@@ -9,15 +9,22 @@
 
     <!-- Le styles -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-            /* background-image: url('assets/img/stripe.png') */
-            background-color: #C0C0C0;
-        }
-    </style>
+    <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <!--<style type="text/css">-->
+    <!--body {-->
+    <!--padding-top: 60px;-->
+    <!--padding-bottom: 40px;-->
+    <!--}-->
+
+    <!--.sidebar-nav {-->
+    <!--padding: 9px 0;-->
+    <!--}-->
+
+    <!--.form-horizontal .control-label {-->
+    <!--text-align: left;-->
+    <!--}-->
+    <!--</style>-->
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -34,9 +41,17 @@
 
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="mc-tools-sidebar">
+    <ul class="mc-tools-sidenav">
+        <li><a href="#">LabNotebook<i class="icon-chevron-right"></i></a></li>
+        <li><a href="#">Data Search</a></li>
+        <li><a href="#">Model Search</a></li>
+    </ul>
+</div>
+
+<div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
-        <div class="container">
+        <div class="container-fluid">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -45,84 +60,138 @@
             <a class="brand" href="#">Materials Commons</a>
 
             <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    <a href="#" class="navbar-link">Login</a>
+                </p>
+
                 <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Computational Data</a></li>
-                            <li><a href="#">Experimental Data</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Labnotebook</a></li>
-                            <li class="divider"></li>
-                            <li class="nav-header">Models and Data</li>
-                            <li><a href="#">Computational Models</a></li>
-                            <li><a href="#">Experimental Data Search</a></li>
-                        </ul>
-                    </li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <div class="control-group"></div>
-                <form class="navbar-form pull-right">
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="icon-search"></i></span>
-                            <input class="span2" id="inputIcon" type="text" placeholder="Search...">
-                        </div>
-                    </div>
-                </form>
+
             </div>
             <!--/.nav-collapse -->
         </div>
     </div>
 </div>
 
-<div class="container">
 
-    <!-- Main hero unit for a primary marketing message or call to action -->
-    <div class="hero-unit">
-        <img src="assets/img/BrightField.jpg"/>
+<div class="container-fluid">
 
-        <p>The materials commons site description here</p>
-
-        <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-    </div>
-
-    <!-- Example row of columns -->
     <div class="row">
-        <div class="span4">
-            <h2>Resources</h2>
 
-            <p>Resources here</p>
+        <div class="offset3 span9">
+            <h1>Overview</h1>
 
-            <p><a class="btn" href="#">View details &raquo;</a></p>
+            <p>
+                Materials Commons store experimental and computational data and results. The site allows you
+                to search for data.
+            </p>
+
+            <p>
+                Lorem ipsum dolor sit amet, habeo graeco aliquando eos ut. At ceteros deleniti nec, pri sint fabellas
+                at,
+                vis suas erat mnesarchum ei. Populo suscipiantur mel ne. Eros possim verear ei vix.
+
+                Est ne vocent timeam deserunt. Eum ad ipsum aliquid partiendo, ad vim ornatus petentium assentior, wisi
+                essent volutpat at per. No pri aeque tritani, ei duo facete verear. Qui meis solum copiosae ut. Et sint
+                iuvaret constituto eos, solum solet has ne.
+
+                Mei nostrum ancillae probatus no. Sit et ferri democritum. Ea pro vidisse quaeque consequat, ex has
+                ancillae
+                electram corrumpit. Ei eruditi inermis praesent per. Animal lucilius definitiones at ius, usu quaestio
+                dignissim an, sit an populo fabulas dignissim. Eum fuisset ullamcorper ad.
+
+                Mel ne liber ignota deterruisset, ius ex modus aeterno interesset, quem salutatus consetetur sea no. Vis
+                ne
+                animal maluisset, et tantas libris laboramus vis. In dicat malorum comprehensam vel, ius possit
+                dissentiet
+                at, oratio graeci diceret vim ne. Apeirian sadipscing eu sit, patrioque rationibus sadipscing quo te,
+                quo ut
+                munere euripidis. An alia aliquam scripserit eam, per ut alienum cotidieque, nostrum suscipit erroribus
+                id
+                sit.
+
+                Putant ocurreret in mel, ea per dicat melius. Eu his illud scripserit, te agam saepe vocent est, ea
+                minim
+                dignissim omittantur mel. Vel erat falli petentium cu, in vis regione epicurei, facilis persecuti
+                adolescens
+                eos no. His facer detraxit an.
+            </p>
+
+            <p>
+                Lorem ipsum dolor sit amet, habeo graeco aliquando eos ut. At ceteros deleniti nec, pri sint fabellas
+                at,
+                vis suas erat mnesarchum ei. Populo suscipiantur mel ne. Eros possim verear ei vix.
+
+                Est ne vocent timeam deserunt. Eum ad ipsum aliquid partiendo, ad vim ornatus petentium assentior, wisi
+                essent volutpat at per. No pri aeque tritani, ei duo facete verear. Qui meis solum copiosae ut. Et sint
+                iuvaret constituto eos, solum solet has ne.
+
+                Mei nostrum ancillae probatus no. Sit et ferri democritum. Ea pro vidisse quaeque consequat, ex has
+                ancillae
+                electram corrumpit. Ei eruditi inermis praesent per. Animal lucilius definitiones at ius, usu quaestio
+                dignissim an, sit an populo fabulas dignissim. Eum fuisset ullamcorper ad.
+
+                Mel ne liber ignota deterruisset, ius ex modus aeterno interesset, quem salutatus consetetur sea no. Vis
+                ne
+                animal maluisset, et tantas libris laboramus vis. In dicat malorum comprehensam vel, ius possit
+                dissentiet
+                at, oratio graeci diceret vim ne. Apeirian sadipscing eu sit, patrioque rationibus sadipscing quo te,
+                quo ut
+                munere euripidis. An alia aliquam scripserit eam, per ut alienum cotidieque, nostrum suscipit erroribus
+                id
+                sit.
+
+                Putant ocurreret in mel, ea per dicat melius. Eu his illud scripserit, te agam saepe vocent est, ea
+                minim
+                dignissim omittantur mel. Vel erat falli petentium cu, in vis regione epicurei, facilis persecuti
+                adolescens
+                eos no. His facer detraxit an.
+            </p>
+
+            <p>
+                Lorem ipsum dolor sit amet, habeo graeco aliquando eos ut. At ceteros deleniti nec, pri sint fabellas
+                at,
+                vis suas erat mnesarchum ei. Populo suscipiantur mel ne. Eros possim verear ei vix.
+
+                Est ne vocent timeam deserunt. Eum ad ipsum aliquid partiendo, ad vim ornatus petentium assentior, wisi
+                essent volutpat at per. No pri aeque tritani, ei duo facete verear. Qui meis solum copiosae ut. Et sint
+                iuvaret constituto eos, solum solet has ne.
+
+                Mei nostrum ancillae probatus no. Sit et ferri democritum. Ea pro vidisse quaeque consequat, ex has
+                ancillae
+                electram corrumpit. Ei eruditi inermis praesent per. Animal lucilius definitiones at ius, usu quaestio
+                dignissim an, sit an populo fabulas dignissim. Eum fuisset ullamcorper ad.
+
+                Mel ne liber ignota deterruisset, ius ex modus aeterno interesset, quem salutatus consetetur sea no. Vis
+                ne
+                animal maluisset, et tantas libris laboramus vis. In dicat malorum comprehensam vel, ius possit
+                dissentiet
+                at, oratio graeci diceret vim ne. Apeirian sadipscing eu sit, patrioque rationibus sadipscing quo te,
+                quo ut
+                munere euripidis. An alia aliquam scripserit eam, per ut alienum cotidieque, nostrum suscipit erroribus
+                id
+                sit.
+
+                Putant ocurreret in mel, ea per dicat melius. Eu his illud scripserit, te agam saepe vocent est, ea
+                minim
+                dignissim omittantur mel. Vel erat falli petentium cu, in vis regione epicurei, facilis persecuti
+                adolescens
+                eos no. His facer detraxit an.
+            </p>
+
+
         </div>
-        <div class="span4">
-            <h2>Developers</h2>
 
-            <p>Developer stuff here</p>
-
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-        <div class="span4">
-            <h2>News</h2>
-
-            <p>News here</p>
-
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
     </div>
 
-    <hr>
+    <div class="row">
 
-    <footer>
-        <p>&copy; Company 2012</p>
-    </footer>
+        <footer>
+            <p>&copy; Company 2012</p>
+        </footer>
+    </div>
 
 </div>
 <!-- /container -->
