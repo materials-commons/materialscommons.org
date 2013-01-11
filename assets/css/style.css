@@ -24,9 +24,9 @@ body {
     left: 2%;
     background: #838B8B;
     list-style-type: none;
-    -webkit-border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
 }
 
 .mc-tools-sidenav > li > a {
@@ -35,7 +35,7 @@ body {
     width: 170px;
     margin: 0 0 -1px;
     padding: 8px 14px;
-    border: 1px solid red;
+    border: 1px solid #C1CDCD;
 }
 
 .mc-tools-sidenav > li:first-child > a {
