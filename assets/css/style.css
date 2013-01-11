@@ -1,7 +1,9 @@
 body {
     padding-top: 60px;
     padding-bottom: 40px;
-    background:#C5C1AA;
+    background:#9CBAC9;
+
+        /*#C5C1AA;*/
 
         /*#8C9896;*/
         /*#768582; *
@@ -22,7 +24,7 @@ body {
     position: fixed;
     top: 10%;
     left: 2%;
-    background: #838B8B;
+    background: #F5F5F5;
     list-style-type: none;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
@@ -31,11 +33,13 @@ body {
 
 .mc-tools-sidenav > li > a {
     display:block;
-    color: black;
+    font-weight: bold;
+    color:  black;
     width: 170px;
     margin: 0 0 -1px;
     padding: 8px 14px;
-    border: 1px solid #C1CDCD;
+    border: 1px solid  #e5e5e5;
+    text-decoration: none;
 }
 
 .mc-tools-sidenav > li:first-child > a {
@@ -50,7 +54,44 @@ body {
     border-radius: 0 0 6px 6px;
 }
 
-/* ************************ */
+.mc-tools-sidenav > li > a:hover {
+    background-color: #A3B8C2;
+}
+
+div.node.level0 {
+    background-color: #c3eafb;
+    border-radius: 5px;
+    width: 150px;
+    border: 2px solid #b5d9ea;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+    -moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+}
+
+div.node.level1 {
+    background-color:#cee3ac;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+    -moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+    width: 100px;
+    border: 2px solid #b8da83;
+}
+
+div.node.level2 {
+    background-color:#fff7aa;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+    -moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+    width: 100px;
+    border: 2px solid #e3ca4b;
+}
+
+/* ******** Remove below this line**************** */
 
 .bs-docs-sidenav {
     width: 228px;
