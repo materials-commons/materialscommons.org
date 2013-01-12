@@ -62,21 +62,25 @@
 </div>
 
 <ul id="experiment" style="display:none">
-    <li style="color: #c3eafb; width:80%"><a href="#" >ALLISON-DEFORMATON-001</a>
+    <li style="color: #c3eafb; width:80%"><a href="#">ALLISON-DEFORMATON-001</a>
         <ul>
             <li><a href="#">Magnesium</a>
                 <ul>
-                    <li><a href="#">Microstructure</a>
-                        <ul>
-                            <li><a href="#">A</a></li>
-                            <li><a href="#">B</a></li>
+                    <li>
+                        <p>
+                            Microstructure
+                        </p>
+
+                        <p>
+                            <button id="microstructure-button" class="btn btn-primary btn-mini" onclick="microstructClicked()">Add Equipment</button>
+                        </p>
+                        <ul id="microstructure">
+
                         </ul>
 
                     </li>
                     <li><a href="#">Mechanical</a>
-                        <ul>
-                            <li><a href="#">C</a></li>
-                            <li><a href="#">D</a></li>
+                        <ul id="mechanical">
                         </ul>
                     </li>
                 </ul>
@@ -95,61 +99,74 @@
             <div class="row">
                 <h3>Create New Experiment</h3>
 
-                <div id="rootwizard">
-                    <div class="navbar">
-                        <div class="navbar-inner">
-                            <div class="container">
-                                <ul>
-                                    <li><a href="#tab1" data-toggle="tab">Lab</a></li>
-                                    <li><a href="#tab2" data-toggle="tab">Material</a></li>
-                                    <li><a href="#tab3" data-toggle="tab">Experiment Type</a></li>
-                                    <li><a href="#tab4" data-toggle="tab">Validation</a></li>
-                                </ul>
+                <div class="accordion" id="a1">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="a1" href="#c1">Experiment Wizard</a>
+                        </div>
+                        <div id="c1" class="accordion-body collapse in">
+                            <div class="accordion-inner">
+
+                                <div id="rootwizard">
+                                    <div class="navbar">
+                                        <div class="navbar-inner">
+                                            <div class="container">
+                                                <ul>
+                                                    <li><a href="#tab1" data-toggle="tab">Lab</a></li>
+                                                    <li><a href="#tab2" data-toggle="tab">Material</a></li>
+                                                    <li><a href="#tab3" data-toggle="tab">Experiment Type</a></li>
+                                                    <li><a href="#tab4" data-toggle="tab">Validation</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="bar" class="progress progress-striped active">
+                                        <div class="bar"></div>
+                                    </div>
+                                    <div class="tab-content">
+                                        <div class="tab-pane" id="tab1">
+                                            <p>
+                                                <input type="text" name="lab" id="lab" placeholder='Enter your lab'>
+                                            </p>
+                                        </div>
+                                        <div class="tab-pane" id="tab2">
+                                            <form class="form-horizontal">
+                                                <select>
+                                                    <option>Magnesium 1</option>
+                                                    <option>Magnesium 2</option>
+                                                    <option>Magnesium 3</option>
+                                                    <option>Magnesium 4</option>
+                                                </select>
+
+                                                <input type="number" step="any" placeholder="thickness">
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane" id="tab3">
+                                            <form class="form-horizontal">
+                                                <select>
+                                                    <option>Microstructure Characterization</option>
+                                                    <option>Mechanical Properties</option>
+                                                </select>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane" id="tab4">
+                                            <label>Lab: Allison</label>
+                                            <label>Material: Magnesium 1</label>
+                                            <label>Thickness: 2mm</label>
+                                            <label>Experiment Type: Mechanical Properties</label>
+                                        </div>
+                                        <ul class="pager wizard">
+                                            <li class="previous first" style="display:none;"><a href="#">First</a></li>
+                                            <li class="previous"><a href="#">Previous</a></li>
+                                            <li class="next last" style="display:none;"><a href="#">Last</a></li>
+                                            <li class="next"><a href="#">Next</a></li>
+                                            <li class="next finish" style="display: none"><a href="#">Finish</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                    </div>
-                    <div id="bar" class="progress progress-striped active">
-                        <div class="bar"></div>
-                    </div>
-                    <div class="tab-content">
-                        <div class="tab-pane" id="tab1">
-                            <p>
-                                <input type="text" name="lab" id="lab" placeholder='Enter your lab'>
-                            </p>
-                        </div>
-                        <div class="tab-pane" id="tab2">
-                            <form class="form-horizontal">
-                                <select>
-                                    <option>Magnesium 1</option>
-                                    <option>Magnesium 2</option>
-                                    <option>Magnesium 3</option>
-                                    <option>Magnesium 4</option>
-                                </select>
-
-                                <input type="number" step="any" placeholder="thickness">
-                            </form>
-                        </div>
-                        <div class="tab-pane" id="tab3">
-                            <form class="form-horizontal">
-                                <select>
-                                    <option>Microstructure Characterization</option>
-                                    <option>Mechanical Properties</option>
-                                </select>
-                            </form>
-                        </div>
-                        <div class="tab-pane" id="tab4">
-                            <label>Lab: Allison</label>
-                            <label>Material: Magnesium 1</label>
-                            <label>Thickness: 2mm</label>
-                            <label>Experiment Type: Mechanical Properties</label>
-                        </div>
-                        <ul class="pager wizard">
-                            <li class="previous first" style="display:none;"><a href="#">First</a></li>
-                            <li class="previous"><a href="#">Previous</a></li>
-                            <li class="next last" style="display:none;"><a href="#">Last</a></li>
-                            <li class="next"><a href="#">Next</a></li>
-                            <li class="next finish" style="display: none"><a href="#">Finish</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -179,6 +196,15 @@
 <script src="assets/js/jquery.bootstrap.wizard.js"></script>
 <script src="assets/js/bootstrap.js"></script>
 <script>
+
+    function microstructClicked(e) {
+        $('#microstructure').append('<li><a href="#">New Equipment</a></li>');
+        $('#experimentBuild').empty();
+        $('#experiment').jOrgChart({
+            chartElement:'#experimentBuild'
+        });
+    }
+
     jQuery(document).ready(function () {
         $('#rootwizard').bootstrapWizard({
             onTabShow:function (tab, navigation, index) {
@@ -198,6 +224,7 @@
         });
 
         $('#rootwizard .finish').click(function () {
+            $('#c1').collapse('hide');
             $("#experiment").jOrgChart({
                 chartElement:'#experimentBuild'
             });
