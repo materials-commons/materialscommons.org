@@ -24,33 +24,37 @@
 
 <body>
 
-<ul id="experiment" style="display:none">
-    <li style="color: #c3eafb; width:80%"><a href="#">ALLISON-DEFORMATON-001</a>
-        <ul>
-            <li><a href="#">Magnesium</a>
-                <ul>
-                    <li>
-                        <p>
-                            Microstructure
-                        </p>
+<div style="display:none">
+    <ul id="experiment">
+        <li style="color: #c3eafb; width:80%"><a href="#">ALLISON-DEFORMATON-001</a>
+            <ul>
+                <li><a href="#">Magnesium</a>
+                    <ul>
+                        <li>
+                            <p>
+                                Microstructure
+                            </p>
 
-                        <p>
-                            <button id="microstructure-button" class="btn btn-primary btn-mini" onclick="microstructClicked()">Add Equipment</button>
-                        </p>
-                        <ul id="microstructure">
-                        </ul>
+                            <p>
+                                <button id="microstructure-button" class="btn btn-primary btn-mini"
+                                        onclick="microstructClicked()">Add Equipment
+                                </button>
+                            </p>
+                            <ul id="microstructure">
+                            </ul>
 
-                    </li>
-                    <li><a href="#">Mechanical</a>
-                        <ul id="mechanical">
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="#">Simulation</a></li>
-        </ul>
-    </li>
-</ul>
+                        </li>
+                        <li><a href="#">Mechanical</a>
+                            <ul id="mechanical">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#">Simulation</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
 
 <div class="mc-tools-sidebar">
     <ul class="mc-tools-sidenav">
@@ -126,6 +130,9 @@
     <div class="row">
         <div class="span9 offset3">
             <div id="experimentBuild" class="orgChart"></div>
+            <ul id="testArea">
+
+            </ul>
         </div>
     </div>
 
@@ -159,11 +166,37 @@
         });
     }
 
-    jQuery(document).ready(function () {
+    function createOrgChartFromJson()
+    {
+        var e = {
+            name: 'TEST-EXPERIMENT',
+            etypes: [ 'Magnesium', 'Simulation'],
+            properties: [ 'Microstructure', 'Mechanical'],
+            microstructure: ['A', 'B', 'C'],
+            mechanical: []
+        };
 
-        $("#experiment").jOrgChart({
+        $('#testArea').append('<li id="mainli"><a href="#">' + e.name + '</a>');
+        $('#mainli').append('<ul id="next1"></ul>');
+        $('#next1').append('<li id="metal"><a href="#">Magnesium</a></li>');
+        $('#next1').append('<li id="simulation"><a href="#">Simulation</a></li>');
+        $('#metal').append('<ul id="metalitems"></ul>');
+        $('#metalitems').append('<li id="ms23"><a href="#">Microstructure</a></li>');
+        $('#ms23').append('<ul id="aa1"></ul>');
+        $('#aa1').append('<li><a href="#">ABC</a></li>');
+        $('#aa1').append('<li><a href="#">DEF</a></li>');
+
+        $("#testArea").jOrgChart({
             chartElement:'#experimentBuild'
         });
+
+    }
+
+    jQuery(document).ready(function () {
+        createOrgChartFromJson();
+//        $("#experiment").jOrgChart({
+//            chartElement:'#experimentBuild'
+//        });
     });
 </script>
 </body>
