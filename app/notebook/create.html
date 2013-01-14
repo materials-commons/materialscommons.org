@@ -62,29 +62,23 @@
 </div>
 
 <ul id="experiment" style="display:none">
-    <li style="color: #c3eafb; width:80%"><a href="#">ALLISON-DEFORMATON-001</a>
+    <li style="color: #c3eafb; width:80%" id="chart-experiment">
         <ul>
-            <li><a href="#">Magnesium</a>
-                <ul>
-                    <li>
-                        <p>
-                            Microstructure
-                        </p>
+            <li>
+                <p>
+                    Microstructure
+                </p>
 
-                        <p>
-                            <button id="microstructure-button" class="btn btn-primary btn-mini"
-                                    onclick="microstructClicked()">Add Equipment
-                            </button>
-                        </p>
-                        <ul id="microstructure">
+                <p>
+                    <button id="microstructure-button" class="btn btn-primary btn-mini"
+                            onclick="microstructClicked()">Add Equipment
+                    </button>
+                </p>
+                <ul id="microstructure">
 
-                        </ul>
-
-                    </li>
-                    <li><a href="#">Mechanical</a>
-                        <ul id="mechanical">
-                        </ul>
-                    </li>
+                </ul>
+            <li><a href="#">Mechanical</a>
+                <ul id="mechanical">
                 </ul>
             </li>
             <li><a href="#">Simulation</a></li>
@@ -210,6 +204,8 @@
 
     //$.couch.urlPrefix = "http://localhost:5984";
 
+    var experimentName = "";
+
     function microstructClicked(e) {
         $('#microstructure').append('<li><a href="#">New Equipment</a></li>');
         $('#experimentBuild').empty();
@@ -219,11 +215,10 @@
     }
 
     function saveExperiment() {
-        var name = $('#lab').val() + '-' + $('#metal').val() + '-TEST' + Math.floor((Math.random() * 10000) + 1);
         var description = $('#description').val();
         var doc = {
             "type":"experiment",
-            "name":name,
+            "name":experimentName,
             "description":description
         };
 
@@ -244,6 +239,8 @@
         var metal = $('#metal').val();
         var thickness = $('#thickness').val();
         var etype = $('#etype').val();
+
+        experimentName = $('#lab').val() + '-' + $('#metal').val() + '-TEST' + Math.floor((Math.random() * 10000) + 1);
 
         $('#tab4').empty();
         $('#tab4').append('<label>Lab:' + lab + '</label>');
@@ -275,6 +272,8 @@
 
         $('#rootwizard .finish').click(function () {
             $('#c1').collapse('hide');
+            $('#experimentName').remove();
+            $('#chart-experiment').prepend('<a href="#" id="experimentName">' + experimentName + '</a>');
             $("#experiment").jOrgChart({
                 chartElement:'#experimentBuild'
             });
