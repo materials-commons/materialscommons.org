@@ -152,6 +152,11 @@
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/jquery.jOrgChart.js"></script>
 <script src="assets/js/bootstrap.js"></script>
+<script src="http://localhost:5984/_utils/script/json2.js"></script>
+<script src="http://localhost:5984/_utils/script/sha1.js"></script>
+<script src="http://localhost:5984/_utils/script/jquery.js?1.4.2"></script>
+<script src="http://localhost:5984/_utils/script/jquery.couch.js?0.11.0"></script>
+<script src="http://localhost:5984/_utils/script/jquery.dialog.js?0.11.0"></script>
 <script>
 
     function m1clicked(e) {
@@ -193,7 +198,16 @@
     }
 
     jQuery(document).ready(function () {
-        createOrgChartFromJson();
+
+        $.couch.urlPrefix = "http://localhost:5984";
+
+        $.couch.allDbs({
+            success: function(data) {
+                console.log(data);
+            }
+        });
+
+        //createOrgChartFromJson();
 //        $("#experiment").jOrgChart({
 //            chartElement:'#experimentBuild'
 //        });
