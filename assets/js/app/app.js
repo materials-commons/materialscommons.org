@@ -5,3 +5,5 @@
  * Time: 1:10 PM
  * To change this template use File | Settings | File Templates.
  */
+
+angular.module('notebook', ['CornerCouch']);

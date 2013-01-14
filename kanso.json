@@ -1,0 +1,13 @@
+{
+    "name":"materialscommons-app",
+    "version":"0.1.0",
+    "description":"Materials Commons Site",
+    "attachments":["index.html", "test.html", "app", "assets"],
+    "modules": ["lib"],
+    "load": "lib/app",
+    "dependencies":{
+        "attachments":null,
+        "modules": null,
+        "properties": null
+    }
+}

@@ -1,0 +1,50 @@
+[
+    {
+        "type": "experiment",
+        "name": "ALLISON-SEM-MAGNESIUSM",
+        "description":"Test tensile strength of magnesium when heated"
+    },
+
+    {
+        "type": "experiment",
+        "name": "ALLISON-THERMAL-MAGNESIUSM-HYBRID",
+        "description":"Alloying of magnesium/aluminum hybrid under extreme temperatures"
+    },
+
+    {
+        "type": "experiment",
+        "name": "ALLISON-SEM-CHROMIUM",
+        "description":"Does chromium show same failure conditions as magnesium?"
+    },
+
+    {
+        "type": "experiment",
+        "name": "ALLISON-APT-MAGNESIUM-001",
+        "description":"Deformation images of magnesium after failure"
+    },
+
+    {
+        "type": "experiment",
+        "name": "ALLISON-OPTICAL-DEFORMATION",
+        "description":"Hourly images of magnesium plate approaching failure point"
+    },
+
+    {
+        "type": "experiment",
+        "name": "ALLISON-FATIGUE-MAGNESIUM-SLOW",
+        "description":"Test if grain boundaries inhibit crack growth when applying pressure slowly"
+    },
+
+    {
+        "type": "experiment",
+        "name": "ALLISON-FATIGUE-MAGNESIUM-FAST",
+        "description":"Test if grain boundaries inhibit crack growth when applying pressure very rapidly"
+    },
+
+    {
+        "type": "experiment",
+        "name": "ALLISON-HARDNESS-MAGESIUM",
+        "description":"Tempered Magnesium/Aluminum mix hardness testing"
+    }
+
+]

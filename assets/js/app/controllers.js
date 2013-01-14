@@ -8,7 +8,7 @@
 
 'use strict';
 
-function ExperimentListController($scope) {
+function ExperimentListController($scope, cornercouch) {
     $scope.experiments = [
         {"name": "ALLISON-SEM-MAGNESIUSM",
         "snippet": "Test tensile strength of magnesium when heated"},
@@ -17,4 +17,9 @@ function ExperimentListController($scope) {
         {"name": "ALLISON-SEM-CHROMIUM",
             "snippet": "Does chromium show same failure conditions as magnesium?"}
     ];
+
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.mcdb.query("materialscommons-app", "all_experiments");
 }

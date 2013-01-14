@@ -1,0 +1,10 @@
+[
+{"type":"experiment","name":"ALLISON-SEM-MAGNESIUSM","description":"Test tensile strength of magnesium when heated","_id":"58193345d4f1d0f9de3af7b1481f87ef"},
+{"type":"experiment","name":"ALLISON-THERMAL-MAGNESIUSM-HYBRID","description":"Alloying of magnesium/aluminum hybrid under extreme temperatures","_id":"58193345d4f1d0f9de3af7b1481f8f9a"},
+{"type":"experiment","name":"ALLISON-SEM-CHROMIUM","description":"Does chromium show same failure conditions as magnesium?","_id":"58193345d4f1d0f9de3af7b1481f948a"},
+{"type":"experiment","name":"ALLISON-APT-MAGNESIUM-001","description":"Deformation images of magnesium after failure","_id":"58193345d4f1d0f9de3af7b1481fa402"},
+{"type":"experiment","name":"ALLISON-OPTICAL-DEFORMATION","description":"Hourly images of magnesium plate approaching failure point","_id":"58193345d4f1d0f9de3af7b1481fac0d"},
+{"type":"experiment","name":"ALLISON-FATIGUE-MAGNESIUM-SLOW","description":"Test if grain boundaries inhibit crack growth when applying pressure slowly","_id":"58193345d4f1d0f9de3af7b1481fb7ae"},
+{"type":"experiment","name":"ALLISON-FATIGUE-MAGNESIUM-FAST","description":"Test if grain boundaries inhibit crack growth when applying pressure very rapidly","_id":"58193345d4f1d0f9de3af7b1481fbbd7"},
+{"type":"experiment","name":"ALLISON-HARDNESS-MAGESIUM","description":"Tempered Magnesium/Aluminum mix hardness testing","_id":"58193345d4f1d0f9de3af7b1481fc101"}
+]
