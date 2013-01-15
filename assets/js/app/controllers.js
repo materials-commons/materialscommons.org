@@ -8,18 +8,30 @@
 
 'use strict';
 
-function ExperimentListController($scope, cornercouch) {
-    $scope.experiments = [
-        {"name": "ALLISON-SEM-MAGNESIUSM",
-        "snippet": "Test tensile strength of magnesium when heated"},
-        {"name": "ALLISON-THERMAL-MAGNESIUSM-HYBRID",
-            "snippet": "Alloying of magnesium/aluminum hybrid under extreme temperatures"},
-        {"name": "ALLISON-SEM-CHROMIUM",
-            "snippet": "Does chromium show same failure conditions as magnesium?"}
-    ];
+function ExperimentListController($scope, $location, cornercouch) {
 
-    $scope.server = cornercouch();
-    $scope.server.session();
-    $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.mcdb.query("materialscommons-app", "all_experiments");
+    var mcdb = {rows:[
+        { value:{"_id":"1", "name":"ALLISON-SEM-MAGNESIUSM",
+            "description":"Test tensile strength of magnesium when heated"}},
+        { value:{"_id":"2", "name":"ALLISON-THERMAL-MAGNESIUSM-HYBRID",
+            "description":"Alloying of magnesium/aluminum hybrid under extreme temperatures"}},
+        { value:{"_id":"3", "name":"ALLISON-SEM-CHROMIUM",
+            "description":"Does chromium show same failure conditions as magnesium?"}}
+    ]};
+
+    console.log($location.url());
+
+    $scope.mcdb = mcdb;
+
+//    $scope.server = cornercouch();
+//    $scope.server.session();
+//    $scope.mcdb = $scope.server.getDB("materialscommons");
+//    $scope.mcdb.query("materialscommons-app", "all_experiments");
+
+    //$scope
+}
+
+function ExperimentDetailController($scope, $routeParams) {
+    console.log("ExperimentDetailController");
+    $scope.experimentId = $routeParams.experimentId;
 }

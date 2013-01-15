@@ -91,6 +91,11 @@ div.node.level2 {
     border: 2px solid #e3ca4b;
 }
 
+.mc-table-hover tbody tr:hover td,
+.mc-table-hover tbody tr:hover th {
+    background-color: #CCCCCC;
+}
+
 /* ******** Remove below this line**************** */
 
 .bs-docs-sidenav {

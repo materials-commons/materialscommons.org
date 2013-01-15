@@ -6,4 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 
-angular.module('notebook', ['CornerCouch']);
+angular.module('notebook', ['CornerCouch']).
+    config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+        $routeProvider.
+            when('/experiments', {templateUrl: 'partials/does-not-exists.html', controller: ExperimentListController}).
+            when('/experiments/:experimentId', {templateUrl: 'partials/experiment-detail.html',
+                controller: ExperimentDetailController}).
+            otherwise({redirectTo: 'experiments'});
+    }
+]);
