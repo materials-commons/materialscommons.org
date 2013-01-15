@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="span2 offset3">
+        Search: <input ng-model="query">
+    </div>
+
+    <div class="span4 offset2">
+        <a href="#/materialscommons/notebook/create" class="btn btn-success">Create New Experiment</a>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="span9 offset3">
+        <h4>Your Experiments</h4>
+
+        <div class="well">
+            <table class="table table-striped mc-table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Snippet</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in mcdb.rows | filter:query">
+                    <td><a href="#/experiments/{{row.value._id}}">{{row.value.name}}</a></td>
+                    <td>{{row.value.description}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

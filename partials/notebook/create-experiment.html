@@ -1,0 +1,92 @@
+<ul id="experiment" style="display:none">
+    <li style="color: #c3eafb; width:80%" id="chart-experiment">
+        <ul>
+            <li>
+                <p>
+                    Microstructure
+                </p>
+
+                <p>
+                    <select onclick="microstructurePicked(this.value);" class="input-small" style="background-color: #85C2E0;">
+                        <option value="APT">APT</option>
+                        <option value="TEM">TEM</option>
+                        <option value="XRD">XRD</option>
+                        <option value="SEM">SEM</option>
+                        <option value="OIM">OIM</option>
+                        <option value="Optical">Optical</option>
+                    </select>
+                </p>
+                <ul id="microstructure">
+
+                </ul>
+            <li><a href="#">Mechanical</a>
+                <ul id="mechanical">
+                </ul>
+            </li>
+            <li><a href="#">Simulation</a></li>
+        </ul>
+    </li>
+</ul>
+
+
+<div class="row">
+
+    <div class="span7 offset4">
+        <div class="row">
+            <h3>Create New Experiment</h3>
+
+            <div class="accordion" id="a1">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="a1" href="#c1">Experiment
+                            Wizard</a>
+                    </div>
+                    <div id="c1" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+
+
+                            <p>
+                                <input type="text" name="lab" id="lab" placeholder='Enter your lab'>
+                            </p>
+
+                            <p>
+                                <textarea rows="3" id="description"
+                                          placeholder="Enter description of experiment"></textarea>
+                            </p>
+
+
+                            <form class="form-horizontal">
+                                <select id="metal">
+                                    <option>Magnesium 1</option>
+                                    <option>Magnesium 2</option>
+                                    <option>Magnesium 3</option>
+                                    <option>Magnesium 4</option>
+                                </select>
+
+                                <input type="number" step="any" placeholder="thickness" id="thickness">
+                            </form>
+
+
+                            <form class="form-horizontal">
+                                <select style="width:250px;" id="etype">
+                                    <option>Microstructure Characterization</option>
+                                    <option>Mechanical Properties</option>
+                                </select>
+                            </form>
+                            <button class="btn btn-success" onclick="doneFillingOutDetails()" id="done-button">Done</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 50px;">
+            <div id="experimentBuild" class="orgChart"></div>
+        </div>
+
+        <div class="row" style="padding-top: 30px;">
+            <button class="btn btn-success" onclick="saveExperiment()" id="save-button">Save</button>
+        </div>
+    </div>
+
+</div>
