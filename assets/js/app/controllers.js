@@ -29,8 +29,20 @@ function ExperimentListController($scope, $location, cornercouch) {
     //$scope
 }
 
-function ExperimentDetailController($scope, $routeParams) {
+function ExperimentDetailController($scope, $routeParams, cornercouch) {
     $scope.experimentId = $routeParams.experimentId;
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.experiment = $scope.mcdb.getDoc($scope.experimentId);
+
+    $scope.deleteExperiment = function() {
+        $scope.experiment.remove().success(function() {
+            alert("Deleted experiment");
+        });
+    }
+
+    //$scope.$on('$viewContentLoaded', showExperimentLayout);
 }
 
 function FrontPageController($scope, $routeParams) {
@@ -47,4 +59,8 @@ function ModelsSearchController($scope, $routeParams) {
 
 function ExperimentCreateController($scope, $routeParams) {
     $scope.$on('$viewContentLoaded', setupWizard);
+
+    $scope.testClick = function() {
+        alert("testClick");
+    }
 }

@@ -10,7 +10,7 @@ angular.module('materialscommons', ['CornerCouch']).
     config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider.
         when('/materialscommons',
-        {templateUrl:'partials/front-page.html', controller:FrontPageController}).
+            {templateUrl:'partials/front-page.html', controller:FrontPageController}).
         when('/materialscommons/data',
             {templateUrl:'partials/data/data.html', controller:DataSearchController}).
         when('/materialscommons/models',
@@ -19,6 +19,8 @@ angular.module('materialscommons', ['CornerCouch']).
             {templateUrl: 'partials/notebook/experiment-list.html', controller: ExperimentListController}).
         when('/materialscommons/notebook/create',
             {templateUrl: 'partials/notebook/create-experiment.html', controller: ExperimentCreateController}).
+        when('/materialscommons/experiment/:experimentId',
+            {templateUrl:'partials/notebook/experiment-details.html', controller: ExperimentDetailController}).
         otherwise({redirectTo:'/materialscommons'});
 //            when('/experiments', {templateUrl: 'partials/does-not-exists.html', controller: ExperimentListController}).
 //            when('/experiments/:experimentId', {templateUrl: 'partials/experiment-detail.html',

@@ -5,6 +5,7 @@ function setupWizard() {
 var experimentName = "";
 
 function microstructurePicked(value) {
+    if (value == "NONE") { return ; }
     $('#microstructure').append('<li><a href="#">' + value + '</a></li>');
     $('#experimentBuild').empty();
     $('#experiment').jOrgChart({
@@ -12,12 +13,26 @@ function microstructurePicked(value) {
     });
 }
 
+function showExperimentLayout() {
+    $('#experimentLayoutBuild').empty();
+    $('#experimentDetail').jOrgChart({
+        chartElement:'#experimentLayoutBuild'
+    });
+}
+
 function saveExperiment() {
     var description = $('#description').val();
+    var microstructures = [];
+    $('#microstructure li').each(function() {
+        microstructures.push($(this).text());
+    });
     var doc = {
         "type":"experiment",
         "name":experimentName,
-        "description":description
+        "description":description,
+        "microstructure":microstructures,
+        "mechanical":[],
+        "simulation":[]
     };
 
     $.couch.db("materialscommons").saveDoc(doc, {

@@ -2,49 +2,73 @@
     {
         "type": "experiment",
         "name": "ALLISON-SEM-MAGNESIUSM",
-        "description":"Test tensile strength of magnesium when heated"
+        "description":"Test tensile strength of magnesium when heated",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     },
 
     {
         "type": "experiment",
         "name": "ALLISON-THERMAL-MAGNESIUSM-HYBRID",
-        "description":"Alloying of magnesium/aluminum hybrid under extreme temperatures"
+        "description":"Alloying of magnesium/aluminum hybrid under extreme temperatures",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     },
 
     {
         "type": "experiment",
         "name": "ALLISON-SEM-CHROMIUM",
-        "description":"Does chromium show same failure conditions as magnesium?"
+        "description":"Does chromium show same failure conditions as magnesium?",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     },
 
     {
         "type": "experiment",
         "name": "ALLISON-APT-MAGNESIUM-001",
-        "description":"Deformation images of magnesium after failure"
+        "description":"Deformation images of magnesium after failure",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     },
 
     {
         "type": "experiment",
         "name": "ALLISON-OPTICAL-DEFORMATION",
-        "description":"Hourly images of magnesium plate approaching failure point"
+        "description":"Hourly images of magnesium plate approaching failure point",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     },
 
     {
         "type": "experiment",
         "name": "ALLISON-FATIGUE-MAGNESIUM-SLOW",
-        "description":"Test if grain boundaries inhibit crack growth when applying pressure slowly"
+        "description":"Test if grain boundaries inhibit crack growth when applying pressure slowly",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     },
 
     {
         "type": "experiment",
         "name": "ALLISON-FATIGUE-MAGNESIUM-FAST",
-        "description":"Test if grain boundaries inhibit crack growth when applying pressure very rapidly"
+        "description":"Test if grain boundaries inhibit crack growth when applying pressure very rapidly",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     },
 
     {
         "type": "experiment",
         "name": "ALLISON-HARDNESS-MAGESIUM",
-        "description":"Tempered Magnesium/Aluminum mix hardness testing"
+        "description":"Tempered Magnesium/Aluminum mix hardness testing",
+        "microstructure":["APT", "TEM"],
+        "mechanical":[],
+        "simulation":[]
     }
 
 ]

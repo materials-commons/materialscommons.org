@@ -23,7 +23,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="row in mcdb.rows | filter:query">
-                    <td><a href="#/experiments/{{row.value._id}}">{{row.value.name}}</a></td>
+                    <td><a href="#/materialscommons/experiment/{{row.value._id}}">{{row.value.name}}</a></td>
                     <td>{{row.value.description}}</td>
                 </tr>
                 </tbody>
