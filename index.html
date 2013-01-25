@@ -4,80 +4,295 @@
     <meta charset="utf-8">
     <title>Materials Commons</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Materials Commons Site">
+    <meta name="author" content="prisms">
 
-    <!-- Le styles -->
+    <!-- styles -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/jquery.jOrgChart.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/stilearn.css" rel="stylesheet">
+    <link href="assets/css/stilearn-responsive.css" rel="stylesheet">
+    <link href="assets/css/stilearn-helper.css" rel="stylesheet">
+    <link href="assets/css/stilearn-icon.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="css/uniform.default.css" rel="stylesheet">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="shortcut icon" href="assets/ico/mc-gear-favicon.ico">
 </head>
 
 <body>
-
-<div class="mc-tools-sidebar">
-    <ul class="mc-tools-sidenav">
-        <li><a href="#/materialscommons/notebook"><img src="assets/ico/glyphish/96-book.png"> LabNotebook<i class="icon-chevron-right"></i></a></li>
-        <li><a href="#/materialscommons/data"><img src="assets/ico/glyphish/16-line-chart.png"> Find Data<i class="icon-chevron-right"></i></a></li>
-        <li><a href="#/materialscommons/models"><img src="assets/ico/glyphish/19-gear.png"> Find Models<i class="icon-chevron-right"></i></a></li>
-    </ul>
-</div>
-
-<div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container-fluid">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="index.html">Materials Commons</a>
-
-            <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">
-                    <a href="#" class="navbar-link">Login</a>
-                </p>
-
-                <ul class="nav">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-
+<!-- section header -->
+<header class="header">
+    <!--nav bar helper-->
+    <div class="navbar-helper">
+        <div class="row-fluid">
+            <!--panel site-name-->
+            <div class="span2">
+                <div class="panel-sitename">
+                    <h2><a href="index.html"><span class="color-teal">Materials </span>Commons</a></h2>
+                </div>
             </div>
-            <!--/.nav-collapse -->
+            <!--/panel name-->
+
+            <div class="span6">
+                <!--panel search-->
+                <div class="panel-search">
+                    <form class="form-search">
+                        <div class="input-icon-append">
+                            <button type="submit" rel="tooltip-bottom" title="search" class="icon"><i
+                                    class="icofont-search"></i></button>
+                            <input class="input-large search-query grd-white" maxlength="23"
+                                   placeholder="Search here..." type="text">
+                        </div>
+                    </form>
+                </div>
+                <!--/panel search-->
+            </div>
+            <div class="span4">
+                <!--panel button ext-->
+                <div class="panel-ext">
+                    <div class="btn-group">
+                        <!--notification-->
+                        <a class="btn btn-danger btn-small" data-toggle="dropdown" href="#" title="3 notification">3</a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-inverse btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+                            About
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-inverse btn-small" href="#">Login</a>
+                    </div>
+                    <div class="btn-group user-group">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <img class="corner-all" align="middle" src="assets/img/user-thumb.jpg" title="John Doe"
+                                 alt="john doe"/> <!--this for display on PC device-->
+                            <button class="btn btn-small btn-inverse">John Doe</button>
+                            <!--this for display on tablet and phone device-->
+                        </a>
+                        <ul class="dropdown-menu dropdown-user" role="menu" aria-labelledby="dLabel">
+                            <li>
+                                <div class="media">
+                                    <a class="pull-left" href="#">
+                                        <img class="img-circle" src="assets/img/user.jpg" title="profile"
+                                             alt="profile"/>
+                                    </a>
+
+                                    <div class="media-body description">
+                                        <p><strong>Glenn Tarcea</strong></p>
+
+                                        <p class="muted">gtarcea@umich.edu</p>
+
+                                        <p class="action"><a class="link" href="#">Activity</a> - <a class="link"
+                                                                                                     href="#">Settings</a>
+                                        </p>
+                                        <a href="profile.html" class="btn btn-primary btn-small btn-block">View
+                                            Profile</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="dropdown-footer">
+                                <div>
+                                    <a class="btn btn-small pull-right" href="login.html">Logout</a>
+                                    <a class="btn btn-small" href="#">Add Account</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--panel button ext-->
+            </div>
         </div>
     </div>
+    <!--/nav bar helper-->
+</header>
+
+<!-- section content -->
+<section class="section">
+<div class="row-fluid">
+<!-- span side-left -->
+<div class="span1">
+    <!--side bar-->
+    <aside class="side-left">
+        <ul class="sidebar" id="materialscommons-sidebar">
+            <li id="dashboard-tab" class="active first" onclick="setActiveTab('#dashboard-tab');">
+                <!--always define class .first for first-child of li element sidebar left-->
+                <a href="index.html" title="dashboard">
+                    <div class="helper-font-24">
+                        <i class="icon-dashboard"></i>
+                    </div>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
+            </li>
+            <li id="notebook-tab" onclick="setActiveTab('#notebook-tab');">
+                <a href="#/materialscommons/notebook" title="notebook">
+                    <div class="helper-font-24">
+                        <i class="icon-book"></i>
+                    </div>
+                    <span class="sidebar-text">LabNotebook</span>
+                </a>
+            </li>
+            <li id="finddata-tab" onclick="setActiveTab('#finddata-tab');">
+                <a href="#/materialscommons/data" title="finddata">
+                    <div class="helper-font-24">
+                        <i class="icon-bar-chart"></i>
+                    </div>
+                    <span class="sidebar-text">Find Data</span>
+                </a>
+            </li>
+            <li id="findmodels-tab" onclick="setActiveTab('#findmodels-tab');">
+                <a href="#/materialscommons/models" title="findmodels">
+                    <div class="helper-font-24">
+                        <i class="icon-cog"></i>
+                    </div>
+                    <span class="sidebar-text">Find Models</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    <!--/side bar -->
 </div>
+<!-- span side-left -->
 
+<!-- span content -->
+<div class="span9">
+    <!-- content -->
+    <div class="content">
+        <!-- content-header -->
+        <div class="content-header">
+            <ul class="content-header-action pull-right">
+                <li>
+                    <a href="#">
+                <span data-chart="peity-bar" data-height="32"
+                      data-colours='["#00A600", "#00A600"]'>5,3,9,6,5,9,7,3,5,2</span>
 
-<div class="container-fluid">
+                        <div class="action-text color-green">8765 <span
+                                class="helper-font-small color-silver-dark">Visitors</span></div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                <span data-chart="peity-bar" data-height="32"
+                      data-colours='["#00A0B1", "#00A0B1"]'>9,7,9,6,3,5,3,5,5,2</span>
 
-    <div ng-view></div>
+                        <div class="action-text color-teal">1437 <span
+                                class="helper-font-small color-silver-dark">Experimental Data</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                <span data-chart="peity-bar" data-height="32"
+                      data-colours='["#BF1E4B", "#BF1E4B"]'>6,5,9,7,3,5,2,5,3,9</span>
 
-    <div class="row">
-        <footer>
-            <p>&copy; Company 2012</p>
-        </footer>
+                        <div class="action-text color-red">4367 <span
+                                class="helper-font-small color-silver-dark">Computational Data</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                <span data-chart="peity-bar" data-height="32"
+                      data-colours='["#BF1E4B", "#BF1E4B"]'>2,3,6,9,7,3,9,4</span>
+
+                        <div class="action-text color-purple">200 <span
+                                class="helper-font-small color-silver-dark">Users</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <h2><i class="icofont-home"></i> Dashboard
+                <small>welcome to Materials Commons</small>
+            </h2>
+        </div>
+        <!-- /content-header -->
+        <div class="content-body" style="background-color: white;">
+            <div ng-view></div>
+        </div>
+
     </div>
-
+    <!-- /content -->
 </div>
-<!-- /container -->
+<!-- /span content -->
 
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
+<!-- span side-right -->
+<div class="span2">
+    <!-- side-right -->
+    <aside class="side-right">
+        <!-- sidebar-right -->
+        <div class="sidebar-right">
+            <!--sidebar-right-header-->
+            <div class="sidebar-right-header">
+                <div class="sr-header-left">
+                    <p class="bold">Activity
+                        <small class="muted">Jan 24th, 2013</small>
+                    </p>
+
+                </div>
+            </div>
+            <!--/sidebar-right-header-->
+
+            <!-- sidebar-right-content -->
+            <div class="sidebar-right-content">
+                <!-- side-task -->
+                <div class="side-task">
+                    <div class="task fade in">
+                        <i class="icon-bookmark color-green"></i>
+                        <span class="task-desc">Phase Field Model Improved</span>
+                    </div>
+                    <div class="task fade in">
+                        <i class="icon-bar-chart color-red"></i>
+                        <span class="task-desc">EMP Stress Test Experiment</span>
+                    </div>
+                    <div class="task fade in">
+                        <i class="icon-bar-chart color-red"></i>
+                        <span class="task-desc">Tensile Testing Under Pres...</span>
+                    </div>
+                    <div class="task fade in">
+                        <i class="icon-cog color-orange"></i>
+                        <span class="task-desc">DFT Model Added</span>
+                    </div>
+                    <div class="task fade in">
+                        <i class="icon-user color-sky"></i>
+                        <span class="task-desc">gtarcea Joined</span>
+                    </div>
+                    <div class="task fade in">
+                        <i class="icon-user color-sky"></i>
+                        <span class="task-desc">jag Joined</span>
+                    </div>
+                    <div class="task fade in">
+                        <i class="icon-bookmark color-green"></i>
+                        <span class="task-desc">Discrete Dislocations Imp..</span>
+                    </div>
+                </div>
+                <!-- /side-task -->
+            </div>
+            <!-- /sidebar-right-content -->
+        </div>
+        <!-- /sidebar-right -->
+    </aside>
+    <!-- /side-right -->
+</div>
+<!-- /span side-right -->
+</div>
+</section>
+
+<!-- section footer -->
+<footer>
+    <a rel="to-top" href="#top"><i class="icofont-circle-arrow-up"></i></a>
+</footer>
+
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/bootstrap.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>-->
+<script src="assets/js/angular/angular.min.js"></script>
 <script src="assets/js/angular-cornercouch.js"></script>
 <script src="http://localhost:5984/_utils/script/json2.js"></script>
 <script src="http://localhost:5984/_utils/script/sha1.js"></script>
@@ -85,6 +300,17 @@
 <script src="assets/js/app/app.js"></script>
 <script src="assets/js/app/controllers.js"></script>
 <script src="assets/js/app/notebook.js"></script>
+<script src="assets/js/uniform/jquery.uniform.js"></script>
+<script src="assets/js/jquery.peity.js"></script>
+<script src="assets/js/app/materialscommons.js"></script>
+<!--<script src="assets/js/stilearn-base.js"></script>-->
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("span[data-chart=peity-bar]").peity("bar");
+        $('[data-form=uniform]').uniform();
+
+    });
+</script>
 </body>
 </html>
