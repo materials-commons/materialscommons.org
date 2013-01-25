@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-angular.module('materialscommons', ['CornerCouch']).
+angular.module('materialscommons', ['CornerCouch', 'ui']).
     config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider.
         when('/materialscommons',

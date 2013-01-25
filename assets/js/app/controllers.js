@@ -45,6 +45,25 @@ function ExperimentDetailController($scope, $routeParams, cornercouch) {
     //$scope.$on('$viewContentLoaded', showExperimentLayout);
 }
 
+function MessagesController($scope, $routeParams, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.mcdb.query("materialscommons-app", "recent_events");
+}
+
+function ChartController($scope, $routeParams, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
+
+    $scope.$on('$viewContentLoaded', function() {
+        alert("viewContentLoaded");
+        $("span[data-chart=peity-bar]").peity("bar");
+    });
+}
+
 function FrontPageController($scope, $routeParams) {
     // Nothing to do yet.
 }

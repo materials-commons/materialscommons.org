@@ -16,7 +16,7 @@
     <link href="assets/css/stilearn-icon.css" rel="stylesheet">
     <link href="assets/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
-    <link href="css/uniform.default.css" rel="stylesheet">
+    <link href="assets/css/uniform.default.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -167,20 +167,20 @@
             <ul class="content-header-action pull-right">
                 <li>
                     <a href="#">
-                <span data-chart="peity-bar" data-height="32"
-                      data-colours='["#00A600", "#00A600"]'>5,3,9,6,5,9,7,3,5,2</span>
+                <span id="visitors_data" data-chart="peity-bar" data-height="32"
+                      data-colours='["#00A600", "#00A600"]'></span>
 
-                        <div class="action-text color-green">8765 <span
+                        <div id="visitors_count" class="action-text color-green"> <span
                                 class="helper-font-small color-silver-dark">Visitors</span></div>
                     </a>
                 </li>
                 <li class="divider"></li>
                 <li>
                     <a href="#">
-                <span data-chart="peity-bar" data-height="32"
-                      data-colours='["#00A0B1", "#00A0B1"]'>9,7,9,6,3,5,3,5,5,2</span>
+                <span id="experimental_data" data-chart="peity-bar" data-height="32"
+                      data-colours='["#00A0B1", "#00A0B1"]'></span>
 
-                        <div class="action-text color-teal">1437 <span
+                        <div id="experimental_count" class="action-text color-teal"> <span
                                 class="helper-font-small color-silver-dark">Experimental Data</span>
                         </div>
                     </a>
@@ -188,10 +188,10 @@
                 <li class="divider"></li>
                 <li>
                     <a href="#">
-                <span data-chart="peity-bar" data-height="32"
-                      data-colours='["#BF1E4B", "#BF1E4B"]'>6,5,9,7,3,5,2,5,3,9</span>
+                <span id="computational_data" data-chart="peity-bar" data-height="32"
+                      data-colours='["#BF1E4B", "#BF1E4B"]'></span>
 
-                        <div class="action-text color-red">4367 <span
+                        <div id="computational_count" class="action-text color-red"> <span
                                 class="helper-font-small color-silver-dark">Computational Data</span>
                         </div>
                     </a>
@@ -199,10 +199,10 @@
                 <li class="divider"></li>
                 <li>
                     <a href="#">
-                <span data-chart="peity-bar" data-height="32"
-                      data-colours='["#BF1E4B", "#BF1E4B"]'>2,3,6,9,7,3,9,4</span>
+                <span id="users_data" data-chart="peity-bar" data-height="32"
+                      data-colours='["#BF1E4B", "#BF1E4B"]'></span>
 
-                        <div class="action-text color-purple">200 <span
+                        <div id="users_count" class="action-text color-purple"> <span
                                 class="helper-font-small color-silver-dark">Users</span>
                         </div>
                     </a>
@@ -240,36 +240,18 @@
             <!--/sidebar-right-header-->
 
             <!-- sidebar-right-content -->
-            <div class="sidebar-right-content">
+            <div class="sidebar-right-content" ng-controller="MessagesController">
                 <!-- side-task -->
                 <div class="side-task">
-                    <div class="task fade in">
-                        <i class="icon-bookmark color-green"></i>
-                        <span class="task-desc">Phase Field Model Improved</span>
-                    </div>
-                    <div class="task fade in">
-                        <i class="icon-bar-chart color-red"></i>
-                        <span class="task-desc">EMP Stress Test Experiment</span>
-                    </div>
-                    <div class="task fade in">
-                        <i class="icon-bar-chart color-red"></i>
-                        <span class="task-desc">Tensile Testing Under Pres...</span>
-                    </div>
-                    <div class="task fade in">
-                        <i class="icon-cog color-orange"></i>
-                        <span class="task-desc">DFT Model Added</span>
-                    </div>
-                    <div class="task fade in">
-                        <i class="icon-user color-sky"></i>
-                        <span class="task-desc">gtarcea Joined</span>
-                    </div>
-                    <div class="task fade in">
-                        <i class="icon-user color-sky"></i>
-                        <span class="task-desc">jag Joined</span>
-                    </div>
-                    <div class="task fade in">
-                        <i class="icon-bookmark color-green"></i>
-                        <span class="task-desc">Discrete Dislocations Imp..</span>
+                    <div class="side-task" ng-repeat="row in mcdb.rows">
+                        <ng-switch on="row.value.etype">
+                            <i ng-switch-when="model-change" class="icon-bookmark color-green"></i>
+                            <i ng-switch-when="experiment-added" class="icon-bar-chart color-red"></i>
+                            <i ng-switch-when="model-added" class="icon-cog color-orange"></i>
+                            <i ng-switch-when="user-added" class="icon-user color-sky"></i>
+                            <i ng-switch-default class="icon-exclamation-sign color-red"></i>
+                        </ng-switch>
+                        <span class="task-desc">{{row.value.description}}</span>
                     </div>
                 </div>
                 <!-- /side-task -->
@@ -294,21 +276,39 @@
 <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>-->
 <script src="assets/js/angular/angular.min.js"></script>
 <script src="assets/js/angular-cornercouch.js"></script>
+<script src="assets/js/angular/angular-ui.js"></script>
 <script src="http://localhost:5984/_utils/script/json2.js"></script>
 <script src="http://localhost:5984/_utils/script/sha1.js"></script>
 <script src="http://localhost:5984/_utils/script/jquery.couch.js"></script>
 <script src="assets/js/app/app.js"></script>
 <script src="assets/js/app/controllers.js"></script>
 <script src="assets/js/app/notebook.js"></script>
-<script src="assets/js/uniform/jquery.uniform.js"></script>
+<script src="assets/js/jquery.uniform.js"></script>
 <script src="assets/js/jquery.peity.js"></script>
 <script src="assets/js/app/materialscommons.js"></script>
 <!--<script src="assets/js/stilearn-base.js"></script>-->
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("span[data-chart=peity-bar]").peity("bar");
-        $('[data-form=uniform]').uniform();
+        $.couch.db("materialscommons").openDoc("942ecdf121a6f788cc86a10a7e3e8ab6", {
+            success: function(data) {
+                $("#visitors_data").append(data.visitors);
+                $("#visitors_count").append(data.visitors_count);
+
+                $("#users_data").append(data.users);
+                $("#users_count").append(data.users_count);
+
+                $("#experimental_data").append(data.experiments);
+                $("#experimental_count").append(data.experiments_count);
+
+                $("#computational_data").append(data.computational);
+                $("#computational_count").append(data.computational_count);
+
+                $("span[data-chart=peity-bar]").peity("bar");
+            }
+        });
+        //$("span[data-chart=peity-bar]").peity("bar");
+        //$('[data-form=uniform]').uniform();
 
     });
 </script>

@@ -1,0 +1,43 @@
+[
+    {
+        "type": "event",
+        "etype": "model-change",
+        "description": "Phase Field Model improved"
+    },
+
+    {
+        "type": "event",
+        "etype": "experiment-added",
+        "description": "EMP Stress Test Experiment"
+    },
+
+    {
+        "type": "event",
+        "etype": "experiment-added",
+        "description": "Tensile Testing Under Pres.."
+    },
+
+    {
+        "type": "event",
+        "etype": "model-added",
+        "description": "DFT Model Added"
+    },
+
+    {
+        "type": "event",
+        "etype": "user-added",
+        "description": "gtarcea Joined"
+    },
+
+    {
+        "type": "event",
+        "etype": "user-added",
+        "description": "jag Joined"
+    },
+
+    {
+        "type": "event",
+        "etype": "model-change",
+        "description": "Discrete Dislocations Impr.."
+    }
+]
