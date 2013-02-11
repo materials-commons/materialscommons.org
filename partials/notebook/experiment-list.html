@@ -1,7 +1,7 @@
 <div class="row">
     <div class="span7 offset2">
-        Search: <input ng-model="query">
-        <a href="#/materialscommons/notebook/create" class="btn btn-success">Create New Experiment</a>
+        Search: <input ui-keypress="{13: 'keypressCallback($event)'}" ng-model="query">
+        <a id="createExperiment" href="#/materialscommons/notebook/create" class="btn btn-success">Create New Experiment</a>
     </div>
 
 </div>
@@ -11,7 +11,7 @@
         <h4>Your Experiments</h4>
 
         <div class="well">
-            <table class="table table-striped mc-table-hover table-condensed">
+            <table id="experimentList" class="table table-striped mc-table-hover table-condensed">
                 <thead>
                 <tr>
                     <th>Name</th>

@@ -1,52 +1,91 @@
-<ul id="experiment" style="display:none">
-    <li style="color: #c3eafb; width:80%" id="chart-experiment">
-        <ul>
-            <li>
-                <p>
-                    Microstructure
-                </p>
+<!-- ***** Modal dialogs for adding properties ***** -->
 
-                <p>
-                    <select onchange="microstructurePicked(this.value);" class="input-small"
-                            style="background-color: #85C2E0;">
-                        <option value="NONE">----</option>
-                        <option value="APT">APT</option>
-                        <option value="TEM">TEM</option>
-                        <option value="XRD">XRD</option>
-                        <option value="SEM">SEM</option>
-                        <option value="OIM">OIM</option>
-                        <option value="Optical">Optical</option>
-                    </select>
-                </p>
-                <ul id="microstructure">
+<div id="microstructure" class="modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="MicrostructureController">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="microstructureLabel">Add Microstructure Test</h3>
+    </div>
+    <div class="modal-body">
+        <select ng-model="ms_equipment" ng-options="choice for choice in equipment" class="input-small"
+                style="background-color: #85C2E0;">
+            <option value="NONE">----</option>
+        </select>
+        <br/>
+        <input ng-model="ms_description" type="text" name="lab" id="msDescription" placeholder='Description'>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+    </div>
+</div>
 
-                </ul>
-            <li><a href="#">Mechanical</a>
-                <ul id="mechanical">
-                </ul>
-            </li>
-            <li><a href="#">Simulation</a></li>
-        </ul>
-    </li>
-</ul>
+<div id="mechanical" class="modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="MechanicalController">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="mechanicalLabel">Add Mechanical Test</h3>
+    </div>
+    <div class="modal-body">
+        <p>One fine body… {{tmessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+    </div>
+</div>
 
+<div id="simulation" class="modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="simulationLabel" aria-hidden="true" ng-controller="SimulationController">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="simulationLabel">Add Simulation</h3>
+    </div>
+    <div class="modal-body">
+        <p>One fine body… {{tmessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+    </div>
+</div>
+
+<div id="computational" class="modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="computationalLabel" aria-hidden="true" ng-controller="ComputationalController">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Computational Test</h3>
+    </div>
+    <div class="modal-body">
+        <p>One fine body… {{tmessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+    </div>
+</div>
+
+<!-- ***** Page ***** -->
 
 <div class="row">
 
     <div class="span7 offset2">
         <div class="row">
 
-            <h3>Create New Experiment</h3>
+            <h3>Create Experiment</h3>
 
             <div class="accordion" id="a1">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="a1" href="#c1">Experiment
-                            Wizard</a>
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="a1" href="#c1">
+                            Experiment Details
+                        </a>
                     </div>
                     <div id="c1" class="accordion-body collapse in">
                         <div class="accordion-inner">
-
+                            <p>
+                                <input ng-model="name" type="text" name="name" id="name" placeholder='Experiment Name'>
+                            </p>
 
                             <p>
                                 <input type="text" name="lab" id="lab" placeholder='Enter your lab'>
@@ -68,14 +107,6 @@
 
                                 <input type="number" step="any" placeholder="thickness" id="thickness">
                             </form>
-
-
-                            <form class="form-horizontal">
-                                <select style="width:250px;" id="etype">
-                                    <option>Microstructure Characterization</option>
-                                    <option>Mechanical Properties</option>
-                                </select>
-                            </form>
                             <button class="btn btn-success" onclick="doneFillingOutDetails()" id="done-button">Done
                             </button>
                         </div>
@@ -86,31 +117,40 @@
     </div>
 </div>
 
+
 <div class="row-fluid">
     <ul class="a-btn-group">
         <li>
-            <button rel="tooltip" title="Add microstructure property" class="btn btn-success"><i class="icon-plus"></i> Microstructure <i class="icon-signal icon-border"></i>
+            <a rel="tooltip" title="Add microstructure property" class="btn btn-success" data-toggle="modal"
+               href="#microstructure">
+                <i class="icon-plus"></i> Microstructure <i class="icon-qrcode icon-border"></i>
 
                 <div class="badge badge-info">9</div>
-            </button>
+            </a>
         </li>
         <li>
-            <button rel="tooltip" title="Add mechanical property" class="btn btn-success"><i class="icon-plus"></i> Mechanical <i class="icon-cogs icon-border"></i>
+            <a rel="tooltip" title="Add mechanical property" class="btn btn-success" data-toggle="modal"
+               href="#mechanical">
+                <i class="icon-plus"></i> Mechanical <i class="icon-cogs icon-border"></i>
 
                 <div class="badge badge-info">0</div>
-            </button>
+            </a>
         </li>
         <li>
-            <button rel="tooltip" title="Add simulation" class="btn btn-success"><i class="icon-plus"></i> Simulation <i class="icon-magic icon-border"></i>
+            <a rel="tooltip" title="Add simulation" class="btn btn-success" data-toggle="modal"
+               href="#simulation">
+                <i class="icon-plus"></i> Simulation <i class="icon-magic icon-border"></i>
 
                 <div class="badge badge-info">0</div>
-            </button>
+            </a>
         </li>
         <li>
-            <button rel="tooltip" title="Add computational property" class="btn btn-success"><i class="icon-plus"></i> Computational <i class="icon-desktop icon-border"></i>
+            <a rel="tooltip" title="Add computational property" class="btn btn-success" data-toggle="modal"
+               href="#computational">
+                <i class="icon-plus"></i> Computational <i class="icon-desktop icon-border"></i>
 
                 <div class="badge badge-info">0</div>
-            </button>
+            </a>
         </li>
     </ul>
 </div>
@@ -118,16 +158,16 @@
 <div class="row">
     <div class="offset1">
         <div class="well">
-            <table class="table table-striped mc-table-hover table-condensed">
+            <table id="experimentProperties" class="table table-striped mc-table-hover table-condensed">
                 <thead>
                 <tr>
                     <th>Type</th>
-                    <th>Note</th>
+                    <th>Description</th>
                     <th>Added On</th>
                     <th>Attachments</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="experimentPropertyEntries">
                 <tr>
                     <td>Mechanical</td>
                     <td>Tensile Testing</td>
@@ -145,3 +185,5 @@
         <button class="btn btn-success" onclick="saveExperiment()" id="save-button">Save</button>
     </div>
 </div>
+
+

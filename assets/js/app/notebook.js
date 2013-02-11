@@ -4,14 +4,14 @@ function setupWizard() {
 
 var experimentName = "";
 
-function microstructurePicked(value) {
-    if (value == "NONE") { return ; }
-    $('#microstructure').append('<li><a href="#">' + value + '</a></li>');
-    $('#experimentBuild').empty();
-    $('#experiment').jOrgChart({
-        chartElement:'#experimentBuild'
-    });
-}
+//function microstructurePicked(value) {
+//    if (value == "NONE") { return ; }
+//    $('#microstructure').append('<li><a href="#">' + value + '</a></li>');
+//    $('#experimentBuild').empty();
+//    $('#experiment').jOrgChart({
+//        chartElement:'#experimentBuild'
+//    });
+//}
 
 function showExperimentLayout() {
     $('#experimentLayoutBuild').empty();
@@ -68,7 +68,6 @@ function doneFillingOutDetails() {
     var description = $('#description').val();
     var metal = $('#metal').val();
     var thickness = $('#thickness').val();
-    var etype = $('#etype').val();
 
     experimentName = $('#lab').val() + '-' + $('#metal').val() + '-TEST' + Math.floor((Math.random() * 10000) + 1);
 
@@ -76,7 +75,4 @@ function doneFillingOutDetails() {
     $('#experimentName').remove();
     $('#chart-experiment').prepend('<a href="#" id="experimentName">' + experimentName + '</a>');
     $('#experimentBuild').empty();
-    $("#experiment").jOrgChart({
-        chartElement:'#experimentBuild'
-    });
 }
