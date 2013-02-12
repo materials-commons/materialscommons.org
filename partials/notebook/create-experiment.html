@@ -84,14 +84,17 @@
                     <div id="c1" class="accordion-body collapse in">
                         <div class="accordion-inner">
                             <p>
+                                <label>Name:</label>
                                 <input ng-model="name" type="text" name="name" id="name" placeholder='Experiment Name'>
                             </p>
 
                             <p>
+                                <label>Lab:</label>
                                 <input type="text" name="lab" id="lab" placeholder='Enter your lab'>
                             </p>
 
                             <p>
+                                <label>Description:</label>
                                 <textarea rows="3" id="description"
                                           placeholder="Enter description of experiment"></textarea>
                             </p>
@@ -107,8 +110,6 @@
 
                                 <input type="number" step="any" placeholder="thickness" id="thickness">
                             </form>
-                            <button class="btn btn-success" onclick="doneFillingOutDetails()" id="done-button">Done
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -123,9 +124,9 @@
         <li>
             <a rel="tooltip" title="Add microstructure property" class="btn btn-success" data-toggle="modal"
                href="#microstructure">
-                <i class="icon-plus"></i> Microstructure <i class="icon-qrcode icon-border"></i>
+                <i class="icon-plus"></i> Microstructure <i class="icon-barcode icon-border"></i>
 
-                <div class="badge badge-info">9</div>
+                <div id="msCountBadge" class="badge badge-info">0</div>
             </a>
         </li>
         <li>
@@ -168,12 +169,6 @@
                 </tr>
                 </thead>
                 <tbody id="experimentPropertyEntries">
-                <tr>
-                    <td>Mechanical</td>
-                    <td>Tensile Testing</td>
-                    <td>2013/01/24</td>
-                    <td><span class="badge badge-info">8</span></td>
-                </tr>
                 </tbody>
             </table>
         </div>

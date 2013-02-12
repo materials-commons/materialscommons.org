@@ -101,8 +101,6 @@ function MicrostructureController($scope, $routeParams) {
 
     $scope.tmessage = "Microstructure";
 
-//    $scope.ms_equipment="NONE";
-
     $scope.equipment = [
         "APT",
         "TEM",
@@ -113,18 +111,17 @@ function MicrostructureController($scope, $routeParams) {
     ];
 
     $scope.saveChanges = function () {
-//        <tr>
-//            <td>Mechanical</td>
-//            <td>Tensile Testing</td>
-//            <td>2013/01/24</td>
-//            <td><span class="badge badge-info">8</span></td>
-//        </tr>
         var type = "<td>Mechanical</td>";
         var description = "<td>" + $scope.ms_description +"</td>";
         var dateAdded = "<td>today</td>";
         var attachmentCount = "<td><span class='badge badge-info'>0</span></td>";
         var entry = "<tr>" + type + description + dateAdded + attachmentCount + "</tr>";
         $('#experimentPropertyEntries').append(entry);
+
+        var rowCount = $('#experimentPropertyEntries tr').length;
+
+        $('#msCountBadge').html(rowCount);
+
         $scope.ms_equipment = "NONE";
         $scope.ms_description = "";
     }
