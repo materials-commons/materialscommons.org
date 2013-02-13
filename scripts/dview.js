@@ -1,8 +1,8 @@
 #!/usr/local/bin/node
-#
-# Quick script to delete all documents in the all_experiments view.
-# TODO: Extend functionality to work with any view.
-#
+//
+// Quick script to delete all documents in the all_experiments view.
+// TODO: Extend functionality to work with any view.
+//
 
 var request = require('/usr/local/lib/node_modules/request');
 
