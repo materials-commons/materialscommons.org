@@ -85,30 +85,30 @@
                         <div class="accordion-inner">
                             <p>
                                 <label>Name:</label>
-                                <input ng-model="name" type="text" name="name" id="name" placeholder='Experiment Name'>
+                                <input ng-model="experiment.name" type="text" name="name" id="name" placeholder='Experiment Name'>
                             </p>
 
                             <p>
                                 <label>Lab:</label>
-                                <input type="text" name="lab" id="lab" placeholder='Enter your lab'>
+                                <input ng-model="experiment.lab" type="text" name="lab" id="lab" placeholder='Enter your lab'>
                             </p>
 
                             <p>
                                 <label>Description:</label>
-                                <textarea rows="3" id="description"
+                                <textarea ng-model="experiment.description" rows="3" id="description"
                                           placeholder="Enter description of experiment"></textarea>
                             </p>
 
 
                             <form class="form-horizontal">
-                                <select id="metal">
+                                <select ng-model="experiment.metal" id="metal">
                                     <option>Magnesium 1</option>
                                     <option>Magnesium 2</option>
                                     <option>Magnesium 3</option>
                                     <option>Magnesium 4</option>
                                 </select>
 
-                                <input type="number" step="any" placeholder="thickness" id="thickness">
+                                <input ng-model="experiment.thickness" type="number" step="any" placeholder="thickness" id="thickness">
                             </form>
                         </div>
                     </div>

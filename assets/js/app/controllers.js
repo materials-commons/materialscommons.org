@@ -63,6 +63,7 @@ function ExperimentCreateController($scope, $routeParams) {
         $scope.name = "";
     }
 
+    $scope.experiment = {};
     $scope.experiment.properties = [];
 }
 

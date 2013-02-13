@@ -2,6 +2,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-SEM-MAGNESIUSM",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Test tensile strength of magnesium when heated",
         "properties": [
             {
@@ -24,6 +27,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-THERMAL-MAGNESIUSM-HYBRID",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Alloying of magnesium/aluminum hybrid under extreme temperatures",
         "properties":[]
     },
@@ -31,6 +37,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-SEM-CHROMIUM",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Does chromium show same failure conditions as magnesium?",
         "properties":[]
     },
@@ -38,6 +47,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-APT-MAGNESIUM-001",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Deformation images of magnesium after failure",
         "properties":[]
     },
@@ -45,6 +57,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-OPTICAL-DEFORMATION",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Hourly images of magnesium plate approaching failure point",
         "properties":[]
     },
@@ -52,6 +67,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-FATIGUE-MAGNESIUM-SLOW",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Test if grain boundaries inhibit crack growth when applying pressure slowly",
         "properties":[]
     },
@@ -59,6 +77,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-FATIGUE-MAGNESIUM-FAST",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Test if grain boundaries inhibit crack growth when applying pressure very rapidly",
         "properties":[]
     },
@@ -66,6 +87,9 @@
     {
         "type": "experiment",
         "name": "ALLISON-HARDNESS-MAGESIUM",
+        "lab": "Allison",
+        "metal": "Magnesium 1",
+        "thickness": 1,
         "description":"Tempered Magnesium/Aluminum mix hardness testing",
         "properties":[]
     }
