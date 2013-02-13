@@ -18,9 +18,9 @@ angular.module('materialscommons', ['CornerCouch', 'ui']).
         when('/materialscommons/notebook',
             {templateUrl: 'partials/notebook/experiment-list.html', controller: ExperimentListController}).
         when('/materialscommons/notebook/create',
-            {templateUrl: 'partials/notebook/create-experiment.html', controller: ExperimentCreateController}).
+            {templateUrl: 'partials/notebook/experiment.html', controller: ExperimentCreateController}).
         when('/materialscommons/experiment/:experimentId',
-            {templateUrl:'partials/notebook/experiment-details.html', controller: ExperimentDetailController}).
+            {templateUrl:'partials/notebook/experiment.html', controller: ExperimentDetailController}).
         otherwise({redirectTo:'/materialscommons'});
 //            when('/experiments', {templateUrl: 'partials/does-not-exists.html', controller: ExperimentListController}).
 //            when('/experiments/:experimentId', {templateUrl: 'partials/experiment-detail.html',

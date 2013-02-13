@@ -36,6 +36,7 @@ function ExperimentListController($scope, $location, cornercouch) {
 }
 
 function ExperimentDetailController($scope, $routeParams, cornercouch) {
+    $scope.pageTypeMessage = "View";
     $scope.experimentId = $routeParams.experimentId;
     $scope.server = cornercouch();
     $scope.server.session();
@@ -46,9 +47,23 @@ function ExperimentDetailController($scope, $routeParams, cornercouch) {
         $scope.experiment.remove().success(function () {
             alert("Deleted experiment");
         });
-    }
+    };
 
     //$scope.$on('$viewContentLoaded', showExperimentLayout);
+}
+
+function ExperimentCreateController($scope, $routeParams) {
+    $scope.pageTypeMessage = "Create";
+
+    if ($routeParams.name) {
+        $scope.name = $routeParams.name;
+    }
+    else
+    {
+        $scope.name = "";
+    }
+
+    $scope.experiment.properties = [];
 }
 
 function MessagesController($scope, $routeParams, cornercouch) {
@@ -82,20 +97,7 @@ function ModelsSearchController($scope, $routeParams) {
     // Nothing to do yet
 }
 
-function ExperimentCreateController($scope, $routeParams) {
 
-    if ($routeParams.name) {
-        $scope.name = $routeParams.name;
-    }
-    else
-    {
-        $scope.name = "";
-    }
-
-    $scope.testClick = function () {
-        alert("testClick");
-    }
-}
 
 function MicrostructureController($scope, $routeParams) {
 

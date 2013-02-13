@@ -72,7 +72,7 @@
     <div class="span7 offset2">
         <div class="row">
 
-            <h3>Create Experiment</h3>
+            <h3>{{pageTypeMessage}} Experiment</h3>
 
             <div class="accordion" id="a1">
                 <div class="accordion-group">
@@ -169,6 +169,12 @@
                 </tr>
                 </thead>
                 <tbody id="experimentPropertyEntries">
+                    <tr ng-repeat="property in experiment.properties">
+                        <td>{{property.type}}</td>
+                        <td>{{property.description}}</td>
+                        <td>{{property.date}}</td>
+                        <td><span class="badge badge-info">{{property.attachments.length}}</span></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
