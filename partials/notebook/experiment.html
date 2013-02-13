@@ -85,31 +85,39 @@
                         <div class="accordion-inner">
                             <p>
                                 <label>Name:</label>
-                                <input ng-model="experiment.name" type="text" name="name" id="name" placeholder='Experiment Name'>
+                                <input ng-model="experiment.name" type="text" name="name" id="name"
+                                       placeholder='Experiment Name'>
                             </p>
 
                             <p>
                                 <label>Lab:</label>
-                                <input ng-model="experiment.lab" type="text" name="lab" id="lab" placeholder='Enter your lab'>
+                                <input ng-model="experiment.lab" type="text" name="lab" id="lab"
+                                       placeholder='Enter your lab'>
                             </p>
 
                             <p>
                                 <label>Description:</label>
                                 <textarea ng-model="experiment.description" rows="3" id="description"
-                                          placeholder="Enter description of experiment"></textarea>
+                                          placeholder="Enter description of experiment" class="span12"></textarea>
                             </p>
 
 
-                            <form class="form-horizontal">
+                            <p>
+                                <label>Material:</label>
                                 <select ng-model="experiment.metal" id="metal">
+                                    <option>-------</option>
                                     <option>Magnesium 1</option>
                                     <option>Magnesium 2</option>
                                     <option>Magnesium 3</option>
                                     <option>Magnesium 4</option>
                                 </select>
+                            </p>
 
-                                <input ng-model="experiment.thickness" type="number" step="any" placeholder="thickness" id="thickness">
-                            </form>
+                            <p>
+                                <label>Thickness:</label>
+                                <input ng-model="experiment.thickness" type="number" step="any" placeholder="thickness"
+                                       id="thickness" class="span2">
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -126,7 +134,7 @@
                href="#microstructure">
                 <i class="icon-plus"></i> Microstructure <i class="icon-barcode icon-border"></i>
 
-                <div id="msCountBadge" class="badge badge-info">0</div>
+                <div id="msCountBadge" class="badge badge-info">{{msCount()}}</div>
             </a>
         </li>
         <li>
@@ -164,17 +172,19 @@
                 <tr>
                     <th>Type</th>
                     <th>Description</th>
-                    <th>Added On</th>
+                    <th>How</th>
+                    <th>Last Updated</th>
                     <th>Attachments</th>
                 </tr>
                 </thead>
                 <tbody id="experimentPropertyEntries">
-                    <tr ng-repeat="property in experiment.properties">
-                        <td>{{property.type}}</td>
-                        <td>{{property.description}}</td>
-                        <td>{{property.date}}</td>
-                        <td><span class="badge badge-info">{{property.attachments.length}}</span></td>
-                    </tr>
+                <tr ng-repeat="property in experiment.properties">
+                    <td>{{property.type}}</td>
+                    <td>{{property.description}}</td>
+                    <td>{{property.mtype}}</td>
+                    <td>{{property.date}}</td>
+                    <td><span class="badge badge-info">{{property.attachments.length}}</span></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -183,7 +193,7 @@
 
 <div class="row" style="padding-top: 30px;">
     <div class="offset1">
-        <button class="btn btn-success" onclick="saveExperiment()" id="save-button">Save</button>
+        <button class="btn btn-success" ng-click="saveExperiment()" id="save-button">Save</button>
     </div>
 </div>
 

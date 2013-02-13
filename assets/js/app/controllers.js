@@ -27,8 +27,6 @@ function ExperimentListController($scope, $location, cornercouch) {
     $scope.mcdb.query("materialscommons-app", "all_experiments");
 
     $scope.keypressCallback = function(event) {
-        var rowCount = $('#experimentList tr').length;
-
         if (length == 0) {
             window.location = document.getElementById('createExperiment').href + "?name=" + $scope.query;
         }
@@ -49,7 +47,18 @@ function ExperimentDetailController($scope, $routeParams, cornercouch) {
         });
     };
 
-    //$scope.$on('$viewContentLoaded', showExperimentLayout);
+    $scope.msCount = function() {
+        return microstructureCount($scope.experiment.properties);
+    };
+
+    $scope.saveExperiment = function() {
+        var currentPropertiesCount = $scope.experiment.properties.length;
+        $('#experimentPropertyEntries tr').each(function() {
+            var item = $(this);
+            var type = "";
+            microstructures.push($(this).text());
+        });
+    };
 }
 
 function ExperimentCreateController($scope, $routeParams) {
@@ -65,6 +74,12 @@ function ExperimentCreateController($scope, $routeParams) {
 
     $scope.experiment = {};
     $scope.experiment.properties = [];
+
+    $scope.msCount = function() { return 0; };
+
+    $scope.saveExperiment = function() {
+
+    };
 }
 
 function MessagesController($scope, $routeParams, cornercouch) {
@@ -79,11 +94,6 @@ function ChartController($scope, $routeParams, cornercouch) {
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
-
-    $scope.$on('$viewContentLoaded', function () {
-        alert("viewContentLoaded");
-        $("span[data-chart=peity-bar]").peity("bar");
-    });
 }
 
 function FrontPageController($scope, $routeParams) {
@@ -114,11 +124,12 @@ function MicrostructureController($scope, $routeParams) {
     ];
 
     $scope.saveChanges = function () {
-        var type = "<td>Mechanical</td>";
+        var type = "<td>microstructure</td>";
         var description = "<td>" + $scope.ms_description +"</td>";
+        var how = "<td>" + $scope.ms_equipment + "</td>"
         var dateAdded = "<td>today</td>";
         var attachmentCount = "<td><span class='badge badge-info'>0</span></td>";
-        var entry = "<tr>" + type + description + dateAdded + attachmentCount + "</tr>";
+        var entry = "<tr>" + type + description + how + dateAdded + attachmentCount + "</tr>";
         $('#experimentPropertyEntries').append(entry);
 
         var rowCount = $('#experimentPropertyEntries tr').length;
