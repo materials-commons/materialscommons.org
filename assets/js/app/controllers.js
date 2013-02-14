@@ -1,11 +1,3 @@
-/**
- * Created with JetBrains WebStorm.
- * User: gtarcea
- * Date: 1/12/13
- * Time: 1:09 PM
- * To change this template use File | Settings | File Templates.
- */
-
 'use strict';
 
 function ExperimentListController($scope, $location, cornercouch) {
@@ -33,14 +25,33 @@ function ExperimentListController($scope, $location, cornercouch) {
     }
 }
 
-function ExperimentDetailController($scope, $routeParams, cornercouch) {
-    $scope.pageTypeMessage = "View";
-    $scope.experimentId = $routeParams.experimentId;
+function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
+
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.experiment = $scope.mcdb.getDoc($scope.experimentId);
-    $scope.ms_equipment = [
+
+    if (! $routeParams.experimentId) {
+        $scope.experiment = $scope.mcdb.newDoc();
+        $scope.experiment.properties = [];
+        $scope.experiment.description = "";
+        $scope.experiment.lab = "";
+        $scope.experiment.metal = "";
+        $scope.experiment.thickness = "";
+        $scope.experiment.type = "experiment";
+        $scope.pageTypeMessage = "Create";
+        if ($routeParams.name) {
+            $scope.name = $routeParams.name;
+        }
+        else {
+            $scope.name = "";
+        }
+    } else {
+        $scope.pageTypeMessage = "View";
+        $scope.experiment = $scope.mcdb.getDoc($routeParams.experimentId);
+    }
+
+    $scope.equipment = [
         "APT",
         "TEM",
         "XRD",
@@ -48,16 +59,6 @@ function ExperimentDetailController($scope, $routeParams, cornercouch) {
         "OIM",
         "Optical"
     ];
-
-    $scope.deleteExperiment = function () {
-        $scope.experiment.remove().success(function () {
-            alert("Deleted experiment");
-        });
-    };
-
-    $scope.msCount = function () {
-        return microstructureCount($scope.experiment.properties);
-    };
 
     $scope.msSaveChanges = function () {
         var prop = {};
@@ -71,32 +72,14 @@ function ExperimentDetailController($scope, $routeParams, cornercouch) {
         $scope.ms_description = "";
     }
 
+    $scope.msCount = function () {
+        return microstructureCount($scope.experiment.properties);
+    };
+
     $scope.saveExperiment = function () {
         $scope.experiment.save().error(function (data, status) {
             alert("Unable to save: " + status);
         });
-    };
-}
-
-function ExperimentCreateController($scope, $routeParams) {
-    $scope.pageTypeMessage = "Create";
-
-    if ($routeParams.name) {
-        $scope.name = $routeParams.name;
-    }
-    else {
-        $scope.name = "";
-    }
-
-    $scope.experiment = {};
-    $scope.experiment.properties = [];
-
-    $scope.msCount = function () {
-        return 0;
-    };
-
-    $scope.saveExperiment = function () {
-
     };
 }
 
