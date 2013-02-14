@@ -1,27 +1,31 @@
 <!-- ***** Modal dialogs for adding properties ***** -->
 
 <div id="microstructure" class="modal hide fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="MicrostructureController">
+     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="microstructureLabel">Add Microstructure Test</h3>
     </div>
     <div class="modal-body">
-        <select ng-model="ms_equipment" ng-options="choice for choice in equipment" class="input-small"
+        <label>Equipment:</label>
+        <select ng-model="ms_equipment" ng-options="choice for choice in ms_equipment" class="input-small"
                 style="background-color: #85C2E0;">
             <option value="NONE">----</option>
         </select>
         <br/>
-        <input ng-model="ms_description" type="text" name="lab" id="msDescription" placeholder='Description'>
+        <form class="form-inline">
+            <input ng-model="ms_description" type="text" name="lab" id="msDescription" placeholder='Description'>
+            <button class="btn" onclick="alert('Not implemented yet');">Files</button>
+        </form>
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="msSaveChanges()">Save changes</button>
     </div>
 </div>
 
 <div id="mechanical" class="modal hide fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="MechanicalController">
+     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="mechanicalLabel">Add Mechanical Test</h3>
@@ -31,12 +35,12 @@
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="mcSaveChanges()">Save changes</button>
     </div>
 </div>
 
 <div id="simulation" class="modal hide fade" tabindex="-1" role="dialog"
-     aria-labelledby="simulationLabel" aria-hidden="true" ng-controller="SimulationController">
+     aria-labelledby="simulationLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="simulationLabel">Add Simulation</h3>
@@ -46,12 +50,12 @@
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="simSaveChanges()">Save changes</button>
     </div>
 </div>
 
 <div id="computational" class="modal hide fade" tabindex="-1" role="dialog"
-     aria-labelledby="computationalLabel" aria-hidden="true" ng-controller="ComputationalController">
+     aria-labelledby="computationalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Add Computational Test</h3>
@@ -61,7 +65,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary" data-dismiss="modal" ng-click="saveChanges()">Save changes</button>
+        <button class="btn btn-primary" data-dismiss="modal" ng-click="compSaveChanges()">Save changes</button>
     </div>
 </div>
 
@@ -179,10 +183,10 @@
                 </thead>
                 <tbody id="experimentPropertyEntries">
                 <tr ng-repeat="property in experiment.properties">
-                    <td>{{property.type}}</td>
-                    <td>{{property.description}}</td>
-                    <td>{{property.mtype}}</td>
-                    <td>{{property.date}}</td>
+                    <td class="mc-prop-type">{{property.type}}</td>
+                    <td class="mc-prop-description">{{property.description}}</td>
+                    <td class="mc-prop-how">{{property.mtype}}</td>
+                    <td class="mc-prop-date">{{property.date}}</td>
                     <td><span class="badge badge-info">{{property.attachments.length}}</span></td>
                 </tr>
                 </tbody>

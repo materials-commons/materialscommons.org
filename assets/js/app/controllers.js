@@ -26,7 +26,7 @@ function ExperimentListController($scope, $location, cornercouch) {
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.mcdb.query("materialscommons-app", "all_experiments");
 
-    $scope.keypressCallback = function(event) {
+    $scope.keypressCallback = function (event) {
         if (length == 0) {
             window.location = document.getElementById('createExperiment').href + "?name=" + $scope.query;
         }
@@ -40,6 +40,14 @@ function ExperimentDetailController($scope, $routeParams, cornercouch) {
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.experiment = $scope.mcdb.getDoc($scope.experimentId);
+    $scope.ms_equipment = [
+        "APT",
+        "TEM",
+        "XRD",
+        "SEM",
+        "OIM",
+        "Optical"
+    ];
 
     $scope.deleteExperiment = function () {
         $scope.experiment.remove().success(function () {
@@ -47,16 +55,25 @@ function ExperimentDetailController($scope, $routeParams, cornercouch) {
         });
     };
 
-    $scope.msCount = function() {
+    $scope.msCount = function () {
         return microstructureCount($scope.experiment.properties);
     };
 
-    $scope.saveExperiment = function() {
-        var currentPropertiesCount = $scope.experiment.properties.length;
-        $('#experimentPropertyEntries tr').each(function() {
-            var item = $(this);
-            var type = "";
-            microstructures.push($(this).text());
+    $scope.msSaveChanges = function () {
+        var prop = {};
+        prop.type = 'microstructure';
+        prop.mtype = $scope.ms_equipment;
+        prop.description = $scope.ms_description;
+        prop.date = 'today';
+        prop.attachments = new Array();
+        $scope.experiment.properties.push(prop);
+        $scope.ms_equipment = "NONE";
+        $scope.ms_description = "";
+    }
+
+    $scope.saveExperiment = function () {
+        $scope.experiment.save().error(function (data, status) {
+            alert("Unable to save: " + status);
         });
     };
 }
@@ -67,17 +84,18 @@ function ExperimentCreateController($scope, $routeParams) {
     if ($routeParams.name) {
         $scope.name = $routeParams.name;
     }
-    else
-    {
+    else {
         $scope.name = "";
     }
 
     $scope.experiment = {};
     $scope.experiment.properties = [];
 
-    $scope.msCount = function() { return 0; };
+    $scope.msCount = function () {
+        return 0;
+    };
 
-    $scope.saveExperiment = function() {
+    $scope.saveExperiment = function () {
 
     };
 }
@@ -109,61 +127,33 @@ function ModelsSearchController($scope, $routeParams) {
 }
 
 
-
-function MicrostructureController($scope, $routeParams) {
-
-    $scope.tmessage = "Microstructure";
-
-    $scope.equipment = [
-        "APT",
-        "TEM",
-        "XRD",
-        "SEM",
-        "OIM",
-        "Optical"
-    ];
-
-    $scope.saveChanges = function () {
-        var type = "<td>microstructure</td>";
-        var description = "<td>" + $scope.ms_description +"</td>";
-        var how = "<td>" + $scope.ms_equipment + "</td>"
-        var dateAdded = "<td>today</td>";
-        var attachmentCount = "<td><span class='badge badge-info'>0</span></td>";
-        var entry = "<tr>" + type + description + how + dateAdded + attachmentCount + "</tr>";
-        $('#experimentPropertyEntries').append(entry);
-
-        var rowCount = $('#experimentPropertyEntries tr').length;
-
-        $('#msCountBadge').html(rowCount);
-
-        $scope.ms_equipment = "NONE";
-        $scope.ms_description = "";
-    }
-}
-
-function MechanicalController($scope, $routeParams) {
-
-    $scope.tmessage = "Mechanical";
-
-    $scope.saveChanges = function () {
-        alert("saveChanges Mechanical");
-    }
-}
-
-function SimulationController($scope, $routeParams) {
-
-    $scope.tmessage = "Simulation";
-
-    $scope.saveChanges = function () {
-        alert("saveChanges Simulation");
-    }
-}
-
-function ComputationalController($scope, $routeParams) {
-
-    $scope.tmessage = "Computational";
-
-    $scope.saveChanges = function () {
-        alert("saveChanges Computational");
-    }
-}
+//function MicrostructureController($scope, $routeParams) {
+//
+//    $scope.tmessage = "Microstructure";
+//
+//    $scope.ms_equipment = [
+//        "APT",
+//        "TEM",
+//        "XRD",
+//        "SEM",
+//        "OIM",
+//        "Optical"
+//    ];
+//
+//    $scope.saveChanges = function () {
+//        var type = "<td class='mc-prop-type'>microstructure</td>";
+//        var description = "<td class='mc-prop-description'>" + $scope.ms_description + "</td>";
+//        var how = "<td class='mc-prop-how'>" + $scope.ms_equipment + "</td>"
+//        var dateAdded = "<td class='mc-prop-date'>today</td>";
+//        var attachmentCount = "<td><span class='badge badge-info'>0</span></td>";
+//        var entry = "<tr>" + type + description + how + dateAdded + attachmentCount + "</tr>";
+//        $('#experimentPropertyEntries').append(entry);
+//
+//        var rowCount = $('#experimentPropertyEntries tr').length;
+//
+//        $('#msCountBadge').html(rowCount);
+//
+//        $scope.ms_equipment = "NONE";
+//        $scope.ms_description = "";
+//    }
+//}
