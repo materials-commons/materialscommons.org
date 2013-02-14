@@ -197,7 +197,10 @@
 
 <div class="row" style="padding-top: 30px;">
     <div class="offset1">
-        <button class="btn btn-success" ng-click="saveExperiment()" id="save-button">Save</button>
+        <form class="form-inline">
+            <button class="btn btn-success" ng-click="saveExperiment()" id="save-button">{{saveButtonText}}</button>
+            <button class="btn btn-danger" ng-click="deleteOrCancel()">{{deleteOrCancelButtonText}}</button>
+        </form>
     </div>
 </div>
 

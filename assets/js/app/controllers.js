@@ -18,7 +18,7 @@ function ExperimentListController($scope, $location, cornercouch) {
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.mcdb.query("materialscommons-app", "all_experiments");
 
-    $scope.keypressCallback = function (event) {
+    $scope.keypressCallback = function(event) {
         if (length == 0) {
             window.location = document.getElementById('createExperiment').href + "?name=" + $scope.query;
         }
@@ -31,7 +31,7 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
 
-    if (! $routeParams.experimentId) {
+    if (!$routeParams.experimentId) {
         $scope.experiment = $scope.mcdb.newDoc();
         $scope.experiment.properties = [];
         $scope.experiment.description = "";
@@ -40,6 +40,9 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
         $scope.experiment.thickness = "";
         $scope.experiment.type = "experiment";
         $scope.pageTypeMessage = "Create";
+        $scope.saveButtonText = "Save";
+        $scope.deleteOrCancelButtonText = "Cancel";
+
         if ($routeParams.name) {
             $scope.name = $routeParams.name;
         }
@@ -48,6 +51,8 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
         }
     } else {
         $scope.pageTypeMessage = "View";
+        $scope.saveButtonText = "Save Changes";
+        $scope.deleteOrCancelButtonText = "Delete";
         $scope.experiment = $scope.mcdb.getDoc($routeParams.experimentId);
     }
 
@@ -60,7 +65,7 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
         "Optical"
     ];
 
-    $scope.msSaveChanges = function () {
+    $scope.msSaveChanges = function() {
         var prop = {};
         prop.type = 'microstructure';
         prop.mtype = $scope.ms_equipment;
@@ -72,15 +77,30 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
         $scope.ms_description = "";
     }
 
-    $scope.msCount = function () {
+    $scope.msCount = function() {
         return microstructureCount($scope.experiment.properties);
     };
 
-    $scope.saveExperiment = function () {
-        $scope.experiment.save().error(function (data, status) {
+    $scope.saveExperiment = function() {
+        $scope.experiment.save().error(function(data, status) {
             alert("Unable to save: " + status);
         });
     };
+
+    $scope.deleteOrCancel = function() {
+        if ($scope.pageTypeMessage == "Create") {
+            window.location = '#/materialscommons/notebook';
+        } else {
+            $scope.experiment.remove()
+                .success(function() {
+                    delete $scope.experiment;
+                })
+                .error(function(data, status) {
+                    alert("Unable to delete experiment: " + status);
+                });
+            window.location = '#/materialscommons/notebook';
+        }
+    }
 }
 
 function MessagesController($scope, $routeParams, cornercouch) {
