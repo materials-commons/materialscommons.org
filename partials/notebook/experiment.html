@@ -187,7 +187,7 @@
                     <td class="mc-prop-description">{{property.description}}</td>
                     <td class="mc-prop-how">{{property.mtype}}</td>
                     <td class="mc-prop-date">{{property.date}}</td>
-                    <td><span class="badge badge-info">{{property.attachments.length}}</span></td>
+                    <td><span class="badge badge-info">{{property.attachments.length}}</span><button type="button" class="close" ng-click="removeProperty($index);">&times;</button></td>
                 </tr>
                 </tbody>
             </table>

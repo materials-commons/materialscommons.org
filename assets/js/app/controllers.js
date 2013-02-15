@@ -85,6 +85,7 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
         $scope.experiment.save().error(function(data, status) {
             alert("Unable to save: " + status);
         });
+        window.location = '#/materialscommons/notebook';
     };
 
     $scope.deleteOrCancel = function() {
@@ -100,7 +101,11 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
                 });
             window.location = '#/materialscommons/notebook';
         }
-    }
+    };
+
+    $scope.removeProperty = function(index) {
+        $scope.experiment.properties.splice(index, 1);
+    };
 }
 
 function MessagesController($scope, $routeParams, cornercouch) {
