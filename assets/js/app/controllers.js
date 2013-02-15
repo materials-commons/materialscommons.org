@@ -23,6 +23,10 @@ function ExperimentListController($scope, $location, cornercouch) {
             window.location = document.getElementById('createExperiment').href + "?name=" + $scope.query;
         }
     }
+
+    $scope.editExperiment = function(id) {
+        window.location = "#/materialscommons/experiment/" + id;
+    }
 }
 
 function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
@@ -30,6 +34,7 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.propertyIndex = -1;
 
     if (!$routeParams.experimentId) {
         $scope.experiment = $scope.mcdb.newDoc();
@@ -66,15 +71,22 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
     ];
 
     $scope.msSaveChanges = function() {
-        var prop = {};
-        prop.type = 'microstructure';
-        prop.mtype = $scope.ms_equipment;
-        prop.description = $scope.ms_description;
-        prop.date = 'today';
-        prop.attachments = new Array();
-        $scope.experiment.properties.push(prop);
-        $scope.ms_equipment = "NONE";
-        $scope.ms_description = "";
+        if ($scope.propertyIndex == -1) {
+            var prop = {};
+            prop.type = 'microstructure';
+            prop.mtype = $scope.ms_equipment;
+            prop.description = $scope.ms_description;
+            prop.date = 'today';
+            prop.attachments = new Array();
+            $scope.experiment.properties.push(prop);
+            $scope.ms_equipment = "NONE";
+            $scope.ms_description = "";
+        } else {
+            var i = $scope.propertyIndex;
+            $scope.experiment.properties[i].mtype = $scope.ms_equipment;
+            $scope.experiment.properties[i].description = $scope.ms_description;
+            $scope.propertyIndex = -1;
+        }
     }
 
     $scope.msCount = function() {
@@ -106,6 +118,21 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
     $scope.removeProperty = function(index) {
         $scope.experiment.properties.splice(index, 1);
     };
+
+    $scope.editProperty = function(index) {
+        $scope.propertyIndex = index;
+        switch ($scope.experiment.properties[index].type) {
+            case "microstructure":
+                $scope.ms_equipment = $scope.experiment.properties[index].mtype;
+                $scope.ms_description = $scope.experiment.properties[index].description;
+                $('#microstructure').modal('show');
+                break;
+            default:
+                $scope.propertyIndex = -1;
+                alert("Not implemented yet");
+                break;
+        }
+    }
 }
 
 function MessagesController($scope, $routeParams, cornercouch) {

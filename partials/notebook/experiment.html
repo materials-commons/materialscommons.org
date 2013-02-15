@@ -182,7 +182,7 @@
                 </tr>
                 </thead>
                 <tbody id="experimentPropertyEntries">
-                <tr ng-repeat="property in experiment.properties">
+                <tr ng-repeat="property in experiment.properties" ng-click="editProperty($index);" style="cursor:pointer">
                     <td class="mc-prop-type">{{property.type}}</td>
                     <td class="mc-prop-description">{{property.description}}</td>
                     <td class="mc-prop-how">{{property.mtype}}</td>
