@@ -1,4 +1,4 @@
-angular.module('materialscommons', ['CornerCouch', 'ui']).
+angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices']).
     config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider.
         when('/materialscommons',
