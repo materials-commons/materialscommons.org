@@ -20,16 +20,17 @@ function ExperimentListController($scope, $location, cornercouch) {
 
     $scope.keypressCallback = function(event) {
         if (length == 0) {
-            window.location = document.getElementById('createExperiment').href + "?name=" + $scope.query;
+            var path = document.getElementById('createExperiment').href + "?name=" + $scope.query;
+            document.location = path;
         }
     }
 
     $scope.editExperiment = function(id) {
-        window.location = "#/materialscommons/experiment/" + id;
+        $location.path("/materialscommons/experiment/" + id);
     }
 }
 
-function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
+function ExperimentCreateEditController($scope, $routeParams, $location, cornercouch) {
 
     $scope.server = cornercouch();
     $scope.server.session();
@@ -43,16 +44,14 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
         $scope.experiment.lab = "";
         $scope.experiment.metal = "";
         $scope.experiment.thickness = "";
+        $scope.experiment.name = "";
         $scope.experiment.type = "experiment";
         $scope.pageTypeMessage = "Create";
         $scope.saveButtonText = "Save";
         $scope.deleteOrCancelButtonText = "Cancel";
 
         if ($routeParams.name) {
-            $scope.name = $routeParams.name;
-        }
-        else {
-            $scope.name = "";
+            $scope.experiment.name = $routeParams.name;
         }
     } else {
         $scope.pageTypeMessage = "View";
@@ -97,12 +96,13 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
         $scope.experiment.save().error(function(data, status) {
             alert("Unable to save: " + status);
         });
-        window.location = '#/materialscommons/notebook';
+        $location.path('/materialscommons/notebook');
     };
 
     $scope.deleteOrCancel = function() {
         if ($scope.pageTypeMessage == "Create") {
-            window.location = '#/materialscommons/notebook';
+            //window.location = '#/materialscommons/notebook';
+            $location.path("/materialscommons/notebook");
         } else {
             $scope.experiment.remove()
                 .success(function() {
@@ -111,7 +111,7 @@ function ExperimentCreateEditController($scope, $routeParams, cornercouch) {
                 .error(function(data, status) {
                     alert("Unable to delete experiment: " + status);
                 });
-            window.location = '#/materialscommons/notebook';
+            $location.path('/materialscommons/notebook');
         }
     };
 
