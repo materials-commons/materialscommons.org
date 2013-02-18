@@ -4,16 +4,12 @@
 
 angular.module('materialsCommonsServices', []).
     factory('User', function() {
+        var self = this;
+        self.authenticated = false;
+        return {
+            isAuthenticated: function() {
+                return self.authenticated;
+            }
 
-        function MCUser() {
-            this.authenticated = false;
-        }
-
-        User.prototype.isAuthenticated = function() {
-            return this.authenticated;
-        }
-
-        return function() {
-            return new MCUser();
         };
     });

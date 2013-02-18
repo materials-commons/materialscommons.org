@@ -1,5 +1,7 @@
-angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices']).
-    config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices']);
+
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider.
         when('/materialscommons',
             {templateUrl:'partials/front-page.html', controller:FrontPageController}).
@@ -19,3 +21,12 @@ angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServic
 //                controller: ExperimentDetailController}).
 }
 ]);
+
+app.run(function($rootScope, $location, User) {
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+//       if (! User.isAuthenticated()) {
+//           alert("Not authenticated");
+//       }
+    });
+
+});
