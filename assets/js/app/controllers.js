@@ -1,5 +1,23 @@
 'use strict';
 
+function LoginController($scope, $location, cornercouch, User) {
+
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+
+
+    $scope.login = function() {
+        //$scope.mcdb.query("materialscommons-app", "mcusers_by_email", );
+        if (! User.authenticate($scope.password)) {
+            alert("Authentication failed: " + $scope.password);
+            $location.path("/materialscommons");
+        } else {
+            $location.path("/materialscommons/notebook");
+        }
+    }
+}
+
 function ExperimentListController($scope, $location, cornercouch) {
 
 //    var mcdb = {rows:[

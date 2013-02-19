@@ -15,18 +15,27 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
             {templateUrl: 'partials/notebook/experiment.html', controller: ExperimentCreateEditController}).
         when('/materialscommons/experiment/:experimentId',
             {templateUrl:'partials/notebook/experiment.html', controller: ExperimentCreateEditController}).
+        when('/login',
+            {templateUrl: 'partials/login.html', controller: LoginController}).
         otherwise({redirectTo:'/materialscommons'});
-//            when('/experiments', {templateUrl: 'partials/does-not-exists.html', controller: ExperimentListController}).
-//            when('/experiments/:experimentId', {templateUrl: 'partials/experiment-detail.html',
-//                controller: ExperimentDetailController}).
 }
 ]);
 
 app.run(function($rootScope, $location, User) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-//       if (! User.isAuthenticated()) {
-//           alert("Not authenticated");
-//       }
+        console.log(next.templateUrl);
+        if (! User.isAuthenticated()) {
+            console.log("  User not authenticated");
+
+            if (next.templateUrl && next.templateUrl.indexOf("partials/notebook") != -1) {
+                console.log("  Going to labnotebook");
+                $location.path("/login");
+                console.log("  User authentication = " + User.isAuthenticated());
+            }
+        }
+        else {
+            console.log("  User is authenticated");
+        }
     });
 
 });
