@@ -1,20 +1,43 @@
 'use strict';
 
-function LoginController($scope, $location, cornercouch, User) {
+function LoginController($scope, $location, $timeout, cornercouch, User) {
 
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
-
+    $scope.alerts = [];
+    $scope.failedLogin = false;
+    $scope.successfulLogin = false;
 
     $scope.login = function() {
-        //$scope.mcdb.query("materialscommons-app", "mcusers_by_email", );
-        if (! User.authenticate($scope.password)) {
-            alert("Authentication failed: " + $scope.password);
-            $location.path("/materialscommons");
-        } else {
-            $location.path("/materialscommons/notebook");
-        }
+        $scope.mcdb.query("materialscommons-app", "mcusers_by_email", {key: $scope.email})
+            .success(function() {
+                if ($scope.mcdb.rows.length > 0) {
+                    console.log("Comparing passwords");
+                    var db_password = $scope.mcdb.rows[0].value.password;
+                    if (db_password == $scope.password) {
+                        User.setAuthenticated(true);
+                        $scope.failedLogin = false;
+                        $scope.successfulLogin = true;
+                        $timeout(function() {
+                            $location.path("/materialscommons/notebook");
+                        }, 2000);
+                    } else {
+                        $scope.failedLogin = true;
+                    }
+                } else {
+                    $scope.failedLogin = true;
+                }
+            })
+            .error(function() { console.log("Query Failed!!!");});
+    }
+
+    $scope.cancel = function() {
+        $location.path("/materialscommons");
+    }
+
+    $scope.closeAlert = function() {
+        $scope.alerts.splice(0,1);
     }
 }
 

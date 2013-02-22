@@ -1,5 +1,5 @@
 
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'ui.bootstrap', 'materialsCommonsServices']);
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider.
@@ -23,18 +23,14 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 
 app.run(function($rootScope, $location, User) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-        console.log(next.templateUrl);
+        //console.log(next.templateUrl);
         if (! User.isAuthenticated()) {
-            console.log("  User not authenticated");
-
             if (next.templateUrl && next.templateUrl.indexOf("partials/notebook") != -1) {
-                console.log("  Going to labnotebook");
                 $location.path("/login");
-                console.log("  User authentication = " + User.isAuthenticated());
             }
         }
         else {
-            console.log("  User is authenticated");
+            //console.log("  User is authenticated");
         }
     });
 
