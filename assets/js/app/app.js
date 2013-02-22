@@ -1,5 +1,5 @@
 
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'ui.bootstrap', 'materialsCommonsServices']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices']);
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider.
