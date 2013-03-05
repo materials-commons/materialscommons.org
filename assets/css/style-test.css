@@ -32,6 +32,14 @@ body {
     -moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
 }
 
+.mc-active {
+    -webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
+    -moz-box-shadow: inset 1px 1px 1px #FFFF00;
+    box-shadow: inset 3px 3px 5px rgba(0,0,0,0.7),  3px 3px 5px rgba(0,0,0,0.7);
+    /*-webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;*/
+    /*-moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;*/
+}
+
 .container-narrow {
     margin: 0 auto;
     max-width: 700px;
