@@ -1,5 +1,5 @@
 body {
-    padding-top: 60px;
+    padding-top: 10px;
     /*background-color:#626262;*/
     /*padding-bottom: 40px;*/
     /*background:#9CBAC9;*/
@@ -35,7 +35,7 @@ body {
 .mc-active {
     -webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
     -moz-box-shadow: inset 1px 1px 1px #FFFF00;
-    box-shadow: inset 3px 3px 5px rgba(0,0,0,0.7),  3px 3px 5px rgba(0,0,0,0.7);
+    box-shadow: inset 3px 3px 15px rgba(0,0,0,0.7),  3px 3px 5px rgba(0,0,0,0.7);
     /*-webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;*/
     /*-moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;*/
 }

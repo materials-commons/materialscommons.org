@@ -2,7 +2,7 @@
     "name":"materialscommons-app",
     "version":"0.1.0",
     "description":"Materials Commons Site",
-    "attachments":["index.html", "test.html", "partials", "assets"],
+    "attachments":["index.html", "index2.html", "test.html", "partials", "assets"],
     "modules": ["lib"],
     "load": "lib/app",
     "dependencies":{
