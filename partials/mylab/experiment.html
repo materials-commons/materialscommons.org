@@ -13,6 +13,7 @@
             <option value="NONE">----</option>
         </select>
         <br/>
+
         <form class="form-inline">
             <input ng-model="ms_description" type="text" name="lab" id="msDescription" placeholder='Description'>
             <button class="btn" onclick="alert('Not implemented yet');">Files</button>
@@ -71,136 +72,133 @@
 
 <!-- ***** Page ***** -->
 
-<div class="row">
+<div class="span10 offset2">
 
-    <div class="span7 offset2">
-        <div class="row">
+    <div class="row">
 
-            <h3>{{pageTypeMessage}} Experiment</h3>
+        <div class="span7 offset1">
+            <div class="row">
 
-            <div class="accordion" id="a1">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="a1" href="#c1">
-                            Experiment Details
-                        </a>
-                    </div>
-                    <div id="c1" class="accordion-body collapse in">
-                        <div class="accordion-inner">
-                            <p>
-                                <label>Name:</label>
-                                <input ng-model="experiment.name" type="text" name="name" id="name"
-                                       placeholder='Experiment Name'>
-                            </p>
+                <h3>{{pageTypeMessage}} Experiment</h3>
 
-                            <p>
-                                <label>Lab:</label>
-                                <input ng-model="experiment.lab" type="text" name="lab" id="lab"
-                                       placeholder='Enter your lab'>
-                            </p>
+                <div class="accordion" id="a1" >
+                    <div class="accordion-group mc-form">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="a1" href="#c1">
+                                Experiment Details
+                            </a>
+                        </div>
+                        <div id="c1" class="accordion-body collapse in">
+                            <div class="accordion-inner">
+                                <p>
+                                    <label>Name:</label>
+                                    <input ng-model="experiment.name" type="text" name="name" id="name"
+                                           placeholder='Experiment Name'>
+                                </p>
 
-                            <p>
-                                <label>Description:</label>
-                                <textarea ng-model="experiment.description" rows="3" id="description"
-                                          placeholder="Enter description of experiment" class="span12"></textarea>
-                            </p>
+                                <p>
+                                    <label>Lab:</label>
+                                    <input ng-model="experiment.lab" type="text" name="lab" id="lab"
+                                           placeholder='Enter your lab'>
+                                </p>
+
+                                <p>
+                                    <label>Description:</label>
+                                    <textarea ng-model="experiment.description" rows="3" id="description"
+                                              placeholder="Enter description of experiment" class="span7"></textarea>
+                                </p>
 
 
-                            <p>
-                                <label>Material:</label>
-                                <select ng-model="experiment.metal" id="metal">
-                                    <option>-------</option>
-                                    <option>Magnesium 1</option>
-                                    <option>Magnesium 2</option>
-                                    <option>Magnesium 3</option>
-                                    <option>Magnesium 4</option>
-                                </select>
-                            </p>
+                                <p>
+                                    <label>Material:</label>
+                                    <select ng-model="experiment.metal" id="metal">
+                                        <option>-------</option>
+                                        <option>Magnesium 1</option>
+                                        <option>Magnesium 2</option>
+                                        <option>Magnesium 3</option>
+                                        <option>Magnesium 4</option>
+                                    </select>
+                                </p>
 
-                            <p>
-                                <label>Thickness:</label>
-                                <input ng-model="experiment.thickness" type="number" step="any" placeholder="thickness"
-                                       id="thickness" class="span3">
-                            </p>
+                                <p>
+                                    <label>Thickness:</label>
+                                    <input ng-model="experiment.thickness" type="number" step="any"
+                                           placeholder="thickness"
+                                           id="thickness" class="span3">
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<div class="row-fluid">
-    <ul class="a-btn-group">
-        <li>
+    <div class="row-fluid">
+        <form class="form-inline">
             <a rel="tooltip" title="Add microstructure property" class="btn btn-success" data-toggle="modal"
                href="#microstructure">
                 <i class="icon-plus"></i> Microstructure <i class="icon-barcode icon-border"></i>
 
                 <div id="msCountBadge" class="badge badge-info">{{msCount()}}</div>
             </a>
-        </li>
-        <li>
+
             <a rel="tooltip" title="Add mechanical property" class="btn btn-success" data-toggle="modal"
                href="#mechanical">
                 <i class="icon-plus"></i> Mechanical <i class="icon-cogs icon-border"></i>
 
                 <div class="badge badge-info">0</div>
             </a>
-        </li>
-        <li>
+
             <a rel="tooltip" title="Add simulation" class="btn btn-success" data-toggle="modal"
                href="#simulation">
                 <i class="icon-plus"></i> Simulation <i class="icon-magic icon-border"></i>
 
                 <div class="badge badge-info">0</div>
             </a>
-        </li>
-        <li>
+
             <a rel="tooltip" title="Add computational property" class="btn btn-success" data-toggle="modal"
                href="#computational">
                 <i class="icon-plus"></i> Computational <i class="icon-desktop icon-border"></i>
 
                 <div class="badge badge-info">0</div>
             </a>
-        </li>
-    </ul>
-</div>
-
-<div class="row">
-    <div class="offset1">
-        <div class="well">
-            <table id="experimentProperties" class="table table-striped mc-table-hover table-condensed">
-                <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>How</th>
-                    <th>Last Updated</th>
-                    <th>Attachments</th>
-                </tr>
-                </thead>
-                <tbody id="experimentPropertyEntries">
-                <tr ng-repeat="property in experiment.properties" ng-click="editProperty($index);" style="cursor:pointer">
-                    <td class="mc-prop-type">{{property.type}}</td>
-                    <td class="mc-prop-description">{{property.description}}</td>
-                    <td class="mc-prop-how">{{property.mtype}}</td>
-                    <td class="mc-prop-date">{{property.date}}</td>
-                    <td><span class="badge badge-info">{{property.attachments.length}}</span><button type="button" class="close" ng-click="removeProperty($index);">&times;</button></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div class="row" style="padding-top: 30px;">
-    <div class="offset1">
-        <form class="form-inline">
-            <button class="btn btn-success" ng-click="saveExperiment()" id="save-button">{{saveButtonText}}</button>
-            <button class="btn btn-danger" ng-click="deleteOrCancel()">{{deleteOrCancelButtonText}}</button>
         </form>
+    </div>
+
+    <div class="row">
+        <div class="offset0">
+            <div class="well">
+                <table id="experimentProperties" class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>How</th>
+                        <th>Last Updated</th>
+                        <th>Attachments</th>
+                    </tr>
+                    </thead>
+                    <tbody id="experimentPropertyEntries">
+                    <tr ng-repeat="property in experiment.properties" ng-click="editProperty($index);"
+                        style="cursor:pointer">
+                        <td class="mc-prop-type">{{property.type}}</td>
+                        <td class="mc-prop-description">{{property.description}}</td>
+                        <td class="mc-prop-how">{{property.mtype}}</td>
+                        <td class="mc-prop-date">{{property.date}}</td>
+                        <td><span class="badge badge-info">{{property.attachments.length}}</span>
+                            <button type="button" class="close" ng-click="removeProperty($index);">&times;</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <form class="form-inline">
+                <button class="btn btn-success" ng-click="saveExperiment()" id="save-button">{{saveButtonText}}</button>
+                <button class="btn btn-danger" ng-click="deleteOrCancel()">{{deleteOrCancelButtonText}}</button>
+            </form>
+        </div>
     </div>
 </div>
 

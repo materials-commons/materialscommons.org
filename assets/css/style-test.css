@@ -49,6 +49,14 @@ body {
 
 }
 
+.mc-table {
+    color:black;
+}
+
+.mc-form {
+    background-color: #F5F5F5;
+}
+
 .mc-tools-sidenav {
     position: fixed;
     top: 60px;

@@ -20,7 +20,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
                         $timeout(function() {
-                            $location.path("/materialscommons/notebook");
+                            $location.path("/materialscommons/mylab");
                         }, 2000);
                     } else {
                         $scope.failedLogin = true;
@@ -137,13 +137,13 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
         $scope.experiment.save().error(function(data, status) {
             alert("Unable to save: " + status);
         });
-        $location.path('/materialscommons/notebook');
+        $location.path('/materialscommons/mylab');
     };
 
     $scope.deleteOrCancel = function() {
         if ($scope.pageTypeMessage == "Create") {
-            //window.location = '#/materialscommons/notebook';
-            $location.path("/materialscommons/notebook");
+            //window.location = '#/materialscommons/mylab';
+            $location.path("/materialscommons/mylab");
         } else {
             $scope.experiment.remove()
                 .success(function() {
@@ -152,7 +152,7 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
                 .error(function(data, status) {
                     alert("Unable to delete experiment: " + status);
                 });
-            $location.path('/materialscommons/notebook');
+            $location.path('/materialscommons/mylab');
         }
     };
 
@@ -200,6 +200,26 @@ function DataSearchController($scope, $routeParams) {
 
 function ModelsSearchController($scope, $routeParams) {
     // Nothing to do yet
+}
+
+function MyLabTabController($scope, $routeParams) {
+    $scope.template = "partials/mylab/experiment-list.html";
+    if ($routeParams.tab) {
+        switch ($routeParams.tab) {
+            case "myexperiments":
+                $scope.template = "partials/mylab/experiment-list.html";
+                break;
+            case "mydata":
+                $scope.template = "partials/mylab/mydata.html";
+                break;
+            case "myreferences":
+                $scope.template = "partials/mylab/myreferences.html";
+                break;
+            default:
+                $scope.template = "partials/mylab/experiment-list.html";
+                break;
+        }
+    }
 }
 
 

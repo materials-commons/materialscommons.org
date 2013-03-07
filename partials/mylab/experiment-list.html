@@ -1,0 +1,35 @@
+<div class="span10 offset2">
+
+    <div class="row">
+        <div class="span7 offset1">
+            Search: <input ui-keypress="{13: 'keypressCallback($event)'}" ng-model="query">
+            <a id="createExperiment" href="#/materialscommons/mylab/create" class="btn btn-success">Create New
+                Experiment</a>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="span10">
+            <h4>Your Experiments</h4>
+
+            <div class="well" >
+                <table id="experimentList" class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Snippet</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in mcdb.rows | filter:query" ng-click="editExperiment(row.value._id);"
+                        style="cursor:pointer;">
+                        <td>{{row.value.name}}</td>
+                        <td>{{row.value.description}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
