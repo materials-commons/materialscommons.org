@@ -41,7 +41,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
     }
 }
 
-function ExperimentListController($scope, $location, cornercouch) {
+function ExperimentListController($scope, $location, $routeParams, cornercouch) {
 
 //    var mcdb = {rows:[
 //        { value:{"_id":"1", "name":"ALLISON-SEM-MAGNESIUSM",
@@ -53,6 +53,9 @@ function ExperimentListController($scope, $location, cornercouch) {
 //    ]};
 //
 //    $scope.mcdb = mcdb;
+
+    console.log("The route params are");
+    console.dir($routeParams);
 
     $scope.server = cornercouch();
     $scope.server.session();
@@ -207,6 +210,7 @@ function MyLabTabController($scope, $routeParams) {
     if ($routeParams.tab) {
         switch ($routeParams.tab) {
             case "myexperiments":
+                $scope.template = partialForMyExperimentsRoute();
                 $scope.template = "partials/mylab/experiment-list.html";
                 break;
             case "mydata":
@@ -218,6 +222,16 @@ function MyLabTabController($scope, $routeParams) {
             default:
                 $scope.template = "partials/mylab/experiment-list.html";
                 break;
+        }
+    }
+
+    function partialForMyExperimentsRoute()
+    {
+        if ($routeParams.subPage == "experiment-list") {
+            return "partials/mylab/experiment-list.html";
+        }
+        else {
+            return "partials/mylab/experiment.html";
         }
     }
 }

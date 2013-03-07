@@ -10,7 +10,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/materialscommons/models',
         {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
 
-        when('/materialscommons/mylab/tab/:tab', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
+        when('/materialscommons/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
 //            {templateUrl: 'partials/mylab/experiment-list.html', controller: ExperimentListController}).
 
         when('/materialscommons/mylab/create',
