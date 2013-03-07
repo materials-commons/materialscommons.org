@@ -1,31 +1,52 @@
-
 var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices']);
 
-app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.
-        when('/materialscommons',
-            {templateUrl:'partials/front-page.html', controller:FrontPageController}).
+        when('/materialscommons', {templateUrl: 'partials/front-page.html', controller: FrontPageController}).
+
         when('/materialscommons/data',
-            {templateUrl:'partials/under-construction.html', controller:DataSearchController}).
+        {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
+
         when('/materialscommons/models',
-            {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
-        when('/materialscommons/mylab',
-            {templateUrl: 'partials/mylab/experiment-list.html', controller: ExperimentListController}).
+        {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
+
+        when('/materialscommons/mylab/tab/:tab', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
+//            {templateUrl: 'partials/mylab/experiment-list.html', controller: ExperimentListController}).
+
         when('/materialscommons/mylab/create',
-            {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
+        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
+
         when('/materialscommons/experiment/:experimentId',
-            {templateUrl:'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
-        when('/login',
-            {templateUrl: 'partials/login.html', controller: LoginController}).
-        otherwise({redirectTo:'/materialscommons'});
+        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
+
+        when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
+
+        otherwise({redirectTo: '/materialscommons'});
 }
 ]);
 
 app.run(function($rootScope, $location, User) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-        //console.log(next.templateUrl);
-        if (true) { return;}
-        if (! User.isAuthenticated()) {
+//        console.dir(next);
+//        console.log(next.templateUrl);
+//        console.log(next.controller);
+        if (matchesPartial(next, "partials/front-page", "ignore")) {
+            setActiveMainTab("#home");
+        }
+        else if (matchesPartial(next, "partials/mylab", "ignore")) {
+            setActiveMainTab("#mylab");
+        }
+        else if (matchesPartial(next, "partials/data", "DataSearchController")) {
+            setActiveMainTab("#finddata");
+        }
+        else if (matchesPartial(next, "partials/models", "ModelsSearchController")) {
+            setActiveMainTab("#findmodels");
+        }
+
+        if (true) {
+            return;
+        }
+        if (!User.isAuthenticated()) {
             if (next.templateUrl && next.templateUrl.indexOf("partials/mylab") != -1) {
                 $location.path("/login");
             }
@@ -36,3 +57,26 @@ app.run(function($rootScope, $location, User) {
     });
 
 });
+
+function matchesPartial(next, what, controller) {
+    if (!next.templateUrl) {
+        return false;
+    }
+    else {
+        var value = next.templateUrl.indexOf(what) != -1;
+        /*
+        Hack to look at controller name to figure out tab. We do this so that partials can be
+        shared by controllers, but we need to show which tab is active. So, we look at the
+        name of the controller (only if controller != 'ignore').
+         */
+        if (controller == "ignore") {
+            return value;
+        }
+        else if (value) {
+            return true;
+        }
+        else {
+            return next.controller.toString().indexOf(controller) != -1;
+        }
+    }
+}

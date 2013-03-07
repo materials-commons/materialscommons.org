@@ -1,6 +1,6 @@
-function setActiveTab(tab) {
-    $('#materialscommons-sidebar li').removeClass("active");
-    $(tab).addClass("active");
+function setActiveMainTab(tab) {
+    $('#mc-main-tabs li').removeClass("mc-active");
+    $(tab).addClass("mc-active");
 }
 
 function microstructureCount(properties) {
