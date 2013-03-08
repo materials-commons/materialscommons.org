@@ -73,6 +73,7 @@ function ExperimentListController($scope, $location, $routeParams, cornercouch) 
 
 function ExperimentCreateEditController($scope, $routeParams, $location, cornercouch) {
 
+    console.log("ExperimentCreateEditController");
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
@@ -224,11 +225,6 @@ function MyLabTabController($scope, $routeParams) {
                 $('#my-experiments-tab').addClass("active");
                 break;
         }
-    }
-
-    function setActiveTab(tabid) {
-        $('#my-lab-tabs li').removeClass("active");
-        $(tabid).addClass("active");
     }
 
     function partialForMyExperimentsRoute()
