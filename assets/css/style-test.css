@@ -41,6 +41,13 @@ body {
     /*-moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;*/
 }
 
+.content-area {
+    background-color:#CDCDB4;
+    border-radius: 25px;
+    color:black;
+    box-shadow: 0 0 0 2px black;
+}
+
 .container-narrow {
     margin: 0 auto;
     max-width: 700px;

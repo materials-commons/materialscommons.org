@@ -54,9 +54,6 @@ function ExperimentListController($scope, $location, $routeParams, cornercouch) 
 //
 //    $scope.mcdb = mcdb;
 
-    console.log("The route params are");
-    console.dir($routeParams);
-
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
@@ -211,23 +208,32 @@ function MyLabTabController($scope, $routeParams) {
         switch ($routeParams.tab) {
             case "myexperiments":
                 $scope.template = partialForMyExperimentsRoute();
-                $scope.template = "partials/mylab/experiment-list.html";
+//                $scope.template = "partials/mylab/experiment-list.html";
+                $('#my-experiments-tab').addClass("active");
                 break;
             case "mydata":
                 $scope.template = "partials/mylab/mydata.html";
+                $('#my-data-tab').addClass("active");
                 break;
             case "myreferences":
                 $scope.template = "partials/mylab/myreferences.html";
+                $('#my-references-tab').addClass("active");
                 break;
             default:
                 $scope.template = "partials/mylab/experiment-list.html";
+                $('#my-experiments-tab').addClass("active");
                 break;
         }
     }
 
+    function setActiveTab(tabid) {
+        $('#my-lab-tabs li').removeClass("active");
+        $(tabid).addClass("active");
+    }
+
     function partialForMyExperimentsRoute()
     {
-        if ($routeParams.subPage == "experiment-list") {
+        if ($routeParams.subpage == "experiment-list") {
             return "partials/mylab/experiment-list.html";
         }
         else {
