@@ -1,5 +1,5 @@
 body {
-    padding-top: 10px;
+    padding-top: 0px;
     /*background-color:#626262;*/
     /*padding-bottom: 40px;*/
     /*background:#9CBAC9;*/
@@ -27,7 +27,8 @@ body {
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    background-color: #F5F5F5;
+    /*background-color: #F5F5F5;*/
+    background-color: #CDCDB4;
     -webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
     -moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
 }
