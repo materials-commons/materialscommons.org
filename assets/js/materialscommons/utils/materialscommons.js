@@ -1,6 +1,6 @@
-function setActiveMainTab(tab) {
-    $('#mc-main-tabs li').removeClass("mc-active");
-    $(tab).addClass("mc-active");
+function setActiveMainNav(nav) {
+    $('#mc-main-navs li').removeClass("active");
+    $(nav).addClass("active");
 }
 
 function microstructureCount(properties) {

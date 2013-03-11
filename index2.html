@@ -26,13 +26,28 @@
 
 <!--<div style="background-color: #CDAF95"><img src="assets/img/MaterialsCommonsLogo_274x75.png"></div>-->
 <div style="background-color: #CDCDB4">
-        <a href="index2.html"><img style="vertical-align;" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>
-        <span style="font-size: 200%;font-style: italic">The source for <span class="mc-logo"> materials</span> data</span>
-        <!--<h3 style="font-style:italic;">The source for <span class="mc-logo"> materials</span> data-->
-        <!--</h3>-->
-            <!--</span>-->
+    <a href="index2.html"><img style="" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>
+    <span style="font-size: 200%;font-style: italic">The source for <span class="mc-logo"> materials</span> data</span>
+        <span>
+            <form class="form-search pull-right" style="padding-top: 20px; padding-right: 10px">
+                <div class="input-prepend">
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-search"></i> Search
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-search"></i>Search All</a></li>
+                            <li><a href="#"><i class="icon-bar-chart"></i> Search Data</a></li>
+                            <li><a href="#"><i class="icon-cog"></i> Search Models</a></li>
+                        </ul>
+                    </div>
+                    <input type="text" class="span3" placeholder="Search">
+                </div>
+            </form>
+        </span>
 </div>
-<div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse ">
+<div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse">
     <div class="navbar-inner">
         <div class="container-fluid">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -40,16 +55,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="index2.html">Something Here</a>
 
             <div class="nav-collapse collapse">
+                <!--<a class="" href="index2.html">Home</a>-->
                 <p class="navbar-text pull-right">
-                    <a href="#" class="navbar-link">Login</a>
+                    <a href="#" class="navbar-link"><i class="icon-user"></i> Login/Signup</a>
                 </p>
-
-                <ul class="nav">
-                    <li class="active"><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                <ul id="mc-main-navs" class="nav nav-pills">
+                    <li id="home-nav" class="active">
+                        <a href="#/materialscommons"><i class="icon-home"></i> Home</a>
+                    </li>
+                    <li id="mylab-nav">
+                        <a href="#/materialscommons/mylab/myexperiments/experiment-list/">
+                            <i class="icon-beaker"></i> My Lab
+                        </a>
+                    </li>
+                    <li id="explore-nav"><a href="#"><i class="icon-road"></i> Explore</a></li>
+                    <li id="about-nav"><a href="#about">About</a></li>
+                    <li id="contact-nav"><a href="#contact">Contact</a></li>
+                    <li id="help-nav"><a href="#">Help</a></li>
                 </ul>
 
             </div>
@@ -67,40 +91,40 @@
     <!--</div>-->
     <!--</div>-->
 
-    <div class="row">
-        <div class="span8 offset4">
-            <ul id="mc-main-tabs" class="nav nav-pills">
-                <li id="home" class="mc-border mc-active">
-                    <h4>
-                        <a href="#/materialscommons">
-                            <i class="icon-home"></i> Home
-                        </a>
-                    </h4>
-                </li>
-                <li id="mylab" class="mc-border">
-                    <h4>
-                        <a href="#/materialscommons/mylab/myexperiments/experiment-list/">
-                            <i class="icon-beaker"></i> My Lab
-                        </a>
-                    </h4>
-                </li>
-                <li id="finddata" class="mc-border">
-                    <h4>
-                        <a href="#/materialscommons/data">
-                            <i class="icon-bar-chart"></i> Find Data
-                        </a>
-                    </h4>
-                </li>
-                <li id="findmodels" class="mc-border">
-                    <h4>
-                        <a href="#/materialscommons/models">
-                            <i class="icon-cog"></i> Find Models
-                        </a>
-                    </h4>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <!--<div class="row">-->
+        <!--<div class="span8 offset4">-->
+            <!--<ul id="mc-main-tabs" class="nav nav-pills">-->
+                <!--<li id="home" class="mc-border mc-active">-->
+                    <!--<h4>-->
+                        <!--<a href="#/materialscommons">-->
+                            <!--<i class="icon-home"></i> Home-->
+                        <!--</a>-->
+                    <!--</h4>-->
+                <!--</li>-->
+                <!--<li id="mylab" class="mc-border">-->
+                    <!--<h4>-->
+                        <!--<a href="#/materialscommons/mylab/myexperiments/experiment-list/">-->
+                            <!--<i class="icon-beaker"></i> My Lab-->
+                        <!--</a>-->
+                    <!--</h4>-->
+                <!--</li>-->
+                <!--<li id="finddata" class="mc-border">-->
+                    <!--<h4>-->
+                        <!--<a href="#/materialscommons/data">-->
+                            <!--<i class="icon-bar-chart"></i> Find Data-->
+                        <!--</a>-->
+                    <!--</h4>-->
+                <!--</li>-->
+                <!--<li id="findmodels" class="mc-border">-->
+                    <!--<h4>-->
+                        <!--<a href="#/materialscommons/models">-->
+                            <!--<i class="icon-cog"></i> Find Models-->
+                        <!--</a>-->
+                    <!--</h4>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
 
     <div class="span12 offset1 content-area">
         <div class="content-body"> <!-- style="background-color: white;"> -->

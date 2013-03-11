@@ -142,6 +142,20 @@ div.node.level2 {
     background-color: #CCCCCC;
 }
 
+/*.nav-pills a {*/
+    /*color: #000000;*/
+/*}*/
+
+/*.nav-pills .active > a {*/
+    /*background: yellow;*/
+    /*color: #000000;*/
+/*}*/
+
+/*.nav-pills .active > a:hover {*/
+    /*background: red;*/
+    /*color:#000000;*/
+/*}*/
+
 /* ******** Remove below this line**************** */
 
 .bs-docs-sidenav {

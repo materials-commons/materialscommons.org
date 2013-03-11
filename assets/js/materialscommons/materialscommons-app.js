@@ -31,17 +31,19 @@ app.run(function($rootScope, $location, User) {
 //        console.log(next.templateUrl);
 //        console.log(next.controller);
         if (matchesPartial(next, "partials/front-page", "ignore")) {
-            setActiveMainTab("#home");
+            console.log("home");
+            setActiveMainNav("#home-nav");
         }
         else if (matchesPartial(next, "partials/mylab", "ignore")) {
-            setActiveMainTab("#mylab");
+            console.log("mylab");
+            setActiveMainNav("#mylab-nav");
         }
-        else if (matchesPartial(next, "partials/data", "DataSearchController")) {
-            setActiveMainTab("#finddata");
-        }
-        else if (matchesPartial(next, "partials/models", "ModelsSearchController")) {
-            setActiveMainTab("#findmodels");
-        }
+//        else if (matchesPartial(next, "partials/data", "DataSearchController")) {
+//            setActiveMainNav("#finddata");
+//        }
+//        else if (matchesPartial(next, "partials/models", "ModelsSearchController")) {
+//            setActiveMainNav("#findmodels");
+//        }
 
         if (true) {
             return;
