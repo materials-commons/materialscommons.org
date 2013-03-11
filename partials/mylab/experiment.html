@@ -200,8 +200,9 @@
             <button class="btn btn-small btn-success" ng-click="saveExperiment()" id="save-button">
                 {{saveButtonText}}
             </button>
-            <button class="btn btn-small btn-danger" ng-click="deleteOrCancel()">{{deleteOrCancelButtonText}}
+            <button ng-show="pageTypeMessage=='View/Edit'" class="btn btn-small btn-danger" ng-click="deleteExperiment()">Delete
             </button>
+            <a class="btn btn-warning btn-small" href="#/mylab/myexperiments/experiment-list/">Cancel</a>
         </form>
     </div>
 </div>

@@ -29,7 +29,9 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
                     $scope.failedLogin = true;
                 }
             })
-            .error(function() { console.log("Query Failed!!!");});
+            .error(function() {
+                console.log("Query Failed!!!");
+            });
     }
 
     $scope.cancel = function() {
@@ -37,7 +39,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
     }
 
     $scope.closeAlert = function() {
-        $scope.alerts.splice(0,1);
+        $scope.alerts.splice(0, 1);
     }
 }
 
@@ -90,15 +92,15 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
         $scope.experiment.type = "experiment";
         $scope.pageTypeMessage = "Create";
         $scope.saveButtonText = "Save";
-        $scope.deleteOrCancelButtonText = "Cancel";
+        //$scope.deleteOrCancelButtonText = "Cancel";
 
         if ($routeParams.name) {
             $scope.experiment.name = $routeParams.name;
         }
     } else {
-        $scope.pageTypeMessage = "View";
+        $scope.pageTypeMessage = "View/Edit";
         $scope.saveButtonText = "Save Changes";
-        $scope.deleteOrCancelButtonText = "Delete";
+        //$scope.deleteOrCancelButtonText = "Delete";
         $scope.experiment = $scope.mcdb.getDoc($routeParams.id);
     }
 
@@ -141,19 +143,15 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
         $location.path('/mylab/myexperiments/experiment-list/');
     };
 
-    $scope.deleteOrCancel = function() {
-        if ($scope.pageTypeMessage == "Create") {
-            $location.path("/mylab/myexperiments/experiment-list/");
-        } else {
-            $scope.experiment.remove()
-                .success(function() {
-                    delete $scope.experiment;
-                })
-                .error(function(data, status) {
-                    alert("Unable to delete experiment: " + status);
-                });
-            $location.path('/mylab/myexperiments/experiment-list/');
-        }
+    $scope.deleteExperiment = function() {
+        $scope.experiment.remove()
+            .success(function() {
+                delete $scope.experiment;
+            })
+            .error(function(data, status) {
+                alert("Unable to delete experiment: " + status);
+            });
+        $location.path('/mylab/myexperiments/experiment-list/');
     };
 
     $scope.removeProperty = function(index) {
@@ -226,8 +224,7 @@ function MyLabTabController($scope, $routeParams) {
         }
     }
 
-    function partialForMyExperimentsRoute()
-    {
+    function partialForMyExperimentsRoute() {
         if ($routeParams.subpage == "experiment-list") {
             return "partials/mylab/experiment-list.html";
         }
