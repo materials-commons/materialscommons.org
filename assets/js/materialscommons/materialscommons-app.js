@@ -2,29 +2,16 @@ var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCom
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.
-        when('/materialscommons', {templateUrl: 'partials/front-page.html', controller: FrontPageController}).
-
-        when('/materialscommons/data',
-        {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
-
-        when('/materialscommons/models',
-        {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
-
-        when('/materialscommons/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
-//            {templateUrl: 'partials/mylab/experiment-list.html', controller: ExperimentListController}).
-
-//        when('/materialscommons/mylab/create',
-//        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
-//
-//        when('/materialscommons/experiment/:experimentId',
-//        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
-
+        when('/home', {templateUrl: 'partials/front-page.html', controller: FrontPageController}).
+        when('/data', {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
+        when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
+        when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
         when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
         when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
         when('/about', {templateUrl: 'partials/under-construction.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/under-construction.html', controller: HelpController}).
-        otherwise({redirectTo: '/materialscommons'});
+        otherwise({redirectTo: '/home'});
 }
 ]);
 

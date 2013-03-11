@@ -20,7 +20,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
                         $timeout(function() {
-                            $location.path("/materialscommons/mylab/myexperiments/experiment-list/");
+                            $location.path("/mylab/myexperiments/experiment-list/");
                         }, 2000);
                     } else {
                         $scope.failedLogin = true;
@@ -33,7 +33,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
     }
 
     $scope.cancel = function() {
-        $location.path("/materialscommons");
+        $location.path("/home");
     }
 
     $scope.closeAlert = function() {
@@ -67,7 +67,7 @@ function ExperimentListController($scope, $location, $routeParams, cornercouch) 
     }
 
     $scope.editExperiment = function(id) {
-        $location.path("/materialscommons/mylab/myexperiments/edit-experiment/" + id);
+        $location.path("/mylab/myexperiments/edit-experiment/" + id);
     }
 }
 
@@ -138,12 +138,12 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
         $scope.experiment.save().error(function(data, status) {
             alert("Unable to save: " + status);
         });
-        $location.path('/materialscommons/mylab/myexperiments/experiment-list/');
+        $location.path('/mylab/myexperiments/experiment-list/');
     };
 
     $scope.deleteOrCancel = function() {
         if ($scope.pageTypeMessage == "Create") {
-            $location.path("/materialscommons/mylab/myexperiments/experiment-list/");
+            $location.path("/mylab/myexperiments/experiment-list/");
         } else {
             $scope.experiment.remove()
                 .success(function() {
@@ -152,7 +152,7 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
                 .error(function(data, status) {
                     alert("Unable to delete experiment: " + status);
                 });
-            $location.path('/materialscommons/mylab/myexperiments/experiment-list/');
+            $location.path('/mylab/myexperiments/experiment-list/');
         }
     };
 
