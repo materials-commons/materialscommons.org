@@ -1,14 +1,51 @@
 body {
-    padding-top: 60px;
+    padding-top: 0px;
+    /*background-color:#626262;*/
     /*padding-bottom: 40px;*/
     /*background:#9CBAC9;*/
 
         /*#C5C1AA;*/
 
         /*#8C9896;*/
-        /*#768582; *
-    /* url(../img/fading_background_17.png) repeat-x;*/
-    /*background-color: #c5c5c5 ;*/
+        /*#768582; */
+     /*url(../img/fading_background_17.png) repeat-x;*/
+    background: url(../img/background/noisy-texture-grey.png) repeat;
+    color:#F5F5F5;
+}
+
+.mc-logo {
+    /*color: #53868B;*/
+    color: #191970;
+    /*text-shadow: 1px 0 #F5F5F5;*/
+}
+
+.mc-border {
+    border-style: solid;
+    border-width:3px;
+    padding: 2px;
+    margin: 2px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    /*background-color: #F5F5F5;*/
+    background-color: #CDCDB4;
+    -webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
+    -moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
+}
+
+.mc-active {
+    -webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
+    -moz-box-shadow: inset 1px 1px 1px #FFFF00;
+    box-shadow: inset 3px 3px 15px rgba(0,0,0,0.7),  3px 3px 5px rgba(0,0,0,0.7);
+    /*-webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;*/
+    /*-moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;*/
+}
+
+.content-area {
+    background-color:#CDCDB4;
+    border-radius: 25px;
+    color:black;
+    box-shadow: 0 0 0 2px black;
 }
 
 .container-narrow {
@@ -20,10 +57,19 @@ body {
 
 }
 
+.mc-table {
+    color:black;
+}
+
+.mc-form {
+    background-color: #F5F5F5;
+}
+
 .mc-tools-sidenav {
     position: fixed;
-    top: 10%;
-    left: 2%;
+    top: 60px;
+    left: 2px;
+    margin: 0 0 -1px;
     background: #F5F5F5;
     list-style-type: none;
     -webkit-border-radius: 6px;
@@ -95,6 +141,20 @@ div.node.level2 {
 .mc-table-hover tbody tr:hover th {
     background-color: #CCCCCC;
 }
+
+/*.nav-pills a {*/
+    /*color: #000000;*/
+/*}*/
+
+/*.nav-pills .active > a {*/
+    /*background: yellow;*/
+    /*color: #000000;*/
+/*}*/
+
+/*.nav-pills .active > a:hover {*/
+    /*background: red;*/
+    /*color:#000000;*/
+/*}*/
 
 /* ******** Remove below this line**************** */
 
