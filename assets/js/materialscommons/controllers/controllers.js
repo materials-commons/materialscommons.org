@@ -210,7 +210,7 @@ function MyLabTabController($scope, $routeParams) {
                 $('#my-experiments-tab').addClass("active");
                 break;
             case "mydata":
-                $scope.template = "partials/mylab/mydata.html";
+                $scope.template = "partials/mylab/mydata/mydata.html";
                 $('#my-data-tab').addClass("active");
                 break;
             case "myreferences":
