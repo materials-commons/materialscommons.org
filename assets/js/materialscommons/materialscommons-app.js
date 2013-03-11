@@ -13,14 +13,17 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/materialscommons/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
 //            {templateUrl: 'partials/mylab/experiment-list.html', controller: ExperimentListController}).
 
-        when('/materialscommons/mylab/create',
-        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
-
-        when('/materialscommons/experiment/:experimentId',
-        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
+//        when('/materialscommons/mylab/create',
+//        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
+//
+//        when('/materialscommons/experiment/:experimentId',
+//        {templateUrl: 'partials/mylab/experiment.html', controller: ExperimentCreateEditController}).
 
         when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
-
+        when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
+        when('/about', {templateUrl: 'partials/under-construction.html', controller: AboutController}).
+        when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
+        when('/help', {templateUrl: 'partials/under-construction.html', controller: HelpController}).
         otherwise({redirectTo: '/materialscommons'});
 }
 ]);
@@ -31,12 +34,22 @@ app.run(function($rootScope, $location, User) {
 //        console.log(next.templateUrl);
 //        console.log(next.controller);
         if (matchesPartial(next, "partials/front-page", "ignore")) {
-            console.log("home");
             setActiveMainNav("#home-nav");
         }
         else if (matchesPartial(next, "partials/mylab", "ignore")) {
-            console.log("mylab");
             setActiveMainNav("#mylab-nav");
+        }
+        else if (matchesPartial(next, "partials/explore", "ExploreController")) {
+            setActiveMainNav("#explore-nav");
+        }
+        else if (matchesPartial(next, "partials/about", "AboutController")) {
+            setActiveMainNav('#about-nav');
+        }
+        else if (matchesPartial(next, "partials/contact", "ContactController")) {
+            setActiveMainNav('#contact-nav');
+        }
+        else if (matchesPartial(next, "partials/help", "HelpController")) {
+            setActiveMainNav("#help-nav");
         }
 //        else if (matchesPartial(next, "partials/data", "DataSearchController")) {
 //            setActiveMainNav("#finddata");

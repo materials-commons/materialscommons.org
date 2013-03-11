@@ -238,34 +238,19 @@ function MyLabTabController($scope, $routeParams) {
     }
 }
 
+function ExploreController($scope, $routeParams) {
+    $scope.pageDescription = "Explore";
+}
 
-//function MicrostructureController($scope, $routeParams) {
-//
-//    $scope.tmessage = "Microstructure";
-//
-//    $scope.ms_equipment = [
-//        "APT",
-//        "TEM",
-//        "XRD",
-//        "SEM",
-//        "OIM",
-//        "Optical"
-//    ];
-//
-//    $scope.saveChanges = function () {
-//        var type = "<td class='mc-prop-type'>microstructure</td>";
-//        var description = "<td class='mc-prop-description'>" + $scope.ms_description + "</td>";
-//        var how = "<td class='mc-prop-how'>" + $scope.ms_equipment + "</td>"
-//        var dateAdded = "<td class='mc-prop-date'>today</td>";
-//        var attachmentCount = "<td><span class='badge badge-info'>0</span></td>";
-//        var entry = "<tr>" + type + description + how + dateAdded + attachmentCount + "</tr>";
-//        $('#experimentPropertyEntries').append(entry);
-//
-//        var rowCount = $('#experimentPropertyEntries tr').length;
-//
-//        $('#msCountBadge').html(rowCount);
-//
-//        $scope.ms_equipment = "NONE";
-//        $scope.ms_description = "";
-//    }
-//}
+function AboutController($scope, $routeParams) {
+    $scope.pageDescription = "About";
+}
+
+function ContactController($scope, $routeParams) {
+    $scope.pageDescription = "Contact";
+
+}
+
+function HelpController($scope, $routeParams) {
+    $scope.pageDescription = "Help";
+}
