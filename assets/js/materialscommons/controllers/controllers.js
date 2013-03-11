@@ -20,7 +20,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
                         $timeout(function() {
-                            $location.path("/materialscommons/mylab");
+                            $location.path("/materialscommons/mylab/myexperiments/experiment-list/");
                         }, 2000);
                     } else {
                         $scope.failedLogin = true;
@@ -67,7 +67,7 @@ function ExperimentListController($scope, $location, $routeParams, cornercouch) 
     }
 
     $scope.editExperiment = function(id) {
-        $location.path("/materialscommons/experiment/" + id);
+        $location.path("/materialscommons/mylab/myexperiments/edit-experiment/" + id);
     }
 }
 
@@ -79,7 +79,7 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.propertyIndex = -1;
 
-    if (!$routeParams.experimentId) {
+    if (!$routeParams.id) {
         $scope.experiment = $scope.mcdb.newDoc();
         $scope.experiment.properties = [];
         $scope.experiment.description = "";
@@ -99,7 +99,7 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
         $scope.pageTypeMessage = "View";
         $scope.saveButtonText = "Save Changes";
         $scope.deleteOrCancelButtonText = "Delete";
-        $scope.experiment = $scope.mcdb.getDoc($routeParams.experimentId);
+        $scope.experiment = $scope.mcdb.getDoc($routeParams.id);
     }
 
     $scope.equipment = [
@@ -138,13 +138,12 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
         $scope.experiment.save().error(function(data, status) {
             alert("Unable to save: " + status);
         });
-        $location.path('/materialscommons/mylab');
+        $location.path('/materialscommons/mylab/myexperiments/experiment-list/');
     };
 
     $scope.deleteOrCancel = function() {
         if ($scope.pageTypeMessage == "Create") {
-            //window.location = '#/materialscommons/mylab';
-            $location.path("/materialscommons/mylab");
+            $location.path("/materialscommons/mylab/myexperiments/experiment-list/");
         } else {
             $scope.experiment.remove()
                 .success(function() {
@@ -153,7 +152,7 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
                 .error(function(data, status) {
                     alert("Unable to delete experiment: " + status);
                 });
-            $location.path('/materialscommons/mylab');
+            $location.path('/materialscommons/mylab/myexperiments/experiment-list/');
         }
     };
 
@@ -232,7 +231,10 @@ function MyLabTabController($scope, $routeParams) {
         if ($routeParams.subpage == "experiment-list") {
             return "partials/mylab/experiment-list.html";
         }
-        else {
+        else if ($routeParams.subpage == "create-experiment") {
+            return "partials/mylab/experiment.html";
+        }
+        else if ($routeParams.subpage == "edit-experiment") {
             return "partials/mylab/experiment.html";
         }
     }
