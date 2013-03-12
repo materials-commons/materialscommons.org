@@ -238,10 +238,11 @@ function MyLabTabController($scope, $routeParams) {
 }
 
 function MyDataListController($scope, $routeParams, cornercouch) {
+    $scope.email="gtarcea@umich.edu";
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.mcdb.query("materialscommons-app", "experiments_with_data");
+    $scope.mcdb.query("materialscommons-app", "data_by_user", {key: $scope.email})
 }
 
 function ExploreController($scope, $routeParams) {
