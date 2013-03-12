@@ -237,6 +237,13 @@ function MyLabTabController($scope, $routeParams) {
     }
 }
 
+function MyDataListController($scope, $routeParams, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.mcdb.query("materialscommons-app", "experiments_with_data");
+}
+
 function ExploreController($scope, $routeParams) {
     $scope.pageDescription = "Explore";
 }
