@@ -1,0 +1,22 @@
+<div ng-controller="MyDataAddController">
+
+    <form>
+        <label>What type of data are you adding? </label>
+
+        <select class="span3" ng-model="dtype" ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}">
+            <option></option>
+            <option value="microstructure">Microstructure</option>
+            <option value="mechanical">Mechanical</option>
+            <option value="simulation">Simulation</option>
+            <option value="computational">Computational</option>
+        </select>
+    </form>
+
+    <ng-switch on="dtype">
+        <p ng-switch-when="microstructure">Microstructure chosen</p>
+        <p ng-switch-when="mechanical">Mechanical chosen</p>
+        <p ng-switch-when="simulation">Simulation chosen</p>
+        <p ng-switch-when="computational">Computational chosen</p>
+        <p ng-switch-default>Nothing chosen</p>
+    </ng-switch>
+</div>

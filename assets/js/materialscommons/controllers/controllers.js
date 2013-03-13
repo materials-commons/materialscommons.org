@@ -74,8 +74,6 @@ function ExperimentListController($scope, $location, $routeParams, cornercouch) 
 }
 
 function ExperimentCreateEditController($scope, $routeParams, $location, cornercouch) {
-
-    console.log("ExperimentCreateEditController");
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
@@ -210,7 +208,8 @@ function MyLabTabController($scope, $routeParams) {
                 $('#my-experiments-tab').addClass("active");
                 break;
             case "mydata":
-                $scope.template = "partials/mylab/mydata/mydata.html";
+//                $scope.template = "partials/mylab/mydata/mydata.html";
+                $scope.template = partialForMyDataRoute();
                 $('#my-data-tab').addClass("active");
                 break;
             case "myreferences":
@@ -235,9 +234,18 @@ function MyLabTabController($scope, $routeParams) {
             return "partials/mylab/experiment.html";
         }
     }
+
+    function partialForMyDataRoute() {
+        if ($routeParams.subpage == "edit-data") {
+            return "partials/mylab/mydata/data.html";
+        }
+        else {
+            return "partials/mylab/mydata/mydata.html";
+        }
+    }
 }
 
-function MyDataListController($scope, $routeParams, cornercouch) {
+function MyDataListController($scope, $routeParams, $location, cornercouch) {
     $scope.email="gtarcea@umich.edu";
     $scope.server = cornercouch();
     $scope.server.session();
@@ -251,6 +259,7 @@ function MyDataListController($scope, $routeParams, cornercouch) {
         **    What happens when a change is made to data that is associated with
         **    an experiment that the user doesn't own?
          */
+        $location.path("/mylab/mydata/edit-data/" + id);
     }
 
     $scope.removeData = function(id) {
@@ -264,6 +273,33 @@ function MyDataListController($scope, $routeParams, cornercouch) {
          **    doesn't own?
           */
     }
+}
+
+function MyDataCreateEditController($scope, $routeParams, $location, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.dataitem = $scope.mcdb.getDoc($routeParams.id);
+
+    $scope.editAttachment = function(id) {
+
+    }
+
+    $scope.removeAttachment = function(index) {
+
+    }
+
+    $scope.editExperiment = function(id) {
+        $location.path("/mylab/myexperiments/edit-experiment/" + id);
+    }
+
+    $scope.removeExperiment = function(index) {
+
+    }
+}
+
+function MyDataAddController($scope, $routeParams, $location, cornercouch) {
+    
 }
 
 function ExploreController($scope, $routeParams) {
