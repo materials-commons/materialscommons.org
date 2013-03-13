@@ -242,7 +242,28 @@ function MyDataListController($scope, $routeParams, cornercouch) {
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.mcdb.query("materialscommons-app", "data_by_user", {key: $scope.email})
+    $scope.mcdb.query("materialscommons-app", "data_by_user", {key: $scope.email});
+
+    $scope.editData = function(id) {
+        /*
+        ** TODO: How to edit an item
+        **
+        **    What happens when a change is made to data that is associated with
+        **    an experiment that the user doesn't own?
+         */
+    }
+
+    $scope.removeData = function(id) {
+        /*
+         ** TODO: How to remove an item -
+         **    Do we remove the item from all the experiments? Should show the user
+         **    the impact of removing the item, and then give them the option to remove
+         **    from experiments they own.
+         **
+         **    What happens when the data is associated with an experiment that a user
+         **    doesn't own?
+          */
+    }
 }
 
 function ExploreController($scope, $routeParams) {

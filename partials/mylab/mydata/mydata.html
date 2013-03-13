@@ -1,11 +1,9 @@
 <div ng-controller="MyDataListController">
-
-    <h3>MyData</h3>
-
     <div class="row">
-        <div class="offset1">
+        <div class="offset0">
+            <h3>MyData</h3>
             <div class="well">
-                <table id="experimentProperties" class="table table-striped mc-table-hover table-condensed mc-table">
+                <table id="mydata-table" class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
                         <th>Type</th>
@@ -15,29 +13,20 @@
                         <th>Attachments</th>
                     </tr>
                     </thead>
-                    <tbody id="mydata-list">
-                    <tr ng-repeat="row in mcdb.rows" ng-click="editProperty($index);"
+                    <tbody id="mydata-entries">
+                    <tr ng-repeat="row in mcdb.rows" ng-click="editData($index);"
                         style="cursor:pointer">
-                        <td class="mc-prop-type">{{property.type}}</td>
-                        <td class="mc-prop-description">{{property.description}}</td>
-                        <td class="mc-prop-how">{{property.mtype}}</td>
-                        <td class="mc-prop-date">{{property.date}}</td>
-                        <td><span class="badge badge-info">{{property.attachments.length}}</span>
-                            <button type="button" class="close" ng-click="removeProperty($index);">&times;</button>
+                        <td class="mc-prop-type">{{row.value.dtype}}</td>
+                        <td class="mc-prop-description">{{row.value.description}}</td>
+                        <td class="mc-prop-how">{{row.value.mtype}}</td>
+                        <td class="mc-prop-date">{{row.value.date}}</td>
+                        <td><span class="badge badge-info">{{row.value.attachments.length}}</span>
+                            <button type="button" class="close" ng-click="removeData($index);">&times;</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <form class="form-inline">
-                <button class="btn btn-small btn-success" ng-click="saveExperiment()" id="save-button">
-                    {{saveButtonText}}
-                </button>
-                <button ng-show="pageTypeMessage=='View/Edit'" class="btn btn-small btn-danger"
-                        ng-click="deleteExperiment()">Delete
-                </button>
-                <a class="btn btn-warning btn-small" href="#/mylab/myexperiments/experiment-list/">Cancel</a>
-            </form>
         </div>
     </div>
 
