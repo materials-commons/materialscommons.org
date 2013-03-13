@@ -1,4 +1,4 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'jqyoui']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.

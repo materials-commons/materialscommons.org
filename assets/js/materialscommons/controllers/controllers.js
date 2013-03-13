@@ -239,6 +239,9 @@ function MyLabTabController($scope, $routeParams) {
         if ($routeParams.subpage == "edit-data") {
             return "partials/mylab/mydata/data.html";
         }
+        else if ($routeParams.subpage == "add-data") {
+            return "partials/mylab/mydata/add-data.html";
+        }
         else {
             return "partials/mylab/mydata/mydata.html";
         }
@@ -299,7 +302,8 @@ function MyDataCreateEditController($scope, $routeParams, $location, cornercouch
 }
 
 function MyDataAddController($scope, $routeParams, $location, cornercouch) {
-    
+    $scope.list1 = {title: 'Drag me!'};
+    $scope.list2 = {};
 }
 
 function ExploreController($scope, $routeParams) {
