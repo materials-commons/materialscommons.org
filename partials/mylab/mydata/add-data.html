@@ -38,19 +38,24 @@
     </div>
 
     <div class="row">
-        <div class="offset0">
+        <div class="span3 offset0">
             <form>
-                <div class="btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
-                     jqyoui-draggable="{animate:true, onDrag:'itemDragged'}" ng-hide="!list1.title">{{list1.title}}
-                </div>
                 <div class="thumbnail" data-drop="true" data-jqyoui-options ng-model="list2"
-                     jqyoui-droppable="{multiple:true, onDrop:'itemDropped'}"
-                     style='height:50px;'>
-                    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable
-                         ng-hide="!list2.title">{{list2.title}}
+                     jqyoui-droppable="{multiple:true, onDrop:'itemDropped'}" style="min-height: 50px;">
+                     <!--style='height:50px;'>-->
+                    <div class="btn btn-success" ng-repeat="item in list2" data-drag="false" data-jqyoui-options
+                         ng-model="list2" jqyoui-draggable
+                         ng-show="item.title">{{item.title}}
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="offset4">
+            <div class="btnx btn-primaryx span2" style="border:black;border-radius: 25px; box-shadow: 0 0 0 2px black;"
+                 data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
+                 jqyoui-draggable="{animate:true, onDrag:'itemDragged'}" ng-hide="!list1.title">
+                <label>{{list1.title}}</label><input type="text" placeholder="{{list1.title}}">
+            </div>
         </div>
     </div>
 
