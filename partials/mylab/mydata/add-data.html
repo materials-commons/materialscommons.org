@@ -1,47 +1,57 @@
 <div ng-controller="MyDataAddController">
+    <div class="row">
+        <div class="offset0">
 
-    <form>
-        <label>What type of data are you adding? </label>
+            <form>
+                <label>What type of data are you adding? </label>
 
-        <select class="span3" ng-model="dtype"
-                ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}">
-            <option></option>
-            <option value="microstructure">Microstructure</option>
-            <option value="mechanical">Mechanical</option>
-            <option value="simulation">Simulation</option>
-            <option value="computational">Computational</option>
-        </select>
+                <select class="span3" ng-model="dtype"
+                        ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}">
+                    <option></option>
+                    <option value="microstructure">Microstructure</option>
+                    <option value="mechanical">Mechanical</option>
+                    <option value="simulation">Simulation</option>
+                    <option value="computational">Computational</option>
+                </select>
 
 
-        <label ng-show="dtype">How was the {{dtype}} data collected?</label>
-        <ng-switch on="dtype">
-            <select class="span3" ng-model="mtype"
-                    ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}"
-                    ng-switch-when="microstructure">
-                <option></option>
-                <option value="a">A</option>
-                <option value="b">B</option>
-            </select>
+                <label ng-show="dtype">How was the {{dtype}} data collected?</label>
+                <ng-switch on="dtype">
+                    <select class="span3" ng-model="mtype"
+                            ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}"
+                            ng-switch-when="microstructure">
+                        <option></option>
+                        <option value="a">A</option>
+                        <option value="b">B</option>
+                    </select>
 
-            <p ng-switch-when="mechanical">Mechanical chosen</p>
+                    <p ng-switch-when="mechanical">Mechanical chosen</p>
 
-            <p ng-switch-when="simulation">Simulation chosen</p>
+                    <p ng-switch-when="simulation">Simulation chosen</p>
 
-            <p ng-switch-when="computational">Computational chosen</p>
+                    <p ng-switch-when="computational">Computational chosen</p>
 
-            <p ng-switch-default>Nothing chosen</p>
-        </ng-switch>
-    </form>
-
-    <div class="btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
-         jqyoui-draggable="{animate:true}" ng-hide="!list1.title">{{list1.title}}
-    </div>
-
-    <div class="thumbnail" data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable style='height:50px;'>
-        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable
-             ng-hide="!list2.title">{{list2.title}}
+                    <p ng-switch-default>Nothing chosen</p>
+                </ng-switch>
+            </form>
         </div>
     </div>
 
+    <div class="row">
+        <div class="offset0">
+            <form>
+                <div class="btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
+                     jqyoui-draggable="{animate:true, onDrag:'itemDragged'}" ng-hide="!list1.title">{{list1.title}}
+                </div>
+                <div class="thumbnail" data-drop="true" data-jqyoui-options ng-model="list2"
+                     jqyoui-droppable="{multiple:true, onDrop:'itemDropped'}"
+                     style='height:50px;'>
+                    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable
+                         ng-hide="!list2.title">{{list2.title}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </div>

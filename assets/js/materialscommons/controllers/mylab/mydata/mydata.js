@@ -54,4 +54,14 @@ function MyDataCreateEditController($scope, $routeParams, $location, cornercouch
 function MyDataAddController($scope, $routeParams, $location, cornercouch) {
     $scope.list1 = {title: 'Drag me!'};
     $scope.list2 = {};
+
+    $scope.itemDropped = function(event, ui) {
+        console.log("itemDropped");
+        console.dir(event);
+        console.dir(ui);
+    }
+
+    $scope.itemDragged = function(event, ui) {
+        console.log("itemDragged");
+    }
 }
