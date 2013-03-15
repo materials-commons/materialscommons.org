@@ -16,6 +16,10 @@ function MyLabTabController($scope, $routeParams) {
                 $scope.template = "partials/mylab/myreferences.html";
                 $('#my-references-tab').addClass("active");
                 break;
+            case "myforms":
+                $scope.template="partials/mylab/myforms/myforms.html";
+                $('#my-forms-tab').addClass("active");
+                break;
             default:
                 $scope.template = "partials/mylab/experiment-list.html";
                 $('#my-experiments-tab').addClass("active");

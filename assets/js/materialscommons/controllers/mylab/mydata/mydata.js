@@ -57,9 +57,9 @@ function MyDataAddController($scope, $routeParams, $location, cornercouch) {
     $scope.i = 0;
 
     $scope.itemDropped = function(event, ui) {
-        console.log("itemDropped");
-        console.dir($scope.list1);
-        console.dir($scope.list2);
+//        console.log("itemDropped");
+//        console.dir($scope.list1);
+//        console.dir($scope.list2);
         $scope.list1 = {title: 'New item'+$scope.i++};
 //        console.dir(event);
 //        console.dir(ui);
