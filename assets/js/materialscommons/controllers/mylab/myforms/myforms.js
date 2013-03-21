@@ -1,33 +1,74 @@
 
-function MyFormsController($scope, $routeParams, $location, cornercouch) {
-    $scope.newitems = [];
+function MyFormsListController($scope, $routeParams, $location, cornercouch) {
+    $scope.user="gtarcea@umich.edu";
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.mcdb.query("materialscommons-app", "form_by_user", {key: $scope.user});
+
+    $scope.editData = function(id) {
+        /*
+         ** TODO: How to edit an item
+         **
+         **    What happens when a change is made to data that is associated with
+         **    an experiment that the user doesn't own?
+         */
+        $location.path("/mylab/myforms/edit-form/" + id);
+    }
+
+    $scope.removeData = function(id) {
+        /*
+         ** TODO: How to remove an item -
+         **    Do we remove the item from all the experiments? Should show the user
+         **    the impact of removing the item, and then give them the option to remove
+         **    from experiments they own.
+         **
+         **    What happens when the data is associated with an experiment that a user
+         **    doesn't own?
+         */
+    }
+}
+
+
+function MyFormsCreateEditController($scope, $routeParams, $location, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+
+    $scope.formentry = {
+        type:"form",
+        user: "gtarcea@umich.edu",
+        title: "",
+        description:"",
+        entries:[]
+    }
+
     $scope.choices = [
         {type:"text", title:"", id:1},
-        {type:"number", title:"number", id:2},
-        {type:"date", title:"date", id:3},
-        {type: "url", title:"url", id:4}
+        {type:"number", title:"", id:2},
+        {type:"date", title:"", id:3},
+        {type: "url", title:"", id:4}
     ];
-
+    $scope.newitems = [];
     $scope.itemtitle = null;
 
-    $scope.newItemDropped = function(event, ui) {
-//        for (var i = 0; i < $scope.choices.length; i++) {
-//            console.log("choices[" + i + "] =");
-//            console.dir($scope.choices[i]);
-//        }
-//
-//        for (var i = 0; i < $scope.newitems.length; i++) {
-//            console.log("newitems[" + i + "] =");
-//            console.dir($scope.newitems[i]);
-//        }
+    if ($routeParams.id) {
+        editForm();
+    }
 
-        console.log($scope.itemtitle);
+
+    $scope.newItemDropped = function(event, ui) {
+//        console.log($scope.itemtitle);
         if ($scope.itemtitle != null) {
-            $scope.newitems[$scope.newitems.length-1].title = $scope.itemtitle;
+            $scope.formentry.entries[$scope.formentry.entries.length-1].title = $scope.itemtitle;
             $scope.itemtitle = null;
         }
 
         addItemBack();
+    }
+
+    function editForm() {
+        $scope.formentry = $scope.mcdb.getDoc($routeParams.id);
     }
 
     function addItemBack() {
@@ -51,16 +92,17 @@ function MyFormsController($scope, $routeParams, $location, cornercouch) {
         }
 
         if (! sawText) {
-            $scope.choices.splice(0,0, {type:"text", title:"text", id:1});
+            $scope.choices.splice(0,0, {type:"text", title:"", id:1});
         }
         else if (! sawNumber) {
-            $scope.choices.splice(1,0, {type:"number", title:"number", id:2});
+            $scope.choices.splice(1,0, {type:"number", title:"", id:2});
         }
         else if (! sawDate) {
-            $scope.choices.splice(1,0, {type:"date", title:"date", id:3});
+            $scope.choices.splice(2,0, {type:"date", title:"", id:3});
         }
         else if (! sawUrl) {
-            $scope.choices.splice(1,0, {type:"url", title:"url", id:4});
+            $scope.choices.splice(3,0, {type:"url", title:"", id:4});
         }
     }
 }
+

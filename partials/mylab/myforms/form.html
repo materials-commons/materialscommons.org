@@ -1,0 +1,43 @@
+<div ng-controller="MyFormsCreateEditController">
+    Add Form
+    <div class="row">
+
+        <div class="span4">
+            <form class="form-horizontal">
+                <input type="text" placeholder="Form Title" id="myforms-title">
+                <div id="myform-drop-point" data-drop="true" data-jqyoui-options="" ng-model="formentry.entries"
+                     jqyoui-droppable="{multiple:true, onDrop:'newItemDropped'}"
+                     style="border:black; box-shadow: 0 0 0 2px black; min-height:75px;margin-top: 20px">
+                    <div class="control-group" ng-repeat="item in formentry.entries" data-drag="false" ng-model="formentry.entries"
+                         ng-show="item.title">
+                        <label class="control-label" for="{{item.id}}">{{item.title}}</label>
+
+                        <div class="controls">
+                            <ng-switch on="item.type">
+                                <input ng-switch-when="text" type="text" id="{{item.id}}" placeholder="{{item.title}}">
+                                <input ng-switch-when="url" type="url" id="{{item.id}}" placeholder="{{item.title}}">
+                                <input ng-switch-when="number" type="number" id="{{item.id}}"
+                                       placeholder="{{item.title}}">
+                                <input ng-switch-when="date" type="date" id="{{item.id}}" placeholder="{{item.title}}">
+
+                                <p ng-switch-default>Unknown {{item.type}}</p>
+                            </ng-switch>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="span4 offset6">
+            <ul>
+                <li ng-repeat="choice in choices" ng-show="choice.type" data-drag="true"
+                    data-jqyoui-options="{revert:'invalid'}" ng-model="choices"
+                    jqyoui-draggable="{index:{{$index}}}">
+                    <input type="text" ng-model="choice.title" placeholder="title ({{choice.type}})" id="text-choice">
+                    <!--<input type="text" readonly>-->
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

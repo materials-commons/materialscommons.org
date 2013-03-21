@@ -4,11 +4,9 @@ function MyLabTabController($scope, $routeParams) {
         switch ($routeParams.tab) {
             case "myexperiments":
                 $scope.template = partialForMyExperimentsRoute();
-//                $scope.template = "partials/mylab/experiment-list.html";
                 $('#my-experiments-tab').addClass("active");
                 break;
             case "mydata":
-//                $scope.template = "partials/mylab/mydata/mydata.html";
                 $scope.template = partialForMyDataRoute();
                 $('#my-data-tab').addClass("active");
                 break;
@@ -17,7 +15,7 @@ function MyLabTabController($scope, $routeParams) {
                 $('#my-references-tab').addClass("active");
                 break;
             case "myforms":
-                $scope.template="partials/mylab/myforms/myforms.html";
+                $scope.template = partialForMyFormsRoute();
                 $('#my-forms-tab').addClass("active");
                 break;
             default:
@@ -48,6 +46,18 @@ function MyLabTabController($scope, $routeParams) {
         }
         else {
             return "partials/mylab/mydata/mydata.html";
+        }
+    }
+
+    function partialForMyFormsRoute() {
+        if ($routeParams.subpage == "edit-form") {
+            return "partials/mylab/myforms/form.html";
+        }
+        else if ($routeParams.subpage == "create-form") {
+            return "partials/mylab/myforms/form.html";
+        }
+        else if ($routeParams.subpage == "forms-list") {
+            return "partials/mylab/myforms/myforms.html";
         }
     }
 }

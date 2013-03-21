@@ -1,62 +1,28 @@
-<div ng-controller="MyFormsController">
-    MyForms
+<div ng-controller="MyFormsListController">
     <div class="row">
-        <div class="span4">
-            <form class="form-horizontal">
-                <div id="myform-drop-point" data-drop="true" data-jqyoui-options="" ng-model="newitems"
-                     jqyoui-droppable="{multiple:true, onDrop:'newItemDropped'}"
-                     style="border:black; box-shadow: 0 0 0 2px black; min-height:75px">
-                    <div class="control-group" ng-repeat="item in newitems" data-drag="false" ng-model="newitems"
-                         ng-show="item.title">
-                        <label class="control-label" for="{{item.id}}">{{item.title}}</label>
+        <div class="offset0">
+            <a href="#/mylab/myforms/add-form/" class="btn">Add Form</a>
 
-                        <div class="controls">
-                            <ng-switch on="item.type">
-                                <input ng-switch-when="text" type="text" id="{{item.id}}" placeholder="{{item.title}}">
-                                <input ng-switch-when="url" type="url" id="{{item.id}}" placeholder="{{item.title}}">
-                                <input ng-switch-when="number" type="number" id="{{item.id}}"
-                                       placeholder="{{item.title}}">
-                                <input ng-switch-when="date" type="date" id="{{item.id}}" placeholder="{{item.title}}">
+            <h3>MyForms</h3>
 
-                                <p ng-switch-default>Unknown {{item.type}}</p>
-                            </ng-switch>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="span4 offset6">
-            <ul>
-                <li ng-repeat="choice in choices" ng-show="choice.type" data-drag="true"
-                    data-jqyoui-options="{revert:'invalid'}" ng-model="choices"
-                    jqyoui-draggable="{index:{{$index}}}">
-                    <input type="text" ng-model="choice.title" placeholder="title ({{choice.type}})" id="text-choice">
-                    <!--<input type="text" readonly>-->
-                </li>
-            </ul>
+            <div class="well">
+                <table id="myforms-table" class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody id="myforms-entries">
+                    <tr ng-repeat="row in mcdb.rows" ng-click="editData(row.value._id);"
+                        style="cursor:pointer">
+                        <td class="mc-form-title">{{row.value.title}}</td>
+                        <td class="mc-prop-description">{{row.value.description}}</td>
+                        <td><button type="button" class="close" ng-click="removeData($index);">&times;</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
-<!--<div class="span3 offset0">-->
-<!--<form>-->
-<!--<div class="thumbnail" data-drop="true" data-jqyoui-options ng-model="list2"-->
-<!--jqyoui-droppable="{multiple:true, onDrop:'itemDropped'}" style="min-height: 50px;">-->
-<!--&lt;!&ndash;style='height:50px;'>&ndash;&gt;-->
-<!--<div class="btn btn-success" ng-repeat="item in list2" data-drag="false" data-jqyoui-options-->
-<!--ng-model="list2" jqyoui-draggable-->
-<!--ng-show="item.title">{{item.title}}-->
-<!--</div>-->
-<!--</div>-->
-<!--</form>-->
-<!--</div>-->
-<!--<div class="offset4">-->
-<!--<div class="btnx btn-primaryx span2" style="border:black;border-radius: 25px; box-shadow: 0 0 0 2px black;"-->
-<!--data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"-->
-<!--jqyoui-draggable="{animate:true, onDrag:'itemDragged'}" ng-hide="!list1.title">-->
-<!--<label>{{list1.title}}</label><input type="text" placeholder="{{list1.title}}">-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-
