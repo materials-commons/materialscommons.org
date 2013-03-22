@@ -76,7 +76,9 @@ factory('cornercouch', ['$http', function($http) {
         }
 
         CouchDoc.prototype.remove = function() {
-
+            console.log("remove:" + this._id);
+            console.log(encodeUri(dbUri, this._id));
+            console.log(this._rev);
             return $http({
                 method: "DELETE",
                 url:    encodeUri(dbUri, this._id),
@@ -158,6 +160,17 @@ factory('cornercouch', ['$http', function($http) {
         .success(function(data) {
             db.info = data;
         });
+    }
+
+    CouchDB.prototype.deleteDoc = function (id, rev) {
+            console.log("deleteDoc:" + id);
+            console.log(encodeUri(this.uri, id));
+            console.log(rev);
+            return $http({
+                method: "DELETE",
+                url:    encodeUri(this.uri, id),
+                params: { rev: rev }
+            });
     }
     
     CouchDB.prototype.getQueryDoc = function(idx) {

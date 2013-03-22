@@ -14,11 +14,12 @@
                     </tr>
                     </thead>
                     <tbody id="myforms-entries">
-                    <tr ng-repeat="row in mcdb.rows" ng-click="editData(row.value._id);"
+                    <tr ng-repeat="row in mcdb.rows" ng-click="editForm(row.value._id);"
                         style="cursor:pointer">
                         <td class="mc-form-title">{{row.value.title}}</td>
-                        <td class="mc-prop-description">{{row.value.description}}</td>
-                        <td><button type="button" class="close" ng-click="removeData($index);">&times;</button></td>
+                        <td class="mc-prop-description"><span>{{row.value.description}}</span>
+                            <button type="button" class="close" ng-click="removeForm($index);">&times;</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

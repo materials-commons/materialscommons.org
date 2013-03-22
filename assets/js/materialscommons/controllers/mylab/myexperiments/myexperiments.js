@@ -108,10 +108,12 @@ function ExperimentCreateEditController($scope, $routeParams, $location, cornerc
     };
 
     $scope.removeProperty = function(index) {
+        console.log("removeProperty");
         $scope.experiment.properties.splice(index, 1);
     };
 
     $scope.editProperty = function(index) {
+        console.log("editProperty");
         $scope.propertyIndex = index;
         switch ($scope.experiment.properties[index].type) {
             case "microstructure":
