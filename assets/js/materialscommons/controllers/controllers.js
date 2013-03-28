@@ -57,7 +57,17 @@ function ChartController($scope, $routeParams, cornercouch) {
     $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
 }
 
-function FrontPageController($scope, $routeParams) {
+function FrontPageController($scope, $routeParams, ngstomp) {
+    $scope.messages = [];
+    $scope.client = ngstomp('http://localhost:15674/stomp');
+    $scope.client.connect("guest", "guest", function(){
+        $scope.client.subscribe("/topic/test", function(message) {
+            $scope.messages.push(message.body);
+        });
+    }, function(){}, '/');
+//    ngstomp.subscribe("/topic/test", function(data) {
+//        $scope.messages.push(data);
+//    })
     // Nothing to do yet.
 }
 

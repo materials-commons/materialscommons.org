@@ -1,6 +1,7 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'jqyoui']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'jqyoui', 'AngularStomp']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+    Stomp.WebSocketClass = SockJS;
     $routeProvider.
         when('/home', {templateUrl: 'partials/front-page.html', controller: FrontPageController}).
         when('/data', {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
