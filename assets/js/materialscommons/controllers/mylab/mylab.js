@@ -53,7 +53,7 @@ function MyLabTabController($scope, $routeParams) {
         if ($routeParams.subpage == "edit-form") {
             return "partials/mylab/myforms/form.html";
         }
-        else if ($routeParams.subpage == "create-form") {
+        else if ($routeParams.subpage == "add-form") {
             return "partials/mylab/myforms/form.html";
         }
         else if ($routeParams.subpage == "forms-list") {

@@ -21,32 +21,14 @@ function MyFormsListController($scope, $routeParams, $location, cornercouch) {
         var id = $scope.mcdb.rows[index].value._id;
         var rev = $scope.mcdb.rows[index].value._rev;
         $scope.mcdb.rows.splice(index, 1);
-        $scope.mcdb.deleteDoc(id, rev).success( function() {
+        $scope.mcdb.deleteDoc(id, rev).success(function() {
             console.log("Successfully deleted document");
         }).error(function(data, status) {
                 /*
-                ** On failure need to add the document back in.
+                 ** On failure need to add the document back in.
                  */
                 console.log("Failed to delete status: " + status);
             });
-//        remove()
-//            .success(function() {
-//                 console.log("success");
-////                $scope.mcdb.rows.splice(index, 1);
-//            })
-//            .error(function(data, status) {
-//                console.log("error: Cannot delete form: " + status);
-//            });
-//        var id = $scope.mcdb.rows[index].id;
-//        var doc2 = $scope.mcdb.getDoc(id);
-//        console.dir(doc2);
-//        doc2.remove()
-//            .success(function() {
-//                $scope.mcdb.rows.splice(index, 1);
-//            })
-//            .error(function(data, status) {
-//                alert("Cannot delete form: " + status);
-//            });
     }
 }
 
@@ -56,19 +38,11 @@ function MyFormsCreateEditController($scope, $routeParams, $location, cornercouc
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
 
-    $scope.formentry = {
-        type: "form",
-        user: "gtarcea@umich.edu",
-        title: "",
-        description: "",
-        entries: []
-    }
-
     $scope.choices = [
-        {type: "text", title: "", id: 1},
-        {type: "number", title: "", id: 2},
-        {type: "date", title: "", id: 3},
-        {type: "url", title: "", id: 4}
+        {type: "text", title: "", description:"", id: 1},
+        {type: "number", title: "", description:"", id: 2},
+        {type: "date", title: "", description:"", id: 3},
+        {type: "url", title: "", description:"", id: 4}
     ];
     $scope.newitems = [];
     $scope.itemtitle = null;
@@ -76,22 +50,34 @@ function MyFormsCreateEditController($scope, $routeParams, $location, cornercouc
     if ($routeParams.id) {
         editForm();
     }
+    else {
+        $scope.formentry = $scope.mcdb.newDoc();
+        $scope.formentry.type = "form";
+        $scope.formentry.user = "gtarcea@umich.edu";
+        $scope.formentry.title = "";
+        $scope.formentry.description = "";
+        $scope.formentry.entries = [];
+    }
 
 
     $scope.newItemDropped = function(event, ui) {
-        console.log("itemtitle = " + $scope.itemtitle);
-        console.log("length = " + $scope.formentry.entries.length);
-        console.log("formentry = " + $scope.formentry.entries[$scope.formentry.entries.length-1].type);
-        if ($scope.itemtitle != null) {
-            $scope.formentry.entries[$scope.formentry.entries.length - 1].title = $scope.itemtitle;
-            $scope.itemtitle = null;
-        }
-
+        $scope.formentry.entries.push($scope.newitems[$scope.newitems.length - 1]);
         addItemBack();
     }
 
     function editForm() {
         $scope.formentry = $scope.mcdb.getDoc($routeParams.id);
+    }
+
+    $scope.removeItem = function(index) {
+        $scope.formentry.entries.splice(index,1);
+    }
+
+    $scope.saveForm = function() {
+        $scope.formentry.save().error(function(data, status) {
+            alert("Unable to save: " + status);
+        });
+        $location.path('/mylab/myforms/forms-list/');
     }
 
     function addItemBack() {
