@@ -33,7 +33,7 @@
                 <li ng-repeat="choice in choices" ng-show="choice.type" data-drag="true"
                     data-jqyoui-options="{revert:'invalid'}" ng-model="choices"
                     jqyoui-draggable="{index:{{$index}}}">
-                    <input type="text" ng-model="choice.title" placeholder="title ({{choice.type}})" id="text-choice">
+                    <input type="text" ng-model="itemtitle" placeholder="title ({{choice.type}})" id="text-choice">
                     <!--<input type="text" readonly>-->
                 </li>
             </ul>

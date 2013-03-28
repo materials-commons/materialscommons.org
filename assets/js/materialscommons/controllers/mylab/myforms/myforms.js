@@ -79,7 +79,9 @@ function MyFormsCreateEditController($scope, $routeParams, $location, cornercouc
 
 
     $scope.newItemDropped = function(event, ui) {
-//        console.log($scope.itemtitle);
+        console.log("itemtitle = " + $scope.itemtitle);
+        console.log("length = " + $scope.formentry.entries.length);
+        console.log("formentry = " + $scope.formentry.entries[$scope.formentry.entries.length-1].type);
         if ($scope.itemtitle != null) {
             $scope.formentry.entries[$scope.formentry.entries.length - 1].title = $scope.itemtitle;
             $scope.itemtitle = null;
