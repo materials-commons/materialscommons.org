@@ -101,16 +101,16 @@ function MyFormsCreateEditController($scope, $routeParams, $location, cornercouc
         }
 
         if (!sawText) {
-            $scope.choices.splice(0, 0, {type: "text", title: "", id: 1});
+            $scope.choices.splice(0, 0, {type: "text", title: "", description: "", id: 1});
         }
         else if (!sawNumber) {
-            $scope.choices.splice(1, 0, {type: "number", title: "", id: 2});
+            $scope.choices.splice(1, 0, {type: "number", title: "", description:"", id: 2});
         }
         else if (!sawDate) {
-            $scope.choices.splice(2, 0, {type: "date", title: "", id: 3});
+            $scope.choices.splice(2, 0, {type: "date", title: "", description: "", id: 3});
         }
         else if (!sawUrl) {
-            $scope.choices.splice(3, 0, {type: "url", title: "", id: 4});
+            $scope.choices.splice(3, 0, {type: "url", title: "", description: "", id: 4});
         }
     }
 }

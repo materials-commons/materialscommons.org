@@ -59,10 +59,15 @@ function ChartController($scope, $routeParams, cornercouch) {
 
 function FrontPageController($scope, $routeParams, ngstomp) {
     $scope.messages = [];
+    $scope.sent = 0;
     $scope.client = ngstomp('http://localhost:15674/stomp');
     $scope.client.connect("guest", "guest", function(){
         $scope.client.subscribe("/topic/test", function(message) {
             $scope.messages.push(message.body);
+            if ($scope.sent == 0) {
+                $scope.client.send("/topic/test", {}, "from AngularStomp");
+                $scope.sent = 1;
+            }
         });
     }, function(){}, '/');
 //    ngstomp.subscribe("/topic/test", function(data) {

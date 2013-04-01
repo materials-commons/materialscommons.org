@@ -28,7 +28,7 @@
                                 <p ng-switch-default>Unknown {{item.type}}</p>
                             </ng-switch>
                             <button type="button" class="close" ng-click="removeItem($index);">&times;</button>
-                            <textarea class="span3" rows=3 placeholder="Description"></textarea>
+                            <textarea class="span3" ng-model="item.description" rows=3 placeholder="Description"></textarea>
                         </div>
                     </div>
                 </div>
