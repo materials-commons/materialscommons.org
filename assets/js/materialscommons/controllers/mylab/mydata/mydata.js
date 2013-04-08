@@ -52,20 +52,26 @@ function MyDataCreateEditController($scope, $routeParams, $location, cornercouch
 }
 
 function MyDataAddController($scope, $routeParams, $location, cornercouch) {
-    $scope.list1 = {title: 'Drag me!'};
-    $scope.list2 = [];
-    $scope.i = 0;
 
-    $scope.itemDropped = function(event, ui) {
-//        console.log("itemDropped");
-//        console.dir($scope.list1);
-//        console.dir($scope.list2);
-        $scope.list1 = {title: 'New item'+$scope.i++};
-//        console.dir(event);
-//        console.dir(ui);
+    $scope.showEntries2 = function() {
+        console.log("runid = " + $scope.runid);
+    }
+}
+
+function APTController($scope, $routeParams, $location, cornercouch) {
+    $scope.save = function() {
+        console.log("runid = " + $scope.runid);
+        console.log("mode = " + $scope.mode);
+        console.log("primary_element = " + $scope.primary_element);
+        console.log("apt_date = " + $scope.apt_date);
+        console.log("preparation_method = " + $scope.preparation_method);
+        console.log("preparation_method = " + $scope.other_prep_method);
     }
 
-    $scope.itemDragged = function(event, ui) {
-        console.log("itemDragged");
-    }
+    $scope.runid = "";
+    $scope.mode = "";
+    $scope.primary_element = "";
+    $scope.apt_date = "";
+    $scope.preparation_method = "";
+    $scope.other_prep_method = "";
 }

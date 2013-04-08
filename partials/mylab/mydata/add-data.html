@@ -2,11 +2,12 @@
     <div class="row">
         <div class="offset0">
 
-            <form>
+            <form class="form-horizontal">
                 <label>What type of data are you adding? </label>
 
                 <select class="span3" ng-model="dtype"
-                        ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}">
+                        ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}"
+                        ng-multiple="false">
                     <option></option>
                     <option value="microstructure">Microstructure</option>
                     <option value="mechanical">Mechanical</option>
@@ -16,47 +17,66 @@
 
 
                 <label ng-show="dtype">How was the {{dtype}} data collected?</label>
-                <ng-switch on="dtype">
+
+                <div ng-show="dtype == 'microstructure'">
                     <select class="span3" ng-model="mtype"
-                            ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}"
-                            ng-switch-when="microstructure">
+                            ui-select2="{placeholder: 'Select equipment used', allowClear: true, width:'element'}"
+                            ng-multiple="false">
                         <option></option>
-                        <option value="a">A</option>
-                        <option value="b">B</option>
+                        <option value="APT">APT</option>
+                        <option value="TEM">TEM</option>
+                        <option value="XRD">XRD</option>
+                        <option value="SEM">SEM</option>
+                        <option value="OIM">OIM</option>
+                        <option value="Optical">Optical</option>
                     </select>
 
-                    <p ng-switch-when="mechanical">Mechanical chosen</p>
+                    <span ng-show="mtype == 'APT'" ng-controller="APTController">
+                        <p></p>
+                        <textarea ng-model="description" placeholder="Description" rows="3" class="span4"></textarea>
+                        <p></p>
+                        <input type="text" placeholder="Run ID" ng-model="runid">
 
-                    <p ng-switch-when="simulation">Simulation chosen</p>
+                        <label>What was the mode of collection?</label>
+                        <select class="span3" ng-model="mode"
+                                ui-select2="{placeholder: 'Select collection mode', allowClear: true, width:'element'}"
+                                ng-multiple="false">
+                            <option></option>
+                            <option value="Laser">Laser</option>
+                            <option value="Voltage">Voltage</option>
+                        </select>
 
-                    <p ng-switch-when="computational">Computational chosen</p>
+                        <p></p>
+                        <input type="text" placeholder="Primary Element" ng-model="primary_element">
 
-                    <p ng-switch-default>Nothing chosen</p>
-                </ng-switch>
-            </form>
-        </div>
-    </div>
+                        <p></p>
+                        <input type="date" placeholder="Date collected" ng-model="apt_date">
 
-    <div class="row">
-        <div class="span3 offset0">
-            <form>
-                <div class="thumbnail" data-drop="true" data-jqyoui-options ng-model="list2"
-                     jqyoui-droppable="{multiple:true, onDrop:'itemDropped'}" style="min-height: 50px;">
-                     <!--style='height:50px;'>-->
-                    <div class="btn btn-success" ng-repeat="item in list2" data-drag="false" data-jqyoui-options
-                         ng-model="list2" jqyoui-draggable
-                         ng-show="item.title">{{item.title}}
-                    </div>
+                        <p></p>
+                        <label>What was the preparation method?</label>
+                        <select class="span3" ng-model="preparation_method"
+                                ui-select2="{placeholder: 'Select prep method', allowClear: true, width:'element'}"
+                                ng-multiple="false">
+                            <option></option>
+                            <option value="FIB Liftout">FIB Liftout</option>
+                            <option value="Electropolish">Electropolish</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input ng-show="preparation_method == 'Other'" type="text"
+                               placeholder="Preparation Method" ng-model="other_prep_method">
+                        <p></p>
+                        <button ng-click="save()">Save</button>
+                    </span>
+
                 </div>
+
+                <p ng-show="dtype == 'mechanical'">Mechanical chosen</p>
+
+                <p ng-show="dtype == 'simulation'">Simulation chosen</p>
+
+                <p ng-show="dtype == 'computational'">Computational chosen</p>
+
             </form>
         </div>
-        <div class="offset4">
-            <div class="btnx btn-primaryx span2" style="border:black;border-radius: 25px; box-shadow: 0 0 0 2px black;"
-                 data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
-                 jqyoui-draggable="{animate:true, onDrag:'itemDragged'}" ng-hide="!list1.title">
-                <label>{{list1.title}}</label><input type="text" placeholder="{{list1.title}}">
-            </div>
-        </div>
     </div>
-
 </div>
