@@ -2,6 +2,7 @@
     {
         "type": "data",
         "user": "gtarcea@umich.edu",
+        "access":"private",
         "dtype": "microstructure",
         "mtype": "APT",
         "description": "Grain boundaries",
@@ -13,6 +14,7 @@
     {
         "type": "data",
         "user": "jag@umich.edu",
+        "access":"public",
         "dtype": "microstructure",
         "mtype": "Optical",
         "description": "Crack growth around precipitates",
@@ -24,6 +26,7 @@
     {
         "type": "data",
         "user": "jag@umich.edu",
+        "access":"public",
         "dtype": "microstructure",
         "mtype": "TEM",
         "description": "Microstructure of grains",
