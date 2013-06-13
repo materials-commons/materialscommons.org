@@ -1,4 +1,4 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'jqyoui', 'AngularStomp']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -12,6 +12,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/about', {templateUrl: 'partials/under-construction.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/under-construction.html', controller: HelpController}).
+        when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchController}).
         otherwise({redirectTo: '/home'});
 }
 ]);

@@ -1,0 +1,41 @@
+    <h3>Search Repository</h3>
+    <div ng-controller="SearchController">
+        <!-- <button  class="input-large search-query" ng-click="search();">Search All</button>   <br>     -->
+        Enter a keyword: <input type="text" ng-model="keyword" placeholder="key word">
+        <button  ng-click="search();">Search</button>
+
+
+
+
+<pagination num-pages="noOfPages" current-page="currentPage" on-select-page="pageChanged(page)"></pagination>
+
+           <!-- <p>Page {{watchPage}} was selected from $watch</p>
+            <p>Page {{callbackPage}} was selected by a callback</p> -->
+    <div class="row">
+        <div class="span10">
+            <h4>Search Results:</h4>
+            <table class = "table table-bordered table-condensed table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Description</th>
+                    <th>Metal</th>
+                    <th>Lab</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                </tr>
+                <tr ng-repeat="res in results.hits.hits">
+                    <td  width="250">{{res._source._id}}</td>
+                    <td  width="200">{{res._source.description}}</td>
+                    <td  width="100">{{res._source.metal}}</td>
+                    <td  width="100">{{res._source.lab}}</td>
+                    <td  width="100">{{res._source.name}}</td>
+                    <td  width="100">{{res._source.type}}</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+
+
+    </div>
