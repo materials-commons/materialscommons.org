@@ -13,7 +13,9 @@
     <link href="assets/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/select2/select2.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
-    <link href="/assets/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-combined.min.css" rel="stylesheet">
+
+
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -27,27 +29,24 @@
 <body>
 
 <!--<div style="background-color: #CDAF95"><img src="assets/img/MaterialsCommonsLogo_274x75.png"></div>-->
-<div style="background-color: #CDCDB4">
+<div ng-controller="FrontPageController">
+<div style="background-color: #87A96B" >   <!--sravya CDCDB4 -->
     <a href="index.html"><img style="" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>
-    <span style="font-size: 200%;font-style: italic">The source for <span class="mc-logo"> materials</span> data</span>
+    <span style="font-size: 200%;font-style: italic;">The source for <span class="mc-logo"> materials</span> data</span>
         <span>
-            <form class="form-search pull-right" style="padding-top: 20px; padding-right: 10px">
-                <div class="input-prepend">
-                    <div class="btn-group">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="margin-top:1px">
-                            <i class="icon-search"></i> Search
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-search"></i>Search All</a></li>
-                            <li><a href="#"><i class="icon-bar-chart"></i> Search Data</a></li>
-                            <li><a href="#"><i class="icon-cog"></i> Search Models</a></li>
-                        </ul>
+                <form class="form-search text-center pull-right" style="padding-top: 20px; padding-right: 10px">
+                    <div class="input-append" >
+
+                        <input type="search" class="span3 search-query" ng-model="keyword" name="q" autocomplete="off" placeholder="SEACH" tabindex="1">
+                        <button type="submit"  ng-click="search_key();" class="btn"><i class="icon-search"></i> Search
+                        </button>
                     </div>
-                    <input type="text" class="span3" placeholder="Search">
-                </div>
-            </form>
+
+                </form>
+
+
         </span>
+</div>
 </div>
 
 <div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse">
@@ -57,6 +56,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
+            </a>
             </a>
 
             <div class="nav-collapse collapse">
@@ -82,14 +82,16 @@
                 </ul>
 
             </div>
+
             <!--/.nav-collapse -->
         </div>
     </div>
 </div>
 
-<div class="container-fluid">
 
-    <div class="span12 offset0 content-area">
+
+<div class="container-fluid">
+    <div class="span12 offset2 content-area">
         <div class="content-body"> <!-- style="background-color: white;"> -->
             <div ng-view></div>
         </div>
@@ -141,6 +143,9 @@
 <script src="assets/js/angular/angular-resource.js"></script>
 <script src="assets/js/materialscommons/filters/filters.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
+<script src="assets/js/jquery.tablesorter.min.js"></script>
+<script src="assets/js/materialscommons/directives/directives.js"></script>
+<script src="assets/js/materialscommons/controllers/searchindex/searchindex.js"></script>
 
 <script>
 

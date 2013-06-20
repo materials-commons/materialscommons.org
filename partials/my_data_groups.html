@@ -1,0 +1,30 @@
+
+
+<h3>My Projects </h3>
+<div ng-app= "materialsdirective">
+    <tablesorter></tablesorter>
+
+</div>
+
+
+
+<div ng-controller="ExperimentListController">
+        <table >
+                <tr>
+                    <th><a href="" ng-click="predicate = 'id'; reverse=!reverse">id </a></th>
+                    <th> <a href="" ng-click="predicate = 'name'; reverse=!reverse">name</a></th>
+                    <th><a href="" ng-click="predicate = 'type'; reverse=!reverse">type</a></th>
+                </tr>
+
+                <tr  ng-repeat="row in list.data.rows | orderBy:predicate:reverse">
+                    <td>{{row.value._id}}</td>
+                    <td>{{row.value.name}}</td>
+                    <td>{{row.value.type}}</td>
+                </tr>
+
+        </table>
+    </div>
+
+
+
+

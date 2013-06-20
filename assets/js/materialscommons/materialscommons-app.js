@@ -1,4 +1,4 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp', 'ui.bootstrap']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -7,16 +7,18 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/data', {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
         when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
         when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
+        when('/searchindex/:subpage/:name', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
         when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
-        when('/about', {templateUrl: 'partials/under-construction.html', controller: AboutController}).
+        when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/under-construction.html', controller: HelpController}).
-        when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchController}).
+        when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
+        when('/my_data_groups', {templateUrl: 'partials/my_data_groups.html', controller: DataGroupController}).
+
         otherwise({redirectTo: '/home'});
 }
 ]);
-
 app.run(function($rootScope, $location, User) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
 //        console.dir(next);

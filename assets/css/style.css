@@ -1,5 +1,8 @@
+
+
 body {
     padding-top: 0px;
+    /*background-color:#99ccff;*/
     /*background-color:#626262;*/
     /*padding-bottom: 40px;*/
     /*background:#9CBAC9;*/
@@ -8,9 +11,14 @@ body {
 
         /*#8C9896;*/
         /*#768582; */
-     /*url(../img/fading_background_17.png) repeat-x;*/
-    background: url(../img/background/noisy-texture-grey.png) repeat;
-    color:#F5F5F5;
+     /*url(../img/fading_background_17.png) repeat-x; */
+    /*background: url(../img/fading_background_17.png) repeat; sravya*/
+    /*color:#F5F5F5; sravya*/
+
+}
+
+td {
+    padding-right: 40px;
 }
 
 .mc-logo {
@@ -28,7 +36,8 @@ body {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     /*background-color: #F5F5F5;*/
-    background-color: #CDCDB4;
+    /*background-color: #CDCDB4; sravya*/
+    background-color: #99ccff;
     -webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
     -moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
 }
@@ -42,12 +51,13 @@ body {
 }
 
 .content-area {
-    background-color:#CDCDB4;
+    background-color:white;    <!-- CDCDB4 -->
     border-radius: 25px;
     color:black;
     box-shadow: 0 0 0 2px black;
     margin-bottom: 10px;
 }
+
 
 .container-narrow {
     margin: 0 auto;

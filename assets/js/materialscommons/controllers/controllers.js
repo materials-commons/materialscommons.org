@@ -1,5 +1,6 @@
 'use strict';
 
+
 function LoginController($scope, $location, $timeout, cornercouch, User) {
 
     $scope.server = cornercouch();
@@ -57,9 +58,14 @@ function ChartController($scope, $routeParams, cornercouch) {
     $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
 }
 
-function FrontPageController($scope, $routeParams, ngstomp) {
+function FrontPageController($scope, $routeParams,$location, ngstomp) {
     $scope.messages = [];
     $scope.sent = 0;
+    $scope.search_key = function() {
+          //$location.path("/search?keyword=" + $scope.keyword);
+        $location.path("/searchindex/search_key/" + $scope.keyword);
+    }
+
 //    $scope.client = ngstomp('http://localhost:15674/stomp');
 //    $scope.client.connect("guest", "guest", function(){
 //        $scope.client.subscribe("/topic/test", function(message) {
@@ -98,31 +104,25 @@ function HelpController($scope, $routeParams) {
     $scope.pageDescription = "Help";
 }
 
-function SearchController($scope, $routeParams, Search){
-    //Method to Search repository using a keyword
-    $scope.search = function(){
-        $scope.noOfPages = 1;
-        $scope.currentPage = 1;
-        $scope.size = 5;
-        $scope.newPage = 1;
 
-        $scope.all_results = Search.get_all_phones($scope.keyword, function(all_results){
-        $scope.total_hits = $scope.all_results.hits.total ;
-        $scope.noOfPages = Math.round($scope.total_hits/$scope.size) ;
-        $scope.$watch('currentPage', function(newPage){
-            $scope.watchPage = newPage;
 
-            //or any other code here
-            $scope.from = $scope.size * (newPage - 1)
-            $scope.results = Search.get_set_of_results_for_pagination($scope.keyword, $scope.from, $scope.size, function(results){
-            });
-        });
-        scope.pageChanged = function(page) {
-            scope.callbackPage = page;
-            $scope.watchPage = newPage;
-            };
-        });
+//Test Javascript to access keys
+function AccessController($scope, $routeParams, cornercouch ){
 
+    $scope.search_doc = function(){
+        $scope.server = cornercouch();
+        $scope.server.session();
+        $scope.mcdb = $scope.server.getDB("angularphonecat");
+        $scope.doc = $scope.mcdb.getDoc("86e8234752cca516c8b8ecdd68004122");
+        //console.log($scope.doc);
     }
+}
+
+
+function DataGroupController($scope, $routeParams, cornercouch){
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.list = $scope.mcdb.query("materialscommons-app", "all_experiments");
 
 }

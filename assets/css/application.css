@@ -1,0 +1,169 @@
+/**
+ * application.css:
+ *   Styles that should be included everywhere, but probably never will.
+ *   Be the change you wish to see in the world.
+ */
+
+
+th {
+    /* This is a hack to override the crazy cascading interaction between the 'depot' and 'scaffold'
+     * stylesheets. */
+    font-family: "Verdana", "Arial", "Helvetica", sans-serif;
+}
+
+em.pass,
+em.fail,
+em.other {
+    font-style: inherit;
+}
+
+em.pass {
+    color: green;
+}
+
+em.fail {
+    color: #c00;
+}
+
+em.other {
+    color: #c90;
+}
+
+
+.fieldWithErrors {
+    display: inline-block;
+}
+
+.help {
+    font-style: italic;
+}
+
+abbr, acronym {
+    border-bottom: .1em dotted;
+    cursor: help;
+}
+
+.match {
+    color: blue;
+}
+
+table.wide {
+    /* This should be a better measurement (e.g., 70em). It is in pixels for consistency. */
+    min-width: 900px;
+}
+
+/**
+ * a.action:
+ *   A link embedded in a heading element that isn't part of the heading and links to another
+ *   action (i.e., an "Edit" link)
+ */
+a.action {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+
+/**
+ * table.listing:
+ *   A table of records arranged in rows. Has zebra-striped columns. Replaces the hundreds of
+ *   spurious '<div id="project-table">' scattered throughout througout the project.
+ */
+
+table.listing td,
+table.listing th {
+    text-align: center;
+    padding: .2em;
+    margin: .2em;
+}
+
+table.listing td.left,
+table.listing th.left {
+    text-align: left;
+}
+
+table.listing th {
+    font-weight: bold;
+}
+
+table.listing tr.highlight td {
+    background: #ffffaa;
+}
+
+table.listing .list-line-even {
+    background: #ccffff;
+}
+
+table.listing .list-line-odd {
+    background: #66ffcc;
+}
+
+table.listing .list-warn-line-even {
+    background: orange;
+}
+
+table.listing .list-warn-line-odd {
+    background: orange;
+}
+
+
+/**
+ * table.info:
+ *   A table that probably shouldn't be a table. Lists information for a single record, with field
+ *   names and their values in separate cells in a single row, i.e.:
+ *
+ *     <tr><td>Foo:</td><td>value-of-foo</td></tr>
+ */
+
+table.info td,
+table.info th {
+    text-align: left;
+    vertical-align: baseline;
+    padding: .2em;
+    margin: .2em;
+}
+
+table.info th {
+    font-weight: bold;
+}
+
+/* Add exra space when the table is arranged with multiple logical "columns" of name-value pairs */
+table.info td + th {
+    padding-left: 1em;
+}
+
+/* Add spacing between row groups */
+table.info tbody tr:first-child td {
+    padding-top: 1em;
+}
+/* ...but not on the first one (which is automatically inserted when no <tbody>s are present) */
+table.info tbody:first-child tr:first-child td {
+    padding-top: inherit;
+}
+
+table.info textarea {
+    vertical-align: text-top;
+}
+
+
+/**
+ * table.box:
+ *   An info table that is set off by a border.
+ */
+
+table.box {
+    border: 1px solid #777;
+}
+
+
+@media print {
+    a,
+    a:link,
+    a:visited {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    a.action {
+        display: none;
+    }
+}

@@ -160,11 +160,11 @@ textarea {
 
 body {
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Arial,Helvetica,sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
-  background-color: #ffffff;
+  background-color: #87A96B;
 }
 
 a {
@@ -568,7 +568,7 @@ a:hover {
 }
 
 .container-fluid {
-  padding-right: 20px;
+  padding-right: 1000px;
   padding-left: 20px;
   *zoom: 1;
 }

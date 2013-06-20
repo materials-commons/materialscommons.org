@@ -26,6 +26,7 @@ function ExperimentListController($scope, $location, $routeParams, cornercouch) 
     $scope.editExperiment = function(id) {
         $location.path("/mylab/myexperiments/edit-experiment/" + id);
     }
+    $scope.predicate = 'name';
 }
 
 function ExperimentCreateEditController($scope, $routeParams, $location, cornercouch) {
