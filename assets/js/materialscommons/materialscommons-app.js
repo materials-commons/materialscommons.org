@@ -8,7 +8,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
         when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
         when('/searchindex/:subpage/:name', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
-        when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
+        when('/login', {temaplateUrl: 'partials/login.html', controller: LoginController}).
         when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
