@@ -1,0 +1,52 @@
+<div ng-controller="DataGroupController">
+    <br></br>
+    <h4>Pick the date range to view the data/datagroups</h4>
+    <br> </br>
+    <table>
+        <tr>
+
+            <b>From  </b> <input type="text" class="datepicker" datepicker="" ng-model="myDate">
+            <b>To   </b> <input type="text" class="datepicker" datepicker="" ng-model="endDate">
+
+            <b>Select Type</b>
+                <select ng-model="type" class="selectpicker" id="type">
+                    <option></option>
+                    <option value="datagroup">DataGroup</option>
+                    <option value="data">Data</option>
+                </select>
+
+                <button class="btn btn-small btn-primary" type="button" ng-click="search_by_date()" >Search</button>
+        </tr>
+    </table>
+     <br>
+    <div ng-show="search_results.data.rows.length > 0">
+        <h4> Search results by {{type}}</h4>  <br></br>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Created At</th>
+                <th>Parent</th>
+                <th>Created By</th>
+
+            </tr>
+
+            <tr ng-repeat="row in search_results.data.rows | matchDates: [myDate, endDate, type]">
+                <td>{{row.value.name}}</td>
+                <td>{{row.value.type}}</td>
+                <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
+                <td>{{row.value.datagroups}}</td>
+                <td>{{row.value.users}}</td>
+
+            </tr>
+        </table>
+
+    </div>
+
+
+
+</div>
+
+
+
+

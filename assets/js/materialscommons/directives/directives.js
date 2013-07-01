@@ -17,4 +17,24 @@ materialsdirective.directive("jqueryTable", function() {
         }
 
     };
-})
+}) ;
+
+
+materialsdirective.directive('datepicker', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            element.datepicker();
+            element.bind('changeDate', function(){
+                scope.$apply(function(){
+                    scope[attrs.ngModel] = element.val()
+                });
+            })
+
+
+        }
+    };
+});
+
+
+

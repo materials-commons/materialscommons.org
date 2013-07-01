@@ -14,7 +14,7 @@ function ExperimentListController($scope, $location, $routeParams, cornercouch) 
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.mcdb.query("materialscommons-app", "all_experiments");
+    $scope.mcdb.query("materialscommons-app", "all_data");
 
     $scope.keypressCallback = function(event) {
         if (length == 0) {

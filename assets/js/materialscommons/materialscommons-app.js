@@ -1,34 +1,35 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp', 'ui.bootstrap']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp', 'ui.bootstrap']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     Stomp.WebSocketClass = SockJS;
     $routeProvider.
-        when('/home', {templateUrl: 'partials/front-page.html', controller: FrontPageController}).
+        when('/home', {templateUrl: 'partials/under-construction.html', controller: FrontPageController}).
         when('/data', {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
         when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
         when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
         when('/searchindex/:subpage/:name', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
-        when('/login', {temaplateUrl: 'partials/login.html', controller: LoginController}).
+        when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
         when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/under-construction.html', controller: HelpController}).
         when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
-        when('/my_data_groups', {templateUrl: 'partials/my_data_groups.html', controller: DataGroupController}).
-
+        when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: DataGroupController}).
+        when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
+        when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
         otherwise({redirectTo: '/home'});
 }
 ]);
 app.run(function($rootScope, $location, User) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-//        console.dir(next);
-//        console.log(next.templateUrl);
-//        console.log(next.controller);
+        //console.dir(next);
+        //console.log(next.templateUrl);
+        //console.log(next.controller);
         if (matchesPartial(next, "partials/front-page", "ignore")) {
             setActiveMainNav("#home-nav");
         }
-        else if (matchesPartial(next, "partials/mylab", "ignore")) {
-            setActiveMainNav("#mylab-nav");
+        else if (matchesPartial(next, "partials/user_functions", "ignore")) {
+            setActiveMainNav("#user-nav");
         }
         else if (matchesPartial(next, "partials/explore", "ExploreController")) {
             setActiveMainNav("#explore-nav");
@@ -50,10 +51,11 @@ app.run(function($rootScope, $location, User) {
 //        }
 
         if (true) {
-            return;
+        //    return;
         }
+
         if (!User.isAuthenticated()) {
-            if (next.templateUrl && next.templateUrl.indexOf("partials/mylab") != -1) {
+            if (next.templateUrl && next.templateUrl.indexOf("partials/user_functions") != -1) {
                 $location.path("/login");
             }
         }

@@ -1,0 +1,47 @@
+
+
+<div ng-controller="DataGroupController">
+    <table class="table">
+        <tr>
+            <th><a href="" ng-click="predicate = 'id'; reverse=!reverse">Name </a></th>
+            <th> <a href="" ng-click="predicate = 'type'; reverse=!reverse">Type</a></th>
+            <th><a href="" ng-click="predicate = 'users'; reverse=!reverse">User</a></th>
+            <th><a href="" ng-click="predicate = 'parentDataGroups'; reverse=!reverse">Parent</a></th>
+            <th><a href="" ng-click="predicate = 'type'; reverse=!reverse">Data</a></th>
+        </tr>
+        <tr  ng-repeat="row in list.data.rows |  orderBy:predicate:reverse">
+            <td>{{row.value.name}}</td>
+            <td>{{row.value.type}}</td>
+            <td>{{row.value.users}}</td>
+            <td>{{row.value.parentDataGroups}}</td>
+            <td>
+                <div ng-show="row.value.data.length > 0">
+                    <accordion>
+                    <accordion-group heading="Data" >
+
+                            <li ng-repeat="id in row.value.data">
+                                <div ng-init="data_item=getData(id)">
+                                       <u>Name</u> :{{data_item.name}}
+                                       <u>Type</u> : {{data_item.type}}
+                                       <u>Owner</u> : {{data_item.owner}}
+                                </div>
+                            </li>
+
+                    </accordion-group>
+                    </accordion>
+                </div>
+
+            </td>
+
+        </tr>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+

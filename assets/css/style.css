@@ -11,11 +11,9 @@ body {
 
         /*#8C9896;*/
         /*#768582; */
-     /*url(../img/fading_background_17.png) repeat-x; */
-    /*background: url(../img/fading_background_17.png) repeat; sravya*/
-    /*color:#F5F5F5; sravya*/
-
-}
+    /*url(../img/fading_background_17.png) repeat-x;*/
+    background: url(../img/background/noisy-texture-grey.png) repeat;
+    /}
 
 td {
     padding-right: 40px;
@@ -36,7 +34,7 @@ td {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     /*background-color: #F5F5F5;*/
-    /*background-color: #CDCDB4; sravya*/
+    background-color: #CDCDB4;
     background-color: #99ccff;
     -webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
     -moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
@@ -51,7 +49,7 @@ td {
 }
 
 .content-area {
-    background-color:white;    <!-- CDCDB4 -->
+    background-color:#CDCDB4;    <!-- CDCDB4 -->
     border-radius: 25px;
     color:black;
     box-shadow: 0 0 0 2px black;

@@ -17,11 +17,13 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
                     console.log("Comparing passwords");
                     var db_password = $scope.mcdb.rows[0].value.password;
                     if (db_password == $scope.password) {
-                        User.setAuthenticated(true);
+                        $scope.user_name = $scope.mcdb.rows[0].value.user_name;
+                        User.setAuthenticated(true, $scope.user_name);
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
                         $timeout(function() {
-                            $location.path("/mylab/myexperiments/experiment-list/");
+                            $location.path("#/partials/user_functions/");
+                            //$location.path("/mylab/myexperiments/experiment-list/");
                         }, 2000);
                     } else {
                         $scope.failedLogin = true;
@@ -42,6 +44,13 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
     $scope.closeAlert = function() {
         $scope.alerts.splice(0, 1);
     }
+
+    $scope.get_user_name = function(){
+        $scope.user  = User.get_username;
+        console.log($scope.user);
+
+    }
+
 }
 
 function MessagesController($scope, $routeParams, cornercouch) {
@@ -78,6 +87,7 @@ function FrontPageController($scope, $routeParams,$location, ngstomp) {
 //    }, function(){}, '/');
 
 }
+
 
 function DataSearchController($scope, $routeParams) {
     // Nothing to do yet
@@ -119,10 +129,3 @@ function AccessController($scope, $routeParams, cornercouch ){
 }
 
 
-function DataGroupController($scope, $routeParams, cornercouch){
-    $scope.server = cornercouch();
-    $scope.server.session();
-    $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.list = $scope.mcdb.query("materialscommons-app", "all_experiments");
-
-}
