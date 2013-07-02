@@ -14,10 +14,9 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
     //$rootScope.me = User.get_username();
     //$rootScope.user_name = 'Login'
 
-    $scope.login = function() {
-
+    $scope.login = function () {
         $scope.mcdb.query("materialscommons-app", "mcusers_by_email", {key: $scope.email})
-            .success(function() {
+            .success(function () {
                 if ($scope.mcdb.rows.length > 0) {
                     console.log("Comparing passwords");
                     var db_password = $scope.mcdb.rows[0].value.password;
@@ -30,7 +29,6 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
                         //$scope.me = User.get_username();
                         $timeout(function() {
                             $location.path("#/partials/user_functions/");
-                            //$location.path("/mylab/myexperiments/experiment-list/");
                         }, 2000);
                     } else {
                         $scope.failedLogin = true;
@@ -39,16 +37,16 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
                     $scope.failedLogin = true;
                 }
             })
-            .error(function() {
+            .error(function () {
                 console.log("Query Failed!!!");
             });
     }
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $location.path("/home");
     }
 
-    $scope.closeAlert = function() {
+    $scope.closeAlert = function () {
         $scope.alerts.splice(0, 1);
     }
 
@@ -87,13 +85,31 @@ function ChartController($scope, $routeParams, cornercouch) {
     $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
 }
 
-function FrontPageController($scope, $routeParams,$location, ngstomp) {
+function FrontPageController($scope, $routeParams, $location, ngstomp) {
     $scope.messages = [];
     $scope.sent = 0;
-    $scope.search_key = function() {
-          //$location.path("/search?keyword=" + $scope.keyword);
+    $scope.search_key = function () {
+        //$location.path("/search?keyword=" + $scope.keyword);
         $location.path("/searchindex/search_key/" + $scope.keyword);
     }
+
+//    users.create('testuser', 'testing', {roles: ['example']}, function (err) {
+//        if (err) {
+//            console.log("Error adding user");
+//            console.dir(err);
+//        }
+//    });
+
+
+//    users.list(function (err, list) {
+//        if (err) {
+//            console.log("Error retrieving users");
+//        }
+//        else {
+//            console.log("Users: ");
+//            console.dir(list);
+//        }
+//    });
 
 //    $scope.client = ngstomp('http://localhost:15674/stomp');
 //    $scope.client.connect("guest", "guest", function(){
@@ -149,3 +165,10 @@ function AccessController($scope, $routeParams, cornercouch ){
 }
 
 
+function DataGroupController($scope, $routeParams, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.list = $scope.mcdb.query("materialscommons-app", "all_experiments");
+
+}

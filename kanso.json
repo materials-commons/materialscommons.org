@@ -8,6 +8,7 @@
     "dependencies":{
         "attachments":null,
         "modules": null,
-        "properties": null
+        "properties": null,
+        "users": null
     }
 }
