@@ -13,7 +13,7 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout){
     $scope.search_by_date = function(){
         $scope.utc_start_date =  Date.parse($scope.myDate)/1000;
         $scope.utc_end_date =  Date.parse($scope.endDate)/1000;
-        $scope.search_results = $scope.mcdb.query("materialscommons-app", "items_with_type_and_date");
+        $scope.search_results = $scope.mcdb.query("materialscommons-app", "items_by_type_and_date");
     }
 
     $scope.get_utc_obj = function(utc_in_sec){

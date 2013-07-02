@@ -8,7 +8,7 @@ materialsCommonsServices.
     factory('User', function() {
         var self = this;
         self.authenticated = false;
-        self.user = '';
+        self.user = 'Login';
         return {
             isAuthenticated: function() {
                 return self.authenticated;

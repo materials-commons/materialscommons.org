@@ -7,23 +7,26 @@
             <table class = "table">
                 <tr>
                     <th>Id</i></a></th>
-                    <th>Description</th>
+                    <th>Location</th>
                     <th>Metal</th>
                     <th>Lab</th>
                     <th>Name</th>
+                    <th>Owner</th>
                     <th>Type</th>
+                    <th>Access</th>
                 </tr>
 
 
 
-
-                <tr ng-repeat="res in results.hits.hits">
+                <tr ng-repeat="res in results.hits.hits" >
                     <td  width="250">{{res._source._id}}</td>
                     <td  width="200">{{res._source.description}}</td>
                     <td  width="100">{{res._source.metal}}</td>
                     <td  width="100">{{res._source.lab}}</td>
                     <td  width="100">{{res._source.name}}</td>
+                    <td  width="100">{{res._source.owner}}</td>
                     <td  width="100">{{res._source.type}}</td>
+                    <td  width="100">{{res._source.access}}</td>
                 </tr>
             </table>
         </div>

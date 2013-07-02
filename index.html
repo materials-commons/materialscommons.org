@@ -31,7 +31,7 @@
 <div ng-controller="FrontPageController">
 <div style="background-color: #CDCDB4" >   <!--sravya CDCDB4 -->
     <a href="index.html"><img style="" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>
-    <span style="font-size: 200%;font-style: italic;">The source for <span class="mc-logo"> materials</span> data</span>
+    <span style="font-size: 200%;font-style: italic;">The source for <span class="mc-logo"> materials</span> data </span>
         <span>
                 <form class="form-search text-center pull-right" style="padding-top: 20px; padding-right: 10px">
                     <div class="input-append" >
@@ -42,13 +42,11 @@
                     </div>
 
                 </form>
-
-
         </span>
 </div>
 </div>
 
-    <div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse" ng-init=>
+    <div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse" >
         <div class="navbar-inner">
             <div class="container-fluid">
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -58,12 +56,21 @@
                 </a>
                 </a>
 
-                <div class="nav-collapse collapse">
+                    <div class="nav-collapse collapse" ng-controller="LoginController">
+                        <div ng-hide="user_name">
                         <p class="navbar-text pull-right">
-                        <a href="#/create-account" class="navbar-link" style="margin-right:15px"><i class="icon-plus-sign"></i> Create Account</a>
-                        <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
+                            <a href="#/create-account" class="navbar-link" style="margin-right:15px"><i class="icon-plus-sign"></i> Create Account</a>
+                            <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
                         </p>
-                </div>
+                        </div>
+                        <div ng-controller="LogOutController" ng-show="user_name">
+                            <p class="navbar-text pull-right">
+                                <a href="#/logout" class="navbar-link"><i class="icon-user"></i> logout {{user_name}}</a>
+                            </p>
+                        </div>
+                    </div>
+
+
 
                     <ul id="mc-main-navs" class="nav nav-pills">
                         <li  id="home-nav" class="active">
@@ -90,11 +97,12 @@
     </div>
 
 
-
 <div class="container-fluid">
     <div class="span12 offset2 content-area">
         <div class="content-body"> <!-- style="background-color: white;"> -->
             <div ng-view>
+
+
 
 
 

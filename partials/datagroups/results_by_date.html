@@ -19,6 +19,7 @@
         </tr>
     </table>
      <br>
+
     <div ng-show="search_results.data.rows.length > 0">
         <h4> Search results by {{type}}</h4>  <br></br>
         <table class="table">
@@ -30,8 +31,7 @@
                 <th>Created By</th>
 
             </tr>
-
-            <tr ng-repeat="row in search_results.data.rows | matchDates: [myDate, endDate, type]">
+            <tr ng-repeat="row in search_results.data.rows | matchDates: [myDate, endDate, type] | private">
                 <td>{{row.value.name}}</td>
                 <td>{{row.value.type}}</td>
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>

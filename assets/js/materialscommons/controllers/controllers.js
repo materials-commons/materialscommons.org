@@ -1,26 +1,33 @@
 'use strict';
 
 
-function LoginController($scope, $location, $timeout, cornercouch, User) {
 
+function LoginController($scope, $location, $timeout, cornercouch, User, $rootScope) {
+
+    console.log("LoginController");
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
+    //$rootScope.me = User.get_username();
+    //$rootScope.user_name = 'Login'
 
     $scope.login = function() {
+
         $scope.mcdb.query("materialscommons-app", "mcusers_by_email", {key: $scope.email})
             .success(function() {
                 if ($scope.mcdb.rows.length > 0) {
                     console.log("Comparing passwords");
                     var db_password = $scope.mcdb.rows[0].value.password;
                     if (db_password == $scope.password) {
-                        $scope.user_name = $scope.mcdb.rows[0].value.user_name;
+                        console.log("Inside of check");
+                        $rootScope.user_name = $scope.mcdb.rows[0].value.user_name;
                         User.setAuthenticated(true, $scope.user_name);
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
+                        //$scope.me = User.get_username();
                         $timeout(function() {
                             $location.path("#/partials/user_functions/");
                             //$location.path("/mylab/myexperiments/experiment-list/");
@@ -48,6 +55,19 @@ function LoginController($scope, $location, $timeout, cornercouch, User) {
     $scope.get_user_name = function(){
         $scope.user  = User.get_username;
         console.log($scope.user);
+
+    }
+
+}
+
+function LogOutController($scope, $rootScope, User){
+    $rootScope.user_name = '';
+    User.setAuthenticated(false, '');
+}
+
+function AccountController($scope, $rootScope, $routeParams){
+    $scope.create_account = function(){
+        console.log($scope.user_name) ;
 
     }
 
@@ -101,7 +121,7 @@ function ExploreController($scope, $routeParams) {
     $scope.pageDescription = "Explore";
 }
 
-function AboutController($scope, $routeParams) {
+function AboutController($scope, $routeParams, $rootScope) {
     $scope.pageDescription = "About";
 }
 

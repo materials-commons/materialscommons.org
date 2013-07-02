@@ -9,6 +9,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
         when('/searchindex/:subpage/:name', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
+        when('/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
         when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
@@ -17,6 +18,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: DataGroupController}).
         when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
         when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
+        when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
         otherwise({redirectTo: '/home'});
 }
 ]);
@@ -28,7 +30,7 @@ app.run(function($rootScope, $location, User) {
         if (matchesPartial(next, "partials/front-page", "ignore")) {
             setActiveMainNav("#home-nav");
         }
-        else if (matchesPartial(next, "partials/user_functions", "ignore")) {
+        else if (matchesPartial(next, "partials/user_functions", "UserFunctionsController")) {
             setActiveMainNav("#user-nav");
         }
         else if (matchesPartial(next, "partials/explore", "ExploreController")) {
