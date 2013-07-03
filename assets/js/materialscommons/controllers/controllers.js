@@ -1,7 +1,6 @@
 'use strict';
 
 
-
 function LoginController($scope, $location, $timeout, cornercouch, User, $rootScope) {
 
     console.log("LoginController");
@@ -27,7 +26,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
                         //$scope.me = User.get_username();
-                        $timeout(function() {
+                        $timeout(function () {
                             $location.path("#/partials/user_functions/");
                         }, 2000);
                     } else {
@@ -50,22 +49,22 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
         $scope.alerts.splice(0, 1);
     }
 
-    $scope.get_user_name = function(){
-        $scope.user  = User.get_username;
+    $scope.get_user_name = function () {
+        $scope.user = User.get_username;
         console.log($scope.user);
 
     }
 
 }
 
-function LogOutController($scope, $rootScope, User){
+function LogOutController($scope, $rootScope, User) {
     $rootScope.user_name = '';
     User.setAuthenticated(false, '');
 }
 
-function AccountController($scope, $rootScope, $routeParams){
-    $scope.create_account = function(){
-        console.log($scope.user_name) ;
+function AccountController($scope, $rootScope, $routeParams) {
+    $scope.create_account = function () {
+        console.log($scope.user_name);
 
     }
 
@@ -89,7 +88,6 @@ function FrontPageController($scope, $routeParams, $location, ngstomp) {
     $scope.messages = [];
     $scope.sent = 0;
     $scope.search_key = function () {
-        //$location.path("/search?keyword=" + $scope.keyword);
         $location.path("/searchindex/search_key/" + $scope.keyword);
     }
 
@@ -124,6 +122,14 @@ function FrontPageController($scope, $routeParams, $location, ngstomp) {
 
 }
 
+function HomeController($scope, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+
+    $scope.mcdb.query("materialscommons-app", "news_by_date", {descending:true});
+}
+
 
 function DataSearchController($scope, $routeParams) {
     // Nothing to do yet
@@ -151,11 +157,10 @@ function HelpController($scope, $routeParams) {
 }
 
 
-
 //Test Javascript to access keys
-function AccessController($scope, $routeParams, cornercouch ){
+function AccessController($scope, $routeParams, cornercouch) {
 
-    $scope.search_doc = function(){
+    $scope.search_doc = function () {
         $scope.server = cornercouch();
         $scope.server.session();
         $scope.mcdb = $scope.server.getDB("angularphonecat");

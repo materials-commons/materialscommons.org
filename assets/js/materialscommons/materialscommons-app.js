@@ -3,7 +3,7 @@ var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'ma
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     Stomp.WebSocketClass = SockJS;
     $routeProvider.
-        when('/home', {templateUrl: 'partials/under-construction.html', controller: FrontPageController}).
+        when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
         when('/data', {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
         when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
         when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
