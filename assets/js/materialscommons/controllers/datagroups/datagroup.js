@@ -1,5 +1,6 @@
 
-function DataGroupController($scope, $routeParams, cornercouch, $timeout){
+function DataGroupController($scope, $routeParams, cornercouch, $timeout, User){
+
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
@@ -35,8 +36,23 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout){
         return d;
     }
 
+    $scope.data_by_user = function(){
+        $scope.user = User.get_username();
+        $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner");
+
+    }
+
+    $scope.data_by_lab = function(){
+
+    }
     $scope.myDate= "12-12-2012";
     $scope.endDate= "13-13-2012";
+
+
+
+
+
+
 
 }
 

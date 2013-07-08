@@ -27,7 +27,8 @@ materialsCommonsServices.
     });
 
 
-materialsCommonsServices.factory('Search', function($resource) {
+materialsCommonsServices.
+    factory('Search', function($resource) {
     var data;
     var resource_obj=  $resource('http://localhost\\:9200/mcindex/materialscommons/_search',{});
 
@@ -44,7 +45,8 @@ materialsCommonsServices.factory('Search', function($resource) {
     };
 });
 
-materialsCommonsServices.factory('uploadService', ['$rootScope', function ($rootScope) {
+materialsCommonsServices.
+    factory('uploadService', ['$rootScope', function ($rootScope) {
 
     return {
         send: function (file) {
