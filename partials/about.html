@@ -1,3 +1,4 @@
+
 <div class="row-fluid">
     <div class="span8 offset1">
         <h1>About</h1>
@@ -30,6 +31,11 @@
 <div class="row-fluid">
     <div class="span8 offset1">
         <h3>Mission & Vision</h3>
-
-
+</div>
     </div>
+
+<div ng-controller="AboutController">
+    Upload File: <input type="file" multiple ng-model="files" file-change>
+    <br><br>
+    Selected: {{ files.length }}
+</div>

@@ -1,4 +1,4 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp', 'ui.bootstrap']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp', 'ui.bootstrap', 'smartTable.table','smartTable.column','flash']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -17,6 +17,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: DataGroupController}).
         when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
+        when('/search_by_name', {templateUrl: 'partials/datagroups/search_by_name.html', controller: DataGroupController}).
+
         when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
         when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
         otherwise({redirectTo: '/home'});

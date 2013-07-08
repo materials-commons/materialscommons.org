@@ -1,10 +1,7 @@
 'use strict';
 
 
-
 function LoginController($scope, $location, $timeout, cornercouch, User, $rootScope) {
-
-    console.log("LoginController");
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
@@ -22,14 +19,16 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
                     var db_password = $scope.mcdb.rows[0].value.password;
                     if (db_password == $scope.password) {
                         console.log("Inside of check");
-                        $rootScope.user_name = $scope.mcdb.rows[0].value.user_name;
-                        User.setAuthenticated(true, $scope.user_name);
+                        $rootScope.email_address = $scope.mcdb.rows[0].value.email;
+                        User.setAuthenticated(true, $scope.email);
+                        //flash("Logged in");
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
                         //$scope.me = User.get_username();
-                        $timeout(function() {
-                            $location.path("#/partials/user_functions/");
-                        }, 2000);
+                        $location.path('/user_functions');
+                        //$timeout(function() {
+                        //  $location.path("#/partials/user_functions/");
+                        //}, 2000);
                     } else {
                         $scope.failedLogin = true;
                     }
@@ -50,22 +49,50 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
         $scope.alerts.splice(0, 1);
     }
 
-    $scope.get_user_name = function(){
-        $scope.user  = User.get_username;
+    $scope.get_user_name = function () {
+        $scope.user = User.get_username;
         console.log($scope.user);
 
     }
 
 }
 
-function LogOutController($scope, $rootScope, User){
-    $rootScope.user_name = '';
+function LogOutController($scope, $rootScope, User) {
+    $rootScope.email_address = '';
     User.setAuthenticated(false, '');
 }
 
-function AccountController($scope, $rootScope, $routeParams){
-    $scope.create_account = function(){
-        console.log($scope.user_name) ;
+function AccountController($scope, $rootScope, $routeParams, cornercouch, $location, flash) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.create_account = function () {
+        //console.log($scope.user_name) ;
+        $scope.new_account = $scope.mcdb.newDoc();
+        $scope.new_account.password = $scope.password;
+        //$scope.new_account.confirm_password =   $scope.confirm_password;
+        $scope.new_account.email = $scope.email;
+        //$scope.new_account.confirm_email = $scope.confirm_email;
+        $scope.new_account.type = 'mcuser';
+        $scope.mcdb.query("materialscommons-app", "mcusers_by_email", {key: $scope.email}).success(function () {
+            if ($scope.mcdb.rows.length > 0) {
+                alert('Account has already been created using ' + $scope.email);
+                $location.path('/create-account');
+            }
+            else {
+                if (($scope.password == $scope.confirm_password) && ($scope.email == $scope.confirm_email)) {
+                    $scope.new_account.save();
+                    flash("Account Created");
+                    $location.path('/login');
+                }
+                else {
+                    alert("Unable to Create Your Account. Confirmation is being entered incorrectly");
+                    $location.path('/create-account');
+                }
+
+            }
+        });
+
 
     }
 
@@ -85,13 +112,21 @@ function ChartController($scope, $routeParams, cornercouch) {
     $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
 }
 
-function FrontPageController($scope, $routeParams, $location, ngstomp) {
+function FrontPageController($scope, $routeParams, $location, ngstomp, cornercouch) {
     $scope.messages = [];
     $scope.sent = 0;
     $scope.search_key = function () {
         //$location.path("/search?keyword=" + $scope.keyword);
         $location.path("/searchindex/search_key/" + $scope.keyword);
     }
+
+//    $scope.server = cornercouch();
+//    $scope.server.session();
+//    $scope.server.login("testuser", "testing").success(function () {
+//        console.log("success");
+//    }).error(function () {
+//            console.log("in error");
+//        });
 
 //    users.create('testuser', 'testing', {roles: ['example']}, function (err) {
 //        if (err) {
@@ -135,10 +170,61 @@ function ModelsSearchController($scope, $routeParams) {
 
 function ExploreController($scope, $routeParams) {
     $scope.pageDescription = "Explore";
+    $scope.rowCollection = [
+        {id: 0, firstName: 'Laurent', lastName: 'Renard', birthDate: new Date('1987-05-21'), balance: 102, email: 'laurent34azerty@gmail.com', nested: {value: 2323}},
+        {id: 1, firstName: 'Blandine', lastName: 'Faivre', birthDate: new Date('1987-04-25'), balance: -2323.22, email: 'laurent34azerty@gmail.com', nested: {value: 123}},
+        {id: 2, firstName: 'Francoise', lastName: 'Frere', birthDate: new Date('1955-08-27'), balance: 42343, email: 'laurent34azerty@gmail.com', nested: {value: 565}}
+    ];
+
+    for (var i = 0; i < $scope.rowCollection.length; i++) {
+        var obj = $scope.rowCollection[i];
+        obj.id = i;
+    }
+
+    $scope.columnCollection = [
+        {label: 'id', map: 'id', isEditable: true},
+        {label: 'FirsName', map: 'firstName'},
+        {label: 'LastName', map: 'lastName', isSortable: false},
+        {label: 'birth date', map: 'birthDate', formatFunction: 'date', type: 'date'},
+        {label: 'balance', map: 'balance', isEditable: true, type: 'number', formatFunction: 'currency', formatParameter: '$'},
+        {label: 'email', map: 'email', type: 'email', isEditable: true},
+        {label: 'nested', map: 'nested.value', formatFunction: 'currency', formatParameter: '$', type: 'number', isEditable: true}
+    ];
+
+    $scope.globalConfig = {
+        isPaginationEnabled: true,
+        isGlobalSearchActivated: true,
+        itemsByPage: 10,
+        selectionMode: 'single'
+    };
 }
 
-function AboutController($scope, $routeParams, $rootScope) {
+function AboutController($scope, $routeParams, $rootScope, uploadService) {
     $scope.pageDescription = "About";
+
+    // 'files' is an array of JavaScript 'File' objects.
+    $scope.files = [];
+
+        $scope.$watch('files', function (newValue, oldValue) {
+            // Only act when our property has changed.
+            if (newValue != oldValue) {
+                console.log('Controller: $scope.files changed. Start upload.');
+                for (var i = 0, length = $scope.files.length; i < length; i++) {
+                    // Hand file off to uploadService.
+                    uploadService.send($scope.files[i]);
+                }
+            }
+        }, true);
+
+        $rootScope.$on('upload:loadstart', function () {
+            console.log('Controller: on `loadstart`');
+        });
+
+        $rootScope.$on('upload:error', function () {
+            console.log('Controller: on `error`');
+        });
+
+
 }
 
 function ContactController($scope, $routeParams) {
@@ -151,11 +237,10 @@ function HelpController($scope, $routeParams) {
 }
 
 
-
 //Test Javascript to access keys
-function AccessController($scope, $routeParams, cornercouch ){
+function AccessController($scope, $routeParams, cornercouch) {
 
-    $scope.search_doc = function(){
+    $scope.search_doc = function () {
         $scope.server = cornercouch();
         $scope.server.session();
         $scope.mcdb = $scope.server.getDB("angularphonecat");

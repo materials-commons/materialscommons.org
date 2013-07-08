@@ -5,9 +5,6 @@ function SearchIndexController($scope, $routeParams, $location, Search){
             $scope.keyword = $routeParams.name;
 
         }
-
-
-       // $scope.search_index = function(){
         $scope.noOfPages = 1;
         $scope.currentPage = 1;
         $scope.size = 5;
@@ -30,7 +27,12 @@ function SearchIndexController($scope, $routeParams, $location, Search){
             };
         });
 
-   // }
+
+    $scope.get_utc_obj = function(utc_in_sec){
+        var d = new Date(utc_in_sec * 1000);
+        return d;
+    }
+
 
 
 

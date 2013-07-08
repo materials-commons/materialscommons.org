@@ -1,39 +1,42 @@
 
-<br></br>
-<div ng-show="results.hits.total > 0">
-    <div class="row">
-        <div class="span10">
-            <h4>Search results for {{keyword}}</h4>
-            <table class = "table">
-                <tr>
-                    <th>Id</i></a></th>
-                    <th>Location</th>
-                    <th>Metal</th>
-                    <th>Lab</th>
-                    <th>Name</th>
-                    <th>Owner</th>
-                    <th>Type</th>
-                    <th>Access</th>
-                </tr>
 
-
-
-                <tr ng-repeat="res in results.hits.hits" >
-                    <td  width="250">{{res._source._id}}</td>
-                    <td  width="200">{{res._source.description}}</td>
-                    <td  width="100">{{res._source.metal}}</td>
-                    <td  width="100">{{res._source.lab}}</td>
-                    <td  width="100">{{res._source.name}}</td>
-                    <td  width="100">{{res._source.owner}}</td>
-                    <td  width="100">{{res._source.type}}</td>
-                    <td  width="100">{{res._source.access}}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small" previous-text="&laquo;" next-text="&raquo;" on-select-page="pageChanged(page)"></pagination>
+<div ng-hide="results.hits.total > 0">
+    <h5>No results found for {{keyword}}</h5>
 
 </div>
+<div ng-show="results.hits.total > 0">
+    <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small" previous-text="&laquo;" next-text="&raquo;" on-select-page="pageChanged(page)"></pagination>
+
+    <h5>Total no of results found for {{keyword}}: {{results.hits.total}}</h5>
+    <ul ng-repeat="res in results.hits.hits">
+            <a href="/home/tammasr/materialscommons.org/dummy.txt">{{res._source.name}}</a>
+            <nav>
+                <li>Type: {{res._source.type}}</li>
+            </nav>
+            <br>
+          Created At: {{get_utc_obj(res._source.dateAdded).toDateString()}}<br>
+            Lab: {{res._source.lab}}<br>
+            access: {{res._source.access}}<br>
+        <div ng-switch on="res._source.type">
+            <div ng-switch-when="data">
+                Owner: {{res._source.owner}}
+            </div>
+            <div ng-switch-when="datagroup">
+                User: {{res._source.user}}
+            </div>
+        </div>
+
+            Text:{{res._source.text}}<br>
+            <span class="label label-info">ethanol</span>
+            <span class="label label-info">magnesium</span>
+            <span class="label label-info">alloy</span>
+        <hr class="horizontal_line"></hr>
+    </ul>
+    <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small" previous-text="&laquo;" next-text="&raquo;" on-select-page="pageChanged(page)"></pagination>
+
+
+
+
 
 </div>
 
