@@ -1,0 +1,25 @@
+<h1>My Data </h1>
+
+<div ng-controller="DataGroupController">
+   <table class="table">
+
+        <tr>
+            <th>Name</th>
+            <th>User</th>
+            <th>Created At</th>
+            <th>Meta Tags</th>
+        </tr>
+       {{user_name}}
+        <tr>
+            <tr ng-repeat="row in data_by_user.data.rows | data_by_user: [email_address]">
+                <td>{{row.value.name}}</td>
+                <td>{{row.key[0]}}</td>
+                <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
+                <td><span class="label label-info">Name:{{row.value.metaTags[0].name}}</span>
+                    Value: {{row.value.metaTags[0].value}}</td>
+            </tr>
+        </tr>
+
+    </table>
+
+</div>

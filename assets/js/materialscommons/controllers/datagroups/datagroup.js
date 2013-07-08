@@ -1,10 +1,13 @@
 
-function DataGroupController($scope, $routeParams, cornercouch, $timeout, User){
+function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootScope){
 
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
+    $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner");
     $scope.list = $scope.mcdb.query("materialscommons-app", "all_datagroups");
+
+    /*
     $scope.columnCollection = [
         {label: 'Name', map: 'name'},
         {label: 'Type', map: 'type'},
@@ -13,6 +16,7 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, User){
         {label: 'Data', map: 'data'},
 
     ];
+     */
 
 
 
@@ -27,20 +31,14 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, User){
         $scope.search_results = $scope.mcdb.query("materialscommons-app", "items_by_type_and_date");
     }
 
-    $scope.search_by_name = function(){
 
-    }
 
     $scope.get_utc_obj = function(utc_in_sec){
         var d = new Date(utc_in_sec * 1000);
         return d;
     }
 
-    $scope.data_by_user = function(){
-        $scope.user = User.get_username();
-        $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner");
 
-    }
 
     $scope.data_by_lab = function(){
 

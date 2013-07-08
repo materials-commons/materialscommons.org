@@ -58,7 +58,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
 }
 
 function LogOutController($scope, $rootScope, User) {
-    $rootScope.user_name = '';
+    $rootScope.email_address = '';
     User.setAuthenticated(false, '');
 }
 
