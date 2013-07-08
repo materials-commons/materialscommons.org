@@ -18,13 +18,11 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
                     console.log("Comparing passwords");
                     var db_password = $scope.mcdb.rows[0].value.password;
                     if (db_password == $scope.password) {
-                        console.log("Inside of check");
                         $rootScope.email_address = $scope.mcdb.rows[0].value.email;
                         User.setAuthenticated(true, $scope.email);
-                        //flash("Logged in");
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
-                        //$scope.me = User.get_username();
+                        $scope.connectError = false;
                         $location.path('/user_functions');
                         //$timeout(function() {
                         //  $location.path("#/partials/user_functions/");
@@ -37,7 +35,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
                 }
             })
             .error(function () {
-                console.log("Query Failed!!!");
+                $scope.connectError = true;
             });
     }
 

@@ -1,6 +1,4 @@
 
-<flash-messages></flash-messages>
-
 
 <div ng-controller="LoginController" class="row">
 
@@ -23,6 +21,10 @@
 
         <div ng-show="failedLogin" class="alert alert-error">
             <strong>Error!</strong> Unknown email address or invalid password
+        </div>
+
+        <div ng-show="connectError" class="alert alert-error">
+            <strong>Error!</strong> An internal error occurred. Please try again. If this error persists please email admin@materialscommons.org
         </div>
 
         <div ng-show="successfulLogin" class="alert alert-success">

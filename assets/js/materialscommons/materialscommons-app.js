@@ -12,8 +12,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
         when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
-        when('/contact', {templateUrl: 'partials/under-construction.html', controller: ContactController}).
-        when('/help', {templateUrl: 'partials/under-construction.html', controller: HelpController}).
+        when('/contact', {templateUrl: 'partials/contact.html', controller: ContactController}).
+        when('/help', {templateUrl: 'partials/help.html', controller: HelpController}).
         when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: DataGroupController}).
         when('/data_by_user', {templateUrl: 'partials/datagroups/user_data.html', controller: DataGroupController}).
@@ -27,10 +27,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 ]);
 app.run(function($rootScope, $location, User) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-        //console.dir(next);
-        //console.log(next.templateUrl);
-        //console.log(next.controller);
-        if (matchesPartial(next, "partials/front-page", "ignore")) {
+        if (matchesPartial(next, "partials/front-page", "HomeController")) {
             setActiveMainNav("#home-nav");
         }
         else if (matchesPartial(next, "partials/user_functions", "UserFunctionsController")) {
@@ -54,10 +51,6 @@ app.run(function($rootScope, $location, User) {
 //        else if (matchesPartial(next, "partials/models", "ModelsSearchController")) {
 //            setActiveMainNav("#findmodels");
 //        }
-
-        if (true) {
-        //    return;
-        }
 
         if (!User.isAuthenticated()) {
             if (next.templateUrl && next.templateUrl.indexOf("partials/user_functions") != -1) {
