@@ -1,27 +1,27 @@
 <h4>Create New Account</h4>
 
+
 <div ng-controller="AccountController">
 <table>
-    <tr>
-        <td>User Name</td>
-        <td><input type="text" ng-model="user_name"></td>
-    </tr>
-    <tr>
-        <td>Password</td>
-        <td><input type="text" ng-model="password"></td>
 
-        <td>Confirm Password</td>
-        <td><input type="text" ng-model="confirm_password"></td>
-
-    </tr>
     <tr>
         <td>Email</td>
-        <td><input type="text" ng-model="email"></td>
+        <td><input type="text" ng-model="email" placeholder="Email address"></td>
 
         <td>Confirm Email</td>
-        <td><input type="text" ng-model="confirm_email"></td>
+        <td><input type="text" ng-model="confirm_email" placeholder=" Confirm Email address"></td>
 
     </tr>
+
+    <tr>
+        <td>Password</td>
+        <td><input  type="password" ng-model="password"  class="input-block-level" placeholder="Password"></td>
+
+        <td>Confirm Password</td>
+        <td><input type="password" ng-model="confirm_password" class="input-block-level" placeholder="Confirm Password"></td>
+
+    </tr>
+
 </table>
 <button class="btn btn-success" type="button" ng-click="create_account()"  > Create Account</button>
 </div>

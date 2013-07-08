@@ -8,20 +8,20 @@ materialsCommonsServices.
     factory('User', function() {
         var self = this;
         self.authenticated = false;
-        self.user = 'Login';
+        self.email_address = 'Login';
         return {
             isAuthenticated: function() {
                 return self.authenticated;
             },
 
-            setAuthenticated: function(value, username) {
+            setAuthenticated: function(value, email_address) {
                 self.authenticated = value;
-                self.user = username;
+                self.email_address = email_address;
 
             },
 
             get_username: function(){
-                return self.user;
+                return self.email_address;
             }
         };
     });
@@ -44,18 +44,30 @@ materialsCommonsServices.factory('Search', function($resource) {
     };
 });
 
-/*
-materialsCommonsServices.factory('DataService', function($resource){
-    var resource_couch =  $resource('http://localhost\\:5984/materialscommons/',{});
-        return{
-            get_data: function(id, fun){
-                return resource_couch.get(id, fun);
+materialsCommonsServices.factory('uploadService', ['$rootScope', function ($rootScope) {
 
-            }
+    return {
+        send: function (file) {
+            var data = new FormData(),
+                xhr = new XMLHttpRequest();
 
+            // When the request starts.
+            xhr.onloadstart = function () {
+                console.log('Factory: upload started: ', file.name);
+                $rootScope.$emit('upload:loadstart', xhr);
+            };
 
-        };
+            // When the request has failed.
+            xhr.onerror = function (e) {
+                $rootScope.$emit('upload:error', e);
+            };
 
-    });
+            // Send to server, where we can then access it with $_FILES['file].
+            data.append('file', file, file.name);
+            xhr.open('POST', '/echo/json');
+            xhr.send(data);
+        }
+    };
 
-    */
+}]);
+

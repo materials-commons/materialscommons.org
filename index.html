@@ -8,6 +8,7 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
+    <link href="assets/css/app.css" rel="stylesheet">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="assets/css/font-awesome.css" rel="stylesheet">
@@ -16,6 +17,8 @@
     <link href="assets/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="assets/css/datepicker.css" rel="stylesheet">
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,7 +32,7 @@
 
 <!--<div style="background-color: #CDAF95"><img src="assets/img/MaterialsCommonsLogo_274x75.png"></div>-->
 <div ng-controller="FrontPageController">
-<div style="background-color: #CDCDB4" >   <!--sravya CDCDB4 -->
+<div style="background-color: #fefefe" >   <!--sravya CDCDB4 -->
     <a href="index.html"><img style="" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>
     <span style="font-size: 200%;font-style: italic;">The source for <span class="mc-logo"> materials</span> data </span>
         <span>
@@ -57,15 +60,17 @@
                 </a>
 
                     <div class="nav-collapse collapse" ng-controller="LoginController">
-                        <div ng-hide="user_name">
+                        <div ng-hide="email_address">
                         <p class="navbar-text pull-right">
                             <a href="#/create-account" class="navbar-link" style="margin-right:15px"><i class="icon-plus-sign"></i> Create Account</a>
                             <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
                         </p>
                         </div>
-                        <div ng-controller="LogOutController" ng-show="user_name">
+
+
+                        <div ng-controller="LogOutController" ng-show="email_address">
                             <p class="navbar-text pull-right">
-                                <a href="#/logout" class="navbar-link"><i class="icon-user"></i> logout {{user_name}}</a>
+                                <a href="#/logout" class="navbar-link"><i class="icon-user"></i> logout {{email_address}}</a>
                             </p>
                         </div>
                     </div>
@@ -83,11 +88,11 @@
                             </a>
                         </li>
                         -->
-                        <li id="user-nav"><a href="#/user_functions"> My Tools</a></li>
+                        <li id="user-nav"><a href="#/user_functions"><i class="icon-wrench"></i> My Tools</a></li>
                         <li id="explore-nav"><a href="#/explore"><i class="icon-road"></i> Explore</a></li>
-                        <li id="about-nav"><a href="#/about">About</a></li>
-                        <li id="contact-nav"><a href="#/contact">Contact</a></li>
-                        <li id="help-nav"><a href="#/help">Help</a></li>
+                        <li id="about-nav"><a href="#/about"><i class="icon-info"></i>About</a></li>
+                        <li id="contact-nav"><a href="#/contact"><i class="icon-phone"></i> Contact</a></li>
+                        <li id="help-nav"><a href="#/help"><i class="icon-question-sign"></i>Help</a></li>
                     </ul>
 
 
@@ -97,10 +102,9 @@
     </div>
 
 
-<div class="container-fluid">
-    <div class="span12 offset2 content-area">
-        <div class="content-body"> <!-- style="background-color: white;"> -->
             <div ng-view>
+
+
 
 
 
@@ -108,9 +112,6 @@
 
             </div>
 
-        </div>
-    </div>
-</div>
 
 <!--<footer>-->
     <!--<p>&copy; Company 2012</p>-->
@@ -164,12 +165,13 @@
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/bootstrap-datepicker.js"></script>
 <script src="assets/js/bootstrap-select.js"></script>
-
-
-<script>
+<script src="assets/js/angular/angular-flash.js"></script>
+<script src="assets/js/materialscommons/Table.js"></script>
+<script src="assets/js/materialscommons/Smart-Table.debug.js"></script>
+<!--<script>
     var users = require('users');
 </script>
-
+-->
 <script>
 
 </script>

@@ -1,4 +1,17 @@
 
+nav li {
+    display: inline-block;
+    padding: 0px;
+    background: gainsboro;
+}
+
+hr.horizontal_line {
+    border:0;
+    color: #a4a7a2;
+    background: #a4a7a2;
+    height:1px;
+}
+
 
 body {
     padding-top: 0px;
@@ -12,8 +25,8 @@ body {
         /*#8C9896;*/
         /*#768582; */
     /*url(../img/fading_background_17.png) repeat-x;*/
-    background: url(../img/background/noisy-texture-grey.png) repeat;
-    /}
+    /*background: url(../img/background/noisy-texture-grey.png) repeat;*/
+    }
 
 td {
     padding-right: 40px;
@@ -38,6 +51,16 @@ td {
     background-color: #99ccff;
     -webkit-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
     -moz-box-shadow: rgba(0,0,0,0.7) 3px 3px 3px;
+}
+
+
+
+.custom_font {
+    color: #888888;
+    font: italic 1em Georgia,Times,serif;
+    margin: 1em 0;
+    padding: 0 0 0 1.7em;
+
 }
 
 .mc-active {

@@ -1,15 +1,20 @@
 
 
 <div ng-controller="DataGroupController">
+    Filter : <input ng-model="query">
+
+
     <table class="table">
         <tr>
-            <th><a href="" ng-click="predicate = 'id'; reverse=!reverse">Name </a></th>
+            <th><a href="" ng-click="predicate = 'id'; reverse=!reverse"> Name</a></th>
             <th> <a href="" ng-click="predicate = 'type'; reverse=!reverse">Type</a></th>
-            <th><a href="" ng-click="predicate = 'users'; reverse=!reverse">User</a></th>
+            <th ><a href="" ng-click="predicate = 'users'; reverse=!reverse">User</a></th>
             <th><a href="" ng-click="predicate = 'parentDataGroups'; reverse=!reverse">Parent</a></th>
             <th><a href="" ng-click="predicate = 'type'; reverse=!reverse">Data</a></th>
         </tr>
-        <tr  ng-repeat="row in list.data.rows |  private | orderBy:predicate:reverse">
+
+
+        <tr ng-repeat="row in list.data.rows | filter:query |  private   | orderBy:predicate:reverse">
             <td>{{row.value.name}}</td>
             <td>{{row.value.type}}</td>
             <td>{{row.value.users}}</td>
@@ -32,7 +37,6 @@
                 </div>
 
             </td>
-
         </tr>
     </table>
 </div>
