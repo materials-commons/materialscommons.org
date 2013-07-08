@@ -58,7 +58,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
 }
 
 function LogOutController($scope, $rootScope, User) {
-    $rootScope.email_address = '';
+    $rootScope.user_name = '';
     User.setAuthenticated(false, '');
 }
 
@@ -92,10 +92,7 @@ function AccountController($scope, $rootScope, $routeParams, cornercouch, $locat
 
             }
         });
-
-
     }
-
 }
 
 function MessagesController($scope, $routeParams, cornercouch) {
@@ -116,7 +113,6 @@ function FrontPageController($scope, $routeParams, $location, ngstomp, cornercou
     $scope.messages = [];
     $scope.sent = 0;
     $scope.search_key = function () {
-        //$location.path("/search?keyword=" + $scope.keyword);
         $location.path("/searchindex/search_key/" + $scope.keyword);
     }
 
@@ -157,6 +153,14 @@ function FrontPageController($scope, $routeParams, $location, ngstomp, cornercou
 //        });
 //    }, function(){}, '/');
 
+}
+
+function HomeController($scope, cornercouch) {
+    $scope.server = cornercouch();
+    $scope.server.session();
+    $scope.mcdb = $scope.server.getDB("materialscommons");
+
+    $scope.mcdb.query("materialscommons-app", "news_by_date", {descending: true});
 }
 
 
@@ -205,24 +209,24 @@ function AboutController($scope, $routeParams, $rootScope, uploadService) {
     // 'files' is an array of JavaScript 'File' objects.
     $scope.files = [];
 
-        $scope.$watch('files', function (newValue, oldValue) {
-            // Only act when our property has changed.
-            if (newValue != oldValue) {
-                console.log('Controller: $scope.files changed. Start upload.');
-                for (var i = 0, length = $scope.files.length; i < length; i++) {
-                    // Hand file off to uploadService.
-                    uploadService.send($scope.files[i]);
-                }
+    $scope.$watch('files', function (newValue, oldValue) {
+        // Only act when our property has changed.
+        if (newValue != oldValue) {
+            console.log('Controller: $scope.files changed. Start upload.');
+            for (var i = 0, length = $scope.files.length; i < length; i++) {
+                // Hand file off to uploadService.
+                uploadService.send($scope.files[i]);
             }
-        }, true);
+        }
+    }, true);
 
-        $rootScope.$on('upload:loadstart', function () {
-            console.log('Controller: on `loadstart`');
-        });
+    $rootScope.$on('upload:loadstart', function () {
+        console.log('Controller: on `loadstart`');
+    });
 
-        $rootScope.$on('upload:error', function () {
-            console.log('Controller: on `error`');
-        });
+    $rootScope.$on('upload:error', function () {
+        console.log('Controller: on `error`');
+    });
 
 
 }
