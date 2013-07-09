@@ -173,3 +173,7 @@ div.node.level2 {
 .mc-table-hover tbody tr:hover th {
     background-color: #CCCCCC;
 }
+
+.people-heading {
+    margin-top:25px;
+}
