@@ -37,8 +37,36 @@
                 <td>{{row.value.name}}</td>
                 <td>{{row.value.type}}</td>
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
-                <td>{{row.value.datagroups}}</td>
-                <td>{{row.value.users}}</td>
+                <td>
+                    <div ng-switch on="row.value.type">
+                        <div ng-switch-when="data">
+                            <ul ng-repeat="each_parent_id in row.value.dataGroups">
+                                <div ng-init="data_item=getData(each_parent_id)">
+                                    <a href="">{{data_item.name}}</a>
+                                </div>
+                            </ul>
+                        </div>
+                        <div ng-switch-when="datagroup">
+                            <ul ng-repeat="each_parent_id in row.value.parentDataGroups">
+                                <div ng-init="data_item=getData(each_parent_id)">
+                                    <a href="">{{data_item.name}}</a>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div ng-switch on="row.value.type">
+                        <div ng-switch-when="data">
+                            Owner: {{row.value.owner}}
+                        </div>
+                        <div ng-switch-when="datagroup">
+                            User: {{row.value.users[0]}}
+                        </div>
+                    </div>
+
+                </td>
+
 
             </tr>
         </table>

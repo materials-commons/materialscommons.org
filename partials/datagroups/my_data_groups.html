@@ -1,5 +1,5 @@
 
-
+<h1>All dataGroups</h1>
 <div ng-controller="DataGroupController">
     Filter : <input ng-model="query">
 
@@ -9,7 +9,7 @@
             <th><a href="" ng-click="predicate = 'id'; reverse=!reverse"> Name</a></th>
             <th> <a href="" ng-click="predicate = 'type'; reverse=!reverse">Type</a></th>
             <th ><a href="" ng-click="predicate = 'users'; reverse=!reverse">User</a></th>
-            <th><a href="" ng-click="predicate = 'parentDataGroups'; reverse=!reverse">Parent</a></th>
+            <th><a href="" ng-click="predicate = 'parentDataGroups'; reverse=!reverse">Parents</a></th>
             <th><a href="" ng-click="predicate = 'type'; reverse=!reverse">Data</a></th>
         </tr>
 
@@ -17,8 +17,12 @@
         <tr ng-repeat="row in list.data.rows | filter:query |  private   | orderBy:predicate:reverse">
             <td>{{row.value.name}}</td>
             <td>{{row.value.type}}</td>
-            <td>{{row.value.users}}</td>
-            <td>{{row.value.parentDataGroups}}</td>
+            <td>{{row.value.users[0]}}</td>
+            <td ng-repeat="each_parent_id in row.value.parentDataGroups">
+                <div ng-init="data_item=getData(each_parent_id)">
+                    <a href="">{{data_item.name}}</a>
+                </div>
+            </td>
             <td>
                 <div ng-show="row.value.data.length > 0">
                     <accordion>
