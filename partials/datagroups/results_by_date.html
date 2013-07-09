@@ -42,14 +42,14 @@
                         <div ng-switch-when="data">
                             <ul ng-repeat="each_parent_id in row.value.dataGroups">
                                 <div ng-init="data_item=getData(each_parent_id)">
-                                    <a href="">{{data_item.name}}</a>
+                                    <a ng-click="display_parent(each_parent_id)">{{data_item.name}}</a>
                                 </div>
                             </ul>
                         </div>
                         <div ng-switch-when="datagroup">
                             <ul ng-repeat="each_parent_id in row.value.parentDataGroups">
                                 <div ng-init="data_item=getData(each_parent_id)">
-                                    <a href="">{{data_item.name}}</a>
+                                    <a ng-click="display_parent(each_parent_id)">{{data_item.name}}</a>
                                 </div>
                             </ul>
                         </div>

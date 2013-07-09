@@ -1,5 +1,5 @@
 
-function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootScope){
+function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootScope, $location){
 
     $scope.server = cornercouch();
     $scope.server.session();
@@ -17,8 +17,17 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootS
 
     ];
      */
+    if ($routeParams.subpage == "data_item"){
+       // alert($routeParams.each_parent_id);
+        $scope.item = $scope.mcdb.getDoc($routeParams.each_parent_id);
+        //$scope.datagroup = $routeParams.each_parent_id;
+        //$scope.datagroup = $scope.getData($routeParams.each_parent_id);
 
+    }
 
+    $scope.display_parent = function (each_parent_id) {
+        $location.path("/parent/data_item/" + each_parent_id);
+    }
 
     $scope.getData = function(id){
          item = $scope.mcdb.getDoc(id);
@@ -43,6 +52,9 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootS
     $scope.data_by_lab = function(){
 
     }
+
+
+
     $scope.myDate= "12-12-2012";
     $scope.endDate= "13-13-2012";
 

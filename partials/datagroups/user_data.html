@@ -9,7 +9,6 @@
             <th>Created At</th>
             <th>Meta Tags</th>
         </tr>
-       {{user_name}}
         <tr>
             <tr ng-repeat="row in data_by_user.data.rows | data_by_user: [email_address]">
                 <td>{{row.value.name}}</td>

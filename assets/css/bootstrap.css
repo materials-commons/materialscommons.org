@@ -1949,6 +1949,13 @@ legend + .control-group {
     padding-left: 180px;
 }
 
+.table_small {
+    width: auto;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+
 table {
     max-width: 100%;
     background-color: transparent;
@@ -1962,6 +1969,8 @@ table {
     margin-bottom: 20px;
 }
 
+
+
 .table .smart-table-header-title {
     padding: 0;
 }
@@ -1973,6 +1982,7 @@ table {
     text-align: left;
     vertical-align: top;
     border: 1px solid rgba(34, 102, 153, 0.52);
+
 }
 
 .table th {
@@ -1997,6 +2007,7 @@ table {
 
 .table .table {
     background-color: #ffffff;
+
 }
 
 .table-condensed th,

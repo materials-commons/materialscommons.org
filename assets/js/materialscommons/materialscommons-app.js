@@ -19,9 +19,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/data_by_user', {templateUrl: 'partials/datagroups/user_data.html', controller: DataGroupController}).
         when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: DataGroupController}).
         when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
-
         when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
         when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
+        when('/dummy', {templateUrl: 'partials/data/dummy.html', controller: FrontPageController}).
+        when('/parent/:subpage/:each_parent_id', {templateUrl: 'partials/datagroups/display_parent.html', controller: DataGroupController}).
         otherwise({redirectTo: '/home'});
 }
 ]);
