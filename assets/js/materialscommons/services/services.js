@@ -2,7 +2,7 @@
 
 /* Services */
 
-var materialsCommonsServices =  angular.module('materialsCommonsServices', ['ngResource']);
+var materialsCommonsServices =  angular.module('materialsCommonsServices', ['ngResource', 'CornerCouch']);
 
 materialsCommonsServices.
     factory('User', function() {
@@ -25,6 +25,24 @@ materialsCommonsServices.
             }
         };
     });
+
+materialsCommonsServices.factory('Mcdb', function(cornercouch) {
+    var self = this;
+    self.server = cornercouch();
+    self.server.session();
+    self.mcdb = self.server.getDB("materialscommons");
+
+    return {
+        db: function() {
+            return self.mcdb;
+        },
+
+        query: function(view, params) {
+            self.mcdb.query("materialscommons-app", view, params);
+        }
+    }
+
+});
 
 
 materialsCommonsServices.
