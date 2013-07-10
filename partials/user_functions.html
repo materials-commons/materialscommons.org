@@ -34,39 +34,37 @@
                     <h4>Analysis: </h4>
                 </td>
             </tr>
-
-
         </table>
 
-    </div>
-</div>
+        <h4>File Upload:</h4>
 
-<h4>File Upload:</h4>
-<div ng-controller="FileUploadCtrl">
-    <div class="control-group">
-        <div class="controls">
-        <span class="btn btn-success fileinput-button">
-            <i class="icon-plus icon-white"></i>
-            <input type="file" name="file" data-url="home/upload"
-                   multiple upload><span>Add files...</span>
-        </span>
+        <div ng-controller="FileUploadCtrl">
+            <div class="control-group">
+                <div class="controls">
+                    <span class="btn btn-success fileinput-button">
+                        <i class="icon-plus icon-white"></i>
+                        <input type="file" name="file" data-url="home/upload" multiple upload><span>Add files...</span>
+                    </span>
+                </div>
+            </div>
+
+            <div>
+                <span ng-show="!files.length">No files selected</span>
+                <ul>
+                    <li ng-repeat="file in files">{{file}}</li>
+                </ul>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary pull-left" ng-click="upload()">Upload</button>
+            </div>
+
+            <div class="progress" ng-show="percentage">
+            </div>
         </div>
+
     </div>
-
-    <div>
-        <span ng-show="!files.length">No files selected</span>
-        <ul>
-            <li ng-repeat="file in files">{{file}}</li>
-        </ul>
-    </div>
-
-    <div>
-        <button type="submit" class="btn btn-primary pull-left" ng-click="upload()">Upload</button>
-    </div>
-
-    <div class="progress" ng-show="percentage">
-    </div>
-
-
 </div>
+
+
 
