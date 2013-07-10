@@ -32,82 +32,79 @@
 
 <!--<div style="background-color: #CDAF95"><img src="assets/img/MaterialsCommonsLogo_274x75.png"></div>-->
 <div ng-controller="FrontPageController">
-<div style="background-color: #fefefe" >   <!--sravya CDCDB4 -->
-    <a href="index.html"><img style="" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>
-    <span style="font-size: 200%;font-style: italic;">The source for <span class="mc-logo"> materials</span> data </span>
+    <div style="background-color: #fefefe">   <!--sravya CDCDB4 -->
+        <a href="index.html"><img style="" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>
+        <span style="font-size: 200%;font-style: italic;">The source for <span
+                class="mc-logo"> materials</span> data </span>
         <span>
                 <form class="form-search text-center pull-right" style="padding-top: 20px; padding-right: 10px">
-                    <div class="input-append" >
+                    <div class="input-append">
 
-                        <input type="search" class="span3 search-query" ng-model="keyword" name="q" autocomplete="off" placeholder="SEARCH" tabindex="1">
-                        <button type="submit"  ng-click="search_key();" class="btn"><i class="icon-search"></i> Search
+                        <input type="search" class="span3 search-query" ng-model="keyword" name="q" autocomplete="off"
+                               placeholder="SEARCH" tabindex="1">
+                        <button type="submit" ng-click="search_key();" class="btn"><i class="icon-search"></i> Search
                         </button>
                     </div>
 
                 </form>
         </span>
+    </div>
 </div>
-</div>
 
-    <div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse" >
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                </a>
+<div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            </a>
 
-                    <div class="nav-collapse collapse" ng-controller="LoginController">
-                        <div ng-hide="email_address">
-                        <p class="navbar-text pull-right">
-                            <a href="#/create-account" class="navbar-link" style="margin-right:15px"><i class="icon-plus-sign"></i> Create Account</a>
-                            <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
-                        </p>
-                        </div>
-
-
-                        <div ng-controller="LogOutController" ng-show="email_address">
-                            <p class="navbar-text pull-right">
-                                <a href="#/logout" class="navbar-link"><i class="icon-user"></i> logout {{email_address}}</a>
-                            </p>
-                        </div>
-                    </div>
+            <div class="nav-collapse collapse" ng-controller="LoginController">
+                <div ng-hide="email_address">
+                    <p class="navbar-text pull-right">
+                        <a href="#/create-account" class="navbar-link" style="margin-right:15px"><i
+                                class="icon-plus-sign"></i> Create Account</a>
+                        <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
+                    </p>
+                </div>
 
 
-
-                    <ul id="mc-main-navs" class="nav nav-pills">
-                        <li  id="home-nav" class="active">
-                            <a href="#/home"><i class="icon-home"></i> Home</a>
-                        </li>
-                        <li id="user-nav"><a href="#/user_functions"><i class="icon-wrench"></i>My Tools</a></li>
-                        <li id="explore-nav"><a href="#/explore"><i class="icon-road"></i>Explore</a></li>
-                        <li id="about-nav"><a href="#/about"><i class="icon-info-sign"></i>About</a></li>
-                        <li id="contact-nav"><a href="#/contact"><i class="icon-phone"></i> Contact</a></li>
-                        <li id="help-nav"><a href="#/help"><i class="icon-question-sign"></i>Help</a></li>
-                    </ul>
-
-
-                <!--/.nav-collapse -->
+                <div ng-controller="LogOutController" ng-show="email_address">
+                    <p class="navbar-text pull-right">
+                        <a href="#/logout" class="navbar-link"><i class="icon-user"></i> logout {{email_address}}</a>
+                    </p>
+                </div>
             </div>
+
+
+            <ul id="mc-main-navs" class="nav nav-pills">
+                <li id="home-nav" class="active">
+                    <a href="#/home"><i class="icon-home"></i> Home</a>
+                </li>
+                <li id="user-nav"><a href="#/user_functions"><i class="icon-wrench"></i>My Tools</a></li>
+                <li id="explore-nav"><a href="#/explore"><i class="icon-road"></i>Explore</a></li>
+                <li id="about-nav"><a href="#/about"><i class="icon-info-sign"></i>About</a></li>
+                <li id="contact-nav"><a href="#/contact"><i class="icon-phone"></i> Contact</a></li>
+                <li id="help-nav"><a href="#/help"><i class="icon-question-sign"></i>Help</a></li>
+            </ul>
+
+
+            <!--/.nav-collapse -->
         </div>
     </div>
+</div>
 
 
-            <div ng-view>
+<div ng-view>
 
 
-
-
-
-
-
-            </div>
+</div>
 
 
 <!--<footer>-->
-    <!--<p>&copy; Company 2012</p>-->
+<!--<p>&copy; Company 2012</p>-->
 <!--</footer>-->
 <!-- /container -->
 
@@ -155,6 +152,7 @@
 <script src="assets/js/materialscommons/controllers/searchindex/searchindex.js"></script>
 <script src="assets/js/materialscommons/controllers/searchindex/searchindex.js"></script>
 <script src="assets/js/materialscommons/controllers/datagroups/datagroup.js"></script>
+<script src="assets/js/materialscommons/controllers/tags/tags.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/bootstrap-datepicker.js"></script>
 <script src="assets/js/bootstrap-select.js"></script>

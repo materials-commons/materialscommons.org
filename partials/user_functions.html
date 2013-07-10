@@ -1,31 +1,37 @@
-
 <div class="row-fluid">
     <div class="span4 offset0">
         <table>
-        <tr>
-            <td><h4>Admin Functions:</h4></td>
-        </tr>
-        <tr>
-            <td><h4> Search Functions: </h4></td>
-            <td id="search-nav"><a href="#/results_by_date">Search by Date</a></td>
-
-        </tr>
-        <div ng-controller="DataGroupController">
             <tr>
-                <td><h4>Data: </h4> </td>
-                <td id="search-nav"><a href="#/datagroups">All Data Groups</a></td>
-                <td id="search-nav"><a href="#/data_by_user">My data</a></td>
-                <td id="search-nav"><a href="#/my_lab">Data by Lab</a></td>
+                <td><h4>Admin Functions:</h4></td>
+            </tr>
+            <tr>
+                <td><h4> Search Functions: </h4></td>
+                <td><a href="#/results_by_date">Search by Date</a></td>
+
+            </tr>
+            <div ng-controller="DataGroupController">
+                <tr>
+                    <td><h4>Data: </h4></td>
+                    <td><a href="#/datagroups">All Data Groups</a></td>
+                    <td><a href="#/data_by_user">My data</a></td>
+                    <td><a href="#/my_lab">Data by Lab</a></td>
+                </tr>
+
+            </div>
+
+            <tr>
+                <td><h4>Tags:</h4></td>
+                <td><a href="#/tags/list/all">List Tags</a></td>
+                <td><a href="#/tags/list/mytags">Tags on my data</a></td>
+                <td><a href="#/tags/edit">Edit Tags</a></td>
+                <td><a href="#/tags/cloud">Tag Cloud</a></td>
             </tr>
 
-        </div>
-
-        <tr>
-            <td>
-                <h4>Analysis: </h4>
-            </td>
-        </tr>
-
+            <tr>
+                <td>
+                    <h4>Analysis: </h4>
+                </td>
+            </tr>
 
 
         </table>
@@ -37,5 +43,5 @@
             </tr>
         </table>
 
-</div>
+    </div>
 </div>
