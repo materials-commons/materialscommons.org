@@ -30,7 +30,8 @@ materialsCommonsServices.
 materialsCommonsServices.
     factory('Search', function($resource) {
     var data;
-    var resource_obj=  $resource('http://localhost\\:9200/mcindex/materialscommons/_search',{});
+    var host_name = document.location.hostname;
+    var resource_obj=  $resource('http://'+host_name+'\\:9200/mcindex/materialscommons/_search',{});
 
     return {
         get_all_info: function(keyword, fun) {
