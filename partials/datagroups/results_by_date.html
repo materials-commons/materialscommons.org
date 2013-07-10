@@ -1,5 +1,5 @@
-<div ng-controller="DataGroupController">
 
+<div ng-controller="DataGroupController">
 
     <br></br>
     <h4>Pick the date range to view the data/datagroups</h4>
@@ -26,13 +26,14 @@
         <h4> Search results by {{type}}</h4>  <br></br>
         <table class="table">
             <tr>
-                <th>Name</th>
+                <th>Data</th>
                 <th>Type</th>
                 <th>Created At</th>
-                <th>Parent</th>
+                <th>DataGroup</th>
                 <th>Created By</th>
 
             </tr>
+
             <tr ng-repeat="row in search_results.data.rows | matchDates: [myDate, endDate, type] | private">
                 <td>{{row.value.name}}</td>
                 <td>{{row.value.type}}</td>
@@ -42,14 +43,16 @@
                         <div ng-switch-when="data">
                             <ul ng-repeat="each_parent_id in row.value.dataGroups">
                                 <div ng-init="data_item=getData(each_parent_id)">
-                                    <a ng-click="display_parent(each_parent_id)">{{data_item.name}}</a>
+                                    <pre>popover: {{each_parent_id}}</pre>
+                                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id">{{data_item.name}}</button>
+
                                 </div>
                             </ul>
                         </div>
                         <div ng-switch-when="datagroup">
                             <ul ng-repeat="each_parent_id in row.value.parentDataGroups">
                                 <div ng-init="data_item=getData(each_parent_id)">
-                                    <a ng-click="display_parent(each_parent_id)">{{data_item.name}}</a>
+                                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id">{{data_item.name}}</button>
                                 </div>
                             </ul>
                         </div>
@@ -66,8 +69,6 @@
                     </div>
 
                 </td>
-
-
             </tr>
         </table>
 
@@ -77,6 +78,8 @@
 
 
 </div>
+
+        <div></div>
 
 
 

@@ -17,6 +17,11 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootS
 
     ];
      */
+    if ($scope.each_parent_id){
+        $scope.item = $scope.mcdb.getDoc($scope.each_parent_id);
+    }
+
+    /*
     if ($routeParams.subpage == "data_item"){
        // alert($routeParams.each_parent_id);
         $scope.item = $scope.mcdb.getDoc($routeParams.each_parent_id);
@@ -28,6 +33,7 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootS
     $scope.display_parent = function (each_parent_id) {
         $location.path("/parent/data_item/" + each_parent_id);
     }
+    */
 
     $scope.getData = function(id){
          item = $scope.mcdb.getDoc(id);

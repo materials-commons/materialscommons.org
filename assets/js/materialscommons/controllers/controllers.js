@@ -201,12 +201,35 @@ function ExploreController($scope, $routeParams) {
     };
 }
 
-function AboutController($scope, $routeParams, $rootScope, uploadService) {
+function AboutController($scope) {
     $scope.pageDescription = "About";
+
+
+}
+
+function ContactController($scope, $routeParams) {
+    $scope.pageDescription = "Contact";
+
+}
+
+function HelpController($scope, $routeParams) {
+    $scope.pageDescription = "Help";
+}
+/*
+function UploadFileController($scope,uploadService, $rootScope ){
+    $scope.clicked="false";
+    $scope.count = 0;
+    $scope.addButtonClicked = function(){
+        $scope.count = $scope.count + 1;
+
+        alert('in function');
+        //var numFiles = $scope.fileList.length;
+        //$scope.fileList.push({name: ('fileName' + numFiles)});
+    }
+
 
     // 'files' is an array of JavaScript 'File' objects.
     $scope.files = [];
-
     $scope.$watch('files', function (newValue, oldValue) {
         // Only act when our property has changed.
         if (newValue != oldValue) {
@@ -228,34 +251,25 @@ function AboutController($scope, $routeParams, $rootScope, uploadService) {
 
 
 }
+*/
 
-function ContactController($scope, $routeParams) {
-    $scope.pageDescription = "Contact";
+function FileUploadCtrl($scope, $rootScope, uploadManager){
+    $scope.files = [];
+    $scope.percentage = 0;
 
-}
+    $scope.upload = function () {
+        uploadManager.upload();
+        $scope.files = [];
+    };
 
-function HelpController($scope, $routeParams) {
-    $scope.pageDescription = "Help";
-}
+    $rootScope.$on('fileAdded', function (e, call) {
+        $scope.files.push(call);
+        $scope.$apply();
+    });
 
-
-//Test Javascript to access keys
-function AccessController($scope, $routeParams, cornercouch) {
-
-    $scope.search_doc = function () {
-        $scope.server = cornercouch();
-        $scope.server.session();
-        $scope.mcdb = $scope.server.getDB("angularphonecat");
-        $scope.doc = $scope.mcdb.getDoc("86e8234752cca516c8b8ecdd68004122");
-        //console.log($scope.doc);
-    }
-}
-
-
-function DataGroupController($scope, $routeParams, cornercouch) {
-    $scope.server = cornercouch();
-    $scope.server.session();
-    $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.list = $scope.mcdb.query("materialscommons-app", "all_experiments");
+    $rootScope.$on('uploadProgress', function (e, call) {
+        $scope.percentage = call;
+        $scope.$apply();
+    });
 
 }

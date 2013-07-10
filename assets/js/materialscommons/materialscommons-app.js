@@ -23,7 +23,6 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
         when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
         when('/dummy', {templateUrl: 'partials/data/dummy.html', controller: FrontPageController}).
-        when('/parent/:subpage/:each_parent_id', {templateUrl: 'partials/datagroups/display_parent.html', controller: DataGroupController}).
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user', {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         otherwise({redirectTo: '/home'});
@@ -55,6 +54,10 @@ app.run(function ($rootScope, $location, User) {
 //        else if (matchesPartial(next, "partials/models", "ModelsSearchController")) {
 //            setActiveMainNav("#findmodels");
 //        }
+
+        if (!User.Authenticated){
+            return ;
+        }
 
         if (!User.isAuthenticated()) {
             if (next.templateUrl && next.templateUrl.indexOf("partials/user_functions") != -1) {
