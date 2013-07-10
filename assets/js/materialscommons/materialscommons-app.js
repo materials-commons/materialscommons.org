@@ -1,6 +1,7 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp', 'ui.bootstrap', 'smartTable.table','smartTable.column','flash']);
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp',
+                            'ui.bootstrap', 'smartTable.table', 'smartTable.column', 'flash']);
 
-app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     Stomp.WebSocketClass = SockJS;
     $routeProvider.
         when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
@@ -23,11 +24,13 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
         when('/dummy', {templateUrl: 'partials/data/dummy.html', controller: FrontPageController}).
         when('/parent/:subpage/:each_parent_id', {templateUrl: 'partials/datagroups/display_parent.html', controller: DataGroupController}).
+        when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
+        when('/tags/data/bytag/:tag/:user', {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         otherwise({redirectTo: '/home'});
 }
 ]);
-app.run(function($rootScope, $location, User) {
-    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+app.run(function ($rootScope, $location, User) {
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (matchesPartial(next, "partials/front-page", "HomeController")) {
             setActiveMainNav("#home-nav");
         }
@@ -72,9 +75,9 @@ function matchesPartial(next, what, controller) {
     else {
         var value = next.templateUrl.indexOf(what) != -1;
         /*
-        Hack to look at controller name to figure out tab. We do this so that partials can be
-        shared by controllers, but we need to show which tab is active. So, we look at the
-        name of the controller (only if controller != 'ignore').
+         Hack to look at controller name to figure out tab. We do this so that partials can be
+         shared by controllers, but we need to show which tab is active. So, we look at the
+         name of the controller (only if controller != 'ignore').
          */
         if (controller == "ignore") {
             return value;
