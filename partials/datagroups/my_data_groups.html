@@ -6,23 +6,24 @@
 
     <table class="table">
         <tr>
-            <th><a href="" ng-click="predicate = 'id'; reverse=!reverse"> Name</a></th>
-            <th> <a href="" ng-click="predicate = 'type'; reverse=!reverse">Type</a></th>
-            <th ><a href="" ng-click="predicate = 'users'; reverse=!reverse">User</a></th>
-            <th><a href="" ng-click="predicate = 'parentDataGroups'; reverse=!reverse">Parents</a></th>
-            <th><a href="" ng-click="predicate = 'type'; reverse=!reverse">Data</a></th>
+            <th><a ng-click="predicate = 'name'"><font color="white"> DataGroup Name</font></a></th>
+            <th><a></a><font color="white"> Type</font></a></th>
+            <th><a ng-click="predicate = 'users'"><font color="white"> User</font></a></th>
+            <th><a><font color="white"> Parent DataGroup</font</a></th>
+            <th><a><font color="white"> Data</font></a></th>
         </tr>
 
 
-        <tr ng-repeat="row in list.data.rows | filter:query |  private   | orderBy:predicate:reverse">
+        <tr ng-repeat="row in list.data.rows | filter:query |  private ">
             <td>{{row.value.name}}</td>
             <td>{{row.value.type}}</td>
             <td>{{row.value.users[0]}}</td>
             <td ng-repeat="each_parent_id in row.value.parentDataGroups">
                 <div ng-init="data_item=getData(each_parent_id)">
-                    <a href="">{{data_item.name}}</a>
+                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id" >{{data_item.name}}</button>
                 </div>
             </td>
+
             <td>
                 <div ng-show="row.value.data.length > 0">
                     <accordion>
@@ -39,6 +40,7 @@
                     </accordion-group>
                     </accordion>
                 </div>
+
 
             </td>
         </tr>

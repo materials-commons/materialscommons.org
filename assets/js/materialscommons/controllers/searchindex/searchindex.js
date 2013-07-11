@@ -9,7 +9,7 @@ function SearchIndexController($scope, $routeParams, $location, Search){
         $scope.currentPage = 1;
         $scope.size = 5;
         $scope.newPage = 1;
-        $scope.imageSource = 'partials/data/1-bf-50k.tif';
+        $scope.imageSource = 'assets/img/BrightField.jpg';
 
 
 

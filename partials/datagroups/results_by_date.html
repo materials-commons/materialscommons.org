@@ -43,7 +43,6 @@
                         <div ng-switch-when="data">
                             <ul ng-repeat="each_parent_id in row.value.dataGroups">
                                 <div ng-init="data_item=getData(each_parent_id)">
-                                    <pre>popover: {{each_parent_id}}</pre>
                                     <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id">{{data_item.name}}</button>
 
                                 </div>
