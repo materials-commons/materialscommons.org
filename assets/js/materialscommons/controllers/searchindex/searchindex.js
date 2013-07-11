@@ -9,6 +9,9 @@ function SearchIndexController($scope, $routeParams, $location, Search){
         $scope.currentPage = 1;
         $scope.size = 5;
         $scope.newPage = 1;
+        $scope.imageSource = 'partials/data/1-bf-50k.tif';
+
+
 
         $scope.all_results = Search.get_all_info($scope.keyword, function(all_results){
             $scope.total_hits = $scope.all_results.hits.total ;
