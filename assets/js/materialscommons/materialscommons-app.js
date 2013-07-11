@@ -25,6 +25,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         when('/dummy', {templateUrl: 'partials/data/dummy.html', controller: FrontPageController}).
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user', {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
+        when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
         otherwise({redirectTo: '/home'});
 }
 ]);
