@@ -4,12 +4,15 @@
     <h5>No results found for {{keyword}}</h5>
 
 </div>
-<div ng-show="results.hits.total > 0">
+
+<div  ng-show="results.hits.total > 0">
     <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small" previous-text="&laquo;" next-text="&raquo;" on-select-page="pageChanged(page)"></pagination>
 
     <h5>Total no of results found for {{keyword}}: {{results.hits.total}}</h5>
+
     <ul ng-repeat="res in results.hits.hits">
-            <a href="#/dummy">{{res._source.name}}</a>
+
+            <a ng-src={{imageSource}}>{{res._source.name}}</a>
             <nav>
                 <li>Type: {{res._source.type}}</li>
             </nav>

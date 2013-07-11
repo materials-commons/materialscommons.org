@@ -215,6 +215,7 @@ function ContactController($scope, $routeParams) {
 function HelpController($scope, $routeParams) {
     $scope.pageDescription = "Help";
 }
+
 /*
 function UploadFileController($scope,uploadService, $rootScope ){
     $scope.clicked="false";

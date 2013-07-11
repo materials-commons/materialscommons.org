@@ -22,7 +22,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
         when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
         when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
-        when('/dummy', {templateUrl: 'partials/data/dummy.html', controller: FrontPageController}).
+        when('/dummy', {templateUrl: 'partials/data/1-bf-50k.tif', controller: FrontPageController}).
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user', {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
