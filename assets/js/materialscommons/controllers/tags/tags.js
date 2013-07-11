@@ -33,9 +33,14 @@ function getMyTags(db, user)
 }
 
 function TagDataController($scope, $routeParams, $location, Mcdb) {
-    $scope.tag = "c";
+    $scope.tag = $routeParams.tag;
     $scope.mcdb = Mcdb.db();
-    Mcdb.query("docs_by_tag_and_user", {startkey:["c"], endkey:["c", {}]});
+
+    Mcdb.query("docs_by_tag_and_user", {startkey:[$scope.tag], endkey:[$scope.tag, $routeParams.user ? $routeParams.user : {}]});
+
+    $scope.editData = function(id) {
+        $location.path("/data/edit/" + id);
+    }
 }
 
 //function TestQueryController($scope, cornercouch)

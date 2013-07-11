@@ -1,0 +1,53 @@
+<div class="span10 offset1">
+    <div class="row-fluid">
+        <h3>Edit Data</h3>
+
+        <form>
+            <label>Name:</label>
+            <input ng-model="doc.name" type="text" readonly>
+
+            <label>Description:</label>
+            <input ng-model="doc.description" type="text" readonly>
+
+            <label>Date Added:</label>
+            <input ng-model="doc.date" type="text" readonly>
+
+            <label>Access:</label>
+            <input ng-model="doc.access" type="text" readonly>
+
+            <label>Owner:</label>
+            <input ng-model="doc.owner" type="text" readonly>
+        </form>
+
+        <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
+            <button type="button" class="close" ng-click="removeTag($index);">&times;</button>{{ tag }}
+        </span>
+
+    </div>
+
+    <div class="row-fluid">
+        <form class="form-horizontal">
+            <label>Create New Tag</label>
+            <input ui-keypress="{13: 'keypressCallback($event)'}" ng-model="new_tag">
+            <label>Tags to add</label>
+            <select class="span3" ng-model="tag_to_add"
+                    ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="tag in tagchoices">{{ tag }}</option>
+            </select>
+            <button ng-click="addTag()">Add Tag</button>
+        </form>
+    </div>
+
+    <div class="row-fluid" style="margin-top: 20px">
+        <button type="button" class="btn btn-primary" ng-click="saveData()">Save</button>
+        <button type="button" class="btn btn-danger" ng-click="cancel()">Cancel</button>
+    </div>
+
+    <h3>tag_to_add</h3>
+    {{ tag_to_add }}
+
+    <h3>new_tag</h3>
+    {{ new_tag }}
+</div>

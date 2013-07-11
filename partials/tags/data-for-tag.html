@@ -18,7 +18,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="row in mcdb.rows | filter:query">
+                <tr ng-repeat="row in mcdb.rows | filter:query" style="cursor:pointer" ng-click="editData(row.value._id)">
                     <td>{{ row.value.name }}</td>
                     <td>{{ row.value.description }}</td>
                     <td>
@@ -28,7 +28,8 @@
                     </td>
                     <td>
                         <ul>
-                            <li ng-repeat="metatag in row.value.metaTags">{{ metatag.name }}:{{ metatag.value }}</li>
+                            <li ng-repeat="metatag in row.value.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value }}</li>
+                            <li ng-show="row.value.metaTags.length > 10">... ({{ row.value.metaTags.length-10 }} more)</li>
                         </ul>
                     </td>
                 </tr>
