@@ -55,7 +55,7 @@ app.run(function ($rootScope, $location, User) {
 //            setActiveMainNav("#findmodels");
 //        }
 
-        if (!User.Authenticated){
+        if (!User.isAuthenticated()){
             return ;
         }
 
