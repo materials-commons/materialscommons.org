@@ -56,7 +56,7 @@ app.run(function ($rootScope, $location, User) {
 //            setActiveMainNav("#findmodels");
 //        }
 
-        if (!User.isAuthenticated()){
+        if (bypasslogin){
             return ;
         }
 

@@ -9,6 +9,7 @@
         "attachments":null,
         "modules": null,
         "properties": null,
-        "users": null
+        "users": null,
+        "db":null
     }
 }

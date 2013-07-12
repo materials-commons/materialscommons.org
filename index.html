@@ -164,6 +164,14 @@
 <script>
     var users = require('users');
     var _ = require('underscore')._;
+    var db = require("db").use("materialscommons");
+    var bypasslogin = false;
+
+    var config = db.getDoc("testconfig", null, function(err, response) {
+        if(! err) {
+            bypasslogin = response.bypasslogin;
+        }
+    });
 </script>
 
 <script>
