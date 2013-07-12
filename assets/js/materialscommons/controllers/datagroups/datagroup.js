@@ -6,7 +6,7 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootS
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner");
     $scope.list = $scope.mcdb.query("materialscommons-app", "all_datagroups");
-
+    $scope.predicate = 'user';
     /*
     $scope.columnCollection = [
         {label: 'Name', map: 'name'},
@@ -20,6 +20,11 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootS
     if ($scope.each_parent_id){
         $scope.item = $scope.mcdb.getDoc($scope.each_parent_id);
     }
+
+    $scope.myValueFunction = function(row) {
+      // console.log($scope.predicate);
+      //  return row.value.users[0];
+    };
 
     /*
     if ($routeParams.subpage == "data_item"){
