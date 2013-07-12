@@ -11,25 +11,6 @@ function DataGroupController($scope, cornercouch, User, $location) {
         $scope.item = $scope.mcdb.getDoc($scope.each_parent_id);
     }
 
-    $scope.myValueFunction = function (row) {
-        // console.log($scope.predicate);
-        //  return row.value.users[0];
-    };
-
-    /*
-     if ($routeParams.subpage == "data_item"){
-     // alert($routeParams.each_parent_id);
-     $scope.item = $scope.mcdb.getDoc($routeParams.each_parent_id);
-     //$scope.datagroup = $routeParams.each_parent_id;
-     //$scope.datagroup = $scope.getData($routeParams.each_parent_id);
-
-     }
-
-     $scope.display_parent = function (each_parent_id) {
-     $location.path("/parent/data_item/" + each_parent_id);
-     }
-     */
-
     $scope.getData = function (id) {
         item = $scope.mcdb.getDoc(id);
         return item;
@@ -52,7 +33,6 @@ function DataGroupController($scope, cornercouch, User, $location) {
 
     }
 
-
     $scope.myDate = "12-12-2012";
     $scope.endDate = "13-13-2012";
 
@@ -61,10 +41,5 @@ function DataGroupController($scope, cornercouch, User, $location) {
             $location.path("/data/edit/" + value._id);
         }
     }
-
-    $scope.matchInDocument = function(item) {
-        console.dir(item);
-    }
-
 }
 
