@@ -10,7 +10,7 @@
             <th>Meta Tags</th>
         </tr>
         <tr>
-            <tr ng-repeat="row in data_by_user.data.rows | data_by_user: [email_address]">
+            <tr ng-repeat="row in data_by_user.data.rows">
                 <td>{{row.value.name}}</td>
                 <td>{{row.key[0]}}</td>
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
