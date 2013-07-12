@@ -22,7 +22,7 @@ function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootS
     }
 
     $scope.myValueFunction = function(row) {
-      // console.log($scope.predicate);
+       console.log(value);
       //  return row.value.users[0];
     };
 
