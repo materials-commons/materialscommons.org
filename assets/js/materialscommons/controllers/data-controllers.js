@@ -12,6 +12,10 @@ function DataEditController($scope, $routeParams, $location, $window, Mcdb) {
     }
 
     $scope.addTag = function() {
+        if (! $scope.doc.tags) {
+            $scope.doc.tags = new Array();
+        }
+
         if (! _.contains($scope.doc.tags, $scope.tag_to_add)) {
             $scope.doc.tags.push($scope.tag_to_add);
         }
