@@ -1,4 +1,4 @@
-var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp',
+var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective','treedirective', 'jqyoui', 'AngularStomp',
                             'ui.bootstrap', 'smartTable.table', 'smartTable.column', 'flash']);
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -26,6 +26,8 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user', {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
+        when('/tree_view', {templateUrl: 'partials/tree_view.html', controller: TreeController}).
+
         otherwise({redirectTo: '/home'});
 }
 ]);

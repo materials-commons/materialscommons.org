@@ -1,3 +1,7 @@
+.tree {
+    margin-left: 20px;
+    display: block;
+}
 
 nav li {
     display: inline-block;
