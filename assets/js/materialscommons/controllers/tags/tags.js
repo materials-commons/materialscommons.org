@@ -42,12 +42,3 @@ function TagDataController($scope, $routeParams, $location, Mcdb) {
         $location.path("/data/edit/" + id);
     }
 }
-
-//function TestQueryController($scope, cornercouch)
-//{
-//    $scope.server = cornercouch();
-//    $scope.server.session();
-//    $scope.mcdb = $scope.server.getDB("materialscommons");
-//
-//    $scope.mcdb.query("materialscommons-app", "datagroups_with_data", {startkey:["01bbcbcbbe0a473899014e9f2f2fe04d"], endkey:["01bbcbcbbe0a473899014e9f2f2fe04d",0]});
-//}
