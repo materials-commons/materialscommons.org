@@ -1,10 +1,10 @@
 
-function DataGroupController($scope, $routeParams, cornercouch, $timeout, $rootScope, $location){
+function DataGroupController($scope, $routeParams, cornercouch, User, $timeout, $rootScope, $location){
 
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner");
+    $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner", {startkey: [User.get_username()], endkey:[User.get_username(), "public"]});
     $scope.list = $scope.mcdb.query("materialscommons-app", "all_datagroups");
     $scope.predicate = 'user';
     /*

@@ -165,11 +165,16 @@
     var users = require('users');
     var _ = require('underscore')._;
     var db = require("db").use("materialscommons");
-    var bypasslogin = false;
+    var mcglobals = {};
+    mcglobals.bypasslogin = false;
+    mcglobals.username = null;
 
     var config = db.getDoc("testconfig", null, function(err, response) {
         if(! err) {
-            bypasslogin = response.bypasslogin;
+            mcglobals.bypasslogin = response.bypasslogin;
+            if (response.username) {
+                mcglobals.username = response.username;
+            }
         }
     });
 </script>
