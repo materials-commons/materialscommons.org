@@ -2,6 +2,7 @@ function TagListController($scope, $routeParams, $location, cornercouch, User)
 {
     $scope.server = cornercouch();
     $scope.server.session();
+    $scope.listtype = $routeParams.listtype;
     $scope.mcdb = $scope.server.getDB("materialscommons");
     if ($routeParams.listtype == "all")
     {
@@ -10,9 +11,9 @@ function TagListController($scope, $routeParams, $location, cornercouch, User)
     }
     else if ($routeParams.listtype == "mytags")
     {
-        // $routeParams.listtype == "mytags"
         $scope.tagHeader = "My Tags";
-        //getMyTags($scope.mcdb, User.get_username());
+        var username = User.get_username();
+        $scope.mcdb.query("materialscommons-app", "tags_by_user", {group_level:2, startkey:[username], endkey:[username, {}]});
 
     }
 
