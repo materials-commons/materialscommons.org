@@ -17,8 +17,12 @@ function TagListController($scope, $routeParams, $location, cornercouch, User)
 
     }
 
-    $scope.listDataForTag = function(tag) {
-        $location.path("/tags/data/bytag/" + tag + "/");
+//    $scope.listDataForTag = function(tag) {
+  //      $location.path("/tags/data/bytag/" + tag + "/");
+
+    $scope.listDataForTag = function(key) {
+        var tag = $scope.listtype == "mytags" ? key[1] : key[0];
+        $location.path("/tags/data/bytag/" + tag +"/" + User.get_username());
     }
 
 }
@@ -27,8 +31,7 @@ function TagListController($scope, $routeParams, $location, cornercouch, User)
 function TagDataController($scope, $routeParams, $location, Mcdb) {
     $scope.tag = $routeParams.tag;
     $scope.mcdb = Mcdb.db();
-
-    Mcdb.query("docs_by_tag_and_user", {startkey:[$scope.tag], endkey:[$scope.tag, $routeParams.user ? $routeParams.user : {}]});
+    $scope.mcdb.query("materialscommons-app", "docs_by_user_and_tag", {startkey:[$scope.user], endkey:[$routeParams.user, $scope.tag]});
 
     $scope.editData = function(id) {
         $location.path("/data/edit/" + id);

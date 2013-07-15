@@ -1,5 +1,6 @@
 [
-{"type":"mcuser","fullname":"V. Glenn Tarcea","username":"gtarcea","email":"gtarcea@umich.edu","password":"gtarcea123","_id":"f241e0753b881964913317af527d5e1a"},
-{"type":"mcuser","fullname":"H.V. Jagadish","username":"jag","email":"jag@umich.edu","password":"jag123","_id":"f241e0753b881964913317af527d68bb"},
-{"type":"mcuser","fullname":"Anonymous","username":"any","email":"any@body.com","password":"any123","_id":"f241e0753b881964913317af527d7289"}
+{"type":"mcuser","fullname":"V. Glenn Tarcea","username":"vgt","email":"vgt@umich.edu","password":"vgt","_id":"f9f00521a68da83db14a5578971f99be"},
+{"type":"mcuser","fullname":"esitzmann","username":"esitzmann","email":"esitzmann@umich.edu","password":"abc","_id":"f9f00521a68da83db14a5578971f9efd"},
+{"type":"mcuser","fullname":"H.V. Jagadish","username":"jag","email":"jag@umich.edu","password":"jag123","_id":"f9f00521a68da83db14a5578971fa5d2"},
+{"type":"mcuser","fullname":"Anonymous","username":"any","email":"any@body.com","password":"any123","_id":"f9f00521a68da83db14a5578971fa8cf"}
 ]
