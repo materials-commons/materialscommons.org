@@ -2,9 +2,17 @@
     {
         "type":"mcuser",
         "fullname":"V. Glenn Tarcea",
-        "username":"gtarcea",
-        "email":"gtarcea@umich.edu",
-        "password":"gtarcea123"
+        "username":"vgt",
+        "email":"vgt@umich.edu",
+        "password":"vgt"
+    },
+
+    {
+        "type":"mcuser",
+        "fullname":"esitzmann",
+        "username":"esitzmann",
+        "email":"esitzmann@umich.edu",
+        "password":"abc"
     },
 
     {
