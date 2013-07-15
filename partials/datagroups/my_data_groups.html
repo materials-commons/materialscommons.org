@@ -1,50 +1,58 @@
+<div class="span12 offset1">
+    <h4>My DataGroups</h4>
+    <div  class="row-fluid">
+        Filter : <input ng-model="query">
+    </div>
 
-<h1>All dataGroups</h1>
-<div ng-controller="DataGroupController">
-    Filter : <input ng-model="query">
+    <div class="row-fluid">
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <thead>
+                <th style="width:15%;"><font color="white">Name</font></a></th>
+                <th style="width:12%;"><font color="white"> Updated At</font></a></th>
+                <th style="width:40%;"><a><font color="white"> Data</font></a></th>
+                <th style="width:15%;"><a><font color="white"> Parent DataGroup</font</a></th>
+                <th style="width:18%;"><a><font color="white"> Note</font></a></th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in datagroup_by_user.data.rows | filter:query ">
+                <td>{{row.value.name}}</td>
+                <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
+                <td>
+                    <div ng-show="row.value.data.length > 0">
+                        <accordion>
+                            <accordion-group heading="Data">
 
+                                <li ng-repeat="id in row.value.data">
+                                    <div ng-init="data_item=getData(id)">
+                                        <u>Name</u> :{{data_item.name}}
+                                        <u>Type</u> : {{data_item.type}}
+                                        <u>Owner</u> : {{data_item.owner}}
+                                    </div>
+                                </li>
 
-    <table class="table">
-        <tr>
-            <th><a ng-model="namee"><font color="white"> DataGroup Name</font></a></th>
-            <th><a></a><font color="white"> Type</font></a></th>
-            <th><a ng-click="predicate = 'users'"><font color="white"> User</font></a></th>
-            <th><a><font color="white"> Parent DataGroup</font</a></th>
-            <th><a><font color="white"> Data</font></a></th>
-        </tr>
+                            </accordion-group>
+                        </accordion>
+                    </div>
 
+                </td>
+                <td ng-repeat="each_parent_id in row.value.parentDataGroups">
+                    <div ng-init="data_item=getData(each_parent_id)">
+                        <button type="button" class="btn" data-unique="1" data-placement="right"
+                                data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'"
+                                data-hide="each_parent_id">{{data_item.name}}
+                        </button>
+                    </div>
+                </td>
+                <td></td>
 
-        <tr ng-repeat="row in list.data.rows | filter:query |  private ">
-            <td>{{row.value.name}}</td>
-            <td>{{row.value.type}}</td>
-            <td>{{row.value.users[0]}}</td>
-            <td ng-repeat="each_parent_id in row.value.parentDataGroups">
-                <div ng-init="data_item=getData(each_parent_id)">
-                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id" >{{data_item.name}}</button>
-                </div>
-            </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <td>
-                <div ng-show="row.value.data.length > 0">
-                    <accordion>
-                    <accordion-group heading="Data" >
-
-                            <li ng-repeat="id in row.value.data">
-                                <div ng-init="data_item=getData(id)">
-                                       <u>Name</u> :{{data_item.name}}
-                                       <u>Type</u> : {{data_item.type}}
-                                       <u>Owner</u> : {{data_item.owner}}
-                                </div>
-                            </li>
-
-                    </accordion-group>
-                    </accordion>
-                </div>
-
-            </td>
-        </tr>
-    </table>
 </div>
+
 
 
 

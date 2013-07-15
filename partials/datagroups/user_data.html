@@ -6,11 +6,11 @@
     </div>
 
     <div class="row-fluid">
-
         <table class="table table-striped mc-table-hover table-condensed mc-table">
             <thead>
             <tr>
                 <th>Name</th>
+                <th>DataGroup</th>
                 <th>Created At</th>
                 <th>Tags</th>
                 <th>Meta Tags</th>
@@ -20,6 +20,10 @@
             <tr ng-repeat="row in data_by_user.data.rows | filter:query" ng-click="editData(row.value);"
                 style="cursor:pointer">
                 <td>{{row.value.name}}</td>
+                <td ng-repeat="id in row.value.dataGroups">
+                        {{getData(id).name}}
+                </td>
+
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
                 <td>
                     <ul style="list-style-type:none">

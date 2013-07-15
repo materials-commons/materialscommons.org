@@ -18,7 +18,7 @@ function TagListController($scope, $routeParams, $location, cornercouch, User)
     }
 
     $scope.listDataForTag = function(tag) {
-        $location.path("/tags/data/bytag/" + tag +"/");
+        $location.path("/tags/data/bytag/" + tag + "/");
     }
 
 }

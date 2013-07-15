@@ -4,8 +4,14 @@ function DataGroupController($scope, cornercouch, User, $location) {
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner", {startkey: [User.get_username()], endkey: [User.get_username(), "public"]});
-    $scope.list = $scope.mcdb.query("materialscommons-app", "all_datagroups");
+    $scope.datagroup_by_user = $scope.mcdb.query("materialscommons-app", "datagroup_by_user",{startkey: [User.get_username()], endkey: [User.get_username(), "public"]});
+    //alert(User.get_username());
+    //$scope.list = $scope.mcdb.query("materialscommons-app", "all_datagroups");
     $scope.predicate = 'user';
+
+    $scope.myDate = "01-01-2013";
+    $scope.endDate = "09-12-2013";
+
 
     if ($scope.each_parent_id) {
         $scope.item = $scope.mcdb.getDoc($scope.each_parent_id);
@@ -33,8 +39,6 @@ function DataGroupController($scope, cornercouch, User, $location) {
 
     }
 
-    $scope.myDate = "12-12-2012";
-    $scope.endDate = "13-13-2012";
 
     $scope.editData = function(value) {
         if (value.type == "data") {
