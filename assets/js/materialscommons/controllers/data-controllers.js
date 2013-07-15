@@ -1,7 +1,14 @@
-function DataEditController($scope, $routeParams, $location, $window, Mcdb) {
+function DataEditController($scope, $routeParams, $window, Mcdb) {
 
     $scope.mcdb = Mcdb.db();
     $scope.doc = Mcdb.db().getDoc($routeParams.id);
+
+    $scope.tagchoices = new Array();
+    $scope.mcdb.query("materialscommons-app", "tags_by_count", {group_level: 1}).success(function (data) {
+        data.rows.forEach(function(kv) {
+            $scope.tagchoices.push(kv.key[0]);
+        });
+    });
 
     $scope.removeTag = function (index) {
         $scope.doc.tags.splice(index, 1);
@@ -20,13 +27,6 @@ function DataEditController($scope, $routeParams, $location, $window, Mcdb) {
             $scope.doc.tags.push($scope.tag_to_add);
         }
     }
-
-    $scope.tagchoices = new Array();
-    $scope.mcdb.query("materialscommons-app", "tags_by_count", {group_level: 1}).success(function (data) {
-        data.rows.forEach(function(kv) {
-           $scope.tagchoices.push(kv.key[0]);
-        });
-    });
 
     $scope.saveData = function () {
         $scope.doc.save().error(function (data, status) {

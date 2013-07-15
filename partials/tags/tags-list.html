@@ -18,7 +18,8 @@
                 <tbody>
                 <tr ng-repeat="row in mcdb.rows | filter:query" style="cursor:pointer"
                     ng-click="listDataForTag(row.key[0]);">
-                    <td>{{ row.key[0] }}</td>
+                    <td ng-show="listtype == 'all'">{{ row.key[0] }}</td>
+                    <td ng-show="listtype == 'mytags'">{{ row.key[1] }}</td>
                     <td>{{ row.value }}</td>
                 </tr>
                 </tbody>

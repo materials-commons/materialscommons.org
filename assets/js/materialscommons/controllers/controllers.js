@@ -107,12 +107,14 @@ function ChartController($scope, $routeParams, cornercouch) {
     $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
 }
 
-function FrontPageController($scope, $routeParams, $location, ngstomp, cornercouch) {
+function FrontPageController($scope, $location) {
     $scope.messages = [];
     $scope.sent = 0;
     $scope.search_key = function () {
         $location.path("/searchindex/search_key/" + $scope.keyword);
     }
+
+
 
 //    $scope.server = cornercouch();
 //    $scope.server.session();
@@ -153,11 +155,8 @@ function FrontPageController($scope, $routeParams, $location, ngstomp, cornercou
 
 }
 
-function HomeController($scope, cornercouch) {
-    $scope.server = cornercouch();
-    $scope.server.session();
-    $scope.mcdb = $scope.server.getDB("materialscommons");
-
+function HomeController($scope, Mcdb) {
+    $scope.mcdb = Mcdb.db();
     $scope.mcdb.query("materialscommons-app", "news_by_date", {descending: true});
 }
 
