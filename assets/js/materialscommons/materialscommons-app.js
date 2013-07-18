@@ -5,7 +5,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     Stomp.WebSocketClass = SockJS;
     $routeProvider.
         when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
-        when('/data', {templateUrl: 'partials/under-construction.html', controller: DataSearchController}).
+        when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).
         when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
         when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
         when('/searchindex/:subpage/:name', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
@@ -26,8 +26,8 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user', {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
-        when('/tree_view', {templateUrl: 'partials/tree_view.html', controller: TreeController}).
-
+        //when('/tree_view', {templateUrl: 'partials/tree_view.html', controller: TreeController}).
+        when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: TagListController}).
         otherwise({redirectTo: '/home'});
 }
 ]);

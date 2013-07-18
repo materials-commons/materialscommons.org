@@ -70,5 +70,42 @@ Filter.filter('data_by_user', function(){
         return return_array;
 
     }
-})
+});
+
+
+//This is not used because in full text search index is getting complicated
+// because we have to apply filter in service to get paginated results
+Filter.filter('elastic_search_filter_data', function(){
+    return function(list){
+        var return_array = [];
+        for(var i=0; i< list.length;i++){
+
+            if (list[i]._source.type == "data"){
+                return_array.push(list[i]);
+            }
+        }
+        return return_array;
+
+    }
+});
+
+Filter.filter('truncate', function(){
+    return function (text, length, end) {
+        if (isNaN(length))
+            length = 10;
+
+        if (end === undefined)
+            end = ".....";
+
+        if (text.length <= length || text.length - end.length <= length) {
+            return text;
+        }
+        else {
+            return String(text).substring(0, length-end.length) + end;
+        }
+
+    };
+});
+
+
 

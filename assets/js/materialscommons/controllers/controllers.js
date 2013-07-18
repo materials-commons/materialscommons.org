@@ -161,8 +161,19 @@ function HomeController($scope, Mcdb) {
 }
 
 
-function DataSearchController($scope, $routeParams) {
+function DataSearchController($scope, Mcdb, $routeParams, $location) {
     // Nothing to do yet
+    $scope.mcdb = Mcdb.db();
+    $scope.imageSource = 'assets/img/BrightField.jpg';
+
+    $scope.get_full_data_with_id = function(id){
+        $location.path("/data/data/" + id);
+
+    }
+
+    if ($routeParams.id){
+        $scope.full_data = $scope.mcdb.getDoc($routeParams.id);
+    }
 }
 
 function ModelsSearchController($scope, $routeParams) {

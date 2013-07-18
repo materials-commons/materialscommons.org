@@ -1,9 +1,116 @@
-<div class="row">
-    <div class="offset3 span9">
-        <h1>Overview</h1>
-        <p>
-            <b>Placeholder page to find data.</b>
-        </p>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <h4>Report for {{full_data.name}}</h4>
+    <div class="span3" >
+        <!--Sidebar content-->
+        <img width="300" height="350" ng-src="{{imageSource}}">
+
+    </div>
+
+    <div class="span8" style="background-color:#dcdcdc; overflow:hidden;">
+        <!--Body content-->
+        <div ng-switch on="full_data.type">
+            <div ng-switch-when="datagroup">
+                <table>
+                    <tr>
+                        <th>Type:</th>
+                        <td>{{full_data.type}}</td>
+                    </tr>
+                    <tr>
+                        <th>User:</th>
+                        <td>{{full_data.users[0]}}</td>
+                    </tr>
+                    <tr>
+                        <th>Date:</th>
+                        <td>{{get_utc_obj(full_data.dateAdded).toDateString()}}</td>
+                    </tr>
+                    <tr>
+                        <th>MetaTags</th>
+                        <td>
+                            <li ng-repeat="metatag in full_data.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value
+                                }}
+                            </li>
+                            <li ng-show="full_data.metaTags.length > 10">... ({{ full_data.metaTags.length-10 }} more)</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{full_data.description}}</td>
+                    </tr>
+                    <tr>
+                        <th>ParentDataGroups:</th>
+                        <td ng-controller="DataGroupController">
+                            <ul ng-repeat="each_parent_id in full_data.parentDataGroups">
+                                <div ng-init="data_item=getData(each_parent_id)">
+                                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id">{{data_item.name}}</button>
+
+                                </div>
+                            </ul>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th> Text:</th>
+                        <td>{{full_data.text}}</td>
+                    </tr>
+
+                </table>
+
+            </div>
+            <div ng-switch-when="data">
+                <table>
+                    <tr>
+                        <th>Type:</th>
+                        <td>{{full_data.type}}</td>
+                    </tr>
+                    <tr>
+                        <th>User:</th>
+                        <td>{{full_data.owner}}</td>
+                    </tr>
+                    <tr>
+                        <th>Date:</th>
+                        <td>{{get_utc_obj(full_data.dateAdded).toDateString()}}</td>
+                    </tr>
+                    <tr>
+                        <th>MetaTags</th>
+                        <td>
+                            <li ng-repeat="metatag in full_data.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value
+                                }}
+                            </li>
+                            <li ng-show="full_data.metaTags.length > 10">... ({{ full_data.metaTags.length-10 }} more)</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{full_data.description}}</td>
+                    </tr>
+                    <tr>
+                        <th>DataGroups:</th>
+                        <td  ng-controller="DataGroupController">
+
+                           <ul ng-repeat="each_parent_id in full_data.dataGroups">
+                               <div ng-init="data_item=getData(each_parent_id)">
+                                   <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id">{{data_item.name}}</button>
+
+                               </div>
+                           </ul>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th> Text:</th>
+                        <td>{{full_data.text}}</td>
+                    </tr>
+
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+
     </div>
 </div>
 

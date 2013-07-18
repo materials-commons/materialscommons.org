@@ -1,0 +1,38 @@
+
+<div class="span10 offset1">
+    <h3>Data for tag: {{ tag_name }}</h3>
+     <div class="row-fluid">
+
+        <div class="well">
+            <table class="table table-striped mc-table-hover table-condensed mc-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Tags</th>
+                    <th>Meta Tags</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in all_tags_by_tag_name.data.rows" style="cursor:pointer" ng-click="editData(row.value._id)">
+                    <td>{{ row.value.name }}</td>
+                    <td>{{ row.value.description }}</td>
+                    <td>
+                        <ul style="list-style-type:none">
+                            <li ng-repeat="tag in row.value.tags"><span class="label label-info">{{ tag }}</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="metatag in row.value.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value }}</li>
+                            <li ng-show="row.value.metaTags.length > 10">... ({{ row.value.metaTags.length-10 }} more)</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>

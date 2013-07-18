@@ -3,8 +3,11 @@ function DataGroupController($scope, cornercouch, User, $location) {
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner", {startkey: [User.get_username()], endkey: [User.get_username(), "public"]});
+    $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner",{startkey: [User.get_username()], endkey: [User.get_username(), "public"]});
     $scope.datagroup_by_user = $scope.mcdb.query("materialscommons-app", "datagroup_by_user",{startkey: [User.get_username()], endkey: [User.get_username(), "public"]});
+
+
+    //$scope.data_with_datagroups = $scope.mcdb.query("materialscommons-app", "data_with_datagroups");
     //alert(User.get_username());
     //$scope.list = $scope.mcdb.query("materialscommons-app", "all_datagroups");
     $scope.predicate = 'user';
@@ -45,5 +48,12 @@ function DataGroupController($scope, cornercouch, User, $location) {
             $location.path("/data/edit/" + value._id);
         }
     }
+
+    $scope.one_query = function(id){
+        $scope.result = $scope.mcdb.query("materialscommons-app", {start_key: [id, User.get_username()] , endkey: [id, User.get_username(), 1]});
+        return $scope.result;
+    }
 }
+
+
 

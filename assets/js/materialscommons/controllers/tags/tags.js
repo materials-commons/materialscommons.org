@@ -25,6 +25,15 @@ function TagListController($scope, $routeParams, $location, cornercouch, User)
         $location.path("/tags/data/bytag/" + tag +"/" + User.get_username());
     }
 
+    if ($routeParams.tag_name){
+       // alert($routeParams.tag_name);
+        $scope.tag_name = $routeParams.tag_name;
+        $scope.all_tags_by_tag_name = $scope.mcdb.query("materialscommons-app", "docs_by_tag", {key:$routeParams.tag_name});
+
+
+    }
+
+
 }
 
 
@@ -36,4 +45,9 @@ function TagDataController($scope, $routeParams, $location, Mcdb) {
     $scope.editData = function(id) {
         $location.path("/data/edit/" + id);
     }
+
+    $scope.get_alldata_for_tag = function(tag){
+        $location.path("/tags/tag_info/" + tag);
+    }
+
 }

@@ -4,7 +4,6 @@
     <div class="row-fluid">
         Search: <input ng-model="query">
     </div>
-
     <div class="row-fluid">
         <table class="table table-striped mc-table-hover table-condensed mc-table">
             <thead>
@@ -16,18 +15,22 @@
                 <th>Meta Tags</th>
             </tr>
             </thead>
-            <tbody>
-            <tr ng-repeat="row in data_by_user.data.rows | filter:query" ng-click="editData(row.value);"
+            <tbody>         ]
+
+            <tr ng-repeat="row in data_by_user.data.rows | filter:query"
                 style="cursor:pointer">
                 <td>{{row.value.name}}</td>
-                <td ng-repeat="id in row.value.dataGroups">
-                        {{getData(id).name}}
+                <td ng-controller="DataGroupController">
+                    <ul ng-repeat="each_parent_id in row.value.dataGroups">
+                        <div ng-init="data_item=getData(row.value.dataGroups)">
+                            <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'" data-hide="each_parent_id">{{data_item.name}}</button>
+                        </div>
+                    </ul>
                 </td>
-
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
                 <td>
                     <ul style="list-style-type:none">
-                        <li ng-repeat="tag in row.value.tags"><span class="label label-info">{{ tag }}</span></li>
+                        <li ng-repeat="tag in row.value.tags" ng-click="editData(row.value);"><span class="label label-info">{{ tag }}</span></li>
                     </ul>
                 </td>
 

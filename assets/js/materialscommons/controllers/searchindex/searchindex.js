@@ -1,5 +1,5 @@
 
-function SearchIndexController($scope, $routeParams, $location, Search){
+function SearchIndexController($scope, $routeParams, $location, Search, $filter){
 
         if ($routeParams.subpage == "search_key"){
             $scope.keyword = $routeParams.name;
@@ -7,14 +7,14 @@ function SearchIndexController($scope, $routeParams, $location, Search){
         }
         $scope.noOfPages = 1;
         $scope.currentPage = 1;
-        $scope.size = 5;
+        $scope.size = 10;
         $scope.newPage = 1;
-        $scope.imageSource = 'assets/img/BrightField.jpg';
 
 
 
         $scope.all_results = Search.get_all_info($scope.keyword, function(all_results){
-            $scope.total_hits = $scope.all_results.hits.total ;
+            $scope.total_hits = $scope.all_results.hits.total
+           // $scope.total_hits = $filter('elastic_search_filter_data')($scope.all_results.hits.hits).length;
             $scope.noOfPages = Math.round($scope.total_hits/$scope.size) ;
             $scope.$watch('currentPage', function(newPage){
                 $scope.watchPage = newPage;
