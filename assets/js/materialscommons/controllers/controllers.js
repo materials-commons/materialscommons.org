@@ -209,6 +209,15 @@ function ExploreController($scope, $routeParams) {
         itemsByPage: 10,
         selectionMode: 'single'
     };
+
+    $scope.word_list = [
+        {text: "Lorem", weight: 15},
+        {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
+        {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
+        {text: "Sit", weight: 7},
+        {text: "Amet", weight: 5}
+
+    ];
 }
 
 function AboutController($scope) {

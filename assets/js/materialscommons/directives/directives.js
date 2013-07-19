@@ -19,6 +19,25 @@ materialsdirective.directive("jqueryTable", function() {
     };
 }) ;
 
+materialsdirective.directive('wordcloud', function(){
+    return {
+        restrict: 'A',
+        transclude: true,
+        scope: { list: '=wordcloud' },
+
+        link: function(scope, element){
+            scope.$watch('list', function(list) {
+                $(element).jQCloud(list);
+            });
+
+        }
+    };
+});
+
+
+
+
+
 
 materialsdirective.directive('datepicker', function(){
     return {

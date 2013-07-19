@@ -7,15 +7,15 @@
     <div class="row-fluid">
         <table class="table table-striped mc-table-hover table-condensed mc-table">
             <thead>
-                <th style="width:15%;"><font color="white">Name</font></a></th>
-                <th style="width:12%;"><font color="white"> Updated At</font></a></th>
+                <th style="width:15%;"><font color="white">   <a href="" ng-click"">Name</a>       </font></th>
+                <th style="width:12%;"><font color="white"> Updated At</font></th>
                 <th style="width:40%;"><a><font color="white"> Data</font></a></th>
                 <th style="width:15%;"><a><font color="white"> Parent DataGroup</font</a></th>
                 <th style="width:18%;"><a><font color="white"> Note</font></a></th>
                 </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="row in datagroup_by_user.data.rows | filter:query ">
+            <tr ng-repeat="row in datagroup_by_user.data.rows | filter:query |  orderBy:'predicate':reverse ">
                 <td>{{row.value.name}}</td>
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
                 <td>
