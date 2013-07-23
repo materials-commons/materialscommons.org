@@ -26,7 +26,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user', {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
-        //when('/tree_view', {templateUrl: 'partials/tree_view.html', controller: TreeController}).
+        when('/tree_view', {templateUrl: 'partials/tree_view.html', controller: TreeController}).
         when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: TagListController}).
         otherwise({redirectTo: '/home'});
 }

@@ -167,7 +167,6 @@ function DataSearchController($scope, Mcdb, $routeParams, $location) {
     $scope.imageSource = 'assets/img/BrightField.jpg';
 
     $scope.get_full_data_with_id = function(id){
-        alert(id);
         $location.path("/data/data/" + id);
 
     }

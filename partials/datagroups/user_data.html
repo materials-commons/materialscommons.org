@@ -2,7 +2,7 @@
     <h1>My Data </h1>
 
     <div class="row-fluid">
-        Search: <input ng-model="query">
+        Filter by: <input ng-model="query">
     </div>
     <div class="row-fluid">
         <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -19,7 +19,7 @@
 
             <tr ng-repeat="row in data_by_user.data.rows | filter:query"
                 style="cursor:pointer" >
-                <td><a href="#/data/data/{{row.value._id}}">{{row.value.name}}</a></td>
+                <td><a href="#/data/edit/{{row.value._id}}">{{row.value.name}}</a></td>
                 <td ng-controller="DataGroupController">
                     <ul ng-repeat="each_parent_id in row.value.dataGroups">
                         <div ng-init="data_item=getData(row.value.dataGroups)">

@@ -14,7 +14,7 @@ function DataGroupController($scope, cornercouch, User, $location) {
 
     $scope.myDate = "06/25/2013";
     $scope.endDate = "07/25/2013";
-
+    $scope.type="data";
 
     if ($scope.each_parent_id) {
         $scope.item = $scope.mcdb.getDoc($scope.each_parent_id);
