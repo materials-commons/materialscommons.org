@@ -18,8 +18,8 @@
             <tbody>
 
             <tr ng-repeat="row in data_by_user.data.rows | filter:query"
-                style="cursor:pointer">
-                <td>{{row.value.name}}</td>
+                style="cursor:pointer" >
+                <td><a href="#/data/data/{{row.value._id}}">{{row.value.name}}</a></td>
                 <td ng-controller="DataGroupController">
                     <ul ng-repeat="each_parent_id in row.value.dataGroups">
                         <div ng-init="data_item=getData(row.value.dataGroups)">
@@ -36,11 +36,28 @@
 
                 <td>
                     <ul>
-                        <li ng-repeat="metatag in row.value.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value
-                            }}
+                        <li ng-repeat="metatag in row.value.metaTags | limitTo:10">
+                            {{ metatag.name }}:{{ metatag.value }}
+
                         </li>
-                        <li ng-show="row.value.metaTags.length > 10">... ({{ row.value.metaTags.length-10 }} more)</li>
+                        <div ng-show="row.value.metaTags.length > 10">
+                            <accordion>
+                                <accordion-group heading="... more">
+
+                                    <li ng-repeat="metatag in row.value.metaTags">
+                                        {{metatag.name}}
+                                        {{metatag.value}}
+
+                                    </li>
+
+                                </accordion-group>
+                            </accordion>
+                        </div>
                     </ul>
+
+                <td>
+
+                </td>
                 </td>
             </tr>
             </tbody>

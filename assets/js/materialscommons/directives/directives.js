@@ -37,8 +37,6 @@ materialsdirective.directive('wordcloud', function(){
 
 
 
-
-
 materialsdirective.directive('datepicker', function(){
     return {
         restrict: 'A',

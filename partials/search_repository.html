@@ -9,7 +9,7 @@
         <ul ng-repeat="res in results.hits.hits">
             <div ng-controller="DataSearchController">
                 <h5><a  ng-href="{{imageSource}}">{{res._source.name}}</a> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                <a  ng-click="get_full_data_with_id(res._source._id)">Full Data</a></h5>
+                <a  ng-click="get_full_data_with_id(res._source._id)" >Full Data</a></h5>
             </div>
 
             <p ng-show="res._source.text.length > 0">

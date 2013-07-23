@@ -25,12 +25,27 @@
                         <td>{{get_utc_obj(full_data.dateAdded).toDateString()}}</td>
                     </tr>
                     <tr>
-                        <th>MetaTags</th>
+                        <th>MetaTagss</th>
                         <td>
-                            <li ng-repeat="metatag in full_data.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value
-                                }}
-                            </li>
-                            <li ng-show="full_data.metaTags.length > 10">... ({{ full_data.metaTags.length-10 }} more)</li>
+                            <ul>
+                                <li ng-repeat="metatag in full_data.metaTags | limitTo:10">
+                                    {{ metatag.name }}:{{ metatag.value }}
+
+                                </li>
+                                <div ng-show="full_data.metaTags.length > 10">
+                                    <accordion>
+                                        <accordion-group heading="... more">
+
+                                            <li ng-repeat="metatag in full_data.metaTags">
+                                                {{metatag.name}}
+                                                {{metatag.value}}
+
+                                            </li>
+
+                                        </accordion-group>
+                                    </accordion>
+                                </div>
+                            </ul>
                         </td>
                     </tr>
                     <tr>
@@ -75,10 +90,25 @@
                     <tr>
                         <th>MetaTags</th>
                         <td>
-                            <li ng-repeat="metatag in full_data.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value
-                                }}
-                            </li>
-                            <li ng-show="full_data.metaTags.length > 10">... ({{ full_data.metaTags.length-10 }} more)</li>
+                            <ul>
+                                <li ng-repeat="metatag in full_data.metaTags | limitTo:10">
+                                    {{ metatag.name }}:{{ metatag.value }}
+
+                                </li>
+                                <div ng-show="full_data.metaTags.length > 10">
+                                    <accordion>
+                                        <accordion-group heading="... more">
+
+                                            <li ng-repeat="metatag in full_data.metaTags">
+                                                {{metatag.name}}
+                                                {{metatag.value}}
+
+                                            </li>
+
+                                        </accordion-group>
+                                    </accordion>
+                                </div>
+                            </ul>
                         </td>
                     </tr>
                     <tr>

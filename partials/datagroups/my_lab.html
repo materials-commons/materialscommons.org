@@ -1,4 +1,4 @@
-<h1>My Lab Data</h1>
+<h1>My Lab DataGroups</h1>
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span2">
@@ -25,7 +25,7 @@
                             <td>{{row.value.name}}</td>
                             <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
                             <td>
-                                <div ng-controller="" ng-show="row.value.data.length > 0">
+                                <div ng-controller="DataGroupController" ng-show="row.value.data.length > 0">
                                     <accordion>
                                         <accordion-group heading="Data">
                                             <li ng-repeat="id in row.value.data">

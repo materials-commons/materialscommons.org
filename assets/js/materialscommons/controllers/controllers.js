@@ -167,8 +167,13 @@ function DataSearchController($scope, Mcdb, $routeParams, $location) {
     $scope.imageSource = 'assets/img/BrightField.jpg';
 
     $scope.get_full_data_with_id = function(id){
+        alert(id);
         $location.path("/data/data/" + id);
 
+    }
+    $scope.get_utc_obj = function (utc_in_sec) {
+        var d = new Date(utc_in_sec * 1000);
+        return d;
     }
 
     if ($routeParams.id){
@@ -182,6 +187,7 @@ function ModelsSearchController($scope, $routeParams) {
 
 function ExploreController($scope, $routeParams) {
     $scope.pageDescription = "Explore";
+    /*
     $scope.rowCollection = [
         {id: 0, firstName: 'Laurent', lastName: 'Renard', birthDate: new Date('1987-05-21'), balance: 102, email: 'laurent34azerty@gmail.com', nested: {value: 2323}},
         {id: 1, firstName: 'Blandine', lastName: 'Faivre', birthDate: new Date('1987-04-25'), balance: -2323.22, email: 'laurent34azerty@gmail.com', nested: {value: 123}},
@@ -218,6 +224,7 @@ function ExploreController($scope, $routeParams) {
         {text: "Amet", weight: 5}
 
     ];
+    */
 }
 
 function AboutController($scope) {

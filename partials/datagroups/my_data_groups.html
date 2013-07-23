@@ -1,3 +1,5 @@
+
+
 <div class="span12 offset1">
     <h4>My DataGroups</h4>
     <div  class="row-fluid">
@@ -16,7 +18,10 @@
             </thead>
             <tbody>
             <tr ng-repeat="row in datagroup_by_user.data.rows | filter:query |  orderBy:'predicate':reverse ">
-                <td>{{row.value.name}}</td>
+                <div ng-controller="DataSearchController">
+                    <td><a href="#/data/data/{{row.value._id}}">{{row.value.name}}</a></td>
+                </div>
+
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
                 <td>
                     <div ng-show="row.value.data.length > 0">
@@ -34,7 +39,6 @@
                             </accordion-group>
                         </accordion>
                     </div>
-
                 </td>
                 <td ng-repeat="each_parent_id in row.value.parentDataGroups">
                     <div ng-init="data_item=getData(each_parent_id)">
@@ -54,10 +58,12 @@
 </div>
 
 
-
-
-
-
+<!--
+<div>
+    <smart-table class="table table-striped" table-title="Smart Table example" columns="columnCollection"
+                 rows="rowCollection" config="globalConfig"></smart-table>
+</div>
+-->
 
 
 
