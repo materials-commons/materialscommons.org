@@ -155,9 +155,22 @@ function FrontPageController($scope, $location) {
 
 }
 
-function HomeController($scope, Mcdb) {
-    $scope.mcdb = Mcdb.db();
-    $scope.mcdb.query("materialscommons-app", "news_by_date", {descending: true});
+function HomeController($scope, $http) {
+    console.log("HomeController");
+    var hostname = document.location.hostname;
+    $scope.news = $http.jsonp('http://' + hostname + ':5000/materialscommons/api/v1.0/public/news?callback=JSON_CALLBACK')
+        .success( function(data, status) {
+            console.log("success");
+            $scope.news = data;
+        }).error(function(data, status, headers, config) {
+            console.dir(status);
+            console.dir(data);
+            console.dir(headers);
+            console.dir(config);
+            console.log("error");
+        });
+//    $scope.mcdb = Mcdb.db();
+//    $scope.mcdb.query("materialscommons-app", "news_by_date", {descending: true});
 }
 
 

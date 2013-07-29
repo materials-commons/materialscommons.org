@@ -1,8 +1,10 @@
 var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective','treedirective', 'jqyoui', 'AngularStomp',
                             'ui.bootstrap', 'smartTable.table', 'smartTable.column', 'flash']);
 
-app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     Stomp.WebSocketClass = SockJS;
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $routeProvider.
         when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
         when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).

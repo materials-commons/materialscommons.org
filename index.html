@@ -170,21 +170,21 @@
 <script src="assets/js/materialscommons/Smart-Table.debug.js"></script>
 
 <script>
-    var users = require('users');
-    var _ = require('underscore')._;
-    var db = require("db").use("materialscommons");
+//    var users = require('users');
+//    var _ = require('underscore')._;
+//    var db = require("db").use("materialscommons");
     var mcglobals = {};
     mcglobals.bypasslogin = false;
     mcglobals.username = null;
 
-    var config = db.getDoc("testconfig", null, function(err, response) {
-        if(! err) {
-            mcglobals.bypasslogin = response.bypasslogin;
-            if (response.username) {
-                mcglobals.username = response.username;
-            }
-        }
-    });
+//    var config = db.getDoc("testconfig", null, function(err, response) {
+//        if(! err) {
+//            mcglobals.bypasslogin = response.bypasslogin;
+//            if (response.username) {
+//                mcglobals.username = response.username;
+//            }
+//        }
+//    });
 </script>
 
 <script>

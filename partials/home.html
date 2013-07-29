@@ -4,9 +4,9 @@
         <h1> News </h1>
         <ul>
 
-            <li ng-repeat="row in mcdb.rows">
-                <h4>{{ row.value.date }} - {{ row.value.header }}</h4>
-                <p>{{ row.value.description }}</p>
+            <li ng-repeat="row in news">
+                <h4>{{ row.date }} - {{ row.header }}</h4>
+                <p>{{ row.description }}</p>
             </li>
         </ul>
     </div>
