@@ -9,6 +9,12 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
         });
 
     $scope.tagchoices = new Array();
+    $http.jsonp(mcurljsonp('/tags'))
+        .success(function(data) {
+            data.forEach(function(item) {
+                $scope.tagchoices.push(item.id);
+            })
+        })
 //    $scope.mcdb.query("materialscommons-app", "tags_by_count", {group_level: 1}).success(function (data) {
 //        data.rows.forEach(function (kv) {
 //            $scope.tagchoices.push(kv.key[0]);
