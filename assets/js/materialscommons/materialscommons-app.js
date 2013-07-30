@@ -3,8 +3,13 @@ var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'ma
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     Stomp.WebSocketClass = SockJS;
+
+    /*
+    ** CORS support
+     */
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     $routeProvider.
         when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
         when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).
@@ -19,7 +24,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/help', {templateUrl: 'partials/help.html', controller: HelpController}).
         when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: DataGroupController}).
-        when('/data_by_user', {templateUrl: 'partials/datagroups/user_data.html', controller: DataGroupController}).
+        when('/data_by_user', {templateUrl: 'partials/datagroups/user_data.html', controller: MyDataController}).
         when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: LabController}).
         when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
         when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).

@@ -32,3 +32,18 @@ function countForProperty(property, properties) {
 
     return count;
 }
+
+function mcurljsonp(path) {
+    var hostname = document.location.hostname;
+    return 'http://' + hostname + ':5000/materialscommons/api/v1.0' + path + '?callback=JSON_CALLBACK';
+}
+
+function mcurljsonpu(path, User) {
+    var hostname = document.location.hostname;
+    return 'http://' + hostname + ':5000/materialscommons/api/v1.0/user/' + User.get_username() + path + '?callback=JSON_CALLBACK';
+}
+
+function mcurljsonpu2(path, arg, User) {
+    var hostname = document.location.hostname;
+    return 'http://' + hostname + ':5000/materialscommons/api/v1.0/user/' + User.get_username() + path + '/' + arg + '?callback=JSON_CALLBACK';
+}

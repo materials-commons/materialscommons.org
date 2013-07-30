@@ -1,5 +1,6 @@
 function DataGroupController($scope, cornercouch, User, $location) {
 
+    console.log("DataGroupController called");
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");

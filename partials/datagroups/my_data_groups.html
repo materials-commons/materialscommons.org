@@ -42,7 +42,7 @@
                 <td ng-repeat="each_parent_id in row.value.parentDataGroups">
                     <div ng-init="data_item=getData(each_parent_id)">
                         <button type="button" class="btn" data-unique="1" data-placement="right"
-                                data-title="DataGroup Report" bs-popover="'partials/datagroups/display_parent.html'"
+                                data-title="DataGroup Report" bs-popover="'partials/datagroups/datagroup_popup.html'"
                                 data-hide="each_parent_id">{{data_item.name}}
                         </button>
                     </div>
