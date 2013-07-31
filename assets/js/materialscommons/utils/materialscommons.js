@@ -47,3 +47,8 @@ function mcurljsonpu2(path, arg, User) {
     var hostname = document.location.hostname;
     return 'http://' + hostname + ':5000/materialscommons/api/v1.0/user/' + User.get_username() + path + '/' + arg + '?callback=JSON_CALLBACK';
 }
+
+function mcurlu2(path, arg, User) {
+    var hostname = document.location.hostname;
+    return 'http://' + hostname + ':5000/materialscommons/api/v1.0/user/' + User.get_username() + path + '/' + arg;
+}

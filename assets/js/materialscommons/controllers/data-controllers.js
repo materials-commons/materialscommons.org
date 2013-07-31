@@ -40,10 +40,23 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
     }
 
     $scope.saveData = function () {
-        $scope.doc.save().error(function (data, status) {
-            // Do something here.
-            alert("Unable to save");
-        });
+        console.log("Sending a post request");
+        //$http.put(mcurlu2('/data/update', $scope.doc.id, User), $scope.doc)
+        $http.put('http://localhost:5000/materialscommons/api/v1.0/abc', $scope.doc)
+            .success(function(data, status) {
+                console.dir(data);
+                console.dir(status);
+            }).error(function(data, status, headers, config) {
+                console.log("Post error");
+                console.dir(data);
+                console.dir(status);
+                console.dir(headers);
+                console.dir(config);
+            });
+//        $scope.doc.save().error(function (data, status) {
+//            // Do something here.
+//            alert("Unable to save");
+//        });
         $window.history.back();
     }
 
