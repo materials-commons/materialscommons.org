@@ -40,12 +40,12 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
     }
 
     $scope.saveData = function () {
-        console.log("Sending a post request");
-        //$http.put(mcurlu2('/data/update', $scope.doc.id, User), $scope.doc)
-        $http.put('http://localhost:5000/materialscommons/api/v1.0/abc', $scope.doc)
+        console.log("Sending a put request");
+        $http.put(mcurlu2('/data/update', $scope.doc.id, User), $scope.doc)
+        //$http.put('http://localhost:5000/materialscommons/api/v1.0/abc', $scope.doc)
             .success(function(data, status) {
+                console.log("success");
                 console.dir(data);
-                console.dir(status);
             }).error(function(data, status, headers, config) {
                 console.log("Post error");
                 console.dir(data);
