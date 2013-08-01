@@ -8,26 +8,28 @@
 
 var materialsdirective = angular.module("materialsdirective", []);
 
-materialsdirective.directive("jqueryTable", function() {
+materialsdirective.directive("jqueryTable", function () {
     return {
         restrict: 'A',
-        link: function(scope,element, attrs){
+        link: function (scope, element, attrs) {
             console.log("directive called");
             $('#myTable').tablesorter();
         }
 
     };
-}) ;
+});
 
-materialsdirective.directive('wordcloud', function(){
+materialsdirective.directive('wordcloud', function () {
     return {
         restrict: 'A',
         transclude: true,
         scope: { list: '=wordcloud' },
 
-        link: function(scope, element){
-            scope.$watch('list', function(list) {
-                $(element).jQCloud(list);
+        link: function (scope, element) {
+            scope.$watch('list', function (list) {
+                if (list) {
+                    $(element).jQCloud(list, {});
+                }
             });
 
         }
@@ -35,15 +37,13 @@ materialsdirective.directive('wordcloud', function(){
 });
 
 
-
-
-materialsdirective.directive('datepicker', function(){
+materialsdirective.directive('datepicker', function () {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs){
+        link: function (scope, element, attrs) {
             element.datepicker();
-            element.bind('changeDate', function(){
-                scope.$apply(function(){
+            element.bind('changeDate', function () {
+                scope.$apply(function () {
                     scope[attrs.ngModel] = element.val()
                 });
             })
@@ -74,7 +74,7 @@ materialsdirective.directive('fileChange', function () {
 
 });
 
-materialsdirective.directive('upload', function(uploadManager){
+materialsdirective.directive('upload', function (uploadManager) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -95,18 +95,18 @@ materialsdirective.directive('upload', function(uploadManager){
     };
 });
 
-materialsdirective.directive('bs:popover', function(expression, compiledElement){
-    return function(linkElement) {
+materialsdirective.directive('bs:popover', function (expression, compiledElement) {
+    return function (linkElement) {
         linkElement.popover();
     };
 });
 
-materialsdirective.directive('bsPopover', function($parse, $compile, $http, $timeout, $q, $templateCache) {
+materialsdirective.directive('bsPopover', function ($parse, $compile, $http, $timeout, $q, $templateCache) {
 
     // Hide popovers when pressing esc
-    $('body').on('keyup', function(ev) {
-        if(ev.keyCode === 27) {
-            $('.popover.in').each(function() {
+    $('body').on('keyup', function (ev) {
+        if (ev.keyCode === 27) {
+            $('.popover.in').each(function () {
                 $(this).popover('hide');
             });
         }
@@ -122,25 +122,25 @@ materialsdirective.directive('bsPopover', function($parse, $compile, $http, $tim
                 value = getter(scope),
                 options = {};
 
-            if(angular.isObject(value)) {
+            if (angular.isObject(value)) {
                 options = value;
             }
 
             $q.when(options.content || $templateCache.get(value) || $http.get(value, {cache: true})).then(function onSuccess(template) {
 
                 // Handle response from $http promise
-                if(angular.isObject(template)) {
+                if (angular.isObject(template)) {
                     template = template.data;
                 }
 
                 // Handle data-unique attribute
-                if(!!attr.unique) {
-                    element.on('show', function(ev) { // requires bootstrap 2.3.0+
+                if (!!attr.unique) {
+                    element.on('show', function (ev) { // requires bootstrap 2.3.0+
                         // Hide any active popover except self
-                        $('.popover.in').each(function() {
+                        $('.popover.in').each(function () {
                             var $this = $(this),
                                 popover = $this.data('popover');
-                            if(popover && !popover.$element.is(element)) {
+                            if (popover && !popover.$element.is(element)) {
                                 $this.popover('hide');
                             }
                         });
@@ -148,11 +148,11 @@ materialsdirective.directive('bsPopover', function($parse, $compile, $http, $tim
                 }
 
                 // Handle data-hide attribute to toggle visibility
-                if(!!attr.hide) {
-                    scope.$watch(attr.hide, function(newValue, oldValue) {
-                        if(!!newValue) {
+                if (!!attr.hide) {
+                    scope.$watch(attr.hide, function (newValue, oldValue) {
+                        if (!!newValue) {
                             popover.hide();
-                        } else if(newValue !== oldValue) {
+                        } else if (newValue !== oldValue) {
                             popover.show();
                         }
                     });
@@ -166,10 +166,10 @@ materialsdirective.directive('bsPopover', function($parse, $compile, $http, $tim
 
                 // Bootstrap override to provide tip() reference & compilation
                 var popover = element.data('popover');
-                popover.hasContent = function() {
+                popover.hasContent = function () {
                     return this.getTitle() || template; // fix multiple $compile()
                 };
-                popover.getPosition = function() {
+                popover.getPosition = function () {
                     var r = $.fn.popover.Constructor.prototype.getPosition.apply(this, arguments);
 
                     // Compile content
@@ -183,19 +183,19 @@ materialsdirective.directive('bsPopover', function($parse, $compile, $http, $tim
                 };
 
                 // Provide scope display functions
-                scope.$popover = function(name) {
+                scope.$popover = function (name) {
                     popover(name);
                 };
-                angular.forEach(['show', 'hide'], function(name) {
-                    scope[name] = function() {
+                angular.forEach(['show', 'hide'], function (name) {
+                    scope[name] = function () {
                         popover[name]();
                     };
                 });
                 scope.dismiss = scope.hide;
 
                 // Emit popover events
-                angular.forEach(['show', 'shown', 'hide', 'hidden'], function(name) {
-                    element.on(name, function(ev) {
+                angular.forEach(['show', 'shown', 'hide', 'hidden'], function (name) {
+                    element.on(name, function (ev) {
                         scope.$emit('popover-' + name, ev);
                     });
                 });

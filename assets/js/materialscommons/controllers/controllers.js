@@ -305,3 +305,13 @@ function FileUploadCtrl($scope, $rootScope, uploadManager){
     });
 
 }
+
+function GlobalTagCloudController($scope, $http, User){
+    $http.jsonp(mcurljsonp('/tags/count'))
+        .success(function(data) {
+            $scope.word_list = [];
+            angular.forEach(data, function(tag) {
+                $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/tags/data/bytag/" + tag.name + '/' + User.get_username()});
+            });
+        });
+}
