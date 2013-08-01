@@ -17,7 +17,7 @@
             </thead>
             <tbody>
 
-            <tr ng-repeat="row in data_by_user | filter:query"
+            <tr ng-repeat="row in data_by_user | orderBy:predicate:reverse | filter:query"
                 style="cursor:pointer">
                 <td><a href="#/data/edit/{{row.id}}">{{row.name}}</a></td>
                 <td>

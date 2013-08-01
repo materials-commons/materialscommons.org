@@ -1,32 +1,24 @@
 function DataEditController($scope, $routeParams, $window, $http, User) {
-
-//    $scope.mcdb = Mcdb.db();
-//    $scope.doc = Mcdb.db().getDoc($routeParams.id);
-
     $http.jsonp(mcurljsonpu2('/data', $routeParams.id, User))
-        .success(function(data) {
-           $scope.doc = data;
+        .success(function (data) {
+            $scope.doc = data;
         });
 
     $scope.tagchoices = new Array();
+    $scope.originalTags = [];
     $http.jsonp(mcurljsonp('/tags'))
-        .success(function(data) {
-            data.forEach(function(item) {
+        .success(function (data) {
+            data.forEach(function (item) {
                 $scope.tagchoices.push(item.id);
+                $scope.originalTags.push(item.id);
             })
-        })
-//    $scope.mcdb.query("materialscommons-app", "tags_by_count", {group_level: 1}).success(function (data) {
-//        data.rows.forEach(function (kv) {
-//            $scope.tagchoices.push(kv.key[0]);
-//        });
-//    });
+        });
+
+    $scope.predicate = 'name';
+    $scope.reverse = false;
 
     $scope.removeTag = function (index) {
         $scope.doc.tags.splice(index, 1);
-    }
-
-    $scope.createNewTag = function (term) {
-        console.log("createNewTag called:" + term);
     }
 
     $scope.addTag = function () {
@@ -42,22 +34,23 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
     $scope.saveData = function () {
         console.log("Sending a put request");
         $http.put(mcurlu2('/data/update', $scope.doc.id, User), $scope.doc)
-        //$http.put('http://localhost:5000/materialscommons/api/v1.0/abc', $scope.doc)
-            .success(function(data, status) {
-                console.log("success");
-                console.dir(data);
-            }).error(function(data, status, headers, config) {
-                console.log("Post error");
-                console.dir(data);
-                console.dir(status);
-                console.dir(headers);
-                console.dir(config);
+            .success(function (data, status) {
+                console.log("Save: Success!!!")
+            }).error(function (data, status, headers, config) {
+                console.log("Save: Error!!!")
+                // Do something here.
             });
-//        $scope.doc.save().error(function (data, status) {
-//            // Do something here.
-//            alert("Unable to save");
-//        });
+        $scope.addNewTags();
         $window.history.back();
+    }
+
+    $scope.addNewTags = function () {
+        var newtags = _.difference($scope.tagchoices, $scope.originalTags);
+        var tagObj = {};
+        newtags.forEach(function (item) {
+            tagObj.id = item;
+            $http.post(mcservicepath2('/tag/new'), tagObj);
+        });
     }
 
     $scope.cancel = function () {

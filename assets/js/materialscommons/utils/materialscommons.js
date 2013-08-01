@@ -34,21 +34,61 @@ function countForProperty(property, properties) {
 }
 
 function mcurljsonp(path) {
-    var hostname = document.location.hostname;
-    return 'http://' + hostname + ':5000/materialscommons/api/v1.0' + path + '?callback=JSON_CALLBACK';
+    return asjsonp(mcservicepath2(path));
 }
 
 function mcurljsonpu(path, User) {
-    var hostname = document.location.hostname;
-    return 'http://' + hostname + ':5000/materialscommons/api/v1.0/user/' + User.get_username() + path + '?callback=JSON_CALLBACK';
+    return asjsonp(mcserviceupath2(User, path));
 }
 
 function mcurljsonpu2(path, arg, User) {
-    var hostname = document.location.hostname;
-    return 'http://' + hostname + ':5000/materialscommons/api/v1.0/user/' + User.get_username() + path + '/' + arg + '?callback=JSON_CALLBACK';
+    return asjsonp(mcserviceupath2(User, path, arg));
 }
 
 function mcurlu2(path, arg, User) {
-    var hostname = document.location.hostname;
-    return 'http://' + hostname + ':5000/materialscommons/api/v1.0/user/' + User.get_username() + path + '/' + arg;
+    return mcserviceupath2(User, path, arg);
+}
+
+function asjsonp(url) {
+    return url + '?callback=JSON_CALLBACK';
+}
+
+function mcurl2(path, arg) {
+    return mcservice() + path + '/' + arg;
+}
+
+function myhost() {
+    return document.location.hostname;
+}
+
+function mchosturl() {
+    return 'http://' + myhost() + ':5000';
+}
+
+function mcservice() {
+    return mchosturl() + '/materialscommons/api/v1.0';
+}
+
+function mcservicepath2(path, arg) {
+    var url =  mcservice() + path;
+    if (arg) {
+        return url + '/' + arg;
+    }
+    else {
+        return url;
+    }
+}
+
+function mcserviceu(User) {
+    return mcservice() + '/user' + '/' + User.get_username();
+}
+
+function mcserviceupath2(User, path, arg) {
+    var url = mcserviceu(User) + path;
+    if (arg) {
+        return url + '/' + arg;
+    }
+    else {
+        return url;
+    }
 }
