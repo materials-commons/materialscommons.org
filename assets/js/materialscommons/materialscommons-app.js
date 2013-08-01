@@ -23,7 +23,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/contact', {templateUrl: 'partials/contact.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/help.html', controller: HelpController}).
         when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
-        when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: DataGroupController}).
+        when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
         when('/data_by_user', {templateUrl: 'partials/datagroups/user_data.html', controller: MyDataController}).
         when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: LabController}).
         when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
