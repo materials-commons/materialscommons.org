@@ -36,11 +36,12 @@ function TagListController($scope, $routeParams, $location, cornercouch, User)
 
 }
 
-
-function TagDataController($scope, $routeParams, $location, Mcdb) {
+function TagDataController($scope, $routeParams, $location, $http, User) {
     $scope.tag = $routeParams.tag;
-    $scope.mcdb = Mcdb.db();
-    $scope.mcdb.query("materialscommons-app", "docs_by_user_and_tag", {startkey:[$scope.user], endkey:[$routeParams.user, $scope.tag]});
+    $http.jsonp(mcurljsonpu2('/data/tag', $routeParams.tag, User))
+        .success(function(data) {
+            $scope.docs = data;
+        });
 
     $scope.editData = function(id) {
         $location.path("/data/edit/" + id);

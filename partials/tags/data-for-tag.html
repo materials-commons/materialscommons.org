@@ -18,18 +18,29 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="row in mcdb.rows | filter:query" style="cursor:pointer" ng-click="editData(row.value._id)">
-                    <td>{{ row.value.name }}</td>
-                    <td>{{ row.value.description }}</td>
+                <tr ng-repeat="row in docs | filter:query">
+                    <td style="cursor:pointer" ng-click="editData(row.id)">{{ row.name }}</td>
+                    <td>{{ row.description }}</td>
                     <td>
                         <ul style="list-style-type:none">
-                            <li ng-repeat="tag in row.value.tags"><span class="label label-info">{{ tag }}</span></li>
+                            <li ng-repeat="tag in row.tags"><span class="label label-info">{{ tag }}</span></li>
                         </ul>
                     </td>
                     <td>
                         <ul>
-                            <li ng-repeat="metatag in row.value.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value }}</li>
-                            <li ng-show="row.value.metaTags.length > 10">... ({{ row.value.metaTags.length-10 }} more)</li>
+                            <li ng-repeat="metatag in row.metaTags | limitTo:10">{{ metatag.name }}:{{ metatag.value }}</li>
+                            <div ng-show="row.metaTags.length > 10">
+                                <accordion>
+                                    <accordion-group heading="... more">
+
+                                        <li ng-repeat="metatag in row.metaTags.slice(10)">
+                                            {{metatag.name}}
+                                            {{metatag.value}}
+                                        </li>
+
+                                    </accordion-group>
+                                </accordion>
+                            </div>
                         </ul>
                     </td>
                 </tr>
