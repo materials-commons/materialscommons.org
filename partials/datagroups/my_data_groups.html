@@ -12,10 +12,9 @@
             <th style="width:12%;"><font color="white"> Updated At</font></th>
             <th style="width:40%;"><a><font color="white"> Data</font></a></th>
             <th style="width:15%;"><a><font color="white"> Parent DataGroup</font</a></th>
-            </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="row in datagroups_by_user | filter:query |  orderBy:'predicate':reverse ">
+            <tr ng-repeat="row in datagroups_by_user | filter:query |  orderBy:predicate:reverse ">
                 <td><a href="#/data/data/{{row.id}}">{{row.name}}</a></td>
 
                 <td>{{get_utc_obj(row.dateadded).toDateString()}}</td>
