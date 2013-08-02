@@ -69,12 +69,16 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
 }
 
 function MyDataController($scope, $http, User, $location) {
+
+    $scope.predicate = 'name';
+    $scope.reverse = false;
+
     $http.jsonp(mcurljsonpu('/data', User))
         .success(function (data, status) {
             $scope.data_by_user = data;
         });
 
-    $scope.dgroupid = ""
+    $scope.dgroupid = "";
 
     $scope.editData = function (id) {
         $location.path("/data/edit/" + id);
