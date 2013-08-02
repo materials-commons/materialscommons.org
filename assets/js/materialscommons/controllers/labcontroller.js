@@ -1,8 +1,20 @@
 function LabController($scope, $http) {
-    $scope.mcdb = Mcdb.db();
+    console.log("LabController");
+    $http.jsonp(mcurljsonp('/usergroups'))
+        .success(function(data) {
+            console.log("retrieved labs");
+            $scope.labs = data;
+        }).error(function(data, status) {
+            console.dir(status);
+        });
+
 
     $scope.get_lab_data = function (value) {
-        $scope.lab_data = $scope.mcdb.query("materialscommons-app", "datagroup_by_usergroups", {key: value});
+        $http.jsonp(mcurljsonp('/usergroup/' + value + '/data'))
+            .success(function(data) {
+                $scope.lab_data = data;
+            })
+        //$scope.lab_data = $scope.mcdb.query("materialscommons-app", "datagroup_by_usergroups", {key: value});
 
     }
 
