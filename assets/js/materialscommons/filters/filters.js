@@ -17,6 +17,8 @@ Filter.filter('startFrom', function() {
 
 Filter.filter('matchDates', function() {
     return function( search_results, start_end_dates ) {
+        if (! search_results) { return;}
+        if (! start_end_dates) { return;}
         var arrayToReturn = [];
         var utc_start_date =  Date.parse(start_end_dates[0])/1000;
         var utc_end_date =  Date.parse(start_end_dates[1])/1000;
@@ -33,7 +35,7 @@ Filter.filter('matchDates', function() {
 
 Filter.filter('private', function(){
    return function(list){
-       //console.log('entered filetr');
+       if (! list) { return;}
        var return_array = [];
        for (var i=0; i< list.length; i++){
            if (list[i].value.access == "private"){

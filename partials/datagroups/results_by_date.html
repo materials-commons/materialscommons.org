@@ -1,29 +1,27 @@
-
-<div ng-controller="DataGroupController">
-
+<div>
     <br></br>
     <h4>Pick the date range to view the data/datagroups</h4>
     <br> </br>
     <table>
         <tr>
 
-            <b>From  </b> <input type="text" class="datepicker" datepicker="" ng-model="myDate">
-            <b>To   </b> <input type="text" class="datepicker" datepicker="" ng-model="endDate">
+            <b>From </b> <input type="text" class="datepicker" datepicker="" ng-model="myDate">
+            <b>To </b> <input type="text" class="datepicker" datepicker="" ng-model="endDate">
 
             <b>Select Type</b>
-                <select ng-model="type" class="selectpicker" id="type">
-                    <option></option>
-                    <option value="data">Data</option>
-                    <option value="datagroup">DataGroup</option>
-                </select>
+            <select ng-model="type" class="selectpicker" id="type">
+                <option></option>
+                <option value="data">Data</option>
+                <option value="datagroup">DataGroup</option>
+            </select>
 
-                <button class="btn btn-small btn-primary" type="button" ng-click="search_by_date()" >Search</button>
+            <button class="btn btn-small btn-primary" type="button" ng-click="search_by_date()">Search</button>
         </tr>
     </table>
-     <br>
-
+    <br>
     <div ng-show="search_results.data.rows.length > 0">
-        <h4> Search results by {{type}}</h4>  <br></br>
+        <h4> Search results by {{type}}</h4>
+        <br>
         <table class="table">
             <tr>
                 <th>Data</th>
@@ -31,31 +29,37 @@
                 <th>Created At</th>
                 <th>DataGroup</th>
                 <th>Created By</th>
-
             </tr>
-
             <tr ng-repeat="row in search_results.data.rows | matchDates: [myDate, endDate, type] | private">
-\               <td> <a href="#/data/edit/{{row.value._id}}">{{row.value.name}}</a></td>
+                <td><a href="#/data/edit/{{row.value._id}}">{{row.value.name}}</a></td>
 
                 <td>{{row.value.type}}</td>
                 <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
                 <td>
-                    <div ng-switch on="row.value.type">
-                        <div ng-switch-when="data">
-                            <ul ng-repeat="each_parent_id in row.value.dataGroups">
-                                <div ng-init="data_item=getData(each_parent_id)">
-                                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/datagroup_popup.html'" data-hide="each_parent_id">{{data_item.name}}</button>
-                                </div>
-                            </ul>
-                        </div>
-                        <div ng-switch-when="datagroup">
-                            <ul ng-repeat="each_parent_id in row.value.parentDataGroups">
-                                <div ng-init="data_item=getData(each_parent_id)">
-                                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/datagroup_popup.html'" data-hide="each_parent_id">{{data_item.name}}</button>
-                                </div>
-                            </ul>
-                        </div>
-                    </div>
+                    <!--<div ng-switch on="row.value.type">-->
+                        <!--<div ng-switch-when="data">-->
+                            <!--<ul ng-repeat="each_parent_id in row.value.dataGroups">-->
+                                <!--<div ng-init="data_item=getData(each_parent_id)">-->
+                                    <!--<button type="button" class="btn" data-unique="1" data-placement="right"-->
+                                            <!--data-title="DataGroup Report"-->
+                                            <!--bs-popover="'partials/datagroups/datagroup_popup.html'"-->
+                                            <!--data-hide="each_parent_id">{{data_item.name}}-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div ng-switch-when="datagroup">-->
+                            <!--<ul ng-repeat="each_parent_id in row.value.parentDataGroups">-->
+                                <!--<div ng-init="data_item=getData(each_parent_id)">-->
+                                    <!--<button type="button" class="btn" data-unique="1" data-placement="right"-->
+                                            <!--data-title="DataGroup Report"-->
+                                            <!--bs-popover="'partials/datagroups/datagroup_popup.html'"-->
+                                            <!--data-hide="each_parent_id">{{data_item.name}}-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </td>
                 <td>
                     <div ng-switch on="row.value.type">
@@ -66,16 +70,10 @@
                             User: {{row.value.users[0]}}
                         </div>
                     </div>
-
                 </td>
             </tr>
         </table>
-
     </div>
-
-
-
-
 </div>
 
 

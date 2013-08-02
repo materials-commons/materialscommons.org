@@ -26,7 +26,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/datagroups', {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
         when('/data_by_user', {templateUrl: 'partials/datagroups/user_data.html', controller: MyDataController}).
         when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: LabController}).
-        when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: DataGroupController}).
+        when('/results_by_date', {templateUrl: 'partials/datagroups/results_by_date.html', controller: SearchByDateController}).
         when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
         when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
