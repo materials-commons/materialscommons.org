@@ -85,9 +85,10 @@ function DataGroupController($scope, cornercouch, User, $location) {
 }
 
 function MyDataGroupsController($scope, $routeParams, $window, $http, User) {
+    $scope.predicate = 'name';
+    $scope.reverse = false;
     $http.jsonp(mcurljsonpu('/datagroups/data', User))
         .success(function (data) {
-            console.log("success getting datagroups")
             $scope.datagroups_by_user = data;
         })
         .error(function (data, status) {
