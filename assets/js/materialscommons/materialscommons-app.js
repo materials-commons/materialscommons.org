@@ -1,5 +1,5 @@
 var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective','treedirective', 'jqyoui', 'AngularStomp',
-                            'ui.bootstrap', 'smartTable.table', 'smartTable.column', 'flash']);
+                            'ui.bootstrap', 'smartTable.table', 'smartTable.column', 'flash', 'angularTree']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -18,7 +18,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/searchindex/:subpage/:name', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
         when('/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
-        when('/explore', {templateUrl: 'partials/under-construction.html', controller: ExploreController}).
+        when('/explore', {templateUrl: 'partials/tree_view.html', controller: ExploreController}).
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/contact.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/help.html', controller: HelpController}).

@@ -115,7 +115,6 @@ function FrontPageController($scope, $location) {
     }
 
 
-
 //    $scope.server = cornercouch();
 //    $scope.server.session();
 //    $scope.server.login("testuser", "testing").success(function () {
@@ -158,9 +157,9 @@ function FrontPageController($scope, $location) {
 function HomeController($scope, $http) {
     var hostname = document.location.hostname;
     $scope.news = $http.jsonp(mcurljsonp('/public/news'))
-        .success( function(data, status) {
+        .success(function (data, status) {
             $scope.news = data;
-        }).error(function(data, status, headers, config) {
+        }).error(function (data, status, headers, config) {
         });
 //    $scope.mcdb = Mcdb.db();
 //    $scope.mcdb.query("materialscommons-app", "news_by_date", {descending: true});
@@ -172,7 +171,7 @@ function DataSearchController($scope, Mcdb, $routeParams, $location) {
     $scope.mcdb = Mcdb.db();
     $scope.imageSource = 'assets/img/BrightField.jpg';
 
-    $scope.get_full_data_with_id = function(id){
+    $scope.get_full_data_with_id = function (id) {
         $location.path("/data/data/" + id);
 
     }
@@ -181,7 +180,7 @@ function DataSearchController($scope, Mcdb, $routeParams, $location) {
         return d;
     }
 
-    if ($routeParams.id){
+    if ($routeParams.id) {
         $scope.full_data = $scope.mcdb.getDoc($routeParams.id);
     }
 }
@@ -190,46 +189,21 @@ function ModelsSearchController($scope, $routeParams) {
     // Nothing to do yet
 }
 
-function ExploreController($scope, $routeParams) {
+function ExploreController($scope, $http) {
     $scope.pageDescription = "Explore";
-    /*
-    $scope.rowCollection = [
-        {id: 0, firstName: 'Laurent', lastName: 'Renard', birthDate: new Date('1987-05-21'), balance: 102, email: 'laurent34azerty@gmail.com', nested: {value: 2323}},
-        {id: 1, firstName: 'Blandine', lastName: 'Faivre', birthDate: new Date('1987-04-25'), balance: -2323.22, email: 'laurent34azerty@gmail.com', nested: {value: 123}},
-        {id: 2, firstName: 'Francoise', lastName: 'Frere', birthDate: new Date('1955-08-27'), balance: 42343, email: 'laurent34azerty@gmail.com', nested: {value: 565}}
+    $scope.model = [
+        {
+            name: 'Item 1 Name',
+            children: [
+                {
+                    name: 'Item 2 Name'
+                },
+                {
+                    name: 'Item 3 Name'
+                }
+            ]
+        }
     ];
-
-    for (var i = 0; i < $scope.rowCollection.length; i++) {
-        var obj = $scope.rowCollection[i];
-        obj.id = i;
-    }
-
-    $scope.columnCollection = [
-        {label: 'id', map: 'id', isEditable: true},
-        {label: 'FirsName', map: 'firstName'},
-        {label: 'LastName', map: 'lastName', isSortable: false},
-        {label: 'birth date', map: 'birthDate', formatFunction: 'date', type: 'date'},
-        {label: 'balance', map: 'balance', isEditable: true, type: 'number', formatFunction: 'currency', formatParameter: '$'},
-        {label: 'email', map: 'email', type: 'email', isEditable: true},
-        {label: 'nested', map: 'nested.value', formatFunction: 'currency', formatParameter: '$', type: 'number', isEditable: true}
-    ];
-
-    $scope.globalConfig = {
-        isPaginationEnabled: true,
-        isGlobalSearchActivated: true,
-        itemsByPage: 10,
-        selectionMode: 'single'
-    };
-
-    $scope.word_list = [
-        {text: "Lorem", weight: 15},
-        {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
-        {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
-        {text: "Sit", weight: 7},
-        {text: "Amet", weight: 5}
-
-    ];
-    */
 }
 
 function AboutController($scope) {
@@ -248,44 +222,44 @@ function HelpController($scope, $routeParams) {
 }
 
 /*
-function UploadFileController($scope,uploadService, $rootScope ){
-    $scope.clicked="false";
-    $scope.count = 0;
-    $scope.addButtonClicked = function(){
-        $scope.count = $scope.count + 1;
+ function UploadFileController($scope,uploadService, $rootScope ){
+ $scope.clicked="false";
+ $scope.count = 0;
+ $scope.addButtonClicked = function(){
+ $scope.count = $scope.count + 1;
 
-        alert('in function');
-        //var numFiles = $scope.fileList.length;
-        //$scope.fileList.push({name: ('fileName' + numFiles)});
-    }
-
-
-    // 'files' is an array of JavaScript 'File' objects.
-    $scope.files = [];
-    $scope.$watch('files', function (newValue, oldValue) {
-        // Only act when our property has changed.
-        if (newValue != oldValue) {
-            console.log('Controller: $scope.files changed. Start upload.');
-            for (var i = 0, length = $scope.files.length; i < length; i++) {
-                // Hand file off to uploadService.
-                uploadService.send($scope.files[i]);
-            }
-        }
-    }, true);
-
-    $rootScope.$on('upload:loadstart', function () {
-        console.log('Controller: on `loadstart`');
-    });
-
-    $rootScope.$on('upload:error', function () {
-        console.log('Controller: on `error`');
-    });
+ alert('in function');
+ //var numFiles = $scope.fileList.length;
+ //$scope.fileList.push({name: ('fileName' + numFiles)});
+ }
 
 
-}
-*/
+ // 'files' is an array of JavaScript 'File' objects.
+ $scope.files = [];
+ $scope.$watch('files', function (newValue, oldValue) {
+ // Only act when our property has changed.
+ if (newValue != oldValue) {
+ console.log('Controller: $scope.files changed. Start upload.');
+ for (var i = 0, length = $scope.files.length; i < length; i++) {
+ // Hand file off to uploadService.
+ uploadService.send($scope.files[i]);
+ }
+ }
+ }, true);
 
-function FileUploadCtrl($scope, $rootScope, uploadManager){
+ $rootScope.$on('upload:loadstart', function () {
+ console.log('Controller: on `loadstart`');
+ });
+
+ $rootScope.$on('upload:error', function () {
+ console.log('Controller: on `error`');
+ });
+
+
+ }
+ */
+
+function FileUploadCtrl($scope, $rootScope, uploadManager) {
     $scope.files = [];
     $scope.percentage = 0;
 
@@ -306,11 +280,11 @@ function FileUploadCtrl($scope, $rootScope, uploadManager){
 
 }
 
-function GlobalTagCloudController($scope, $http, User){
+function GlobalTagCloudController($scope, $http, User) {
     $http.jsonp(mcurljsonp('/tags/count'))
-        .success(function(data) {
+        .success(function (data) {
             $scope.word_list = [];
-            angular.forEach(data, function(tag) {
+            angular.forEach(data, function (tag) {
                 $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/tags/data/bytag/" + tag.name + '/' + User.get_username()});
             });
         });

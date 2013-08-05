@@ -1,7 +1,12 @@
-<h4>Tree</h4>
+<div class="row-fluid">
 
-<div ng-controller="TreeController">
-    <tree class= " treeview" family="treeFamily"></tree>
+    <div class="span8 offset1">
+        <div>
+            <ul ng-tree="model">
+                <li select="selected()">{{ item.name }}</li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 
