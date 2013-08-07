@@ -6,7 +6,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="assets/js/materialscommons/directives/tree.js"></script>
     <script type="text/javascript">
-        angular.module("demo", ['NgTree']);
+        var app = angular.module("demo", ['NgTree']);
+        app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+            $httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        }]);
         function demoController($scope, $http) {
             $scope.searchText = "";
 //            $scope.data = [
@@ -24,18 +28,44 @@
 //                    ]
 //                }
 //            ];
-            $http.jsonp("http://" + document.location.hostname + ":5000/materialscommons/api/v1.0/user/mcfada@umich.edu/datagroups/tree?callback=JSON_CALLBACK")
+
+            $http.put("http://magnesium.eecs.umich.edu:5000/materialscommons/api/v1.0/abc",
+                    {headers:{'Authorization':'Basic Z2xlbm46YWJj'}, withCredentials:true})
                     .success(function(data) {
-                        console.log("success");
+                        console.log("Success");
                         console.dir(data);
-                        $scope.data = data;
                     })
-                    .error(function(data, status, headers, config) {
-                        console.log("error");
+                    .error(function(data, status) {
+                        console.log("Fail");
                         console.dir(status);
-                        console.dir(headers);
-                        console.dir(config);
-                    });
+                    })
+
+//            $http.defaults.headers.common['Authorization'] = 'Basic Z2xlbm46YWJj';
+            //$http({method: 'GET', url: 'http://localhost:5000/materialscommons/api/v1.0/private/private', headers:{'Authorization': 'Basic abc'}});
+//            $http.jsonp("http://" + document.location.hostname + ":5000/materialscommons/api/v1.0/private/private?callback=JSON_CALLBACK",
+//                    {headers:{'Authorizationxxx':'Basic Z2xlbm46YWJj'}})
+//                    .success(function(data) {
+//                        console.log("private access succeeded");
+//                        console.dir(data);
+//                    })
+//                    .error(function(data, status, headers, config) {
+//                        console.log("private access failed");
+//                        console.dir(status);
+//                        console.dir(headers);
+//                        console.dir(config);
+//                    });
+//            $http.jsonp("http://" + document.location.hostname + ":5000/materialscommons/api/v1.0/user/mcfada@umich.edu/datagroups/tree?callback=JSON_CALLBACK")
+//                    .success(function(data) {
+//                        console.log("success");
+//                        console.dir(data);
+//                        $scope.data = data;
+//                    })
+//                    .error(function(data, status, headers, config) {
+//                        console.log("error");
+//                        console.dir(status);
+//                        console.dir(headers);
+//                        console.dir(config);
+//                    });
 //                        data.forEach(function(item) {
 //                            var obj = {};
 //                            obj.id = item.id;
