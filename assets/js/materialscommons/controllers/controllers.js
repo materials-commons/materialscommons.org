@@ -93,19 +93,6 @@ function AccountController($scope, $rootScope, $routeParams, cornercouch, $locat
     }
 }
 
-function MessagesController($scope, $routeParams, cornercouch) {
-    $scope.server = cornercouch();
-    $scope.server.session();
-    $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.mcdb.query("materialscommons-app", "recent_events");
-}
-
-function ChartController($scope, $routeParams, cornercouch) {
-    $scope.server = cornercouch();
-    $scope.server.session();
-    $scope.mcdb = $scope.server.getDB("materialscommons");
-    $scope.chart_data = $scope.mcdb.getDoc("942ecdf121a6f788cc86a10a7e3e8ab6");
-}
 
 function FrontPageController($scope, $location) {
     $scope.messages = [];
@@ -114,32 +101,6 @@ function FrontPageController($scope, $location) {
         $location.path("/searchindex/search_key/" + $scope.keyword);
     }
 
-
-//    $scope.server = cornercouch();
-//    $scope.server.session();
-//    $scope.server.login("testuser", "testing").success(function () {
-//        console.log("success");
-//    }).error(function () {
-//            console.log("in error");
-//        });
-
-//    users.create('testuser', 'testing', {roles: ['example']}, function (err) {
-//        if (err) {
-//            console.log("Error adding user");
-//            console.dir(err);
-//        }
-//    });
-
-
-//    users.list(function (err, list) {
-//        if (err) {
-//            console.log("Error retrieving users");
-//        }
-//        else {
-//            console.log("Users: ");
-//            console.dir(list);
-//        }
-//    });
 
 //    $scope.client = ngstomp('http://localhost:15674/stomp');
 //    $scope.client.connect("guest", "guest", function(){
@@ -156,13 +117,11 @@ function FrontPageController($scope, $location) {
 
 function HomeController($scope, $http) {
     var hostname = document.location.hostname;
-    $scope.news = $http.jsonp(mcurljsonp('/public/news'))
+    $scope.news = $http.jsonp(mcurljsonp('/news'))
         .success(function (data, status) {
             $scope.news = data;
         }).error(function (data, status, headers, config) {
         });
-//    $scope.mcdb = Mcdb.db();
-//    $scope.mcdb.query("materialscommons-app", "news_by_date", {descending: true});
 }
 
 
@@ -288,4 +247,30 @@ function GlobalTagCloudController($scope, $http, User) {
                 $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/tags/data/bytag/" + tag.name + '/' + User.get_username()});
             });
         });
+}
+
+function ReviewListController($scope, $http, $location, User) {
+    $http.jsonp(mcurljsonpu('/reviews', User))
+        .success(function(data) {
+            $scope.reviews = data;
+        });
+
+    $scope.startReview = function(id, type) {
+        if (type == "data") {
+            $location.path("/data/edit/" + id);
+        }
+        else {
+            console.log("datagroup not supported yet");
+        }
+    }
+
+    $scope.removeReview = function(index) {
+        var id = $scope.reviews[index].id;
+        $http.delete(mcurlu2('/review', id, User))
+            .success(function(data) {
+                console.log("success deleting");
+                $scope.reviews.splice(index, 1);
+            });
+
+    }
 }

@@ -66,7 +66,7 @@ function mchosturl() {
 }
 
 function mcservice() {
-    return mchosturl() + '/materialscommons/api/v1.0';
+    return mchosturl() + '/v1.0';
 }
 
 function mcservicepath2(path, arg) {

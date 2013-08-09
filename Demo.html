@@ -3,13 +3,14 @@
 <head>
     <title></title>
     <link href="assets/css/treeview.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
     <script src="assets/js/materialscommons/directives/tree.js"></script>
     <script type="text/javascript">
         var app = angular.module("demo", ['NgTree']);
         app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
-            $httpProvider.defaults.useXDomain = true;
-            delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            //$httpProvider.defaults.useXDomain = true;
+            //$httpProvider.defaults.withCredentials = true;
+            //delete $httpProvider.defaults.headers.common['X-Requested-With'];
         }]);
         function demoController($scope, $http) {
             $scope.searchText = "";
@@ -29,11 +30,18 @@
 //                }
 //            ];
 
-            $http.put("http://magnesium.eecs.umich.edu:5000/materialscommons/api/v1.0/abc",
-                    {headers:{'Authorization':'Basic Z2xlbm46YWJj'}, withCredentials:true})
+            console.log("Here i am");
+//            $http({
+//                        method: 'PUT',
+//                        url: "http://magnesium.eecs.umich.edu:5000/materialscommons/api/v1.0/abc"
+//                        //headers:{Authorization:'Basic Z2xlbm46YWJj'},
+//                        //withCredentials: true
+//                    })
+            $http.put("http://magnesium.eecs.umich.edu:5000/materialscommons/api/v1.0/abcuser/glenn?apikey=abc")
                     .success(function(data) {
                         console.log("Success");
                         console.dir(data);
+                        $scope.abc = data;
                     })
                     .error(function(data, status) {
                         console.log("Fail");
@@ -120,6 +128,7 @@
 </head>
 <body ng-controller="demoController">
     <h2>Data Tree View</h2>
+    abc is {{ abc }}
     <input type="text" width="50px" ng-model="searchText" placeholder="Search data"/>
     <ngtree search-model="searchText" treeview-data="data" unique-id="id" display-attr="name"></ngtree>
 

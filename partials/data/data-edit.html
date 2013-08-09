@@ -3,6 +3,11 @@
         <h3>Edit Data</h3>
 
         <form>
+            <label>Mark for review:</label>
+            <input type="checkbox" ng-model="marked_for_review">
+            <input type="text" ng-model="review_note" ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
+                    placeholder="Review Note...">
+
             <label>Name:</label>
             <input ng-model="doc.name" type="text" readonly>
 
@@ -17,6 +22,13 @@
 
             <label>Owner:</label>
             <input ng-model="doc.owner" type="text" readonly>
+
+            <label>Notes:</label>
+            <input ng-repeat="note in doc.notes" value="{{ note }}" type="text" readonly>
+
+            <label>Add Note:</label>
+            <input ui-keypress="{13: 'addNoteKeypressCallback($event)'}" ng-model="new_note" type="text">
+
         </form>
 
         <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
@@ -28,7 +40,7 @@
     <div class="row-fluid">
         <form class="form-horizontal">
             <label>Create New Tag</label>
-            <input ui-keypress="{13: 'keypressCallback($event)'}" ng-model="new_tag">
+            <input ui-keypress="{13: 'addTagKeypressCallback($event)'}" ng-model="new_tag" placeholder="Tag...">
             <label>Tags to add</label>
             <select class="span3" ng-model="tag_to_add"
                     ui-select2="{placeholder: 'Select data type', allowClear: true, width:'element'}"

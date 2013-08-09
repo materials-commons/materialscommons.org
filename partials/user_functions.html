@@ -30,37 +30,38 @@
 
             <tr>
                 <td>
-                    <h4>Analysis: </h4>
+                    <h4>Reviews:</h4>
                 </td>
+                <td><a href=""></a></td>
             </tr>
         </table>
 
-        <h4>File Upload:</h4>
+        <!--<h4>File Upload:</h4>-->
 
-        <div ng-controller="FileUploadCtrl">
-            <div class="control-group">
-                <div class="controls">
-                    <span class="btn btn-success fileinput-button">
-                        <i class="icon-plus icon-white"></i>
-                        <input type="file" name="file" data-url="home/upload" multiple upload><span>Add files...</span>
-                    </span>
-                </div>
-            </div>
+        <!--<div ng-controller="FileUploadCtrl">-->
+        <!--<div class="control-group">-->
+        <!--<div class="controls">-->
+        <!--<span class="btn btn-success fileinput-button">-->
+        <!--<i class="icon-plus icon-white"></i>-->
+        <!--<input type="file" name="file" data-url="home/upload" multiple upload><span>Add files...</span>-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--</div>-->
 
-            <div>
-                <span ng-show="!files.length">No files selected</span>
-                <ul>
-                    <li ng-repeat="file in files">{{file}}</li>
-                </ul>
-            </div>
+        <!--<div>-->
+        <!--<span ng-show="!files.length">No files selected</span>-->
+        <!--<ul>-->
+        <!--<li ng-repeat="file in files">{{file}}</li>-->
+        <!--</ul>-->
+        <!--</div>-->
 
-            <div>
-                <button type="submit" class="btn btn-primary pull-left" ng-click="upload()">Upload</button>
-            </div>
+        <!--<div>-->
+        <!--<button type="submit" class="btn btn-primary pull-left" ng-click="upload()">Upload</button>-->
+        <!--</div>-->
 
-            <div class="progress" ng-show="percentage">
-            </div>
-        </div>
+        <!--<div class="progress" ng-show="percentage">-->
+        <!--</div>-->
+        <!--</div>-->
 
     </div>
     <div class="span5">
@@ -70,6 +71,31 @@
             <div wordcloud="word_list" style="width: 550px; height: 350px; position: relative;"></div>
         </div>
 
+    </div>
+</div>
+<div class="row-fluid" ng-controller="ReviewListController">
+    <div class="offset1">
+        <h4>Queued Reviews</h4>
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <thead>
+            <tr>
+                <th>User</th>
+                <th>Note</th>
+                <th>Marked On</th>
+                <th>Type</th>
+                <th>What</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="review in reviews"  style="cursor:pointer">
+                <td ng-click="startReview(review.itemId, review.type)">{{ review.who }}</td>
+                <td>{{ review.note }}</td>
+                <td>{{ review.markedOnDate }}</td>
+                <td>{{ review.type }}</td>
+                <td>{{ review.itemName }}<button type="button" class="close" ng-click="removeReview($index);">&times;</button></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 

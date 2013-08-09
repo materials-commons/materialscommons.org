@@ -1,5 +1,5 @@
 var app = angular.module('materialscommons', ['CornerCouch', 'ui', 'Filter', 'materialsCommonsServices', 'materialsdirective','treedirective', 'jqyoui', 'AngularStomp',
-                            'ui.bootstrap', 'smartTable.table', 'smartTable.column', 'flash', 'angularTree']);
+                            'ui.bootstrap', 'smartTable.table', 'smartTable.column', 'flash']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     Stomp.WebSocketClass = SockJS;
