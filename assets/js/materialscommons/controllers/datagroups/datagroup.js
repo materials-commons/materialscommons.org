@@ -4,7 +4,7 @@ function DataGroupController($scope, cornercouch, User, $location) {
 //    $scope.server = cornercouch();
 //    $scope.server.session();
 //    $scope.mcdb = $scope.server.getDB("materialscommons");
-//    $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner", {startkey: [User.get_username()], endkey: [User.get_username(), "public"]});
+//    $scope.data_by_user = $scope.mcdb.query("materialscommons-app", "data_by_owner", {startkey: [User.u()], endkey: [User.get_username(), "public"]});
 //    $scope.datagroup_by_user = $scope.mcdb.query("materialscommons-app", "datagroup_by_user", {startkey: [User.get_username()], endkey: [User.get_username(), "public"]});
 //
 //    $scope.predicate = 'name';
@@ -87,7 +87,7 @@ function DataGroupController($scope, cornercouch, User, $location) {
 function MyDataGroupsController($scope, $routeParams, $window, $http, User) {
     $scope.predicate = 'name';
     $scope.reverse = false;
-    $http.jsonp(mcurljsonpu('/datagroups/data', User))
+    $http.jsonp(mcurljsonp('/user/%/datagroups/data', User.u()))
         .success(function (data) {
             $scope.datagroups_by_user = data;
         })
@@ -97,7 +97,7 @@ function MyDataGroupsController($scope, $routeParams, $window, $http, User) {
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            var url = mcurljsonpu2('/datagroup', datagroupId, User);
+            var url = mcurljsonp('/user/%/datagroup/%', User.u(), datagroupId);
             $http.jsonp(url)
                 .success(function (data) {
                     $scope.dgroup = data;

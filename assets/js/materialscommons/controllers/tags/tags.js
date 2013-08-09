@@ -9,14 +9,14 @@ function TagListController($scope, $routeParams, $location, $http, User) {
     }
     else if ($routeParams.listtype == "mytags") {
         $scope.tagHeader = "My Tags";
-        $http.jsonp(mcurljsonpu('/tags/count', User))
+        $http.jsonp(mcurljsonp('/user/%/tags/count', User.u()))
             .success(function (data) {
                 $scope.tags = data;
             });
     }
 
     $scope.listDataForTag = function (tag) {
-        $location.path("/tags/data/bytag/" + tag + "/" + User.get_username());
+        $location.path("/tags/data/bytag/" + tag + "/" + User.u());
     }
 
 //    if ($routeParams.tag_name){
@@ -28,7 +28,7 @@ function TagListController($scope, $routeParams, $location, $http, User) {
 
 function TagDataController($scope, $routeParams, $location, $http, User) {
     $scope.tag = $routeParams.tag;
-    $http.jsonp(mcurljsonpu2('/data/tag', $routeParams.tag, User))
+    $http.jsonp(mcurljsonp('/user/%/data/tag/%', User.u(), $routeParams.tag))
         .success(function (data) {
             $scope.docs = data;
         });

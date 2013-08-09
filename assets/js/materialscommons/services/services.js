@@ -22,7 +22,9 @@ materialsCommonsServices.
 
             get_username: function(){
                 return self.email_address;
-            }
+            },
+
+            u: function() { return self.email_address; }
         };
     });
 

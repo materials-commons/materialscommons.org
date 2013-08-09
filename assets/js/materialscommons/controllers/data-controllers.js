@@ -1,5 +1,5 @@
 function DataEditController($scope, $routeParams, $window, $http, User) {
-    $http.jsonp(mcurljsonpu2('/data', $routeParams.id, User))
+    $http.jsonp(mcurljsonp('/user/%/data/%', User.u(), $routeParams.id))
         .success(function (data) {
             $scope.doc = data;
         });
@@ -20,7 +20,7 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
             })
         });
 
-    $http.jsonp(mcurljsonpu2('/data/review', $routeParams.id, User))
+    $http.jsonp(mcurljsonp('/user/%/data/review/%', User.u(), $routeParams.id))
         .success(function (data) {
             console.dir(data);
             if (data.found) {
@@ -46,7 +46,7 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
 
     $scope.saveData = function () {
         console.log("Sending a put request");
-        $http.put(mcurlu2('/data/update', $scope.doc.id, User), $scope.doc)
+        $http.put(mcurl('/user/%/data/update/%', User.u(), $scope.doc.id), $scope.doc)
             .success(function (data, status) {
                 console.log("Save: Success!!!")
                 $scope.addNewTags();
@@ -64,7 +64,7 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
         var tagObj = {};
         newtags.forEach(function (item) {
             tagObj.id = item;
-            $http.post(mcservicepath2('/tag'), tagObj);
+            $http.post(mcurl('/tag'), tagObj);
         });
     }
 
@@ -76,11 +76,11 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
             var now = new Date();
             review.type = "data";
             review.markedOnDate = now.getFullYear() + '/' + (now.getMonth()+1) + '/' + now.getDate();
-            review.owner = User.get_username();
+            review.owner = User.u();
             review.itemName = $scope.doc.name;
             review.itemId = $scope.doc.id;
             review.who = $scope.doc.owner;
-            $http.post(mcserviceupath2(User, '/review'), review)
+            $http.post(mcurl('/user/%/review', User.u()), review)
                 .success(function (data) {
                     console.log("added review");
                     console.dir(data);
@@ -112,7 +112,7 @@ function MyDataController($scope, $http, User, $location) {
     $scope.predicate = 'name';
     $scope.reverse = false;
 
-    $http.jsonp(mcurljsonpu('/data', User))
+    $http.jsonp(mcurljsonp('/user/%/data', User.u()))
         .success(function (data, status) {
             $scope.data_by_user = data;
         });
@@ -125,7 +125,7 @@ function MyDataController($scope, $http, User, $location) {
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            var url = mcurljsonpu2('/datagroup', datagroupId, User);
+            var url = mcurljsonp('/user/%/datagroup/%', User.u(), datagroupId);
             $http.jsonp(url)
                 .success(function (data, status) {
                     $scope.dgroup = data;

@@ -8,7 +8,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
-    //$rootScope.me = User.get_username();
+    //$rootScope.me = User.u();
     //$rootScope.user_name = 'Login'
 
     $scope.login = function () {
@@ -48,7 +48,7 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
     }
 
     $scope.get_user_name = function () {
-        $scope.user = User.get_username;
+        $scope.user = User.u();
         console.log($scope.user);
 
     }
@@ -117,7 +117,7 @@ function FrontPageController($scope, $location) {
 
 function HomeController($scope, $http) {
     var hostname = document.location.hostname;
-    $scope.news = $http.jsonp(mcurljsonp('/news'))
+    $scope.news = $http.jsonp(mcurljsonp('/news', 'a'))
         .success(function (data, status) {
             $scope.news = data;
         }).error(function (data, status, headers, config) {
@@ -244,13 +244,13 @@ function GlobalTagCloudController($scope, $http, User) {
         .success(function (data) {
             $scope.word_list = [];
             angular.forEach(data, function (tag) {
-                $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/tags/data/bytag/" + tag.name + '/' + User.get_username()});
+                $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/tags/data/bytag/" + tag.name + '/' + User.u()});
             });
         });
 }
 
 function ReviewListController($scope, $http, $location, User) {
-    $http.jsonp(mcurljsonpu('/reviews', User))
+    $http.jsonp(mcurljsonp('/user/%/reviews', User.u()))
         .success(function(data) {
             $scope.reviews = data;
         });
@@ -266,7 +266,7 @@ function ReviewListController($scope, $http, $location, User) {
 
     $scope.removeReview = function(index) {
         var id = $scope.reviews[index].id;
-        $http.delete(mcurlu2('/review', id, User))
+        $http.delete(mcurl('/user/%/review/%', User.u(), id))
             .success(function(data) {
                 console.log("success deleting");
                 $scope.reviews.splice(index, 1);
