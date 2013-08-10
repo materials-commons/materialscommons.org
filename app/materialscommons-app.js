@@ -19,7 +19,6 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
         when('/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
-        when('/explore', {templateUrl: 'partials/tree_view.html', controller: ExploreController}).
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/contact.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/help.html', controller: HelpController}).
@@ -36,7 +35,6 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/tags/data/bytag/:tag/:user',
         {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
-        when('/tree_view', {templateUrl: 'partials/tree_view.html', controller: TreeController}).
         when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: TagListController}).
         otherwise({redirectTo: '/home'});
 }
