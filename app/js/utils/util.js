@@ -5,7 +5,7 @@ function setActiveMainNav(nav) {
 }
 
 function mcurl() {
-    var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org/v1.0";
+    var apihost = mcglobals.apihost ? mcglobals.apihost : "http://magnesium.eecs.umich.edu:5000/v1.0";
 
     if (arguments.length < 1)
     {
