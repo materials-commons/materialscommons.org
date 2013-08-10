@@ -29,7 +29,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: LabController}).
         when('/results_by_date',
         {templateUrl: 'partials/datagroups/results_by_date.html', controller: SearchByDateController}).
-        when('/user_functions', {templateUrl: 'partials/user_functions.html', controller: FrontPageController}).
+        when('/my-tools', {templateUrl: 'partials/my-tools.html', controller: FrontPageController}).
         when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user',
@@ -44,7 +44,7 @@ app.run(function ($rootScope, $location, User) {
         if (matchesPartial(next, "partials/front-page", "HomeController")) {
             setActiveMainNav("#home-nav");
         }
-        else if (matchesPartial(next, "partials/user_functions", "UserFunctionsController")) {
+        else if (matchesPartial(next, "partials/my-tools", "FrontPageController")) {
             setActiveMainNav("#user-nav");
         }
         else if (matchesPartial(next, "partials/explore", "ExploreController")) {
@@ -59,12 +59,6 @@ app.run(function ($rootScope, $location, User) {
         else if (matchesPartial(next, "partials/help", "HelpController")) {
             setActiveMainNav("#help-nav");
         }
-//        else if (matchesPartial(next, "partials/data", "DataSearchController")) {
-//            setActiveMainNav("#finddata");
-//        }
-//        else if (matchesPartial(next, "partials/models", "ModelsSearchController")) {
-//            setActiveMainNav("#findmodels");
-//        }
 
         if (mcglobals.bypasslogin) {
             if (mcglobals.username) {
@@ -74,7 +68,7 @@ app.run(function ($rootScope, $location, User) {
         }
 
         if (!User.isAuthenticated()) {
-            if (next.templateUrl && next.templateUrl.indexOf("partials/user_functions") != -1) {
+            if (next.templateUrl && next.templateUrl.indexOf("partials/my-tools") != -1) {
                 $location.path("/login");
             }
         }

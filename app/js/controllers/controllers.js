@@ -1,10 +1,10 @@
 'use strict';
 
 
-function LoginController($scope, $location, $timeout, cornercouch, User, $rootScope) {
-    $scope.server = cornercouch();
-    $scope.server.session();
-    $scope.mcdb = $scope.server.getDB("materialscommons");
+function LoginController($scope, $location, $timeout, User, $rootScope) {
+//    $scope.server = cornercouch();
+//    $scope.server.session();
+//    $scope.mcdb = $scope.server.getDB("materialscommons");
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
@@ -23,9 +23,9 @@ function LoginController($scope, $location, $timeout, cornercouch, User, $rootSc
                         $scope.failedLogin = false;
                         $scope.successfulLogin = true;
                         $scope.connectError = false;
-                        $location.path('/user_functions');
+                        $location.path('/my-tools');
                         //$timeout(function() {
-                        //  $location.path("#/partials/user_functions/");
+                        //  $location.path("/my-tools");
                         //}, 2000);
                     } else {
                         $scope.failedLogin = true;
@@ -60,7 +60,7 @@ function LogOutController($scope, $rootScope, User) {
     User.setAuthenticated(false, '');
 }
 
-function AccountController($scope, $rootScope, $routeParams, cornercouch, $location, flash) {
+function AccountController($scope, $rootScope, $routeParams, $location, flash) {
     $scope.server = cornercouch();
     $scope.server.session();
     $scope.mcdb = $scope.server.getDB("materialscommons");
