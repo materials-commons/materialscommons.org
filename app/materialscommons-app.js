@@ -15,7 +15,6 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
         when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).
         when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
-        when('/mylab/:tab/:subpage/:id', {templateUrl: 'partials/mylab/mylab.html', controller: MyLabTabController}).
         when('/searchindex/:subpage/:name',
         {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
         when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
