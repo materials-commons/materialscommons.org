@@ -13,28 +13,51 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
 
     $routeProvider.
         when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
-        when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).
-        when('/models', {templateUrl: 'partials/under-construction.html', controller: ModelsSearchController}).
         when('/searchindex/:subpage/:name',
-        {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
-        when('/login', {templateUrl: 'partials/login.html', controller: LoginController}).
-        when('/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
+        {templateUrl: 'partials/search.html', controller: SearchIndexController}).
+
+        /*
+        ** Account controllers
+         */
+        when('/account/login', {templateUrl: 'partials/account/login.html', controller: LoginController}).
+        when('/account/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
+        when('/account/create-account', {templateUrl: 'partials/account/create-account.html', controller: AccountController}).
+
+        /*
+        ** Top level controllers
+         */
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/contact.html', controller: ContactController}).
         when('/help', {templateUrl: 'partials/help.html', controller: HelpController}).
-        when('/search', {templateUrl: 'partials/search_repository.html', controller: SearchIndexController}).
+        when('/search', {templateUrl: 'partials/search.html', controller: SearchIndexController}).
+        when('/my-tools', {templateUrl: 'partials/my-tools.html', controller: FrontPageController}).
+
+        /*
+        ** Controllers with in the My Tools subpages
+         */
+
+        /*
+        ** Other
+         */
         when('/datagroups',
         {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
-        when('/data_by_user', {templateUrl: 'partials/datagroups/user_data.html', controller: MyDataController}).
         when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: LabController}).
         when('/results_by_date',
         {templateUrl: 'partials/datagroups/results_by_date.html', controller: SearchByDateController}).
-        when('/my-tools', {templateUrl: 'partials/my-tools.html', controller: FrontPageController}).
-        when('/create-account', {templateUrl: 'partials/create-account.html', controller: AccountController}).
+
+        /*
+        ** Data
+         */
+        when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).
+        when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
+        when('/data/mydata', {templateUrl: 'partials/data/my-data.html', controller: MyDataController}).
+
+        /*
+        ** Tags
+         */
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user',
         {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
-        when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
         when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: TagListController}).
         otherwise({redirectTo: '/home'});
 }
@@ -69,7 +92,7 @@ app.run(function ($rootScope, $location, User) {
 
         if (!User.isAuthenticated()) {
             if (next.templateUrl && next.templateUrl.indexOf("partials/my-tools") != -1) {
-                $location.path("/login");
+                $location.path("/account/login");
             }
         }
         else {

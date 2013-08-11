@@ -27,3 +27,8 @@ function mcurljsonp() {
     return mcurl.apply(this, arguments) + "?callback=JSON_CALLBACK";
 }
 
+function get_utc_obj(utc_in_sec) {
+    var d = new Date(utc_in_sec * 1000);
+    return d;
+}
+

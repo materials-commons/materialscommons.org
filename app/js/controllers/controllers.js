@@ -75,17 +75,17 @@ function AccountController($scope, $rootScope, $routeParams, $location, flash) {
         $scope.mcdb.query("materialscommons-app", "mcusers_by_email", {key: $scope.email}).success(function () {
             if ($scope.mcdb.rows.length > 0) {
                 alert('Account has already been created using ' + $scope.email);
-                $location.path('/create-account');
+                $location.path('/account/create-account');
             }
             else {
                 if (($scope.password == $scope.confirm_password) && ($scope.email == $scope.confirm_email)) {
                     $scope.new_account.save();
                     flash("Account Created");
-                    $location.path('/login');
+                    $location.path('/account/login');
                 }
                 else {
                     alert("Unable to Create Your Account. Confirmation is being entered incorrectly");
-                    $location.path('/create-account');
+                    $location.path('/account/create-account');
                 }
 
             }
@@ -144,25 +144,9 @@ function DataSearchController($scope, Mcdb, $routeParams, $location) {
     }
 }
 
-function ModelsSearchController($scope, $routeParams) {
-    // Nothing to do yet
-}
 
 function ExploreController($scope, $http) {
     $scope.pageDescription = "Explore";
-    $scope.model = [
-        {
-            name: 'Item 1 Name',
-            children: [
-                {
-                    name: 'Item 2 Name'
-                },
-                {
-                    name: 'Item 3 Name'
-                }
-            ]
-        }
-    ];
 }
 
 function AboutController($scope) {

@@ -64,16 +64,16 @@
             <div class="nav-collapse collapse" ng-controller="LoginController">
                 <div ng-hide="email_address">
                     <p class="navbar-text pull-right">
-                        <a href="#/create-account" class="navbar-link" style="margin-right:15px"><i
+                        <a href="#/account/create-account" class="navbar-link" style="margin-right:15px"><i
                                 class="icon-plus-sign"></i> Create Account</a>
-                        <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
+                        <a href="#/account/login" class="navbar-link"><i class="icon-user"></i> Login</a>
                     </p>
                 </div>
 
 
                 <div ng-controller="LogOutController" ng-show="email_address">
                     <p class="navbar-text pull-right">
-                        <a href="#/logout" class="navbar-link"><i class="icon-user"></i> logout {{email_address}}</a>
+                        <a href="#/account/logout" class="navbar-link"><i class="icon-user"></i> logout {{email_address}}</a>
                     </p>
                 </div>
             </div>
@@ -123,9 +123,9 @@
 <script src="assets/js/jquery.tablesorter.min.js"></script>
 <script src="app/js/directives/directives.js"></script>
 <script src="app/js/controllers/searchindex/searchindex.js"></script>
-<script src="app/js/controllers/datagroups/datagroup.js"></script>
+<script src="app/js/controllers/mytools/datagroup-controllers.js"></script>
 <script src="app/js/controllers/tags/tags.js"></script>
-<script src="app/js/controllers/data-controllers.js"></script>
+<script src="app/js/controllers/mytools/data-controllers.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/bootstrap-datepicker.js"></script>
 <script src="assets/js/bootstrap-select.js"></script>

@@ -1,5 +1,4 @@
 function LabController($scope, $http) {
-    console.log("LabController");
     $http.jsonp(mcurljsonp('/usergroups'))
         .success(function(data) {
             console.log("retrieved labs");
@@ -14,8 +13,6 @@ function LabController($scope, $http) {
             .success(function(data) {
                 $scope.lab_data = data;
             })
-        //$scope.lab_data = $scope.mcdb.query("materialscommons-app", "datagroup_by_usergroups", {key: value});
-
     }
 
     $scope.get_utc_obj = function (utc_in_sec) {
