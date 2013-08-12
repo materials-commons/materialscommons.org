@@ -66,7 +66,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
          */
         when('/upload/file', {templateUrl: 'partials/updownload/upload-file.html', controller: UploadFileController}).
         when('/upload/directory', {templateUrl: 'partials/updownload/upload-directory.html', controller: UploadDirectoryController}).
-        when('/updownload/queue', {templateUrl: 'partials/updownload/queue.html', controller: UpDownLoadQueueController}).
+        when('/updownload/queue', {templateUrl: 'partials/updownload/udqueue.html', controller: UpDownLoadQueueController}).
 
         otherwise({redirectTo: '/home'});
 }

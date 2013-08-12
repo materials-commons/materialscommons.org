@@ -71,6 +71,7 @@ materialsCommonsServices.
 
     return {
         send: function (file) {
+            console.log("uploadService send called");
             var data = new FormData(),
                 xhr = new XMLHttpRequest();
 
@@ -105,6 +106,9 @@ materialsCommonsServices.
         clear: function () {
             _files = [];
         },
+
+        getFiles: function() { return _files; },
+
         files: function () {
             var fileNames = [];
             $.each(_files, function (index, file) {
@@ -114,6 +118,8 @@ materialsCommonsServices.
         },
         upload: function () {
             $.each(_files, function (index, file) {
+                console.log("upload called");
+                console.dir(file);
                 file.submit();
             });
             this.clear();

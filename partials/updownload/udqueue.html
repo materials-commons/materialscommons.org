@@ -1,0 +1,32 @@
+<div class="row-fluid">
+
+    <div class="span10 offset1">
+        <h4>Your Scheduled Uploads/Downloads</h4>
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <thead>
+            <tr>
+            <th>Type</th>
+            <th>Host</th>
+            <th>Submitted On</th>
+            <th>Path</th>
+            <th>Status</th>
+            <th>Datagroup</th>
+            <th>Note</th>
+            <th>Last Update</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="entry in udentries">
+                <td>{{ entry.type }}</td>
+                <td>{{ entry.host }}</td>
+                <td>{{ entry.submittedOn }}</td>
+                <td>{{ entry.path }}</td>
+                <td>{{ entry.status }}</td>
+                <td>{{ entry.datagroup }}</td>
+                <td>{{ entry.note }}</td>
+                <td ng-show="entry.logs.length > 0">{{ entry.logs[entry.logs.length-1] }}</td>
+                <td ng-show="entry.logs.length == 0"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
