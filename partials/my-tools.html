@@ -1,14 +1,10 @@
 <div class="row-fluid">
-    <div class="span6 offset1">
+    <div class="span8 offset1">
         <table>
             <tr>
-                <td><h4>Admin Functions:</h4></td>
-            </tr>
-
-            <tr>
-                <td><h4> Search Functions: </h4></td>
-                <td><a href="#/results_by_date">Search by Date</a></td>
-                <td><a href="#/tree_view">Tree View</a></td>
+                <td><h4>View: </h4></td>
+                <td><a href="#/results_by_date">By Date</a></td>
+                <td><a href="#/tree_view">Tree</a></td>
             </tr>
 
             <div>
@@ -24,16 +20,16 @@
                 <td><h4>Tags:</h4></td>
                 <td><a href="#/tags/list/all">List Tags</a></td>
                 <td><a href="#/tags/list/mytags">Tags on my data</a></td>
-                <!--<td><a href="#/tags/edit">Edit Tags</a></td>-->
-                <td><a href="#/tags/cloud">Tag Cloud</a></td>
+                <td><a href="#/tags/cloud/global">Global Tag Cloud</a></td>
             </tr>
 
             <tr>
-                <td>
-                    <h4>Reviews:</h4>
-                </td>
-                <td><a href=""></a></td>
+                <td><h4>Upload/Download:</h4></td>
+                <td><a href="#/upload/file">Upload file</a></td>
+                <td><a href="#/upload/directory">Upload directory</a></td>
+                <td><a href="#/upload/queue">View Upload/Download Queue</a></td>
             </tr>
+
         </table>
 
         <!--<h4>File Upload:</h4>-->
@@ -64,13 +60,6 @@
         <!--</div>-->
 
     </div>
-    <div class="span5">
-        <h4>Global Tag Cloud</h4>
-
-        <div ng-controller="GlobalTagCloudController">
-            <div wordcloud="word_list" style="width: 550px; height: 350px; position: relative;"></div>
-        </div>
-
     </div>
 </div>
 <div class="row-fluid" ng-controller="ReviewListController">

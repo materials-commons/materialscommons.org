@@ -59,6 +59,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/tags/data/bytag/:tag/:user',
         {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: TagListController}).
+        when('/tags/cloud/global', {templateUrl: 'partials/tags/tagcloud.html', controller: GlobalTagCloudController}).
         otherwise({redirectTo: '/home'});
 }
 ]);
