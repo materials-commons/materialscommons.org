@@ -15,4 +15,13 @@
 
 *** Review Workflow
 
+***** Review Queue
+      View the list of reviews you need to do. Click on reviews to do start your review, or delete a review.
+
+      [[file:ReviewQueue.png]]
+***** Data Review
+      View the list of reviews for a data item. Request reviews, or mark an item for future followup.
+
+      [[file:DataReview.png]]
+
 *** Upload/Download Workflow
