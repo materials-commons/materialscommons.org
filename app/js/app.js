@@ -60,6 +60,14 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
         when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: TagListController}).
         when('/tags/cloud/global', {templateUrl: 'partials/tags/tagcloud.html', controller: GlobalTagCloudController}).
+
+        /*
+        ** Upload/Download
+         */
+        when('/upload/file', {templateUrl: 'partials/updownload/upload-file.html', controller: UploadFileController}).
+        when('/upload/directory', {templateUrl: 'partials/updownload/upload-directory.html', controller: UploadDirectoryController}).
+        when('/updownload/queue', {templateUrl: 'partials/updownload/queue.html', controller: UpDownLoadQueueController}).
+
         otherwise({redirectTo: '/home'});
 }
 ]);

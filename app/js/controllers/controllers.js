@@ -223,8 +223,6 @@ function FileUploadCtrl($scope, $rootScope, uploadManager) {
 
 }
 
-
-
 function ReviewListController($scope, $http, $location, User) {
     $http.jsonp(mcurljsonp('/user/%/reviews', User.u()))
         .success(function(data) {
@@ -249,4 +247,8 @@ function ReviewListController($scope, $http, $location, User) {
             });
 
     }
+}
+
+function EventController() {
+
 }
