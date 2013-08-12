@@ -9,6 +9,8 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
     $scope.reviewId = null;
     $scope.predicate = 'name';
     $scope.reverse = false;
+    $scope.schedule_for_self = false;
+
 
     $scope.tagchoices = new Array();
     $scope.originalTags = [];
@@ -20,15 +22,15 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
             })
         });
 
-    $http.jsonp(mcurljsonp('/user/%/data/review/%', User.u(), $routeParams.id))
+    $http.jsonp(mcurljsonp('/user/%/data/reviews/%', User.u(), $routeParams.id))
         .success(function (data) {
-            console.dir(data);
-            if (data.found) {
-                $scope.review_note = data.note;
-                $scope.marked_for_review = true;
-                $scope.reviewId = data.id;
-            }
+            $scope.scheduledReviews = data;
         });
+
+    $http.jsonp(mcurljsonp('/users'))
+        .success(function (data) {
+            $scope.users = data;
+        })
 
     $scope.removeTag = function (index) {
         $scope.doc.tags.splice(index, 1);
@@ -50,7 +52,6 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
             .success(function (data, status) {
                 console.log("Save: Success!!!")
                 $scope.addNewTags();
-                $scope.addReview();
             }).error(function (data, status, headers, config) {
                 console.log("Save: Error!!!")
                 // Do something here.
@@ -69,23 +70,35 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
     }
 
     $scope.addReview = function () {
-        console.log("marked_for_review = " + $scope.marked_for_review);
-        if ($scope.marked_for_review) {
-            var review = {};
-            review.note = $scope.review_note;
-            var now = new Date();
-            review.type = "data";
-            review.markedOnDate = now.getFullYear() + '/' + (now.getMonth()+1) + '/' + now.getDate();
+        var review = {};
+        review.note = $scope.review_note;
+        var now = new Date();
+        review.type = "data";
+        review.markedOnDate = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
+        if ($scope.schedule_for_self) {
             review.owner = User.u();
-            review.itemName = $scope.doc.name;
-            review.itemId = $scope.doc.id;
-            review.who = $scope.doc.owner;
-            $http.post(mcurl('/user/%/review', User.u()), review)
-                .success(function (data) {
-                    console.log("added review");
-                    console.dir(data);
-                });
         }
+        else {
+            review.owner = $scope.user_for_review;
+        }
+        review.itemName = $scope.doc.name;
+        review.itemId = $scope.doc.id;
+        review.who = $scope.doc.owner;
+        $http.post(mcurl('/user/%/review', User.u()), review)
+            .success(function (data) {
+                $http.jsonp(mcurljsonp('/user/%/data/reviews/%', User.u(), $routeParams.id))
+                    .success(function (data) {
+                        $scope.scheduledReviews = data;
+                        $scope.user_for_review = ""
+                    });
+            });
+        $scope.schedule_for_self = false;
+    }
+
+    $scope.addReviewForOther = function() {
+        $scope.review_note = $scope.review_note_other;
+        $scope.review_note_other = "";
+        $scope.addReview();
     }
 
     $scope.cancel = function () {
@@ -104,6 +117,13 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
 
     $scope.addNoteKeypressCallback = function (event) {
         $scope.doc.notes.push($scope.new_note);
+    }
+
+    $scope.addReviewNoteKeypressCallback = function (event) {
+        $scope.schedule_for_self = true;
+        $scope.review_note = $scope.review_note_self;
+        $scope.review_note_self = "";
+        $scope.addReview();
     }
 }
 
