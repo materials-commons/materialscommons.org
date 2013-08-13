@@ -1,4 +1,4 @@
-% Created 2013-08-12 Mon 17:11
+% Created 2013-08-12 Mon 20:08
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -16,6 +16,7 @@
 \usepackage{amstext}
 \usepackage{hyperref}
 \tolerance=1000
+\author{V. Glenn Tarcea}
 \date{\today}
 \title{workflow}
 \hypersetup{
@@ -47,5 +48,31 @@ View the list of reviews for a data item. Request reviews, or mark an item for f
 \includegraphics[width=.9\linewidth]{DataReview.png}
 \subsection{Upload/Download Workflow}
 \label{sec-1-2}
+There will be two methods to upload/download files from the website. If a user installs
+our send$_{\text{file}}$ package they will be able to queue their requests. The advantage to using
+the send$_{\text{file}}$ package is that uploads and downloads can be done in the background. The
+transfers will automatically restart if they are interrupted.
+
+If a user doesn't have this package installed then they can choose to upload/download
+files directly from the website. The download will take place through the browser and
+the user will have to wait while it completes.
+
+\subsubsection{Upload/Download Queue}
+\label{sec-1-2-1}
+View the list of queued upload/download requests and their current status.
+
+\includegraphics[width=.9\linewidth]{ScheduledUploadsDownloads.png}
+\subsubsection{Upload Files}
+\label{sec-1-2-2}
+Choose files to upload and the datagroup to upload them to. All files go to the
+same datagroup.
+
+\includegraphics[width=.9\linewidth]{UploadFile.png}
+\subsubsection{Upload Directories}
+\label{sec-1-2-3}
+Choose directories to upload and the datagroup to upload them to. All directories
+go to the same datagroup.
+
+\includegraphics[width=.9\linewidth]{UploadDirectories.png}
 % <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.2.1 (<a href="http://orgmode.org">Org</a> mode 8.0.6)
 \end{document}
