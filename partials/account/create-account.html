@@ -1,31 +1,22 @@
-
-
 <div class="span10 offset1">
     <h4>Create New Account</h4>
-
     <table>
+        <tr>
+            <td>Email</td>
+            <td><input type="email" ng-model="email" placeholder="me@example.com" required></td>
+        </tr>
 
-    <tr>
-        <td>Email</td>
-        <td><input type="text" ng-model="email" placeholder="Email address"></td>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" ng-model="password" class="input-block-level" placeholder="Password" required></td>
 
-        <td>Confirm Email</td>
-        <td><input type="text" ng-model="confirm_email" placeholder=" Confirm Email address"></td>
-
-    </tr>
-
-    <tr>
-        <td>Password</td>
-        <td><input  type="password" ng-model="password"  class="input-block-level" placeholder="Password"></td>
-
-        <td>Confirm Password</td>
-        <td><input type="password" ng-model="confirm_password" class="input-block-level" placeholder="Confirm Password"></td>
-
-    </tr>
-
-</table>
+            <td>Confirm Password</td>
+            <td><input type="password" ng-model="confirm_password" class="input-block-level"
+                       placeholder="Confirm Password" required></td>
+        </tr>
+    </table>
     <br>
-<button class="btn btn-success" type="button" ng-click="create_account()"  > Create Account</button>
+    <button class="btn btn-success" type="button" ng-click="create_account()"> Create Account</button>
 </div>
 
 

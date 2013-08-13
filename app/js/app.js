@@ -94,7 +94,8 @@ app.run(function ($rootScope, $location, User) {
 
         if (mcglobals.bypasslogin) {
             if (mcglobals.username) {
-                User.setAuthenticated(true, mcglobals.username);
+                User.setAuthenticated(true, mcglobals.apikey, mcglobals.username);
+                $rootScope.email_address = mcglobals.username;
             }
             return;
         }

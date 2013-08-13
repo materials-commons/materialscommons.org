@@ -4,6 +4,7 @@ if (window.location.hostname != "materialscommons.org")
         mcglobals.bypasslogin = testconfig.bypasslogin;
         mcglobals.username = testconfig.username;
         mcglobals.apihost = testconfig.apihost;
+        mcglobals.apikey = testconfig.apikey;
     }
 }
 

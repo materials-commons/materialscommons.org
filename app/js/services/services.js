@@ -9,19 +9,20 @@ materialsCommonsServices.
         var self = this;
         self.authenticated = false;
         self.email_address = 'Login';
+        self.apikey = undefined;
         return {
             isAuthenticated: function() {
                 return self.authenticated;
             },
 
-            setAuthenticated: function(value, email_address) {
+            setAuthenticated: function(value, apikey, email_address) {
                 self.authenticated = value;
                 self.email_address = email_address;
-
+                self.apikey = apikey;
             },
 
-            get_username: function(){
-                return self.email_address;
+            apikey: function() {
+                return self.apikey;
             },
 
             u: function() { return self.email_address; }
