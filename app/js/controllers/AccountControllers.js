@@ -56,5 +56,26 @@ function CreateAccountController($scope, $http, $location) {
 }
 
 function AccountDetailsController($scope, $http, User) {
-    
+    $scope.new_password = undefined;
+    $scope.verify_new_password;
+
+    $http.jsonp(mcurljsonp('/user/%', User.u()))
+        .success(function(data) {
+            $scope.account = data;
+        });
+
+    $scope.saveChanges = function() {
+        if ($scope.new_password) {
+            if ($scope.new_password == $scope.verify_new_password) {
+                $http.put(mcurl('/user/%/password/%', User.u(), $scope.new_password))
+                    .success(function(data) {
+                        console.log("password changed!");
+                    }).error(function() {
+                        console.log("Failed to change password");
+                    });
+            } else {
+                console.log("new passwords don't match");
+            }
+        }
+    }
 }
