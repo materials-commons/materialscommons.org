@@ -1,9 +1,5 @@
 'use strict';
 
-
-
-
-
 function FrontPageController($scope, $location) {
     $scope.messages = [];
     $scope.sent = 0;
@@ -74,52 +70,13 @@ function HelpController($scope, $routeParams) {
     $scope.pageDescription = "Help";
 }
 
-/*
- function UploadFileController($scope,uploadService, $rootScope ){
- $scope.clicked="false";
- $scope.count = 0;
- $scope.addButtonClicked = function(){
- $scope.count = $scope.count + 1;
-
- alert('in function');
- //var numFiles = $scope.fileList.length;
- //$scope.fileList.push({name: ('fileName' + numFiles)});
- }
-
-
- // 'files' is an array of JavaScript 'File' objects.
- $scope.files = [];
- $scope.$watch('files', function (newValue, oldValue) {
- // Only act when our property has changed.
- if (newValue != oldValue) {
- console.log('Controller: $scope.files changed. Start upload.');
- for (var i = 0, length = $scope.files.length; i < length; i++) {
- // Hand file off to uploadService.
- uploadService.send($scope.files[i]);
- }
- }
- }, true);
-
- $rootScope.$on('upload:loadstart', function () {
- console.log('Controller: on `loadstart`');
- });
-
- $rootScope.$on('upload:error', function () {
- console.log('Controller: on `error`');
- });
-
-
- }
- */
-
-
 function ReviewListController($scope, $http, $location, User) {
     $http.jsonp(mcurljsonp('/user/%/reviews', User.u()))
-        .success(function(data) {
+        .success(function (data) {
             $scope.reviews = data;
         });
 
-    $scope.startReview = function(id, type) {
+    $scope.startReview = function (id, type) {
         if (type == "data") {
             $location.path("/data/edit/" + id);
         }
@@ -128,10 +85,10 @@ function ReviewListController($scope, $http, $location, User) {
         }
     }
 
-    $scope.removeReview = function(index) {
+    $scope.removeReview = function (index) {
         var id = $scope.reviews[index].id;
         $http.delete(mcurl('/user/%/review/%', User.u(), id))
-            .success(function(data) {
+            .success(function (data) {
                 console.log("success deleting");
                 $scope.reviews.splice(index, 1);
             });

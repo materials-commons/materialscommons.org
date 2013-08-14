@@ -30,20 +30,6 @@ materialsCommonsServices.
     });
 
 materialsCommonsServices.factory('Mcdb', function() {
-//    var self = this;
-//    self.server = cornercouch();
-//    self.server.session();
-//    self.mcdb = self.server.getDB("materialscommons");
-//
-//    return {
-//        db: function() {
-//            return self.mcdb;
-//        },
-//
-//        query: function(view, params) {
-//            self.mcdb.query("materialscommons-app", view, params);
-//        }
-//    }
 
 });
 
@@ -76,68 +62,3 @@ materialsCommonsServices.factory('formDataObject', function () {
         return fd;
     };
 });
-
-materialsCommonsServices.
-    factory('uploadService', ['$rootScope', function ($rootScope) {
-
-    return {
-        send: function (file) {
-            console.log("uploadService send called");
-            var data = new FormData(),
-                xhr = new XMLHttpRequest();
-
-            // When the request starts.
-            xhr.onloadstart = function () {
-                console.log('Factory: upload started: ', file.name);
-                $rootScope.$emit('upload:loadstart', xhr);
-            };
-
-            // When the request has failed.
-            xhr.onerror = function (e) {
-                $rootScope.$emit('upload:error', e);
-            };
-
-            // Send to server, where we can then access it with $_FILES['file].
-            data.append('file', file, file.name);
-            xhr.open('POST', '/echo/json');
-            xhr.send(data);
-        }
-    };
-
-}]);
-
-materialsCommonsServices.
-    factory('uploadManager', ['$rootScope', function($rootScope){
-    var _files = [];
-    return {
-        add: function (file) {
-            _files.push(file);
-            $rootScope.$broadcast('fileAdded', file.files[0].name);
-        },
-        clear: function () {
-            _files = [];
-        },
-
-        getFiles: function() { return _files; },
-
-        files: function () {
-            var fileNames = [];
-            $.each(_files, function (index, file) {
-                fileNames.push(file.files[0].name);
-            });
-            return fileNames;
-        },
-        upload: function () {
-            $.each(_files, function (index, file) {
-                console.log("upload called");
-                console.dir(file);
-                file.submit();
-            });
-            this.clear();
-        },
-        setProgress: function (percentage) {
-            $rootScope.$broadcast('uploadProgress', percentage);
-        }
-    };
-}]);
-

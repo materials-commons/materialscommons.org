@@ -7,15 +7,13 @@
                 <td><a href="#/tree_view">Tree</a></td>
             </tr>
 
-            <div>
-                <tr>
-                    <td><h4>Data: </h4></td>
-                    <td><a href="#/datagroups">My DataGroups</a></td>
-                    <td><a href="#/data/mydata">My data</a></td>
-                    <td><a href="#/my_lab">Data by Lab</a></td>
-                </tr>
+            <tr>
+                <td><h4>Data: </h4></td>
+                <td><a href="#/datagroups">My DataGroups</a></td>
+                <td><a href="#/data/mydata">My data</a></td>
+                <td><a href="#/my_lab">Data by Lab</a></td>
+            </tr>
 
-            </div>
             <tr>
                 <td><h4>Tags:</h4></td>
                 <td><a href="#/tags/list/all">List Tags</a></td>
@@ -29,39 +27,10 @@
                 <td><a href="#/upload/directory">Upload directory</a></td>
                 <td><a href="#/updownload/queue">View Upload/Download Queue</a></td>
             </tr>
-
         </table>
-
-        <!--<h4>File Upload:</h4>-->
-
-        <!--<div ng-controller="FileUploadCtrl">-->
-        <!--<div class="control-group">-->
-        <!--<div class="controls">-->
-        <!--<span class="btn btn-success fileinput-button">-->
-        <!--<i class="icon-plus icon-white"></i>-->
-        <!--<input type="file" name="file" data-url="home/upload" multiple upload><span>Add files...</span>-->
-        <!--</span>-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--<div>-->
-        <!--<span ng-show="!files.length">No files selected</span>-->
-        <!--<ul>-->
-        <!--<li ng-repeat="file in files">{{file}}</li>-->
-        <!--</ul>-->
-        <!--</div>-->
-
-        <!--<div>-->
-        <!--<button type="submit" class="btn btn-primary pull-left" ng-click="upload()">Upload</button>-->
-        <!--</div>-->
-
-        <!--<div class="progress" ng-show="percentage">-->
-        <!--</div>-->
-        <!--</div>-->
-
-    </div>
     </div>
 </div>
+
 <div class="row-fluid" ng-controller="ReviewListController">
     <div class="offset1">
         <h4>Queued Reviews</h4>
@@ -81,7 +50,9 @@
                 <td>{{ review.note }}</td>
                 <td>{{ review.markedOnDate }}</td>
                 <td>{{ review.type }}</td>
-                <td>{{ review.itemName }}<button type="button" class="close" ng-click="removeReview($index);">&times;</button></td>
+                <td>{{ review.itemName }}
+                    <button type="button" class="close" ng-click="removeReview($index);">&times;</button>
+                </td>
             </tr>
             </tbody>
         </table>

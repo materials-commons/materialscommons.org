@@ -21,7 +21,8 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
          */
         when('/account/login', {templateUrl: 'partials/account/login.html', controller: LoginController}).
         when('/account/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
-        when('/account/create-account', {templateUrl: 'partials/account/create-account.html', controller: AccountController}).
+        when('/account/create-account', {templateUrl: 'partials/account/create-account.html', controller: CreateAccountController}).
+        when('/account/details', {templateUrl: 'partials/account/account-details.html', controller: AccountDetailsController}).
 
         /*
         ** Top level controllers
