@@ -20,12 +20,13 @@ function mcurl() {
         s = s.replace('%', arguments[i]);
     }
 
-    var url = apihost + s;
+    var url = apihost + s + "?apikey=" + mcglobals.apikey;
+    console.log(url);
     return url;
 }
 
 function mcurljsonp() {
-    return mcurl.apply(this, arguments) + "?callback=JSON_CALLBACK";
+    return mcurl.apply(this, arguments) + "&callback=JSON_CALLBACK";
 }
 
 function get_utc_obj(utc_in_sec) {
