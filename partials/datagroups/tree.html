@@ -1,7 +1,7 @@
 <div class="row-fluid">
-    <div class="span10 offset1">
+    <div class="span5 offset1">
         <h2>Data Tree View</h2>
         <input type="text" width="50px" ng-model="searchText" placeholder="Search data"/>
-        <ngtree search-model="searchText" treeview-data="tree" unique-id="id" display-attr="name"></ngtree>
+        <ngtree selected="gotoSelection(d)" search-model="searchText" treeview-data="tree" unique-id="id" display-attr="name"></ngtree>
     </div>
 </div>

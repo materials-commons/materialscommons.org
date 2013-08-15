@@ -32,15 +32,20 @@ function SearchByDateController($scope, $http, $routeParams, User) {
     }
 }
 
-function DataGroupsTreeController($scope, $http, User) {
+function DataGroupsTreeController($scope, $http, $location, User) {
     $http.jsonp(mcurljsonp('/user/%/datagroups/tree', User.u()))
         .success(function(tree) {
-            console.log("success: Got Tree");
             $scope.tree = tree;
         })
         .error(function() {
             console.log("Failed to retrieve tree");
         })
+
+    $scope.gotoSelection = function(d) {
+        if (d.type == "data") {
+            $location.path("/data/edit/" + d.id);
+        }
+    }
 }
 
 

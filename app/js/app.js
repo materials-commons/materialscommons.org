@@ -4,6 +4,8 @@ var app = angular.module('materialscommons',
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     Stomp.WebSocketClass = SockJS;
+    mcglobals = {};
+    doConfig();
 
     /*
      ** CORS support

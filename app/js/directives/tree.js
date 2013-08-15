@@ -23,6 +23,7 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
             }
 
             $scope.check = function (d) {
+
                 if (!d.confirm) {
                     d.confirm = true
                 } else {
@@ -44,7 +45,9 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
                 checkMode: "@",
                 ngModel: "@",
                 getSelection: "@",
-                searchModel: "=searchModel"
+                searchModel: "=searchModel",
+                selected: "&",
+                d: '='
             },
 //            link: function(scope, element, attrs) {
 //
@@ -74,7 +77,7 @@ angular.module("template/ngtree/element.html", []).run(["$templateCache", functi
         "      <span type=\"checkbox\" style=\"margin-bottom: 7px;\" ng-class=\"{opacity:data.partial == true}\" ng-click=\"check(data)\" class=\"treecheckBox\">" +
         "        <img src=\"checkmark.png\" ng-show=\"data.confirm\" class=\"checkBox-icon\"/>" +
         "      </span>" +
-        "      <span ng-click=\"check(data)\">{{data[displayAttr]}}</span>" +
+        "      <span ng-click=\"selected({d: data})\" style='cursor:pointer'>{{data[displayAttr]}}</span>" +
         "  </div>" +
         "</div>" +
         "<ul ng-class='{display:!data.hide, displayshow:data.hide}' style='padding-left: 20px'>" +

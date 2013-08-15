@@ -62,7 +62,7 @@
             </a>
             </a>
 
-            <div class="nav-collapse collapse" ng-controller="LoginController">
+            <div class="nav-collapse collapse">
                 <div ng-hide="email_address">
                     <p class="navbar-text pull-right">
                         <a href="#/account/create-account" class="navbar-link" style="margin-right:15px"><i
@@ -72,7 +72,7 @@
                 </div>
 
 
-                <div ng-controller="LogOutController" ng-show="email_address">
+                <div ng-show="email_address">
                     <p class="navbar-text pull-right">
                         <a href="#/account/details" class="navbar-link"><i class="icon-user"></i>{{email_address}}</a>
                         <a href="#/account/logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
@@ -143,11 +143,6 @@
 <script src="assets/js/angular/angular-flash.js"></script>
 <script src="assets/js/jqcloud-1.0.4.js"></script>
 <script src="assets/js/underscore-min.js"></script>
-
-<script>
-    var mcglobals = {};
-</script>
-
 <script src="app/js/config/testconfig.js"></script>
 <script src="app/js/config/config.js"></script>
 </body>
