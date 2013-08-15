@@ -1,3 +1,10 @@
+/*
+** Based on the Angular Treeview code written by: Kavitha Kgowd. You can find it at:
+** http://logically-thinking.blogspot.in/2013/07/angular-treeview-directive-01v.html.
+** Code was modified to meet additional requirements for example calling out to an
+** external selected function.
+*/
+
 angular.module("NgTree.tpls", ["template/ngtree/tree.html", "template/ngtree/element.html"]);
 angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
     .controller("NgTreeController", ["$scope", "$attrs",
