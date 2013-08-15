@@ -1,6 +1,6 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'flash']);
+        'ui.bootstrap', 'flash', 'NgTree']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -36,6 +36,11 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         /*
         ** Controllers with in the My Tools subpages
          */
+
+        /*
+        ** Data Groups
+         */
+        when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: DataGroupsTreeController}).
 
         /*
         ** Other
