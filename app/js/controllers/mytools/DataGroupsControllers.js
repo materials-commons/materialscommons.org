@@ -2,7 +2,7 @@
 function MyDataGroupsController($scope, $routeParams, $window, $http, User) {
     $scope.predicate = 'name';
     $scope.reverse = false;
-    $http.jsonp(mcurljsonp('/user/%/datagroups/data', User.u()))
+    $http.jsonp(mcurljsonp('/user/%/datadirs/datafiles', User.u()))
         .success(function (data) {
             $scope.datagroups_by_user = data;
         })
@@ -12,7 +12,7 @@ function MyDataGroupsController($scope, $routeParams, $window, $http, User) {
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            var url = mcurljsonp('/user/%/datagroup/%', User.u(), datagroupId);
+            var url = mcurljsonp('/user/%/datadir/%', User.u(), datagroupId);
             $http.jsonp(url)
                 .success(function (data) {
                     $scope.dgroup = data;
@@ -33,7 +33,7 @@ function SearchByDateController($scope, $http, $routeParams, User) {
 }
 
 function DataGroupsTreeController($scope, $http, $location, User) {
-    $http.jsonp(mcurljsonp('/user/%/datagroups/tree', User.u()))
+    $http.jsonp(mcurljsonp('/user/%/datadirs/tree', User.u()))
         .success(function(tree) {
             $scope.tree = tree;
         })
@@ -42,7 +42,7 @@ function DataGroupsTreeController($scope, $http, $location, User) {
         })
 
     $scope.gotoSelection = function(d) {
-        if (d.type == "data") {
+        if (d.type == "datafile") {
             $location.path("/data/edit/" + d.id);
         }
     }

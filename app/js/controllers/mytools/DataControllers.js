@@ -1,5 +1,5 @@
 function DataEditController($scope, $routeParams, $window, $http, User) {
-    $http.jsonp(mcurljsonp('/user/%/data/%', User.u(), $routeParams.id))
+    $http.jsonp(mcurljsonp('/user/%/datafile/%', User.u(), $routeParams.id))
         .success(function (data) {
             $scope.doc = data;
         });
@@ -22,7 +22,7 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
             })
         });
 
-    $http.jsonp(mcurljsonp('/user/%/data/reviews/%', User.u(), $routeParams.id))
+    $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
         .success(function (data) {
             $scope.scheduledReviews = data;
         });
@@ -48,7 +48,7 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
 
     $scope.saveData = function () {
         console.log("Sending a put request");
-        $http.put(mcurl('/user/%/data/update/%', User.u(), $scope.doc.id), $scope.doc)
+        $http.put(mcurl('/user/%/datafile/update/%', User.u(), $scope.doc.id), $scope.doc)
             .success(function (data, status) {
                 console.log("Save: Success!!!")
                 $scope.addNewTags();
@@ -86,7 +86,7 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
         review.who = $scope.doc.owner;
         $http.post(mcurl('/user/%/review', User.u()), review)
             .success(function (data) {
-                $http.jsonp(mcurljsonp('/user/%/data/reviews/%', User.u(), $routeParams.id))
+                $http.jsonp(mcurljsonp('/user/%/datafiles/reviews/%', User.u(), $routeParams.id))
                     .success(function (data) {
                         $scope.scheduledReviews = data;
                         $scope.user_for_review = ""
@@ -106,6 +106,7 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
     }
 
     $scope.addTagKeypressCallback = function (event) {
+        console.log("addTagKeypressCallback");
         if (!_.contains($scope.tagchoices, $scope.new_tag)) {
             $scope.tagchoices.push($scope.new_tag);
         }
@@ -132,7 +133,7 @@ function MyDataController($scope, $http, User, $location) {
     $scope.predicate = 'name';
     $scope.reverse = false;
 
-    $http.jsonp(mcurljsonp('/user/%/data', User.u()))
+    $http.jsonp(mcurljsonp('/user/%/datafiles', User.u()))
         .success(function (data, status) {
             $scope.data_by_user = data;
         });
@@ -145,7 +146,7 @@ function MyDataController($scope, $http, User, $location) {
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            var url = mcurljsonp('/user/%/datagroup/%', User.u(), datagroupId);
+            var url = mcurljsonp('/user/%/datadirs/%', User.u(), datagroupId);
             $http.jsonp(url)
                 .success(function (data, status) {
                     $scope.dgroup = data;

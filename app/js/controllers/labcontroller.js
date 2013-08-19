@@ -9,7 +9,7 @@ function LabController($scope, $http) {
 
 
     $scope.get_lab_data = function (value) {
-        $http.jsonp(mcurljsonp('/usergroup/%/data', value))
+        $http.jsonp(mcurljsonp('/usergroup/%/datafiles', value))
             .success(function(data) {
                 $scope.lab_data = data;
             })

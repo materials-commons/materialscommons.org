@@ -2,7 +2,7 @@ function UploadFileController($scope, $http, User, $rootScope, formDataObject) {
     $scope.files = [];
     $scope.percentage = 0;
 
-    $http.jsonp(mcurljsonp('/user/%/datagroups', User.u()))
+    $http.jsonp(mcurljsonp('/user/%/datadirs', User.u()))
         .success(function (data) {
             $scope.datagroups = data;
         });
@@ -55,7 +55,7 @@ function UploadDirectoryController($scope, $http, User) {
 
     $scope.uploadurl = "notset";
 
-    $http.jsonp(mcurljsonp('/user/%/datagroups', User.u()))
+    $http.jsonp(mcurljsonp('/user/%/datadirs', User.u()))
         .success(function (data) {
             $scope.datagroups = data;
         })

@@ -22,7 +22,7 @@ function TagListController($scope, $routeParams, $location, $http, User) {
 
 function TagDataController($scope, $routeParams, $location, $http, User) {
     $scope.tag = $routeParams.tag;
-    $http.jsonp(mcurljsonp('/user/%/data/tag/%', User.u(), $routeParams.tag))
+    $http.jsonp(mcurljsonp('/user/%/datafiles/tag/%', User.u(), $routeParams.tag))
         .success(function (data) {
             $scope.docs = data;
         });
