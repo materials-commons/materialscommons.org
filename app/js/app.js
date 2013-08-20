@@ -3,7 +3,7 @@ var app = angular.module('materialscommons',
         'ui.bootstrap', 'flash', 'NgTree']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-    Stomp.WebSocketClass = SockJS;
+//    Stomp.WebSocketClass = SockJS;
     mcglobals = {};
     doConfig();
 
