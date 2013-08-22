@@ -78,4 +78,35 @@ function AccountDetailsController($scope, $http, User) {
             }
         }
     }
+
+}
+
+function ApiKeyController($scope, User){
+    $scope.apikey = User.apikey();
+
+}
+
+function ApiKeyResetController($scope, $http, User){
+    $http.put(mcurl('/user/%/resetapikey', User.u()))
+        .success(function(data){
+            $scope.new_apikey= data;
+            console.log("new apikey=" + $scope.new_apikey['apikey']);
+            User.reset_apikey($scope.new_apikey['apikey']);
+            mcglobals.apikey = $scope.new_apikey['apikey'];
+
+        }).error(function(){
+            console.log("error");
+        });
+
+}
+
+function UserGroupController($http, User){
+    $http.jsonp(mcurljsonp('/user/%/my_usergroups', User.u()))
+        .success(function (data) {
+            $scope.user_groups = data;
+        })
+        .error(function () {
+            console.log("error:usergroups")
+        });
+
 }

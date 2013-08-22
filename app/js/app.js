@@ -25,7 +25,9 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/account/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
         when('/account/create-account', {templateUrl: 'partials/account/create-account.html', controller: CreateAccountController}).
         when('/account/details', {templateUrl: 'partials/account/account-details.html', controller: AccountDetailsController}).
-
+        when('/account/details/apikey/view', {templateUrl: 'partials/account/details/apikeyview.html', controller: ApiKeyController}).
+        when('/account/details/apikey/reset', {templateUrl: 'partials/account/details/apikeyreset.html', controller: ApiKeyResetController}).
+        when('/account/details/usergroups', {templateUrl: 'partials/account/details/usergroups.html', controller: UserGroupController}).
         /*
         ** Top level controllers
          */
