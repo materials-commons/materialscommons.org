@@ -35,32 +35,40 @@
     <hr/>
 
     <div class="row-fluid">
-        <form>
-            <label>Name:</label>
-            <input ng-model="doc.name" type="text" readonly>
+        <div class="span6">
+            <form>
+                <label>Name:</label>
+                <input ng-model="doc.name" type="text" readonly>
 
-            <label>Description:</label>
-            <input ng-model="doc.description" type="text" readonly>
+                <label>Description:</label>
+                <input ng-model="doc.description" type="text" readonly>
 
-            <label>Date Added:</label>
-            <input ng-model="doc.sdateAdded" type="text" readonly>
+                <label>Date Added:</label>
+                <input ng-model="doc.sdateAdded" type="text" readonly>
 
-            <label>Access:</label>
-            <input ng-model="doc.access" type="text" readonly>
+                <label>Access:</label>
+                <input ng-model="doc.access" type="text" readonly>
 
-            <label>Owner:</label>
-            <input ng-model="doc.owner" type="text" readonly>
+                <label>Owner:</label>
+                <input ng-model="doc.owner" type="text" readonly>
 
-            <label>Notes:</label>
-            <input ng-repeat="note in doc.notes" value="{{ note }}" type="text" readonly>
+                <label>Notes:</label>
+                <input ng-repeat="note in doc.notes" value="{{ note }}" type="text" readonly>
 
-            <label>Add Note:</label>
-            <input ui-keypress="{13: 'addNoteKeypressCallback($event)'}" ng-model="new_note" type="text">
-        </form>
+                <label>Add Note:</label>
+                <input ui-keypress="{13: 'addNoteKeypressCallback($event)'}" ng-model="new_note" type="text">
+            </form>
 
-        <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
-            <button type="button" class="close" ng-click="removeTag($index);">&times;</button>{{ tag }}
-        </span>
+            <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
+                <button type="button" class="close" ng-click="removeTag($index);">&times;</button>{{ tag }}
+            </span>
+        </div>
+        <div class="span4">
+            <div ng-switch on="fileType">
+                <img ng-switch-when="image" ng-src="{{ fileSrc }}">
+                <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
+            </div>
+        </div>
     </div>
 
     <div class="row-fluid">
