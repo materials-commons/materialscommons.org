@@ -1,9 +1,10 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'flash', 'NgTree']);
+        'ui.bootstrap', 'flash', 'NgTree', 'ngCookies']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
 //    Stomp.WebSocketClass = SockJS;
+    console.log("app.config called");
     mcglobals = {};
     doConfig();
 
@@ -79,7 +80,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         otherwise({redirectTo: '/home'});
 }
 ]);
-app.run(function ($rootScope, $location, User) {
+app.run(function ($rootScope, $location, $cookieStore, User) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (matchesPartial(next, "partials/front-page", "HomeController")) {
             setActiveMainNav("#home-nav");
@@ -100,7 +101,15 @@ app.run(function ($rootScope, $location, User) {
             setActiveMainNav("#help-nav");
         }
 
-        if (mcglobals.bypasslogin) {
+        var mcuser = $cookieStore.get('mcuser');
+
+        if (mcuser) {
+            mcglobals.username = mcuser.email;
+            mcglobals.apikey = mcuser.apikey;
+            $rootScope.email_address = mcglobals.username;
+            User.setAuthenticated(true, mcglobals.apikey, mcglobals.username);
+            return;
+        } else if (mcglobals.bypasslogin) {
             if (mcglobals.username) {
                 User.setAuthenticated(true, mcglobals.apikey, mcglobals.username);
                 $rootScope.email_address = mcglobals.username;

@@ -64,7 +64,10 @@
             </span>
         </div>
         <div class="span4">
-            <img src="assets/materialscommons/Data_MatComm/Location1/4_6_13_toothSite3.jpg">
+            <div ng-switch on="fileType">
+                <img ng-switch-when="image" ng-src="{{ fileSrc }}">
+                <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
+            </div>
         </div>
     </div>
 

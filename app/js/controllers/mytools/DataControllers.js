@@ -1,9 +1,18 @@
 function DataEditController($scope, $routeParams, $window, $http, User) {
+
+    $scope.setupAccessToUserFile = function() {
+        $scope.fileType = determineFileType($scope.doc.mediaType);
+        $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediaType, $scope.doc.location, $scope.doc.name);
+    }
+
     $http.jsonp(mcurljsonp('/user/%/datafile/%', User.u(), $routeParams.id))
         .success(function (data) {
             $scope.doc = data;
+            $scope.setupAccessToUserFile();
         });
 
+//    $scope.fileType = "image";
+//    $scope.fileSrc = "assets/materialscommons/Data_MatComm/Location1/.conversion/4_6_13_toothSite3.jpg";
     $scope.review_note = "";
     $scope.marked_for_review = false;
     $scope.reviewId = null;
@@ -30,7 +39,9 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
     $http.jsonp(mcurljsonp('/users'))
         .success(function (data) {
             $scope.users = data;
-        })
+        });
+
+
 
     $scope.removeTag = function (index) {
         $scope.doc.tags.splice(index, 1);

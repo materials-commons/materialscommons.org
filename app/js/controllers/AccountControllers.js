@@ -1,4 +1,4 @@
-function LoginController($scope, $location, $http, User, $rootScope) {
+function LoginController($scope, $location, $http, User, $rootScope, $cookieStore) {
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
@@ -13,6 +13,11 @@ function LoginController($scope, $location, $http, User, $rootScope) {
                 $location.path('/my-tools');
                 $rootScope.email_address = $scope.email;
                 mcglobals.apikey = apikey.apikey;
+
+                var obj = {};
+                obj.apikey = apikey.apikey;
+                obj.email = $scope.email;
+                $cookieStore.put('mcuser', obj);
             })
             .error(function () {
                 $scope.failedLogin = true;
@@ -28,11 +33,12 @@ function LoginController($scope, $location, $http, User, $rootScope) {
     }
 }
 
-function LogOutController($scope, $rootScope, $location, User) {
+function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
     $rootScope.email_address = '';
     User.setAuthenticated(false, '', '');
     mcglobals.apikey = "";
     $location.path('/home');
+    $cookieStore.remove('mcuser');
 }
 
 function CreateAccountController($scope, $http, $location) {
