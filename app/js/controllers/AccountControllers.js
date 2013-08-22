@@ -63,7 +63,7 @@ function CreateAccountController($scope, $http, $location) {
 
 function AccountDetailsController($scope, $http, User) {
     $scope.new_password = undefined;
-    $scope.verify_new_password;
+    $scope.verify_new_password = undefined;
 
     $http.jsonp(mcurljsonp('/user/%', User.u()))
         .success(function(data) {
