@@ -58,13 +58,10 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
     }
 
     $scope.saveData = function () {
-        console.log("Sending a put request");
         $http.put(mcurl('/user/%/datafile/update/%', User.u(), $scope.doc.id), $scope.doc)
             .success(function (data, status) {
-                console.log("Save: Success!!!")
                 $scope.addNewTags();
             }).error(function (data, status, headers, config) {
-                console.log("Save: Error!!!")
                 // Do something here.
             });
 
@@ -100,8 +97,10 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
             .success(function (data) {
                 $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
                     .success(function (data) {
-                        $scope.scheduledReviews = data;
-                        $scope.user_for_review = ""
+                        $scope.scheduledReviews = _.filter(data, function(item){
+                            if (!item.done) { return item; }
+                        });
+                        $scope.user_for_review = "";
                     });
             });
         $scope.schedule_for_self = false;
