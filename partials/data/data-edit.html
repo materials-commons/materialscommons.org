@@ -1,7 +1,35 @@
 <div class="span10 offset1">
+
+    <div ng-controller="DataChatController">
+
+        Start Chat: <input type="checkbox" ng-model="chat">
+
+
+        <div class="row-fluid" ng-show="chat==true">
+            <div>
+                <div class="chat-box">
+                    <h3>Chat:</h3>
+
+                    <div>
+                        <ul>
+                            <li ng-repeat="message in chatMessages track by $index">{{ message }}</li>
+                        </ul>
+                    </div>
+                    <form>
+                        <input autocomplete="off" ng-model="conversationItem"
+                               ui-keypress="{13: 'addConversationItem($event)'}"
+                               placeholder="Type here...">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h3>Edit Data</h3>
 
-    <div id="review-section" class="row-fluid">
+    See Reviews: <input type="checkbox" ng-model="seeReviews">
+
+    <div ng-show="seeReviews==true" id="review-section" class="row-fluid">
         <h4>Reviews Scheduled</h4>
         <table class="table table-striped mc-table-hover table-condensed mc-table">
             <thead>
@@ -9,12 +37,14 @@
             <th>By</th>
             <th>Note</th>
             <th>Marked On</th>
+            <th>Finished?</th>
             </thead>
             <tbody>
             <tr ng-repeat="review in scheduledReviews" style="cursor:pointer">
                 <td>{{ review.owner }}</td>
                 <td>{{ review.note }}</td>
                 <td>{{ review.markedOnDate }}</td>
+                <td><input type="checkbox" ng-model="review.done" ng-click="reviewStatusChanged($index)"></td>
             </tr>
             </tbody>
         </table>
@@ -23,7 +53,7 @@
                placeholder="Review Note...">
         <h4>Ask For Review</h4>
         <input type="text" ng-model="review_note_other" placeholder="Review Note...">
-        <select class="span3" ng-model="user_for_review"
+        <select ng-model="user_for_review"
                 ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
                 ng-multiple="false">
             <option></option>
@@ -65,7 +95,10 @@
         </div>
         <div class="span4">
             <div ng-switch on="fileType">
-                <img ng-switch-when="image" ng-src="{{ fileSrc }}">
+                <div ng-switch-when="image">
+                    <img ng-src="{{ fileSrc }}">
+                    <a ng-href="{{ fileSrc }}">View full size</a>
+                </div>
                 <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
             </div>
         </div>

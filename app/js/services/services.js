@@ -6,7 +6,6 @@ var materialsCommonsServices =  angular.module('materialsCommonsServices', ['ngR
 
 materialsCommonsServices.
     factory('User', function() {
-        console.log("User created");
         var self = this;
         self.authenticated = false;
         self.email_address = 'Login';

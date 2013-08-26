@@ -2,11 +2,12 @@ var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp',
         'ui.bootstrap', 'flash', 'NgTree', 'ngCookies']);
 
-app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-//    Stomp.WebSocketClass = SockJS;
-    console.log("app.config called");
+app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider) {
+    Stomp.WebSocketClass = SockJS;
     mcglobals = {};
     doConfig();
+
+
 
     /*
      ** CORS support
@@ -82,7 +83,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         otherwise({redirectTo: '/home'});
 }
 ]);
-app.run(function ($rootScope, $location, $cookieStore, User) {
+app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (matchesPartial(next, "partials/front-page", "HomeController")) {
             setActiveMainNav("#home-nav");
@@ -101,6 +102,10 @@ app.run(function ($rootScope, $location, $cookieStore, User) {
         }
         else if (matchesPartial(next, "partials/help", "HelpController")) {
             setActiveMainNav("#help-nav");
+        }
+
+        if (!$rootScope.stompClient) {
+            $rootScope.stompClient = ngstomp('http://localhost:15674/stomp');
         }
 
         var mcuser = $cookieStore.get('mcuser');

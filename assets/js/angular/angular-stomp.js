@@ -5,7 +5,6 @@
 
 angular.module('AngularStomp', []).
     factory('ngstomp', function($rootScope) {
-        //Stomp.WebSocketClass = SockJS;
         var stompClient = {};
 
         function NGStomp(url) {
@@ -19,6 +18,10 @@ angular.module('AngularStomp', []).
                     callback(args[0]);
                 })
             })
+        }
+
+        NGStomp.prototype.unsubscribe = function(queue, headers) {
+            this.stompClient.unsubscribe(queue, headers);
         }
 
         NGStomp.prototype.send = function(queue, headers, data) {

@@ -73,7 +73,9 @@ function HelpController($scope, $routeParams) {
 function ReviewListController($scope, $http, $location, User) {
     $http.jsonp(mcurljsonp('/user/%/reviews', User.u()))
         .success(function (data) {
-            $scope.reviews = data;
+            $scope.reviews = _.filter(data, function(item) {
+                if (!item.done) { return item; }
+            });
         });
 
     $scope.startReview = function (id, type) {

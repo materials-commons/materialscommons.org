@@ -1,4 +1,4 @@
-function DataEditController($scope, $routeParams, $window, $http, User) {
+function DataEditController($scope, $routeParams, $window, $http, $rootScope, User) {
 
     $scope.setupAccessToUserFile = function() {
         $scope.fileType = determineFileType($scope.doc.mediaType);
@@ -11,8 +11,6 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
             $scope.setupAccessToUserFile();
         });
 
-//    $scope.fileType = "image";
-//    $scope.fileSrc = "assets/materialscommons/Data_MatComm/Location1/.conversion/4_6_13_toothSite3.jpg";
     $scope.review_note = "";
     $scope.marked_for_review = false;
     $scope.reviewId = null;
@@ -33,7 +31,9 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
 
     $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
         .success(function (data) {
-            $scope.scheduledReviews = data;
+            $scope.scheduledReviews = _.filter(data, function(item) {
+                if (! item.done) { return item; }
+            });
         });
 
     $http.jsonp(mcurljsonp('/users'))
@@ -95,9 +95,10 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
         review.itemName = $scope.doc.name;
         review.itemId = $scope.doc.id;
         review.who = $scope.doc.owner;
+        review.done = false;
         $http.post(mcurl('/user/%/review', User.u()), review)
             .success(function (data) {
-                $http.jsonp(mcurljsonp('/user/%/datafiles/reviews/%', User.u(), $routeParams.id))
+                $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
                     .success(function (data) {
                         $scope.scheduledReviews = data;
                         $scope.user_for_review = ""
@@ -136,6 +137,15 @@ function DataEditController($scope, $routeParams, $window, $http, User) {
         $scope.review_note = $scope.review_note_self;
         $scope.review_note_self = "";
         $scope.addReview();
+    }
+
+    $scope.reviewStatusChanged = function(index) {
+        console.log("reviewStatusChanged = " + $scope.scheduledReviews[index]);
+        $http.put(mcurl('/user/%/review/%/mark/%', User.u(), $scope.scheduledReviews[index].id,
+            $scope.scheduledReviews[index].done))
+            .success(function() {
+               //console.log("Marked as done");
+            });
     }
 }
 

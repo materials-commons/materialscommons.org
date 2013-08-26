@@ -5,7 +5,6 @@ function setActiveMainNav(nav) {
 
 function mcurl() {
     var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org:5000/v1.0";
-    console.log(apihost);
 
     if (arguments.length < 1) {
         throw "Invalid mcurl spec";
@@ -18,7 +17,6 @@ function mcurl() {
     }
 
     var url = apihost + s + "?apikey=" + mcglobals.apikey;
-    console.log(url);
     return url;
 }
 
