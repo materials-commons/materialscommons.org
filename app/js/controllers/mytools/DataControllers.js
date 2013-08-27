@@ -18,7 +18,6 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
     $scope.reverse = false;
     $scope.schedule_for_self = false;
 
-
     $scope.tagchoices = new Array();
     $scope.originalTags = [];
     $http.jsonp(mcurljsonp('/tags'))
@@ -35,12 +34,6 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
                 if (! item.done) { return item; }
             });
         });
-
-    $http.jsonp(mcurljsonp('/users'))
-        .success(function (data) {
-            $scope.users = data;
-        });
-
 
 
     $scope.removeTag = function (index) {
