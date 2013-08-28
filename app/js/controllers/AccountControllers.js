@@ -89,25 +89,26 @@ function AccountDetailsController($scope, $http, User) {
 
 function ApiKeyController($scope, User){
     $scope.apikey = User.apikey();
-
 }
 
-function ApiKeyResetController($scope, $http, User){
-    $http.put(mcurl('/user/%/resetapikey', User.u()))
+function ApiKeyResetController($scope, $http, User, $cookieStore){
+    $http.put(mcurl('/user/%/apikey/reset', User.u()))
         .success(function(data){
             $scope.new_apikey= data;
             console.log("new apikey=" + $scope.new_apikey['apikey']);
             User.reset_apikey($scope.new_apikey['apikey']);
             mcglobals.apikey = $scope.new_apikey['apikey'];
-
+            var mcuser = $cookieStore.get('mcuser');
+            mcuser.apikey = $scope.new_apikey;
+            $cookieStore.put('mcuser');
         }).error(function(){
             console.log("error");
         });
 
 }
 
-function UserGroupController($http, User){
-    $http.jsonp(mcurljsonp('/user/%/my_usergroups', User.u()))
+function UserGroupController($scope, $http, User, $location){
+    $http.jsonp(mcurljsonp('/user/%/usergroups', User.u()))
         .success(function (data) {
             $scope.user_groups = data;
         })
@@ -115,4 +116,44 @@ function UserGroupController($http, User){
             console.log("error:usergroups")
         });
 
+    $scope.create_usergroup = function () {
+
+        var u_group = {};
+        u_group.access = "private";
+        u_group.dateAdded = "";
+        u_group.dateModified = "";
+        u_group.description = $scope.desc;
+        u_group.id = $scope.name;
+        u_group.name = $scope.name;
+        u_group.sdateAdded = "";
+        u_group.sdateModified = "";
+
+        $http.post(mcurl('/usergroups/new'), u_group)
+            .success(function(){
+                $location.path('/account/details/usergroups/list_all');
+            })
+            .error(function(){
+                console.log("error in creating a new usergroup");
+            });
+    }
+}
+
+function ListUserGroupController($scope, $http, User){
+    $http.jsonp(mcurljsonp('/user/%/all_usergroups', User.u()))
+        .success(function (data) {
+            $scope.all_user_groups = data;
+        })
+        .error(function () {
+            console.log("error:usergroups")
+        });
+
+
+    $scope.show_users_by_usergroup = function(user_group_id){
+        $http.jsonp(mcurljsonp('/usergroup/%/users', user_group_id))
+            .success(function(data) {
+                $scope.users = data;
+                console.log('users are ' + $scope.data);
+            });
+
+    }
 }

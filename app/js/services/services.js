@@ -16,6 +16,7 @@ materialsCommonsServices.
             },
 
             setAuthenticated: function(value, apikey, email_address) {
+                console.log('passed apikey as argument is '+ apikey);
                 self.authenticated = value;
                 self.email_address = email_address;
                 self.apikey = apikey;
@@ -29,6 +30,8 @@ materialsCommonsServices.
 
             reset_apikey: function(new_key){
                 self.apikey = new_key;
+                console.log("after reset api key is :" + self.apikey);
+
             }
         };
     });
