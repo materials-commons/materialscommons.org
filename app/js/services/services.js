@@ -30,6 +30,7 @@ materialsCommonsServices.
 
             reset_apikey: function(new_key){
                 self.apikey = new_key;
+
             }
         };
     });
