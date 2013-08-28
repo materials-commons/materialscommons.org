@@ -78,6 +78,13 @@ function ReviewListController($scope, $http, $location, User) {
             });
         });
 
+    $http.jsonp(mcurljsonp('/user/%/reviews/requested', User.u()))
+        .success(function(data) {
+            $scope.reviewsRequested = _.filter(data, function(item) {
+                if (!item.done) { return item; }
+            });
+        });
+
     $scope.startReview = function (id, type) {
         if (type == "data") {
             $location.path("/data/edit/" + id);
@@ -94,7 +101,14 @@ function ReviewListController($scope, $http, $location, User) {
                 console.log("success deleting");
                 $scope.reviews.splice(index, 1);
             });
+    }
 
+    $scope.removeRequestedReview = function(index) {
+        var id = $scope.reviewsRequested[index].id;
+        $http.delete(mcurl('/user/%/review/%/requested', User.u(), id))
+            .success(function() {
+                $scope.reviewsRequested.splice(index, 1);
+            })
     }
 }
 

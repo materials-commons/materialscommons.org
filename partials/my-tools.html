@@ -74,14 +74,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="review in reviewsYouRequested">
-                    <td ng-click="startReview(review.itemId, review.type)" style="cursor:pointer">{{ review.owner }}
+                <tr ng-repeat="review in reviewsRequested">
+                    <td>{{ review.owner }}
                     </td>
                     <td>{{ review.note }}</td>
                     <td>{{ review.markedOnDate }}</td>
                     <td>{{ review.type }}</td>
                     <td>{{ review.itemName }}
-                        <button type="button" class="close" ng-click="removeReview($index);">&times;</button>
+                        <button type="button" class="close" ng-click="removeRequestedReview($index);">&times;</button>
                     </td>
                 </tr>
                 </tbody>
