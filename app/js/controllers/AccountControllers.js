@@ -91,15 +91,16 @@ function ApiKeyController($scope, User){
     $scope.apikey = User.apikey();
 }
 
-function ApiKeyResetController($scope, $http, User){
+function ApiKeyResetController($scope, $http, User, $cookieStore){
     $http.put(mcurl('/user/%/apikey/reset', User.u()))
         .success(function(data){
             $scope.new_apikey= data;
             console.log("new apikey=" + $scope.new_apikey['apikey']);
             User.reset_apikey($scope.new_apikey['apikey']);
             mcglobals.apikey = $scope.new_apikey['apikey'];
-            console.log('mc glabals api key now : ' + mcglobals.apikey);
-            console.log(User.apikey());
+            var mcuser = $cookieStore.get('mcuser');
+            mcuser.apikey = $scope.new_apikey;
+            $cookieStore.put('mcuser');
         }).error(function(){
             console.log("error");
         });
