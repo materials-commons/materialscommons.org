@@ -2,3 +2,6 @@
 .idea
 *.dump
 nohup.out
+test
+api
+apitest
