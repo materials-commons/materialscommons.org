@@ -108,7 +108,13 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
         }
 
         if (!$rootScope.stompClient) {
-            $rootScope.stompClient = ngstomp('http://'+ document.location.hostname + ':15674/stomp');
+            var connectionType = "https://";
+            if (document.location.hostname != "materialscommons.org")
+            {
+                connectionType = "http://";
+            }
+
+            $rootScope.stompClient = ngstomp(connectionType + document.location.hostname + ':15674/stomp');
         }
 
         var mcuser = $cookieStore.get('mcuser');
