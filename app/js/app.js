@@ -31,6 +31,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/account/details/usergroups/my_list', {templateUrl: 'partials/account/details/usergroups.html', controller: UserGroupController}).
         when('/account/details/usergroups/create',{templateUrl: 'partials/account/details/usergroup-create.html', controller: UserGroupController}).
         when('/account/details/usergroups/list_all', {templateUrl: 'partials/account/details/usergroups_list_all.html', controller: ListUserGroupController}).
+        when('/account/details/usergroup/list_users/:usergroup_name', {templateUrl: 'partials/account/details/usergroup_list_users.html', controller: ListUserController}).
 
         /*
         ** Top level controllers

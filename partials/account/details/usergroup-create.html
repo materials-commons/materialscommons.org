@@ -3,12 +3,16 @@
     <table>
         <tr>
             <td>Name</td>
-            <td><input  ng-model="name" placeholder="allisonlab"></td>
+            <td><input  ng-model="name" placeholder="group name"></td>
+            <td>Access</td>
+            <td><select ng-model="access">
+            <option value="private">private</option>
+            <option value="public">public</option>
+        </select></td>
         </tr>
 
         <tr>
-            <td>Access</td>
-            <td><input  ng-model="access"  placeholder="private/public" ></td>
+
 
             <td>Description</td>
             <td><input  ng-model="desc"></td>

@@ -95,14 +95,14 @@ function ApiKeyResetController($scope, $http, User, $cookieStore){
     $http.put(mcurl('/user/%/apikey/reset', User.u()))
         .success(function(data){
             $scope.new_apikey= data;
-            console.log("new apikey=" + $scope.new_apikey['apikey']);
+            //console.log("new apikey=" + $scope.new_apikey['apikey']);
             User.reset_apikey($scope.new_apikey['apikey']);
             mcglobals.apikey = $scope.new_apikey['apikey'];
             var mcuser = $cookieStore.get('mcuser');
             mcuser.apikey = $scope.new_apikey;
             $cookieStore.put('mcuser');
         }).error(function(){
-            console.log("error");
+            //console.log("error");
         });
 
 }
@@ -113,13 +113,13 @@ function UserGroupController($scope, $http, User, $location){
             $scope.user_groups = data;
         })
         .error(function () {
-            console.log("error:usergroups")
+            //console.log("error:usergroups")
         });
 
     $scope.create_usergroup = function () {
 
         var u_group = {};
-        u_group.access = "private";
+        u_group.access = $scope.access;
         u_group.dateAdded = "";
         u_group.dateModified = "";
         u_group.description = $scope.desc;
@@ -127,13 +127,14 @@ function UserGroupController($scope, $http, User, $location){
         u_group.name = $scope.name;
         u_group.sdateAdded = "";
         u_group.sdateModified = "";
+        u_group.users = [];
 
         $http.post(mcurl('/usergroups/new'), u_group)
             .success(function(){
                 $location.path('/account/details/usergroups/list_all');
             })
             .error(function(){
-                console.log("error in creating a new usergroup");
+                //console.log("error in creating a new usergroup");
             });
     }
 }
@@ -144,16 +145,55 @@ function ListUserGroupController($scope, $http, User){
             $scope.all_user_groups = data;
         })
         .error(function () {
-            console.log("error:usergroups")
+            //console.log("error:usergroups")
         });
 
 
-    $scope.show_users_by_usergroup = function(user_group_id){
-        $http.jsonp(mcurljsonp('/usergroup/%/users', user_group_id))
+}
+
+function ListUserController ($scope, $http, $routeParams){
+    //Get all users - for select options
+    $http.jsonp(mcurljsonp('/private/users'))
+        .success(function (data) {
+            $scope.all_users = data;
+        })
+        .error(function () {
+            //console.log("error: in finding all users");
+        });
+
+    $scope.lab_name =  $routeParams.usergroup_name;
+    $http.jsonp(mcurljsonp('/usergroup/%/users', $scope.lab_name))
+        .success(function(data) {
+            $scope.users_by_usergroup = data;
+
+        })
+        .error(function(){
+            console.log("error")
+        });
+
+    $scope.add_user_to_usergroup = function(){
+        console.log('usergorup is ' + $scope.lab_name + 'user name is '+ $scope.user_name);
+        $http.put(mcurl('/usergroup/%/username/%', $scope.lab_name, $scope.user_name))
             .success(function(data) {
-                $scope.users = data;
-                console.log('users are ' + $scope.data);
+                $scope.users_by_usergroup[0].users = data;
+                //console.log("Added username to the usergroup !" + data);
+            }).error(function() {
+                //console.log("Failed to add username");
             });
 
+
+    }
+
+    $scope.delete_user_from_usergroup = function(index){
+        console.log('index is ' +$scope.users_by_usergroup[0].users[index]);
+       // $scope.users_by_usergroup[index].name
+        $http.put(mcurl('/usergroup/%/username/%/remove', $scope.lab_name, $scope.users_by_usergroup[0].users[index]))
+            .success(function(data) {
+                $scope.users_by_usergroup[0].users = data;
+                //console.log("Removed user name from !" + data);
+            }).error(function() {
+                //console.log("Failed to remove username");
+            });
     }
 }
+
