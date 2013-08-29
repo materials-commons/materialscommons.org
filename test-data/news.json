@@ -1,29 +1,15 @@
 [
     {
         "type": "news",
-        "date": "2013/07/03",
-        "header": "New extensions to DFT analysis platform.",
-        "description":"The DFT platform has been extended to include multi-dimensional data analysis. This allows researchers to improve the accuracy of their results while decreasing the run time on large data runs."
+        "date": "2013/09/05",
+        "header": "First annual PRISMS Center conference",
+        "description":"The PRISMS Center is holding its first annual conference to review our progress and get feedback. Welcome External Advisory Board!"
     },
 
     {
         "type": "news",
-        "date": "2013/07/02",
-        "header": "150th user added.",
-        "description":"The Materials Commons site continues to grow in popularity. We recently added our 150th user to the site: Welcome Dr. Terry Titanium!"
+        "date": "2013/08/20",
+        "header": "Materials Commons enters Alpha Phase",
+        "description":"The Materials Commons site enter Alpha phase testing."
     },
-
-    {
-        "type": "news",
-        "date": "2013/07/04",
-        "header": "Ductility of magnesium in very high cycle fatigue environments.",
-        "description":"Sam Daly's research group just released a paper discussing the ductility of magnesium when put under high strains, such as seen in centrifuges. The paper demonstrates that magnesium can be used to dampen the effects of high impact stress impacts such as when an asteroid strikes a car."
-    },
-
-    {
-        "type": "news",
-        "date": "2013/07/03",
-        "header": "Big data and MGI",
-        "description":"Dr. John Allison lead a workshop at the 3rd annual MGI workshop. The workshop titled 'Big data and MGI' looked at the impact of big data analysis on computational materials research. 'I would say this has a material impact on our field', Dr. Allison was overheard saying."
-    }
 ]
