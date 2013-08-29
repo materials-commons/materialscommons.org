@@ -1,12 +1,12 @@
 <div class="span10 offset1">
     <h4>All User Groups List</h4>
-    <table>
-        <div ng-repeat="i in all_user_groups">
-            <br><button type="button" class="btn btn-success" ng-click="show_users_by_usergroup(i.id)">{{i.name}}</button>
+    <div ng-repeat="i in all_user_groups">
+        <table>
+            <br><a href="#/account/details/usergroup/list_users/{{i.name}}">{{i.name}}</a>
 
-        </div>
+        </table>
+    </div>
 
-    </table>
 </div>
 
 
