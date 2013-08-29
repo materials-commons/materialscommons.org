@@ -127,11 +127,11 @@ function UserGroupController($scope, $http, User, $location){
         u_group.name = $scope.name;
         u_group.sdateAdded = "";
         u_group.sdateModified = "";
-        u_group.users = [];
+        u_group.users = [User.u()];
 
         $http.post(mcurl('/usergroups/new'), u_group)
             .success(function(){
-                $location.path('/account/details/usergroups/list_all');
+                $location.path('/account/details/usergroups/my_list');
             })
             .error(function(){
                 //console.log("error in creating a new usergroup");
