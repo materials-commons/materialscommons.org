@@ -50,7 +50,8 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         /*
         ** Data Groups
          */
-        when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: DataGroupsTreeController}).
+        when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
+        when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
 
         /*
         ** Other

@@ -32,8 +32,24 @@ function SearchByDateController($scope, $http, $routeParams, User) {
     }
 }
 
-function DataGroupsTreeController($scope, $http, $location, User) {
+function MyDataGroupsTreeController($scope, $http, $location, User) {
     $http.jsonp(mcurljsonp('/user/%/datadirs/tree', User.u()))
+        .success(function(tree) {
+            $scope.tree = tree;
+        })
+        .error(function() {
+            console.log("Failed to retrieve tree");
+        })
+
+    $scope.gotoSelection = function(d) {
+        if (d.type == "datafile") {
+            $location.path("/data/edit/" + d.id);
+        }
+    }
+}
+
+function MyGroupsDataGroupsTreeController($scope, $http, $location, User) {
+    $http.jsonp(mcurljsonp('/user/%/datadirs/tree/groups', User.u()))
         .success(function(tree) {
             $scope.tree = tree;
         })
