@@ -1,8 +1,8 @@
 <div class="span10 offset1">
 
-<h4>I belong to </h4>     <br>
+<h4>I belong to: </h4>     <br>
         <div ng-repeat="i in user_groups">
-            <br><button type="button" class="btn btn-success">{{i.name}}</button>
 
+            <br><a href="#/account/details/usergroup/list_users/{{i.name}}">{{i.name}}</a>
         </div>
 </div>
