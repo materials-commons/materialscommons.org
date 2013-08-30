@@ -10,6 +10,8 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
             $scope.doc = data;
             $scope.setupAccessToUserFile();
         });
+    //This obj is used in data-edit
+    $scope.signed_in_user = User.u();
 
     $scope.review_note = "";
     $scope.marked_for_review = false;
@@ -34,6 +36,17 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
                 if (! item.done) { return item; }
             });
         });
+
+    $http.jsonp(mcurljsonp('/private/user/%/selected_users', User.u()))
+        .success(function (data) {
+            $scope.users = data;
+            console.log('selected users are : '+ $scope.users);
+        })
+        .error(function () {
+            //console.log("error: in finding all users");
+        });
+
+
 
 
     $scope.removeTag = function (index) {

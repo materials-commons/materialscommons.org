@@ -151,7 +151,7 @@ function ListUserGroupController($scope, $http, User){
 
 }
 
-function ListUserController ($scope, $http, $routeParams){
+function ListUserController ($scope, $http, $routeParams, $dialog){
     //Get all users - for select options
     $http.jsonp(mcurljsonp('/private/users'))
         .success(function (data) {
@@ -172,28 +172,47 @@ function ListUserController ($scope, $http, $routeParams){
         });
 
     $scope.add_user_to_usergroup = function(){
-        console.log('usergorup is ' + $scope.lab_name + 'user name is '+ $scope.user_name);
-        $http.put(mcurl('/usergroup/%/username/%', $scope.lab_name, $scope.user_name))
-            .success(function(data) {
-                $scope.users_by_usergroup[0].users = data;
-                //console.log("Added username to the usergroup !" + data);
-            }).error(function() {
-                //console.log("Failed to add username");
-            });
+        var title = '';
+        var msg = 'Do you want to add  ' +$scope.user_name + ' to '+ $scope.lab_name + '?';
+        var btns = [{result:'no', label: 'no'}, {result:'yes', label: 'yes', cssClass: 'btn-primary'}];
 
+        //from angular ui.bootstrap
+        $dialog.messageBox(title, msg, btns)
+            .open()
+            .then(function(result){
+                if (result == 'yes'){
+                    //console.log('usergorup is ' + $scope.lab_name + 'user name is '+ $scope.user_name);
+                    $http.put(mcurl('/usergroup/%/username/%', $scope.lab_name, $scope.user_name))
+                        .success(function(data) {
+                            $scope.users_by_usergroup[0].users = data;
+                            //console.log("Added username to the usergroup !" + data);
+                        }).error(function() {
+                            //console.log("Failed to add username");
+                        });
+                }
 
+            })
     }
 
     $scope.delete_user_from_usergroup = function(index){
-        console.log('index is ' +$scope.users_by_usergroup[0].users[index]);
-       // $scope.users_by_usergroup[index].name
-        $http.put(mcurl('/usergroup/%/username/%/remove', $scope.lab_name, $scope.users_by_usergroup[0].users[index]))
-            .success(function(data) {
-                $scope.users_by_usergroup[0].users = data;
-                //console.log("Removed user name from !" + data);
-            }).error(function() {
-                //console.log("Failed to remove username");
-            });
+        var title = '';
+        var msg = 'Do you want to delete ' +$scope.users_by_usergroup[0].users[index] + ' from '+ $scope.lab_name + '?';
+        var btns = [{result:'no', label: 'no'}, {result:'yes', label: 'yes', cssClass: 'btn-primary'}];
+
+        $dialog.messageBox(title, msg, btns)
+            .open()
+            .then(function(result){
+                if (result == 'yes'){
+                    $http.put(mcurl('/usergroup/%/username/%/remove', $scope.lab_name, $scope.users_by_usergroup[0].users[index]))
+                        .success(function(data) {
+                            $scope.users_by_usergroup[0].users = data;
+                            //console.log("Removed user name from !" + data);
+                        }).error(function() {
+                            //console.log("Failed to remove username");
+                        });
+                }
+            })
+
     }
 }
 

@@ -44,7 +44,12 @@
                 <td>{{ review.owner }}</td>
                 <td>{{ review.note }}</td>
                 <td>{{ review.markedOnDate }}</td>
-                <td><input type="checkbox" ng-model="review.done" ng-click="reviewStatusChanged($index)"></td>
+                <td ng-show="signed_in_user==review.owner" >
+                    <input type="checkbox" ng-model="review.done" ng-click="reviewStatusChanged($index)">
+                </td>
+                <td ng-show="signed_in_user!=review.owner" >
+                    Not Authorized
+                </td>
             </tr>
             </tbody>
         </table>
@@ -57,7 +62,7 @@
                 ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
                 ng-multiple="false">
             <option></option>
-            <option ng-repeat="user in users">{{ user.emailAddress }}</option>
+            <option ng-repeat="user in users">{{ user }}</option>
         </select>
         <button ng-click="addReviewForOther()">Request Review</button>
     </div>

@@ -36,6 +36,7 @@ function DataGroupsTreeController($scope, $http, $location, User) {
     $http.jsonp(mcurljsonp('/user/%/datadirs/tree', User.u()))
         .success(function(tree) {
             $scope.tree = tree;
+            //console.dir('tree data :' + $scope.tree);
         })
         .error(function() {
             console.log("Failed to retrieve tree");
