@@ -3,7 +3,7 @@
 
 <div class="span7 offset2">
 
-    <h4>Material Properties</h4>
+    <h4>Material Conditions</h4>
 
     <div class="well">
 
@@ -55,7 +55,7 @@
 <div class="well">
     <table>
         <tr>
-            <td><h5>Equipment Properties</h5></td>
+            <td><h5>Equipment Attributes</h5></td>
             <td><select class="span12" ng-model="equipment_type">
                 <option value="TEM">TEM</option>
                 <option value="APT">APT</option>
@@ -69,7 +69,7 @@
 <div ng-switch on="equipment_type">
 <div class="well">
 <div ng-switch-when="TEM">
-    <td><h5>Equipment Properties for TEM</h5></td>
+    <td><h5>Equipment Attributes for TEM</h5></td>
     <table>
         <tr>
             <td>
@@ -139,7 +139,7 @@
     </table>
 </div>
 <div ng-switch-when="APT">
-    <td><h5>Equipment Properties for APT</h5></td>
+    <td><h5>Equipment Attributes for APT</h5></td>
     <table>
         <tr>
             <td>
@@ -210,7 +210,7 @@
     </table>
 </div>
 <div ng-switch-when="SEM">
-    <td><h5>Equipment Properties for SEM</h5></td>
+    <td><h5>Equipment Attributes for SEM</h5></td>
     <table>
         <tr>
             <td>
@@ -291,7 +291,7 @@
 <div>
     <div class="row-fluid">
         <div class="offset1">
-            <h4>Pick the datagroup to upload to (You may change for each file):</h4>
+            <h4>Pick the datadir to upload to (You may change for each file):</h4>
 
             <div class="offset1" style="margin-bottom:10px">
                 <select class="span3" ng-model="datagroup"
