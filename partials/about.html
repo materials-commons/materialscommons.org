@@ -37,3 +37,286 @@
 </div>
 </div>
 
+<form name="material" >
+    <div class="span6 offset2" >
+
+        <h4>Material Properties</h4>
+        <div class="well">
+
+            <table>
+                <tr>
+                    <td>
+                        Alloy Name:  <input name="input" ng-model="alloyName" required>
+                    </td>
+                    <td>
+                        Notes:  <textarea ng-model="alloyNameNotes"> </textarea>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        Known Composition: <input name="input" ng-model="composition" >
+                    </td>
+                    <td>
+                        Notes:  <textarea ng-model="compositionNotes"> </textarea>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        Manufacturing Condition:  <select ng-model="manufactureCondition">
+                        <option value="rolled">rolled</option>
+                        <option value="forged">forged</option>
+                        <option value="cast">cast</option>
+                    </select>
+                    </td>
+                    <td>
+                        Notes:  <textarea ng-model="manufactureConditionNotes"> </textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Heat Treatment: <input name="input" ng-model="heatTreatment" >
+                    </td>
+                    <td>
+                        Notes:  <textarea ng-model="heatTreatmentNotes"> </textarea>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="span12 offset1">
+        <div class="well">
+            <table>
+                <tr>
+                    <td><h5>Equipment Properties</h5></td>
+                    <td><select class="span3" ng-model="equipment_type">
+                        <option value="TEM">TEM</option>
+                        <option value="APT">APT</option>
+                        <option value="SEM">SEM</option>
+                    </select></td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <div ng-switch on="equipment_type">
+            <div class="well">
+                <div ng-switch-when="TEM">
+                    <table>
+                        <tr>
+                            <td>
+                                Microscope Mfg:  <input name="input" ng-model="m_mfg" required>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_mfgNotes"> </textarea>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Microscope Model:  <input name="input" ng-model="m_model" required>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_modelNotes"> </textarea>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Voltage: <input name="input" ng-model="voltage" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="voltageNotes"> </textarea>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Mode:  <select ng-model="mode">
+                                <option value="diffraction">Diffraction</option>
+                                <option value="transmission">Transmission</option>
+                                <option value="scanning">Scanning</option>
+                            </select>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="modeNotes"> </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Field:  <select ng-model="field">
+                                <option value="bright">Bright</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="fieldNotes"> </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Specimen Prep:  <select ng-model="s_prep">
+                                <option value="electropolish">Electropolish</option>
+                                <option value="fib">FIB</option>
+                            </select>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="s_prepNotes"> </textarea>
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                </div>
+                <div ng-switch-when="APT">
+                    <table>
+                        <tr>
+                            <td>
+                                Microscope Mfg:  <input name="input" ng-model="m_mfg" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_mfgNotes"> </textarea>
+                            </td>
+                            <td>
+                                Microscope Model:  <input name="input" ng-model="m_model" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_modelNotes"> </textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Microscope Type: <select ng-model="m_type">
+                                <option value="voltage">Voltage</option>
+                                <option value="laser">Laser</option>
+                            </select>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_typeNotes"> </textarea>
+                            </td>
+                            <div ng-show="m_type=='voltage'">
+                                <td>
+                                    Pulse Something:  <input name="input" ng-model="pulseSomething" >
+                                </td>
+
+                            </div>
+                            <div ng-show="m_type=='laser'">
+                                <td>
+                                    Pulse Energy:  <input name="input" ng-model="pulseEnergy" >
+                                </td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <td>
+                                Temperature: <input name="input" ng-model="temp" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="tempNotes"> </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Pulse Frequency: <input name="input" ng-model="pulse_frequency" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="pulse_frequencyNotes"> </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Specimen Prep:  <select ng-model="s_prep">
+                                <option value="electropolish">Electropolish</option>
+                                <option value="fib">FIB</option>
+                            </select>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="s_prepNotes"> </textarea>
+                            </td>
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div ng-switch-when="SEM">
+                    <table>
+                        <tr>
+                            <td>
+                                Microscope Mfg:  <input name="input" ng-model="m_mfg" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_mfgNotes"> </textarea>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Microscope Model:  <input name="input" ng-model="m_model" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_modelNotes"> </textarea>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Microscope Type: <select ng-model="m_type">
+                                <option value="electron">Electron</option>
+                                <option value="ion">Ion</option>
+                            </select>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="m_typeNotes"> </textarea>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                Voltage: <input name="input" ng-model="voltage" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="voltageNotes"> </textarea>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Current: <input name="input" ng-model="current" >
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="currentNotes"> </textarea>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                Specimen Prep:  <select ng-model="s_prep">
+                                <option value="electropolish">Electropolish</option>
+                                <option value="silicafinish">Silica Finish</option>
+                            </select>
+                            </td>
+                            <td>
+                                Notes:  <textarea ng-model="s_prepNotes"> </textarea>
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
