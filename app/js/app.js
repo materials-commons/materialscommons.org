@@ -50,7 +50,8 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         /*
         ** Data Groups
          */
-        when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: DataGroupsTreeController}).
+        when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
+        when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
 
         /*
         ** Other
@@ -109,13 +110,12 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
         }
 
         if (!$rootScope.stompClient) {
-            var connectionType = "https://";
-            if (document.location.hostname != "materialscommons.org")
-            {
-                connectionType = "http://";
+            var chatConnection = "http://" + document.location.name + ":15674/stomp";
+            if (document.location.hostname == "materialscommons.org") {
+                chatConnection = "https://materialscommons.org:55674/stomp";
             }
 
-            $rootScope.stompClient = ngstomp(connectionType + document.location.hostname + ':15674/stomp');
+            $rootScope.stompClient = ngstomp(chatConnection);
         }
 
         var mcuser = $cookieStore.get('mcuser');
