@@ -112,6 +112,12 @@ function ReviewListController($scope, $http, $location, User) {
     }
 }
 
-function EventController() {
+
+function EventController($scope, alertService) {
+    $scope.$on('handleBroadcast', function() {
+        $scope.message = {"type": "info",
+            "content": alertService.message};
+    });
 
 }
+

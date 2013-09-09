@@ -1,4 +1,4 @@
-function LoginController($scope, $location, $http, User, $rootScope, $cookieStore) {
+function LoginController($scope, $location, $http, User, $rootScope, $cookieStore, alertService) {
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
@@ -9,6 +9,7 @@ function LoginController($scope, $location, $http, User, $rootScope, $cookieStor
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.failedLogin = false;
                 $scope.successfulLogin = true;
+
                 $scope.connectError = false;
                 $location.path('/my-tools');
                 $rootScope.email_address = $scope.email;
@@ -18,9 +19,18 @@ function LoginController($scope, $location, $http, User, $rootScope, $cookieStor
                 obj.apikey = apikey.apikey;
                 obj.email = $scope.email;
                 $cookieStore.put('mcuser', obj);
+
+                $scope.msg = apikey.msg;
+                alertService.prepForBroadcast($scope.msg);
+
+                $scope.$on('handleBroadcast', function() {
+                    $scope.message = alertService.message;
+                });
+
             })
             .error(function () {
                 $scope.failedLogin = true;
+
             });
     }
 
@@ -41,23 +51,43 @@ function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
     $cookieStore.remove('mcuser');
 }
 
-function CreateAccountController($scope, $http, $location) {
+function CreateAccountController($scope, $http, $location, alertService) {
 
     $scope.create_account = function () {
         if ($scope.password != $scope.confirm_password) {
-            alert("Passwords don't match");
+            //alert("Passwords don't match");
+            $scope.msg = "Passwords do not match!"
+            alertService.prepForBroadcast($scope.msg);
+            $scope.$on('handleBroadcast', function() {
+                $scope.message = alertService.message;
+            });
         } else {
             var acc = {};
             acc.email = $scope.email;
             acc.password = $scope.password;
             $http.post(mcurl('/newuser'), acc)
-                .success(function () {
+                .success(function (data) {
+                    //console.dir('on success '+ data);
+                    $scope.msg = data.msg
+                    alertService.prepForBroadcast($scope.msg);
+                    $scope.$on('handleBroadcast', function() {
+                        $scope.message = alertService.message;
+                    });
                     $location.path('/account/login');
                 })
-                .error(function () {
-                    console.log("Couldn't add user");
+                .error(function (data, status) {
+                    console.log('status is  ' + status);
+                    $scope.msg = data.error;
+                    alertService.prepForBroadcast($scope.msg);
+                    $scope.$on('handleBroadcast', function() {
+                        $scope.message = alertService.message;
+                    });
                 });
+
         }
+
+
+
     }
 }
 

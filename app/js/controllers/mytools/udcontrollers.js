@@ -20,10 +20,12 @@ function UploadFileController($scope, $http, User, $rootScope, formDataObject) {
         });
     }
 
-    $scope.uploadEachFile = function () {
+    $scope.uploadEachFile = function (mp,ep) {
         if ($scope.files.length == 0) {
             return;
         }
+
+
 
         //var url = "http://magnesium.eecs.umich.edu:5000/v1.0/user/mcfada@umich.edu/upload/abc123";
         $scope.files.forEach(function (fileEntry) {
@@ -45,6 +47,16 @@ function UploadFileController($scope, $http, User, $rootScope, formDataObject) {
                     });
             }
         });
+
+        /*$http.post(mcurl('/mp/ep/new'), mp,ep)
+            .success(function(){
+                $location.path('/account/details/usergroups/my_list');
+            })
+            .error(function(){
+                //console.log("error in creating a new usergroup");
+            });
+
+        */
 
     };
 }
