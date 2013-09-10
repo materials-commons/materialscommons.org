@@ -1,4 +1,4 @@
-function DataEditController($scope, $routeParams, $window, $http, $rootScope, User) {
+function DataEditController($scope, $routeParams, $window, $http, $rootScope, User, alertService) {
 
     $scope.setupAccessToUserFile = function() {
         $scope.fileType = determineFileType($scope.doc.mediaType);
@@ -60,15 +60,27 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
 
         if (!_.contains($scope.doc.tags, $scope.tag_to_add)) {
             $scope.doc.tags.push($scope.tag_to_add);
+
+            $scope.msg = "Data has been tagged !"
+            alertService.prepForBroadcast($scope.msg);
+            $scope.$on('handleBroadcast', function() {
+                $scope.message = alertService.message;
+            });
+
         }
     }
 
     $scope.saveData = function () {
         $http.put(mcurl('/user/%/datafile/update/%', User.u(), $scope.doc.id), $scope.doc)
-            .success(function (data, status) {
+            .success(function (data) {
                 $scope.addNewTags();
+                //console.log('msg received is ' + data.msg) ;
+                alertService.prepForBroadcast(data.msg);
+                $scope.$on('handleBroadcast', function() {
+                    $scope.message = alertService.message;
+                });
             }).error(function (data, status, headers, config) {
-                // Do something here.
+               console.log('im in error part');
             });
 
         $window.history.back();
@@ -79,7 +91,13 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
         var tagObj = {};
         newtags.forEach(function (item) {
             tagObj.id = item;
-            $http.post(mcurl('/tag'), tagObj);
+            $http.post(mcurl('/tag'), tagObj)
+                .success(function(data){
+
+                })
+                .error(function(){
+
+                });
         });
     }
 
@@ -101,6 +119,10 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
         review.done = false;
         $http.post(mcurl('/user/%/review', User.u()), review)
             .success(function (data) {
+                alertService.prepForBroadcast(data.msg);
+                $scope.$on('handleBroadcast', function() {
+                    $scope.message = alertService.message;
+                });
                 $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
                     .success(function (data) {
                         $scope.scheduledReviews = _.filter(data, function(item){
