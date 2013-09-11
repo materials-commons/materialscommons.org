@@ -45,8 +45,10 @@ function filePath(fileType, mediaType, location, name) {
         return filePath + location + '/.conversion/' + newName;
 
     } else if (fileType == "image") {
+        //console.log('yes image');
         return filePath + location + '/' + name;
     } else {
+        //console.log('not image');
         return filePath + location + '/' + name;
     }
 

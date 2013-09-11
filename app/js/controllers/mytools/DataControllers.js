@@ -1,6 +1,8 @@
 function DataEditController($scope, $routeParams, $window, $http, $rootScope, User, alertService) {
-
+    //filePath = assets/materialscommons/location/name
     $scope.setupAccessToUserFile = function() {
+        //alert($scope.doc.mediaType);
+
         $scope.fileType = determineFileType($scope.doc.mediaType);
         $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediaType, $scope.doc.location, $scope.doc.name);
     }
@@ -40,7 +42,7 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
     $http.jsonp(mcurljsonp('/private/user/%/selected_users', User.u()))
         .success(function (data) {
             $scope.users = data;
-            console.log('selected users are : '+ $scope.users);
+            //console.log('selected users are : '+ $scope.users);
         })
         .error(function () {
             //console.log("error: in finding all users");

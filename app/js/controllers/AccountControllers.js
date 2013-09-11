@@ -28,7 +28,8 @@ function LoginController($scope, $location, $http, User, $rootScope, $cookieStor
                 });
 
             })
-            .error(function () {
+            .error(function (data) {
+                //console.log('what is this data' + data.headers['msg']);
                 $scope.failedLogin = true;
 
             });
@@ -160,7 +161,7 @@ function UserGroupController($scope, $http, User, $location){
         u_group.users = [User.u()];
 
         $http.post(mcurl('/usergroups/new'), u_group)
-            .success(function(){
+            .success(function(data){
                 $location.path('/account/details/usergroups/my_list');
             })
             .error(function(){
