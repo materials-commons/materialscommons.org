@@ -84,9 +84,9 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
     return sharedService;
 });
 
-materialsCommonsServices.factory('mcjsonp', function ($http, $rootScope) {
-    function MCJsonp(url) {
-        this.url = url;
+materialsCommonsServices.factory('mcjsonp', function ($http) {
+    function MCJsonp() {
+        this.url = mcurljsonp.apply(this, arguments);
         this.on_error = undefined;
         this.on_success = undefined;
     }
@@ -117,7 +117,11 @@ materialsCommonsServices.factory('mcjsonp', function ($http, $rootScope) {
             })
     }
 
-    return function (url) {
-        return new MCJsonp(url);
+    return function () {
+           function F(args) {
+               return MCJsonp.apply(this, args);
+           }
+           F.prototype = MCJsonp.prototype;
+           return new F(arguments);
     }
-})
+});
