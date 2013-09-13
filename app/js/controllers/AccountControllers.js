@@ -4,7 +4,7 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
     $scope.successfulLogin = false;
 
     $scope.login = function() {
-        mcjsonp(mcurljsonp('/user/%/%/apikey', $scope.email, $scope.password))
+        mcjsonp('/user/%/%/apikey', $scope.email, $scope.password)
             .success(function(apikey, status) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.failedLogin = false;

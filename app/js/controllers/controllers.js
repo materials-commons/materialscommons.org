@@ -10,7 +10,7 @@ function FrontPageController($scope, $location) {
 
 function HomeController($scope, mcjsonp) {
 
-    mcjsonp(mcurljsonp('/news'))
+    mcjsonp('/news')
         .success(function(data) {
             $scope.news = data;
         }).run();
@@ -56,15 +56,15 @@ function HelpController($scope, $routeParams) {
     $scope.pageDescription = "Help";
 }
 
-function ReviewListController($scope, $http, $location, User) {
-    $http.jsonp(mcurljsonp('/user/%/reviews', User.u()))
+function ReviewListController($scope, $http, $location, mcjsonp, User) {
+    mcjsonp('/user/%/reviews', User.u())
         .success(function (data) {
             $scope.reviews = _.filter(data, function(item) {
                 if (!item.done) { return item; }
             });
         });
 
-    $http.jsonp(mcurljsonp('/user/%/reviews/requested', User.u()))
+    mcjsonp('/user/%/reviews/requested', User.u())
         .success(function(data) {
             $scope.reviewsRequested = _.filter(data, function(item) {
                 if (!item.done) { return item; }
