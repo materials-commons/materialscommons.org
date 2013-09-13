@@ -111,7 +111,7 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
         $http.post(mcurl('/user/%/review', User.u()), review)
             .success(function (data) {
                 alertService.prepForBroadcast(data.msg);
-                $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
+                mcjsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
                     .success(function (data) {
                         $scope.scheduledReviews = _.filter(data, function (item) {
                             if (!item.done) {
