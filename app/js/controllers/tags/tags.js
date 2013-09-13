@@ -1,15 +1,15 @@
-function TagListController($scope, $routeParams, $location, $http, User) {
+function TagListController($scope, $routeParams, $location, mcjsonp, User) {
     $scope.listtype = $routeParams.listtype;
     if ($routeParams.listtype == "all") {
         $scope.tagHeader = "All Tags";
-        $http.jsonp(mcurljsonp('/tags/count'))
+        mcjsonp('/tags/count')
             .success(function (data) {
                 $scope.tags = data;
             });
     }
     else if ($routeParams.listtype == "mytags") {
         $scope.tagHeader = "My Tags";
-        $http.jsonp(mcurljsonp('/user/%/tags/count', User.u()))
+        mcjsonp('/user/%/tags/count', User.u())
             .success(function (data) {
                 $scope.tags = data;
             });
@@ -20,9 +20,9 @@ function TagListController($scope, $routeParams, $location, $http, User) {
     }
 }
 
-function TagDataController($scope, $routeParams, $location, $http, User) {
+function TagDataController($scope, $routeParams, $location, mcjsonp, User) {
     $scope.tag = $routeParams.tag;
-    $http.jsonp(mcurljsonp('/user/%/datafiles/tag/%', User.u(), $routeParams.tag))
+    mcjsonp('/user/%/datafiles/tag/%', User.u(), $routeParams.tag)
         .success(function (data) {
             $scope.docs = data;
         });
@@ -36,9 +36,9 @@ function TagDataController($scope, $routeParams, $location, $http, User) {
     }
 }
 
-function GlobalTagCloudController($scope, $http, User) {
+function GlobalTagCloudController($scope, mcjsonp, User) {
     $scope.cloudtype = "Global";
-    $http.jsonp(mcurljsonp('/tags/count'))
+    mcjsonp('/tags/count')
         .success(function (data) {
             $scope.word_list = [];
             angular.forEach(data, function (tag) {
