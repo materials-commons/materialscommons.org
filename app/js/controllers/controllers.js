@@ -11,7 +11,7 @@ function FrontPageController($scope, $location) {
 function HomeController($scope, mcjsonp) {
 
     mcjsonp('/news')
-        .success(function(data) {
+        .success(function (data) {
             $scope.news = data;
         }).run();
 }
@@ -59,15 +59,19 @@ function HelpController($scope, $routeParams) {
 function ReviewListController($scope, $http, $location, mcjsonp, User) {
     mcjsonp('/user/%/reviews', User.u())
         .success(function (data) {
-            $scope.reviews = _.filter(data, function(item) {
-                if (!item.done) { return item; }
+            $scope.reviews = _.filter(data, function (item) {
+                if (!item.done) {
+                    return item;
+                }
             });
         });
 
     mcjsonp('/user/%/reviews/requested', User.u())
-        .success(function(data) {
-            $scope.reviewsRequested = _.filter(data, function(item) {
-                if (!item.done) { return item; }
+        .success(function (data) {
+            $scope.reviewsRequested = _.filter(data, function (item) {
+                if (!item.done) {
+                    return item;
+                }
             });
         });
 
@@ -89,10 +93,10 @@ function ReviewListController($scope, $http, $location, mcjsonp, User) {
             });
     }
 
-    $scope.removeRequestedReview = function(index) {
+    $scope.removeRequestedReview = function (index) {
         var id = $scope.reviewsRequested[index].id;
         $http.delete(mcurl('/user/%/review/%/requested', User.u(), id))
-            .success(function() {
+            .success(function () {
                 $scope.reviewsRequested.splice(index, 1);
             })
     }
@@ -100,7 +104,7 @@ function ReviewListController($scope, $http, $location, mcjsonp, User) {
 
 function EventController($scope, alertService) {
     $scope.message = '';
-    $scope.$on('handleBroadcast', function() {
+    $scope.$on('handleBroadcast', function () {
         $scope.message = {"type": "info",
             "content": alertService.message};
     });

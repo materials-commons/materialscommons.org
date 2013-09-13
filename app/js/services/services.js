@@ -118,10 +118,11 @@ materialsCommonsServices.factory('mcjsonp', function ($http) {
     }
 
     return function () {
-           function F(args) {
-               return MCJsonp.apply(this, args);
-           }
-           F.prototype = MCJsonp.prototype;
-           return new F(arguments);
+        function F(args) {
+            return MCJsonp.apply(this, args);
+        }
+
+        F.prototype = MCJsonp.prototype;
+        return new F(arguments);
     }
 });
