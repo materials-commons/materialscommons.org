@@ -170,7 +170,7 @@ materialsdirective.directive('notification', function($timeout){
                 element.show();
                 $timeout(function(){
                     element.hide();
-                }, 5000);
+                }, 3000);
             });
         }
     }

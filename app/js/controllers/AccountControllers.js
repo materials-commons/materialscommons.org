@@ -1,11 +1,11 @@
-function LoginController($scope, $location, $http, User, $rootScope, $cookieStore, alertService) {
+function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, mcjsonp) {
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
 
-    $scope.login = function () {
-        $http.jsonp(mcurljsonp('/user/%/%/apikey', $scope.email, $scope.password))
-            .success(function (apikey) {
+    $scope.login = function() {
+        mcjsonp(mcurljsonp('/user/%/%/apikey', $scope.email, $scope.password))
+            .success(function(apikey, status) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.failedLogin = false;
                 $scope.successfulLogin = true;
@@ -22,17 +22,10 @@ function LoginController($scope, $location, $http, User, $rootScope, $cookieStor
 
                 $scope.msg = apikey.msg;
                 alertService.prepForBroadcast($scope.msg);
-
-                $scope.$on('handleBroadcast', function() {
-                    $scope.message = alertService.message;
-                });
-
             })
-            .error(function (data) {
-                //console.log('what is this data' + data.headers['msg']);
+            .error(function(data, status) {
                 $scope.failedLogin = true;
-
-            });
+            }).run();
     }
 
     $scope.cancel = function () {
@@ -86,9 +79,6 @@ function CreateAccountController($scope, $http, $location, alertService) {
                 });
 
         }
-
-
-
     }
 }
 

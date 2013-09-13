@@ -6,34 +6,20 @@ function FrontPageController($scope, $location) {
     $scope.search_key = function () {
         $location.path("/searchindex/search_key/" + $scope.keyword);
     }
-
-
-//    $scope.client = ngstomp('http://localhost:15674/stomp');
-//    $scope.client.connect("guest", "guest", function(){
-//        $scope.client.subscribe("/topic/test", function(message) {
-//            $scope.messages.push(message.body);
-//            if ($scope.sent == 0) {
-//                $scope.client.send("/topic/test", {}, "from AngularStomp");
-//                $scope.sent = 1;
-//            }
-//        });
-//    }, function(){}, '/');
-
 }
 
-function HomeController($scope, $http) {
-    var hostname = document.location.hostname;
-    $scope.news = $http.jsonp(mcurljsonp('/news', 'a'))
-        .success(function (data, status) {
+function HomeController($scope, mcjsonp) {
+
+    mcjsonp(mcurljsonp('/news'))
+        .success(function(data) {
             $scope.news = data;
-        }).error(function (data, status, headers, config) {
-        });
+        }).run();
 }
 
 
-function DataSearchController($scope, Mcdb, $routeParams, $location) {
+function DataSearchController($scope, $routeParams, $location) {
     // Nothing to do yet
-    $scope.mcdb = Mcdb.db();
+    //$scope.mcdb = Mcdb.db();
     $scope.imageSource = 'assets/img/BrightField.jpg';
 
     $scope.get_full_data_with_id = function (id) {
@@ -46,7 +32,7 @@ function DataSearchController($scope, Mcdb, $routeParams, $location) {
     }
 
     if ($routeParams.id) {
-        $scope.full_data = $scope.mcdb.getDoc($routeParams.id);
+        //$scope.full_data = $scope.mcdb.getDoc($routeParams.id);
     }
 }
 
@@ -112,8 +98,8 @@ function ReviewListController($scope, $http, $location, User) {
     }
 }
 
-
 function EventController($scope, alertService) {
+    $scope.message = '';
     $scope.$on('handleBroadcast', function() {
         $scope.message = {"type": "info",
             "content": alertService.message};
