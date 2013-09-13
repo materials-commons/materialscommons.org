@@ -3,9 +3,9 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
 
-    $scope.login = function() {
+    $scope.login = function () {
         mcjsonp('/user/%/%/apikey', $scope.email, $scope.password)
-            .success(function(apikey, status) {
+            .success(function (apikey, status) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.failedLogin = false;
                 $scope.successfulLogin = true;
@@ -23,7 +23,7 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
                 $scope.msg = apikey.msg;
                 alertService.prepForBroadcast($scope.msg);
             })
-            .error(function(data, status) {
+            .error(function (data, status) {
                 $scope.failedLogin = true;
             }).run();
     }
@@ -52,52 +52,41 @@ function CreateAccountController($scope, $http, $location, alertService) {
             //alert("Passwords don't match");
             $scope.msg = "Passwords do not match!"
             alertService.prepForBroadcast($scope.msg);
-            $scope.$on('handleBroadcast', function() {
-                $scope.message = alertService.message;
-            });
         } else {
             var acc = {};
             acc.email = $scope.email;
             acc.password = $scope.password;
             $http.post(mcurl('/newuser'), acc)
                 .success(function (data) {
-                    //console.dir('on success '+ data);
                     $scope.msg = data.msg
                     alertService.prepForBroadcast($scope.msg);
-                    $scope.$on('handleBroadcast', function() {
-                        $scope.message = alertService.message;
-                    });
                     $location.path('/account/login');
                 })
                 .error(function (data, status) {
-                    console.log('status is  ' + status);
                     $scope.msg = data.error;
                     alertService.prepForBroadcast($scope.msg);
-                    $scope.$on('handleBroadcast', function() {
-                        $scope.message = alertService.message;
-                    });
                 });
 
         }
     }
 }
 
-function AccountDetailsController($scope, $http, User) {
+function AccountDetailsController($scope, $http, mcjsonp, User) {
     $scope.new_password = undefined;
     $scope.verify_new_password = undefined;
 
-    $http.jsonp(mcurljsonp('/user/%', User.u()))
-        .success(function(data) {
+    mcjsonp('/user/%', User.u())
+        .success(function (data) {
             $scope.account = data;
         });
 
-    $scope.saveChanges = function() {
+    $scope.saveChanges = function () {
         if ($scope.new_password) {
             if ($scope.new_password == $scope.verify_new_password) {
                 $http.put(mcurl('/user/%/password/%', User.u(), $scope.new_password))
-                    .success(function(data) {
+                    .success(function (data) {
                         console.log("password changed!");
-                    }).error(function() {
+                    }).error(function () {
                         console.log("Failed to change password");
                     });
             } else {
@@ -108,28 +97,27 @@ function AccountDetailsController($scope, $http, User) {
 
 }
 
-function ApiKeyController($scope, User){
+function ApiKeyController($scope, User) {
     $scope.apikey = User.apikey();
 }
 
-function ApiKeyResetController($scope, $http, User, $cookieStore){
+function ApiKeyResetController($scope, $http, User, $cookieStore) {
     $http.put(mcurl('/user/%/apikey/reset', User.u()))
-        .success(function(data){
-            $scope.new_apikey= data;
-            //console.log("new apikey=" + $scope.new_apikey['apikey']);
+        .success(function (data) {
+            $scope.new_apikey = data;
             User.reset_apikey($scope.new_apikey['apikey']);
             mcglobals.apikey = $scope.new_apikey['apikey'];
             var mcuser = $cookieStore.get('mcuser');
             mcuser.apikey = $scope.new_apikey;
             $cookieStore.put('mcuser');
-        }).error(function(){
+        }).error(function () {
             //console.log("error");
         });
 
 }
 
-function UserGroupController($scope, $http, User, $location){
-    $http.jsonp(mcurljsonp('/user/%/usergroups', User.u()))
+function UserGroupController($scope, $http, User, mcjsonp, $location) {
+    mcjsonp('/user/%/usergroups', User.u())
         .success(function (data) {
             $scope.user_groups = data;
         })
@@ -151,17 +139,17 @@ function UserGroupController($scope, $http, User, $location){
         u_group.users = [User.u()];
 
         $http.post(mcurl('/usergroups/new'), u_group)
-            .success(function(data){
+            .success(function (data) {
                 $location.path('/account/details/usergroups/my_list');
             })
-            .error(function(){
+            .error(function () {
                 //console.log("error in creating a new usergroup");
             });
     }
 }
 
-function ListUserGroupController($scope, $http, User){
-    $http.jsonp(mcurljsonp('/user/%/all_usergroups', User.u()))
+function ListUserGroupController($scope, mcjsonp, User) {
+    mcjsonp('/user/%/all_usergroups', User.u())
         .success(function (data) {
             $scope.all_user_groups = data;
         })
@@ -172,9 +160,9 @@ function ListUserGroupController($scope, $http, User){
 
 }
 
-function ListUserController ($scope, $http, $routeParams, $dialog){
+function ListUserController($scope, $http, mcjsonp, $routeParams, $dialog) {
     //Get all users - for select options
-    $http.jsonp(mcurljsonp('/private/users'))
+    mcjsonp('/private/users')
         .success(function (data) {
             $scope.all_users = data;
         })
@@ -182,32 +170,35 @@ function ListUserController ($scope, $http, $routeParams, $dialog){
             //console.log("error: in finding all users");
         });
 
-    $scope.lab_name =  $routeParams.usergroup_name;
-    $http.jsonp(mcurljsonp('/usergroup/%/users', $scope.lab_name))
-        .success(function(data) {
+    $scope.lab_name = $routeParams.usergroup_name;
+    mcjsonp('/usergroup/%/users', $scope.lab_name)
+        .success(function (data) {
             $scope.users_by_usergroup = data;
 
         })
-        .error(function(){
+        .error(function () {
             console.log("error")
         });
 
-    $scope.add_user_to_usergroup = function(){
+    $scope.add_user_to_usergroup = function () {
         var title = '';
-        var msg = 'Do you want to add  ' +$scope.user_name + ' to '+ $scope.lab_name + '?';
-        var btns = [{result:'no', label: 'no'}, {result:'yes', label: 'yes', cssClass: 'btn-primary'}];
+        var msg = 'Do you want to add  ' + $scope.user_name + ' to ' + $scope.lab_name + '?';
+        var btns = [
+            {result: 'no', label: 'no'},
+            {result: 'yes', label: 'yes', cssClass: 'btn-primary'}
+        ];
 
         //from angular ui.bootstrap
         $dialog.messageBox(title, msg, btns)
             .open()
-            .then(function(result){
-                if (result == 'yes'){
+            .then(function (result) {
+                if (result == 'yes') {
                     //console.log('usergorup is ' + $scope.lab_name + 'user name is '+ $scope.user_name);
                     $http.put(mcurl('/usergroup/%/username/%', $scope.lab_name, $scope.user_name))
-                        .success(function(data) {
+                        .success(function (data) {
                             $scope.users_by_usergroup[0].users = data;
                             //console.log("Added username to the usergroup !" + data);
-                        }).error(function() {
+                        }).error(function () {
                             //console.log("Failed to add username");
                         });
                 }
@@ -215,20 +206,23 @@ function ListUserController ($scope, $http, $routeParams, $dialog){
             })
     }
 
-    $scope.delete_user_from_usergroup = function(index){
+    $scope.delete_user_from_usergroup = function (index) {
         var title = '';
-        var msg = 'Do you want to delete ' +$scope.users_by_usergroup[0].users[index] + ' from '+ $scope.lab_name + '?';
-        var btns = [{result:'no', label: 'no'}, {result:'yes', label: 'yes', cssClass: 'btn-primary'}];
+        var msg = 'Do you want to delete ' + $scope.users_by_usergroup[0].users[index] + ' from ' + $scope.lab_name + '?';
+        var btns = [
+            {result: 'no', label: 'no'},
+            {result: 'yes', label: 'yes', cssClass: 'btn-primary'}
+        ];
 
         $dialog.messageBox(title, msg, btns)
             .open()
-            .then(function(result){
-                if (result == 'yes'){
+            .then(function (result) {
+                if (result == 'yes') {
                     $http.put(mcurl('/usergroup/%/username/%/remove', $scope.lab_name, $scope.users_by_usergroup[0].users[index]))
-                        .success(function(data) {
+                        .success(function (data) {
                             $scope.users_by_usergroup[0].users = data;
                             //console.log("Removed user name from !" + data);
-                        }).error(function() {
+                        }).error(function () {
                             //console.log("Failed to remove username");
                         });
                 }
