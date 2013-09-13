@@ -1,13 +1,13 @@
-function DataEditController($scope, $routeParams, $window, $http, $rootScope, User, alertService) {
+function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User, alertService) {
     //filePath = assets/materialscommons/location/name
-    $scope.setupAccessToUserFile = function() {
+    $scope.setupAccessToUserFile = function () {
         //alert($scope.doc.mediaType);
 
         $scope.fileType = determineFileType($scope.doc.mediaType);
         $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediaType, $scope.doc.location, $scope.doc.name);
     }
 
-    $http.jsonp(mcurljsonp('/user/%/datafile/%', User.u(), $routeParams.id))
+    mcjsonp('/user/%/datafile/%', User.u(), $routeParams.id)
         .success(function (data) {
             $scope.doc = data;
             $scope.setupAccessToUserFile();
@@ -24,7 +24,7 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
 
     $scope.tagchoices = new Array();
     $scope.originalTags = [];
-    $http.jsonp(mcurljsonp('/tags'))
+    mcjsonp('/tags')
         .success(function (data) {
             data.forEach(function (item) {
                 $scope.tagchoices.push(item.id);
@@ -32,24 +32,22 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
             })
         });
 
-    $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
+    mcjsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
         .success(function (data) {
-            $scope.scheduledReviews = _.filter(data, function(item) {
-                if (! item.done) { return item; }
+            $scope.scheduledReviews = _.filter(data, function (item) {
+                if (!item.done) {
+                    return item;
+                }
             });
         });
 
-    $http.jsonp(mcurljsonp('/private/user/%/selected_users', User.u()))
+    mcjsonp('/private/user/%/selected_users', User.u())
         .success(function (data) {
             $scope.users = data;
-            //console.log('selected users are : '+ $scope.users);
         })
         .error(function () {
             //console.log("error: in finding all users");
         });
-
-
-
 
     $scope.removeTag = function (index) {
         $scope.doc.tags.splice(index, 1);
@@ -62,13 +60,8 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
 
         if (!_.contains($scope.doc.tags, $scope.tag_to_add)) {
             $scope.doc.tags.push($scope.tag_to_add);
-
             $scope.msg = "Data has been tagged !"
             alertService.prepForBroadcast($scope.msg);
-            $scope.$on('handleBroadcast', function() {
-                $scope.message = alertService.message;
-            });
-
         }
     }
 
@@ -76,13 +69,9 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
         $http.put(mcurl('/user/%/datafile/update/%', User.u(), $scope.doc.id), $scope.doc)
             .success(function (data) {
                 $scope.addNewTags();
-                //console.log('msg received is ' + data.msg) ;
                 alertService.prepForBroadcast(data.msg);
-                $scope.$on('handleBroadcast', function() {
-                    $scope.message = alertService.message;
-                });
             }).error(function (data, status, headers, config) {
-               console.log('im in error part');
+                console.log('im in error part');
             });
 
         $window.history.back();
@@ -94,10 +83,10 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
         newtags.forEach(function (item) {
             tagObj.id = item;
             $http.post(mcurl('/tag'), tagObj)
-                .success(function(data){
+                .success(function (data) {
 
                 })
-                .error(function(){
+                .error(function () {
 
                 });
         });
@@ -122,13 +111,12 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
         $http.post(mcurl('/user/%/review', User.u()), review)
             .success(function (data) {
                 alertService.prepForBroadcast(data.msg);
-                $scope.$on('handleBroadcast', function() {
-                    $scope.message = alertService.message;
-                });
                 $http.jsonp(mcurljsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id))
                     .success(function (data) {
-                        $scope.scheduledReviews = _.filter(data, function(item){
-                            if (!item.done) { return item; }
+                        $scope.scheduledReviews = _.filter(data, function (item) {
+                            if (!item.done) {
+                                return item;
+                            }
                         });
                         $scope.user_for_review = "";
                     });
@@ -136,7 +124,7 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
         $scope.schedule_for_self = false;
     }
 
-    $scope.addReviewForOther = function() {
+    $scope.addReviewForOther = function () {
         $scope.review_note = $scope.review_note_other;
         $scope.review_note_other = "";
         $scope.addReview();
@@ -147,7 +135,6 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
     }
 
     $scope.addTagKeypressCallback = function (event) {
-        console.log("addTagKeypressCallback");
         if (!_.contains($scope.tagchoices, $scope.new_tag)) {
             $scope.tagchoices.push($scope.new_tag);
         }
@@ -168,22 +155,22 @@ function DataEditController($scope, $routeParams, $window, $http, $rootScope, Us
         $scope.addReview();
     }
 
-    $scope.reviewStatusChanged = function(index) {
+    $scope.reviewStatusChanged = function (index) {
         console.log("reviewStatusChanged = " + $scope.scheduledReviews[index]);
         $http.put(mcurl('/user/%/review/%/mark/%', User.u(), $scope.scheduledReviews[index].id,
-            $scope.scheduledReviews[index].done))
-            .success(function() {
-               //console.log("Marked as done");
+                $scope.scheduledReviews[index].done))
+            .success(function () {
+                //console.log("Marked as done");
             });
     }
 }
 
-function MyDataController($scope, $http, User, $location) {
+function MyDataController($scope, mcjsonp, User, $location) {
 
     $scope.predicate = 'name';
     $scope.reverse = false;
 
-    $http.jsonp(mcurljsonp('/user/%/datafiles', User.u()))
+    mcjsonp('/user/%/datafiles', User.u())
         .success(function (data, status) {
             $scope.data_by_user = data;
         });
@@ -196,8 +183,7 @@ function MyDataController($scope, $http, User, $location) {
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            var url = mcurljsonp('/user/%/datadirs/%', User.u(), datagroupId);
-            $http.jsonp(url)
+            mcjsonp('/user/%/datadirs/%', User.u(), datagroupId)
                 .success(function (data, status) {
                     $scope.dgroup = data;
                     $scope.dgroupid = data.id;
