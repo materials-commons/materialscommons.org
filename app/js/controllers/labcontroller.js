@@ -1,16 +1,15 @@
-function LabController($scope, $http) {
-    $http.jsonp(mcurljsonp('/usergroups'))
-        .success(function(data) {
-            console.log("retrieved labs");
+function LabController($scope, mcjsonp) {
+    mcjsonp('/usergroups')
+        .success(function (data) {
             $scope.labs = data;
-        }).error(function(data, status) {
+        }).error(function (data, status) {
             console.dir(status);
         });
 
 
     $scope.get_lab_data = function (value) {
-        $http.jsonp(mcurljsonp('/usergroup/%/datafiles', value))
-            .success(function(data) {
+        mcjsonp('/usergroup/%/datafiles', value)
+            .success(function (data) {
                 $scope.lab_data = data;
             })
     }
