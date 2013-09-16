@@ -1,4 +1,4 @@
-function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, mcjsonp) {
+function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, mcjsonp, decodeAlerts) {
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
@@ -20,12 +20,13 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
                 obj.email = $scope.email;
                 $cookieStore.put('mcuser', obj);
 
-                $scope.msg = apikey.msg;
+                $scope.msg = "Logged in Successfully";
                 alertService.prepForBroadcast($scope.msg);
 
             })
-            .error(function (data, status) {
-                $scope.failedLogin = true;
+            .error(function (data) {
+                $scope.msg = decodeAlerts.get_alert_msg(data.error);
+                alertService.prepForBroadcast($scope.msg);
             }).run();
     }
 
@@ -200,9 +201,7 @@ function ListUserController($scope, $http, mcjsonp, $routeParams, $dialog) {
                     $http.put(mcurl('/usergroup/%/username/%', $scope.lab_name, $scope.user_name))
                         .success(function (data) {
                             $scope.users_by_usergroup[0].users = data;
-                            //console.log("Added username to the usergroup !" + data);
                         }).error(function () {
-                            //console.log("Failed to add username");
                         });
                 }
 

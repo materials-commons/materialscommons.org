@@ -1,4 +1,4 @@
-function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User, alertService) {
+function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User, alertService, decodeAlerts) {
     //filePath = assets/materialscommons/location/name
     $scope.setupAccessToUserFile = function () {
         //alert($scope.doc.mediaType);
@@ -11,7 +11,11 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
         .success(function (data) {
             $scope.doc = data;
             $scope.setupAccessToUserFile();
-        });
+        })
+        .error(function(data){
+
+        }).run();
+
     //This obj is used in data-edit
     $scope.signed_in_user = User.u();
 
@@ -30,7 +34,9 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
                 $scope.tagchoices.push(item.id);
                 $scope.originalTags.push(item.id);
             })
-        });
+        }).error(function(data, status){
+
+        }).run();
 
     mcjsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
         .success(function (data) {
@@ -47,7 +53,7 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
         })
         .error(function () {
             //console.log("error: in finding all users");
-        });
+        }).run();
 
     $scope.removeTag = function (index) {
         $scope.doc.tags.splice(index, 1);
@@ -68,10 +74,13 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
     $scope.saveData = function () {
         $http.put(mcurl('/user/%/datafile/update/%', User.u(), $scope.doc.id), $scope.doc)
             .success(function (data) {
+                $scope.msg = "Data has been saved"
+                console.log($scope.msg);
                 $scope.addNewTags();
-                alertService.prepForBroadcast(data.msg);
-            }).error(function (data, status, headers, config) {
-                console.log('im in error part');
+                alertService.prepForBroadcast($scope.msg);
+            }).error(function (data) {
+                $scope.msg = decodeAlerts.get_alert_msg(data.error);
+                alertService.prepForBroadcast($scope.msg);
             });
 
         $window.history.back();
@@ -169,11 +178,15 @@ function MyDataController($scope, mcjsonp, User, $location) {
 
     $scope.predicate = 'name';
     $scope.reverse = false;
-
     mcjsonp('/user/%/datafiles', User.u())
         .success(function (data, status) {
+            console.dir(data);
             $scope.data_by_user = data;
-        });
+        })
+        .error(function(data, status){
+            console.log('status for data error '+ status + ' data will be '+ data.error)
+
+        }).run();
 
     $scope.dgroupid = "";
 

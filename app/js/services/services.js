@@ -126,3 +126,18 @@ materialsCommonsServices.factory('mcjsonp', function ($http) {
         return new F(arguments);
     }
 });
+materialsCommonsServices.factory('decodeAlerts', function(){
+    var alert_msg = {
+        'forbidden' : 'Access Denied',
+        'bad request': 'Error:  Please try again'
+    };
+    return {
+    get_alert_msg: function (key) {
+        return alert_msg[key];
+    }
+
+    }
+
+
+
+});
