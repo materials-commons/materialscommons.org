@@ -23,14 +23,14 @@ function LoginController($scope, $location, $http, User, $rootScope, $cookieStor
                 $scope.msg = apikey.msg;
                 alertService.prepForBroadcast($scope.msg);
 
-                $scope.$on('handleBroadcast', function() {
-                    $scope.message = alertService.message;
-                });
-
             })
-            .error(function (data) {
-                //console.log('what is this data' + data.headers['msg']);
-                $scope.failedLogin = true;
+            .error(function (data, status) {
+                 console.dir(data);
+               //console.log('status is  ' + status + ' msg is '+ data.error);
+
+                $scope.msg = data.error;
+                //console.log('here is ' + $scope.msg)  ;
+                alertService.prepForBroadcast($scope.msg);
 
             });
     }
@@ -68,21 +68,17 @@ function CreateAccountController($scope, $http, $location, alertService) {
             acc.password = $scope.password;
             $http.post(mcurl('/newuser'), acc)
                 .success(function (data) {
-                    //console.dir('on success '+ data);
                     $scope.msg = data.msg
                     alertService.prepForBroadcast($scope.msg);
-                    $scope.$on('handleBroadcast', function() {
-                        $scope.message = alertService.message;
-                    });
+
                     $location.path('/account/login');
                 })
                 .error(function (data, status) {
-                    console.log('status is  ' + status);
+                    console.log('status is  ' + status + ' msg is '+ data.error);
+
                     $scope.msg = data.error;
                     alertService.prepForBroadcast($scope.msg);
-                    $scope.$on('handleBroadcast', function() {
-                        $scope.message = alertService.message;
-                    });
+
                 });
 
         }
