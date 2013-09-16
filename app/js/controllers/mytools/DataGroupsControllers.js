@@ -1,27 +1,27 @@
-function MyDataGroupsController($scope, mcjsonp, User) {
+function MyDataGroupsController($scope, mcapi, User) {
     $scope.predicate = 'name';
     $scope.reverse = false;
 
-    mcjsonp('/user/%/datadirs/datafiles', User.u())
+    mcapi('/user/%/datadirs/datafiles', User.u())
         .success(function (data) {
             $scope.datagroups_by_user = data;
         })
         .error(function (data, status) {
             // Do something
-        });
+        }).jsonp();
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            mcjsonp('/user/%/datadir/%', User.u(), datagroupId)
+            mcapi('/user/%/datadir/%', User.u(), datagroupId)
                 .success(function (data) {
                     $scope.dgroup = data;
                     $scope.dgroupid = data.id;
-                });
+                }).jsonp();
         }
     }
 }
 
-function SearchByDateController($scope, $http, $routeParams, User) {
+function SearchByDateController($scope, $routeParams, User) {
     $scope.search_by_date = function () {
         $scope.utc_start_date = Date.parse($scope.myDate) / 1000;
         $scope.utc_end_date = Date.parse($scope.endDate) / 1000;
@@ -29,15 +29,15 @@ function SearchByDateController($scope, $http, $routeParams, User) {
     }
 }
 
-function MyDataGroupsTreeController($scope, mcjsonp, $location, User) {
-    mcjsonp('/user/%/datadirs/tree', User.u())
+function MyDataGroupsTreeController($scope, mcapi, $location, User) {
+    mcapi('/user/%/datadirs/tree', User.u())
         .success(function (tree) {
             $scope.tree = tree;
             //console.dir('tree data :' + $scope.tree);
         })
         .error(function () {
             console.log("Failed to retrieve tree");
-        })
+        }).jsonp();
 
     $scope.gotoSelection = function (d) {
         if (d.type == "datafile") {
@@ -46,14 +46,14 @@ function MyDataGroupsTreeController($scope, mcjsonp, $location, User) {
     }
 }
 
-function MyGroupsDataGroupsTreeController($scope, mcjsonp, $location, User) {
-    mcjsonp('/user/%/datadirs/tree/groups', User.u())
+function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
+    mcapi('/user/%/datadirs/tree/groups', User.u())
         .success(function (tree) {
             $scope.tree = tree;
         })
         .error(function () {
             console.log("Failed to retrieve tree");
-        })
+        }).jsonp();
 
     $scope.gotoSelection = function (d) {
         if (d.type == "datafile") {

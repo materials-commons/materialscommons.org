@@ -1,35 +1,10 @@
-function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, mcjsonp, mcapi2) {
+function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, decodeAlerts, mcapi) {
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
 
-    $scope.login = function() {
-        mcapi2('/user/%/%/apikey', $scope.email, $scope.password)
-            .success(function(apikey, status) {
-                User.setAuthenticated(true, apikey.apikey, $scope.email);
-                $scope.failedLogin = false;
-                $scope.successfulLogin = true;
-
-                $scope.connectError = false;
-                $location.path('/my-tools');
-                $rootScope.email_address = $scope.email;
-                mcglobals.apikey = apikey.apikey;
-
-                var obj = {};
-                obj.apikey = apikey.apikey;
-                obj.email = $scope.email;
-                $cookieStore.put('mcuser', obj);
-
-                $scope.msg = apikey.msg;
-                alertService.prepForBroadcast($scope.msg);
-            })
-            .error(function() {
-                $scope.failedLogin = true;
-            }).jsonp();
-    }
-
-    $scope.login2 = function () {
-        mcjsonp('/user/%/%/apikey', $scope.email, $scope.password)
+    $scope.login = function () {
+        mcapi('/user/%/%/apikey', $scope.email, $scope.password)
             .success(function (apikey, status) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.failedLogin = false;
@@ -45,12 +20,13 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
                 obj.email = $scope.email;
                 $cookieStore.put('mcuser', obj);
 
-                $scope.msg = apikey.msg;
+                $scope.msg = "Logged in Successfully";
                 alertService.prepForBroadcast($scope.msg);
             })
-            .error(function (data, status) {
-                $scope.failedLogin = true;
-            }).run();
+            .error(function () {
+                $scope.msg = decodeAlerts.get_alert_msg(data.error);
+                alertService.prepForBroadcast($scope.msg);
+            }).jsonp();
     }
 
     $scope.cancel = function () {
@@ -70,18 +46,19 @@ function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
     $cookieStore.remove('mcuser');
 }
 
-function CreateAccountController($scope, $http, $location, alertService) {
+function CreateAccountController($scope, mcapi, $location, alertService) {
 
     $scope.create_account = function () {
         if ($scope.password != $scope.confirm_password) {
             //alert("Passwords don't match");
             $scope.msg = "Passwords do not match!"
             alertService.prepForBroadcast($scope.msg);
-        } else {
+        }
+        else {
             var acc = {};
             acc.email = $scope.email;
             acc.password = $scope.password;
-            $http.post(mcurl('/newuser'), acc)
+            mcapi('/newuser')
                 .success(function (data) {
                     $scope.msg = data.msg
                     alertService.prepForBroadcast($scope.msg);
@@ -90,30 +67,31 @@ function CreateAccountController($scope, $http, $location, alertService) {
                 .error(function (data, status) {
                     $scope.msg = data.error;
                     alertService.prepForBroadcast($scope.msg);
-                });
+                }).post(acc);
+
 
         }
     }
 }
 
-function AccountDetailsController($scope, $http, mcjsonp, User) {
+function AccountDetailsController($scope, mcapi, User) {
     $scope.new_password = undefined;
     $scope.verify_new_password = undefined;
 
-    mcjsonp('/user/%', User.u())
+    mcapi('/user/%', User.u())
         .success(function (data) {
             $scope.account = data;
-        });
+        }).jsonp();
 
     $scope.saveChanges = function () {
         if ($scope.new_password) {
             if ($scope.new_password == $scope.verify_new_password) {
-                $http.put(mcurl('/user/%/password/%', User.u(), $scope.new_password))
+                mcapi('/user/%/password/%', User.u(), $scope.new_password)
                     .success(function (data) {
                         console.log("password changed!");
                     }).error(function () {
                         console.log("Failed to change password");
-                    });
+                    }).put();
             } else {
                 console.log("new passwords don't match");
             }
@@ -126,8 +104,8 @@ function ApiKeyController($scope, User) {
     $scope.apikey = User.apikey();
 }
 
-function ApiKeyResetController($scope, $http, User, $cookieStore) {
-    $http.put(mcurl('/user/%/apikey/reset', User.u()))
+function ApiKeyResetController($scope, mcapi, User, $cookieStore) {
+    mcapi('/user/%/apikey/reset', User.u())
         .success(function (data) {
             $scope.new_apikey = data;
             User.reset_apikey($scope.new_apikey['apikey']);
@@ -137,18 +115,18 @@ function ApiKeyResetController($scope, $http, User, $cookieStore) {
             $cookieStore.put('mcuser');
         }).error(function () {
             //console.log("error");
-        });
+        }).put();
 
 }
 
-function UserGroupController($scope, $http, User, mcjsonp, $location) {
-    mcjsonp('/user/%/usergroups', User.u())
+function UserGroupController($scope, User, mcapi, $location) {
+    mcapi('/user/%/usergroups', User.u())
         .success(function (data) {
             $scope.user_groups = data;
         })
         .error(function () {
             //console.log("error:usergroups")
-        });
+        }).jsonp();
 
     $scope.create_usergroup = function () {
 
@@ -163,47 +141,47 @@ function UserGroupController($scope, $http, User, mcjsonp, $location) {
         u_group.sdateModified = "";
         u_group.users = [User.u()];
 
-        $http.post(mcurl('/usergroups/new'), u_group)
+        mcapi('/usergroups/new')
             .success(function (data) {
                 $location.path('/account/details/usergroups/my_list');
             })
             .error(function () {
                 //console.log("error in creating a new usergroup");
-            });
+            }).post(u_group);
     }
 }
 
-function ListUserGroupController($scope, mcjsonp, User) {
-    mcjsonp('/user/%/all_usergroups', User.u())
+function ListUserGroupController($scope, mcapi, User) {
+    mcapi('/user/%/all_usergroups', User.u())
         .success(function (data) {
             $scope.all_user_groups = data;
         })
         .error(function () {
             //console.log("error:usergroups")
-        });
+        }).jsonp();
 
 
 }
 
-function ListUserController($scope, $http, mcjsonp, $routeParams, $dialog) {
+function ListUserController($scope, mcapi, $routeParams, $dialog) {
     //Get all users - for select options
-    mcjsonp('/private/users')
+    mcapi('/private/users')
         .success(function (data) {
             $scope.all_users = data;
         })
         .error(function () {
             //console.log("error: in finding all users");
-        });
+        }).jsonp();
 
     $scope.lab_name = $routeParams.usergroup_name;
-    mcjsonp('/usergroup/%/users', $scope.lab_name)
+    mcapi('/usergroup/%/users', $scope.lab_name)
         .success(function (data) {
             $scope.users_by_usergroup = data;
 
         })
         .error(function () {
             console.log("error")
-        });
+        }).jsonp();
 
     $scope.add_user_to_usergroup = function () {
         var title = '';
@@ -218,14 +196,11 @@ function ListUserController($scope, $http, mcjsonp, $routeParams, $dialog) {
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    //console.log('usergorup is ' + $scope.lab_name + 'user name is '+ $scope.user_name);
-                    $http.put(mcurl('/usergroup/%/username/%', $scope.lab_name, $scope.user_name))
+                    mcapi('/usergroup/%/username/%', $scope.lab_name, $scope.user_name)
                         .success(function (data) {
                             $scope.users_by_usergroup[0].users = data;
-                            //console.log("Added username to the usergroup !" + data);
                         }).error(function () {
-                            //console.log("Failed to add username");
-                        });
+                        }).put();
                 }
 
             })
@@ -243,13 +218,13 @@ function ListUserController($scope, $http, mcjsonp, $routeParams, $dialog) {
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    $http.put(mcurl('/usergroup/%/username/%/remove', $scope.lab_name, $scope.users_by_usergroup[0].users[index]))
+                    mcapi('/usergroup/%/username/%/remove', $scope.lab_name, $scope.users_by_usergroup[0].users[index])
                         .success(function (data) {
                             $scope.users_by_usergroup[0].users = data;
                             //console.log("Removed user name from !" + data);
                         }).error(function () {
                             //console.log("Failed to remove username");
-                        });
+                        }).put();
                 }
             })
 

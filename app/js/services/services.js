@@ -85,8 +85,7 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
 });
 
 
-
-materialsCommonsServices.factory('mcapi2', function ($http, User) {
+materialsCommonsServices.factory('mcapi', function ($http, User) {
     function MCApi() {
         console.log("MCApi constructor")
         this.url = this._makeUrl.apply(this, arguments);
@@ -199,7 +198,7 @@ materialsCommonsServices.factory('mcapi2', function ($http, User) {
             })
     }
 
-    return function() {
+    return function () {
         function F2(args) {
             return MCApi.apply(this, args);
         }
@@ -210,45 +209,15 @@ materialsCommonsServices.factory('mcapi2', function ($http, User) {
 
 });
 
-materialsCommonsServices.factory('mcjsonp', function ($http) {
-    function MCJsonp() {
-        this.url = mcurljsonp.apply(this, arguments);
-        this.on_error = undefined;
-        this.on_success = undefined;
-    }
-
-    MCJsonp.prototype.success = function (on_success) {
-        this.on_success = on_success;
-        return this;
-    }
-
-    MCJsonp.prototype.error = function (on_error) {
-        this.on_error = on_error;
-        return this;
-    }
-
-    MCJsonp.prototype.run = function () {
-        var self = this;
-        $http.jsonp(this.url)
-            .success(function (data) {
-                if (data.success) {
-                    if (self.on_success) {
-                        self.on_success.call(self, data.data, data.status_code);
-                    }
-                } else {
-                    if (self.on_error) {
-                        self.on_error.call(self, data.data, data.status_code);
-                    }
-                }
-            })
-    }
-
-    return function () {
-        function F(args) {
-            return MCJsonp.apply(this, args);
+materialsCommonsServices.factory('decodeAlerts', function () {
+    var alert_msg = {
+        'forbidden': 'Access Denied',
+        'bad request': 'Error:  Please try again'
+    };
+    return {
+        get_alert_msg: function (key) {
+            return alert_msg[key];
         }
 
-        F.prototype = MCJsonp.prototype;
-        return new F(arguments);
     }
 });

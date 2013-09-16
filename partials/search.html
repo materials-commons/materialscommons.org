@@ -1,5 +1,25 @@
 
 
+
+<div class="container">
+    <div ng-show="total_hits > 0">
+        <h4>Total number of results found for {{keyword}}: {{count}}</h4>
+        <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small" previous-text="&laquo;" next-text="&raquo;" on-select-page="pageChanged(page)"></pagination>
+        <div ng-repeat="res in results">
+            <p ng-show="res._source.type == datagroup">
+
+            </p>
+            <p ng-show="res._source.type == data">
+
+            </p>
+            <strong>{{res._source.type}}</strong>
+             {{res}}
+        </div>
+    </div>
+
+</div>
+
+
 <div class="container">
     <div ng-hide="total_hits > 0"><h4>No results found for {{keyword}}</h4></div>
 
@@ -9,14 +29,14 @@
         <ul ng-repeat="res in results.hits.hits">
             <div ng-controller="DataSearchController">
                 <h5><a  ng-href="{{imageSource}}">{{res._source.name}}</a> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                <a  ng-click="get_full_data_with_id(res._source._id)" >Full Data</a></h5>
+                    <a  ng-click="get_full_data_with_id(res._source._id)" >Full Data</a></h5>
             </div>
 
             <p ng-show="res._source.text.length > 0">
                 {{res._source.text | truncate:250}}<br>
             </p>
             <p ng-hide="res._source.text.length > 0">
-               No Text Information
+                No Text Information
             </p>
             <div  ng-controller="TagDataController">
                 <div ng-repeat="tag in res._source.tags">
@@ -30,6 +50,4 @@
         <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small" previous-text="&laquo;" next-text="&raquo;" on-select-page="pageChanged(page)"></pagination>
     </div>
 </div>
-
-
 

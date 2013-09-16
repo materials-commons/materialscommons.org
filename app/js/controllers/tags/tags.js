@@ -1,18 +1,18 @@
-function TagListController($scope, $routeParams, $location, mcjsonp, User) {
+function TagListController($scope, $routeParams, $location, mcapi, User) {
     $scope.listtype = $routeParams.listtype;
     if ($routeParams.listtype == "all") {
         $scope.tagHeader = "All Tags";
-        mcjsonp('/tags/count')
+        mcapi('/tags/count')
             .success(function (data) {
                 $scope.tags = data;
-            });
+            }).jsonp();
     }
     else if ($routeParams.listtype == "mytags") {
         $scope.tagHeader = "My Tags";
-        mcjsonp('/user/%/tags/count', User.u())
+        mcapi('/user/%/tags/count', User.u())
             .success(function (data) {
                 $scope.tags = data;
-            });
+            }).jsonp();
     }
 
     $scope.listDataForTag = function (tag) {
@@ -20,12 +20,12 @@ function TagListController($scope, $routeParams, $location, mcjsonp, User) {
     }
 }
 
-function TagDataController($scope, $routeParams, $location, mcjsonp, User) {
+function TagDataController($scope, $routeParams, $location, mcapi, User) {
     $scope.tag = $routeParams.tag;
-    mcjsonp('/user/%/datafiles/tag/%', User.u(), $routeParams.tag)
+    mcapi('/user/%/datafiles/tag/%', User.u(), $routeParams.tag)
         .success(function (data) {
             $scope.docs = data;
-        });
+        }).jsonp();
 
     $scope.editData = function (id) {
         $location.path("/data/edit/" + id);
@@ -36,13 +36,13 @@ function TagDataController($scope, $routeParams, $location, mcjsonp, User) {
     }
 }
 
-function GlobalTagCloudController($scope, mcjsonp, User) {
+function GlobalTagCloudController($scope, mcapi, User) {
     $scope.cloudtype = "Global";
-    mcjsonp('/tags/count')
+    mcapi('/tags/count')
         .success(function (data) {
             $scope.word_list = [];
             angular.forEach(data, function (tag) {
                 $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/tags/data/bytag/" + tag.name + '/' + User.u()});
             });
-        });
+        }).jsonp();
 }
