@@ -1,9 +1,34 @@
-function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, mcjsonp) {
+function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, mcjsonp, mcapi2) {
     $scope.alerts = [];
     $scope.failedLogin = false;
     $scope.successfulLogin = false;
 
-    $scope.login = function () {
+    $scope.login = function() {
+        mcapi2('/user/%/%/apikey', $scope.email, $scope.password)
+            .success(function(apikey, status) {
+                User.setAuthenticated(true, apikey.apikey, $scope.email);
+                $scope.failedLogin = false;
+                $scope.successfulLogin = true;
+
+                $scope.connectError = false;
+                $location.path('/my-tools');
+                $rootScope.email_address = $scope.email;
+                mcglobals.apikey = apikey.apikey;
+
+                var obj = {};
+                obj.apikey = apikey.apikey;
+                obj.email = $scope.email;
+                $cookieStore.put('mcuser', obj);
+
+                $scope.msg = apikey.msg;
+                alertService.prepForBroadcast($scope.msg);
+            })
+            .error(function() {
+                $scope.failedLogin = true;
+            }).jsonp();
+    }
+
+    $scope.login2 = function () {
         mcjsonp('/user/%/%/apikey', $scope.email, $scope.password)
             .success(function (apikey, status) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);

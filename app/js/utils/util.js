@@ -37,6 +37,10 @@ function determineFileType(mediaType) {
     }
 }
 
+function _add_json_callback(url) {
+    return url + "&callback=JSON_CALLBACK";
+}
+
 function filePath(fileType, mediaType, location, name) {
     var filePath = "assets/materialscommons/";
     if (fileType == "image" && mediaType == "image/tiff") {
