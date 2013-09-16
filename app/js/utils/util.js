@@ -43,15 +43,11 @@ function filePath(fileType, mediaType, location, name) {
         var newName = name.substr(0, name.lastIndexOf('.')) || name;
         newName = newName + '.jpg';
         return filePath + location + '/.conversion/' + newName;
-
     } else if (fileType == "image") {
-        //console.log('yes image');
         return filePath + location + '/' + name;
     } else {
-        //console.log('not image');
         return filePath + location + '/' + name;
     }
 
     return filePath;
 }
-

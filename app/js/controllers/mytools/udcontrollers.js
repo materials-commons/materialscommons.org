@@ -1,16 +1,13 @@
-function UploadFileController($scope, $http, User, $rootScope, formDataObject) {
+function UploadFileController($scope, $http, mcjsonp, User, formDataObject) {
     $scope.files = [];
     $scope.percentage = 0;
 
-    $http.jsonp(mcurljsonp('/user/%/datadirs', User.u()))
+    mcjsonp('/user/%/datadirs', User.u())
         .success(function (data) {
             $scope.datagroups = data;
         });
 
     $scope.addFile = function (element) {
-        //$scope.files.push(element.files[0]);
-        console.log("addFile");
-        console.dir(element.files[0]);
         $scope.$apply(function () {
             var obj = {};
             obj.file = element.files[0];
@@ -20,14 +17,11 @@ function UploadFileController($scope, $http, User, $rootScope, formDataObject) {
         });
     }
 
-    $scope.uploadEachFile = function (mp,ep) {
+    $scope.uploadEachFile = function (mp, ep) {
         if ($scope.files.length == 0) {
             return;
         }
 
-
-
-        //var url = "http://magnesium.eecs.umich.edu:5000/v1.0/user/mcfada@umich.edu/upload/abc123";
         $scope.files.forEach(function (fileEntry) {
             if (fileEntry.status != "Uploaded") {
                 var url = mcurl("/user/%/upload/%", User.u(), fileEntry.datagroup);
@@ -47,35 +41,23 @@ function UploadFileController($scope, $http, User, $rootScope, formDataObject) {
                     });
             }
         });
-
-        /*$http.post(mcurl('/mp/ep/new'), mp,ep)
-            .success(function(){
-                $location.path('/account/details/usergroups/my_list');
-            })
-            .error(function(){
-                //console.log("error in creating a new usergroup");
-            });
-
-        */
-
     };
 }
 
-function UploadDirectoryController($scope, $http, User) {
+function UploadDirectoryController($scope, mcjsonp, User) {
     $scope.files = [];
     $scope.percentage = 0;
-
     $scope.uploadurl = "notset";
 
-    $http.jsonp(mcurljsonp('/user/%/datadirs', User.u()))
+    mcjsonp('/user/%/datadirs', User.u())
         .success(function (data) {
             $scope.datagroups = data;
         })
 
 }
 
-function UpDownLoadQueueController($scope, $http, User) {
-    $http.jsonp(mcurljsonp('/user/%/udqueue', User.u()))
+function UpDownLoadQueueController($scope, mcjsonp, User) {
+    mcjsonp('/user/%/udqueue', User.u())
         .success(function (data) {
             $scope.udentries = data;
         })
