@@ -34,3 +34,8 @@ function filePath(fileType, mediaType, location, name) {
 
     return filePath;
 }
+
+function originalFilePath(location, name) {
+    var filePath = "assets/materialscommons/";
+    return filePath + location + '/' + name;
+}

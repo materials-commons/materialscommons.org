@@ -1,10 +1,10 @@
 function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, decodeAlerts) {
-    //filePath = assets/materialscommons/location/name
-    $scope.setupAccessToUserFile = function () {
-        //alert($scope.doc.mediaType);
 
+    $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediaType);
         $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediaType, $scope.doc.location, $scope.doc.name);
+        $scope.originalFileSrc = originalFilePath($scope.doc.location, $scope.doc.name);
+        $scope.fileName = $scope.doc.name;
     }
 
     mcapi('/user/%/datafile/%', User.u(), $routeParams.id)
