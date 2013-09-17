@@ -26,6 +26,14 @@ function UploadFileController($scope, $http, mcapi, User, formDataObject) {
             if (fileEntry.status != "Uploaded") {
                 var url = mcurl("/user/%/upload/%", User.u(), fileEntry.datagroup);
                 fileEntry.status = "Uploading...";
+                /*
+                For mcapi this looks like:
+                mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
+                    .success(function() { fileEntry.status = "Uploaded"; })
+                    .error(function() { fileEntry.status = "Failed"; })
+                    .post({file: fileEntry.file},
+                          {headers: {'Content-Type': false}}, transformRequest:formDataObject});
+                 */
                 $http({
                     method: 'POST',
                     url: url,
