@@ -84,26 +84,107 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
     return sharedService;
 });
 
-materialsCommonsServices.factory('mcjsonp', function ($http) {
-    function MCJsonp() {
-        this.url = mcurljsonp.apply(this, arguments);
+
+materialsCommonsServices.factory('mcapi', function ($http, User) {
+    function MCApi() {
+        console.log("MCApi constructor")
+        this.url = this._makeUrl.apply(this, arguments);
+        console.log("this.url = " + this.url);
         this.on_error = undefined;
         this.on_success = undefined;
     }
 
-    MCJsonp.prototype.success = function (on_success) {
+    MCApi.prototype._makeUrl = function () {
+        var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org:5000/v1.0";
+
+        if (arguments.length < 1) {
+            throw "Invalid mcurl spec";
+        }
+
+        var s = arguments[0];
+
+        for (var i = 1; i < arguments.length; i++) {
+            s = s.replace('%', arguments[i]);
+        }
+
+        var url = apihost + s + "?apikey=" + User.apikey();
+        return url;
+    }
+
+    MCApi.prototype.success = function (on_success) {
         this.on_success = on_success;
         return this;
     }
 
-    MCJsonp.prototype.error = function (on_error) {
+    MCApi.prototype.error = function (on_error) {
         this.on_error = on_error;
         return this;
     }
 
-    MCJsonp.prototype.run = function () {
+    MCApi.prototype.put = function (putData, putConfig) {
         var self = this;
-        $http.jsonp(this.url)
+        $http.put(this.url, putData, putConfig)
+            .success(function (data, status, headers, config) {
+                if (self.on_success) {
+                    self.on_success(data, status, headers, config);
+                }
+            })
+            .error(function (data, status, headers, config) {
+                if (self.on_error) {
+                    self.on_error(data, status, headers, config);
+                }
+            })
+    }
+
+    MCApi.prototype.delete = function (deleteConfig) {
+        var self = this;
+        $http.delete(this.url, deleteConfig)
+            .success(function (data, status, headers, config) {
+                if (self.on_success) {
+                    self.on_success(data, status, headers, config);
+                }
+            })
+            .error(function (data, status, headers, config) {
+                if (self.on_error) {
+                    self.on_error(data, status, headers, config);
+                }
+            })
+    }
+
+    MCApi.prototype.post = function (postData, postConfig) {
+        var self = this;
+        $http.post(this.url, postData, postConfig)
+            .success(function (data, status, headers, config) {
+                if (self.on_success) {
+                    self.on_success(data, status, headers, config);
+                }
+            })
+            .error(function (data, status, headers, config) {
+                if (self.on_error) {
+                    self.on_error(data, status, headers, config);
+                }
+            })
+    }
+
+    MCApi.prototype.get = function (getConfig) {
+        var self = this;
+        $http.get(this.url, getConfig)
+            .success(function (data, status, headers, config) {
+                if (self.on_success) {
+                    self.on_success(data, status, headers, config);
+                }
+            })
+            .error(function (data, status, headers, config) {
+                if (self.on_error) {
+                    self.on_error(data, status, headers, config);
+                }
+            })
+    }
+
+    MCApi.prototype.jsonp = function (jsonpConfig) {
+        var self = this;
+        var jsonpurl = _add_json_callback(this.url);
+        $http.jsonp(jsonpurl, jsonpConfig)
             .success(function (data) {
                 if (data.success) {
                     if (self.on_success) {
@@ -118,26 +199,25 @@ materialsCommonsServices.factory('mcjsonp', function ($http) {
     }
 
     return function () {
-        function F(args) {
-            return MCJsonp.apply(this, args);
+        function F2(args) {
+            return MCApi.apply(this, args);
         }
 
-        F.prototype = MCJsonp.prototype;
-        return new F(arguments);
+        F2.prototype = MCApi.prototype;
+        return new F2(arguments);
     }
+
 });
-materialsCommonsServices.factory('decodeAlerts', function(){
+
+materialsCommonsServices.factory('decodeAlerts', function () {
     var alert_msg = {
-        'forbidden' : 'Access Denied',
+        'forbidden': 'Access Denied',
         'bad request': 'Error:  Please try again'
     };
     return {
-    get_alert_msg: function (key) {
-        return alert_msg[key];
-    }
+        get_alert_msg: function (key) {
+            return alert_msg[key];
+        }
 
     }
-
-
-
 });

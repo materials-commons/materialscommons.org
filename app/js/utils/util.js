@@ -20,10 +20,6 @@ function mcurl() {
     return url;
 }
 
-function mcurljsonp() {
-    return mcurl.apply(this, arguments) + "&callback=JSON_CALLBACK";
-}
-
 function get_utc_obj(utc_in_sec) {
     var d = new Date(utc_in_sec * 1000);
     return d;
@@ -35,6 +31,10 @@ function determineFileType(mediaType) {
     } else {
         return "other";
     }
+}
+
+function _add_json_callback(url) {
+    return url + "&callback=JSON_CALLBACK";
 }
 
 function filePath(fileType, mediaType, location, name) {

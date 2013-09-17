@@ -1,4 +1,4 @@
-function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User, alertService, decodeAlerts) {
+function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, decodeAlerts) {
     //filePath = assets/materialscommons/location/name
     $scope.setupAccessToUserFile = function () {
         //alert($scope.doc.mediaType);
@@ -7,14 +7,14 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
         $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediaType, $scope.doc.location, $scope.doc.name);
     }
 
-    mcjsonp('/user/%/datafile/%', User.u(), $routeParams.id)
+    mcapi('/user/%/datafile/%', User.u(), $routeParams.id)
         .success(function (data) {
             $scope.doc = data;
             $scope.setupAccessToUserFile();
         })
-        .error(function(data){
+        .error(function (data) {
 
-        }).run();
+        }).jsonp();
 
     //This obj is used in data-edit
     $scope.signed_in_user = User.u();
@@ -28,32 +28,32 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
 
     $scope.tagchoices = new Array();
     $scope.originalTags = [];
-    mcjsonp('/tags')
+    mcapi('/tags')
         .success(function (data) {
             data.forEach(function (item) {
                 $scope.tagchoices.push(item.id);
                 $scope.originalTags.push(item.id);
             })
-        }).error(function(data, status){
+        }).error(function (data, status) {
 
-        }).run();
+        }).jsonp();
 
-    mcjsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
+    mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
         .success(function (data) {
             $scope.scheduledReviews = _.filter(data, function (item) {
                 if (!item.done) {
                     return item;
                 }
             });
-        });
+        }).jsonp();
 
-    mcjsonp('/private/user/%/selected_users', User.u())
+    mcapi('/private/user/%/selected_users', User.u())
         .success(function (data) {
             $scope.users = data;
         })
         .error(function () {
             //console.log("error: in finding all users");
-        }).run();
+        }).jsonp();
 
     $scope.removeTag = function (index) {
         $scope.doc.tags.splice(index, 1);
@@ -72,7 +72,7 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
     }
 
     $scope.saveData = function () {
-        $http.put(mcurl('/user/%/datafile/update/%', User.u(), $scope.doc.id), $scope.doc)
+        mcapi('/user/%/datafile/update/%', User.u(), $scope.doc.id)
             .success(function (data) {
                 $scope.msg = "Data has been saved"
                 console.log($scope.msg);
@@ -81,7 +81,7 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
             }).error(function (data) {
                 $scope.msg = decodeAlerts.get_alert_msg(data.error);
                 alertService.prepForBroadcast($scope.msg);
-            });
+            }).put($scope.doc);
 
         $window.history.back();
     }
@@ -91,13 +91,13 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
         var tagObj = {};
         newtags.forEach(function (item) {
             tagObj.id = item;
-            $http.post(mcurl('/tag'), tagObj)
+            mcapi('/tag')
                 .success(function (data) {
 
                 })
                 .error(function () {
 
-                });
+                }).post(tagObj);
         });
     }
 
@@ -117,11 +117,10 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
         review.itemId = $scope.doc.id;
         review.who = $scope.doc.owner;
         review.done = false;
-        $http.post(mcurl('/user/%/review', User.u()), review)
+        mcapi('/user/%/review', User.u())
             .success(function (data) {
-                $scope.msg = "Review has been added"
                 alertService.prepForBroadcast($scope.msg);
-                mcjsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
+                mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
                     .success(function (data) {
                         $scope.scheduledReviews = _.filter(data, function (item) {
                             if (!item.done) {
@@ -129,8 +128,8 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
                             }
                         });
                         $scope.user_for_review = "";
-                    }).run();
-            });
+                    }).jsonp();
+            }).post(review);
         $scope.schedule_for_self = false;
     }
 
@@ -167,26 +166,25 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
 
     $scope.reviewStatusChanged = function (index) {
         console.log("reviewStatusChanged = " + $scope.scheduledReviews[index]);
-        $http.put(mcurl('/user/%/review/%/mark/%', User.u(), $scope.scheduledReviews[index].id,
-                $scope.scheduledReviews[index].done))
+        mcapi('/user/%/review/%/mark/%', User.u(), $scope.scheduledReviews[index].id,
+            $scope.scheduledReviews[index].done)
             .success(function () {
                 //console.log("Marked as done");
-            });
+            }).put();
     }
 }
 
-function MyDataController($scope, mcjsonp, User, $location) {
-
+function MyDataController($scope, mcapi, User, $location) {
     $scope.predicate = 'name';
     $scope.reverse = false;
-    mcjsonp('/user/%/datafiles', User.u())
+    mcapi('/user/%/datafiles', User.u())
         .success(function (data, status) {
             $scope.data_by_user = data;
         })
-        .error(function(data, status){
-            console.log('status for data error '+ status + ' data will be '+ data.error)
+        .error(function (data, status) {
+            console.log('status for data error ' + status + ' data will be ' + data.error)
 
-        }).run();
+        }).jsonp();
 
     $scope.dgroupid = "";
 
@@ -196,11 +194,11 @@ function MyDataController($scope, mcjsonp, User, $location) {
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            mcjsonp('/user/%/datadirs/%', User.u(), datagroupId)
+            mcapi('/user/%/datadirs/%', User.u(), datagroupId)
                 .success(function (data, status) {
                     $scope.dgroup = data;
                     $scope.dgroupid = data.id;
-                });
+                }).jsonp();
         }
     }
 }

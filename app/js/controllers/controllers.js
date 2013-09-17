@@ -8,12 +8,12 @@ function FrontPageController($scope, $location) {
     }
 }
 
-function HomeController($scope, mcjsonp) {
+function HomeController($scope, mcapi) {
 
-    mcjsonp('/news')
+    mcapi('/news')
         .success(function (data) {
             $scope.news = data;
-        }).run();
+        }).jsonp();
 }
 
 
@@ -37,7 +37,7 @@ function DataSearchController($scope, $routeParams, $location) {
 }
 
 
-function ExploreController($scope, $http) {
+function ExploreController($scope) {
     $scope.pageDescription = "Explore";
 }
 
@@ -56,24 +56,24 @@ function HelpController($scope, $routeParams) {
     $scope.pageDescription = "Help";
 }
 
-function ReviewListController($scope, $http, $location, mcjsonp, User) {
-    mcjsonp('/user/%/reviews', User.u())
+function ReviewListController($scope, $location, mcapi, User) {
+    mcapi('/user/%/reviews', User.u())
         .success(function (data) {
             $scope.reviews = _.filter(data, function (item) {
                 if (!item.done) {
                     return item;
                 }
             });
-        });
+        }).jsonp();
 
-    mcjsonp('/user/%/reviews/requested', User.u())
+    mcapi('/user/%/reviews/requested', User.u())
         .success(function (data) {
             $scope.reviewsRequested = _.filter(data, function (item) {
                 if (!item.done) {
                     return item;
                 }
             });
-        });
+        }).jsonp();
 
     $scope.startReview = function (id, type) {
         if (type == "data") {
@@ -86,19 +86,19 @@ function ReviewListController($scope, $http, $location, mcjsonp, User) {
 
     $scope.removeReview = function (index) {
         var id = $scope.reviews[index].id;
-        $http.delete(mcurl('/user/%/review/%', User.u(), id))
+        mcapi('/user/%/review/%', User.u(), id)
             .success(function (data) {
                 console.log("success deleting");
                 $scope.reviews.splice(index, 1);
-            });
+            }).delete();
     }
 
     $scope.removeRequestedReview = function (index) {
         var id = $scope.reviewsRequested[index].id;
-        $http.delete(mcurl('/user/%/review/%/requested', User.u(), id))
+        mcapi('/user/%/review/%/requested', User.u(), id)
             .success(function () {
                 $scope.reviewsRequested.splice(index, 1);
-            })
+            }).delete()
     }
 }
 

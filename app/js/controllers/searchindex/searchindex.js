@@ -1,4 +1,4 @@
-function SearchIndexController($scope, $routeParams, $location, Search, $filter, $http) {
+function SearchIndexController($scope, $routeParams, $location, Search, $filter, mcapi) {
 
     if ($routeParams.subpage == "search_key") {
         $scope.keyword = $routeParams.name;
@@ -29,7 +29,7 @@ function SearchIndexController($scope, $routeParams, $location, Search, $filter,
      };
      });
      */
-    $http.jsonp(mcurljsonp('/search_index/keyword/%', $scope.keyword))
+    mcapi('/search_index/keyword/%', $scope.keyword)
         .success(function (data) {
             $scope.total_hits = data.count;
             $scope.noOfPages = Math.round($scope.total_hits / $scope.size);
@@ -37,26 +37,22 @@ function SearchIndexController($scope, $routeParams, $location, Search, $filter,
             $scope.results = data.results;
             $scope.count = data.count;
             //console.dir('results are as' + data.results[0]);
-           // $scope.$watch('currentPage', function (newPage) {
-               // $scope.watchPage = newPage;
-                //$scope.from = $scope.size * (newPage - 1)
-                //$scope.results = Search.get_set_of_results_for_pagination($scope.keyword, $scope.from, $scope.size, function(results){
+            // $scope.$watch('currentPage', function (newPage) {
+            // $scope.watchPage = newPage;
+            //$scope.from = $scope.size * (newPage - 1)
+            //$scope.results = Search.get_set_of_results_for_pagination($scope.keyword, $scope.from, $scope.size, function(results){
 
             //});
         })
-
-
         .error(function () {
 
-        });
+        }).jsonp();
 
 
     $scope.get_utc_obj = function (utc_in_sec) {
         var d = new Date(utc_in_sec * 1000);
         return d;
     }
-
-
 }
 
 

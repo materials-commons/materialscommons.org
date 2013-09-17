@@ -1,11 +1,11 @@
-function UploadFileController($scope, $http, mcjsonp, User, formDataObject) {
+function UploadFileController($scope, $http, mcapi, User, formDataObject) {
     $scope.files = [];
     $scope.percentage = 0;
 
-    mcjsonp('/user/%/datadirs', User.u())
+    mcapi('/user/%/datadirs', User.u())
         .success(function (data) {
             $scope.datagroups = data;
-        });
+        }).jsonp();
 
     $scope.addFile = function (element) {
         $scope.$apply(function () {
@@ -44,21 +44,21 @@ function UploadFileController($scope, $http, mcjsonp, User, formDataObject) {
     };
 }
 
-function UploadDirectoryController($scope, mcjsonp, User) {
+function UploadDirectoryController($scope, mcapi, User) {
     $scope.files = [];
     $scope.percentage = 0;
     $scope.uploadurl = "notset";
 
-    mcjsonp('/user/%/datadirs', User.u())
+    mcapi('/user/%/datadirs', User.u())
         .success(function (data) {
             $scope.datagroups = data;
-        })
+        }).jsonp();
 
 }
 
-function UpDownLoadQueueController($scope, mcjsonp, User) {
-    mcjsonp('/user/%/udqueue', User.u())
+function UpDownLoadQueueController($scope, mcapi, User) {
+    mcapi('/user/%/udqueue', User.u())
         .success(function (data) {
             $scope.udentries = data;
-        })
+        }).jsonp();
 }
