@@ -1,26 +1,13 @@
-function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, decodeAlerts, mcapi) {
+function LoginController($scope, $location, User, alertService, decodeAlerts, mcapi) {
     $scope.alerts = [];
-    $scope.failedLogin = false;
-    $scope.successfulLogin = false;
 
     $scope.login = function () {
         mcapi('/user/%/%/apikey', $scope.email, $scope.password)
             .success(function (apikey, status) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
-                $scope.failedLogin = false;
-                $scope.successfulLogin = true;
-
-                $scope.connectError = false;
-                $location.path('/my-tools');
-                $rootScope.email_address = $scope.email;
-
-                var obj = {};
-                obj.apikey = apikey.apikey;
-                obj.email = $scope.email;
-                $cookieStore.put('mcuser', obj);
-
                 $scope.msg = "Logged in Successfully";
                 alertService.prepForBroadcast($scope.msg);
+                $location.path('/my-tools');
             })
             .error(function () {
                 $scope.msg = decodeAlerts.get_alert_msg(data.error);
@@ -30,10 +17,6 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
 
     $scope.cancel = function () {
         $location.path("/home");
-    }
-
-    $scope.closeAlert = function () {
-        $scope.alerts.splice(0, 1);
     }
 }
 
@@ -66,8 +49,6 @@ function CreateAccountController($scope, mcapi, $location, alertService) {
                     $scope.msg = data.error;
                     alertService.prepForBroadcast($scope.msg);
                 }).post(acc);
-
-
         }
     }
 }

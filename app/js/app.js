@@ -118,14 +118,7 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
             $rootScope.stompClient = ngstomp(chatConnection);
         }
 
-        var mcuser = $cookieStore.get('mcuser');
-
-        if (mcuser) {
-            mcglobals.username = mcuser.email;
-            $rootScope.email_address = mcglobals.username;
-            User.setAuthenticated(true, mcuser.apikey, mcglobals.username);
-            return;
-        } else if (mcglobals.bypasslogin) {
+        if (mcglobals.bypasslogin) {
             if (mcglobals.username) {
                 User.setAuthenticated(true, mcglobals.apikey, mcglobals.username);
                 $rootScope.email_address = mcglobals.username;
@@ -139,7 +132,7 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
             }
         }
         else {
-            //console.log("  User is authenticated");
+            $rootScope.email_address = User.u();
         }
     });
 
