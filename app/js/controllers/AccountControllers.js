@@ -13,7 +13,6 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
                 $scope.connectError = false;
                 $location.path('/my-tools');
                 $rootScope.email_address = $scope.email;
-                mcglobals.apikey = apikey.apikey;
 
                 var obj = {};
                 obj.apikey = apikey.apikey;
@@ -41,7 +40,6 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
 function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
     $rootScope.email_address = '';
     User.setAuthenticated(false, '', '');
-    mcglobals.apikey = "";
     $location.path('/home');
     $cookieStore.remove('mcuser');
 }
@@ -109,7 +107,6 @@ function ApiKeyResetController($scope, mcapi, User, $cookieStore) {
         .success(function (data) {
             $scope.new_apikey = data;
             User.reset_apikey($scope.new_apikey['apikey']);
-            mcglobals.apikey = $scope.new_apikey['apikey'];
             var mcuser = $cookieStore.get('mcuser');
             mcuser.apikey = $scope.new_apikey;
             $cookieStore.put('mcuser');

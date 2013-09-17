@@ -122,9 +122,8 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
 
         if (mcuser) {
             mcglobals.username = mcuser.email;
-            mcglobals.apikey = mcuser.apikey;
             $rootScope.email_address = mcglobals.username;
-            User.setAuthenticated(true, mcglobals.apikey, mcglobals.username);
+            User.setAuthenticated(true, mcuser.apikey, mcglobals.username);
             return;
         } else if (mcglobals.bypasslogin) {
             if (mcglobals.username) {

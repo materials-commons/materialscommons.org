@@ -96,7 +96,7 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
         var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org:5000/v1.0";
 
         if (arguments.length < 1) {
-            throw "Invalid mcurl spec";
+            throw "Invalid url spec";
         }
 
         var s = arguments[0];
