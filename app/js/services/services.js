@@ -87,9 +87,7 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
 
 materialsCommonsServices.factory('mcapi', function ($http, User) {
     function MCApi() {
-        console.log("MCApi constructor")
         this.url = this._makeUrl.apply(this, arguments);
-        console.log("this.url = " + this.url);
         this.on_error = undefined;
         this.on_success = undefined;
     }
