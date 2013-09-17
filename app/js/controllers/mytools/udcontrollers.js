@@ -26,9 +26,13 @@ function UploadFileController($scope, $http, mcapi, User, formDataObject) {
             if (fileEntry.status != "Uploaded") {
                 fileEntry.status = "Uploading...";
                 mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
-                    .success(function() { fileEntry.status = "Uploaded"; })
-                    .error(function() { fileEntry.status = "Failed"; })
-                    .post({file: fileEntry.file}, {headers:{'Content-Type': false}, transformRequest:formDataObject});
+                    .success(function () {
+                        fileEntry.status = "Uploaded";
+                    })
+                    .error(function () {
+                        fileEntry.status = "Failed";
+                    })
+                    .post({file: fileEntry.file}, {headers: {'Content-Type': false}, transformRequest: formDataObject});
             }
         });
     };
