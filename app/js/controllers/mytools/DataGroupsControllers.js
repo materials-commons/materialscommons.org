@@ -8,7 +8,7 @@ function MyDataGroupsController($scope, mcjsonp, User) {
         })
         .error(function (data, status) {
             // Do something
-        });
+        }).run();
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {

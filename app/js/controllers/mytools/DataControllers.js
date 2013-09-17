@@ -119,7 +119,8 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
         review.done = false;
         $http.post(mcurl('/user/%/review', User.u()), review)
             .success(function (data) {
-                alertService.prepForBroadcast(data.msg);
+                $scope.msg = "Review has been added"
+                alertService.prepForBroadcast($scope.msg);
                 mcjsonp('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
                     .success(function (data) {
                         $scope.scheduledReviews = _.filter(data, function (item) {
@@ -128,7 +129,7 @@ function DataEditController($scope, $routeParams, $window, $http, mcjsonp, User,
                             }
                         });
                         $scope.user_for_review = "";
-                    });
+                    }).run();
             });
         $scope.schedule_for_self = false;
     }
@@ -180,7 +181,6 @@ function MyDataController($scope, mcjsonp, User, $location) {
     $scope.reverse = false;
     mcjsonp('/user/%/datafiles', User.u())
         .success(function (data, status) {
-            console.dir(data);
             $scope.data_by_user = data;
         })
         .error(function(data, status){
