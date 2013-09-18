@@ -212,7 +212,8 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
 materialsCommonsServices.factory('decodeAlerts', function () {
     var alert_msg = {
         'forbidden': 'Access Denied',
-        'bad request': 'Error:  Please try again'
+        'bad request': 'Error:  Please try again',
+        'account exists': 'Error: Account already Exists'
     };
     return {
         get_alert_msg: function (key) {

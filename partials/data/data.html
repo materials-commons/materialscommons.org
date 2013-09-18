@@ -1,145 +1,58 @@
-<div class="container-fluid">
+<div class="container">
     <div class="row-fluid">
-        <h4>Report for {{full_data.name}}</h4><br>   <br>
-    <div class="span3" >
-        <!--Sidebar content-->
-        <img width="300" height="350" ng-src="{{imageSource}}">
-
-    </div>
-
+    <h4>Report for DataDirectory   {{data_dir.name}}</h4><br>
     <div class="span8" style="background-color:#dcdcdc; overflow:hidden;">
-        <!--Body content-->
-        <div ng-switch on="full_data.type">
-            <div ng-switch-when="datagroup">
-                <table>
-                    <tr>
-                        <th>Type:</th>
-                        <td>{{full_data.type}}</td>
-                    </tr>
-                    <tr>
-                        <th>User:</th>
-                        <td>{{full_data.users[0]}}</td>
-                    </tr>
-                    <tr>
-                        <th>Date:</th>
-                        <td>{{get_utc_obj(full_data.dateAdded).toDateString()}}</td>
-                    </tr>
-                    <tr>
-                        <th>MetaTagss</th>
-                        <td>
-                            <ul>
-                                <li ng-repeat="metatag in full_data.metaTags | limitTo:10">
-                                    {{ metatag.name }}:{{ metatag.value }}
-
-                                </li>
-                                <div ng-show="full_data.metaTags.length > 10">
-                                    <accordion>
-                                        <accordion-group heading="... more">
-
-                                            <li ng-repeat="metatag in full_data.metaTags">
-                                                {{metatag.name}}
-                                                {{metatag.value}}
-
-                                            </li>
-
-                                        </accordion-group>
-                                    </accordion>
-                                </div>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Description:</th>
-                        <td>{{full_data.description}}</td>
-                    </tr>
-                    <tr>
-                        <th>ParentDataGroups:</th>
-                        <td ng-controller="DataGroupController">
-                            <ul ng-repeat="each_parent_id in full_data.parentDataGroups">
-                                <div ng-init="data_item=getData(each_parent_id)">
-                                    <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/datagroup_popup.html'" data-hide="each_parent_id">{{data_item.name}}</button>
-
-                                </div>
-                            </ul>
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <th> Text:</th>
-                        <td>{{full_data.text}}</td>
-                    </tr>
-
-                </table>
-
-            </div>
-            <div ng-switch-when="data">
-                <table>
-                    <tr>
-                        <th>Type:</th>
-                        <td>{{full_data.type}}</td>
-                    </tr>
-                    <tr>
-                        <th>User:</th>
-                        <td>{{full_data.owner}}</td>
-                    </tr>
-                    <tr>
-                        <th>Date:</th>
-                        <td>{{get_utc_obj(full_data.dateAdded).toDateString()}}</td>
-                    </tr>
-                    <tr>
-                        <th>MetaTags</th>
-                        <td>
-                            <ul>
-                                <li ng-repeat="metatag in full_data.metaTags | limitTo:10">
-                                    {{ metatag.name }}:{{ metatag.value }}
-
-                                </li>
-                                <div ng-show="full_data.metaTags.length > 10">
-                                    <accordion>
-                                        <accordion-group heading="... more">
-
-                                            <li ng-repeat="metatag in full_data.metaTags">
-                                                {{metatag.name}}
-                                                {{metatag.value}}
-
-                                            </li>
-
-                                        </accordion-group>
-                                    </accordion>
-                                </div>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Description:</th>
-                        <td>{{full_data.description}}</td>
-                    </tr>
-                    <tr>
-                        <th>DataGroups:</th>
-                        <td  ng-controller="DataGroupController">
-
-                           <ul ng-repeat="each_parent_id in full_data.dataGroups">
-                               <div ng-init="data_item=getData(each_parent_id)">
-                                   <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Report" bs-popover="'partials/datagroups/datagroup_popup.html'" data-hide="each_parent_id">{{data_item.name}}</button>
-
-                               </div>
-                           </ul>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <th> Text:</th>
-                        <td>{{full_data.text}}</td>
-                    </tr>
-
-                </table>
 
 
-            </div>
-        </div>
+        <tr>
+            <strong>User:</strong>
+            <td>{{data_dir.users[0]}}</td>
+        </tr> <br>  <br>
+        <tr>
+            <strong>Date Created:</strong>
+            <td>{{data_dir.sdateAdded}}</td>
+        </tr>   <br> <br>
+        <tr>
+            <strong>Description:</strong>
+            <td>{{data_dir.description}}</td>
+        </tr>   <br>   <br>
+        <tr>
+            <strong>Parent Directory:</strong>
+            <td>
+                <div ng-controller="MyDataGroupsController">
+                    <button type="button" class="btn" data-unique="1" data-placement="right"
+                            ng-click="getDatagroup(data_dir.parentDataGroup)"
+                            data-title="DataGroup Report" bs-popover="'partials/datagroups/datagroup_popup.html'">
+                        {{data_dir.parentDataGroup}}
+                    </button>
+                </div>
+            </td>
 
-    </div>
+        </tr>   <br>  <br>
+        <tr>
+            <strong>Data files:</strong>
+            <table class="table table-striped" >
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date Created</th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="file in datafiles">
+                <tr>
+                    <td><a href="#/data/edit/{{file.id}}">{{file.name}}</a></td>
+                    <td>{{file.sdateAdded}}</td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+        </tr>   <br>
+
+
+     </div>
+
 
     </div>
 </div>

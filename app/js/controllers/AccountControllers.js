@@ -23,7 +23,7 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
                 $scope.msg = "Logged in Successfully";
                 alertService.prepForBroadcast($scope.msg);
             })
-            .error(function () {
+            .error(function (data) {
                 $scope.msg = decodeAlerts.get_alert_msg(data.error);
                 alertService.prepForBroadcast($scope.msg);
             }).jsonp();
@@ -46,7 +46,7 @@ function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
     $cookieStore.remove('mcuser');
 }
 
-function CreateAccountController($scope, mcapi, $location, alertService) {
+function CreateAccountController($scope, mcapi, $location, alertService, decodeAlerts) {
 
     $scope.create_account = function () {
         if ($scope.password != $scope.confirm_password) {
@@ -60,12 +60,13 @@ function CreateAccountController($scope, mcapi, $location, alertService) {
             acc.password = $scope.password;
             mcapi('/newuser')
                 .success(function (data) {
-                    $scope.msg = data.msg
+                    $scope.msg = "Account has been created successfully"
                     alertService.prepForBroadcast($scope.msg);
                     $location.path('/account/login');
                 })
-                .error(function (data, status) {
-                    $scope.msg = data.error;
+                .error(function (data) {
+                    console.log('here is ' + data.error);
+                    $scope.msg = decodeAlerts.get_alert_msg(data.error);
                     alertService.prepForBroadcast($scope.msg);
                 }).post(acc);
 
