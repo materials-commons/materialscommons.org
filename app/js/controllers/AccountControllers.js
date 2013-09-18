@@ -1,27 +1,13 @@
-function LoginController($scope, $location, User, $rootScope, $cookieStore, alertService, decodeAlerts, mcapi) {
+function LoginController($scope, $location, User, alertService, decodeAlerts, mcapi) {
     $scope.alerts = [];
-    $scope.failedLogin = false;
-    $scope.successfulLogin = false;
 
     $scope.login = function () {
         mcapi('/user/%/%/apikey', $scope.email, $scope.password)
             .success(function (apikey, status) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
-                $scope.failedLogin = false;
-                $scope.successfulLogin = true;
-
-                $scope.connectError = false;
-                $location.path('/my-tools');
-                $rootScope.email_address = $scope.email;
-                mcglobals.apikey = apikey.apikey;
-
-                var obj = {};
-                obj.apikey = apikey.apikey;
-                obj.email = $scope.email;
-                $cookieStore.put('mcuser', obj);
-
                 $scope.msg = "Logged in Successfully";
                 alertService.prepForBroadcast($scope.msg);
+                $location.path('/my-tools');
             })
             .error(function (data) {
                 $scope.msg = decodeAlerts.get_alert_msg(data.error);
@@ -32,16 +18,11 @@ function LoginController($scope, $location, User, $rootScope, $cookieStore, aler
     $scope.cancel = function () {
         $location.path("/home");
     }
-
-    $scope.closeAlert = function () {
-        $scope.alerts.splice(0, 1);
-    }
 }
 
 function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
     $rootScope.email_address = '';
     User.setAuthenticated(false, '', '');
-    mcglobals.apikey = "";
     $location.path('/home');
     $cookieStore.remove('mcuser');
 }
@@ -69,8 +50,6 @@ function CreateAccountController($scope, mcapi, $location, alertService, decodeA
                     $scope.msg = decodeAlerts.get_alert_msg(data.error);
                     alertService.prepForBroadcast($scope.msg);
                 }).post(acc);
-
-
         }
     }
 }
@@ -110,7 +89,6 @@ function ApiKeyResetController($scope, mcapi, User, $cookieStore) {
         .success(function (data) {
             $scope.new_apikey = data;
             User.reset_apikey($scope.new_apikey['apikey']);
-            mcglobals.apikey = $scope.new_apikey['apikey'];
             var mcuser = $cookieStore.get('mcuser');
             mcuser.apikey = $scope.new_apikey;
             $cookieStore.put('mcuser');

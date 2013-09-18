@@ -5,36 +5,41 @@
 var materialsCommonsServices = angular.module('materialsCommonsServices', ['ngResource']);
 
 materialsCommonsServices.
-    factory('User', function () {
+    factory('User', function ($cookieStore) {
         var self = this;
-        self.authenticated = false;
-        self.email_address = 'Login';
-        self.apikey = undefined;
+        self.mcuser = $cookieStore.get('mcuser');
+
         return {
             isAuthenticated: function () {
-                return self.authenticated;
+                return self.mcuser;
             },
 
-            setAuthenticated: function (value, apikey, email_address) {
-                // console.log('passed apikey as argument is '+ apikey);
-                //console.log('passed apikey as argument is '+ apikey);
-                self.authenticated = value;
-                self.email_address = email_address;
-                self.apikey = apikey;
+            setAuthenticated: function (authenticated, apikey, email) {
+                if (! authenticated) {
+                    $cookieStore.remove('mcuser');
+                    self.mcuser = undefined;
+                } else {
+                    var mcuser = {};
+                    mcuser.apikey = apikey;
+                    mcuser.email = email;
+                    $cookieStore.put('mcuser', mcuser);
+                    self.mcuser = mcuser;
+                }
             },
 
             apikey: function () {
-                return self.apikey;
+                return self.mcuser ? self.mcuser.apikey : undefined;
             },
 
             u: function () {
-                return self.email_address;
+                return self.mcuser ? self.mcuser.email : 'Login';
             },
 
             reset_apikey: function (new_key) {
-                self.apikey = new_key;
-                //console.log("after reset api key is :" + self.apikey);
-
+                if (self.mcuser) {
+                    self.mcuser.apikey = new_key;
+                    $cookieStore.put('mcuser', self.mcuser);
+                }
             }
         };
     });
@@ -87,9 +92,7 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
 
 materialsCommonsServices.factory('mcapi', function ($http, User) {
     function MCApi() {
-        console.log("MCApi constructor")
         this.url = this._makeUrl.apply(this, arguments);
-        console.log("this.url = " + this.url);
         this.on_error = undefined;
         this.on_success = undefined;
     }
@@ -98,7 +101,7 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
         var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org:5000/v1.0";
 
         if (arguments.length < 1) {
-            throw "Invalid mcurl spec";
+            throw "Invalid url spec";
         }
 
         var s = arguments[0];

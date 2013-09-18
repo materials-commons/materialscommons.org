@@ -103,6 +103,7 @@
                 <div ng-switch-when="image">
                     <img ng-src="{{ fileSrc }}">
                     <a ng-href="{{ fileSrc }}">View full size</a>
+                    <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
                 </div>
                 <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
             </div>
