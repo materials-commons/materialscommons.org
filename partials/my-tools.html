@@ -52,7 +52,7 @@
                 <tr ng-repeat="review in reviews">
                     <td ng-click="startReview(review.itemId, review.type)" style="cursor:pointer">{{ review.who }}</td>
                     <td>{{ review.note }}</td>
-                    <td>{{ review.markedOnDate }}</td>
+                    <td>{{ toDateString(review.markedOnDate) }}</td>
                     <td>{{ review.type }}</td>
                     <td>{{ review.itemName }}
                         <button type="button" class="close" ng-click="removeReview($index);">&times;</button>
@@ -81,7 +81,7 @@
                     <td>{{ review.owner }}
                     </td>
                     <td>{{ review.note }}</td>
-                    <td>{{ review.markedOnDate }}</td>
+                    <td>{{ toDateString(review.markedOnDate) }}</td>
                     <td>{{ review.type }}</td>
                     <td>{{ review.itemName }}
                         <button type="button" class="close" ng-click="removeRequestedReview($index);">&times;</button>

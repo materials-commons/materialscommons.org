@@ -7,8 +7,6 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
     mcglobals = {};
     doConfig();
 
-
-
     /*
      ** CORS support
      */
@@ -21,7 +19,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         {templateUrl: 'partials/search.html', controller: SearchIndexController}).
 
         /*
-        ** Account controllers
+         ** Account controllers
          */
         when('/account/login', {templateUrl: 'partials/account/login.html', controller: LoginController}).
         when('/account/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
@@ -30,12 +28,12 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/account/details/apikey/view', {templateUrl: 'partials/account/details/apikeyview.html', controller: ApiKeyController}).
         when('/account/details/apikey/reset', {templateUrl: 'partials/account/details/apikeyreset.html', controller: ApiKeyResetController}).
         when('/account/details/usergroups/my_list', {templateUrl: 'partials/account/details/usergroups.html', controller: UserGroupController}).
-        when('/account/details/usergroups/create',{templateUrl: 'partials/account/details/usergroup-create.html', controller: UserGroupController}).
+        when('/account/details/usergroups/create', {templateUrl: 'partials/account/details/usergroup-create.html', controller: UserGroupController}).
         when('/account/details/usergroups/list_all', {templateUrl: 'partials/account/details/usergroups_list_all.html', controller: ListUserGroupController}).
         when('/account/details/usergroup/list_users/:usergroup_name', {templateUrl: 'partials/account/details/usergroup_list_users.html', controller: ListUserController}).
 
         /*
-        ** Top level controllers
+         ** Top level controllers
          */
         when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
         when('/contact', {templateUrl: 'partials/contact.html', controller: ContactController}).
@@ -44,17 +42,17 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/my-tools', {templateUrl: 'partials/my-tools.html', controller: FrontPageController}).
 
         /*
-        ** Controllers with in the My Tools subpages
+         ** Controllers with in the My Tools subpages
          */
 
         /*
-        ** Data Groups
+         ** Data Groups
          */
         when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
         when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
 
         /*
-        ** Other
+         ** Other
          */
         when('/datagroups',
         {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
@@ -63,14 +61,14 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         {templateUrl: 'partials/datagroups/results_by_date.html', controller: SearchByDateController}).
 
         /*
-        ** Data
+         ** Data
          */
         when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
         when('/data/mydata', {templateUrl: 'partials/data/my-data.html', controller: MyDataController}).
 
         /*
-        ** Tags
+         ** Tags
          */
         when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
         when('/tags/data/bytag/:tag/:user',
@@ -79,15 +77,15 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/tags/cloud/global', {templateUrl: 'partials/tags/tagcloud.html', controller: GlobalTagCloudController}).
 
         /*
-        ** Upload/Download
+         ** Upload/Download
          */
         when('/upload/file', {templateUrl: 'partials/updownload/upload-file.html', controller: UploadFileController}).
         when('/upload/directory', {templateUrl: 'partials/updownload/upload-directory.html', controller: UploadDirectoryController}).
         when('/updownload/queue', {templateUrl: 'partials/updownload/udqueue.html', controller: UpDownLoadQueueController}).
 
         otherwise({redirectTo: '/home'});
-}
-]);
+}]);
+
 app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (matchesPartial(next, "partials/front-page", "HomeController")) {
@@ -135,6 +133,14 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
             $rootScope.email_address = User.u();
         }
     });
+
+    $rootScope.get_utc_date = function (epoch_time_structure) {
+        return new Date(epoch_time_structure.epoch_time * 1000);
+    }
+
+    $rootScope.toDateString = function(epoch_time_structure) {
+        return new Date(epoch_time_structure.epoch_time * 1000).toDateString();
+    }
 
 });
 

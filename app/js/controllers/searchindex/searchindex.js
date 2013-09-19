@@ -47,12 +47,6 @@ function SearchIndexController($scope, $routeParams, $location, Search, $filter,
         .error(function () {
 
         }).jsonp();
-
-
-    $scope.get_utc_obj = function (utc_in_sec) {
-        var d = new Date(utc_in_sec * 1000);
-        return d;
-    }
 }
 
 

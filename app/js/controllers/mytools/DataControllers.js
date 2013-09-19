@@ -106,7 +106,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         review.note = $scope.review_note;
         var now = new Date();
         review.type = "data";
-        review.markedOnDate = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
         if ($scope.schedule_for_self) {
             review.owner = User.u();
         }

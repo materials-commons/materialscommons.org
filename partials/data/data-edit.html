@@ -43,7 +43,7 @@
             <tr ng-repeat="review in scheduledReviews" style="cursor:pointer">
                 <td>{{ review.owner }}</td>
                 <td>{{ review.note }}</td>
-                <td>{{ review.markedOnDate }}</td>
+                <td>{{ toDateString(review.markedOnDate) }}</td>
                 <td ng-show="signed_in_user==review.owner" >
                     <input type="checkbox" ng-model="review.done" ng-click="reviewStatusChanged($index)">
                 </td>
@@ -79,7 +79,7 @@
                 <input ng-model="doc.description" type="text" readonly>
 
                 <label>Date Added:</label>
-                <input ng-model="doc.sdateAdded" type="text" readonly>
+                <input value="{{ toDateString(doc.dateAdded) }}" type="text" readonly>
 
                 <label>Access:</label>
                 <input ng-model="doc.access" type="text" readonly>
