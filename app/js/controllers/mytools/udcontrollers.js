@@ -1,10 +1,20 @@
-function UploadFileController($scope, $http, mcapi, User, formDataObject) {
+function UploadFileController($scope, mcapi, User, formDataObject) {
     $scope.files = [];
     $scope.percentage = 0;
 
     mcapi('/user/%/datadirs', User.u())
         .success(function (data) {
             $scope.datagroups = data;
+        }).jsonp();
+
+    mcapi('/user/%/material_conditions', User.u())
+        .success(function (data) {
+            $scope.material_conditions = data;
+        }).jsonp();
+
+    mcapi('/user/%/equipment_conditions', User.u())
+        .success(function (data) {
+            $scope.equipment_conditions = data;
         }).jsonp();
 
     $scope.addFile = function (element) {
@@ -17,12 +27,13 @@ function UploadFileController($scope, $http, mcapi, User, formDataObject) {
         });
     }
 
-    $scope.uploadEachFile = function (mp, ep) {
+    $scope.uploadEachFile = function () {
         if ($scope.files.length == 0) {
             return;
         }
 
         $scope.files.forEach(function (fileEntry) {
+            console.log('file entry ob j is '+ fileEntry.status);
             if (fileEntry.status != "Uploaded") {
                 fileEntry.status = "Uploading...";
                 mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
@@ -36,6 +47,8 @@ function UploadFileController($scope, $http, mcapi, User, formDataObject) {
             }
         });
     };
+
+
 }
 
 function UploadDirectoryController($scope, mcapi, User) {
