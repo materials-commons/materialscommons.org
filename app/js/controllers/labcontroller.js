@@ -13,9 +13,4 @@ function LabController($scope, mcapi) {
                 $scope.lab_data = data;
             }).jsonp();
     }
-
-    $scope.get_utc_obj = function (utc_in_sec) {
-        var d = new Date(utc_in_sec * 1000);
-        return d;
-    }
 }

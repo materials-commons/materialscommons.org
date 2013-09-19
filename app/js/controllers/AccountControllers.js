@@ -111,13 +111,9 @@ function UserGroupController($scope, User, mcapi, $location) {
 
         var u_group = {};
         u_group.access = $scope.access;
-        u_group.dateAdded = "";
-        u_group.dateModified = "";
         u_group.description = $scope.desc;
         u_group.id = $scope.name;
         u_group.name = $scope.name;
-        u_group.sdateAdded = "";
-        u_group.sdateModified = "";
         u_group.users = [User.u()];
 
         mcapi('/usergroups/new')

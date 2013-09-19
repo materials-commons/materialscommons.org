@@ -22,30 +22,21 @@ function DataSearchController($scope, $routeParams, $location, mcapi, User) {
         $location.path("/data/data/" + id);
 
     }
-    /*
-    $scope.get_utc_obj = function (utc_in_sec) {
-        var d = new Date(utc_in_sec * 1000);
-        return d;
-    }
-    */
 
     if ($routeParams.id) {
         mcapi('/user/%/datadir/%', User.u(), $routeParams.id)
             .success(function (data) {
-                console.dir(data);
                 $scope.data_dir = data;
-                mcapi('/user/%/datafile/ids/%', User.u(),$routeParams.id)
-                    .success(function(datafiles){
+                mcapi('/user/%/datafile/ids/%', User.u(), $routeParams.id)
+                    .success(function (datafiles) {
                         $scope.datafiles = datafiles;
                     })
-                    .error(function(){
+                    .error(function () {
 
                     }).jsonp();
             })
             .error(function () {
-                //console.log("error:usergroups")
             }).jsonp();
-
     }
 }
 

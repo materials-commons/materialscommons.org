@@ -34,32 +34,8 @@
                 <td><a href="#/data/edit/{{row.value._id}}">{{row.value.name}}</a></td>
 
                 <td>{{row.value.type}}</td>
-                <td>{{get_utc_obj(row.value.dateAdded).toDateString()}}</td>
+                <td>{{toDateString(row.value.dateAdded)}}</td>
                 <td>
-                    <!--<div ng-switch on="row.value.type">-->
-                        <!--<div ng-switch-when="data">-->
-                            <!--<ul ng-repeat="each_parent_id in row.value.dataGroups">-->
-                                <!--<div ng-init="data_item=getData(each_parent_id)">-->
-                                    <!--<button type="button" class="btn" data-unique="1" data-placement="right"-->
-                                            <!--data-title="DataGroup Report"-->
-                                            <!--bs-popover="'partials/datagroups/datagroup_popup.html'"-->
-                                            <!--data-hide="each_parent_id">{{data_item.name}}-->
-                                    <!--</button>-->
-                                <!--</div>-->
-                            <!--</ul>-->
-                        <!--</div>-->
-                        <!--<div ng-switch-when="datagroup">-->
-                            <!--<ul ng-repeat="each_parent_id in row.value.parentDataGroups">-->
-                                <!--<div ng-init="data_item=getData(each_parent_id)">-->
-                                    <!--<button type="button" class="btn" data-unique="1" data-placement="right"-->
-                                            <!--data-title="DataGroup Report"-->
-                                            <!--bs-popover="'partials/datagroups/datagroup_popup.html'"-->
-                                            <!--data-hide="each_parent_id">{{data_item.name}}-->
-                                    <!--</button>-->
-                                <!--</div>-->
-                            <!--</ul>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </td>
                 <td>
                     <div ng-switch on="row.value.type">

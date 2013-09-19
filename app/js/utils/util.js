@@ -3,11 +3,6 @@ function setActiveMainNav(nav) {
     $(nav).addClass("active");
 }
 
-function get_utc_obj(utc_in_sec) {
-    var d = new Date(utc_in_sec * 1000);
-    return d;
-}
-
 function determineFileType(mediaType) {
     if (mediaType.indexOf('image') != -1) {
         return "image";
