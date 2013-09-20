@@ -50,6 +50,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
          */
         when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
         when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
+        when('/datagroups/data/:id', {templateUrl: 'partials/datagroups/datareport.html', controller: DataDirReportController}).
 
         /*
          ** Other
@@ -63,7 +64,6 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         /*
          ** Data
          */
-        when('/data/data/:id', {templateUrl: 'partials/data/data.html', controller: DataSearchController}).
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
         when('/data/mydata', {templateUrl: 'partials/data/my-data.html', controller: MyDataController}).
 
@@ -138,8 +138,9 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
         return new Date(epoch_time_structure.epoch_time * 1000);
     }
 
-    $rootScope.toDateString = function(epoch_time_structure) {
-        return new Date(epoch_time_structure.epoch_time * 1000).toDateString();
+    $rootScope.toDateString = function(o) {
+        var t = o.epoch_time;
+        return new Date(t * 1000).toDateString();
     }
 
 });

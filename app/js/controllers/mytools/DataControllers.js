@@ -1,4 +1,4 @@
-function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, decodeAlerts) {
+function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, decodeAlerts, $rootScope) {
 
     $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediaType);
@@ -7,9 +7,15 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         $scope.fileName = $scope.doc.name;
     }
 
+    $scope.toDateString = $rootScope.toDateString;
+
     mcapi('/user/%/datafile/%', User.u(), $routeParams.id)
         .success(function (data) {
             $scope.doc = data;
+            /*
+            ** This is a work around because Angular is throwing an error.
+             */
+            $scope.sdateAdded = $rootScope.toDateString($scope.doc.dateAdded);
             $scope.setupAccessToUserFile();
         })
         .error(function (data) {
@@ -201,3 +207,5 @@ function MyDataController($scope, mcapi, User, $location) {
         }
     }
 }
+
+

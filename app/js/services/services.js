@@ -224,4 +224,5 @@ materialsCommonsServices.factory('decodeAlerts', function () {
         }
 
     }
+
 });

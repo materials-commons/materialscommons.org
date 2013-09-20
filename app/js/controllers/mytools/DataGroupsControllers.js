@@ -62,5 +62,30 @@ function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
     }
 }
 
+function DataDirReportController($scope, $routeParams, $location, mcapi, User, $rootScope) {
+    $scope.get_full_data_with_id = function (id) {
+        $location.path("/data/data/" + id);
+
+    }
+
+    if ($routeParams.id) {
+        mcapi('/user/%/datadir/%', User.u(), $routeParams.id)
+            .success(function (data) {
+                $scope.data_dir = data;
+                $scope.sdateModified = $rootScope.toDateString($scope.data_dir.dateModified);
+                $scope.sdateAdded = $rootScope.toDateString($scope.data_dir.dateAdded);
+                mcapi('/user/%/datafile/ids/%', User.u(), $routeParams.id)
+                    .success(function (datafiles) {
+                        $scope.datafiles = datafiles;
+                    })
+                    .error(function () {
+
+                    }).jsonp();
+            })
+            .error(function () {
+            }).jsonp();
+    }
+}
+
 
 
