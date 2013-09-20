@@ -17,7 +17,7 @@
             <tr ng-repeat="row in datagroups_by_user | filter:query |  orderBy:predicate:reverse ">
                 <td><a href="#/datagroups/data/{{row.id}}">{{row.name}}</a></td>
 
-                <td>{{toDateString(row.dateAdded)}}</td>
+                <td>{{row.dateAdded | toDateString}}</td>
                 <td>
                     <div ng-show="row.data.length > 0">
                         <accordion>

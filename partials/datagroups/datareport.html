@@ -11,12 +11,12 @@
             <br> <br>
             <tr>
                 <strong>Date Created:</strong>
-                <td>{{sdateAdded}}</td>
+                <td>{{data_dir.dateAdded | toDateString }}</td>
             </tr>
             <br> <br>
             <tr>
                 <strong>Date Modified:</strong>
-                <td>{{sdateModified}}</td>
+                <td>{{ data_dir.dateModified | toDateString }}</td>
             </tr>
             <br> <br>
             <tr>
@@ -50,7 +50,7 @@
                     <tbody ng-repeat="file in datafiles">
                     <tr>
                         <td><a href="#/data/edit/{{file.id}}">{{file.name}}</a></td>
-                        <td>{{toDateString(file.dateAdded)}}</td>
+                        <td>{{ file.dateAdded | toDateString }}</td>
 
                     </tr>
 

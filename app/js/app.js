@@ -134,15 +134,6 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
         }
     });
 
-    $rootScope.get_utc_date = function (epoch_time_structure) {
-        return new Date(epoch_time_structure.epoch_time * 1000);
-    }
-
-    $rootScope.toDateString = function(o) {
-        var t = o.epoch_time;
-        return new Date(t * 1000).toDateString();
-    }
-
 });
 
 function matchesPartial(next, what, controller) {
