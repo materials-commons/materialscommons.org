@@ -98,7 +98,7 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
     }
 
     MCApi.prototype._makeUrl = function () {
-        var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org:5000/v1.0";
+        var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org/v1.0";
 
         if (arguments.length < 1) {
             throw "Invalid url spec";
