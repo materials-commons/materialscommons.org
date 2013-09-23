@@ -13,6 +13,7 @@ function MyDataGroupsController($scope, mcapi, User) {
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
             mcapi('/user/%/datadir/%', User.u(), datagroupId)
+                .arg('order_by=name')
                 .success(function (data) {
                     $scope.dgroup = data;
                     $scope.dgroupid = data.id;
@@ -70,6 +71,7 @@ function DataDirReportController($scope, $routeParams, $location, mcapi, User) {
 
     if ($routeParams.id) {
         mcapi('/user/%/datadir/%', User.u(), $routeParams.id)
+            .arg('order_by=name')
             .success(function (data) {
                 $scope.data_dir = data;
                 mcapi('/user/%/datafile/ids/%', User.u(), $routeParams.id)

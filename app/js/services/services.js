@@ -15,7 +15,7 @@ materialsCommonsServices.
             },
 
             setAuthenticated: function (authenticated, apikey, email) {
-                if (! authenticated) {
+                if (!authenticated) {
                     $cookieStore.remove('mcuser');
                     self.mcuser = undefined;
                 } else {
@@ -121,6 +121,15 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
 
     MCApi.prototype.error = function (on_error) {
         this.on_error = on_error;
+        return this;
+    }
+
+    MCApi.prototype.arg = function (a) {
+        /*
+         ** There is always a ?apikey=xxx on the url so all additional args
+         ** are &'d onto the url
+         */
+        this.url = this.url + "&" + a;
         return this;
     }
 
