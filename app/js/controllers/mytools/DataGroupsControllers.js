@@ -13,6 +13,7 @@ function MyDataGroupsController($scope, mcapi, User) {
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
             mcapi('/user/%/datadir/%', User.u(), datagroupId)
+                .arg('order_by=name')
                 .success(function (data) {
                     $scope.dgroup = data;
                     $scope.dgroupid = data.id;
@@ -59,6 +60,29 @@ function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
         if (d.type == "datafile") {
             $location.path("/data/edit/" + d.id);
         }
+    }
+}
+
+function DataDirReportController($scope, $routeParams, $location, mcapi, User) {
+    $scope.get_full_data_with_id = function (id) {
+        $location.path("/data/data/" + id);
+
+    }
+
+    if ($routeParams.id) {
+        mcapi('/user/%/datadir/%', User.u(), $routeParams.id)
+            .arg('order_by=name')
+            .success(function (data) {
+                $scope.data_dir = data;
+                mcapi('/user/%/datafile/ids/%', User.u(), $routeParams.id)
+                    .success(function (datafiles) {
+                        $scope.datafiles = datafiles;
+                    })
+                    .error(function () {
+                    }).jsonp();
+            })
+            .error(function () {
+            }).jsonp();
     }
 }
 

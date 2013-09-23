@@ -17,29 +17,6 @@ function HomeController($scope, mcapi) {
 }
 
 
-function DataSearchController($scope, $routeParams, $location, mcapi, User) {
-    $scope.get_full_data_with_id = function (id) {
-        $location.path("/data/data/" + id);
-
-    }
-
-    if ($routeParams.id) {
-        mcapi('/user/%/datadir/%', User.u(), $routeParams.id)
-            .success(function (data) {
-                $scope.data_dir = data;
-                mcapi('/user/%/datafile/ids/%', User.u(), $routeParams.id)
-                    .success(function (datafiles) {
-                        $scope.datafiles = datafiles;
-                    })
-                    .error(function () {
-
-                    }).jsonp();
-            })
-            .error(function () {
-            }).jsonp();
-    }
-}
-
 
 function ExploreController($scope) {
     $scope.pageDescription = "Explore";

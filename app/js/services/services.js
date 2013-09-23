@@ -15,7 +15,7 @@ materialsCommonsServices.
             },
 
             setAuthenticated: function (authenticated, apikey, email) {
-                if (! authenticated) {
+                if (!authenticated) {
                     $cookieStore.remove('mcuser');
                     self.mcuser = undefined;
                 } else {
@@ -124,6 +124,15 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
         return this;
     }
 
+    MCApi.prototype.arg = function (a) {
+        /*
+         ** There is always a ?apikey=xxx on the url so all additional args
+         ** are &'d onto the url
+         */
+        this.url = this.url + "&" + a;
+        return this;
+    }
+
     MCApi.prototype.put = function (putData, putConfig) {
         var self = this;
         $http.put(this.url, putData, putConfig)
@@ -225,4 +234,5 @@ materialsCommonsServices.factory('decodeAlerts', function () {
         }
 
     }
+
 });
