@@ -118,6 +118,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         review.done = false;
         mcapi('/user/%/review', User.u())
             .success(function (data) {
+                $scope.msg= "Review/Fowllowup has been added"
                 alertService.prepForBroadcast($scope.msg);
                 mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
                     .success(function (data) {
