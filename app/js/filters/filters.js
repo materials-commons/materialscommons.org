@@ -118,5 +118,17 @@ Filter.filter('toDateString', function() {
     }
 });
 
+Filter.filter('page', function() {
+    return function(input, currentPage, pageSize) {
+        var page_size = pageSize ? pageSize : 10;
+        var to_page_size = page_size;
+        var to = currentPage == 0 ? 1 : currentPage;
+        if (currentPage != 0) {
+           to_page_size++;
+        }
+        return input ? input.slice(currentPage * page_size, to * to_page_size) : [];
+    }
+});
+
 
 
