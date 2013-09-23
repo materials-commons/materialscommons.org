@@ -5,59 +5,64 @@
         Filter by: <input ng-model="query">
     </div>
     <div class="row-fluid">
-        <table class="table table-striped mc-table-hover table-condensed mc-table">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>DataGroup</th>
-                <th>Created At</th>
-                <th>Tags</th>
-                <th>Meta Tags</th>
-            </tr>
-            </thead>
-            <tbody>
+        <paged data="data_by_user" current-page="currentDataPage" page-size="10">
+            <table class="table table-striped mc-table-hover table-condensed mc-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>DataGroup</th>
+                    <th>Created At</th>
+                    <th>Tags</th>
+                    <th>Meta Tags</th>
+                </tr>
+                </thead>
+                <tbody>
 
-            <tr ng-repeat="row in data_by_user | orderBy:predicate:reverse | filter:query"
-                style="cursor:pointer">
-                <td><a href="#/data/edit/{{row.id}}">{{row.name}}</a></td>
-                <td>
-                    <ul>
-                       <li ng-repeat="datagroupid in row.dataGroups">
-                           <button type="button" class="btn" data-unique="1" data-placement="right" data-title="DataGroup Details"
-                                   ng-click="getDatagroup(datagroupid)" bs-popover="'partials/datagroups/datagroup_popup.html'">{{ datagroupid }}</button>
-                       </li>
-                    </ul>
-                </td>
-                <td>{{row.sdateAdded}}</td>
-                <td>
-                    <ul style="list-style-type:none">
-                        <li ng-repeat="tag in row.tags" ng-click="editData(row.id);"><span class="label label-info">{{ tag }}</span>
-                        </li>
-                    </ul>
-                </td>
+                <tr ng-repeat="row in data_by_user  | orderBy:predicate:reverse | filter:query | page:currentDataPage:10"
+                    style="cursor:pointer">
+                    <td><a href="#/data/edit/{{row.id}}">{{row.name}}</a></td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="datagroupid in row.dataGroups">
+                                <button type="button" class="btn" data-unique="1" data-placement="right"
+                                        data-title="DataGroup Details"
+                                        ng-click="getDatagroup(datagroupid)"
+                                        bs-popover="'partials/datagroups/datagroup_popup.html'">{{ datagroupid }}
+                                </button>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{row.sdateAdded}}</td>
+                    <td>
+                        <ul style="list-style-type:none">
+                            <li ng-repeat="tag in row.tags" ng-click="editData(row.id);"><span class="label label-info">{{ tag }}</span>
+                            </li>
+                        </ul>
+                    </td>
 
-                <td>
-                    <ul>
-                        <li ng-repeat="metatag in row.metaTags | limitTo:10">
-                            {{ metatag.name }}:{{ metatag.value }}
-                        </li>
-                        <div ng-show="row.metaTags.length > 10">
-                            <accordion>
-                                <accordion-group heading="... more">
+                    <td>
+                        <ul>
+                            <li ng-repeat="metatag in row.metaTags | limitTo:10">
+                                {{ metatag.name }}:{{ metatag.value }}
+                            </li>
+                            <div ng-show="row.metaTags.length > 10">
+                                <accordion>
+                                    <accordion-group heading="... more">
 
-                                    <li ng-repeat="metatag in row.metaTags.slice(10)">
-                                        {{metatag.name}}
-                                        {{metatag.value}}
-                                    </li>
+                                        <li ng-repeat="metatag in row.metaTags.slice(10)">
+                                            {{metatag.name}}
+                                            {{metatag.value}}
+                                        </li>
 
-                                </accordion-group>
-                            </accordion>
-                        </div>
-                    </ul>
-                <td>
+                                    </accordion-group>
+                                </accordion>
+                            </div>
+                        </ul>
+                    <td>
 
-            </tr>
-            </tbody>
-        </table>
+                </tr>
+                </tbody>
+            </table>
+        </paged>
     </div>
 </div>
