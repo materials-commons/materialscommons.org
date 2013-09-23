@@ -216,7 +216,8 @@ materialsCommonsServices.factory('decodeAlerts', function () {
     var alert_msg = {
         'forbidden': 'Access Denied',
         'bad request': 'Error:  Please try again',
-        'account exists': 'Error: Account already Exists'
+        'account exists': 'Error: Account already Exists',
+        'usergroup exists': 'Error: Usergroup already exists. Try with new usergroup name'
     };
     return {
         get_alert_msg: function (key) {

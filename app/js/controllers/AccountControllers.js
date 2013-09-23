@@ -98,7 +98,7 @@ function ApiKeyResetController($scope, mcapi, User, $cookieStore) {
 
 }
 
-function UserGroupController($scope, User, mcapi, $location) {
+function UserGroupController($scope, User, mcapi, $location, alertService, decodeAlerts) {
     mcapi('/user/%/usergroups', User.u())
         .success(function (data) {
             $scope.user_groups = data;
@@ -115,13 +115,17 @@ function UserGroupController($scope, User, mcapi, $location) {
         u_group.id = $scope.name;
         u_group.name = $scope.name;
         u_group.users = [User.u()];
-
+        u_group.owner = User.u();
         mcapi('/usergroups/new')
             .success(function (data) {
+                $scope.msg = "UserGroup has been created successfully"
+                alertService.prepForBroadcast($scope.msg);
                 $location.path('/account/details/usergroups/my_list');
             })
-            .error(function () {
-                //console.log("error in creating a new usergroup");
+            .error(function (data) {
+                console.log('here is ' + data.error);
+                $scope.msg = decodeAlerts.get_alert_msg(data.error);
+                alertService.prepForBroadcast($scope.msg);
             }).post(u_group);
     }
 }
@@ -138,7 +142,7 @@ function ListUserGroupController($scope, mcapi, User) {
 
 }
 
-function ListUserController($scope, mcapi, $routeParams, $dialog) {
+function ListUserController($scope, mcapi, $routeParams, $dialog, User) {
     //Get all users - for select options
     mcapi('/private/users')
         .success(function (data) {
@@ -149,6 +153,14 @@ function ListUserController($scope, mcapi, $routeParams, $dialog) {
         }).jsonp();
 
     $scope.lab_name = $routeParams.usergroup_name;
+
+    mcapi('/usergroup/%', $scope.lab_name)
+        .success(function (data) {
+            $scope.user_group = data;
+            $scope.owner = $scope.user_group[0].owner
+            $scope.signed_in_user = User.u();
+        }).jsonp();
+
     mcapi('/usergroup/%/users', $scope.lab_name)
         .success(function (data) {
             $scope.users_by_usergroup = data;

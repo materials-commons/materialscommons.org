@@ -237,27 +237,33 @@
                     <th>File</th>
                     <th>Datagroup</th>
                     <th>Status</th>
-                    <th>material conditions</th>
-                    <th>equipment conditions</th>
+                    <th>material conditions <select class="span6" ng-model="mc_orderProp" ng-options="mc.name for mc in material_conditions" ng-change="apply_all()" ></select>
+
+                    </th>
+                    <th>equipment conditions <select class="span6" ng-model="eq_orderProp" ng-options="eq.name for eq in equipment_conditions" ng-change="apply_all()" ></select> </th>
 
                     </thead>
                     <tbody>
+
                     <tr ng-repeat="entry in files">
                         <td>{{ entry.file.name }}</td>
                         <td>{{ entry.datagroup }}</td>
                         <td>{{ entry.status }}</td>
                         <td>
-                            <select class="span3" ng-model="entry.mc.name"
-                                    ui-select2="{placeholder: 'Select material conditions', allowClear: true, width:'element'}">
-                                <option></option>
-                                <option ng-repeat="mc in material_conditions">{{ mc.name }}</option>
+                            <select class="span6" ng-model="mc_orderProp"  ng-options="condition.name for  condition in material_conditions">
+
                             </select>
                         </td>
                         <td>
-                            <select class="span3" ng-model="entry.eq"
+                            <!--
+                            <select class="span3" ng-model="test"
                                     ui-select2="{placeholder: 'Select equipment properties', allowClear: true, width:'element'}" >
                                 <option></option>
                                 <option ng-repeat="eq in equipment_conditions">{{ eq.name }}</option>
+                            </select>
+                            -->
+                            <select class="span6" ng-model="eq_orderProp"  ng-options="condition.name for  condition in equipment_conditions">
+
                             </select>
                         </td>
                     </tr>
