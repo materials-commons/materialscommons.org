@@ -23,13 +23,17 @@
                 </table>
             </paged>
         </div>
-        <select class="span3" ng-model="user_name"
-                ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
-                ng-multiple="false">
-            <option></option>
-            <option ng-repeat="dg in all_users">{{ dg.name }}</option>
-        </select>
-        <button class="btn" ng-click="add_user_to_usergroup()">Add User</button>
+
+        {{owner}} {{signed_in_user}}
+
+        <div ng-show="owner==signed_in_user">
+            <select class="span3" ng-model="user_name"
+                    ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="dg in all_users">{{ dg.name }}</option>
+            </select>
+            <button class="btn" ng-click="add_user_to_usergroup()">Add User</button>
+        </div>
     </div>
 </div>
-

@@ -1,6 +1,15 @@
-function UploadFileController($scope, mcapi, User, formDataObject) {
+function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
     $scope.files = [];
     $scope.percentage = 0;
+
+    $scope.apply_all = function(){
+        if ($scope.mc_order_prop){
+            $rootScope.mc_orderProp = $scope.mc_orderProp.name
+        }
+        if ($scope.eq_order_prop){
+            $rootScope.eq_orderProp = $scope.eq_orderProp.name
+        }
+    }
 
     mcapi('/user/%/datadirs', User.u())
         .success(function (data) {
@@ -10,6 +19,7 @@ function UploadFileController($scope, mcapi, User, formDataObject) {
     mcapi('/user/%/material_conditions', User.u())
         .success(function (data) {
             $scope.material_conditions = data;
+
         }).jsonp();
 
     mcapi('/user/%/equipment_conditions', User.u())
@@ -26,6 +36,8 @@ function UploadFileController($scope, mcapi, User, formDataObject) {
             $scope.files.push(obj);
         });
     }
+
+
 
     $scope.uploadEachFile = function () {
         if ($scope.files.length == 0) {
