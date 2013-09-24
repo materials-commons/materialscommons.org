@@ -65,7 +65,6 @@ function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
 function DataDirReportController($scope, $routeParams, $location, mcapi, User) {
     $scope.get_full_data_with_id = function (id) {
         $location.path("/data/data/" + id);
-
     }
 
     if ($routeParams.id) {
