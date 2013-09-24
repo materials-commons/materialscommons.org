@@ -32,7 +32,7 @@
                             </li>
                         </ul>
                     </td>
-                    <td>{{row.sdateAdded}}</td>
+                    <td>{{row.dateAdded | toDateString}}</td>
                     <td>
                         <ul style="list-style-type:none">
                             <li ng-repeat="tag in row.tags" ng-click="editData(row.id);"><span class="label label-info">{{ tag }}</span>

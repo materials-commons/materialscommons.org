@@ -1,15 +1,16 @@
 <div>
     <table class="table">
         <tr>
-            <th>Name:</th><td>{{dgroup.name}}</td>
+            <th>Name:</th>
+            <td>{{dgroup.name}}</td>
         </tr>
         <tr>
-            <th>Created By:</th><td>{{dgroup.owner}}</td>
+            <th>Created By:</th>
+            <td>{{dgroup.owner}}</td>
         </tr>
         <tr>
-            <th>Data Added:</th><td>{{dgroup.sdateAdded}}</td>
+            <th>Data Added:</th>
+            <td>{{dgroup.dateAdded | toDateString}}</td>
         </tr>
-
     </table>
-
 </div>
