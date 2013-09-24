@@ -19,6 +19,8 @@
                 </tbody>
             </table>
         </div>
+        {{owner}} {{signed_in_user}}
+
         <div ng-show="owner==signed_in_user">
             <select class="span3" ng-model="user_name"
                     ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"

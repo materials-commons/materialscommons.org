@@ -153,7 +153,6 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User) {
         }).jsonp();
 
     $scope.lab_name = $routeParams.usergroup_name;
-
     mcapi('/usergroup/%', $scope.lab_name)
         .success(function (data) {
             $scope.user_group = data;
@@ -169,6 +168,17 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User) {
         .error(function () {
             console.log("error")
         }).jsonp();
+
+
+
+
+
+
+
+
+
+
+
 
     $scope.add_user_to_usergroup = function () {
         var title = '';
