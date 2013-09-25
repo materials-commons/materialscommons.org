@@ -78,8 +78,8 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
                 $scope.msg = "Data has been saved"
                 alertService.prepForBroadcast($scope.msg);
             }).error(function (data) {
-                $scope.msg = decodeAlerts.get_alert_msg(data.error);
-                alertService.prepForBroadcast($scope.msg);
+                //$scope.msg = decodeAlerts.get_alert_msg(data.error);
+                alertService.prepForBroadcast(data.error);
             }).put($scope.doc);
 
         $window.history.back();
@@ -95,8 +95,8 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
 
                 })
                 .error(function (data) {
-                    $scope.msg = decodeAlerts.get_alert_msg(data.error);
-                    alertService.prepForBroadcast($scope.msg);
+                    //$scope.msg = decodeAlerts.get_alert_msg(data.error);
+                    alertService.prepForBroadcast(data.error);
                 }).post(tagObj);
         });
     }
@@ -118,7 +118,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         review.done = false;
         mcapi('/user/%/review', User.u())
             .success(function (data) {
-                $scope.msg= "Review/Fowllowup has been added"
+                $scope.msg= "Review/Followup has been added"
                 alertService.prepForBroadcast($scope.msg);
                 mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
                     .success(function (data) {
