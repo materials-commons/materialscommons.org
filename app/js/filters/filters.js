@@ -118,5 +118,13 @@ Filter.filter('toDateString', function() {
     }
 });
 
+Filter.filter('page', function() {
+    return function(input, currentPage, pageSize) {
+        var from = currentPage * pageSize;
+        var to = from + pageSize;
+        return input ? input.slice(from, to) : [];
+    }
+});
+
 
 

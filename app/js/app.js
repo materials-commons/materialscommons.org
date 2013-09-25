@@ -51,12 +51,12 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
         when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
         when('/datagroups/data/:id', {templateUrl: 'partials/datagroups/datareport.html', controller: DataDirReportController}).
+        when('/datagroups',
+        {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
 
         /*
          ** Other
          */
-        when('/datagroups',
-        {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
         when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: LabController}).
         when('/results_by_date',
         {templateUrl: 'partials/datagroups/results_by_date.html', controller: SearchByDateController}).

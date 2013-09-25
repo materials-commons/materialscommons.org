@@ -26,7 +26,6 @@ function SearchByDateController($scope, $routeParams, User) {
     $scope.search_by_date = function () {
         $scope.utc_start_date = Date.parse($scope.myDate) / 1000;
         $scope.utc_end_date = Date.parse($scope.endDate) / 1000;
-        //$scope.search_results = $scope.mcdb.query("materialscommons-app", "items_by_type_and_date");
     }
 }
 
@@ -66,7 +65,6 @@ function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
 function DataDirReportController($scope, $routeParams, $location, mcapi, User) {
     $scope.get_full_data_with_id = function (id) {
         $location.path("/data/data/" + id);
-
     }
 
     if ($routeParams.id) {
