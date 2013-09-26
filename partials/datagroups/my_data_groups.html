@@ -11,30 +11,12 @@
                 <thead>
                 <th>Name</th>
                 <th>Updated At</th>
-                <th>Data</th>
                 <th>Parent DataGroup</th>
                 </thead>
                 <tbody>
                 <tr ng-repeat="row in datagroups_by_user | filter:query | orderBy:predicate:reverse | page:currentDataGroupsPage:10">
                     <td><a href="#/datagroups/data/{{row.id}}">{{row.name}}</a></td>
                     <td>{{row.dateAdded | toDateString}}</td>
-                    <td>
-                        <div ng-show="row.data.length > 0">
-                            <accordion>
-                                <accordion-group heading="Data">
-
-                                    <li ng-repeat="dataitem in row.data" style="cursor:pointer">
-                                        <div>
-                                            {{dataitem.name}}
-                                            <br><a href="#/data/edit/{{dataitem.id}}">Edit</a> &nbsp;&nbsp;&nbsp;
-                                            <a>Download</a>
-                                        </div>
-                                    </li>
-
-                                </accordion-group>
-                            </accordion>
-                        </div>
-                    </td>
                     <td>
                         <div>
                             <button type="button" class="btn" data-unique="1" data-placement="right"

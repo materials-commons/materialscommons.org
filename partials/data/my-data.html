@@ -23,12 +23,8 @@
                     <td><a href="#/data/edit/{{row.id}}">{{row.name}}</a></td>
                     <td>
                         <ul>
-                            <li ng-repeat="datagroupid in row.dataGroups">
-                                <button type="button" class="btn" data-unique="1" data-placement="right"
-                                        data-title="DataGroup Details"
-                                        ng-click="getDatagroup(datagroupid)"
-                                        bs-popover="'partials/datagroups/datagroup_popup.html'">{{ datagroupid }}
-                                </button>
+                            <li ng-repeat="dg in row.dataDirs">
+                                {{dg | splitDataDir}}
                             </li>
                         </ul>
                     </td>

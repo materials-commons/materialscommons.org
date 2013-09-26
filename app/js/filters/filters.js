@@ -126,5 +126,12 @@ Filter.filter('page', function() {
     }
 });
 
+Filter.filter('splitDataDir', function(){
+    return function(datadir){
+        return datadir.split('$')[1]
+
+    }
+});
+
 
 
