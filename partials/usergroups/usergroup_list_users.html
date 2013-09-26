@@ -13,7 +13,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="i in users_by_usergroup[0].users | page:currentUsersPage:10">
+                    <tr ng-repeat="i in users_by_usergroup | page:currentUsersPage:10">
                         <td>{{i}}</td>
                         <td>
                             <button class="btn" ng-click="delete_user_from_usergroup($index)">Delete</button>
@@ -24,7 +24,6 @@
             </paged>
         </div>
 
-        {{owner}} {{signed_in_user}}
 
         <div ng-show="owner==signed_in_user">
             <select class="span3" ng-model="user_name"
