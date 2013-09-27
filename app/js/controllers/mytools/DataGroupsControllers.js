@@ -24,8 +24,10 @@ function MyDataGroupsController($scope, mcapi, User) {
 
 function SearchByDateController($scope, $routeParams, User) {
     $scope.search_by_date = function () {
-        $scope.utc_start_date = Date.parse($scope.myDate) / 1000;
-        $scope.utc_end_date = Date.parse($scope.endDate) / 1000;
+        //$scope.utc_start_date = Date.parse($scope.startDate) / 1000;
+        //$scope.utc_end_date = Date.parse($scope.endDate) / 1000;
+        console.log('start date  ' + $scope.startDate);
+
     }
 }
 

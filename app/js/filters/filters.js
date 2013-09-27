@@ -15,24 +15,7 @@ Filter.filter('startFrom', function() {
     }
 });
 
-Filter.filter('matchDates', function() {
-    return function( search_results, start_end_dates ) {
-        if (! search_results) { return;}
-        if (! start_end_dates) { return;}
-        var arrayToReturn = [];
-        var utc_start_date =  Date.parse(start_end_dates[0])/1000;
-        var utc_end_date =  Date.parse(start_end_dates[1])/1000;
-            for (var i=0; i< search_results.length; i++){
-            if ( (search_results[i].key[1] == start_end_dates[2]) && (search_results[i].key[0] > utc_start_date) && (search_results[i].key[0] < utc_end_date)) {
-                arrayToReturn.push(search_results[i]);
-            }
-        }
-
-        return arrayToReturn;
-
-    };
-});
-
+//Used in Search results by date
 Filter.filter('private', function(){
    return function(list){
        if (! list) { return;}
@@ -47,6 +30,7 @@ Filter.filter('private', function(){
 
 });
 
+//Used in Search results by date
 Filter.filter('public', function(){
     return function(list){
         //console.log('entered filetr');
@@ -61,36 +45,7 @@ Filter.filter('public', function(){
 
 });
 
-Filter.filter('data_by_user', function(){
-    return function(list, user){
-        var return_array = [];
-        for(var i=0; i< list.length;i++){
-            if (list[i].key[0] == user[0]){
-                return_array.push(list[i]);
-            }
-        }
-        return return_array;
-
-    }
-});
-
-
-//This is not used because in full text search index is getting complicated
-// because we have to apply filter in service to get paginated results
-Filter.filter('elastic_search_filter_data', function(){
-    return function(list){
-        var return_array = [];
-        for(var i=0; i< list.length;i++){
-
-            if (list[i]._source.type == "data"){
-                return_array.push(list[i]);
-            }
-        }
-        return return_array;
-
-    }
-});
-
+//Can be used in ELastic search for truncating the text
 Filter.filter('truncate', function(){
     return function (text, length, end) {
         if (isNaN(length))

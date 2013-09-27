@@ -1,14 +1,10 @@
-function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
+function UploadFileController($scope, mcapi, User, formDataObject) {
     $scope.files = [];
     $scope.percentage = 0;
 
     $scope.apply_all = function(){
-        if ($scope.mc_order_prop){
-            $rootScope.mc_orderProp = $scope.mc_orderProp.name
-        }
-        if ($scope.eq_order_prop){
-            $rootScope.eq_orderProp = $scope.eq_orderProp.name
-        }
+        $scope.mc_name = $scope.item;
+        $scope.orderProp = $scope.mc_name.name
     }
 
     mcapi('/user/%/datadirs', User.u())
