@@ -30,7 +30,7 @@
                 <th>DataGroup</th>
                 <th>Created By</th>
             </tr>
-            <tr ng-repeat="row in search_results.data.rows | matchDates: [myDate, endDate, type] | private">
+            <tr ng-repeat="row in search_results.data.rows | private">
                 <td><a href="#/data/edit/{{row.value._id}}">{{row.value.name}}</a></td>
 
                 <td>{{row.value.type}}</td>

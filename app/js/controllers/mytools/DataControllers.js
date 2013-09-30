@@ -183,7 +183,6 @@ function MyDataController($scope, mcapi, User, $location) {
         })
         .error(function (data, status) {
             console.log('status for data error ' + status + ' data will be ' + data.error)
-
         }).jsonp();
 
     $scope.dgroupid = "";

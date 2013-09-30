@@ -1,10 +1,14 @@
-function UploadFileController($scope, mcapi, User, formDataObject) {
+function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
     $scope.files = [];
     $scope.percentage = 0;
 
     $scope.apply_all = function(){
-        $scope.mc_name = $scope.item;
-        $scope.orderProp = $scope.mc_name.name
+        if ($scope.mc_name){
+            $rootScope.mc_name = $scope.mc_name.name
+        }
+        if ($scope.ec_name){
+            $rootScope.ec_name = $scope.ec_name.name
+        }
     }
 
     mcapi('/user/%/datadirs', User.u())
@@ -29,7 +33,16 @@ function UploadFileController($scope, mcapi, User, formDataObject) {
             obj.file = element.files[0];
             obj.status = "Ready";
             obj.datagroup = $scope.datagroup;
+            //obj.mc_name = $scope.mc_name;
             $scope.files.push(obj);
+        });
+    }
+
+    $scope.update_file_entry = function(file, mc_name){
+        //console.log($scope.files[0].file.name);
+        $scope.files.forEach(function(){
+
+
         });
     }
 
@@ -39,12 +52,13 @@ function UploadFileController($scope, mcapi, User, formDataObject) {
         if ($scope.files.length == 0) {
             return;
         }
-
         $scope.files.forEach(function (fileEntry) {
-            console.log('file entry ob j is '+ fileEntry.status);
+            //console.log('status of the file is '+ fileEntry.status);
+            //console.log('mc condition will be  '+ $scope.mc_name.id);
+            console.dir(fileEntry);
             if (fileEntry.status != "Uploaded") {
                 fileEntry.status = "Uploading...";
-                mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
+                mcapi('/user/%/upload/%/%', User.u(), fileEntry.datagroup)
                     .success(function () {
                         fileEntry.status = "Uploaded";
                     })

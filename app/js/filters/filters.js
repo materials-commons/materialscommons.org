@@ -15,7 +15,7 @@ Filter.filter('startFrom', function() {
     }
 });
 
-//Used in Search results by date
+
 Filter.filter('private', function(){
    return function(list){
        if (! list) { return;}
@@ -30,7 +30,6 @@ Filter.filter('private', function(){
 
 });
 
-//Used in Search results by date
 Filter.filter('public', function(){
     return function(list){
         //console.log('entered filetr');
@@ -45,7 +44,21 @@ Filter.filter('public', function(){
 
 });
 
-//Can be used in ELastic search for truncating the text
+Filter.filter('data_by_user', function(){
+    return function(list, user){
+        var return_array = [];
+        for(var i=0; i< list.length;i++){
+            if (list[i].key[0] == user[0]){
+                return_array.push(list[i]);
+            }
+        }
+        return return_array;
+
+    }
+});
+
+
+
 Filter.filter('truncate', function(){
     return function (text, length, end) {
         if (isNaN(length))
@@ -87,6 +100,8 @@ Filter.filter('splitDataDir', function(){
 
     }
 });
+
+
 
 
 
