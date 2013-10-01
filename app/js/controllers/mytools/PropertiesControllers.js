@@ -1,6 +1,6 @@
-function MaterialConditionsController($scope, mcapi, User, alertService, decodeAlerts) {
+function MaterialConditionsController($scope, mcapi, User, alertService, decodeAlerts, $rootScope) {
 
-    $scope.add_mc_conditions = function(){
+    $scope.add_mc_conditions = function () {
         var mc = {};
         mc.name = $scope.name;
         mc.alloy_name = $scope.alloy_name;
@@ -13,18 +13,24 @@ function MaterialConditionsController($scope, mcapi, User, alertService, decodeA
         mc.heat_treatment_notes = $scope.heat_treatment_notes;
         //console.dir(mc);
         mcapi('/user/%/material_conditions', User.u())
-            .success(function(){
+            .success(function () {
+                mcapi('/user/%/material_conditions', User.u())
+                    .success(function (data) {
+                        $rootScope.material_conditions = data;
+
+                    }).jsonp();
                 $scope.msg = "material conditions have been added to the list"
                 alertService.prepForBroadcast($scope.msg);
+
             })
-            .error(function(data){
+            .error(function (data) {
                 $scope.msg = decodeAlerts.get_alert_msg(data.error);
                 alertService.prepForBroadcast($scope.msg);
             }).post(mc);
 
     }
 
-    $scope.add_equipment_conditions = function(){
+    $scope.add_equipment_conditions = function () {
         var ec = {};
         ec.name = $scope.name;
         ec.equipment_type = $scope.equipment_type;
@@ -52,11 +58,11 @@ function MaterialConditionsController($scope, mcapi, User, alertService, decodeA
         ec.current_notes = $scope.current_notes;
 
         mcapi('/user/%/equipment_conditions', User.u())
-            .success(function(data){
+            .success(function (data) {
                 $scope.msg = "equipment properties have been added to the list"
                 alertService.prepForBroadcast($scope.msg);
             })
-            .error(function(data){
+            .error(function (data) {
                 $scope.msg = decodeAlerts.get_alert_msg(data.error);
                 alertService.prepForBroadcast($scope.msg);
             }).post(ec);

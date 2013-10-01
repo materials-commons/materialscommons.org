@@ -237,3 +237,17 @@ materialsCommonsServices.factory('decodeAlerts', function () {
     }
 
 });
+
+/*
+ materialsCommonsServices.factory('Properties', function(mcapi, User){
+ var material_conditions = [];
+ material_conditions = mcapi('/user/%/material_conditions', User.u());
+ return {
+ add_mc_condition : function(){
+ return mcapi('/user/%/material_conditions', User.u());
+ }
+ }
+ });
+
+ */
+
