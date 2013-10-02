@@ -251,3 +251,22 @@ materialsCommonsServices.factory('decodeAlerts', function () {
 
  */
 
+
+materialsCommonsServices.factory('treeToggle', function () {
+    var selected = [];
+    return {
+        add_it: function (id) {
+            selected.push(id);
+        },
+
+        pop_it: function (id) {
+            return  selected.splice(selected.indexOf(id), 1);
+        },
+
+        get_all: function(){
+            return selected
+        }
+    }
+
+});
+

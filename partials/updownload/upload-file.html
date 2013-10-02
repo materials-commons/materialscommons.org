@@ -240,13 +240,13 @@
                     <th>File</th>
                     <th>Datagroup</th>
                     <th>Status</th>
-                    <th>material conditions <select class="span6" ng-model="mc_name"
+                    <th>material conditions <select class="span6" ng-model="top_level_mc"
                                                     ng-options="mc.name for mc in material_conditions"
-                                                    ng-change="apply_all()"></select>
+                                                    ng-change="apply_to_all_files()"></select>
                     </th>
-                    <th>equipment conditions <select class="span6" ng-model="ec_name"
+                    <th>equipment conditions <select class="span6" ng-model="top_level_ec"
                                                      ng-options="eq.name for eq in equipment_conditions"
-                                                     ng-change="apply_all()"></select></th>
+                                                     ng-change="apply_to_all_files()"></select></th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="entry in files">
@@ -254,15 +254,15 @@
                         <td>{{ entry.datagroup }}</td>
                         <td>{{ entry.status }}</td>
                         <td>
-                            <select class="span6" ng-model="mc_name"
-                                    ng-options="condition.name for  condition in material_conditions"
-                                    ng-change="update_file_entry(entry.file.name, mc_name, '')">
+                            <select class="span6" ng-model="entry.material_condition"
+                                    ng-options="entry.name for  entry in material_conditions"
+                                    ng-change="update_file_entry(entry.file.name, entry.material_condition, '')">
                             </select>
                         </td>
                         <td>
-                            <select class="span6" ng-model="ec_name"
+                            <select class="span6" ng-model="entry.equipment_condition"
                                     ng-options="condition.name for  condition in equipment_conditions"
-                                    ng-change="update_file_entry(entry.file.name,'', ec_name)">
+                                    ng-change="update_file_entry(entry.file.name,'', entry.equipment_condition)">
                             </select>
                         </td>
                     </tr>

@@ -31,11 +31,11 @@ function SearchByDateController($scope, $routeParams, User) {
     }
 }
 
-function MyDataGroupsTreeController($scope, mcapi, $location, User) {
+function MyDataGroupsTreeController($scope, mcapi, $location, User, treeToggle) {
     mcapi('/user/%/datadirs/tree', User.u())
         .success(function (tree) {
             $scope.tree = tree;
-            //console.dir('tree data :' + $scope.tree);
+            $scope.selected = treeToggle.get_all();
         })
         .error(function () {
             console.log("Failed to retrieve tree");

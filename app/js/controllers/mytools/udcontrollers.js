@@ -24,35 +24,36 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
             obj.file = element.files[0];
             obj.status = "Ready";
             obj.datagroup = $scope.datagroup;
-            //obj.mc_name = $scope.mc_name;
             $scope.files.push(obj);
         });
     }
 
-    $scope.update_file_entry = function (file, mc_name, ec_name) {
+    $scope.update_file_entry = function (file, mc, ec) {
+        //console.log('file name ' + file + ' mc name is ' + mc.name)
         $scope.files.forEach(function (fileEntry) {
             if (fileEntry.file.name == file) {
-                if (mc_name) {
-                    fileEntry.mc_name = mc_name.name;
+                if (mc) {
+                    fileEntry.material_condition = mc;
                 }
-                if (ec_name) {
-                    fileEntry.ec_name = ec_name.name;
+                if (ec) {
+                    fileEntry.equipment_condition = ec;
                 }
             }
         });
     }
 
-    $scope.apply_all = function () {
-        if ($scope.mc_name) {
-            $rootScope.mc_name = $scope.mc_name.name
+    $scope.apply_to_all_files = function () {
+        if ($scope.top_level_mc) {
+            //console.log(' im inside mc name ' + $scope.top_level_mc);
             $scope.files.forEach(function (fileEntry) {
-                fileEntry.mc_name = $rootScope.mc_name;
+                fileEntry.material_condition = $scope.top_level_mc;
+                //console.log(' updated mc_name with   ' + fileEntry.material_condition.name + 'and file is  ' + fileEntry.file.name);
             });
         }
-        if ($scope.ec_name) {
-            $rootScope.ec_name = $scope.ec_name.name
+        if ($scope.top_level_ec) {
             $scope.files.forEach(function (fileEntry) {
-                fileEntry.ec_name = $rootScope.ec_name;
+                fileEntry.equipment_condition = $scope.top_level_ec;
+                //console.log(' updated mc_name with   ' + fileEntry.equipment_condition.name + 'and file is  ' + fileEntry.file.name);
             });
         }
     }
@@ -66,7 +67,7 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
             console.dir(fileEntry);
             if (fileEntry.status != "Uploaded") {
                 fileEntry.status = "Uploading...";
-                mcapi('/user/%/upload/%/mc_name/%/ec_name/%', User.u(), fileEntry.datagroup, fileEntry.mc_name, fileEntry.ec_name)
+                mcapi('/user/%/upload/%/mc/%/ec/%', User.u(), fileEntry.datagroup, fileEntry.material_condition.id, fileEntry.equipment_condition.id)
                     .success(function () {
                         fileEntry.status = "Uploaded";
                     })
