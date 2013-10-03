@@ -233,24 +233,8 @@ materialsCommonsServices.factory('decodeAlerts', function () {
         get_alert_msg: function (key) {
             return alert_msg[key];
         }
-
     }
-
 });
-
-/*
- materialsCommonsServices.factory('Properties', function(mcapi, User){
- var material_conditions = [];
- material_conditions = mcapi('/user/%/material_conditions', User.u());
- return {
- add_mc_condition : function(){
- return mcapi('/user/%/material_conditions', User.u());
- }
- }
- });
-
- */
-
 
 materialsCommonsServices.factory('treeToggle', function () {
     var selected = [];
@@ -267,6 +251,4 @@ materialsCommonsServices.factory('treeToggle', function () {
             return selected
         }
     }
-
 });
-

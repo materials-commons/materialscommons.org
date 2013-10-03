@@ -17,7 +17,6 @@ function MaterialConditionsController($scope, mcapi, User, alertService, decodeA
                 mcapi('/user/%/material_conditions', User.u())
                     .success(function (data) {
                         $rootScope.material_conditions = data;
-
                     }).jsonp();
                 $scope.msg = "material conditions have been added to the list"
                 alertService.prepForBroadcast($scope.msg);

@@ -3,7 +3,7 @@ function LoginController($scope, $location, User, alertService, decodeAlerts, mc
 
     $scope.login = function () {
         mcapi('/user/%/%/apikey', $scope.email, $scope.password)
-            .success(function (apikey, status) {
+            .success(function (apikey) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.msg = "Logged in Successfully";
                 alertService.prepForBroadcast($scope.msg);

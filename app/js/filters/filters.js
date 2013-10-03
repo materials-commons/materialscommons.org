@@ -1,11 +1,3 @@
-/**
- * Created with JetBrains WebStorm.
- * User: gtarcea
- * Date: 1/12/13
- * Time: 1:11 PM
- * To change this template use File | Settings | File Templates.
- */
-
 var Filter = angular.module('Filter', []);
 
 Filter.filter('startFrom', function() {
@@ -14,7 +6,6 @@ Filter.filter('startFrom', function() {
         return input.slice(start);
     }
 });
-
 
 Filter.filter('private', function(){
    return function(list){
@@ -56,8 +47,6 @@ Filter.filter('data_by_user', function(){
 
     }
 });
-
-
 
 Filter.filter('truncate', function(){
     return function (text, length, end) {

@@ -25,7 +25,7 @@
                 <tbody>
                 <tr ng-repeat="row in lab_data.data">
                     <td><a href="#/datagroups/data/{{row.id}}">{{row.name}}</a></td>
-                    <td>{{row.dateAdded | toDateString}}</td>
+                    <td>{{row.birthtime | toDateString}}</td>
                     <td>{{row.owner}}</td>
                 </tr>
                 </tbody>

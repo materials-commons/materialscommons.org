@@ -2,12 +2,6 @@
     <div class="span8 offset1">
         <table>
             <tr>
-            <td><h4>View: </h4></td>
-            <!--<td><a href="#/results_by_date">By Date</a></td>-->
-            <!--<td><a href="#/datagroups/tree">Tree</a></td>-->
-            </tr>
-
-            <tr>
                 <td><h4>Data: </h4></td>
                 <td><a href="#/datagroups">My Data Directories</a></td>
                 <td><a href="#/data/mydata">My Data</a></td>
@@ -54,9 +48,9 @@
                         <td ng-click="startReview(review.itemId, review.type)" style="cursor:pointer">{{ review.who }}
                         </td>
                         <td>{{ review.note }}</td>
-                        <td>{{ review.markedOnDate | toDateString }}</td>
+                        <td>{{ review.marked_on | toDateString }}</td>
                         <td>{{ review.type }}</td>
-                        <td>{{ review.itemName }}
+                        <td>{{ review.item_name }}
                             <button type="button" class="close" ng-click="removeReview($index);">&times;</button>
                         </td>
                     </tr>
@@ -85,9 +79,9 @@
                         <td>{{ review.owner }}
                         </td>
                         <td>{{ review.note }}</td>
-                        <td>{{ review.markedOnDate | toDateString }}</td>
+                        <td>{{ review.marked_on | toDateString }}</td>
                         <td>{{ review.type }}</td>
-                        <td>{{ review.itemName }}
+                        <td>{{ review.item_name }}
                             <button type="button" class="close"
                                     ng-click="removeRequestedReview($index);">&times;</button>
                         </td>

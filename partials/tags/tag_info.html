@@ -26,11 +26,11 @@
                         </td>
                         <td>
                             <ul>
-                                <li ng-repeat="metatag in row.value.metaTags | limitTo:10">{{ metatag.name }}:{{
-                                    metatag.value }}
+                                <li ng-repeat="metatag in row.value.metatags | limitTo:10">
+                                    {{ metatag.name }}:{{ metatag.value }}
                                 </li>
-                                <li ng-show="row.value.metaTags.length > 10">... ({{ row.value.metaTags.length-10 }}
-                                    more)
+                                <li ng-show="row.value.metatags.length > 10">
+                                    ... ({{ row.value.metatags.length-10 }} more)
                                 </li>
                             </ul>
                         </td>

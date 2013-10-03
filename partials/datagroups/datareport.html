@@ -11,12 +11,12 @@
             <br> <br>
             <tr>
                 <strong>Date Created:</strong>
-                <td>{{data_dir.dateAdded | toDateString }}</td>
+                <td>{{data_dir.birthtime | toDateString }}</td>
             </tr>
             <br> <br>
             <tr>
                 <strong>Date Modified:</strong>
-                <td>{{ data_dir.dateModified | toDateString }}</td>
+                <td>{{ data_dir.mtime | toDateString }}</td>
             </tr>
             <br> <br>
             <tr>
@@ -29,9 +29,9 @@
                 <td>
                     <div ng-controller="MyDataGroupsController">
                         <button type="button" class="btn" data-unique="1" data-placement="right"
-                                ng-click="getDatagroup(data_dir.parentDataGroup)"
+                                ng-click="getDatagroup(data_dir.parent)"
                                 data-title="DataGroup Report" bs-popover="'partials/datagroups/datagroup_popup.html'">
-                            {{data_dir.parentDataGroup}}
+                            {{data_dir.parent}}
                         </button>
                     </div>
                 </td>
@@ -51,7 +51,7 @@
                         <tbody ng-repeat="file in datafiles | page:currentDataPage:10">
                         <tr>
                             <td><a href="#/data/edit/{{file.id}}">{{file.name}}</a></td>
-                            <td>{{ file.dateAdded | toDateString }}</td>
+                            <td>{{ file.birthtime | toDateString }}</td>
                         </tr>
                         </tbody>
                     </table>

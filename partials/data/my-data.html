@@ -28,14 +28,13 @@
                             </li>
                         </ul>
                     </td>
-                    <td>{{row.dateAdded | toDateString}}</td>
+                    <td>{{row.birthtime | toDateString}}</td>
                     <td>
                         <ul style="list-style-type:none">
                             <li ng-repeat="tag in row.tags" ng-click="editData(row.id);"><span class="label label-info">{{ tag }}</span>
                             </li>
                         </ul>
                     </td>
-
                     <td>
                         <ul>
                             <li ng-repeat="metatag in row.metaTags | limitTo:10">
@@ -55,7 +54,6 @@
                             </div>
                         </ul>
                     <td>
-
                 </tr>
                 </tbody>
             </table>

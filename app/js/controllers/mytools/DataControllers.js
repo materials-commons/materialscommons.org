@@ -1,8 +1,8 @@
 function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, decodeAlerts) {
 
     $scope.setupAccessToUserFile = function () {
-        $scope.fileType = determineFileType($scope.doc.mediaType);
-        $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediaType, $scope.doc.location, $scope.doc.name);
+        $scope.fileType = determineFileType($scope.doc.mediatype);
+        $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediatype, $scope.doc.location, $scope.doc.name);
         $scope.originalFileSrc = originalFilePath($scope.doc.location, $scope.doc.name);
         $scope.fileName = $scope.doc.name;
     }
@@ -112,8 +112,8 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         else {
             review.owner = $scope.user_for_review;
         }
-        review.itemName = $scope.doc.name;
-        review.itemId = $scope.doc.id;
+        review.item_name = $scope.doc.name;
+        review.item_id = $scope.doc.id;
         review.who = $scope.doc.owner;
         review.done = false;
         mcapi('/user/%/review', User.u())
@@ -155,6 +155,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
 
     $scope.addNoteKeypressCallback = function (event) {
         $scope.doc.notes.push($scope.new_note);
+        $scope.new_note = "";
     }
 
     $scope.addReviewNoteKeypressCallback = function (event) {
@@ -194,12 +195,10 @@ function MyDataController($scope, mcapi, User, $location) {
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
             mcapi('/user/%/datadirs/%', User.u(), datagroupId)
-                .success(function (data, status) {
+                .success(function (data) {
                     $scope.dgroup = data;
                     $scope.dgroupid = data.id;
                 }).jsonp();
         }
     }
 }
-
-

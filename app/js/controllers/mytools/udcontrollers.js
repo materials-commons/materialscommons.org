@@ -2,7 +2,6 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
     $scope.files = [];
     $scope.percentage = 0;
 
-
     mcapi('/user/%/datadirs', User.u())
         .success(function (data) {
             $scope.datagroups = data;
@@ -29,7 +28,6 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
     }
 
     $scope.update_file_entry = function (file, mc, ec) {
-        //console.log('file name ' + file + ' mc name is ' + mc.name)
         $scope.files.forEach(function (fileEntry) {
             if (fileEntry.file.name == file) {
                 if (mc) {
@@ -44,20 +42,16 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
 
     $scope.apply_to_all_files = function () {
         if ($scope.top_level_mc) {
-            //console.log(' im inside mc name ' + $scope.top_level_mc);
             $scope.files.forEach(function (fileEntry) {
                 fileEntry.material_condition = $scope.top_level_mc;
-                //console.log(' updated mc_name with   ' + fileEntry.material_condition.name + 'and file is  ' + fileEntry.file.name);
             });
         }
         if ($scope.top_level_ec) {
             $scope.files.forEach(function (fileEntry) {
                 fileEntry.equipment_condition = $scope.top_level_ec;
-                //console.log(' updated mc_name with   ' + fileEntry.equipment_condition.name + 'and file is  ' + fileEntry.file.name);
             });
         }
     }
-
 
     $scope.uploadEachFile = function () {
         if ($scope.files.length == 0) {
@@ -78,8 +72,6 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
             }
         });
     };
-
-
 }
 
 function UploadDirectoryController($scope, mcapi, User) {
@@ -91,7 +83,6 @@ function UploadDirectoryController($scope, mcapi, User) {
         .success(function (data) {
             $scope.datagroups = data;
         }).jsonp();
-
 }
 
 function UpDownLoadQueueController($scope, mcapi, User) {

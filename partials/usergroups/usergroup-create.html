@@ -3,21 +3,21 @@
     <table>
         <tr>
             <td>Name</td>
-            <td><input  ng-model="name" placeholder="group name"></td>
+            <td><input ng-model="name" placeholder="group name"></td>
             <td>Access</td>
-            <td><select ng-model="access">
-            <option value="private">private</option>
-            <option value="public">public</option>
-        </select></td>
+            <td>
+                <select ng-model="access">
+                    <option value="private">private</option>
+                    <option value="public">public</option>
+                </select>
+            </td>
         </tr>
-
         <tr>
             <td>Description</td>
-            <td><input  ng-model="desc"></td>
+            <td><input ng-model="desc"></td>
         </tr>
     </table>
     <br>
-
     <button class="btn btn-success" type="button" ng-click="create_usergroup()"> Create Account</button>
 </div>
 
