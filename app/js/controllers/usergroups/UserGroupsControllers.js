@@ -7,7 +7,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService,
         u_group.name = $scope.name;
         u_group.users = [User.u()];
         u_group.owner = User.u();
-        mcapi('/usergroups/new')
+        mcapi('/user/%/usergroups/new', User.u())
             .success(function (data) {
                 $scope.msg = "UserGroup has been created successfully"
                 alertService.prepForBroadcast($scope.msg);
@@ -45,14 +45,14 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
         }).jsonp();
 
     $scope.lab_name = $routeParams.usergroup_name;
-    mcapi('/usergroup/%', $scope.lab_name)
+    mcapi('/user/%/usergroup/%', User.u(), $scope.lab_name)
         .success(function (data) {
             $scope.user_group = data;
             $scope.owner = $scope.user_group.owner
             $scope.signed_in_user = User.u();
         }).jsonp();
 
-    mcapi('/usergroup/%/users', $scope.lab_name)
+    mcapi('/user/%/usergroup/%/users', User.u(), $scope.lab_name)
         .success(function (data) {
             $scope.users_by_usergroup = data[0].users;
         })
@@ -71,8 +71,7 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    console.log('results is yess');
-                    mcapi('/user/%/usergroup/%/%', $scope.user_name, $scope.lab_name, User.u())
+                    mcapi('/user/%/usergroup/%/selected_name/%', User.u(), $scope.lab_name, $scope.user_name)
                         .success(function (data) {
                             console.log(' Here the data is ' + data);
                             $scope.users_by_usergroup = data;
@@ -96,7 +95,7 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    mcapi('/usergroup/%/username/%/remove', $scope.lab_name, $scope.users_by_usergroup[index])
+                    mcapi('/user/%/usergroup/%/selected_name/%/remove', User.u(), $scope.lab_name, $scope.users_by_usergroup[index])
                         .success(function (data) {
                             $scope.users_by_usergroup = data;
                         }).error(function () {

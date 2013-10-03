@@ -27,6 +27,9 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/account/details', {templateUrl: 'partials/account/account-details.html', controller: AccountDetailsController}).
         when('/account/details/apikey/view', {templateUrl: 'partials/account/details/apikeyview.html', controller: ApiKeyController}).
         when('/account/details/apikey/reset', {templateUrl: 'partials/account/details/apikeyreset.html', controller: ApiKeyResetController}).
+        /*
+         ** UserGroups controllers
+         */
         when('/usergroups/my_usergroups', {templateUrl: 'partials/usergroups/my_usergroups.html', controller: ListUserGroupController}).
         when('/usergroups/create', {templateUrl: 'partials/usergroups/usergroup-create.html', controller: CreateUserGroupController}).
         when('/usergroups/list_all', {templateUrl: 'partials/usergroups/usergroups_list_all.html', controller: ListUserGroupController}).
