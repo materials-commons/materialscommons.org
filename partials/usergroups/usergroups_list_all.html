@@ -1,11 +1,14 @@
 <div class="span10 offset1">
-    <h4>All User Groups List</h4>
-    <div ng-repeat="i in all_user_groups">
-        <table>
-            <br><button type="button" class="btn btn-success">{{i.name}}</button>
-        </table>
+    <h4>UserGroups List</h4>
+    <div class="row-fluid">
+        <div class="well">
+            <select ng-model="ug" ng-options="group.name for group in all_user_groups">
+
+            </select>
+            <td ng-show="ug">
+                <a href="#/usergroups/list_users/{{ug.name}}/">view</a>
+
+            </td>
+        </div>
     </div>
 </div>
-
-
-
