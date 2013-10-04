@@ -23,7 +23,7 @@
                     <td><a href="#/data/edit/{{row.id}}">{{row.name}}</a></td>
                     <td>
                         <ul>
-                            <li ng-repeat="dg in row.dataDirs">
+                            <li ng-repeat="dg in row.datadirs">
                                 {{dg | splitDataDir}}
                             </li>
                         </ul>
@@ -37,14 +37,14 @@
                     </td>
                     <td>
                         <ul>
-                            <li ng-repeat="metatag in row.metaTags | limitTo:10">
+                            <li ng-repeat="metatag in row.metatags | limitTo:10">
                                 {{ metatag.name }}:{{ metatag.value }}
                             </li>
-                            <div ng-show="row.metaTags.length > 10">
+                            <div ng-show="row.metatags.length > 10">
                                 <accordion>
                                     <accordion-group heading="... more">
 
-                                        <li ng-repeat="metatag in row.metaTags.slice(10)">
+                                        <li ng-repeat="metatag in row.metatags.slice(10)">
                                             {{metatag.name}}
                                             {{metatag.value}}
                                         </li>
