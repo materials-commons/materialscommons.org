@@ -57,7 +57,11 @@ function MaterialConditionsController($scope, mcapi, User, alertService, decodeA
         ec.current_notes = $scope.current_notes;
 
         mcapi('/user/%/equipment_conditions', User.u())
-            .success(function (data) {
+            .success(function () {
+                mcapi('/user/%/equipment_conditions', User.u())
+                    .success(function (data) {
+                        $rootScope.equipment_conditions = data;
+                    }).jsonp();
                 $scope.msg = "equipment properties have been added to the list"
                 alertService.prepForBroadcast($scope.msg);
             })
@@ -65,6 +69,5 @@ function MaterialConditionsController($scope, mcapi, User, alertService, decodeA
                 $scope.msg = decodeAlerts.get_alert_msg(data.error);
                 alertService.prepForBroadcast($scope.msg);
             }).post(ec);
-
     }
 }

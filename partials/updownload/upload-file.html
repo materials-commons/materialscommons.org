@@ -261,7 +261,7 @@
                         </td>
                         <td>
                             <select class="span6" ng-model="entry.equipment_condition"
-                                    ng-options="condition.name for  condition in equipment_conditions"
+                                    ng-options="entry.name for  entry in equipment_conditions"
                                     ng-change="update_file_entry(entry.file.name,'', entry.equipment_condition)">
                             </select>
                         </td>
