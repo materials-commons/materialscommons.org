@@ -130,7 +130,7 @@ def get_meta_tags(path):
     return metatags
 
 def usetag(tagname, tagdata):
-    if "unknown tag" in tagname:
+    if "Unknown tag" in tagname:
         if isinstance(tagdata, unicode):
             value = ''.join(tagdata.split())
             return not value.isdigit()
