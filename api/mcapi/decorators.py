@@ -52,7 +52,6 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
 
     def decorator(f):
         def wrapped_function(*args, **kwargs):
-            #print "in cross domain"
             if automatic_options and request.method == 'OPTIONS':
                 resp = current_app.make_default_options_response()
             else:
@@ -64,13 +63,8 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
             requestHeaders = request.headers.get('Access-Control-Request-Headers')
-            #print "Here Access-Control-Request-Headers = %s" %(requestHeaders)
-            #printHeaders("request", request.headers)
             if requestHeaders is not None:
-                #print "setting allow-headers to %s " %(requestHeaders)
                 h['Access-Control-Allow-Headers'] = requestHeaders
-            #print "here 4 %s" % (request.method)
-            #printHeaders("response", h)
             return resp
 
         f.provide_automatic_options = False
