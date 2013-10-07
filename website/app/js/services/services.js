@@ -252,3 +252,24 @@ materialsCommonsServices.factory('treeToggle', function () {
         }
     }
 });
+
+materialsCommonsServices.factory('Thumbnail', function () {
+    var fileType = '';
+    var fileSrc = '';
+    return {
+        fetch_images: function(datafiles){
+            var images = [];
+            datafiles.forEach(function (item){
+                fileType = determineFileType(item.mediatype);
+                if (fileType == 'image'){
+                    fileSrc = filePath(fileType, item.mediatype, item.location, item.name);
+                    images.push({'file': item,'link': fileSrc})
+                }
+
+            });
+
+            return images;
+        }
+
+    }
+});

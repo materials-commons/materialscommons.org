@@ -56,6 +56,8 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/datagroups/data/:id', {templateUrl: 'partials/datagroups/datareport.html', controller: DataDirReportController}).
         when('/datagroups',
         {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
+        when('/datagroupgrid', {templateUrl: 'partials/thumbnail.html', controller: DataGroupGridController}).
+
 
         /*
          ** Other
