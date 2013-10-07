@@ -72,7 +72,7 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
                         {
                             file: fileEntry.file,
                             material_condition: fileEntry.material_condition.id,
-                            equipment_condition: fileEntry.equipment_condition.id,
+                            equipment_condition: fileEntry.equipment_condition.id
                         },
                         {headers: {'Content-Type': false}, transformRequest: formDataObject});
             }
