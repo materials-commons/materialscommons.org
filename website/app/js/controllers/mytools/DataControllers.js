@@ -1,8 +1,9 @@
-function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, decodeAlerts) {
+function DataEditController($scope, $routeParams, $window, mcapi, User, alertService) {
 
     $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediatype);
         $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediatype, $scope.doc.location, $scope.doc.name);
+        console.log($scope.fileSrc);
         $scope.originalFileSrc = originalFilePath($scope.doc.location, $scope.doc.name);
         $scope.fileName = $scope.doc.name;
     }
