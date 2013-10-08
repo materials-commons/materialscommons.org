@@ -1,9 +1,10 @@
 import rethinkdb as r
 
 class Process(object):
-    def __init__(self, name, owner, machine, process_type, parent=None):
+    def __init__(self, name, owner, machine, process_type, description, parent=None):
         self.name = name
         self.owner = owner
+        self.description = description
         self.birthtime = r.now()
         self.mtime = self.birthtime
         self.machine = machine
