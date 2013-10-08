@@ -11,10 +11,9 @@ function MaterialConditionsController($scope, mcapi, User, alertService, decodeA
         mc.manufacturing_condition_notes = $scope.manufacturing_condition_notes;
         mc.heat_treatment = $scope.heat_treatment;
         mc.heat_treatment_notes = $scope.heat_treatment_notes;
-        //console.dir(mc);
-        mcapi('/user/%/material_conditions', User.u())
+        mcapi('/user/%/condition/material_condition', User.u())
             .success(function () {
-                mcapi('/user/%/material_conditions', User.u())
+                mcapi('/user/%/conditions/material_condition', User.u())
                     .success(function (data) {
                         $rootScope.material_conditions = data;
                     }).jsonp();
@@ -56,9 +55,9 @@ function MaterialConditionsController($scope, mcapi, User, alertService, decodeA
         ec.current = $scope.current;
         ec.current_notes = $scope.current_notes;
 
-        mcapi('/user/%/equipment_conditions', User.u())
+        mcapi('/user/%/condition/equipment_condition', User.u())
             .success(function () {
-                mcapi('/user/%/equipment_conditions', User.u())
+                mcapi('/user/%/conditions/equipment_condition', User.u())
                     .success(function (data) {
                         $rootScope.equipment_conditions = data;
                     }).jsonp();

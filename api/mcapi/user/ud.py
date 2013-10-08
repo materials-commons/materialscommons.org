@@ -15,16 +15,18 @@ def get_udqueue(user):
     selection = list(r.table('udqueue').filter({'owner':user}).run(g.conn))
     return json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/upload/<path:datadir>/mc/<material_condition_id>/ec/<equipment_condition_id>', methods=['POST'])
+@app.route('/v1.0/user/<user>/upload/<path:datadir>', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
-def upload_file(user, datadir, material_condition_id, equipment_condition_id):
+def upload_file(user, datadir):
     dir = os.path.join('/tmp', user, datadir)
     mkdirp(dir)
     file = request.files['file']
-    filepath = (os.path.join(dir, file.filename))
+    material_condition_id = request.form['material_condition']
+    equipment_condition_id = request.form['equipment_condition']
+    filepath = os.path.join(dir, file.filename)
     file.save(filepath)
-    putRequestOnQueue(filepath, user, material_condition_id,equipment_condition_id )
+    #putRequestOnQueue(filepath, user, material_condition_id, equipment_condition_id)
     return jsonify({'success': True})
 
 def putRequestOnQueue(filepath, user, material_condition_id, equipment_condition_id):

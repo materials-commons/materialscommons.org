@@ -7,12 +7,12 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
             $scope.datagroups = data;
         }).jsonp();
 
-    mcapi('/user/%/material_conditions', User.u())
+    mcapi('/user/%/conditions/material_condition', User.u())
         .success(function (data) {
             $rootScope.material_conditions = data;
         }).jsonp();
 
-    mcapi('/user/%/equipment_conditions', User.u())
+    mcapi('/user/%/conditions/equipment_condition', User.u())
         .success(function (data) {
             $rootScope.equipment_conditions = data;
         }).jsonp();
@@ -61,14 +61,20 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
             console.dir(fileEntry);
             if (fileEntry.status != "Uploaded") {
                 fileEntry.status = "Uploading...";
-                mcapi('/user/%/upload/%/mc/%/ec/%', User.u(), fileEntry.datagroup, fileEntry.material_condition.id, fileEntry.equipment_condition.id)
+                mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
                     .success(function () {
                         fileEntry.status = "Uploaded";
                     })
                     .error(function () {
                         fileEntry.status = "Failed";
                     })
-                    .post({file: fileEntry.file}, {headers: {'Content-Type': false}, transformRequest: formDataObject});
+                    .post(
+                        {
+                            file: fileEntry.file,
+                            material_condition: fileEntry.material_condition.id,
+                            equipment_condition: fileEntry.equipment_condition.id
+                        },
+                        {headers: {'Content-Type': false}, transformRequest: formDataObject});
             }
         });
     };
