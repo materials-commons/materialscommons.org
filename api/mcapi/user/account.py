@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp, removeUserFromApiKeyCache
+from ..decorators import crossdomain, apikey, jsonp, remove_user_from_apikey_cache
 import json
 from flask import jsonify, g
 import rethinkdb as r
@@ -41,7 +41,7 @@ def change_password(user, newpw):
 def reset_apikey(user):
     new_apikey = uuid.uuid1().hex
     rv = r.table('users').get(user).update({'apikey':new_apikey}).run(g.conn)
-    removeUserFromApiKeyCache(user)
+    remove_user_from_apikey_cache(user)
     return jsonify({'apikey':new_apikey})
 
 @app.route('/v1.0/user/<user>/usergroups', methods=['GET'])
