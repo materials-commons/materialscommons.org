@@ -295,3 +295,25 @@ div.node.level2 {
 /*#second div {*/
     /*font-size: 0.8em;*/
 /*}*/
+
+
+
+
+img.data-img {
+    width: 500px; /* Width of new image */
+    height: 300px; /* Height of new image */
+    max-width: none;
+    position: absolute;
+
+}
+
+hr{
+   border-color: black;
+}
+
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 400px;
+    height: 300px
+}
+

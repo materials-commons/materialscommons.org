@@ -98,10 +98,12 @@ sub {
     bottom: -0.25em;
 }
 
+/*Sravya (10/08/2013) - changed the max-width to none because
+it is affecting the custom css file :data-edit.css while resizing the image*/
 img {
-    width: auto\9;
+    width: auto;
     height: auto;
-    max-width: 100%;
+    max-width: none;
     vertical-align: middle;
     border: 0;
     -ms-interpolation-mode: bicubic;
@@ -1395,6 +1397,7 @@ textarea.span1,
 input[disabled],
 select[disabled],
 textarea[disabled],
+input[readonly],
 input[readonly],
 select[readonly],
 textarea[readonly] {

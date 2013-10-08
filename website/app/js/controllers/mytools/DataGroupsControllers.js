@@ -26,7 +26,6 @@ function SearchByDateController($scope, $routeParams, User) {
     $scope.search_by_date = function () {
         //$scope.utc_start_date = Date.parse($scope.startDate) / 1000;
         //$scope.utc_end_date = Date.parse($scope.endDate) / 1000;
-        console.log('start date  ' + $scope.startDate);
 
     }
 }
@@ -38,7 +37,6 @@ function MyDataGroupsTreeController($scope, mcapi, $location, User, treeToggle) 
             $scope.selected = treeToggle.get_all();
         })
         .error(function () {
-            console.log("Failed to retrieve tree");
         }).jsonp();
 
     $scope.gotoSelection = function (d) {
@@ -54,7 +52,6 @@ function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
             $scope.tree = tree;
         })
         .error(function () {
-            console.log("Failed to retrieve tree");
         }).jsonp();
 
     $scope.gotoSelection = function (d) {
