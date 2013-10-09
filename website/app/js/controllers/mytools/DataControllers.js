@@ -1,9 +1,49 @@
 function DataEditController($scope, $routeParams, $window, mcapi, User, alertService) {
 
+    /*
+    $scope.processes = {
+
+            "P1":
+            [
+                {
+                    property: 'temperature', value: '70C'
+                },
+                {
+                    property: 'pressure', value:'100'
+                },
+                {
+                    property: 'elasticity', value: 'test'
+                }
+
+            ]
+
+
+
+        [
+            {
+                property: 'microscope', value: 'standard'
+            },
+            {
+                property: 'type', value:'sem'
+            },
+            {
+                property: 'voltage', value: '20'
+            }
+        ]
+
+};
+*/
+
+    $scope.myData = [{name: "Moroni", age: 50},
+        {name: "Tiancum", age: 43},
+        {name: "Jacob", age: 27},
+        {name: "Nephi", age: 29},
+        {name: "Enos", age: 34}];
+    $scope.gridOptions = { data: 'myData' };
+
     $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediatype);
         $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediatype, $scope.doc.location, $scope.doc.name);
-        console.log($scope.fileSrc);
         $scope.originalFileSrc = originalFilePath($scope.doc.location, $scope.doc.name);
         $scope.fileName = $scope.doc.name;
     }
@@ -53,7 +93,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
             $scope.users = data;
         })
         .error(function () {
-            //console.log("error: in finding all users");
         }).jsonp();
 
     $scope.removeTag = function (index) {
