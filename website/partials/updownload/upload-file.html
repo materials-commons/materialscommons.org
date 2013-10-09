@@ -1,3 +1,114 @@
+<div class="row-fluid">
+    <div class="span9 offset1">
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <thead>
+            <tr>
+            <th>Inputs</th>
+            <th>Process</th>
+            <th>Outputs</th>
+            <th>Status</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="entry in files">
+                <td>{{ entry.input.type }}/{{ entry.input.name }}</td>
+                <td>{{ entry.datagroup }}</td>
+                <td>{{ entry.status }}</td>
+                <td>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<br>
+
+<div class="row-fluid">
+    <div class="arrow_box_right span3 offset1">Inputs</div>
+    <div class="exampleborderradius span3">Process</div>
+    <div class="arrow_box_right span3">Outputs</div>
+</div>
+
+<br>
+
+<div class=row-fluid>
+    <div class="span3 offset1 well">
+        <h4>Inputs</h4>
+
+        <form>
+            <label>Select Conditions</label>
+            <select class="span2" ng-model="tag_to_add"
+                    ui-select2="{placeholder: 'Select condition', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="condition in conditions">{{ condition.name }}</option>
+            </select>
+            <button ng-click="addInputCondition()">Add Condition</button>
+            <hr>
+            <label>Select Existing Files</label>
+            <select class="span2" ng-model="tag_to_add"
+                    ui-select2="{placeholder: 'Select file', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="file in files">{{ file.name }}</option>
+            </select>
+            <button ng-click="addInputFile()">Add File</button>
+        </form>
+    </div>
+    <div class="span3 well">
+        <h4>Process</h4>
+
+        <form>
+            <label>Select Process</label>
+            <select class="span2" ng-model="tag_to_add"
+                    ui-select2="{placeholder: 'Select process', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="process in processes">{{ process.name }}</option>
+            </select>
+            <button ng-click="addProcess()">Add Process</button>
+        </form>
+    </div>
+    <div class="span3 well">
+        <h4>Outputs</h4>
+
+        <form>
+            <label>Select Conditions</label>
+            <select class="span2" ng-model="tag_to_add"
+                    ui-select2="{placeholder: 'Select condition', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="condition in conditions">{{ condition.name }}</option>
+            </select>
+            <button ng-click="addOutputCondition()">Add Condition</button>
+            <hr>
+            <select class="span2" ng-model="datagroup"
+                    ui-select2="{placeholder: 'Select datagroup', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="dg in datagroups">{{ dg.name }}</option>
+            </select>
+            <hr>
+            <button ng-click="addOutputFile()">Add File</button>
+        </form>
+    </div>
+</div>
+
+<div class=row-fluid>
+    <div class="span3 offset1 well">
+        <h4>{{inputType}} Details</h4>
+    </div>
+    <div class="span3 well">
+        <h4>Process Details</h4>
+    </div>
+    <div class="span3 well">
+        <h4>{{outputType}} Details</h4>
+    </div>
+</div>
+
+
+<!----------------------------------------------------------------------------------------------------------------->
+
 <div class="offset1">
     <h5>Select type: </h5>
     <select ng-model="preference">
@@ -8,204 +119,204 @@
 
 <div ng-show="preference=='new'" class="row-fluid">
 
-    <div class="span7 offset2">
-        <h5>Create New Material Conditions</h5>
+<div class="span7 offset2">
+    <h5>Create New Material Conditions</h5>
 
-        <div class="well" ng-controller="MaterialConditionsController">
-            <form>
+    <div class="well" ng-controller="MaterialConditionsController">
+        <form>
+            <table>
+                <tr>
+                    <td>
+                        Name:<br> <input name="input" ng-model="name" required>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        Alloy Name: <br><input name="input" ng-model="alloy_name">
+                    </td>
+                    <td>
+                        Notes: <textarea ng-model="alloy_name_notes"> </textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Known Composition: <br><input name="input" ng-model="known_composition">
+                    </td>
+                    <td>
+                        Notes: <textarea ng-model="known_composition_notes"> </textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Manufacturing Condition: <br>
+                        <select ng-model="manufacturing_condition">
+                            <option value="rolled">rolled</option>
+                            <option value="forged">forged</option>
+                            <option value="cast">cast</option>
+                        </select>
+                    </td>
+                    <td>
+                        Notes: <textarea ng-model="manufacturing_condition_notes"> </textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Heat Treatment: <br><input name="input" ng-model="heat_treatment">
+                    </td>
+                    <td>
+                        Notes: <textarea ng-model="heat_treatment_notes"> </textarea>
+                </tr>
+
+            </table>
+            <button type="button" ng-click="add_mc_conditions()">Submit</button>
+        </form>
+    </div>
+</div>
+
+<form>
+    <div class="span7 offset2" ng-controller="MaterialConditionsController">
+        <h5>Create New Equipment Conditions</h5>
+
+        <div class="well">
+            <h5>Select equipment type:</h5>
+            <select class="span12" ng-model="equipment_type">
+                <option value="TEM">TEM</option>
+                <option value="APT">APT</option>
+                <option value="SEM">SEM</option>
+            </select>
+
+
+            <div ng-show="equipment_type=='TEM'">
+                <td><h5>Equipment properties for TEM</h5></td>
                 <table>
                     <tr>
-                        <td>
-                            Name:<br> <input name="input" ng-model="name" required>
-                        </td>
-
+                        <td>Name: <br>
+                            <input name="input" ng-model="name" required></td>
                     </tr>
                     <tr>
-                        <td>
-                            Alloy Name: <br><input name="input" ng-model="alloy_name">
-                        </td>
-                        <td>
-                            Notes: <textarea ng-model="alloy_name_notes"> </textarea>
-                        </td>
+                        <td>Microscope Mfg: <br><input name="input" ng-model="microscope_mfg"></td>
+                        <td>Notes: <textarea ng-model="microscope_mfg_notes"> </textarea></td>
                     </tr>
                     <tr>
-                        <td>
-                            Known Composition: <br><input name="input" ng-model="known_composition">
-                        </td>
-                        <td>
-                            Notes: <textarea ng-model="known_composition_notes"> </textarea>
-                        </td>
+                        <td>Microscope Model: <br><input name="input" ng-model="microscope_model"></td>
+                        <td>Notes: <textarea ng-model="microscope_model_notes"> </textarea></td>
                     </tr>
                     <tr>
-                        <td>
-                            Manufacturing Condition: <br>
-                            <select ng-model="manufacturing_condition">
-                                <option value="rolled">rolled</option>
-                                <option value="forged">forged</option>
-                                <option value="cast">cast</option>
-                            </select>
-                        </td>
-                        <td>
-                            Notes: <textarea ng-model="manufacturing_condition_notes"> </textarea>
-                        </td>
+                        <td>Voltage:<br> <input name="input" ng-model="voltage"></td>
+                        <td>Notes: <textarea ng-model="voltage_notes"> </textarea></td>
                     </tr>
                     <tr>
-                        <td>
-                            Heat Treatment: <br><input name="input" ng-model="heat_treatment">
+                        <td>Mode:<br> <select ng-model="mode">
+                            <option value="diffraction">Diffraction</option>
+                            <option value="transmission">Transmission</option>
+                            <option value="scanning">Scanning</option>
+                        </select>
                         </td>
-                        <td>
-                            Notes: <textarea ng-model="heat_treatment_notes"> </textarea>
+                        <td>Notes: <textarea ng-model="mode_notes"> </textarea></td>
                     </tr>
-
+                    <tr>
+                        <td> Field:<br> <select ng-model="field">
+                            <option value="bright">Bright</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                        </td>
+                        <td> Notes: <textarea ng-model="field_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Specimen Prep: <br><select ng-model="specimen_prep">
+                            <option value="electropolish">Electropolish</option>
+                            <option value="fib">FIB</option>
+                        </select>
+                        </td>
+                        <td>Notes: <textarea ng-model="specimen_prep_notes"> </textarea></td>
+                    </tr>
                 </table>
-                <button type="button" ng-click="add_mc_conditions()">Submit</button>
-            </form>
-        </div>
-    </div>
+                <button type="button" ng-click="add_equipment_conditions()">Submit</button>
+            </div>
+            <div ng-show="equipment_type=='APT'">
+                <td><h5>Equipment properties for APT</h5></td>
+                <table>
+                    <tr>
+                        <td>Name: <br>
+                            <input name="input" ng-model="name" required></td>
+                    </tr>
+                    <tr>
+                        <td> Microscope Mfg:<br> <input name="input" ng-model="microscope_mfg"></td>
+                        <td>Notes: <textarea ng-model="microscope_mfg_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Microscope Type: <br><select ng-model="microscope_type">
+                            <option value="voltage">Voltage</option>
+                            <option value="laser">Laser</option>
+                        </select>
+                        </td>
+                        <td>Notes: <textarea ng-model="microscope_type_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Temperature:<br> <input name="input" ng-model="temp"></td>
+                        <td>Notes: <textarea ng-model="temp_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Pulse Frequency:<br> <input name="input" ng-model="pulse_frequency"></td>
+                        <td>Notes: <textarea ng-model="pulse_frequency_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Specimen Prep:<br> <select ng-model="specimen_prep">
+                            <option value="electropolish">Electropolish</option>
+                            <option value="fib">FIB</option>
+                        </select>
+                        </td>
+                        <td>Notes: <textarea ng-model="specimen_prep_notes"> </textarea></td>
+                    </tr>
+                </table>
+                <button type="button" ng-click="add_equipment_conditions()">Submit</button>
+            </div>
+            <div ng-show="equipment_type=='SEM'">
+                <td><h5>Equipment properties for SEM</h5></td>
+                <table>
+                    <tr>
+                        <td>Name: <br>
+                            <input name="input" ng-model="name" required></td>
+                    </tr>
+                    <tr>
+                        <td>Microscope Mfg: <br><input name="input" ng-model="microscope_mfg"></td>
+                        <td>Notes: <textarea ng-model="microscope_mfg_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Microscope Model: <br><input name="input" ng-model="microscope_model"></td>
+                        <td>Notes: <textarea ng-model="microscope_model_notes"> </textarea>
+                    </tr>
+                    <tr>
+                        <td>Microscope Type:<br> <select ng-model="microscope_type">
+                            <option value="electron">Electron</option>
+                            <option value="ion">Ion</option>
+                        </select>
+                        </td>
+                        <td>Notes: <textarea ng-model="microscope_type_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Voltage:<br> <input name="input" ng-model="voltage"></td>
+                        <td> Notes: <textarea ng-model="voltage_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Current: <br> <input name="input" ng-model="current"></td>
+                        <td>Notes: <textarea ng-model="current_notes"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Specimen Prep:<br> <select ng-model="specimen_prep">
+                            <option value="electropolish">Electropolish</option>
+                            <option value="silicafinish">Silica Finish</option>
+                        </select>
+                        </td>
+                        <td>Notes: <textarea ng-model="specimen_prep_notes"> </textarea></td>
+                    </tr>
+                </table>
+                <button type="button" ng-click="add_equipment_conditions()">Submit</button>
 
-    <form>
-        <div class="span7 offset2" ng-controller="MaterialConditionsController">
-            <h5>Create New Equipment Conditions</h5>
-
-            <div class="well">
-                <h5>Select equipment type:</h5>
-                <select class="span12" ng-model="equipment_type">
-                    <option value="TEM">TEM</option>
-                    <option value="APT">APT</option>
-                    <option value="SEM">SEM</option>
-                </select>
-
-
-                <div ng-show="equipment_type=='TEM'">
-                    <td><h5>Equipment properties for TEM</h5></td>
-                    <table>
-                        <tr>
-                            <td>Name: <br>
-                                <input name="input" ng-model="name" required></td>
-                        </tr>
-                        <tr>
-                            <td>Microscope Mfg: <br><input name="input" ng-model="microscope_mfg"></td>
-                            <td>Notes: <textarea ng-model="microscope_mfg_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Microscope Model: <br><input name="input" ng-model="microscope_model"></td>
-                            <td>Notes: <textarea ng-model="microscope_model_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Voltage:<br> <input name="input" ng-model="voltage"></td>
-                            <td>Notes: <textarea ng-model="voltage_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Mode:<br> <select ng-model="mode">
-                                <option value="diffraction">Diffraction</option>
-                                <option value="transmission">Transmission</option>
-                                <option value="scanning">Scanning</option>
-                            </select>
-                            </td>
-                            <td>Notes: <textarea ng-model="mode_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td> Field:<br> <select ng-model="field">
-                                <option value="bright">Bright</option>
-                                <option value="dark">Dark</option>
-                            </select>
-                            </td>
-                            <td> Notes: <textarea ng-model="field_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Specimen Prep: <br><select ng-model="specimen_prep">
-                                <option value="electropolish">Electropolish</option>
-                                <option value="fib">FIB</option>
-                            </select>
-                            </td>
-                            <td>Notes: <textarea ng-model="specimen_prep_notes"> </textarea></td>
-                        </tr>
-                    </table>
-                    <button type="button" ng-click="add_equipment_conditions()">Submit</button>
-                </div>
-                <div ng-show="equipment_type=='APT'">
-                    <td><h5>Equipment properties for APT</h5></td>
-                    <table>
-                        <tr>
-                            <td>Name: <br>
-                                <input name="input" ng-model="name" required></td>
-                        </tr>
-                        <tr>
-                            <td> Microscope Mfg:<br> <input name="input" ng-model="microscope_mfg"></td>
-                            <td>Notes: <textarea ng-model="microscope_mfg_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Microscope Type: <br><select ng-model="microscope_type">
-                                <option value="voltage">Voltage</option>
-                                <option value="laser">Laser</option>
-                            </select>
-                            </td>
-                            <td>Notes: <textarea ng-model="microscope_type_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Temperature:<br> <input name="input" ng-model="temp"></td>
-                            <td>Notes: <textarea ng-model="temp_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Pulse Frequency:<br> <input name="input" ng-model="pulse_frequency"></td>
-                            <td>Notes: <textarea ng-model="pulse_frequency_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Specimen Prep:<br> <select ng-model="specimen_prep">
-                                <option value="electropolish">Electropolish</option>
-                                <option value="fib">FIB</option>
-                            </select>
-                            </td>
-                            <td>Notes: <textarea ng-model="specimen_prep_notes"> </textarea></td>
-                        </tr>
-                    </table>
-                    <button type="button" ng-click="add_equipment_conditions()">Submit</button>
-                </div>
-                <div ng-show="equipment_type=='SEM'">
-                    <td><h5>Equipment properties for SEM</h5></td>
-                    <table>
-                        <tr>
-                            <td>Name: <br>
-                                <input name="input" ng-model="name" required></td>
-                        </tr>
-                        <tr>
-                            <td>Microscope Mfg: <br><input name="input" ng-model="microscope_mfg"></td>
-                            <td>Notes: <textarea ng-model="microscope_mfg_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Microscope Model: <br><input name="input" ng-model="microscope_model"></td>
-                            <td>Notes: <textarea ng-model="microscope_model_notes"> </textarea>
-                        </tr>
-                        <tr>
-                            <td>Microscope Type:<br> <select ng-model="microscope_type">
-                                <option value="electron">Electron</option>
-                                <option value="ion">Ion</option>
-                            </select>
-                            </td>
-                            <td>Notes: <textarea ng-model="microscope_type_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Voltage:<br> <input name="input" ng-model="voltage"></td>
-                            <td> Notes: <textarea ng-model="voltage_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Current: <br> <input name="input" ng-model="current"></td>
-                            <td>Notes: <textarea ng-model="current_notes"> </textarea></td>
-                        </tr>
-                        <tr>
-                            <td>Specimen Prep:<br> <select ng-model="specimen_prep">
-                                <option value="electropolish">Electropolish</option>
-                                <option value="silicafinish">Silica Finish</option>
-                            </select>
-                            </td>
-                            <td>Notes: <textarea ng-model="specimen_prep_notes"> </textarea></td>
-                        </tr>
-                    </table>
-                    <button type="button" ng-click="add_equipment_conditions()">Submit</button>
-
-                </div>
             </div>
         </div>
+    </div>
 
 </div>
 </form>
