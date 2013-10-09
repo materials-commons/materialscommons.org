@@ -2,6 +2,7 @@ from flask import Flask, g, abort
 from os import environ
 import rethinkdb as r
 from rethinkdb.errors import RqlDriverError
+import mcexceptions
 
 app = Flask(__name__.split('.')[0])
 
@@ -25,3 +26,23 @@ def teardown_request(exception):
         g.conn.close()
     except:
         pass
+
+@app.errorhandler(mcexceptions.RequiredAttributeException)
+def required_attribute_exception_handler(error):
+    return "Missing required attribute", 406
+
+@app.errorhandler(RqlDriverError)
+def database_exception_handler(error):
+    return "Database connection failed", 500
+
+@app.errorhandler(mcexceptions.AuthenticationException)
+def authentication_exception_handler(error):
+    return "Authentication failed", 401
+
+@app.errorhandler(mcexceptions.AccessNotAllowedException)
+def access_not_allowed_exception_handler(error):
+    return "Access not allowed", 401
+
+@app.errorhandler(Exception)
+def catchall_exception_handler(error):
+    return "Unknown server error", 500

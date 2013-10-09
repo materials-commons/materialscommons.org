@@ -3,8 +3,11 @@ from utils import error_response
 import rethinkdb as r
 from flask import g
 from args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
+from mcexceptions import RequiredAttributeException
 
 def get_required(what, d):
+    if what not in d:
+        raise RequiredAttributeException
     return d[what]
 
 def get_optional(what, d, novalue=""):
