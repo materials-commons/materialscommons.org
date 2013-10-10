@@ -1,4 +1,4 @@
-function LoginController($scope, $location, User, alertService, decodeAlerts, mcapi) {
+function LoginController($scope, $location, User, alertService, mcapi) {
     $scope.alerts = [];
 
     $scope.login = function () {
@@ -10,8 +10,7 @@ function LoginController($scope, $location, User, alertService, decodeAlerts, mc
                 $location.path('/my-tools');
             })
             .error(function (data) {
-                $scope.msg = decodeAlerts.get_alert_msg(data.error);
-                alertService.prepForBroadcast($scope.msg);
+                alertService.prepForBroadcast(data.error);
             }).jsonp();
     }
 
@@ -27,8 +26,7 @@ function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
     $cookieStore.remove('mcuser');
 }
 
-function CreateAccountController($scope, mcapi, $location, alertService, decodeAlerts) {
-
+function CreateAccountController($scope, mcapi, $location, alertService) {
     $scope.create_account = function () {
         if ($scope.password != $scope.confirm_password) {
             //alert("Passwords don't match");
@@ -46,15 +44,13 @@ function CreateAccountController($scope, mcapi, $location, alertService, decodeA
                     $location.path('/account/login');
                 })
                 .error(function (data) {
-                    console.log('here is ' + data.error);
-                    $scope.msg = decodeAlerts.get_alert_msg(data.error);
-                    alertService.prepForBroadcast($scope.msg);
+                    alertService.prepForBroadcast(data.error);
                 }).post(acc);
         }
     }
 }
 
-function AccountDetailsController($scope, mcapi, User) {
+function AccountDetailsController($scope, mcapi, User, alertService) {
     $scope.new_password = undefined;
     $scope.verify_new_password = undefined;
 
@@ -68,12 +64,13 @@ function AccountDetailsController($scope, mcapi, User) {
             if ($scope.new_password == $scope.verify_new_password) {
                 mcapi('/user/%/password/%', User.u(), $scope.new_password)
                     .success(function (data) {
-                        console.log("password changed!");
-                    }).error(function () {
-                        console.log("Failed to change password");
+                        $scope.msg = "Password updated successfully"
+                    }).error(function (data) {
+                        alertService.prepForBroadcast(data.error);
                     }).put();
             } else {
-                console.log("new passwords don't match");
+                $scope.msg = "Passwords do not match!"
+                alertService.prepForBroadcast($scope.msg);
             }
         }
     }
@@ -92,8 +89,8 @@ function ApiKeyResetController($scope, mcapi, User, $cookieStore) {
             var mcuser = $cookieStore.get('mcuser');
             mcuser.apikey = $scope.new_apikey;
             $cookieStore.put('mcuser');
-        }).error(function () {
-            //console.log("error");
+        }).error(function (data) {
+            alertService.prepForBroadcast(data.error);
         }).put();
 
 }

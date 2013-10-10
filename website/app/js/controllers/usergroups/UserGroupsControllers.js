@@ -1,4 +1,4 @@
-function CreateUserGroupController($scope, User, mcapi, $location, alertService, decodeAlerts) {
+function CreateUserGroupController($scope, User, mcapi, $location, alertService) {
     $scope.create_usergroup = function () {
         var u_group = {};
         u_group.access = $scope.access;
@@ -14,8 +14,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService,
                 $location.path('/usergroups/my_usergroups');
             })
             .error(function (data) {
-                $scope.msg = decodeAlerts.get_alert_msg(data.error);
-                alertService.prepForBroadcast($scope.msg);
+                alertService.prepForBroadcast(data.error);
             }).post(u_group);
     }
 }
@@ -24,15 +23,11 @@ function ListUserGroupController($scope, mcapi, User) {
     mcapi('/user/%/all_usergroups', User.u())
         .success(function (data) {
             $scope.all_user_groups = data;
-        })
-        .error(function () {
         }).jsonp();
 
     mcapi('/user/%/usergroups', User.u())
         .success(function (data) {
             $scope.user_groups = data;
-        })
-        .error(function () {
         }).jsonp();
 }
 

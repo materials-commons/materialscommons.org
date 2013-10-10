@@ -1,45 +1,35 @@
-function DataEditController($scope, $routeParams, $window, mcapi, User, alertService) {
+function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, processInformation) {
+     $scope.count = 0;
+     $scope.grid_options = [];
+//     $scope.all_process = [
+//        [
+//            {property: 'temperature', value: '70C'},
+//            { property: 'pressure', value:'100'},
+//            {property: 'elasticity', value: 'test'}
+//        ],
+//        [
+//            {property: 'mc1', value: 'test1'},
+//            {property: 'mc2', value: 'test2'}
+//
+//        ]
+//    ];
 
-    /*
-    $scope.processes = {
+//    $scope.grid_options = [
+//        {data: all_process[0]},
+//        {data: all_process[1]}
+//    ]
 
-            "P1":
-            [
-                {
-                    property: 'temperature', value: '70C'
-                },
-                {
-                    property: 'pressure', value:'100'
-                },
-                {
-                    property: 'elasticity', value: 'test'
-                }
-
-            ]
-
-
-
-        [
-            {
-                property: 'microscope', value: 'standard'
-            },
-            {
-                property: 'type', value:'sem'
-            },
-            {
-                property: 'voltage', value: '20'
+    mcapi('/user/%/equipment_conditions', User.u())
+        .success(function(data){
+            $scope.conditions = data;
+            $scope.all_process = processInformation.convert_into_gridoptions($scope.conditions)
+            for(var i = 0; i < $scope.all_process.length; i++){
+                var template = {data : 'all_process[' + i + ']'}
+                $scope.grid_options.push(template);
             }
-        ]
 
-};
-*/
+        }).jsonp();
 
-    $scope.myData = [{name: "Moroni", age: 50},
-        {name: "Tiancum", age: 43},
-        {name: "Jacob", age: 27},
-        {name: "Nephi", age: 29},
-        {name: "Enos", age: 34}];
-    $scope.gridOptions = { data: 'myData' };
 
     $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediatype);
@@ -52,10 +42,13 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         .success(function (data) {
             $scope.doc = data;
             $scope.setupAccessToUserFile();
+
         })
         .error(function (data) {
 
         }).jsonp();
+
+
 
     //This obj is used in data-edit
     $scope.signed_in_user = User.u();
@@ -118,7 +111,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
                 $scope.msg = "Data has been saved"
                 alertService.prepForBroadcast($scope.msg);
             }).error(function (data) {
-                //$scope.msg = decodeAlerts.get_alert_msg(data.error);
                 alertService.prepForBroadcast(data.error);
             }).put($scope.doc);
 

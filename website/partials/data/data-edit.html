@@ -4,15 +4,14 @@
 
 
         Start Chat   : <input type="checkbox" ng-model="chat">
-        See Reviews: <input type="checkbox" ng-model="seeReviews">
-
-
+        See Reviews & Tags: <input type="checkbox" ng-model="seeReviews">
+    <!--
     <div ng-controller="DataChatController">
 
     <div class="row-fluid" ng-show="chat==true">
             <div>
                 <div class="chat-box">
-                    <h3>Chat:</h3>
+                    <h4>Chat:</h4>
 
                     <div>
                         <ul>
@@ -28,37 +27,40 @@
             </div>
         </div>
     </div>
+    -->
 
+    <div class="row-fluid">
+        <div ng-show="seeReviews==true" id="review-section" class="row-fluid">
 
+        <div class="span7">
+            <h4>Reviews Scheduled</h4>
 
-    <div ng-show="seeReviews==true" id="review-section" class="row-fluid">
-        <h4>Reviews Scheduled</h4>
-        <table class="table table-striped mc-table-hover table-condensed mc-table">
-            <thead>
-            <tr>
-            <th>By</th>
-            <th>Note</th>
-            <th>Marked On</th>
-            <th>Finished?</th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="review in scheduledReviews" style="cursor:pointer">
-                <td>{{ review.owner }}</td>
-                <td>{{ review.note }}</td>
-                <td>{{ review.marked_on | toDateString }}</td>
-                <td ng-show="signed_in_user==review.owner">
-                    <input type="checkbox" ng-model="review.done" ng-click="reviewStatusChanged($index)">
-                </td>
-                <td ng-show="signed_in_user!=review.owner">
-                    Not Authorized
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <h4>Mark For Followup</h4>
-        <input type="text" ng-model="review_note_self" ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
-               placeholder="Review Note...">
-        <h4>Ask For Review</h4>
+            <table class="table table-striped mc-table-hover table-condensed mc-table">
+                <thead>
+                <tr>
+                <th>By</th>
+                <th>Note</th>
+                <th>Marked On</th>
+                <th>Finished?</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="review in scheduledReviews" style="cursor:pointer">
+                    <td>{{ review.owner }}</td>
+                    <td>{{ review.note }}</td>
+                    <td>{{ review.marked_on | toDateString }}</td>
+                    <td ng-show="signed_in_user==review.owner">
+                        <input type="checkbox" ng-model="review.done" ng-click="reviewStatusChanged($index)">
+                    </td>
+                    <td ng-show="signed_in_user!=review.owner">
+                        Not Authorized
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <h4>Mark For Followup</h4>
+            <input type="text" ng-model="review_note_self" ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
+                   placeholder="Review Note...">
+            <h4>Ask For Review</h4>
             <input type="text" ng-model="review_note_other" placeholder="Review Note...">
             <select ng-model="user_for_review"
                     ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
@@ -68,7 +70,32 @@
             </select>
             <button style="position:absolute"  ng-click="addReviewForOther()">Request Review</button>
 
+        </div>
+
+
+        <div class="span5">
+            <h4>Create/Edit Tags</h4>
+            <div class="well">
+                 <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
+                    <button type="button" class="close" ng-click="removeTag($index);">&times;</button>{{ tag }}
+                </span>
+                <form class="form-horizontal">
+                    <input ui-keypress="{13: 'addTagKeypressCallback($event)'}" ng-model="new_tag" placeholder="Tag...">
+                    <label>Tags to add</label>
+                    <select  ng-model="tag_to_add"
+                             ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
+                             ng-multiple="false">
+                        <option></option>
+                        <option ng-repeat="tag in tagchoices">{{ tag }}</option>
+                    </select>
+                    <button ng-click="addTag()">Add Tag</button>
+                </form>
+            </div>
+        </div>
+        </div>
+
     </div>
+
 
     <hr/>
 
@@ -80,7 +107,7 @@
                 Date Added:<br><input value="{{ doc.birthtime | toDateString }}" type="text" readonly><br>
                 Owner:<br><input ng-model="doc.owner" type="text" readonly><br>
                 Access:<br><input ng-model="doc.access" type="text" readonly><br>
-                Add Note:<br><textarea class="input-xxlarge" " ui-keypress="{13: 'addNoteKeypressCallback($event)'}" ng-model="new_note" /><br>
+                Add Note:<br><textarea class="input-xxlarge" "ui-keypress="{13: 'addNoteKeypressCallback($event)'}" ng-model="new_note" /><br>
                 Notes: <br><li ng-repeat="note in doc.notes">
                            {{note}}
                         </li>
@@ -103,30 +130,17 @@
     <div class="row-fluid">
         <div class="span7">
             <div class="well">
-                <h4>Conditions:</h4>
-                <div class="gridStyle" ng-grid="gridOptions"></div>
+                <h4>Process Conditions:</h4>
+                <div ng-repeat="p in all_process">
+
+                    <div class="gridStyle" ng-grid="grid_options[$index]">
+
+                    </div>
+                </div>
             </div>
 
         </div>
-        <div class="span5">
-            <div class="well">
-                 <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
-                    <button type="button" class="close" ng-click="removeTag($index);">&times;</button>{{ tag }}
-                </span>
-                <form class="form-horizontal">
-                    <label>Create New Tag</label>
-                    <input ui-keypress="{13: 'addTagKeypressCallback($event)'}" ng-model="new_tag" placeholder="Tag...">
-                    <label>Tags to add</label>
-                    <select class="span3" ng-model="tag_to_add"
-                            ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
-                            ng-multiple="false">
-                        <option></option>
-                        <option ng-repeat="tag in tagchoices">{{ tag }}</option>
-                    </select>
-                    <button ng-click="addTag()">Add Tag</button>
-                </form>
-            </div>
-        </div>
+
     </div>
 
 
