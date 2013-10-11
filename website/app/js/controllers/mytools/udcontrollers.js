@@ -1,4 +1,4 @@
-function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
+function UploadFileController($scope, mcapi, User, formDataObject, $rootScope, pubsub) {
     $scope.show_project_panel = true;
     $scope.show_process_panel = false;
     $scope.show_inputs_panel = false;
@@ -10,7 +10,12 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
     $scope.process = "Process";
     $scope.required_conditions = [];
 
-    $scope.$watch('selected_project', function(oldval, newval) { console.log("project chosen o:" + oldval + " n:" +  newval)});
+    $scope.$watch('selected_project', function(newval, oldval) {
+        var obj = {};
+        obj.val1 = oldval;
+        obj.val2 = newval;
+        pubsub.send("project", obj);
+    });
 
     $scope.projects = [
         {name:'project1', id:1},
@@ -36,8 +41,18 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
         $scope.show_inputs_panel = true;
         $scope.required_conditions = _.find($scope.processes, function(item) {
             return item.name == $scope.process;
+
         }).required_conditions;
     }
+
+    mcapi('/templates')
+        .arg('filter_by="template_type":"condition"')
+        .success(function(data) {
+            //console.dir(data);
+        })
+        .error(function(data) {
+            //console.log("/templates call failed")
+        }).jsonp();
 
     $scope.uploadEachFile = function () {
         if ($scope.files.length == 0) {
@@ -64,6 +79,16 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
             }
         });
     };
+}
+
+function ProjectDetailsController($scope, mcapi, User, pubsub) {
+    pubsub.waitOn($scope, "project", function(data) {
+        console.dir(data);
+    })
+}
+
+function ProcessDetailsController($scope) {
+
 }
 
 function UploadDirectoryController($scope, mcapi, User) {

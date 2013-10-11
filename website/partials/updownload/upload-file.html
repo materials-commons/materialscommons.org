@@ -18,7 +18,7 @@
                 </form>
                 <button ng-click="useProject()">Use Project</button>
             </div>
-            <div class="span6 well">
+            <div class="span6 well" ng-controller="ProjectDetailsController">
                 Project details here.
             </div>
         </div>
@@ -36,7 +36,7 @@
 
 <div class="row-fluid">
     <div class="arrow_box_right span4 offset1"><h5>Inputs</h5></div>
-    <div class="exampleborderradius span2"><h5>{{ process }}</h5></div>
+    <div class="processbox span2"><h5>{{ process }}</h5></div>
     <div class="arrow_box_right span4"><h5>Outputs</h5></div>
 </div>
 
@@ -107,7 +107,7 @@
                     <button ng-click="useProcess()">Use Process</button>
                 </form>
             </div>
-            <div class="span6 well">
+            <div class="span6 well" ng-controller="ProcessDetailsController">
                 Process details here
             </div>
         </div>

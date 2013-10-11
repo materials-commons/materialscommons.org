@@ -89,6 +89,24 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
     return sharedService;
 });
 
+materialsCommonsServices.factory('pubsub', function ($rootScope) {
+    var pubsubService = {};
+    pubsubService.message = '';
+
+    pubsubService.send = function(channel, msg) {
+        this.message = msg;
+        $rootScope.$broadcast(channel);
+    }
+
+    pubsubService.waitOn = function(scope, channel, fn) {
+        scope.$on(channel, function() {
+            fn(pubsubService.message);
+        });
+    }
+
+    return pubsubService;
+});
+
 
 materialsCommonsServices.factory('mcapi', function ($http, User) {
     function MCApi() {
@@ -247,7 +265,7 @@ materialsCommonsServices.factory('treeToggle', function () {
             return  selected.splice(selected.indexOf(id), 1);
         },
 
-        get_all: function(){
+        get_all: function () {
             return selected
         }
     }
@@ -257,13 +275,13 @@ materialsCommonsServices.factory('Thumbnail', function () {
     var fileType = '';
     var fileSrc = '';
     return {
-        fetch_images: function(datafiles){
+        fetch_images: function (datafiles) {
             var images = [];
-            datafiles.forEach(function (item){
+            datafiles.forEach(function (item) {
                 fileType = determineFileType(item.mediatype);
-                if (fileType == 'image'){
+                if (fileType == 'image') {
                     fileSrc = filePath(fileType, item.mediatype, item.location, item.name);
-                    images.push({'file': item,'link': fileSrc})
+                    images.push({'file': item, 'link': fileSrc})
                 }
 
             });
@@ -278,13 +296,13 @@ materialsCommonsServices.factory('Thumbnail', function () {
 materialsCommonsServices.factory('processInformation', function () {
     var all_process = [];
     return {
-        convert_into_gridoptions: function(process){
-            process.forEach(function(pr){
+        convert_into_gridoptions: function (process) {
+            process.forEach(function (pr) {
                 var one_process = [];
                 var keys = '';
                 keys = Object.keys(pr);
-                keys.forEach(function(k){
-                    var template = {'property': k, 'value' : pr[k]}
+                keys.forEach(function (k) {
+                    var template = {'property': k, 'value': pr[k]}
                     one_process.push(template);
                 })
                 all_process.push(one_process)
