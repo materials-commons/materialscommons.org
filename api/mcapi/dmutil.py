@@ -7,7 +7,7 @@ from mcexceptions import RequiredAttributeException
 
 def get_required(what, d):
     if what not in d:
-        raise RequiredAttributeException
+        raise RequiredAttributeException(what)
     return d[what]
 
 def get_optional(what, d, novalue=""):

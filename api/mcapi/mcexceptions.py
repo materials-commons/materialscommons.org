@@ -1,5 +1,6 @@
 class RequiredAttributeException(Exception):
-    pass
+    def __init__(self, attr):
+        self.attr = attr
 
 class AuthenticationException(Exception):
     pass
