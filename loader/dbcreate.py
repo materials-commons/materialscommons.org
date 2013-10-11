@@ -17,8 +17,13 @@ def create_tables():
     run_rethinkdb_command(lambda: r.table_create("udqueue").run())
     run_rethinkdb_command(lambda: r.table_create("reviews").run())
     run_rethinkdb_command(lambda: r.table_create("conditions").run())
-    run_rethinkdb_command(lambda: r.table_create("material_conditions").run())
-    run_rethinkdb_command(lambda: r.table_create("equipment_conditions").run())
+    run_rethinkdb_command(lambda: r.table_create("processes").run())
+    run_rethinkdb_command(lambda: r.table_create("machines").run())
+    run_rethinkdb_command(lambda: r.table_create("projects").run())
+    run_rethinkdb_command(lambda: r.table_create("datasets").run())
+    run_rethinkdb_command(lambda: r.table_create("citations").run())
+    run_rethinkdb_command(lambda: r.table_create("notes").run())
+    run_rethinkdb_command(lambda: r.table_create("templates").run())
 
 def run_rethinkdb_command(func):
     try:

@@ -1,56 +1,42 @@
 function UploadFileController($scope, mcapi, User, formDataObject, $rootScope) {
-    $scope.files = [];
-    $scope.percentage = 0;
+    $scope.show_project_panel = true;
+    $scope.show_process_panel = false;
+    $scope.show_inputs_panel = false;
+    $scope.show_outputs_panel = false;
+    $scope.project_panel_active = true;
+    $scope.process_panel_active = false;
+    $scope.inputs_panel_active = false;
+    $scope.outputs_panel_active = false;
+    $scope.process = "Process";
+    $scope.required_conditions = [];
 
-    mcapi('/user/%/datadirs', User.u())
-        .success(function (data) {
-            $scope.datagroups = data;
-        }).jsonp();
+    $scope.$watch('selected_project', function(oldval, newval) { console.log("project chosen o:" + oldval + " n:" +  newval)});
 
-    mcapi('/user/%/conditions/material_condition', User.u())
-        .success(function (data) {
-            $rootScope.material_conditions = data;
-        }).jsonp();
+    $scope.projects = [
+        {name:'project1', id:1},
+        {name:'project2', id:2}
+    ];
 
-    mcapi('/user/%/conditions/equipment_condition', User.u())
-        .success(function (data) {
-            $rootScope.equipment_conditions = data;
-        }).jsonp();
-
-    $scope.addFile = function (element) {
-        $scope.$apply(function () {
-            var obj = {};
-            obj.file = element.files[0];
-            obj.status = "Ready";
-            obj.datagroup = $scope.datagroup;
-            $scope.files.push(obj);
-        });
+    $scope.useProject = function() {
+        $scope.project = $scope.selected_project;
+        $scope.show_project_panel = false;
+        $scope.process_panel_active = true;
+        $scope.show_process_panel = true;
     }
 
-    $scope.update_file_entry = function (file, mc, ec) {
-        $scope.files.forEach(function (fileEntry) {
-            if (fileEntry.file.name == file) {
-                if (mc) {
-                    fileEntry.material_condition = mc;
-                }
-                if (ec) {
-                    fileEntry.equipment_condition = ec;
-                }
-            }
-        });
-    }
+    $scope.processes = [
+        {name: 'process1', id:1, required_conditions: ['equipment', 'material']},
+        {name: 'process2', id:2, required_conditions: ['equipment', 'material', 'allisonlab', 'papers']}
+    ];
 
-    $scope.apply_to_all_files = function () {
-        if ($scope.top_level_mc) {
-            $scope.files.forEach(function (fileEntry) {
-                fileEntry.material_condition = $scope.top_level_mc;
-            });
-        }
-        if ($scope.top_level_ec) {
-            $scope.files.forEach(function (fileEntry) {
-                fileEntry.equipment_condition = $scope.top_level_ec;
-            });
-        }
+    $scope.useProcess = function() {
+        $scope.process = $scope.selected_process;
+        $scope.show_process_panel = false;
+        $scope.inputs_panel_active = true;
+        $scope.show_inputs_panel = true;
+        $scope.required_conditions = _.find($scope.processes, function(item) {
+            return item.name == $scope.process;
+        }).required_conditions;
     }
 
     $scope.uploadEachFile = function () {

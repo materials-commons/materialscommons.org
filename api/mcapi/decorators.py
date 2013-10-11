@@ -9,14 +9,18 @@ _apikeys = {}
 def apikey(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        userApiKey = getUsersApiKey(kwargs['user'])
+        if 'user' in kwargs:
+            user = kwargs['user']
+        else:
+            user = request.args.get('user', False)
+        user_apikey = get_users_apikey(user)
         apikey = request.args.get('apikey', False)
-        if apikey <> userApiKey:
+        if apikey <> user_apikey:
             return badkey()
         return f(*args, **kwargs)
     return decorated
 
-def getUsersApiKey(username):
+def get_users_apikey(username):
     if username in _apikeys:
         return _apikeys[username]
     else:
@@ -27,7 +31,7 @@ def getUsersApiKey(username):
             _apikeys[username] = user['apikey']
             return user['apikey']
 
-def removeUserFromApiKeyCache(username):
+def remove_user_from_apikey_cache(username):
     if username in _apikeys:
         _apikeys.pop(username, None)
 
