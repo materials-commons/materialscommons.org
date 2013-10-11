@@ -22,7 +22,15 @@ def add_order_by_when_order_by(rr):
     else:
         return rr
 
+def add_filter_when_filter_by(rr):
+    val = request.args.get('filter_by')
+    if val:
+        return rr.filter(json.loads('{'+val+'}'))
+    else:
+        return rr
+
 def add_all_arg_options(rr):
+    rr = add_filter_when_filter_by(rr)
     rr = add_pluck_when_fields(rr)
     rr = add_order_by_when_order_by(rr)
     return rr
