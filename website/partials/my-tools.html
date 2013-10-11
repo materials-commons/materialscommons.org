@@ -24,13 +24,24 @@
                 <td><a href="#/upload/directory">Upload Directory</a></td>
                 <td><a href="#/updownload/queue">View Upload/Download Queue</a></td>
             </tr>
+
+            <tr>
+                <td><h4>Conditions</h4></td>
+                <td><a href="#/conditions/template/create">Create condition template</a></td>
+                <td><a href="#/conditions/template/list">List condition templates</a></td>
+                <td><a href="#/conditions/list">List all conditions</a></td>
+            </tr>
         </table>
     </div>
 </div>
-{{selected}}
+
+<br>
+<br>
+<br>
+
 <div ng-controller="ReviewListController">
     <div class="row-fluid">
-        <div class="offset1">
+        <div class="span10 offset1">
             <h4>Reviews to conduct</h4>
             <paged data="reviews" current-page="currentReviewPage" page-size="5">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -61,7 +72,7 @@
     </div>
 
     <div class="row-fluid">
-        <div class="offset1">
+        <div class="span10 offset1">
             <h4>Reviews you have requested</h4>
             <paged data="reviewsRequested" current-page="currentRequestedReviewPage" page-size="5">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
