@@ -61,7 +61,6 @@ function ReviewListController($scope, $location, mcapi, User) {
             $location.path("/data/edit/" + id);
         }
         else {
-            console.log("datagroup not supported yet");
         }
     }
 
@@ -69,7 +68,6 @@ function ReviewListController($scope, $location, mcapi, User) {
         var id = $scope.reviews[index].id;
         mcapi('/user/%/review/%', User.u(), id)
             .success(function (data) {
-                console.log("success deleting");
                 $scope.reviews.splice(index, 1);
             }).delete();
     }

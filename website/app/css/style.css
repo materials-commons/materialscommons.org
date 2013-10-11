@@ -349,7 +349,7 @@ div.exampleborderradius {
 
 img.data-img {
     width: 500px; /* Width of new image */
-    height: 300px; /* Height of new image */
+    height: 420px; /* Height of new image */
     max-width: none;
     position: absolute;
 
@@ -362,6 +362,6 @@ hr{
 .gridStyle {
     border: 1px solid rgb(212,212,212);
     width: 400px;
-    height: 300px
+    height: 150px
 }
 

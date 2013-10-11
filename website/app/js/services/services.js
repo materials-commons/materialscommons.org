@@ -273,3 +273,26 @@ materialsCommonsServices.factory('Thumbnail', function () {
 
     }
 });
+
+
+materialsCommonsServices.factory('processInformation', function () {
+    var all_process = [];
+    return {
+        convert_into_gridoptions: function(process){
+            process.forEach(function(pr){
+                var one_process = [];
+                var keys = '';
+                keys = Object.keys(pr);
+                keys.forEach(function(k){
+                    var template = {'property': k, 'value' : pr[k]}
+                    one_process.push(template);
+                })
+                all_process.push(one_process)
+
+
+            })
+            return all_process;
+        }
+    }
+
+});
