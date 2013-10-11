@@ -5,9 +5,6 @@ function MyDataGroupsController($scope, mcapi, User) {
     mcapi('/user/%/datadirs/datafiles', User.u())
         .success(function (data) {
             $scope.datagroups_by_user = data;
-        })
-        .error(function (data, status) {
-
         }).jsonp();
 
     $scope.getDatagroup = function (datagroupId) {

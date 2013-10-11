@@ -11,10 +11,9 @@ from utils import createTagCount, makePwHash, error_response, set_dates
 def tag():
     inserted = r.table('tags').insert(request.json).run(g.conn)
     if (inserted[u'inserted'] == 1):
-        return ''
+        return {'status': 'SUCCESS'}
     else:
-        error_msg = error_response(404)
-        return error_msg
+        return error_response(423)
 
 @app.route('/v1.0/tag/<tag>', methods=['DELETE'])
 @crossdomain(origin='*')

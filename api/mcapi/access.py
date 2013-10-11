@@ -1,7 +1,7 @@
 import rethinkdb as r
 import json
 from flask import g
-from utils import error_access_response, error_not_found_response, Status
+from utils import Status
 from args import json_as_format_arg
 
 _userAccessMatrix = {}
@@ -33,19 +33,19 @@ def checkAccessResponseList(user, items):
 
 def checkAccessResponseSingleUsing(user, item, l):
     if not item:
-        return error_access_response()
+        return error_response(422)
     elif not checkAccess(user, item['owner']):
-        return error_not_found_response()
+        return error_response(402)
     else:
         return l(item)
 
 def checkAccessResponseListUsing(user, items, l):
     if not items:
-        return error_access_response()
+        return error_response(422)
     else:
         owner = items[0]['owner']
         if not checkAccess(user, owner):
-            return error_access_response()
+            return error_response(402)
         else:
             return l(items)
 
