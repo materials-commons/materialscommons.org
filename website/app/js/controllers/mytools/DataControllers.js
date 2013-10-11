@@ -1,33 +1,15 @@
 function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, processInformation) {
-     $scope.count = 0;
-     $scope.grid_options = [];
-//     $scope.all_process = [
-//        [
-//            {property: 'temperature', value: '70C'},
-//            { property: 'pressure', value:'100'},
-//            {property: 'elasticity', value: 'test'}
-//        ],
-//        [
-//            {property: 'mc1', value: 'test1'},
-//            {property: 'mc2', value: 'test2'}
-//
-//        ]
-//    ];
+    $scope.count = 0;
+    $scope.grid_options = [];
 
-//    $scope.grid_options = [
-//        {data: all_process[0]},
-//        {data: all_process[1]}
-//    ]
-
-    mcapi('/user/%/equipment_conditions', User.u())
-        .success(function(data){
+    mcapi('/user/%/equipment_conditions/', User.u())
+        .success(function (data) {
             $scope.conditions = data;
             $scope.all_process = processInformation.convert_into_gridoptions($scope.conditions)
-            for(var i = 0; i < $scope.all_process.length; i++){
-                var template = {data : 'all_process[' + i + ']'}
+            for (var i = 0; i < $scope.all_process.length; i++) {
+                var template = {data: 'all_process[' + i + ']'}
                 $scope.grid_options.push(template);
             }
-
         }).jsonp();
 
 
@@ -42,17 +24,13 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         .success(function (data) {
             $scope.doc = data;
             $scope.setupAccessToUserFile();
-
         })
         .error(function (data) {
-
+            alertService.prepForBroadcast(data.error);
         }).jsonp();
-
-
 
     //This obj is used in data-edit
     $scope.signed_in_user = User.u();
-
     $scope.review_note = "";
     $scope.marked_for_review = false;
     $scope.reviewId = null;
@@ -68,8 +46,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
                 $scope.tagchoices.push(item.id);
                 $scope.originalTags.push(item.id);
             })
-        }).error(function (data, status) {
-
         }).jsonp();
 
     mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
@@ -84,8 +60,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     mcapi('/private/user/%/selected_users', User.u())
         .success(function (data) {
             $scope.users = data;
-        })
-        .error(function () {
         }).jsonp();
 
     $scope.removeTag = function (index) {
@@ -127,7 +101,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
 
                 })
                 .error(function (data) {
-                    //$scope.msg = decodeAlerts.get_alert_msg(data.error);
                     alertService.prepForBroadcast(data.error);
                 }).post(tagObj);
         });
@@ -150,7 +123,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         review.done = false;
         mcapi('/user/%/review', User.u())
             .success(function (data) {
-                $scope.msg= "Review/Followup has been added"
+                $scope.msg = "Review/Followup has been added"
                 alertService.prepForBroadcast($scope.msg);
                 mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
                     .success(function (data) {
@@ -189,6 +162,11 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         $scope.doc.notes.push($scope.new_note);
         $scope.new_note = "";
     }
+    $scope.add_notes = function () {
+        $scope.doc.notes.push($scope.new_note);
+        $scope.new_note = "";
+    }
+
 
     $scope.addReviewNoteKeypressCallback = function (event) {
         $scope.schedule_for_self = true;
@@ -198,11 +176,11 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     }
 
     $scope.reviewStatusChanged = function (index) {
-        console.log("reviewStatusChanged = " + $scope.scheduledReviews[index]);
         mcapi('/user/%/review/%/mark/%', User.u(), $scope.scheduledReviews[index].id,
             $scope.scheduledReviews[index].done)
             .success(function () {
-                //console.log("Marked as done");
+                $scope.msg = "Review Status has been changed"
+                alertService.prepForBroadcast($scope.msg);
             }).put();
     }
 }
@@ -213,9 +191,6 @@ function MyDataController($scope, mcapi, User, $location) {
     mcapi('/user/%/datafiles', User.u())
         .success(function (data, status) {
             $scope.data_by_user = data;
-        })
-        .error(function (data, status) {
-            console.log('status for data error ' + status + ' data will be ' + data.error)
         }).jsonp();
 
     $scope.dgroupid = "";

@@ -31,4 +31,5 @@ def json_as_format_arg(what):
     if 'format' in request.args:
         return json.dumps(what, indent=4)
     else:
+        print what
         return json.dumps(what)

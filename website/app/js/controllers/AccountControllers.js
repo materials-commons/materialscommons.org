@@ -81,14 +81,11 @@ function ApiKeyController($scope, User) {
     $scope.apikey = User.apikey();
 }
 
-function ApiKeyResetController($scope, mcapi, User, $cookieStore) {
+function ApiKeyResetController($scope, mcapi, User) {
     mcapi('/user/%/apikey/reset', User.u())
         .success(function (data) {
             $scope.new_apikey = data;
             User.reset_apikey($scope.new_apikey['apikey']);
-            var mcuser = $cookieStore.get('mcuser');
-            mcuser.apikey = $scope.new_apikey;
-            $cookieStore.put('mcuser');
         }).error(function (data) {
             alertService.prepForBroadcast(data.error);
         }).put();

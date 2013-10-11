@@ -1,10 +1,9 @@
-from mcapp import app
-from decorators import crossdomain, apikey, jsonp
+from ..mcapp import app
+from ..decorators import crossdomain, apikey, jsonp
 import json
 from flask import g, request
 import rethinkdb as r
-from utils import error_response, set_dates
-from access import checkOwnership
+from ..utils import error_response, set_dates
 
 @app.route('/v1.0/usergroup/<usergroup>/datafiles')
 @jsonp

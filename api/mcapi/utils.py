@@ -52,22 +52,22 @@ def makePwHash(password):
 def makePwHashWithSalt(password, salt):
     return crypt(password, salt, iterations=_PW_ITERATIONS)
 
-def error_access_response():
-    make_response(jsonify({'error': 'access denied'}), 403)
+#def error_access_response():
+    #make_response(jsonify({'error': 'access denied'}), 403)
 
-def error_not_found_response():
-    make_response(jsonify({'error': 'no such datafile'}), 404)
+#def error_not_found_response():
+    #make_response(jsonify({'error': 'no such datafile'}), 404)
 
 def error_response(code):
     error_dict = {
-        400 : {'error': 'bad request'},
-        401 : {'error' : 'usergroup already exists. Try using a different usergroup'},
-        402 : {'error' : 'account exists. Please check username and try again'},
-        403 : {'error':  'forbidden'},
-        404 : {'error':  'Sorry! There was a problem adding tag'},
-        405 : {'error':  'You do not have permission to access this file at this time.'},
-        406 : {'error':  'Cannot add duplicate users.'},
-        407 : {'error':  'You do not have permission to add the User to Usergroup'}
+        400 : {'Bad Request'},
+        403:  {'Access Denied'},
+        418 : {'error': 'Login Failed. Please check the Username & Password'},
+        419 : {'error': 'Update Failed. Please check the entries and try again'},
+        420 : {'error': 'Reset Failed. Unable to reset apikey'},
+        421 : {'error': 'Failed: Entry already exists'},
+        422 : {'error': 'No entry in the database'},
+        423 : {'error': 'Failed: Unable to add the entity to database'}
     }
     return make_response(jsonify(error_dict[code]), code)
 
