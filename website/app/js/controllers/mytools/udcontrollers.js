@@ -1,4 +1,4 @@
-function UploadFileController($scope, mcapi, User, formDataObject, $rootScope, pubsub) {
+function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watcher) {
     $scope.show_project_panel = true;
     $scope.show_process_panel = false;
     $scope.show_inputs_panel = false;
@@ -10,19 +10,31 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope, p
     $scope.process = "Process";
     $scope.required_conditions = [];
 
-    $scope.$watch('selected_project', function(newval, oldval) {
-        var obj = {};
-        obj.val1 = oldval;
-        obj.val2 = newval;
-        pubsub.send("project", obj);
+    watcher.watch($scope, 'selected_project', function (projectname) {
+        pubsub.send('project_details', projectname);
+    });
+
+    watcher.watch($scope, 'selected_process', function (processname) {
+        var p = _.find($scope.processes, function (item) {
+            return item.name == processname;
+        });
+        pubsub.send('process_details', p);
+    });
+
+    watcher.watch($scope, 'selected_condition', function (conditionName) {
+        console.log("selected_condition = " + conditionName);
+        var c = _.find($scope.conditions, function (condition) {
+            return condition.template_name == conditionName;
+        });
+        pubsub.send('condition_details', c);
     });
 
     $scope.projects = [
-        {name:'project1', id:1},
-        {name:'project2', id:2}
+        {name: 'project1', id: 1},
+        {name: 'project2', id: 2}
     ];
 
-    $scope.useProject = function() {
+    $scope.useProject = function () {
         $scope.project = $scope.selected_project;
         $scope.show_project_panel = false;
         $scope.process_panel_active = true;
@@ -30,71 +42,59 @@ function UploadFileController($scope, mcapi, User, formDataObject, $rootScope, p
     }
 
     $scope.processes = [
-        {name: 'process1', id:1, required_conditions: ['equipment', 'material']},
-        {name: 'process2', id:2, required_conditions: ['equipment', 'material', 'allisonlab', 'papers']}
+        {name: 'Run SEM', id: 1, description: 'Run the SEM and collect data', required_conditions: ['material_conditions', 'sem_equipment_conditions']},
+        {name: 'Run APT', id: 2, description: 'Run the APT and collect data', required_conditions: ['material_conditions', 'apt_equipment_conditions']}
     ];
 
-    $scope.useProcess = function() {
+    $scope.useProcess = function () {
         $scope.process = $scope.selected_process;
         $scope.show_process_panel = false;
         $scope.inputs_panel_active = true;
         $scope.show_inputs_panel = true;
-        $scope.required_conditions = _.find($scope.processes, function(item) {
+        var p = _.find($scope.processes, function (item) {
             return item.name == $scope.process;
+        });
 
-        }).required_conditions;
+        $scope.required_conditions = p.required_conditions;
+
+        pubsub.send("process_details", p);
+    }
+
+    $scope.useInputCondition = function() {
+        $scope.show_edit_condition = true;
+        var c = _.find($scope.conditions, function (condition) {
+            return condition.template_name == $scope.selected_condition;
+        });
+        console.dir(c);
+        pubsub.send('edit_condition', c);
     }
 
     mcapi('/templates')
-        .arg('filter_by="template_type":"condition"')
-        .success(function(data) {
-            //console.dir(data);
+        .argWithValue('filter_by', '"template_type":"condition"')
+        .success(function (conditions) {
+            $scope.conditions = conditions;
         })
-        .error(function(data) {
-            //console.log("/templates call failed")
+        .error(function (data) {
+            console.log("/templates call failed")
         }).jsonp();
-
-    $scope.uploadEachFile = function () {
-        if ($scope.files.length == 0) {
-            return;
-        }
-        $scope.files.forEach(function (fileEntry) {
-            console.dir(fileEntry);
-            if (fileEntry.status != "Uploaded") {
-                fileEntry.status = "Uploading...";
-                mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
-                    .success(function () {
-                        fileEntry.status = "Uploaded";
-                    })
-                    .error(function () {
-                        fileEntry.status = "Failed";
-                    })
-                    .post(
-                        {
-                            file: fileEntry.file,
-                            material_condition: fileEntry.material_condition.id,
-                            equipment_condition: fileEntry.equipment_condition.id
-                        },
-                        {headers: {'Content-Type': false}, transformRequest: formDataObject});
-            }
-        });
-    };
 }
 
-function ProjectDetailsController($scope, mcapi, User, pubsub) {
-    pubsub.waitOn($scope, "project", function(data) {
-        console.dir(data);
+function ProjectDetailsController($scope, pubsub) {
+    pubsub.waitOn($scope, "project_details", function (projectName) {
+        $scope.projectName = projectName;
     })
 }
 
-function ProcessDetailsController($scope, mcapi, User, pubsub) {
-    pubsub.waitOn($scope, "process_details", function(data) {
+function ProcessDetailsController($scope, pubsub) {
+    pubsub.waitOn($scope, "process_details", function (data) {
         $scope.process = data;
     });
 }
 
-function InputDetailsController($scope) {
-
+function InputDetailsController($scope, pubsub) {
+    pubsub.waitOn($scope, "condition_details", function (condition) {
+        $scope.condition = condition;
+    });
 }
 
 function OutputDetailsController($scope) {
@@ -103,6 +103,12 @@ function OutputDetailsController($scope) {
 
 function UploadProcessController($scope) {
 
+}
+
+function ConditionEditController($scope, pubsub) {
+    pubsub.waitOn($scope, 'edit_condition', function(condition) {
+        $scope.condition = condition;
+    });
 }
 
 function UploadDirectoryController($scope, mcapi, User) {
@@ -122,3 +128,29 @@ function UpDownLoadQueueController($scope, mcapi, User) {
             $scope.udentries = data;
         }).jsonp();
 }
+
+//$scope.uploadEachFile = function () {
+//    if ($scope.files.length == 0) {
+//        return;
+//    }
+//    $scope.files.forEach(function (fileEntry) {
+//        console.dir(fileEntry);
+//        if (fileEntry.status != "Uploaded") {
+//            fileEntry.status = "Uploading...";
+//            mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
+//                .success(function () {
+//                    fileEntry.status = "Uploaded";
+//                })
+//                .error(function () {
+//                    fileEntry.status = "Failed";
+//                })
+//                .post(
+//                {
+//                    file: fileEntry.file,
+//                    material_condition: fileEntry.material_condition.id,
+//                    equipment_condition: fileEntry.equipment_condition.id
+//                },
+//                {headers: {'Content-Type': false}, transformRequest: formDataObject});
+//        }
+//    });
+//};

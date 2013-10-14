@@ -19,7 +19,7 @@
                 <button ng-click="useProject()">Use Project</button>
             </div>
             <div class="span6 well" ng-controller="ProjectDetailsController">
-                Project details here.
+                {{projectName}}
             </div>
         </div>
     </div>
@@ -115,7 +115,12 @@
                 </form>
             </div>
             <div class="span6 well" ng-controller="ProcessDetailsController">
-                Process details here
+                <label>Name:</label> {{process.name}}
+                <label>Description:</label> {{process.description}}
+                <label>Required Conditions:</label>
+                <ul>
+                    <li ng-repeat="condition in process.required_conditions">{{condition}}</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -135,15 +140,15 @@
                 <h4>Inputs</h4>
 
                 <form>
-                    <select ng-model="tag_to_add"
+                    <select ng-model="selected_condition"
                             ui-select2="{placeholder: 'Select condition', allowClear: true, width:'element'}"
                             ng-multiple="false">
                         <option></option>
-                        <option ng-repeat="condition in conditions">{{ condition.name }}</option>
+                        <option ng-repeat="condition in conditions">{{ condition.template_name }}</option>
                     </select>
-                    <button ng-click="addInputCondition()">Add Condition</button>
+                    <button ng-click="useInputCondition()">Use Condition</button>
                     <hr>
-                    <select ng-model="tag_to_add"
+                    <select ng-model="selected_file"
                             ui-select2="{placeholder: 'Select file', allowClear: true, width:'element'}"
                             ng-multiple="false">
                         <option></option>
@@ -153,7 +158,23 @@
                 </form>
             </div>
             <div class="span6 well" ng-controller="InputDetailsController">
-                Input details here
+                <label>Name:</label> {{condition.template_name}}
+                <label>Description:</label>{{condition.template_description}}
+                <ul>
+                    <li ng-repeat="propertyItem in condition.model">{{propertyItem.name}}</li>
+                </ul>
+            </div>
+            <div class="row-fluid" ng-show="show_edit_condition" ng-controller="ConditionEditController">
+                <div class="span12 well">
+                    <form>
+                        <label>Name:</label> {{condition.template_name}}
+                        <label>Description</label> {{condition.template_description}}
+                        <div ng-repeat="property in condition.model">
+                            <label>{{property.name}}</label><input ng-model=property.value type="text">
+                        </div>
+                        <button ng-click="addCondition()">Add Condition</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
