@@ -20,12 +20,12 @@ def get_all_templates():
 def delete_template(template_id):
     pass
 
-@app.route('/v1.0/templates', methods=['POST'])
-@apikey
+@app.route('/v1.0/templates/new', methods=['POST'])
 @crossdomain(origin='*')
 def create_template():
     j = request.get_json()
     template_type = dmutil.get_required('template_type', j)
+    print template_type
     return create_template_for_type(template_type, j)
 
 def create_template_for_type(template_type, j):
@@ -35,6 +35,7 @@ def create_template_for_type(template_type, j):
                       "machine": create_machine_template,\
                       "condition": create_condition_template\
     }
+    print j
     if template_type in template_table:
         template_func = template_table[template_type]
         template = template_func(j)
@@ -76,7 +77,8 @@ def create_machine_template(j):
 
 def create_condition_template(j):
     template = common_template_elements("condition", j)
-    properties = j['properties']
+    #properties = j['properties']
+    properties = condition['properties']
     for prop in properties:
         prop_name = prop['name']
         prop_value = prop['value']

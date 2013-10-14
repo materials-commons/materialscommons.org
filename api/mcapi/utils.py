@@ -3,6 +3,7 @@ import uuid
 from pbkdf2 import crypt
 from flask import jsonify, make_response
 from args import json_as_format_arg
+import rethinkdb as r
 
 class Status:
     SUCCESS = 200

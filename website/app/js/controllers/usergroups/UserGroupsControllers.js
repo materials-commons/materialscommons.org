@@ -7,7 +7,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService)
         u_group.name = $scope.name;
         u_group.users = [User.u()];
         u_group.owner = User.u();
-        mcapi('/user/%/usergroups/new', User.u())
+        mcapi('/user/%/usergroups/neww', User.u())
             .success(function (data) {
                 $scope.msg = "UserGroup has been created successfully"
                 alertService.prepForBroadcast($scope.msg);

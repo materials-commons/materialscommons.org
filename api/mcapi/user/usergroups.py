@@ -5,9 +5,32 @@ from flask import g, request
 import rethinkdb as r
 from ..utils import error_response, set_dates
 
+@app.route('/v1.0/user/<user>/usergroups/neww', methods=['POST'])
+@apikey
+@crossdomain(origin='*')
+def newusergroup(user):
+    u_group = request.get_json(silent = False)
+    exists = r.table('usergroups').get(u_group['name']).run(g.conn)
+    if exists is None:
+        new_u_group = {}
+        new_u_group['name'] = u_group['name']
+        new_u_group['description'] = u_group['description']
+        new_u_group['access'] = u_group['access']
+        new_u_group['id'] = u_group['name']
+        new_u_group['users'] = u_group['users']
+        new_u_group['owner'] = user
+        set_dates(new_u_group)
+        selection = r.table('usergroups').insert(new_u_group).run(g.conn)
+        if (selection[u'inserted'] == 1):
+            return ''
+    else:
+        error_msg = error_response(423)
+        return error_msg
+
 @app.route('/v1.0/usergroup/<usergroup>/datafiles')
 @jsonp
 def list_datafiles_by_usergroup(usergroup):
+    print ''
     selection = list(r.table('usergroups').filter({'id':usergroup}).outer_join(\
             r.table('datafiles'), lambda urow, drow: drow['owner'] in urow['users'])\
                      .run(g.conn, time_format='raw'))
@@ -29,7 +52,6 @@ def make_json_obj_for_join(selection, use_name):
 def get_usergroup(user,usergroup):
     selection = r.table('usergroups').get(usergroup).run(g.conn, time_format='raw')
     return json.dumps(selection)
-
 
 @app.route('/v1.0/user/<user>/usergroup/<usergroup>/users', methods=['GET'])
 @apikey
@@ -64,27 +86,6 @@ def remove_user_from_usergroup(user, usergroup, selected_name):
     r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
     return json.dumps(res)
 
-@app.route('/v1.0/user/<user>/usergroups/new', methods=['POST'])
-@apikey
-@crossdomain(origin='*')
-def newusergroup(user):
-    u_group = request.get_json(silent = False)
-    exists = r.table('usergroups').get(u_group['name']).run(g.conn)
-    if exists is None:
-        new_u_group = {}
-        new_u_group['name'] = u_group['name']
-        new_u_group['description'] = u_group['description']
-        new_u_group['access'] = u_group['access']
-        new_u_group['id'] = u_group['name']
-        new_u_group['users'] = u_group['users']
-        new_u_group['owner'] = user
-        set_dates(new_u_group)
-        selection = r.table('usergroups').insert(new_u_group).run(g.conn)
-        if (selection[u'inserted'] == 1):
-            return ''
-    else:
-        error_msg = error_response(401)
-        return error_msg
 
 def does_user_exists_in_ugroup(user, usergroup):
     ug = r.table('usergroups').get(usergroup).run(g.conn)

@@ -236,22 +236,7 @@ materialsCommonsServices.factory('decodeAlerts', function () {
     }
 });
 
-materialsCommonsServices.factory('treeToggle', function () {
-    var selected = [];
-    return {
-        add_it: function (id) {
-            selected.push(id);
-        },
 
-        pop_it: function (id) {
-            return  selected.splice(selected.indexOf(id), 1);
-        },
-
-        get_all: function(){
-            return selected
-        }
-    }
-});
 
 materialsCommonsServices.factory('Thumbnail', function () {
     var fileType = '';
@@ -277,6 +262,7 @@ materialsCommonsServices.factory('Thumbnail', function () {
 
 materialsCommonsServices.factory('processInformation', function () {
     var all_process = [];
+    var new_conditions_format = [];
     return {
         convert_into_gridoptions: function(process){
             process.forEach(function(pr){
@@ -292,6 +278,13 @@ materialsCommonsServices.factory('processInformation', function () {
 
             })
             return all_process;
+        },
+
+        reformat_conditions: function(conditions){
+            conditions.forEach(function(c){
+                var row = {'property' : c, 'value': ''}
+                new_conditions_format.push()
+            })
         }
     }
 
