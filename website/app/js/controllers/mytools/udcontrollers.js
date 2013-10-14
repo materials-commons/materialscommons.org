@@ -87,7 +87,21 @@ function ProjectDetailsController($scope, mcapi, User, pubsub) {
     })
 }
 
-function ProcessDetailsController($scope) {
+function ProcessDetailsController($scope, mcapi, User, pubsub) {
+    pubsub.waitOn($scope, "process_details", function(data) {
+        $scope.process = data;
+    });
+}
+
+function InputDetailsController($scope) {
+
+}
+
+function OutputDetailsController($scope) {
+
+}
+
+function UploadProcessController($scope) {
 
 }
 
