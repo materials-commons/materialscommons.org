@@ -107,6 +107,24 @@ materialsCommonsServices.factory('pubsub', function ($rootScope) {
     return pubsubService;
 });
 
+materialsCommonsServices.factory('watcher', function() {
+    var watcherService = {};
+
+    watcherService.watch = function(scope, variable, fn) {
+        scope.$watch(variable, function(newval, oldval) {
+            if (!newval && !oldval) {
+                return; }
+            else if (newval == "" && oldval) {
+                fn(oldval);
+            } else {
+                fn(newval);
+            }
+        });
+    }
+
+    return watcherService;
+});
+
 
 materialsCommonsServices.factory('mcapi', function ($http, User) {
     function MCApi() {
@@ -148,6 +166,11 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
          ** are &'d onto the url
          */
         this.url = this.url + "&" + a;
+        return this;
+    }
+
+    MCApi.prototype.argWithValue = function(a, v) {
+        this.url = this.url + "&" + a + "=" + v;
         return this;
     }
 
