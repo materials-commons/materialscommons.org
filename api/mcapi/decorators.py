@@ -11,9 +11,13 @@ def apikey(f):
     def decorated(*args, **kwargs):
         if 'user' in kwargs:
             user = kwargs['user']
+            user_apikey = get_users_apikey(user)
         else:
             user = request.args.get('user', False)
-        user_apikey = get_users_apikey(user)
+            if user:
+                user_apikey = get_users_apikey(user)
+            else:
+                user_apikey = get_apikey_no_user(apikey)
         apikey = request.args.get('apikey', False)
         if apikey <> user_apikey:
             return badkey()
@@ -30,6 +34,17 @@ def get_users_apikey(username):
         else:
             _apikeys[username] = user['apikey']
             return user['apikey']
+
+def get_apikey_no_user(apikey):
+    if apikey in _apikeys:
+        return apikey
+    else:
+        selection = r.table('users').filter({'apikey': apikey}).run(g.conn)
+        if selection:
+            apikey[apikey] = apikey
+            return apikey
+        else:
+            return None
 
 def remove_user_from_apikey_cache(username):
     if username in _apikeys:

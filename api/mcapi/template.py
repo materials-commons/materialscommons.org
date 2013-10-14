@@ -29,7 +29,6 @@ def create_template():
     return create_template_for_type(template_type, j)
 
 def create_template_for_type(template_type, j):
-    print "create_template_for_type: %s" %(template_type)
     template_table = {\
                       "process": create_process_template,\
                       "machine": create_machine_template,\

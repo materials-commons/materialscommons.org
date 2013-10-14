@@ -89,6 +89,42 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
     return sharedService;
 });
 
+materialsCommonsServices.factory('pubsub', function ($rootScope) {
+    var pubsubService = {};
+    pubsubService.message = '';
+
+    pubsubService.send = function(channel, msg) {
+        this.message = msg;
+        $rootScope.$broadcast(channel);
+    }
+
+    pubsubService.waitOn = function(scope, channel, fn) {
+        scope.$on(channel, function() {
+            fn(pubsubService.message);
+        });
+    }
+
+    return pubsubService;
+});
+
+materialsCommonsServices.factory('watcher', function() {
+    var watcherService = {};
+
+    watcherService.watch = function(scope, variable, fn) {
+        scope.$watch(variable, function(newval, oldval) {
+            if (!newval && !oldval) {
+                return; }
+            else if (newval == "" && oldval) {
+                fn(oldval);
+            } else {
+                fn(newval);
+            }
+        });
+    }
+
+    return watcherService;
+});
+
 
 materialsCommonsServices.factory('mcapi', function ($http, User) {
     function MCApi() {
@@ -130,6 +166,11 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
          ** are &'d onto the url
          */
         this.url = this.url + "&" + a;
+        return this;
+    }
+
+    MCApi.prototype.argWithValue = function(a, v) {
+        this.url = this.url + "&" + a + "=" + v;
         return this;
     }
 
@@ -242,13 +283,13 @@ materialsCommonsServices.factory('Thumbnail', function () {
     var fileType = '';
     var fileSrc = '';
     return {
-        fetch_images: function(datafiles){
+        fetch_images: function (datafiles) {
             var images = [];
-            datafiles.forEach(function (item){
+            datafiles.forEach(function (item) {
                 fileType = determineFileType(item.mediatype);
-                if (fileType == 'image'){
+                if (fileType == 'image') {
                     fileSrc = filePath(fileType, item.mediatype, item.location, item.name);
-                    images.push({'file': item,'link': fileSrc})
+                    images.push({'file': item, 'link': fileSrc})
                 }
 
             });
@@ -264,13 +305,13 @@ materialsCommonsServices.factory('processInformation', function () {
     var all_process = [];
     var new_conditions_format = [];
     return {
-        convert_into_gridoptions: function(process){
-            process.forEach(function(pr){
+        convert_into_gridoptions: function (process) {
+            process.forEach(function (pr) {
                 var one_process = [];
                 var keys = '';
                 keys = Object.keys(pr);
-                keys.forEach(function(k){
-                    var template = {'property': k, 'value' : pr[k]}
+                keys.forEach(function (k) {
+                    var template = {'property': k, 'value': pr[k]}
                     one_process.push(template);
                 })
                 all_process.push(one_process)
