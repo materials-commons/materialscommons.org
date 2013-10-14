@@ -11,6 +11,7 @@ def apikey(f):
     def decorated(*args, **kwargs):
         if 'user' in kwargs:
             user = kwargs['user']
+            user_apikey = get_users_apikey(user)
         else:
             user = request.args.get('user', False)
             if user:
