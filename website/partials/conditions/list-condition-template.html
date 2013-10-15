@@ -1,0 +1,28 @@
+<div class="span12 offset1">
+    <div class="well">
+        <h4>Recently Created Condition  Templates</h4>
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <thead>
+            <tr>
+            <th>Template Name</th>
+            <th>Template Type</th>
+            <th>Owner</th>
+            <th>Created Date</th>
+            <th>Properties</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="t in templates" style="cursor:pointer">
+                <td>{{ t.template_name }}</td>
+                <td>{{ t.template_type }}</td>
+                <td>{{ t.owner }}</td>
+                <td>{{ t.template_birthtime | toDateString }}</td>
+                <td>
+                     <li class="label label-info" style="margin-left: 5px" ng-repeat="p in t.model">
+                     {{ p.name }}
+                </li>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

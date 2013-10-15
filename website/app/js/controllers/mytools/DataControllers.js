@@ -1,11 +1,11 @@
-function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, processInformation) {
+function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, formatData) {
     $scope.count = 0;
     $scope.grid_options = [];
 
     mcapi('/user/%/equipment_conditions/', User.u())
         .success(function (data) {
             $scope.conditions = data;
-            $scope.all_process = processInformation.convert_into_gridoptions($scope.conditions)
+            $scope.all_process = formatData.convert_into_gridoptions($scope.conditions)
             for (var i = 0; i < $scope.all_process.length; i++) {
                 var template = {data: 'all_process[' + i + ']'}
                 $scope.grid_options.push(template);

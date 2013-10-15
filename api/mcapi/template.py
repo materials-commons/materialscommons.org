@@ -34,7 +34,6 @@ def create_template_for_type(template_type, j):
                       "machine": create_machine_template,\
                       "condition": create_condition_template\
     }
-    print j
     if template_type in template_table:
         template_func = template_table[template_type]
         template = template_func(j)
@@ -76,10 +75,9 @@ def create_machine_template(j):
 
 def create_condition_template(j):
     template = common_template_elements("condition", j)
-    #properties = j['properties']
-    properties = condition['properties']
+    properties = j[u'properties']
     for prop in properties:
-        prop_name = prop['name']
+        prop_name = prop['property']
         prop_value = prop['value']
         add_model_item(template, prop_name, prop_value)
         add_model_item(template, prop_name + '_note', "")

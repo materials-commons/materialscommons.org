@@ -9,20 +9,29 @@
                          ng-multiple="false">
                     <option value=''></option>
                     <option value='process'>Process</option>
-                    <option value='machine'>Machine</option>
                     <option value='condition'>Condition</option>
                 </select><br>
-
-                Template Name:<br>
-                <input ng-model="doc.template_name" type="text"><br>
-
-                Owner: <br>
-                <input ng-model="doc.owner" type="text"><br>
-                Template Description:<br>
-                <textarea class="input-xlarge" ng-model="doc.template_description" /><br>
             </div>
+    </div>
+</div>
+</div>
+
+<div ng-show="doc.template_type" class="span12 offset1">
+<div class="row-fluid">
+    <div class="span5">
+        <div class="well">
+            Template Name:<br>
+            <input ng-model="doc.template_name" type="text"><br>
+            Owner: <br>
+            <input ng-model="doc.owner" type="text"><br>
+            Template Description:<br>
+            <textarea class="input-xlarge" ng-model="doc.template_description" /><br>
         </div>
     </div>
+</div>
+</div>
+
+<div ng-show="doc.template_type=='condition'" class="span12 offset1">
     <div class="row-fluid">
         <div class="span7">
             <div class="well">
@@ -35,14 +44,13 @@
                 <span class="label label-success" style="margin-left: 5px" ng-repeat="p in properties">
                      <button type="button" class="close" ng-click="remove_property($index);">&times;</button>{{ p }}
                 </span>
-
-
             </div>
-
         </div>
     </div>
     <button type="button"  class="btn btn-primary" ng-click="create_template()">Create template</button>
-
-
 </div>
 
+
+<div ng-show="doc.template_type=='process'" class="span12 offset1">
+    <button type="button"  class="btn btn-primary" ng-click="create_template()">Create template</button>
+</div>
