@@ -296,12 +296,11 @@ materialsCommonsServices.factory('Thumbnail', function () {
 
             return images;
         }
-
     }
 });
 
 
-materialsCommonsServices.factory('processInformation', function () {
+materialsCommonsServices.factory('formatData', function () {
     var all_process = [];
     var new_conditions_format = [];
     return {
@@ -315,17 +314,17 @@ materialsCommonsServices.factory('processInformation', function () {
                     one_process.push(template);
                 })
                 all_process.push(one_process)
-
-
             })
             return all_process;
         },
 
         reformat_conditions: function(conditions){
+            console.log('conditions are ' + conditions);
             conditions.forEach(function(c){
                 var row = {'property' : c, 'value': ''}
-                new_conditions_format.push()
+                new_conditions_format.push(row)
             })
+            return new_conditions_format;
         }
     }
 
