@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="entry in output_files">
-                    <td>{{ entry.type }}</td>
+                    <td>file</td>
                     <td>{{ entry.file.name }}</td>
                     <td>{{ entry.datagroup }}</td>
                 </tr>
@@ -210,7 +210,10 @@
                         <option></option>
                         <option ng-repeat="dg in datagroups">{{ dg.name }}</option>
                     </select>
-                    <button ng-click="addOutputFile()">Add File</button>
+                    <span class="btn btn-success fileinput-button" style="margin-left: 2px">
+                    <i class="icon-plus icon-white"></i>
+                    <input type="file" name="file" ng-model="upFile"
+                           onchange="angular.element(this).scope().addFile(this)"><span>Add files...</span>
                 </form>
             </div>
             <div class="span6 well">
@@ -220,7 +223,7 @@
 
         <!-- Upload data Step -->
         <div ng-show="nav_step == 'nav_upload'" class="row-fluid">
-            Upload data step
+            Upload files here
         </div>
     </div>
 </div>

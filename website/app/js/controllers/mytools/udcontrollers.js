@@ -2,6 +2,7 @@ function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watch
     $scope.nav_step = 'nav_choose_project';
     $scope.process = "Process";
     $scope.required_conditions = [];
+    $scope.output_files = [];
 
     $scope.setCurrentStep = function (step) {
         $scope.nav_step = step;
@@ -38,10 +39,6 @@ function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watch
     pubsub.waitOn($scope, 'nav_step_inputs_next_by_index', function (next_by_index) {
         $scope.setInputsCurrentStep($scope.required_conditions[next_by_index]);
     });
-
-    //---------------------------------------------------------
-
-
 
 
 }
@@ -130,6 +127,9 @@ function UploadProcessController($scope, pubsub) {
     });
 
     $scope.output_files = [];
+    pubsub.waitOn($scope, 'add_output_file', function(file) {
+        $scope.output_files.push(file);
+    })
 }
 
 function UploadWizardFileInputController($scope, pubsub) {
@@ -146,8 +146,19 @@ function UploadWizardFileInputController($scope, pubsub) {
     }
 }
 
-function UploadWizardOutputStepController($scope) {
+function UploadWizardOutputStepController($scope, pubsub) {
 
+    $scope.addFile = function (element) {
+        $scope.$apply(function () {
+            var obj = {};
+            obj.file = element.files[0];
+            obj.status = "Ready";
+            //obj.datagroup = $scope.datagroup;
+            obj.datagroup = "datagroup1";
+            pubsub.send('add_output_file', obj);
+            //$scope.files.push(obj);
+        });
+    }
 }
 
 function UploadDirectoryController($scope, mcapi, User) {
