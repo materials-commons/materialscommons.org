@@ -1,120 +1,104 @@
 function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watcher) {
-    $scope.show_project_panel = true;
-    $scope.show_process_panel = false;
-
-    $scope.show_inputs_panel = true;
-
-    $scope.show_outputs_panel = false;
-    $scope.project_panel_active = true;
-    $scope.process_panel_active = false;
-
-    $scope.inputs_panel_active = true;
-
-    $scope.outputs_panel_active = false;
+    $scope.nav_step = 'nav_choose_project';
     $scope.process = "Process";
     $scope.required_conditions = [];
 
-    watcher.watch($scope, 'selected_project', function (projectname) {
-        pubsub.send('project_details', projectname);
-    });
-
-    watcher.watch($scope, 'selected_process', function (processname) {
-        var p = _.find($scope.processes, function (item) {
-            return item.name == processname;
-        });
-        pubsub.send('process_details', p);
-    });
-
-    watcher.watch($scope, 'selected_condition', function (conditionName) {
-        var c = _.find($scope.conditions, function (condition) {
-            return condition.template_name == conditionName;
-        });
-        pubsub.send('condition_details', c);
-    });
-
-    $scope.addInputFile = function () {
-        var f = _.find($scope.input_files, function (file) {
-            return file.name == $scope.selected_file;
-        });
-        pubsub.send('add_input_file', f);
+    $scope.setCurrentStep = function (step) {
+        $scope.nav_step = step;
     }
 
+    $scope.isCurrentStep = function (step) {
+        return $scope.nav_step == step;
+    }
+
+    $scope.setInputsCurrentStep = function (step) {
+        $scope.nav_step_inputs = step;
+    }
+
+    $scope.isInputsCurrentStep = function (step) {
+        return $scope.nav_step_inputs == step;
+    }
+
+    pubsub.waitOn($scope, 'nav_set_step', function (step) {
+        $scope.setCurrentStep(step);
+    });
+
+    pubsub.waitOn($scope, 'set_project', function (project) {
+        $scope.project = project;
+    });
+
+    pubsub.waitOn($scope, 'set_process', function (process) {
+        $scope.process = process.name;
+        $scope.required_conditions = process.required_conditions;
+        if ($scope.required_conditions && $scope.required_conditions.length > 0) {
+            $scope.nav_step_inputs = $scope.required_conditions[0];
+        }
+    });
+
+    pubsub.waitOn($scope, 'nav_step_inputs_next_by_index', function (next_by_index) {
+        $scope.setInputsCurrentStep($scope.required_conditions[next_by_index]);
+    });
+
+    //---------------------------------------------------------
+
+
+
+
+}
+
+function UploadWizardProjectStepController($scope, pubsub, watcher) {
     $scope.projects = [
         {name: 'project1', id: 1},
         {name: 'project2', id: 2}
     ];
 
-    $scope.useProject = function () {
-        $scope.project = $scope.selected_project;
-        $scope.show_project_panel = false;
-        $scope.process_panel_active = true;
-        $scope.show_process_panel = true;
-    }
+    watcher.watch($scope, 'selected_project', function (projectname) {
+        $scope.projectname = projectname;
+    });
 
-    $scope.doneAddingInputs = function() {
-        $scope.show_inputs_panel = false;
-        $scope.show_outputs_panel = true;
-        $scope.outputs_panel_active = true;
+    $scope.next = function () {
+        pubsub.send('set_project', $scope.projectname);
+        pubsub.send('nav_set_step', 'nav_choose_process');
     }
+}
 
+function UploadWizardProcessStepController($scope, pubsub, watcher) {
     $scope.processes = [
         {name: 'Run SEM', id: 1, description: 'Run the SEM and collect data', required_conditions: ['material_conditions', 'sem_equipment_conditions']},
         {name: 'Run APT', id: 2, description: 'Run the APT and collect data', required_conditions: ['material_conditions', 'apt_equipment_conditions']}
     ];
 
-    $scope.useProcess = function () {
-        $scope.process = $scope.selected_process;
-        $scope.show_process_panel = false;
-        $scope.inputs_panel_active = true;
-        $scope.show_inputs_panel = true;
-        var p = _.find($scope.processes, function (item) {
-            return item.name == $scope.process;
+    watcher.watch($scope, 'selected_process', function (processname) {
+        $scope.process = _.find($scope.processes, function (item) {
+            return item.name == processname;
         });
+    });
 
-        $scope.required_conditions = p.required_conditions;
+    $scope.next = function () {
+        pubsub.send('nav_set_step', 'nav_choose_inputs');
+        pubsub.send('set_process', $scope.process);
+    }
+}
 
-        pubsub.send("process_details", p);
+function UploadWizardConditionInputController($scope, mcapi, pubsub, watcher) {
+    $scope.init = function (condition_name, index) {
+        $scope.condition_name = condition_name;
+        $scope.condition_index = index;
+
+        var name = '"' + $scope.condition_name + '"';
+        mcapi('/templates')
+            .argWithValue('filter_by', '"template_name":' + name)
+            .success(function (condition) {
+                $scope.condition = condition[0];
+            })
+            .error(function () {
+                console.log("Failed looking up: " + $scope.condition_name);
+            }).jsonp();
     }
 
-    $scope.useInputCondition = function () {
-        $scope.show_edit_condition = true;
-        var c = _.find($scope.conditions, function (condition) {
-            return condition.template_name == $scope.selected_condition;
-        });
-        pubsub.send('edit_condition', c);
+    $scope.save = function () {
+        pubsub.send('add_condition', $scope.condition);
     }
-
-    mcapi('/templates')
-        .argWithValue('filter_by', '"template_type":"condition"')
-        .success(function (conditions) {
-            $scope.conditions = conditions;
-        })
-        .error(function (data) {
-            console.log("/templates call failed")
-        }).jsonp();
-
-    $scope.input_files = [
-        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
-        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
-    ];
-}
-
-function ProjectDetailsController($scope, pubsub) {
-    pubsub.waitOn($scope, "project_details", function (projectName) {
-        $scope.projectName = projectName;
-    })
-}
-
-function ProcessDetailsController($scope, pubsub) {
-    pubsub.waitOn($scope, "process_details", function (data) {
-        $scope.process = data;
-    });
-}
-
-function InputDetailsController($scope, pubsub) {
-    pubsub.waitOn($scope, "condition_details", function (condition) {
-        $scope.condition = condition;
-    });
 }
 
 function OutputDetailsController($scope) {
@@ -138,7 +122,6 @@ function UploadProcessController($scope, pubsub) {
 
     $scope.input_files = [];
     pubsub.waitOn($scope, "add_input_file", function (file) {
-        console.log("add_input_file");
         var file_to_add = {};
         file_to_add.id = file.id;
         file_to_add.name = file.name;
@@ -149,15 +132,22 @@ function UploadProcessController($scope, pubsub) {
     $scope.output_files = [];
 }
 
-function ConditionEditController($scope, pubsub) {
-    pubsub.waitOn($scope, 'edit_condition', function (condition) {
-        $scope.condition = condition;
-    });
+function UploadWizardFileInputController($scope, pubsub) {
+    $scope.input_files = [
+        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
+        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
+    ];
 
-    $scope.addCondition = function () {
-        pubsub.send('add_condition', $scope.condition);
-        $scope.condition = null;
+    $scope.addInputFile = function () {
+        var f = _.find($scope.input_files, function (file) {
+            return file.name == $scope.selected_file;
+        });
+        pubsub.send('add_input_file', f);
     }
+}
+
+function UploadWizardOutputStepController($scope) {
+
 }
 
 function UploadDirectoryController($scope, mcapi, User) {
@@ -177,6 +167,7 @@ function UpDownLoadQueueController($scope, mcapi, User) {
             $scope.udentries = data;
         }).jsonp();
 }
+
 
 //$scope.uploadEachFile = function () {
 //    if ($scope.files.length == 0) {

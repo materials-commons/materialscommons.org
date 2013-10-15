@@ -1,34 +1,4 @@
 <div class="row-fluid">
-    <div class="span9 offset1">
-        <div class="row-fluid">
-            <h5>First choose the project your are uploading to.</h5>
-            <h6>Show Panel:<input type="checkbox" ng-model="show_project_panel"></h6>
-        </div>
-        <div class="row-fluid" ng-show="show_project_panel">
-            <div class="span6 well">
-                <h4>Projects</h4>
-
-                <form>
-                    <select class="span4" ng-model="selected_project"
-                            ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
-                            ng-multiple="false">
-                        <option></option>
-                        <option ng-repeat="project in projects">{{ project.name }}</option>
-                    </select>
-                </form>
-                <button ng-click="useProject()">Use Project</button>
-            </div>
-            <div class="span6 well" ng-controller="ProjectDetailsController">
-                {{projectName}}
-            </div>
-        </div>
-    </div>
-    <div class="row-fluid" ng-show="!show_project_panel">
-        <div class="span9 offset1 well">Project Panel</div>
-    </div>
-</div>
-
-<div class="row-fluid">
     <div class="span3 offset1">
         <h5>Upload for project: {{project}}</h5>
     </div>
@@ -39,8 +9,6 @@
     <div class="processbox span2"><h5>{{ process }}</h5></div>
     <div class="arrow_box_right span4"><h5>Outputs</h5></div>
 </div>
-
-<br>
 
 <div ng-controller="UploadProcessController">
     <div class="row-fluid">
@@ -64,13 +32,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="span2 text-center">
-            <label>Required Conditions</label>
-            <ul>
-                <li ng-repeat="condition in required_conditions"><input type="checkbox" readonly>{{ condition }}</li>
-            </ul>
-        </div>
-        <div class="span4">
+        <div class="span4 offset2">
             <table class="table table-striped mc-table-hover table-condensed mc-table">
                 <thead>
                 <tr>
@@ -89,117 +51,152 @@
             </table>
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="offset1">
-            <button ng-click="submitUpload()">Submit</button>
-        </div>
-    </div>
 </div>
 
 <br>
 
-<div class="row-fluid" ng-show="process_panel_active">
-    <div class="span9 offset1">
+<div class="row-fluid">
+    <div class="span10 offset1">
         <div class="row-fluid">
-            <h5>Next choose a process that describes how your files and other inputs were created.</h5>
-            <h6>Show Panel:<input type="checkbox" ng-model="show_process_panel"></h6>
-        </div>
-        <div class="row-fluid" ng-show="show_process_panel">
-            <div class="span6 well">
-                <h4>Process</h4>
-
-                <form>
-                    <select ng-model="selected_process"
-                            ui-select2="{placeholder: 'Select process', allowClear: true, width:'element'}"
-                            ng-multiple="false">
-                        <option></option>
-                        <option ng-repeat="process in processes">{{ process.name }}</option>
-                    </select>
-                    <button ng-click="useProcess()">Use Process</button>
-                </form>
-            </div>
-            <div class="span6 well" ng-controller="ProcessDetailsController">
-                <label>Name:</label> {{process.name}}
-                <label>Description:</label> {{process.description}}
-                <label>Required Conditions:</label>
-                <ul>
-                    <li ng-repeat="condition in process.required_conditions">{{condition}}</li>
-                </ul>
+            <div class="span12">
+                <div class="btn-group">
+                    <button class="btn" ng-class="{'btn-primary':isCurrentStep('nav_choose_project')}"
+                            ng-click="setCurrentStep('nav_choose_project')">Choose Project
+                    </button>
+                    <button class="btn" ng-class="{'btn-primary':isCurrentStep('nav_choose_process')}"
+                            ng-click="setCurrentStep('nav_choose_process')">Choose Process
+                    </button>
+                    <button class="btn" ng-class="{'btn-primary':isCurrentStep('nav_choose_inputs')}"
+                            ng-click="setCurrentStep('nav_choose_inputs')">Choose Inputs
+                    </button>
+                    <button class="btn" ng-class="{'btn-primary':isCurrentStep('nav_choose_outputs')}"
+                            ng-click="setCurrentStep('nav_choose_outputs')">Choose Outputs
+                    </button>
+                    <button class="btn" ng-class="{'btn-primary':isCurrentStep('nav_upload')}"
+                            ng-click="setCurrentStep('nav_upload')">Upload
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row-fluid" ng-show="!show_process_panel">
-        <div class="span9 offset1 well text-center">Process Panel</div>
-    </div>
-</div>
 
-<div class="row-fluid" ng-show="inputs_panel_active">
-    <div class="span9 offset1">
-        <div class="row-fluid">
-            <h5>Now choose the inputs to your process.</h5>
-            <h6>Show Panel:<input type="checkbox" ng-model="show_inputs_panel"></h6>
-        </div>
-        <div class="row-fluid" ng-show="show_inputs_panel">
-            <div class="span6 well">
-                <h4>Inputs</h4>
+        <br>
 
-                <button ng-click="doneAddingInputs()">Done Adding Inputs</button>
-                <form>
-                    <select ng-model="selected_condition"
-                            ui-select2="{placeholder: 'Select condition', allowClear: true, width:'element'}"
-                            ng-multiple="false">
-                        <option></option>
-                        <option ng-repeat="condition in conditions">{{ condition.template_name }}</option>
-                    </select>
-                    <button ng-click="useInputCondition()">Use Condition</button>
-                    <hr>
-                    <select ng-model="selected_file"
-                            ui-select2="{placeholder: 'Select file', allowClear: true, width:'element'}"
-                            ng-multiple="false">
-                        <option></option>
-                        <option ng-repeat="file in input_files">{{ file.name }}</option>
-                    </select>
-                    <button ng-click="addInputFile()">Add File</button>
-                </form>
-            </div>
-            <div class="span6 well" ng-controller="InputDetailsController">
-                <label>Name:</label> {{condition.template_name}}
-                <label>Description:</label>{{condition.template_description}}
-                <ul>
-                    <li ng-repeat="propertyItem in condition.model">{{propertyItem.name}}</li>
-                </ul>
-            </div>
-            <div class="row-fluid" ng-show="show_edit_condition" ng-controller="ConditionEditController">
-                <div class="span12 well">
+        <!-- Choose Project Step -->
+
+        <div ng-show="nav_step == 'nav_choose_project'" class="row-fluid">
+            <div ng-controller="UploadWizardProjectStepController">
+                <div class="span6 well">
+                    <h4>Projects</h4>
+
                     <form>
-                        <label>Name:</label> {{condition.template_name}}
-                        <label>Description</label> {{condition.template_description}}
-                        <div ng-repeat="property in condition.model">
-                            <label>{{property.name}}</label><input ng-model=property.value type="text">
+                        <select class="span4" ng-model="selected_project"
+                                ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
+                                ng-multiple="false">
+                            <option></option>
+                            <option ng-repeat="project in projects">{{ project.name }}</option>
+                        </select>
+                    </form>
+                    <button ng-click="next()">Next</button>
+                </div>
+                <div class="span6 well">
+                    {{projectname}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Choose Process Step -->
+
+        <div ng-show="nav_step == 'nav_choose_process'" class="row-fluid">
+            <div ng-controller="UploadWizardProcessStepController">
+                <div class="span6 well">
+                    <h4>Process</h4>
+
+                    <form>
+                        <select ng-model="selected_process"
+                                ui-select2="{placeholder: 'Select process', allowClear: true, width:'element'}"
+                                ng-multiple="false">
+                            <option></option>
+                            <option ng-repeat="process in processes">{{ process.name }}</option>
+                        </select>
+                        <button ng-click="next()">Next</button>
+                    </form>
+                </div>
+                <div class="span6 well">
+                    <label>Name:</label> {{process.name}}
+                    <label>Description:</label> {{process.description}}
+                    <label>Required Conditions:</label>
+                    <ul>
+                        <li ng-repeat="condition in process.required_conditions">{{condition}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Choose Inputs Step -->
+
+        <div ng-show="nav_step == 'nav_choose_inputs'" class="row-fluid">
+
+            <div class="row-fluid">
+                <div class="span10 offset1">
+                    <div class="btn-group">
+                        <button ng-repeat="condition in required_conditions" class="btn"
+                                ng-class="{'btn-primary':isInputsCurrentStep(condition)}"
+                                ng-click="setInputsCurrentStep(condition)">{{condition}}
+                        </button>
+                        <button class="btn" ng-class="{'btn-primary':isInputsCurrentStep('nav_input_files')}"
+                                ng-click="setInputsCurrentStep('nav_input_files')">Files
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div ng-show="nav_step_inputs == condition" ng-repeat="condition in required_conditions"
+                 class="row-fluid">
+                <div class="span6 well" ng-controller="UploadWizardConditionInputController" ng-init="init(condition)">
+                    <h4>{{condition_name}}</h4>
+                    <div class="row-fluid">
+                        <div class="span12 well">
+                            <form>
+                                <label>Name:</label> {{condition.template_name}}
+                                <label>Description</label> {{condition.template_description}}
+                                <div ng-repeat="property in condition.model">
+                                    <label>{{property.name}}</label><input ng-model=property.value type="text">
+                                </div>
+                                <button ng-click="save(condition_name)">save</button>
+                            </form>
                         </div>
-                        <button ng-click="addCondition()">Add Condition</button>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="nav_step_inputs == 'nav_input_files'" class="row-fluid">
+                <h4>Files</h4>
+                <div class="span12 well" ng-controller="UploadWizardFileInputController">
+                    <form>
+                        <label>Choose File:</label>
+                        <select ng-model="selected_file"
+                                ui-select2="{placeholder: 'Select file', allowClear: true, width:'element'}"
+                                ng-multiple="false">
+                            <option></option>
+                            <option ng-repeat="file in input_files">{{ file.name }}</option>
+                        </select>
+                        <button ng-click="addInputFile()">Add file</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row-fluid" ng-show="!show_inputs_panel">
-        <div class="span9 offset1 well text-center">Inputs Panel</div>
-    </div>
-</div>
 
-<div class="row-fluid" ng-show="outputs_panel_active">
-    <div class="span9 offset1">
-        <div class="row-fluid">
-            <h5>Finally choose the outputs from your process.</h5>
-            <h6>Show Panel:<input type="checkbox" ng-model="show_outputs_panel"></h6>
-        </div>
-        <div class="row-fluid" ng-show="show_outputs_panel">
-            <div class="span6 well">
+        <!-- Choose Outputs Step -->
+
+        <div ng-show="nav_step == 'nav_choose_outputs'" class="row-fluid"
+             ng-controller="UploadWizardOutputStepController">
+            <div class="span6 well" >
                 <h4>Outputs</h4>
 
                 <form>
-                    <select ng-model="tag_to_add"
+                    <select ng-model="selected_condition"
                             ui-select2="{placeholder: 'Select condition', allowClear: true, width:'element'}"
                             ng-multiple="false">
                         <option></option>
@@ -216,12 +213,14 @@
                     <button ng-click="addOutputFile()">Add File</button>
                 </form>
             </div>
-            <div class="span6 well" ng-controller="OutputDetailsController">
+            <div class="span6 well">
                 Output details here
             </div>
         </div>
-    </div>
-    <div class="row-fluid" ng-show="!show_outputs_panel">
-        <div class="span9 offset1 well text-center">Outputs Panel</div>
+
+        <!-- Upload data Step -->
+        <div ng-show="nav_step == 'nav_upload'" class="row-fluid">
+            Upload data step
+        </div>
     </div>
 </div>
