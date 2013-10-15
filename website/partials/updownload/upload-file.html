@@ -84,6 +84,7 @@
         <!-- Choose Project Step -->
 
         <div ng-show="nav_step == 'nav_choose_project'" class="row-fluid">
+            here
             <div ng-controller="UploadWizardProjectStepController">
                 <div class="span6 well">
                     <h4>Projects</h4>
@@ -156,6 +157,7 @@
                  class="row-fluid">
                 <div class="span6 well" ng-controller="UploadWizardConditionInputController" ng-init="init(condition)">
                     <h4>{{condition_name}}</h4>
+
                     <div class="row-fluid">
                         <div class="span12 well">
                             <form>
@@ -173,6 +175,7 @@
 
             <div ng-show="nav_step_inputs == 'nav_input_files'" class="row-fluid">
                 <h4>Files</h4>
+
                 <div class="span12 well" ng-controller="UploadWizardFileInputController">
                     <form>
                         <label>Choose File:</label>
@@ -192,7 +195,7 @@
 
         <div ng-show="nav_step == 'nav_choose_outputs'" class="row-fluid"
              ng-controller="UploadWizardOutputStepController">
-            <div class="span6 well" >
+            <div class="span6 well">
                 <h4>Outputs</h4>
 
                 <form>
@@ -214,6 +217,7 @@
                     <i class="icon-plus icon-white"></i>
                     <input type="file" name="file" ng-model="upFile"
                            onchange="angular.element(this).scope().addFile(this)"><span>Add files...</span>
+                        </span>
                 </form>
             </div>
             <div class="span6 well">

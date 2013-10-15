@@ -1,15 +1,23 @@
-function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watcher) {
-    $scope.nav_step = 'nav_choose_project';
+function UploadFileController($scope, pubsub, wizardSteps) {
     $scope.process = "Process";
     $scope.required_conditions = [];
     $scope.output_files = [];
+    $scope.nav_step = 'nav_choose_project';
 
     $scope.setCurrentStep = function (step) {
-        $scope.nav_step = step;
+        wizardSteps.setCurrent('upload_wizard', step);
+        //$scope.nav_step = step;
     }
 
+    $scope.setCurrentStep('nav_choose_project');
+
     $scope.isCurrentStep = function (step) {
-        return $scope.nav_step == step;
+        console.log("step = " + step);
+        console.log("current == " + wizardSteps.getCurrent('upload_wizard'));
+        var m = wizardSteps.getCurrent('upload_wizard') == step
+        console.log("matching = " + m);
+        wizardSteps.getCurrent('upload_wizard') == step;
+        //return $scope.nav_step == step;
     }
 
     $scope.setInputsCurrentStep = function (step) {
