@@ -53,9 +53,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="entry in files">
-                    <td>{{ entry.file.name }}</td>
-                    <td>{{ entry.datagroup }}</td>
+                <tr ng-repeat="condition in conditions">
+                    <td>{{ condition.ctype }}</td>
+                    <td>{{ condition.name }}</td>
+                </tr>
+                <tr ng-repeat="file in input_files">
+                    <td>{{ file.type }}</td>
+                    <td>{{ file.name }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -63,7 +67,7 @@
         <div class="span2 text-center">
             <label>Required Conditions</label>
             <ul>
-                <li ng-repeat="condition in required_conditions">{{ condition }}</li>
+                <li ng-repeat="condition in required_conditions"><input type="checkbox" readonly>{{ condition }}</li>
             </ul>
         </div>
         <div class="span4">
@@ -76,7 +80,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="entry in files">
+                <tr ng-repeat="entry in output_files">
                     <td>{{ entry.type }}</td>
                     <td>{{ entry.file.name }}</td>
                     <td>{{ entry.datagroup }}</td>
@@ -139,6 +143,7 @@
             <div class="span6 well">
                 <h4>Inputs</h4>
 
+                <button ng-click="doneAddingInputs()">Done Adding Inputs</button>
                 <form>
                     <select ng-model="selected_condition"
                             ui-select2="{placeholder: 'Select condition', allowClear: true, width:'element'}"
@@ -152,7 +157,7 @@
                             ui-select2="{placeholder: 'Select file', allowClear: true, width:'element'}"
                             ng-multiple="false">
                         <option></option>
-                        <option ng-repeat="file in files">{{ file.name }}</option>
+                        <option ng-repeat="file in input_files">{{ file.name }}</option>
                     </select>
                     <button ng-click="addInputFile()">Add File</button>
                 </form>
