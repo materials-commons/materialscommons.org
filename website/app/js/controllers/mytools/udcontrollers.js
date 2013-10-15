@@ -1,11 +1,15 @@
 function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watcher) {
     $scope.show_project_panel = true;
     $scope.show_process_panel = false;
-    $scope.show_inputs_panel = false;
+
+    $scope.show_inputs_panel = true;
+
     $scope.show_outputs_panel = false;
     $scope.project_panel_active = true;
     $scope.process_panel_active = false;
-    $scope.inputs_panel_active = false;
+
+    $scope.inputs_panel_active = true;
+
     $scope.outputs_panel_active = false;
     $scope.process = "Process";
     $scope.required_conditions = [];
@@ -22,12 +26,18 @@ function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watch
     });
 
     watcher.watch($scope, 'selected_condition', function (conditionName) {
-        console.log("selected_condition = " + conditionName);
         var c = _.find($scope.conditions, function (condition) {
             return condition.template_name == conditionName;
         });
         pubsub.send('condition_details', c);
     });
+
+    $scope.addInputFile = function () {
+        var f = _.find($scope.input_files, function (file) {
+            return file.name == $scope.selected_file;
+        });
+        pubsub.send('add_input_file', f);
+    }
 
     $scope.projects = [
         {name: 'project1', id: 1},
@@ -39,6 +49,12 @@ function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watch
         $scope.show_project_panel = false;
         $scope.process_panel_active = true;
         $scope.show_process_panel = true;
+    }
+
+    $scope.doneAddingInputs = function() {
+        $scope.show_inputs_panel = false;
+        $scope.show_outputs_panel = true;
+        $scope.outputs_panel_active = true;
     }
 
     $scope.processes = [
@@ -60,12 +76,11 @@ function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watch
         pubsub.send("process_details", p);
     }
 
-    $scope.useInputCondition = function() {
+    $scope.useInputCondition = function () {
         $scope.show_edit_condition = true;
         var c = _.find($scope.conditions, function (condition) {
             return condition.template_name == $scope.selected_condition;
         });
-        console.dir(c);
         pubsub.send('edit_condition', c);
     }
 
@@ -77,6 +92,11 @@ function UploadFileController($scope, mcapi, User, formDataObject, pubsub, watch
         .error(function (data) {
             console.log("/templates call failed")
         }).jsonp();
+
+    $scope.input_files = [
+        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
+        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
+    ];
 }
 
 function ProjectDetailsController($scope, pubsub) {
@@ -101,14 +121,43 @@ function OutputDetailsController($scope) {
 
 }
 
-function UploadProcessController($scope) {
+function UploadProcessController($scope, pubsub) {
+    $scope.conditions = [];
+    pubsub.waitOn($scope, "add_condition", function (condition) {
+        var condition_to_add = {};
+        condition_to_add.name = condition.template_name;
+        condition_to_add.ctype = condition.template_type;
+        condition_to_add.properties = [];
+        condition.model.forEach(function (item) {
+            var obj = {};
+            obj[item.name] = item.value;
+            condition_to_add.properties.push(obj);
+        });
+        $scope.conditions.push(condition_to_add);
+    });
 
+    $scope.input_files = [];
+    pubsub.waitOn($scope, "add_input_file", function (file) {
+        console.log("add_input_file");
+        var file_to_add = {};
+        file_to_add.id = file.id;
+        file_to_add.name = file.name;
+        file_to_add.type = "file";
+        $scope.input_files.push(file_to_add);
+    });
+
+    $scope.output_files = [];
 }
 
 function ConditionEditController($scope, pubsub) {
-    pubsub.waitOn($scope, 'edit_condition', function(condition) {
+    pubsub.waitOn($scope, 'edit_condition', function (condition) {
         $scope.condition = condition;
     });
+
+    $scope.addCondition = function () {
+        pubsub.send('add_condition', $scope.condition);
+        $scope.condition = null;
+    }
 }
 
 function UploadDirectoryController($scope, mcapi, User) {
