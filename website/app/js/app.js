@@ -93,6 +93,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/conditions/template/create', {templateUrl: 'partials/conditions/create-condition-template.html', controller: CreateConditionControllers}).
         when('/conditions/template/list', {templateUrl: 'partials/conditions/list-condition-template.html', controller: ListConditionControllers}).
 
+        when('/provenance', {templateUrl: 'partials/provenance.html', controller: ProvenanceController}).
 
         otherwise({redirectTo: '/home'});
 }]);

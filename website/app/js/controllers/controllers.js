@@ -88,5 +88,32 @@ function EventController($scope, alertService) {
             "content": alertService.message};
     });
 
+
+}
+
+function ProvenanceController($scope){
+    $scope.process = [
+        {
+            name: 'TEM',
+            owner: 'Allison'
+        },
+        {
+            name: 'pr22',
+            owner: 'Emanuelle'
+        },
+        {
+            name: 'SEM',
+            owner: 'Emanuelle'
+        },
+        {
+            name: 'P4',
+            owner: 'Allison'
+        },
+        {
+            name: 'P5',
+            owner: 'Emanuelle'
+        }
+    ];
+
 }
 
