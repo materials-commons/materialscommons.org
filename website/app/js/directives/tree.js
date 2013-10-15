@@ -6,7 +6,24 @@
 */
 
 angular.module("NgTree.tpls", ["template/ngtree/tree.html", "template/ngtree/element.html"]);
+
 angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
+    .factory('treeToggle', function () {
+        var selected = [];
+        return {
+            add_id: function (id) {
+                selected.push(id);
+            },
+
+            pop_id: function (id) {
+                return  selected.splice(selected.indexOf(id), 1);
+            },
+
+            get_all: function(){
+                return selected
+            }
+        }
+    })
     .controller("NgTreeController", ["$scope", "$attrs", "treeToggle",
         function ($scope, $attrs, treeToggle) {
 
@@ -23,9 +40,9 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
 
             $scope.toggleShow = function(d){
                 if (treeToggle.get_all().indexOf(d.id)>= 0){ //open
-                    $scope.choose = treeToggle.pop_it(d.id);
+                    $scope.choose = treeToggle.pop_id(d.id);
                 }else{      //closed
-                    treeToggle.add_it(d.id);
+                    treeToggle.add_id(d.id);
                 }
             }
             $scope.getSelectedClass = function (id) {

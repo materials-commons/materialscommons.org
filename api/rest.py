@@ -2,7 +2,7 @@
 
 from mcapi.mcapp import app
 from mcapi import tservices, public, utils, private, access, process, machine, template
-from mcapi.user import account, datadirs, datafiles, reviews, ud
+from mcapi.user import account, datadirs, datafiles, reviews, ud, usergroups
 import sys
 
 if __name__ == '__main__':

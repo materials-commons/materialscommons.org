@@ -87,6 +87,12 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/upload/file', {templateUrl: 'partials/updownload/upload-file.html', controller: UploadFileController}).
         when('/upload/directory', {templateUrl: 'partials/updownload/upload-directory.html', controller: UploadDirectoryController}).
         when('/updownload/queue', {templateUrl: 'partials/updownload/udqueue.html', controller: UpDownLoadQueueController}).
+        /*
+        ** Conditions
+         */
+        when('/conditions/template/create', {templateUrl: 'partials/conditions/create-condition-template.html', controller: CreateConditionControllers}).
+        when('/conditions/template/list', {templateUrl: 'partials/conditions/list-condition-template.html', controller: ListConditionControllers}).
+
 
         otherwise({redirectTo: '/home'});
 }]);
