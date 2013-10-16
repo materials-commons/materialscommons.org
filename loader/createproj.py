@@ -14,6 +14,8 @@ def create_project(user):
     parents = {}
     proj = project.Project(project_name, "", user)
     for root, dirs, files in os.walk(directory):
+        if os.path.basename(root) == ".conversion":
+            continue
         datadir_name = construct_datadir_name(project_name, root, directory)
         parents[datadir_name] = ""
         parentname = os.path.dirname(datadir_name)
