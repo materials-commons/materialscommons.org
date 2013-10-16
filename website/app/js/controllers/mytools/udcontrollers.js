@@ -20,11 +20,11 @@ function UploadFileController($scope, pubsub, wizardSteps) {
         return wizardSteps.getCurrent('upload_inputs_wizard') == step;
     }
 
-    $scope.setOutputsCurrentStep = function(step) {
+    $scope.setOutputsCurrentStep = function (step) {
         wizardSteps.setCurrent('upload_outputs_wizard', step);
     }
 
-    $scope.isOutputsCurrentStep = function(step) {
+    $scope.isOutputsCurrentStep = function (step) {
         return wizardSteps.getCurrent('upload_outputs_wizard') == step;
     }
 
@@ -54,7 +54,7 @@ function UploadFileController($scope, pubsub, wizardSteps) {
         }
     });
 
-    pubsub.waitOn($scope, 'nav_step_outputs_next', function(step) {
+    pubsub.waitOn($scope, 'nav_step_outputs_next', function (step) {
         $scope.setOutputsCurrentStep(step);
     });
 
@@ -73,11 +73,11 @@ function UploadFileController($scope, pubsub, wizardSteps) {
     });
 
     $scope.output_conditions = [];
-    pubsub.waitOn($scope, "add_output_condition", function(condition) {
+    pubsub.waitOn($scope, "add_output_condition", function (condition) {
         $scope.add_condition_to_list(condition, $scope.output_conditions);
     });
 
-    $scope.add_condition_to_list = function(condition, condition_list) {
+    $scope.add_condition_to_list = function (condition, condition_list) {
         var condition_to_add = {};
         condition_to_add.name = condition.template_name;
         condition_to_add.ctype = condition.template_type;
@@ -104,7 +104,7 @@ function UploadFileController($scope, pubsub, wizardSteps) {
         $scope.output_files.push(file);
     });
 
-    $scope.upload = function() {
+    $scope.upload = function () {
         console.log("Upload data");
         //$scope.uploadEachFile = function () {
 //    if ($scope.files.length == 0) {
@@ -134,14 +134,21 @@ function UploadFileController($scope, pubsub, wizardSteps) {
     }
 }
 
-function UploadWizardProjectStepController($scope, pubsub, watcher) {
-    $scope.projects = [
-        {name: 'project1', id: 1},
-        {name: 'project2', id: 2}
-    ];
+function UploadWizardProjectStepController($scope, pubsub, watcher, mcapi, User) {
+
+    mcapi('/user/%/projects', User.u())
+        .success(function (projects) {
+            $scope.projects = projects;
+        })
+        .error(function () {
+            console.log("Unable to retrieve projects");
+        }).jsonp();
 
     watcher.watch($scope, 'selected_project', function (projectname) {
         $scope.projectname = projectname;
+        $scope.project = _.find($scope.projects, function (project) {
+            return project.name == projectname;
+        })
     });
 
     $scope.next = function () {
@@ -150,16 +157,27 @@ function UploadWizardProjectStepController($scope, pubsub, watcher) {
     }
 }
 
-function UploadWizardProcessStepController($scope, pubsub, watcher) {
-    $scope.processes = [
-        {name: 'Run SEM', id: 1, description: 'Run the SEM and collect data', required_conditions: ['material_conditions', 'sem_equipment_conditions']},
-        {name: 'Run APT', id: 2, description: 'Run the APT and collect data', required_conditions: ['material_conditions', 'apt_equipment_conditions']}
-    ];
+function UploadWizardProcessStepController($scope, pubsub, watcher, mcapi) {
+    mcapi('/templates')
+        .argWithValue('filter_by', '"template_type":"process"')
+        .success(function (processes) {
+            $scope.processes = processes;
+        })
+        .error(function () {
+            console.log("Unable to retrieve processes from database.");
+        }).jsonp();
 
     watcher.watch($scope, 'selected_process', function (processname) {
         $scope.process = _.find($scope.processes, function (item) {
-            return item.name == processname;
+            return item.template_name == processname;
         });
+
+        $scope.process.name = $scope.process.template_name;
+        var required_conditions_property = _.find($scope.process.model, function (prop) {
+            return prop.name == "required_conditions";
+        });
+
+        $scope.process.required_conditions = required_conditions_property.value;
     });
 
     $scope.next = function () {
@@ -206,7 +224,7 @@ function UploadWizardFileInputController($scope, pubsub) {
         pubsub.send('add_input_file', f);
     }
 
-    $scope.done = function() {
+    $scope.done = function () {
         pubsub.send('nav_set_step', 'nav_choose_outputs');
     }
 }
@@ -223,14 +241,14 @@ function UploadWizardFileOutputController($scope, pubsub) {
         });
     }
 
-    $scope.done = function() {
+    $scope.done = function () {
         pubsub.send('nav_set_step', 'nav_upload');
     }
 }
 
 function UploadWizardConditionOutputController($scope, mcapi, pubsub, watcher) {
 
-    watcher.watch($scope, 'selected_condition', function(condition_name) {
+    watcher.watch($scope, 'selected_condition', function (condition_name) {
         var name = '"' + condition_name + '"';
         mcapi('/templates')
             .argWithValue('filter_by', '"template_name":' + name)
@@ -244,18 +262,18 @@ function UploadWizardConditionOutputController($scope, mcapi, pubsub, watcher) {
 
     mcapi('/templates')
         .argWithValue('filter_by', '"template_type":"condition"')
-        .success(function(conditions) {
+        .success(function (conditions) {
             $scope.conditions = conditions;
         })
-        .error(function() {
+        .error(function () {
             console.log("Failed retrieving all condition templates");
         }).jsonp();
 
-    $scope.next = function(step) {
+    $scope.next = function (step) {
         pubsub.send('nav_step_outputs_next', 'nav_output_files');
     }
 
-    $scope.save = function() {
+    $scope.save = function () {
         pubsub.send('add_output_condition', $scope.condition);
     }
 }

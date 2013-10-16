@@ -106,7 +106,8 @@
             <button ng-click="next()">Next</button>
         </div>
         <div class="span6 well">
-            {{projectname}}
+            <label>Name:</label> {{projectname}}
+            <label>Description</label> {{project.description}}
         </div>
     </div>
 </div>
@@ -123,14 +124,14 @@
                         ui-select2="{placeholder: 'Select process', allowClear: true, width:'element'}"
                         ng-multiple="false">
                     <option></option>
-                    <option ng-repeat="process in processes">{{ process.name }}</option>
+                    <option ng-repeat="process in processes">{{ process.template_name }}</option>
                 </select>
                 <button ng-click="next()">Next</button>
             </form>
         </div>
         <div class="span6 well">
-            <label>Name:</label> {{process.name}}
-            <label>Description:</label> {{process.description}}
+            <label>Name:</label> {{process.template_name}}
+            <label>Description:</label> {{process.template_description}}
             <label>Required Conditions:</label>
             <ul>
                 <li ng-repeat="condition in process.required_conditions">{{condition}}</li>
