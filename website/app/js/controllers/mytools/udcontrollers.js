@@ -60,15 +60,6 @@ function UploadFileController($scope, pubsub, wizardSteps) {
 
     $scope.input_conditions = [];
     pubsub.waitOn($scope, "add_input_condition", function (condition) {
-//        var condition_to_add = {};
-//        condition_to_add.name = condition.template_name;
-//        condition_to_add.ctype = condition.template_type;
-//        condition_to_add.properties = [];
-//        condition.model.forEach(function (item) {
-//            var obj = {};
-//            obj[item.name] = item.value;
-//            condition_to_add.properties.push(obj);
-//        });
         $scope.add_condition_to_list(condition, $scope.input_conditions);
     });
 
@@ -106,7 +97,7 @@ function UploadFileController($scope, pubsub, wizardSteps) {
 
     $scope.upload = function () {
         console.log("Upload data");
-        //$scope.uploadEachFile = function () {
+//$scope.uploadEachFile = function () {
 //    if ($scope.files.length == 0) {
 //        return;
 //    }
@@ -213,8 +204,8 @@ function UploadWizardConditionInputController($scope, mcapi, pubsub, wizardSteps
 
 function UploadWizardFileInputController($scope, pubsub) {
     $scope.input_files = [
-        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
-        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
+//        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
+//        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
     ];
 
     $scope.addInputFile = function () {
@@ -229,7 +220,15 @@ function UploadWizardFileInputController($scope, pubsub) {
     }
 }
 
-function UploadWizardFileOutputController($scope, pubsub) {
+function UploadWizardFileOutputController($scope, pubsub, mcapi, watcher, User) {
+    mcapi('/v1.0/user/%/datadirs/tree', User.u())
+        .success(function(tree) {
+            console.dir(tree);
+        })
+        .error(function() {
+            console.log("Unable to retrieve tree");
+        }).jsonp();
+
     $scope.addFile = function (element) {
         $scope.$apply(function () {
             var obj = {};
