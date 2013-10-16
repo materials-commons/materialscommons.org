@@ -12,12 +12,15 @@ function UploadFileController($scope, pubsub, wizardSteps) {
     $scope.setCurrentStep('nav_choose_project');
 
     $scope.isCurrentStep = function (step) {
-        console.log("step = " + step);
-        console.log("current == " + wizardSteps.getCurrent('upload_wizard'));
-        var m = wizardSteps.getCurrent('upload_wizard') == step
-        console.log("matching = " + m);
-        wizardSteps.getCurrent('upload_wizard') == step;
-        //return $scope.nav_step == step;
+        //$scope.$apply(function () {
+//            console.log("step = " + step);
+//            console.log("current == " + wizardSteps.getCurrent('upload_wizard'));
+//            var m = wizardSteps.getCurrent('upload_wizard') == step
+//            console.log("matching = " + m);
+
+            return wizardSteps.getCurrent('upload_wizard') == step;
+            //return $scope.nav_step == step;
+        //});
     }
 
     $scope.setInputsCurrentStep = function (step) {
@@ -135,7 +138,7 @@ function UploadProcessController($scope, pubsub) {
     });
 
     $scope.output_files = [];
-    pubsub.waitOn($scope, 'add_output_file', function(file) {
+    pubsub.waitOn($scope, 'add_output_file', function (file) {
         $scope.output_files.push(file);
     })
 }
