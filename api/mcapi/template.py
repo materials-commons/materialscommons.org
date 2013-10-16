@@ -77,7 +77,7 @@ def create_condition_template(j):
     template = common_template_elements("condition", j)
     properties = j[u'properties']
     for prop in properties:
-        prop_name = prop['property']
+        prop_name = prop['name']
         prop_value = prop['value']
         add_model_item(template, prop_name, prop_value)
         add_model_item(template, prop_name + '_note', "")
