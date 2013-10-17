@@ -1,5 +1,5 @@
-function UploadFileController($scope, pubsub, wizardSteps) {
-    $scope.process = "Process";
+function UploadFileController($scope, pubsub, wizardSteps, mcapi) {
+    $scope.process_name = "Process";
     $scope.required_conditions = [];
 
     $scope.setCurrentStep = function (step) {
@@ -39,7 +39,8 @@ function UploadFileController($scope, pubsub, wizardSteps) {
     });
 
     pubsub.waitOn($scope, 'set_process', function (process) {
-        $scope.process = process.name;
+        $scope.process = process;
+        $scope.process_name = process.name;
         $scope.required_conditions = process.required_conditions;
         if ($scope.required_conditions && $scope.required_conditions.length > 0) {
             $scope.nav_step_inputs = $scope.required_conditions[0];
@@ -96,32 +97,46 @@ function UploadFileController($scope, pubsub, wizardSteps) {
     });
 
     $scope.upload = function () {
-        console.log("Upload data");
-//$scope.uploadEachFile = function () {
-//    if ($scope.files.length == 0) {
-//        return;
-//    }
-//    $scope.files.forEach(function (fileEntry) {
-//        console.dir(fileEntry);
-//        if (fileEntry.status != "Uploaded") {
-//            fileEntry.status = "Uploading...";
-//            mcapi('/user/%/upload/%', User.u(), fileEntry.datagroup)
-//                .success(function () {
-//                    fileEntry.status = "Uploaded";
-//                })
-//                .error(function () {
-//                    fileEntry.status = "Failed";
-//                })
-//                .post(
-//                {
-//                    file: fileEntry.file,
-//                    material_condition: fileEntry.material_condition.id,
-//                    equipment_condition: fileEntry.equipment_condition.id
-//                },
-//                {headers: {'Content-Type': false}, transformRequest: formDataObject});
-//        }
-//    });
-//};
+        $scope.uploadProcess();
+        $scope.uploadConditions();
+        $scope.uploadFiles();
+    }
+
+    $scope.uploadProcess = function () {
+        console.dir($scope.process);
+    }
+
+    $scope.uploadConditions = function () {
+
+    }
+
+    $scope.uploadFiles = function () {
+        return;
+
+        if ($scope.output_files.length == 0) {
+            return;
+        }
+        $scope.output_files.forEach(function (fileEntry) {
+            console.dir(fileEntry);
+            if (fileEntry.status != "Uploaded") {
+                fileEntry.status = "Uploading...";
+                mcapi('/user/%/upload/%', User.u(), fileEntry.datadir)
+                    .success(function () {
+                        fileEntry.status = "Uploaded";
+                    })
+                    .error(function () {
+                        fileEntry.status = "Failed";
+                    })
+                    .post(
+                    {
+                        file: fileEntry.file,
+                        input_conditions: fileEntry.material_condition.id,
+                        output_conditions: fileEntry.equipment_condition.id,
+                        input_files: $scope.input_files
+                    },
+                    {headers: {'Content-Type': false}, transformRequest: formDataObject});
+            }
+        });
     }
 }
 
@@ -145,10 +160,21 @@ function UploadWizardProjectStepController($scope, pubsub, watcher, mcapi, User)
     $scope.next = function () {
         pubsub.send('set_project', $scope.projectname);
         pubsub.send('nav_set_step', 'nav_choose_process');
+        pubsub.send('project_id', $scope.project.id);
     }
 }
 
 function UploadWizardProcessStepController($scope, pubsub, watcher, mcapi) {
+    $scope.uneditable_properties = [];
+    var c = [
+        'required_conditions', 'owner', 'birthtime', 'mtime', 'parent', 'notes',
+        'inputs', 'outputs', 'runs', 'citations', 'status'
+    ];
+
+    c.forEach(function(name) {
+       $scope.uneditable_properties[name] = "";
+    });
+
     mcapi('/templates')
         .argWithValue('filter_by', '"template_type":"process"')
         .success(function (processes) {
@@ -221,21 +247,22 @@ function UploadWizardFileInputController($scope, pubsub) {
 }
 
 function UploadWizardFileOutputController($scope, pubsub, mcapi, watcher, User) {
-    mcapi('/v1.0/user/%/datadirs/tree', User.u())
-        .success(function(tree) {
-            console.dir(tree);
-        })
-        .error(function() {
-            console.log("Unable to retrieve tree");
-        }).jsonp();
+    pubsub.waitOn($scope, 'project_id', function (project_id) {
+        mcapi('/user/%/projects/%/datadirs', User.u(), project_id)
+            .success(function (datadirs) {
+                $scope.datadirs = datadirs;
+            })
+            .error(function () {
+                console.log("Unable to retrieve tree");
+            }).jsonp();
+    });
 
     $scope.addFile = function (element) {
         $scope.$apply(function () {
             var obj = {};
             obj.file = element.files[0];
             obj.status = "Ready";
-            //obj.datagroup = $scope.datagroup;
-            obj.datagroup = "datagroup1";
+            obj.datadir = $scope.selected_datadir;
             pubsub.send('add_output_file', obj);
         });
     }

@@ -6,7 +6,7 @@
 
 <div class="row-fluid">
     <div class="arrow_box_right span4 offset1"><h5>Inputs</h5></div>
-    <div class="processbox span2"><h5>{{ process }}</h5></div>
+    <div class="processbox span2"><h5>{{ process_name }}</h5></div>
     <div class="arrow_box_right span4"><h5>Outputs</h5></div>
 </div>
 
@@ -136,6 +136,13 @@
             <ul>
                 <li ng-repeat="condition in process.required_conditions">{{condition}}</li>
             </ul>
+            <form>
+                <div ng-repeat="property in process.model | removeProperties:uneditable_properties">
+                    <label>{{property.name}}</label><input ng-model=property.value type="text">
+                </div>
+                <button ng-click="save()">Save</button>
+                <button ng-click="next()">Next</button>
+            </form>
         </div>
     </div>
 </div>
@@ -259,11 +266,11 @@
             <h4>Files</h4>
 
             <form>
-                <select ng-model="datagroup"
-                        ui-select2="{placeholder: 'Select datagroup', allowClear: true, width:'element'}"
+                <select ng-model="selected_datadir"
+                        ui-select2="{placeholder: 'Select datadir', allowClear: true, width:'element'}"
                         ng-multiple="false">
                     <option></option>
-                    <option ng-repeat="dg in datagroups">{{ dg.name }}</option>
+                    <option ng-repeat="datadir in datadirs">{{ datadir.name }}</option>
                 </select>
                     <span class="btn btn-success fileinput-button" style="margin-left: 2px">
                     <i class="icon-plus icon-white"></i>
@@ -278,11 +285,11 @@
 
 <!-- Upload data Step -->
 <div ng-show="isCurrentStep('nav_upload')" class="row-fluid">
-   <div class="span12 well">
-       <form>
-           <button ng-click="upload()">Upload</button>
-       </form>
-   </div>
+    <div class="span12 well">
+        <form>
+            <button ng-click="upload()">Upload</button>
+        </form>
+    </div>
 </div>
 </div>
 </div>
