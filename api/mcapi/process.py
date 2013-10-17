@@ -15,7 +15,7 @@ def get_process(process_id):
 def get_all_processes():
     return dmutil.get_all_from_table('processes')
 
-@app.route('/v1.0/processes', methods=['POST'])
+@app.route('/v1.0/processes/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
 def create_process():
