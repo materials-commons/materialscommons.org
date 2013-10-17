@@ -13,6 +13,7 @@ def create_project(user):
     project_name = os.path.basename(directory)
     parents = {}
     proj = project.Project(project_name, "", user)
+    project_id = None
     for root, dirs, files in os.walk(directory):
         if os.path.basename(root) == ".conversion":
             continue
@@ -25,18 +26,27 @@ def create_project(user):
             ddir_id = add_datadir(ddir)
             parents[datadir_name] = ddir_id
             proj.datadir = ddir_id
-            add_project(proj)
+            project_id = add_project(proj)
         else:
             ddir = datadir.DataDir(datadir_name, "private", user, parentid)
             ddir_id = add_datadir(ddir)
             parents[datadir_name] = ddir_id
+        add_proj_datadir_mapping(project_id, ddir_id)
+
+def add_proj_datadir_mapping(project_id, ddir_id):
+    if project_id:
+        r.table('project2datadir').insert({'project_id':project_id, 'datadir_id':ddir_id}).run(conn)
 
 def add_datadir(ddir):
     r.table('datadirs').insert(ddir.__dict__, return_vals=True).run(conn)
     return ddir.id
 
 def add_project(proj):
-    r.table('projects').insert(proj.__dict__, return_vals=True).run(conn)
+    rv = r.table('projects').insert(proj.__dict__).run(conn)
+    if rv[u'inserted'] == 1:
+        key = rv['generated_keys'][0]
+        return key
+    return None
 
 def construct_datadir_name(base, root, directory):
     rpath = os.path.relpath(root, directory)
