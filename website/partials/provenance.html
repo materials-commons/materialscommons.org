@@ -1,2 +1,25 @@
+
+
 <h4>Track the provenance</h4>
-<div raphael process-list = "process"></div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div prov  process-list = "process" callback-fn="get_process_details(arg1)">
+
+
+        </div>
+    </div>
+</div>
+
+<div  ng-show="details" class="row-fluid">
+    <div class="span4 offset3">
+        <div class="well">
+        <b><u>Process Details:</u></b><br><br>
+            Name: {{details.name}} <br>
+            Owner: {{details.owner}} <br>
+            Inputs:<br>
+            Outputs:<br>
+
+      </div>
+</div>
+</div>

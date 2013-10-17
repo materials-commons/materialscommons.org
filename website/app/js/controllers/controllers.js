@@ -88,10 +88,10 @@ function EventController($scope, alertService) {
             "content": alertService.message};
     });
 
-
 }
 
-function ProvenanceController($scope){
+function ProvenanceController($scope, $rootScope){
+    console.log('how many');
     $scope.process = [
         {
             name: 'TEM',
@@ -114,6 +114,16 @@ function ProvenanceController($scope){
             owner: 'Emanuelle'
         }
     ];
+   $scope.get_process_details = function(index){
+       $scope.$apply(function(){
+           $scope.details = $scope.process[index];
+
+       })
+
+
+   }
+
+
 
 }
 

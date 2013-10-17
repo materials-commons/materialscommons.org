@@ -302,7 +302,6 @@ materialsCommonsServices.factory('Thumbnail', function () {
 
 materialsCommonsServices.factory('formatData', function () {
     var all_process = [];
-    var new_conditions_format = [];
     return {
         convert_into_gridoptions: function (process) {
             process.forEach(function (pr) {
@@ -319,7 +318,7 @@ materialsCommonsServices.factory('formatData', function () {
         },
 
         reformat_conditions: function(conditions){
-            console.log('conditions are ' + conditions);
+            var new_conditions_format = [];
             conditions.forEach(function(c){
                 var row = {'property' : c, 'value': ''}
                 new_conditions_format.push(row)
