@@ -90,3 +90,40 @@ function EventController($scope, alertService) {
 
 }
 
+function ProvenanceController($scope, $rootScope){
+    console.log('how many');
+    $scope.process = [
+        {
+            name: 'TEM',
+            owner: 'Allison'
+        },
+        {
+            name: 'pr22',
+            owner: 'Emanuelle'
+        },
+        {
+            name: 'SEM',
+            owner: 'Emanuelle'
+        },
+        {
+            name: 'P4',
+            owner: 'Allison'
+        },
+        {
+            name: 'P5',
+            owner: 'Emanuelle'
+        }
+    ];
+   $scope.get_process_details = function(index){
+       $scope.$apply(function(){
+           $scope.details = $scope.process[index];
+
+       })
+
+
+   }
+
+
+
+}
+

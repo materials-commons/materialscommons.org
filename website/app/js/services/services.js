@@ -302,7 +302,6 @@ materialsCommonsServices.factory('Thumbnail', function () {
 
 materialsCommonsServices.factory('formatData', function () {
     var all_process = [];
-    var new_conditions_format = [];
     return {
         convert_into_gridoptions: function (process) {
             process.forEach(function (pr) {
@@ -318,6 +317,7 @@ materialsCommonsServices.factory('formatData', function () {
         },
 
         reformat_conditions: function (conditions) {
+            var new_conditions_format = [];
             conditions.forEach(function (c) {
                 var row = {'name': c, 'value': ''}
                 new_conditions_format.push(row)
@@ -325,18 +325,17 @@ materialsCommonsServices.factory('formatData', function () {
             return new_conditions_format;
         }
     }
-
 });
 
 materialsCommonsServices.factory('wizardSteps', function () {
     var currentStep = {};
 
     return {
-        setCurrent: function(wizardName, stepName) {
+        setCurrent: function (wizardName, stepName) {
             currentStep[wizardName] = stepName;
         },
 
-        getCurrent: function(wizardName) {
+        getCurrent: function (wizardName) {
             return currentStep[wizardName];
         }
     }

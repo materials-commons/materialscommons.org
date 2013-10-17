@@ -8,6 +8,7 @@ import dmutil
 @app.route('/v1.0/templates/<template_id>', methods=['GET'])
 @jsonp
 def get_template(template_id):
+    print template_id
     return dmutil.get_single_from_table('templates', template_id)
 
 @app.route('/v1.0/templates', methods=['GET'])
@@ -25,7 +26,6 @@ def delete_template(template_id):
 def create_template():
     j = request.get_json()
     template_type = dmutil.get_required('template_type', j)
-    print template_type
     return create_template_for_type(template_type, j)
 
 def create_template_for_type(template_type, j):
@@ -40,7 +40,7 @@ def create_template_for_type(template_type, j):
         return dmutil.insert_entry('templates', template)
     else:
         # Do something about throwing an error
-        return error_response(400)
+        return error_response(423)
 
 def create_process_template(j):
     template = common_template_elements("process", j)
