@@ -1,4 +1,15 @@
-function UploadFileController($scope, pubsub, wizardSteps, mcapi) {
+function UploadFileController($scope, pubsub, wizardSteps, mcapi, User) {
+
+//    $scope.cors = function() {
+//        mcapi('/abc')
+//            .success(function(data){
+//                console.dir(data);
+//            })
+//            .error(function(e) {
+//                console.log(e);
+//            }).post({});
+//    }
+
     $scope.process_name = "Process";
     $scope.required_conditions = [];
 
@@ -69,6 +80,10 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi) {
         $scope.add_condition_to_list(condition, $scope.output_conditions);
     });
 
+    pubsub.waitOn($scope, 'project_id', function (project_id) {
+        $scope.project_id = project_id;
+    });
+
     $scope.add_condition_to_list = function (condition, condition_list) {
         var condition_to_add = {};
         condition_to_add.name = condition.template_name;
@@ -103,11 +118,34 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi) {
     }
 
     $scope.uploadProcess = function () {
-        console.dir($scope.process);
+        console.log($scope.project_id);
+        $scope.process.project = $scope.project_id;
+        mcapi('/processes/from_template')
+            .argWithValue('user', User.u())
+            .success(function(process_id) {
+                $scope.process_id = process_id.id;
+            })
+            .error(function(e) {
+                console.log("Saving process failed:" + e);
+            }).post($scope.process);
     }
 
     $scope.uploadConditions = function () {
-
+        console.log("Saving conditions.")
+        $scope.input_conditions.forEach(function(condition){
+            condition.condition_type = "input_conditions";
+            condition.process = $scope.process_id;
+            condition.project = $scope.project_id;
+            console.log(condition);
+            mcapi('/user/%/conditions/from_template', User.u())
+                .success(function(c) {
+                    console.log("condition saved");
+                    console.dir(c);
+                })
+                .error(function() {
+                    console.log("condition save failed")
+                }).post(condition);
+        })
     }
 
     $scope.uploadFiles = function () {

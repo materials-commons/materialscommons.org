@@ -8,7 +8,6 @@ import dmutil
 @app.route('/v1.0/templates/<template_id>', methods=['GET'])
 @jsonp
 def get_template(template_id):
-    print template_id
     return dmutil.get_single_from_table('templates', template_id)
 
 @app.route('/v1.0/templates', methods=['GET'])
