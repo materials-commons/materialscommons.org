@@ -1,7 +1,9 @@
 <div class="span12 offset1">
-    <div class="well">
-        <h4>Recently Created Condition  Templates</h4>
-        <table class="table table-striped mc-table-hover table-condensed mc-table">
+    <div >
+        <h4>Recently Created Templates</h4>
+        <paged data="templates" current-page="currentDataPage" page-size="10">
+
+        <table class="table table-striped">
             <thead>
             <tr>
             <th>Template Name</th>
@@ -11,18 +13,20 @@
             <th>Properties</th>
             </thead>
             <tbody>
-            <tr ng-repeat="t in templates" style="cursor:pointer">
+            <tr ng-repeat="t in templates | page:currentDataPage:10 " on-click="display_template(t)" style="cursor:pointer">
                 <td>{{ t.template_name }}</td>
                 <td>{{ t.template_type }}</td>
                 <td>{{ t.owner }}</td>
                 <td>{{ t.template_birthtime | toDateString }}</td>
                 <td>
-                     <li class="label label-info" style="margin-left: 5px" ng-repeat="p in t.model">
-                     {{ p.name }}
-                </li>
+                     <ul style="margin-left: 5px" ng-repeat="p in t.model">
+                     <li>{{ p.name }}</li>
+                </ul>
                 </td>
             </tr>
             </tbody>
         </table>
+            </paged>
     </div>
 </div>
+

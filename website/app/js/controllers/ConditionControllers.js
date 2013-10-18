@@ -51,5 +51,10 @@ function ListConditionControllers($scope, mcapi){
             $scope.templates = data;
         }).jsonp();
 
+    $scope.display_template = function(t){
+        console.log(t);
+
+    }
+
 
 }
