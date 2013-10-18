@@ -32,52 +32,6 @@ materialsdirective.directive('datepicker', function () {
     };
 });
 
-//materialsdirective.directive('provenance', function ($compile) {
-//
-//      return {
-//          restrict: 'EA',
-//          scope: { ProcessList: '=processList' },
-//          template: "<div>" +
-//                        "<div ng-repeat=' in scope.ProcessList'>" +
-//
-//                        "</div>"+
-//                    "</div>",
-//          link: function(scope, element, attrs){
-//              var paper = Raphael(element[0], 1000, 1000);
-//              var connections = [];
-//              var shapes = new Array();
-//              var texts = new Array();
-//              var x = 20, y = 20;
-//              var width = 80 , height = 40 , radius = 5;
-//
-//              for (var i = 0; i< scope.ProcessList.length; i++){
-//                  shapes[i] = paper.rect(x,y,width, height,radius);
-//                  texts[i] =  paper.text(x+50,y+20,scope.ProcessList[i].name + ' - ' + i );
-//                  shapes[i].attr({fill: 'yellow', stroke: '#000080', "stroke-width": 2, cursor: "move"});
-//                  texts[i].attr({fill: '#0000A0', stroke: "none", "font-size": 12,"font-weight":"bold", cursor: "move"});
-//                  var c = ["M", x+width, height, "L", x+180, height].join(",");
-//
-//                  if (i == 4){
-//                  }
-//                  else{
-//                      connections.push(paper.path(c))
-//                      x = x+180;
-//                      y = y+0;
-//                  }
-//              }
-//              $compile(element.contents())(scope);
-//
-//
-//          }
-//
-//
-//
-//      }
-//
-//
-//
-//});
-
 materialsdirective.directive('bs:popover', function (expression, compiledElement) {
     return function (linkElement) {
         linkElement.popover();
