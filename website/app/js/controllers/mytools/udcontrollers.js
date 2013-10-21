@@ -90,8 +90,6 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, formData
 
     $scope.output_files = [];
     pubsub.waitOn($scope, 'add_output_file', function (file) {
-        console.log("add_output_file");
-        console.log(file.datadir);
         $scope.output_files.push(file);
     });
 
@@ -142,12 +140,10 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, formData
             return;
         }
         $scope.output_files.forEach(function (fileEntry) {
-            console.dir(fileEntry);
             if (fileEntry.status != "Uploaded") {
                 fileEntry.status = "Uploading...";
                 mcapi('/user/%/upload/%', User.u(), fileEntry.datadir)
                     .success(function () {
-                        console.log("Uploaded file!");
                         fileEntry.status = "Uploaded";
                     })
                     .error(function () {
