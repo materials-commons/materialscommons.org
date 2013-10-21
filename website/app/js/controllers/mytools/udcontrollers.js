@@ -153,7 +153,12 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, formData
                     .error(function () {
                         fileEntry.status = "Failed";
                     })
-                    .post({file: fileEntry.file}, {headers: {'Content-Type': false}, transformRequest: formDataObject});
+                    .post(
+                        {
+                            file: fileEntry.file,
+                            process_id: $scope.process_id,
+                            project_id: $scope.project_id
+                        }, {headers: {'Content-Type': false}, transformRequest: formDataObject});
             }
         });
     }

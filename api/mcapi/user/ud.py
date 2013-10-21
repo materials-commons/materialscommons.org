@@ -7,6 +7,7 @@ import rethinkdb as r
 import os.path
 import pika
 from ..args import json_as_format_arg
+import tempfile
 
 @app.route('/v1.0/user/<user>/udqueue')
 @apikey
@@ -19,7 +20,10 @@ def get_udqueue(user):
 @apikey
 @crossdomain(origin='*')
 def upload_file(user, datadir):
-    dir = os.path.join('/tmp', user, datadir)
+    process_id = request.form['process_id']
+    project_id = request.form['project_id']
+    tdir = tempfile.mkdtemp(dir='/tmp')
+    dir = os.path.join(tdir, project_id, process_id, datadir)
     mkdirp(dir)
     file = request.files['file']
     filepath = os.path.join(dir, file.filename)
