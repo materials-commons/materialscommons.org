@@ -5,6 +5,7 @@ from flask import jsonify, g, request, send_from_directory
 from ..utils import mkdirp
 import rethinkdb as r
 import os.path
+import os
 import pika
 from ..args import json_as_format_arg
 import tempfile
@@ -16,18 +17,21 @@ def get_udqueue(user):
     selection = list(r.table('udqueue').filter({'owner':user}).run(g.conn))
     return json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/upload/<path:datadir>', methods=['POST'])
+@app.route('/v1.0/user/<user>/upload', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
-def upload_file(user, datadir):
+def upload_file(user):
     process_id = request.form['process_id']
     project_id = request.form['project_id']
-    tdir = tempfile.mkdtemp(dir='/tmp')
-    dir = os.path.join(tdir, project_id, process_id, datadir)
-    mkdirp(dir)
-    file = request.files['file']
-    filepath = os.path.join(dir, file.filename)
-    file.save(filepath)
+    tdir = tempfile.mkdtemp(dir='/tmp/uploads')
+    mkdirp('/tmp/uploads')
+    for key in request.files.keys():
+        datadir = request.form[key + "_datadir"]
+        file = request.files[key]
+        dir = os.path.join(tdir, project_id, process_id, datadir)
+        mkdirp(dir)
+        filepath = os.path.join(dir, file.filename)
+        file.save(filepath)
     #putRequestOnQueue(filepath, user, material_condition_id, equipment_condition_id)
     return jsonify({'success': True})
 

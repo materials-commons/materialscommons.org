@@ -63,11 +63,18 @@ materialsCommonsServices.
         };
     });
 
-materialsCommonsServices.factory('formDataObject', function () {
+materialsCommonsServices.factory('toUploadForm', function () {
     return function (data) {
         var fd = new FormData();
         angular.forEach(data, function (value, key) {
-            fd.append(key, value);
+            if (key != "files") {
+                fd.append(key, value);
+            } else {
+                for (var i = 0; i < data.files.length; i++) {
+                    fd.append("file_" + i, data.files[i].file);
+                    fd.append("file_" + i + "_datadir", data.files[i].datadir);
+                }
+            }
         });
         return fd;
     };

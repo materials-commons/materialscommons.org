@@ -1,4 +1,4 @@
-function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, formDataObject) {
+function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUploadForm) {
     $scope.process_name = "Process";
     $scope.required_conditions = [];
 
@@ -139,24 +139,38 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, formData
         if ($scope.output_files.length == 0) {
             return;
         }
-        $scope.output_files.forEach(function (fileEntry) {
-            if (fileEntry.status != "Uploaded") {
-                fileEntry.status = "Uploading...";
-                mcapi('/user/%/upload/%', User.u(), fileEntry.datadir)
-                    .success(function () {
-                        fileEntry.status = "Uploaded";
-                    })
-                    .error(function () {
-                        fileEntry.status = "Failed";
-                    })
-                    .post(
-                        {
-                            file: fileEntry.file,
-                            process_id: $scope.process_id,
-                            project_id: $scope.project_id
-                        }, {headers: {'Content-Type': false}, transformRequest: formDataObject});
-            }
-        });
+
+        mcapi('/user/%/upload', User.u())
+            .success(function () {
+                //fileEntry.status = "Uploaded";
+            })
+            .error(function () {
+                //fileEntry.status = "Failed";
+            })
+            .post(
+            {
+                files: $scope.output_files,
+                process_id: $scope.process_id,
+                project_id: $scope.project_id
+            }, {headers: {'Content-Type': false}, transformRequest: toUploadForm});
+//        $scope.output_files.forEach(function (fileEntry) {
+//            if (fileEntry.status != "Uploaded") {
+//                fileEntry.status = "Uploading...";
+//                mcapi('/user/%/upload/%', User.u(), fileEntry.datadir)
+//                    .success(function () {
+//                        fileEntry.status = "Uploaded";
+//                    })
+//                    .error(function () {
+//                        fileEntry.status = "Failed";
+//                    })
+//                    .post(
+//                        {
+//                            file: fileEntry.file,
+//                            process_id: $scope.process_id,
+//                            project_id: $scope.project_id
+//                        }, {headers: {'Content-Type': false}, transformRequest: formDataObject});
+//            }
+//        });
     }
 }
 
