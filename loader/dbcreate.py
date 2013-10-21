@@ -26,7 +26,7 @@ def create_tables():
     run_rethinkdb_command(lambda: r.table_create("templates").run())
     run_rethinkdb_command(lambda: r.table_create("project2datadir", primary_key="project_id").run())
     run_rethinkdb_command(lambda: r.table_create("project2datafile", primary_key="project_id").run())
-    run_rethinkdb_command(lambda: r.table_create("project2process", primary_key="project_id").run())
+    run_rethinkdb_command(lambda: r.table_create("project2processes", primary_key="project_id").run())
     run_rethinkdb_command(lambda: r.table_create("project2conditions", primary_key="project_id").run())
 
 def run_rethinkdb_command(func):
