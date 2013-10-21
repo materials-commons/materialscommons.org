@@ -22,8 +22,6 @@ def upload_file(user, datadir):
     dir = os.path.join('/tmp', user, datadir)
     mkdirp(dir)
     file = request.files['file']
-    material_condition_id = request.form['material_condition']
-    equipment_condition_id = request.form['equipment_condition']
     filepath = os.path.join(dir, file.filename)
     file.save(filepath)
     #putRequestOnQueue(filepath, user, material_condition_id, equipment_condition_id)
