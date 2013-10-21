@@ -56,10 +56,8 @@ def create_process():
 def create_process_from_template():
     p = dict()
     j = request.get_json()
-
     p['template'] = dmutil.get_required('id', j)
     p['project'] = dmutil.get_required('project', j)
-
     m = j['model']
     p['name'] = dmutil.get_required_prop('name', m)
     p['birthtime'] = r.now()
