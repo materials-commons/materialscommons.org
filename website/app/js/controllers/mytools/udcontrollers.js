@@ -1,15 +1,4 @@
-function UploadFileController($scope, pubsub, wizardSteps, mcapi, User) {
-
-//    $scope.cors = function() {
-//        mcapi('/abc')
-//            .success(function(data){
-//                console.dir(data);
-//            })
-//            .error(function(e) {
-//                console.log(e);
-//            }).post({});
-//    }
-
+function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, formDataObject) {
     $scope.process_name = "Process";
     $scope.required_conditions = [];
 
@@ -85,16 +74,9 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User) {
     });
 
     $scope.add_condition_to_list = function (condition, condition_list) {
-        var condition_to_add = {};
-        condition_to_add.name = condition.template_name;
-        condition_to_add.ctype = condition.template_type;
-        condition_to_add.properties = [];
-        condition.model.forEach(function (item) {
-            var obj = {};
-            obj[item.name] = item.value;
-            condition_to_add.properties.push(obj);
-        });
-        condition_list.push(condition_to_add);
+        condition.name = condition.template_name;
+        condition.ctype = condition.template_type;
+        condition_list.push(condition);
     }
 
     $scope.input_files = [];
@@ -108,49 +90,54 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User) {
 
     $scope.output_files = [];
     pubsub.waitOn($scope, 'add_output_file', function (file) {
+        console.log("add_output_file");
+        console.log(file.datadir);
         $scope.output_files.push(file);
     });
 
     $scope.upload = function () {
-        $scope.uploadProcess();
-        $scope.uploadConditions();
-        $scope.uploadFiles();
+        $scope.uploadAllItems();
     }
 
-    $scope.uploadProcess = function () {
-        console.log($scope.project_id);
+    $scope.uploadAllItems = function () {
         $scope.process.project = $scope.project_id;
         mcapi('/processes/from_template')
             .argWithValue('user', User.u())
-            .success(function(process_id) {
-                $scope.process_id = process_id.id;
+            .success(function (p) {
+                $scope.process_id = p.id;
+                $scope.uploadConditions();
             })
-            .error(function(e) {
+            .error(function (e) {
                 console.log("Saving process failed:" + e);
             }).post($scope.process);
     }
 
     $scope.uploadConditions = function () {
-        console.log("Saving conditions.")
-        $scope.input_conditions.forEach(function(condition){
+        $scope.input_conditions.forEach(function (condition) {
             condition.condition_type = "input_conditions";
             condition.process = $scope.process_id;
             condition.project = $scope.project_id;
-            console.log(condition);
-            mcapi('/user/%/conditions/from_template', User.u())
-                .success(function(c) {
-                    console.log("condition saved");
-                    console.dir(c);
-                })
-                .error(function() {
-                    console.log("condition save failed")
-                }).post(condition);
-        })
+        });
+
+        $scope.output_conditions.forEach(function (condition) {
+            condition.condition_type = "output_conditions";
+            condition.process = $scope.process_id;
+            condition.project = $scope.project_id;
+        });
+
+        var obj = {};
+        obj.input_conditions = $scope.input_conditions;
+        obj.output_conditions = $scope.output_conditions;
+        mcapi('/user/%/conditions/from_template_list', User.u())
+            .success(function () {
+                $scope.uploadFiles();
+            })
+            .error(function () {
+                console.log("condition save failed")
+            }).post(obj);
     }
 
     $scope.uploadFiles = function () {
-        return;
-
         if ($scope.output_files.length == 0) {
             return;
         }
@@ -160,19 +147,13 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User) {
                 fileEntry.status = "Uploading...";
                 mcapi('/user/%/upload/%', User.u(), fileEntry.datadir)
                     .success(function () {
+                        console.log("Uploaded file!");
                         fileEntry.status = "Uploaded";
                     })
                     .error(function () {
                         fileEntry.status = "Failed";
                     })
-                    .post(
-                    {
-                        file: fileEntry.file,
-                        input_conditions: fileEntry.material_condition.id,
-                        output_conditions: fileEntry.equipment_condition.id,
-                        input_files: $scope.input_files
-                    },
-                    {headers: {'Content-Type': false}, transformRequest: formDataObject});
+                    .post({file: fileEntry.file}, {headers: {'Content-Type': false}, transformRequest: formDataObject});
             }
         });
     }
@@ -209,8 +190,8 @@ function UploadWizardProcessStepController($scope, pubsub, watcher, mcapi) {
         'inputs', 'outputs', 'runs', 'citations', 'status'
     ];
 
-    c.forEach(function(name) {
-       $scope.uneditable_properties[name] = "";
+    c.forEach(function (name) {
+        $scope.uneditable_properties[name] = "";
     });
 
     mcapi('/templates')
