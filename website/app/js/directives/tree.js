@@ -28,15 +28,15 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
         function ($scope, $attrs, treeToggle) {
 
             var c = [];
-            /*$scope.isChecked = function (d, e) {
+            $scope.isChecked = function (d, e) {
                 if (d == true) {
                     c.push(e)
                 }
-            };
-            */
+            }
+
             $scope.$parent[$attrs.getSelection] = function () {
                 return c
-            };
+            }
 
             $scope.toggleShow = function(d){
                 if (treeToggle.get_all().indexOf(d.id)>= 0){ //open
@@ -45,13 +45,14 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
                     treeToggle.add_id(d.id);
                 }
             }
+
             $scope.getSelectedClass = function (id) {
                 return $scope.isSelected(id) ? 'show' : '';
-            };
+            }
 
             $scope.isSelected = function (id) {
                 return treeToggle.get_all().indexOf(id) >= 0;
-            };
+            }
 
             $scope.check = function (d){
                 if (!d.confirm) {
