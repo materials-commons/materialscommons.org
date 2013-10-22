@@ -51,12 +51,41 @@ def get_datadirs_as_tree_for_project(user, project_id):
     rr = rr.pluck('id', 'name').order_by('name')
     selection = list(rr.run(g.conn, time_format='raw'))
     all_data_dirs = {}
-    for item in selection:
-        name = item['name']
-        if name not in all_data_dirs:
-            all_data_dirs[name] = DItem(item['id'], name, "datadir")
-        dname = dirname(name)
-        if dname in all_data_dirs:
-            dir_to_add_to = all_data_dirs[dname]
-            dir_to_add_to.children.append(item)
-    return json.dumps(all_data_dirs, indent=4, cls=DEncoder)
+    top_level_dirs = []
+    ddir = selection[0]
+    current_datadir = add_to_top_level(ddir, top_level_dirs)
+    all_data_dirs[current_datadir.name] = current_datadir
+    for ddir in selection:
+        if ddir['name'] <> current_datadir.name:
+            if ddir['name'] not in all_data_dirs:
+                if is_top_level(ddir):
+                    dd = add_to_top_level(ddir, top_level_dirs)
+                    all_data_dirs[dd.name] = dd
+                elif ddir['name'] in all_data_dirs:
+                    dd = all_data_dirs[ddir['name']]
+                else:
+                    dd = DItem(ddir['id'], ddir['name'], "datadir")
+                    all_data_dirs[dd.name] = dd
+                    dir_to_add_to = all_data_dirs[dirname(dd.name)]
+                    dir_to_add_to.children.append(dd)
+                current_datadir = dd
+            else:
+                current_datadir = all_data_dirs[ddir['name']]
+    return json.dumps(top_level_dirs, indent=4, cls=DEncoder)
+
+def is_top_level(ddir):
+    return "/" not in ddir['name']
+
+def add_to_top_level(ddir, top_level_dirs):
+    item = find_in_ditem_list(ddir['name'], top_level_dirs)
+    if not item:
+        dd = DItem(ddir['id'], ddir['name'], "datadir")
+        top_level_dirs.append(dd)
+        item = dd
+    return item
+
+def find_in_ditem_list(name, items):
+    for item in items:
+        if item.name == name:
+            return item
+    return None
