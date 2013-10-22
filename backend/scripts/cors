@@ -1,0 +1,12 @@
+#!/bin/sh
+METHOD=$1
+KEY=$2
+curl -H "Origin: http://example.com" \
+  -H "Access-Control-Request-Method: $METHOD" \
+  -H "Access-Control-Request-Headers: X-Requested-With" \
+  -X OPTIONS --verbose \
+  http://localhost:5000/v1.0/abc?apikey=$KEY
+  #http://localhost:5000/materialscommons/api/v1.0/private/private
+#http://server.cors-api.appspot.com/server?id=3349374&enable=true&status=200&credentials=false&methods=GET%2CPOST&headers=X-Requested-With
+#  http://www.googleapis.com/discovery/v1/apis?fields=
+  #http://localhost:5000/materialscommons/api/v1.0/abc
