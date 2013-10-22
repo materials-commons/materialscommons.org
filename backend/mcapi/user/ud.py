@@ -1,14 +1,14 @@
 from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
-import json
 from flask import jsonify, g, request, send_from_directory
 from ..utils import mkdirp
 import rethinkdb as r
 import os.path
 import os
-import pika
 from ..args import json_as_format_arg
 import tempfile
+from loader.tasks.db import load_data_dir, import_data_dir_to_repo
+from celery import chain
 
 @app.route('/v1.0/user/<user>/udqueue')
 @apikey
@@ -28,40 +28,14 @@ def upload_file(user):
     for key in request.files.keys():
         datadir = request.form[key + "_datadir"]
         file = request.files[key]
-        dir = os.path.join(tdir, project_id, process_id, datadir)
+        dir = os.path.join(tdir, datadir)
         mkdirp(dir)
         filepath = os.path.join(dir, file.filename)
         file.save(filepath)
-    #putRequestOnQueue(filepath, user, material_condition_id, equipment_condition_id)
+    #chain(load_data_dir(user, tdir, project_id, process_id)\
+    #      | import_data_dir_to_repo(tdir))
+    load_data_dir.delay(user, tdir, project_id, process_id)
     return jsonify({'success': True})
-
-def putRequestOnQueue(filepath, user, material_condition_id, equipment_condition_id):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
-    channel.queue_declare(queue='data_loader', durable=True)
-    message = {}
-    message['dirpath'] = baseDirpath(filepath)
-    message['user'] = user
-    message['material_condition_id'] = material_condition_id
-    message['equipment_condition_id'] = equipment_condition_id
-    channel.basic_publish(exchange='', routing_key='data_loader', body=json.dumps(message),\
-                              properties=pika.BasicProperties(delivery_mode=2)) 
-    connection.close()
-
-def baseDirpath(filepath):
-    i = getFourth(filepath)
-    return filepath[0:i]
-
-def getFourth(s):
-    count = 0
-    index = 0
-    for c in s:
-        if c == '/':
-            count = count+1
-        if count == 4:
-            break
-        index = index + 1
-    return index
 
 @app.route('/v1.0/user/<user>/download/file/<path:datafile>')
 #@apikey

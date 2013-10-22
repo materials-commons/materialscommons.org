@@ -23,7 +23,7 @@ def load_data_dirs(user, dirs):
         raise load_data_dirs.retry(exc=exc)
 
 @celery.task
-def load_data_dir(user, directory):
+def load_data_dir(user, directory, project_id, process_id):
     try:
         r.connect('localhost', 28015, db='materialscommons').repl()
         load_directory(user, directory)
@@ -49,22 +49,28 @@ def import_data_dirs_to_repo(dirpaths):
 def copy_data_over(dirpath):
     # For now hard code where we copy data to
     dir = dirname(dirpath)
-    dir_util.copy_tree(dir, '/var/www/html/assets/materialscommons')
+    #dir_util.copy_tree(dir, '/var/www/html/assets/materialscommons')
     print "Removing dir: %s" %(dirpath)
-    shutil.rmtree(dirpath)
+    #shutil.rmtree(dirpath)
 
 def load_directory(user, directory):
     parents = {}
     base = basename(directory)
+    dorethink = False
     for root, dirs, files in os.walk(directory):
         if basename(root) == ".conversion" :
             continue
         dir_name = construct_datadir_name(base, root, directory)
+        print dir_name
         location = dir_name
         parents[dir_name] = ""
         parentname = dirname(dir_name)
         parentid = parents[parentname] if parentname in parents else ""
-        ddir = DataDir(dir_name, "private", user, parentid)
+        fixed_name = fix_name(dir_name)
+        if fixed_name is None:
+            continue
+        ddir = DataDir(fixed_name, "private", user, parentid)
+        print "creating datadir with name: %s" %(fixed_name)
         for datafile in files:
             id = load_data_file(datafile, location, ddir.id, user, root)
             ddir.datafiles.append(id)
@@ -75,6 +81,12 @@ def load_directory(user, directory):
                 dbobj['datafiles'].append(data_item)
             r.table('datadirs').update(dbobj).run()
         parents[dir_name] = dbobj['id']
+
+def fix_name(dir_name):
+    if '/' not in dir_name:
+        return None
+    slash = dir_name.index('/')
+    return dir_name[slash+1:]
 
 def construct_datadir_name(base, root, directory):
     rpath = relpath(root, directory)
