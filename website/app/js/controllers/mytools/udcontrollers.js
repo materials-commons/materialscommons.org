@@ -262,17 +262,30 @@ function UploadWizardConditionInputController($scope, mcapi, pubsub, wizardSteps
     }
 }
 
-function UploadWizardFileInputController($scope, pubsub) {
+function UploadWizardFileInputController($scope, pubsub, mcapi, User) {
     $scope.input_files = [
 //        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
 //        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
     ];
 
+    mcapi('/user/%/datadirs/tree/groups', User.u())
+        .success(function (tree) {
+            $scope.tree = tree;
+        })
+        .error(function () {
+        }).jsonp();
+
     $scope.addInputFile = function () {
         var f = _.find($scope.input_files, function (file) {
-            return file.name == $scope.selected_file;
+            return file.name == $scope.selected_file.name;
         });
         pubsub.send('add_input_file', f);
+    }
+
+    $scope.chooseSelection = function(item) {
+        if (item.type == "datafile") {
+            $scope.selected_file = item;
+        }
     }
 
     $scope.done = function () {
@@ -282,21 +295,25 @@ function UploadWizardFileInputController($scope, pubsub) {
 
 function UploadWizardFileOutputController($scope, pubsub, mcapi, watcher, User) {
     pubsub.waitOn($scope, 'project_id', function (project_id) {
-        mcapi('/user/%/projects/%/datadirs', User.u(), project_id)
+        mcapi('/user/%/projects/%/datadirs/tree', User.u(), project_id)
             .success(function (datadirs) {
-                $scope.datadirs = datadirs;
+                $scope.tree = datadirs;
             })
             .error(function () {
                 console.log("Unable to retrieve tree");
             }).jsonp();
     });
 
+    $scope.chooseSelection = function(d) {
+        $scope.selected_datadir = d;
+    }
+
     $scope.addFile = function (element) {
         $scope.$apply(function () {
             var obj = {};
             obj.file = element.files[0];
             obj.status = "Ready";
-            obj.datadir = $scope.selected_datadir;
+            obj.datadir = $scope.selected_datadir.name;
             pubsub.send('add_output_file', obj);
         });
     }

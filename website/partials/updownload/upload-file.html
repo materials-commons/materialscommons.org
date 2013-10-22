@@ -191,17 +191,19 @@
     </div>
 
     <div ng-show="isInputsCurrentStep('nav_input_files')" class="row-fluid">
-        <h4>Files</h4>
-
         <div class="span12 well" ng-controller="UploadWizardFileInputController">
+            <h4>Files</h4>
+            <div class="row-fluid">
+                <div class="span10">
+                    <h5>Choose file</h5>
+                    <input type="text" width="50px" ng-model="searchText" placeholder="Search data"/>
+                    <ngtree selected="chooseSelection(d)"  search-model="searchText" treeview-data="tree" unique-id="id" display-attr="displayname"></ngtree>
+                </div>
+            </div>
+
+            <hr>
+
             <form>
-                <label>Choose File:</label>
-                <select ng-model="selected_file"
-                        ui-select2="{placeholder: 'Select file', allowClear: true, width:'element'}"
-                        ng-multiple="false">
-                    <option></option>
-                    <option ng-repeat="file in input_files">{{ file.name }}</option>
-                </select>
                 <button ng-click="addInputFile()">Add file</button>
                 <button ng-click="done()">Done</button>
             </form>
@@ -267,18 +269,22 @@
         <div class="span12 well" ng-controller="UploadWizardFileOutputController">
             <h4>Files</h4>
 
+            <div class="row-fluid">
+                <div class="span10">
+                    <h5>Choose Datadir</h5>
+                    <ngtree selected="chooseSelection(d)" search-model="searchText" treeview-data="tree" unique-id="id"
+                            display-attr="displayname"></ngtree>
+                </div>
+            </div>
+
+            <hr>
+
             <form>
-                <select ng-model="selected_datadir"
-                        ui-select2="{placeholder: 'Select datadir', allowClear: true, width:'element'}"
-                        ng-multiple="false">
-                    <option></option>
-                    <option ng-repeat="datadir in datadirs">{{ datadir.name }}</option>
-                </select>
-                    <span class="btn btn-success fileinput-button" style="margin-left: 2px">
+                <span class="btn btn-success fileinput-button" style="margin-left: 2px">
                     <i class="icon-plus icon-white"></i>
                     <input type="file" name="file" ng-model="upFile"
                            onchange="angular.element(this).scope().addFile(this)"><span>Add files...</span>
-                        </span>
+                </span>
                 <button ng-click="done()">Done</button>
             </form>
         </div>
