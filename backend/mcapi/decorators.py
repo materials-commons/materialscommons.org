@@ -9,6 +9,7 @@ _apikeys = {}
 def apikey(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        apikey = request.args.get('apikey', False)
         if 'user' in kwargs:
             user = kwargs['user']
             user_apikey = get_users_apikey(user)
@@ -18,7 +19,6 @@ def apikey(f):
                 user_apikey = get_users_apikey(user)
             else:
                 user_apikey = get_apikey_no_user(apikey)
-        apikey = request.args.get('apikey', False)
         if apikey <> user_apikey:
             return badkey()
         return f(*args, **kwargs)
@@ -41,7 +41,7 @@ def get_apikey_no_user(apikey):
     else:
         selection = r.table('users').filter({'apikey': apikey}).run(g.conn)
         if selection:
-            apikey[apikey] = apikey
+            _apikeys[apikey] = apikey
             return apikey
         else:
             return None
