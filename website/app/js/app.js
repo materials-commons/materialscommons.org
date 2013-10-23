@@ -18,6 +18,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/searchindex/:subpage/:name',
         {templateUrl: 'partials/search.html', controller: SearchIndexController}).
 
+        when('/subpage-template/:tab', {templateUrl: 'partials/my-tools.html', controller: SubPageController}).
         /*
          ** Account controllers
          */
@@ -51,12 +52,12 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         /*
          ** Data Groups
          */
-        when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
-        when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
+        //when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
+        //when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
         when('/datagroups/data/:id', {templateUrl: 'partials/datagroups/datareport.html', controller: DataDirReportController}).
-        when('/datagroups',
-        {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
-        when('/datagroupgrid', {templateUrl: 'partials/thumbnail.html', controller: DataGroupGridController}).
+        //when('/datagroups',
+       // {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
+        //when('/datagroupgrid', {templateUrl: 'partials/thumbnail.html', controller: DataGroupGridController}).
 
 
         /*
@@ -70,16 +71,16 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
          ** Data
          */
         when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
-        when('/data/mydata', {templateUrl: 'partials/data/my-data.html', controller: MyDataController}).
+        //when('/data/mydata', {templateUrl: 'partials/data/my-data.html', controller: MyDataController}).
 
         /*
          ** Tags
          */
-        when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: TagListController}).
+        //when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: AllTagsController}).
         when('/tags/data/bytag/:tag/:user',
         {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
-        when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: TagListController}).
-        when('/tags/cloud/global', {templateUrl: 'partials/tags/tagcloud.html', controller: GlobalTagCloudController}).
+        when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: AllTagsController}).
+        //when('/tags/cloud/global', {templateUrl: 'partials/tags/tagcloud.html', controller: GlobalTagCloudController}).
 
         /*
          ** Upload/Download
@@ -90,10 +91,10 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         /*
         ** Conditions
          */
-        when('/conditions/template/create', {templateUrl: 'partials/conditions/create-condition-template.html', controller: CreateConditionControllers}).
+        //when('/conditions/template/create', {templateUrl: 'partials/conditions/create-condition-template.html', controller: CreateConditionControllers}).
         when('/conditions/template/list', {templateUrl: 'partials/conditions/list-condition-template.html', controller: ListConditionControllers}).
-
         when('/provenance', {templateUrl: 'partials/provenance.html', controller: ProvenanceController}).
+        when('/conditions/template-report/:id', {templateUrl: 'partials/conditions/template-report.html', controller: TemplateReportController}).
 
         otherwise({redirectTo: '/home'});
 }]);

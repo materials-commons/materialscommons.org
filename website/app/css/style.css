@@ -373,3 +373,35 @@ hr{
 
 }
 
+.label-info.custom {
+    background-color: #3A87AD;
+    font-size: 10px;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    line-height: 14px;
+}
+
+.h1.custom{
+    background-color: white;
+    font: 180% sans-serif;
+    color: #226;
+    border-bottom: 3px dotted #77d
+}
+.line {
+    display: block;
+    border: none;
+    color: #333;
+    background: transparent;
+    border-bottom: 1px dotted black;
+    padding: 5px 2px 0 2px;
+}
+
+.line:focus {
+    outline: none;
+    border-color: #51CBEE;
+}
+
+
+
+
+

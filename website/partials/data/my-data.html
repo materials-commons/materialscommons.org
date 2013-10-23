@@ -1,12 +1,9 @@
-<div class="span12 offset1">
-    <h1>My Data </h1>
+<h1>My Data </h1>
 
-    <div class="row-fluid">
+<div ng-controller="MyDataController">
         Filter by: <input ng-model="query">
-    </div>
-    <div class="row-fluid">
         <paged data="data_by_user" current-page="currentDataPage" page-size="10">
-            <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <table class="table table-striped ">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -58,5 +55,4 @@
                 </tbody>
             </table>
         </paged>
-    </div>
 </div>

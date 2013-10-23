@@ -1,23 +1,21 @@
-function TagListController($scope, $routeParams, $location, mcapi, User) {
-    $scope.listtype = $routeParams.listtype;
-    if ($routeParams.listtype == "all") {
+function AllTagsController($scope, $routeParams, $location, mcapi, User) {
         $scope.tagHeader = "All Tags";
         mcapi('/tags/count')
             .success(function (data) {
                 $scope.tags = data;
             }).jsonp();
-    }
-    else if ($routeParams.listtype == "mytags") {
-        $scope.tagHeader = "My Tags";
-        mcapi('/user/%/tags/count', User.u())
-            .success(function (data) {
-                $scope.tags = data;
-            }).jsonp();
-    }
 
-    $scope.listDataForTag = function (tag) {
-        $location.path("/tags/data/bytag/" + tag + "/" + User.u());
+        $scope.listDataForTag = function (tag) {
+            $location.path("/tags/data/bytag/" + tag + "/" + User.u());
     }
+}
+
+function MyTagsController($scope, mcapi, User){
+    $scope.tagHeader = "My Tags";
+    mcapi('/user/%/tags/count', User.u())
+        .success(function (data) {
+            $scope.tags = data;
+        }).jsonp();
 }
 
 function TagDataController($scope, $routeParams, $location, mcapi, User) {

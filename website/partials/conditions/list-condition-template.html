@@ -1,4 +1,6 @@
-<div class="span12 offset1">
+<div ng-controller="ListConditionControllers">
+
+<div class="span8">
     <div >
         <h4>Recently Created Templates</h4>
         <paged data="templates" current-page="currentDataPage" page-size="10">
@@ -13,15 +15,15 @@
             <th>Properties</th>
             </thead>
             <tbody>
-            <tr ng-repeat="t in templates | page:currentDataPage:10 " on-click="display_template(t)" style="cursor:pointer">
+            <tr ng-repeat="t in templates | page:currentDataPage:10 " ng-click="display_template(t)" style="cursor:pointer">
                 <td>{{ t.template_name }}</td>
                 <td>{{ t.template_type }}</td>
                 <td>{{ t.owner }}</td>
                 <td>{{ t.template_birthtime | toDateString }}</td>
                 <td>
-                     <ul style="margin-left: 5px" ng-repeat="p in t.model">
-                     <li>{{ p.name }}</li>
-                </ul>
+                     <span style="margin-left: 5px" ng-repeat="p in t.model">
+                        {{ p.name}}{{$last ? '': ','}}
+                    </span>
                 </td>
             </tr>
             </tbody>
@@ -29,4 +31,6 @@
             </paged>
     </div>
 </div>
+</div>
+
 

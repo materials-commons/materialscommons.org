@@ -1,55 +1,41 @@
-<div class="span12 offset1">
-    <h3>Create new template</h3>
-    <div class="row-fluid">
-        <div class="span4">
-            <div class="well">
-                Template Type: <br>
-                <select  ng-model="doc.template_type"  ng-click="change_properties(doc.template_type)"
-                         ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
-                         ng-multiple="false">
-                    <option value=''></option>
-                    <option value='process'>Process</option>
-                    <option value='condition'>Condition</option>
-                </select><br><br>
-                Template Name:<br>
-                <input ng-model="doc.template_name" type="text"><br>
-                Owner: <br>
-                <input ng-model="doc.owner" type="text"><br>
-                Template Description:<br>
-                <textarea class="input-xlarge" ng-model="doc.template_description" /><br></br>
-                <p ng-show="doc.template_type=='condition'">
-                    <b>Add your own properties</b><br>
-                    <input ng-model="doc.new_property" type="text">
-                    <button style="position: absolute" ng-click="add_property()">Add </button><br>
+<div ng-controller="CreateConditionControllers">
+        <h3>Create new template</h3>
 
-                    List :<br>
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="well">
+                    Template Type: <br>
+                    <select ng-model="doc.template_type" ng-click="change_properties(doc.template_type)"
+                            ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
+                            ng-multiple="false">
+                        <option value=''></option>
+                        <option value='process'>Process</option>
+                        <option value='condition'>Condition</option>
+                    </select><br><br>
+                    Template Name:<br>
+                    <input ng-model="doc.template_name" type="text"><br>
+                    Owner: <br>
+                    <input ng-model="doc.owner" type="text"><br>
+                    Template Description:<br>
+                    <textarea class="input-xlarge" ng-model="doc.template_description"/><br>
+
+                    <p ng-show="doc.template_type=='condition'">
+                        <b>Add your own properties</b><br>
+                        <input ng-model="doc.new_property" type="text">
+                        <button style="position: absolute" ng-click="add_property()">Add</button>
+                        <br>
+
+                        List :<br>
                 <span class="label label-success" style="margin-left: 5px" ng-repeat="p in properties">
                      <button type="button" class="close" ng-click="remove_property($index);">&times;</button>{{ p }}
                 </span>
-                </p>
+                    </p>
 
-            </div>
-        </div>
-
-        <div ng-show="created_template">
-            <div class="span5 offset2">
-                <div class="well">
-                    <h4> Created Template: {{created_template.template_name}}</h4>
-                    <table>
-                        <b>Name: </b>{{created_template.template_name}}  <br>
-                        <b>Owner:</b> {{created_template.owner}}  <br>
-                        <b>Created At:</b>  {{created_template.template_birthtime | toDateString}} <br>
-                        <b>Description</b>  {{created_template.template_description}} <br>
-                        <b>Type:</b> {{created_template.template_type}}  <br>
-                        <b>Properties:</b> <ul ng-repeat="p in properties"><li>{{p}} = </ul>
-
-                    </table>
                 </div>
             </div>
         </div>
-</div>
-</div>
+        <div ng-show="doc.template_type">
+            <button type="button" class="btn btn-primary" ng-click="create_template()">Create template</button>
+        </div>
 
-<div ng-show="doc.template_type" class="span12 offset1">
-    <button type="button"  class="btn btn-primary" ng-click="create_template()">Create template</button>
 </div>
