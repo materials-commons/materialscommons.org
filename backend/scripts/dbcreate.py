@@ -24,10 +24,10 @@ def create_tables():
     run_rethinkdb_command(lambda: r.table_create("citations").run())
     run_rethinkdb_command(lambda: r.table_create("notes").run())
     run_rethinkdb_command(lambda: r.table_create("templates").run())
-    run_rethinkdb_command(lambda: r.table_create("project2datadir", primary_key="project_id").run())
-    run_rethinkdb_command(lambda: r.table_create("project2datafile", primary_key="project_id").run())
-    run_rethinkdb_command(lambda: r.table_create("project2processes", primary_key="project_id").run())
-    run_rethinkdb_command(lambda: r.table_create("project2conditions", primary_key="project_id").run())
+    run_rethinkdb_command(lambda: r.table_create("project2datadir").run())
+    run_rethinkdb_command(lambda: r.table_create("project2datafile").run())
+    run_rethinkdb_command(lambda: r.table_create("project2processes").run())
+    run_rethinkdb_command(lambda: r.table_create("project2conditions").run())
 
 def run_rethinkdb_command(func):
     try:
