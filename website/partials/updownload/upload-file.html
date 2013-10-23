@@ -1,5 +1,5 @@
 <!--<button ng-click="cors()">cors</button>-->
-
+<div ng-controller="UploadFileController">
 <div class="row-fluid">
     <div class="span3 offset1">
         <h5>Upload for project: {{project}}</h5>
@@ -98,7 +98,7 @@
             <h4>Projects</h4>
 
             <form>
-                <select class="span4" ng-model="selected_project"
+                <select class="span3" ng-model="selected_project"
                         ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
                         ng-multiple="false">
                     <option></option>
@@ -298,6 +298,7 @@
             <button ng-click="upload()">Upload</button>
         </form>
     </div>
+</div>
 </div>
 </div>
 </div>

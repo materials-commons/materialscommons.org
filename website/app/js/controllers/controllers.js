@@ -245,6 +245,21 @@ function SubPageController($scope, $routeParams){
                 $scope.template = "partials/usergroups/usergroups_list_all.html";
                 $('#reviews-tab').addClass("active");
                 break;
+
+            case "upload-file-tab":
+                $scope.template = "partials/updownload/upload-file.html";
+                $('#upload-tab').addClass("active");
+                break;
+
+            case "upload-directory-tab":
+                $scope.template = "partials/updownload/upload-directory.html";
+                $('#upload-tab').addClass("active");
+                break;
+
+            case "updownload-queue-tab":
+                $scope.template = "partials/updownload/udqueue.html";
+                $('#upload-tab').addClass("active");
+                break;
         }
     }
 }
