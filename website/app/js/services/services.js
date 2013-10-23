@@ -63,11 +63,18 @@ materialsCommonsServices.
         };
     });
 
-materialsCommonsServices.factory('formDataObject', function () {
+materialsCommonsServices.factory('toUploadForm', function () {
     return function (data) {
         var fd = new FormData();
         angular.forEach(data, function (value, key) {
-            fd.append(key, value);
+            if (key != "files") {
+                fd.append(key, value);
+            } else {
+                for (var i = 0; i < data.files.length; i++) {
+                    fd.append("file_" + i, data.files[i].file);
+                    fd.append("file_" + i + "_datadir", data.files[i].datadir);
+                }
+            }
         });
         return fd;
     };
@@ -93,13 +100,13 @@ materialsCommonsServices.factory('pubsub', function ($rootScope) {
     var pubsubService = {};
     pubsubService.message = '';
 
-    pubsubService.send = function(channel, msg) {
+    pubsubService.send = function (channel, msg) {
         this.message = msg;
         $rootScope.$broadcast(channel);
     }
 
-    pubsubService.waitOn = function(scope, channel, fn) {
-        scope.$on(channel, function() {
+    pubsubService.waitOn = function (scope, channel, fn) {
+        scope.$on(channel, function () {
             fn(pubsubService.message);
         });
     }
@@ -107,13 +114,14 @@ materialsCommonsServices.factory('pubsub', function ($rootScope) {
     return pubsubService;
 });
 
-materialsCommonsServices.factory('watcher', function() {
+materialsCommonsServices.factory('watcher', function () {
     var watcherService = {};
 
-    watcherService.watch = function(scope, variable, fn) {
-        scope.$watch(variable, function(newval, oldval) {
+    watcherService.watch = function (scope, variable, fn) {
+        scope.$watch(variable, function (newval, oldval) {
             if (!newval && !oldval) {
-                return; }
+                return;
+            }
             else if (newval == "" && oldval) {
                 fn(oldval);
             } else {
@@ -169,7 +177,7 @@ materialsCommonsServices.factory('mcapi', function ($http, User) {
         return this;
     }
 
-    MCApi.prototype.argWithValue = function(a, v) {
+    MCApi.prototype.argWithValue = function (a, v) {
         this.url = this.url + "&" + a + "=" + v;
         return this;
     }
@@ -278,7 +286,6 @@ materialsCommonsServices.factory('decodeAlerts', function () {
 });
 
 
-
 materialsCommonsServices.factory('Thumbnail', function () {
     var fileType = '';
     var fileSrc = '';
@@ -306,10 +313,9 @@ materialsCommonsServices.factory('formatData', function () {
         convert_into_gridoptions: function (process) {
             process.forEach(function (pr) {
                 var one_process = [];
-                var keys = '';
-                keys = Object.keys(pr);
+                var keys = Object.keys(pr);
                 keys.forEach(function (k) {
-                    var template = {'property': k, 'value': pr[k]}
+                    var template = {'name': k, 'value': pr[k]}
                     one_process.push(template);
                 })
                 all_process.push(one_process)
@@ -317,14 +323,27 @@ materialsCommonsServices.factory('formatData', function () {
             return all_process;
         },
 
-        reformat_conditions: function(conditions){
+        reformat_conditions: function (conditions) {
             var new_conditions_format = [];
-            conditions.forEach(function(c){
-                var row = {'property' : c, 'value': ''}
+            conditions.forEach(function (c) {
+                var row = {'name': c, 'value': ''}
                 new_conditions_format.push(row)
             })
             return new_conditions_format;
         }
     }
+});
 
+materialsCommonsServices.factory('wizardSteps', function () {
+    var currentStep = {};
+
+    return {
+        setCurrent: function (wizardName, stepName) {
+            currentStep[wizardName] = stepName;
+        },
+
+        getCurrent: function (wizardName) {
+            return currentStep[wizardName];
+        }
+    }
 });

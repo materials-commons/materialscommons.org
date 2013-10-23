@@ -3,7 +3,7 @@ from utils import error_response
 import rethinkdb as r
 from flask import g
 from args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
-from mcexceptions import RequiredAttributeException
+from mcexceptions import RequiredAttributeException, DatabaseError
 
 def get_required(what, d):
     if what not in d:
@@ -14,6 +14,18 @@ def get_optional(what, d, novalue=""):
     if what not in d:
         return novalue
     return d[what]
+
+def get_optional_prop(what, d, novalue=""):
+    for item in d:
+        if what == item['name']:
+            return item['value']
+    return novalue
+
+def get_required_prop(what, d):
+    for item in d:
+        if what == item['name']:
+            return item['value']
+    raise RequiredAttributeException(what)
 
 def insert_status(rv):
     if rv[u'inserted'] == 1:
@@ -41,3 +53,9 @@ def entry_exists(table_name, entry_id):
 def insert_entry(table_name, entry):
     rv = r.table(table_name).insert(entry).run(g.conn)
     return insert_status(rv)
+
+def insert_entry_id(table_name, entry):
+    rv = r.table(table_name).insert(entry).run(g.conn)
+    if rv[u'inserted'] == 1:
+        return rv['generated_keys'][0]
+    raise DatabaseError()

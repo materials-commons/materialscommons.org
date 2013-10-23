@@ -7,3 +7,6 @@ class AuthenticationException(Exception):
 
 class AccessNotAllowedException(Exception):
     pass
+
+class DatabaseError(Exception):
+    pass

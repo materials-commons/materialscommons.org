@@ -16,7 +16,7 @@ def t_users():
     selection = list(r.table('users').run(g.conn))
     return json.dumps(selection)
 
-@app.route('/v1.0/abc', methods=['PUT'])
+@app.route('/v1.0/abc', methods=['POST'])
 @crossdomain(origin='*')
 #@apikey
 def my_abc():

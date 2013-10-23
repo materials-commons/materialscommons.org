@@ -30,6 +30,7 @@ def teardown_request(exception):
 
 @app.errorhandler(mcexceptions.RequiredAttributeException)
 def required_attribute_exception_handler(error):
+    print "Missing attribute: " + error.attr
     return "Missing required attribute: " + error.attr, 406
 
 @app.errorhandler(RqlDriverError)
@@ -43,6 +44,10 @@ def authentication_exception_handler(error):
 @app.errorhandler(mcexceptions.AccessNotAllowedException)
 def access_not_allowed_exception_handler(error):
     return "Access not allowed", 401
+
+@app.errorhandler(mcexceptions.DatabaseError)
+def database_error_exception_handler(error):
+    return "Internal database error", 500
 
 @app.errorhandler(Exception)
 def catchall_exception_handler(error):

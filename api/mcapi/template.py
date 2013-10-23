@@ -8,7 +8,6 @@ import dmutil
 @app.route('/v1.0/templates/<template_id>', methods=['GET'])
 @jsonp
 def get_template(template_id):
-    print template_id
     return dmutil.get_single_from_table('templates', template_id)
 
 @app.route('/v1.0/templates', methods=['GET'])
@@ -77,7 +76,7 @@ def create_condition_template(j):
     template = common_template_elements("condition", j)
     properties = j[u'properties']
     for prop in properties:
-        prop_name = prop['property']
+        prop_name = prop['name']
         prop_value = prop['value']
         add_model_item(template, prop_name, prop_value)
         add_model_item(template, prop_name + '_note', "")

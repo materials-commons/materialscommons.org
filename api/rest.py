@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 from mcapi.mcapp import app
-from mcapi import tservices, public, utils, private, access, process, machine, template
-from mcapi.user import account, datadirs, datafiles, reviews, ud, usergroups
+from mcapi import tservices, public, utils, private, access, process, machine, template, tservices
+from mcapi.user import account, datadirs, datafiles, reviews, ud, usergroups, projects, conditions
 import sys
 
 if __name__ == '__main__':
