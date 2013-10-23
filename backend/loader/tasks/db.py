@@ -14,11 +14,11 @@ import shutil
 celery = Celery('db', broker='amqp://guest@localhost//')
 
 @celery.task
-def load_data_dirs(user, dirs):
+def load_data_dirs(user, dirs, project_id, process_id):
     try:
         r.connect('localhost', 28015, db='materialscommons').repl()
         for directory in dirs:
-            load_directory(user, directory)
+            load_directory(user, directory, project_id, process_id)
     except Exception as exc:
         raise load_data_dirs.retry(exc=exc)
 
@@ -26,13 +26,14 @@ def load_data_dirs(user, dirs):
 def load_data_dir(user, directory, project_id, process_id):
     try:
         r.connect('localhost', 28015, db='materialscommons').repl()
-        load_directory(user, directory)
+        load_directory(user, directory, project_id, process_id)
     except Exception as exc:
         raise load_data_dir.retry(exc=exc)
 
 @celery.task
 def import_data_dir_to_repo(dirpath):
     try:
+        print "Copying over: %s" %(dirpath)
         copy_data_over(dirpath)
     except Exception as exc:
         raise import_data_dir_to_repo.retry(exc)
@@ -41,27 +42,25 @@ def import_data_dir_to_repo(dirpath):
 def import_data_dirs_to_repo(dirpaths):
     try:
         for directory in dirpaths:
-            print "Copying over: %s" %(directory)
             copy_data_over(directory)
     except Exception as exc:
         raise import_data_dirs_to_repo.retry(exc)
 
 def copy_data_over(dirpath):
+    print "Copying over: %s" % (dirpath)
     # For now hard code where we copy data to
-    dir = dirname(dirpath)
-    #dir_util.copy_tree(dir, '/var/www/html/assets/materialscommons')
-    print "Removing dir: %s" %(dirpath)
-    #shutil.rmtree(dirpath)
+    dir_util.copy_tree(dirpath, '/var/www/html/assets/materialscommons')
+    print "Removing dir: %s" % (dirpath)
+    shutil.rmtree(dirpath)
 
-def load_directory(user, directory):
+def load_directory(user, directory, project_id, process_id):
     parents = {}
     base = basename(directory)
-    dorethink = False
+    df_ids = []
     for root, dirs, files in os.walk(directory):
         if basename(root) == ".conversion" :
             continue
         dir_name = construct_datadir_name(base, root, directory)
-        print dir_name
         location = dir_name
         parents[dir_name] = ""
         parentname = dirname(dir_name)
@@ -70,9 +69,9 @@ def load_directory(user, directory):
         if fixed_name is None:
             continue
         ddir = DataDir(fixed_name, "private", user, parentid)
-        print "creating datadir with name: %s" %(fixed_name)
         for datafile in files:
             id = load_data_file(datafile, location, ddir.id, user, root)
+            df_ids.append(id)
             ddir.datafiles.append(id)
         rv = r.table('datadirs').insert(ddir.__dict__, return_vals=True).run()
         dbobj = rv['new_val']
@@ -81,6 +80,7 @@ def load_directory(user, directory):
                 dbobj['datafiles'].append(data_item)
             r.table('datadirs').update(dbobj).run()
         parents[dir_name] = dbobj['id']
+    add_dfids_to_process(process_id, df_ids)
 
 def fix_name(dir_name):
     if '/' not in dir_name:
@@ -153,3 +153,10 @@ def usetag(tagname, tagdata):
 
 def get_media_type(path):
     return runtika("-d", path).rstrip()
+
+def add_dfids_to_process(process_id, df_ids):
+    process = r.table('processes').get(process_id).run()
+    for id in df_ids:
+        process['output_files'].append(id)
+    output_files = process['output_files']
+    r.table('processes').get(process_id).update({'output_files':output_files}).run()
