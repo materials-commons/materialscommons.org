@@ -1,0 +1,30 @@
+
+
+<h4>Track the provenance of datafile- t1.txt</h4>
+<div ng-controller="ProvenanceController">
+<div class="row-fluid">
+    <div class="span12">
+        <div prov  process-list = "process" callback-fn="get_process_details(arg1)">
+
+
+        </div>
+    </div>
+</div>
+
+<div  ng-show="details" class="row-fluid">
+    <div class="span4 offset3">
+        <div class="well">
+        <b><u>Process Details:</u></b><br><br>
+            Name: {{details.name}} <br>
+            Owner: {{details.owner}} <br>
+            Inputs:<ul ng-repeat="i in details.inputs">
+                <li><a>{{i}}</a></li>
+            </ul>
+            Outputs:<ul ng-repeat="i in details.inputs">
+            <li><a>{{i}}</a></li>
+        </ul>
+
+      </div>
+</div>
+</div>
+</div>

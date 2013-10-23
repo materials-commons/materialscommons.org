@@ -1,0 +1,64 @@
+<div ng-controller="ReviewListController">
+    <div class="row-fluid">
+        <div class="span8">
+            <h4>Reviews to conduct</h4>
+            <paged data="reviews" current-page="currentReviewPage" page-size="5">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Note</th>
+                        <th>Marked On</th>
+                        <th>Type</th>
+                        <th>What</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="review in reviews | page:currentReviewPage:5">
+                        <td ng-click="startReview(review.itemId, review.type)" style="cursor:pointer">{{ review.who }}
+                        </td>
+                        <td>{{ review.note }}</td>
+                        <td>{{ review.marked_on | toDateString }}</td>
+                        <td>{{ review.type }}</td>
+                        <td>{{ review.item_name }}
+                            <button type="button" class="close" ng-click="removeReview($index);">&times;</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </paged>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span8">
+            <h4>Reviews you have requested</h4>
+            <paged data="reviewsRequested" current-page="currentRequestedReviewPage" page-size="5">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>User asked</th>
+                        <th>Note</th>
+                        <th>Marked On</th>
+                        <th>Type</th>
+                        <th>What</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="review in reviewsRequested | page:currentRequestedReviewPage:5">
+                        <td>{{ review.owner }}
+                        </td>
+                        <td>{{ review.note }}</td>
+                        <td>{{ review.marked_on | toDateString }}</td>
+                        <td>{{ review.type }}</td>
+                        <td>{{ review.item_name }}
+                            <button type="button" class="close"
+                                    ng-click="removeRequestedReview($index);">&times;</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </paged>
+        </div>
+    </div>
+</div>
