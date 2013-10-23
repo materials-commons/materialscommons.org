@@ -128,14 +128,30 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUpload
         obj.output_conditions = $scope.output_conditions;
         mcapi('/user/%/conditions/from_template_list', User.u())
             .success(function () {
-                $scope.uploadFiles();
+                $scope.uploadInputFiles();
             })
             .error(function () {
                 console.log("condition save failed")
             }).post(obj);
     }
 
-    $scope.uploadFiles = function () {
+    $scope.uploadInputFiles = function() {
+        var input_file_ids = [];
+
+        $scope.input_files.forEach(function(f) {
+            input_file_ids.push(f.id);
+        });
+
+        mcapi('/processes/%/update', $scope.process_id)
+            .success(function() {
+                $scope.uploadOutputFiles();
+            })
+            .error(function() {
+                console.log("input file update failed");
+            }).put({input_files: input_file_ids});
+    }
+
+    $scope.uploadOutputFiles = function () {
         if ($scope.output_files.length == 0) {
             return;
         }
@@ -276,10 +292,7 @@ function UploadWizardFileInputController($scope, pubsub, mcapi, User) {
         }).jsonp();
 
     $scope.addInputFile = function () {
-        var f = _.find($scope.input_files, function (file) {
-            return file.name == $scope.selected_file.name;
-        });
-        pubsub.send('add_input_file', f);
+        pubsub.send('add_input_file', $scope.selected_file);
     }
 
     $scope.chooseSelection = function(item) {
