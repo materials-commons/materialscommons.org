@@ -19,15 +19,13 @@ def create_condition_from_template(user, j):
     type_of_condition = dmutil.get_required('condition_type', j)
     process_id = dmutil.get_required('process', j)
     c['owner'] = user
-    c['process'] = process_id
-    c['project'] = dmutil.get_required('project', j)
     c['template'] = dmutil.get_required('id', j)
     c['name'] = dmutil.get_required('name', j)
     for attr in m:
         c[attr['name']] = attr['value']
     c_id = dmutil.insert_entry_id('conditions', c)
     new_conditions = r.table('processes').get(process_id)[type_of_condition].append(c_id).run(g.conn)
-    r.table('processes').update({type_of_condition:new_conditions}).run(g.conn)
+    r.table('processes').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
     return c_id
 
 @app.route('/v1.0/user/<user>/conditions/from_template_list', methods=['POST'])
