@@ -32,9 +32,8 @@ def upload_file(user):
         mkdirp(dir)
         filepath = os.path.join(dir, file.filename)
         file.save(filepath)
-    #chain(load_data_dir(user, tdir, project_id, process_id)\
-    #      | import_data_dir_to_repo(tdir))
-    load_data_dir.delay(user, tdir, project_id, process_id)
+    chain(load_data_dir.si(user, tdir, project_id, process_id)\
+          | import_data_dir_to_repo.si(tdir))()
     return jsonify({'success': True})
 
 @app.route('/v1.0/user/<user>/download/file/<path:datafile>')
