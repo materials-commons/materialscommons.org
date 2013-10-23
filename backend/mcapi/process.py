@@ -1,9 +1,10 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request
+from flask import request, g
 import rethinkdb as r
 from utils import error_response
 import dmutil
+import json
 
 @app.route('/v1.0/processes/<process_id>', methods=['GET'])
 @jsonp
@@ -18,6 +19,7 @@ def get_all_processes():
 #
 # TODO: Fix up error_response(400) to something meaningful
 # TODO: Where should we get user from (remove from request args?)
+# TODO: Check that the project exists
 @app.route('/v1.0/processes/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
@@ -57,7 +59,8 @@ def create_process_from_template():
     p = dict()
     j = request.get_json()
     p['template'] = dmutil.get_required('id', j)
-    p['project'] = dmutil.get_required('project', j)
+    project_id = dmutil.get_required('project', j)
+    p['project'] = project_id
     m = j['model']
     p['name'] = dmutil.get_required_prop('name', m)
     p['birthtime'] = r.now()
@@ -74,10 +77,21 @@ def create_process_from_template():
     p['runs'] = dmutil.get_optional_prop('runs', m, [])
     p['citations'] = dmutil.get_optional_prop('citations', m, [])
     p['status'] = dmutil.get_optional_prop('status', m)
-    return dmutil.insert_entry('processes', p)
+    process_id = dmutil.insert_entry_id('processes', p)
+    dmutil.insert_join_entry('project2processes',\
+                           {'project_id': project_id, 'process_id': process_id})
+    return json.dumps({'id': process_id})
 
-@app.route('/v1.0/process/<process_id>', methods=['PUT'])
+@app.route('/v1.0/processes/<process_id>/update', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def update_process(process_id):
-    pass
+    process = r.table('processes').get(process_id).run(g.conn)
+    if process is None:
+        return error_response(400)
+    j = request.get_json()
+    for id in j['input_files']:
+        process['input_files'].append(id)
+    input_files = process['input_files']
+    r.table('processes').get(process_id).update({'input_files':input_files}).run(g.conn)
+    return json.dumps({"success": True})
