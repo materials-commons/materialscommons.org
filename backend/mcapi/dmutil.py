@@ -59,3 +59,9 @@ def insert_entry_id(table_name, entry):
     if rv[u'inserted'] == 1:
         return rv['generated_keys'][0]
     raise DatabaseError()
+
+def insert_join_entry(table_name, entry):
+    rv = r.table(table_name).insert(entry).run(g.conn)
+    if rv[u'inserted'] == 1:
+        return True
+    raise DatabaseError()
