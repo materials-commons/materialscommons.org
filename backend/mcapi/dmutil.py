@@ -1,5 +1,5 @@
 import json
-from utils import error_response
+import error
 import rethinkdb as r
 from flask import g
 from args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
@@ -32,7 +32,7 @@ def insert_status(rv):
         key = rv['generated_keys'][0]
         return json.dumps({'id': key})
     else:
-        return error_response(400)
+        return error.server_internal_error("Unable to insert entry into database")
 
 def get_all_from_table(table_name):
     rr = r.table(table_name)

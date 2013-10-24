@@ -2,7 +2,7 @@ from mcapp import app
 from decorators import crossdomain, apikey, jsonp
 from flask import request, g
 import rethinkdb as r
-from utils import error_response
+import error
 import dmutil
 import json
 
@@ -29,7 +29,7 @@ def create_process():
     p['name'] = dmutil.get_required('name', j)
     user = request.args.get('user', None)
     if user is None:
-        return error_response(400)
+        return error.bad_request("No user specified")
     p['owner'] = user
 
     p['project'] = dmutil.get_required('project', j)
@@ -88,7 +88,7 @@ def create_process_from_template():
 def update_process(process_id):
     process = r.table('processes').get(process_id).run(g.conn)
     if process is None:
-        return error_response(400)
+        return error.bad_request("No such process: " + process_id)
     j = request.get_json()
     for id in j['input_files']:
         process['input_files'].append(id)

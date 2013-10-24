@@ -1,10 +1,11 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
 import json
-from flask import jsonify, g, request, make_response
+from flask import jsonify, g, request
 import rethinkdb as r
 import uuid
-from utils import createTagCount, makePwHash, error_response, set_dates
+from utils import createTagCount, make_password_hash, set_dates
+import error
 
 @app.route('/v1.0/tag', methods=['POST'])
 @crossdomain(origin='*')
@@ -13,7 +14,7 @@ def tag():
     if (inserted[u'inserted'] == 1):
         return {'status': 'SUCCESS'}
     else:
-        return error_response(423)
+        return error.bad_request("Unable to insert tag")
 
 @app.route('/v1.0/tag/<tag>', methods=['DELETE'])
 @crossdomain(origin='*')
@@ -80,16 +81,16 @@ def list_users():
 @app.route('/v1.0/newuser', methods=['POST'])
 @crossdomain(origin='*')
 def newuser():
-    account = request.get_json(silent = False)
+    account = request.get_json(silent=False)
     if 'email' not in account:
-        return make_response(jsonify({'error': 'invalid account'}), 400)
+        return error.not_acceptable("No email specified")
     elif 'password' not in account:
-        return make_response(jsonify({'error': 'invalid account'}), 400)
+        return error.not_acceptable("No password specified")
     exists = r.table('users').get(account['email']).run(g.conn)
     if exists is None:
         newacc = {}
         newacc['email'] = account['email']
-        newacc['password'] = makePwHash(account['password'])
+        newacc['password'] = make_password_hash(account['password'])
         newacc['apikey'] = uuid.uuid1().hex
         newacc['name'] = account['email']
         newacc['id'] = account['email']
@@ -97,5 +98,4 @@ def newuser():
         r.table('users').insert(newacc).run(g.conn)
         return json.dumps({'apikey': newacc['apikey']})
     else:
-        error_msg = error_response(403)
-        return error_msg
+        return error.server_internal_error("Unable to create the account")

@@ -1,10 +1,11 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp, remove_user_from_apikey_cache
+from ..decorators import crossdomain, apikey, jsonp
+from access import remove_user
 import json
 from flask import jsonify, g
 import rethinkdb as r
 import uuid
-from ..utils import makePwHash, makePwHashWithSalt, error_response
+from ..utils import make_password_hash, make_salted_password_hash
 from ..args import json_as_format_arg
 
 @app.route('/v1.0/user/<user>', methods=['GET'])
@@ -20,7 +21,7 @@ def get_api_key_for_user(user, password):
     u = r.table('users').get(user).run(g.conn)
     dbpw = u['password']
     _i1,_i2, _i3, salt, _pwhash = dbpw.split('$')
-    hash = makePwHashWithSalt(password, salt)
+    hash = make_salted_password_hash(password, salt)
     if hash == dbpw:
         return json.dumps({'apikey': u['apikey']})
     else:
@@ -31,7 +32,7 @@ def get_api_key_for_user(user, password):
 @apikey
 @crossdomain(origin='*')
 def change_password(user, newpw):
-    hash = makePwHash(newpw)
+    hash = make_password_hash(newpw)
     rv = r.table('users').get(user).update({'password':hash}).run(g.conn)
     return jsonify(rv)
 
@@ -41,7 +42,7 @@ def change_password(user, newpw):
 def reset_apikey(user):
     new_apikey = uuid.uuid1().hex
     rv = r.table('users').get(user).update({'apikey':new_apikey}).run(g.conn)
-    remove_user_from_apikey_cache(user)
+    remove_user(user)
     return jsonify({'apikey':new_apikey})
 
 @app.route('/v1.0/user/<user>/usergroups', methods=['GET'])
