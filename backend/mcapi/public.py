@@ -97,5 +97,5 @@ def newuser():
         r.table('users').insert(newacc).run(g.conn)
         return json.dumps({'apikey': newacc['apikey']})
     else:
-        error_msg = error_response(402)
+        error_msg = error_response(403)
         return error_msg
