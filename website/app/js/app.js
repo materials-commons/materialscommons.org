@@ -121,7 +121,7 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
         }
 
         if (!$rootScope.stompClient) {
-            var chatConnection = "http://" + document.location.name + ":15674/stomp";
+            var chatConnection = "http://" + document.location.hostname + ":15674/stomp";
             if (document.location.hostname == "materialscommons.org") {
                 chatConnection = "https://materialscommons.org:55674/stomp";
             }
