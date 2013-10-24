@@ -23,8 +23,8 @@ def get_udqueue(user):
 def upload_file(user):
     process_id = request.form['process_id']
     project_id = request.form['project_id']
-    tdir = tempfile.mkdtemp(dir='/tmp/uploads')
     mkdirp('/tmp/uploads')
+    tdir = tempfile.mkdtemp(dir='/tmp/uploads')
     for key in request.files.keys():
         datadir = request.form[key + "_datadir"]
         file = request.files[key]
