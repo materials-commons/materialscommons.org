@@ -97,7 +97,7 @@ def load_data_file(datafile, location, ddirid, user, root):
     path = getpath(root, datafile)
     mediatype = get_media_type(path)
     data_item.mediatype = mediatype
-    data_item.location = location
+    data_item.location = fix_name(location)
     data_item.checksum = getchecksum(path)
     data_item.size = getsize(path)
     metatags = get_meta_tags(path)
