@@ -27,7 +27,8 @@ def createTagCount(selection):
         tag['name'] = key
         tag['count'] = tagsCountDict[key]
         tagsByCount.append(tag)
-    return json_as_format_arg(tagsByCount)
+    sorted_list = sorted(tagsByCount, key=sort_by_count, reverse=True)
+    return json_as_format_arg(sorted_list)
 
 def mkdirp(path):
     try:
@@ -71,6 +72,10 @@ def error_response(code):
         423 : {'error': 'Failed: Unable to add the entity to database'}
     }
     return make_response(jsonify(error_dict[code]), code)
+
+def sort_by_count(list):
+    return list['count']
+
 
 def set_dates(item):
     tnow = r.now()
