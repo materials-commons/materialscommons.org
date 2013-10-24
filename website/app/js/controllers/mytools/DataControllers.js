@@ -2,15 +2,15 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     $scope.count = 0;
     $scope.grid_options = [];
 
-    mcapi('/user/%/equipment_conditions/', User.u())
-        .success(function (data) {
-            $scope.conditions = data;
-            $scope.all_process = formatData.convert_into_gridoptions($scope.conditions)
-            for (var i = 0; i < $scope.all_process.length; i++) {
-                var template = {data: 'all_process[' + i + ']'}
-                $scope.grid_options.push(template);
-            }
-        }).jsonp();
+//    mcapi('/user/%/equipment_conditions/', User.u())
+//        .success(function (data) {
+//            $scope.conditions = data;
+//            $scope.all_process = formatData.convert_into_gridoptions($scope.conditions)
+//            for (var i = 0; i < $scope.all_process.length; i++) {
+//                var template = {data: 'all_process[' + i + ']'}
+//                $scope.grid_options.push(template);
+//            }
+//        }).jsonp();
 
 
     $scope.setupAccessToUserFile = function () {

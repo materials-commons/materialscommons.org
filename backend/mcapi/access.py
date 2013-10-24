@@ -1,12 +1,14 @@
 import rethinkdb as r
 import json
 from flask import g
-from utils import Status
+from utils import Status, error_response
 from args import json_as_format_arg
 
 _userAccessMatrix = {}
 
 def checkAccess(user, itemOwner):
+    if user == itemOwner:
+        return True
     if user not in _userAccessMatrix:
         loadUserIntoUserAccessMatrix(user)
     return accessAllowed(user, itemOwner)
@@ -35,7 +37,7 @@ def checkAccessResponseSingleUsing(user, item, l):
     if not item:
         return error_response(422)
     elif not checkAccess(user, item['owner']):
-        return error_response(402)
+        return error_response(403)
     else:
         return l(item)
 
@@ -45,7 +47,7 @@ def checkAccessResponseListUsing(user, items, l):
     else:
         owner = items[0]['owner']
         if not checkAccess(user, owner):
-            return error_response(402)
+            return error_response(403)
         else:
             return l(items)
 
