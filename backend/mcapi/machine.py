@@ -1,7 +1,7 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
 from flask import request
-from utils import error_response
+import error
 import rethinkdb as r
 import dmutil
 
@@ -27,6 +27,6 @@ def create_machine():
     machine['notes'] = dmutil.get_optional('notes', j, [])
     contact_id = dmutil.get_required('contact', j)
     if not dmutil.entry_exists('contacts', contact_id):
-        return error_response(400)
+        return error.bad_request("You must specify the contacts")
     machine['contact'] = contact_id
     return dmutil.insert_entry('machines', machine)

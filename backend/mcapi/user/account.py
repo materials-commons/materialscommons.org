@@ -1,6 +1,6 @@
 from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
-from access import remove_user
+from ..access import remove_user
 import json
 from flask import jsonify, g
 import rethinkdb as r
