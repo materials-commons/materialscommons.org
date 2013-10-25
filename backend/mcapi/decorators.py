@@ -1,57 +1,28 @@
-from flask import request, make_response, jsonify, current_app, g
+from flask import request, make_response, current_app
 from functools import wraps, update_wrapper
 from datetime import timedelta
-import rethinkdb as r
 import json
-
-_apikeys = {}
+import apikeydb
+import error
+import access
 
 def apikey(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        apikey = request.args.get('apikey', False)
-        if 'user' in kwargs:
-            user = kwargs['user']
-            user_apikey = get_users_apikey(user)
-        else:
-            user = request.args.get('user', False)
-            if user:
-                user_apikey = get_users_apikey(user)
-            else:
-                user_apikey = get_apikey_no_user(apikey)
-        if apikey <> user_apikey:
-            return badkey()
+        apikey = request.args.get('apikey', default="no_such_key")
+        if not apikeydb.valid_apikey(apikey):
+            return error.not_authorized("You are not authorized to access the system")
         return f(*args, **kwargs)
     return decorated
 
-def get_users_apikey(username):
-    if username in _apikeys:
-        return _apikeys[username]
-    else:
-        user = r.table('users').get(username).run(g.conn)
-        if user is None:
-            return None
-        else:
-            _apikeys[username] = user['apikey']
-            return user['apikey']
-
-def get_apikey_no_user(apikey):
-    if apikey in _apikeys:
-        return apikey
-    else:
-        selection = r.table('users').filter({'apikey': apikey}).run(g.conn)
-        if selection:
-            _apikeys[apikey] = apikey
-            return apikey
-        else:
-            return None
-
-def remove_user_from_apikey_cache(username):
-    if username in _apikeys:
-        _apikeys.pop(username, None)
-
-def badkey():
-    return make_response(jsonify({'error': 'unauthorized access'}), 400)
+def apigroup(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        apiuser = access.get_apiuser()
+        user = request.args.get('user', default=apiuser)
+        access.check_access(apiuser, user)
+        return f(*args, **kwargs)
+    return decorated
 
 def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_to_all=True, automatic_options=True):
     if methods is not None:
