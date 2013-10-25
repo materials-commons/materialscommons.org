@@ -7,7 +7,7 @@ _user_access_matrix = {}
 
 def check_access(user, owner, id):
     if user != owner or not _user_in_owner_group(user, owner):
-        raise mcexceptions.NoSuchItem(id)
+        raise mcexceptions.AccessNotAllowedException(id)
 
 def _user_in_owner_group(user, owner):
     if user not in _user_access_matrix:
@@ -29,9 +29,8 @@ def remove_user(user):
     if user in _user_access_matrix:
         _user_access_matrix.pop(user, None)
 
-def check_ownership(usergroup, signed_in_user):
+def check_ownership(usergroup, user):
     ug = r.table('usergroups').get(usergroup).run(g.conn)
     owners = json.dumps(ug['owner'])
-    if signed_in_user in owners:
-        return True
-    return False
+    if not user in owners:
+        raise mcexceptions.AccessNotAllowedException(user)

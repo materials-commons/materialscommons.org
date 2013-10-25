@@ -3,7 +3,10 @@ from ..decorators import crossdomain, apikey, jsonp
 import json
 from flask import g, request
 import rethinkdb as r
-from ..utils import error_response, set_dates
+from ..utils import set_dates
+from .. import error
+from .. import dmutil
+from .. import args
 
 @app.route('/v1.0/user/<user>/usergroups/neww', methods=['POST'])
 @apikey
@@ -20,17 +23,13 @@ def newusergroup(user):
         new_u_group['users'] = u_group['users']
         new_u_group['owner'] = user
         set_dates(new_u_group)
-        selection = r.table('usergroups').insert(new_u_group).run(g.conn)
-        if (selection[u'inserted'] == 1):
-            return ''
+        return dmutil.insert_entry('usergroups', new_u_group)
     else:
-        error_msg = error_response(423)
-        return error_msg
+        return error.bad_request("Usergroup already exists: " + u_group['name'])
 
 @app.route('/v1.0/usergroup/<usergroup>/datafiles')
 @jsonp
 def list_datafiles_by_usergroup(usergroup):
-    print ''
     selection = list(r.table('usergroups').filter({'id':usergroup}).outer_join(\
             r.table('datafiles'), lambda urow, drow: drow['owner'] in urow['users'])\
                      .run(g.conn, time_format='raw'))
@@ -39,26 +38,25 @@ def list_datafiles_by_usergroup(usergroup):
 def make_json_obj_for_join(selection, use_name):
     if not selection:
         return json.dumps(selection)
-
     obj = selection[0]['left']
     obj[use_name] = []
     for item in selection:
         obj[use_name].append(item['right'])
-    return json.dumps(obj)
+    return args.json_as_format_arg(obj)
 
 @app.route('/v1.0/user/<user>/usergroup/<usergroup>', methods=['GET'])
 @apikey
 @jsonp
 def get_usergroup(user,usergroup):
     selection = r.table('usergroups').get(usergroup).run(g.conn, time_format='raw')
-    return json.dumps(selection)
+    return args.json_as_format_arg(selection)
 
 @app.route('/v1.0/user/<user>/usergroup/<usergroup>/users', methods=['GET'])
 @apikey
 @jsonp
 def list_users_by_usergroup(user, usergroup):
     selection = list(r.table('usergroups').filter({'id':usergroup}).run(g.conn, time_format='raw'))
-    return json.dumps(selection)
+    return args.json_as_format_arg(selection)
 
 @app.route('/v1.0/user/<user>/usergroup/<usergroup>/selected_name/<selected_name>', methods=['PUT'])
 @apikey
@@ -66,29 +64,23 @@ def list_users_by_usergroup(user, usergroup):
 def add_user_to_u_group(user, usergroup, selected_name):
     exists = does_user_exists_in_ugroup(selected_name, usergroup)
     if exists is None:
-        permission = checkOwnership(usergroup, user)
-        if permission == True:
-            res = r.table('usergroups').get(usergroup)['users'].append(selected_name).run(g.conn)
-            r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
-            return json.dumps(res)
-        else:
-            error_msg = error_response(407)
-            return error_msg
+        access.check_ownership(usergroup, user)
+        res = r.table('usergroups').get(usergroup)['users'].append(selected_name).run(g.conn)
+        r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
+        return args.json_as_format_arg({'id': user})
     else:
-        error_msg = error_response(406)
-        return error_msg
+        return error.not_acceptable("User %s already in group %s" % (user, usergroup))
 
-@app.route('/v1.0/user/<user>/usergroup/<usergroup>/selected_name/<selected_name>/remove', methods=['PUT'])
+@app.route('/v1.0/user/<user>/usergroup/<usergroup>/selected_name/<selected_name>/remove',\
+           methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def remove_user_from_usergroup(user, usergroup, selected_name):
     res = r.table('usergroups').get(usergroup)['users'].difference([selected_name]).run(g.conn)
     r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
-    return json.dumps(res)
-
+    return args.json_as_format_arg({'id': user})
 
 def does_user_exists_in_ugroup(user, usergroup):
-    ug = r.table('usergroups').get(usergroup).run(g.conn)
-    users = json.dumps(ug['users'])
-    if user in users:
-        return True
+    ugroup = r.table('usergroups').get(usergroup).run(g.conn)
+    users = ugroup['users']
+    return user in users

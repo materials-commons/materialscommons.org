@@ -44,7 +44,7 @@ def authentication_exception_handler(e):
 
 @app.errorhandler(mcexceptions.AccessNotAllowedException)
 def access_not_allowed_exception_handler(e):
-    return error.not_authorized("Access not allowed")
+    return error.not_authorized("Access not allowed: " + e.id)
 
 @app.errorhandler(mcexceptions.DatabaseError)
 def database_error_exception_handler(e):
