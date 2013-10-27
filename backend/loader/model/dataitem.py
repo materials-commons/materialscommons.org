@@ -15,5 +15,5 @@ class DataItem(object):
         self.description = name
         self.notes = []
         self.owner = owner
-        self.process = None
+        self.process = ""
         self.machine = ""

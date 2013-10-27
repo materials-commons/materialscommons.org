@@ -10,10 +10,10 @@ class Note(object):
         self.notes.append(note_entry)
 
 class NoteEntry(object):
-    def __init__(self, key, value, units = None):
+    def __init__(self, key, value, units=""):
         self.key = key
         self.value = value
         self.units = units
 
-    def new_note_entry(value, key=None, units=None):
+    def new_note_entry(value, key="", units=""):
         return Entry(key, value, units)

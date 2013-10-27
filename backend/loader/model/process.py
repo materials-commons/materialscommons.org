@@ -1,7 +1,7 @@
 import rethinkdb as r
 
 class Process(object):
-    def __init__(self, name, owner, machine, process_type, description, parent=None):
+    def __init__(self, name, owner, machine, process_type, description, parent=""):
         self.name = name
         self.owner = owner
         self.description = description

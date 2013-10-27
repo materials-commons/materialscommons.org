@@ -1,7 +1,7 @@
 import rethinkdb as r
 
 class Contact(object):
-    def __init__(self, owner, email=None, phone=None, website=None):
+    def __init__(self, owner, email="", phone="", website=""):
         self.owner = owner
         self.email = email
         self.phone = phone
