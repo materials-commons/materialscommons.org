@@ -55,6 +55,6 @@ def no_such_item_exception_handler(e):
     return error.bad_request("Unknown item: " + e.id)
 
 @app.errorhandler(Exception)
-def catchall_exception_handler(error):
+def catchall_exception_handler(e):
     traceback.print_exc()
     return error.server_internal_error("Unknown server error")

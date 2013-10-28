@@ -7,7 +7,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService)
         u_group.name = $scope.name;
         u_group.users = [User.u()];
         u_group.owner = User.u();
-        mcapi('/user/%/usergroups/neww', User.u())
+        mcapi('/usergroups/new', User.u())
             .success(function (data) {
                 $scope.msg = "UserGroup has been created successfully"
                 alertService.prepForBroadcast($scope.msg);
@@ -32,7 +32,7 @@ function ListUserGroupController($scope, mcapi, User) {
 }
 
 function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertService) {
-    mcapi('/private/users')
+    mcapi('/users')
         .success(function (data) {
             $scope.all_users = data;
         })
@@ -40,14 +40,14 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
         }).jsonp();
 
     $scope.lab_name = $routeParams.usergroup_name;
-    mcapi('/user/%/usergroup/%', User.u(), $scope.lab_name)
+    mcapi('/usergroup/%', $scope.lab_name)
         .success(function (data) {
             $scope.user_group = data;
             $scope.owner = $scope.user_group.owner
             $scope.signed_in_user = User.u();
         }).jsonp();
 
-    mcapi('/user/%/usergroup/%/users', User.u(), $scope.lab_name)
+    mcapi('/usergroup/%/users', $scope.lab_name)
         .success(function (data) {
             $scope.users_by_usergroup = data[0].users;
         })
@@ -66,12 +66,10 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    mcapi('/user/%/usergroup/%/selected_name/%', User.u(), $scope.lab_name, $scope.user_name)
+                    mcapi('/usergroup/%/selected_name/%', $scope.lab_name, $scope.user_name)
                         .success(function (data) {
-                            console.log(' Here the data is ' + data);
                             $scope.users_by_usergroup = data;
                         }).error(function (data) {
-                            console.log('here is error' + data);
                             alertService.prepForBroadcast(data.error);
                         }).put();
                 }
@@ -90,14 +88,13 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    mcapi('/user/%/usergroup/%/selected_name/%/remove', User.u(), $scope.lab_name, $scope.users_by_usergroup[index])
+                    mcapi('/usergroup/%/selected_name/%/remove', $scope.lab_name, $scope.users_by_usergroup[index])
                         .success(function (data) {
                             $scope.users_by_usergroup = data;
                         }).error(function () {
                         }).put();
                 }
             })
-
     }
 }
 

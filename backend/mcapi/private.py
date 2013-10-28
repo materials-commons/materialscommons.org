@@ -30,7 +30,7 @@ def update_user():
 @app.route('/selected_users', methods = ['GET'])
 @apikey
 @jsonp
-def selected_users_from_usergroups(user):
+def selected_users_from_usergroups():
     user = access.get_user()
     allowedUsers = list(r.table('usergroups')\
                         .filter(r.row['users'].contains(user))\

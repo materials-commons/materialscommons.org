@@ -13,6 +13,7 @@ from .. import access
 @jsonp
 def datafiles_for_user():
     user = access.get_user()
+    print "user = %s" % (user)
     rr = r.table('datafiles').filter({'owner':user})
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))

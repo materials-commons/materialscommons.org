@@ -1,4 +1,4 @@
-function AllTagsController($scope, $routeParams, $location, mcapi, User) {
+function AllTagsController($scope, $location, mcapi, User) {
         $scope.tagHeader = "All Tags";
         mcapi('/tags/count')
             .success(function (data) {
@@ -10,17 +10,17 @@ function AllTagsController($scope, $routeParams, $location, mcapi, User) {
     }
 }
 
-function MyTagsController($scope, mcapi, User){
+function MyTagsController($scope, mcapi){
     $scope.tagHeader = "My Tags";
-    mcapi('/user/%/tags/count', User.u())
+    mcapi('tags/count')
         .success(function (data) {
             $scope.tags = data;
         }).jsonp();
 }
 
-function TagDataController($scope, $routeParams, $location, mcapi, User) {
+function TagDataController($scope, $routeParams, $location, mcapi) {
     $scope.tag = $routeParams.tag;
-    mcapi('/user/%/datafiles/tag/%', User.u(), $routeParams.tag)
+    mcapi('/datafiles/tag/%', $routeParams.tag)
         .success(function (data) {
             $scope.docs = data;
         }).jsonp();

@@ -1,3 +1,17 @@
+/*
+* This file implements the upload file wizard. There are a number of communicating controllers
+* used to implement the wizard. The controllers talk by sending messages to each other. The service
+* 'pubsub' is used for this communication. A controller that is interested in a message performs a
+* 'waitOn' on a particular named channel. Controllers that wish to communicate send messages to the
+* channel.
+*
+* The coordination of the upload is performed in the the 'UploadFileController'. This controller gathers
+* all the needed state attributes produced by the other controllers and performs the upload. This master
+* controller has a number 'waitOn' calls where it retrieves and stores the information needed to perform
+* the upload. The other controllers exist to gather the needed data and send it to this controller.
+*
+ */
+
 function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUploadForm) {
     $scope.process_name = "Process";
     $scope.required_conditions = [];
@@ -126,7 +140,7 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUpload
         var obj = {};
         obj.input_conditions = $scope.input_conditions;
         obj.output_conditions = $scope.output_conditions;
-        mcapi('/user/%/conditions/from_template_list', User.u())
+        mcapi('/conditions/from_template_list')
             .success(function () {
                 $scope.uploadInputFiles();
             })
@@ -156,7 +170,7 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUpload
             return;
         }
 
-        mcapi('/user/%/upload', User.u())
+        mcapi('/upload')
             .success(function () {
                 //fileEntry.status = "Uploaded";
             })
@@ -169,30 +183,12 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUpload
                 process_id: $scope.process_id,
                 project_id: $scope.project_id
             }, {headers: {'Content-Type': false}, transformRequest: toUploadForm});
-//        $scope.output_files.forEach(function (fileEntry) {
-//            if (fileEntry.status != "Uploaded") {
-//                fileEntry.status = "Uploading...";
-//                mcapi('/user/%/upload/%', User.u(), fileEntry.datadir)
-//                    .success(function () {
-//                        fileEntry.status = "Uploaded";
-//                    })
-//                    .error(function () {
-//                        fileEntry.status = "Failed";
-//                    })
-//                    .post(
-//                        {
-//                            file: fileEntry.file,
-//                            process_id: $scope.process_id,
-//                            project_id: $scope.project_id
-//                        }, {headers: {'Content-Type': false}, transformRequest: formDataObject});
-//            }
-//        });
     }
 }
 
-function UploadWizardProjectStepController($scope, pubsub, watcher, mcapi, User) {
+function UploadWizardProjectStepController($scope, pubsub, watcher, mcapi) {
 
-    mcapi('/user/%/projects', User.u())
+    mcapi('/projects')
         .success(function (projects) {
             $scope.projects = projects;
         })
@@ -278,13 +274,13 @@ function UploadWizardConditionInputController($scope, mcapi, pubsub, wizardSteps
     }
 }
 
-function UploadWizardFileInputController($scope, pubsub, mcapi, User) {
+function UploadWizardFileInputController($scope, pubsub, mcapi) {
     $scope.input_files = [
 //        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
 //        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
     ];
 
-    mcapi('/user/%/datadirs/tree/groups', User.u())
+    mcapi('/datadirs/tree/groups')
         .success(function (tree) {
             $scope.tree = tree;
         })
@@ -306,9 +302,9 @@ function UploadWizardFileInputController($scope, pubsub, mcapi, User) {
     }
 }
 
-function UploadWizardFileOutputController($scope, pubsub, mcapi, watcher, User) {
+function UploadWizardFileOutputController($scope, pubsub, mcapi) {
     pubsub.waitOn($scope, 'project_id', function (project_id) {
-        mcapi('/user/%/projects/%/datadirs/tree', User.u(), project_id)
+        mcapi('/projects/%/datadirs/tree', project_id)
             .success(function (datadirs) {
                 $scope.tree = datadirs;
             })
@@ -368,19 +364,19 @@ function UploadWizardConditionOutputController($scope, mcapi, pubsub, watcher) {
     }
 }
 
-function UploadDirectoryController($scope, mcapi, User) {
+function UploadDirectoryController($scope, mcapi) {
     $scope.files = [];
     $scope.percentage = 0;
     $scope.uploadurl = "notset";
 
-    mcapi('/user/%/datadirs', User.u())
+    mcapi('/datadirs')
         .success(function (data) {
             $scope.datagroups = data;
         }).jsonp();
 }
 
-function UpDownLoadQueueController($scope, mcapi, User) {
-    mcapi('/user/%/udqueue', User.u())
+function UpDownLoadQueueController($scope, mcapi) {
+    mcapi('/udqueue')
         .success(function (data) {
             $scope.udentries = data;
         }).jsonp();

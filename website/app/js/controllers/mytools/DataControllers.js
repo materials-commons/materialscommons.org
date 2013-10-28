@@ -1,17 +1,6 @@
-function DataEditController($scope, $routeParams, $window, mcapi, User, alertService, formatData) {
+function DataEditController($scope, $routeParams, $window, mcapi, User, alertService) {
     $scope.count = 0;
     $scope.grid_options = [];
-
-//    mcapi('/user/%/equipment_conditions/', User.u())
-//        .success(function (data) {
-//            $scope.conditions = data;
-//            $scope.all_process = formatData.convert_into_gridoptions($scope.conditions)
-//            for (var i = 0; i < $scope.all_process.length; i++) {
-//                var template = {data: 'all_process[' + i + ']'}
-//                $scope.grid_options.push(template);
-//            }
-//        }).jsonp();
-
 
     $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediatype);
@@ -20,7 +9,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         $scope.fileName = $scope.doc.name;
     }
 
-    mcapi('/user/%/datafile/%', User.u(), $routeParams.id)
+    mcapi('/datafile/%', $routeParams.id)
         .success(function (data) {
             $scope.doc = data;
             $scope.setupAccessToUserFile();
@@ -29,7 +18,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
             alertService.prepForBroadcast(data.error);
         }).jsonp();
 
-    //This obj is used in data-edit
     $scope.signed_in_user = User.u();
     $scope.review_note = "";
     $scope.marked_for_review = false;
@@ -48,7 +36,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
             })
         }).jsonp();
 
-    mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
+    mcapi('/datafile/reviews/%', $routeParams.id)
         .success(function (data) {
             $scope.scheduledReviews = _.filter(data, function (item) {
                 if (!item.done) {
@@ -57,7 +45,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
             });
         }).jsonp();
 
-    mcapi('/private/user/%/selected_users', User.u())
+    mcapi('/selected_users')
         .success(function (data) {
             $scope.users = data;
         }).jsonp();
@@ -79,7 +67,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     }
 
     $scope.saveData = function () {
-        mcapi('/user/%/datafile/update/%', User.u(), $scope.doc.id)
+        mcapi('/datafile/update/%', $scope.doc.id)
             .success(function (data) {
                 $scope.addNewTags();
                 $scope.msg = "Data has been saved"
@@ -109,7 +97,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     $scope.addReview = function () {
         var review = {};
         review.note = $scope.review_note;
-        var now = new Date();
         review.type = "data";
         if ($scope.schedule_for_self) {
             review.owner = User.u();
@@ -121,11 +108,11 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         review.item_id = $scope.doc.id;
         review.who = $scope.doc.owner;
         review.done = false;
-        mcapi('/user/%/review', User.u())
-            .success(function (data) {
+        mcapi('/review')
+            .success(function () {
                 $scope.msg = "Review/Followup has been added"
                 alertService.prepForBroadcast($scope.msg);
-                mcapi('/user/%/datafile/reviews/%', User.u(), $routeParams.id)
+                mcapi('/datafile/reviews/%', $routeParams.id)
                     .success(function (data) {
                         $scope.scheduledReviews = _.filter(data, function (item) {
                             if (!item.done) {
@@ -176,7 +163,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     }
 
     $scope.reviewStatusChanged = function (index) {
-        mcapi('/user/%/review/%/mark/%', User.u(), $scope.scheduledReviews[index].id,
+        mcapi('/review/%/mark/%', $scope.scheduledReviews[index].id,
             $scope.scheduledReviews[index].done)
             .success(function () {
                 $scope.msg = "Review Status has been changed"
@@ -185,11 +172,11 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     }
 }
 
-function MyDataController($scope, mcapi, User, $location) {
+function MyDataController($scope, mcapi, $location) {
     $scope.predicate = 'name';
     $scope.reverse = false;
-    mcapi('/user/%/datafiles', User.u())
-        .success(function (data, status) {
+    mcapi('/datafiles')
+        .success(function (data) {
             $scope.data_by_user = data;
         }).jsonp();
 
@@ -201,7 +188,7 @@ function MyDataController($scope, mcapi, User, $location) {
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            mcapi('/user/%/datadirs/%', User.u(), datagroupId)
+            mcapi('/datadirs/%', datagroupId)
                 .success(function (data) {
                     $scope.dgroup = data;
                     $scope.dgroupid = data.id;

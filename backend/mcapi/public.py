@@ -34,13 +34,13 @@ def tags_by_count():
     selection = list(r.table('datafiles').concat_map(lambda item: item['tags']).run(g.conn))
     return create_tag_count(selection)
 
-@app.route('/datafiles')
+@app.route('/public/datafiles')
 @jsonp
 def list_public_datafiles():
     selection = list(r.table('datafiles').filter({'access':'public'}).run(g.conn, time_format='raw'))
     return json.dumps(selection)
 
-@app.route('/usergroups')
+@app.route('/public/usergroups')
 @jsonp
 def list_usergroups():
     selection = list(r.table('usergroups').filter({'access':'public'}).run(g.conn, time_format='raw'))
@@ -66,7 +66,7 @@ def delete_news(id):
     rv = r.table('news').get(id).delete().run(g.conn)
     return jsonify(rv)
 
-@app.route('/datadirs')
+@app.route('/public/datadirs')
 @jsonp
 def list_public_datadirs():
     selection = list(r.table('datadirs').filter({'access':'public'}).run(g.conn, time_format='raw'))
