@@ -10,6 +10,7 @@ angular.module("NgTree.tpls", ["template/ngtree/tree.html", "template/ngtree/ele
 angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
     .factory('treeToggle', function () {
         var selected = [];
+        var checked_items = [];
         return {
             add_id: function (id) {
                 selected.push(id);
@@ -21,22 +22,27 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
 
             get_all: function(){
                 return selected
+            },
+
+            get_all_checked_items: function(){
+                return checked_items
+            },
+
+            add_checked_item: function(id){
+                checked_items.push(id)
+            },
+
+            pop_checked_item: function(id){
+                checked_items.splice(checked_items.indexOf(id), 1);
             }
         }
     })
     .controller("NgTreeController", ["$scope", "$attrs", "treeToggle",
         function ($scope, $attrs, treeToggle) {
 
-            var c = [];
-            $scope.isChecked = function (d, e) {
-                if (d == true) {
-                    c.push(e)
-                }
-            }
-
-            $scope.$parent[$attrs.getSelection] = function () {
-                return c
-            }
+            /*
+             Following 3 functions are to determine if the state of toggle
+            */
 
             $scope.toggleShow = function(d){
                 if (treeToggle.get_all().indexOf(d.id)>= 0){ //open
@@ -54,13 +60,26 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
                 return treeToggle.get_all().indexOf(id) >= 0;
             }
 
-            $scope.check = function (d){
-                if (!d.confirm) {
-                    d.confirm = true
-                } else {
-                    d.confirm = false
+            /*
+            Following 3 functions are to determine if box is checked or not
+            */
+            $scope.determine_check = function (id) {
+                return treeToggle.get_all_checked_items().indexOf(id) >= 0;
+            }
+
+            $scope.check = function (id){
+                if (treeToggle.get_all_checked_items().indexOf(id)>= 0){ //open
+                    treeToggle.pop_checked_item(id);
+                }
+                else{
+                    treeToggle.add_checked_item(id);
                 }
             }
+            $scope.isChecked = function (id) {
+
+                return $scope.determine_check(id) ? 'show' : '';
+            }
+
         }])
     .directive("ngtree", function (treeToggle) {
         return {
@@ -105,8 +124,8 @@ angular.module("template/ngtree/element.html", []).run(["$templateCache", functi
         "  </div>" +
         "  <div ng-show='!data.children' ng-class='{show: !getSelectedClass(data.id), hide: getSelectedClass(data.id)}' class='pull-left'></div>" +
         "  <div class='item' style='padding-left: 0px'>" +
-        "      <span type=\"checkbox\" style=\"margin-bottom: 7px;\"  ng-class=\"{opacity:data.partial == true}\"  ng-click=\"check(data)\" class=\"treecheckBox\">" +
-        "        <img src=\"checkmark.png\" ng-show=\"data.confirm\" class=\"checkBox-icon\"/>" +
+        "      <span type=\"checkbox\" style=\"margin-bottom: 7px;\"    ng-click=\"check(data.id)\" class=\"treecheckBox\">" +
+        "        <img src=\"checkmark.png\"  ng-class='{show: isChecked(data.id), hide: !isChecked(data.id)}'  class=\"checkBox-icon\"/>" +
         "      </span>" +
         "      <span ng-click=\"selected({d: data})\" style='cursor:pointer'>{{data[displayAttr]}}</span>" +
         "  </div>" +
