@@ -1,54 +1,67 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp
+from ..decorators import crossdomain, apikey, jsonp, apigroup
 from flask import g, request, jsonify
 import rethinkdb as r
 from ..utils import set_dates
 from .. import args
 from .. import error
 from .. import dmutil
+from .. import access
 
-@app.route('/v1.0/user/<user>/reviews')
+@app.route('/reviews')
 @apikey
+@apigroup
 @jsonp
-def get_reviews(user):
+def get_reviews():
+    user = access.get_user()
     selection = list(r.table('reviews').filter({'owner':user}).run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/reviews/requested')
+@app.route('/reviews/requested')
 @apikey
+@apigroup
 @jsonp
-def get_reviews_requested(user):
+def get_reviews_requested():
+    user = access.get_user()
     selection = list(r.table('reviews').filter({'who':user}).filter(r.row['owner'] != user)\
                      .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/review/<id>', methods=['DELETE'])
+@app.route('/review/<id>', methods=['DELETE'])
 @apikey
 @crossdomain(origin='*')
-def delete_review(user, id):
+def delete_review(id):
+    user = access.get_user()
     rv = r.table('reviews').filter({'owner':user, 'id':id}).delete().run(g.conn)
     return jsonify(rv)
 
-@app.route('/v1.0/user/<user>/review', methods=['POST'])
+@app.route('/review', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
-def add_review(user):
+def add_review():
+    user = access.get_user()
     review = request.get_json()
     review['marked_on'] = r.now()
     set_dates(review)
     return dmutil.insert_entry('reviews', review)
 
-@app.route('/v1.0/user/<user>/datafile/reviews/<path:datafileid>')
+@app.route('/datafile/reviews/<path:datafileid>')
 @apikey
+@apigroup
 @jsonp
-def get_reviews_for_datafileid(user, datafileid):
+def get_reviews_for_datafileid(datafileid):
+    user = access.get_user()
     selection = list(r.table('reviews').filter({'item_id':datafileid}).run(g.conn, time_format='raw'))
+    if selection:
+        owner = selection[0]['owner']
+        access.check(user, owner)
     return args.json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/review/<reviewid>/mark/<markas>', methods=['PUT'])
+@app.route('/review/<reviewid>/mark/<markas>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
-def mark_review(user, reviewid, markas):
+def mark_review(reviewid, markas):
+    user = access.get_user()
     if markas == 'true' or markas == 'false':
         r.table('reviews').get(reviewid).update({'done': markas == 'true'}).run(g.conn)
         return jsonify({'id': reviewid})

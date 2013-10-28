@@ -65,3 +65,6 @@ def insert_join_entry(table_name, entry):
     if rv[u'inserted'] == 1:
         return True
     raise DatabaseError()
+
+def item_exists(table, id):
+    return r.table(table).get(id).run(g.conn)

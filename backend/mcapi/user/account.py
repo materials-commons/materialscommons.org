@@ -7,15 +7,17 @@ import rethinkdb as r
 import uuid
 from ..utils import make_password_hash, make_salted_password_hash
 from ..args import json_as_format_arg
+from .. import access
+from .. import error
 
-@app.route('/v1.0/user/<user>', methods=['GET'])
+@app.route('/user/<user>', methods=['GET'])
 @apikey
 @jsonp
 def get_user_details(user):
     u = r.table('users').get(user).pluck('apikey', 'email', 'name').run(g.conn)
     return json_as_format_arg(u)
 
-@app.route('/v1.0/user/<user>/<password>/apikey')
+@app.route('/user/<user>/<password>/apikey')
 @jsonp
 def get_api_key_for_user(user, password):
     u = r.table('users').get(user).run(g.conn)
@@ -25,10 +27,9 @@ def get_api_key_for_user(user, password):
     if hash == dbpw:
         return json.dumps({'apikey': u['apikey']})
     else:
-        error_msg = error_response(400)
-        return error_msg
+        return error.not_authorized("Bad username or password")
 
-@app.route('/v1.0/user/<user>/password/<newpw>', methods=['PUT'])
+@app.route('/user/<user>/password/<newpw>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def change_password(user, newpw):
@@ -36,7 +37,7 @@ def change_password(user, newpw):
     rv = r.table('users').get(user).update({'password':hash}).run(g.conn)
     return jsonify(rv)
 
-@app.route('/v1.0/user/<user>/apikey/reset', methods=['PUT'])
+@app.route('/user/<user>/apikey/reset', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def reset_apikey(user):
@@ -45,7 +46,7 @@ def reset_apikey(user):
     remove_user(user)
     return jsonify({'apikey':new_apikey})
 
-@app.route('/v1.0/user/<user>/usergroups', methods=['GET'])
+@app.route('/user/<user>/usergroups', methods=['GET'])
 @apikey
 @jsonp
 def list_usergroups_for_user(user):
@@ -53,7 +54,7 @@ def list_usergroups_for_user(user):
                .run(g.conn, time_format='raw'))
     return json.dumps(res)
 
-@app.route('/v1.0/user/<user>/all_usergroups', methods=['GET'])
+@app.route('/user/<user>/all_usergroups', methods=['GET'])
 @apikey
 @jsonp
 def list_all_usergroups(user):

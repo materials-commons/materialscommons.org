@@ -6,7 +6,7 @@ import apikeydb
 
 _user_access_matrix = {}
 
-def check_access(user, owner, id="Unknown"):
+def check(user, owner, id="Unknown"):
     if user == owner:
         return
     if _user_in_owner_group(user, owner):

@@ -1,17 +1,17 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp
+from ..decorators import crossdomain, apikey
 from flask import g, request
 import rethinkdb as r
-import json
-from ..utils import createTagCount, error_response, Status
-from ..access import checkAccessResponseSingle, checkDatafileAccess
-from ..args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
+from .. import access
+from .. import error
+from .. import dmutil
 
-@app.route('/v1.0/user/<user>/usergroups/neww', methods=['POST'])
+@app.route('/usergroups/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
-def newusergroup(user):
-    u_group = request.get_json(silent = False)
+def newusergroup():
+    user = access.get_group()
+    u_group = request.get_json(silent=False)
     exists = r.table('usergroups').get(u_group['name']).run(g.conn)
     if exists is None:
         new_u_group = {}
@@ -21,12 +21,6 @@ def newusergroup(user):
         new_u_group['id'] = u_group['name']
         new_u_group['users'] = u_group['users']
         new_u_group['owner'] = user
-        #set_dates(new_u_group)
-        selection = r.table('usergroups').insert(new_u_group).run(g.conn)
-        if (selection[u'inserted'] == 1):
-            return ''
+        return dmutil.insert_entry('usergroups', new_u_group)
     else:
-        error_msg = error_response(423)
-        return error_msg
-
-
+        return error.bad_request("Usergroup already exists: %s" % (u_group['name']))

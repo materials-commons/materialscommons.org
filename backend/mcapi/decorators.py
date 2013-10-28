@@ -20,7 +20,7 @@ def apigroup(f):
     def decorated(*args, **kwargs):
         apiuser = access.get_apiuser()
         user = request.args.get('user', default=apiuser)
-        access.check_access(apiuser, user)
+        access.check(apiuser, user)
         return f(*args, **kwargs)
     return decorated
 
@@ -52,13 +52,13 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
             h['Access-Control-Allow-Origin'] = origin
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
-            requestHeaders = request.headers.get('Access-Control-Request-Headers')
-            if requestHeaders is not None:
-                h['Access-Control-Allow-Headers'] = requestHeaders
+            request_headers = request.headers.get('Access-Control-Request-Headers')
+            if request_headers is not None:
+                h['Access-Control-Allow-Headers'] = request_headers
             return resp
 
         f.provide_automatic_options = False
-        f.required_methods=['OPTIONS']
+        f.required_methods = ['OPTIONS']
         return update_wrapper(wrapped_function, f)
     return decorator
 

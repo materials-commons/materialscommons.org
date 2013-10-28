@@ -5,17 +5,17 @@ import error
 import rethinkdb as r
 import dmutil
 
-@app.route('/v1.0/machines', methods=['GET'])
+@app.route('/machines', methods=['GET'])
 @jsonp
 def get_all_machines():
     return dmutil.get_all_from_table('machines')
 
-@app.route('/v1.0/machines/<machine_id>', methods=['GET'])
+@app.route('/machines/<machine_id>', methods=['GET'])
 @jsonp
 def get_machine(machine_id):
     return dmutil.get_single_from_table('machines', machine_id)
 
-@app.route('/v1.0/machines', methods=['POST'])
+@app.route('/machines', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
 def create_machine():

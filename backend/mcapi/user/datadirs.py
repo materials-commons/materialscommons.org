@@ -1,34 +1,41 @@
 from ..mcapp import app
-from ..decorators import apikey, jsonp
+from ..decorators import apikey, jsonp, apigroup
 import json
 from flask import g
 import rethinkdb as r
 from os.path import dirname, basename
 from ..utils import json_for_single_item_list
 from ..args import add_all_arg_options, json_as_format_arg
+from .. import access
 
-@app.route('/v1.0/user/<user>/datadir/<path:datadirid>')
+@app.route('/datadir/<path:datadirid>')
 @apikey
+@apigroup
 @jsonp
-def datadir_for_user(user, datadirid):
+def datadir_for_user(datadirid):
+    user = access.get_user()
     rr = r.table('datadirs').filter({'owner':user, 'id':datadirid})
     rr = add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_for_single_item_list(selection)
 
-@app.route('/v1.0/user/<user>/datadirs')
+@app.route('/datadirs')
 @apikey
+@apigroup
 @jsonp
-def datadirs_for_user(user):
+def datadirs_for_user():
+    user = access.get_user()
     rr = r.table('datadirs').filter({'owner':user})
     rr = add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/datadirs/datafiles')
+@app.route('/datadirs/datafiles')
 @apikey
+@apigroup
 @jsonp
-def list_datadirs_with_data_by_user(user):
+def list_datadirs_with_data_by_user():
+    user = access.get_user()
     selection = list(r.table('datadirs').filter({'owner':user}).outer_join(\
             r.table('datafiles'), lambda ddirrow, drow: ddirrow['datafiles'].contains(drow['id']))\
                      .run(g.conn, time_format='raw'))
@@ -65,10 +72,11 @@ class DEncoder(json.JSONEncoder):
     def default(self, o):
         return o.__dict__
 
-@app.route('/v1.0/user/<user>/datadirs/tree/groups')
+@app.route('/datadirs/tree/groups')
 @apikey
 @jsonp
-def group_datadirs_as_tree(user):
+def group_datadirs_as_tree():
+    user = access.get_user()
     allowedUsers = list(r.table('usergroups').filter(r.row['users'].contains(user))\
                         .concat_map(lambda g: g['users']).distinct().run(g.conn))
     users = '(' + '|'.join(allowedUsers) + ')'
@@ -80,10 +88,11 @@ def group_datadirs_as_tree(user):
                          .run(g.conn, time_format='raw'))
     return buildTreeFromSelection(selection)
 
-@app.route('/v1.0/user/<user>/datadirs/tree')
+@app.route('/datadirs/tree')
 @apikey
 @jsonp
-def user_datadirs_as_tree(user):
+def user_datadirs_as_tree():
+    user = access.get_user()
     selection = list(r.table('datadirs').filter({'owner':user})\
                          .pluck('id', 'name', 'datafiles')\
                          .order_by('name')\

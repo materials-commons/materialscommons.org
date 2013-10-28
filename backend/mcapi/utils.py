@@ -5,7 +5,7 @@ from pbkdf2 import crypt
 from args import json_as_format_arg
 import rethinkdb as r
 
-def createTagCount(selection):
+def create_tag_count(selection):
     tagsByCount = []
     tagsCountDict = {}
     for tag in selection:

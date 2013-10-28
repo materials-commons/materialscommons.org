@@ -9,18 +9,21 @@ from ..args import json_as_format_arg
 import tempfile
 from loader.tasks.db import load_data_dir, import_data_dir_to_repo
 from celery import chain
+from .. import access
 
-@app.route('/v1.0/user/<user>/udqueue')
+@app.route('/udqueue')
 @apikey
 @jsonp
-def get_udqueue(user):
+def get_udqueue():
+    user = access.get_user()
     selection = list(r.table('udqueue').filter({'owner':user}).run(g.conn))
     return json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/upload', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
-def upload_file(user):
+def upload_file():
+    user = access.get_user()
     process_id = request.form['process_id']
     project_id = request.form['project_id']
     mkdirp('/tmp/uploads')
@@ -36,9 +39,10 @@ def upload_file(user):
           | import_data_dir_to_repo.si(tdir))()
     return jsonify({'success': True})
 
-@app.route('/v1.0/user/<user>/download/file/<path:datafile>')
+@app.route('/download/<path:datafile>')
 #@apikey
-def download_file(user, datafile):
+def download_file(datafile):
+    user = access.get_user()
     return send_from_directory('/tmp', 'ReviewQueue.png', as_attachment=True)
     #df = r.table('datafiles').get(datafile).run(g.conn)
     #if not checkAccess(user, df):

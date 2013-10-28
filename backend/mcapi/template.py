@@ -5,22 +5,17 @@ import rethinkdb as r
 import error
 import dmutil
 
-@app.route('/v1.0/templates/<template_id>', methods=['GET'])
+@app.route('/templates/<template_id>', methods=['GET'])
 @jsonp
 def get_template(template_id):
     return dmutil.get_single_from_table('templates', template_id)
 
-@app.route('/v1.0/templates', methods=['GET'])
+@app.route('/templates', methods=['GET'])
 @jsonp
 def get_all_templates():
     return dmutil.get_all_from_table('templates')
 
-@app.route('/v1.0/templates/<template_id>', methods=['DELETE'])
-@apikey
-def delete_template(template_id):
-    pass
-
-@app.route('/v1.0/templates/new', methods=['POST'])
+@app.route('/templates/new', methods=['POST'])
 @crossdomain(origin='*')
 def create_template():
     j = request.get_json()

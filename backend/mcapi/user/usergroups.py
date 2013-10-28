@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp
+from ..decorators import crossdomain, apikey, jsonp, apigroup
 import json
 from flask import g, request
 import rethinkdb as r
@@ -7,11 +7,13 @@ from ..utils import set_dates
 from .. import error
 from .. import dmutil
 from .. import args
+from .. import access
 
-@app.route('/v1.0/user/<user>/usergroups/neww', methods=['POST'])
+@app.route('/usergroups/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
-def newusergroup(user):
+def newusergroup():
+    user = access.get_user()
     u_group = request.get_json(silent = False)
     exists = r.table('usergroups').get(u_group['name']).run(g.conn)
     if exists is None:
@@ -27,7 +29,7 @@ def newusergroup(user):
     else:
         return error.bad_request("Usergroup already exists: " + u_group['name'])
 
-@app.route('/v1.0/usergroup/<usergroup>/datafiles')
+@app.route('/usergroup/<usergroup>/datafiles')
 @jsonp
 def list_datafiles_by_usergroup(usergroup):
     selection = list(r.table('usergroups').filter({'id':usergroup}).outer_join(\
@@ -44,43 +46,55 @@ def make_json_obj_for_join(selection, use_name):
         obj[use_name].append(item['right'])
     return args.json_as_format_arg(obj)
 
-@app.route('/v1.0/user/<user>/usergroup/<usergroup>', methods=['GET'])
+@app.route('/usergroup/<usergroup>', methods=['GET'])
 @apikey
+@apigroup
 @jsonp
-def get_usergroup(user,usergroup):
+def get_usergroup(usergroup):
+    user = access.get_user()
     selection = r.table('usergroups').get(usergroup).run(g.conn, time_format='raw')
     return args.json_as_format_arg(selection)
 
-@app.route('/v1.0/user/<user>/usergroup/<usergroup>/users', methods=['GET'])
+@app.route('/usergroup/<usergroup>/users', methods=['GET'])
 @apikey
+@apigroup
 @jsonp
-def list_users_by_usergroup(user, usergroup):
-    selection = list(r.table('usergroups').filter({'id':usergroup}).run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
+def list_users_by_usergroup(usergroup):
+    user = access.get_user()
+    ugroup = r.table('usergroups').get(usergroup).run(g.conn, time_format='raw')
+    if ugroup:
+        access.check(user, ugroup['owner'])
+        return args.json_as_format_arg(ugroup)
+    else:
+        error.bad_request("No such usergroup: %s" % (usergroup))
 
-@app.route('/v1.0/user/<user>/usergroup/<usergroup>/selected_name/<selected_name>', methods=['PUT'])
+@app.route('/usergroup/<usergroup>/selected_name/<selected_name>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
-def add_user_to_u_group(user, usergroup, selected_name):
+def add_user_to_u_group(usergroup, selected_name):
+    user = access.get_user()
     exists = does_user_exists_in_ugroup(selected_name, usergroup)
     if exists is None:
         access.check_ownership(usergroup, user)
         res = r.table('usergroups').get(usergroup)['users'].append(selected_name).run(g.conn)
         r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
-        return args.json_as_format_arg({'id': user})
+        return args.json_as_format_arg({'id': selected_name})
     else:
-        return error.not_acceptable("User %s already in group %s" % (user, usergroup))
+        return error.not_acceptable("User %s already in group %s" % (selected_name, usergroup))
 
-@app.route('/v1.0/user/<user>/usergroup/<usergroup>/selected_name/<selected_name>/remove',\
+@app.route('/usergroup/<usergroup>/selected_name/<selected_name>/remove',\
            methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
-def remove_user_from_usergroup(user, usergroup, selected_name):
+def remove_user_from_usergroup(usergroup, selected_name):
+    user = access.get_user()
     res = r.table('usergroups').get(usergroup)['users'].difference([selected_name]).run(g.conn)
     r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
-    return args.json_as_format_arg({'id': user})
+    return args.json_as_format_arg({'id': selected_name})
 
 def does_user_exists_in_ugroup(user, usergroup):
     ugroup = r.table('usergroups').get(usergroup).run(g.conn)
-    users = ugroup['users']
-    return user in users
+    if ugroup:
+        users = ugroup['users']
+        return user in users
+    return False
