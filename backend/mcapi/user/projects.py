@@ -1,38 +1,36 @@
 from ..mcapp import app
-from ..decorators import apikey, jsonp
+from ..decorators import apikey, jsonp, apigroup
 from flask import g
 import rethinkdb as r
-#from .. import dmutil
 from .. import args
-from ..utils import error_response
 from datadirs import DItem, DEncoder
 from os.path import dirname
 import json
+from .. import access
 
-@app.route('/v1.0/user/<user>/projects', methods=['GET'])
+@app.route('/projects', methods=['GET'])
 @apikey
+@apigroup
 @jsonp
-def get_all_projects(user):
+def get_all_projects():
+    user = access.get_user()
     rr = r.table('projects').filter({'owner': user})
     rr = args.add_all_arg_options(rr)
     items = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(items)
 
-@app.route('/v1.0/user/<user>/projects/<project_id>/datafiles')
+@app.route('/projects/<project_id>/datafiles')
 @apikey
 @jsonp
-def get_all_datafiles_for_project(user, project_id):
-    project = r.table('projects').get(project_id).run(g.conn)
-    if project is None:
-        return error_response(400)
-    if project['owner'] != user:
-        return error_response(400)
-    return ""
+def get_all_datafiles_for_project(project_id):
+    pass
 
-@app.route('/v1.0/user/<user>/projects/<project_id>/datadirs')
+@app.route('/projects/<project_id>/datadirs')
 @apikey
+@apigroup
 @jsonp
-def get_datadirs_for_project(user, project_id):
+def get_datadirs_for_project(project_id):
+    user = access.get_user()
     rr = r.table('project2datadir').filter({'project_id': project_id})
     rr = rr.eq_join('project_id', r.table('projects')).zip()
     rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
@@ -41,15 +39,19 @@ def get_datadirs_for_project(user, project_id):
         return args.json_as_format_arg(selection)
     return args.json_as_format_arg([])
 
-@app.route('/v1.0/user/<user>/projects/<project_id>/datadirs/tree')
-#@apikey
+@app.route('/projects/<project_id>/datadirs/tree')
+@apikey
+@apigroup
 @jsonp
-def get_datadirs_as_tree_for_project(user, project_id):
+def get_datadirs_as_tree_for_project(project_id):
+    user = access.get_user()
     rr = r.table('project2datadir').filter({'project_id': project_id})
     rr = rr.eq_join('project_id', r.table('projects')).zip()
     rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
-    rr = rr.pluck('id', 'name').order_by('name')
+    rr = rr.pluck('id', 'name', 'owner').order_by('name')
     selection = list(rr.run(g.conn, time_format='raw'))
+    if len(selection) > 0 and selection[0]['owner'] != user:
+        return args.json_as_format_arg([])
     all_data_dirs = {}
     top_level_dirs = []
     ddir = selection[0]

@@ -16,8 +16,6 @@ function HomeController($scope, mcapi) {
         }).jsonp();
 }
 
-
-
 function ExploreController($scope) {
     $scope.pageDescription = "Explore";
 }
@@ -28,17 +26,17 @@ function AboutController($scope) {
 
 }
 
-function ContactController($scope, $routeParams) {
+function ContactController($scope) {
     $scope.pageDescription = "Contact";
 
 }
 
-function HelpController($scope, $routeParams) {
+function HelpController($scope) {
     $scope.pageDescription = "Help";
 }
 
-function ReviewListController($scope, $location, mcapi, User) {
-    mcapi('/user/%/reviews', User.u())
+function ReviewListController($scope, $location, mcapi) {
+    mcapi('/reviews')
         .success(function (data) {
             $scope.reviews = _.filter(data, function (item) {
                 if (!item.done) {
@@ -47,7 +45,7 @@ function ReviewListController($scope, $location, mcapi, User) {
             });
         }).jsonp();
 
-    mcapi('/user/%/reviews/requested', User.u())
+    mcapi('/reviews/requested')
         .success(function (data) {
             $scope.reviewsRequested = _.filter(data, function (item) {
                 if (!item.done) {
@@ -66,7 +64,7 @@ function ReviewListController($scope, $location, mcapi, User) {
 
     $scope.removeReview = function (index) {
         var id = $scope.reviews[index].id;
-        mcapi('/user/%/review/%', User.u(), id)
+        mcapi('/review/%', id)
             .success(function (data) {
                 $scope.reviews.splice(index, 1);
             }).delete();
@@ -74,7 +72,7 @@ function ReviewListController($scope, $location, mcapi, User) {
 
     $scope.removeRequestedReview = function (index) {
         var id = $scope.reviewsRequested[index].id;
-        mcapi('/user/%/review/%/requested', User.u(), id)
+        mcapi('/review/%/requested', id)
             .success(function () {
                 $scope.reviewsRequested.splice(index, 1);
             }).delete()
@@ -90,7 +88,7 @@ function EventController($scope, alertService) {
 
 }
 
-function ProvenanceController($scope, $rootScope){
+function ProvenanceController($scope, $rootScope) {
     console.log('how many');
     $scope.process = [
         {
@@ -124,16 +122,16 @@ function ProvenanceController($scope, $rootScope){
             outputs: ['TEM-excel-analysis', 'a.txt', 'TEM.jpg']
         }
     ];
-   $scope.get_process_details = function(index){
-       $scope.$apply(function(){
-           $scope.details = $scope.process[index];
+    $scope.get_process_details = function (index) {
+        $scope.$apply(function () {
+            $scope.details = $scope.process[index];
 
-       })
-   }
+        })
+    }
 
 }
 
-function SubPageController($scope, $routeParams){
+function SubPageController($scope, $routeParams) {
     $scope.template = "partials/data/data-main.html";
     if ($routeParams.tab) {
         switch ($routeParams.tab) {
@@ -169,7 +167,6 @@ function SubPageController($scope, $routeParams){
                 $scope.template = "partials/usergroups/usergroup-subpage.html";
                 $('#usergroups-tab').addClass("active");
                 break;
-
 
 
             case "my-projects-tab":

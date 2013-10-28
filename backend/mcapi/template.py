@@ -2,25 +2,20 @@ from mcapp import app
 from decorators import crossdomain, apikey, jsonp
 from flask import request
 import rethinkdb as r
-from utils import error_response
+import error
 import dmutil
 
-@app.route('/v1.0/templates/<template_id>', methods=['GET'])
+@app.route('/templates/<template_id>', methods=['GET'])
 @jsonp
 def get_template(template_id):
     return dmutil.get_single_from_table('templates', template_id)
 
-@app.route('/v1.0/templates', methods=['GET'])
+@app.route('/templates', methods=['GET'])
 @jsonp
 def get_all_templates():
     return dmutil.get_all_from_table('templates')
 
-@app.route('/v1.0/templates/<template_id>', methods=['DELETE'])
-@apikey
-def delete_template(template_id):
-    pass
-
-@app.route('/v1.0/templates/new', methods=['POST'])
+@app.route('/templates/new', methods=['POST'])
 @crossdomain(origin='*')
 def create_template():
     j = request.get_json()
@@ -38,8 +33,7 @@ def create_template_for_type(template_type, j):
         template = template_func(j)
         return dmutil.insert_entry('templates', template)
     else:
-        # Do something about throwing an error
-        return error_response(423)
+        return error.bad_request("Unrecognized template type: " + template_type)
 
 def create_process_template(j):
     template = common_template_elements("process", j)

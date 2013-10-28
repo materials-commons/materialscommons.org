@@ -2,40 +2,33 @@ from mcapp import app
 from decorators import crossdomain, apikey, jsonp
 from flask import request, g
 import rethinkdb as r
-from utils import error_response
+import error
 import dmutil
 import json
+import access
 
-@app.route('/v1.0/processes/<process_id>', methods=['GET'])
+@app.route('/processes/<process_id>', methods=['GET'])
 @jsonp
 def get_process(process_id):
     return dmutil.get_single_from_table('processes', process_id)
 
-@app.route('/v1.0/processes', methods=['GET'])
+@app.route('/processes', methods=['GET'])
 @jsonp
 def get_all_processes():
     return dmutil.get_all_from_table('processes')
 
-#
-# TODO: Fix up error_response(400) to something meaningful
-# TODO: Where should we get user from (remove from request args?)
-# TODO: Check that the project exists
-@app.route('/v1.0/processes/new', methods=['POST'])
+@app.route('/processes/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
 def create_process():
     p = dict()
     j = request.get_json()
     p['name'] = dmutil.get_required('name', j)
-    user = request.args.get('user', None)
-    if user is None:
-        return error_response(400)
+    user = access.get_user()
     p['owner'] = user
-
     p['project'] = dmutil.get_required('project', j)
-    #
-    # Check validity of project. When process is created
-    #
+    if not dmutil.item_exists('projects', p['project']):
+        return error.not_acceptable("Unknown project id: %s" % (p['project']))
     p['birthtime'] = r.now()
     p['mtime'] = p['birthtime']
     p['machine'] = dmutil.get_optional('machine', j)
@@ -52,7 +45,7 @@ def create_process():
     p['status'] = dmutil.get_optional('status', j)
     return dmutil.insert_entry('processes', p)
 
-@app.route('/v1.0/processes/from_template', methods=['POST'])
+@app.route('/processes/from_template', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
 def create_process_from_template():
@@ -61,6 +54,8 @@ def create_process_from_template():
     p['template'] = dmutil.get_required('id', j)
     project_id = dmutil.get_required('project', j)
     p['project'] = project_id
+    if not dmutil.item_exists('projects', project_id):
+        return error.not_acceptable("Unknown project id: %s" % (project_id))
     m = j['model']
     p['name'] = dmutil.get_required_prop('name', m)
     p['birthtime'] = r.now()
@@ -82,13 +77,13 @@ def create_process_from_template():
                            {'project_id': project_id, 'process_id': process_id})
     return json.dumps({'id': process_id})
 
-@app.route('/v1.0/processes/<process_id>/update', methods=['PUT'])
+@app.route('/processes/<process_id>/update', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def update_process(process_id):
     process = r.table('processes').get(process_id).run(g.conn)
     if process is None:
-        return error_response(400)
+        return error.bad_request("No such process: " + process_id)
     j = request.get_json()
     for id in j['input_files']:
         process['input_files'].append(id)

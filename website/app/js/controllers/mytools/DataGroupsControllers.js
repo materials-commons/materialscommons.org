@@ -1,15 +1,15 @@
-function MyDataGroupsController($scope, mcapi, User) {
+function MyDataGroupsController($scope, mcapi) {
     $scope.predicate = 'name';
     $scope.reverse = false;
 
-    mcapi('/user/%/datadirs/datafiles', User.u())
+    mcapi('/datadirs/datafiles')
         .success(function (data) {
             $scope.datagroups_by_user = data;
         }).jsonp();
 
     $scope.getDatagroup = function (datagroupId) {
         if ($scope.dgroupid != datagroupId) {
-            mcapi('/user/%/datadir/%', User.u(), datagroupId)
+            mcapi('/datadir/%', datagroupId)
                 .arg('order_by=name')
                 .success(function (data) {
                     $scope.dgroup = data;
@@ -19,7 +19,7 @@ function MyDataGroupsController($scope, mcapi, User) {
     }
 }
 
-function SearchByDateController($scope, $routeParams, User) {
+function SearchByDateController($scope) {
     $scope.search_by_date = function () {
         //$scope.utc_start_date = Date.parse($scope.startDate) / 1000;
         //$scope.utc_end_date = Date.parse($scope.endDate) / 1000;
@@ -27,8 +27,8 @@ function SearchByDateController($scope, $routeParams, User) {
     }
 }
 
-function MyDataGroupsTreeController($scope, mcapi, $location, User, treeToggle) {
-    mcapi('/user/%/datadirs/tree', User.u())
+function MyDataGroupsTreeController($scope, mcapi, $location, treeToggle) {
+    mcapi('/datadirs/tree')
         .success(function (tree) {
             $scope.tree = tree;
             $scope.selected = treeToggle.get_all();
@@ -43,8 +43,8 @@ function MyDataGroupsTreeController($scope, mcapi, $location, User, treeToggle) 
     }
 }
 
-function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
-    mcapi('/user/%/datadirs/tree/groups', User.u())
+function MyGroupsDataGroupsTreeController($scope, mcapi, $location) {
+    mcapi('/datadirs/tree/groups')
         .success(function (tree) {
             $scope.tree = tree;
         })
@@ -58,17 +58,17 @@ function MyGroupsDataGroupsTreeController($scope, mcapi, $location, User) {
     }
 }
 
-function DataDirReportController($scope, $routeParams, $location, mcapi, User) {
+function DataDirReportController($scope, $routeParams, $location, mcapi) {
     $scope.get_full_data_with_id = function (id) {
         $location.path("/data/data/" + id);
     }
 
     if ($routeParams.id) {
-        mcapi('/user/%/datadir/%', User.u(), $routeParams.id)
+        mcapi('/datadir/%', $routeParams.id)
             .arg('order_by=name')
             .success(function (data) {
                 $scope.data_dir = data;
-                mcapi('/user/%/datafile/ids/%', User.u(), $routeParams.id)
+                mcapi('/datafile/ids/%', $routeParams.id)
                     .success(function (datafiles) {
                         $scope.datafiles = datafiles;
                     })
@@ -79,6 +79,3 @@ function DataDirReportController($scope, $routeParams, $location, mcapi, User) {
             }).jsonp();
     }
 }
-
-
-

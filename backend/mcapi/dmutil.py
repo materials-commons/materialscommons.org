@@ -1,5 +1,5 @@
 import json
-from utils import error_response
+import error
 import rethinkdb as r
 from flask import g
 from args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
@@ -28,11 +28,15 @@ def get_required_prop(what, d):
     raise RequiredAttributeException(what)
 
 def insert_status(rv):
+    print rv
     if rv[u'inserted'] == 1:
-        key = rv['generated_keys'][0]
+        if 'generated_keys' in rv:
+            key = rv['generated_keys'][0]
+        else:
+            key = rv['new_val']['id']
         return json.dumps({'id': key})
     else:
-        return error_response(400)
+        return error.server_internal_error("Unable to insert entry into database")
 
 def get_all_from_table(table_name):
     rr = r.table(table_name)
@@ -51,13 +55,16 @@ def entry_exists(table_name, entry_id):
     return rv is not None
 
 def insert_entry(table_name, entry):
-    rv = r.table(table_name).insert(entry).run(g.conn)
+    rv = r.table(table_name).insert(entry, return_vals=True).run(g.conn)
     return insert_status(rv)
 
 def insert_entry_id(table_name, entry):
-    rv = r.table(table_name).insert(entry).run(g.conn)
+    rv = r.table(table_name).insert(entry, return_vals=True).run(g.conn)
     if rv[u'inserted'] == 1:
-        return rv['generated_keys'][0]
+        if 'generated_keys' in rv:
+            return rv['generated_keys'][0]
+        else:
+            return rv['new_val']['id']
     raise DatabaseError()
 
 def insert_join_entry(table_name, entry):
@@ -65,3 +72,6 @@ def insert_join_entry(table_name, entry):
     if rv[u'inserted'] == 1:
         return True
     raise DatabaseError()
+
+def item_exists(table, id):
+    return r.table(table).get(id).run(g.conn)

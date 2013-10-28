@@ -74,14 +74,13 @@ function AccountDetailsController($scope, mcapi, User, alertService) {
             }
         }
     }
-
 }
 
 function ApiKeyController($scope, User) {
     $scope.apikey = User.apikey();
 }
 
-function ApiKeyResetController($scope, mcapi, User) {
+function ApiKeyResetController($scope, mcapi, User, alertService) {
     mcapi('/user/%/apikey/reset', User.u())
         .success(function (data) {
             $scope.new_apikey = data;
