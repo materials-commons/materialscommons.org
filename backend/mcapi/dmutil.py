@@ -28,8 +28,12 @@ def get_required_prop(what, d):
     raise RequiredAttributeException(what)
 
 def insert_status(rv):
+    print rv
     if rv[u'inserted'] == 1:
-        key = rv['generated_keys'][0]
+        if 'generated_keys' in rv:
+            key = rv['generated_keys'][0]
+        else:
+            key = rv['new_val']['id']
         return json.dumps({'id': key})
     else:
         return error.server_internal_error("Unable to insert entry into database")
@@ -51,13 +55,16 @@ def entry_exists(table_name, entry_id):
     return rv is not None
 
 def insert_entry(table_name, entry):
-    rv = r.table(table_name).insert(entry).run(g.conn)
+    rv = r.table(table_name).insert(entry, return_vals=True).run(g.conn)
     return insert_status(rv)
 
 def insert_entry_id(table_name, entry):
-    rv = r.table(table_name).insert(entry).run(g.conn)
+    rv = r.table(table_name).insert(entry, return_vals=True).run(g.conn)
     if rv[u'inserted'] == 1:
-        return rv['generated_keys'][0]
+        if 'generated_keys' in rv:
+            return rv['generated_keys'][0]
+        else:
+            return rv['new_val']['id']
     raise DatabaseError()
 
 def insert_join_entry(table_name, entry):

@@ -3,7 +3,7 @@
 
     <div class="row-fluid">
         <div class="well">
-            <paged data="data_by_user" current-page="currentUsersPage" page-size="10">
+            <paged data="users_by_usergroup" current-page="currentUsersPage" page-size="10">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
@@ -29,7 +29,7 @@
                     ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
                     ng-multiple="false">
                 <option></option>
-                <option ng-repeat="dg in all_users">{{ dg.name }}</option>
+                <option ng-repeat="user in all_users">{{ user.email }}</option>
             </select>
             <button class="btn" ng-click="add_user_to_usergroup()">Add User</button>
         </div>

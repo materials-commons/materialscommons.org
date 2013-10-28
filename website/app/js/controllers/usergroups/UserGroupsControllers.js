@@ -13,18 +13,13 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService)
                 alertService.prepForBroadcast($scope.msg);
                 $location.path('/usergroups/my_usergroups');
             })
-            .error(function (data) {
-                alertService.prepForBroadcast(data.error);
+            .error(function (errorMsg) {
+                alertService.prepForBroadcast(errorMsg);
             }).post(u_group);
     }
 }
 
 function ListUserGroupController($scope, mcapi, User) {
-    mcapi('/user/%/all_usergroups', User.u())
-        .success(function (data) {
-            $scope.all_user_groups = data;
-        }).jsonp();
-
     mcapi('/user/%/usergroups', User.u())
         .success(function (data) {
             $scope.user_groups = data;
@@ -49,7 +44,7 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
 
     mcapi('/usergroup/%/users', $scope.lab_name)
         .success(function (data) {
-            $scope.users_by_usergroup = data[0].users;
+            $scope.users_by_usergroup = data.users;
         })
         .error(function () {
         }).jsonp();
@@ -61,14 +56,13 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
             {result: 'no', label: 'no'},
             {result: 'yes', label: 'yes', cssClass: 'btn-primary'}
         ];
-        //from angular ui.bootstrap
         $dialog.messageBox(title, msg, btns)
             .open()
             .then(function (result) {
                 if (result == 'yes') {
                     mcapi('/usergroup/%/selected_name/%', $scope.lab_name, $scope.user_name)
                         .success(function (data) {
-                            $scope.users_by_usergroup = data;
+                            $scope.users_by_usergroup.push(data.id);
                         }).error(function (data) {
                             alertService.prepForBroadcast(data.error);
                         }).put();

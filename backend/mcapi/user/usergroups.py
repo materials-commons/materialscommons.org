@@ -73,14 +73,13 @@ def list_users_by_usergroup(usergroup):
 @crossdomain(origin='*')
 def add_user_to_u_group(usergroup, selected_name):
     user = access.get_user()
-    exists = does_user_exists_in_ugroup(selected_name, usergroup)
-    if exists is None:
-        access.check_ownership(usergroup, user)
-        res = r.table('usergroups').get(usergroup)['users'].append(selected_name).run(g.conn)
-        r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
-        return args.json_as_format_arg({'id': selected_name})
-    else:
+    if user_in_usergroup(selected_name, usergroup):
         return error.not_acceptable("User %s already in group %s" % (selected_name, usergroup))
+    access.check_ownership(usergroup, user)
+    updated_users_list = r.table('usergroups').get(usergroup)['users'].append(selected_name).run(g.conn)
+    r.table('usergroups').get(usergroup).update({'users': updated_users_list}).run(g.conn)
+    return args.json_as_format_arg({'id': selected_name})
+
 
 @app.route('/usergroup/<usergroup>/selected_name/<selected_name>/remove',\
            methods=['PUT'])
@@ -92,9 +91,8 @@ def remove_user_from_usergroup(usergroup, selected_name):
     r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
     return args.json_as_format_arg({'id': selected_name})
 
-def does_user_exists_in_ugroup(user, usergroup):
+def user_in_usergroup(user, usergroup):
     ugroup = r.table('usergroups').get(usergroup).run(g.conn)
     if ugroup:
-        users = ugroup['users']
-        return user in users
+        return user in ugroup['users']
     return False

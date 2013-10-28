@@ -53,10 +53,3 @@ def list_usergroups_for_user(user):
     res = list(r.table('usergroups').filter(r.row['users'].contains(user))\
                .run(g.conn, time_format='raw'))
     return json.dumps(res)
-
-@app.route('/user/<user>/all_usergroups', methods=['GET'])
-@apikey
-@jsonp
-def list_all_usergroups(user):
-    res = list(r.table('usergroups').run(g.conn, time_format='raw'))
-    return json.dumps(res)
