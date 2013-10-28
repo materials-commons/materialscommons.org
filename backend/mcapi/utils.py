@@ -18,7 +18,8 @@ def create_tag_count(selection):
         tag['name'] = key
         tag['count'] = tagsCountDict[key]
         tagsByCount.append(tag)
-    return json_as_format_arg(tagsByCount)
+    sorted_list = sorted(tagsByCount, key=sort_by_count, reverse=True)
+    return json_as_format_arg(sorted_list)
 
 def mkdirp(path):
     try:
@@ -43,6 +44,9 @@ def make_password_hash(password):
 
 def make_salted_password_hash(password, salt):
     return crypt(password, salt, iterations=_PW_ITERATIONS)
+
+def sort_by_count(l):
+    return l['count']
 
 def set_dates(item):
     tnow = r.now()
