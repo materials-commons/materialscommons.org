@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp, apigroup
+from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request
 import rethinkdb as r
 from ..utils import create_tag_count
@@ -8,20 +8,17 @@ from .. import error
 from .. import access
 
 @app.route('/datafiles')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def datafiles_for_user():
     user = access.get_user()
-    print "user = %s" % (user)
     rr = r.table('datafiles').filter({'owner':user})
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
 @app.route('/datafiles/tag/<tag>')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def datafiles_for_user_by_tag(tag):
     user = access.get_user()
@@ -53,8 +50,7 @@ def tags_by_count_for_user():
     return create_tag_count(selection)
 
 @app.route('/datafile/<datafileid>')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def datafile_for_user_by_id(datafileid):
     user = access.get_user()
@@ -65,8 +61,7 @@ def datafile_for_user_by_id(datafileid):
     return args.json_as_format_arg(df)
 
 @app.route('/datafile/ids/<datadir_id>')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def datafiles_list(datadir_id):
     user = access.get_user()

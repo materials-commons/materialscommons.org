@@ -1,28 +1,28 @@
 from flask import request, make_response, current_app
-from functools import wraps, update_wrapper
+from functools import wraps, update_wrapper, partial
 from datetime import timedelta
 import json
 import apikeydb
 import error
 import access
+import mcexceptions
 
-def apikey(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
+def apikey(method=None, shared=False):
+    if method is None:
+        return partial(apikey, shared=shared)
+    @wraps(method)
+    def wrapper(*args, **kwargs):
         apikey = request.args.get('apikey', default="no_such_key")
         if not apikeydb.valid_apikey(apikey):
             return error.not_authorized("You are not authorized to access the system")
-        return f(*args, **kwargs)
-    return decorated
-
-def apigroup(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
         apiuser = access.get_apiuser()
         user = request.args.get('user', default=apiuser)
-        access.check(apiuser, user)
-        return f(*args, **kwargs)
-    return decorated
+        if shared:
+            access.check(apiuser, user)
+        elif apiuser != user:
+            raise mcexceptions.AccessNotAllowedException()
+        return method(*args, **kwargs)
+    return wrapper
 
 def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_to_all=True, automatic_options=True):
     if methods is not None:

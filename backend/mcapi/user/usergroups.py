@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp, apigroup
+from ..decorators import crossdomain, apikey, jsonp
 import json
 from flask import g, request
 import rethinkdb as r
@@ -47,8 +47,7 @@ def make_json_obj_for_join(selection, use_name):
     return args.json_as_format_arg(obj)
 
 @app.route('/usergroup/<usergroup>', methods=['GET'])
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def get_usergroup(usergroup):
     user = access.get_user()
@@ -56,8 +55,7 @@ def get_usergroup(usergroup):
     return args.json_as_format_arg(selection)
 
 @app.route('/usergroup/<usergroup>/users', methods=['GET'])
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def list_users_by_usergroup(usergroup):
     user = access.get_user()

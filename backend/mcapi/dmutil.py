@@ -28,7 +28,6 @@ def get_required_prop(what, d):
     raise RequiredAttributeException(what)
 
 def insert_status(rv):
-    print rv
     if rv[u'inserted'] == 1:
         if 'generated_keys' in rv:
             key = rv['generated_keys'][0]

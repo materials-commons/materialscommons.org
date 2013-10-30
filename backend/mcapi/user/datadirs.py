@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import apikey, jsonp, apigroup
+from ..decorators import apikey, jsonp
 import json
 from flask import g
 import rethinkdb as r
@@ -9,8 +9,7 @@ from ..args import add_all_arg_options, json_as_format_arg
 from .. import access
 
 @app.route('/datadir/<path:datadirid>')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def datadir_for_user(datadirid):
     user = access.get_user()
@@ -20,8 +19,7 @@ def datadir_for_user(datadirid):
     return json_for_single_item_list(selection)
 
 @app.route('/datadirs')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def datadirs_for_user():
     user = access.get_user()
@@ -31,8 +29,7 @@ def datadirs_for_user():
     return json_as_format_arg(selection)
 
 @app.route('/datadirs/datafiles')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def list_datadirs_with_data_by_user():
     user = access.get_user()
