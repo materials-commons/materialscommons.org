@@ -1,5 +1,5 @@
 from mcapp import app
-from decorators import crossdomain, apikey, jsonp
+from decorators import crossdomain, jsonp
 from flask import request
 import rethinkdb as r
 import error

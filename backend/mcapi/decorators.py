@@ -6,21 +6,23 @@ import apikeydb
 import error
 import access
 
-def apikey(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        apikey = request.args.get('apikey', default="no_such_key")
-        if not apikeydb.valid_apikey(apikey):
-            return error.not_authorized("You are not authorized to access the system")
-        return f(*args, **kwargs)
-    return decorated
+def apikey(share=False):
+    def decorator(f):
+        def wrapped_function(*args, **kwargs):
+            apikey = request.args.get('apikey', default="no_such_key")
+            if not apikeydb.valid_apikey(apikey):
+                return error.not_authorized("You are not authorized to access the system")
+            if share:
+                apiuser = access.get_apiuser()
+                user = request.args.get('user', default=apiuser)
+                access.check(apiuser, user)                
+            return update_wrapper(wrapped_function, f)
+    return decorator
 
 def apigroup(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        apiuser = access.get_apiuser()
-        user = request.args.get('user', default=apiuser)
-        access.check(apiuser, user)
+
         return f(*args, **kwargs)
     return decorated
 

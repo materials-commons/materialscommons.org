@@ -347,3 +347,4 @@ materialsCommonsServices.factory('wizardSteps', function () {
         }
     }
 });
+
