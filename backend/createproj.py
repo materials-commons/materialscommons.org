@@ -10,7 +10,9 @@ conn = r.connect('localhost', 28015, db='materialscommons')
 
 def create_project(user):
     directory = os.getcwd()
+    print directory
     project_name = os.path.basename(directory)
+    print project_name
     parents = {}
     proj = project.Project(project_name, "", user)
     project_id = None
