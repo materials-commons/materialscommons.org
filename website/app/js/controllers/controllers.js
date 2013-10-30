@@ -9,7 +9,6 @@ function FrontPageController($scope, $location) {
 }
 
 function HomeController($scope, mcapi) {
-
     mcapi('/news')
         .success(function (data) {
             $scope.news = data;
