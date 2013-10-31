@@ -1,12 +1,13 @@
 from ..mcapp import app
-from ..decorators import apikey, jsonp
+from ..decorators import apikey, jsonp, crossdomain
 import json
-from flask import g
+from flask import g, request
 import rethinkdb as r
 from os.path import dirname, basename
 from ..utils import json_for_single_item_list
 from ..args import add_all_arg_options, json_as_format_arg
 from .. import access
+from ..import dmutil
 
 @app.route('/datadir/<path:datadirid>')
 @apikey(shared=True)
@@ -150,3 +151,10 @@ def find_in_ditem_list(name, items):
         if item.name == name:
             return item
     return None
+
+@app.route('/datadir/test/', methods=['POST'])
+@crossdomain(origin='*')
+def create_datadir():
+    dir = request.get_json();
+    dir_id =  dmutil.insert_entry('datadirs', dir)
+    return  dir_id
