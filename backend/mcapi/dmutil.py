@@ -28,7 +28,6 @@ def get_required_prop(what, d):
     raise RequiredAttributeException(what)
 
 def insert_status(rv):
-    print rv
     if rv[u'inserted'] == 1:
         if 'generated_keys' in rv:
             key = rv['generated_keys'][0]
@@ -56,6 +55,7 @@ def entry_exists(table_name, entry_id):
 
 def insert_entry(table_name, entry):
     rv = r.table(table_name).insert(entry, return_vals=True).run(g.conn)
+    
     return insert_status(rv)
 
 def insert_entry_id(table_name, entry):

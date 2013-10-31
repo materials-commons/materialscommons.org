@@ -1,12 +1,46 @@
 #!/usr/bin/env python
 
-#import requests
+import requests
 import sys
 import os
 from loader.model import datadir, project
 import rethinkdb as r
 
 conn = r.connect('localhost', 28015, db='materialscommons')
+
+
+class Project(object):
+    def __init__(self, name, datadir, owner):
+        self.name = name
+        self.description = ""
+        self.datadir = datadir
+        self.owner = owner
+        self.birthtime = r.now()
+        self.mtime = self.birthtime
+        self.notes = []
+        self.tags = []
+        self.reviews = []
+        self.mytags = []
+
+class DataDir(object):
+    def __init__(self, name, access, userid, parent):
+        self.access = access
+        self.owner = userid
+        self.marked_for_review = False
+        self.name = name
+        self.datafiles = []
+        self.dataparams = []
+        self.users = []
+        self.tags = []
+        self.mytags = []
+        self.users.append(userid)
+        self.parent = parent
+        self.reviews = []
+        self.birthtime = r.now()
+        self.mtime = self.birthtime
+        self.atime = self.birthtime
+        self.id = userid + "$" + name.replace('/', '_')
+
 
 def create_project(user):
     directory = os.getcwd()
@@ -40,14 +74,12 @@ def add_proj_datadir_mapping(project_id, ddir_id):
         r.table('project2datadir').insert({'project_id':project_id, 'datadir_id':ddir_id}).run(conn)
 
 def add_datadir(ddir):
+    
     r.table('datadirs').insert(ddir.__dict__, return_vals=True).run(conn)
     return ddir.id
 
 def add_project(proj):
-    rv = r.table('projects').insert(proj.__dict__).run(conn)
-    if rv[u'inserted'] == 1:
-        key = rv['generated_keys'][0]
-        return key
+    requests.post("http://localhost:5000/v1.0/projects", data=proj)
     return None
 
 def construct_datadir_name(base, root, directory):

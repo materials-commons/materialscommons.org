@@ -1,16 +1,16 @@
 from ..mcapp import app
-from ..decorators import apikey, jsonp, apigroup
-from flask import g
+from ..decorators import crossdomain, apikey, jsonp, apigroup
+from flask import g, request
 import rethinkdb as r
 from .. import args
 from datadirs import DItem, DEncoder
 from os.path import dirname
 import json
 from .. import access
+from ..import dmutil
 
 @app.route('/projects', methods=['GET'])
 @apikey
-@apigroup
 @jsonp
 def get_all_projects():
     user = access.get_user()
@@ -91,3 +91,19 @@ def find_in_ditem_list(name, items):
         if item.name == name:
             return item
     return None
+
+@app.route('/projects/test/', methods=['POST'])
+@crossdomain(origin='*')
+def create_project():
+    proj = request.get_json();
+    project_id =  dmutil.insert_entry('projects', proj)
+    return  project_id
+
+@app.route('/project/datadir/join/', methods=['POST'])
+@crossdomain(origin='*')
+def create_project_datadir_join():
+    proj_ddir = request.get_json()
+    proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_ddir)
+    return  proj_ddir_id
+
+
