@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp, apigroup
+from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request
 import rethinkdb as r
 from .. import args
