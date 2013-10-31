@@ -1,26 +1,32 @@
 /*
-* This file implements the upload file wizard. There are a number of communicating controllers
-* used to implement the wizard. The controllers talk by sending messages to each other. The service
-* 'pubsub' is used for this communication. A controller that is interested in a message performs a
-* 'waitOn' on a particular named channel. Controllers that wish to communicate send messages to the
-* channel.
-*
-* The coordination of the upload is performed in the the 'UploadFileController'. This controller gathers
-* all the needed state attributes produced by the other controllers and performs the upload. This master
-* controller has a number 'waitOn' calls where it retrieves and stores the information needed to perform
-* the upload. The other controllers exist to gather the needed data and send it to this controller.
-*
+ * This file implements the upload file wizard. There are a number of communicating controllers
+ * used to implement the wizard. The controllers talk by sending messages to each other. The service
+ * 'pubsub' is used for this communication. A controller that is interested in a message performs a
+ * 'waitOn' on a particular named channel. Controllers that wish to communicate send messages to the
+ * channel.
+ *
+ * The coordination of the upload is performed in the the 'UploadFileController'. This controller gathers
+ * all the needed state attributes produced by the other controllers and performs the upload. This master
+ * controller has a number 'waitOn' calls where it retrieves and stores the information needed to perform
+ * the upload. The other controllers exist to gather the needed data and send it to this controller.
+ *
  */
 
-function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUploadForm) {
-    $scope.process_name = "Process";
-    $scope.required_conditions = [];
+function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUploadForm, Stater) {
+
+    Stater.newId("upload_file", "upload_file", "upload_file", function (status, state) {
+        if (status) {
+            $scope.state = state;
+            $scope.state.attributes.process = {};
+            $scope.state.attributes.process.name = "Process";
+        }
+        $scope.setCurrentStep('nav_choose_project');
+    });
 
     $scope.setCurrentStep = function (step) {
         wizardSteps.setCurrent('upload_wizard', step);
+        pubsub.send('current_step', step);
     }
-
-    $scope.setCurrentStep('nav_choose_project');
 
     $scope.isCurrentStep = function (step) {
         return wizardSteps.getCurrent('upload_wizard') == step;
@@ -42,30 +48,22 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUpload
         return wizardSteps.getCurrent('upload_outputs_wizard') == step;
     }
 
-    $scope.setOutputsCurrentStep('nav_output_conditions')
+    //$scope.setOutputsCurrentStep('nav_output_conditions');
 
     pubsub.waitOn($scope, 'nav_set_step', function (step) {
+        $scope.state = Stater.retrieve();
         $scope.setCurrentStep(step);
-    });
-
-    pubsub.waitOn($scope, 'set_project', function (project) {
-        $scope.project = project;
-    });
-
-    pubsub.waitOn($scope, 'set_process', function (process) {
-        $scope.process = process;
-        $scope.process_name = process.name;
-        $scope.required_conditions = process.required_conditions;
-        if ($scope.required_conditions && $scope.required_conditions.length > 0) {
-            $scope.nav_step_inputs = $scope.required_conditions[0];
+        if (step == 'nav_choose_inputs') {
+            pubsub.send('input_condition_step', 'inputs_broadcast');
         }
     });
 
     pubsub.waitOn($scope, 'nav_step_inputs_next_by_index', function (next_by_index) {
-        if (next_by_index == $scope.required_conditions.length) {
+        var required_conditions = $scope.state.process.required_conditions;
+        if (next_by_index == required_conditions.length) {
             $scope.setInputsCurrentStep('nav_input_files');
         } else {
-            $scope.setInputsCurrentStep($scope.required_conditions[next_by_index]);
+            $scope.setInputsCurrentStep(required_conditions[next_by_index]);
         }
     });
 
@@ -149,18 +147,18 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUpload
             }).post(obj);
     }
 
-    $scope.uploadInputFiles = function() {
+    $scope.uploadInputFiles = function () {
         var input_file_ids = [];
 
-        $scope.input_files.forEach(function(f) {
+        $scope.input_files.forEach(function (f) {
             input_file_ids.push(f.id);
         });
 
         mcapi('/processes/%/update', $scope.process_id)
-            .success(function() {
+            .success(function () {
                 $scope.uploadOutputFiles();
             })
-            .error(function() {
+            .error(function () {
                 console.log("input file update failed");
             }).put({input_files: input_file_ids});
     }
@@ -186,31 +184,44 @@ function UploadFileController($scope, pubsub, wizardSteps, mcapi, User, toUpload
     }
 }
 
-function UploadWizardProjectStepController($scope, pubsub, watcher, mcapi) {
+/* ********************************************************************************************** */
 
-    mcapi('/projects')
-        .success(function (projects) {
-            $scope.projects = projects;
-        })
-        .error(function () {
-            console.log("Unable to retrieve projects");
-        }).jsonp();
+function UploadWizardProjectStepController($scope, pubsub, watcher, mcapi, Stater) {
+    pubsub.waitOn($scope, 'current_step', function (step) {
+        if (step == 'nav_choose_project') {
+            $scope.state = Stater.retrieve();
+
+            if ('project' in $scope.state.attributes) {
+                $scope.project = $scope.state.attributes.project;
+            }
+
+            mcapi('/projects')
+                .success(function (projects) {
+                    $scope.projects = projects;
+                })
+                .error(function () {
+                    console.log("Unable to retrieve projects");
+                }).jsonp();
+        }
+    });
 
     watcher.watch($scope, 'selected_project', function (projectname) {
         $scope.projectname = projectname;
         $scope.project = _.find($scope.projects, function (project) {
             return project.name == projectname;
         })
+        $scope.state.attributes.project = $scope.project;
     });
 
     $scope.next = function () {
-        pubsub.send('set_project', $scope.projectname);
+        Stater.persist($scope.state);
         pubsub.send('nav_set_step', 'nav_choose_process');
-        pubsub.send('project_id', $scope.project.id);
     }
 }
 
-function UploadWizardProcessStepController($scope, pubsub, watcher, mcapi) {
+/* ********************************************************************************************** */
+
+function UploadWizardProcessStepController($scope, pubsub, watcher, mcapi, Stater) {
     $scope.uneditable_properties = [];
     var c = [
         'required_conditions', 'owner', 'birthtime', 'mtime', 'parent', 'notes',
@@ -221,19 +232,38 @@ function UploadWizardProcessStepController($scope, pubsub, watcher, mcapi) {
         $scope.uneditable_properties[name] = "";
     });
 
-    mcapi('/templates')
-        .argWithValue('filter_by', '"template_type":"process"')
-        .success(function (processes) {
-            $scope.processes = processes;
-        })
-        .error(function () {
-            console.log("Unable to retrieve processes from database.");
-        }).jsonp();
+    pubsub.waitOn($scope, 'current_step', function (step) {
+        if (step == 'nav_choose_process') {
+            $scope.state = Stater.retrieve();
+            if ('process' in $scope.state.attributes) {
+                $scope.process = $scope.state.attributes.process;
+            }
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"process"')
+                .success(function (processes) {
+                    $scope.processes = processes;
+                })
+                .error(function () {
+                    console.log("Unable to retrieve processes from database.");
+                }).jsonp();
+        }
+    });
 
     watcher.watch($scope, 'selected_process', function (processname) {
+
         $scope.process = _.find($scope.processes, function (item) {
             return item.template_name == processname;
         });
+
+        /*
+         * Process is a template. All templates have a 'model' attribute that contains
+         * a list of all the properties that are associated with the object they are
+         * a template for.
+         *
+         * The code below pulls out the the property "required_conditions" which is a list
+         * of the conditions that are required for this process. It then adds this attribute
+         * into the process so we don't have to reconstruct this again.
+         */
 
         $scope.process.name = $scope.process.template_name;
         var required_conditions_property = _.find($scope.process.model, function (prop) {
@@ -244,16 +274,18 @@ function UploadWizardProcessStepController($scope, pubsub, watcher, mcapi) {
     });
 
     $scope.next = function () {
+        $scope.state.attributes.process = $scope.process;
+        Stater.persist($scope.state);
         pubsub.send('nav_set_step', 'nav_choose_inputs');
-        pubsub.send('set_process', $scope.process);
     }
 }
 
-function UploadWizardConditionInputController($scope, mcapi, pubsub, wizardSteps) {
-    $scope.init = function (condition_name) {
-        $scope.condition_name = condition_name;
-        wizardSteps.setCurrent('upload_inputs_wizard', $scope.required_conditions[0]);
+/* ********************************************************************************************** */
 
+function UploadWizardConditionInputController($scope, mcapi, pubsub, Stater) {
+    $scope.init = function (condition_name) {
+        console.log("Initializing UPloadWizardConditionInputController: " + condition_name);
+        $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
         mcapi('/templates')
             .argWithValue('filter_by', '"template_name":' + name)
@@ -263,22 +295,49 @@ function UploadWizardConditionInputController($scope, mcapi, pubsub, wizardSteps
             .error(function () {
                 console.log("Failed looking up: " + $scope.condition_name);
             }).jsonp();
+        pubsub.send('input_condition_step', 'inputs_broadcast');
     }
 
+    pubsub.waitOn($scope, 'input_condition_step', function (step) {
+        console.log("got input_condition_step");
+        $scope.state = Stater.retrieve();
+        if ('input_conditions' in $scope.state.attributes) {
+            if ($scope.condition_name in $scope.state.attributes.input_conditions) {
+                console.log("found " + $scope.condition_name + " in input_conditions");
+            }
+        } else {
+            console.log("adding input_conditions to attributes")
+            $scope.state.attributes.input_conditions = [];
+        }
+        console.dir($scope.state);
+    })
+
+//    pubsub.waitOn($scope, 'current_step', function (step) {
+//        if (step == 'nav_choose_inputs') {
+//            $scope.state = Stater.retrieve();
+//            if ('input_conditions' in $scope.state.attributes) {
+//                $scope.input_conditions = $scope.state.attributes.input_conditions;
+//            } else {
+//                $scope.input_conditions = [];
+//                $scope.state.attributes.input_conditions = $scope.input_conditions;
+//            }
+//        }
+//    });
+
     $scope.save = function () {
-        pubsub.send('add_input_condition', $scope.condition);
+        $scope.state.attributes.input_conditions[$scope.condition_name] = $scope.condition;
+        console.dir($scope.state);
     }
 
     $scope.next = function (index) {
+        Stater.save($scope.state);
         pubsub.send('nav_step_inputs_next_by_index', index + 1);
     }
 }
 
+/* ********************************************************************************************** */
+
 function UploadWizardFileInputController($scope, pubsub, mcapi) {
-    $scope.input_files = [
-//        {id: 1, name: "sem_config.props", description: "Configuration properties for SEM"},
-//        {id: 2, name: "Al.jpg", description: "Picture of aluminum needle we scanned"}
-    ];
 
     mcapi('/datadirs/tree/groups')
         .success(function (tree) {
@@ -291,7 +350,7 @@ function UploadWizardFileInputController($scope, pubsub, mcapi) {
         pubsub.send('add_input_file', $scope.selected_file);
     }
 
-    $scope.chooseSelection = function(item) {
+    $scope.chooseSelection = function (item) {
         if (item.type == "datafile") {
             $scope.selected_file = item;
         }
@@ -301,6 +360,8 @@ function UploadWizardFileInputController($scope, pubsub, mcapi) {
         pubsub.send('nav_set_step', 'nav_choose_outputs');
     }
 }
+
+/* ********************************************************************************************** */
 
 function UploadWizardFileOutputController($scope, pubsub, mcapi) {
     pubsub.waitOn($scope, 'project_id', function (project_id) {
@@ -313,7 +374,7 @@ function UploadWizardFileOutputController($scope, pubsub, mcapi) {
             }).jsonp();
     });
 
-    $scope.chooseSelection = function(d) {
+    $scope.chooseSelection = function (d) {
         $scope.selected_datadir = d;
     }
 
@@ -331,6 +392,8 @@ function UploadWizardFileOutputController($scope, pubsub, mcapi) {
         pubsub.send('nav_set_step', 'nav_upload');
     }
 }
+
+/* ********************************************************************************************** */
 
 function UploadWizardConditionOutputController($scope, mcapi, pubsub, watcher) {
 
@@ -364,6 +427,8 @@ function UploadWizardConditionOutputController($scope, mcapi, pubsub, watcher) {
     }
 }
 
+/* ********************************************************************************************** */
+
 function UploadDirectoryController($scope, mcapi) {
     $scope.files = [];
     $scope.percentage = 0;
@@ -374,6 +439,8 @@ function UploadDirectoryController($scope, mcapi) {
             $scope.datagroups = data;
         }).jsonp();
 }
+
+/* ********************************************************************************************** */
 
 function UpDownLoadQueueController($scope, mcapi) {
     mcapi('/udqueue')

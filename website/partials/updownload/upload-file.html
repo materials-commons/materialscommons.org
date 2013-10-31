@@ -1,4 +1,3 @@
-<!--<button ng-click="cors()">cors</button>-->
 <div ng-controller="UploadFileController">
 <div class="row-fluid">
     <div class="span3 offset1">
@@ -8,7 +7,7 @@
 
 <div class="row-fluid">
     <div class="arrow_box_right span4 offset1"><h5>Inputs</h5></div>
-    <div class="processbox span2"><h5>{{ process_name }}</h5></div>
+    <div class="processbox span2"><h5>{{ state.attributes.process.name }}</h5></div>
     <div class="arrow_box_right span4"><h5>Outputs</h5></div>
 </div>
 
@@ -93,12 +92,12 @@
 <!-- Choose Project Step -->
 
 <div ng-show="isCurrentStep('nav_choose_project')" class="row-fluid">
-    <div ng-controller="UploadWizardProjectStepController">
+    <div ng-controller="UploadWizardProjectStepController"ng-init="init()">
         <div class="span6 well">
             <h4>Projects</h4>
 
             <form>
-                <select class="span3" ng-model="selected_project"
+                <select ng-model="selected_project"
                         ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
                         ng-multiple="false">
                     <option></option>
@@ -156,7 +155,7 @@
     <div class="row-fluid">
         <div class="span10 offset1">
             <div class="btn-group">
-                <button ng-repeat="condition in required_conditions" class="btn"
+                <button ng-repeat="condition in state.attributes.process.required_conditions" class="btn"
                         ng-class="{'btn-primary':isInputsCurrentStep(condition)}"
                         ng-click="setInputsCurrentStep(condition)">{{condition}}
                 </button>
@@ -169,7 +168,7 @@
 
     <br>
 
-    <div ng-show="isInputsCurrentStep(condition)" ng-repeat="condition in required_conditions"
+    <div ng-show="isInputsCurrentStep(condition)" ng-repeat="condition in state.attributes.process.required_conditions"
          class="row-fluid">
         <div class="span6 well" ng-controller="UploadWizardConditionInputController" ng-init="init(condition)">
             <h4>{{condition_name}}</h4>
