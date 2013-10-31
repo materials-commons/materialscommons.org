@@ -4,6 +4,7 @@ import uuid
 from pbkdf2 import crypt
 from args import json_as_format_arg
 import rethinkdb as r
+import datetime
 
 def create_tag_count(selection):
     tagsByCount = []
@@ -52,3 +53,6 @@ def set_dates(item):
     tnow = r.now()
     item['birthtime'] = tnow
     item['mtime'] = tnow
+
+def now_str():
+    return datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")

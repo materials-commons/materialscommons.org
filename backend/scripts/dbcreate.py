@@ -24,6 +24,7 @@ def create_tables():
     run_rethinkdb_command(lambda: r.table_create("citations").run())
     run_rethinkdb_command(lambda: r.table_create("notes").run())
     run_rethinkdb_command(lambda: r.table_create("templates").run())
+    run_rethinkdb_command(lambda: r.table_create("state").run())
     run_rethinkdb_command(lambda: r.table_create("project2datadir").run())
     run_rethinkdb_command(lambda: r.table_create("project2datafile").run())
     run_rethinkdb_command(lambda: r.table_create("project2processes").run())

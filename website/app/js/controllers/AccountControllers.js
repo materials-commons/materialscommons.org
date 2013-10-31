@@ -19,7 +19,8 @@ function LoginController($scope, $location, User, alertService, mcapi) {
     }
 }
 
-function LogOutController($scope, $rootScope, $location, $cookieStore, User) {
+function LogOutController($rootScope, $location, $cookieStore, User, Stater) {
+    Stater.clear();
     $rootScope.email_address = '';
     User.setAuthenticated(false, '', '');
     $location.path('/home');

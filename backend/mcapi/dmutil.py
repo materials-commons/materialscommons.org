@@ -47,6 +47,8 @@ def get_single_from_table(table_name, item_id):
     rr = r.table(table_name).get(item_id)
     rr = add_pluck_when_fields(rr)
     item = rr.run(g.conn, time_format='raw')
+    if not item:
+        return error.bad_request("Unknown id %s for table %s" %(item_id, table_name))
     return json_as_format_arg(item)
 
 def entry_exists(table_name, entry_id):

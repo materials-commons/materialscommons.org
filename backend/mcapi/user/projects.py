@@ -10,7 +10,7 @@ from .. import access
 from ..import dmutil
 
 @app.route('/projects', methods=['GET'])
-@apikey
+@apikey(shared=True)
 @jsonp
 def get_all_projects():
     user = access.get_user()
@@ -26,8 +26,7 @@ def get_all_datafiles_for_project(project_id):
     pass
 
 @app.route('/projects/<project_id>/datadirs')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def get_datadirs_for_project(project_id):
     user = access.get_user()
@@ -40,8 +39,7 @@ def get_datadirs_for_project(project_id):
     return args.json_as_format_arg([])
 
 @app.route('/projects/<project_id>/datadirs/tree')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def get_datadirs_as_tree_for_project(project_id):
     user = access.get_user()

@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp, apigroup
+from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request, jsonify
 import rethinkdb as r
 from ..utils import set_dates
@@ -9,8 +9,7 @@ from .. import dmutil
 from .. import access
 
 @app.route('/reviews')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def get_reviews():
     user = access.get_user()
@@ -18,8 +17,7 @@ def get_reviews():
     return args.json_as_format_arg(selection)
 
 @app.route('/reviews/requested')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def get_reviews_requested():
     user = access.get_user()
@@ -46,8 +44,7 @@ def add_review():
     return dmutil.insert_entry('reviews', review)
 
 @app.route('/datafile/reviews/<path:datafileid>')
-@apikey
-@apigroup
+@apikey(shared=True)
 @jsonp
 def get_reviews_for_datafileid(datafileid):
     user = access.get_user()

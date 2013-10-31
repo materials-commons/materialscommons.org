@@ -1,6 +1,6 @@
 var app = angular.module('materialscommons',
-    ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid','Provenance']);
+    ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'Provenance']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -49,7 +49,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         //when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
         when('/datagroups/data/:id', {templateUrl: 'partials/datagroups/datareport.html', controller: DataDirReportController}).
         //when('/datagroups',
-       // {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
+        // {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
         //when('/datagroupgrid', {templateUrl: 'partials/thumbnail.html', controller: DataGroupGridController}).
 
 
@@ -82,7 +82,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         when('/upload/directory', {templateUrl: 'partials/updownload/upload-directory.html', controller: UploadDirectoryController}).
         when('/updownload/queue', {templateUrl: 'partials/updownload/udqueue.html', controller: UpDownLoadQueueController}).
         /*
-        ** Conditions
+         ** Conditions
          */
         //when('/conditions/template/create', {templateUrl: 'partials/conditions/create-condition-template.html', controller: CreateConditionControllers}).
         when('/conditions/template/list', {templateUrl: 'partials/conditions/list-condition-template.html', controller: ListConditionControllers}).
