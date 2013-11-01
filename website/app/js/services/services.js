@@ -354,8 +354,22 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
             });
 
             if (nodeToAddTo) {
-                var n = self.tree.parse(child);
-                nodeToAddTo.addChild(n);
+                var stepname = child.step;
+                var stepAlreadyExists = false;
+                /*
+                 * Only add children that don't exist.
+                 */
+                if ('children' in nodeToAddTo.model) {
+                    nodeToAddTo.model.children.forEach(function (child) {
+                        if (stepname == child.step) {
+                            stepAlreadyExists = true;
+                        }
+                    })
+                }
+                if (!stepAlreadyExists) {
+                    var n = self.tree.parse(child);
+                    nodeToAddTo.addChild(n);
+                }
             }
         },
 
@@ -363,10 +377,10 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
             return self.current_step;
         },
 
-        fireNextStep: function () {
+        fireStepAfter: function (step) {
             var saw = false;
             self.root.walk({strategy: 'pre'}, function (node) {
-                if (node.model.step == self.current_step) {
+                if (node.model.step == step) {
                     saw = true;
                 } else if (saw) {
                     pubsub.send('wizard_next_step', node.model.step);
@@ -376,6 +390,10 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
 
                 return true;
             })
+        },
+
+        fireNextStep: function () {
+            this.fireStepAfter(self.current_step);
         },
 
         isAfterStep: function (step, stepAfter) {
@@ -394,8 +412,8 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
             return isAfter;
         },
 
-        isAfterCurrentStep: function(stepAfter) {
-            return self.isAfterStep(self.current_step, stepAfter);
+        isAfterCurrentStep: function (stepAfter) {
+            return this.isAfterStep(self.current_step, stepAfter);
         },
 
         fireStep: function (step) {

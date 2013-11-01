@@ -177,9 +177,11 @@ function UploadWizardProcessStepController($scope, wizard, watcher, mcapi, State
             var s = {step: condition};
             wizard.addStep('nav_choose_inputs', s);
         });
+        wizard.addStep('nav_choose_inputs', {step:'nav_input_files'});
         $scope.state.attributes.process = $scope.process;
         Stater.persist($scope.state);
-        wizard.fireNextStep();
+        wizard.fireStepAfter('nav_choose_inputs');
+        console.log(wizard.currentStep());
     }
 }
 

@@ -156,11 +156,11 @@
         <div class="span10 offset1">
             <div class="btn-group">
                 <button ng-repeat="condition in state.attributes.process.required_conditions" class="btn"
-                        ng-class="{'btn-primary':isInputsCurrentStep(condition)}"
-                        ng-click="setInputsCurrentStep(condition)">{{condition}}
+                        ng-class="{'btn-primary':isCurrentStep(condition)}"
+                        ng-click="setCurrentStep(condition)">{{condition}}
                 </button>
-                <button class="btn" ng-class="{'btn-primary':isInputsCurrentStep('nav_input_files')}"
-                        ng-click="setInputsCurrentStep('nav_input_files')">Files
+                <button class="btn" ng-class="{'btn-primary':isCurrentStep('nav_input_files')}"
+                        ng-click="setCurrentStep('nav_input_files')">Files
                 </button>
             </div>
         </div>
@@ -218,11 +218,11 @@
     <div class="row-fluid">
         <div class="span10 offset1">
             <div class="btn-group">
-                <button class="btn" ng-class="{'btn-primary':isOutputsCurrentStep('nav_output_conditions')}"
-                        ng-click="setOutputsCurrentStep('nav_output_conditions')">Conditions
+                <button class="btn" ng-class="{'btn-primary':isCurrentStep('nav_output_conditions')}"
+                        ng-click="setCurrentStep('nav_output_conditions')">Conditions
                 </button>
                 <button class="btn" ng-class="{'btn-primary':isOutputsCurrentStep('nav_output_files')}"
-                        ng-click="setOutputsCurrentStep('nav_output_files')">Files
+                        ng-click="setCurrentStep('nav_output_files')">Files
                 </button>
             </div>
         </div>

@@ -16,6 +16,7 @@ stateServices.
         }
 
         S.save = function (state) {
+            //console.dir(state);
             S.state = state;
         }
 
@@ -24,6 +25,7 @@ stateServices.
         }
 
         S.persist = function (state) {
+            //console.dir(state);
             S.state = state;
             if ('id' in S.state) {
                 mcapi('/stater/%', S.state.id).put({attributes: S.state.attributes});
