@@ -30,26 +30,31 @@
 
     <div class="row-fluid">
         <div ng-show="seeReviews==true" id="review-section" class="row-fluid">
+            <div ng-controller="CreateReviewController">
 
-            <div class="span7">
+                <div class="span7">
                 <div class="well">
                     <h4>Reviews Scheduled</h4>
 
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                         <thead>
                         <tr>
-                        <th>By</th>
-                        <th>Note</th>
-                        <th>Marked On</th>
-                        <th>Finished?</th>
+                        <th>Requested by</th>
+                        <th>Requested To </th>
+                        <th>Message</th>
+                        <th>Created on</th>
+                        <th>Status</th>
+                        <th>Mark as Done</th>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="review in scheduledReviews" style="cursor:pointer">
+                        <tr ng-repeat="review in all_reviews" style="cursor:pointer">
                             <td>{{ review.owner }}</td>
+                            <td>{{ review.who }}</td>
                             <td>{{ review.note }}</td>
                             <td>{{ review.marked_on | toDateString }}</td>
+                            <td>{{review.status}}</td>
                             <td ng-show="signed_in_user==review.owner">
-                                <input type="checkbox" ng-model="review.done" ng-click="reviewStatusChanged($index)">
+                                <button ng-click="reviewStatusChanged($index)" ng-model="review.done">Done</button>
                             </td>
                             <td ng-show="signed_in_user!=review.owner">
                                 Not Authorized
@@ -75,9 +80,10 @@
                 </div>
 
             </div>
+        </div>
 
 
-            <div class="span5">
+        <div class="span5">
                 <div class="well">
                     <h4>Create/Edit Tags</h4>
                  <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">

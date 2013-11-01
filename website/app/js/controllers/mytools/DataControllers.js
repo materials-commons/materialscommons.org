@@ -1,4 +1,4 @@
-function DataEditController($scope, $routeParams, $window, mcapi, User, alertService) {
+function DataEditController($scope, $routeParams, $window, mcapi, alertService) {
     $scope.count = 0;
     $scope.grid_options = [];
 
@@ -18,14 +18,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
             alertService.prepForBroadcast(data.error);
         }).jsonp();
 
-    $scope.signed_in_user = User.u();
-    $scope.review_note = "";
-    $scope.marked_for_review = false;
-    $scope.reviewId = null;
-    $scope.predicate = 'name';
-    $scope.reverse = false;
-    $scope.schedule_for_self = false;
-
     $scope.tagchoices = new Array();
     $scope.originalTags = [];
     mcapi('/tags')
@@ -34,20 +26,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
                 $scope.tagchoices.push(item.id);
                 $scope.originalTags.push(item.id);
             })
-        }).jsonp();
-
-    mcapi('/datafile/reviews/%', $routeParams.id)
-        .success(function (data) {
-            $scope.scheduledReviews = _.filter(data, function (item) {
-                if (!item.done) {
-                    return item;
-                }
-            });
-        }).jsonp();
-
-    mcapi('/selected_users')
-        .success(function (data) {
-            $scope.users = data;
         }).jsonp();
 
     $scope.removeTag = function (index) {
@@ -94,43 +72,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
         });
     }
 
-    $scope.addReview = function () {
-        var review = {};
-        review.note = $scope.review_note;
-        review.type = "data";
-        if ($scope.schedule_for_self) {
-            review.owner = User.u();
-        }
-        else {
-            review.owner = $scope.user_for_review;
-        }
-        review.item_name = $scope.doc.name;
-        review.item_id = $scope.doc.id;
-        review.who = $scope.doc.owner;
-        review.done = false;
-        mcapi('/review')
-            .success(function () {
-                $scope.msg = "Review/Followup has been added"
-                alertService.prepForBroadcast($scope.msg);
-                mcapi('/datafile/reviews/%', $routeParams.id)
-                    .success(function (data) {
-                        $scope.scheduledReviews = _.filter(data, function (item) {
-                            if (!item.done) {
-                                return item;
-                            }
-                        });
-                        $scope.user_for_review = "";
-                    }).jsonp();
-            }).post(review);
-        $scope.schedule_for_self = false;
-    }
-
-    $scope.addReviewForOther = function () {
-        $scope.review_note = $scope.review_note_other;
-        $scope.review_note_other = "";
-        $scope.addReview();
-    }
-
     $scope.cancel = function () {
         $window.history.back();
     }
@@ -155,21 +96,6 @@ function DataEditController($scope, $routeParams, $window, mcapi, User, alertSer
     }
 
 
-    $scope.addReviewNoteKeypressCallback = function (event) {
-        $scope.schedule_for_self = true;
-        $scope.review_note = $scope.review_note_self;
-        $scope.review_note_self = "";
-        $scope.addReview();
-    }
-
-    $scope.reviewStatusChanged = function (index) {
-        mcapi('/review/%/mark/%', $scope.scheduledReviews[index].id,
-            $scope.scheduledReviews[index].done)
-            .success(function () {
-                $scope.msg = "Review Status has been changed"
-                alertService.prepForBroadcast($scope.msg);
-            }).put();
-    }
 }
 
 function MyDataController($scope, mcapi, $location) {
