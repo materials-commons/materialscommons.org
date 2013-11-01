@@ -334,16 +334,85 @@ materialsCommonsServices.factory('formatData', function () {
     }
 });
 
-materialsCommonsServices.factory('wizardSteps', function () {
-    var currentStep = {};
+materialsCommonsServices.factory('wizard', function (pubsub) {
+    var self = this;
 
     return {
-        setCurrent: function (wizardName, stepName) {
-            currentStep[wizardName] = stepName;
+
+        setSteps: function (steps) {
+            self.tree = new TreeModel();
+            self.root = self.tree.parse(steps);
+            self.current_step = self.root.model.step;
         },
 
-        getCurrent: function (wizardName) {
-            return currentStep[wizardName];
+        addStep: function (toStep, child) {
+            var nodeToAddTo = self.root.first(function (node) {
+                if (node.model.step == toStep) {
+                    return true;
+                }
+                return false;
+            });
+
+            if (nodeToAddTo) {
+                var n = self.tree.parse(child);
+                nodeToAddTo.addChild(n);
+            }
+        },
+
+        currentStep: function () {
+            return self.current_step;
+        },
+
+        fireNextStep: function () {
+            var saw = false;
+            self.root.walk({strategy: 'pre'}, function (node) {
+                if (node.model.step == self.current_step) {
+                    saw = true;
+                } else if (saw) {
+                    pubsub.send('wizard_next_step', node.model.step);
+                    self.current_step = node.model.step;
+                    return false;
+                }
+
+                return true;
+            })
+        },
+
+        isAfterStep: function (step, stepAfter) {
+            var sawStep = false;
+            var isAfter = false;
+            self.root.walk({strategy: 'pre'}, function (node) {
+                if (node.model.step == step) {
+                    sawStep = true;
+                } else if (sawStep) {
+                    if (node.model.step == stepAfter) {
+                        isAfter = true;
+                    }
+                }
+            });
+
+            return isAfter;
+        },
+
+        isAfterCurrentStep: function(stepAfter) {
+            return self.isAfterStep(self.current_step, stepAfter);
+        },
+
+        fireStep: function (step) {
+            self.current_step = step;
+            pubsub.send('wizard_next_step', step);
+        },
+
+        channel: function () {
+            return 'wizard_next_step';
+        },
+
+        waitOn: function (scope, step, f) {
+            pubsub.waitOn(scope, 'wizard_next_step', function (currentStep) {
+                if (currentStep == step) {
+                    f();
+                }
+            });
         }
     }
 });
