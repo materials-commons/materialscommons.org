@@ -24,9 +24,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="condition in input_conditions">
-                    <td>{{ condition.ctype }}</td>
-                    <td>{{ condition.name }}</td>
+                <tr ng-repeat="condition in state.attributes.input_conditions">
+                    <td>{{ condition.template_name }}</td>
+                    <td>{{ condition.template_type }}</td>
                 </tr>
                 <tr ng-repeat="file in input_files">
                     <td>{{ file.type }}</td>
