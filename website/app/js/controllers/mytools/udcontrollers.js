@@ -54,6 +54,10 @@ function UploadFileController($scope, pubsub, wizard, mcapi, User, toUploadForm,
         return wizard.currentStep() == step;
     }
 
+    $scope.isSubStepOf = function (step) {
+        return wizard.isSubStepOf(step, wizard.currentStep());
+    }
+
     $scope.input_files = [];
     pubsub.waitOn($scope, "add_input_file", function (file) {
         var file_to_add = {};
@@ -177,11 +181,10 @@ function UploadWizardProcessStepController($scope, wizard, watcher, mcapi, State
             var s = {step: condition};
             wizard.addStep('nav_choose_inputs', s);
         });
-        wizard.addStep('nav_choose_inputs', {step:'nav_input_files'});
+        wizard.addStep('nav_choose_inputs', {step: 'nav_input_files'});
         $scope.state.attributes.process = $scope.process;
         Stater.persist($scope.state);
         wizard.fireStepAfter('nav_choose_inputs');
-        console.log(wizard.currentStep());
     }
 }
 
