@@ -24,8 +24,7 @@ def get_udqueue():
 @crossdomain(origin='*')
 def upload_file():
     user = access.get_user()
-    process_id = request.form['process_id']
-    project_id = request.form['project_id']
+    state_id = request.form['state_id']
     mkdirp('/tmp/uploads')
     tdir = tempfile.mkdtemp(dir='/tmp/uploads')
     for key in request.files.keys():
@@ -35,7 +34,7 @@ def upload_file():
         mkdirp(dir)
         filepath = os.path.join(dir, file.filename)
         file.save(filepath)
-    chain(load_data_dir.si(user, tdir, project_id, process_id)\
+    chain(load_data_dir.si(user, tdir, state_id)\
           | import_data_dir_to_repo.si(tdir))()
     return jsonify({'success': True})
 
