@@ -1,12 +1,13 @@
-function CreateConditionControllers($scope, mcapi, formatData, alertService, $location) {
+function CreateConditionControllers($scope, mcapi, formatData, alertService,User, $location) {
     $scope.properties = [];
     $scope.add_property = function () {
         $scope.properties.push($scope.doc.new_property);
     }
-
+    $scope.owner = User.u();
     $scope.create_template = function () {
         var temp = {};
         $scope.doc.properties = formatData.reformat_conditions($scope.properties);
+        $scope.doc.owner = $scope.owner;
         temp = $scope.doc;
         mcapi('/templates/new')
             .success(function (data) {

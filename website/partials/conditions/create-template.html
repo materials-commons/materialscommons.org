@@ -4,20 +4,22 @@
         <div class="row-fluid">
             <div class="span6">
                 <div class="well">
-                    Template Type: <br>
+                    Create a template for : <br>
                     <select ng-model="doc.template_type" ng-click="change_properties(doc.template_type)"
                             ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
                             ng-multiple="false">
                         <option value=''></option>
-                        <option value='process'>Process</option>
-                        <option value='condition'>Condition</option>
+                        <option value='process'>process</option>
+                        <option value='condition'>material </option>
                     </select><br><br>
                     Template Name:<br>
                     <input ng-model="doc.template_name" type="text"><br>
                     Owner: <br>
-                    <input ng-model="doc.owner" type="text"><br>
+                    <input ng-model="owner" type="text" readonly><br>
                     Template Description:<br>
                     <textarea class="input-xlarge" ng-model="doc.template_description"/><br>
+
+
 
                     <p ng-show="doc.template_type=='condition'">
                         <b>Add your own properties</b><br>

@@ -208,7 +208,7 @@ function SubPageController($scope, $routeParams) {
                 break;
 
             case "create-template-tab":
-                $scope.template = "partials/conditions/create-condition-template.html";
+                $scope.template = "partials/conditions/create-template.html";
                 $('#conditions-tab').addClass("active");
                 break;
 
