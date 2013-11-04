@@ -3,8 +3,8 @@
 
 
     Start Chat : <input type="checkbox" ng-model="chat">
-    See Reviews & Tags: <input type="checkbox" ng-model="seeReviews">
-
+    See Reviews: <input type="checkbox" ng-model="seeReviews">
+    See Tags: <input type="checkbox" ng-model="seeTags">
     <div ng-controller="DataChatController">
 
         <div class="row-fluid" ng-show="chat==true">
@@ -32,7 +32,6 @@
         <div ng-show="seeReviews==true" id="review-section" class="row-fluid">
             <div ng-controller="CreateReviewController">
 
-                <div class="span7">
                 <div class="well">
                     <h4>Reviews Scheduled</h4>
 
@@ -54,7 +53,7 @@
                             <td>{{ review.marked_on | toDateString }}</td>
                             <td>{{review.status}}</td>
                             <td ng-show="signed_in_user==review.owner">
-                                <button ng-click="reviewStatusChanged($index)" ng-model="review.done">Done</button>
+                                <button ng-click="reviewStatusChanged($index)" >Done</button>
                             </td>
                             <td ng-show="signed_in_user!=review.owner">
                                 Not Authorized
@@ -76,41 +75,35 @@
                         <option ng-repeat="user in users">{{ user }}</option>
                     </select>
                     <button style="position:absolute" ng-click="addReviewForOther()">Request Review</button>
-
-                </div>
-
             </div>
         </div>
+    </div>
 
-
-        <div class="span5">
-                <div class="well">
-                    <h4>Create/Edit Tags</h4>
+    </div>
+    <div class="row-fluid">
+            <div ng-show="seeTags" id="tags-section" class="row-fluid">
+            <div class="well">
+                <h4>Create/Edit Tags</h4>
                  <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
                     <button type="button" class="close" ng-click="removeTag($index);">&times;</button>{{ tag }}
                 </span>
 
-                    <form class="form-horizontal">
-                        <input ui-keypress="{13: 'addTagKeypressCallback($event)'}" ng-model="new_tag"
-                               placeholder="Tag...">
-                        <label>Tags to add</label>
-                        <select ng-model="tag_to_add"
-                                ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
-                                ng-multiple="false">
-                            <option></option>
-                            <option ng-repeat="tag in tagchoices">{{ tag }}</option>
-                        </select>
-                        <button ng-click="addTag()">Add Tag</button>
-                    </form>
-                </div>
-            </div>
+                <form class="form-horizontal">
+                    <input ui-keypress="{13: 'addTagKeypressCallback($event)'}" ng-model="new_tag"
+                           placeholder="Tag...">
+                    <label>Tags to add</label>
+                    <select ng-model="tag_to_add"
+                            ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
+                            ng-multiple="false">
+                        <option></option>
+                        <option ng-repeat="tag in tagchoices">{{ tag }}</option>
+                    </select>
+                    <button ng-click="addTag()">Add Tag</button>
+                </form>
         </div>
-
     </div>
 
-
     <hr/>
-
     <div class="row-fluid">
         <div class="span6">
             <div class="well">
