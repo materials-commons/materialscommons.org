@@ -380,7 +380,7 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
             var stepname = child.step;
             var stepAlreadyExists = false;
 
-            nodeToAddTo.model.children.forEach(function (child) {
+            node.children.forEach(function (child) {
                 if (stepname == child.step) {
                     stepAlreadyExists = true;
                 }
@@ -388,7 +388,7 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
 
             if (!stepAlreadyExists) {
                 var n = self.tree.parse(child);
-                nodeToAddTo.addChild(n);
+                node.addChild(n);
             }
         },
 
@@ -458,15 +458,14 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
         isSubStepOf: function (step, substep) {
             var node = this._getNode(step);
             if (node) {
-                var foundMatch = _.find(node.children, function (child) {
-                    if (child.step == substep) {
-                        return true;
+                var foundMatch = false;
+                node.children.forEach(function(child) {
+                    if (child.model.step == substep) {
+                        foundMatch = true;
                     }
-                })
+                });
 
-                if (foundMatch) {
-                    return true;
-                }
+                return foundMatch;
             }
 
             return false;
