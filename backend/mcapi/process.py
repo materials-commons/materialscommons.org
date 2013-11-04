@@ -1,10 +1,9 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request, g
+from flask import request
 import rethinkdb as r
 import error
 import dmutil
-import json
 import access
 
 @app.route('/processes/<process_id>', methods=['GET'])
@@ -44,49 +43,3 @@ def create_process():
     p['citations'] = dmutil.get_optional('citations', j, [])
     p['status'] = dmutil.get_optional('status', j)
     return dmutil.insert_entry('processes', p)
-
-@app.route('/processes/from_template', methods=['POST'])
-@apikey
-@crossdomain(origin='*')
-def create_process_from_template():
-    p = dict()
-    j = request.get_json()
-    p['template'] = dmutil.get_required('id', j)
-    project_id = dmutil.get_required('project', j)
-    p['project'] = project_id
-    if not dmutil.item_exists('projects', project_id):
-        return error.not_acceptable("Unknown project id: %s" % (project_id))
-    m = j['model']
-    p['name'] = dmutil.get_required_prop('name', m)
-    p['birthtime'] = r.now()
-    p['mtime'] = p['birthtime']
-    p['machine'] = dmutil.get_optional_prop('machine', m)
-    p['process_type'] = dmutil.get_required_prop('process_type', m)
-    p['description'] = dmutil.get_required_prop('description', m)
-    p['version'] = dmutil.get_optional_prop('version', m)
-    p['notes'] = dmutil.get_optional_prop('notes', m, [])
-    p['input_conditions'] = dmutil.get_optional_prop('input_conditions', m, [])
-    p['input_files'] = dmutil.get_optional_prop('input_files', m, [])
-    p['output_conditions'] = dmutil.get_optional_prop('output_conditions', m, [])
-    p['output_files'] = dmutil.get_optional_prop('output_files', m, [])
-    p['runs'] = dmutil.get_optional_prop('runs', m, [])
-    p['citations'] = dmutil.get_optional_prop('citations', m, [])
-    p['status'] = dmutil.get_optional_prop('status', m)
-    process_id = dmutil.insert_entry_id('processes', p)
-    dmutil.insert_join_entry('project2processes',\
-                           {'project_id': project_id, 'process_id': process_id})
-    return json.dumps({'id': process_id})
-
-@app.route('/processes/<process_id>/update', methods=['PUT'])
-@apikey
-@crossdomain(origin='*')
-def update_process(process_id):
-    process = r.table('processes').get(process_id).run(g.conn)
-    if process is None:
-        return error.bad_request("No such process: " + process_id)
-    j = request.get_json()
-    for id in j['input_files']:
-        process['input_files'].append(id)
-    input_files = process['input_files']
-    r.table('processes').get(process_id).update({'input_files':input_files}).run(g.conn)
-    return json.dumps({"success": True})
