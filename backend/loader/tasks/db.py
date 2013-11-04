@@ -2,6 +2,8 @@ from celery import Celery
 import rethinkdb as r
 from ..model.datadir import DataDir
 from ..model.datafile import DataFile
+from mcapi import dmutil
+from mcapi import mcexceptions
 from os.path import basename, dirname, splitext, getsize, relpath
 import os
 from ..utils import mkdirp, runtika
@@ -10,24 +12,30 @@ from PIL import Image
 import json
 from distutils import dir_util
 import shutil
+import traceback
 
 celery = Celery('db', broker='amqp://guest@localhost//')
 
 @celery.task
-def load_data_dirs(user, dirs, project_id, process_id):
+def load_data_dirs(user, dirs, state_id):
     try:
         r.connect('localhost', 28015, db='materialscommons').repl()
         for directory in dirs:
-            load_directory(user, directory, project_id, process_id)
+            load_directory(user, directory, state_id)
     except Exception as exc:
         raise load_data_dirs.retry(exc=exc)
 
 @celery.task
-def load_data_dir(user, directory, project_id, process_id):
+def load_data_dir(user, directory, state_id):
     try:
         r.connect('localhost', 28015, db='materialscommons').repl()
-        load_directory(user, directory, project_id, process_id)
+        process_id = load_provenance_from_state(state_id)
+        load_directory(user, directory, process_id)
+    except mcexceptions.RequiredAttributeException as rae:
+        traceback.print_exc()
+        print "Missing attribute: %s" % (rae.attr)
     except Exception as exc:
+        traceback.print_exc()
         raise load_data_dir.retry(exc=exc)
 
 @celery.task
@@ -53,7 +61,77 @@ def copy_data_over(dirpath):
     print "Removing dir: %s" % (dirpath)
     shutil.rmtree(dirpath)
 
-def load_directory(user, directory, project_id, process_id):
+def load_provenance_from_state(state_id):
+    state = r.table('state').get(state_id).run()
+    attributes = state['attributes']
+    user = state['owner']
+    project_id = attributes['project']['id']
+    process_id = create_process_from_template(attributes['process'], project_id)
+    if 'input_files' in attributes:
+        add_input_files_to_process(process_id, attributes['input_files'])
+    input_conditions = attributes['input_conditions']
+    output_conditions = attributes['output_conditions']
+    create_conditions_from_templates(process_id, user, input_conditions, output_conditions)
+    return process_id
+
+def create_condition_from_template(process_id, user, j):
+    c = dict()
+    m = j['model']
+    type_of_condition = dmutil.get_required('condition_type', j)
+    c['owner'] = user
+    c['template'] = dmutil.get_required('id', j)
+    c['name'] = dmutil.get_required('template_name', j)
+    for attr in m:
+        c[attr['name']] = attr['value']
+    rv = r.table('conditions').insert(c).run()
+    c_id = rv['generated_keys'][0]
+    new_conditions = r.table('processes').get(process_id)[type_of_condition].append(c_id).run()
+    r.table('processes').get(process_id).update({type_of_condition:new_conditions}).run()
+    return c_id
+
+def create_conditions_from_templates(process_id, user, input_conditions, output_conditions):
+    for condition_name in input_conditions:
+        condition = input_conditions[condition_name]
+        condition['condition_type'] = 'input_conditions'
+        c_id = create_condition_from_template(process_id, user, condition)
+    for condition in output_conditions:
+        condition = output_conditions[condition_name]
+        condition['condition_type'] = 'output_conditions'
+        c_id = create_condition_from_template(process_id, user, condition)
+
+def create_process_from_template(j, project_id):
+    p = dict()
+    p['template'] = dmutil.get_required('id', j)
+    p['project'] = project_id
+    m = j['model']
+    p['name'] = dmutil.get_required_prop('name', m)
+    p['birthtime'] = r.now()
+    p['mtime'] = p['birthtime']
+    p['machine'] = dmutil.get_optional_prop('machine', m)
+    p['process_type'] = dmutil.get_required_prop('process_type', m)
+    p['description'] = dmutil.get_required_prop('description', m)
+    p['version'] = dmutil.get_optional_prop('version', m)
+    p['notes'] = dmutil.get_optional_prop('notes', m, [])
+    p['input_conditions'] = dmutil.get_optional_prop('input_conditions', m, [])
+    p['input_files'] = dmutil.get_optional_prop('input_files', m, [])
+    p['output_conditions'] = dmutil.get_optional_prop('output_conditions', m, [])
+    p['output_files'] = dmutil.get_optional_prop('output_files', m, [])
+    p['runs'] = dmutil.get_optional_prop('runs', m, [])
+    p['citations'] = dmutil.get_optional_prop('citations', m, [])
+    p['status'] = dmutil.get_optional_prop('status', m)
+    rv = r.table('processes').insert(p).run()
+    process_id = rv['generated_keys'][0]
+    r.table('project2processes').insert({'project_id': project_id, 'process_id': process_id}).run()
+    return process_id
+
+def add_input_files_to_process(process_id, input_files):
+    process = r.table('processes').get(process_id).run()
+    for id in input_files:
+        process['input_files'].append(id)
+    ifiles = process['input_files']
+    r.table('processes').get(process_id).update({'input_files':ifiles}).run()
+
+def load_directory(user, directory, process_id):
     parents = {}
     base = basename(directory)
     df_ids = []
