@@ -1,7 +1,7 @@
 function DataGroupGridController($scope, mcapi, Thumbnail){
 
     $scope.layout = 'grid';
-    mcapi('/%/datadirs')
+    mcapi('/datadirs')
         .success(function (data) {
             $scope.datagroups = data;
         }).jsonp();

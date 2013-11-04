@@ -50,19 +50,14 @@ def add_review():
         review_datafile_id =  dmutil.insert_entry('review2datafile', params)
         return review['item_id']
     
-@app.route('/review/<reviewid>/mark/%', methods=['PUT'])
+@app.route('/review/<reviewid>/mark/<markas>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def mark_review(reviewid, markas):
-    print "what is markas"
-    print markas
     user = access.get_user()
-    if markas == 'true':
-        #r.table('reviews').get(reviewid).update({'status': 'Finished'}).run(g.conn)
-        return jsonify({'id': reviewid})
-    else:
-        return error.bad_request("How to mark review improperly specified: " + markas)
-
+    r.table('reviews').get(reviewid).update({'status': markas}).run(g.conn)
+    return jsonify({'id': reviewid})        
+   
 #Special case:  where we return objects instead of id's    
 @app.route('/datafile/<datafile_id>/reviews')
 @apikey(shared=True)
