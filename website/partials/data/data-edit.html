@@ -1,7 +1,6 @@
 <div class="span12 offset1">
     <h3>Edit Data</h3>
 
-
     Start Chat : <input type="checkbox" ng-model="chat">
     See Reviews: <input type="checkbox" ng-model="seeReviews">
     See Tags: <input type="checkbox" ng-model="seeTags">
@@ -47,19 +46,18 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="review in all_reviews" style="cursor:pointer">
-                            <td>{{ review.owner }}</td>
-                            <td>{{ review.who }}</td>
+                            <td>{{ review.requested_by }}</td>
+                            <td>{{ review.requested_to }}</td>
                             <td>{{ review.note }}</td>
                             <td>{{ review.marked_on | toDateString }}</td>
                             <td>{{review.status}}</td>
-                            <td ng-show="signed_in_user==review.owner">
+                            <td ng-show="review.requested_to==review.requested_by">
                                 <input type="checkbox" ng-model="review.status" ng-click="reviewStatusChanged($index)" ng-true-value="Finished" ng-false-value="InProcess">
                             </td>
 
-                            <td ng-show="signed_in_user!=review.owner">
+                            <td ng-show="review.requested_to!=review.requested_by">
                                 Not Authorized
                             </td>
-
                         </tr>
                         </tbody>
                     </table>

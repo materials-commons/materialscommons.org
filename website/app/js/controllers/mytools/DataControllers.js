@@ -12,6 +12,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, alertService) 
     mcapi('/datafile/%', $routeParams.id)
         .success(function (data) {
             $scope.doc = data;
+            console.dir($scope.doc)
             $scope.setupAccessToUserFile();
         })
         .error(function (data) {

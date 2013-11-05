@@ -24,15 +24,15 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
         review.note = $scope.review_note;
         review.item_type = "data";
         review.status = "InProcess" ;
+        review.requested_by = User.u();
         if ($scope.schedule_for_self) {
-            review.owner = User.u();
+            review.requested_to = User.u();
         }
         else {
-            review.owner = $scope.user_for_review;
+            review.requested_to = $scope.user_for_review;
         }
         review.item_name = $scope.doc.name;
         review.item_id = $scope.doc.id;
-        review.who = $scope.doc.owner;
         mcapi('/review')
             .success(function (data) {
                 $scope.all_reviews = [];
@@ -73,19 +73,19 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
 }
 
 function ReviewListController($scope, $location, mcapi) {
-    mcapi('/reviews')
+    mcapi('/reviews/requested')
         .success(function (data) {
-            $scope.reviews = _.filter(data, function (item) {
-                if (!item.done) {
+            $scope.reviewsRequested = _.filter(data, function (item) {
+                if (item.status != "Finished") {
                     return item;
                 }
             });
         }).jsonp();
 
-    mcapi('/reviews/requested')
+    mcapi('/reviews/to_conduct')
         .success(function (data) {
-            $scope.reviewsRequested = _.filter(data, function (item) {
-                if (!item.done) {
+            $scope.reviewstoConduct = _.filter(data, function (item) {
+                if (item.status != "Finished") {
                     return item;
                 }
             });

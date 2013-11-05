@@ -186,17 +186,17 @@ function SubPageController($scope, $routeParams) {
 
             case "create-usergroup-tab":
                 $scope.template = "partials/usergroups/usergroup-create.html";
-                $('#conditions-tab').addClass("active");
+                $('#usergroups-tab').addClass("active");
                 break;
 
             case "my-usergoups-tab":
                 $scope.template = "partials/usergroups/my_usergroups.html";
-                $('#conditions-tab').addClass("active");
+                $('#usergroups-tab').addClass("active");
                 break;
 
             case "all-usergoups-tab":
                 $scope.template = "partials/usergroups/usergroups_list_all.html";
-                $('#reviews-tab').addClass("active");
+                $('#usergroups-tab').addClass("active");
                 break;
 
             case "upload-file-tab":
