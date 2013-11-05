@@ -34,49 +34,6 @@ function HelpController($scope) {
     $scope.pageDescription = "Help";
 }
 
-function ReviewListController($scope, $location, mcapi) {
-    mcapi('/reviews')
-        .success(function (data) {
-            $scope.reviews = _.filter(data, function (item) {
-                if (!item.done) {
-                    return item;
-                }
-            });
-        }).jsonp();
-
-    mcapi('/reviews/requested')
-        .success(function (data) {
-            $scope.reviewsRequested = _.filter(data, function (item) {
-                if (!item.done) {
-                    return item;
-                }
-            });
-        }).jsonp();
-
-    $scope.startReview = function (id, type) {
-        if (type == "data") {
-            $location.path("/data/edit/" + id);
-        }
-        else {
-        }
-    }
-
-    $scope.removeReview = function (index) {
-        var id = $scope.reviews[index].id;
-        mcapi('/review/%', id)
-            .success(function (data) {
-                $scope.reviews.splice(index, 1);
-            }).delete();
-    }
-
-    $scope.removeRequestedReview = function (index) {
-        var id = $scope.reviewsRequested[index].id;
-        mcapi('/review/%/requested', id)
-            .success(function () {
-                $scope.reviewsRequested.splice(index, 1);
-            }).delete()
-    }
-}
 
 function EventController($scope, alertService) {
     $scope.message = '';
