@@ -34,49 +34,6 @@ function HelpController($scope) {
     $scope.pageDescription = "Help";
 }
 
-function ReviewListController($scope, $location, mcapi) {
-    mcapi('/reviews')
-        .success(function (data) {
-            $scope.reviews = _.filter(data, function (item) {
-                if (!item.done) {
-                    return item;
-                }
-            });
-        }).jsonp();
-
-    mcapi('/reviews/requested')
-        .success(function (data) {
-            $scope.reviewsRequested = _.filter(data, function (item) {
-                if (!item.done) {
-                    return item;
-                }
-            });
-        }).jsonp();
-
-    $scope.startReview = function (id, type) {
-        if (type == "data") {
-            $location.path("/data/edit/" + id);
-        }
-        else {
-        }
-    }
-
-    $scope.removeReview = function (index) {
-        var id = $scope.reviews[index].id;
-        mcapi('/review/%', id)
-            .success(function (data) {
-                $scope.reviews.splice(index, 1);
-            }).delete();
-    }
-
-    $scope.removeRequestedReview = function (index) {
-        var id = $scope.reviewsRequested[index].id;
-        mcapi('/review/%/requested', id)
-            .success(function () {
-                $scope.reviewsRequested.splice(index, 1);
-            }).delete()
-    }
-}
 
 function EventController($scope, alertService) {
     $scope.message = '';
@@ -229,17 +186,17 @@ function SubPageController($scope, $routeParams) {
 
             case "create-usergroup-tab":
                 $scope.template = "partials/usergroups/usergroup-create.html";
-                $('#conditions-tab').addClass("active");
+                $('#usergroups-tab').addClass("active");
                 break;
 
             case "my-usergoups-tab":
                 $scope.template = "partials/usergroups/my_usergroups.html";
-                $('#conditions-tab').addClass("active");
+                $('#usergroups-tab').addClass("active");
                 break;
 
             case "all-usergoups-tab":
                 $scope.template = "partials/usergroups/usergroups_list_all.html";
-                $('#reviews-tab').addClass("active");
+                $('#usergroups-tab').addClass("active");
                 break;
 
             case "upload-file-tab":

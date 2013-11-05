@@ -37,8 +37,6 @@ def add_all_arg_options(rr):
 
 def json_as_format_arg(what):
     if 'format' in request.args:
-        print 'yes'
         return json.dumps(what, indent=4)
     else:
-        print 'nooo'
         return json.dumps(what)

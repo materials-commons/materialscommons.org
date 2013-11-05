@@ -24,15 +24,15 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
         review.note = $scope.review_note;
         review.item_type = "data";
         review.status = "InProcess" ;
+        review.requested_by = User.u();
         if ($scope.schedule_for_self) {
-            review.owner = User.u();
+            review.requested_to = User.u();
         }
         else {
-            review.owner = $scope.user_for_review;
+            review.requested_to = $scope.user_for_review;
         }
         review.item_name = $scope.doc.name;
         review.item_id = $scope.doc.id;
-        review.who = $scope.doc.owner;
         mcapi('/review')
             .success(function (data) {
                 $scope.all_reviews = [];
@@ -70,4 +70,48 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
             }).put();
     }
 
+}
+
+function ReviewListController($scope, $location, mcapi) {
+    mcapi('/reviews/requested')
+        .success(function (data) {
+            $scope.reviewsRequested = _.filter(data, function (item) {
+                if (item.status != "Finished") {
+                    return item;
+                }
+            });
+        }).jsonp();
+
+    mcapi('/reviews/to_conduct')
+        .success(function (data) {
+            $scope.reviewstoConduct = _.filter(data, function (item) {
+                if (item.status != "Finished") {
+                    return item;
+                }
+            });
+        }).jsonp();
+
+    $scope.startReview = function (id, type) {
+        if (type == "data") {
+            $location.path("/data/edit/" + id);
+        }
+        else {
+        }
+    }
+
+    $scope.removeReview = function (index) {
+        var id = $scope.reviews[index].id;
+        mcapi('/review/%', id)
+            .success(function (data) {
+                $scope.reviews.splice(index, 1);
+            }).delete();
+    }
+
+    $scope.removeRequestedReview = function (index) {
+        var id = $scope.reviewsRequested[index].id;
+        mcapi('/review/%/requested', id)
+            .success(function () {
+                $scope.reviewsRequested.splice(index, 1);
+            }).delete()
+    }
 }

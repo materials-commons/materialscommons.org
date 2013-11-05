@@ -57,7 +57,7 @@ def datafile_for_user_by_id(datafileid):
     rr = r.table('datafiles').get(datafileid)
     rr = args.add_pluck_when_fields(rr)
     df = rr.run(g.conn, time_format='raw')
-    access.check(user, df['owner'], df['id'])
+    t = access.check(user, df['owner'], df['id'])
     return args.json_as_format_arg(df)
 
 @app.route('/datafile/ids/<datadir_id>')
