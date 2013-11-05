@@ -6,9 +6,9 @@ from .. import dmutil
 from ..args import json_as_format_arg
 from .. import access
 
-@app.route('/conditions/from_template', methods=['POST'])
-@apikey
-@crossdomain(origin='*')
+#@app.route('/conditions/from_template', methods=['POST'])
+#@apikey
+#@crossdomain(origin='*')
 def create_new_condition_from_template():
     user = access.get_user()
     j = request.get_json()
@@ -30,9 +30,9 @@ def create_condition_from_template(user, j):
     r.table('processes').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
     return c_id
 
-@app.route('/conditions/from_template_list', methods=['POST'])
-@apikey
-@crossdomain(origin='*')
+#@app.route('/conditions/from_template_list', methods=['POST'])
+#@apikey
+#@crossdomain(origin='*')
 def create_new_conditions_from_template_list():
     user = access.get_user()
     j = request.get_json()

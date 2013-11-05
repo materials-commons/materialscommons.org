@@ -334,16 +334,182 @@ materialsCommonsServices.factory('formatData', function () {
     }
 });
 
-materialsCommonsServices.factory('wizardSteps', function () {
-    var currentStep = {};
+/*
+ * The wizard service gives routines to write a wizard. The wizard is represented
+ * as a tree. This means that any step can have substeps, and you substeps can have
+ * substeps, ad nauseum.
+ *
+ * You can only have one wizard active at a time. Though this could be changed, it
+ * was designed this way to facilitate communication of steps across different controllers.
+ */
+materialsCommonsServices.factory('wizard', function (pubsub) {
+    var self = this;
 
     return {
-        setCurrent: function (wizardName, stepName) {
-            currentStep[wizardName] = stepName;
+
+        /*
+         * Set the steps for the Wizard
+         */
+        setSteps: function (steps) {
+            self.tree = new TreeModel();
+            self.root = self.tree.parse(steps);
+            self.current_step = self.root.model.step;
         },
 
-        getCurrent: function (wizardName) {
-            return currentStep[wizardName];
+        /*
+         * Add substeps to an existing step.
+         */
+        addStep: function (toStep, child) {
+            var nodeToAddTo = self.root.first(function (node) {
+                if (node.model.step == toStep) {
+                    return true;
+                }
+                return false;
+            });
+
+            this._addIfNotIn(nodeToAddTo, child);
+        },
+
+        /*
+         * Only add children that don't exist.
+         */
+        _addIfNotIn: function (node, child) {
+            if (!node) {
+                return;
+            }
+            var stepname = child.step;
+            var stepAlreadyExists = false;
+
+            node.children.forEach(function (child) {
+                if (stepname == child.step) {
+                    stepAlreadyExists = true;
+                }
+            });
+
+            if (!stepAlreadyExists) {
+                var n = self.tree.parse(child);
+                node.addChild(n);
+            }
+        },
+
+        /*
+         * Return the current step.
+         */
+        currentStep: function () {
+            return self.current_step;
+        },
+
+        /*
+         * Fire the step after the named step. Set current_step to the step
+         * that was fired.
+         */
+        fireStepAfter: function (step) {
+            var saw = false;
+            self.root.walk({strategy: 'pre'}, function (node) {
+                if (node.model.step == step) {
+                    saw = true;
+                } else if (saw) {
+                    pubsub.send('wizard_next_step', node.model.step);
+                    self.current_step = node.model.step;
+                    return false;
+                }
+
+                return true;
+            })
+        },
+
+        /*
+         * Fires the step after current_step.
+         */
+        fireNextStep: function () {
+            this.fireStepAfter(self.current_step);
+        },
+
+        /*
+         * Check if stepAfter comes after step.
+         */
+        isAfterStep: function (step, stepAfter) {
+            var sawStep = false;
+            var isAfter = false;
+            self.root.walk({strategy: 'pre'}, function (node) {
+                if (node.model.step == step) {
+                    sawStep = true;
+                } else if (sawStep) {
+                    if (node.model.step == stepAfter) {
+                        isAfter = true;
+                    }
+                }
+            });
+
+            return isAfter;
+        },
+
+        /*
+         * Check if stepAfter comes after current_step.
+         */
+        isAfterCurrentStep: function (stepAfter) {
+            return this.isAfterStep(self.current_step, stepAfter);
+        },
+
+        /*
+         * Check if substep is a substep of step. This is done by
+         * checking the children of step, but not checking any deeper.
+         */
+        isSubStepOf: function (step, substep) {
+            var node = this._getNode(step);
+            if (node) {
+                var foundMatch = false;
+                node.children.forEach(function(child) {
+                    if (child.model.step == substep) {
+                        foundMatch = true;
+                    }
+                });
+
+                return foundMatch;
+            }
+
+            return false;
+        },
+
+        /*
+         * Retrieve the specified node.
+         */
+        _getNode: function (step) {
+            var node = self.root.first(function (node) {
+                if (node.model.step == step) {
+                    return true;
+                }
+                return false;
+            });
+
+            return node;
+        },
+
+        /*
+         * Fire the specified step. Set current_step to that step.
+         */
+        fireStep: function (step) {
+            self.current_step = step;
+            pubsub.send(this.channel(), step);
+        },
+
+        /*
+         * Get the pubsub channel the wizard uses.
+         */
+        channel: function () {
+            return 'wizard_next_step';
+        },
+
+        /*
+         * Waits on the wizard pubsub channel for the step identified.
+         * Calls the function when that step is fired.
+         */
+        waitOn: function (scope, step, f) {
+            pubsub.waitOn(scope, this.channel(), function (currentStep) {
+                if (currentStep == step) {
+                    f();
+                }
+            });
         }
     }
 });

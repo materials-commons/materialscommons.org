@@ -1,68 +1,58 @@
 var stateServices = angular.module('stateServices', ['ngResource']);
 
 stateServices.
-    factory('Stater', function (mcapi, $cookieStore, User) {
+    factory('Stater', function (mcapi) {
         var S = {};
-
-        S.newId = function (name, description, f) {
+        S.newId = function (name, description, type, f) {
             mcapi('/stater')
                 .success(function (data) {
-                    var cookie = S._createCookie();
-                    cookie.id = data.id;
-                    $cookieStore.put(S._userStateCookie(), cookie);
-                    f(true, cookie);
+                    S.state = data;
+                    S.state.attributes = {};
+                    f(true, S.state);
                 })
                 .error(function () {
                     f(false);
-                }).post({name: name, description: description});
-        };
+                }).post({name: name, description: description, type: type});
+        }
 
-        S.existingState = function () {
-            var userStateCookie = S._userStateCookie();
-            return $cookieStore.get(userStateCookie);
-        };
-
-        S.store = function (what) {
-            $cookieStore.put(S._userStateCookie(), what);
-        };
+        S.save = function (state) {
+            //console.dir(state);
+            S.state = state;
+        }
 
         S.retrieve = function () {
-            return $cookieStore.get(S._userStateCookie());
-        };
+            return S.state;
+        }
+
+        S.persist = function (state) {
+            S.state = state;
+            if ('id' in S.state) {
+                mcapi('/stater/%', S.state.id).put({attributes: S.state.attributes});
+            }
+        }
+
+        S.retrieveRemote = function (f) {
+            mcapi('/stater')
+                .success(function (data) {
+                    S.state = data;
+                    f(true, data);
+                })
+                .error(function () {
+                    f(false);
+                }).jsonp();
+        }
 
         S.clear = function () {
-            console.log("Calling clear: " + S._userStateCookie());
-            $cookieStore.remove(S._userStateCookie());
-        };
+            S.state = {};
+        }
 
-        S.persist = function () {
-            var cookieVal = $cookieStore.get(S._userStateCookie());
-            if (cookieVal) {
-                mcapi('/stater/%', cookieVal.id)
-                    .success(function () {
-                    })
-                    .error(function () {
-                    }).put({attributes: cookieVal.attributes});
-            }
-        };
+        S.clearAllRemote = function () {
+            mcapi('/stater').delete();
+        }
 
-        S.retrieveRemote = function (id) {
+        S.clearRemote = function () {
+            mcapi('/stater/%', S.state.id).delete();
+        }
 
-        };
-
-        S._userStateCookie = function () {
-            return 'mcuser_state_' + User.u();
-        };
-
-        S._createCookie = function () {
-            var cookie = $cookieStore.get(S._userStateCookie());
-            if (cookie) {
-                return cookie;
-            } else {
-                cookie = {};
-                $cookieStore.put(S._userStateCookie(), cookie);
-                return cookie;
-            }
-        };
         return S;
     });
