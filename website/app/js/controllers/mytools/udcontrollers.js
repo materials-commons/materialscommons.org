@@ -67,7 +67,6 @@ function UploadFileController($scope, pubsub, wizard, mcapi, User, toUploadForm,
     }
 
     $scope.upload = function () {
-        console.dir($scope.state);
         if ($scope.state.attributes.output_files.length == 0) {
             // Handle case where there are no output files, but we still need to
             // create provenance
@@ -76,6 +75,8 @@ function UploadFileController($scope, pubsub, wizard, mcapi, User, toUploadForm,
 
         mcapi('/upload')
             .success(function () {
+                Stater.clear();
+                $scope.state = Stater.retrieve();
                 console.log("Uploads succeeded")
                 //fileEntry.status = "Uploaded";
             })
