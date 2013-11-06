@@ -10,11 +10,11 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService)
         mcapi('/usergroups/new', User.u())
             .success(function (data) {
                 $scope.msg = "UserGroup has been created successfully"
-                alertService.prepForBroadcast($scope.msg);
+                alertService.sendMessage($scope.msg);
                 $location.path('/usergroups/my_usergroups');
             })
             .error(function (errorMsg) {
-                alertService.prepForBroadcast(errorMsg);
+                alertService.sendMessage(errorMsg);
             }).post(u_group);
     }
 }
@@ -64,7 +64,7 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
                         .success(function (data) {
                             $scope.users_by_usergroup.push(data.id);
                         }).error(function (data) {
-                            alertService.prepForBroadcast(data.error);
+                            alertService.sendMessage(data.error);
                         }).put();
                 }
             })

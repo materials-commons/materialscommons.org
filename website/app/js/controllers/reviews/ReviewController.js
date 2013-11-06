@@ -38,7 +38,7 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
                 $scope.all_reviews = [];
                 $scope.data_file_id  = data;
                 $scope.msg = "Review/Followup has been added"
-                alertService.prepForBroadcast($scope.msg);
+                alertService.sendMessage($scope.msg);
                 mcapi('/datafile/%/reviews', $scope.data_file_id)
                     .success(function(data){
                         data.forEach(function(item){
@@ -66,7 +66,7 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
         mcapi('/review/%/mark/%', $scope.all_reviews[index].id, $scope.all_reviews[index].status)
             .success(function () {
                 $scope.msg = "Review Status has been changed"
-                alertService.prepForBroadcast($scope.msg);
+                alertService.sendMessage($scope.msg);
             }).put();
     }
 

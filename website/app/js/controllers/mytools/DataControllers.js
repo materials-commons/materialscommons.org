@@ -16,7 +16,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, alertService) 
             $scope.setupAccessToUserFile();
         })
         .error(function (data) {
-            alertService.prepForBroadcast(data.error);
+            alertService.sendMessage(data.error);
         }).jsonp();
 
     $scope.tagchoices = new Array();
@@ -41,7 +41,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, alertService) 
         if (!_.contains($scope.doc.tags, $scope.tag_to_add)) {
             $scope.doc.tags.push($scope.tag_to_add);
             $scope.msg = "Data has been tagged !"
-            alertService.prepForBroadcast($scope.msg);
+            alertService.sendMessage($scope.msg);
         }
     }
 
@@ -50,9 +50,9 @@ function DataEditController($scope, $routeParams, $window, mcapi, alertService) 
             .success(function (data) {
                 $scope.addNewTags();
                 $scope.msg = "Data has been saved"
-                alertService.prepForBroadcast($scope.msg);
+                alertService.sendMessage($scope.msg);
             }).error(function (data) {
-                alertService.prepForBroadcast(data.error);
+                alertService.sendMessage(data.error);
             }).put($scope.doc);
 
         $window.history.back();
@@ -68,7 +68,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, alertService) 
 
                 })
                 .error(function (data) {
-                    alertService.prepForBroadcast(data.error);
+                    alertService.sendMessage(data.error);
                 }).post(tagObj);
         });
     }

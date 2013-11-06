@@ -84,7 +84,7 @@ materialsCommonsServices.factory('alertService', function ($rootScope) {
     var sharedService = {};
     sharedService.message = '';
 
-    sharedService.prepForBroadcast = function (msg) {
+    sharedService.sendMessage = function (msg) {
         this.message = msg;
         this.broadcastItem();
     };
