@@ -12,11 +12,11 @@ function CreateConditionControllers($scope, mcapi, formatData, alertService,User
         mcapi('/templates/new')
             .success(function (data) {
                 $scope.msg = "New template " + $scope.doc.template_name + " has been created"
-                alertService.prepForBroadcast($scope.msg);
+                alertService.sendMessage($scope.msg);
                 $location.path('/conditions/template-report/' + data.id);
             })
             .error(function (data) {
-                alertService.prepForBroadcast(data.error);
+                alertService.sendMessage(data.error);
             }).post(temp);
     }
 }

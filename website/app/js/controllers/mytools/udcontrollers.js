@@ -4,22 +4,20 @@
  * Each controller appends its data to the state object. The object is created in the
  * initial controller: UploadFileController.
  *
- * Each controller is notified that it is the active controller by subscribing on a
- * channel in the pubsub service. There are just a couple of channels that are used.
- * The main channel which is used for each of the top level steps is the 'nav_set_step'
- * channel. The messages in this channel correspond to each of the top level steps in
- * the wizard. For example 'nav_choose_project' or 'nav_choose_process'. Some of these
- * wizard steps have small sub wizards embedded in them. These sub wizards communicate
- * using a different channel. For example the sub wizard related to collecting all the
- * process inputs 'input_condition_step'. The controllers related to this step wait on
- * this channel to discover they are active.
+ * Most of the steps in the wizard are separate controllers. There is a wizard service
+ * that coordinates the controllers and fires an event to let a controller know that
+ * its step is active. The wizard provides the method waitOn(scope, step, f) that a
+ * controller calls to specify the step it is expecting. f is the function that will
+ * be called when that step is activated.
  *
- * The UploadFileController is the master overseer. It is both responsible for tracking
- * the steps through the wizard, and for
+ * The UploadFileController is the master controller. It sets up the initial set of
+ * steps for the wizard and is responsible for deciding whether a particular step is
+ * active. The majority of the logic in this controller is concerned with step flow
+ * and the actual upload process.
  *
  */
 
-function UploadFileController($scope, pubsub, wizard, mcapi, User, toUploadForm, Stater) {
+function UploadFileController($scope, wizard, mcapi, alertService, toUploadForm, Stater) {
 
     var steps = {
         step: 'nav_choose_project',
@@ -67,7 +65,6 @@ function UploadFileController($scope, pubsub, wizard, mcapi, User, toUploadForm,
     }
 
     $scope.upload = function () {
-        console.dir($scope.state);
         if ($scope.state.attributes.output_files.length == 0) {
             // Handle case where there are no output files, but we still need to
             // create provenance
@@ -76,12 +73,12 @@ function UploadFileController($scope, pubsub, wizard, mcapi, User, toUploadForm,
 
         mcapi('/upload')
             .success(function () {
-                console.log("Uploads succeeded")
-                //fileEntry.status = "Uploaded";
+                Stater.clear();
+                $scope.state = Stater.retrieve();
+                alertService.sendMessage("Your file(s) were successfully uploaded.")
             })
             .error(function () {
-                console.log("Uploads failed");
-                //fileEntry.status = "Failed";
+                alertService.sendMessage("Sorry - Your files did not successfully upload.");
             })
             .post(
             {
@@ -93,7 +90,7 @@ function UploadFileController($scope, pubsub, wizard, mcapi, User, toUploadForm,
 
 /* ********************************************************************************************** */
 
-function UploadWizardProjectStepController($scope, watcher, mcapi, Stater, wizard) {
+function UploadWizardProjectStepController($scope, watcher, mcapi, Stater, wizard, alertService) {
     wizard.waitOn($scope, 'nav_choose_project', function () {
         $scope.state = Stater.retrieve();
 
@@ -105,8 +102,8 @@ function UploadWizardProjectStepController($scope, watcher, mcapi, Stater, wizar
             .success(function (projects) {
                 $scope.projects = projects;
             })
-            .error(function () {
-                console.log("Unable to retrieve projects");
+            .error(function (e) {
+                alertService.sendMessage("Failure communicating with Materials Commons. Please try again later.");
             }).jsonp();
     });
 
@@ -126,7 +123,7 @@ function UploadWizardProjectStepController($scope, watcher, mcapi, Stater, wizar
 
 /* ********************************************************************************************** */
 
-function UploadWizardProcessStepController($scope, wizard, watcher, mcapi, Stater) {
+function UploadWizardProcessStepController($scope, wizard, watcher, mcapi, Stater, alertService) {
     $scope.uneditable_properties = [];
     var c = [
         'required_conditions', 'owner', 'birthtime', 'mtime', 'parent', 'notes',
@@ -148,7 +145,7 @@ function UploadWizardProcessStepController($scope, wizard, watcher, mcapi, State
                 $scope.processes = processes;
             })
             .error(function () {
-                console.log("Unable to retrieve processes from database.");
+               alertService.sendMessage("Unable to retrieve processes from database.");
             }).jsonp();
     });
 
@@ -193,7 +190,7 @@ function UploadWizardProcessStepController($scope, wizard, watcher, mcapi, State
 
 /* ********************************************************************************************** */
 
-function UploadWizardConditionInputController($scope, mcapi, wizard, Stater) {
+function UploadWizardConditionInputController($scope, mcapi, wizard, Stater, alertService) {
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
@@ -203,7 +200,7 @@ function UploadWizardConditionInputController($scope, mcapi, wizard, Stater) {
                 $scope.condition = condition[0];
             })
             .error(function () {
-                console.log("Failed looking up: " + $scope.condition_name);
+                alertService.sendMessage("Failed looking up: " + $scope.condition_name);
             }).jsonp();
     }
 
@@ -236,7 +233,7 @@ function UploadWizardConditionInputController($scope, mcapi, wizard, Stater) {
 
 /* ********************************************************************************************** */
 
-function UploadWizardFileInputController($scope, wizard, mcapi, Stater) {
+function UploadWizardFileInputController($scope, wizard, mcapi, Stater, alertService) {
 
     wizard.waitOn($scope, 'nav_input_files', function () {
         mcapi('/datadirs/tree/groups')
@@ -244,6 +241,7 @@ function UploadWizardFileInputController($scope, wizard, mcapi, Stater) {
                 $scope.tree = tree;
             })
             .error(function () {
+                alertService.sendMessage("Unable to retrieve a list of your files.")
             }).jsonp();
         $scope.state = Stater.retrieve();
         if (!('input_files' in $scope.state.attributes)) {
@@ -269,7 +267,7 @@ function UploadWizardFileInputController($scope, wizard, mcapi, Stater) {
 
 /* ********************************************************************************************** */
 
-function UploadWizardConditionOutputController($scope, mcapi, wizard, watcher, Stater) {
+function UploadWizardConditionOutputController($scope, mcapi, wizard, watcher, Stater, alertService) {
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -283,7 +281,7 @@ function UploadWizardConditionOutputController($scope, mcapi, wizard, watcher, S
                 $scope.condition = condition[0];
             })
             .error(function () {
-                console.log("Failed looking up: " + $scope.condition_name);
+                alertService.sendMessage("Failed looking up: " + $scope.condition_name);
             }).jsonp();
     });
 
@@ -294,7 +292,7 @@ function UploadWizardConditionOutputController($scope, mcapi, wizard, watcher, S
                 $scope.conditions = conditions;
             })
             .error(function () {
-                console.log("Failed retrieving all condition templates");
+                alertService.sendMessage("Failed retrieving all condition templates");
             }).jsonp();
         $scope.state = Stater.retrieve();
         if (!('output_conditions' in $scope.state.attributes)) {
@@ -314,7 +312,7 @@ function UploadWizardConditionOutputController($scope, mcapi, wizard, watcher, S
 
 /* ********************************************************************************************** */
 
-function UploadWizardFileOutputController($scope, wizard, mcapi, Stater) {
+function UploadWizardFileOutputController($scope, wizard, mcapi, Stater, alertService) {
     wizard.waitOn($scope, 'nav_output_files', function () {
         $scope.state = Stater.retrieve();
         if (!('output_files' in $scope.state.attributes)) {
@@ -325,7 +323,7 @@ function UploadWizardFileOutputController($scope, wizard, mcapi, Stater) {
                 $scope.tree = datadirs;
             })
             .error(function () {
-                console.log("Unable to retrieve tree");
+                alertService.sendMessage("Unable to retrieve your project.");
             }).jsonp();
     });
 

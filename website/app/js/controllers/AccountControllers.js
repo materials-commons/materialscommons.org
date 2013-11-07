@@ -6,11 +6,11 @@ function LoginController($scope, $location, User, alertService, mcapi) {
             .success(function (apikey) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.msg = "Logged in Successfully";
-                alertService.prepForBroadcast($scope.msg);
+                alertService.sendMessage($scope.msg);
                 $location.path('/my-tools');
             })
             .error(function (data) {
-                alertService.prepForBroadcast(data.error);
+                alertService.sendMessage(data.error);
             }).jsonp();
     }
 
@@ -32,7 +32,7 @@ function CreateAccountController($scope, mcapi, $location, alertService) {
         if ($scope.password != $scope.confirm_password) {
             //alert("Passwords don't match");
             $scope.msg = "Passwords do not match!"
-            alertService.prepForBroadcast($scope.msg);
+            alertService.sendMessage($scope.msg);
         }
         else {
             var acc = {};
@@ -41,11 +41,11 @@ function CreateAccountController($scope, mcapi, $location, alertService) {
             mcapi('/newuser')
                 .success(function (data) {
                     $scope.msg = "Account has been created successfully"
-                    alertService.prepForBroadcast($scope.msg);
+                    alertService.sendMessage($scope.msg);
                     $location.path('/account/login');
                 })
                 .error(function (data) {
-                    alertService.prepForBroadcast(data.error);
+                    alertService.sendMessage(data.error);
                 }).post(acc);
         }
     }
@@ -67,11 +67,11 @@ function AccountDetailsController($scope, mcapi, User, alertService) {
                     .success(function (data) {
                         $scope.msg = "Password updated successfully"
                     }).error(function (data) {
-                        alertService.prepForBroadcast(data.error);
+                        alertService.sendMessage(data.error);
                     }).put();
             } else {
                 $scope.msg = "Passwords do not match!"
-                alertService.prepForBroadcast($scope.msg);
+                alertService.sendMessage($scope.msg);
             }
         }
     }
@@ -87,7 +87,7 @@ function ApiKeyResetController($scope, mcapi, User, alertService) {
             $scope.new_apikey = data;
             User.reset_apikey($scope.new_apikey['apikey']);
         }).error(function (data) {
-            alertService.prepForBroadcast(data.error);
+            alertService.sendMessage(data.error);
         }).put();
 
 }
