@@ -30,6 +30,8 @@ def create_tables():
     run_rethinkdb_command(lambda: r.table_create("project2datafile").run())
     run_rethinkdb_command(lambda: r.table_create("project2processes").run())
     run_rethinkdb_command(lambda: r.table_create("project2conditions").run())
+    run_rethinkdb_command(lambda: r.table_create("review2datafile").run())
+
 
 def run_rethinkdb_command(func):
     try:

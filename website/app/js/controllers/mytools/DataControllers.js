@@ -18,8 +18,7 @@ function DataEditController($scope, $routeParams, $window, mcapi, alertService) 
         .error(function (data) {
             alertService.sendMessage(data.error);
         }).jsonp();
-
-    $scope.tagchoices = new Array();
+ $scope.tagchoices = new Array();
     $scope.originalTags = [];
     mcapi('/tags')
         .success(function (data) {
