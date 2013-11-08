@@ -40,7 +40,7 @@ def insert_status(rv, return_created=False):
         else:
             return json.dumps({'id': val})
     else:
-        return error.server_internal_error("Unable to insert entry into database")
+        raise DatabaseError()
 
 def get_all_from_table(table_name, filter_by=None):
     rr = r.table(table_name)

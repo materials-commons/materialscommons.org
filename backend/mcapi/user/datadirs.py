@@ -9,6 +9,11 @@ from ..args import add_all_arg_options, json_as_format_arg
 from .. import access
 from ..import dmutil
 
+class Project2DataDir(object):
+    def __init__(self, project_id, ddir_id):
+        self.project_id = project_id
+        self.ddir_id = ddir_id
+        
 @app.route('/datadir/<path:datadirid>')
 @apikey(shared=True)
 @jsonp
@@ -152,9 +157,21 @@ def find_in_ditem_list(name, items):
             return item
     return None
 
-@app.route('/datadir/test/', methods=['POST'])
+@app.route('/datadir', methods=['POST'])
 @crossdomain(origin='*')
 def create_datadir():
-    dir = request.get_json();
-    dir_id =  dmutil.insert_entry('datadirs', dir)
-    return  dir_id
+    directory  = request.get_json();
+    dir_params = directory;
+    if directory[u'parent']:
+        dir_id =  dmutil.insert_entry('datadirs', dir_params)
+        if directory[u'project_id'] == None:
+            proj_ddir = Project2DataDir(directory[u'parent'],dir_id)
+        else:
+            proj_ddir = Project2DataDir(directory[u'project_id'],dir_id)
+                
+        proj_dir_dict = proj_ddir.__dict__
+        proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_dir_dict)
+        return  dir_id
+    else:
+        dir_id =  dmutil.insert_entry('datadirs', directory)
+        return dir_id

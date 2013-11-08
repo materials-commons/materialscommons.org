@@ -74,7 +74,6 @@ def add_proj_datadir_mapping(project_id, ddir_id):
         r.table('project2datadir').insert({'project_id':project_id, 'datadir_id':ddir_id}).run(conn)
 
 def add_datadir(ddir):
-    
     r.table('datadirs').insert(ddir.__dict__, return_vals=True).run(conn)
     return ddir.id
 
