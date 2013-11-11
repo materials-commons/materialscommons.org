@@ -162,16 +162,16 @@ def find_in_ditem_list(name, items):
 def create_datadir():
     directory  = request.get_json();
     dir_params = directory;
+    del dir_params[u'project_id']
     if directory[u'parent']:
         dir_id =  dmutil.insert_entry('datadirs', dir_params)
         if directory[u'project_id'] == None:
             proj_ddir = Project2DataDir(directory[u'parent'],dir_id)
         else:
             proj_ddir = Project2DataDir(directory[u'project_id'],dir_id)
-                
-        proj_dir_dict = proj_ddir.__dict__
-        proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_dir_dict)
-        return  dir_id
+            proj_dir_dict = proj_ddir.__dict__
+            proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_dir_dict)
+            return  dir_id
     else:
         dir_id =  dmutil.insert_entry('datadirs', directory)
         return dir_id
