@@ -19,6 +19,10 @@
                     Template Description:<br>
                     <textarea class="input-xlarge" ng-model="doc.template_description"/><br>
 
+                    <p ng-show="doc.template_type=='process'">
+
+                    </p>
+
 
 
                     <p ng-show="doc.template_type=='condition'">
@@ -28,9 +32,9 @@
                         <br>
 
                         List :<br>
-                <span class="label label-success" style="margin-left: 5px" ng-repeat="p in properties">
-                     <button type="button" class="close" ng-click="remove_property($index);">&times;</button>{{ p }}
-                </span>
+                        <span class="label label-success" style="margin-left: 5px" ng-repeat="p in properties">
+                            <button type="button" class="close" ng-click="remove_property($index);">&times;</button>{{ p }}
+                        </span>
                     </p>
 
                 </div>

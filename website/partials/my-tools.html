@@ -19,6 +19,22 @@
 
                     <li class="nav-header"><i class="icon-lock"></i>Admin</li>
                     <li id="usergroups-tab"><a href="#/subpage-template/usergroups-tab">Usergroups</a></li>
+                        <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
+                        <div ng-controller="AllTagsController">
+                        <span  ng-click="listDataForTag(tag.name)" style="cursor:pointer" class="label label-info custom" ng-repeat="tag in tags | limitTo: 10" >
+                            {{ tag.name }}  ({{tag.count}})
+                        </span>
+                        </div>
+
+                        <li class="nav-header"><i class="icon-search"></i>Browse By:</li>
+                        <li><a href="#">Process</a></li>
+                        <li><a href="#">Conditions</a></li>
+                        <li><a href="#">Tags</a></li>
+
+                        <li class="nav-header"><i class="icon-upload"></i>Recent Uploads</li>
+                        <li><a href="#">File 1</a></li>
+                        <li><a href="#">File 2</a></li>
+                        <li><a href="#">File 3</a></li>
                 </ul>
 
             </div>
@@ -70,31 +86,9 @@
 
     </div>
 
-    <div class="span2">
-        <div class="sidebar-nav-fixed">
-            <div class="well">
-                <ul class="nav nav-list">
-                    <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
-                    <div ng-controller="AllTagsController">
-                        <span  ng-click="listDataForTag(tag.name)" style="cursor:pointer" class="label label-info custom" ng-repeat="tag in tags | limitTo: 10" >
-                            {{ tag.name }}  ({{tag.count}})
-                        </span>
-                    </div>
 
-                     <li class="nav-header"><i class="icon-search"></i>Browse By:</li>
-                    <li><a href="#">Process</a></li>
-                    <li><a href="#">Conditions</a></li>
-                    <li><a href="#">Tags</a></li>
-
-                    <li class="nav-header"><i class="icon-upload"></i>Recent Uploads</li>
-                    <li><a href="#">File 1</a></li>
-                    <li><a href="#">File 2</a></li>
-                    <li><a href="#">File 3</a></li>
-                </ul>
-            </div><!--/.well -->
-        </div> <!--/sidebar-nav-fixed -->
-    </div><!--/span-->
 </div>
+
 </div>
 
 
