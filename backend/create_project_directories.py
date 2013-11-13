@@ -42,7 +42,7 @@ def create_project(user, apikey, base_url):
     project_name = os.path.basename(directory)
     parents = {}
     proj = Project(project_name, "", user)
-    project_id = None
+    project_id = {}
     for root, dirs, files in os.walk(directory):
         if os.path.basename(root) == ".conversion":
             continue
