@@ -103,9 +103,5 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         usage()
     else:
-        _MCDB_HOST = environ.get('MCURL') or 'localhost'
-        if _MCDB_HOST == "localhost":
-            base_url = 'http://localhost:5000'
-        else:
-            base_url = 'https://materialscommons.org'
-        create_project(sys.argv[1], sys.argv[2], base_url)
+        MCURL = environ.get("MCURL") or 'https://api.materialscommons.org'
+        create_project(sys.argv[1], sys.argv[2], MCURL)
