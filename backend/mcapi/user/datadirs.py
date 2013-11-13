@@ -161,6 +161,7 @@ def find_in_ditem_list(name, items):
 @crossdomain(origin='*')
 def create_datadir():
     directory  = request.get_json();
+    print directory
     dir_params = directory;
     del dir_params[u'project_id']
     if directory[u'parent']:
