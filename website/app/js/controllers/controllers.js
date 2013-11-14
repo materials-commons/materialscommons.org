@@ -212,6 +212,11 @@ function SubPageController($scope, $routeParams) {
                 $scope.template = "partials/updownload/udqueue.html";
                 $('#upload-tab').addClass("active");
                 break;
+
+            case "projects-view-tab":
+                $scope.template = "partials/project/project-report.html";
+                $('#upload-tab').addClass("active");
+                break;
         }
     }
 }

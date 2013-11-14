@@ -18,6 +18,7 @@ class Project2DataDir(object):
 @apikey(shared=True)
 @jsonp
 def get_all_projects():
+    print 'yesss****'
     user = access.get_user()
     rr = r.table('projects').filter({'owner': user})
     rr = args.add_all_arg_options(rr)
