@@ -400,6 +400,11 @@ hr{
     border-color: #51CBEE;
 }
 
+.nav-list{
+    max-height: 300px;
+    overflow-y:scroll;
+}
+
 
 
 

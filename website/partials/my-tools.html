@@ -6,12 +6,20 @@
                 <ul class="nav nav-list">
 
                     <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
-                    <li id="my-data-tab"><a href="#/subpage-template/data-tab">My Data</a></li>
+                    <li id="my-data-tab"><a href="#/subpage-template/data-tab">Projects</a>
+                        <div ng-controller="ListProjectsController">
+                            <ul ng-repeat="proj in projects">
+                                <li>{{proj.name}}</li>
+                            </ul>
+                        </div>
+
+                    </li>
                     <li id="tags-tab"><a href="#/subpage-template/tags-tab">Tags</a></li>
                     <li id="conditions-tab"><a href="#/subpage-template/conditions-tab">Templates</a></li>
                     <li id="provenance-tab"><a href="#/subpage-template/provenance-tab">Provenance</a></li>
                     <li id="upload-tab"><a href="#/subpage-template/upload-tab">Upload/Download</a></li>
-                    <li id="reviews-tab"><a href="#/subpage-template/reviews-tab">Reviews <span ng-controller="ReviewListController">
+                    <li id="reviews-tab"><a href="#/subpage-template/reviews-tab">Reviews
+                        <span ng-controller="ReviewListController">
                             ({{reviewstoConduct.length}})
                         </span></a>
 

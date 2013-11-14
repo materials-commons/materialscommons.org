@@ -45,7 +45,6 @@ function EventController($scope, alertService) {
 }
 
 function ProvenanceController($scope, $rootScope) {
-    console.log('how many');
     $scope.process = [
         {
             name: 'TEM',
