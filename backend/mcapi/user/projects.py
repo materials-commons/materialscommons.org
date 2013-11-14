@@ -101,6 +101,8 @@ def create_project():
     proj = request.get_json();
     if proj[u'datadir']:
         project_id =  dmutil.insert_entry('projects', proj)
+        j = json.loads(project_id)
+        print j['id']
         proj_ddir = Project2DataDir(project_id,proj[u'datadir'])
         proj_dir_dict = proj_ddir.__dict__
         proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_dir_dict)

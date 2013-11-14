@@ -320,6 +320,7 @@ function UploadWizardFileOutputController($scope, wizard, mcapi, Stater, alertSe
         }
         mcapi('/projects/%/datadirs/tree', $scope.state.attributes.project.id)
             .success(function (datadirs) {
+                console.log(datadirs) ;
                 $scope.tree = datadirs;
             })
             .error(function () {
@@ -328,6 +329,7 @@ function UploadWizardFileOutputController($scope, wizard, mcapi, Stater, alertSe
     });
 
     $scope.chooseSelection = function (d) {
+        console.log('here is selected dir '+ d)
         $scope.selected_datadir = d;
     }
 

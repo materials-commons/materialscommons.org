@@ -163,7 +163,8 @@ def create_datadir():
     directory  = request.get_json();
     if directory[u'parent']:
         dir_id =  dmutil.insert_entry('datadirs', directory)
-        proj_ddir = Project2DataDir(directory[u'project_id'],dir_id)
+        j = json.loads(dir_id)
+        proj_ddir = Project2DataDir(directory[u'project_id'],j['id'])
         proj_dir_dict = proj_ddir.__dict__
         proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_dir_dict)
         return  dir_id
