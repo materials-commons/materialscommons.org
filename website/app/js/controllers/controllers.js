@@ -87,7 +87,8 @@ function ProvenanceController($scope, $rootScope) {
 }
 
 function SubPageController($scope, $routeParams) {
-    $scope.template = "partials/data/data-main.html";
+    console.log($routeParams.id)
+    $scope.template = "partials/project/project-report.html";
     if ($routeParams.tab) {
         switch ($routeParams.tab) {
             case "data-tab":
@@ -213,12 +214,16 @@ function SubPageController($scope, $routeParams) {
                 $('#upload-tab').addClass("active");
                 break;
 
-            case "projects-view-tab":
-                $scope.template = "partials/project/project-report.html";
-                $('#upload-tab').addClass("active");
-                break;
+
         }
     }
+    if ($routeParams.id){
+        console.log('yesss')
+            $scope.template = "partials/project/project-report.html";
+            $('#upload-tab').addClass("active");
+
+    }
+
 }
 
 

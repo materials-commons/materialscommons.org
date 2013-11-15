@@ -14,7 +14,7 @@
                     <li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>
                         <div class="project-scrollbar" ng-show="clicked">
                                 <ul ng-repeat="proj in projects">
-                                    <li><a href="" ng-click="render_project(proj)">{{proj.name}}</a></li>
+                                    <li><a href="" ng-click="render_project(proj.id)">{{proj.name}}</a></li>
                                 </ul>
                             </div>
 

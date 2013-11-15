@@ -1,6 +1,6 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'Provenance']);
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'Provenance', 'route-segment', 'view-segment']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -13,6 +13,8 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($r
         {templateUrl: 'partials/search.html', controller: SearchIndexController}).
 
         when('/subpage-template/:tab', {templateUrl: 'partials/my-tools.html', controller: SubPageController}).
+        when('subpage-template/project-report-tab/:id', {templateUrl: 'partials/my-tools.html', controller: SubPageController}).
+
         /*
          ** Account controllers
          */
