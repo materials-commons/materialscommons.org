@@ -400,8 +400,8 @@ hr{
     border-color: #51CBEE;
 }
 
-.project-scrollbar{
-    max-height: 150px;
+.nav-list{
+    max-height: 300px;
     overflow-y:scroll;
 }
 

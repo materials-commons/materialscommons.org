@@ -10,29 +10,18 @@
                     <li><a href="">Search</a></li>
                     <li><a href="">Messages</a></li>
 
-                    <div  ng-controller="ListProjectsController">
                     <li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>
                         <div class="project-scrollbar" ng-show="clicked">
                                 <ul ng-repeat="proj in projects">
-                                    <li><a href="" ng-click="render_project(proj.id)">{{proj.name}}</a></li>
+                                    <li><a href="#/projects/{{proj.id}}"
+                                           ng-click="selected_project(proj.id)">{{proj.name}}</a>
+                                    </li>
                                 </ul>
                             </div>
 
 
                     </li>
-                    </div>
 
-                    <!--<li id="tags-tab"><a href="#/subpage-template/tags-tab">Tags</a></li>-->
-                    <!--<li id="conditions-tab"><a href="#/subpage-template/conditions-tab">Templates</a></li>-->
-                    <!--<li id="provenance-tab"><a href="#/subpage-template/provenance-tab">Provenance</a></li>-->
-                    <!--<li id="upload-tab"><a href="#/subpage-template/upload-tab">Upload/Download</a></li>-->
-                    <!--<li id="reviews-tab"><a href="#/subpage-template/reviews-tab">Reviews-->
-                        <!--<span ng-controller="ReviewListController">-->
-                            <!--({{reviewstoConduct.length}})-->
-                        <!--</span></a>-->
-
-                    <!--</li>-->
-                    <br>
                     <li class="nav-header"><i class="icon-lock"></i>Admin</li>
                     <li id="usergroups-tab"><a href="#/subpage-template/usergroups-tab">Usergroups</a></li>
                         <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
@@ -59,46 +48,7 @@
 
 
     <div class="span8">
-        <div ng-include src="template"></div>
-
-        <!--<table>-->
-            <!--<tr>-->
-                <!--<td><h4>Data: </h4></td>-->
-                <!--<td><a href="#/datagroups">My Data Directories</a></td>-->
-                <!--<td><a href="#/data/mydata">My Data</a></td>-->
-                <!--<td><a href="#/datagroups/tree">My Projects Tree</a></td>-->
-                <!--<td><a href="#/datagroups/tree/group">My Groups Projects Tree</a></td>-->
-                <!--<td><a href="#/datagroupgrid">Thumbnail View</a></td>-->
-                <!--&lt;!&ndash;<td><a href="#/my_lab">Data by Lab</a></td>&ndash;&gt;-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Tags:</h4></td>-->
-                <!--<td><a href="#/tags/list/all">List Tags</a></td>-->
-                <!--<td><a href="#/tags/list/mytags">Tags On My Data</a></td>-->
-                <!--<td><a href="#/tags/cloud/global">Global Tag Cloud</a></td>-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Upload/Download:</h4></td>-->
-                <!--<td><a href="#/upload/file">Upload File</a></td>-->
-                <!--<td><a href="#/upload/directory">Upload Directory</a></td>-->
-                <!--<td><a href="#/updownload/queue">View Upload/Download Queue</a></td>-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Conditions</h4></td>-->
-                <!--<td><a href="#/conditions/template/create">Create condition template</a></td>-->
-                <!--<td><a href="#/conditions/template/list">List condition templates</a></td>-->
-                <!--<td><a href="#/conditions/list">List all conditions</a></td>-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Provenance</h4></td>-->
-                <!--<td><a href="#/provenance">track</a></td>-->
-
-            <!--</tr>-->
-        <!--</table>-->
+        <div ui-view></div>
 
     </div>
 
