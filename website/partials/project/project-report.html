@@ -1,0 +1,52 @@
+<div class="row-fluid">
+    <div class="span5 offset1">
+        <select ng-model="view_type"
+                ui-select2="{placeholder: 'View', allowClear: true, width:'element'}"
+                ng-multiple="false">
+            <option></option>
+            <option value="tree">Tree</option>
+            <option value="provenance">Provenance</option>
+        </select>
+        <select ng-model="tag"
+                ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
+                ng-multiple="false">
+            <option></option>
+            <option ng-repeat="tag in tagchoices">{{ tag }}</option>
+        </select>
+    </div>
+
+    <div class="span5 offset1">
+         <button type="button" class="label-info">Download</button>
+        <button type="button" class="label-info">Upload </button>
+
+    </div>
+</div>
+
+
+<div ng-controller="ListProjectsController">
+
+<div class="row-fluid">
+    <div class="span5 offset1">
+        <h3>Project</h3>
+        <input type="text" width="50px" ng-model="searchText" placeholder="Search data"/>
+        <ngtree selected="gotoSelection(d)" search-model="searchText" treeview-data="project_tree" unique-id="id"
+                display-attr="displayname"></ngtree>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span5 offset1">
+        <h3>Process</h3>
+        {{processes}}
+        <div class="gridStyle" ng-grid="gridOptions">
+        </div>
+    </div>
+</div>
+
+
+<div class="row-fluid">
+    <div class="span5 offset1">
+        <h3>DataSet</h3>
+    </div>
+</div>
+    </div>
