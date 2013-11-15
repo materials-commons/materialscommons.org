@@ -355,7 +355,7 @@ img.data-img {
 }
 
 hr{
-   border-color: black;
+    border-color: black;
 }
 
 .gridStyle {
@@ -400,8 +400,8 @@ hr{
     border-color: #51CBEE;
 }
 
-.nav-list{
-    max-height: 300px;
+.project-scrollbar{
+    max-height: 150px;
     overflow-y:scroll;
 }
 
