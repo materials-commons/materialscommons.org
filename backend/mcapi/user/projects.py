@@ -13,7 +13,7 @@ class Project2DataDir(object):
     def __init__(self, project_id, ddir_id):
         self.project_id = project_id
         self.ddir_id = ddir_id
-        
+
 @app.route('/projects', methods=['GET'])
 @apikey(shared=True)
 @jsonp
@@ -96,16 +96,16 @@ def find_in_ditem_list(name, items):
     return None
 
 @app.route('/projects', methods=['POST'])
+@apikey
 @crossdomain(origin='*')
 def create_project():
-    proj = request.get_json();
-    if proj[u'datadir']:
-        project_id =  dmutil.insert_entry('projects', proj)
-        proj_ddir = Project2DataDir(project_id,proj[u'datadir'])
+    proj = request.get_json()
+    if 'datadir' in proj:
+        project_id = dmutil.insert_entry('projects', proj)
+        proj_ddir = Project2DataDir(project_id, proj[u'datadir'])
         proj_dir_dict = proj_ddir.__dict__
-        proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_dir_dict)
-        return  project_id
-            
+        proj_ddir_id = dmutil.insert_entry('project2datadir', proj_dir_dict)
+        return project_id
     else:
-        project_id =  dmutil.insert_entry('projects', proj)
-        return  project_id
+        project_id = dmutil.insert_entry('projects', proj)
+        return project_id
