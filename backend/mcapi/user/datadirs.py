@@ -8,12 +8,8 @@ from ..utils import json_for_single_item_list
 from ..args import add_all_arg_options, json_as_format_arg
 from .. import access
 from ..import dmutil
+from loader.model import datadir
 
-class Project2DataDir(object):
-    def __init__(self, project_id, ddir_id):
-        self.project_id = project_id
-        self.ddir_id = ddir_id
-        
 @app.route('/datadir/<path:datadirid>')
 @apikey(shared=True)
 @jsonp
@@ -29,7 +25,7 @@ def datadir_for_user(datadirid):
 @jsonp
 def datadirs_for_user():
     user = access.get_user()
-    rr = r.table('datadirs').filter({'owner':user})
+    rr = r.table('datadirs').filter({'owner': user})
     rr = add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_as_format_arg(selection)
@@ -39,7 +35,7 @@ def datadirs_for_user():
 @jsonp
 def list_datadirs_with_data_by_user():
     user = access.get_user()
-    selection = list(r.table('datadirs').filter({'owner':user}).outer_join(\
+    selection = list(r.table('datadirs').filter({'owner': user}).outer_join(\
             r.table('datafiles'), lambda ddirrow, drow: ddirrow['datafiles'].contains(drow['id']))\
                      .run(g.conn, time_format='raw'))
     if not selection:
@@ -157,16 +153,21 @@ def find_in_ditem_list(name, items):
             return item
     return None
 
-@app.route('/datadir', methods=['POST'])
+@app.route('/datadirs', methods=['POST'])
+@apikey
 @crossdomain(origin='*')
 def create_datadir():
-    directory  = request.get_json();
-    if directory[u'parent']:
-        dir_id =  dmutil.insert_entry('datadirs', directory)
-        proj_ddir = Project2DataDir(directory[u'project_id'],dir_id)
-        proj_dir_dict = proj_ddir.__dict__
-        proj_ddir_id =  dmutil.insert_entry('project2datadir', proj_dir_dict)
-        return  dir_id
-    else:
-        dir_id =  dmutil.insert_entry('datadirs', directory)
-        return dir_id
+    user = access.get_user()
+    j = request.get_json()
+    project = dmutil.get_required('project', j)
+    ddir = construct_datadir(j, user)
+    ddir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
+    proj2datadir = {'project_id': project, 'datadir_id': ddir_id}
+    dmutil.insert_entry('project2datadir', proj2datadir)
+    return json_as_format_arg({'id': ddir_id})
+
+def construct_datadir(j, user):
+    parent = dmutil.get_required('parent', j)
+    access = dmutil.get_optional('access', j, "private")
+    name = dmutil.get_required('name', j)
+    return datadir.DataDir(name, access, user, parent)

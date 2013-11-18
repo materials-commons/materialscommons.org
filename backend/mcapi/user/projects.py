@@ -8,11 +8,8 @@ from os.path import dirname
 import json
 from .. import access
 from ..import dmutil
-
-class Project2DataDir(object):
-    def __init__(self, project_id, ddir_id):
-        self.project_id = project_id
-        self.ddir_id = ddir_id
+from loader.model import project
+from loader.model import datadir
 
 @app.route('/projects', methods=['GET'])
 @apikey(shared=True)
@@ -99,13 +96,21 @@ def find_in_ditem_list(name, items):
 @apikey
 @crossdomain(origin='*')
 def create_project():
-    proj = request.get_json()
-    if 'datadir' in proj:
-        project_id = dmutil.insert_entry('projects', proj)
-        proj_ddir = Project2DataDir(project_id, proj[u'datadir'])
-        proj_dir_dict = proj_ddir.__dict__
-        proj_ddir_id = dmutil.insert_entry('project2datadir', proj_dir_dict)
-        return project_id
-    else:
-        project_id = dmutil.insert_entry('projects', proj)
-        return project_id
+    j = request.get_json()
+    user = access.get_user()
+    datadir_id = make_toplevel_datadir(j, user)
+    proj = construct_project(j, user, datadir_id)
+    project_id = dmutil.insert_entry_id('projects', proj.__dict__)
+    proj2datadir = {'project_id': project_id, 'datadir_id': proj.datadir}
+    dmutil.insert_entry('project2datadir', proj2datadir)
+    return args.json_as_format_arg(proj2datadir)
+
+def make_toplevel_datadir(j, user):
+    name = dmutil.get_required('name', j)
+    access = dmutil.get_optional('access', j, "private")
+    ddir = datadir.DataDir(name, access, user, "")
+    return dmutil.insert_entry_id('datadirs', ddir.__dict__)
+
+def construct_project(j, user, datadir):
+    name = dmutil.get_required("name", j)
+    return project.Project(name, datadir, user)

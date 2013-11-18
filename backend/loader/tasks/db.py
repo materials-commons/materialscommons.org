@@ -70,6 +70,14 @@ def load_data_dir(user, directory, state_id):
         state_saver.delete_tables()
 
 @celery.task
+def load_data_file(datafile, project, datadir):
+    try:
+        r.connect('localhost', 28015, db='materialscommons').repl()
+    except Exception as exc:
+        traceback.print_exc()
+        raise load_data_file.retry(exc=exc)
+
+@celery.task
 def import_data_dir_to_repo(dirpath):
     try:
         print "Copying over: %s" %(dirpath)
