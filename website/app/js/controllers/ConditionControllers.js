@@ -1,4 +1,4 @@
-function CreateConditionControllers($scope, mcapi, formatData, alertService,User, $location) {
+function CreateConditionControllers($scope, mcapi, formatData, alertService,User, $state) {
     $scope.properties = [];
     $scope.add_property = function () {
         $scope.properties.push($scope.doc.new_property);
@@ -13,7 +13,7 @@ function CreateConditionControllers($scope, mcapi, formatData, alertService,User
             .success(function (data) {
                 $scope.msg = "New template " + $scope.doc.template_name + " has been created"
                 alertService.sendMessage($scope.msg);
-                $location.path('/conditions/template-report/' + data.id);
+                $state.transitionTo('subpages.templatereport', {id: data.id})
             })
             .error(function (data) {
                 alertService.sendMessage(data.error);
@@ -21,21 +21,19 @@ function CreateConditionControllers($scope, mcapi, formatData, alertService,User
     }
 }
 
-function ListConditionControllers($scope, mcapi, $location) {
+function ListConditionControllers($scope, mcapi, $state) {
     mcapi('/templates')
         .success(function (data) {
             $scope.templates = data;
         }).jsonp();
 
     $scope.display_template = function (t) {
-        console.log('here ' + t.id);
-        $location.path('/conditions/template-report/' + t.id);
-
+        $state.transitionTo('subpages.templatereport', {id: t.id})
     }
 }
 
-function TemplateReportController($scope, $routeParams, mcapi) {
-    mcapi('/templates/%', $routeParams.id)
+function TemplateReportController($scope, $stateParams, mcapi) {
+    mcapi('/templates/%', $stateParams.id)
         .success(function (template) {
             $scope.properties = [];
             $scope.created_template = template;

@@ -125,6 +125,23 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/conditions/conditions-subpage.html'
 
         })
+        .state('subpages.createtemplate', {
+            url: '/createtemplate',
+            templateUrl: 'partials/conditions/create-template.html',
+            controller: 'CreateConditionControllers'
+        })
+        .state('subpages.listtemplate', {
+            url: '/listtemplate',
+            templateUrl: 'partials/conditions/list-condition-template.html',
+            controller: 'ListConditionControllers'
+        })
+        .state('subpages.templatereport', {
+            url: '/templatereport/:id',
+            templateUrl: 'partials/conditions/template-report.html',
+            controller: 'TemplateReportController'
+        })
+
+
         .state('subpages.provenancetab', {
             url: '/provenancetab',
             templateUrl: 'partials/provenance/provenance-subpage.html'
@@ -135,10 +152,21 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/updownload/upload-subpage.html'
 
         })
+        .state('subpages.uploadfile', {
+            url: '/uploadfile',
+            templateUrl: 'partials/updownload/upload-file.html',
+            controller:'UploadFileController'
+
+        })
         .state('subpages.reviewstab', {
             url: '/reviewstab',
             templateUrl: 'partials/reviews/review-subpage.html'
 
+        })
+        .state('subpages.reviewlist', {
+            url: '/reviewlist',
+            templateUrl: 'partials/reviews/review-list.html',
+            controller: 'ReviewListController'
         })
     /**
      * END Subpage

@@ -1,4 +1,4 @@
-function CreateReviewController($scope, mcapi, User, $routeParams, alertService, $window){
+function CreateReviewController($scope, mcapi, User, $stateParams, alertService, $window){
     $scope.all_reviews = [];
 
 
@@ -6,7 +6,7 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
     $scope.review_note = "";
     $scope.schedule_for_self = false;
 
-    mcapi('/datafile/%/reviews', $routeParams.id)
+    mcapi('/datafile/%/reviews', $stateParams.id)
         .success(function(data){
             data.forEach(function(item){
                 $scope.all_reviews.push(item.right)
@@ -72,7 +72,7 @@ function CreateReviewController($scope, mcapi, User, $routeParams, alertService,
 
 }
 
-function ReviewListController($scope, $location, mcapi) {
+function ReviewListController($scope, mcapi, $state) {
     mcapi('/reviews/requested')
         .success(function (data) {
             $scope.reviewsRequested = _.filter(data, function (item) {
@@ -93,7 +93,7 @@ function ReviewListController($scope, $location, mcapi) {
 
     $scope.startReview = function (id, type) {
         if (type == "data") {
-            $location.path("/data/edit/" + id);
+            $state.transitionTo('data/edit/', {id: id})
         }
         else {
         }
