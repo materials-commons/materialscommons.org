@@ -175,10 +175,14 @@ def create_datadir():
     j = request.get_json()
     project = dmutil.get_required('project', j)
     ddir = construct_datadir(j, user)
-    if not validate.project_id_exists(project, user):
+    if validate.project_id_exists(project, user) is None:
         return error.bad_request("Invalid request: bad project")
-    if not validate.datadir_id_exists(ddir.parent, user):
-        return error.bad_request("Invalid request: bad datadir parent")
+    if validate.datadir_id_exists(ddir.parent, user) is None:
+        return error.bad_request(
+            "Invalid request: parent does not exist %s" % (ddir.parent))
+    ddir_exists = validate.datadir_id_exists(ddir.id, user)
+    if ddir_exists is not None:
+        return json_as_format_arg({'id': ddir_exists['id']})
     ddir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
     proj2datadir = {'project_id': project, 'datadir_id': ddir_id}
     dmutil.insert_entry('project2datadir', proj2datadir)
