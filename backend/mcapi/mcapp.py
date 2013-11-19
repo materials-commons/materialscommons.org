@@ -36,6 +36,7 @@ def required_attribute_exception_handler(e):
 
 @app.errorhandler(RqlDriverError)
 def database_exception_handler(e):
+    traceback.print_exc()
     return error.server_internal_error("Database connection failed")
 
 @app.errorhandler(mcexceptions.AuthenticationException)
