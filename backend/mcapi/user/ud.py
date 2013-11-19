@@ -13,6 +13,7 @@ from .. import access
 from .. import error
 from .. import dmutil
 from .. import validate
+from .. import mcdir
 from loader.model import datafile
 
 
@@ -58,7 +59,6 @@ def import_file():
         return error.bad_request('No datadir specified')
     project = request.form['project']
     datadir = request.form['datadir']
-    mkdirp('/tmp/uploads')
     file = request.files['file']
     proj = validate.project_id_exists(project, user)
     if proj is None:
@@ -74,7 +74,7 @@ def import_file():
         return error.bad_request(
             "File %s already exists in datadir %s" % (file.filename, datadir))
     dfid = make_datafile(datadir, user, file.filename)
-    filepath = os.path.join('/tmp/uploads', dfid)
+    filepath = os.path.join(mcdir.for_uid(dfid), dfid)
     file.save(filepath)
     #load_data_file.delay(df, project, datadir)
     return jsonify({'id': dfid})
@@ -100,7 +100,7 @@ def filename_in_datadir(ddir, filename):
 
 
 def make_datafile(datadir, user, filename):
-    df = datafile.DataFile(filename, "private", user)
+    df = datafile.DataFile(os.path.basename(filename), "private", user)
     df.datadirs.append(datadir)
     dfid = dmutil.insert_entry_id('datafiles', df.__dict__)
     ddir = r.table('datadirs').get(datadir).run(g.conn)
