@@ -24,6 +24,17 @@ def get_all_projects():
     return args.json_as_format_arg(items)
 
 
+@app.route('/projects/<id>', methods=['GET'])
+@apikey(shared=True)
+@jsonp
+def get_project(id):
+    user = access.get_user()
+    rr = r.table('projects').filter({'id': id})
+    rr = args.add_all_arg_options(rr)
+    items = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(items)
+
+
 @app.route('/projects/<project_id>/datafiles')
 @apikey
 @jsonp
@@ -49,6 +60,7 @@ def get_datadirs_for_project(project_id):
 @apikey(shared=True)
 @jsonp
 def get_datadirs_as_tree_for_project(project_id):
+    print 'tree***********88'
     user = access.get_user()
     rr = r.table('project2datadir').filter({'project_id': project_id})
     rr = rr.eq_join('project_id', r.table('projects')).zip()

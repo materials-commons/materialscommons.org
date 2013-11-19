@@ -1,5 +1,6 @@
 'use strict';
 
+
 function FrontPageController($scope, $location) {
     $scope.messages = [];
     $scope.sent = 0;
@@ -32,6 +33,7 @@ function ContactController($scope) {
 
 function HelpController($scope) {
     $scope.pageDescription = "Help";
+
 }
 
 
@@ -45,7 +47,6 @@ function EventController($scope, alertService) {
 }
 
 function ProvenanceController($scope, $rootScope) {
-    console.log('how many');
     $scope.process = [
         {
             name: 'TEM',
@@ -88,7 +89,8 @@ function ProvenanceController($scope, $rootScope) {
 }
 
 function SubPageController($scope, $routeParams) {
-    $scope.template = "partials/data/data-main.html";
+    console.log($routeParams.id)
+    $scope.template = "partials/project/project-report.html";
     if ($routeParams.tab) {
         switch ($routeParams.tab) {
             case "data-tab":
@@ -155,7 +157,7 @@ function SubPageController($scope, $routeParams) {
                 break;
 
             case "my-tags-list-tab":
-                $scope.template = "partials/tags/my-tags-list.html";
+                $scope.template = "partials/tags/tags-list.html";
                 $('#tags-tab').addClass("active");
                 break;
 
@@ -213,8 +215,17 @@ function SubPageController($scope, $routeParams) {
                 $scope.template = "partials/updownload/udqueue.html";
                 $('#upload-tab').addClass("active");
                 break;
+
+
         }
     }
+    if ($routeParams.id){
+        console.log('yesss')
+            $scope.template = "partials/project/project-report.html";
+            $('#upload-tab').addClass("active");
+
+    }
+
 }
 
 

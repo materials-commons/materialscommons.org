@@ -32,7 +32,7 @@ def get_reviews_requested():
 @jsonp
 def get_reviews_to_be_conducted():
     user = access.get_user()
-    selection = list(r.table('reviews').filter({'requested_to':user}).filter(r.row['requested_by'] != user)\
+    selection = list(r.table('reviews').filter({'requested_to':user}).filter(r.row['requested_by'] == user)\
                      .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 

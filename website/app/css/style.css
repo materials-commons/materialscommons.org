@@ -355,7 +355,7 @@ img.data-img {
 }
 
 hr{
-   border-color: black;
+    border-color: black;
 }
 
 .gridStyle {
@@ -398,6 +398,11 @@ hr{
 .line:focus {
     outline: none;
     border-color: #51CBEE;
+}
+
+.project-scrollbar{
+    max-height: 150px;
+    overflow-y:scroll;
 }
 
 

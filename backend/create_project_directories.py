@@ -81,15 +81,16 @@ def add_datadir(ddir, base_url, project_id):
     json_dir_data  = json.dumps(dir_dict)
     headers = {'content-type': 'application/json'}
     response = requests.post(url, data=json_dir_data, headers = headers)
-    return response.text
+    j = json.loads(response.text)
+    return j['id']
     
 def add_project(proj, base_url):
     url = base_url+'/projects'
     json_data  = json.dumps(proj.__dict__)
     headers = {'content-type': 'application/json'}
     response = requests.post(url,data =json_data ,headers = headers)
-    return response.text
-
+    j = json.loads(response.text)
+    return j['id']
 
 def construct_datadir_name(base, root, directory):
     rpath = os.path.relpath(root, directory)
