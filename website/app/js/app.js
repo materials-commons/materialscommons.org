@@ -1,118 +1,236 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'Provenance']);
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router']);
 
-app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider) {
+app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
     mcglobals = {};
     doConfig();
+    $stateProvider
+    /**
+     * Top level navigation
+     */
+        .state('home', {
+            url: '/home',
+            templateUrl: 'partials/home.html',
+            controller: 'HomeController'
+        })
+        .state('mytools', {
+            url: '/mytools',
+            templateUrl: 'partials/my-tools.html',
+            controller: 'ListProjectsController'
+        })
 
-    $routeProvider.
-        when('/home', {templateUrl: 'partials/home.html', controller: HomeController}).
-        when('/searchindex/:subpage/:name',
-        {templateUrl: 'partials/search.html', controller: SearchIndexController}).
+        .state('mytools.projects', {
+            url: '/projects/:project_id',
+            templateUrl: 'partials/project/project-report.html',
+            controller: function ($scope, $stateParams) {
+                $scope.project_id = $stateParams.project_id;
+            }
+        })
+        .state('about', {
+            url: '/about',
+            templateUrl: 'partials/about.html',
+            controller: 'AboutController'
 
-        when('/subpage-template/:tab', {templateUrl: 'partials/my-tools.html', controller: SubPageController}).
-        /*
-         ** Account controllers
-         */
-        when('/account/login', {templateUrl: 'partials/account/login.html', controller: LoginController}).
-        when('/account/logout', {templateUrl: 'partials/about.html', controller: LogOutController}).
-        when('/account/create-account', {templateUrl: 'partials/account/create-account.html', controller: CreateAccountController}).
-        when('/account/details', {templateUrl: 'partials/account/account-details.html', controller: AccountDetailsController}).
-        when('/account/details/apikey/view', {templateUrl: 'partials/account/details/apikeyview.html', controller: ApiKeyController}).
-        when('/account/details/apikey/reset', {templateUrl: 'partials/account/details/apikeyreset.html', controller: ApiKeyResetController}).
-        /*
-         ** UserGroups controllers
-         */
-        when('/usergroups/my_usergroups', {templateUrl: 'partials/usergroups/my_usergroups.html', controller: ListUserGroupController}).
-        when('/usergroups/create', {templateUrl: 'partials/usergroups/usergroup-create.html', controller: CreateUserGroupController}).
-        when('/usergroups/list_users/:usergroup_name', {templateUrl: 'partials/usergroups/usergroup_list_users.html', controller: ListUserController}).
+        })
+        .state('contact', {
+            url: '/contact',
+            templateUrl: 'partials/contact.html',
+            controller: 'ContactController'
 
-        /*
-         ** Top level controllers
-         */
-        when('/about', {templateUrl: 'partials/about.html', controller: AboutController}).
-        when('/contact', {templateUrl: 'partials/contact.html', controller: ContactController}).
-        when('/help', {templateUrl: 'partials/help.html', controller: HelpController}).
-        when('/search', {templateUrl: 'partials/search.html', controller: SearchIndexController}).
-        when('/my-tools', {templateUrl: 'partials/my-tools.html', controller: FrontPageController}).
+        })
+        .state('help', {
+            url: '/help',
+            templateUrl: 'partials/help.html',
+            controller: 'HelpController'
 
-        /*
-         ** Controllers with in the My Tools subpages
-         */
-
-        /*
-         ** Data Groups
-         */
-        //when('/datagroups/tree', {templateUrl: 'partials/datagroups/tree.html', controller: MyDataGroupsTreeController}).
-        //when('/datagroups/tree/group', {templateUrl: 'partials/datagroups/tree.html', controller: MyGroupsDataGroupsTreeController}).
-        when('/datagroups/data/:id', {templateUrl: 'partials/datagroups/datareport.html', controller: DataDirReportController}).
-        //when('/datagroups',
-        // {templateUrl: 'partials/datagroups/my_data_groups.html', controller: MyDataGroupsController}).
-        //when('/datagroupgrid', {templateUrl: 'partials/thumbnail.html', controller: DataGroupGridController}).
+        })
+    /**
+     * End To level navigation
+     */
 
 
-        /*
-         ** Other
-         */
-        when('/my_lab', {templateUrl: 'partials/datagroups/my_lab.html', controller: LabController}).
-        when('/results_by_date',
-        {templateUrl: 'partials/datagroups/results_by_date.html', controller: SearchByDateController}).
+    /**
+     * Mytools - Subpage is the parent and the rest inherit
+     */
 
-        /*
-         ** Data
-         */
-        when('/data/edit/:id', {templateUrl: 'partials/data/data-edit.html', controller: DataEditController}).
-        //when('/data/mydata', {templateUrl: 'partials/data/my-data.html', controller: MyDataController}).
+        .state('mytools.datatab', {
+            url: '/datatab',
+            templateUrl: 'partials/data/data-subpage.html'
+        })
+        .state('mytools.myprojects', {
+            url: '/myprojects',
+            templateUrl: 'partials/datagroups/my_data_groups.html',
+            controller: 'MyDataGroupsController'
+        })
+        .state('mytools.mydata', {
+            url: '/mydata',
+            templateUrl: 'partials/data/my-data.html',
+            controller: 'MyDataController'
+        })
+        .state('mytools.myprojectstree', {
+            url: '/myprojectstree',
+            templateUrl: 'partials/datagroups/tree.html',
+            controller: 'MyDataGroupsTreeController'
+        })
+        .state('mytools.groupprojectstree', {
+            url: '/groupprojectstree',
+            templateUrl: 'partials/datagroups/group-tree.html',
+            controller: 'MyGroupsDataGroupsTreeController'
+        })
+        .state('mytools.thumbnail', {
+            url: '/thumbnail',
+            templateUrl: 'partials/thumbnail.html',
+            controller: 'DataGroupGridController'
+        })
 
-        /*
-         ** Tags
-         */
-        //when('/tags/list/:listtype', {templateUrl: 'partials/tags/tags-list.html', controller: AllTagsController}).
-        when('/tags/data/bytag/:tag/:user',
-        {templateUrl: 'partials/tags/data-for-tag.html', controller: TagDataController}).
-        when('/tags/tag_info/:tag_name', {templateUrl: 'partials/tags/tag_info.html', controller: AllTagsController}).
-        //when('/tags/cloud/global', {templateUrl: 'partials/tags/tagcloud.html', controller: GlobalTagCloudController}).
 
-        /*
-         ** Upload/Download
-         */
-        when('/upload/file', {templateUrl: 'partials/updownload/upload-file.html', controller: UploadFileController}).
-        when('/upload/directory', {templateUrl: 'partials/updownload/upload-directory.html', controller: UploadDirectoryController}).
-        when('/updownload/queue', {templateUrl: 'partials/updownload/udqueue.html', controller: UpDownLoadQueueController}).
-        /*
-         ** Conditions
-         */
-        //when('/conditions/template/create', {templateUrl: 'partials/conditions/create-condition-template.html', controller: CreateConditionControllers}).
-        when('/conditions/template/list', {templateUrl: 'partials/conditions/list-condition-template.html', controller: ListConditionControllers}).
-        when('/provenance', {templateUrl: 'partials/provenance.html', controller: ProvenanceController}).
-        when('/conditions/template-report/:id', {templateUrl: 'partials/conditions/template-report.html', controller: TemplateReportController}).
 
-        otherwise({redirectTo: '/home'});
-}]);
+        .state('mytools.tagstab', {
+            url: '/tagstab',
+            templateUrl: 'partials/tags/tags-subpage.html'
 
-app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
-    $rootScope.$on('$routeChangeStart', function (event, next, current) {
-        if (matchesPartial(next, "partials/front-page", "HomeController")) {
+        })
+        .state('mytools.listtags', {
+            url: '/listtags',
+            templateUrl: 'partials/tags/tags-list.html',
+            controller: 'AllTagsController'
+        })
+        .state('mytools.mytagslist', {
+            url: '/mytagslist',
+            templateUrl: 'partials/tags/my-tags-list.html',
+            controller: 'MyTagsController'
+        })
+        .state('mytools.globaltagcloud', {
+            url: '/globaltagcloud',
+            templateUrl: 'partials/tags/tagcloud.html',
+            controller: 'GlobalTagCloudController'
+        })
+
+
+
+        .state('mytools.conditionstab', {
+            url: '/conditionstab',
+            templateUrl: 'partials/conditions/conditions-subpage.html'
+
+        })
+        .state('mytools.createtemplate', {
+            url: '/createtemplate',
+            templateUrl: 'partials/conditions/create-template.html',
+            controller: 'CreateConditionControllers'
+        })
+        .state('mytools.listtemplate', {
+            url: '/listtemplate',
+            templateUrl: 'partials/conditions/list-condition-template.html',
+            controller: 'ListConditionControllers'
+        })
+        .state('mytools.templatereport', {
+            url: '/templatereport/:id',
+            templateUrl: 'partials/conditions/template-report.html',
+            controller: 'TemplateReportController'
+        })
+
+
+        .state('mytools.provenancetab', {
+            url: '/provenancetab',
+            templateUrl: 'partials/provenance/provenance-subpage.html'
+
+        })
+        .state('mytools.uploadtab', {
+            url: '/uploadtab',
+            templateUrl: 'partials/updownload/upload-subpage.html'
+
+        })
+        .state('mytools.uploadfile', {
+            url: '/uploadfile',
+            templateUrl: 'partials/updownload/upload-file.html',
+            controller:'UploadFileController'
+
+        })
+        .state('mytools.reviewstab', {
+            url: '/reviewstab',
+            templateUrl: 'partials/reviews/review-subpage.html'
+
+        })
+        .state('mytools.reviewlist', {
+            url: '/reviewlist',
+            templateUrl: 'partials/reviews/review-list.html',
+            controller: 'ReviewListController'
+        })
+    /**
+     * END Subpage
+     */
+
+
+
+        .state('account/details', {
+            url: '/account/details',
+            templateUrl: 'partials/account/account-details.html',
+            controller: 'AccountDetailsController'
+        })
+        .state('account/details/apikey/view', {
+            url: '/account/details/apikey/view',
+            templateUrl: 'partials/account/details/apikeyview.html',
+            controller: 'ApiKeyController'
+        })
+        .state('account/details/apikey/reset', {
+            url: '/account/details/apikey/reset',
+            templateUrl: 'partials/account/details/apikeyreset.html',
+            controller: 'ApiKeyResetController'
+        })
+        .state('account/logout', {
+            url: '/account/logout',
+            templateUrl: 'partials/about.html',
+            controller: 'LogOutController'
+
+        })
+        .state('account/login', {
+            url: '/account/login',
+            templateUrl: 'partials/account/login.html',
+            controller: 'LoginController'
+
+        })
+        .state('data/edit/:id', {
+            url: '/data/edit/:id',
+            templateUrl: 'partials/data/data-edit.html',
+            controller: 'DataEditController'
+        })
+        .state('datagroups/data/:id', {
+            url: '/datagroups/data/:id',
+            templateUrl: 'partials/datagroups/datareport.html',
+            controller: 'DataDirReportController'
+        })
+        .state('data/bytag/:name', {
+            url: '/data/bytag/:name',
+            templateUrl: 'partials/tags/data-for-tag.html',
+            controller: 'TagDataController'
+        })
+
+
+    ;
+})
+
+app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User, ngstomp) {
+    $rootScope.$on('$stateChangeStart', function (event, toState) {
+        if (matchesPartial(toState, "partials/front-page", "HomeController")) {
             setActiveMainNav("#home-nav");
         }
-        else if (matchesPartial(next, "partials/my-tools", "FrontPageController")) {
+        else if (matchesPartial(toState, "partials/my-tools", "FrontPageController")) {
             setActiveMainNav("#user-nav");
         }
-        else if (matchesPartial(next, "partials/explore", "ExploreController")) {
+        else if (matchesPartial(toState, "partials/explore", "ExploreController")) {
             setActiveMainNav("#explore-nav");
         }
-        else if (matchesPartial(next, "partials/about", "AboutController")) {
+        else if (matchesPartial(toState, "partials/about", "AboutController")) {
             setActiveMainNav('#about-nav');
         }
-        else if (matchesPartial(next, "partials/contact", "ContactController")) {
+        else if (matchesPartial(toState, "partials/contact", "ContactController")) {
             setActiveMainNav('#contact-nav');
         }
-        else if (matchesPartial(next, "partials/help", "HelpController")) {
+        else if (matchesPartial(toState, "partials/help", "HelpController")) {
             setActiveMainNav("#help-nav");
         }
-
         if (!$rootScope.stompClient) {
             var chatConnection = "http://" + document.location.hostname + ":15674/stomp";
             if (document.location.hostname == "materialscommons.org") {
@@ -131,13 +249,16 @@ app.run(function ($rootScope, $location, $cookieStore, User, ngstomp) {
         }
 
         if (!User.isAuthenticated()) {
-            if (next.templateUrl && next.templateUrl.indexOf("partials/my-tools") != -1) {
-                $location.path("/account/login");
+            if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") != -1) {
+                //$location.path("/account/login");
+                $state.transitionTo('account/login')
             }
         }
         else {
             $rootScope.email_address = User.u();
         }
+
+
     });
 
 });
@@ -160,7 +281,8 @@ function matchesPartial(next, what, controller) {
             return true;
         }
         else {
-            return next.controller.toString().indexOf(controller) != -1;
+            // return next.controller.toString().indexOf(controller) != -1;
+            return value
         }
     }
 }

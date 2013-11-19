@@ -5,9 +5,9 @@ function AllTagsController($scope, $location, mcapi, User) {
                 $scope.tags = data;
             }).jsonp();
 
-        $scope.listDataForTag = function (tag) {
-            $location.path("/tags/data/bytag/" + tag + "/" + User.u());
-    }
+//        $scope.listDataForTag = function (tag) {
+//            $location.path("/tags/data/bytag/" + tag + "/" + User.u());
+//    }
 }
 
 function MyTagsController($scope, mcapi){
@@ -18,20 +18,13 @@ function MyTagsController($scope, mcapi){
         }).jsonp();
 }
 
-function TagDataController($scope, $routeParams, $location, mcapi) {
-    $scope.tag = $routeParams.tag;
-    mcapi('/datafiles/tag/%', $routeParams.tag)
+function TagDataController($scope, $stateParams, mcapi) {
+    $scope.tag = $stateParams.name;
+    mcapi('/datafiles/tag/%', $stateParams.name)
         .success(function (data) {
             $scope.docs = data;
         }).jsonp();
 
-    $scope.editData = function (id) {
-        $location.path("/data/edit/" + id);
-    }
-
-    $scope.get_alldata_for_tag = function (tag) {
-        $location.path("/tags/tag_info/" + tag);
-    }
 }
 
 function GlobalTagCloudController($scope, mcapi, User) {
@@ -40,7 +33,7 @@ function GlobalTagCloudController($scope, mcapi, User) {
         .success(function (data) {
             $scope.word_list = [];
             angular.forEach(data, function (tag) {
-                $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/tags/data/bytag/" + tag.name + '/' + User.u()});
+                $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/data/bytag/" + tag.name});
             });
         }).jsonp();
 }

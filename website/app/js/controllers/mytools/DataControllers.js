@@ -1,4 +1,4 @@
-function DataEditController($scope, $routeParams, $window, mcapi, alertService) {
+function DataEditController($scope, $window, mcapi, alertService, $stateParams) {
     $scope.count = 0;
     $scope.grid_options = [];
 
@@ -8,17 +8,15 @@ function DataEditController($scope, $routeParams, $window, mcapi, alertService) 
         $scope.originalFileSrc = originalFilePath($scope.doc.location, $scope.doc.name);
         $scope.fileName = $scope.doc.name;
     }
-
-    mcapi('/datafile/%', $routeParams.id)
+    mcapi('/datafile/%', $stateParams.id)
         .success(function (data) {
             $scope.doc = data;
-            console.dir($scope.doc)
             $scope.setupAccessToUserFile();
         })
         .error(function (data) {
             alertService.sendMessage(data.error);
         }).jsonp();
- $scope.tagchoices = new Array();
+    $scope.tagchoices = new Array();
     $scope.originalTags = [];
     mcapi('/tags')
         .success(function (data) {

@@ -6,12 +6,27 @@
                 <ul class="nav nav-list">
 
                     <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
-                    <li id="my-data-tab"><a href="#/subpage-template/data-tab">My Data</a></li>
-                    <li id="tags-tab"><a href="#/subpage-template/tags-tab">Tags</a></li>
-                    <li id="conditions-tab"><a href="#/subpage-template/conditions-tab">Templates</a></li>
-                    <li id="provenance-tab"><a href="#/subpage-template/provenance-tab">Provenance</a></li>
-                    <li id="upload-tab"><a href="#/subpage-template/upload-tab">Upload/Download</a></li>
-                    <li id="reviews-tab"><a href="#/subpage-template/reviews-tab">Reviews <span ng-controller="ReviewListController">
+
+                    <li><a href="">Search</a></li>
+                    <li><a href="">Messages</a></li>
+
+                    <li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>
+                        <div class="project-scrollbar" ng-show="clicked">
+                                <ul ng-repeat="proj in projects">
+                                    <li><a href="#/mytools/projects/{{proj.id}}"
+                                           ng-click="selected_project(proj.id)">{{proj.name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                    </li>
+                    <li id="data-tab"><a href="#/mytools/datatab">My Data</a></li>
+                    <li id="tags-tab"><a href="#/mytools/tagstab">Tags</a></li>
+                    <li id="conditions-tab"><a href="#/mytools/conditionstab">Templates</a></li>
+                    <li id="provenance-tab"><a href="#/mytools/provenancetab">Provenance</a></li>
+                    <li id="upload-tab"><a href="#/mytools/uploadtab">Upload/Download</a></li>
+                    <li id="reviews-tab"><a href="#/mytools/reviewstab">Reviews <span ng-controller="ReviewListController">
                             ({{reviewstoConduct.length}})
                         </span></a>
 
@@ -43,46 +58,7 @@
 
 
     <div class="span8">
-        <div ng-include src="template"></div>
-
-        <!--<table>-->
-            <!--<tr>-->
-                <!--<td><h4>Data: </h4></td>-->
-                <!--<td><a href="#/datagroups">My Data Directories</a></td>-->
-                <!--<td><a href="#/data/mydata">My Data</a></td>-->
-                <!--<td><a href="#/datagroups/tree">My Projects Tree</a></td>-->
-                <!--<td><a href="#/datagroups/tree/group">My Groups Projects Tree</a></td>-->
-                <!--<td><a href="#/datagroupgrid">Thumbnail View</a></td>-->
-                <!--&lt;!&ndash;<td><a href="#/my_lab">Data by Lab</a></td>&ndash;&gt;-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Tags:</h4></td>-->
-                <!--<td><a href="#/tags/list/all">List Tags</a></td>-->
-                <!--<td><a href="#/tags/list/mytags">Tags On My Data</a></td>-->
-                <!--<td><a href="#/tags/cloud/global">Global Tag Cloud</a></td>-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Upload/Download:</h4></td>-->
-                <!--<td><a href="#/upload/file">Upload File</a></td>-->
-                <!--<td><a href="#/upload/directory">Upload Directory</a></td>-->
-                <!--<td><a href="#/updownload/queue">View Upload/Download Queue</a></td>-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Conditions</h4></td>-->
-                <!--<td><a href="#/conditions/template/create">Create condition template</a></td>-->
-                <!--<td><a href="#/conditions/template/list">List condition templates</a></td>-->
-                <!--<td><a href="#/conditions/list">List all conditions</a></td>-->
-            <!--</tr>-->
-
-            <!--<tr>-->
-                <!--<td><h4>Provenance</h4></td>-->
-                <!--<td><a href="#/provenance">track</a></td>-->
-
-            <!--</tr>-->
-        <!--</table>-->
+        <div ui-view></div>
 
     </div>
 

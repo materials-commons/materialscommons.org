@@ -1,10 +1,12 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request
+from flask import request, g
 import rethinkdb as r
 import error
 import dmutil
 import access
+from args import add_all_arg_options, json_as_format_arg
+
 
 @app.route('/processes/<process_id>', methods=['GET'])
 @jsonp
@@ -43,3 +45,13 @@ def create_process():
     p['citations'] = dmutil.get_optional('citations', j, [])
     p['status'] = dmutil.get_optional('status', j)
     return dmutil.insert_entry('processes', p)
+
+@app.route('/processes/project/<project_id>', methods=['GET'])
+@jsonp
+def get_all_processes_for_project(project_id):
+    rr = r.table('processes').filter({'project': project_id}).pluck('id', 'name')
+    #rr = add_all_arg_options(rr)
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return json_as_format_arg(selection)
+
+
