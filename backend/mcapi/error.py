@@ -10,7 +10,7 @@ class HttpStatusCode(object):
     STATUS_NOT_FOUND = 404
     STATUS_METHOD_NOT_ALLOWED = 405
     STATUS_NOT_ACCEPTABLE = 406
-    STATUS_UPDATE_CONFLICT = 409
+    STATUS_ALREADY_EXISTS = 409
 
     #
     # Server Errors
@@ -39,8 +39,8 @@ def method_not_allowed(message):
 def not_acceptable(message):
     return error_response(message, HttpStatusCode.STATUS_NOT_ACCEPTABLE)
 
-def update_conflict(message):
-    return error_response(message, HttpStatusCode.STATUS_UPDATE_CONFLICT)
+def already_exists(message):
+    return error_response(message, HttpStatusCode.STATUS_ALREADY_EXISTS)
 
 def server_internal_error(message):
     return error_response(message, HttpStatusCode.STATUS_SERVER_INTERNAL_ERROR)
