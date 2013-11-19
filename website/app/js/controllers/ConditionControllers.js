@@ -28,7 +28,7 @@ function ListConditionControllers($scope, mcapi, $state) {
         }).jsonp();
 
     $scope.display_template = function (t) {
-        $state.transitionTo('subpages.templatereport', {id: t.id})
+        $state.transitionTo('mytools.templatereport', {id: t.id})
     }
 }
 

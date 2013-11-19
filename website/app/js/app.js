@@ -58,38 +58,32 @@ app.config(function ($stateProvider) {
     /**
      * Mytools - Subpage is the parent and the rest inherit
      */
-        .state('subpages', {
-            url: '/subpages',
-            abstract: true,
-            templateUrl: 'partials/my-tools.html'
 
-        })
-        .state('subpages.datatab', {
+        .state('mytools.datatab', {
             url: '/datatab',
             templateUrl: 'partials/data/data-subpage.html'
-
         })
-        .state('subpages.myprojects', {
+        .state('mytools.myprojects', {
             url: '/myprojects',
             templateUrl: 'partials/datagroups/my_data_groups.html',
             controller: 'MyDataGroupsController'
         })
-        .state('subpages.mydata', {
+        .state('mytools.mydata', {
             url: '/mydata',
             templateUrl: 'partials/data/my-data.html',
             controller: 'MyDataController'
         })
-        .state('subpages.myprojectstree', {
+        .state('mytools.myprojectstree', {
             url: '/myprojectstree',
             templateUrl: 'partials/datagroups/tree.html',
             controller: 'MyDataGroupsTreeController'
         })
-        .state('subpages.groupprojectstree', {
+        .state('mytools.groupprojectstree', {
             url: '/groupprojectstree',
             templateUrl: 'partials/datagroups/group-tree.html',
             controller: 'MyGroupsDataGroupsTreeController'
         })
-        .state('subpages.thumbnail', {
+        .state('mytools.thumbnail', {
             url: '/thumbnail',
             templateUrl: 'partials/thumbnail.html',
             controller: 'DataGroupGridController'
@@ -97,22 +91,22 @@ app.config(function ($stateProvider) {
 
 
 
-        .state('subpages.tagstab', {
+        .state('mytools.tagstab', {
             url: '/tagstab',
             templateUrl: 'partials/tags/tags-subpage.html'
 
         })
-        .state('subpages.listtags', {
+        .state('mytools.listtags', {
             url: '/listtags',
             templateUrl: 'partials/tags/tags-list.html',
             controller: 'AllTagsController'
         })
-        .state('subpages.mytagslist', {
+        .state('mytools.mytagslist', {
             url: '/mytagslist',
             templateUrl: 'partials/tags/my-tags-list.html',
             controller: 'MyTagsController'
         })
-        .state('subpages.globaltagcloud', {
+        .state('mytools.globaltagcloud', {
             url: '/globaltagcloud',
             templateUrl: 'partials/tags/tagcloud.html',
             controller: 'GlobalTagCloudController'
@@ -120,50 +114,50 @@ app.config(function ($stateProvider) {
 
 
 
-        .state('subpages.conditionstab', {
+        .state('mytools.conditionstab', {
             url: '/conditionstab',
             templateUrl: 'partials/conditions/conditions-subpage.html'
 
         })
-        .state('subpages.createtemplate', {
+        .state('mytools.createtemplate', {
             url: '/createtemplate',
             templateUrl: 'partials/conditions/create-template.html',
             controller: 'CreateConditionControllers'
         })
-        .state('subpages.listtemplate', {
+        .state('mytools.listtemplate', {
             url: '/listtemplate',
             templateUrl: 'partials/conditions/list-condition-template.html',
             controller: 'ListConditionControllers'
         })
-        .state('subpages.templatereport', {
+        .state('mytools.templatereport', {
             url: '/templatereport/:id',
             templateUrl: 'partials/conditions/template-report.html',
             controller: 'TemplateReportController'
         })
 
 
-        .state('subpages.provenancetab', {
+        .state('mytools.provenancetab', {
             url: '/provenancetab',
             templateUrl: 'partials/provenance/provenance-subpage.html'
 
         })
-        .state('subpages.uploadtab', {
+        .state('mytools.uploadtab', {
             url: '/uploadtab',
             templateUrl: 'partials/updownload/upload-subpage.html'
 
         })
-        .state('subpages.uploadfile', {
+        .state('mytools.uploadfile', {
             url: '/uploadfile',
             templateUrl: 'partials/updownload/upload-file.html',
             controller:'UploadFileController'
 
         })
-        .state('subpages.reviewstab', {
+        .state('mytools.reviewstab', {
             url: '/reviewstab',
             templateUrl: 'partials/reviews/review-subpage.html'
 
         })
-        .state('subpages.reviewlist', {
+        .state('mytools.reviewlist', {
             url: '/reviewlist',
             templateUrl: 'partials/reviews/review-list.html',
             controller: 'ReviewListController'
@@ -260,7 +254,8 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
 
         if (!User.isAuthenticated()) {
             if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") != -1) {
-                $location.path("/account/login");
+                //$location.path("/account/login");
+                $state.transitionTo('account/login')
             }
         }
         else {
