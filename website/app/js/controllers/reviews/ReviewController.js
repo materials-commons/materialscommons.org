@@ -93,7 +93,7 @@ function ReviewListController($scope, mcapi, $state) {
 
     $scope.startReview = function (id, type) {
         if (type == "data") {
-            $state.transitionTo('data/edit/', {id: id})
+            $state.transitionTo('data/edit/:id', {id: id})
         }
         else {
         }
