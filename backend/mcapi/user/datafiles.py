@@ -89,8 +89,8 @@ def datafiles_list(datadir_id):
 def get_datafile_by_name(datadir_id, name):
     user = access.get_user()
     name = os.path.basename(name)
-    rr = r.tables('datafiles').filter({'name': name, 'owner': user})
-    selection = list(rr.run(g.conn))
+    rr = r.table('datafiles').filter({'name': name, 'owner': user})
+    selection = list(rr.run(g.conn, time_format='raw'))
     if not selection:
         return error.not_found(
             "No such file %s in datadir %s" % (name, datadir_id))
