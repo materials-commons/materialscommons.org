@@ -20,18 +20,14 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/my-tools.html',
             controller: 'ListProjectsController'
         })
-//        .state('projects', {
-//            url: '/projects',
-//            templateUrl: 'partials/my-tools.html',
-//            controller: 'ListProjectsController'
-//        })
-//        .state('projects.item', {
-//            url: '/:project_id',
-//            templateUrl: 'partials/project/project-report.html',
-//            controller: function ($scope, $stateParams) {
-//                $scope.project_id = $stateParams.project_id;
-//            }
-//        })
+
+        .state('mytools.projects', {
+            url: '/projects/:project_id',
+            templateUrl: 'partials/project/project-report.html',
+            controller: function ($scope, $stateParams) {
+                $scope.project_id = $stateParams.project_id;
+            }
+        })
         .state('about', {
             url: '/about',
             templateUrl: 'partials/about.html',
