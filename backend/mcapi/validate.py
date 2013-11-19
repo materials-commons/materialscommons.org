@@ -4,7 +4,7 @@ from flask import g
 
 def project_name_exists(name, user):
     selection = list(r.table('projects').filter({'name': name, 'owner': user}).run(g.conn))
-    if selection is None:
+    if selection:
         return True
     return False
 
@@ -19,9 +19,8 @@ def datadir_id_exists(ddir_id, owner=None):
 
 def item_id_exists(table, item_id, owner=None):
     item = r.table(table).get(item_id).run(g.conn)
-    if item is None:
-        return False
-    if owner is not None:
-        if item.owner != owner:
-            return False
-    return True
+    if item is not None:
+        if owner is not None:
+            if item['owner'] != owner:
+                return None
+    return item
