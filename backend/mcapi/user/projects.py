@@ -60,7 +60,6 @@ def get_datadirs_for_project(project_id):
 @apikey(shared=True)
 @jsonp
 def get_datadirs_as_tree_for_project(project_id):
-    print 'tree***********88'
     user = access.get_user()
     rr = r.table('project2datadir').filter({'project_id': project_id})
     rr = rr.eq_join('project_id', r.table('projects')).zip()
@@ -131,7 +130,6 @@ def create_project():
 
 
 def get_project_toplevel_datadir(project, user):
-    print "get_project_toplevel_datadir"
     filter_by = {'name': project, 'owner': user}
     selection = list(r.table('projects').filter(filter_by).run(g.conn))
     proj = selection[0]
