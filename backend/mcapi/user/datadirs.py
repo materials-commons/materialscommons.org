@@ -8,7 +8,10 @@ from ..utils import json_for_single_item_list
 from ..args import add_all_arg_options, json_as_format_arg
 from .. import access
 from ..import dmutil
+from ..import error
+from ..import validate
 from loader.model import datadir
+
 
 @app.route('/datadir/<path:datadirid>')
 @apikey(shared=True)
@@ -20,6 +23,7 @@ def datadir_for_user(datadirid):
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_for_single_item_list(selection)
 
+
 @app.route('/datadirs')
 @apikey(shared=True)
 @jsonp
@@ -29,6 +33,7 @@ def datadirs_for_user():
     rr = add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_as_format_arg(selection)
+
 
 @app.route('/datadirs/datafiles')
 @apikey(shared=True)
@@ -59,6 +64,7 @@ def list_datadirs_with_data_by_user():
             datadirs.append(current_datadir)
     return json_as_format_arg(datadirs)
 
+
 class DItem:
     def __init__(self, id, name, type):
         self.id = id
@@ -67,9 +73,11 @@ class DItem:
         self.type = type
         self.children = []
 
+
 class DEncoder(json.JSONEncoder):
     def default(self, o):
         return o.__dict__
+
 
 @app.route('/datadirs/tree/groups')
 @apikey
@@ -87,6 +95,7 @@ def group_datadirs_as_tree():
                          .run(g.conn, time_format='raw'))
     return buildTreeFromSelection(selection)
 
+
 @app.route('/datadirs/tree')
 @apikey
 @jsonp
@@ -99,6 +108,7 @@ def user_datadirs_as_tree():
                                          lambda ddrow, drow: ddrow['datafiles'].contains(drow['id']))\
                          .run(g.conn, time_format='raw'))
     return buildTreeFromSelection(selection)
+
 
 def buildTreeFromSelection(selection):
     if not selection:
@@ -135,9 +145,11 @@ def buildTreeFromSelection(selection):
             currentDataDir.children.append(data)
     return json.dumps(topLevelDirs, indent=4, cls=DEncoder)
 
+
 def isTopLevel(ddir):
     # Top level dirs don't have a '/' in their names
     return "/" not in ddir['name']
+
 
 def addToTopLevelDirs(ddir, topLevelDirs):
     item = find_in_ditem_list(ddir['name'], topLevelDirs)
@@ -147,11 +159,13 @@ def addToTopLevelDirs(ddir, topLevelDirs):
         item = dd
     return item
 
+
 def find_in_ditem_list(name, items):
     for item in items:
         if item.name == name:
             return item
     return None
+
 
 @app.route('/datadirs', methods=['POST'])
 @apikey
@@ -161,10 +175,15 @@ def create_datadir():
     j = request.get_json()
     project = dmutil.get_required('project', j)
     ddir = construct_datadir(j, user)
+    if not validate.project_id_exists(project, user):
+        return error.bad_request("Invalid request: bad project")
+    if not validate.datadir_id_exists(ddir.parent, user):
+        return error.bad_request("Invalid request: bad datadir parent")
     ddir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
     proj2datadir = {'project_id': project, 'datadir_id': ddir_id}
     dmutil.insert_entry('project2datadir', proj2datadir)
     return json_as_format_arg({'id': ddir_id})
+
 
 def construct_datadir(j, user):
     parent = dmutil.get_required('parent', j)

@@ -57,11 +57,16 @@ def import_file():
     datadir = request.form['datadir']
     mkdirp('/tmp/uploads')
     file = request.files['file']
+    if not validate_import_parms(project, datadir, user, file.filename):
+        return error.bad_request("Invalidate import bad project, datadir or existing file without provenance")
     dfid = make_datafile(datadir, user, file.filename)
     filepath = os.path.join('/tmp/uploads', dfid)
     file.save(filepath)
     #load_data_file.delay(df, project, datadir)
     return jsonify({'id': dfid})
+
+def validate_import_parms(project, datadir, filename, user):
+    return True
 
 def make_datafile(datadir, user, filename):
     df = datafile.DataFile(filename, "private", user)

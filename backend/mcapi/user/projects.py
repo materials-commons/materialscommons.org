@@ -8,6 +8,8 @@ from os.path import dirname
 import json
 from .. import access
 from ..import dmutil
+from ..import error
+from ..import validate
 from loader.model import project
 from loader.model import datadir
 
@@ -98,12 +100,17 @@ def find_in_ditem_list(name, items):
 def create_project():
     j = request.get_json()
     user = access.get_user()
+    name = dmutil.get_required('name', j)
+    if validate.project_exists(name, user):
+        return error.bad_request("Project %s already exists" % name)
     datadir_id = make_toplevel_datadir(j, user)
-    proj = construct_project(j, user, datadir_id)
+    proj = project.Project(name, datadir_id, user)
     project_id = dmutil.insert_entry_id('projects', proj.__dict__)
     proj2datadir = {'project_id': project_id, 'datadir_id': proj.datadir}
     dmutil.insert_entry('project2datadir', proj2datadir)
     return args.json_as_format_arg(proj2datadir)
+
+
 
 def make_toplevel_datadir(j, user):
     name = dmutil.get_required('name', j)
@@ -111,6 +118,3 @@ def make_toplevel_datadir(j, user):
     ddir = datadir.DataDir(name, access, user, "")
     return dmutil.insert_entry_id('datadirs', ddir.__dict__)
 
-def construct_project(j, user, datadir):
-    name = dmutil.get_required("name", j)
-    return project.Project(name, datadir, user)
