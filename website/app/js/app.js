@@ -7,6 +7,9 @@ app.config(function ($stateProvider) {
     mcglobals = {};
     doConfig();
     $stateProvider
+    /**
+     * Top level navigation
+     */
         .state('home', {
             url: '/home',
             templateUrl: 'partials/home.html',
@@ -17,18 +20,18 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/my-tools.html',
             controller: 'ListProjectsController'
         })
-        .state('projects', {
-            url: '/projects',
-            templateUrl: 'partials/my-tools.html',
-            controller: 'ListProjectsController'
-        })
-        .state('projects.item', {
-            url: '/:project_id',
-            templateUrl: 'partials/project/project-report.html',
-            controller: function ($scope, $stateParams) {
-                $scope.project_id = $stateParams.project_id;
-            }
-        })
+//        .state('projects', {
+//            url: '/projects',
+//            templateUrl: 'partials/my-tools.html',
+//            controller: 'ListProjectsController'
+//        })
+//        .state('projects.item', {
+//            url: '/:project_id',
+//            templateUrl: 'partials/project/project-report.html',
+//            controller: function ($scope, $stateParams) {
+//                $scope.project_id = $stateParams.project_id;
+//            }
+//        })
         .state('about', {
             url: '/about',
             templateUrl: 'partials/about.html',
@@ -47,6 +50,102 @@ app.config(function ($stateProvider) {
             controller: 'HelpController'
 
         })
+    /**
+     * End To level navigation
+     */
+
+
+    /**
+     * Mytools - Subpage is the parent and the rest inherit
+     */
+        .state('subpages', {
+            url: '/subpages',
+            abstract: true,
+            templateUrl: 'partials/my-tools.html'
+
+        })
+        .state('subpages.datatab', {
+            url: '/datatab',
+            templateUrl: 'partials/data/data-subpage.html'
+
+        })
+        .state('subpages.myprojects', {
+            url: '/myprojects',
+            templateUrl: 'partials/datagroups/my_data_groups.html',
+            controller: 'MyDataGroupsController'
+        })
+        .state('subpages.mydata', {
+            url: '/mydata',
+            templateUrl: 'partials/data/my-data.html',
+            controller: 'MyDataController'
+        })
+        .state('subpages.myprojectstree', {
+            url: '/myprojectstree',
+            templateUrl: 'partials/datagroups/tree.html',
+            controller: 'MyDataGroupsTreeController'
+        })
+        .state('subpages.groupprojectstree', {
+            url: '/groupprojectstree',
+            templateUrl: 'partials/datagroups/group-tree.html',
+            controller: 'MyGroupsDataGroupsTreeController'
+        })
+        .state('subpages.thumbnail', {
+            url: '/thumbnail',
+            templateUrl: 'partials/thumbnail.html',
+            controller: 'DataGroupGridController'
+        })
+
+
+
+        .state('subpages.tagstab', {
+            url: '/tagstab',
+            templateUrl: 'partials/tags/tags-subpage.html'
+
+        })
+        .state('subpages.listtags', {
+            url: '/listtags',
+            templateUrl: 'partials/tags/tags-list.html',
+            controller: 'AllTagsController'
+        })
+        .state('subpages.mytagslist', {
+            url: '/mytagslist',
+            templateUrl: 'partials/tags/my-tags-list.html',
+            controller: 'MyTagsController'
+        })
+        .state('subpages.globaltagcloud', {
+            url: '/globaltagcloud',
+            templateUrl: 'partials/tags/tagcloud.html',
+            controller: 'GlobalTagCloudController'
+        })
+
+
+
+        .state('subpages.conditionstab', {
+            url: '/conditionstab',
+            templateUrl: 'partials/conditions/conditions-subpage.html'
+
+        })
+        .state('subpages.provenancetab', {
+            url: '/provenancetab',
+            templateUrl: 'partials/provenance/provenance-subpage.html'
+
+        })
+        .state('subpages.uploadtab', {
+            url: '/uploadtab',
+            templateUrl: 'partials/updownload/upload-subpage.html'
+
+        })
+        .state('subpages.reviewstab', {
+            url: '/reviewstab',
+            templateUrl: 'partials/reviews/review-subpage.html'
+
+        })
+    /**
+     * END Subpage
+     */
+
+
+
         .state('account/details', {
             url: '/account/details',
             templateUrl: 'partials/account/account-details.html',
@@ -79,11 +178,17 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/data/data-edit.html',
             controller: 'DataEditController'
         })
-        .state('phones', {
-            url: '/phones',
-            templateUrl: 'partials/phones.html',
-            controller: 'PhoneListController'
+        .state('datagroups/data/:id', {
+            url: '/datagroups/data/:id',
+            templateUrl: 'partials/datagroups/datareport.html',
+            controller: 'DataDirReportController'
         })
+        .state('data/bytag/:name', {
+            url: '/data/bytag/:name',
+            templateUrl: 'partials/tags/data-for-tag.html',
+            controller: 'TagDataController'
+        })
+
 
     ;
 })
@@ -157,7 +262,8 @@ function matchesPartial(next, what, controller) {
             return true;
         }
         else {
-            return next.controller.toString().indexOf(controller) != -1;
+            // return next.controller.toString().indexOf(controller) != -1;
+            return value
         }
     }
 }

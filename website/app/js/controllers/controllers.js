@@ -1,5 +1,6 @@
 'use strict';
 
+
 function FrontPageController($scope, $location) {
     $scope.messages = [];
     $scope.sent = 0;
@@ -33,17 +34,6 @@ function ContactController($scope) {
 function HelpController($scope) {
     $scope.pageDescription = "Help";
 
-}
-
-function PhoneListController($scope) {
-    $scope.phones = [
-        {'name': 'Nexus S',
-            'snippet': 'Fast just got faster with Nexus S.'},
-        {'name': 'Motorola XOOM™ with Wi-Fi',
-            'snippet': 'The Next, Next Generation tablet.'},
-        {'name': 'MOTOROLA XOOM™',
-            'snippet': 'The Next, Next Generation tablet.'}
-    ];
 }
 
 
@@ -167,7 +157,7 @@ function SubPageController($scope, $routeParams) {
                 break;
 
             case "my-tags-list-tab":
-                $scope.template = "partials/tags/my-tags-list.html";
+                $scope.template = "partials/tags/tags-list.html";
                 $('#tags-tab').addClass("active");
                 break;
 
