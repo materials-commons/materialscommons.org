@@ -7,18 +7,28 @@
 
                     <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
 
-                    <li><a href="">Search</a></li>
-                    <li><a href="">Messages</a></li>
+                    <!--<li><a href="">Search</a></li>-->
+                    <!--<li><a href="">Messages</a></li>-->
 
-                    <li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>
-                        <div class="project-scrollbar" ng-show="clicked">
-                                <ul ng-repeat="proj in projects">
-                                    <li><a href="#/projects/{{proj.id}}"
-                                           ng-click="selected_project(proj.id)">{{proj.name}}</a>
-                                    </li>
-                                </ul>
-                            </div>
+                    <!--<li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>-->
+                        <!--<div class="project-scrollbar" ng-show="clicked">-->
+                                <!--<ul ng-repeat="proj in projects">-->
+                                    <!--<li><a href="#/projects/{{proj.id}}"-->
+                                           <!--ng-click="selected_project(proj.id)">{{proj.name}}</a>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
 
+
+                    <!--</li>-->
+                    <li id="data-tab"><a href="#/subpages/datatab">My Data</a></li>
+                    <li id="tags-tab"><a href="#/subpages/tagstab">Tags</a></li>
+                    <li id="conditions-tab"><a href="#/subpages/conditionstab">Templates</a></li>
+                    <li id="provenance-tab"><a href="#/subpages/provenancetab">Provenance</a></li>
+                    <li id="upload-tab"><a href="#/subpages/uploadtab">Upload/Download</a></li>
+                    <li id="reviews-tab"><a href="#/subpages/reviewstab">Reviews <span ng-controller="ReviewListController">
+                            ({{reviewstoConduct.length}})
+                        </span></a>
 
                     </li>
 

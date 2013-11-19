@@ -58,17 +58,17 @@ function MyGroupsDataGroupsTreeController($scope, mcapi, $location) {
     }
 }
 
-function DataDirReportController($scope, $routeParams, $location, mcapi) {
+function DataDirReportController($scope,  $location, mcapi, $stateParams) {
     $scope.get_full_data_with_id = function (id) {
-        $location.path("/data/data/" + id);
+        //$location.path("/data/data/" + id);
     }
 
-    if ($routeParams.id) {
-        mcapi('/datadir/%', $routeParams.id)
+    if ($stateParams.id) {
+        mcapi('/datadir/%', $stateParams.id)
             .arg('order_by=name')
             .success(function (data) {
                 $scope.data_dir = data;
-                mcapi('/datafile/ids/%', $routeParams.id)
+                mcapi('/datafile/ids/%', $stateParams.id)
                     .success(function (datafiles) {
                         $scope.datafiles = datafiles;
                     })
