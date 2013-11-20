@@ -106,6 +106,13 @@ Filter.filter('removeProperties', function () {
     }
 });
 
+Filter.filter('reverse', function () {
+    return function () {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
+
 
 
 
