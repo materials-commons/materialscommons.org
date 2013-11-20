@@ -3,7 +3,7 @@ from os import environ
 import os.path
 
 
-MCDIR = environ.get("MCDIR") or '/mcfs/data'
+MCDIR = environ.get("MCDIR") or '/mcfs/data/materialscommons'
 
 
 def for_uid(uidstr):
