@@ -35,7 +35,8 @@ function HelpController($scope) {
     //$scope.pageDescription = "Help";
     $scope.list = [
         {'name': 'Mac'},
-        {'name': 'John'}
+        {'name': 'John'},
+        {'name': 'test'}
     ];
 
 }
