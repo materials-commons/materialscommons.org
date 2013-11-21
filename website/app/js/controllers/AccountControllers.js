@@ -1,4 +1,4 @@
-function LoginController($scope, $location, User, alertService, mcapi) {
+function LoginController($scope, $location, $state, User, alertService, mcapi) {
     $scope.alerts = [];
 
     $scope.login = function () {
@@ -7,7 +7,7 @@ function LoginController($scope, $location, User, alertService, mcapi) {
                 User.setAuthenticated(true, apikey.apikey, $scope.email);
                 $scope.msg = "Logged in Successfully";
                 alertService.sendMessage($scope.msg);
-                $location.path('/my-tools');
+                $state.transitionTo('mytools')
             })
             .error(function (data) {
                 alertService.sendMessage(data.error);
@@ -27,10 +27,9 @@ function LogOutController($rootScope, $location, $cookieStore, User, Stater) {
     $cookieStore.remove('mcuser');
 }
 
-function CreateAccountController($scope, mcapi, $location, alertService) {
+function CreateAccountController($scope, mcapi, $state, alertService) {
     $scope.create_account = function () {
         if ($scope.password != $scope.confirm_password) {
-            //alert("Passwords don't match");
             $scope.msg = "Passwords do not match!"
             alertService.sendMessage($scope.msg);
         }
@@ -42,7 +41,7 @@ function CreateAccountController($scope, mcapi, $location, alertService) {
                 .success(function (data) {
                     $scope.msg = "Account has been created successfully"
                     alertService.sendMessage($scope.msg);
-                    $location.path('/account/login');
+                    $state.transitionTo('account/login')
                 })
                 .error(function (data) {
                     alertService.sendMessage(data.error);
