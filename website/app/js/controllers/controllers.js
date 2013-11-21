@@ -32,12 +32,8 @@ function ContactController($scope) {
 }
 
 function HelpController($scope) {
-    //$scope.pageDescription = "Help";
-    $scope.list = [
-        {'name': 'Mac'},
-        {'name': 'John'},
-        {'name': 'test'}
-    ];
+    $scope.pageDescription = "Help";
+
 
 }
 
