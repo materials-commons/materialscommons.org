@@ -5,10 +5,12 @@ import threading
 _lock = threading.Lock()
 _apikeys = {}
 
+
 def valid_apikey(apikey):
     if not _apikeys:
         _load_apikeys()
     return apikey in _apikeys
+
 
 def _load_apikeys():
     _lock.acquire()
@@ -21,14 +23,18 @@ def _load_apikeys():
     finally:
         _lock.release()
 
+
 def remove_apikey(apikey):
     _apikeys.clear()
+
 
 def apikey_user(apikey):
     return _lookup_key(apikey)
 
+
 def user_apikey(user):
     return _lookup_key(user)
+
 
 def _lookup_key(what):
     if what in _apikeys:
