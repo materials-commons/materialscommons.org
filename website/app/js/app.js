@@ -162,7 +162,11 @@ app.config(function ($stateProvider) {
      * END Subpage
      */
 
-
+        .state('account/create-account', {
+            url: '/account/create-account',
+            templateUrl: 'partials/account/create-account.html',
+            controller: 'CreateAccountController'
+        })
 
         .state('account/details', {
             url: '/account/details',
