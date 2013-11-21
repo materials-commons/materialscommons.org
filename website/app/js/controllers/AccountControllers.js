@@ -1,4 +1,4 @@
-function LoginController($scope, $location, $state, User, alertService, mcapi) {
+function LoginController($scope, $state, User, alertService, mcapi) {
     $scope.alerts = [];
 
     $scope.login = function () {
@@ -15,15 +15,15 @@ function LoginController($scope, $location, $state, User, alertService, mcapi) {
     }
 
     $scope.cancel = function () {
-        $location.path("/home");
+        $state.transitionTo('home')
     }
 }
 
-function LogOutController($rootScope, $location, $cookieStore, User, Stater) {
+function LogOutController($rootScope, $state,  $cookieStore, User, Stater) {
     Stater.clear();
     $rootScope.email_address = '';
     User.setAuthenticated(false, '', '');
-    $location.path('/home');
+    $state.transitionTo('home')
     $cookieStore.remove('mcuser');
 }
 
