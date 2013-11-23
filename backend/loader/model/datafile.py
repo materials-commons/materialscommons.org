@@ -11,3 +11,4 @@ class DataFile(DataItem):
         self.text = ""
         self.metatags = []
         self.datadirs = []
+        self.parent = ""
