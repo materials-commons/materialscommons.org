@@ -4,17 +4,17 @@
 ** Code was modified to meet additional requirements for example calling out to an
 ** external selected function.
 */
-angular.module('TreeTable', [])
-.directive('treetable', function ($compile, $timeout) {
+
+angular.module('TreeTable', []).directive('treetable', function ($compile, $timeout) {
     return {
         restrict: 'A',
         link: function (scope, element) {
             $timeout(function () {
                 $(element).treetable({ expandable: true });
-            }, 0)
+            }, 0);
 
         }
-    }
+    };
 });
 
 angular.module("NgTree.tpls", ["template/ngtree/tree.html", "template/ngtree/element.html"]);
