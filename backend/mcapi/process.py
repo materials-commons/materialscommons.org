@@ -50,8 +50,6 @@ def create_process():
 @jsonp
 def get_all_processes_for_project(project_id):
     rr = r.table('processes').filter({'project': project_id}).pluck('id', 'name')
-    #rr = add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_as_format_arg(selection)
-
 

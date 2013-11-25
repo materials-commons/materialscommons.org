@@ -1,6 +1,6 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router']);
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'TreeTable', 'Provenance']);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -134,8 +134,15 @@ app.config(function ($stateProvider) {
 
         .state('mytools.provenancetab', {
             url: '/provenancetab',
-            templateUrl: 'partials/provenance/provenance-subpage.html'
+            templateUrl: 'partials/provenance/provenance-subpage.html',
+            controller: 'ProvenanceController'
 
+        })
+
+        .state('mytools.provtrack', {
+            url: '/provtrack',
+            templateUrl: 'partials/provenance/provenance.html',
+            controller: 'ProvenanceController'
         })
         .state('mytools.uploadtab', {
             url: '/uploadtab',
