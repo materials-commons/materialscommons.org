@@ -1,4 +1,3 @@
-'use strict';
 
 
 function FrontPageController($scope, $location) {
