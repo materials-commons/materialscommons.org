@@ -293,7 +293,7 @@ function matchesPartial(next, what, controller) {
         }
         else {
             // return next.controller.toString().indexOf(controller) != -1;
-            return value
+            return value;
         }
     }
 }
