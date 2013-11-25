@@ -32,6 +32,7 @@ function MyDataGroupsTreeController($scope, mcapi, $location, treeToggle) {
         .success(function (tree) {
             $scope.tree = tree;
             $scope.selected = treeToggle.get_all();
+            console.dir(tree)
         })
         .error(function () {
         }).jsonp();

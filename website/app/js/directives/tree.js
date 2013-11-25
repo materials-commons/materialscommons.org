@@ -4,6 +4,18 @@
 ** Code was modified to meet additional requirements for example calling out to an
 ** external selected function.
 */
+angular.module('TreeTable', [])
+.directive('treetable', function ($compile, $timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            $timeout(function () {
+                $(element).treetable({ expandable: true });
+            }, 0)
+
+        }
+    }
+});
 
 angular.module("NgTree.tpls", ["template/ngtree/tree.html", "template/ngtree/element.html"]);
 
@@ -107,9 +119,11 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
     });
 
 angular.module("template/ngtree/tree.html", []).run(["$templateCache", function ($templateCache) {
-    var template = '<ul style="padding:0px; margin:0px;">' +
+    var template =
+        '<ul style="padding:0px; margin:0px;">' +
         '<li ng-repeat="data in treeData|filter:searchModel  " ng-include="\'template/ngtree/element.html\'"></li>' +
-        '</ul>';
+
+        '</ul>'
     $templateCache.put("template/ngtree/tree.html", template);
 }]);
 
@@ -132,6 +146,7 @@ angular.module("template/ngtree/element.html", []).run(["$templateCache", functi
         "</div>" +
         "<ul ng-class='{display:!getSelectedClass(data.id), displayshow:getSelectedClass(data.id)}' style='padding-left: 20px'>" +
         "   <li ng-repeat='data in data.children|filter:searchModel' ng-include='\"template/ngtree/element.html\"' style='padding-left: 0px;'></li>" +
-        "</ul>";
+        "</ul>"
+        ;
     $templateCache.put("template/ngtree/element.html", template);
 }]);
