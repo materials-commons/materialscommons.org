@@ -68,6 +68,7 @@ def get_datadirs_as_tree_for_project(project_id):
     selection = list(rr.run(g.conn, time_format='raw'))
     if len(selection) > 0 and selection[0]['owner'] != user:
         return args.json_as_format_arg([])
+    next_id = 1
     all_data_dirs = {}
     top_level_dirs = []
     ddir = selection[0]
@@ -77,14 +78,18 @@ def get_datadirs_as_tree_for_project(project_id):
         if ddir['name'] <> current_datadir.name:
             if ddir['name'] not in all_data_dirs:
                 if is_top_level(ddir):
-                    dd = add_to_top_level(ddir, top_level_dirs)
+                    dd = add_to_top_level(ddir, top_level_dirs, next_id)
+                    next_id = next_id + 1
                     all_data_dirs[dd.name] = dd
                 elif ddir['name'] in all_data_dirs:
                     dd = all_data_dirs[ddir['name']]
                 else:
                     dd = DItem(ddir['id'], ddir['name'], "datadir")
+                    dd.c_id = str(next_id)
+                    next_id = next_id + 1
                     all_data_dirs[dd.name] = dd
                     dir_to_add_to = all_data_dirs[dirname(dd.name)]
+                    dd.parent_id = dir_to_add_to.c_id
                     dir_to_add_to.children.append(dd)
                 current_datadir = dd
             else:
@@ -96,10 +101,11 @@ def is_top_level(ddir):
     return "/" not in ddir['name']
 
 
-def add_to_top_level(ddir, top_level_dirs):
+def add_to_top_level(ddir, top_level_dirs, c_id):
     item = find_in_ditem_list(ddir['name'], top_level_dirs)
     if not item:
         dd = DItem(ddir['id'], ddir['name'], "datadir")
+        dd.c_id = str(c_id)
         top_level_dirs.append(dd)
         item = dd
     return item
