@@ -7,14 +7,17 @@ import error
 import access
 import mcexceptions
 
+
 def apikey(method=None, shared=False):
     if method is None:
         return partial(apikey, shared=shared)
+
     @wraps(method)
     def wrapper(*args, **kwargs):
         apikey = request.args.get('apikey', default="no_such_key")
         if not apikeydb.valid_apikey(apikey):
-            return error.not_authorized("You are not authorized to access the system")
+            return error.not_authorized(
+                "You are not authorized to access the system")
         apiuser = access.get_apiuser()
         user = request.args.get('user', default=apiuser)
         if shared:
@@ -24,7 +27,9 @@ def apikey(method=None, shared=False):
         return method(*args, **kwargs)
     return wrapper
 
-def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_to_all=True, automatic_options=True):
+
+def crossdomain(origin=None, methods=None, headers=None,
+                max_age=21600, attach_to_all=True, automatic_options=True):
     if methods is not None:
         methods = ', '.join(sorted(x.upper() for x in methods))
     if headers is not None and not isinstance(headers, basestring):
@@ -52,7 +57,8 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
             h['Access-Control-Allow-Origin'] = origin
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
-            request_headers = request.headers.get('Access-Control-Request-Headers')
+            request_headers = request.headers.get(
+                'Access-Control-Request-Headers')
             if request_headers is not None:
                 h['Access-Control-Allow-Headers'] = request_headers
             return resp
@@ -61,6 +67,7 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
         f.required_methods = ['OPTIONS']
         return update_wrapper(wrapped_function, f)
     return decorator
+
 
 def jsonp(f):
     """Wraps JSONified output for JSONP """
@@ -71,19 +78,23 @@ def jsonp(f):
             rv = f(*args, **kwargs)
             data_as_dict = json2dict(rv)
             if hasattr(rv, "status_code"):
-                jsonpjson = {'status_code' : rv.status_code,\
-                             'success' : is_successful(rv.status_code),\
+                jsonpjson = {'status_code': rv.status_code,
+                             'success': is_successful(rv.status_code),
                              'data': data_as_dict}
             else:
-                jsonpjson = {'status_code': 200, 'success' : True, 'data': data_as_dict}
+                jsonpjson = {'status_code': 200, 'success': True,
+                             'data': data_as_dict}
             content = str(callback) + '(' + json.dumps(jsonpjson) + ')'
-            return current_app.response_class(content, mimetype='application/javascript')
+            mimetype = 'application/javascript'
+            return current_app.response_class(content, mimetype=mimetype)
         else:
             return f(*args, **kwargs)
     return decorated_function
 
+
 def is_successful(status_code):
     return status_code < 299 and status_code >= 200
+
 
 def json2dict(what):
     if hasattr(what, "status_code"):

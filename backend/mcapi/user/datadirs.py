@@ -68,6 +68,8 @@ def list_datadirs_with_data_by_user():
 class DItem:
     def __init__(self, id, name, type):
         self.id = id
+        self.c_id = ""
+        self.parent_id = ""
         self.name = name
         self.displayname = basename(name)
         self.type = type
@@ -117,7 +119,9 @@ def buildTreeFromSelection(selection):
     allDataDirs = {}
     # The first entry is a top level dir
     ddir = selection[0]['left']
-    currentDataDir = addToTopLevelDirs(ddir, topLevelDirs)
+    next_id = 1
+    currentDataDir = addToTopLevelDirs(ddir, topLevelDirs, next_id)
+    next_id = next_id + 1
     allDataDirs[currentDataDir.name] = currentDataDir
     for item in selection:
         ddir = item['left']
@@ -128,20 +132,27 @@ def buildTreeFromSelection(selection):
         if ddir['name'] <> currentDataDir.name:
             if ddir['name'] not in allDataDirs:
                 if isTopLevel(ddir):
-                    dd = addToTopLevelDirs(ddir, topLevelDirs)
+                    dd = addToTopLevelDirs(ddir, topLevelDirs, next_id)
+                    next_id = next_id + 1
                     allDataDirs[dd.name] = dd
                 elif ddir['name'] in allDataDirs:
                     dd = allDataDirs[ddir['name']]
                 else:
                     dd = DItem(ddir['id'], ddir['name'], "datadir")
+                    dd.c_id = str(next_id)
+                    next_id = next_id + 1
                     allDataDirs[dd.name] = dd
                     dirToAddTo = allDataDirs[dirname(dd.name)]
+                    dd.parent_id = dirToAddTo.c_id
                     dirToAddTo.children.append(dd)
                 currentDataDir = dd
             else:
                 currentDataDir = allDataDirs[ddir['name']]
         if data:
             data = DItem(data['id'], data['name'], "datafile")
+            data.c_id = str(next_id)
+            next_id = next_id + 1
+            data.parent_id = currentDataDir.c_id
             currentDataDir.children.append(data)
     return json.dumps(topLevelDirs, indent=4, cls=DEncoder)
 
@@ -151,10 +162,11 @@ def isTopLevel(ddir):
     return "/" not in ddir['name']
 
 
-def addToTopLevelDirs(ddir, topLevelDirs):
+def addToTopLevelDirs(ddir, topLevelDirs, c_id):
     item = find_in_ditem_list(ddir['name'], topLevelDirs)
     if not item:
         dd = DItem(ddir['id'], ddir['name'], "datadir")
+        dd.c_id = str(c_id)
         topLevelDirs.append(dd)
         item = dd
     return item
