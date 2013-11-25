@@ -3,12 +3,13 @@ from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request
 import rethinkdb as r
 from .. import args
-from datadirs import DItem, DEncoder
+from datadirs import DItem, DEncoder, buildTreeFromSelection
 from os.path import dirname
 import json
 from .. import access
-from ..import dmutil
-from ..import validate
+from .. import dmutil
+from .. import validate
+from .. import error
 from loader.model import project
 from loader.model import datadir
 
@@ -28,7 +29,6 @@ def get_all_projects():
 @apikey(shared=True)
 @jsonp
 def get_project(id):
-    user = access.get_user()
     rr = r.table('projects').filter({'id': id})
     rr = args.add_all_arg_options(rr)
     items = list(rr.run(g.conn, time_format='raw'))
@@ -56,6 +56,26 @@ def get_datadirs_for_project(project_id):
     return args.json_as_format_arg([])
 
 
+@app.route('/projects/<project_id>/tree')
+@apikey(shared=True)
+@jsonp
+def get_project_tree(project_id):
+    user = access.get_user()
+    proj = r.table('projects').get(project_id).run(g.conn)
+    if proj is None:
+        return error.bad_request("Unknown project id: %s" % (project_id))
+    access.check(user, proj['owner'])
+    rr = r.table('project2datadir').filter({'project_id': project_id})
+    rr = rr.eq_join('project_id', r.table('projects')).zip()
+    rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
+    rr = rr.pluck('id', 'name', 'owner', 'datafiles').order_by('name')
+    rr = rr.outer_join(r.table('datafiles').pluck('id', 'name'),
+                       lambda ddrow, drow: ddrow['datafiles']
+                       .contains(drow['id']))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return buildTreeFromSelection(selection)
+
+
 @app.route('/projects/<project_id>/datadirs/tree')
 @apikey(shared=True)
 @jsonp
@@ -75,7 +95,7 @@ def get_datadirs_as_tree_for_project(project_id):
     current_datadir = add_to_top_level(ddir, top_level_dirs)
     all_data_dirs[current_datadir.name] = current_datadir
     for ddir in selection:
-        if ddir['name'] <> current_datadir.name:
+        if ddir['name'] != current_datadir.name:
             if ddir['name'] not in all_data_dirs:
                 if is_top_level(ddir):
                     dd = add_to_top_level(ddir, top_level_dirs, next_id)
