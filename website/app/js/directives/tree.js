@@ -5,17 +5,7 @@
 ** external selected function.
 */
 
-angular.module('TreeTable', []).directive('treetable', function ($compile, $timeout) {
-    return {
-        restrict: 'A',
-        link: function (scope, element) {
-            $timeout(function () {
-                $(element).treetable({ expandable: true });
-            }, 0);
 
-        }
-    };
-});
 
 angular.module("NgTree.tpls", ["template/ngtree/tree.html", "template/ngtree/element.html"]);
 

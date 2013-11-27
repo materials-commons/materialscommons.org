@@ -1,6 +1,6 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'TreeTable', 'Provenance']);
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance']);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -54,7 +54,10 @@ app.config(function ($stateProvider) {
     /**
      * Mytools - Subpage is the parent and the rest inherit
      */
-
+        .state('mytools.projects.process', {
+            url: '/projects/process/new',
+            templateUrl: 'partials/process.html'
+        })
         .state('mytools.datatab', {
             url: '/datatab',
             templateUrl: 'partials/data/data-subpage.html'

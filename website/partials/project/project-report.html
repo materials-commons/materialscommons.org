@@ -1,6 +1,4 @@
-
-
-<div ng-controller="ProvController">
+<div ng-controller="CreateProcessController">
     <div class="row-fluid">
 
         <div class="span6 offset1">
@@ -51,18 +49,17 @@
 
                             </div>
                         </div>
-
                     </div>
 
                     <div class="row-fluid">
                         <div class="span2">
                             <div class="well">
                                 <ul class="nav nav-list">
-                                <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
+                                    <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
 
-                                <li><a href="">Process</a></li>
-                                <li><a href="">Inputs</a></li>
-                                <li><a href="">Outputs</a></li>
+                                    <li id="process-tab"><a href="">Process</a></li>
+                                    <li><a href="">Inputs</a></li>
+                                    <li><a href="">Outputs</a></li>
 
                                 </ul>
 
@@ -70,43 +67,46 @@
                         </div>
                         <div class="span8">
                             <div class="well">
+                                <h4>Process Information</h4>
+                                Type  : <select ng-model="process_type">
+                                <option>Select Process Type:</option>
+                                <option ng-repeat="p in process_templates" ng-click="selected_template_type(p.id)">{{p.template_name}}</option>
+                                </select>
 
-                                Type: <select ng-model="process_type">
-                                <option>Select Process Type:</option>
-                                <option value="temp1">SEM</option>
-                                <option value="temp2">Tensile Test</option>
-                                <option value="temp3">VASP</option>
-                            </select>
-                                Processes: <select ng-model="process_type">
-                                <option>Select Process Type:</option>
-                                <option value="temp1">SEM</option>
-                                <option value="temp2">Tensile Test</option>
-                                <option value="temp3">VASP</option>
-                            </select><br>
-                                Name: <input ng-model="doc.name" type="text"><br>
-                                <hr/>
-                                Description: <input ng-model="doc.description" type="text"><br>
-                                Machine: <select ng-model="machine">
-                                <option>Select Machine:</option>
-                                <option value="mach1">Machine 1</option>
-                                <option value="mach2">Machine 2</option>
-                                <option value="mach3">Machine 3</option>
-                            </select><br>
-                                Notes:<br><textarea class="input-xxlarge" ng-model="new_note"/>
-                                <button ng-click="add_notes()">Add Notes</button>
-                                <br>
-                                Runs: Start: <input ng-model="doc.start_run" type="text"><br>
-                                stop: <input ng-model="doc.stop_run" type="text"><br>
-                                Notes:<br><textarea class="input-small" ng-model="error_message"/>
-                                <button ng-click="add_notes()">Add error msg</button>
-                                <br>
-                                Citations:<br><textarea class="input-xxlarge" ng-model="citation"/><br>
-                                <button ng-click="add_notes()">Add Citations</button>
+                                <div ng-show="process_type">
+                                    Name: <select ng-model="selected_process">
+                                        <option value="new"> New Process</option>
+                                        <option disabled>----------</option>
+                                        <option ng-repeat="pr in processes" value="{{pr}}">{{pr.name}}</option>
+
+                                    </select>
+                                </div>
+
+                                <div ng-show="selected_process">
+                                    <hr/>
+
+                                    Description: <input ng-model="process.description" type="text"><br>
+                                    Machine: <select ng-model="machine">
+                                    <option>Select Machine:</option>
+                                    <option ng-repeat="m in process.machine">{{m}}</option>
+                                    </select> Selected: {{m}}<br>
+                                    Notes:<br><textarea class="input-xxlarge" ng-model="process.notes"/>
+                                    <button ng-click="add_notes()">Add Notes</button>
+                                    <br>
+                                    Runs:
+                                    Start: <input ng-model="process.start_run" type="text"><br>
+                                    stop: <input ng-model="process.stop_run" type="text"><br>
+                                    Notes:<br><textarea class="input-small" ng-model="error_message"/>
+                                    <button ng-click="add_notes()">Add error msg</button>
+                                    <br>
+                                    Citations:<br><textarea class="input-xxlarge" ng-model="process.citation"/><br>
+                                    <button ng-click="add_notes()">Add Citations</button>
+
+                                </div>
 
                             </div>
                         </div>
                     </div>
-
 
 
                 </div>
@@ -120,27 +120,28 @@
 
 <br></br>
 
-<div ng-controller="ListProjectsController">
+<div>
     <div class="row-fluid">
         <div class="span8 offset1">
-            <table treetable id="example">
+            <table treetable treedata="tree_data">
                 <thead>
                 <tr>
-                    <th width="10%"></th>
+                    <th></th>
                     <th>Project</th>
-                    <th>Text</th>
-                    <th>Size</th>
-                    <th>Date</th>
+                    <th>id</th>
+                    <!--<th>type</th>-->
+                    <th>c_id</th>
+                    <th>p_id</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.p_id}}>
-                    <!--<span type="checkbox" style="margin-bottom: 7px;"    ng-click="check(data.id)" class="treecheckBox">" +-->
+                <tr ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+                    <!--<span type="checkbox" style="margin-bottom: 7px;"    ng-click="check(data.id)" class="treecheckBox">"-->
                     <td><input type="checkbox" ng-model='check'></td>
-                    <td>{{t.node}}</td>
-                    <td>{{t.text}}</td>
-                    <td>{{t.size}}</td>
-                    <td>{{t.date}}</td>
+                    <td>{{t.name}}</td>
+                    <td>{{t.type}}</td>
+                    <td>{{t.c_id}}</td>
+                    <td>{{t.parent_id}}</td>
                 </tr>
                 </tbody>
             </table>
