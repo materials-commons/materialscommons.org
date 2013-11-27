@@ -1,5 +1,5 @@
 from mcapp import app
-from decorators import crossdomain, jsonp
+from decorators import crossdomain, jsonp, apikey
 from flask import request
 import rethinkdb as r
 import error
@@ -11,6 +11,7 @@ def get_template(template_id):
     return dmutil.get_single_from_table('templates', template_id)
 
 @app.route('/templates', methods=['GET'])
+@apikey(shared=True)
 @jsonp
 def get_all_templates():
     return dmutil.get_all_from_table('templates')

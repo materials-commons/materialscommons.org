@@ -18,6 +18,16 @@ def get_process(process_id):
 def get_all_processes():
     return dmutil.get_all_from_table('processes')
 
+
+@app.route('/processes/template/<template_id>', methods=['GET'])
+@jsonp
+def get_all_processes_for_template(template_id):
+    rr = r.table('processes').filter({'template': template_id})
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return json_as_format_arg(selection)
+
+
+
 @app.route('/processes/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')

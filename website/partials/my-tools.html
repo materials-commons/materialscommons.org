@@ -1,40 +1,43 @@
 <div class="container-fluid">
-<div class="row-fluid">
-    <div class="span2">
-        <div class="sidebar-nav-fixed">
-            <div class="well">
-                <ul class="nav nav-list">
+    <div class="row-fluid">
+        <div class="span2">
+            <div class="sidebar-nav-fixed">
+                <div class="well">
+                    <ul class="nav nav-list">
 
-                    <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
+                        <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
 
-                    <li><a href="">Search</a></li>
-                    <li><a href="">Messages</a></li>
+                        <li><a href="">Search</a></li>
+                        <li><a href="">Messages</a></li>
 
-                    <li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>
-                        <div class="project-scrollbar" ng-show="clicked">
-                                <ul ng-repeat="proj in projects">
-                                    <li><a href="#/mytools/projects/{{proj.id}}"
-                                           ng-click="selected_project(proj.id)">{{proj.name}}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                    </li>
-                    <li id="data-tab"><a href="#/mytools/datatab">My Data</a></li>
-                    <li id="tags-tab"><a href="#/mytools/tagstab">Tags</a></li>
-                    <li id="conditions-tab"><a href="#/mytools/conditionstab">Templates</a></li>
-                    <li id="provenance-tab"><a href="#/mytools/provenancetab">Provenance</a></li>
-                    <li id="upload-tab"><a href="#/mytools/uploadtab">Upload/Download</a></li>
-                    <li id="reviews-tab"><a href="#/mytools/reviewstab">Reviews <span ng-controller="ReviewListController">
+                            <li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>
+
+                                <div class="project-scrollbar" ng-show="clicked">
+                                    <ul ng-repeat="proj in projects">
+                                        <li><a href="#/mytools/projects/{{proj.id}}"
+                                               ng-click="selected_project(proj.id)">{{proj.name}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        <li id="data-tab"><a href="#/mytools/datatab">My Data</a></li>
+                        <li id="tags-tab"><a href="#/mytools/tagstab">Tags</a></li>
+                        <li id="conditions-tab"><a href="#/mytools/conditionstab">Templates</a></li>
+                        <li id="provenance-tab"><a href="#/mytools/provenancetab">Provenance</a></li>
+                        <li id="upload-tab"><a href="#/mytools/uploadtab">Upload/Download</a></li>
+                        <li id="reviews-tab"><a href="#/mytools/reviewstab">Reviews <span
+                                ng-controller="ReviewListController">
                             ({{reviewstoConduct.length}})
                         </span></a>
 
-                    </li>
+                        </li>
 
-                    <li class="nav-header"><i class="icon-lock"></i>Admin</li>
-                    <li id="usergroups-tab"><a href="#/mytools/usergrouptab">Usergroups</a></li>
+                        <li class="nav-header"><i class="icon-lock"></i>Admin</li>
+                        <li id="usergroups-tab"><a href="#/mytools/usergrouptab">Usergroups</a></li>
                         <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
                         <div ng-controller="AllTagsController">
-                        <span  ng-click="listDataForTag(tag.name)" style="cursor:pointer" class="label label-info custom" ng-repeat="tag in tags | limitTo: 10" >
+                        <span ng-click="listDataForTag(tag.name)" style="cursor:pointer" class="label label-info custom"
+                              ng-repeat="tag in tags | limitTo: 10">
                             {{ tag.name }}  ({{tag.count}})
                         </span>
                         </div>
@@ -48,20 +51,20 @@
                         <li><a href="#">File 1</a></li>
                         <li><a href="#">File 2</a></li>
                         <li><a href="#">File 3</a></li>
-                </ul>
+                    </ul>
 
+                </div>
             </div>
         </div>
+
+
+        <div class="span8">
+            <div ui-view></div>
+
+        </div>
+
+
     </div>
-
-
-    <div class="span8">
-        <div ui-view></div>
-
-    </div>
-
-
-</div>
 
 </div>
 
