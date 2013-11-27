@@ -28,6 +28,7 @@ app.config(function ($stateProvider) {
                 $scope.project_id = $stateParams.project_id;
             }
         })
+
         .state('about', {
             url: '/about',
             templateUrl: 'partials/about.html',
