@@ -406,6 +406,7 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
         fireStepAfter: function (step) {
             var saw = false;
             self.root.walk({strategy: 'pre'}, function (node) {
+                console.log(node.model)
                 if (node.model.step == step) {
                     saw = true;
                 } else if (saw) {
@@ -413,7 +414,6 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
                     self.current_step = node.model.step;
                     return false;
                 }
-
                 return true;
             })
         },
@@ -490,6 +490,7 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
          */
         fireStep: function (step) {
             self.current_step = step;
+            console.log(self.current_step)
             pubsub.send(this.channel(), step);
         },
 

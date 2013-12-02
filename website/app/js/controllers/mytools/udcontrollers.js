@@ -150,8 +150,9 @@ function UploadWizardProcessStepController($scope, wizard, watcher, mcapi, State
     });
 
     watcher.watch($scope, 'selected_process', function (processname) {
-
+        console.log(processname)
         $scope.process = _.find($scope.processes, function (item) {
+
             return item.template_name == processname;
         });
 
