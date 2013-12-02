@@ -1,157 +1,188 @@
-    <div class="row-fluid">
-        <div class="span6 offset1">
-            <select ng-model="view_type"
-                    ui-select2="{placeholder: 'View', allowClear: true, width:'element'}"
-                    ng-multiple="false">
-                <option></option>
-                <option value="prov">Provenance View</option>
-                <option value="thumbnail">Thumbnail View</option>
-            </select>
+<div class="row-fluid">
+    <div class="span6 offset1">
+        <select ng-model="view_type"
+                ui-select2="{placeholder: 'View', allowClear: true, width:'element'}"
+                ng-multiple="false">
+            <option></option>
+            <option value="prov">Provenance View</option>
+            <option value="thumbnail">Thumbnail View</option>
+        </select>
 
-            <select ng-model="add_to"
-                    ui-select2="{placeholder: 'Add To', allowClear: true, width:'element'}"
-                    ng-multiple="false">
-                <option></option>
-                <option value="prov">Provenance</option>
-                <option value="to_dataset">To Dataset</option>
-                <option value="to_project">To Project</option>
+        <select ng-model="add_to"
+                ui-select2="{placeholder: 'Add To', allowClear: true, width:'element'}"
+                ng-multiple="false">
+            <option></option>
+            <option value="prov">Provenance</option>
+            <option value="to_dataset">To Dataset</option>
+            <option value="to_project">To Project</option>
 
-            </select>
-
-        </div>
-        <div class="span4">
-            <button type="button" class="label-info">Download</button>
-            <button type="button" class="label-info">Upload</button>
-        </div>
+        </select>
 
     </div>
+    <div class="span4">
+        <button type="button" class="label-info">Download</button>
+        <button type="button" class="label-info">Upload</button>
+    </div>
 
-    <div ng-show="add_to=='prov'">
-        <br>
-        <div class="row-fluid">
-            <div class="span12 offset1">
-                <div class="span2">
+</div>
 
-                </div>
-                <div class="span10">
-                    <div class="row-fluid">
-                        <div class="span10">
-                            <div class="well">
-                                <div ng-show="choose==process">
-                                    <b>Instructions</b>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
+<div ng-show="add_to=='prov'">
+    <br>
+    <div class="row-fluid">
+        <div class="span12 offset1">
+            <div class="span2">
 
-                                </div>
+            </div>
+            <div class="span10">
+                <div class="row-fluid">
+                    <div class="span10">
+                        <div class="well">
+                            <div ng-show="choose==process">
+                                <b>Instructions</b>
+                                <li></li>
+                                <li></li>
+                                <li></li>
 
                             </div>
+
                         </div>
                     </div>
+                </div>
 
-                    <div class="row-fluid">
-                        <div class="span2">
+                <div class="row-fluid">
+                    <div class="span2">
+                        <div class="well">
+                            <ul class="nav nav-list">
+                                <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
+                                <li ng-class="{active : isSelected('process-tab')}"><a ng-click="active('process-tab')">Process</a>
+                                </li>
+                                <li ng-class="{active : isSelected('input-tab')}"><a ng-click="active('input-tab')">Inputs </a>
+
+                                    <div ng-show="expand==true">
+                                            <ul ng-repeat="condition in required_conditions">
+                                                <li  ng-class="{active : isSubTabSelected($index)}" ><a ng-click="selected_substep(condition, $index)">{{condition}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                </li>
+                                <li ng-class="{active : isSelected('output-tab')}"><a ng-click="active('output-tab')">Outputs</a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div ui-view>
+
+                    </div>
+                    <div class="block" ng-show="isSelected('process-tab')" ng-controller="ProcessStepController">
+                        <form id="process-tab" class="form-inline span8">
                             <div class="well">
-                                <ul class="nav nav-list">
-                                    <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
-                                    <li ng-class="{active : isSelected('process-tab')}"><a ng-click="active('process-tab')">Process</a></li>
-                                    <li ng-class="{active : isSelected('input-tab')}"><a ng-click="active('input-tab')">Inputs </a></li>
-                                    <li ng-class="{active : isSelected('output-tab')}"><a ng-click="active('output-tab')">Outputs</a></li>
+                                <h4>Process Information</h4>
+                                <label>Type :</label> <select ng-model="process_type">
+                                <option>Select Process Type:</option>
+                                <option ng-repeat="p in process_templates" ng-click="selected_template_type(p.id)">
+                                    {{p.template_name}}
+                                </option>
+                            </select>
 
-                                </ul>
+                                <div ng-show="process_type">
+                                    <label> Name:</label> <select ng-model="selected_process">
+                                    <option value="new"> New Process</option>
+                                    <option disabled>----------</option>
+                                    <option ng-repeat="pr in processes" value="{{pr}}">{{pr.name}}</option>
 
-                            </div>
-                        </div>
-                        <div ui-view>
+                                </select>
 
-                        </div>
-                        <div ng-show="isSelected('process-tab')" ng-controller="ProcessStepController">
-                            <form id="process-tab" class="form-inline span8">
-                                    <div class="well">
-                                        <h4>Process Information</h4>
-                                            <label>Type :</label> <select ng-model="process_type">
-                                            <option>Select Process Type:</option>
-                                            <option ng-repeat="p in process_templates" ng-click="selected_template_type(p.id)">
-                                                {{p.template_name}}
-                                            </option>
+                                    <div ng-show="selected_process">
+                                        <hr/>
+                                        <label>Description:</label> <input ng-model="process.description"
+                                                                           type="text"><br></br>
+                                        <label>Machine:</label>
+                                        <select ng-model="m">
+                                            <option>Select Machine:</option>
+                                            <option ng-repeat="m in process.machine">{{m}}</option>
                                         </select>
-                                        <div  ng-show="process_type">
-                                            <label> Name:</label> <select ng-model="selected_process">
-                                            <option value="new"> New Process</option>
-                                            <option disabled>----------</option>
-                                            <option ng-repeat="pr in processes" value="{{pr}}">{{pr.name}}</option>
-
-                                        </select>
-
-                                        <div ng-show="selected_process">
-                                            <hr/>
-                                                <label>Description:</label> <input ng-model="process.description" type="text"><br></br>
-                                            <label>Machine:</label>
-                                                <select ng-model="m">
-                                                    <option>Select Machine:</option>
-                                                    <option ng-repeat="m in process.machine">{{m}}</option>
-                                             </select>
-                                            <label>Selected Machine:</label> {{m}}<br>
-                                            <label>Notes:</label><br><textarea class="input-xxlarge" ng-model="new_note"/>
-                                            <button ng-click="add_notes()">Add Notes</button>
-                                           <br>
-                                            <a>previous notes</a>
-                                            <label>Notes List:</label><br>
-                                            <li ng-repeat="note in process.notes">
-                                                {{note}}
-                                            </li>
-                                            <div class="well">
-                                                <label> Runs:</label> <br>
-                                                <label>Start: </label><input class="span3" ng-model="start_run" type="text"><br>
-                                                <label> stop: </label><input class="span3" ng-model="stop_run" type="text">
-                                                <label>Error Msg:</label><textarea class="input-large" ng-model="new_err_msg"/>
-                                                <button ng-click="add_error_msg()">Add Run</button>
-                                                <br>
-                                                <a>previous runs</a>
-                                            </div>
-
+                                        <label>Selected Machine:</label> {{m}}<br>
+                                        <label>Notes:</label><br><textarea class="input-xxlarge" ng-model="new_note"/>
+                                        <button ng-click="add_notes()">Add Notes</button>
+                                        <br>
+                                        <a>previous notes</a>
+                                        <label>Notes List:</label><br>
+                                        <li ng-repeat="note in process.notes">
+                                            {{note}}
+                                        </li>
+                                        <div class="well">
+                                            <label> Runs:</label> <br>
+                                            <label>Start: </label><input class="span3" ng-model="start_run" type="text"><br>
+                                            <label> stop: </label><input class="span3" ng-model="stop_run" type="text">
+                                            <label>Error Msg:</label><textarea class="input-large"
+                                                                               ng-model="new_err_msg"/>
+                                            <button ng-click="add_error_msg()">Add Run</button>
                                             <br>
-                                            <label>Citations:</label><br><textarea class="input-xxlarge" ng-model="process.citation"/><br>
-                                            <button ng-click="add_citations()">Add Citations</button><br>
-                                            <a>previous citations</a>
-                                            <br>
-                                            <button class="label label-info" ng-click="save_process()"> Save Process</button>
-                                            <div ng-show="is_saved==true">
-                                                <button class="label label-info" ng-click="active('input-tab')"> Next Step</button>
-                                            </div>
+                                            <a>previous runs</a>
+                                        </div>
 
+                                        <br>
+                                        <label>Citations:</label><br><textarea class="input-xxlarge"
+                                                                               ng-model="process.citation"/><br>
+                                        <button ng-click="add_citations()">Add Citations</button>
+                                        <br>
+                                        <a>previous citations</a>
+                                        <br>
+
+                                        <div ng-hide="is_saved==true">
+                                            <button class="label label-info" ng-click="save_process()"> Save Process
+                                            </button>
+                                        </div>
+                                        <div ng-show="is_saved==true">
+                                            <button class="label label-info" ng-click="active('input-tab')"> Next Step
+                                            </button>
                                         </div>
 
                                     </div>
-                            </form>
 
-                        </div>
-
-                        <div ng-show="isSelected('input-tab')" >
-                            <div class="span8">
-                                <div class="well">
-                                    <h4>Input</h4>
-                                    </div>
                                 </div>
-                        </div>
-                        <div ng-show="isSelected('output-tab')" >
-                            <div class="span8">
-                                <div class="well">
-                                    <h4>Output</h4>
-                                    </div>
-                                </div>
-                        </div>
-
+                            </div>
+                        </form>
                     </div>
 
+                    <div class="block" ng-show="isSelected('input-tab')"  ng-controller="InputStepController">
+                        <form id="input-tab" class="form-inline span8">
+                            <div class="well">
+                                <div  class="block" ng-show="isSubTabSelected(sub_tab)">
+                                    <h4>{{condition_name}}</h4>
+                                                <label>Name:</label> {{condition.template_name}}<br>
+                                                <label>Description</label> {{condition.template_description}}
+                                                <div ng-repeat="property in condition.model">
+                                                    <label>{{property.name}}</label><input ng-model=property.value type="text">
+                                                </div>
+                                                <button ng-click="save()">Save</button>
+                                                <button ng-click="next()">Next</button>
+
+                                </div>
+
+                      </form>
+                    </div>
+                    <div ng-show="isSelected('output-tab')">
+                        <div class="span8">
+                            <div class="well">
+                                <h4>Output</h4>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
 
             </div>
 
+
         </div>
+
     </div>
+</div>
 <br></br>
 
 <div>
