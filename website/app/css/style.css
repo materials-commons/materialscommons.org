@@ -414,6 +414,13 @@ hr{
 
 }
 
+.block label {
+    display: inline-block;
+    padding-top: 10px;
+    width: 140px;
+    text-align: left; }
+
+
 
 
 

@@ -514,3 +514,23 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
     }
 });
 
+materialsCommonsServices.factory('flow', function () {
+    var self = this;
+    return {
+        setrequiredInputConditions: function(data){
+            data.model.forEach(function (item) {
+                if (item.name == 'required_conditions'){
+                    self.req_input_conditions = item.value;
+                }
+            })
+
+        },
+
+        getrequiredInputConditions: function(){
+            return self.req_input_conditions
+        }
+
+    }
+});
+
+
