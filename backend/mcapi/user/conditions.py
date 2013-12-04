@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey
+from ..decorators import crossdomain, apikey, jsonp
 from flask import request, g
 import rethinkdb as r
 from .. import dmutil
@@ -46,3 +46,18 @@ def create_new_conditions_from_template_list():
         c_id = create_condition_from_template(user, condition)
         ids.append(c_id)
     return json_as_format_arg({'ids': ids})
+
+
+@app.route('/conditions/template/<template_id>', methods=['GET'])
+@jsonp
+def get_conditions_by_template(template_id):
+    rr = r.table('conditions').filter({'template': template_id})
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return json_as_format_arg(selection)
+
+@app.route('/conditions', methods=['GET'])
+@apikey(shared=True)
+@jsonp
+def get_all_conditions():
+    return dmutil.get_all_from_table('conditions')
+

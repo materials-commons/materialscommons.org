@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row-fluid" >
     <div class="span6 offset1">
         <select ng-model="view_type"
                 ui-select2="{placeholder: 'View', allowClear: true, width:'element'}"
@@ -29,7 +29,7 @@
 <div ng-show="add_to=='prov'">
     <br>
 
-    <div class="row-fluid">
+    <div class="row-fluid" >
         <div class="span12 offset1">
             <div class="span2">
 
@@ -62,10 +62,14 @@
                                         ng-click="setCurrentStep('nav_choose_inputs')">Inputs </a>
                                 </li>
 
-                                    <ul ng-show="isSubStepOf('nav_choose_inputs')" ng-repeat="condition in state.attributes.process.required_conditions">
-                                        <li ><a  >{{condition}}</a>
-                                        </li>
-                                    </ul>
+                                <ul ng-show="isSubStepOf('nav_choose_inputs')"
+                                    ng-repeat="condition in state.attributes.process.required_conditions">
+                                    <li><a>{{condition}}</a></li>
+                                </ul>
+                                <li  ng-show="isSubStepOf('nav_choose_inputs')">
+                                    <a>files</a>
+                                </li>
+
                                 <li ng-class="{active : isSelected('output-tab')}"><a ng-click="active('output-tab')">Outputs</a>
                                 </li>
 
@@ -99,6 +103,12 @@
 
                                     <div ng-show="selected_process">
                                         <hr/>
+                                        <div ng-show="new_process_tag==new">
+                                            <label>Name:</label> <input ng-model="process.name"
+                                                                        type="text"><br></br>
+                                        </div>
+
+
                                         <label>Description:</label> <input ng-model="process.description"
                                                                            type="text"><br></br>
                                         <label>Machine:</label>
@@ -149,22 +159,81 @@
                             </div>
                         </form>
                     </div>
-                       {{condition}}
-                    <div class="block" ng-show="isCurrentStep(condition)"  ng-repeat="condition in state.attributes.process.required_conditions">
-                        <form id="input-tab" class="form-inline span8" ng-controller="InputStepController" ng-init="init(condition)">
+
+                    <div class="block" ng-show="isCurrentStep(condition)"
+                         ng-repeat="condition in state.attributes.process.required_conditions">
+                        <form id="input-tab" class="form-inline span8" ng-controller="InputStepController"
+                              ng-init="init(condition)">
                             <div class="well">
-                                    <h4>{{condition_name}}</h4>
+                                <h4>{{condition_name}}</h4>
+                                <label>Use Existing: </label>
+                                <select ng-model="use_condition">
+                                    <option>Pick Condition:</option>
+                                    <option ng-repeat="ec in existing_conditions" value="{{ec}}"
+                                            ng-click="selected_condition(ec)">
+                                        {{ec.name}}
+                                    </option>
+                                </select> <br> <br>
+
+                                <div ng-show="use_condition">
+                                    <label>Name:</label> {{selected_cond.name}}<br>
+                                </div>
+                                <div ng-hide="use_condition">
+
+                                    OR Fill out for new<br><br>
+
                                     <label>Name:</label> {{condition.template_name}}<br>
                                     <label>Description</label> {{condition.template_description}}
-                                    <div ng-repeat="property in condition.model">
-                                        <label>{{property.name}}</label><input ng-model=property.value type="text">
-                                    </div>
-                                    <button ng-click="save()">Save</button>
-                                    <button ng-click="next()">Next</button>
+                                </div>
+
+                                <div ng-repeat="property in condition.model">
+                                    <label>{{property.name}}</label><input ng-model=property.value type="text">
+                                </div>
+                                <button ng-click="next()">Next</button>
 
                             </div>
                         </form>
                     </div>
+
+                    <div ng-show="isCurrentStep('nav_input_files')" class="row-fluid">
+                        <div class="span12 well" >
+                            <h4>Files</h4>
+                            <div class="row-fluid">
+                                <div class="span8 offset1">
+                                    <table treetable treedata="tree_data">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Project</th>
+                                            <th>id</th>
+                                            <!--<th>type</th>-->
+                                            <th>c_id</th>
+                                            <th>p_id</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+                                            <!--<span type="checkbox" style="margin-bottom: 7px;"    ng-click="check(data.id)" class="treecheckBox">"-->
+                                            <td ng-click="check(t.id)"><input type="checkbox" ng-model='check'></td>
+                                            <td>{{t.name}}</td>
+                                            <td>{{t.type}}</td>
+                                            <td>{{t.c_id}}</td>
+                                            <td>{{t.parent_id}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <form>
+                                <button ng-click="addInputFile()">Add file</button>
+                                <button ng-click="done()">Done</button>
+                            </form>
+                        </div>
+                    </div>
+
                     <div ng-show="isSelected('output-tab')">
                         <div class="span8">
                             <div class="well">
@@ -193,7 +262,7 @@
                 <tr>
                     <th></th>
                     <th>Project</th>
-                    <th>id</th>
+                    <th>Type</th>
                     <!--<th>type</th>-->
                     <th>c_id</th>
                     <th>p_id</th>
