@@ -406,7 +406,6 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
         fireStepAfter: function (step) {
             var saw = false;
             self.root.walk({strategy: 'pre'}, function (node) {
-                console.log(node.model)
                 if (node.model.step == step) {
                     saw = true;
                 } else if (saw) {
@@ -459,7 +458,7 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
             var node = this._getNode(step);
             if (node) {
                 var foundMatch = false;
-                node.children.forEach(function(child) {
+                node.children.forEach(function (child) {
                     if (child.model.step == substep) {
                         foundMatch = true;
                     }
@@ -490,7 +489,6 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
          */
         fireStep: function (step) {
             self.current_step = step;
-            console.log(self.current_step)
             pubsub.send(this.channel(), step);
         },
 
@@ -518,16 +516,16 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
 materialsCommonsServices.factory('flow', function () {
     var self = this;
     return {
-        setrequiredInputConditions: function(data){
+        setrequiredInputConditions: function (data) {
             data.model.forEach(function (item) {
-                if (item.name == 'required_conditions'){
+                if (item.name == 'required_conditions') {
                     self.req_input_conditions = item.value;
                 }
             })
 
         },
 
-        getrequiredInputConditions: function(){
+        getrequiredInputConditions: function () {
             return self.req_input_conditions
         }
 
