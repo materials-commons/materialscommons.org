@@ -20,8 +20,8 @@
 
     </div>
     <div class="span4">
-        <button type="button" class="label-info">Download</button>
-        <button type="button" class="label-info">Upload</button>
+        <!--<button type="button" class="label-info">Download</button>-->
+        <!--<button type="button" class="label-info">Upload</button>-->
     </div>
 
 </div>
@@ -39,10 +39,12 @@
                     <div class="span10">
                         <div class="well">
                             <div ng-show="choose==process">
-                                <b>Instructions</b>
-                                <li></li>
-                                <li></li>
-                                <li></li>
+                                <b><u>Instructions</u></b><br>
+                                Where did your data come from?
+                                <li>Choose a Process Type, Inputs and Outputs to describe your data's provenance.</li>
+                                <li>Start by choosing the Process Type used to generate the data, because the Process Type will decide what
+                                    Inputs and Outputs are required.</li>
+
 
                             </div>
 
@@ -103,12 +105,10 @@
 
                                     <div ng-show="selected_process">
                                         <hr/>
-                                        <div ng-show="new_process_tag==new">
-                                            <label>Name:</label> <input ng-model="process.name"
-                                                                        type="text"><br></br>
-                                        </div>
 
-
+                                        <span ng-show="selected_process=='new'">
+                                            <label>Name:</label> <input ng-model="process.name" type="text">
+                                        </span><br>
                                         <label>Description:</label> <input ng-model="process.description"
                                                                            type="text"><br></br>
                                         <label>Machine:</label>
@@ -121,10 +121,10 @@
                                         <button ng-click="add_notes()">Add Notes</button>
                                         <br>
                                         <a>previous notes</a>
-                                        <label>Notes List:</label><br>
-                                        <li ng-repeat="note in process.notes">
-                                            {{note}}
-                                        </li>
+                                        <!--<label>Notes List:</label><br>-->
+                                        <!--<li ng-repeat="note in process.notes">-->
+                                            <!--{{note}}-->
+                                        <!--</li>-->
                                         <div class="well">
                                             <label> Runs:</label> <br>
                                             <label>Start: </label><input class="span3" ng-model="start_run" type="text"><br>
