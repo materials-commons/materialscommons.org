@@ -129,7 +129,6 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
     });
 
     watcher.watch($scope, 'selected_process', function (name) {
-        $scope.new_process_tag = name;
         if (name == "new") {
             $scope.process = name;
         }
@@ -156,6 +155,7 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
     }
 
     $scope.save_process = function () {
+        console.log($scope.process)
         $scope.process.required_conditions = $scope.required_input_conditions;
         $scope.is_saved = true;
     }

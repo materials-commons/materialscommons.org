@@ -10,6 +10,7 @@ function DataEditController($scope, $window, mcapi, alertService, $stateParams) 
     }
     mcapi('/datafile/%', $stateParams.id)
         .success(function (data) {
+            console.log(data)
             $scope.doc = data;
             $scope.setupAccessToUserFile();
         })
