@@ -87,6 +87,10 @@ function ListProjectsController($scope, mcapi, Stater, wizard, treeToggle) {
 }
 
 function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
+    $scope.customnote = true;
+    $scope.customruns = true;
+    $scope.customcitations = true;
+
 
     wizard.waitOn($scope, 'nav_choose_process', function () {
         $scope.state = Stater.retrieve();
@@ -130,7 +134,8 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
 
     watcher.watch($scope, 'selected_process', function (name) {
         if (name == "new") {
-            $scope.process = name;
+//            $scope.process = name;
+              $scope.process = {'notes': [], 'runs': [], 'citations': [] };
         }
         else {
             $scope.process = JSON.parse(name);
@@ -138,8 +143,8 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
 
     });
 
-
     $scope.add_notes = function () {
+
         $scope.process.notes.push($scope.new_note);
         $scope.new_note = "";
     }
@@ -151,7 +156,8 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
     }
 
     $scope.add_citations = function () {
-
+        $scope.process.citations.push($scope.new_citation);
+        $scope.new_citation = "";
     }
 
     $scope.save_process = function () {
