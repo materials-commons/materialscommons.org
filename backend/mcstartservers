@@ -23,7 +23,7 @@ else
 fi
 
 echo Starting servers...
-nohup ./rest.py -p $MC_SERVICE_PORT > /tmp/rest.out 2>&1&
+nohup ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out 2>&1&
 (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
 
 if [ $TESTSERVER = true ]; then
