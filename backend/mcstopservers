@@ -24,7 +24,7 @@ fi
 echo Stopping servers....
 RPID=$(ps -eo "%p:%c:%a" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | cut -f1 -d:)
 kill $RPID
-ps -eo "%p:%c:%a" | grep rest.py | grep "p $MC_SERVICE_PORT" | grep -v grep | cut -f1 -d: | while read line
+ps -eo "%p:%c:%a" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | cut -f1 -d: | while read line
 do
     kill $line
 done
