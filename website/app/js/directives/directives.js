@@ -150,3 +150,12 @@ mod.directive('treetable', function ($timeout) {
     };
 });
 
+mod.directive('checkFocus', function () {
+    return function(scope, element, attrs) {
+        scope.$watch(attrs.checkFocus,
+            function (newValue) {
+                newValue && element.focus();
+            },true);
+    };
+});
+

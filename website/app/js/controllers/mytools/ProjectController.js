@@ -1,4 +1,4 @@
-function ListProjectsController($scope, mcapi, Stater, wizard, treeToggle) {
+function ListProjectsController($scope, mcapi, Stater, wizard, watcher, treeToggle) {
     mcapi('/projects')
         .success(function (data) {
             $scope.projects = data;
@@ -36,12 +36,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, treeToggle) {
         step: 'nav_choose_process',
         children: [
             {step: 'nav_choose_inputs'},
-            {step: 'nav_choose_outputs',
-                children: [
-                    {step: 'nav_output_conditions'},
-                    {step: 'nav_output_files'}
-                ]
-            },
+            {step: 'nav_choose_outputs'},
             {step: 'nav_upload'}
         ]
     };
@@ -72,18 +67,25 @@ function ListProjectsController($scope, mcapi, Stater, wizard, treeToggle) {
         return wizard.currentStep() == step;
     }
 
-    $scope.isSubStepOf = function (step) {
-        return wizard.isSubStepOf(step, wizard.currentStep());
-    }
-
     $scope.check = function (id){
-        if (treeToggle.get_all_checked_items().indexOf(id)>= 0){ //open
+        $scope.checked_items  = treeToggle.get_all_checked_items();
+
+        if ($scope.checked_items.indexOf(id) >= 0){
             treeToggle.pop_checked_item(id);
         }
         else{
             treeToggle.add_checked_item(id);
         }
     }
+
+    $scope.isChecked = function (id) {
+        if (_.contains($scope.checked_items, id)) {
+            return true;
+        }
+        return false;
+    };
+
+
 }
 
 function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
@@ -127,6 +129,9 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
             if (item.name == "required_conditions") {
                 $scope.required_input_conditions = item.value;
             }
+            else if(item.name == "required_output_conditions"){
+                $scope.required_output_conditions = item.value;
+            }
 
         })
 
@@ -134,7 +139,6 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
 
     watcher.watch($scope, 'selected_process', function (name) {
         if (name == "new") {
-//            $scope.process = name;
               $scope.process = {'notes': [], 'runs': [], 'citations': [] };
         }
         else {
@@ -144,7 +148,6 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
     });
 
     $scope.add_notes = function () {
-
         $scope.process.notes.push($scope.new_note);
         $scope.new_note = "";
     }
@@ -161,33 +164,44 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
     }
 
     $scope.save_process = function () {
-        console.log($scope.process)
         $scope.process.required_conditions = $scope.required_input_conditions;
+        $scope.process.required_output_conditions = $scope.required_output_conditions;
         $scope.is_saved = true;
     }
 
     $scope.next_step = function () {
         /*
-         * Add in new wizard steps for the conditions
+         * Add in new wizard steps for the conditions and files
          */
         $scope.process.required_conditions.forEach(function (condition) {
             var s = {step: condition};
             wizard.addStep('nav_choose_inputs', s);
         });
         wizard.addStep('nav_choose_inputs', {step: 'nav_input_files'});
+
+        $scope.process.required_output_conditions.forEach(function (cond) {
+            var s = {step: cond};
+            wizard.addStep('nav_choose_outputs', s);
+        });
+        wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
+
         $scope.state.attributes.process = $scope.process;
         Stater.persist($scope.state);
-        wizard.fireStepAfter('nav_choose_inputs');
+
+        wizard.fireNextStep();
     }
 
 }
 
-function InputStepController($scope, mcapi, wizard, Stater) {
+function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 
-
+    /**
+     *
+     * @param condition_name
+     */
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
-        var name = '"' + $scope.condition_name + '"';
+            var name = '"' + $scope.condition_name + '"';
         mcapi('/templates')
             .argWithValue('filter_by', '"template_name":' + name)
             .success(function (condition) {
@@ -232,7 +246,7 @@ function InputStepController($scope, mcapi, wizard, Stater) {
         }
     });
 
-    $scope.next = function(){
+    $scope.save_condition = function(){
         $scope.state = Stater.retrieve();
         if (! ('input_conditions' in $scope.state.attributes)) {
             $scope.state.attributes.input_conditions = {};
@@ -240,9 +254,118 @@ function InputStepController($scope, mcapi, wizard, Stater) {
         }
         $scope.state.attributes.input_conditions[$scope.condition_name] = $scope.condition;
         Stater.save($scope.state);
-        Stater.persist($scope.state);
-        wizard.fireNextStep();
+        $scope.showDetails= false;
+    }
 
+
+    $scope.next_step = function(){
+        Stater.persist($scope.state);
+        wizard.fireStep('nav_choose_outputs');
+
+    }
+    /**
+     * Input Files
+     */
+    $scope.save_selected_input_files = function(){
+        $scope.checked_items  = treeToggle.get_all_checked_items();
+        treeToggle.uncheck_all_items()
+        $scope.state = Stater.retrieve();
+        if (! ('input_files' in $scope.state.attributes)) {
+            $scope.state.attributes.input_files = {};
+            Stater.save($scope.state);
+        }
+
+        $scope.state.attributes.input_files = $scope.checked_items;
+        Stater.save($scope.state);
+        $scope.added = true;
+    }
+
+}
+
+function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertService){
+
+    $scope.init = function (condition_name) {
+        $scope.condition_name = condition_name;
+        var name = '"' + $scope.condition_name + '"';
+        mcapi('/templates')
+            .argWithValue('filter_by', '"template_name":' + name)
+            .success(function (condition) {
+                $scope.condition = condition[0];
+                mcapi('/conditions/template/%', $scope.condition.id)
+                    .success(function (data) {
+                        $scope.existing_conditions = data;
+
+                    })
+                    .error(function(e){
+                    }).jsonp();
+            })
+            .error(function () {
+                alertService.sendMessage("Failed looking up: " + $scope.condition_name);
+            }).jsonp();
+    }
+
+    $scope.selected_condition = function(cond){
+        $scope.selected_cond = cond;
+        var model =   $scope.condition.model
+
+
+        model.forEach(function(property){
+            var name =  property.name;
+            var all_keys = Object.keys($scope.selected_cond)
+            if(all_keys.indexOf(name) > -1){
+                property.value =   $scope.selected_cond[name]
+            }
+
+        });
+
+    }
+
+    wizard.waitOn($scope, $scope.condition_name, function () {
+        $scope.state = Stater.retrieve();
+        if ('output_conditions' in $scope.state.attributes) {
+            if ($scope.condition_name in $scope.state.attributes.output_conditions) {
+                $scope.condition = $scope.state.attributes.output_conditions[$scope.condition_name];
+            }
+        } else {
+            $scope.state.attributes.output_conditions = {};
+        }
+    });
+
+    $scope.save_condition = function(){
+        $scope.state = Stater.retrieve();
+        if (! ('output_conditions' in $scope.state.attributes)) {
+            $scope.state.attributes.output_conditions = {};
+            Stater.save($scope.state);
+        }
+        $scope.state.attributes.output_conditions[$scope.condition_name] = $scope.condition;
+        Stater.save($scope.state);
+        $scope.showDetails= false;
+    }
+
+
+    $scope.next_step = function(){
+        Stater.persist($scope.state);
+        wizard.fireStep('nav_choose_outputs');
+
+    }
+
+    /**
+     * Output Files
+     */
+    $scope.save_selected_output_files = function(){
+        $scope.checked_items  = treeToggle.get_all_checked_items();
+
+        $scope.state = Stater.retrieve();
+        if (! ('output_files' in $scope.state.attributes)) {
+            $scope.state.attributes.output_files = {};
+            Stater.save($scope.state);
+        }
+
+        $scope.state.attributes.output_files = $scope.checked_items;
+        console.dir($scope.state)
+
+        Stater.save($scope.state);
+        $scope.added = true;
     }
 
 }

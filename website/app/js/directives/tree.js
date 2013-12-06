@@ -11,8 +11,7 @@ angular.module("NgTree.tpls", ["template/ngtree/tree.html", "template/ngtree/ele
 
 angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
     .factory('treeToggle', function () {
-        var selected = [];
-        var checked_items = [];
+        var selected = [], checked_items = [];
         return {
             add_id: function (id) {
                 selected.push(id);
@@ -22,22 +21,26 @@ angular.module("NgTree", ["NgTree.tpls", "template/ngtree/tree.html"])
                 return  selected.splice(selected.indexOf(id), 1);
             },
 
-            get_all: function(){
-                return selected
+            get_all: function () {
+                return selected;
             },
 
-            get_all_checked_items: function(){
-                return checked_items
+            get_all_checked_items: function () {
+                return checked_items;
             },
 
-            add_checked_item: function(id){
-                checked_items.push(id)
+            add_checked_item: function (id) {
+                checked_items.push(id);
             },
 
-            pop_checked_item: function(id){
+            pop_checked_item: function (id) {
                 checked_items.splice(checked_items.indexOf(id), 1);
+            },
+
+            uncheck_all_items: function () {
+                checked_items = [];
             }
-        }
+        };
     })
     .controller("NgTreeController", ["$scope", "$attrs", "treeToggle",
         function ($scope, $attrs, treeToggle) {
