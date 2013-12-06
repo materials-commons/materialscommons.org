@@ -1,0 +1,13 @@
+#!/bin/sh
+
+CMD="$1"
+TESTING="$2"
+
+case "$CMD" in
+    start)
+        mcstartservers $TESTING
+        ;;
+    stop)
+        mcstopservers $TESTING
+        ;;
+esac

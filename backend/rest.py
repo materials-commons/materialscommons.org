@@ -6,14 +6,13 @@ from mcapi.user import account, datadirs, datafiles, reviews, ud, usergroups, pr
 from mcapi.stater import stater
 import sys
 from os import environ
+import optparse
 
 _HOST = environ.get('MC_SERVICE_HOST') or 'localhost'
-_PORT = environ.get('MC_SERVICE_PORT') or '5000'
 
 if __name__ == '__main__':
-    if len(sys.argv) >= 2:
-        debug = True
-    else:
-        debug = False
-
-    app.run(debug=debug, host=_HOST, port=int(_PORT))
+    parser = optparse.OptionParser()
+    parser.add_option("-p", "--port", dest="port",
+                      help="Port to run on", default=5000)
+    (options, args) = parser.parse_args()
+    app.run(debug=True, host=_HOST, port=int(options.port))
