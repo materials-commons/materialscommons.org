@@ -5,6 +5,10 @@ from mcapi import tservices, public, utils, private, access, process, machine, t
 from mcapi.user import account, datadirs, datafiles, reviews, ud, usergroups, projects, conditions
 from mcapi.stater import stater
 import sys
+from os import environ
+
+_HOST = environ.get('MC_SERVICE_HOST') or 'localhost'
+_PORT = environ.get('MC_SERVICE_PORT') or '5000'
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
@@ -12,7 +16,4 @@ if __name__ == '__main__':
     else:
         debug = False
 
-    if len(sys.argv) == 3:
-        app.run(debug=debug, host='0.0.0.0')
-    else:
-        app.run(debug=debug)
+    app.run(debug=debug, host=_HOST, port=int(_PORT))
