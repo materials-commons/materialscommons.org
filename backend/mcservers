@@ -1,0 +1,98 @@
+#!/bin/sh
+
+CMD="$1"
+TESTING="$2"
+TESTSERVER=false
+SERVERTYPE="production"
+
+function start_servers()
+{
+    echo Starting $SERVERTYPE servers...
+    nohup ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
+    (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
+
+    if [ $TESTSERVER = true ]; then
+        cp ../test_data/rethinkdb_dump_test_data.tar.gz $MCDB_DIR
+        rethinkdb restore $MCDB_DIR/rethinkdb_dump_test_data.tar.gz --connect localhost:$MCDB_PORT
+    fi
+    echo Started $SERVERTYPE.
+}
+
+function stop_servers()
+{
+    echo Stopping $SERVERTYPE servers....
+    RPID=$(ps -eo "%p:%c:%a" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | cut -f1 -d:)
+    if [ "$RPID" != "" ]; then
+        kill $RPID
+    fi
+    ps -eo "%p:%c:%a" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | cut -f1 -d: | while read line
+    do
+        kill $line
+    done
+
+    if [ $TESTSERVER = true ]; then
+        (cd $MCDB_DIR; rm -rf rethinkdb_data)
+    fi
+    echo Stopped $SERVERTYPE.
+}
+
+function status_servers()
+{
+    echo
+    echo "RethinkDB (production):"
+    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "MCAPI Server (production):"
+    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+    echo ======================================================
+    echo
+    export MCDB_PORT=38015
+    export MC_SERVICE_PORT=5002
+    echo "RethinkDB (test):"
+    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "MCAPI Server (test):"
+    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+}
+
+if [ "$TESTING" = "-t" ]; then
+    TESTSERVER=true
+    SERVERTYPE="test"
+fi
+
+if [ $TESTSERVER = true ]; then
+    export MC_SERVICE_PORT=5002
+    export MCDB_PORT=30815
+    export MCDB_DIR=/tmp
+    export RETHINKDB_HTTP_PORT=8090
+    export RETHINKDB_CLUSTER_PORT=31815
+
+    if [ -f /etc/materialscommons/config.test ]; then
+        . /etc/materialscommons/config.test
+    fi
+    (cd $MCDB_DIR; rm -rf rethinkdb_data)
+else
+    export MCDB_PORT=28015
+    export MC_SERVICE_PORT=5000
+    export RETHINKDB_HTTP_PORT=8080
+    export RETHINKDB_CLUSTER_PORT=29015
+    export MCDB_DIR=~
+  
+    if [ -f /etc/materialscommons/config.prod ]; then
+        . /etc/materialscommons/config.prod
+    fi
+fi
+
+case "$CMD" in
+    start)
+        start_servers
+        ;;
+    stop)
+        stop_servers
+        ;;
+    status)
+        status_servers
+        ;;
+esac
