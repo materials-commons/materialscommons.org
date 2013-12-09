@@ -1,0 +1,14 @@
+These configuration files allow you to run our service out of nginx. Once nginx
+is installed copy these configuration files to /etc/nginx/conf.d. After you have
+done that add the following entries to your 127.0.0.1 entry in /etc/hosts
+mc.localhost
+api.mc.localhost
+mctest.localhost
+api.mctest.localhost
+
+Then start/restart nginx.
+
+Now when you are running the web-server and mcapiservice.py you can go to
+http://mc.localhost/index.html to load materialscommons. Or to connect to
+the test version go go http://mctest.localhost/index.html.
+
