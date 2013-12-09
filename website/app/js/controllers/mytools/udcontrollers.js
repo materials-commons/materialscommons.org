@@ -329,7 +329,6 @@ function UploadWizardFileOutputController($scope, wizard, mcapi, Stater, alertSe
     });
 
     $scope.chooseSelection = function (d) {
-        console.log('here is selected dir '+ d)
         $scope.selected_datadir = d;
     }
 

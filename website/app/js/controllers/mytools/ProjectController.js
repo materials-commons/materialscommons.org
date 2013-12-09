@@ -11,6 +11,10 @@ function ListProjectsController($scope, mcapi, Stater, wizard, watcher, treeTogg
         $scope.clicked = true;
     }
     $scope.selected_project = function (proj_id) {
+        $scope.state = Stater.retrieve();
+        $scope.state.attributes.project_id = proj_id;
+        Stater.save($scope.state);
+
 
         mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
