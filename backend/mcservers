@@ -10,4 +10,7 @@ case "$CMD" in
     stop)
         mcstopservers $TESTING
         ;;
+    status)
+        mcstatusservers $TESTING
+        ;;
 esac
