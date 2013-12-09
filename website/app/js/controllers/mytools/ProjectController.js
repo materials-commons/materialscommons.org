@@ -1,4 +1,4 @@
-function ListProjectsController($scope, mcapi, Stater, wizard, watcher, toUploadForm, alertService, treeToggle) {
+function ListProjectsController($scope, mcapi, Stater, wizard, alertService, treeToggle) {
     mcapi('/projects')
         .success(function (data) {
             $scope.projects = data;
@@ -12,6 +12,15 @@ function ListProjectsController($scope, mcapi, Stater, wizard, watcher, toUpload
     }
 
     $scope.selected_project = function (proj_id) {
+        mcapi('/projects/%', proj_id)
+            .success(function(data){
+                console.log(data)
+                $scope.project_obj = data;
+            })
+            .error(function(){
+
+            }).jsonp();
+
         $scope.state = Stater.retrieve();
         $scope.state.attributes.project_id = proj_id;
         Stater.save($scope.state);
@@ -91,8 +100,11 @@ function ListProjectsController($scope, mcapi, Stater, wizard, watcher, toUpload
     };
 
     $scope.upload_state = function(){
+        $scope.state = Stater.retrieve();
+        console.dir($scope.state);
         mcapi('/upload')
             .success(function () {
+                $scope.done = true;
                 Stater.clear();
                 $scope.state = Stater.retrieve();
                 alertService.sendMessage("Your file(s) were successfully uploaded.")
@@ -101,6 +113,10 @@ function ListProjectsController($scope, mcapi, Stater, wizard, watcher, toUpload
                 alertService.sendMessage("Sorry - Your files did not successfully upload.");
             })
             .post({state_id: $scope.state.id})
+
+    }
+
+    $scope.report = function(){
 
     }
 
@@ -355,17 +371,12 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
         if (! ('output_conditions' in $scope.state.attributes)) {
             $scope.state.attributes.output_conditions = {};
             Stater.save($scope.state);
+
         }
         $scope.state.attributes.output_conditions[$scope.condition_name] = $scope.condition;
         Stater.save($scope.state);
         $scope.showDetails= false;
-    }
-
-
-    $scope.next_step = function(){
         Stater.persist($scope.state);
-        wizard.fireStep('nav_choose_outputs');
-
     }
 
     /**
@@ -381,8 +392,6 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
         }
 
         $scope.state.attributes.output_files = $scope.checked_items;
-        console.dir($scope.state)
-
         Stater.save($scope.state);
         $scope.added = true;
     }

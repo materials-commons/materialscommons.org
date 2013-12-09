@@ -51,7 +51,7 @@ def upload_file():
 @crossdomain(origin='*')
 def upload_file_1():
     user = access.get_user()
-    print '******yes'
+    print 'state_id'
     j = request.get_json()
     state_id = dmutil.get_required('state_id', j)
     print state_id

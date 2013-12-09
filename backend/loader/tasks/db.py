@@ -74,7 +74,6 @@ def load_data_dir(user, directory, state_id):
 def load_data_dir_1(user, state_id):
     state_saver = StateCreateSaver()
     try:
-        print '************inside load datadir_1'
         r.connect('localhost', 28015, db='materialscommons').repl()
         load_data_1(user, state_id, state_saver)
     except mcexceptions.RequiredAttributeException as rae:
@@ -121,7 +120,6 @@ def load_data(user, directory, state_id, state_saver):
     
 
 def load_data_1(user, state_id, state_saver):
-    print '******************8inside load data_1'
     load_provenance_from_state_1(state_id, state_saver)
     r.table('state').get(state_id).delete().run()
     state_saver.move_to_tables()
@@ -150,7 +148,6 @@ def load_provenance_from_state(state_id, saver):
     return process_id
 
 def load_provenance_from_state_1(state_id, saver):
-    print '*****inside prov _ 1'
     state = r.table('state').get(state_id).run()
     attributes = state['attributes']
     user = state['owner']
@@ -159,10 +156,10 @@ def load_provenance_from_state_1(state_id, saver):
     create_process_from_template_1(attributes['process'], saver)
     process_id = saver.process_id
     if 'input_files' in attributes:
-        add_input_files_to_process(process_id, attributes['input_files'])
-    input_conditions = dmutil.get_optional('input_conditions', attributes, [])
+        r.table('saver').get(process_id).update({'input_files': attributes['input_files']}).run()
     if 'output_files' in attributes:
-        add_output_files_to_process(process_id, attributes['output_files'])
+        r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run()  
+    input_conditions = dmutil.get_optional('input_conditions', attributes, [])
     output_conditions = dmutil.get_optional('output_conditions', attributes, [])
     create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
     return process_id
@@ -197,23 +194,23 @@ def create_process_from_template(j, saver):
 def create_process_from_template_1(j, saver):
     project_id = saver.project_id
     p = dict()
-    p['template'] = dmutil.get_required('id', j)
+    p['template'] = dmutil.get_optional('id', j)
     p['project'] = project_id
-    p['name'] = j['name']
+    p['name'] = dmutil.get_required('name', j)
     p['birthtime'] = r.now()
     p['mtime'] = p['birthtime']
-    p['machine'] = j['machine']
-    p['process_type'] = j['process_type']
-    p['description'] = j['description']
-    p['version'] = j['version']
-    p['notes'] = j['notes']
-    p['input_conditions'] = j['input_conditions']
-    p['input_files'] = j['input_files']
-    p['output_conditions'] = j['output_conditions']
-    p['output_files'] = j['output_files']
-    p['runs'] = j['runs']
-    p['citations'] = j['citations']
-    p['status'] = j['status']
+    p['machine'] = dmutil.get_optional('machine', j)
+    p['process_type'] = dmutil.get_optional('process_type', j)
+    p['description'] = dmutil.get_optional('description', j)
+    p['version'] = dmutil.get_optional('version', j)
+    p['notes'] = dmutil.get_optional('notes', j, [])
+    p['input_conditions'] = dmutil.get_optional('input_conditions', j, [])
+    p['input_files'] = dmutil.get_optional('input_files', j, [])
+    p['output_conditions'] = dmutil.get_optional('output_conditions', j, [])
+    p['output_files'] = dmutil.get_optional('output_files', j, [])
+    p['runs'] = dmutil.get_optional('runs', j, [])
+    p['citations'] = dmutil.get_optional('citations', j, [])
+    p['status'] = dmutil.get_optional('status', j)
     process_id = saver.insert('processes', p)
     saver.process_id = process_id
     print '****saver-process_id'
@@ -231,19 +228,20 @@ def add_input_files_to_process(process_id, input_files):
 def add_output_files_to_process(process_id, output_files):
     process = r.table('saver').get(process_id).run()
     for id in output_files:
-        process['input_files'].append(id)
+        process['output_files'].append(id)
     ifiles = process['output_files']
     r.table('saver').get(process_id).update({'output_files':ifiles}).run()
 
 def create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver):
     for condition_name in input_conditions:
         condition = input_conditions[condition_name]
-        condition['condition_type'] = 'input_conditions'
+        condition[u'condition_type'] = 'input_conditions'
         create_condition_from_template(process_id, user, condition, saver)
     for condition_name in output_conditions:
         condition = output_conditions[condition_name]
-        condition['condition_type'] = 'output_conditions'
+        condition[u'condition_type'] = 'output_conditions'
         create_condition_from_template(process_id, user, condition, saver)
+    
 
 def create_condition_from_template(process_id, user, j, saver):
     c = dict()
