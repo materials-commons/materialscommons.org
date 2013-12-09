@@ -1,4 +1,4 @@
-function ListProjectsController($scope, mcapi, Stater, wizard, watcher, treeToggle) {
+function ListProjectsController($scope, mcapi, Stater, wizard, watcher, toUploadForm, alertService, treeToggle) {
     mcapi('/projects')
         .success(function (data) {
             $scope.projects = data;
@@ -10,6 +10,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, watcher, treeTogg
     $scope.clicked = function () {
         $scope.clicked = true;
     }
+
     $scope.selected_project = function (proj_id) {
         $scope.state = Stater.retrieve();
         $scope.state.attributes.project_id = proj_id;
@@ -88,6 +89,20 @@ function ListProjectsController($scope, mcapi, Stater, wizard, watcher, treeTogg
         }
         return false;
     };
+
+    $scope.upload_state = function(){
+        mcapi('/upload')
+            .success(function () {
+                Stater.clear();
+                $scope.state = Stater.retrieve();
+                alertService.sendMessage("Your file(s) were successfully uploaded.")
+            })
+            .error(function () {
+                alertService.sendMessage("Sorry - Your files did not successfully upload.");
+            })
+            .post({state_id: $scope.state.id})
+
+    }
 
 
 }
