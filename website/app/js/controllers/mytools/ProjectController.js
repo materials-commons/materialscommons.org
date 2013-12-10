@@ -12,6 +12,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
     }
 
     $scope.selected_project = function (proj_id) {
+        $scope.selected_proj = true
         mcapi('/projects/%', proj_id)
             .success(function(data){
                 console.log(data)
@@ -107,7 +108,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
                 $scope.done = true;
                 Stater.clear();
                 $scope.state = Stater.retrieve();
-                alertService.sendMessage("Your file(s) were successfully uploaded.")
+                alertService.sendMessage("Your Provenance was Created Successfully.")
             })
             .error(function () {
                 alertService.sendMessage("Sorry - Your files did not successfully upload.");
@@ -120,13 +121,16 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
     }
 
+    $scope.remove_instructions = function(){
+        $scope.display = true
+
+
+    }
+
 
 }
 
 function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
-    $scope.customnote = true;
-    $scope.customruns = true;
-    $scope.customcitations = true;
 
 
     wizard.waitOn($scope, 'nav_choose_process', function () {
@@ -170,17 +174,19 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
 
         })
 
-    });
-
-    watcher.watch($scope, 'selected_process', function (name) {
-        if (name == "new") {
-              $scope.process = {'notes': [], 'runs': [], 'citations': [] };
-        }
-        else {
-            $scope.process = JSON.parse(name);
-        }
+        $scope.process = {'notes': [], 'runs': [], 'citations': [] };
 
     });
+
+//    watcher.watch($scope, 'selected_process', function (name) {
+//        if (name == "new") {
+//              $scope.process = {'notes': [], 'runs': [], 'citations': [] };
+//        }
+////        else {
+////            $scope.process = JSON.parse(name);
+////        }
+//
+//    });
 
     $scope.add_notes = function () {
         $scope.process.notes.push($scope.new_note);
@@ -221,6 +227,7 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
 
         $scope.state.attributes.process = $scope.process;
+        console.dir($scope.state)
         Stater.persist($scope.state);
 
         wizard.fireNextStep();
@@ -256,6 +263,8 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 
     $scope.selected_condition = function(cond){
         $scope.selected_cond = cond;
+        $scope.condition.name = cond.name;
+        $scope.condition.description = cond.description
         var model =   $scope.condition.model
 
 
@@ -270,16 +279,16 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 
     }
 
-    wizard.waitOn($scope, $scope.condition_name, function () {
-        $scope.state = Stater.retrieve();
-        if ('input_conditions' in $scope.state.attributes) {
-            if ($scope.condition_name in $scope.state.attributes.input_conditions) {
-                $scope.condition = $scope.state.attributes.input_conditions[$scope.condition_name];
-            }
-        } else {
-            $scope.state.attributes.input_conditions = {};
-        }
-    });
+//    wizard.waitOn($scope, $scope.condition_name, function () {
+//        $scope.state = Stater.retrieve();
+//        if ('input_conditions' in $scope.state.attributes) {
+//            if ($scope.condition_name in $scope.state.attributes.input_conditions) {
+//                $scope.condition = $scope.state.attributes.input_conditions[$scope.condition_name];
+//            }
+//        } else {
+//            $scope.state.attributes.input_conditions = {};
+//        }
+//    });
 
     $scope.save_condition = function(){
         $scope.state = Stater.retrieve();
@@ -302,7 +311,12 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
      * Input Files
      */
     $scope.save_selected_input_files = function(){
+        $scope.checked_ids = [];
         $scope.checked_items  = treeToggle.get_all_checked_items();
+        $scope.checked_items.forEach(function(item){
+            $scope.checked_ids.push(item.id)
+        })
+
         treeToggle.uncheck_all_items()
         $scope.state = Stater.retrieve();
         if (! ('input_files' in $scope.state.attributes)) {
@@ -310,7 +324,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
             Stater.save($scope.state);
         }
 
-        $scope.state.attributes.input_files = $scope.checked_items;
+        $scope.state.attributes.input_files = $scope.checked_ids;
         Stater.save($scope.state);
         $scope.added = true;
     }
@@ -341,6 +355,8 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
 
     $scope.selected_condition = function(cond){
         $scope.selected_cond = cond;
+        $scope.condition.name = cond.name;
+        $scope.condition.description = cond.description
         var model =   $scope.condition.model
 
 
@@ -355,16 +371,17 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
 
     }
 
-    wizard.waitOn($scope, $scope.condition_name, function () {
-        $scope.state = Stater.retrieve();
-        if ('output_conditions' in $scope.state.attributes) {
-            if ($scope.condition_name in $scope.state.attributes.output_conditions) {
-                $scope.condition = $scope.state.attributes.output_conditions[$scope.condition_name];
-            }
-        } else {
-            $scope.state.attributes.output_conditions = {};
-        }
-    });
+//    wizard.waitOn($scope, $scope.condition_name, function () {
+//        alert('yes')
+//        $scope.state = Stater.retrieve();
+//        if ('output_conditions' in $scope.state.attributes) {
+//            if ($scope.condition_name in $scope.state.attributes.output_conditions) {
+//                $scope.condition = $scope.state.attributes.output_conditions[$scope.condition_name];
+//            }
+//        } else {
+//            $scope.state.attributes.output_conditions = {};
+//        }
+//    });
 
     $scope.save_condition = function(){
         $scope.state = Stater.retrieve();
@@ -373,6 +390,7 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
             Stater.save($scope.state);
 
         }
+
         $scope.state.attributes.output_conditions[$scope.condition_name] = $scope.condition;
         Stater.save($scope.state);
         $scope.showDetails= false;
@@ -383,16 +401,21 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
      * Output Files
      */
     $scope.save_selected_output_files = function(){
+        $scope.checked_ids = [];
         $scope.checked_items  = treeToggle.get_all_checked_items();
-
+        $scope.checked_items.forEach(function(item){
+            $scope.checked_ids.push(item.id)
+        })
+        treeToggle.uncheck_all_items()
         $scope.state = Stater.retrieve();
         if (! ('output_files' in $scope.state.attributes)) {
             $scope.state.attributes.output_files = {};
             Stater.save($scope.state);
         }
 
-        $scope.state.attributes.output_files = $scope.checked_items;
+        $scope.state.attributes.output_files = $scope.checked_ids;
         Stater.save($scope.state);
+        Stater.persist($scope.state);
         $scope.added = true;
     }
 
