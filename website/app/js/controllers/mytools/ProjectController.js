@@ -15,7 +15,6 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
         $scope.selected_proj = true
         mcapi('/projects/%', proj_id)
             .success(function(data){
-                console.log(data)
                 $scope.project_obj = data;
             })
             .error(function(){
@@ -52,7 +51,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
         children: [
             {step: 'nav_choose_inputs'},
             {step: 'nav_choose_outputs'},
-            {step: 'nav_upload'}
+            {step: 'nav_choose_upload'}
         ]
     };
 
@@ -71,7 +70,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
     $scope.setCurrentStep = function (step) {
         if (step == 'nav_choose_process') {
             wizard.fireStep(step);
-        } else if (step == 'nav_choose_inputs' || step == 'nav_choose_outputs') {
+        } else if (step == 'nav_choose_inputs' || step == 'nav_choose_outputs' || step == 'nav_choose_upload') {
             wizard.fireStepAfter(step);
         } else if (!wizard.isAfterCurrentStep(step)) {
             wizard.fireStep(step);
@@ -118,6 +117,14 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
     }
 
     $scope.report = function(){
+        $scope.showreport = true
+        mcapi('/project/provenance/%', $scope.project_obj[0].id)
+            .success(function(data){
+                $scope.data = data;
+            })
+            .error(function(e){
+               alert('no')
+            }).jsonp();
 
     }
 
@@ -178,15 +185,6 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
 
     });
 
-//    watcher.watch($scope, 'selected_process', function (name) {
-//        if (name == "new") {
-//              $scope.process = {'notes': [], 'runs': [], 'citations': [] };
-//        }
-////        else {
-////            $scope.process = JSON.parse(name);
-////        }
-//
-//    });
 
     $scope.add_notes = function () {
         $scope.process.notes.push($scope.new_note);
@@ -279,16 +277,10 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 
     }
 
-//    wizard.waitOn($scope, $scope.condition_name, function () {
-//        $scope.state = Stater.retrieve();
-//        if ('input_conditions' in $scope.state.attributes) {
-//            if ($scope.condition_name in $scope.state.attributes.input_conditions) {
-//                $scope.condition = $scope.state.attributes.input_conditions[$scope.condition_name];
-//            }
-//        } else {
-//            $scope.state.attributes.input_conditions = {};
-//        }
-//    });
+    $scope.custom_property = function(){
+        $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
+    }
+
 
     $scope.save_condition = function(){
         $scope.state = Stater.retrieve();
@@ -371,17 +363,9 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
 
     }
 
-//    wizard.waitOn($scope, $scope.condition_name, function () {
-//        alert('yes')
-//        $scope.state = Stater.retrieve();
-//        if ('output_conditions' in $scope.state.attributes) {
-//            if ($scope.condition_name in $scope.state.attributes.output_conditions) {
-//                $scope.condition = $scope.state.attributes.output_conditions[$scope.condition_name];
-//            }
-//        } else {
-//            $scope.state.attributes.output_conditions = {};
-//        }
-//    });
+    $scope.custom_property = function(){
+        $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
+    }
 
     $scope.save_condition = function(){
         $scope.state = Stater.retrieve();
@@ -415,9 +399,23 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
 
         $scope.state.attributes.output_files = $scope.checked_ids;
         Stater.save($scope.state);
-        Stater.persist($scope.state);
         $scope.added = true;
     }
+
+    $scope.next_step = function(){
+        Stater.persist($scope.state);
+        wizard.fireStep('nav_choose_upload');
+
+    }
+
+}
+
+function UploadStepController($scope, mcapi, wizard, Stater, treeToggle,alertService){
+
+    wizard.waitOn($scope, 'nav_choose_upload', function () {
+        $scope.state = Stater.retrieve();
+        console.dir($scope.state)
+    });
 
 }
 
