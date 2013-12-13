@@ -69,7 +69,7 @@ def get_project_tree(project_id):
     rr = rr.eq_join('project_id', r.table('projects')).zip()
     rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
     rr = rr.pluck('id', 'name', 'owner', 'datafiles').order_by('name')
-    rr = rr.outer_join(r.table('datafiles').pluck('id', 'name'),
+    rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
                        lambda ddrow, drow: ddrow['datafiles']
                        .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))

@@ -10,9 +10,9 @@
                         <li><a href="">Search</a></li>
                         <li><a href="">Messages</a></li>
 
-                            <li id="my-data-tab" ng-model="clicked"><a href="" ng-click="clicked()">Projects</a>
+                            <li id="my-data-tab"><a href="" style="cursor:pointer" ng-click="showDetails=!showDetails">Projects</a>
 
-                                <div class="project-scrollbar" ng-show="clicked">
+                                <div class="project-scrollbar" ng-show="showDetails">
                                     <ul ng-repeat="proj in projects">
                                         <li><a href="#/mytools/projects/{{proj.id}}"
                                                ng-click="selected_project(proj.id)">{{proj.name}}</a>
