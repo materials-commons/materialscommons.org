@@ -138,6 +138,39 @@ def find_in_ditem_list(name, items):
     return None
 
 
+@app.route('/project/provenance/<project_id>', methods=['GET'])
+@apikey
+@jsonp
+def get_provenance(project_id):
+    prov = {}
+    rr = r.table('project2processes').filter({'project_id': project_id})
+    rr = rr.eq_join('process_id', r.table('processes')).zip()
+    rr = rr.pluck('id', 'name', 'input_files', 'input_conditions', 'output_files', 'output_conditions')
+
+    items = list(rr.run(g.conn, time_format='raw'))
+    for process in items:
+        prov =  {'process': process['name'],'input_files': get_datafiles(process['input_files']),
+                                  'output_files': get_datafiles(process['output_files']),
+                                  'input_conditions': get_otherfiles(process['input_conditions']),
+                                  'output_conditions': get_otherfiles(process['output_conditions'])
+                                  }
+    print prov
+    return args.json_as_format_arg(prov)
+
+def get_datafiles(files):
+    result = []
+    for id in files:
+        result.append(dmutil.get_single_from_table('datafiles', id))
+    return result
+
+def get_otherfiles(files):
+    result = []
+    for id in files:
+        result.append(dmutil.get_single_from_table('conditions', id))
+    return result
+
+
+
 @app.route('/projects', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
