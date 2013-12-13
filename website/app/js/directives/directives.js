@@ -1,4 +1,3 @@
-
 var materialsdirective = angular.module("materialsdirective", []);
 
 materialsdirective.directive('wordcloud', function () {
@@ -39,7 +38,7 @@ materialsdirective.directive('bs:popover', function (expression, compiledElement
 });
 
 
-materialsdirective.directive('notification', function($timeout){
+materialsdirective.directive('notification', function ($timeout) {
     return {
         restrict: 'E',
         replace: true,
@@ -47,10 +46,10 @@ materialsdirective.directive('notification', function($timeout){
             ngModel: '='
         },
         template: '<div class="alert fade" bs-alert="ngModel"></div>',
-        link: function(scope, element){
-            scope.$watch('ngModel', function(){
+        link: function (scope, element) {
+            scope.$watch('ngModel', function () {
                 element.show();
-                $timeout(function(){
+                $timeout(function () {
                     element.hide();
                 }, 3000);
             });
@@ -58,7 +57,7 @@ materialsdirective.directive('notification', function($timeout){
     }
 });
 
-materialsdirective.directive('paged', function() {
+materialsdirective.directive('paged', function () {
     return {
         template: '<div>' +
             '<div ng-transclude=""></div>' +
@@ -69,48 +68,48 @@ materialsdirective.directive('paged', function() {
             '</div>' +
             '</div>',
         restrict: 'E',
-        transclude:true,
+        transclude: true,
         scope: {
-            'currentPage' : '=',
+            'currentPage': '=',
             'pageSize': '=',
             'data': '='
         },
-        link: function($scope, element, attrs) {
-            $scope.size = function() {
+        link: function ($scope, element, attrs) {
+            $scope.size = function () {
                 return $scope.data.length;
             }
 
-            $scope.end = function() {
+            $scope.end = function () {
                 var endItem = $scope.start() + $scope.pageSize;
                 return endItem > $scope.size() ? $scope.data.length : endItem;
             }
 
-            $scope.start = function() {
+            $scope.start = function () {
                 return $scope.currentPage * $scope.pageSize;
             }
 
-            $scope.showStart = function() {
+            $scope.showStart = function () {
                 var s = $scope.start();
-                return s+1;
+                return s + 1;
             }
 
-            $scope.page = function() {
+            $scope.page = function () {
                 return $scope.size() ? ($scope.currentPage + 1) : 0;
             }
 
-            $scope.hasNextPage = function() {
+            $scope.hasNextPage = function () {
                 return $scope.page() < ($scope.size() / $scope.pageSize);
             }
 
-            $scope.nextPage = function() {
+            $scope.nextPage = function () {
                 $scope.currentPage = parseInt($scope.currentPage) + 1;
             }
 
-            $scope.hasPreviousPage = function() {
+            $scope.hasPreviousPage = function () {
                 return $scope.currentPage != 0;
             }
 
-            $scope.previousPage = function() {
+            $scope.previousPage = function () {
                 $scope.currentPage = $scope.currentPage - 1;
             }
 
@@ -126,7 +125,8 @@ materialsdirective.directive('paged', function() {
                 if (!angular.isDefined($scope.pageSize)) {
                     $scope.pageSize = 10;
                 }
-            } catch(e) {}
+            } catch (e) {
+            }
         }
     }
 });
@@ -151,11 +151,11 @@ mod.directive('treetable', function ($timeout) {
 });
 
 mod.directive('checkFocus', function () {
-    return function(scope, element, attrs) {
+    return function (scope, element, attrs) {
         scope.$watch(attrs.checkFocus,
             function (newValue) {
                 newValue && element.focus();
-            },true);
+            }, true);
     };
 });
 

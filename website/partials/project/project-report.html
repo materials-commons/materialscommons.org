@@ -323,7 +323,7 @@
             </div>
             <div class="block" ng-show="isCurrentStep('nav_choose_upload')">
                 <form id="submit-tab" class="form-inline span8">
-                    <div class="well" ng-controller="UploadStepController">
+                    <div ng-hide="done"  class="well" ng-controller="UploadStepController">
                         <h4>Verify and Submit</h4>
                         <b>Process:</b>
 
@@ -368,7 +368,10 @@
                     </span><br>
                         </div>
                     </div>
-                    <div>
+                    <div ng-show="done" class="well">
+                        <h4>Provenance uploaded successfully</h4>
+                    </div>
+                    <div ng-hide="done">
                         <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>
                     </div>
                 </form>
@@ -389,8 +392,9 @@
                 <th></th>
                 <th>Project</th>
                 <th>Type</th>
-                <th>c_id</th>
-                <th>p_id</th>
+                <th>Size</th>
+                <th>Owner</th>
+                <th>Date</th>
             </tr>
             </thead>
             <tbody>
@@ -402,8 +406,9 @@
                 </td>
                 <td>{{t.name}}</td>
                 <td>{{t.type}}</td>
-                <td>{{t.c_id}}</td>
-                <td>{{t.parent_id}}</td>
+                <td>{{t.size}}</td>
+                <td>{{t.owner}}</td>
+                <td>{{t.birthtime | toDateString}}</td>
             </tr>
             </tbody>
         </table>

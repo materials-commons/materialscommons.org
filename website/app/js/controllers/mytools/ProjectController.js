@@ -7,17 +7,14 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
         }).jsonp();
 
-    $scope.clicked = function () {
-        $scope.clicked = true;
-    }
 
     $scope.selected_project = function (proj_id) {
         $scope.selected_proj = true
         mcapi('/projects/%', proj_id)
-            .success(function(data){
+            .success(function (data) {
                 $scope.project_obj = data;
             })
-            .error(function(){
+            .error(function () {
 
             }).jsonp();
 
@@ -81,13 +78,13 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
         return wizard.currentStep() == step;
     }
 
-    $scope.check = function (id){
-        $scope.checked_items  = treeToggle.get_all_checked_items();
+    $scope.check = function (id) {
+        $scope.checked_items = treeToggle.get_all_checked_items();
 
-        if ($scope.checked_items.indexOf(id) >= 0){
+        if ($scope.checked_items.indexOf(id) >= 0) {
             treeToggle.pop_checked_item(id);
         }
-        else{
+        else {
             treeToggle.add_checked_item(id);
         }
     }
@@ -99,9 +96,8 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
         return false;
     };
 
-    $scope.upload_state = function(){
+    $scope.upload_state = function () {
         $scope.state = Stater.retrieve();
-        console.dir($scope.state);
         mcapi('/upload')
             .success(function () {
                 $scope.done = true;
@@ -116,19 +112,19 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
     }
 
-    $scope.report = function(){
+    $scope.report = function () {
         $scope.showreport = true
         mcapi('/project/provenance/%', $scope.project_obj[0].id)
-            .success(function(data){
+            .success(function (data) {
                 $scope.data = data;
             })
-            .error(function(e){
-               alert('no')
+            .error(function (e) {
+                alert('no')
             }).jsonp();
 
     }
 
-    $scope.remove_instructions = function(){
+    $scope.remove_instructions = function () {
         $scope.display = true
 
 
@@ -138,7 +134,6 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 }
 
 function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
-
 
     wizard.waitOn($scope, 'nav_choose_process', function () {
         $scope.state = Stater.retrieve();
@@ -175,7 +170,7 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
             if (item.name == "required_conditions") {
                 $scope.required_input_conditions = item.value;
             }
-            else if(item.name == "required_output_conditions"){
+            else if (item.name == "required_output_conditions") {
                 $scope.required_output_conditions = item.value;
             }
 
@@ -241,7 +236,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
      */
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
-            var name = '"' + $scope.condition_name + '"';
+        var name = '"' + $scope.condition_name + '"';
         mcapi('/templates')
             .argWithValue('filter_by', '"template_name":' + name)
             .success(function (condition) {
@@ -251,7 +246,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
                         $scope.existing_conditions = data;
 
                     })
-                    .error(function(e){
+                    .error(function (e) {
                     }).jsonp();
             })
             .error(function () {
@@ -259,42 +254,42 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
             }).jsonp();
     }
 
-    $scope.selected_condition = function(cond){
+    $scope.selected_condition = function (cond) {
         $scope.selected_cond = cond;
         $scope.condition.name = cond.name;
         $scope.condition.description = cond.description
-        var model =   $scope.condition.model
+        var model = $scope.condition.model
 
 
-       model.forEach(function(property){
-            var name =  property.name;
+        model.forEach(function (property) {
+            var name = property.name;
             var all_keys = Object.keys($scope.selected_cond)
-            if(all_keys.indexOf(name) > -1){
-                property.value =   $scope.selected_cond[name]
+            if (all_keys.indexOf(name) > -1) {
+                property.value = $scope.selected_cond[name]
             }
 
         });
 
     }
 
-    $scope.custom_property = function(){
+    $scope.custom_property = function () {
         $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
     }
 
 
-    $scope.save_condition = function(){
+    $scope.save_condition = function () {
         $scope.state = Stater.retrieve();
-        if (! ('input_conditions' in $scope.state.attributes)) {
+        if (!('input_conditions' in $scope.state.attributes)) {
             $scope.state.attributes.input_conditions = {};
             Stater.save($scope.state);
         }
         $scope.state.attributes.input_conditions[$scope.condition_name] = $scope.condition;
         Stater.save($scope.state);
-        $scope.showDetails= false;
+        $scope.showDetails = false;
     }
 
 
-    $scope.next_step = function(){
+    $scope.next_step = function () {
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_outputs');
 
@@ -302,16 +297,16 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
     /**
      * Input Files
      */
-    $scope.save_selected_input_files = function(){
+    $scope.save_selected_input_files = function () {
         $scope.checked_ids = [];
-        $scope.checked_items  = treeToggle.get_all_checked_items();
-        $scope.checked_items.forEach(function(item){
+        $scope.checked_items = treeToggle.get_all_checked_items();
+        $scope.checked_items.forEach(function (item) {
             $scope.checked_ids.push(item.id)
         })
 
         treeToggle.uncheck_all_items()
         $scope.state = Stater.retrieve();
-        if (! ('input_files' in $scope.state.attributes)) {
+        if (!('input_files' in $scope.state.attributes)) {
             $scope.state.attributes.input_files = {};
             Stater.save($scope.state);
         }
@@ -323,7 +318,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 
 }
 
-function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertService){
+function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertService) {
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -337,7 +332,7 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
                         $scope.existing_conditions = data;
 
                     })
-                    .error(function(e){
+                    .error(function (e) {
                     }).jsonp();
             })
             .error(function () {
@@ -345,31 +340,31 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
             }).jsonp();
     }
 
-    $scope.selected_condition = function(cond){
+    $scope.selected_condition = function (cond) {
         $scope.selected_cond = cond;
         $scope.condition.name = cond.name;
         $scope.condition.description = cond.description
-        var model =   $scope.condition.model
+        var model = $scope.condition.model
 
 
-        model.forEach(function(property){
-            var name =  property.name;
+        model.forEach(function (property) {
+            var name = property.name;
             var all_keys = Object.keys($scope.selected_cond)
-            if(all_keys.indexOf(name) > -1){
-                property.value =   $scope.selected_cond[name]
+            if (all_keys.indexOf(name) > -1) {
+                property.value = $scope.selected_cond[name]
             }
 
         });
 
     }
 
-    $scope.custom_property = function(){
+    $scope.custom_property = function () {
         $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
     }
 
-    $scope.save_condition = function(){
+    $scope.save_condition = function () {
         $scope.state = Stater.retrieve();
-        if (! ('output_conditions' in $scope.state.attributes)) {
+        if (!('output_conditions' in $scope.state.attributes)) {
             $scope.state.attributes.output_conditions = {};
             Stater.save($scope.state);
 
@@ -377,22 +372,22 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
 
         $scope.state.attributes.output_conditions[$scope.condition_name] = $scope.condition;
         Stater.save($scope.state);
-        $scope.showDetails= false;
+        $scope.showDetails = false;
         Stater.persist($scope.state);
     }
 
     /**
      * Output Files
      */
-    $scope.save_selected_output_files = function(){
+    $scope.save_selected_output_files = function () {
         $scope.checked_ids = [];
-        $scope.checked_items  = treeToggle.get_all_checked_items();
-        $scope.checked_items.forEach(function(item){
+        $scope.checked_items = treeToggle.get_all_checked_items();
+        $scope.checked_items.forEach(function (item) {
             $scope.checked_ids.push(item.id)
         })
         treeToggle.uncheck_all_items()
         $scope.state = Stater.retrieve();
-        if (! ('output_files' in $scope.state.attributes)) {
+        if (!('output_files' in $scope.state.attributes)) {
             $scope.state.attributes.output_files = {};
             Stater.save($scope.state);
         }
@@ -402,7 +397,7 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
         $scope.added = true;
     }
 
-    $scope.next_step = function(){
+    $scope.next_step = function () {
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_upload');
 
@@ -410,7 +405,7 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle,alertSer
 
 }
 
-function UploadStepController($scope, mcapi, wizard, Stater, treeToggle,alertService){
+function UploadStepController($scope, mcapi, wizard, Stater, treeToggle, alertService) {
 
     wizard.waitOn($scope, 'nav_choose_upload', function () {
         $scope.state = Stater.retrieve();
