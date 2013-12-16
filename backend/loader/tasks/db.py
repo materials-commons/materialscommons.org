@@ -154,13 +154,10 @@ def load_provenance_from_state_1(state_id, saver):
     project_id = attributes['project_id']
     saver.project_id = project_id
     create_process_from_template_1(attributes['process'], saver)
-    print attributes
     process_id = saver.process_id
     if 'input_files' in attributes:
-        print 'Input files ************'
         r.table('saver').get(process_id).update({'input_files': attributes['input_files']}).run()
     if 'output_files' in attributes:
-        print '**********yes'
         r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run()  
     input_conditions = dmutil.get_optional('input_conditions', attributes, [])
     output_conditions = dmutil.get_optional('output_conditions', attributes, [])
@@ -216,8 +213,6 @@ def create_process_from_template_1(j, saver):
     p['status'] = dmutil.get_optional('status', j)
     process_id = saver.insert('processes', p)
     saver.process_id = process_id
-    print '****saver-process_id'
-    print process_id 
     saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
 
 def add_input_files_to_process(process_id, input_files):
