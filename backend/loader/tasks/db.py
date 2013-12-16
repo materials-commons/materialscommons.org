@@ -68,6 +68,24 @@ def load_data_dir(user, directory, state_id):
         raise load_data_dir.retry(exc=exc)
     finally:
         state_saver.delete_tables()
+        
+        
+@celery.task
+def load_data_dir_1(user, state_id):
+    state_saver = StateCreateSaver()
+    try:
+        r.connect('localhost', 28015, db='materialscommons').repl()
+        load_data_1(user, state_id, state_saver)
+    except mcexceptions.RequiredAttributeException as rae:
+        traceback.print_exc()
+        state_saver.delete_tables()
+        print "Missing attribute: %s" % (rae.attr)
+    except Exception as exc:
+        traceback.print_exc()
+        state_saver.delete_tables()
+        raise load_data_dir.retry(exc=exc)
+    finally:
+        state_saver.delete_tables()
 
 @celery.task
 def load_data_file(datafile, project, datadir):
@@ -99,6 +117,13 @@ def load_data(user, directory, state_id, state_saver):
     r.table('state').get(state_id).delete().run()
     state_saver.move_to_tables()
     state_saver.delete_tables()
+    
+
+def load_data_1(user, state_id, state_saver):
+    load_provenance_from_state_1(state_id, state_saver)
+    r.table('state').get(state_id).delete().run()
+    state_saver.move_to_tables()
+    state_saver.delete_tables()
 
 def copy_data_over(dirpath):
     print "Copying over: %s" % (dirpath)
@@ -121,6 +146,27 @@ def load_provenance_from_state(state_id, saver):
     output_conditions = dmutil.get_optional('output_conditions', attributes, [])
     create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
     return process_id
+
+def load_provenance_from_state_1(state_id, saver):
+    state = r.table('state').get(state_id).run()
+    attributes = state['attributes']
+    user = state['owner']
+    project_id = attributes['project_id']
+    saver.project_id = project_id
+    create_process_from_template_1(attributes['process'], saver)
+    print attributes
+    process_id = saver.process_id
+    if 'input_files' in attributes:
+        print 'Input files ************'
+        r.table('saver').get(process_id).update({'input_files': attributes['input_files']}).run()
+    if 'output_files' in attributes:
+        print '**********yes'
+        r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run()  
+    input_conditions = dmutil.get_optional('input_conditions', attributes, [])
+    output_conditions = dmutil.get_optional('output_conditions', attributes, [])
+    create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
+    return process_id
+
 
 def create_process_from_template(j, saver):
     project_id = saver.project_id
@@ -146,6 +192,33 @@ def create_process_from_template(j, saver):
     process_id = saver.insert('processes', p)
     saver.process_id = process_id
     saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
+    
+    
+def create_process_from_template_1(j, saver):
+    project_id = saver.project_id
+    p = dict()
+    p['template'] = dmutil.get_optional('id', j)
+    p['project'] = project_id
+    p['name'] = dmutil.get_required('name', j)
+    p['birthtime'] = r.now()
+    p['mtime'] = p['birthtime']
+    p['machine'] = dmutil.get_optional('machine', j)
+    p['process_type'] = dmutil.get_optional('process_type', j)
+    p['description'] = dmutil.get_optional('description', j)
+    p['version'] = dmutil.get_optional('version', j)
+    p['notes'] = dmutil.get_optional('notes', j, [])
+    p['input_conditions'] = dmutil.get_optional('input_conditions', j, [])
+    p['input_files'] = dmutil.get_optional('input_files', j, [])
+    p['output_conditions'] = dmutil.get_optional('output_conditions', j, [])
+    p['output_files'] = dmutil.get_optional('output_files', j, [])
+    p['runs'] = dmutil.get_optional('runs', j, [])
+    p['citations'] = dmutil.get_optional('citations', j, [])
+    p['status'] = dmutil.get_optional('status', j)
+    process_id = saver.insert('processes', p)
+    saver.process_id = process_id
+    print '****saver-process_id'
+    print process_id 
+    saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
 
 def add_input_files_to_process(process_id, input_files):
     process = r.table('saver').get(process_id).run()
@@ -153,24 +226,34 @@ def add_input_files_to_process(process_id, input_files):
         process['input_files'].append(id)
     ifiles = process['input_files']
     r.table('saver').get(process_id).update({'input_files':ifiles}).run()
+    
+    
+def add_output_files_to_process(process_id, output_files):
+    process = r.table('saver').get(process_id).run()
+    for id in output_files:
+        process['output_files'].append(id)
+    ifiles = process['output_files']
+    r.table('saver').get(process_id).update({'output_files':ifiles}).run()
 
 def create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver):
     for condition_name in input_conditions:
         condition = input_conditions[condition_name]
-        condition['condition_type'] = 'input_conditions'
+        condition[u'condition_type'] = 'input_conditions'
         create_condition_from_template(process_id, user, condition, saver)
     for condition_name in output_conditions:
         condition = output_conditions[condition_name]
-        condition['condition_type'] = 'output_conditions'
+        condition[u'condition_type'] = 'output_conditions'
         create_condition_from_template(process_id, user, condition, saver)
+    
 
 def create_condition_from_template(process_id, user, j, saver):
     c = dict()
     m = j['model']
-    type_of_condition = dmutil.get_required('condition_type', j)
+    type_of_condition = dmutil.get_required('condition_type', j) 
     c['owner'] = user
     c['template'] = dmutil.get_required('id', j)
-    c['name'] = dmutil.get_required('template_name', j)
+    c['name'] =  dmutil.get_required('name', j)   #dmutil.get_required('template_name', j) = every condition instance should have its own name
+    c['description'] =  dmutil.get_optional('description', j)
     for attr in m:
         c[attr['name']] = attr['value']
     c_id = saver.insert('conditions', c)
