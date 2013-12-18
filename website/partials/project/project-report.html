@@ -92,8 +92,7 @@
                         <h4>Process Information</h4>
                         <label>process type :</label> <select ng-model="process_type">
                         <option disabled>Select Process Type:</option>
-                        <option ng-repeat="p in process_templates" value="{{p}}"
-                                ng-click="selected_template_type(p.id)">
+                        <option ng-repeat="p in process_templates" value="{{p}}">
                             {{p.template_name}}
                         </option>
                     </select>
@@ -385,8 +384,17 @@
     </div>
 </div>
 
-<div>
+<div class="span10 offset1">
     <h4>Processes associated with project : {{project_obj[0].name}} </h4>
+    <div ng-repeat="pr in proj_processes">
+        <li><a style="cursor:pointer" ng-click="showDetails=!showDetails">{{pr.name}}</a></li>
+        <span ng-show="showDetails">
+            <div class="well">
+                <b>Process: {{pr.name}}</b><br>
+                Inputs:
+            </div>
+        </span>
+    </div>
 
 </div>
 
