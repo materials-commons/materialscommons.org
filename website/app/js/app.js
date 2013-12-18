@@ -286,7 +286,7 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
         if (!User.isAuthenticated()) {
             if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") != -1) {
                 //$location.path("/account/login");
-                $state.transitionTo('account/login')
+                $state.transitionTo('account/login');
             }
         }
         else {

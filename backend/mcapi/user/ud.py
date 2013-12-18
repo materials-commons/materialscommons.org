@@ -44,7 +44,7 @@ def upload_file():
     chain(load_data_dir.si(user, tdir, state_id)\
           | import_data_dir_to_repo.si(tdir))()
     return jsonify({'success': True})
-
+   
 
 @app.route('/upload', methods=['POST'])
 @apikey

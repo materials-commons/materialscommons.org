@@ -1,4 +1,5 @@
 function ListProjectsController($scope, mcapi, Stater, wizard, alertService, treeToggle) {
+
     mcapi('/projects')
         .success(function (data) {
             $scope.projects = data;
@@ -26,11 +27,61 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
         mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
                 $scope.tree_data = $scope.flattenTree(data);
+            })
+            .error(function (data) {
+
+            }).jsonp();
+
+        mcapi('/processes/project/%', proj_id)
+            .success(function (data) {
+                $scope.proj_processes = $scope.process_processes(data);
+                $scope.tree_process = $scope.convert_into_tree($scope.proj_processes);
 
             })
             .error(function (data) {
 
             }).jsonp();
+    }
+
+    $scope.process_processes = function (processes) {
+        $scope.temp_proc = {};
+        processes.forEach(function(pr){
+            var temp = pr.template
+            if(temp in $scope.temp_proc){
+                $scope.temp_proc[temp].push(pr);
+            }
+            else{
+                $scope.temp_proc[temp] = new Array();
+                $scope.temp_proc[temp].push(pr);
+            }
+
+        })
+        return $scope.temp_proc
+
+    }
+
+    $scope.convert_into_tree = function(data){
+        var tree_process = [];
+        var count = 0;
+        var all_templates = Object.keys(data);
+        all_templates.forEach(function(d){
+            mcapi('/templates/%', d)
+                .success(function(){
+
+                })
+            count = count + 1;
+            var temp = d;
+            temp[c_id] = count;
+            temp[p_id] = '';
+            tree_process.push(temp);
+            data[d].foreach(function(pr){
+                count = count + 1;
+                pr[c_id] = count;
+                pr[p_id] = temp[c_id];
+                tree_process.push(d);
+            });
+
+        })
     }
 
     $scope.flattenTree = function (tree) {
@@ -153,16 +204,6 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
     });
 
 
-    $scope.selected_template_type = function (id) {
-        mcapi('/processes/template/%', id)
-            .success(function (data) {
-                $scope.processes = data;
-
-            })
-            .error(function (data) {
-
-            }).jsonp();
-    }
 
     watcher.watch($scope, 'process_type', function (template) {
         template = JSON.parse(template)
@@ -176,7 +217,7 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
 
         })
 
-        $scope.process = {'notes': [], 'runs': [], 'citations': [] };
+        $scope.process = {'notes': [], 'runs': [], 'citations': [], 'template': template.id };
 
     });
 
@@ -220,9 +261,8 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
 
         $scope.state.attributes.process = $scope.process;
-        console.dir($scope.state)
         Stater.persist($scope.state);
-
+        console.dir($scope.state)
         wizard.fireNextStep();
     }
 
@@ -409,7 +449,6 @@ function UploadStepController($scope, mcapi, wizard, Stater, treeToggle, alertSe
 
     wizard.waitOn($scope, 'nav_choose_upload', function () {
         $scope.state = Stater.retrieve();
-        console.dir($scope.state)
     });
 
 }

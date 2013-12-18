@@ -51,7 +51,7 @@ def load_data_dirs(user, dirs, state_id):
             load_directory(user, directory, state_id)
     except Exception as exc:
         raise load_data_dirs.retry(exc=exc)
-
+    
 @celery.task
 def load_data_dir(user, directory, state_id):
     state_saver = StateCreateSaver()
