@@ -95,4 +95,11 @@ case "$CMD" in
     status)
         status_servers
         ;;
+    "")
+        status_servers
+        ;;
+    *)
+        echo "Unknown command: $CMD"
+        exit 1
+        ;;
 esac
