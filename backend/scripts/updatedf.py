@@ -6,7 +6,7 @@ import rethinkdb as r
 
 def main():
     conn = r.connect('localhost', 28015, db='materialscommons')
-    for root, dirs, files in os.walk("/mcfs/data/materialscommons"):
+    for root, dirs, files in os.walk("/home/gtarcea/mcfs/data/materialscommons"):
         for f in files:
             path = os.path.join(root, f)
             with open(path) as fd:
