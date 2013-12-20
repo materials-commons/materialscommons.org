@@ -7,7 +7,7 @@ import os.path
 import os
 from ..args import json_as_format_arg
 import tempfile
-from loader.tasks.db import load_data_dir, import_data_dir_to_repo, load_data_dir_1
+from loader.tasks.db import load_data_dir, import_data_dir_to_repo
 from celery import chain
 from .. import access
 from .. import error
@@ -53,7 +53,7 @@ def upload_file_1():
     user = access.get_user()
     j = request.get_json()
     state_id = dmutil.get_required('state_id', j)
-    load_data_dir_1(user, state_id)
+    #load_data_dir_1(user, state_id)
     return jsonify({'success': True})
 
 
