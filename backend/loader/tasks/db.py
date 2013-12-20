@@ -46,7 +46,7 @@ class StateCreateSaver(object):
 @celery.task
 def load_data_dirs(user, dirs, state_id):
     try:
-        r.connect('localhost', 28015, db='materialscommons').repl()
+        r.connect('localhost', 30815, db='materialscommons').repl()
         for directory in dirs:
             load_directory(user, directory, state_id)
     except Exception as exc:
@@ -56,7 +56,7 @@ def load_data_dirs(user, dirs, state_id):
 def load_data_dir(user, directory, state_id):
     state_saver = StateCreateSaver()
     try:
-        r.connect('localhost', 28015, db='materialscommons').repl()
+        r.connect('localhost', 30815, db='materialscommons').repl()
         load_data(user, directory, state_id, state_saver)
     except mcexceptions.RequiredAttributeException as rae:
         traceback.print_exc()
@@ -74,7 +74,7 @@ def load_data_dir(user, directory, state_id):
 def load_data_dir_1(user, state_id):
     state_saver = StateCreateSaver()
     try:
-        r.connect('localhost', 28015, db='materialscommons').repl()
+        r.connect('localhost', 30815, db='materialscommons').repl()
         load_data_1(user, state_id, state_saver)
     except mcexceptions.RequiredAttributeException as rae:
         traceback.print_exc()
@@ -90,7 +90,7 @@ def load_data_dir_1(user, state_id):
 @celery.task
 def load_data_file(datafile, project, datadir):
     try:
-        r.connect('localhost', 28015, db='materialscommons').repl()
+        r.connect('localhost', 30815, db='materialscommons').repl()
     except Exception as exc:
         traceback.print_exc()
         raise load_data_file.retry(exc=exc)
