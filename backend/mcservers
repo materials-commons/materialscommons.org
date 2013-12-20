@@ -47,7 +47,7 @@ function status_servers()
     echo
     echo ======================================================
     echo
-    export MCDB_PORT=38015
+    export MCDB_PORT=30815
     export MC_SERVICE_PORT=5002
     echo "RethinkDB (test):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
@@ -94,5 +94,12 @@ case "$CMD" in
         ;;
     status)
         status_servers
+        ;;
+    "")
+        status_servers
+        ;;
+    *)
+        echo "Unknown command: $CMD"
+        exit 1
         ;;
 esac
