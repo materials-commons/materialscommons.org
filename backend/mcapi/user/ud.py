@@ -14,8 +14,39 @@ from .. import dmutil
 from .. import validate
 from .. import mcdir
 from loader.model import datafile
+from mcapi import mcexceptions
+import traceback
 
 
+
+class StateCreateSaver(object):
+    def __init__(self):
+        self.objects = {}
+
+    def insert(self, table, entry):
+        rv = r.table('saver').insert(entry).run(g.conn)
+        id = rv['generated_keys'][0]
+        self.objects[id] = table
+        return id
+
+    def insert_newval(self, table, entry):
+        rv = r.table('saver').insert(entry, return_vals=True).run(g.conn)
+        id = rv['generated_keys'][0]
+        self.objects[id] = table
+        return rv
+
+    def move_to_tables(self):
+        for key in self.objects:
+            table_name = self.objects[key]
+            o = r.table('saver').get(key).run(g.conn)
+            r.table(table_name).insert(o).run(g.conn)
+
+    def delete_tables(self):
+        for key in self.objects:
+            r.table('saver').get(key).delete().run(g.conn)
+        self.objects.clear()
+        
+        
 @app.route('/udqueue')
 @apikey
 @jsonp
@@ -67,7 +98,7 @@ def load_data_dir_1(user, state_id):
     except Exception as exc:
         traceback.print_exc()
         state_saver.delete_tables()
-        raise load_data_dir.retry(exc=exc)
+        #raise load_data_dir.retry(exc=exc)
     finally:
         state_saver.delete_tables()
         
@@ -80,7 +111,7 @@ def load_data_1(user, state_id, state_saver):
     
 
 def load_provenance_from_state_1(state_id, saver):
-    state = r.table('state').get(state_id).run()
+    state = r.table('state').get(state_id).run(g.conn)
     attributes = state['attributes']
     user = state['owner']
     project_id = attributes['project_id']

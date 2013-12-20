@@ -40,6 +40,7 @@ def create_process_template(j):
     template = common_template_elements("process", j)
     required_conditions = dmutil.get_optional('required_conditions', j, [])
     add_model_item(template, 'required_conditions', required_conditions)
+    add_model_item(template, 'required_output_conditions', required_conditions)
     add_model_item(template, 'name', "")
     add_model_item(template, 'owner', "")
     add_model_item(template, 'description', "")

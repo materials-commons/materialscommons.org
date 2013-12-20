@@ -16,32 +16,7 @@ import traceback
 
 celery = Celery('db', broker='amqp://guest@localhost//')
 
-class StateCreateSaver(object):
-    def __init__(self):
-        self.objects = {}
 
-    def insert(self, table, entry):
-        rv = r.table('saver').insert(entry).run()
-        id = rv['generated_keys'][0]
-        self.objects[id] = table
-        return id
-
-    def insert_newval(self, table, entry):
-        rv = r.table('saver').insert(entry, return_vals=True).run()
-        id = rv['generated_keys'][0]
-        self.objects[id] = table
-        return rv
-
-    def move_to_tables(self):
-        for key in self.objects:
-            table_name = self.objects[key]
-            o = r.table('saver').get(key).run(time_format='raw')
-            r.table(table_name).insert(o).run()
-
-    def delete_tables(self):
-        for key in self.objects:
-            r.table('saver').get(key).delete().run()
-        self.objects.clear()
 
 @celery.task
 def load_data_dirs(user, dirs, state_id):
