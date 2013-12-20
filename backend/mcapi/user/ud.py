@@ -7,7 +7,7 @@ import os.path
 import os
 from ..args import json_as_format_arg
 import tempfile
-from loader.tasks.db import load_data_dir, import_data_dir_to_repo, load_data_dir_1
+from loader.tasks.db import load_data_dir, import_data_dir_to_repo
 from celery import chain
 from .. import access
 from .. import error
@@ -55,6 +55,95 @@ def upload_file_1():
     state_id = dmutil.get_required('state_id', j)
     load_data_dir_1(user, state_id)
     return jsonify({'success': True})
+
+def load_data_dir_1(user, state_id):
+    state_saver = StateCreateSaver()
+    try:
+        load_data_1(user, state_id, state_saver)
+    except mcexceptions.RequiredAttributeException as rae:
+        traceback.print_exc()
+        state_saver.delete_tables()
+        print "Missing attribute: %s" % (rae.attr)
+    except Exception as exc:
+        traceback.print_exc()
+        state_saver.delete_tables()
+        raise load_data_dir.retry(exc=exc)
+    finally:
+        state_saver.delete_tables()
+        
+
+def load_data_1(user, state_id, state_saver):
+    load_provenance_from_state_1(state_id, state_saver)
+    r.table('state').get(state_id).delete().run(g.conn)
+    state_saver.move_to_tables()
+    state_saver.delete_tables()
+    
+
+def load_provenance_from_state_1(state_id, saver):
+    state = r.table('state').get(state_id).run()
+    attributes = state['attributes']
+    user = state['owner']
+    project_id = attributes['project_id']
+    saver.project_id = project_id
+    create_process_from_template_1(attributes['process'], saver)
+    process_id = saver.process_id
+    if 'input_files' in attributes:
+        r.table('saver').get(process_id).update({'input_files': attributes['input_files']}).run(g.conn)
+    if 'output_files' in attributes:
+        r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run(g.conn)  
+    input_conditions = dmutil.get_optional('input_conditions', attributes, [])
+    output_conditions = dmutil.get_optional('output_conditions', attributes, [])
+    create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
+    return process_id
+
+def create_process_from_template_1(j, saver):
+    project_id = saver.project_id
+    p = dict()
+    p['template'] = dmutil.get_optional('id', j)
+    p['project'] = project_id
+    p['name'] = dmutil.get_required('name', j)
+    p['birthtime'] = r.now()
+    p['mtime'] = p['birthtime']
+    p['machine'] = dmutil.get_optional('machine', j)
+    p['process_type'] = dmutil.get_optional('process_type', j)
+    p['description'] = dmutil.get_optional('description', j)
+    p['version'] = dmutil.get_optional('version', j)
+    p['notes'] = dmutil.get_optional('notes', j, [])
+    p['input_conditions'] = dmutil.get_optional('input_conditions', j, [])
+    p['input_files'] = dmutil.get_optional('input_files', j, [])
+    p['output_conditions'] = dmutil.get_optional('output_conditions', j, [])
+    p['output_files'] = dmutil.get_optional('output_files', j, [])
+    p['runs'] = dmutil.get_optional('runs', j, [])
+    p['citations'] = dmutil.get_optional('citations', j, [])
+    p['status'] = dmutil.get_optional('status', j)
+    process_id = saver.insert('processes', p)
+    saver.process_id = process_id
+    saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
+
+
+def create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver):
+    for condition_name in input_conditions:
+        condition = input_conditions[condition_name]
+        condition[u'condition_type'] = 'input_conditions'
+        create_condition_from_template(process_id, user, condition, saver)
+    for condition_name in output_conditions:
+        condition = output_conditions[condition_name]
+        condition[u'condition_type'] = 'output_conditions'
+        create_condition_from_template(process_id, user, condition, saver)
+    
+def create_condition_from_template(process_id, user, j, saver):
+    c = dict()
+    m = j['model']
+    type_of_condition = dmutil.get_required('condition_type', j) 
+    c['owner'] = user
+    c['template'] = dmutil.get_required('id', j)
+    c['name'] =  dmutil.get_required('name', j)   #dmutil.get_required('template_name', j) = every condition instance should have its own name
+    c['description'] =  dmutil.get_optional('description', j)
+    for attr in m:
+        c[attr['name']] = attr['value']
+    c_id = saver.insert('conditions', c)
+    new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run(g.conn)
+    r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
 
 
 @app.route('/import', methods=['POST'])
