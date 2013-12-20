@@ -3,10 +3,12 @@ import json
 from flask import g, request
 import mcexceptions
 import apikeydb
+import os
+
 
 _user_access_matrix = {}
 
-def check(user, owner, id="Unknown"):
+def check(user, owner, id ="Unknown"):
     if user == owner:
         return
     if _user_in_owner_group(user, owner):

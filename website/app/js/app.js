@@ -28,6 +28,16 @@ app.config(function ($stateProvider) {
                 $scope.project_id = $stateParams.project_id;
             }
         })
+        .state('mytools.dataedit', {
+            url: '/data/edit/:id',
+            templateUrl: 'partials/data/data-edit.html',
+            controller: 'DataEditController'
+        })
+        .state('mytools.process', {
+            url: '/process/report/:process_id',
+            templateUrl: 'partials/process/report.html',
+            controller: 'ProcessReportController'
+        })
 
         .state('about', {
             url: '/about',
@@ -68,6 +78,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/datagroups/my_data_groups.html',
             controller: 'MyDataGroupsController'
         })
+
         .state('mytools.mydata', {
             url: '/mydata',
             templateUrl: 'partials/data/my-data.html',
@@ -189,6 +200,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/usergroups/usergroups_list_all.html',
             controller: 'ListUserGroupController'
         })
+
     /**
      * END Subpage
      */
@@ -226,11 +238,7 @@ app.config(function ($stateProvider) {
             controller: 'LoginController'
 
         })
-        .state('data/edit/:id', {
-            url: '/data/edit/:id',
-            templateUrl: 'partials/data/data-edit.html',
-            controller: 'DataEditController'
-        })
+
         .state('datagroups/data/:id', {
             url: '/datagroups/data/:id',
             templateUrl: 'partials/datagroups/datareport.html',
@@ -286,7 +294,7 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
         if (!User.isAuthenticated()) {
             if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") != -1) {
                 //$location.path("/account/login");
-                $state.transitionTo('account/login')
+                $state.transitionTo('account/login');
             }
         }
         else {
