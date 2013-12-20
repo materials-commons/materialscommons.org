@@ -38,8 +38,25 @@ def get_project(id):
 @app.route('/projects/<project_id>/datafiles')
 @apikey
 @jsonp
-def get_all_datafiles_for_project(project_id):
-    pass
+def get_datafiles_for_project(project_id):
+    user = access.get_user()
+    proj = r.table('projects').get(project_id).run(g.conn)
+    if proj is None:
+        return error.bad_request("Unknown project id: %s" % (project_id))
+    access.check(user, proj['owner'])
+    rr = r.table('project2datadir').filter({'project_id': project_id})
+    rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
+    rr = rr.pluck('id', 'name', 'owner', 'datafiles').order_by('name')
+    rr = rr.map(r.row.merge({'datadir_path': r.row['name'],
+                             'datadir_id': r.row['id']}))
+    rr = rr.outer_join(r.table('datafiles'),
+                       #.pluck('id', 'name', 'size', 'owner', 'birthtime'),
+                       lambda ddrow, drow: ddrow['datafiles']
+                       .contains(drow['id'])).zip()
+    rr = rr.pluck('datadir_id', 'datadir_path', 'id',
+                  'name', 'checksum', 'size')
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 
 @app.route('/projects/<project_id>/datadirs')
@@ -69,7 +86,8 @@ def get_project_tree(project_id):
     rr = rr.eq_join('project_id', r.table('projects')).zip()
     rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
     rr = rr.pluck('id', 'name', 'owner', 'datafiles').order_by('name')
-    rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
+    rr = rr.outer_join(r.table('datafiles')
+                       .pluck('id', 'name', 'size', 'owner', 'birthtime'),
                        lambda ddrow, drow: ddrow['datafiles']
                        .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
@@ -145,17 +163,18 @@ def get_provenance(project_id):
     prov = {}
     rr = r.table('project2processes').filter({'project_id': project_id})
     rr = rr.eq_join('process_id', r.table('processes')).zip()
-    rr = rr.pluck('id', 'name', 'input_files', 'input_conditions', 'output_files', 'output_conditions')
-
+    rr = rr.pluck('id', 'name', 'input_files',
+                  'input_conditions', 'output_files', 'output_conditions')
     items = list(rr.run(g.conn, time_format='raw'))
     for process in items:
-        prov =  {'process': process['name'],'input_files': get_datafiles(process['input_files']),
-                                  'output_files': get_datafiles(process['output_files']),
-                                  'input_conditions': get_otherfiles(process['input_conditions']),
-                                  'output_conditions': get_otherfiles(process['output_conditions'])
-                                  }
+        prov = {'process': process['name'],
+                'input_files': get_datafiles(process['input_files']),
+                'output_files': get_datafiles(process['output_files']),
+                'input_conditions': get_otherfiles(process['input_conditions']),
+                'output_conditions': get_otherfiles(process['output_conditions'])}
     print prov
     return args.json_as_format_arg(prov)
+
 
 def get_datafiles(files):
     result = []
@@ -163,12 +182,12 @@ def get_datafiles(files):
         result.append(dmutil.get_single_from_table('datafiles', id))
     return result
 
+
 def get_otherfiles(files):
     result = []
     for id in files:
         result.append(dmutil.get_single_from_table('conditions', id))
     return result
-
 
 
 @app.route('/projects', methods=['POST'])
