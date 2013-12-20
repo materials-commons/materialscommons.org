@@ -38,6 +38,11 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/process/report.html',
             controller: 'ProcessReportController'
         })
+        .state('mytools.tagbyname', {
+            url: '/data/bytag/:name',
+            templateUrl: 'partials/tags/data-for-tag.html',
+            controller: 'TagDataController'
+        })
 
         .state('about', {
             url: '/about',
@@ -244,11 +249,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/datagroups/datareport.html',
             controller: 'DataDirReportController'
         })
-        .state('data/bytag/:name', {
-            url: '/data/bytag/:name',
-            templateUrl: 'partials/tags/data-for-tag.html',
-            controller: 'TagDataController'
-        })
+
 
 
     ;
