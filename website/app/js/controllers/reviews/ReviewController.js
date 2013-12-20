@@ -1,15 +1,13 @@
-function CreateReviewController($scope, mcapi, User, $stateParams, alertService, $window){
+function CreateReviewController($scope, mcapi, User, $stateParams, alertService){
     $scope.all_reviews = [];
-
-
     $scope.signed_in_user = User.u();
     $scope.review_note = "";
     $scope.schedule_for_self = false;
 
     mcapi('/datafile/%/reviews', $stateParams.id)
-        .success(function(data){
-            data.forEach(function(item){
-                $scope.all_reviews.push(item.right)
+        .success(function (data) {
+            data.forEach(function (item) {
+                $scope.all_reviews.push(item.right);
             })
         }).jsonp();
 
@@ -23,7 +21,7 @@ function CreateReviewController($scope, mcapi, User, $stateParams, alertService,
         var review = {};
         review.note = $scope.review_note;
         review.item_type = "data";
-        review.status = "InProcess" ;
+        review.status = "InProcess";
         review.requested_by = User.u();
         if ($scope.schedule_for_self) {
             review.requested_to = User.u();

@@ -28,6 +28,11 @@ app.config(function ($stateProvider) {
                 $scope.project_id = $stateParams.project_id;
             }
         })
+        .state('mytools.process', {
+            url: '/process/report/:process_id',
+            templateUrl: 'partials/process/report.html',
+            controller: 'ProcessReportController'
+        })
 
         .state('about', {
             url: '/about',
@@ -68,6 +73,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/datagroups/my_data_groups.html',
             controller: 'MyDataGroupsController'
         })
+
         .state('mytools.mydata', {
             url: '/mydata',
             templateUrl: 'partials/data/my-data.html',
@@ -189,6 +195,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/usergroups/usergroups_list_all.html',
             controller: 'ListUserGroupController'
         })
+
     /**
      * END Subpage
      */
