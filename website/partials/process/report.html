@@ -1,0 +1,23 @@
+<div class="row-fluid">
+    <div class="span5 offset1">
+        <h3>Process report</h3>
+
+        <div ng-controller="ProcessReportController" class="well">
+            {{process}}
+            Name:<span>{{process.name}}</span><br>
+            Description:<span>{{process.description}}</span> <br>
+            Notes:
+                    <span ng-repeat="n in process.notes">
+                     {{n}}
+                    </span> <br>
+            Runs:
+                <span ng-repeat="r in process.runs">
+                    {{r.started}}  -
+                    {{r.stopped}}
+                    {{r.error_messages}}
+                </span> <br>
+
+        </div>
+    </div>
+
+</div>
