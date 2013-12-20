@@ -16,7 +16,7 @@
 
                 <tr ng-repeat="row in data_by_user  | orderBy:predicate:reverse | filter:query | page:currentDataPage:10"
                     style="cursor:pointer">
-                    <td><a href="#/data/edit/{{row.id}}">{{row.name}}</a></td>
+                    <td><a href="#/mytools/data/edit/{{row.id}}">{{row.name}}</a></td>
                     <td>
                         <ul>
                             <li ng-repeat="dg in row.datadirs">
