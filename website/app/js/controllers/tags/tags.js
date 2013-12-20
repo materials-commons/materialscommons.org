@@ -5,9 +5,6 @@ function AllTagsController($scope, $location, mcapi, User) {
                 $scope.tags = data;
             }).jsonp();
 
-//        $scope.listDataForTag = function (tag) {
-//            $location.path("/tags/data/bytag/" + tag + "/" + User.u());
-//    }
 }
 
 function MyTagsController($scope, mcapi){

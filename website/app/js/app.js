@@ -28,6 +28,11 @@ app.config(function ($stateProvider) {
                 $scope.project_id = $stateParams.project_id;
             }
         })
+        .state('mytools.dataedit', {
+            url: '/data/edit/:id',
+            templateUrl: 'partials/data/data-edit.html',
+            controller: 'DataEditController'
+        })
         .state('mytools.process', {
             url: '/process/report/:process_id',
             templateUrl: 'partials/process/report.html',
@@ -233,11 +238,7 @@ app.config(function ($stateProvider) {
             controller: 'LoginController'
 
         })
-        .state('data/edit/:id', {
-            url: '/data/edit/:id',
-            templateUrl: 'partials/data/data-edit.html',
-            controller: 'DataEditController'
-        })
+
         .state('datagroups/data/:id', {
             url: '/datagroups/data/:id',
             templateUrl: 'partials/datagroups/datareport.html',
