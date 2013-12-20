@@ -384,22 +384,41 @@
     </div>
 </div>
 
-<div class="span10 offset1">
-    <h4>Processes associated with project : {{project_obj[0].name}} </h4>
-    <div ng-repeat="pr in proj_processes">
-        <li><a style="cursor:pointer" ng-click="showDetails=!showDetails">{{pr.name}}</a></li>
-        <span ng-show="showDetails">
-            <div class="well">
-                <b>Process: {{pr.name}}</b><br>
-                Inputs:
-            </div>
-        </span>
-    </div>
+<div class="row-fluid">
+    <div class="span10 offset1">
+        <h4>Process Tree</h4>
+        <table treetable treedata="tree_process">
+            <thead>
+            <tr ng-show="selected_proj">
+                <th></th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
 
+            <tr ng-repeat="t in tree_process" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+                <td><span type="checkbox" style="margin-bottom: 7px;" ng-click="check(t)" class="treecheckBox">
+                        <img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon">
+                    </span>
+                </td>
+                <td ng-controller="ProcessReportController">
+                    <a href="#/mytools/process/report/{{t.id}}" ng-click="selected_process(t.id)">
+                        {{t.name}}</a>
+                </td>
+                <td>{{t.description}}</td>
+
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
 </div>
+
 
 <div class="row-fluid">
     <div class="span10 offset1">
+        <h4>Project Tree</h4>
         <table treetable treedata="tree_data">
             <thead>
             <tr ng-show="selected_proj">
@@ -409,6 +428,10 @@
                 <th>Size</th>
                 <th>Owner</th>
                 <th>Date</th>
+                <th>
+                    c_id
+                </th>
+                <th>p_id</th>
             </tr>
             </thead>
             <tbody>
@@ -418,11 +441,13 @@
                         <img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon">
                     </span>
                 </td>
-                <td>{{t.name}}</td>
+                <td><a href="#/data/edit/{{t.id}}">{{t.name}}</a></td>
                 <td>{{t.type}}</td>
                 <td>{{t.size}}</td>
                 <td>{{t.owner}}</td>
                 <td>{{t.birthtime | toDateString}}</td>
+                <td>{{t.c_id}}</td>
+                <td>{{t.parent_id}}</td>
             </tr>
             </tbody>
         </table>

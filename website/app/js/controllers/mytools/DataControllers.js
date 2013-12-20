@@ -1,6 +1,7 @@
 function DataEditController($scope, $window, mcapi, alertService, $stateParams) {
     $scope.count = 0;
     $scope.grid_options = [];
+    $scope.id = $stateParams.id;
 
     $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediatype);
@@ -8,15 +9,16 @@ function DataEditController($scope, $window, mcapi, alertService, $stateParams) 
         $scope.originalFileSrc = originalFilePath($scope.doc.location, $scope.doc.name);
         $scope.fileName = $scope.doc.name;
     }
-    mcapi('/datafile/%', $stateParams.id)
+
+    mcapi('/datafile/%', $scope.id)
         .success(function (data) {
-            console.log(data)
             $scope.doc = data;
             $scope.setupAccessToUserFile();
         })
         .error(function (data) {
             alertService.sendMessage(data.error);
         }).jsonp();
+
     $scope.tagchoices = new Array();
     $scope.originalTags = [];
     mcapi('/tags')

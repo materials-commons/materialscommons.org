@@ -10,7 +10,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
 
     $scope.selected_project = function (proj_id) {
-        $scope.selected_proj = true
+        $scope.selected_proj = true;
         mcapi('/projects/%', proj_id)
             .success(function (data) {
                 $scope.project_obj = data;
@@ -32,11 +32,13 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
             }).jsonp();
 
+
+
         mcapi('/processes/project/%', proj_id)
             .success(function (data) {
                 $scope.proj_processes = $scope.process_processes(data);
-                $scope.tree_process = $scope.convert_into_tree($scope.proj_processes);
-
+                $scope.tree_process =  $scope.convert_into_tree($scope.proj_processes);
+                //$scope.tree_p = [{"template_description":"Collect data using an SEM.","template_name":"Run SEM","template_type":"process","template_birthtime":{"timezone":"+00:00","epoch_time":1384454393.733},"owner":"gtarcea@umich.edu","model":[{"name":"required_conditions","value":["sem_equipment_conditions","material_conditions"]},{"name":"name","value":""},{"name":"owner","value":""},{"name":"description","value":""},{"name":"birthtime","value":""},{"name":"mtime","value":""},{"name":"machine","value":""},{"name":"process_type","value":""},{"name":"version","value":""},{"name":"parent","value":""},{"name":"notes","value":[]},{"name":"inputs","value":[]},{"name":"outputs","value":[]},{"name":"runs","value":[]},{"name":"citations","value":[]},{"name":"status","value":""},{"name":"required_output_conditions","value":["material_conditions"]}],"template_mtime":{"timezone":"+00:00","epoch_time":1384454393.733},"id":"a71eecb5-f9ba-4da7-8129-5309a428bb42","c_id":"1","parent_id":""},{"name":"dfg","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"91f58f49-64ca-47b0-a1b0-2084bdcf4f27","c_id":"2","parent_id":"1"},{"name":"*****Process****","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"8ae9fbba-9ee5-4a7f-ad8f-d97bf08d1ab3","c_id":"3","parent_id":"1"},{"name":"light","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"ae4ff8d9-0621-4e4f-b285-5b36cd1d51ed","c_id":"4","parent_id":"1"},{"name":"test 8 process************","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"fafa9432-0763-412b-923e-3c7523233211","c_id":"5","parent_id":"1"},{"name":"fdg","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"0a5a6e1f-bbff-4413-9bf4-9a02ee10a2f6","c_id":"6","parent_id":"1"},{"name":"gem","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"4f83ce2c-07db-473c-9fbc-795f89596864","c_id":"7","parent_id":"1"},{"name":"pr -1","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"bc4f1379-2fdc-4d45-b4da-8626a4516322","c_id":"8","parent_id":"1"},{"name":"qaz","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"c246b768-1d08-4d56-bf2d-08622592cca0","c_id":"9","parent_id":"1"},{"name":"fantastic process","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"ea1df4a0-3ee7-485f-859a-001e281a73e6","c_id":"10","parent_id":"1"}]
             })
             .error(function (data) {
 
@@ -59,29 +61,32 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
         return $scope.temp_proc
 
     }
-
+    $scope.tree = [];
     $scope.convert_into_tree = function(data){
-        var tree_process = [];
         var count = 0;
+        var processes = data;
         var all_templates = Object.keys(data);
         all_templates.forEach(function(d){
-            mcapi('/templates/%', d)
-                .success(function(){
+            var template = {"id": d, "name": ''};
+                    count = count + 1;
+                    template['c_id'] = count.toString();
+                    template['parent_id'] = '';
+                    $scope.tree.push(template);
+                    var list_processes = processes[d]
+                    $scope.tree, count  = $scope.iterate_process(count, list_processes, template, $scope.tree)
 
-                })
+        });
+        return $scope.tree
+    }
+
+    $scope.iterate_process = function(count, data, template, tree){
+        data.forEach(function(pr){
             count = count + 1;
-            var temp = d;
-            temp[c_id] = count;
-            temp[p_id] = '';
-            tree_process.push(temp);
-            data[d].foreach(function(pr){
-                count = count + 1;
-                pr[c_id] = count;
-                pr[p_id] = temp[c_id];
-                tree_process.push(d);
-            });
-
-        })
+            pr['c_id'] = count.toString();
+            pr['parent_id'] = template.c_id;
+            tree.push(pr);
+        });
+        return tree, count
     }
 
     $scope.flattenTree = function (tree) {

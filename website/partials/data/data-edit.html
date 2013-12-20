@@ -1,11 +1,11 @@
-<div class="span12 offset1">
+
+<div class="span12 offset1" >
     <h3>Edit Data</h3>
 
     Start Chat : <input type="checkbox" ng-model="chat">
     See Reviews: <input type="checkbox" ng-model="seeReviews">
     See Tags: <input type="checkbox" ng-model="seeTags">
     <div ng-controller="DataChatController">
-
         <div class="row-fluid" ng-show="chat==true">
             <div>
                 <div class="chat-box">
@@ -29,8 +29,7 @@
 
     <div class="row-fluid">
         <div ng-show="seeReviews==true" id="review-section" class="row-fluid">
-            <div ng-controller="CreateReviewController">
-                <div class="well">
+                <div class="well" ng-controller="CreateReviewController">
                     <h4>Reviews Scheduled</h4>
 
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -74,13 +73,12 @@
                         <option ng-repeat="user in users">{{ user }}</option>
                     </select>
                     <button style="position:absolute" ng-click="addReviewForOther()">Request Review</button>
-            </div>
         </div>
     </div>
 
-    </div>
-    <div class="row-fluid">
-            <div ng-show="seeTags" id="tags-section" class="row-fluid">
+    <!--</div>-->
+<div class="row-fluid" ng-controller="DataEditController">
+    <div ng-show="seeTags" id="tags-section" class="row-fluid">
             <div class="well">
                 <h4>Create/Edit Tags</h4>
                  <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
@@ -103,7 +101,7 @@
     </div>
 
     <hr/>
-    <div class="row-fluid">
+    <div class="row-fluid" >
         <div class="span6">
             <div class="well">
                 <h4>Basic Information</h4>
@@ -134,32 +132,33 @@
 
     <hr/>
 
-    <div class="row-fluid">
-        <div class="span7">
-            <div class="well">
-                <h4>Process Conditions:</h4>
+    <!--<div class="row-fluid">-->
+        <!--<div class="span7">-->
+            <!--<div class="well">-->
+                <!--<h4>Process Conditions:</h4>-->
 
-                <div ng-repeat="p in all_process">
+                <!--<div ng-repeat="p in all_process">-->
 
-                    <div class="gridStyle" ng-grid="grid_options[$index]">
+                    <!--<div class="gridStyle" ng-grid="grid_options[$index]">-->
 
-                    </div>
-                </div>
-            </div>
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
-        </div>
+        <!--</div>-->
 
-        <div class="span4">
-            <div class="well">
-                <h4>File Conditions:</h4>
-            </div>
+        <!--<div class="span4">-->
+            <!--<div class="well">-->
+                <!--<h4>File Conditions:</h4>-->
+            <!--</div>-->
 
-        </div>
+        <!--</div>-->
 
-    </div>
+    <!--</div>-->
 
     <div class="row-fluid" style="margin-top: 20px">
         <button type="button" class="btn btn-primary" ng-click="saveData()">Save</button>
         <button type="button" class="btn btn-danger" ng-click="cancel()">Cancel</button>
     </div>
+</div>
 </div>
