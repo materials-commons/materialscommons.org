@@ -7,7 +7,6 @@ import os.path
 import os
 from ..args import json_as_format_arg
 import tempfile
-from loader.tasks.db import load_data_dir, import_data_dir_to_repo
 from celery import chain
 from .. import access
 from .. import error
