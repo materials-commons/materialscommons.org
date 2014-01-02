@@ -84,7 +84,7 @@ def upload_file_1():
     user = access.get_user()
     j = request.get_json()
     state_id = dmutil.get_required('state_id', j)
-    #load_data_dir_1(user, state_id)
+    load_data_dir_1(user, state_id)
     return jsonify({'success': True})
 
 def load_data_dir_1(user, state_id):
