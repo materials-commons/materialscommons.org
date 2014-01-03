@@ -38,7 +38,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
             .success(function (data) {
                 $scope.proj_processes = $scope.process_processes(data);
                 var template_ids = Object.keys($scope.proj_processes)
-                mcapi('templates/list/%', template_ids)
+                mcapi('/templates/list/%', template_ids)
                     .success(function (data) {
                         console.log(data)
                     })
