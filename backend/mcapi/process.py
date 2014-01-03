@@ -62,12 +62,26 @@ def get_all_processes_for_project(project_id):
     selection = list(rr.run(g.conn, time_format='raw'))
     return  json_as_format_arg(selection)
 
-@app.route('/processes/datafiles/<process_id>', methods=['GET'])
+@app.route('/processes/extract/<process_id>/<object_type>', methods=['GET'])
+@apikey
 @jsonp
-def get_datafile_objects(project_id):
+def get_datafile_objects(process_id, object_type):
     rr = r.table('processes').filter({'id': process_id})
-    rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
-                       lambda ddrow, drow: ddrow['inputfiles']
+    if object_type == 'input_files':
+        rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
+                       lambda ddrow, drow: ddrow['input_files']
+                       .contains(drow['id']))
+    elif object_type == 'output_files':
+        rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
+                       lambda ddrow, drow: ddrow['output_files']
+                       .contains(drow['id']))
+    elif object_type == 'input_conditions':
+        rr = rr.outer_join(r.table('conditions'),
+                       lambda ddrow, drow: ddrow['input_conditions']
+                       .contains(drow['id']))
+    elif object_type == 'output_conditions':
+        rr = rr.outer_join(r.table('conditions'),
+                       lambda ddrow, drow: ddrow['output_conditions']
                        .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
     print selection

@@ -1,4 +1,4 @@
-function ListProjectsController($scope, mcapi, Stater, wizard, templateService, alertService, treeToggle) {
+function ListProjectsController($scope, mcapi, Stater, wizard, alertService, treeToggle) {
     $scope.all_templates = [];
     init();
     function init(){
