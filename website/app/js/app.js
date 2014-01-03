@@ -33,7 +33,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/data/data-edit.html',
             controller: 'DataEditController'
         })
-        .state('mytools.process', {
+        .state('mytools.processreport', {
             url: '/process/report/:process_id',
             templateUrl: 'partials/process/report.html',
             controller: 'ProcessReportController'

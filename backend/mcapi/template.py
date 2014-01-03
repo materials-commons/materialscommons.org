@@ -18,16 +18,6 @@ def get_all_templates():
     return dmutil.get_all_from_table('templates')
 
 
-@app.route('/templates/list/<list_ids>', methods=['GET'])
-@apikey
-@jsonp
-def get_template_list(list_ids):
-    print list_ids
-    x = [];
-    for item in list_ids:
-        x = dmutil.get_single_from_table('templates', item)
-        print x
-
 @app.route('/templates/new', methods=['POST'])
 @crossdomain(origin='*')
 def create_template():

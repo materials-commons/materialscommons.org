@@ -60,6 +60,17 @@ def create_process():
 def get_all_processes_for_project(project_id):
     rr = r.table('processes').filter({'project': project_id}).pluck('id', 'name','template')
     selection = list(rr.run(g.conn, time_format='raw'))
-    return json_as_format_arg(selection)
+    return  json_as_format_arg(selection)
+
+@app.route('/processes/datafiles/<process_id>', methods=['GET'])
+@jsonp
+def get_datafile_objects(project_id):
+    rr = r.table('processes').filter({'id': process_id})
+    rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
+                       lambda ddrow, drow: ddrow['inputfiles']
+                       .contains(drow['id']))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    print selection
+    return  json_as_format_arg(selection)
 
 
