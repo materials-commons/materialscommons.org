@@ -33,10 +33,12 @@ def get_all_processes_for_template(template_id):
 def create_process():
     p = dict()
     j = request.get_json()
+    print j
     p['name'] = dmutil.get_required('name', j)
     user = access.get_user()
     p['owner'] = user
     p['project'] = dmutil.get_required('project', j)
+    p['template'] = dmutil.get_required('template', j)
     if not dmutil.item_exists('projects', p['project']):
         return error.not_acceptable("Unknown project id: %s" % (p['project']))
     p['birthtime'] = r.now()
