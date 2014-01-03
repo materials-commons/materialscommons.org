@@ -9,7 +9,6 @@ import dmutil
 @apikey
 @jsonp
 def get_template(template_id):
-    print template_id
     return dmutil.get_single_from_table('templates', template_id)
 
 @app.route('/templates', methods=['GET'])
@@ -25,9 +24,9 @@ def get_all_templates():
 def get_template_list(list_ids):
     print list_ids
     x = [];
-    for id in list_ids:
-        x.append(dmutil.get_single_from_table('templates', id))
-    return x
+    for item in list_ids:
+        x = dmutil.get_single_from_table('templates', item)
+        print x
 
 @app.route('/templates/new', methods=['POST'])
 @crossdomain(origin='*')
