@@ -6,8 +6,10 @@ import error
 import dmutil
 
 @app.route('/templates/<template_id>', methods=['GET'])
+@apikey
 @jsonp
 def get_template(template_id):
+    print template_id
     return dmutil.get_single_from_table('templates', template_id)
 
 @app.route('/templates', methods=['GET'])
@@ -16,6 +18,16 @@ def get_template(template_id):
 def get_all_templates():
     return dmutil.get_all_from_table('templates')
 
+
+@app.route('/templates/list/<list_ids>', methods=['GET'])
+@apikey
+@jsonp
+def get_template_list(list_ids):
+    print list_ids
+    x = [];
+    for id in list_ids:
+        x.append(dmutil.get_single_from_table('templates', id))
+    return x
 
 @app.route('/templates/new', methods=['POST'])
 @crossdomain(origin='*')
