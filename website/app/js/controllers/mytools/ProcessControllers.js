@@ -1,16 +1,16 @@
-function ProcessReportController($scope, mcapi) {
+function ProcessReportController($scope, $stateParams, mcapi) {
+    $scope.process_id = $stateParams.process_id;
 
-    $scope.selected_process = function (id) {
+    mcapi('/processes/%', $scope.process_id)
+        .success(function (data) {
+            $scope.process = data;
+            mcapi('/processes/datafiles/%', $scope.process.id)
+                .success(function(data){
+                    $scope.input_files = data
+                })
+        })
+        .error(function (e) {
 
-        mcapi('/processes/%', id)
-            .success(function (data) {
-                $scope.process = data;
-                console.log($scope.process);
-            })
-            .error(function (e) {
-
-            }).jsonp();
-
-    }
+        }).jsonp();
 
 }

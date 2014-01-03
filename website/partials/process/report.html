@@ -1,9 +1,9 @@
 <div class="row-fluid">
     <div class="span5 offset1">
         <h3>Process report</h3>
+        {{process}}
 
-        <div ng-controller="ProcessReportController" class="well">
-            {{process}}
+        <div class="well">
             Name:<span>{{process.name}}</span><br>
             Description:<span>{{process.description}}</span> <br>
             Notes:
@@ -16,6 +16,14 @@
                     {{r.stopped}}
                     {{r.error_messages}}
                 </span> <br>
+
+            Input Properties:
+
+            Input Files:
+
+            Output Properties:
+
+            Output Files:
 
         </div>
     </div>
