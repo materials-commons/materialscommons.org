@@ -38,7 +38,6 @@ def create_process():
     user = access.get_user()
     p['owner'] = user
     p['project'] = dmutil.get_required('project', j)
-    p['template'] = dmutil.get_required('template', j)
     if not dmutil.item_exists('projects', p['project']):
         return error.not_acceptable("Unknown project id: %s" % (p['project']))
     p['birthtime'] = r.now()
