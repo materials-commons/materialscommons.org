@@ -203,6 +203,7 @@ def create_process_from_template_1(j, saver):
     p['process_type'] = dmutil.get_optional('process_type', j)
     p['description'] = dmutil.get_optional('description', j)
     p['version'] = dmutil.get_optional('version', j)
+    p['template'] = dmutil.get_required('template', j)
     p['notes'] = dmutil.get_optional('notes', j, [])
     p['input_conditions'] = dmutil.get_optional('input_conditions', j, [])
     p['input_files'] = dmutil.get_optional('input_files', j, [])
