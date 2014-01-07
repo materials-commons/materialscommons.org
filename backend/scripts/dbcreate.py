@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 import rethinkdb as r
+from os import environ
 
-r.connect("localhost", 28015, db="materialscommons").repl()
+MCDB_PORT = environ.get('MCDB_PORT') or 28015
+r.connect("localhost", int(MCDB_PORT), db="materialscommons").repl()
+
 
 def create_database():
     run_rethinkdb_command(lambda: r.db_create("materialscommons").run())
+
 
 def create_tables():
     run_rethinkdb_command(lambda: r.table_create("users").run())
@@ -33,6 +37,10 @@ def create_tables():
     run_rethinkdb_command(lambda: r.table_create("review2datafile").run())
 
 
+def create_indices():
+    run_rethinkdb_command(lambda: r.table('datadirs').index_create('name').run())
+
+
 def run_rethinkdb_command(func):
     try:
         func()
@@ -42,3 +50,4 @@ def run_rethinkdb_command(func):
 if __name__ == "__main__":
     create_database()
     create_tables()
+    create_indices()
