@@ -7,43 +7,45 @@ r.connect("localhost", int(MCDB_PORT), db="materialscommons").repl()
 
 
 def create_database():
-    run_rethinkdb_command(lambda: r.db_create("materialscommons").run())
+    run(r.db_create("materialscommons"))
 
 
 def create_tables():
-    run_rethinkdb_command(lambda: r.table_create("users").run())
-    run_rethinkdb_command(lambda: r.table_create("usergroups").run())
-    run_rethinkdb_command(lambda: r.table_create("datafiles").run())
-    run_rethinkdb_command(lambda: r.table_create("dataparams").run())
-    run_rethinkdb_command(lambda: r.table_create("datadirs").run())
-    run_rethinkdb_command(lambda: r.table_create("tags").run())
-    run_rethinkdb_command(lambda: r.table_create("news").run())
-    run_rethinkdb_command(lambda: r.table_create("udqueue").run())
-    run_rethinkdb_command(lambda: r.table_create("reviews").run())
-    run_rethinkdb_command(lambda: r.table_create("conditions").run())
-    run_rethinkdb_command(lambda: r.table_create("processes").run())
-    run_rethinkdb_command(lambda: r.table_create("machines").run())
-    run_rethinkdb_command(lambda: r.table_create("projects").run())
-    run_rethinkdb_command(lambda: r.table_create("datasets").run())
-    run_rethinkdb_command(lambda: r.table_create("citations").run())
-    run_rethinkdb_command(lambda: r.table_create("notes").run())
-    run_rethinkdb_command(lambda: r.table_create("templates").run())
-    run_rethinkdb_command(lambda: r.table_create("state").run())
-    run_rethinkdb_command(lambda: r.table_create("saver").run())
-    run_rethinkdb_command(lambda: r.table_create("project2datadir").run())
-    run_rethinkdb_command(lambda: r.table_create("project2datafile").run())
-    run_rethinkdb_command(lambda: r.table_create("project2processes").run())
-    run_rethinkdb_command(lambda: r.table_create("project2conditions").run())
-    run_rethinkdb_command(lambda: r.table_create("review2datafile").run())
+    run(r.table_create("users"))
+    run(r.table_create("usergroups"))
+    run(r.table_create("datafiles"))
+    run(r.table_create("dataparams"))
+    run(r.table_create("datadirs"))
+    run(r.table_create("tags"))
+    run(r.table_create("news"))
+    run(r.table_create("udqueue"))
+    run(r.table_create("reviews"))
+    run(r.table_create("conditions"))
+    run(r.table_create("processes"))
+    run(r.table_create("machines"))
+    run(r.table_create("projects"))
+    run(r.table_create("datasets"))
+    run(r.table_create("citations"))
+    run(r.table_create("notes"))
+    run(r.table_create("templates"))
+    run(r.table_create("state"))
+    run(r.table_create("saver"))
+    run(r.table_create("project2datadir"))
+    run(r.table_create("project2datafile"))
+    run(r.table_create("project2processes"))
+    run(r.table_create("project2conditions"))
+    run(r.table_create("review2datafile"))
 
 
 def create_indices():
-    run_rethinkdb_command(lambda: r.table('datadirs').index_create('name').run())
+    run(r.table('datadirs').index_create('name'))
+    run(r.table('project2datadir').index_create('datadir_id'))
+    run(r.table('project2datadir').index_create('project_id'))
 
 
-def run_rethinkdb_command(func):
+def run(rql):
     try:
-        func()
+        rql.run()
     except r.RqlRuntimeError:
         pass
 
