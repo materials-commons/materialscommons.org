@@ -16,7 +16,32 @@ import traceback
 
 celery = Celery('db', broker='amqp://guest@localhost//')
 
+class StateCreateSaver(object):
+    def __init__(self):
+        self.objects = {}
 
+    def insert(self, table, entry):
+        rv = r.table('saver').insert(entry).run()
+        id = rv['generated_keys'][0]
+        self.objects[id] = table
+        return id
+
+    def insert_newval(self, table, entry):
+        rv = r.table('saver').insert(entry, return_vals=True).run()
+        id = rv['generated_keys'][0]
+        self.objects[id] = table
+        return rv
+
+    def move_to_tables(self):
+        for key in self.objects:
+            table_name = self.objects[key]
+            o = r.table('saver').get(key).run(time_format='raw')
+            r.table(table_name).insert(o).run()
+
+    def delete_tables(self):
+        for key in self.objects:
+            r.table('saver').get(key).delete().run()
+        self.objects.clear()
 
 @celery.task
 def load_data_dirs(user, dirs, state_id):
@@ -31,7 +56,7 @@ def load_data_dirs(user, dirs, state_id):
 def load_data_dir(user, directory, state_id):
     state_saver = StateCreateSaver()
     try:
-        r.connect('localhost', 28015, db='materialscommons').repl()
+        r.connect('localhost', 30815, db='materialscommons').repl()
         load_data(user, directory, state_id, state_saver)
     except mcexceptions.RequiredAttributeException as rae:
         traceback.print_exc()
@@ -44,6 +69,22 @@ def load_data_dir(user, directory, state_id):
     finally:
         state_saver.delete_tables()
         
+        
+def load_data_dir_1(user, state_id):
+    state_saver = StateCreateSaver()
+    try:
+        r.connect('localhost', 30815, db='materialscommons').repl()
+        load_data_1(user, state_id, state_saver)
+    except mcexceptions.RequiredAttributeException as rae:
+        traceback.print_exc()
+        state_saver.delete_tables()
+        print "Missing attribute: %s" % (rae.attr)
+    except Exception as exc:
+        traceback.print_exc()
+        state_saver.delete_tables()
+        raise load_data_dir.retry(exc=exc)
+    finally:
+        state_saver.delete_tables()
 
 @celery.task
 def load_data_file(datafile, project, datadir):
@@ -76,6 +117,12 @@ def load_data(user, directory, state_id, state_saver):
     state_saver.move_to_tables()
     state_saver.delete_tables()
     
+
+def load_data_1(user, state_id, state_saver):
+    load_provenance_from_state_1(state_id, state_saver)
+    r.table('state').get(state_id).delete().run()
+    state_saver.move_to_tables()
+    state_saver.delete_tables()
 
 def copy_data_over(dirpath):
     print "Copying over: %s" % (dirpath)
@@ -110,7 +157,7 @@ def load_provenance_from_state_1(state_id, saver):
     if 'input_files' in attributes:
         r.table('saver').get(process_id).update({'input_files': attributes['input_files']}).run()
     if 'output_files' in attributes:
-        r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run() 
+        r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run()
     input_conditions = dmutil.get_optional('input_conditions', attributes, [])
     output_conditions = dmutil.get_optional('output_conditions', attributes, [])
     create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
@@ -142,11 +189,10 @@ def create_process_from_template(j, saver):
     saver.process_id = process_id
     saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
     
-
+    
 def create_process_from_template_1(j, saver):
     project_id = saver.project_id
     p = dict()
-    print j
     p['project'] = project_id
     p['name'] = dmutil.get_required('name', j)
     p['birthtime'] = r.now()
@@ -168,7 +214,6 @@ def create_process_from_template_1(j, saver):
     saver.process_id = process_id
     saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
 
-
 def add_input_files_to_process(process_id, input_files):
     process = r.table('saver').get(process_id).run()
     for id in input_files:
@@ -184,7 +229,30 @@ def add_output_files_to_process(process_id, output_files):
     ifiles = process['output_files']
     r.table('saver').get(process_id).update({'output_files':ifiles}).run()
 
+def create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver):
+    for condition_name in input_conditions:
+        condition = input_conditions[condition_name]
+        condition[u'condition_type'] = 'input_conditions'
+        create_condition_from_template(process_id, user, condition, saver)
+    for condition_name in output_conditions:
+        condition = output_conditions[condition_name]
+        condition[u'condition_type'] = 'output_conditions'
+        create_condition_from_template(process_id, user, condition, saver)
+    
 
+def create_condition_from_template(process_id, user, j, saver):
+    c = dict()
+    m = j['model']
+    type_of_condition = dmutil.get_required('condition_type', j)
+    c['owner'] = user
+    c['template'] = dmutil.get_required('id', j)
+    c['name'] = dmutil.get_required('name', j) #dmutil.get_required('template_name', j) = every condition instance should have its own name
+    c['description'] = dmutil.get_optional('description', j)
+    for attr in m:
+        c[attr['name']] = attr['value']
+    c_id = saver.insert('conditions', c)
+    new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run()
+    r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run()
 
 def load_directory(user, directory, process_id):
     parents = {}
@@ -224,9 +292,9 @@ def add_dfids_to_process(process_id, df_ids):
 
 def fix_name(dir_name):
     """The dir path at this point has the project name
-    included in it. We want to strip out the pieces we
-    don't care about.
-    """
+included in it. We want to strip out the pieces we
+don't care about.
+"""
     if '/' not in dir_name:
         return None
     slash = dir_name.index('/')
