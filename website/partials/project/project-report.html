@@ -171,14 +171,11 @@
                                         </span>
                             <br>
 
-                            <div ng-hide="is_saved==true">
+                            <div>
                                 <button class="label label-info" ng-click="save_process()"> Save Process
                                 </button>
                             </div>
-                            <div ng-show="is_saved==true">
-                                <button class="label label-info" ng-click="next_step()"> Next Step
-                                </button>
-                            </div>
+
 
                         </div>
 
@@ -187,8 +184,8 @@
             </div>
             <div class="block" ng-show="isCurrentStep('nav_choose_inputs')">
                 <form id="input-tab" class="form-inline span8">
-                    <div class="well">
-                        <div ng-repeat="condition in state.attributes.process.required_conditions">
+                    <div class="well" ng-controller="ProcessStepController">
+                        <div  ng-repeat="condition in state.attributes.process.required_conditions">
                             <div class="well" ng-controller="InputStepController" ng-init="init(condition)">
 
                                 <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{condition_name}}</a>
@@ -256,7 +253,7 @@
             </div>
             <div class="block" ng-show="isCurrentStep('nav_choose_outputs')">
                 <form id="output-tab" class="form-inline span8">
-                    <div class="well">
+                    <div class="well" ng-controller="ProcessStepController">
                         <h4>Outputs</h4>
 
                         <div ng-repeat="cond in state.attributes.process.required_output_conditions">
@@ -403,7 +400,7 @@
                     </span>
                 </td>
                 <td ng-controller="ProcessReportController">
-                    <a href="#/mytools/process/report/{{t.id}}" ng-click="selected_process(t.id)">
+                    <a href="#/mytools/process/report/{{t.id}}">
                         {{t.name}}</a>
                 </td>
                 <td>{{t.description}}</td>

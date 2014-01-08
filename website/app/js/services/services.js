@@ -332,6 +332,23 @@ materialsCommonsServices.factory('Thumbnail', function () {
     }
 });
 
+//materialsCommonsServices.factory('processService', function (mcapi) {
+//    return {
+//        get_input_files: function (ids) {
+//
+//            mcapi('/templates/%', id)
+//                .success(function(data){
+//                     temp = data;
+//                })
+//                .error(function(e){
+//
+//                }).jsonp()
+//
+//            return temp ;
+//        }
+//    }
+//});
+
 
 materialsCommonsServices.factory('formatData', function () {
     var all_process = [];
@@ -538,4 +555,6 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
         }
     }
 });
+
+
 

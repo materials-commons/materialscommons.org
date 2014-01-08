@@ -1,4 +1,14 @@
 function ListProjectsController($scope, mcapi, Stater, wizard, alertService, treeToggle) {
+    $scope.all_templates = [];
+    $scope.test_cond = ["sem_equipment_properties", "material_properties"]
+
+    init();
+    function init() {
+        mcapi('/templates')
+            .success(function (data) {
+                $scope.all_templates = data
+            }).jsonp();
+    }
 
     mcapi('/projects')
         .success(function (data) {
@@ -21,8 +31,8 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
         $scope.state = Stater.retrieve();
         $scope.state.attributes.project_id = proj_id;
-        Stater.save($scope.state);
-
+        //Stater.save($scope.state);
+        Stater.persist($scope.state);
 
         mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
@@ -33,11 +43,10 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
             }).jsonp();
 
 
-
         mcapi('/processes/project/%', proj_id)
             .success(function (data) {
                 $scope.proj_processes = $scope.process_processes(data);
-                $scope.tree_process =  $scope.convert_into_tree($scope.proj_processes);
+                $scope.tree_process = $scope.convert_into_tree($scope.proj_processes);
                 //$scope.tree_p = [{"template_description":"Collect data using an SEM.","template_name":"Run SEM","template_type":"process","template_birthtime":{"timezone":"+00:00","epoch_time":1384454393.733},"owner":"gtarcea@umich.edu","model":[{"name":"required_conditions","value":["sem_equipment_conditions","material_conditions"]},{"name":"name","value":""},{"name":"owner","value":""},{"name":"description","value":""},{"name":"birthtime","value":""},{"name":"mtime","value":""},{"name":"machine","value":""},{"name":"process_type","value":""},{"name":"version","value":""},{"name":"parent","value":""},{"name":"notes","value":[]},{"name":"inputs","value":[]},{"name":"outputs","value":[]},{"name":"runs","value":[]},{"name":"citations","value":[]},{"name":"status","value":""},{"name":"required_output_conditions","value":["material_conditions"]}],"template_mtime":{"timezone":"+00:00","epoch_time":1384454393.733},"id":"a71eecb5-f9ba-4da7-8129-5309a428bb42","c_id":"1","parent_id":""},{"name":"dfg","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"91f58f49-64ca-47b0-a1b0-2084bdcf4f27","c_id":"2","parent_id":"1"},{"name":"*****Process****","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"8ae9fbba-9ee5-4a7f-ad8f-d97bf08d1ab3","c_id":"3","parent_id":"1"},{"name":"light","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"ae4ff8d9-0621-4e4f-b285-5b36cd1d51ed","c_id":"4","parent_id":"1"},{"name":"test 8 process************","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"fafa9432-0763-412b-923e-3c7523233211","c_id":"5","parent_id":"1"},{"name":"fdg","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"0a5a6e1f-bbff-4413-9bf4-9a02ee10a2f6","c_id":"6","parent_id":"1"},{"name":"gem","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"4f83ce2c-07db-473c-9fbc-795f89596864","c_id":"7","parent_id":"1"},{"name":"pr -1","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"bc4f1379-2fdc-4d45-b4da-8626a4516322","c_id":"8","parent_id":"1"},{"name":"qaz","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"c246b768-1d08-4d56-bf2d-08622592cca0","c_id":"9","parent_id":"1"},{"name":"fantastic process","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"ea1df4a0-3ee7-485f-859a-001e281a73e6","c_id":"10","parent_id":"1"}]
             })
             .error(function (data) {
@@ -47,12 +56,12 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
     $scope.process_processes = function (processes) {
         $scope.temp_proc = {};
-        processes.forEach(function(pr){
+        processes.forEach(function (pr) {
             var temp = pr.template
-            if(temp in $scope.temp_proc){
+            if (temp in $scope.temp_proc) {
                 $scope.temp_proc[temp].push(pr);
             }
-            else{
+            else {
                 $scope.temp_proc[temp] = new Array();
                 $scope.temp_proc[temp].push(pr);
             }
@@ -62,25 +71,35 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 
     }
     $scope.tree = [];
-    $scope.convert_into_tree = function(data){
+    $scope.convert_into_tree = function (data) {
+
         var count = 0;
         var processes = data;
         var all_templates = Object.keys(data);
-        all_templates.forEach(function(d){
-            var template = {"id": d, "name": ''};
-                    count = count + 1;
-                    template['c_id'] = count.toString();
-                    template['parent_id'] = '';
-                    $scope.tree.push(template);
-                    var list_processes = processes[d]
-                    $scope.tree, count  = $scope.iterate_process(count, list_processes, template, $scope.tree)
-
+        var new_templates = all_templates.filter(function (v) {
+            return v !== ''
+        });
+        new_templates.forEach(function (d) {
+            var template_name = '';
+            $scope.all_templates.forEach(function (item) {
+                if (item.id == d) {
+                    template_name = item.template_name;
+                }
+            })
+            var template = {"id": d, "name": template_name};
+            count = count + 1;
+            template['c_id'] = count.toString();
+            template['parent_id'] = '';
+            $scope.tree.push(template);
+            var list_processes = processes[d]
+            $scope.tree, count = $scope.iterate_process(count, list_processes, template, $scope.tree)
         });
         return $scope.tree
     }
 
-    $scope.iterate_process = function(count, data, template, tree){
-        data.forEach(function(pr){
+
+    $scope.iterate_process = function (count, data, template, tree) {
+        data.forEach(function (pr) {
             count = count + 1;
             pr['c_id'] = count.toString();
             pr['parent_id'] = template.c_id;
@@ -121,6 +140,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
     });
 
     $scope.setCurrentStep = function (step) {
+        alert('yesss')
         if (step == 'nav_choose_process') {
             wizard.fireStep(step);
         } else if (step == 'nav_choose_inputs' || step == 'nav_choose_outputs' || step == 'nav_choose_upload') {
@@ -160,6 +180,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
                 Stater.clear();
                 $scope.state = Stater.retrieve();
                 alertService.sendMessage("Your Provenance was Created Successfully.")
+
             })
             .error(function () {
                 alertService.sendMessage("Sorry - Your files did not successfully upload.");
@@ -167,6 +188,7 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
             .post({state_id: $scope.state.id})
 
     }
+
 
     $scope.report = function () {
         $scope.showreport = true
@@ -190,7 +212,6 @@ function ListProjectsController($scope, mcapi, Stater, wizard, alertService, tre
 }
 
 function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
-
     wizard.waitOn($scope, 'nav_choose_process', function () {
         $scope.state = Stater.retrieve();
 
@@ -207,7 +228,6 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
                 alertService.sendMessage("Unable to retrieve processes from database.");
             }).jsonp();
     });
-
 
 
     watcher.watch($scope, 'process_type', function (template) {
@@ -246,13 +266,6 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
     $scope.save_process = function () {
         $scope.process.required_conditions = $scope.required_input_conditions;
         $scope.process.required_output_conditions = $scope.required_output_conditions;
-        $scope.is_saved = true;
-    }
-
-    $scope.next_step = function () {
-        /*
-         * Add in new wizard steps for the conditions and files
-         */
         $scope.process.required_conditions.forEach(function (condition) {
             var s = {step: condition};
             wizard.addStep('nav_choose_inputs', s);
@@ -267,18 +280,20 @@ function ProcessStepController($scope, mcapi, watcher, Stater, wizard) {
 
         $scope.state.attributes.process = $scope.process;
         Stater.persist($scope.state);
-        console.dir($scope.state)
-        wizard.fireNextStep();
+        wizard.fireStep('nav_choose_inputs');
+
     }
+
 
 }
 
 function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
-
+    $scope.state = Stater.retrieve();
     /**
      *
      * @param condition_name
      */
+
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
@@ -364,7 +379,6 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 }
 
 function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertService) {
-
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
