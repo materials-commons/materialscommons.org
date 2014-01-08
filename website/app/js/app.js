@@ -33,10 +33,15 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/data/data-edit.html',
             controller: 'DataEditController'
         })
-        .state('mytools.process', {
+        .state('mytools.processreport', {
             url: '/process/report/:process_id',
             templateUrl: 'partials/process/report.html',
             controller: 'ProcessReportController'
+        })
+        .state('mytools.tagbyname', {
+            url: '/data/bytag/:name',
+            templateUrl: 'partials/tags/data-for-tag.html',
+            controller: 'TagDataController'
         })
 
         .state('about', {
@@ -244,11 +249,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/datagroups/datareport.html',
             controller: 'DataDirReportController'
         })
-        .state('data/bytag/:name', {
-            url: '/data/bytag/:name',
-            templateUrl: 'partials/tags/data-for-tag.html',
-            controller: 'TagDataController'
-        })
+
 
 
     ;

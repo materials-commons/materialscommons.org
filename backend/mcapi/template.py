@@ -6,6 +6,7 @@ import error
 import dmutil
 
 @app.route('/templates/<template_id>', methods=['GET'])
+@apikey
 @jsonp
 def get_template(template_id):
     return dmutil.get_single_from_table('templates', template_id)
@@ -16,12 +17,14 @@ def get_template(template_id):
 def get_all_templates():
     return dmutil.get_all_from_table('templates')
 
+
 @app.route('/templates/new', methods=['POST'])
 @crossdomain(origin='*')
 def create_template():
     j = request.get_json()
     template_type = dmutil.get_required('template_type', j)
     return create_template_for_type(template_type, j)
+
 
 def create_template_for_type(template_type, j):
     template_table = {\
@@ -34,7 +37,8 @@ def create_template_for_type(template_type, j):
         template = template_func(j)
         return dmutil.insert_entry('templates', template)
     else:
-        return error.bad_request("Unrecognized template type: " + template_type)
+        return error.bad_request("Unrecognized template type: " + template_type)    
+
 
 def create_process_template(j):
     template = common_template_elements("process", j)
