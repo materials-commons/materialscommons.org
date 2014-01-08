@@ -15,6 +15,7 @@ function start_servers()
         cp ../test_data/rethinkdb_dump_test_data.tar.gz $MCDB_DIR
         rethinkdb restore $MCDB_DIR/rethinkdb_dump_test_data.tar.gz --connect localhost:$MCDB_PORT
     fi
+    scripts/dbcreate.py
     echo Started $SERVERTYPE.
 }
 
