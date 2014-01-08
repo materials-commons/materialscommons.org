@@ -99,6 +99,23 @@ def load_provenance_from_state(state_id, saver):
     create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
     return process_id
 
+def load_provenance_from_state_1(state_id, saver):
+    state = r.table('state').get(state_id).run()
+    attributes = state['attributes']
+    user = state['owner']
+    project_id = attributes['project_id']
+    saver.project_id = project_id
+    create_process_from_template_1(attributes['process'], saver)
+    process_id = saver.process_id
+    if 'input_files' in attributes:
+        r.table('saver').get(process_id).update({'input_files': attributes['input_files']}).run()
+    if 'output_files' in attributes:
+        r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run() 
+    input_conditions = dmutil.get_optional('input_conditions', attributes, [])
+    output_conditions = dmutil.get_optional('output_conditions', attributes, [])
+    create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
+    return process_id
+
 
 def create_process_from_template(j, saver):
     project_id = saver.project_id
@@ -129,7 +146,7 @@ def create_process_from_template(j, saver):
 def create_process_from_template_1(j, saver):
     project_id = saver.project_id
     p = dict()
-    p['template'] = dmutil.get_optional('id', j)
+    print j
     p['project'] = project_id
     p['name'] = dmutil.get_required('name', j)
     p['birthtime'] = r.now()
