@@ -15,18 +15,18 @@ def get_all_machines():
 def get_machine(machine_id):
     return dmutil.get_single_from_table('machines', machine_id)
 
-@app.route('/machines', methods=['POST'])
+@app.route('/machines/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
 def create_machine():
     j = request.get_json()
     machine = dict()
     machine['name'] = dmutil.get_required('name', j)
-    machine['longname'] = dmutil.get_required('longname', j)
+    #machine['longname'] = dmutil.get_required('longname', j)
     machine['birthtime'] = r.now()
     machine['notes'] = dmutil.get_optional('notes', j, [])
-    contact_id = dmutil.get_required('contact', j)
-    if not dmutil.entry_exists('contacts', contact_id):
-        return error.bad_request("You must specify the contacts")
-    machine['contact'] = contact_id
+    #contact_id = dmutil.get_required('contact', j)
+    #if not dmutil.entry_exists('contacts', contact_id):
+        #return error.bad_request("You must specify the contacts")
+    #machine['contact'] = contact_id
     return dmutil.insert_entry('machines', machine)
