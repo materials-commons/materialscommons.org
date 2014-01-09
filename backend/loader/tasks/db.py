@@ -73,7 +73,7 @@ def load_data_dir(user, directory, state_id):
 def load_data_dir_1(user, state_id):
     state_saver = StateCreateSaver()
     try:
-        r.connect('localhost', 30815, db='materialscommons').repl()
+        r.connect('localhost', 28015, db='materialscommons').repl()
         load_data_1(user, state_id, state_saver)
     except mcexceptions.RequiredAttributeException as rae:
         traceback.print_exc()
@@ -193,6 +193,7 @@ def create_process_from_template(j, saver):
 def create_process_from_template_1(j, saver):
     project_id = saver.project_id
     p = dict()
+    print j
     p['project'] = project_id
     p['name'] = dmutil.get_required('name', j)
     p['birthtime'] = r.now()
