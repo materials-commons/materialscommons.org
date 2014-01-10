@@ -145,13 +145,15 @@ function ListProjectsController($scope,$rootScope,  mcapi, Stater, wizard, alert
 
     $scope.check = function (id) {
         $scope.checked_items = treeToggle.get_all_checked_items();
+        if (id.type == 'datafile'){
+            if ($scope.checked_items.indexOf(id) >= 0) {
+                treeToggle.pop_checked_item(id);
+            }
+            else {
+                treeToggle.add_checked_item(id);
+            }
+        }
 
-        if ($scope.checked_items.indexOf(id) >= 0) {
-            treeToggle.pop_checked_item(id);
-        }
-        else {
-            treeToggle.add_checked_item(id);
-        }
     }
 
     $scope.isChecked = function (id) {
@@ -368,13 +370,10 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
     }
 
     $scope.custom_property = function () {
-        if ($scope.additional_prop == ''){
-
-        }
-        else{
+        if ($scope.additional_prop || $scope.additional_prop == ' '){
             $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
-
         }
+
     }
 
 
@@ -401,11 +400,11 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
     $scope.save_selected_input_files = function () {
         $scope.checked_ids = [];
         $scope.checked_items = treeToggle.get_all_checked_items();
+
         $scope.checked_items.forEach(function (item) {
             $scope.checked_ids.push(item.id)
         })
 
-        treeToggle.uncheck_all_items()
         $scope.state = Stater.retrieve();
         if (!('input_files' in $scope.state.attributes)) {
             $scope.state.attributes.input_files = {};
@@ -413,6 +412,9 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
         }
 
         $scope.state.attributes.input_files = $scope.checked_ids;
+        //to display names of the files in verify and submit
+        $scope.state.attributes.checked_input_filenames = treeToggle.get_all_checked_items();
+
         Stater.save($scope.state);
         $scope.added = true;
     }
@@ -420,6 +422,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 }
 
 function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertService) {
+
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
@@ -459,14 +462,9 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertSe
     }
 
     $scope.custom_property = function () {
-        if ($scope.additional_prop == ''){
-
-        }
-        else{
+        if ($scope.additional_prop || $scope.additional_prop == ' '){
             $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
-
         }
-
     }
 
     $scope.save_condition = function () {
@@ -489,10 +487,11 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertSe
     $scope.save_selected_output_files = function () {
         $scope.checked_ids = [];
         $scope.checked_items = treeToggle.get_all_checked_items();
+        console.log($scope.checked_items)
         $scope.checked_items.forEach(function (item) {
-            $scope.checked_ids.push(item.id)
+            $scope.checked_ids.push(item.id);
+
         })
-        treeToggle.uncheck_all_items()
         $scope.state = Stater.retrieve();
         if (!('output_files' in $scope.state.attributes)) {
             $scope.state.attributes.output_files = {};
@@ -500,8 +499,14 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertSe
         }
 
         $scope.state.attributes.output_files = $scope.checked_ids;
+        console.dir($scope.state)
+        //to display names of the files in verify and submit
+        $scope.state.attributes.checked_output_filenames = treeToggle.get_all_checked_items();
         Stater.save($scope.state);
         $scope.added = true;
+
+        //to display names of the files in verify and submit
+        $scope.state.attributes.checked_output_filenames = treeToggle.get_all_checked_items();
     }
 
     $scope.next_step = function () {
@@ -517,6 +522,8 @@ function UploadStepController($scope, mcapi, wizard, Stater, treeToggle, alertSe
     wizard.waitOn($scope, 'nav_choose_upload', function () {
         $scope.state = Stater.retrieve();
     });
+
+
 
 }
 
