@@ -327,6 +327,9 @@
                         <div class="well">
                             Name:<span>{{state.attributes.process.name}}</span> <br>
                             Description:<span>{{state.attributes.process.description}}</span> <br>
+                            Machine:<span>{{state.attributes.process.machine}}</span> <br>
+                            Version:<span>{{state.attributes.process.version}}</span> <br>
+
                             Notes:
                     <span ng-repeat="n in state.attributes.process.notes">
                      {{n}}
@@ -344,11 +347,11 @@
                         <div class="well">
                             Input Properties:<br>
                     <span ng-repeat="ip in state.attributes.input_conditions">
-                        <a>{{ip.name}}</a><br>
+                        <a href="#modalCondition"  data-toggle="modal" ng-click="get_mode(ip)">{{ip.name}}</a><br>
                     </span><br>
                             Input Files:<br>
                     <span ng-repeat="file in state.attributes.checked_input_filenames">
-                        <a>{{file.name}}</a><br>
+                        <a href="#modalFile"  data-toggle="modal" ng-click="get_mode(file)">{{file.name}}</a><br>
                     </span><br>
                         </div>
 
@@ -357,12 +360,48 @@
                         <div class="well">
                             Output Properties:<br>
                     <span ng-repeat="ip in state.attributes.output_conditions">
-                        <a>{{ip.name}}</a><br>
+                        <a href="#modalCondition"  data-toggle="modal" ng-click="get_mode(ip)">{{ip.name}}</a><br>
                     </span><br>
                             Output Files:<br>
                     <span ng-repeat="file in state.attributes.checked_output_filenames">
-                        <a>{{file.name}}</a> <br>
+
+                        <a href="#modalFile"  data-toggle="modal" ng-click="get_mode(file)">{{file.name}}</a> <br>
                     </span><br>
+                            <!-- Modal -->
+                            <div id="modalFile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalFileLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="modalFileLabel">File: {{jet.name}}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div ng-repeat="k in all_keys">
+                                        {{k}} : <span>{{jet[k]}}</span>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div id="modalCondition" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalConditionLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="modalConditionLabel">{{jet.name}}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div ng-repeat="k in all_keys">
+                                        {{k}} : <span>{{jet[k]}}</span>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                     <div ng-show="done" class="well">
@@ -378,7 +417,9 @@
                     </div>
                     </div>
                     <div ng-hide="done||notdone">
-                        <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>
+                        <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>  &nbsp;&nbsp;&nbsp
+                        <button class="btn btn-large btn-primary" type="button" ng-click="cancel_provenance()">Cancel</button>
+
                     </div>
                 </form>
 

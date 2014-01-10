@@ -1,4 +1,4 @@
-function ListProjectsController($scope,$rootScope,  mcapi, Stater, wizard, alertService, treeToggle) {
+function ListProjectsController($scope,$rootScope,  mcapi, Stater, wizard, alertService, treeToggle, $state) {
     $scope.all_templates = [];
 
     init();
@@ -177,13 +177,17 @@ function ListProjectsController($scope,$rootScope,  mcapi, Stater, wizard, alert
                 $scope.notdone = true;
                 Stater.clear();
                 $scope.state = Stater.retrieve();
-                console.log($scope.state)
                 alertService.sendMessage("Sorry - Your Provenance upload failed.");
             })
             .post({state_id: $scope.state.id})
 
     }
 
+    $scope.cancel_provenance = function () {
+        Stater.clear();
+        $state.transitionTo('mytools')
+
+    }
 
     $scope.report = function () {
         $scope.showreport = true
@@ -384,6 +388,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
             Stater.save($scope.state);
         }
         $scope.state.attributes.input_conditions[$scope.condition_name] = $scope.condition;
+        console.dir($scope.state)
         Stater.save($scope.state);
         $scope.showDetails = false;
     }
@@ -517,13 +522,21 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertSe
 
 }
 
-function UploadStepController($scope, mcapi, wizard, Stater, treeToggle, alertService) {
+function UploadStepController($scope, wizard, Stater) {
 
     wizard.waitOn($scope, 'nav_choose_upload', function () {
         $scope.state = Stater.retrieve();
     });
 
+    $scope.get_mode = function(file){
+        $scope.jet = file;
+        $scope.all_keys = Object.keys($scope.jet);
+    }
 
+    $scope.get_mode_condition = function(file){
+        $scope.jet = file;
+        $scope.all_keys = Object.keys($scope.jet);
+    }
 
 }
 
