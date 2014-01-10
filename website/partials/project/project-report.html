@@ -295,13 +295,6 @@
                                             <div class="well">
                                                 Add Custom Properties:
                                                 <input ng-model="additional_prop" type="text">
-                                                <!--<select ng-model="additional_prop"-->
-                                                <!--ui-select2="{placeholder: 'Add Additional Properties', allowClear: true, width:'element'}"-->
-                                                <!--ng-multiple="false">-->
-                                                <!--<option value="strain">Strain</option>-->
-                                                <!--<option value="Elasticity">Elasticity</option>-->
-                                                <!--<option value="strength">strength</option>-->
-                                                <!--</select>-->
                                                 <button ng-click="custom_property()">Add Property</button>
                                             </div>
                                         </span>
@@ -354,8 +347,8 @@
                         <a>{{ip.name}}</a><br>
                     </span><br>
                             Input Files:<br>
-                    <span ng-repeat="file in state.attributes.input_files">
-                        <a>{{file}}</a><br>
+                    <span ng-repeat="file in state.attributes.checked_input_filenames">
+                        <a>{{file.name}}</a><br>
                     </span><br>
                         </div>
 
@@ -367,8 +360,8 @@
                         <a>{{ip.name}}</a><br>
                     </span><br>
                             Output Files:<br>
-                    <span ng-repeat="file in state.attributes.output_files">
-                        <a>{{file}}</a> <br>
+                    <span ng-repeat="file in state.attributes.checked_output_filenames">
+                        <a>{{file.name}}</a> <br>
                     </span><br>
                         </div>
                     </div>

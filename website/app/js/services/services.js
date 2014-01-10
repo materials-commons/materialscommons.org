@@ -385,7 +385,7 @@ materialsCommonsServices.factory('formatData', function () {
  * You can only have one wizard active at a time. Though this could be changed, it
  * was designed this way to facilitate communication of steps across different controllers.
  */
-materialsCommonsServices.factory('wizard', function (pubsub) {
+materialsCommonsServices.factory('wizard', function (pubsub, treeToggle) {
     var self = this;
 
     return {
@@ -533,6 +533,8 @@ materialsCommonsServices.factory('wizard', function (pubsub) {
         fireStep: function (step) {
             self.current_step = step;
             pubsub.send(this.channel(), step);
+            treeToggle.uncheck_all_items();
+
         },
 
         /*
