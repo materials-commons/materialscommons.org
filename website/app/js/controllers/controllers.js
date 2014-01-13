@@ -85,7 +85,7 @@ function ProvenanceController($scope) {
 
         })
     }
-            s
+
     redraw();
     function redraw() {
         var width = 600;
