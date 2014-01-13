@@ -1,11 +1,11 @@
-function ListProjectsController($scope, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
+function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
     $scope.all_templates = [];
 
     init();
     function init() {
         mcapi('/templates')
             .success(function (data) {
-                $scope.all_templates = data
+                $scope.all_templates = data;
             }).jsonp();
     }
 
@@ -330,12 +330,15 @@ function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher
 
         $scope.state.attributes.process = $scope.process;
         $scope.state.attributes.project_id = $rootScope.project_id;
-         //console.dir($scope.state)
+        console.dir($scope.state)
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_inputs');
 
     }
 
+    $scope.edit_process = function(){
+        wizard.fireStep('nav_choose_process');
+    }
 
 }
 
