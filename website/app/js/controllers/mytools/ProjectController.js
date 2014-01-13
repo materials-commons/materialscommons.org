@@ -154,7 +154,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
     $scope.check = function (id) {
         $scope.checked_items = treeToggle.get_all_checked_items();
-        if (id.type == 'datafile'){
+        if (id.type == 'datafile') {
             if ($scope.checked_items.indexOf(id) >= 0) {
                 treeToggle.pop_checked_item(id);
             }
@@ -219,7 +219,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 }
 
-function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher, Stater, wizard) {
+function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, Stater, wizard) {
     mcapi('/machines')
         .success(function (data) {
             $scope.machines_list = data;
@@ -263,11 +263,10 @@ function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher
 
     watcher.watch($scope, 'machine_selected', function (mach) {
 
-        if (mach == 'new')
-        {
+        if (mach == 'new') {
 
         }
-        else{
+        else {
             machine = JSON.parse(mach)
             $scope.process.machine = machine.name
         }
@@ -337,13 +336,13 @@ function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher
 
     }
 
-    $scope.edit_process = function(){
+    $scope.edit_process = function () {
         wizard.fireStep('nav_choose_process');
     }
 
 }
 
-function InputStepController($scope,trackSavedProv,  mcapi, wizard, Stater, treeToggle) {
+function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle) {
     $scope.state = Stater.retrieve();
     /**
      *
@@ -389,7 +388,7 @@ function InputStepController($scope,trackSavedProv,  mcapi, wizard, Stater, tree
     }
 
     $scope.custom_property = function () {
-        if ($scope.additional_prop || $scope.additional_prop == ' '){
+        if ($scope.additional_prop || $scope.additional_prop == ' ') {
             $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
         }
 
@@ -440,7 +439,7 @@ function InputStepController($scope,trackSavedProv,  mcapi, wizard, Stater, tree
         $scope.added = true;
     }
 
-    $scope.edit_input = function(){
+    $scope.edit_input = function () {
         console.dir($scope.state)
         wizard.fireStep('nav_choose_inputs');
     }
@@ -448,7 +447,7 @@ function InputStepController($scope,trackSavedProv,  mcapi, wizard, Stater, tree
 
 }
 
-function OutputStepController($scope, trackSavedProv,  mcapi, wizard, Stater, treeToggle, alertService) {
+function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService) {
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -489,7 +488,7 @@ function OutputStepController($scope, trackSavedProv,  mcapi, wizard, Stater, tr
     }
 
     $scope.custom_property = function () {
-        if ($scope.additional_prop || $scope.additional_prop == ' '){
+        if ($scope.additional_prop || $scope.additional_prop == ' ') {
             $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
         }
     }
@@ -542,7 +541,7 @@ function OutputStepController($scope, trackSavedProv,  mcapi, wizard, Stater, tr
         wizard.fireStep('nav_choose_upload');
 
     }
-    $scope.edit_output = function(){
+    $scope.edit_output = function () {
         console.dir($scope.state)
         wizard.fireStep('nav_choose_outputs');
     }
@@ -554,14 +553,15 @@ function UploadStepController($scope, wizard, Stater) {
         $scope.state = Stater.retrieve();
     });
 
-    $scope.get_mode = function(file){
+    $scope.get_file = function (file) {
         $scope.jet = file;
         $scope.all_keys = Object.keys($scope.jet);
     }
 
-    $scope.get_mode_condition = function(file){
+    $scope.get_mode_condition = function (file) {
         $scope.jet = file;
-        $scope.all_keys = Object.keys($scope.jet);
+        $scope.model = $scope.jet.model;
+
     }
 
 }
