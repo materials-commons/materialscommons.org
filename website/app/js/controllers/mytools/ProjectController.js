@@ -1,4 +1,4 @@
-function ListProjectsController($scope,$rootScope,  mcapi, Stater, wizard, alertService, treeToggle, $state) {
+function ListProjectsController($scope, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
     $scope.all_templates = [];
 
     init();
@@ -138,10 +138,19 @@ function ListProjectsController($scope,$rootScope,  mcapi, Stater, wizard, alert
         }
     });
 
-
     $scope.isCurrentStep = function (step) {
+        $scope.process_saved = trackSavedProv.get_process_status();
+        $scope.inputs_saved = trackSavedProv.get_input_status();
+        $scope.outputs_saved = trackSavedProv.get_output_status();
+
         return wizard.currentStep() == step;
+
     }
+
+    $scope.process_saved = trackSavedProv.get_process_status();
+    $scope.inputs_saved = trackSavedProv.get_input_status();
+    $scope.outputs_saved = trackSavedProv.get_output_status();
+
 
     $scope.check = function (id) {
         $scope.checked_items = treeToggle.get_all_checked_items();
@@ -210,7 +219,7 @@ function ListProjectsController($scope,$rootScope,  mcapi, Stater, wizard, alert
 
 }
 
-function ProcessStepController($scope,$rootScope,  mcapi, watcher, Stater, wizard) {
+function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher, Stater, wizard) {
     mcapi('/machines')
         .success(function (data) {
             $scope.machines_list = data;
@@ -302,7 +311,9 @@ function ProcessStepController($scope,$rootScope,  mcapi, watcher, Stater, wizar
         $scope.new_citation = "";
     }
 
+
     $scope.save_process = function () {
+        trackSavedProv.mark_process();
         $scope.process.required_conditions = $scope.required_input_conditions;
         $scope.process.required_output_conditions = $scope.required_output_conditions;
         $scope.process.required_conditions.forEach(function (condition) {
@@ -319,7 +330,7 @@ function ProcessStepController($scope,$rootScope,  mcapi, watcher, Stater, wizar
 
         $scope.state.attributes.process = $scope.process;
         $scope.state.attributes.project_id = $rootScope.project_id;
-         console.dir($scope.state)
+         //console.dir($scope.state)
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_inputs');
 
@@ -328,7 +339,7 @@ function ProcessStepController($scope,$rootScope,  mcapi, watcher, Stater, wizar
 
 }
 
-function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
+function InputStepController($scope,trackSavedProv,  mcapi, wizard, Stater, treeToggle) {
     $scope.state = Stater.retrieve();
     /**
      *
@@ -395,6 +406,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 
 
     $scope.next_step = function () {
+        trackSavedProv.mark_inputs();
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_outputs');
 
@@ -426,7 +438,7 @@ function InputStepController($scope, mcapi, wizard, Stater, treeToggle) {
 
 }
 
-function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertService) {
+function OutputStepController($scope, trackSavedProv,  mcapi, wizard, Stater, treeToggle, alertService) {
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -515,6 +527,7 @@ function OutputStepController($scope, mcapi, wizard, Stater, treeToggle, alertSe
     }
 
     $scope.next_step = function () {
+        trackSavedProv.mark_outputs();
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_upload');
 

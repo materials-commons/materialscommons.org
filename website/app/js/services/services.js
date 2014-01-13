@@ -134,6 +134,8 @@ materialsCommonsServices.factory('watcher', function () {
 });
 
 
+
+
 materialsCommonsServices.factory('mcapi', function ($http, User) {
     function MCApi() {
         this.url = this._makeUrl.apply(this, arguments);
@@ -558,5 +560,30 @@ materialsCommonsServices.factory('wizard', function (pubsub, treeToggle) {
     }
 });
 
+materialsCommonsServices.factory('trackSavedProv', function () {
+    var process_saved = false;
+    var inputs_saved = false;
+    var outputs_saved = false;
+    return {
+        mark_process: function(){
+            process_saved = true;
+        },
 
+        get_process_status: function(){
+            return process_saved;
+        },
+        mark_inputs: function(){
+            inputs_saved = true;
+        },
+        get_input_status: function (){
+            return inputs_saved;
+        },
+        mark_outputs: function (){
+            outputs_saved = true;
+        },
+        get_output_status: function(){
+            return outputs_saved;
+        }
+    }
+});
 

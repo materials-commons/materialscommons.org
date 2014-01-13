@@ -421,6 +421,14 @@ hr{
     text-align: left;
 }
 
+.icon-autoscroll {
+    display: inline-block;
+    background-color: green;
+}
+.icon-autoscroll-disabled {
+    display: inline-block;
+    background-color: red;
+}
 
 
 

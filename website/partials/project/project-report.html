@@ -71,14 +71,17 @@
                 <div class="well">
                     <ul class="nav nav-list">
                         <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
-                        <li ng-class="{'active':isCurrentStep('nav_choose_process')}"><a
-                            >Process</a>
+                        <li ng-class="{'active':isCurrentStep('nav_choose_process')}">
+                            <a> <i ng-show="process_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
+                                Process</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_inputs')}"><a
-                            >Inputs </a>
+                            > <i ng-show="inputs_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
+                            Inputs </a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_outputs')}"><a
-                            >Outputs </a>
+                            > <i ng-show="outputs_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
+                            Outputs </a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_upload')}"><a
                            >Submit </a>
