@@ -33,7 +33,6 @@ def get_all_processes_for_template(template_id):
 def create_process():
     p = dict()
     j = request.get_json()
-    print j
     p['name'] = dmutil.get_required('name', j)
     user = access.get_user()
     p['owner'] = user
@@ -85,7 +84,6 @@ def get_datafile_objects(process_id, object_type):
                        lambda ddrow, drow: ddrow['output_conditions']
                        .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
-    print selection
     return  json_as_format_arg(selection)
 
 

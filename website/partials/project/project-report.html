@@ -77,11 +77,11 @@
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_inputs')}"><a
                             > <i ng-show="inputs_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
-                            Inputs </a>
+                            Inputs </a><a ng-show="inputs_saved" ng-controller="InputStepController" ng-click="edit_input()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_outputs')}"><a
                             > <i ng-show="outputs_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
-                            Outputs </a>
+                            Outputs </a>  <a ng-show="outputs_saved" ng-controller="OutputStepController" ng-click="edit_output()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_upload')}"><a
                            >Submit </a>
@@ -102,12 +102,6 @@
                         </option>
                     </select>
 
-                        <!--<label> Name:</label> <select ng-model="selected_process">-->
-                        <!--<option value="new"> New Process</option>-->
-                        <!--&lt;!&ndash;<option disabled>----------</option>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<option ng-repeat="pr in processes" value="{{pr}}">{{pr.name}}</option>&ndash;&gt;-->
-
-                        <!--</select>-->
 
                         <div ng-show="process_type">
                             <hr/>

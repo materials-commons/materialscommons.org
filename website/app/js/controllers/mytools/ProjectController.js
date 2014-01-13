@@ -225,7 +225,16 @@ function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher
             $scope.machines_list = data;
         })
         .error(function (data) {
-            //alertService.sendMessage(data.error);
+        }).jsonp();
+
+
+    mcapi('/templates')
+        .argWithValue('filter_by', '"template_type":"process"')
+        .success(function (processes) {
+            $scope.process_templates = processes;
+        })
+        .error(function () {
+            alertService.sendMessage("Unable to retrieve processes from database.");
         }).jsonp();
 
     wizard.waitOn($scope, 'nav_choose_process', function () {
@@ -234,14 +243,6 @@ function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher
             $scope.process = $scope.state.attributes.process;
         }
 
-        mcapi('/templates')
-            .argWithValue('filter_by', '"template_type":"process"')
-            .success(function (processes) {
-                $scope.process_templates = processes;
-            })
-            .error(function () {
-                alertService.sendMessage("Unable to retrieve processes from database.");
-            }).jsonp();
     });
 
 
@@ -256,12 +257,12 @@ function ProcessStepController($scope, $rootScope,trackSavedProv, mcapi, watcher
             }
 
         })
-
         $scope.process = {'notes': [], 'runs': [], 'citations': [], 'template': template.id };
 
     });
 
     watcher.watch($scope, 'machine_selected', function (mach) {
+
         if (mach == 'new')
         {
 
@@ -439,6 +440,12 @@ function InputStepController($scope,trackSavedProv,  mcapi, wizard, Stater, tree
         $scope.added = true;
     }
 
+    $scope.edit_input = function(){
+        console.dir($scope.state)
+        wizard.fireStep('nav_choose_inputs');
+    }
+
+
 }
 
 function OutputStepController($scope, trackSavedProv,  mcapi, wizard, Stater, treeToggle, alertService) {
@@ -535,7 +542,10 @@ function OutputStepController($scope, trackSavedProv,  mcapi, wizard, Stater, tr
         wizard.fireStep('nav_choose_upload');
 
     }
-
+    $scope.edit_output = function(){
+        console.dir($scope.state)
+        wizard.fireStep('nav_choose_outputs');
+    }
 }
 
 function UploadStepController($scope, wizard, Stater) {
