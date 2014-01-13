@@ -193,7 +193,6 @@ def create_process_from_template(j, saver):
 def create_process_from_template_1(j, saver):
     project_id = saver.project_id
     p = dict()
-    print j
     p['project'] = project_id
     p['name'] = dmutil.get_required('name', j)
     p['birthtime'] = r.now()

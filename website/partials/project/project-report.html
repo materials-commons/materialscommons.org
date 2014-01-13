@@ -67,21 +67,21 @@
     </div>
     <div class="row-fluid">
         <div class="span12 offset1">
-            <div class="span2">
+            <div class="span3">
                 <div class="well">
                     <ul class="nav nav-list">
                         <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
                         <li ng-class="{'active':isCurrentStep('nav_choose_process')}">
                             <a> <i ng-show="process_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
-                                Process</a>
+                                Process</a> <a ng-show="process_saved" ng-controller="ProcessStepController" ng-click="edit_process()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_inputs')}"><a
                             > <i ng-show="inputs_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
-                            Inputs </a>
+                            Inputs </a><a ng-show="inputs_saved" ng-controller="InputStepController" ng-click="edit_input()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_outputs')}"><a
                             > <i ng-show="outputs_saved" ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
-                            Outputs </a>
+                            Outputs </a>  <a ng-show="outputs_saved" ng-controller="OutputStepController" ng-click="edit_output()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_upload')}"><a
                            >Submit </a>
@@ -89,7 +89,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="span10">
+            <div class="span9">
             <div class="block" ng-show="isCurrentStep('nav_choose_process')"
                  ng-controller="ProcessStepController" ng-init="init()">
                 <form id="process-tab" class="form-inline span8">
@@ -102,12 +102,6 @@
                         </option>
                     </select>
 
-                        <!--<label> Name:</label> <select ng-model="selected_process">-->
-                        <!--<option value="new"> New Process</option>-->
-                        <!--&lt;!&ndash;<option disabled>----------</option>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<option ng-repeat="pr in processes" value="{{pr}}">{{pr.name}}</option>&ndash;&gt;-->
-
-                        <!--</select>-->
 
                         <div ng-show="process_type">
                             <hr/>
