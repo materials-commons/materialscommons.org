@@ -49,7 +49,6 @@ def insert_status(rv, return_created=False):
 
 
 def get_all_from_table(table_name, filter_by=None):
-    print table_name 
     rr = r.table(table_name)
     if filter_by:
         print 'filter by'
