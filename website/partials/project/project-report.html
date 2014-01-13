@@ -1,29 +1,31 @@
+
 <div class="row-fluid">
-    <div class="span6 offset1">
-        <select ng-model="view_type"
-                ui-select2="{placeholder: 'View', allowClear: true, width:'element'}"
-                ng-multiple="false">
-            <option></option>
-            <option value="prov">Provenance View</option>
-            <option value="thumbnail">Thumbnail View</option>
-        </select>
+    <div class="span12 offset1" >
+        <div class="span4" ng-controller="ListProjectsController">
+            <h4>Project: {{project_obj[0].name}}</h4>
+        </div>
+        <div class="span6 offset2">
+            <!--<select ng-model="view_type"-->
+            <!--ui-select2="{placeholder: 'View', allowClear: true, width:'element'}"-->
+            <!--ng-multiple="false">-->
+            <!--<option></option>-->
+            <!--<option value="prov">Provenance View</option>-->
+            <!--<option value="thumbnail">Thumbnail View</option>-->
+            <!--</select>-->
 
-        <select ng-model="add_to"
-                ui-select2="{placeholder: 'Add To', allowClear: true, width:'element'}"
-                ng-multiple="false">
-            <option></option>
-            <option value="prov">Provenance</option>
-            <option value="to_dataset">To Dataset</option>
-            <option value="to_project">To Project</option>
+            <select ng-model="add_to"
+                    ui-select2="{placeholder: 'Add', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option value="prov">Provenance</option>
+                <option value="to_dataset">To Dataset</option>
+                <option value="to_project">To Project</option>
 
-        </select>
+            </select>
+        </div>
     </div>
 </div>
-<div class="row-fluid">
-    <div class="span6 offset1" ng-controller="ListProjectsController">
-        <h4>Project: {{project_obj[0].name}}</h4>
-    </div>
-</div>
+
 <div ng-show="add_to=='prov'">
     <div class="row-fluid">
         <div class="span10 offset1">
@@ -31,9 +33,9 @@
                 <div class="well">
                     <button type="button" class="close" ng-click="remove_instructions();">&times;</button>
                     <b><u>Instructions - Process</u></b><br>
-                    <li><b>Process Type:</b> list of processes present in materials commons</li>
+                    <li><b>Process Type:</b> These are defined types of processes. Pre-populated in materials commons.</li>
                     <li>Process Type will decide what Inputs and Outputs are required for creating provenance</li>
-                    <li><b>Machine:</b>Pick a machine used for creating this process</li>
+                    <li><b>Machine:</b>Machine can be an experimental machine or either a computation</li>
                     <li><b>Runs:</b> Is to keep track of exactly for how many days the process was run.</li>
                 </div>
             </div>
@@ -110,11 +112,23 @@
                             <label>Description:</label>
                             <textarea class="input-xlarge" placeholder="Describe your process...."
                                       ng-model="process.description"/> <br>
+
                             <label>Machine:</label>
-                            <select ng-model="m">
+                            <select ng-model="machine_selected">
                                 <option disabled>pick a machine:</option>
-                                <option ng-repeat="m in process.machine">{{m}}</option>
-                            </select> <br>
+                                <option ng-repeat="m in machines_list" value="{{m}}">{{m.name}}</option>
+                                <option disabled>----------</option>
+
+                                <option value="new"> New machine</option>
+                            </select>
+
+                            <span ng-show="machine_selected=='new'">
+                                   <input ng-model="new_machine" placeholder="Machine name..."
+                                          type="text">
+                                <button ng-click="add_machine_to_db()">Add</button>
+                            </span>
+
+                            <br>
 
 
                             <label>Version:</label> <input ng-model="process.version" placeholder="Version V1.1 ...."
@@ -218,13 +232,6 @@
                                             <div class="well">
                                                 Add Custom Properties:
                                                 <input ng-model="additional_prop" type="text">
-                                                <!--<select ng-model="additional_prop"-->
-                                                <!--ui-select2="{placeholder: 'Add Additional Properties', allowClear: true, width:'element'}"-->
-                                                <!--ng-multiple="false">-->
-                                                <!--<option value="strain">Strain</option>-->
-                                                <!--<option value="Elasticity">Elasticity</option>-->
-                                                <!--<option value="strength">strength</option>-->
-                                                <!--</select>-->
                                                 <button ng-click="custom_property()">Add Property</button>
                                             </div>
                                         </span>
@@ -288,13 +295,6 @@
                                             <div class="well">
                                                 Add Custom Properties:
                                                 <input ng-model="additional_prop" type="text">
-                                                <!--<select ng-model="additional_prop"-->
-                                                <!--ui-select2="{placeholder: 'Add Additional Properties', allowClear: true, width:'element'}"-->
-                                                <!--ng-multiple="false">-->
-                                                <!--<option value="strain">Strain</option>-->
-                                                <!--<option value="Elasticity">Elasticity</option>-->
-                                                <!--<option value="strength">strength</option>-->
-                                                <!--</select>-->
                                                 <button ng-click="custom_property()">Add Property</button>
                                             </div>
                                         </span>
@@ -320,13 +320,16 @@
             </div>
             <div class="block" ng-show="isCurrentStep('nav_choose_upload')">
                 <form id="submit-tab" class="form-inline span8">
-                    <div ng-hide="done"  class="well" ng-controller="UploadStepController">
+                    <div ng-hide="done||notdone"  class="well" ng-controller="UploadStepController">
                         <h4>Verify and Submit</h4>
                         <b>Process:</b>
 
                         <div class="well">
                             Name:<span>{{state.attributes.process.name}}</span> <br>
                             Description:<span>{{state.attributes.process.description}}</span> <br>
+                            Machine:<span>{{state.attributes.process.machine}}</span> <br>
+                            Version:<span>{{state.attributes.process.version}}</span> <br>
+
                             Notes:
                     <span ng-repeat="n in state.attributes.process.notes">
                      {{n}}
@@ -344,11 +347,11 @@
                         <div class="well">
                             Input Properties:<br>
                     <span ng-repeat="ip in state.attributes.input_conditions">
-                        <a>{{ip.name}}</a><br>
+                        <a href="#modalCondition"  data-toggle="modal" ng-click="get_mode(ip)">{{ip.name}}</a><br>
                     </span><br>
                             Input Files:<br>
-                    <span ng-repeat="file in state.attributes.input_files">
-                        <a>{{file}}</a><br>
+                    <span ng-repeat="file in state.attributes.checked_input_filenames">
+                        <a href="#modalFile"  data-toggle="modal" ng-click="get_mode(file)">{{file.name}}</a><br>
                     </span><br>
                         </div>
 
@@ -357,19 +360,66 @@
                         <div class="well">
                             Output Properties:<br>
                     <span ng-repeat="ip in state.attributes.output_conditions">
-                        <a>{{ip.name}}</a><br>
+                        <a href="#modalCondition"  data-toggle="modal" ng-click="get_mode(ip)">{{ip.name}}</a><br>
                     </span><br>
                             Output Files:<br>
-                    <span ng-repeat="file in state.attributes.output_files">
-                        <a>{{file}}</a> <br>
+                    <span ng-repeat="file in state.attributes.checked_output_filenames">
+
+                        <a href="#modalFile"  data-toggle="modal" ng-click="get_mode(file)">{{file.name}}</a> <br>
                     </span><br>
+                            <!-- Modal -->
+                            <div id="modalFile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalFileLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="modalFileLabel">File: {{jet.name}}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div ng-repeat="k in all_keys">
+                                        {{k}} : <span>{{jet[k]}}</span>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div id="modalCondition" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalConditionLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="modalConditionLabel">{{jet.name}}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div ng-repeat="k in all_keys">
+                                        {{k}} : <span>{{jet[k]}}</span>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                     <div ng-show="done" class="well">
                         <h4>Provenance uploaded successfully</h4>
                     </div>
-                    <div ng-hide="done">
-                        <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>
+                    <div ng-show="notdone" class="well">
+                        <h4>Provenance failed</h4>
+                        <div class="well">
+                        <b>Because of following reasons:</b><br>
+                        <a> 1. Project was not selected</a><br>
+                        <a> 2. Bad input or output files</a> <br>
+
+                    </div>
+                    </div>
+                    <div ng-hide="done||notdone">
+                        <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>  &nbsp;&nbsp;&nbsp
+                        <button class="btn btn-large btn-primary" type="button" ng-click="cancel_provenance()">Cancel</button>
+
                     </div>
                 </form>
 
@@ -381,7 +431,7 @@
     </div>
 </div>
 
-<div class="row-fluid">
+<div ng-hide="add_to=='prov'" class="row-fluid">
     <div class="span10 offset1">
         <h4>Process Tree</h4>
         <table treetable treedata="tree_process">
@@ -425,10 +475,6 @@
                 <th>Size</th>
                 <th>Owner</th>
                 <th>Date</th>
-                <th>
-                    c_id
-                </th>
-                <th>p_id</th>
             </tr>
             </thead>
             <tbody>
@@ -443,8 +489,6 @@
                 <td>{{t.size}}</td>
                 <td>{{t.owner}}</td>
                 <td>{{t.birthtime | toDateString}}</td>
-                <td>{{t.c_id}}</td>
-                <td>{{t.parent_id}}</td>
             </tr>
             </tbody>
         </table>
