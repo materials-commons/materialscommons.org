@@ -59,7 +59,7 @@ def create_process():
 @app.route('/processes/project/<project_id>', methods=['GET'])
 @jsonp
 def get_all_processes_for_project(project_id):
-    rr = r.table('processes').filter({'project': project_id}).pluck('id', 'name','template')
+    rr = r.table('processes').filter({'project': project_id}).pluck('id', 'name','template', 'description')
     selection = list(rr.run(g.conn, time_format='raw'))
     return  json_as_format_arg(selection)
 

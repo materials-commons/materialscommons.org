@@ -46,7 +46,7 @@ class StateCreateSaver(object):
 @celery.task
 def load_data_dirs(user, dirs, state_id):
     try:
-        r.connect('localhost', 28015, db='materialscommons').repl()
+        r.connect('localhost', 30815, db='materialscommons').repl()
         for directory in dirs:
             load_directory(user, directory, state_id)
     except Exception as exc:
@@ -193,6 +193,7 @@ def create_process_from_template(j, saver):
 def create_process_from_template_1(j, saver):
     project_id = saver.project_id
     p = dict()
+    print j
     p['project'] = project_id
     p['name'] = dmutil.get_required('name', j)
     p['birthtime'] = r.now()
