@@ -247,7 +247,7 @@
                                 </span>
 
                 <div ng-show="added">
-                    <li ng-repeat="item in checked_items">
+                    <li ng-repeat="item in item_names">
                         <i class="fa fa-check-square"></i>{{item.name}}
                     </li>
                     <button class="label label-info" ng-click="next_step()">Next Step</button>
@@ -310,7 +310,7 @@
                                 </span>
 
                 <div ng-show="added">
-                    <li ng-repeat="item in checked_items">
+                    <li ng-repeat="item in item_names">
                         <i class="fa fa-check-square"></i>{{item.name}}
                     </li>
                     <button class="label label-info" ng-click="next_step()">Next Step</button>
@@ -443,7 +443,7 @@
 
             </div>
         </div>
-        <div ng-hide="done||notdone">
+        <div ng-hide="done">
             <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>
             &nbsp;&nbsp;&nbsp
             <button class="btn btn-large btn-primary" type="button" ng-click="cancel_provenance()">Cancel</button>
