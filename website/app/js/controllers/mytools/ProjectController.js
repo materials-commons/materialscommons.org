@@ -35,6 +35,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
         mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
                 $scope.tree_data = $scope.flattenTree(data);
+                console.log(data)
             })
             .error(function (data) {
 
@@ -50,6 +51,17 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
             }).jsonp();
     }
+
+    $scope.flattenTree = function (tree) {
+        var flatTree = [],
+            treeModel = new TreeModel(),
+            root = treeModel.parse(tree[0]);
+        root.walk({strategy: 'pre'}, function (node) {
+            flatTree.push(node.model);
+        });
+        return flatTree;
+    };
+
 
     $scope.process_processes = function (processes) {
         $scope.temp_proc = {};
@@ -107,15 +119,6 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
         return tree, count
     }
 
-    $scope.flattenTree = function (tree) {
-        var flatTree = [],
-            treeModel = new TreeModel(),
-            root = treeModel.parse(tree[0]);
-        root.walk({strategy: 'pre'}, function (node) {
-            flatTree.push(node.model);
-        });
-        return flatTree;
-    };
 
     var steps = {
         step: 'nav_choose_process',
@@ -547,7 +550,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
     }
 }
 
-function UploadStepController($scope, wizard, Stater) {
+function UploadStepController($scope, wizard, Stater,mcapi) {
 
     wizard.waitOn($scope, 'nav_choose_upload', function () {
         $scope.state = Stater.retrieve();
@@ -555,13 +558,27 @@ function UploadStepController($scope, wizard, Stater) {
 
     $scope.get_file = function (file) {
         $scope.jet = file;
-        $scope.all_keys = Object.keys($scope.jet);
+        mcapi('/datafile/%', $scope.jet.id)
+            .success(function(data){
+             $scope.datafile = data;
+                $scope.setupAccessToUserFile();
+            })
+            .error(function(e){
+
+            }).jsonp();
     }
 
     $scope.get_mode_condition = function (file) {
         $scope.jet = file;
         $scope.model = $scope.jet.model;
 
+    }
+
+    $scope.setupAccessToUserFile = function () {
+        $scope.fileType = determineFileType($scope.datafile.mediatype);
+        $scope.fileSrc = filePath($scope.fileType, $scope.datafile.mediatype, $scope.datafile.location, $scope.datafile.name);
+        $scope.originalFileSrc = originalFilePath($scope.datafile.location, $scope.datafile.name);
+        $scope.fileName = $scope.datafile.name;
     }
 
 }
