@@ -380,10 +380,21 @@
                     </div>
                     <div class="modal-body">
                         <div>
-                            <label>Name:</label><span>{{jet.name}}</span>
-                            <label>Type:</label><span>{{jet.type}}</span>
-                            <label>Owner:</label><span>{{jet.owner}}</span>
-
+                            <label>Name:</label><span>{{datafile.name}}</span>
+                            <label>Type:</label><span>{{datafile.item_type}}</span>
+                            <label>Owner:</label><span>{{datafile.owner}}</span>
+                            <label>Description:</label><span>{{datafile.description}}</span>
+                            <label>notes:</label><span>{{datafile.notes}}</span><br>
+                            <label>Tags:</label><span>{{datafile.tags}}</span><br>
+                            <label>Access:</label><span>{{datafile.access}}</span><br>
+                            <label>Media Type:</label><span>{{datafile.mediatype}}</span><br>
+                                <div ng-switch on="fileType">
+                                    <div ng-switch-when="image">
+                                        <img ng-src="{{ fileSrc }}">
+                                        <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
+                                    </div>
+                                    <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
+                                </div>
                         </div>
                     </div>
                     <div class="modal-footer">
