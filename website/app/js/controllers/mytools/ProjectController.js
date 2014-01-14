@@ -35,7 +35,6 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
         mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
                 $scope.tree_data = $scope.flattenTree(data);
-                console.log(data)
             })
             .error(function (data) {
 
@@ -57,7 +56,6 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
             treeModel = new TreeModel(),
             root = treeModel.parse(tree[0]);
         root.walk({strategy: 'pre'}, function (node) {
-            console.log(node);
             flatTree.push(node.model);
         });
         return flatTree;
@@ -406,7 +404,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
             Stater.save($scope.state);
         }
         $scope.state.attributes.input_conditions[$scope.condition_name] = $scope.condition;
-        console.dir($scope.state)
         Stater.save($scope.state);
         $scope.showDetails = false;
     }
@@ -444,7 +441,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
     }
 
     $scope.edit_input = function () {
-        console.dir($scope.state)
         wizard.fireStep('nav_choose_inputs');
     }
 
@@ -452,6 +448,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 }
 
 function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService) {
+
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
