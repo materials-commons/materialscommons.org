@@ -154,14 +154,15 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
     $scope.outputs_saved = trackSavedProv.get_output_status();
 
 
-    $scope.check = function (id) {
+    $scope.check = function (t) {
         $scope.checked_items = treeToggle.get_all_checked_items();
-        if (id.type == 'datafile') {
-            if ($scope.checked_items.indexOf(id) >= 0) {
-                treeToggle.pop_checked_item(id);
+
+        if (t.type == 'datafile') {
+            if ($scope.checked_items.indexOf(t) >= 0) {
+                treeToggle.pop_checked_item(t);
             }
             else {
-                treeToggle.add_checked_item(id);
+                treeToggle.add_checked_item(t);
             }
         }
 
@@ -420,21 +421,30 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
      */
     $scope.save_selected_input_files = function () {
         $scope.checked_ids = [];
-        $scope.checked_items = treeToggle.get_all_checked_items();
-
-        $scope.checked_items.forEach(function (item) {
-            $scope.checked_ids.push(item.id)
-        })
-
+        $scope.item_names = [];
         $scope.state = Stater.retrieve();
         if (!('input_files' in $scope.state.attributes)) {
             $scope.state.attributes.input_files = {};
-            Stater.save($scope.state);
+            $scope.state.attributes.checked_input_filenames = {};
         }
+        else{
+            $scope.checked_ids = $scope.state.attributes.input_files;
+            $scope.item_names = $scope.state.attributes.checked_input_filenames;
+        }
+
+        $scope.checked_items = treeToggle.get_all_checked_items();
+
+        $scope.checked_items.forEach(function (item) {
+            if (!($scope.checked_ids.indexOf(item.id) > -1)) {
+                $scope.checked_ids.push(item.id)
+                $scope.item_names.push(item)
+            }
+
+        })
 
         $scope.state.attributes.input_files = $scope.checked_ids;
         //to display names of the files in verify and submit
-        $scope.state.attributes.checked_input_filenames = treeToggle.get_all_checked_items();
+        $scope.state.attributes.checked_input_filenames = $scope.item_names;
 
         Stater.save($scope.state);
         $scope.added = true;
@@ -513,27 +523,35 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
      */
     $scope.save_selected_output_files = function () {
         $scope.checked_ids = [];
-        $scope.checked_items = treeToggle.get_all_checked_items();
-        console.log($scope.checked_items)
-        $scope.checked_items.forEach(function (item) {
-            $scope.checked_ids.push(item.id);
+        $scope.item_names = [];
 
-        })
         $scope.state = Stater.retrieve();
         if (!('output_files' in $scope.state.attributes)) {
             $scope.state.attributes.output_files = {};
-            Stater.save($scope.state);
+            $scope.state.attributes.checked_output_filenames = {};
+
+        }
+        else{
+            $scope.checked_ids = $scope.state.attributes.output_files;
+            $scope.item_names = $scope.state.attributes.checked_output_filenames;
         }
 
+        $scope.checked_items = treeToggle.get_all_checked_items();
+        $scope.checked_items.forEach(function (item) {
+            if (!($scope.checked_ids.indexOf(item.id) > -1)) {
+                $scope.checked_ids.push(item.id)
+                $scope.item_names.push(item)
+            }
+
+        })
+
+
         $scope.state.attributes.output_files = $scope.checked_ids;
-        console.dir($scope.state)
         //to display names of the files in verify and submit
-        $scope.state.attributes.checked_output_filenames = treeToggle.get_all_checked_items();
+        $scope.state.attributes.checked_output_filenames = $scope.item_names;
+
         Stater.save($scope.state);
         $scope.added = true;
-
-        //to display names of the files in verify and submit
-        $scope.state.attributes.checked_output_filenames = treeToggle.get_all_checked_items();
     }
 
     $scope.next_step = function () {
