@@ -57,6 +57,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
             treeModel = new TreeModel(),
             root = treeModel.parse(tree[0]);
         root.walk({strategy: 'pre'}, function (node) {
+            console.log(node);
             flatTree.push(node.model);
         });
         return flatTree;
