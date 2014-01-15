@@ -381,8 +381,9 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.selected_cond = cond;
         $scope.condition.name = cond.name;
         $scope.condition.description = cond.description
+        console.log(cond)
         var model = $scope.condition.model
-
+        console.log(model)
 
         model.forEach(function (property) {
             var name = property.name;
