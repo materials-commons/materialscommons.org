@@ -187,7 +187,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
             })
             .error(function () {
                 $scope.notdone = true;
-                Stater.clear();
+                //Stater.clear();
                 $scope.state = Stater.retrieve();
                 alertService.sendMessage("Sorry - Your Provenance upload failed.");
             })
@@ -197,7 +197,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
     $scope.cancel_provenance = function () {
         Stater.clear();
-        $state.transitionTo('mytools')
+        $state.transitionTo('mytools');
 
     }
 
@@ -218,7 +218,11 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 
     }
-
+    $scope.try_again = function () {
+        wizard.fireStep('nav_choose_upload');
+        $scope.done = false;
+        $scope.notdone = false;
+    }
 
 }
 

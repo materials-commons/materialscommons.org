@@ -432,6 +432,7 @@
         </div>
         <div ng-show="done" class="well">
             <h4>Provenance uploaded successfully</h4>
+            <a href="#/mytools/projects/{{proj.id}}" ng-click="selected_project(project_obj[0].id)">view uploaded provenance</a>
         </div>
         <div ng-show="notdone" class="well">
             <h4>Provenance failed</h4>
@@ -442,11 +443,12 @@
                 <a> 2. Bad input or output files</a> <br>
 
             </div>
+            <button class="btn btn-small btn-info" type="button" ng-click="try_again()">Try Again</button>
         </div>
-        <div ng-hide="done">
+        <div ng-hide="done||notdone">
             <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>
             &nbsp;&nbsp;&nbsp
-            <button class="btn btn-large btn-primary" type="button" ng-click="cancel_provenance()">Cancel</button>
+            <button class="btn btn-large btn-danger" type="button" ng-click="cancel_provenance()">Cancel</button>
 
         </div>
     </form>
