@@ -35,7 +35,6 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
         mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
                 $scope.tree_data = $scope.flattenTree(data);
-                console.log(data)
             })
             .error(function (data) {
 
@@ -65,6 +64,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
     $scope.process_processes = function (processes) {
         $scope.temp_proc = {};
+        $scope.tree_p = [];
         processes.forEach(function (pr) {
             var temp = pr.template
             if (temp in $scope.temp_proc) {
@@ -77,13 +77,13 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
         })
         //return $scope.temp_proc
-        $scope.tree_p = [];
+
         $scope.tree_p = $scope.convert_into_tree($scope.temp_proc);
         return $scope.tree_p
     }
-    $scope.tree = [];
-    $scope.convert_into_tree = function (data) {
 
+    $scope.convert_into_tree = function (data) {
+        $scope.tree = [];
         var count = 0;
         var processes = data;
         var all_templates = Object.keys(data);
@@ -155,14 +155,15 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
     $scope.outputs_saved = trackSavedProv.get_output_status();
 
 
-    $scope.check = function (id) {
+    $scope.check = function (t) {
         $scope.checked_items = treeToggle.get_all_checked_items();
-        if (id.type == 'datafile') {
-            if ($scope.checked_items.indexOf(id) >= 0) {
-                treeToggle.pop_checked_item(id);
+
+        if (t.type == 'datafile') {
+            if ($scope.checked_items.indexOf(t) >= 0) {
+                treeToggle.pop_checked_item(t);
             }
             else {
-                treeToggle.add_checked_item(id);
+                treeToggle.add_checked_item(t);
             }
         }
 
@@ -187,7 +188,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
             })
             .error(function () {
                 $scope.notdone = true;
-                Stater.clear();
+                //Stater.clear();
                 $scope.state = Stater.retrieve();
                 alertService.sendMessage("Sorry - Your Provenance upload failed.");
             })
@@ -197,7 +198,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
     $scope.cancel_provenance = function () {
         Stater.clear();
-        $state.transitionTo('mytools')
+        $state.transitionTo('mytools');
 
     }
 
@@ -218,7 +219,11 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 
     }
-
+    $scope.try_again = function () {
+        wizard.fireStep('nav_choose_upload');
+        $scope.done = false;
+        $scope.notdone = false;
+    }
 
 }
 
@@ -376,8 +381,9 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.selected_cond = cond;
         $scope.condition.name = cond.name;
         $scope.condition.description = cond.description
+        console.log(cond)
         var model = $scope.condition.model
-
+        console.log(model)
 
         model.forEach(function (property) {
             var name = property.name;
@@ -405,7 +411,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
             Stater.save($scope.state);
         }
         $scope.state.attributes.input_conditions[$scope.condition_name] = $scope.condition;
-        console.dir($scope.state)
         Stater.save($scope.state);
         $scope.showDetails = false;
     }
@@ -422,28 +427,36 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
      */
     $scope.save_selected_input_files = function () {
         $scope.checked_ids = [];
-        $scope.checked_items = treeToggle.get_all_checked_items();
-
-        $scope.checked_items.forEach(function (item) {
-            $scope.checked_ids.push(item.id)
-        })
-
+        $scope.item_names = [];
         $scope.state = Stater.retrieve();
         if (!('input_files' in $scope.state.attributes)) {
             $scope.state.attributes.input_files = {};
-            Stater.save($scope.state);
+            $scope.state.attributes.checked_input_filenames = {};
         }
+        else{
+            $scope.checked_ids = $scope.state.attributes.input_files;
+            $scope.item_names = $scope.state.attributes.checked_input_filenames;
+        }
+
+        $scope.checked_items = treeToggle.get_all_checked_items();
+
+        $scope.checked_items.forEach(function (item) {
+            if (!($scope.checked_ids.indexOf(item.id) > -1)) {
+                $scope.checked_ids.push(item.id)
+                $scope.item_names.push(item)
+            }
+
+        })
 
         $scope.state.attributes.input_files = $scope.checked_ids;
         //to display names of the files in verify and submit
-        $scope.state.attributes.checked_input_filenames = treeToggle.get_all_checked_items();
+        $scope.state.attributes.checked_input_filenames = $scope.item_names;
 
         Stater.save($scope.state);
         $scope.added = true;
     }
 
     $scope.edit_input = function () {
-        console.dir($scope.state)
         wizard.fireStep('nav_choose_inputs');
     }
 
@@ -451,6 +464,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 }
 
 function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService) {
+
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -515,27 +529,35 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
      */
     $scope.save_selected_output_files = function () {
         $scope.checked_ids = [];
-        $scope.checked_items = treeToggle.get_all_checked_items();
-        console.log($scope.checked_items)
-        $scope.checked_items.forEach(function (item) {
-            $scope.checked_ids.push(item.id);
+        $scope.item_names = [];
 
-        })
         $scope.state = Stater.retrieve();
         if (!('output_files' in $scope.state.attributes)) {
             $scope.state.attributes.output_files = {};
-            Stater.save($scope.state);
+            $scope.state.attributes.checked_output_filenames = {};
+
+        }
+        else{
+            $scope.checked_ids = $scope.state.attributes.output_files;
+            $scope.item_names = $scope.state.attributes.checked_output_filenames;
         }
 
+        $scope.checked_items = treeToggle.get_all_checked_items();
+        $scope.checked_items.forEach(function (item) {
+            if (!($scope.checked_ids.indexOf(item.id) > -1)) {
+                $scope.checked_ids.push(item.id)
+                $scope.item_names.push(item)
+            }
+
+        })
+
+
         $scope.state.attributes.output_files = $scope.checked_ids;
-        console.dir($scope.state)
         //to display names of the files in verify and submit
-        $scope.state.attributes.checked_output_filenames = treeToggle.get_all_checked_items();
+        $scope.state.attributes.checked_output_filenames = $scope.item_names;
+
         Stater.save($scope.state);
         $scope.added = true;
-
-        //to display names of the files in verify and submit
-        $scope.state.attributes.checked_output_filenames = treeToggle.get_all_checked_items();
     }
 
     $scope.next_step = function () {

@@ -85,7 +85,7 @@ def get_project_tree(project_id):
     rr = r.table('project2datadir').filter({'project_id': project_id})
     rr = rr.eq_join('project_id', r.table('projects')).zip()
     rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
-    rr = rr.pluck('id', 'name', 'owner', 'datafiles').order_by('name')
+    rr = rr.pluck('id', 'name', 'owner', 'datafiles', 'birthtime', 'size').order_by('name')
     rr = rr.outer_join(r.table('datafiles')
                        .pluck('id', 'name', 'size', 'owner', 'birthtime', 'notes','tags'),
                        lambda ddrow, drow: ddrow['datafiles']
@@ -172,7 +172,6 @@ def get_provenance(project_id):
                 'output_files': get_datafiles(process['output_files']),
                 'input_conditions': get_otherfiles(process['input_conditions']),
                 'output_conditions': get_otherfiles(process['output_conditions'])}
-    print prov
     return args.json_as_format_arg(prov)
 
 
