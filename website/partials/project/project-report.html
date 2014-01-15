@@ -1,3 +1,4 @@
+
 <div class="row-fluid">
     <div class="span12 offset1">
         <div class="span4" ng-controller="ListProjectsController">
@@ -509,7 +510,7 @@
             </thead>
             <tbody>
 
-            <tr ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+            <tr  ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
                 <td><span type="checkbox" style="margin-bottom: 7px;" ng-click="check(t)" class="treecheckBox">
                         <img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon">
                     </span>
