@@ -66,11 +66,14 @@ def list_datadirs_with_data_by_user():
 
 
 class DItem:
-    def __init__(self, id, name, type):
+    def __init__(self, id, name, type, owner, birthtime, size):
         self.id = id
         self.c_id = ""
         self.parent_id = ""
         self.name = name
+        self.owner = owner
+        self.birthtime = birthtime
+        self.size = size
         self.displayname = basename(name)
         self.type = type
         self.children = []
@@ -138,7 +141,11 @@ def buildTreeFromSelection(selection):
                 elif ddir['name'] in allDataDirs:
                     dd = allDataDirs[ddir['name']]
                 else:
-                    dd = DItem(ddir['id'], ddir['name'], "datadir")
+                    if not 'birthtime' in ddir.keys():
+                        ddir['birthtime'] = '';
+                    if not 'size' in ddir.keys():
+                        ddir['size'] = ''; 
+                    dd = DItem(ddir['id'], ddir['name'], "datadir", ddir['owner'],ddir['birthtime'],ddir['size'])
                     dd.c_id = str(next_id)
                     next_id = next_id + 1
                     allDataDirs[dd.name] = dd
@@ -149,7 +156,11 @@ def buildTreeFromSelection(selection):
             else:
                 currentDataDir = allDataDirs[ddir['name']]
         if data:
-            data = DItem(data['id'], data['name'], "datafile")
+            if not 'birthtime' in data.keys():
+                data['birthtime'] = '';
+            if not 'size' in data.keys():
+                data['size'] = '';
+            data = DItem(data['id'], data['name'], "datafile",data['owner'],data['birthtime'],data['size'])
             data.c_id = str(next_id)
             next_id = next_id + 1
             data.parent_id = currentDataDir.c_id
@@ -165,7 +176,11 @@ def isTopLevel(ddir):
 def addToTopLevelDirs(ddir, topLevelDirs, c_id):
     item = find_in_ditem_list(ddir['name'], topLevelDirs)
     if not item:
-        dd = DItem(ddir['id'], ddir['name'], "datadir")
+        if not 'birthtime' in ddir.keys():
+            ddir['birthtime'] = '';
+        if not 'size' in ddir.keys():
+            ddir['size'] = '';
+        dd = DItem(ddir['id'], ddir['name'], "datadir", ddir['owner'], ddir['birthtime'], ddir['size'])
         dd.c_id = str(c_id)
         topLevelDirs.append(dd)
         item = dd
