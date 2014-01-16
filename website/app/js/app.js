@@ -186,25 +186,29 @@ app.config(function ($stateProvider) {
             controller: 'ReviewListController'
         })
 
-        .state('mytools.usergrouptab', {
-            url: '/usergrouptab',
-            templateUrl: 'partials/usergroups/usergroup-subpage.html'
-        })
-        .state('mytools.createusergroup', {
-            url: '/createusergroup',
-            templateUrl: 'partials/usergroups/usergroup-create.html',
-            controller: 'CreateUserGroupController'
-        })
-        .state('mytools.myusergoups', {
-            url: '/myusergoups',
-            templateUrl: 'partials/usergroups/my_usergroups.html',
-            controller: 'ListUserGroupController'
-        })
-        .state('mytools.allusergroups', {
-            url: '/allusergroups',
-            templateUrl: 'partials/usergroups/usergroups_list_all.html',
-            controller: 'ListUserGroupController'
-        })
+//        .state('mytools.usergrouptab', {
+//            url: '/usergrouptab',
+//            templateUrl: 'partials/usergroups/usergroup-subpage.html'
+//        })
+//        .state('mytools.createusergroup', {
+//            url: '/createusergroup',
+//            templateUrl: 'partials/usergroups/usergroup-create.html',
+//            controller: 'CreateUserGroupController'
+//        })
+//        .state('mytools.myusergoups', {
+//            url: '/myusergoups',
+//            templateUrl: 'partials/usergroups/my_usergroups.html',
+//            controller: 'ListUserGroupController'
+//        })
+//        .state('mytools.allusergroups', {
+//            url: '/allusergroups',
+//            templateUrl: 'partials/usergroups/usergroups_list_all.html',
+//            controller: 'ListUserGroupController'
+//        })
+
+
+
+
 
     /**
      * END Subpage
@@ -243,6 +247,11 @@ app.config(function ($stateProvider) {
             controller: 'LoginController'
 
         })
+        .state('createusergroup', {
+            url: '/createusergroup',
+            templateUrl: 'partials/usergroups/usergroup-create.html',
+            controller: 'CreateUserGroupController'
+        })
 
         .state('datagroups/data/:id', {
             url: '/datagroups/data/:id',
@@ -253,6 +262,9 @@ app.config(function ($stateProvider) {
 
 
     ;
+
+
+
 })
 
 app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User, ngstomp) {

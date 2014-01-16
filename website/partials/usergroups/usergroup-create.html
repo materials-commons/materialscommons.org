@@ -8,18 +8,27 @@
                 <td>Access</td>
                 <td>
                     <select ng-model="access">
-                        <option value="private">private</option>
-                        <option value="public">public</option>
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Description</td>
                 <td><input ng-model="desc"></td>
+                <textarea class="input-xlarge" placeholder="Describe your process...."
+                          ng-model="process.description"/> <br>
             </tr>
         </table>
         <br>
         <button class="btn btn-success" type="button" ng-click="create_usergroup()"> Create Group</button>
+    </div>
+
+</div>
+
+<div class="row-fluid">
+    <div class="span">
+
     </div>
 
 </div>
