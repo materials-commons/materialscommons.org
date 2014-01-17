@@ -1,4 +1,4 @@
-function CreateUserGroupController($scope, User, mcapi, $location, alertService) {
+function CreateUserGroupController($scope, User, mcapi, $location, alertService, $state) {
     $scope.create_usergroup = function () {
         var u_group = {};
         u_group.access = $scope.access;
@@ -11,7 +11,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService)
             .success(function (data) {
                 $scope.msg = "UserGroup has been created successfully"
                 alertService.sendMessage($scope.msg);
-                $location.path('/usergroups/my_usergroups');
+                $state.transitionTo('myusergoups');
             })
             .error(function (errorMsg) {
                 alertService.sendMessage(errorMsg);
@@ -26,7 +26,7 @@ function ListUserGroupController($scope, mcapi, User) {
         }).jsonp();
 }
 
-function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertService) {
+function ListUserController($scope, mcapi, $stateParams, $dialog, User, alertService) {
     mcapi('/users')
         .success(function (data) {
             $scope.all_users = data;
@@ -34,15 +34,15 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
         .error(function () {
         }).jsonp();
 
-    $scope.lab_name = $routeParams.usergroup_name;
-    mcapi('/usergroup/%', $scope.lab_name)
+    $scope.ug_name =  $stateParams.id;
+    mcapi('/usergroup/%', $scope.ug_name)
         .success(function (data) {
             $scope.user_group = data;
             $scope.owner = $scope.user_group.owner
             $scope.signed_in_user = User.u();
         }).jsonp();
 
-    mcapi('/usergroup/%/users', $scope.lab_name)
+    mcapi('/usergroup/%/users', $scope.ug_name)
         .success(function (data) {
             $scope.users_by_usergroup = data.users;
         })
@@ -51,7 +51,7 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
 
     $scope.add_user_to_usergroup = function () {
         var title = '';
-        var msg = 'Do you want to add  ' + $scope.user_name + ' to ' + $scope.lab_name + '?';
+        var msg = 'Do you want to add  ' + $scope.user_name + ' to ' + $scope.ug_name + '?';
         var btns = [
             {result: 'no', label: 'no'},
             {result: 'yes', label: 'yes', cssClass: 'btn-primary'}
@@ -60,7 +60,7 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    mcapi('/usergroup/%/selected_name/%', $scope.lab_name, $scope.user_name)
+                    mcapi('/usergroup/%/selected_name/%', $scope.ug_name, $scope.user_name)
                         .success(function (data) {
                             $scope.users_by_usergroup.push(data.id);
                         }).error(function (data) {
@@ -72,7 +72,7 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
 
     $scope.delete_user_from_usergroup = function (index) {
         var title = '';
-        var msg = 'Do you want to delete ' + $scope.users_by_usergroup[index] + ' from ' + $scope.lab_name + '?';
+        var msg = 'Do you want to delete ' + $scope.users_by_usergroup[index] + ' from ' + $scope.ug_name + '?';
         var btns = [
             {result: 'no', label: 'no'},
             {result: 'yes', label: 'yes', cssClass: 'btn-primary'}
@@ -82,9 +82,9 @@ function ListUserController($scope, mcapi, $routeParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    mcapi('/usergroup/%/selected_name/%/remove', $scope.lab_name, $scope.users_by_usergroup[index])
+                    mcapi('/usergroup/%/selected_name/%/remove', $scope.ug_name, $scope.users_by_usergroup[index])
                         .success(function (data) {
-                            $scope.users_by_usergroup = data;
+                            $scope.users_by_usergroup = data.users;
                         }).error(function () {
                         }).put();
                 }

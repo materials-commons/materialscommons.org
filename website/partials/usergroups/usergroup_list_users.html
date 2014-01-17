@@ -1,5 +1,5 @@
 <div class="span10 offset1">
-    <h4>List of Users in {{lab_name}}</h4>
+    <h4>List of Users in {{ug_name}}</h4>
 
     <div class="row-fluid">
         <div class="well">
@@ -12,7 +12,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="i in users_by_usergroup | page:currentUsersPage:10">
+                    <tr ng-repeat="i in users_by_usergroup">
                         <td>{{i}}</td>
                         <td ng-show="owner==signed_in_user">
                             <button class="btn" ng-click="delete_user_from_usergroup($index)">Delete</button>

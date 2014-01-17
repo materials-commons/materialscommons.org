@@ -87,7 +87,8 @@ def remove_user_from_usergroup(usergroup, selected_name):
     user = access.get_user()
     res = r.table('usergroups').get(usergroup)['users'].difference([selected_name]).run(g.conn)
     r.table('usergroups').get(usergroup).update({'users': res}).run(g.conn)
-    return args.json_as_format_arg({'id': selected_name})
+    ugroup = r.table('usergroups').get(usergroup).run(g.conn, time_format='raw')
+    return args.json_as_format_arg(ugroup)
 
 def user_in_usergroup(user, usergroup):
     ugroup = r.table('usergroups').get(usergroup).run(g.conn)

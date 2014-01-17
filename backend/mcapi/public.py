@@ -95,6 +95,7 @@ def list_public_datadirs():
 @app.route('/users', methods=['GET'])
 @jsonp
 def list_users():
+    print 'users'
     selection = list(r.table('users').pluck('email', 'id').run(g.conn))
     return json.dumps(selection)
 
