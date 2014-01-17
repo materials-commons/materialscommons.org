@@ -1,4 +1,4 @@
-function CreateUserGroupController($scope, User, mcapi, $location, alertService) {
+function CreateUserGroupController($scope, User, mcapi, $location, alertService, $state) {
     $scope.create_usergroup = function () {
         var u_group = {};
         u_group.access = $scope.access;
@@ -11,7 +11,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService)
             .success(function (data) {
                 $scope.msg = "UserGroup has been created successfully"
                 alertService.sendMessage($scope.msg);
-                $location.path('/usergroups/my_usergroups');
+                $state.transitionTo('myusergoups');
             })
             .error(function (errorMsg) {
                 alertService.sendMessage(errorMsg);
