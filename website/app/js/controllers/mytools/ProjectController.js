@@ -460,6 +460,10 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.added = true;
     }
 
+    $scope.removeFile = function(index){
+        $scope.state.attributes.input_files.splice(index,1);
+        $scope.state.attributes.checked_input_filenames.splice(index,1);
+    }
     $scope.edit_input = function () {
         wizard.fireStep('nav_choose_inputs');
     }
@@ -563,7 +567,10 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         Stater.save($scope.state);
         $scope.added = true;
     }
-
+    $scope.removeFile = function(index){
+        $scope.state.attributes.output_files.splice(index,1);
+        $scope.state.attributes.checked_output_filenames.splice(index,1);
+    }
     $scope.next_step = function () {
         trackSavedProv.mark_outputs();
         Stater.persist($scope.state);
