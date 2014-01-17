@@ -1,11 +1,29 @@
-<div ng-controller="ListUserGroupController">
-    <div class="span10 offset1">
-        <h4>My UserGroups</h4>
-        <br>
 
-        <div ng-repeat="i in user_groups">
-            <br><a href="#/usergroups/myusergoups/{{i.name}}">{{i.name}}</a>
+
+<div ng-controller="ListUserGroupController">
+    <div class="span8 offset2">
+        <div class="well">
+            <h4>My UserGroups</h4>
+                <table class="table table-striped mc-table">
+                    <thead>
+                        <th>UserGroup</th>
+                        <th>Date created</th>
+                        <th>Description</th>
+                        <th>Owner</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="i in user_groups">
+                            <td><b>{{i.name}}</b></td>
+                            <td>{{i.birthtime | toDateString}}</td>
+                            <td>{{i.description}}</td>
+                            <td>{{i.owner}}</td>
+                            <td><a href="#/myusergoups/{{i.id}}">edit</a></td>
+                        </tr>
+                    </tbody>
+                </table>
         </div>
     </div>
 
 </div>
+
