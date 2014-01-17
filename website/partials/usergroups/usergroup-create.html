@@ -1,25 +1,24 @@
-<div ng-controller="CreateUserGroupController">
-    <div class="span10 offset1">
-        <h4>Create New UserGroup</h4>
-        <table>
-            <tr>
-                <td>Name</td>
-                <td><input ng-model="name" placeholder="group name"></td>
-                <td>Access</td>
-                <td>
-                    <select ng-model="access">
-                        <option value="private">private</option>
-                        <option value="public">public</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Description</td>
-                <td><input ng-model="desc"></td>
-            </tr>
-        </table>
-        <br>
-        <button class="btn btn-success" type="button" ng-click="create_usergroup()"> Create Group</button>
+
+<div class="row-fluid">
+    <div class="span5 offset2">
+        <div class="well" ng-controller="CreateUserGroupController">
+            <h4>Create UserGroup</h4>
+            <label>Name: </label><span><input ng-model="name" placeholder="name your group..."></span> <br>
+            <label>Access:</label>
+            <span>
+                <select ng-model="access">
+                    <option value="private">Private</option>
+                    <option value="public">Public</option>
+                </select>
+            </span><br>
+            <label>Description:</label>
+                <textarea class="input-xlarge" placeholder="Describe here...."
+                      ng-model="desc"/> <br>
+            <button class="btn btn-success" type="button" ng-click="create_usergroup()"> Create Group</button>
+
+
+        </div>
+
     </div>
 
 </div>
