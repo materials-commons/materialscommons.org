@@ -35,8 +35,10 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
         mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
+                if (data[0]){
+                    $scope.tree_data = $scope.flattenTree(data);
 
-                $scope.tree_data = $scope.flattenTree(data);
+                }
             })
             .error(function (data) {
 
