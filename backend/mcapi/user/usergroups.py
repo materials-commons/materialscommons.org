@@ -18,10 +18,10 @@ def newusergroup():
     exists = r.table('usergroups').get(u_group['name']).run(g.conn)
     if exists is None:
         new_u_group = {}
-        new_u_group['name'] = u_group['name']
-        new_u_group['description'] = u_group['description']
-        new_u_group['access'] = u_group['access']
-        new_u_group['id'] = u_group['name']
+        new_u_group['name'] = dmutil.get_required('name', u_group)
+        new_u_group['description'] = dmutil.get_optional('description', u_group)
+        new_u_group['access'] = dmutil.get_optional('access', u_group)
+        new_u_group['id'] = dmutil.get_required('id', u_group)
         new_u_group['users'] = u_group['users']
         new_u_group['owner'] = user
         set_dates(new_u_group)

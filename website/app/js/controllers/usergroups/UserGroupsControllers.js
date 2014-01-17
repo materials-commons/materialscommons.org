@@ -14,7 +14,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService,
                 $state.transitionTo('myusergoups');
             })
             .error(function (errorMsg) {
-                alertService.sendMessage(errorMsg);
+                alertService.sendMessage("Please enter Usergroup");
             }).post(u_group);
     }
 }
