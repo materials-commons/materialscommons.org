@@ -253,6 +253,12 @@ app.config(function ($stateProvider) {
             controller: 'CreateUserGroupController'
         })
 
+        .state('myusergoups', {
+            url: '/myusergoups',
+            templateUrl: 'partials/usergroups/my_usergroups.html',
+            controller: 'ListUserGroupController'
+        })
+
         .state('datagroups/data/:id', {
             url: '/datagroups/data/:id',
             templateUrl: 'partials/datagroups/datareport.html',
