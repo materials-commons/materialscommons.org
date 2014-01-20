@@ -27,7 +27,7 @@ table.treetable thead tr th {
 
 table.treetable tbody tr td {
   cursor: default;
-  padding: .3em 1em;
+  padding: .3em 0.5em;
   font-size: 1.4em;
 }
 
