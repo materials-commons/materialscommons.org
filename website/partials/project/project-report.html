@@ -480,10 +480,7 @@
             <tbody>
 
             <tr ng-repeat="t in tree_process" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
-                <td><span type="checkbox" style="margin-bottom: 7px;" ng-click="check(t)" class="treecheckBox">
-                        <img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon">
-                    </span>
-                </td>
+
                 <td ng-controller="ProcessReportController">
                     <a href="#/mytools/process/report/{{t.id}}">
                         {{t.name}}</a>
