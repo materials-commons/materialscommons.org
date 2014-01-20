@@ -7,8 +7,6 @@ import os.path
 import os
 from ..args import json_as_format_arg
 import tempfile
-from loader.tasks.db import load_data_dir, import_data_dir_to_repo
-from celery import chain
 from .. import access
 from .. import error
 from .. import dmutil
@@ -56,41 +54,23 @@ def get_udqueue():
     return json_as_format_arg(selection)
 
 
-@app.route('/upload12', methods=['POST'])
-@apikey
-@crossdomain(origin='*')
-def upload_file():
-    user = access.get_user()
-    state_id = request.form['state_id']
-    mkdirp('/tmp/uploads')
-    tdir = tempfile.mkdtemp(dir='/tmp/uploads')
-    for key in request.files.keys():
-        datadir = request.form[key + "_datadir"]
-        file = request.files[key]
-        dir = os.path.join(tdir, datadir)
-        mkdirp(dir)
-        filepath = os.path.join(dir, file.filename)
-        file.save(filepath)
-    chain(load_data_dir.si(user, tdir, state_id)\
-          | import_data_dir_to_repo.si(tdir))()
-    return jsonify({'success': True})
-  
-
 @app.route('/upload', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
-def upload_file_1():
+def upload_state():
     user = access.get_user()
     j = request.get_json()
     state_id = dmutil.get_required('state_id', j)
-    load_data_dir_1(user, state_id)
-    return jsonify({'success': True})
+    process_id = load_data_dir(user, state_id)
+    if (process_id):
+        return jsonify({'success': True})
 
 
-def load_data_dir_1(user, state_id):
+def load_data_dir(user, state_id):
     state_saver = StateCreateSaver()
     try:
-        load_data_1(user, state_id, state_saver)
+        process_id = load_data(user, state_id,state_saver)
+        return process_id
     except mcexceptions.RequiredAttributeException as rae:
         traceback.print_exc()
         state_saver.delete_tables()
@@ -103,20 +83,21 @@ def load_data_dir_1(user, state_id):
         state_saver.delete_tables()
 
 
-def load_data_1(user, state_id, state_saver):
-    load_provenance_from_state_1(state_id, state_saver)
+def load_data(user, state_id, state_saver):
+    process_id = load_provenance_from_state(state_id, state_saver)
     r.table('state').get(state_id).delete().run(g.conn)
     state_saver.move_to_tables()
     state_saver.delete_tables()
+    return process_id
     
 
-def load_provenance_from_state_1(state_id, saver):
+def load_provenance_from_state(state_id, saver):
     state = r.table('state').get(state_id).run(g.conn)
     attributes = state['attributes']
     user = state['owner']
     project_id = attributes['project_id']
     saver.project_id = project_id
-    create_process_from_template_1(attributes['process'], saver)
+    create_process_from_template(attributes['process'], saver)
     process_id = saver.process_id
     if 'input_files' in attributes:
         r.table('saver').get(process_id).update({'input_files': attributes['input_files']}).run(g.conn)
@@ -128,7 +109,7 @@ def load_provenance_from_state_1(state_id, saver):
     return process_id
 
 
-def create_process_from_template_1(j, saver):
+def create_process_from_template(j, saver):
     project_id = saver.project_id
     p = dict()
     p['project'] = project_id
@@ -252,4 +233,26 @@ def download_file(datafile):
     #if not checkAccess(user, df):
     #   return error_not_found_response()
     #return None
+    
+    
+@app.route('/upload12', methods=['POST'])
+@apikey
+@crossdomain(origin='*')
+def upload_file():
+    user = access.get_user()
+    state_id = request.form['state_id']
+    mkdirp('/tmp/uploads')
+    tdir = tempfile.mkdtemp(dir='/tmp/uploads')
+    for key in request.files.keys():
+        datadir = request.form[key + "_datadir"]
+        file = request.files[key]
+        dir = os.path.join(tdir, datadir)
+        mkdirp(dir)
+        filepath = os.path.join(dir, file.filename)
+        file.save(filepath)
+    chain(load_data_dir.si(user, tdir, state_id)\
+          | import_data_dir_to_repo.si(tdir))()
+    return jsonify({'success': True})
+
+
 
