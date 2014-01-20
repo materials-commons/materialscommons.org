@@ -44,6 +44,8 @@ def create_indices():
     run(r.table('datafiles').index_create('name'))
     run(r.table('users').index_create('apikey'))
     run(r.table('projects').index_create('name'))
+    run(r.table('projects').index_create('owner'))
+    run(r.table('usergroups').index_create('owner'))
 
 
 def run(rql):
