@@ -1,6 +1,7 @@
 function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
     $scope.all_templates = [];
-
+    $scope.done = false;
+    $scope.notdone = false;
     init();
     function init() {
         mcapi('/templates')
@@ -19,6 +20,15 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 
     $scope.selected_project = function (proj_id) {
+        Stater.newId("prov", "create prov", "type", function (status, state) {
+            if (status) {
+                $scope.state = state;
+                $scope.state.attributes.process = {};
+                wizard.fireStep('nav_choose_process');
+
+            }
+        });
+
         $scope.tree_data = [];
         $scope.state = Stater.retrieve();
         //$scope.state.attributes.project_id = proj_id;
@@ -135,15 +145,6 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
     wizard.setSteps(steps);
 
-
-    Stater.newId("setting_provenance1", "Creating provenance1", "upload1", function (status, state) {
-        if (status) {
-            $scope.state = state;
-            $scope.state.attributes.process = {};
-            wizard.fireStep('nav_choose_process');
-
-        }
-    });
 
     $scope.isCurrentStep = function (step) {
         $scope.process_saved = trackSavedProv.get_process_status();
