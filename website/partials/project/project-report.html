@@ -499,7 +499,7 @@
 
 
 <div class="row-fluid">
-    <div class="span10 offset1">
+    <div class="span11 offset1">
         <h4>Project Tree</h4>
         <table treetable treedata="tree_data">
             <thead>
@@ -516,7 +516,7 @@
 
             <tr  ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
                <td>
-                   <span type="checkbox" style="margin-bottom: 7px;" ng-click="check(t)" class="treecheckBox">
+                   <span type="checkbox" style="margin-bottom: 5px;" ng-click="check(t)" class="treecheckBox">
                         <img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon" >
                     </span>
                </td>
