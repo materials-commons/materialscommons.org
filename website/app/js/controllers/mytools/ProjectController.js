@@ -1,7 +1,6 @@
 function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
     $scope.all_templates = [];
-    $scope.done = false;
-    $scope.notdone = false;
+
     init();
     function init() {
         mcapi('/templates')
@@ -20,7 +19,16 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 
     $scope.selected_project = function (proj_id) {
-        Stater.newId("prov", "create prov", "type", function (status, state) {
+        $scope.done = false;
+        $scope.notdone = false;
+        trackSavedProv.mark_process(false);
+        $scope.process_saved =  trackSavedProv.get_process_status();
+        trackSavedProv.mark_inputs(false);
+        $scope.inputs_saved =  trackSavedProv.get_input_status();
+        trackSavedProv.mark_outputs(false);
+        $scope.outputs_saved =  trackSavedProv.get_output_status();
+
+            Stater.newId("prov", "create prov", "type", function (status, state) {
             if (status) {
                 $scope.state = state;
                 $scope.state.attributes.process = {};
@@ -184,8 +192,9 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
     $scope.upload_state = function () {
         $scope.state = Stater.retrieve();
         mcapi('/upload')
-            .success(function () {
+            .success(function (data) {
                 $scope.done = true;
+                $scope.process_id = data.process;
                 Stater.clear();
                 $scope.state = Stater.retrieve();
                 alertService.sendMessage("Your Provenance was Created Successfully.")
@@ -326,7 +335,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
 
     $scope.save_process = function () {
-        trackSavedProv.mark_process();
+        trackSavedProv.mark_process(true);
         $scope.process.required_conditions = $scope.required_input_conditions;
         $scope.process.required_output_conditions = $scope.required_output_conditions;
         $scope.process.required_conditions.forEach(function (condition) {
@@ -343,7 +352,6 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
         $scope.state.attributes.process = $scope.process;
         $scope.state.attributes.project_id = $rootScope.project_id;
-        console.dir($scope.state)
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_inputs');
 
@@ -420,7 +428,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
 
     $scope.next_step = function () {
-        trackSavedProv.mark_inputs();
+        trackSavedProv.mark_inputs(true);
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_outputs');
 
@@ -571,13 +579,12 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.state.attributes.checked_output_filenames.splice(index,1);
     }
     $scope.next_step = function () {
-        trackSavedProv.mark_outputs();
+        trackSavedProv.mark_outputs(true);
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_upload');
 
     }
     $scope.edit_output = function () {
-        console.dir($scope.state)
         wizard.fireStep('nav_choose_outputs');
     }
 }

@@ -63,7 +63,7 @@ def upload_state():
     state_id = dmutil.get_required('state_id', j)
     process_id = load_data_dir(user, state_id)
     if (process_id):
-        return jsonify({'success': True})
+        return jsonify({'success': True, 'process': process_id})
 
 
 def load_data_dir(user, state_id):

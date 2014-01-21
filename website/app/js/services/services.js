@@ -565,21 +565,21 @@ materialsCommonsServices.factory('trackSavedProv', function () {
     var inputs_saved = false;
     var outputs_saved = false;
     return {
-        mark_process: function(){
-            process_saved = true;
+        mark_process: function(as){
+            process_saved = as;
         },
 
         get_process_status: function(){
             return process_saved;
         },
-        mark_inputs: function(){
-            inputs_saved = true;
+        mark_inputs: function(as){
+            inputs_saved = as;
         },
         get_input_status: function (){
             return inputs_saved;
         },
-        mark_outputs: function (){
-            outputs_saved = true;
+        mark_outputs: function (as){
+            outputs_saved = as;
         },
         get_output_status: function(){
             return outputs_saved;
