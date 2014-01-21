@@ -49,11 +49,11 @@
                             <td>{{ review.note }}</td>
                             <td>{{ review.marked_on | toDateString }}</td>
                             <td>{{review.status}}</td>
-                            <td ng-show="review.requested_to==review.requested_by">
+                            <td ng-show="review.requested_to==signed_user">
                                 <input type="checkbox" ng-model="review.status" ng-click="reviewStatusChanged($index)" ng-true-value="Finished" ng-false-value="InProcess">
                             </td>
 
-                            <td ng-show="review.requested_to!=review.requested_by">
+                            <td ng-hide="review.requested_to==signed_user">
                                 Not Authorized
                             </td>
                         </tr>

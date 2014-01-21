@@ -1,11 +1,14 @@
 <div class="row-fluid">
-    <div class="span5 offset1">
-        <h3>Process report</h3>
+    <div class="span7 offset1">
+        <h3>Provenance - {{process.name}}</h3>
 
         <div class="block">
             <div class="well">
-                <label>Name:</label><span>{{process.name}}</span><br>
-                <label>Description:</label><span>{{process.description}}</span> <br>
+                <h5>Process</h5>
+
+                <div class="well">
+                    <label>Name:</label><span>{{process.name}}</span><br>
+                    <label>Description:</label><span>{{process.description}}</span> <br>
                     <label>Notes:</label>
                     <span ng-repeat="n in process.notes">
                      {{n}}
@@ -16,7 +19,13 @@
                     {{r.stopped}}
                     {{r.error_messages}}
                 </span> <br>
+                    <label>Machine:</label><span>{{process.machine}}</span> <br>
+                    <label>Version:</label><span>{{process.version}}</span> <br>
 
+                </div>
+                <h5>Inputs</h5>
+
+                <div class="well">
                     <label>Input Properties:</label><br>  <span ng-repeat="ip_file in input_conditions">
                     <a href="">{{ip_file.name}}</a>  <br>
             </span> <br>
@@ -24,7 +33,11 @@
                     <label>Input Files:</label><br>  <span ng-repeat="ip_file in input_files">
                     <a href="#/mytools/data/edit/{{ip_file.id}}">{{ip_file.name}} </a><br>
             </span> <br>
+                </div>
 
+                <h5>Outputs</h5>
+
+                <div class="well">
                     <label>Output Properties:</label> <br> <span ng-repeat="op_cond in output_conditions">
                     <a href="">{{op_cond.name}} </a> <br>
             </span> <br>
@@ -32,6 +45,8 @@
                     <label>Output Files:</label><br>  <span ng-repeat="op_file in output_files">
                     <a href="#/mytools/data/edit/{{op_file.id}}">{{op_file.name}} </a> <br>
             </span>
+                </div>
+
 
             </div>
         </div>
