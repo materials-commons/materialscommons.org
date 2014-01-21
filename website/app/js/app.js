@@ -185,6 +185,11 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/reviews/review-list.html',
             controller: 'ReviewListController'
         })
+        .state('mytools.eachreview', {
+            url: '/review/:id',
+            templateUrl: 'partials/data/data-edit.html',
+            controller: 'DataEditController'
+        })
 
 
 

@@ -5,6 +5,7 @@
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>Requested by</th>
                         <th>Requested To </th>
                         <th>Message</th>
@@ -15,7 +16,8 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="review in reviewstoConduct | page:currentReviewPage:5">
-                        <td ng-click="startReview(review.item_id, review.item_type)" style="cursor:pointer">{{ review.requested_by }}
+                        <td><a style="cursor:pointer" href="#/mytools/data/edit/{{review.item_id}}">view file</a></td>
+                        <td>{{ review.requested_by }}
                         </td>
                         <td>{{ review.requested_to }}</td>
                         <td>{{ review.note }}</td>
@@ -38,6 +40,7 @@
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>Requested by</th>
                         <th>Requested To </th>
                         <th>Message</th>
@@ -48,6 +51,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="review in reviewsRequested | page:currentRequestedReviewPage:5">
+                        <td><a style="cursor:pointer" href="#/mytools/data/edit/{{review.item_id}}">view file</a></td>
                         <td>{{review.requested_by}}</td>
                         <td>{{ review.requested_to }}</td>
                         <td>{{ review.note }}</td>

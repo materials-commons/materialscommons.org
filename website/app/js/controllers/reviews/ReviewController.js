@@ -3,7 +3,7 @@ function CreateReviewController($scope, mcapi, User, $stateParams, alertService)
     $scope.signed_in_user = User.u();
     $scope.review_note = "";
     $scope.schedule_for_self = false;
-
+    $scope.signed_user = User.u();
     mcapi('/datafile/%/reviews', $stateParams.id)
         .success(function (data) {
             data.forEach(function (item) {
@@ -61,7 +61,14 @@ function CreateReviewController($scope, mcapi, User, $stateParams, alertService)
     }
 
     $scope.reviewStatusChanged = function (index) {
-        mcapi('/review/%/mark/%', $scope.all_reviews[index].id, $scope.all_reviews[index].status)
+        if  ($scope.all_reviews[index].status == 'InProcess'){
+            var set_status = 'Finished';
+
+        }
+        else {
+            var set_status = 'InProcess'
+        }
+        mcapi('/review/%/mark/%', $scope.all_reviews[index].id, set_status)
             .success(function () {
                 $scope.msg = "Review Status has been changed"
                 alertService.sendMessage($scope.msg);
