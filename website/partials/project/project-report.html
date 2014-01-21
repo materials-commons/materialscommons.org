@@ -327,8 +327,9 @@
 </div>
 <div class="block" ng-show="isCurrentStep('nav_choose_upload')">
     <form id="submit-tab" class="form-inline span8">
+        <h4>Verify and Submit</h4>
+
         <div ng-hide="done||notdone" class="well" ng-controller="UploadStepController">
-            <h4>Verify and Submit</h4>
             <b>Process:</b>
 
             <div class="well">
@@ -437,7 +438,7 @@
         </div>
         <div ng-show="done" class="well">
             <h4>Provenance uploaded successfully</h4>
-            <a href="#/mytools/projects/{{proj.id}}" ng-click="selected_project(project_obj[0].id)">view uploaded provenance</a>
+            <a href="#/mytools/process/report/{{process_id}}" ng-click="selected_project(project_obj[0].id)">view uploaded provenance</a>
         </div>
         <div ng-show="notdone" class="well">
             <h4>Provenance failed</h4>
