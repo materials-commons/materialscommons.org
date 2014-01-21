@@ -1,9 +1,10 @@
-function AllTagsController($scope, $location, mcapi, User) {
+function AllTagsController($scope, $location, mcapi, $state, $stateParams) {
         $scope.tagHeader = "All Tags";
         mcapi('/tags/count')
             .success(function (data) {
                 $scope.tags = data;
             }).jsonp();
+
 
 }
 
@@ -15,11 +16,13 @@ function MyTagsController($scope, mcapi){
         }).jsonp();
 }
 
-function TagDataController($scope, $stateParams, mcapi) {
+function TagDataController($scope, $stateParams, $state, mcapi) {
     $scope.tag = $stateParams.name;
-    mcapi('/datafiles/tag/%', $stateParams.name)
+    mcapi('/datafiles/tag/%', $scope.tag)
         .success(function (data) {
             $scope.docs = data;
+
+
         }).jsonp();
 
 }

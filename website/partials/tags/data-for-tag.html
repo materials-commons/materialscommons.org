@@ -1,4 +1,3 @@
-<div ng-controller="TagDataController">
 
 <div class="span10 offset1">
     <h3>Data for tag: {{ tag }}</h3>
@@ -20,7 +19,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="row in docs | filter:query | page:currentTagDataPage:10">
-                        <td style="cursor:pointer" ><a href="#/data/edit/{{row.id}}">{{ row.name }}</a></td>
+                        <td style="cursor:pointer" ><a href="#/mytools/data/edit/{{row.id}}">{{ row.name }}</a></td>
                         <td>{{ row.description }}</td>
                         <td>
                             <ul style="list-style-type:none">
@@ -51,5 +50,4 @@
             </paged>
         </div>
     </div>
-</div>
 </div>
