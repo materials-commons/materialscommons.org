@@ -112,7 +112,14 @@ function ReviewListController($scope, mcapi, $state) {
             }).delete();
     }
 
-    $scope.removeRequestedReview = function (index) {
+    $scope.removeReview_to_conduct = function (index) {
+        var id = $scope.reviewstoConduct[index].id;
+        mcapi('/review/%/requested', id)
+            .success(function () {
+                $scope.reviewstoConduct.splice(index, 1);
+            }).delete()
+    }
+    $scope.removeReview_requested = function (index) {
         var id = $scope.reviewsRequested[index].id;
         mcapi('/review/%/requested', id)
             .success(function () {

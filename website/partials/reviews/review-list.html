@@ -1,4 +1,8 @@
-    <div class="row-fluid">
+Instructions:<br>
+Q) How to mark the review as completed? <br>
+A) Click the viewfile and check the reviews radio-button and mark the review as completed. <br>You should be able to see the status changing from INPROCESS - FINISHED.Then it would fade away from the below list <br>
+
+<div class="row-fluid">
         <div class="span12">
             <h4>Reviews to conduct</h4>
             <paged data="reviews" current-page="currentReviewPage" page-size="5">
@@ -24,7 +28,7 @@
                         <td>{{ review.marked_on | toDateString }}</td>
                         <td>{{ review.item_name }}</td>
                         <td>{{ review.status }}
-                            <button type="button" class="close" ng-click="removeReview($index);">&times;</button>
+                            <!--<button type="button" class="close" ng-click="removeReview_to_conduct($index);">&times;</button>-->
                         </td>
                     </tr>
                     </tbody>
@@ -58,7 +62,7 @@
                         <td>{{ review.marked_on | toDateString }}</td>
                         <td>{{ review.item_name }}</td>
                         <td>{{ review.status }}
-                            <button type="button" class="close" ng-click="removeReview($index);">&times;</button>
+                            <!--<button type="button" class="close" ng-click="removeReview_requested($index);">&times;</button>-->
                         </td>
                     </tr>
                     </tbody>
