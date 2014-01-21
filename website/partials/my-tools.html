@@ -10,16 +10,17 @@
                         <!--<li><a href="">Search</a></li>-->
                         <!--<li><a href="">Messages</a></li>-->
 
-                            <li id="my-data-tab"><a href="" style="cursor:pointer" ng-click="showProjs=!showProjs">Projects</a>
+                        <li id="my-data-tab"><a href="" style="cursor:pointer"
+                                                ng-click="showProjs=!showProjs">Projects</a>
 
-                                <div ng-show="showProjs" class="project-scrollbar" >
-                                    <ul ng-repeat="proj in projects">
-                                        <li><a href="#/mytools/projects/{{proj.id}}"
-                                               ng-click="selected_project(proj.id)">{{proj.name}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                            <div ng-show="showProjs" class="project-scrollbar">
+                                <ul ng-repeat="proj in projects">
+                                    <li><a href="#/mytools/projects/{{proj.id}}"
+                                           ng-click="selected_project(proj.id)">{{proj.name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         <li id="data-tab"><a href="#/mytools/datatab">My Data</a></li>
                         <li id="tags-tab"><a href="#/mytools/tagstab">Tags</a></li>
                         <!--<li id="conditions-tab"><a href="#/mytools/conditionstab">Templates</a></li>-->
@@ -36,9 +37,9 @@
                         <!--<li id="usergroups-tab"><a href="#/mytools/usergrouptab">Usergroups</a></li>-->
                         <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
                         <div ng-controller="AllTagsController">
-                        <span ng-click="listDataForTag(tag.name)" style="cursor:pointer" class="label label-info custom"
+                        <span style="cursor:pointer" class="label label-info custom"
                               ng-repeat="tag in tags | limitTo: 10">
-                            {{ tag.name }}  ({{tag.count}})
+                           <a href="#/mytools/data/bytag/{{tag.name}}" style="color: white">{{ tag.name }}  ({{tag.count}})</a>
                         </span>
                         </div>
 
