@@ -1,4 +1,3 @@
-
 <div class="row-fluid">
     <div class="span12 offset1">
         <div class="span4" ng-controller="ListProjectsController">
@@ -114,27 +113,26 @@
                 <label>Description:</label>
                 <textarea class="input-xlarge" placeholder="Describe your process...."
                           ng-model="process.description"/> <br>
-
-                <label>Machine:</label>
-                <select ng-model="machine_selected">
-                    <option disabled>pick a machine:</option>
-                    <option ng-repeat="m in machines_list" value="{{m}}">{{m.name}}</option>
-                    <option disabled>----------</option>
-
-                    <option value="new"> New machine</option>
-                </select>
-
-                            <span ng-show="machine_selected=='new'">
-                                   <input ng-model="new_machine" placeholder="Machine name..."
-                                          type="text">
-                                <button ng-click="add_machine_to_db()">Add</button>
-                            </span>
-
-                <br>
-
-
                 <label>Version:</label> <input ng-model="process.version" placeholder="Version V1.1 ...."
                                                type="text"><br> </br>
+
+                <div class="well">
+                    <label>Select Machine:</label>
+
+                    <select ng-model="machine_selected">
+                        <option disabled>pick a machine:</option>
+                        <option ng-repeat="m in machines_list" value="{{m}}">{{m.name}}</option>
+                    </select>
+                    <br>
+                    <label>OR</label> <br>
+                    <label>Create New Machine:</label>
+                    <input ng-model="new_machine" placeholder="Type in machine name..."
+                           type="text">
+                    <button ng-click="add_machine_to_db()">Add</button><br>
+                    <span style="color: #ff0000" ng-show="machine_added">Machine {{process.machine.name}} has been added</span>
+                </div>
+
+
                 <div class="well">
                     <label> Runs:</label> <br>
                     <label>Start: </label><input class="span3" ng-model="start_run" placeholder="start date"
@@ -250,7 +248,8 @@
                 <div ng-show="added">
                     <li ng-repeat="item in state.attributes.checked_input_filenames">
                         <i class="fa fa-check-square"></i>{{item.name}}
-                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button><br>
+                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+                        <br>
 
                     </li>
                     <button class="label label-info" ng-click="next_step()">Next Step</button>
@@ -315,7 +314,8 @@
                 <div ng-show="added">
                     <li ng-repeat="item in item_names">
                         <i class="fa fa-check-square"></i>{{item.name}}
-                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button><br>
+                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+                        <br>
 
                     </li>
                     <button class="label label-info" ng-click="next_step()">Next Step</button>
@@ -335,7 +335,7 @@
             <div class="well">
                 Name:<span>{{state.attributes.process.name}}</span> <br>
                 Description:<span>{{state.attributes.process.description}}</span> <br>
-                Machine:<span>{{state.attributes.process.machine}}</span> <br>
+                Machine:<span>{{state.attributes.process.machine.name}}</span> <br>
                 Version:<span>{{state.attributes.process.version}}</span> <br>
 
                 Notes:
@@ -394,13 +394,15 @@
                             <label>Tags:</label><span>{{datafile.tags}}</span><br>
                             <label>Access:</label><span>{{datafile.access}}</span><br>
                             <label>Media Type:</label><span>{{datafile.mediatype}}</span><br>
-                                <div ng-switch on="fileType">
-                                    <div ng-switch-when="image">
-                                        <img ng-src="{{ fileSrc }}">
-                                        <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
-                                    </div>
-                                    <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
+
+                            <div ng-switch on="fileType">
+                                <div ng-switch-when="image">
+                                    <img ng-src="{{ fileSrc }}">
+                                    <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}"
+                                       style="margin-left: 15px">Download</a>
                                 </div>
+                                <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -438,7 +440,8 @@
         </div>
         <div ng-show="done" class="well">
             <h4>Provenance uploaded successfully</h4>
-            <a href="#/mytools/process/report/{{process_id}}" ng-click="selected_project(project_obj[0].id)">view uploaded provenance</a>
+            <a href="#/mytools/process/report/{{process_id}}" ng-click="selected_project(project_obj[0].id)">view
+                uploaded provenance</a>
         </div>
         <div ng-show="notdone" class="well">
             <h4>Provenance failed</h4>
@@ -512,12 +515,12 @@
             </thead>
             <tbody>
 
-            <tr  ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
-               <td>
+            <tr ng-repeat="t in tree_data" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+                <td>
                    <span type="checkbox" style="margin-bottom: 5px;" ng-click="check(t)" class="treecheckBox">
-                        <img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon" >
+                        <img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon">
                     </span>
-               </td>
+                </td>
 
                 <td><a href="#/mytools/data/edit/{{t.id}}">{{t.name}}</td>
                 <td>{{t.type}}</td>
