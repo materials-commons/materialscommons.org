@@ -22,6 +22,8 @@ def get_user_details(user):
 @jsonp
 def get_api_key_for_user(user, password):
     u = r.table('users').get(user).run(g.conn)
+    if u is None:
+        return error.not_authorized("Bad username or password")
     dbpw = u['password']
     _i1, _i2,  _i3,  salt, _pwhash = dbpw.split('$')
     hash = make_salted_password_hash(password, salt)
