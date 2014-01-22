@@ -1,4 +1,4 @@
-function DataEditController($scope, $window, mcapi, alertService, $stateParams) {
+function DataEditController($scope, $window, mcapi, alertService, $stateParams, pubsub) {
     $scope.count = 0;
     $scope.grid_options = [];
     $scope.id = $stateParams.id;
@@ -50,9 +50,9 @@ function DataEditController($scope, $window, mcapi, alertService, $stateParams) 
         mcapi('/datafile/update/%', $scope.doc.id)
             .success(function (data) {
                 $scope.addNewTags();
-                console.log(data)
                 $scope.msg = "Data has been saved"
                 alertService.sendMessage($scope.msg);
+                pubsub.send('tags.change', '')
             }).error(function (data) {
                 alertService.sendMessage(data.error);
             }).put($scope.doc);

@@ -25,7 +25,8 @@ def datafiles_for_user():
 @jsonp
 def datafiles_for_user_by_tag(tag):
     user = access.get_user()
-    rr = r.table('datafiles').filter({'owner':user}).filter(r.row['tags'].contains(tag))
+    rr = r.table('datafiles').filter({'owner': user})\
+                             .filter(r.row['tags'].contains(tag))
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
@@ -50,7 +51,7 @@ def update_datafile_for_user(datafileid):
 @jsonp
 def tags_by_count_for_user():
     user = access.get_user()
-    selection = list(r.table('datafiles').filter({'owner': user})\
+    selection = list(r.table('datafiles').get_all(user, index='owner')
                      .concat_map(lambda item: item['tags']).run(g.conn))
     return create_tag_count(selection)
 
@@ -63,7 +64,7 @@ def datafile_for_user_by_id(datafileid):
     rr = r.table('datafiles').get(datafileid)
     rr = args.add_pluck_when_fields(rr)
     df = rr.run(g.conn, time_format='raw')
-    t = access.check(user, df['owner'], df['id'])
+    access.check(user, df['owner'], df['id'])
     return args.json_as_format_arg(df)
 
 
