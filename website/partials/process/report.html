@@ -39,7 +39,7 @@
 
                 <div class="well">
                     <label>Output Properties:</label> <br> <span ng-repeat="op_cond in output_conditions">
-                    <a href="">{{op_cond.name}} </a> <br>
+                    <a href="#modalCondition" data-toggle="modal">{{op_cond.name}} </a> <br>
             </span> <br>
 
                     <label>Output Files:</label><br>  <span ng-repeat="op_file in output_files">
@@ -48,6 +48,29 @@
                 </div>
 
 
+            </div>
+            <div id="modalCondition" class="modal hide fade" tabindex="-1" role="dialog"
+                 aria-labelledby="modalConditionLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="modalConditionLabel">{{op_cond.name}}</h3>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>Name:</label><span>{{op_cond.name}}</span>
+                        <label>Type:</label><span>{{op_cond.template_type}}</span>
+                        <label>Description:</label><span>{{op_cond.description}}</span><br>
+                        <!--<label>Model:</label>-->
+
+                        <!--<div ng-repeat="kv in model">-->
+                            <!--<label>{{kv.name}}</label> - <span>{{kv.value}}</span>-->
+                        <!--</div>-->
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
             </div>
         </div>
 
