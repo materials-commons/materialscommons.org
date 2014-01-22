@@ -9,7 +9,6 @@
                     <th>DataGroup</th>
                     <th>Created At</th>
                     <th>Tags</th>
-                    <th>Meta Tags</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,25 +30,6 @@
                             </li>
                         </ul>
                     </td>
-                    <td>
-                        <ul>
-                            <li ng-repeat="metatag in row.metatags | limitTo:10">
-                                {{ metatag.name }}:{{ metatag.value }}
-                            </li>
-                            <div ng-show="row.metatags.length > 10">
-                                <accordion>
-                                    <accordion-group heading="... more">
-
-                                        <li ng-repeat="metatag in row.metatags.slice(10)">
-                                            {{metatag.name}}
-                                            {{metatag.value}}
-                                        </li>
-
-                                    </accordion-group>
-                                </accordion>
-                            </div>
-                        </ul>
-                    <td>
                 </tr>
                 </tbody>
             </table>
