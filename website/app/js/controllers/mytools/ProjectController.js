@@ -190,6 +190,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
     };
 
     $scope.upload_state = function () {
+        $scope.inputs_saved = false;
         $scope.state = Stater.retrieve();
         mcapi('/upload')
             .success(function (data) {
@@ -233,11 +234,11 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 
     }
-    $scope.try_again = function () {
-        wizard.fireStep('nav_choose_upload');
-        $scope.done = false;
-        $scope.notdone = false;
-    }
+//    $scope.try_again = function () {
+//        wizard.fireStep('nav_choose_upload');
+//        $scope.done = false;
+//        $scope.notdone = false;
+//    }
 
 }
 
@@ -343,6 +344,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
         $scope.state.attributes.process = $scope.process;
         $scope.state.attributes.project_id = $rootScope.project_id;
+        console.dir($scope.state)
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_inputs');
 
