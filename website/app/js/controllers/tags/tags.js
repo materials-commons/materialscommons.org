@@ -1,14 +1,21 @@
-function AllTagsController($scope, $location, mcapi, $state, $stateParams) {
-        $scope.tagHeader = "All Tags";
+function AllTagsController($scope, mcapi, pubsub) {
+    $scope.tagHeader = "All Tags";
+
+    pubsub.waitOn($scope, 'tags.change', function() {
+        $scope.tagsCount();
+    });
+
+    $scope.tagsCount = function() {
         mcapi('/tags/count')
             .success(function (data) {
                 $scope.tags = data;
             }).jsonp();
+    }
 
-
+    $scope.tagsCount();
 }
 
-function MyTagsController($scope, mcapi){
+function MyTagsController($scope, mcapi) {
     $scope.tagHeader = "My Tags";
     mcapi('tags/count')
         .success(function (data) {
@@ -16,7 +23,7 @@ function MyTagsController($scope, mcapi){
         }).jsonp();
 }
 
-function TagDataController($scope, $stateParams, $state, mcapi) {
+function TagDataController($scope, $stateParams, mcapi) {
     $scope.tag = $stateParams.name;
     mcapi('/datafiles/tag/%', $scope.tag)
         .success(function (data) {
@@ -27,7 +34,7 @@ function TagDataController($scope, $stateParams, $state, mcapi) {
 
 }
 
-function GlobalTagCloudController($scope, mcapi, User) {
+function GlobalTagCloudController($scope, mcapi) {
     $scope.cloudtype = "Global";
     mcapi('/tags/count')
         .success(function (data) {
