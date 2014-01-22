@@ -356,7 +356,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
 }
 
-function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle) {
+function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle,watcher) {
     $scope.state = Stater.retrieve();
     /**
      *
@@ -435,6 +435,8 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
     $scope.next_step = function () {
         trackSavedProv.mark_inputs(true);
         Stater.persist($scope.state);
+        $scope.state = Stater.retrieve();
+
         wizard.fireStep('nav_choose_outputs');
 
     }
@@ -467,9 +469,17 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.state.attributes.input_files = $scope.checked_ids;
         //to display names of the files in verify and submit
         $scope.state.attributes.checked_input_filenames = $scope.item_names;
-
         Stater.save($scope.state);
-        $scope.added = true;
+        if($scope.state.attributes.process.required_conditions == []){
+            $scope.added = true;
+        }
+        else{
+            if ((Object.keys($scope.state.attributes.input_conditions).length) == (($scope.state.attributes.process.required_conditions).length)){
+                $scope.added = true;
+
+            }
+        }
+
     }
 
     $scope.removeFile = function(index){

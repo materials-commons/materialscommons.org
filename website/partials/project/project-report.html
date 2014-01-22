@@ -109,7 +109,7 @@
 
             <div ng-show="process_type">
                 <hr/>
-                <label>Name:</label> <input ng-model="process.name" placeholder="Name your process" type="text"><br>
+                <label>Name: (required)</label> <input ng-model="process.name" placeholder="Name your process" type="text"><br>
                 <label>Description:</label>
                 <textarea class="input-xlarge" placeholder="Describe your process...."
                           ng-model="process.description"/> <br>
@@ -117,8 +117,7 @@
                                                type="text"><br> </br>
 
                 <div class="well">
-                    <label>Select Machine:</label>
-
+                    <label>Pick a machine:</label>
                     <select ng-model="machine_selected">
                         <option disabled>pick a machine:</option>
                         <option ng-repeat="m in machines_list" value="{{m}}">{{m.name}}</option>
@@ -129,7 +128,7 @@
                     <input ng-model="new_machine" placeholder="Type in machine name..."
                            type="text">
                     <button ng-click="add_machine_to_db()" ng-disabled="!new_machine">Add</button><br>
-                    <span style="color: #ff0000" ng-show="machine_added">Machine {{process.machine.name}} has been added</span>
+                     <br><b>selected: {{process.machine.name}}</b>
                 </div>
 
 
@@ -258,7 +257,8 @@
                         <br>
 
                     </li>
-                    <button class="label label-info" ng-click="next_step()">Next Step</button>
+                    <br><br>
+                    <button  ng-click="next_step()">Next Step</button>
                     <br></br>
                 </div>
 
