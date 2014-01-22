@@ -209,17 +209,23 @@
                     </p>
                     <br>
                                         <span ng-show="showDetails">
-                                               <label>Pick one or Create New: </label>
+                                               <label>Pick one: </label>
                                             <select ng-model="use_condition">
                                                 <option disabled>Pick:</option>
                                                 <option disabled> -------------------</option>
                                                 <option ng-repeat="ec in existing_conditions" value="{{ec}}"
-                                                        ng-click="selected_condition(ec)">
-                                                    {{ec.name}}
-                                                </option>
-                                            </select> <br> <br> <br>
+                                                        ng-click="selected_condition(ec)">  {{ec.name}}
+                                                <option disabled> -------------------</option>
+                                                <option ng-click="clear_condition()" value="clear">Clear</option>
 
-                                            <label>Name:</label><input ng-model="condition.name" type="text"> <br>
+                                                </option>
+                                            </select> <br>
+
+                                            <b style="color: lightseagreen"> OR you can create your own by filling out the form below</b><br>
+                                            <br> <br>
+
+
+                                            <label style="color: red">Name: [required]</label><input placeholder="Give a name to your property" ng-model="condition.name" type="text" required> <br>
                                             <label>Description</label> <input ng-model="condition.description"
                                                                               type="text">
                                             <br>
@@ -227,7 +233,7 @@
                                         <div ng-repeat="property in condition.model">
                                             <label>{{property.name}}</label><input ng-model=property.value type="text">
                                         </div>
-                                            <button ng-click="save_condition()">Save</button>
+                                            <button ng-click="save_condition()" ng-disabled="!condition.name">Save</button>
                                             <br>
                                             <div class="well">
                                                 Add Custom Properties:
@@ -276,17 +282,24 @@
                     </p>
                     <br>
                                         <span ng-show="showDetails">
-                                               <label>Pick one or Create New: </label>
+                                               <label>Pick one </label>
                                             <select ng-model="use_condition">
                                                 <option disabled>Pick:</option>
                                                 <option disabled> -------------------</option>
                                                 <option ng-repeat="ec in existing_conditions" value="{{ec}}"
-                                                        ng-click="selected_condition(ec)">
-                                                    {{ec.name}}
-                                                </option>
-                                            </select> <br> <br> <br>
+                                                        ng-click="selected_condition(ec)"> {{ec.name}}
+                                                <option disabled> -------------------</option>
 
-                                            <label>Name:</label><input ng-model="condition.name" type="text"> {{condition.name}}<br>
+                                                <option ng-click="clear_condition()" value="clear">Clear</option>
+
+                                                </option>
+                                            </select> <br>
+                                            <b style="color: lightseagreen"> OR you can create your own by filling out the form below</b><br>
+
+                                            <br> <br>
+
+
+                                            <label style="color: red">Name: [required]</label><input ng-model="condition.name" type="text" required> <br>
                                             <label>Description</label> <input ng-model="condition.description"
                                                                               type="text">
                                             <br>
@@ -294,7 +307,7 @@
                                         <div ng-repeat="property in condition.model">
                                             <label>{{property.name}}</label><input ng-model=property.value type="text">
                                         </div>
-                                            <button ng-click="save_condition()">Save</button>
+                                            <button ng-click="save_condition()" ng-disabled="!condition.name">Save</button>
                                             <br>
                                             <div class="well">
                                                 Add Custom Properties:
@@ -389,7 +402,7 @@
                             <label>Name:</label><span>{{datafile.name}}</span>
                             <label>Type:</label><span>{{datafile.item_type}}</span>
                             <label>Owner:</label><span>{{datafile.owner}}</span>
-                            <label>Description:</label><span>{{datafile.description}}</span>
+                            <label>Description:</label><span>{{datafile.description}}</span> <br>
                             <label>notes:</label><span>{{datafile.notes}}</span><br>
                             <label>Tags:</label><span>{{datafile.tags}}</span><br>
                             <label>Access:</label><span>{{datafile.access}}</span><br>
@@ -421,7 +434,7 @@
                         <div>
                             <label>Name:</label><span>{{jet.name}}</span>
                             <label>Type:</label><span>{{jet.template_type}}</span>
-                            <label>Description:</label><span>{{jet.description}}</span>
+                            <label>Description:</label><span>{{jet.description}}</span><br>
                             <label>Model:</label>
 
                             <div ng-repeat="kv in model">

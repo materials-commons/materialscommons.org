@@ -383,7 +383,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
     $scope.selected_condition = function (cond) {
         $scope.selected_cond = cond;
-        $scope.condition.name = cond.name;
+        $scope.condition.name = '';
         $scope.condition.description = cond.description
         var model = $scope.condition.model
 
@@ -394,7 +394,19 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
                 property.value = $scope.selected_cond[name]
             }
 
+
         });
+
+    }
+
+    $scope.clear_condition = function(){
+        $scope.condition.name = '';
+        $scope.condition.description = '';
+        $scope.condition.model.forEach(function (property) {
+            property.value = '';
+
+        });
+        $scope.use_condition = '';
 
     }
 
@@ -494,7 +506,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
 
     $scope.selected_condition = function (cond) {
         $scope.selected_cond = cond;
-        $scope.condition.name = cond.name;
+        $scope.condition.name = '';
         $scope.condition.description = cond.description
         var model = $scope.condition.model
 
@@ -510,6 +522,16 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
 
     }
 
+    $scope.clear_condition = function(){
+        $scope.condition.name = '';
+        $scope.condition.description = '';
+        $scope.condition.model.forEach(function (property) {
+            property.value = '';
+
+        });
+        $scope.use_condition = '';
+
+    }
     $scope.custom_property = function () {
         if ($scope.additional_prop || $scope.additional_prop == ' ') {
             $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
