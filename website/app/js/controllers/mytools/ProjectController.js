@@ -313,7 +313,6 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         $scope.new_note = "";
     }
     $scope.add_error_msg = function () {
-        console.log($scope.start_run)
         $scope.process.runs.push({'started': $scope.start_run, 'stopped': $scope.stop_run, 'error_messages': $scope.new_err_msg});
         $scope.new_err_msg = "";
         $scope.start_run = "";
