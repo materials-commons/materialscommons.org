@@ -42,6 +42,7 @@ def create_indices():
     run(r.table('project2datadir').index_create('datadir_id'))
     run(r.table('project2datadir').index_create('project_id'))
     run(r.table('datafiles').index_create('name'))
+    run(r.table('datafiles').index_create('owner'))
     run(r.table('users').index_create('apikey'))
     run(r.table('projects').index_create('name'))
     run(r.table('projects').index_create('owner'))
