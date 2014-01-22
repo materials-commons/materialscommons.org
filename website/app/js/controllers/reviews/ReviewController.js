@@ -1,4 +1,4 @@
-function CreateReviewController($scope, mcapi, User, $stateParams, alertService){
+function CreateReviewController($scope, mcapi, User, $stateParams, alertService, pubsub){
     $scope.all_reviews = [];
     $scope.signed_in_user = User.u();
     $scope.review_note = "";
@@ -37,6 +37,7 @@ function CreateReviewController($scope, mcapi, User, $stateParams, alertService)
                 $scope.data_file_id  = data;
                 $scope.msg = "Review/Followup has been added"
                 alertService.sendMessage($scope.msg);
+                pubsub.send('reviews.change', 'review.change')
                 mcapi('/datafile/%/reviews', $scope.data_file_id)
                     .success(function(data){
                         data.forEach(function(item){
@@ -72,12 +73,17 @@ function CreateReviewController($scope, mcapi, User, $stateParams, alertService)
             .success(function () {
                 $scope.msg = "Review Status has been changed"
                 alertService.sendMessage($scope.msg);
+                pubsub.send('reviews.change', 'review.change')
             }).put();
     }
 
 }
 
-function ReviewListController($scope, mcapi, $state) {
+function ReviewListController($scope, mcapi, $state, pubsub) {
+    pubsub.waitOn($scope, 'reviews.change', function() {
+        $scope.reviewsCount();
+    });
+
     mcapi('/reviews/requested')
         .success(function (data) {
             $scope.reviewsRequested = _.filter(data, function (item) {
@@ -87,14 +93,18 @@ function ReviewListController($scope, mcapi, $state) {
             });
         }).jsonp();
 
-    mcapi('/reviews/to_conduct')
-        .success(function (data) {
-            $scope.reviewstoConduct = _.filter(data, function (item) {
-                if (item.status != "Finished") {
-                    return item;
-                }
-            });
-        }).jsonp();
+    $scope.reviewsCount = function() {
+        mcapi('/reviews/to_conduct')
+            .success(function (data) {
+                $scope.reviewstoConduct = _.filter(data, function (item) {
+                    if (item.status != "Finished") {
+                        return item;
+                    }
+                });
+            }).jsonp();
+    }
+
+    $scope.reviewsCount();
 
     $scope.startReview = function (id, type) {
         if (type == "data") {
