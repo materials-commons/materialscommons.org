@@ -78,26 +78,10 @@ app.config(function ($stateProvider) {
             url: '/datatab',
             templateUrl: 'partials/data/data-subpage.html'
         })
-        .state('mytools.myprojects', {
-            url: '/myprojects',
-            templateUrl: 'partials/datagroups/my_data_groups.html',
-            controller: 'MyDataGroupsController'
-        })
-
         .state('mytools.mydata', {
             url: '/mydata',
             templateUrl: 'partials/data/my-data.html',
             controller: 'MyDataController'
-        })
-        .state('mytools.myprojectstree', {
-            url: '/myprojectstree',
-            templateUrl: 'partials/datagroups/tree.html',
-            controller: 'MyDataGroupsTreeController'
-        })
-        .state('mytools.groupprojectstree', {
-            url: '/groupprojectstree',
-            templateUrl: 'partials/datagroups/group-tree.html',
-            controller: 'MyGroupsDataGroupsTreeController'
         })
         .state('mytools.thumbnail', {
             url: '/thumbnail',
