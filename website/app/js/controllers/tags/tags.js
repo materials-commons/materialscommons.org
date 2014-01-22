@@ -33,7 +33,7 @@ function GlobalTagCloudController($scope, mcapi, User) {
         .success(function (data) {
             $scope.word_list = [];
             angular.forEach(data, function (tag) {
-                $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/data/bytag/" + tag.name});
+                $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/mytools/data/bytag/" + tag.name});
             });
         }).jsonp();
 }
