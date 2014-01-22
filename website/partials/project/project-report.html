@@ -128,7 +128,7 @@
                     <label>Create New Machine:</label>
                     <input ng-model="new_machine" placeholder="Type in machine name..."
                            type="text">
-                    <button ng-click="add_machine_to_db()">Add</button><br>
+                    <button ng-click="add_machine_to_db()" ng-disabled="!new_machine">Add</button><br>
                     <span style="color: #ff0000" ng-show="machine_added">Machine {{process.machine.name}} has been added</span>
                 </div>
 
@@ -136,13 +136,13 @@
                 <div class="well">
                     <label> Runs:</label> <br>
                     <label>Start: </label><input class="span3" ng-model="start_run" placeholder="start date"
-                                                 type="text"><br>
+                                                type="text"><br>
                     <label> stop: </label><input class="span3" ng-model="stop_run" placeholder="end date"
                                                  type="text"><br>
                     <label>Error Msg:</label><textarea class="input-large"
                                                        placeholder="Add error messages ....."
                                                        ng-model="new_err_msg"/><br>
-                    <button ng-click="add_error_msg()">Add Run</button>
+                    <button ng-click="add_error_msg()" ng-disabled="!start_run">Add Run</button>
 
                     <a style="cursor:pointer" ng-click="customruns=!customruns">previous runs</a>
                     <br>
@@ -160,7 +160,7 @@
                 <br>
                 <label>Notes:</label><br><textarea class="input-xlarge" placeholder="enter notes here ....."
                                                    ng-model="new_note"/><br>
-                <button ng-click="add_notes()">Add Notes</button>
+                <button ng-click="add_notes()" ng-disabled="!new_note">Add Notes</button>
 
                 <a style="cursor:pointer" ng-click="customnote=!customnote">previous notes</a> <br>
                                         <span ng-show="customnote">
@@ -173,7 +173,7 @@
                 <br>
                 <label>Citations:</label><br><textarea class="input-xlarge"
                                                        placeholder="Provide citations here..." ng-model="new_citation"/><br>
-                <button ng-click="add_citations()">Add Citations</button>
+                <button ng-click="add_citations()" ng-disabled="!new_citation">Add Citations</button>
                 <a style="cursor:pointer" ng-click="customcitations=!customcitations">previous citations</a>
                 <br>
                                         <span ng-show="customcitations">
