@@ -245,6 +245,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     mcapi('/machines')
         .success(function (data) {
             $scope.machines_list = data;
+
         })
         .error(function (data) {
         }).jsonp();
@@ -284,15 +285,8 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     });
 
     watcher.watch($scope, 'machine_selected', function (mach) {
-
-        if (mach == 'new') {
-
-        }
-        else {
             machine = JSON.parse(mach)
-            $scope.process.machine = machine.name
-        }
-
+            $scope.process.machine = machine;
 
     });
 
@@ -301,20 +295,17 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         temp = {'name': $scope.new_machine};
         mcapi('/machines/new')
             .success(function (data) {
-                mcapi('/machines')
-                    .success(function (data) {
-                        $scope.machines_list = data;
+                mcapi('/machines/%', data.id)
+                    .success(function(machine_obj){
+                        $scope.process.machine = machine_obj;
+                        $scope.machine_added = true
                     })
-                    .error(function (data) {
-                        //alertService.sendMessage(data.error);
+                    .error(function(e){
+
                     }).jsonp();
-                $scope.new_machine = "";
             })
             .error(function (data) {
-                //alertService.sendMessage(data.error);
             }).post(temp);
-
-
     }
 
     $scope.add_notes = function () {
