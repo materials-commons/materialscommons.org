@@ -186,7 +186,7 @@
                 <br>
 
                 <div>
-                    <button class="label label-info" ng-click="save_process()"> Save Process
+                    <button ng-click="save_process()" ng-disabled="!process.name"> Save Process
                     </button>
                 </div>
 
@@ -340,9 +340,19 @@
 </div>
 <div class="block" ng-show="isCurrentStep('nav_choose_upload')">
     <form id="submit-tab" class="form-inline span8">
-        <h4>Verify and Submit</h4>
 
-        <div ng-hide="done||notdone" class="well" ng-controller="UploadStepController">
+
+        <div ng-hide="done" class="well" ng-controller="UploadStepController">
+
+            <div ng-show="notdone" class="well">
+                <h4>Provenance failed</h4><br>
+                    <b>Because of following reasons:</b><br>
+                    <a> 1. Project was not selected</a><br>
+                    <a> 2. Bad input or output files</a> <br>
+            </div>
+            <h4>Verify and Submit</h4>
+
+
             <b>Process:</b>
 
             <div class="well">
@@ -447,32 +457,34 @@
                         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                     </div>
                 </div>
-
-
             </div>
+            <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>
+            &nbsp;&nbsp;&nbsp
+            <button class="btn btn-large btn-danger" type="button" ng-click="cancel_provenance()">Cancel</button>
+
         </div>
         <div ng-show="done" class="well">
             <h4>Provenance uploaded successfully</h4>
             <a href="#/mytools/process/report/{{process_id}}" ng-click="selected_project(project_obj[0].id)">view
                 uploaded provenance</a>
         </div>
-        <div ng-show="notdone" class="well">
-            <h4>Provenance failed</h4>
+        <!--<div ng-show="notdone" class="well">-->
+            <!--<h4>Provenance failed</h4>-->
 
-            <div class="well">
-                <b>Because of following reasons:</b><br>
-                <a> 1. Project was not selected</a><br>
-                <a> 2. Bad input or output files</a> <br>
+            <!--<div class="well">-->
+                <!--<b>Because of following reasons:</b><br>-->
+                <!--<a> 1. Project was not selected</a><br>-->
+                <!--<a> 2. Bad input or output files</a> <br>-->
 
-            </div>
-            <button class="btn btn-small btn-info" type="button" ng-click="try_again()">Try Again</button>
+            <!--</div>-->
+            <!--<button class="btn btn-small btn-info" type="button" ng-click="try_again()">Try Again</button>-->
         </div>
-        <div ng-hide="done||notdone">
-            <button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>
-            &nbsp;&nbsp;&nbsp
-            <button class="btn btn-large btn-danger" type="button" ng-click="cancel_provenance()">Cancel</button>
+        <!--<div ng-hide="done||notdone">-->
+            <!--<button class="btn btn-large btn-primary" type="button" ng-click="upload_state()">Submit</button>-->
+            <!--&nbsp;&nbsp;&nbsp-->
+            <!--<button class="btn btn-large btn-danger" type="button" ng-click="cancel_provenance()">Cancel</button>-->
 
-        </div>
+        <!--</div>-->
     </form>
 
 </div>
