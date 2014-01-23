@@ -470,17 +470,33 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         //to display names of the files in verify and submit
         $scope.state.attributes.checked_input_filenames = $scope.item_names;
         Stater.save($scope.state);
-        if($scope.state.attributes.process.required_conditions == []){
+
+        if($scope.state.attributes.process.required_conditions.length == 0){
             $scope.added = true;
+            $scope.warning = false;
+
         }
         else{
-            if ((Object.keys($scope.state.attributes.input_conditions).length) == (($scope.state.attributes.process.required_conditions).length)){
-                $scope.added = true;
+            if ($scope.state.attributes.input_conditions){
+                if ((Object.keys($scope.state.attributes.input_conditions).length) == (($scope.state.attributes.process.required_conditions).length)){
+                    $scope.added = true;
+                    $scope.warning = false;
 
+                }
+                else{
+                    $scope.warning = true;
+                }
             }
+            else{
+                $scope.warning = true;
+            }
+
         }
 
     }
+
+
+
 
     $scope.removeFile = function(index){
         $scope.state.attributes.input_files.splice(index,1);
@@ -597,7 +613,27 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.state.attributes.checked_output_filenames = $scope.item_names;
 
         Stater.save($scope.state);
-        $scope.added = true;
+        if($scope.state.attributes.process.required_output_conditions.length == 0){
+            $scope.added = true;
+            $scope.warning = false;
+        }
+        else{
+            if ($scope.state.attributes.output_conditions){
+                if ((Object.keys($scope.state.attributes.output_conditions).length) == (($scope.state.attributes.process.required_output_conditions).length)){
+                    $scope.added = true;
+                    $scope.warning = false;
+
+                }
+                else{
+                    $scope.warning = true;
+                }
+            }
+            else{
+                $scope.warning = true;
+            }
+
+        }
+
     }
     $scope.removeFile = function(index){
         $scope.state.attributes.output_files.splice(index,1);
