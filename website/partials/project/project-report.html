@@ -11,16 +11,18 @@
             <!--<option value="prov">Provenance View</option>-->
             <!--<option value="thumbnail">Thumbnail View</option>-->
             <!--</select>-->
+            <span ng-show="selected_proj">
+                      <select  ng-model="add_to"
+                               ui-select2="{placeholder: 'Add', allowClear: true, width:'element'}"
+                               ng-multiple="false">
+                          <option></option>
+                          <option value="prov">Provenance</option>
+                          <!--<option value="to_dataset">To Dataset</option>-->
+                          <!--<option value="to_project">To Project</option>-->
 
-            <select ng-model="add_to"
-                    ui-select2="{placeholder: 'Add', allowClear: true, width:'element'}"
-                    ng-multiple="false">
-                <option></option>
-                <option value="prov">Provenance</option>
-                <!--<option value="to_dataset">To Dataset</option>-->
-                <!--<option value="to_project">To Project</option>-->
+                      </select>
+            </span>
 
-            </select>
         </div>
     </div>
 </div>
