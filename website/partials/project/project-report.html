@@ -248,6 +248,7 @@
                                 <span ng-show="showDetails">
                                         <b>Select the files from project tree shown below</b><br>
                                         <button ng-click="save_selected_input_files()">Add Files</button>
+                                        <button ng-click="save_selected_input_files()">No Files</button>
                                 </span>
 
                 <div ng-show="added">
@@ -258,8 +259,11 @@
 
                     </li>
                     <br><br>
-                    <button  ng-click="next_step()">Next Step</button>
+                    <button class="label label-info"  ng-click="next_step()">Next Step</button>
                     <br></br>
+                </div>
+                <div ng-show="warning"><br>
+                    <b style="color:orange">please fill out the required properties</b>
                 </div>
 
             </div>
@@ -322,6 +326,8 @@
                                 <span ng-show="showDetails">
                                         <b>Select the files from project tree shown below</b><br>
                                         <button ng-click="save_selected_output_files()">Add Files</button>
+                                        <button ng-click="save_selected_output_files()">No Files</button>
+
                                 </span>
 
                 <div ng-show="added">
@@ -332,6 +338,9 @@
 
                     </li>
                     <button class="label label-info" ng-click="next_step()">Next Step</button>
+                </div>
+                <div ng-show="warning"><br>
+                    <b style="color:orange">please fill out the required properties</b>
                 </div>
             </div>
         </div>
@@ -409,9 +418,9 @@
                     </div>
                     <div class="modal-body">
                         <div>
-                            <label>Name:</label><span>{{datafile.name}}</span>
-                            <label>Type:</label><span>{{datafile.item_type}}</span>
-                            <label>Owner:</label><span>{{datafile.owner}}</span>
+                            <label>Name:</label><span>{{datafile.name}}</span><br>
+                            <label>Type:</label><span>{{datafile.item_type}}</span> <br>
+                            <label>Owner:</label><span>{{datafile.owner}}</span> <br>
                             <label>Description:</label><span>{{datafile.description}}</span> <br>
                             <label>notes:</label><span>{{datafile.notes}}</span><br>
                             <label>Tags:</label><span>{{datafile.tags}}</span><br>
@@ -442,8 +451,8 @@
                     </div>
                     <div class="modal-body">
                         <div>
-                            <label>Name:</label><span>{{jet.name}}</span>
-                            <label>Type:</label><span>{{jet.template_type}}</span>
+                            <label>Name:</label><span>{{jet.name}}</span>  <br>
+                            <label>Type:</label><span>{{jet.template_type}}</span><br>
                             <label>Description:</label><span>{{jet.description}}</span><br>
                             <label>Model:</label>
 
