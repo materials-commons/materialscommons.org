@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="span2">
+        <div class="span3">
             <div class="sidebar-nav-fixed">
                 <div class="well">
                     <ul class="nav nav-list">
@@ -9,13 +9,12 @@
 
                         <!--<li><a href="">Search</a></li>-->
                         <!--<li><a href="">Messages</a></li>-->
-
                         <li id="my-data-tab"><a href="" style="cursor:pointer"
                                                 ng-click="showProjs=!showProjs">Projects</a>
 
                             <div ng-show="showProjs" class="project-scrollbar">
                                 <ul ng-repeat="proj in projects">
-                                    <li><a href="#/mytools/projects/{{proj.id}}"
+                                    <li style="list-style-type: circle" ><a href="#/mytools/projects/{{proj.id}}"
                                            ng-click="selected_project(proj.id)">{{proj.name}}</a>
                                     </li>
                                 </ul>
