@@ -46,7 +46,6 @@ function DataEditController($scope, $window, mcapi, alertService, $stateParams, 
     }
 
     $scope.saveData = function () {
-        console.log($scope.doc)
         mcapi('/datafile/update/%', $scope.doc.id)
             .success(function (data) {
                 $scope.addNewTags();
