@@ -30,13 +30,24 @@ def get_all_projects():
 @jsonp
 def get_all_group_projects():
     user = access.get_user()
+    list_projects = []
     allowedUsers = list(r.table('usergroups').filter(r.row['users'].contains(user))\
                         .concat_map(lambda g: g['users']).distinct().run(g.conn))
     users = '(' + '|'.join(allowedUsers) + ')'
-    rr = r.table('projects').filter(r.row['owner'].match(users))
-    rr = args.add_all_arg_options(rr)
-    items = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(items)
+    if allowedUsers == []:
+        rr = r.table('projects').filter({'owner': user})
+        rr = args.add_all_arg_options(rr)
+        items = list(rr.run(g.conn, time_format='raw'))
+        return args.json_as_format_arg(items)
+    else:
+        rr = r.table('projects').filter(r.row['owner'].match(users))
+        rr = args.add_all_arg_options(rr)
+        selection = list(rr.run(g.conn, time_format='raw'))
+        for proj in selection:
+            test = access.check_project_access(user, proj[u'owner'])
+            if test == True:
+                list_projects.append(proj)
+        return args.json_as_format_arg(list_projects)
 
 
 @app.route('/projects/<id>', methods=['GET'])

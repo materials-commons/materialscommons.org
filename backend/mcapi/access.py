@@ -9,9 +9,13 @@ import os
 _user_access_matrix = {}
 
 def check(user, owner, id ="Unknown"):
+    print user
+    print owner
     if user == owner:
+        print 'equal'
         return
     if _user_in_owner_group(user, owner):
+        print 'present'
         return
     raise mcexceptions.AccessNotAllowedException(id)
 
@@ -49,3 +53,12 @@ def get_apiuser():
 def get_user():
     apiuser = get_apiuser()
     return request.args.get('user', default=apiuser)
+
+def check_project_access(user, owner, id ="Unknown"):
+
+    if user == owner:
+        return True
+    if _user_in_owner_group(user, owner):
+        return True
+    else:
+        return False
