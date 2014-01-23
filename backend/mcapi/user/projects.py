@@ -25,6 +25,20 @@ def get_all_projects():
     return args.json_as_format_arg(items)
 
 
+@app.route('/projects/by_group', methods=['GET'])
+@apikey(shared=True)
+@jsonp
+def get_all_group_projects():
+    user = access.get_user()
+    allowedUsers = list(r.table('usergroups').filter(r.row['users'].contains(user))\
+                        .concat_map(lambda g: g['users']).distinct().run(g.conn))
+    users = '(' + '|'.join(allowedUsers) + ')'
+    rr = r.table('projects').filter(r.row['owner'].match(users))
+    rr = args.add_all_arg_options(rr)
+    items = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(items)
+
+
 @app.route('/projects/<id>', methods=['GET'])
 @apikey(shared=True)
 @jsonp
@@ -33,6 +47,7 @@ def get_project(id):
     rr = args.add_all_arg_options(rr)
     items = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(items)
+
 
 
 @app.route('/projects/<project_id>/datafiles')

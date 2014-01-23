@@ -114,7 +114,7 @@
 
             <div ng-show="process_type">
                 <hr/>
-                <label>Name: (required)</label> <input ng-model="process.name" placeholder="Name your process" type="text"><br>
+                <label style="color:red">Name: [required]</label> <input ng-model="process.name" placeholder="Name your process" type="text"><br>
                 <label>Description:</label>
                 <textarea class="input-xlarge" placeholder="Describe your process...."
                           ng-model="process.description"/> <br>
@@ -122,6 +122,8 @@
                                                type="text"><br> </br>
 
                 <div class="well">
+                    <label><b>Selected Machine: {{process.machine.name}}</b></label>
+
                     <label>Pick a machine:</label>
                     <select ng-model="machine_selected">
                         <option disabled>pick a machine:</option>
@@ -133,7 +135,6 @@
                     <input ng-model="new_machine" placeholder="Type in machine name..."
                            type="text">
                     <button ng-click="add_machine_to_db()" ng-disabled="!new_machine">Add</button><br>
-                     <br><b>selected: {{process.machine.name}}</b>
                 </div>
 
 
@@ -229,7 +230,7 @@
                                             <br> <br>
 
 
-                                            <label style="color: red">Name: [required]</label><input placeholder="Give a name to your property" ng-model="condition.name" type="text" required> <br>
+                                            <label style="color: red">Name: [required]</label><input placeholder="Give a name to your property" ng-model="condition.name" type="text" > <br>
                                             <label>Description</label> <input ng-model="condition.description"
                                                                               type="text">
                                             <br>
@@ -308,7 +309,7 @@
                                             <br> <br>
 
 
-                                            <label style="color: red">Name: [required]</label><input ng-model="condition.name" type="text" required> <br>
+                                            <label style="color: red">Name: [required]</label><input ng-model="condition.name" type="text" > <br>
                                             <label>Description</label> <input ng-model="condition.description"
                                                                               type="text">
                                             <br>

@@ -9,7 +9,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
             }).jsonp();
     }
 
-    mcapi('/projects')
+    mcapi('/projects/by_group')
         .success(function (data) {
             $scope.projects = data;
         })

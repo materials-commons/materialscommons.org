@@ -109,8 +109,8 @@
                 Date Added:<br><input value="{{ doc.birthtime | toDateString }}" type="text" readonly><br>
                 Owner:<br><input ng-model="doc.owner" type="text" readonly><br>
                 Access:<br><input ng-model="doc.access" type="text" readonly><br>
-                Add Note:<br><textarea class="input-xxlarge" ng-model="new_note"/>
-                <button ng-click="add_notes()">Add Notes</button>
+                Add Note:<br><textarea class="input-xlarge" ng-model="new_note"/>
+                <button ng-click="add_notes()" ng-disabled="!new_note">Add Notes</button>
                 <br>
                 Notes: <br>
                 <li ng-repeat="note in doc.notes">
