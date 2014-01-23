@@ -10,6 +10,7 @@ class AuthenticationException(Exception):
     pass
 
 class AccessNotAllowedException(Exception):
+    print 'dfgfdg**********8'
     def __init__(self, id="Unknown"):
         self.id = str(id)
 
