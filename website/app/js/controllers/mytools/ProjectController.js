@@ -341,12 +341,18 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             wizard.addStep('nav_choose_outputs', s);
         });
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
+        if ($scope.state){
+            $scope.state.attributes.process = $scope.process;
+            $scope.state.attributes.project_id = $rootScope.project_id;
+            Stater.persist($scope.state);
+            $scope.project_warning = false;
+            wizard.fireStep('nav_choose_inputs');
 
-        $scope.state.attributes.process = $scope.process;
-        $scope.state.attributes.project_id = $rootScope.project_id;
-        console.dir($scope.state)
-        Stater.persist($scope.state);
-        wizard.fireStep('nav_choose_inputs');
+        }
+        else{
+            $scope.project_warning = true;
+        }
+
 
     }
 

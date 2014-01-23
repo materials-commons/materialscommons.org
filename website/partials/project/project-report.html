@@ -1,7 +1,7 @@
 <div class="row-fluid">
     <div class="span12 offset1">
         <div class="span4" ng-controller="ListProjectsController">
-            <h4>Project: {{project_obj[0].name}}</h4>
+            <h4><u>Selected Project: {{project_obj[0].name}}</u></h4>
         </div>
         <div class="span6 offset2">
             <!--<select ng-model="view_type"-->
@@ -17,8 +17,8 @@
                     ng-multiple="false">
                 <option></option>
                 <option value="prov">Provenance</option>
-                <option value="to_dataset">To Dataset</option>
-                <option value="to_project">To Project</option>
+                <!--<option value="to_dataset">To Dataset</option>-->
+                <!--<option value="to_project">To Project</option>-->
 
             </select>
         </div>
@@ -97,6 +97,9 @@
 <div class="block" ng-show="isCurrentStep('nav_choose_process')"
      ng-controller="ProcessStepController" ng-init="init()">
     <form id="process-tab" class="form-inline span8">
+        <span ng-show="project_warning">
+              <b style="color: orange">Project was not selected</b>
+        </span>
         <div class="well">
             <h4>Process Information</h4>
             <label>process type :</label> <select ng-model="process_type">
@@ -506,11 +509,10 @@
 
 <div ng-hide="add_to=='prov'" class="row-fluid">
     <div class="span11 offset1">
-        <h4>Process Tree</h4>
+        <h4>Processes</h4>
         <table treetable treedata="tree_process">
             <thead>
             <tr ng-show="selected_proj">
-                <th></th>
                 <th>Name</th>
                 <th>Description</th>
             </tr>
@@ -535,7 +537,7 @@
 
 <div class="row-fluid">
     <div class="span11 offset1">
-        <h4>Project Tree</h4>
+        <h4>Project Files:</h4>
         <table treetable treedata="tree_data">
             <thead>
             <tr ng-show="selected_proj">
