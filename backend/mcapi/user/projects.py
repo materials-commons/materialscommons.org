@@ -108,8 +108,7 @@ def get_project_tree(project_id):
     if proj is None:
         return error.bad_request("Unknown project id: %s" % (project_id))
     access.check(user, proj['owner'])
-    rr = r.table('project2datadir').filter({'project_id': project_id})
-    rr = rr.eq_join('project_id', r.table('projects')).zip()
+    rr = r.table('project2datadir').get_all(project_id, index='project_id')
     rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
     rr = rr.pluck('id', 'name', 'owner', 'datafiles', 'birthtime', 'size').order_by('name')
     rr = rr.outer_join(r.table('datafiles')
