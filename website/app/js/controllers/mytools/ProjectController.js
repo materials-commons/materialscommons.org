@@ -348,9 +348,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     }
 
     $scope.remove_run = function (index) {
-        console.log($scope.process.runs[index]);
         $scope.process.runs.splice(index, 1);
-        console.log($scope.process.runs);
 
     }
 
