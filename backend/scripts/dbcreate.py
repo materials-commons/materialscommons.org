@@ -35,6 +35,7 @@ def create_tables():
     run(r.table_create("project2processes"))
     run(r.table_create("project2conditions"))
     run(r.table_create("review2datafile"))
+    run(r.table_create("datadirs_denorm"))
 
 
 def create_indices():
