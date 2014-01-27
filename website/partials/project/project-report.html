@@ -126,7 +126,7 @@
 
                 <div class="well">
                     <label><b>Selected Machine: {{process.machine.name}}</b></label>
-
+                    <br>
                     <label>Pick a machine:</label>
                     <select ng-model="machine_selected">
                         <option disabled>pick a machine:</option>
@@ -562,43 +562,49 @@
                 ng-repeat="trailitem in trail">{{trailitem.displayname}}
         </button>
     </div>
-    <div class="span11 offset1">
-        <h4>Project Files:</h4>
-        <table class="table table-bordered">
-            <thead>
-            <tr ng-show="selected_proj">
-                <th></th>
-                <th>Project</th>
-                <th>Type</th>
-                <th>Size(kb)</th>
-                <th>Owner</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
+    <div class="row-fluid">
+        <div class="span11 offset1">
+            <h4>Project Files:</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr ng-show="selected_proj">
+                    <th></th>
+                    <th></th>
+                    <th>Project</th>
+                    <th>Type</th>
+                    <th>Size(kb)</th>
+                    <th>Owner</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
 
-            <tr ng-repeat="entry in dir" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
-                <!--<td>-->
-                <!--<span type="checkbox" style="margin-bottom: 5px;" ng-click="check(t)" class="treecheckBox">-->
-                <!--<img src="checkmark.png" ng-show="isChecked(t)" class="checkBox-icon">-->
-                <!--</span>-->
-                <!--</td>-->
-                <td ng-if="entry.type=='datadir'">
-                    <button ng-dblclick="openFolder(entry)"><i class="fa fa-folder fa-4x"></i>{{entry.displayname}}
-                    </button>
-                </td>
-                <td ng-if="entry.type=='datafile'">
-                    <p><i class="fa fa-file fa-4x"></i>{{entry.displayname}}</p>
-                </td>
+                <tr ng-repeat="entry in dir" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+                    <td ng-if="entry.type=='datafile'">
+                        <input type="checkbox"  ng-click="check(entry)"/>
+                    </td>
 
-                <td><a href="#/mytools/data/edit/{{entry.id}}">{{entry.name}}</a></td>
-                <td>{{entry.type}}</td>
-                <td>{{entry.size}}</td>
-                <td>{{entry.owner}}</td>
-                <td>{{entry.birthtime | toDateString}}</td>
-            </tr>
-            </tbody>
-        </table>
+                    <td ng-if="entry.type=='datadir'">
+                        <input type="checkbox"  disabled/>
+                    </td>
+                    <td ng-if="entry.type=='datadir'">
+                        <button ng-dblclick="openFolder(entry)"><i class="fa fa-folder fa-4x"></i>{{entry.displayname}}
+                        </button>
+                    </td>
+                    <td ng-if="entry.type=='datafile'">
+                        <p><i class="fa fa-file fa-4x"></i>{{entry.displayname}}</p>
+                    </td>
 
+                    <td><a href="#/mytools/data/edit/{{entry.id}}">{{entry.name}}</a></td>
+                    <td>{{entry.type}}</td>
+                    <td>{{entry.size}}</td>
+                    <td>{{entry.owner}}</td>
+                    <td>{{entry.birthtime | toDateString}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
+
 </div>

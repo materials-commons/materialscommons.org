@@ -13,7 +13,10 @@ function doConfig() {
         mcglobals.apihost = window.location.protocol + "//api." + window.location.hostname;
 
     } else if (window.location.hostname == 'localhost') {
-        mcglobals.apihost = 'http://localhost:5002'
+        mcglobals.apihost = 'http://localhost:5002';
+    } else {
+        mcglobals.apihost = window.location.protocol + "//api." + window.location.hostname;
+
     }
 }
 
