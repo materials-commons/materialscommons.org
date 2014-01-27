@@ -1,6 +1,6 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance']);
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance', 'ngQuickDate']);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;

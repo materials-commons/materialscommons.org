@@ -339,12 +339,20 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         $scope.process.notes.push($scope.new_note);
         $scope.new_note = "";
     }
-    $scope.add_error_msg = function () {
+    $scope.add_run = function () {
         $scope.process.runs.push({'started': $scope.start_run, 'stopped': $scope.stop_run, 'error_messages': $scope.new_err_msg});
         $scope.new_err_msg = "";
         $scope.start_run = "";
         $scope.stop_run = "";
     }
+
+    $scope.remove_run = function (index) {
+        console.log($scope.process.runs[index]);
+        $scope.process.runs.splice(index, 1);
+        console.log($scope.process.runs);
+
+    }
+
 
     $scope.add_citations = function () {
         $scope.process.citations.push($scope.new_citation);
