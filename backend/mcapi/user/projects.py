@@ -4,7 +4,7 @@ from flask import g, request
 import rethinkdb as r
 from .. import args
 from datadirs import DItem, DEncoder, buildTreeFromSelection
-from os.path import dirname
+from os.path import dirname, basename
 import json
 from .. import access
 from .. import dmutil
@@ -31,8 +31,10 @@ def get_all_projects():
 def get_all_group_projects():
     user = access.get_user()
     list_projects = []
-    allowedUsers = list(r.table('usergroups').filter(r.row['users'].contains(user))\
-                        .concat_map(lambda g: g['users']).distinct().run(g.conn))
+    allowedUsers = list(r.table('usergroups')
+                        .filter(r.row['users'].contains(user))
+                        .concat_map(lambda g: g['users'])
+                        .distinct().run(g.conn))
     users = '(' + '|'.join(allowedUsers) + ')'
     if allowedUsers == []:
         rr = r.table('projects').filter({'owner': user})
@@ -44,8 +46,7 @@ def get_all_group_projects():
         rr = args.add_all_arg_options(rr)
         selection = list(rr.run(g.conn, time_format='raw'))
         for proj in selection:
-            test = access.check_project_access(user, proj[u'owner'])
-            if test == True:
+            if access.check_project_access(user, proj[u'owner']):
                 list_projects.append(proj)
         return args.json_as_format_arg(list_projects)
 
@@ -58,7 +59,6 @@ def get_project(id):
     rr = args.add_all_arg_options(rr)
     items = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(items)
-
 
 
 @app.route('/projects/<project_id>/datafiles')
@@ -99,6 +99,68 @@ def get_datadirs_for_project(project_id):
     return args.json_as_format_arg([])
 
 
+@app.route('/projects/<project_id>/tree2')
+@apikey(shared=True)
+@jsonp
+def get_project_tree2(project_id):
+    user = access.get_user()
+    proj = r.table('projects').get(project_id).run(g.conn)
+    if proj is None:
+        return error.bad_request("Unknown project id: %s" % (project_id))
+    access.check(user, proj['owner'])
+    selection = list(r.table('project2datadir')
+                     .get_all(project_id, index='project_id')
+                     .eq_join("datadir_id", r.table('datadirs_denorm'))
+                     .zip().run(g.conn, time_format='raw'))
+    return build_tree(selection)
+
+
+class DItem2:
+    def __init__(self, id, name, type, owner, birthtime, size):
+        self.id = id
+        self.c_id = ""
+        self.level = 0
+        self.parent_id = ""
+        self.name = name
+        self.owner = owner
+        self.birthtime = birthtime
+        self.size = size
+        self.displayname = basename(name)
+        self.type = type
+        self.children = []
+
+
+class DEncoder2(json.JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+
+def build_tree(datadirs):
+    next_id = 0
+    all_data_dirs = {}
+    top_level_dirs = []
+    for ddir in datadirs:
+        ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
+                       ddir['birthtime'], 0)
+        ditem.level = ditem.name.count('/')
+        ditem.c_id = next_id
+        next_id = next_id + 1
+        all_data_dirs[ditem.name] = ditem
+        if ditem.level == 0:
+            top_level_dirs.append(ditem)
+        for df in ddir['datafileso']:
+            dfitem = DItem2(df['id'], df['name'], 'datafile',
+                            df['owner'], df['birthtime'], df['size'])
+            dfitem.c_id = next_id
+            next_id = next_id + 1
+            ditem.children.append(dfitem)
+        parent_name = dirname(ditem.name)
+        if parent_name in all_data_dirs:
+            parent = all_data_dirs[parent_name]
+            parent.children.append(ditem)
+    return json.dumps(top_level_dirs, indent=4, cls=DEncoder2)
+
+
 @app.route('/projects/<project_id>/tree')
 @apikey(shared=True)
 @jsonp
@@ -110,9 +172,11 @@ def get_project_tree(project_id):
     access.check(user, proj['owner'])
     rr = r.table('project2datadir').get_all(project_id, index='project_id')
     rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
-    rr = rr.pluck('id', 'name', 'owner', 'datafiles', 'birthtime', 'size').order_by('name')
+    rr = rr.pluck('id', 'name', 'owner', 'datafiles', 'birthtime', 'size')
+    rr = rr.order_by('name')
     rr = rr.outer_join(r.table('datafiles')
-                       .pluck('id', 'name', 'size', 'owner', 'birthtime', 'notes','tags'),
+                       .pluck('id', 'name', 'size', 'owner',
+                              'birthtime', 'notes', 'tags'),
                        lambda ddrow, drow: ddrow['datafiles']
                        .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
@@ -195,8 +259,10 @@ def get_provenance(project_id):
         prov = {'process': process['name'],
                 'input_files': get_datafiles(process['input_files']),
                 'output_files': get_datafiles(process['output_files']),
-                'input_conditions': get_otherfiles(process['input_conditions']),
-                'output_conditions': get_otherfiles(process['output_conditions'])}
+                'input_conditions': get_otherfiles(
+                    process['input_conditions']),
+                'output_conditions': get_otherfiles(
+                    process['output_conditions'])}
     return args.json_as_format_arg(prov)
 
 
