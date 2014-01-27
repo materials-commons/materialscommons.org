@@ -74,8 +74,9 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
             }).jsonp();
 
         $scope.loaded=false;
-        mcapi('/projects/%/tree', proj_id)
+        mcapi('/projects/%/tree2', proj_id)
             .success(function (data) {
+                console.dir(data);
                 if (data[0]) {
                     //$scope.tree_data = $scope.flattenTree(data);
                     $scope.tree_data = data;
