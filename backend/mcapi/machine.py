@@ -4,6 +4,7 @@ from flask import request
 import error
 import rethinkdb as r
 import dmutil
+import json
 
 @app.route('/machines', methods=['GET'])
 @jsonp
@@ -30,3 +31,11 @@ def create_machine():
         #return error.bad_request("You must specify the contacts")
     #machine['contact'] = contact_id
     return dmutil.insert_entry('machines', machine)
+
+
+@app.route('/add_two_numbers', methods=['GET'])
+def add_numbers():
+    x = request.args.get('a', 0, type=int)
+    y = request.args.get('b', 0, type=int)
+    return jsonify(result=x+y)
+
