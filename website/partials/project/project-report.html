@@ -272,30 +272,39 @@
 
                 </div>
             </div>
-            <div class="well" ng-controller="InputStepController">
-                <a style="cursor:pointer" ng-click="showDetails=!showDetails">Input files</a><br>
+            <div ng-show="state.attributes.process.required_input_files=='yes'">
+                <div class="well" ng-controller="InputStepController">
+                    <a style="cursor:pointer" ng-click="showDetails=!showDetails">Input files</a><br>
                                 <span ng-show="showDetails">
                                         <b>Select the files from project tree shown below</b><br>
-                                        <button ng-click="save_selected_input_files()">Add Files</button>
-                                        <button ng-click="save_selected_input_files()">No Files</button>
+                                        <button ng-click="add_input_files()">Add Files</button>
                                 </span>
 
-                <div ng-show="added">
                     <li ng-repeat="item in state.attributes.checked_input_filenames">
                         <i class="fa fa-check-square"></i>{{item.name}}
                         <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
                         <br>
 
                     </li>
-                    <br><br>
-                    <button class="label label-info" ng-click="next_step()">Next Step</button>
-                    <br>
-                </div>
-                <div ng-show="warning"><br>
-                    <b style="color:orange">Required properties should atleast have a name. Then you can add files and
-                        move to next step </b>
+                    <!--<br><br>-->
+                    <!--<button class="label label-info" ng-click="next_step()">Next Step</button>-->
+                    <!--<br></br>-->
                 </div>
 
+            </div>
+
+
+            <div ng-controller="InputStepController">
+                <div ng-show="warning"><br>
+                    <b style="color:orange">WARNING: Required properties should atleast have a name.</b>
+                </div>
+                <div ng-hide="verified">
+                    <button ng-click="verify_inputs()">Verify Inputs</button>
+
+                </div>
+                <div ng-show="verified">
+                    <button ng-click="next_step()">Next Step</button>
+                </div>
             </div>
 
         </div>
@@ -354,27 +363,33 @@
                                         </span>
                 </div>
             </div>
-            <div class="well" ng-controller="OutputStepController">
-                <a style="cursor:pointer" ng-click="showDetails=!showDetails">Output files</a><br>
+            <div ng-show="state.attributes.process.required_output_files=='yes'">
+                <div class="well" ng-controller="OutputStepController">
+                    <a style="cursor:pointer" ng-click="showDetails=!showDetails">Output files</a><br>
                                 <span ng-show="showDetails">
                                         <b>Select the files from project tree shown below</b><br>
-                                        <button ng-click="save_selected_output_files()">Add Files</button>
-                                        <button ng-click="save_selected_output_files()">No Files</button>
-
+                                        <button ng-click="add_output_files()">Add Files</button>
                                 </span>
 
-                <div ng-show="added">
-                    <li ng-repeat="item in item_names">
+                    <li ng-repeat="item in state.attributes.checked_output_filenames">
                         <i class="fa fa-check-square"></i>{{item.name}}
                         <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
                         <br>
 
                     </li>
-                    <button class="label label-info" ng-click="next_step()">Next Step</button>
                 </div>
+            </div>
+
+            <div ng-controller="OutputStepController">
                 <div ng-show="warning"><br>
-                    <b style="color:orange">Required properties should atleast have a name. Then you can add files and
-                        move to next step </b>
+                    <b style="color:orange">WARNING: Required properties should atleast have a name.</b>
+                </div>
+                <div ng-hide="verified">
+                    <button ng-click="verify_outputs()">Verify Outputs</button>
+
+                </div>
+                <div ng-show="verified">
+                    <button ng-click="next_step()">Next Step</button>
                 </div>
             </div>
         </div>
