@@ -1,8 +1,11 @@
+
+
 <div class="row-fluid">
     <div class="span12 offset1">
         <div class="span4" ng-controller="ListProjectsController">
             <h4><u>Selected Project: {{project_obj[0].name}}</u></h4>
         </div>
+
         <div class="span6 offset2">
             <!--<select ng-model="view_type"-->
             <!--ui-select2="{placeholder: 'View', allowClear: true, width:'element'}"-->
@@ -248,8 +251,6 @@
                                             <b style="color: lightseagreen"> OR you can create your own by filling out
                                                 the form below</b><br>
                                             <br> <br>
-
-
                                             <label style="color: red">Name: [required]</label><input
                                                 placeholder="Give a name to your property" ng-model="condition.name"
                                                 type="text"> <br>
@@ -258,7 +259,30 @@
                                             <br>
                                             {{condition.template_description}}<br>   <br>
                                         <div ng-repeat="property in condition.model">
-                                            <label>{{property.name}}</label><input ng-model=property.value type="text">
+
+                                            <label>{{property.name}}</label>
+                                            <span ng-switch on="typeOf(property.value)">
+                                                <span ng-switch-when="object">
+                                                       <select  ng-model="selected_value"
+                                                               ui-select2="{placeholder: 'select....', allowClear: true, width:'element'}"
+                                                               ng-multiple="false">
+                                                           <option ng-repeat="val in property.value" > {{val}}
+                                                           </option>
+                                                       </select>
+                                                </span>
+                                                <span ng-switch-default><input ng-model="property.value" type="text"></span>
+                                            </span>
+
+                                            <span ng-if="property.units.length!=0">
+                                                   <label>Units:</label>
+
+                                            <select style="width:80px" ng-model="property.selected_unit"
+                                                    ui-select2="{placeholder: 'select....', allowClear: true, width:'element'}"
+                                                    ng-multiple="false">
+                                                <option ng-repeat="unit in property.units" > {{unit}}
+                                                </option>
+                                            </select>
+                                            </span>
                                         </div>
                                             <button ng-click="save_condition()" ng-disabled="!condition.name">Save
                                             </button>

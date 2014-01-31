@@ -411,6 +411,9 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
      * @param condition_name
      */
 
+    $scope.typeOf = function(input){
+        return typeof input;
+    }
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
