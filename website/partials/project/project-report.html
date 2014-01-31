@@ -261,25 +261,21 @@
                                         <div ng-repeat="property in condition.model">
 
                                             <label>{{property.name}}</label>
-                                            <span ng-switch on="typeOf(property.value)">
-                                                <span ng-switch-when="object">
-                                                       <select  ng-model="selected_value"
-                                                               ui-select2="{placeholder: 'select....', allowClear: true, width:'element'}"
-                                                               ng-multiple="false">
-                                                           <option ng-repeat="val in property.value" > {{val}}
-                                                           </option>
-                                                       </select>
-                                                </span>
-                                                <span ng-switch-default><input ng-model="property.value" type="text"></span>
+                                            <span ng-if="property.value_choice.length!=0">
+                                                <select  ng-model="property.value">
+
+                                                    <option ng-repeat="val in property.value_choice"> {{val}}
+                                                    </option>
+                                                </select>
+                                            </span>
+                                            <span ng-if="property.value_choice.length==0">
+                                                <input ng-model="property.value" type="text">
                                             </span>
 
-                                            <span ng-if="property.units.length!=0">
+                                            <span ng-if="property.unit_choice.length!=0">
                                                    <label>Units:</label>
-
-                                            <select style="width:80px" ng-model="property.selected_unit"
-                                                    ui-select2="{placeholder: 'select....', allowClear: true, width:'element'}"
-                                                    ng-multiple="false">
-                                                <option ng-repeat="unit in property.units" > {{unit}}
+                                            <select style="width:80px" ng-model="property.unit">
+                                                <option ng-repeat="unit in property.unit_choice"> {{unit}}
                                                 </option>
                                             </select>
                                             </span>
