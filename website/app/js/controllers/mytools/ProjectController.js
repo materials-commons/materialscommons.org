@@ -438,17 +438,19 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.selected_cond = cond;
         $scope.condition.name = '';
         $scope.condition.description = cond.description
-        var model = $scope.condition.model
+        $scope.condition.model = cond.model
+        console.log($scope.condition)
+        //var model = $scope.condition.model
 
-        model.forEach(function (property) {
-            var name = property.name;
-            var all_keys = Object.keys($scope.selected_cond)
-            if (all_keys.indexOf(name) > -1) {
-                property.value = $scope.selected_cond[name]
-            }
-
-
-        });
+//        model.forEach(function (property) {
+//            var name = property.name;
+//            var all_keys = Object.keys($scope.selected_cond)
+//            if (all_keys.indexOf(name) > -1) {
+//                property.value = $scope.selected_cond[name]
+//            }
+//
+//
+//        });
 
     }
 
@@ -465,7 +467,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
     $scope.custom_property = function () {
         if ($scope.additional_prop || $scope.additional_prop == ' ') {
-            $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
+            $scope.condition.model.push({'name': $scope.additional_prop, 'value': '', 'value_choice':[],'unit': '', 'unit_choice':[],'type':''})
         }
 
     }
