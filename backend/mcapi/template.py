@@ -5,31 +5,7 @@ import rethinkdb as r
 import error
 import dmutil
 import json
-from flask import g
 
-r = r.connect(host="localhost", port='30815', db="materialscommons")
-
-class Template:
-    def __init__(self, template_type, template_name, owner, template_description, properties):
-        self.template_type = template_type
-        self.template_name = template_name
-        self.owner = owner
-        self.template_description = ""
-        self.properties = [{"name":"voltage","value":"",
-                            "value_choice":[],"unit":"" ,
-                            "unit_choice": ["V"], "type": ""
-                            },
-                           {"name":"current","value":"",
-                            "value_choice":[] ,"unit":"",
-                            "unit_choice": ["Amp"], "type": ""
-                            }]
-
-
-def create_template_using_constructor():
-    template_obj = Template("condition", "SEM Equipment Properties", "gtarcea@umich.edu", "", "")
-    template_in_json = json.dumps(vars(template_obj), sort_keys=True, indent=4)
-    rr = r.table('templates').insert(template_in_json).run(g.conn)
-    print rr
 
 @app.route('/templates/<template_id>', methods=['GET'])
 @apikey
@@ -126,7 +102,3 @@ def common_template_elements(template_type, j):
 
 def add_model_item(template, name, value, unit, value_type):
     template['model'].append({'name':name, 'value':value, 'units': unit, 'type': value_type})
-
-
-if __name__ == "__main__":
-    create_template_using_constructor()
