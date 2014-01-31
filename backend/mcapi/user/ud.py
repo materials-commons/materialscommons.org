@@ -21,6 +21,7 @@ class StateCreateSaver(object):
     def __init__(self):
         self.objects = {}
 
+
     def insert(self, table, entry):
         rv = r.table('saver').insert(entry).run(g.conn)
         id = rv['generated_keys'][0]

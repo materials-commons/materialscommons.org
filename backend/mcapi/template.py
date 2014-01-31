@@ -4,6 +4,32 @@ from flask import request
 import rethinkdb as r
 import error
 import dmutil
+import json
+from flask import g
+
+r = r.connect(host="localhost", port='30815', db="materialscommons")
+
+class Template:
+    def __init__(self, template_type, template_name, owner, template_description, properties):
+        self.template_type = template_type
+        self.template_name = template_name
+        self.owner = owner
+        self.template_description = ""
+        self.properties = [{"name":"voltage","value":"",
+                            "value_choice":[],"unit":"" ,
+                            "unit_choice": ["V"], "type": ""
+                            },
+                           {"name":"current","value":"",
+                            "value_choice":[] ,"unit":"",
+                            "unit_choice": ["Amp"], "type": ""
+                            }]
+
+
+def create_template_using_constructor():
+    template_obj = Template("condition", "SEM Equipment Properties", "gtarcea@umich.edu", "", "")
+    template_in_json = json.dumps(vars(template_obj), sort_keys=True, indent=4)
+    rr = r.table('templates').insert(template_in_json).run(g.conn)
+    print rr
 
 @app.route('/templates/<template_id>', methods=['GET'])
 @apikey
@@ -46,24 +72,22 @@ def create_process_template(j):
     required_output_conditions = dmutil.get_optional('required_output_conditions', j, [])
     required_input_files = dmutil.get_optional('required_input_files', j, [])
     required_output_files = dmutil.get_optional('required_output_files', j, [])
-    add_model_item(template, 'required_conditions', required_conditions)
-    add_model_item(template, 'required_output_conditions', required_output_conditions)
-    add_model_item(template, 'required_input_files', required_input_files)
-    add_model_item(template, 'required_output_files', required_output_files)
-    add_model_item(template, 'name', "")
-    add_model_item(template, 'description', "")
-    add_model_item(template, 'birthtime', "")
-    add_model_item(template, 'mtime', "")
-    add_model_item(template, 'machine', "")
-    add_model_item(template, 'process_type', "")
-    add_model_item(template, 'version', "")
-    add_model_item(template, 'parent', "")
-    add_model_item(template, 'notes', [])
-    add_model_item(template, 'inputs', [])
-    add_model_item(template, 'outputs', [])
-    add_model_item(template, 'runs', [])
-    add_model_item(template, 'citations', [])
-    add_model_item(template, 'status', "")
+    add_model_item(template, 'required_conditions', required_conditions, "", "")
+    add_model_item(template, 'required_output_conditions', required_output_conditions, "", "")
+    add_model_item(template, 'required_input_files', required_input_files, "", "")
+    add_model_item(template, 'required_output_files', required_output_files, "", "")
+    add_model_item(template, 'name', "","","")
+    add_model_item(template, 'description', "", "", "")
+    add_model_item(template, 'birthtime', "", "", "")
+    add_model_item(template, 'mtime', "", "", "")
+    add_model_item(template, 'machine', "", "", "")
+    add_model_item(template, 'process_type', "", "", "")
+    add_model_item(template, 'version', "", "", "")
+    add_model_item(template, 'parent', "", "", "")
+    add_model_item(template, 'notes', [], "", "")
+    add_model_item(template, 'runs', [], "", "")
+    add_model_item(template, 'citations', [], "", "")
+    add_model_item(template, 'status', "", "", "")
     return template
 
 def create_machine_template(j):
@@ -82,9 +106,11 @@ def create_condition_template(j):
     for prop in properties:
         prop_name = prop['name']
         prop_value = prop['value']
-        add_model_item(template, prop_name, prop_value)
-        add_model_item(template, prop_name + '_note', "")
+        prop_units = prop['units']
+        prop_type  = prop['type']
+        add_model_item(template, prop_name, prop_value, prop_units, prop_type)
     return template
+
 
 def common_template_elements(template_type, j):
     template = dict()
@@ -98,5 +124,9 @@ def common_template_elements(template_type, j):
     template['model'] = list()
     return template
 
-def add_model_item(template, name, value):
-    template['model'].append({'name':name, 'value':value})
+def add_model_item(template, name, value, unit, value_type):
+    template['model'].append({'name':name, 'value':value, 'units': unit, 'type': value_type})
+
+
+if __name__ == "__main__":
+    create_template_using_constructor()
