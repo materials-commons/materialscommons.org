@@ -57,10 +57,17 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <div ng-repeat="key in all_keys">
-                            <label>{{key}}</label> - <span>{{display_condition[key]}}</span>
-                        </div>
 
+                        <label>Name:</label><span>{{display_condition.name}}</span> <br>
+                        <label>Description:</label><span>{{display_condition.description}}</span><br>
+                        <label>Model:</label>
+
+                        <div ng-repeat="prop in display_condition.model">
+                            <label>{{prop.name}}</label> - <span>{{prop.value}}</span>
+                            <span ng-if="prop.unit!=''">
+                                {{prop.unit}}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

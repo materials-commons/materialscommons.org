@@ -15,8 +15,8 @@ class Template:
         self.template_mtime = now
         self.model = list()
         add_model_item(self, 'required_conditions',
-                       [] , "", "", "", "")
-        add_model_item(self, 'required_output_conditions', [],"","", "", "")
+                       ["Material Properties"] , "", "", "", "")
+        add_model_item(self, 'required_output_conditions', ["SEM Equipment Properties"],"","", "", "")
         add_model_item(self, 'required_input_files', 'yes',"","", "", "")
         add_model_item(self, 'required_output_files', 'yes',"","", "", "")
         add_model_item(self, 'name', "","","","","")
@@ -39,7 +39,7 @@ def add_model_item(template, name, value, value_choice, unit, unit_choice,  valu
 
 
 def create_template_using_constructor():
-    template_obj = Template("process", "Data Analysis", "gtarcea@umich.edu")
+    template_obj = Template("process", "Ti", "gtarcea@umich.edu")
     rr = r.table('templates').insert(template_obj.__dict__).run(conn)
     print rr
 
