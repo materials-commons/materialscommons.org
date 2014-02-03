@@ -404,7 +404,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
 }
 
-function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher) {
+function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher,$dialog) {
     $scope.state = Stater.retrieve();
     /**
      *
@@ -497,6 +497,20 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
     $scope.add_input_files = function(){
         $scope.checked_ids = [];
         $scope.item_names = [];
+        $scope.checked_items = treeToggle.get_all_checked_items();
+        if ($scope.checked_items.length == 0){
+            var title = '';
+            var msg = 'Please select files from tree below ';
+            var btns = [
+                {result: 'close', label: 'close', cssClass: 'btn-primary'}
+            ];
+
+            $dialog.messageBox(title, msg, btns)
+                .open()
+                .then(function (result) {
+
+                })
+        }
         $scope.state = Stater.retrieve();
         if (!('input_files' in $scope.state.attributes)) {
             $scope.state.attributes.input_files = {};
@@ -545,7 +559,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
             else{
                 $scope.warning = true;
             }
-
         }
 
     }
@@ -638,7 +651,20 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
     $scope.add_output_files = function(){
         $scope.checked_ids = [];
         $scope.item_names = [];
+        $scope.checked_items = treeToggle.get_all_checked_items();
+        if ($scope.checked_items.length == 0){
+            var title = '';
+            var msg = 'Please select files from tree below ';
+            var btns = [
+                {result: 'close', label: 'close', cssClass: 'btn-primary'}
+            ];
 
+            $dialog.messageBox(title, msg, btns)
+                .open()
+                .then(function (result) {
+
+                })
+        }
         $scope.state = Stater.retrieve();
         if (!('output_files' in $scope.state.attributes)) {
             $scope.state.attributes.output_files = {};
