@@ -197,7 +197,6 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
     $scope.check = function (t) {
         $scope.checked_items = treeToggle.get_all_checked_items();
-
         if (t.type == 'datafile') {
             if ($scope.checked_items.indexOf(t) >= 0) {
                 treeToggle.pop_checked_item(t);
@@ -404,7 +403,8 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
 }
 
-function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher,$dialog) {
+function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher,$dialog,$rootScope) {
+    $rootScope.checked=false;
     $scope.state = Stater.retrieve();
     /**
      *
@@ -495,6 +495,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
      */
 
     $scope.add_input_files = function(){
+        $rootScope.checked = false;
         $scope.checked_ids = [];
         $scope.item_names = [];
         $scope.checked_items = treeToggle.get_all_checked_items();
@@ -574,7 +575,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
 }
 
-function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService) {
+function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService,$dialog) {
 
 
     $scope.init = function (condition_name) {
