@@ -411,9 +411,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
      * @param condition_name
      */
 
-    $scope.typeOf = function(input){
-        return typeof input;
-    }
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
@@ -524,7 +521,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         //to display names of the files in verify and submit
         $scope.state.attributes.checked_input_filenames = $scope.item_names;
         Stater.save($scope.state);
-
     }
 
 
@@ -592,17 +588,18 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.selected_cond = cond;
         $scope.condition.name = '';
         $scope.condition.description = cond.description
-        var model = $scope.condition.model
+        $scope.condition.model = cond.model
+        //var model = $scope.condition.model
 
 
-        model.forEach(function (property) {
-            var name = property.name;
-            var all_keys = Object.keys($scope.selected_cond)
-            if (all_keys.indexOf(name) > -1) {
-                property.value = $scope.selected_cond[name]
-            }
-
-        });
+//        model.forEach(function (property) {
+//            var name = property.name;
+//            var all_keys = Object.keys($scope.selected_cond)
+//            if (all_keys.indexOf(name) > -1) {
+//                property.value = $scope.selected_cond[name]
+//            }
+//
+//        });
 
     }
 
@@ -633,7 +630,6 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.state.attributes.output_conditions[$scope.condition_name] = $scope.condition;
         Stater.save($scope.state);
         $scope.showDetails = false;
-        Stater.persist($scope.state);
     }
 
     /**
@@ -667,7 +663,6 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.state.attributes.output_files = $scope.checked_ids;
         //to display names of the files in verify and submit
         $scope.state.attributes.checked_output_filenames = $scope.item_names;
-
         Stater.save($scope.state);
     }
 
@@ -705,7 +700,6 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         trackSavedProv.mark_outputs(true);
         Stater.persist($scope.state);
         wizard.fireStep('nav_choose_upload');
-
     }
     $scope.edit_output = function () {
         wizard.fireStep('nav_choose_outputs');

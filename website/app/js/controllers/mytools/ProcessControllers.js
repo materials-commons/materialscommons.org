@@ -10,7 +10,6 @@ function ProcessReportController($scope, $stateParams, mcapi) {
                     data.forEach(function (item) {
                         $scope.input_files.push(item.right);
                     });
-
                 })
                 .error(function (e) {
                 }).jsonp();
@@ -56,13 +55,13 @@ function ProcessReportController($scope, $stateParams, mcapi) {
 
     $scope.get_mode_condition = function (cond) {
         $scope.display_condition = cond;
-        var index = '';
-        $scope.all_keys = Object.keys($scope.display_condition);
-        index = $scope.all_keys.indexOf("id");
-        $scope.all_keys.splice(index, 1);
-        index = $scope.all_keys.indexOf("$$hashKey");
-        $scope.all_keys.splice(index, 1);
-        index = $scope.all_keys.indexOf("template");
-        $scope.all_keys.splice(index, 1);
+//        var index = '';
+//        $scope.all_keys = Object.keys($scope.display_condition);
+//        index = $scope.all_keys.indexOf("id");
+//        $scope.all_keys.splice(index, 1);
+//        index = $scope.all_keys.indexOf("$$hashKey");
+//        $scope.all_keys.splice(index, 1);
+//        index = $scope.all_keys.indexOf("template");
+//        $scope.all_keys.splice(index, 1);
     };
 }
