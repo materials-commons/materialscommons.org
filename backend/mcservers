@@ -24,11 +24,11 @@ function start_servers()
 function stop_servers()
 {
     echo Stopping $SERVERTYPE servers....
-    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^ //' | cut -f1 -d' ')
+    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
     if [ "$RPID" != "" ]; then
         kill $RPID
     fi
-    ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^ //' | cut -f1 -d' ' | while read line
+    ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill $line
     done
