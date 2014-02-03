@@ -10,18 +10,20 @@
                     <label>Name:</label><span>{{process.name}}</span><br>
                     <label>Description:</label><span>{{process.description}}</span> <br>
                     <label>Notes:</label>
-                    <span ng-repeat="n in process.notes">
-                     {{n}}
-                    </span> <br>
+                    <ul ng-repeat="n in process.notes">
+                        <li>{{n}}</li>
+                    </ul> <br>
                     <label>Runs:</label>
                 <span ng-repeat="r in process.runs">
-                    {{r.started}}  -
-                    {{r.stopped}}
-                    {{r.error_messages}}
+                    <li>
+                        {{r.started | date:'medium' }}  -
+                        {{r.stopped | date:'medium'}} <br> Error Messages:
+                        {{r.error_messages}}
+                    </li>
+
                 </span> <br>
                     <label>Machine:</label><span>{{process.machine.name}}</span> <br>
                     <label>Version:</label><span>{{process.version}}</span> <br>
-
                 </div>
                 <h5>Inputs</h5>
 

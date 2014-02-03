@@ -158,29 +158,28 @@
                                                        ng-model="new_err_msg"/><br>
                     <button ng-click="add_run()" ng-disabled="!start_run">Add Run</button>
 
-                    <a style="cursor:pointer" ng-click="customruns=!customruns">previous runs</a>
+                    <a style="cursor:pointer" ng-click="customruns=!customruns">view runs</a>
                     <br>
-
-                    <div ng-show="customruns">
-                        <table class="treetable">
-                            <thead>
-                            <th>Start</th>
-                            <th>End</th>
-                            <th>Error Message</th>
-                            <th></th>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="run in process.runs">
-                                <td>{{run.started | date:'medium'}}</td>
-                                <td>{{run.stopped | date:'medium'}}</td>
-                                <td>{{run.error_messages}}</td>
-                                <td>
-                                    <button type="button" class="close" ng-click="remove_run($index);">&times;</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        <div ng-show="customruns">
+                            <table class="treetable">
+                                <thead>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Error Message</th>
+                                <th></th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="run in process.runs">
+                                    <td>{{run.started | date:'medium'}}</td>
+                                    <td>{{run.stopped | date:'medium'}}</td>
+                                    <td>{{run.error_messages}}</td>
+                                    <td>
+                                        <button type="button" class="close" ng-click="remove_run($index);">&times;</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                 </div>
 
@@ -448,15 +447,16 @@
                 Version:<span>{{state.attributes.process.version}}</span> <br>
 
                 Notes:
-                    <span ng-repeat="n in state.attributes.process.notes">
-                     {{n}}
-                    </span> <br>
+                    <ul ng-repeat="n in state.attributes.process.notes">
+                     <li>{{n}}</li>
+                    </ul> <br>
                 Runs:
-                <span ng-repeat="r in state.attributes.process.runs">
-                    {{r.started}}  -
-                    {{r.stopped}}
-                    {{r.error_messages}}
-                </span> <br>
+                <ul ng-repeat="r in state.attributes.process.runs">
+                    <li>{{r.started | date:'medium'}}  -
+                        {{r.stopped | date:'medium'}} <br> Error Messages:
+                        {{r.error_messages}}
+                    </li>
+                </ul> <br>
             </div>
 
             <b>Inputs:</b>
@@ -580,10 +580,14 @@
             <tbody>
 
             <tr ng-repeat="t in tree_process" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
-
                 <td ng-controller="ProcessReportController">
-                    <a href="#/mytools/process/report/{{t.id}}">
+                    <span ng-if="t.parent_id==0">
+                        <b>{{t.name}}</b>
+                    </span>
+                    <span ng-if="t.parent_id!=0">
+                        <a href="#/mytools/process/report/{{t.id}}">
                         {{t.name}}</a>
+                    </span>
                 </td>
                 <td>{{t.description}}</td>
 
