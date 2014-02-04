@@ -36,7 +36,7 @@ def create_tables():
     run(r.table_create("project2conditions"))
     run(r.table_create("review2datafile"))
     run(r.table_create("datadirs_denorm"))
-
+    run(r.table_create("materials"))
 
 def create_indices():
     run(r.table('datadirs').index_create('name'))
