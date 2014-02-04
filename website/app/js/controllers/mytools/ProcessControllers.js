@@ -42,11 +42,16 @@ function ProcessReportController($scope, $stateParams, mcapi) {
                     data.forEach(function (item) {
                         $scope.output_conditions.push(item.right);
                     });
-
                 })
                 .error(function (e) {
                 }).jsonp();
 
+            mcapi('/machines/%', $scope.process.machine)
+                .success(function (data) {
+                    $scope.machine = data;
+                })
+                .error(function (e) {
+                }).jsonp();
 
         })
         .error(function (e) {

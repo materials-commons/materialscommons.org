@@ -74,7 +74,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
             }).jsonp();
 
         $scope.loaded=false;
-        mcapi('/projects/%/tree2', proj_id)
+        mcapi('/projects/%/tree', proj_id)
             .success(function (data) {
                 console.dir(data);
                 if (data[0]) {
@@ -271,7 +271,6 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     mcapi('/machines')
         .success(function (data) {
             $scope.machines_list = data;
-            console.log(data)
 
         })
         .error(function (data) {
@@ -424,7 +423,10 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
         if ($scope.state) {
             $scope.state.attributes.process = $scope.process;
+            $scope.state.attributes.machine_obj = $scope.process.machine;
+            $scope.state.attributes.process.machine = $scope.process.machine.id
             $scope.state.attributes.project_id = $rootScope.project_id;
+            console.dir($scope.state)
             Stater.persist($scope.state);
             $scope.project_warning = false;
             wizard.fireStep('nav_choose_inputs');
