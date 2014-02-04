@@ -423,8 +423,11 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
         if ($scope.state) {
             $scope.state.attributes.process = $scope.process;
-            $scope.state.attributes.machine_obj = $scope.process.machine;
-            $scope.state.attributes.process.machine = $scope.process.machine.id
+            if($scope.process.machine){
+                $scope.state.attributes.machine_obj = $scope.process.machine;
+                $scope.state.attributes.process.machine = $scope.process.machine.id
+            }
+
             $scope.state.attributes.project_id = $rootScope.project_id;
             console.dir($scope.state)
             Stater.persist($scope.state);
@@ -455,6 +458,13 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
      *
      * @param condition_name
      */
+    mcapi('/materials')
+        .success(function (data) {
+            $scope.materials = data;
+        })
+        .error(function(){
+
+        }).jsonp()
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -481,6 +491,10 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.condition.name = '';
         $scope.condition.description = cond.description
         $scope.condition.model = cond.model
+        if(cond.material){
+            $scope.condition.material = cond.material;
+        }
+
         console.log($scope.condition)
 //var model = $scope.condition.model
 //        model.forEach(function (property) {
@@ -499,9 +513,12 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.condition.description = '';
         $scope.condition.model.forEach(function (property) {
             property.value = '';
+            property.unit = '';
 
         });
         $scope.use_condition = '';
+        $scope.condition.material = '';
+
 
     }
 

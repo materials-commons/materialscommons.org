@@ -152,6 +152,7 @@ def create_condition_from_template(process_id, user, j, saver):
     m = j['model']
     type_of_condition = dmutil.get_required('condition_type', j)
     c['owner'] = user
+    c['material'] = dmutil.get_optional('material', j)
     c['template'] = dmutil.get_required('id', j)
     c['name'] = dmutil.get_required('name', j) #dmutil.get_required('template_name', j) = every condition instance should have its own name
     c['description'] = dmutil.get_optional('description', j)

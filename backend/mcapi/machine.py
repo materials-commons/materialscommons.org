@@ -41,3 +41,10 @@ def add_numbers():
     y = request.args.get('b', 0, type=int)
     return jsonify(result=x+y)
 
+@app.route('/materials', methods=['GET'])
+@apikey(shared=True)
+@jsonp
+def get_all_materials():
+    return dmutil.get_all_from_table('materials')
+
+
