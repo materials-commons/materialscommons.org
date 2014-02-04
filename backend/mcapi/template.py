@@ -102,3 +102,4 @@ def common_template_elements(template_type, j):
 
 def add_model_item(template, name, value, unit, value_type):
     template['model'].append({'name':name, 'value':value, 'units': unit, 'type': value_type})
+

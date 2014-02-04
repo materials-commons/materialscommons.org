@@ -23,13 +23,15 @@ def create_machine():
     j = request.get_json()
     machine = dict()
     machine['name'] = dmutil.get_required('name', j)
-    #machine['longname'] = dmutil.get_required('longname', j)
+    machine['longname'] = dmutil.get_optional('longname', j)
     machine['birthtime'] = r.now()
     machine['notes'] = dmutil.get_optional('notes', j, [])
     #contact_id = dmutil.get_required('contact', j)
     #if not dmutil.entry_exists('contacts', contact_id):
         #return error.bad_request("You must specify the contacts")
     #machine['contact'] = contact_id
+    machine['contact_email'] = dmutil.get_required('contact_email', j)
+    machine['model'] = dmutil.get_optional('model', j)
     return dmutil.insert_entry('machines', machine)
 
 
