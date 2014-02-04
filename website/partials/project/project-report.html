@@ -122,27 +122,110 @@
                                                                          placeholder="Name your process"
                                                                          type="text"><br>
                 <label>Description:</label>
-                <textarea class="input-xlarge" placeholder="Describe your process...."
+                <textarea class="input-large" placeholder="Describe your process...."
                           ng-model="process.description"/> <br>
                 <label>Version:</label> <input ng-model="process.version" placeholder="Version V1.1 ...."
                                                type="text"><br>
 
+                <!--<a style="cursor:pointer" ng-click="newmachine=!newmachine">dsf</a>-->
+
                 <div class="well">
-                    <label><b>Selected Machine: {{process.machine.name}}</b></label>
-                    <br>
-                    <label>Pick a machine:</label>
-                    <select ng-model="machine_selected">
-                        <option disabled>pick a machine:</option>
-                        <option ng-repeat="m in machines_list" value="{{m}}">{{m.name}}</option>
-                    </select>
-                    <br>
-                    <label>OR</label> <br>
-                    <label>Create New Machine:</label>
-                    <input ng-model="new_machine" placeholder="Type in machine name..."
-                           type="text">
-                    <button ng-click="add_machine_to_db()" ng-disabled="!new_machine">Add</button>
-                    <br>
-                </div>
+                   <b>Selected Machine:<a href="#modalMachine" data-toggle="modal">{{process.machine.name}}</a></b>
+                    <p style="float: right" ng-show="machine_added">
+                        <button class="btn btn-success">Saved</button>
+                    </p><br> <br>
+                    <!-- Modal -->
+                    <div id="modalMachine" class="modal hide fade" tabindex="-1" role="dialog"
+                         aria-labelledby="modalMachineLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 id="modalMachineLabel">{{process.machine.name}}</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <label>Name:</label><span>{{process.machine.name}}</span> <br>
+                                <label>Type:</label><span>{{process.machine.contact_email}}</span><br>
+                                <label>birthtime:</label><span>{{process.machine.birthtime | toDateString}}</span><br>
+                                <label>Description:</label><span>{{process.machine.longname}}</span><br>
+                                <label>notes:</label><span>{{process.machine.notes}}</span><br>
+
+                                <label>Model:</label>
+
+                                <div ng-repeat="kv in process.machine.model">
+                                    <label>{{kv.name}}</label> - <span>{{kv.value}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                        </div>
+                    </div>
+
+
+                    <input type="radio" ng-model="myradio" value="select">Use Existing Machine<br>
+                    <input type="radio" ng-model="myradio" value="create">Create New Machine
+
+                   <div ng-show="myradio=='select'">
+                       select existing machine:
+                       <select ng-model="machine_selected">
+                           <option disabled>pick a machine:</option>
+                           <option ng-repeat="m in machines_list" value="{{m}}"
+                                   ng-click="machine_select()">{{m.name}}</option>
+                           <option disabled></option>
+                           <option ng-click="clear_machine()" value="clear">clear</option>
+                       </select><br>
+                  </div>
+                       <div ng-show="myradio=='create'" >
+                           <div class="well">
+                               <label>Name:</label> <span><input ng-model="process.machine.name" placeholder="Name your machine" type="text"></span> <br>
+                               <label>Contact: </label><span><input ng-model="process.machine.contact_email" placeholder="email.." type="text"></span><br>
+                               <label>Long Name: </label><span><input ng-model="process.machine.longname" placeholder="" type="text"></span> <br>
+
+                               <label>Notes:</label><span><input ng-model="process.machine.notes" placeholder="Type your notes.." type="text"></span>  <br>
+                               <label>---------Additional/Custom-----------</label><br>
+
+                                        <span ng-repeat="pv in process.machine.model">
+                                            <label>{{pv.name}}</label><span><input type="text" ng-model="pv.value"></span><br>
+                                        </span>
+                               <label>Additional Properties:</label>
+                            <span>
+                                <select ng-model="p_name">
+                                    <option ng-repeat="each in machine_template.model" value="{{each.name}}">{{each.name}}</option>
+                                </select><button ng-click="add_property_to_machine()">add </button>
+                            </span>
+
+                               <label>Add Custom Properties:</label>
+                               <span>
+                                    <input ng-model="additional_prop" placeholder="type property name ....." type="text">
+                                    <button ng-click="custom_property()">add</button>
+                               </span>
+
+                               <br><br><button ng-disabled="!process.machine.name" ng-click="add_machine_to_db()">Save Machine</button> <button ng-click="clear_machine()">clear</button>
+
+                           </div>
+
+                       </div>
+
+                 </div>
+
+
+
+
+
+                    <!--<label><b>Selected Machine: {{process.machine.name}}</b></label>-->
+                    <!--<br>-->
+                    <!--<label>select existing:</label>-->
+                    <!--<select ng-model="machine_selected">-->
+                        <!--<option disabled>pick a machine:</option>-->
+                        <!--<option ng-repeat="m in machines_list" value="{{m}}">{{m.name}}</option>-->
+                    <!--</select>-->
+                    <!--<br>-->
+                    <!--<label>OR</label> <br>-->
+                    <!--<label>Create New Machine:</label>-->
+                    <!--<input ng-model="new_machine" placeholder="Type in machine name..."-->
+                           <!--type="text">-->
+                    <!--<button ng-click="add_machine_to_db()" ng-disabled="!new_machine">Add</button>-->
+                    <!--<br>-->
 
 
                 <div class="well">

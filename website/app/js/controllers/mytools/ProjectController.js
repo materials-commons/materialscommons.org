@@ -260,29 +260,39 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 
     }
-//    $scope.try_again = function () {
-//        wizard.fireStep('nav_choose_upload');
-//        $scope.done = false;
-//        $scope.notdone = false;
-//    }
+
 
 }
 
-function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, Stater, wizard) {
+function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, Stater, wizard,alertService) {
+
+    $scope.myradio = 'select';
+
     mcapi('/machines')
         .success(function (data) {
             $scope.machines_list = data;
+            console.log(data)
 
         })
         .error(function (data) {
         }).jsonp();
+
+    mcapi('/templates')
+        .argWithValue('filter_by', '"template_type":"machine"')
+        .success(function (data) {
+            $scope.machine_template = data[0];
+        })
+        .error(function(e){
+
+        }).jsonp()
+
 
 
     mcapi('/templates')
         .argWithValue('filter_by', '"template_type":"process"')
         .success(function (processes) {
             $scope.process_templates = processes;
-        })
+            })
         .error(function () {
             alertService.sendMessage("Unable to retrieve processes from database.");
         }).jsonp();
@@ -313,32 +323,62 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             }
 
         })
-        $scope.process = {'notes': [], 'runs': [], 'citations': [], 'template': template.id };
-
+        $scope.process = {'notes': [], 'runs': [], 'citations': [], 'template': template.id, 'machine': {'model':[]} };
     });
 
-    watcher.watch($scope, 'machine_selected', function (mach) {
-        machine = JSON.parse(mach)
+    $scope.add_property_to_machine = function(){
+        if (!('model' in $scope.process.machine)) {
+            $scope.process.machine.model = {};
+        }
+        if ($scope.p_name || $scope.p_name == ' ') {
+            $scope.process.machine.model.push({'name': $scope.p_name, 'value':''});
+            console.dir($scope.process);
+        }
+
+    }
+    $scope.custom_property = function () {
+        if ($scope.additional_prop || $scope.additional_prop == ' ') {
+            $scope.process.machine.model.push({'name': $scope.additional_prop, 'value': ''})
+        }
+
+    }
+
+
+
+    $scope.machine_select = function(){
+        machine = JSON.parse($scope.machine_selected)
         $scope.process.machine = machine;
+        console.log('selected machine '+ $scope.process.machine)
+    }
 
-    });
-
+    $scope.clear_machine = function () {
+        $scope.process.machine =  {'model':[]};
+        $scope.machine_added = false;
+    }
+//    $scope.clear_machine = function () {
+//        $scope.process.machine = {};
+//
+//    }
+//
 
     $scope.add_machine_to_db = function () {
-        temp = {'name': $scope.new_machine};
+        var temp = $scope.process.machine;
         mcapi('/machines/new')
-            .success(function (data) {
+            .success(function(data){
                 mcapi('/machines/%', data.id)
                     .success(function (machine_obj) {
                         $scope.process.machine = machine_obj;
-                        $scope.machine_added = true
+                        $scope.show_machine = $scope.process.machine.name;
+                        $scope.machine_added = true;
                     })
                     .error(function (e) {
 
                     }).jsonp();
             })
-            .error(function (data) {
+            .error(function(e){
+
             }).post(temp);
+
     }
 
     $scope.add_notes = function () {
@@ -401,6 +441,9 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         wizard.fireStep('nav_choose_process');
     }
 
+
+
+
 }
 
 function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher,$dialog,$rootScope) {
@@ -437,15 +480,13 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.condition.description = cond.description
         $scope.condition.model = cond.model
         console.log($scope.condition)
-        //var model = $scope.condition.model
-
+//var model = $scope.condition.model
 //        model.forEach(function (property) {
 //            var name = property.name;
 //            var all_keys = Object.keys($scope.selected_cond)
 //            if (all_keys.indexOf(name) > -1) {
 //                property.value = $scope.selected_cond[name]
 //            }
-//
 //
 //        });
 
