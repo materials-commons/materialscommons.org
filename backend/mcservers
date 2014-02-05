@@ -18,7 +18,7 @@ function start_servers()
         rethinkdb restore $MCDB_DIR/rethinkdb_dump_test_data.tar.gz --connect localhost:$MCDB_PORT
     fi
     scripts/dbcreate.py
-    nohup mcfs --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
+    nohup mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
     echo Started $SERVERTYPE.
 }
 
