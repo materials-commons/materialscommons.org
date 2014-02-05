@@ -48,3 +48,16 @@ def get_all_materials():
     return dmutil.get_all_from_table('materials')
 
 
+@app.route('/materials/new', methods=['POST'])
+@apikey
+@crossdomain(origin='*')
+def create_material():
+    j = request.get_json()
+    material = dict()
+    material['name'] = dmutil.get_required('name', j)
+    material['birthtime'] = r.now()
+    material['notes'] = dmutil.get_optional('notes', j, [])
+    material['contact_email'] = dmutil.get_required('contact_email', j)
+    return dmutil.insert_entry('materials', material)
+
+

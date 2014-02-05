@@ -91,6 +91,7 @@ Filter.filter('splitDataDir', function () {
     }
 });
 
+
 Filter.filter('removeProperties', function () {
     return function (props, propsToRemove) {
         if (props) {
