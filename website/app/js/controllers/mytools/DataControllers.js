@@ -3,6 +3,7 @@ function DataEditController($scope, $window, mcapi, alertService, $stateParams, 
     $scope.grid_options = [];
     $scope.id = $stateParams.id;
 
+
     $scope.setupAccessToUserFile = function () {
         $scope.fileType = determineFileType($scope.doc.mediatype);
         $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediatype, $scope.doc.location, $scope.doc.name);
@@ -123,4 +124,15 @@ function MyDataController($scope, mcapi, $location) {
                 }).jsonp();
         }
     }
+
+    $scope.get_dg = function(dg){
+        mcapi('/datadir/%', dg)
+            .success(function (data) {
+                $scope.dir = data;
+            })
+            .error(function (data) {
+                alertService.sendMessage(data.error);
+            }).jsonp();
+    }
+
 }

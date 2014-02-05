@@ -369,6 +369,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
                         $scope.process.machine = machine_obj;
                         $scope.show_machine = $scope.process.machine.name;
                         $scope.machine_added = true;
+                        $scope.myradio = 'select';
                     })
                     .error(function (e) {
 
@@ -466,6 +467,30 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
         }).jsonp()
 
+    $scope.material_select = function(){
+        var material = JSON.parse($scope.material_selected)
+        $scope.condition.material = material;
+    }
+
+    $scope.clear_material = function () {
+        $scope.condition.material =  {};
+        $scope.material_added = false;
+    }
+
+    $scope.add_material_to_db = function () {
+        var temp = $scope.condition.material;
+        mcapi('/materials/new')
+            .success(function(data){
+                console.log(data)
+                $scope.material_added = true;
+                $scope.myradio = 'select';
+
+            })
+            .error(function(e){
+            }).post(temp);
+    }
+
+
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
         var name = '"' + $scope.condition_name + '"';
@@ -495,17 +520,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
             $scope.condition.material = cond.material;
         }
 
-        console.log($scope.condition)
-//var model = $scope.condition.model
-//        model.forEach(function (property) {
-//            var name = property.name;
-//            var all_keys = Object.keys($scope.selected_cond)
-//            if (all_keys.indexOf(name) > -1) {
-//                property.value = $scope.selected_cond[name]
-//            }
-//
-//        });
-
     }
 
     $scope.clear_condition = function () {
@@ -518,8 +532,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         });
         $scope.use_condition = '';
         $scope.condition.material = '';
-
-
     }
 
     $scope.custom_property = function () {
@@ -601,7 +613,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
     $scope.verify_inputs = function () {
         $scope.state = Stater.retrieve();
-        console.dir($scope.state)
         if($scope.state.attributes.process.required_conditions.length == 0){
             $scope.verified = true;
             $scope.warning = false;
@@ -637,6 +648,36 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
 function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService,$dialog) {
 
+    mcapi('/materials')
+        .success(function (data) {
+            $scope.materials = data;
+        })
+        .error(function(){
+
+        }).jsonp()
+
+    $scope.material_select = function(){
+        var material = JSON.parse($scope.material_selected)
+        $scope.condition.material = material;
+    }
+
+    $scope.clear_material = function () {
+        $scope.condition.material =  {};
+        $scope.material_added = false;
+    }
+
+    $scope.add_material_to_db = function () {
+        var temp = $scope.condition.material;
+        mcapi('/materials/new')
+            .success(function(data){
+                $scope.material_added = true;
+                $scope.myradio = 'select';
+
+            })
+            .error(function(e){
+            }).post(temp);
+    }
+
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -663,17 +704,9 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.condition.name = '';
         $scope.condition.description = cond.description
         $scope.condition.model = cond.model
-        //var model = $scope.condition.model
-
-
-//        model.forEach(function (property) {
-//            var name = property.name;
-//            var all_keys = Object.keys($scope.selected_cond)
-//            if (all_keys.indexOf(name) > -1) {
-//                property.value = $scope.selected_cond[name]
-//            }
-//
-//        });
+        if(cond.material){
+            $scope.condition.material = cond.material;
+        }
 
     }
 
@@ -682,14 +715,16 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.condition.description = '';
         $scope.condition.model.forEach(function (property) {
             property.value = '';
+            property.unit = '';
 
         });
         $scope.use_condition = '';
+        $scope.condition.material = '';
 
     }
     $scope.custom_property = function () {
         if ($scope.additional_prop || $scope.additional_prop == ' ') {
-            $scope.condition.model.push({'name': $scope.additional_prop, 'value': ''})
+            $scope.condition.model.push({'name': $scope.additional_prop, 'value': '', 'value_choice':[],'unit': '', 'unit_choice':[],'type':''})
         }
     }
 
@@ -756,7 +791,6 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
 
     $scope.verify_outputs = function () {
         $scope.state = Stater.retrieve();
-        console.dir($scope.state)
         if($scope.state.attributes.process.required_output_conditions.length == 0){
             $scope.verified = true;
             $scope.warning = false;
@@ -786,6 +820,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
     $scope.next_step = function () {
         trackSavedProv.mark_outputs(true);
         Stater.persist($scope.state);
+        $scope.state = Stater.retrieve();
         wizard.fireStep('nav_choose_upload');
     }
     $scope.edit_output = function () {

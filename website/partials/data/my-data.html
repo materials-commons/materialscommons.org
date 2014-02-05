@@ -18,8 +18,8 @@
                     <td><a href="#/mytools/data/edit/{{row.id}}">{{row.name}}</a></td>
                     <td>
                         <ul>
-                            <li ng-repeat="dg in row.datadirs">
-                                {{dg | splitDataDir}}
+                            <li ng-repeat="dg in row.datadirs" ng-init="get_dg(dg)">
+                                {{dir.name}}
                             </li>
                         </ul>
                     </td>
