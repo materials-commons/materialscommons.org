@@ -18,6 +18,7 @@ function start_servers()
         rethinkdb restore $MCDB_DIR/rethinkdb_dump_test_data.tar.gz --connect localhost:$MCDB_PORT
     fi
     scripts/dbcreate.py
+    nohup mcfs --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
     echo Started $SERVERTYPE.
 }
 
@@ -32,6 +33,11 @@ function stop_servers()
     do
         kill $line
     done
+
+    MCFS_PID=$(ps -eo "pid,command" | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCFS_PID" != "" ]; then
+        kill $MCFS_PID
+    fi
 
     if [ $TESTSERVER = true ]; then
         (cd $MCDB_DIR; rm -rf rethinkdb_data)
@@ -48,6 +54,9 @@ function status_servers()
     echo "MCAPI Server (production):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
+    echo "MCFS Server (production):"
+    ps -ef | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo
     echo ======================================================
     echo
     export MCDB_PORT=30815
@@ -57,6 +66,9 @@ function status_servers()
     echo
     echo "MCAPI Server (test):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCFS Server (test):"
+    ps -ef | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
 }
 
@@ -71,6 +83,9 @@ if [ $TESTSERVER = true ]; then
     export MCDB_DIR=~/testdb
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
+    export MCFS_PORT=35882
+    export MCDIR=/mcfs/data/test/mcdir
+    export MCFS_HTTP_PORT=5012
 
     if [ -f /etc/materialscommons/config.test ]; then
         . /etc/materialscommons/config.test
@@ -85,6 +100,9 @@ else
     export RETHINKDB_HTTP_PORT=8080
     export RETHINKDB_CLUSTER_PORT=29015
     export MCDB_DIR=~
+    export MCFS_PORT=35862
+    export MCDIR=/mcfs/data/materialscommons
+    export MCFS_HTTP_PORT=5010
   
     if [ -f /etc/materialscommons/config.prod ]; then
         . /etc/materialscommons/config.prod
