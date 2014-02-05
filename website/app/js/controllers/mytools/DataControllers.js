@@ -1,12 +1,16 @@
-function DataEditController($scope, $window, mcapi, alertService, $stateParams, pubsub) {
+function DataEditController($scope, $window, mcapi, alertService, $stateParams, pubsub, User) {
     $scope.count = 0;
     $scope.grid_options = [];
     $scope.id = $stateParams.id;
 
     $scope.setupAccessToUserFile = function () {
-        $scope.fileType = determineFileType($scope.doc.mediatype);
-        $scope.fileSrc = filePath($scope.fileType, $scope.doc.mediatype, $scope.doc.location, $scope.doc.name);
-        $scope.originalFileSrc = originalFilePath($scope.doc.location, $scope.doc.name);
+        if (isImage($scope.doc.name)) {
+            $scope.fileType = "image";
+        } else {
+            $scope.fileType = "other";
+        }
+        $scope.fileSrc = "datafiles/static/" + $scope.doc.id+"?apikey=" + User.apikey();
+        $scope.originalFileSrc = "datafiles/static/" + $scope.doc.id+"?apikey=" + User.apikey();
         $scope.fileName = $scope.doc.name;
     }
 
