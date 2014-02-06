@@ -152,8 +152,8 @@ case "$CMD" in
             if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                 exit 0
             else
-                echo "Shutting down production in 10 seconds CTRL-C to abort..."
-                sleep 10
+                echo "Shutting down production in 5 seconds CTRL-C to abort..."
+                sleep 5
             fi
         fi
         stop_servers
