@@ -1,0 +1,142 @@
+{
+
+    "id": "2ee53927-7206-4a25-aea6-9fc869992e2f" ,
+    "model": [
+        {
+            "name": "required_conditions" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": ""
+        } ,
+        {
+            "name": "required_output_conditions" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": ""
+        } ,
+        {
+            "name": "required_input_files" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "yes" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "required_output_files" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "yes" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "name" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "description" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "birthtime" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "mtime" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "machine" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "process_type" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "version" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "parent" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "notes" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": ""
+        } ,
+        {
+            "name": "runs" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": ""
+        } ,
+        {
+            "name": "citations" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": ""
+        } ,
+        {
+            "name": "status" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ""
+        }
+    ] ,
+    "owner": "gtarcea@umich.edu", 
+    "template_birthtime": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
+    "template_description": "" ,
+    "template_mtime": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
+    "template_name": "Data Analysis" ,
+    "template_type": "process",
+    "template_pick": ""
+
+}
