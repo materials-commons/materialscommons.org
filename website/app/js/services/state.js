@@ -57,3 +57,35 @@ stateServices.
         return S;
     });
 
+stateServices.factory('Thumbnails', [function () {
+    var service = {
+        model: {
+            datadir: '',
+            datadirs: [],
+            layout: 'grid',
+            pics: []
+        },
+
+        clear: function () {
+            service.model.datadirs = [];
+            service.model.datadir = '';
+            service.pics = [];
+            service.layout = 'grid';
+        }
+    };
+    return service;
+}]);
+
+stateServices.factory('Projects', [function () {
+    var service = {
+        model: {
+            projects: {}
+        },
+
+        clear: function() {
+            service.model.projects = {};
+        }
+    };
+    return service;
+}]);
+
