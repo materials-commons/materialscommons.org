@@ -1,5 +1,6 @@
-function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
+function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
     $scope.all_templates = [];
+    $scope.model = Projects.model;
 
     init();
     function init() {
@@ -73,21 +74,27 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
             }).jsonp();
 
-        $scope.loaded=false;
-        mcapi('/projects/%/tree', proj_id)
-            .success(function (data) {
-                console.dir(data);
-                if (data[0]) {
-                    //$scope.tree_data = $scope.flattenTree(data);
-                    $scope.tree_data = data;
-                    $scope.dir = $scope.tree_data[0].children;
-                    $scope.loaded=true;
-                    $scope.trail.push(data[0]);
-                }
-            })
-            .error(function (data) {
+        $scope.loaded = false;
+        if (!(proj_id in $scope.model.projects)) {
+            mcapi('/projects/%/tree', proj_id)
+                .success(function (data) {
+                    if (data[0]) {
+                        $scope.tree_data = data;
+                        $scope.dir = $scope.tree_data[0].children;
+                        var obj = {};
+                        obj.dir = $scope.dir;
+                        $scope.model.projects[proj_id] = obj;
+                        $scope.loaded = true;
+                        $scope.trail.push(data[0]);
+                    }
+                })
+                .error(function (data) {
 
-            }).jsonp();
+                }).jsonp();
+        } else {
+            $scope.loaded = true;
+            $scope.dir = $scope.model.projects[proj_id].dir;
+        }
 
         mcapi('/processes/project/%', proj_id)
             .success(function (data) {
@@ -264,7 +271,7 @@ function ListProjectsController($scope, $rootScope, trackSavedProv, mcapi, State
 
 }
 
-function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, Stater, wizard,alertService) {
+function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, Stater, wizard, alertService) {
 
     $scope.myradio = 'select';
 
@@ -281,17 +288,16 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         .success(function (data) {
             $scope.machine_template = data[0];
         })
-        .error(function(e){
+        .error(function (e) {
 
         }).jsonp()
-
 
 
     mcapi('/templates')
         .argWithValue('filter_by', '"template_type":"process"')
         .success(function (processes) {
             $scope.process_templates = processes;
-            })
+        })
         .error(function () {
             alertService.sendMessage("Unable to retrieve processes from database.");
         }).jsonp();
@@ -322,16 +328,15 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             }
 
         })
-        $scope.process = {'notes': [], 'runs': [], 'citations': [], 'template': template.id, 'machine': {'model':[]} };
+        $scope.process = {'notes': [], 'runs': [], 'citations': [], 'template': template.id, 'machine': {'model': []} };
     });
 
-    $scope.add_property_to_machine = function(){
+    $scope.add_property_to_machine = function () {
         if (!('model' in $scope.process.machine)) {
             $scope.process.machine.model = {};
         }
         if ($scope.p_name || $scope.p_name == ' ') {
-            $scope.process.machine.model.push({'name': $scope.p_name, 'value':''});
-            console.dir($scope.process);
+            $scope.process.machine.model.push({'name': $scope.p_name, 'value': ''});
         }
 
     }
@@ -343,15 +348,13 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     }
 
 
-
-    $scope.machine_select = function(){
+    $scope.machine_select = function () {
         machine = JSON.parse($scope.machine_selected)
         $scope.process.machine = machine;
-        console.log('selected machine '+ $scope.process.machine)
     }
 
     $scope.clear_machine = function () {
-        $scope.process.machine =  {'model':[]};
+        $scope.process.machine = {'model': []};
         $scope.machine_added = false;
     }
 //    $scope.clear_machine = function () {
@@ -363,7 +366,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     $scope.add_machine_to_db = function () {
         var temp = $scope.process.machine;
         mcapi('/machines/new')
-            .success(function(data){
+            .success(function (data) {
                 mcapi('/machines/%', data.id)
                     .success(function (machine_obj) {
                         $scope.process.machine = machine_obj;
@@ -375,7 +378,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
                     }).jsonp();
             })
-            .error(function(e){
+            .error(function (e) {
 
             }).post(temp);
 
@@ -424,13 +427,12 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
         if ($scope.state) {
             $scope.state.attributes.process = $scope.process;
-            if($scope.process.machine){
+            if ($scope.process.machine) {
                 $scope.state.attributes.machine_obj = $scope.process.machine;
                 $scope.state.attributes.process.machine = $scope.process.machine.id
             }
 
             $scope.state.attributes.project_id = $rootScope.project_id;
-            console.dir($scope.state)
             Stater.persist($scope.state);
             $scope.project_warning = false;
             wizard.fireStep('nav_choose_inputs');
@@ -448,12 +450,10 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     }
 
 
-
-
 }
 
-function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher,$dialog,$rootScope) {
-    $rootScope.checked=false;
+function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher, $dialog, $rootScope) {
+    $rootScope.checked = false;
     $scope.state = Stater.retrieve();
     /**
      *
@@ -463,30 +463,29 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         .success(function (data) {
             $scope.materials = data;
         })
-        .error(function(){
+        .error(function () {
 
         }).jsonp()
 
-    $scope.material_select = function(){
+    $scope.material_select = function () {
         var material = JSON.parse($scope.material_selected)
         $scope.condition.material = material;
     }
 
     $scope.clear_material = function () {
-        $scope.condition.material =  {};
+        $scope.condition.material = {};
         $scope.material_added = false;
     }
 
     $scope.add_material_to_db = function () {
         var temp = $scope.condition.material;
         mcapi('/materials/new')
-            .success(function(data){
-                console.log(data)
+            .success(function (data) {
                 $scope.material_added = true;
                 $scope.myradio = 'select';
 
             })
-            .error(function(e){
+            .error(function (e) {
             }).post(temp);
     }
 
@@ -516,7 +515,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.condition.name = '';
         $scope.condition.description = cond.description
         $scope.condition.model = cond.model
-        if(cond.material){
+        if (cond.material) {
             $scope.condition.material = cond.material;
         }
 
@@ -536,7 +535,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
     $scope.custom_property = function () {
         if ($scope.additional_prop || $scope.additional_prop == ' ') {
-            $scope.condition.model.push({'name': $scope.additional_prop, 'value': '', 'value_choice':[],'unit': '', 'unit_choice':[],'type':''})
+            $scope.condition.model.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [], 'unit': '', 'unit_choice': [], 'type': ''})
         }
 
     }
@@ -566,12 +565,12 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
      * Input Files
      */
 
-    $scope.add_input_files = function(){
+    $scope.add_input_files = function () {
         $rootScope.checked = false;
         $scope.checked_ids = [];
         $scope.item_names = [];
         $scope.checked_items = treeToggle.get_all_checked_items();
-        if ($scope.checked_items.length == 0){
+        if ($scope.checked_items.length == 0) {
             var title = '';
             var msg = 'Please select files from tree below ';
             var btns = [
@@ -589,7 +588,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
             $scope.state.attributes.input_files = {};
             $scope.state.attributes.checked_input_filenames = {};
         }
-        else{
+        else {
             $scope.checked_ids = $scope.state.attributes.input_files;
             $scope.item_names = $scope.state.attributes.checked_input_filenames;
         }
@@ -613,22 +612,22 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
     $scope.verify_inputs = function () {
         $scope.state = Stater.retrieve();
-        if($scope.state.attributes.process.required_conditions.length == 0){
+        if ($scope.state.attributes.process.required_conditions.length == 0) {
             $scope.verified = true;
             $scope.warning = false;
         }
-        else{
-            if ($scope.state.attributes.input_conditions){
-                if ((Object.keys($scope.state.attributes.input_conditions).length) == (($scope.state.attributes.process.required_conditions).length)){
+        else {
+            if ($scope.state.attributes.input_conditions) {
+                if ((Object.keys($scope.state.attributes.input_conditions).length) == (($scope.state.attributes.process.required_conditions).length)) {
                     $scope.verified = true;
                     $scope.warning = false;
 
                 }
-                else{
+                else {
                     $scope.warning = true;
                 }
             }
-            else{
+            else {
                 $scope.warning = true;
             }
         }
@@ -646,35 +645,35 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
 }
 
-function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService,$dialog) {
+function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService, $dialog) {
 
     mcapi('/materials')
         .success(function (data) {
             $scope.materials = data;
         })
-        .error(function(){
+        .error(function () {
 
         }).jsonp()
 
-    $scope.material_select = function(){
+    $scope.material_select = function () {
         var material = JSON.parse($scope.material_selected)
         $scope.condition.material = material;
     }
 
     $scope.clear_material = function () {
-        $scope.condition.material =  {};
+        $scope.condition.material = {};
         $scope.material_added = false;
     }
 
     $scope.add_material_to_db = function () {
         var temp = $scope.condition.material;
         mcapi('/materials/new')
-            .success(function(data){
+            .success(function (data) {
                 $scope.material_added = true;
                 $scope.myradio = 'select';
 
             })
-            .error(function(e){
+            .error(function (e) {
             }).post(temp);
     }
 
@@ -704,7 +703,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.condition.name = '';
         $scope.condition.description = cond.description
         $scope.condition.model = cond.model
-        if(cond.material){
+        if (cond.material) {
             $scope.condition.material = cond.material;
         }
 
@@ -724,7 +723,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
     }
     $scope.custom_property = function () {
         if ($scope.additional_prop || $scope.additional_prop == ' ') {
-            $scope.condition.model.push({'name': $scope.additional_prop, 'value': '', 'value_choice':[],'unit': '', 'unit_choice':[],'type':''})
+            $scope.condition.model.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [], 'unit': '', 'unit_choice': [], 'type': ''})
         }
     }
 
@@ -744,11 +743,11 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
     /**
      * Output Files
      */
-    $scope.add_output_files = function(){
+    $scope.add_output_files = function () {
         $scope.checked_ids = [];
         $scope.item_names = [];
         $scope.checked_items = treeToggle.get_all_checked_items();
-        if ($scope.checked_items.length == 0){
+        if ($scope.checked_items.length == 0) {
             var title = '';
             var msg = 'Please select files from tree below ';
             var btns = [
@@ -767,7 +766,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
             $scope.state.attributes.checked_output_filenames = {};
 
         }
-        else{
+        else {
             $scope.checked_ids = $scope.state.attributes.output_files;
             $scope.item_names = $scope.state.attributes.checked_output_filenames;
         }
@@ -791,22 +790,22 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
 
     $scope.verify_outputs = function () {
         $scope.state = Stater.retrieve();
-        if($scope.state.attributes.process.required_output_conditions.length == 0){
+        if ($scope.state.attributes.process.required_output_conditions.length == 0) {
             $scope.verified = true;
             $scope.warning = false;
         }
-        else{
-            if ($scope.state.attributes.output_conditions){
-                if ((Object.keys($scope.state.attributes.output_conditions).length) == (($scope.state.attributes.process.required_output_conditions).length)){
+        else {
+            if ($scope.state.attributes.output_conditions) {
+                if ((Object.keys($scope.state.attributes.output_conditions).length) == (($scope.state.attributes.process.required_output_conditions).length)) {
                     $scope.verified = true;
                     $scope.warning = false;
 
                 }
-                else{
+                else {
                     $scope.warning = true;
                 }
             }
-            else{
+            else {
                 $scope.warning = true;
             }
 
