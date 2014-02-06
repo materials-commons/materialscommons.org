@@ -69,8 +69,8 @@ stateServices.factory('Thumbnails', [function () {
         clear: function () {
             service.model.datadirs = [];
             service.model.datadir = '';
-            service.pics = [];
-            service.layout = 'grid';
+            service.model.pics = [];
+            service.model.layout = 'grid';
         }
     };
     return service;
