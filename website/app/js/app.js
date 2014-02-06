@@ -174,8 +174,16 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/data/data-edit.html',
             controller: 'DataEditController'
         })
-
-
+        .state('mytools.machine', {
+            url: '/machine',
+            templateUrl: 'partials/machine/create-machine.html',
+            controller: 'CreateNewMachineController'
+        })
+        .state('mytools.material', {
+            url: '/material',
+            templateUrl: 'partials/material/create-material.html',
+            controller: 'CreateNewMaterialController'
+        })
 
 
     /**
