@@ -76,7 +76,7 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mc
 
         $scope.loaded = false;
         if (!(proj_id in $scope.model.projects)) {
-            mcapi('/projects/%/tree', proj_id)
+            mcapi('/projects/%/tree2', proj_id)
                 .success(function (data) {
                     if (data[0]) {
                         $scope.tree_data = data;
