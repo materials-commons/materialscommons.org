@@ -118,6 +118,7 @@ def get_project_tree2(project_id):
                      .get_all(project_id, index='project_id')
                      .eq_join("datadir_id", r.table('datadirs_denorm'))
                      .zip().run(g.conn, time_format='raw'))
+    print len(selection)
     return build_tree(selection)
 
 
@@ -151,10 +152,18 @@ def build_tree(datadirs):
         ditem.level = ditem.name.count('/')
         ditem.c_id = next_id
         next_id = next_id + 1
+        #
+        # The item may have been added as a parent
+        # before it was actually seen. We check for
+        # this case and grab the children to add to
+        # us now that we have the details for the ditem.
+        if ditem.name in all_data_dirs:
+            existing_ditem = all_data_dirs[ditem.name]
+            ditem.children = existing_ditem.children
         all_data_dirs[ditem.name] = ditem
         if ditem.level == 0:
             top_level_dirs.append(ditem)
-        for df in ddir['datafileso']:
+        for df in ddir['datafiles']:
             dfitem = DItem2(df['id'], df['name'], 'datafile',
                             df['owner'], df['birthtime'], df['size'])
             dfitem.c_id = next_id
@@ -164,7 +173,16 @@ def build_tree(datadirs):
         if parent_name in all_data_dirs:
             parent = all_data_dirs[parent_name]
             parent.children.append(ditem)
-    return json.dumps(top_level_dirs, indent=4, cls=DEncoder2)
+        else:
+            # We haven't seen the parent yet, but we need
+            # to add the children. So, create a parent with
+            # name and add children. When we finally see it
+            # we will grab the children and add them to the
+            # real object.
+            parent = DItem2('', parent_name, 'datadir', '', '', 0)
+            parent.children.append(ditem)
+            all_data_dirs[parent_name] = parent
+    return json.dumps(top_level_dirs, cls=DEncoder2)
 
 
 @app.route('/projects/<project_id>/tree')
