@@ -30,7 +30,7 @@ def create_machine():
     #if not dmutil.entry_exists('contacts', contact_id):
         #return error.bad_request("You must specify the contacts")
     #machine['contact'] = contact_id
-    machine['contact_email'] = dmutil.get_required('contact_email', j)
+    machine['contact_email'] = dmutil.get_optional('contact_email', j)
     machine['model'] = dmutil.get_optional('model', j)
     return dmutil.insert_entry('machines', machine)
 
@@ -57,7 +57,14 @@ def create_material():
     material['name'] = dmutil.get_required('name', j)
     material['birthtime'] = r.now()
     material['notes'] = dmutil.get_optional('notes', j, [])
-    material['contact_email'] = dmutil.get_required('contact_email', j)
+    material['contact_email'] = dmutil.get_optional('contact_email', j)
+    material['alloy_name'] = dmutil.get_optional('alloy_name', j)
+    material['composition'] = dmutil.get_optional('composition', j)
+    material['model'] =  dmutil.get_optional('model', j)
     return dmutil.insert_entry('materials', material)
 
 
+@app.route('/materials/<material_id>', methods=['GET'])
+@jsonp
+def get_material(material_id):
+    return dmutil.get_single_from_table('materials', material_id)
