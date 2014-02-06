@@ -314,19 +314,19 @@
 </form>
 </div>
 <div class="block" ng-show="isCurrentStep('nav_choose_inputs')">
-<form id="input-tab" class="form-inline span8">
-<div class="well" ng-controller="ProcessStepController">
-    <h4>Inputs</h4>
+    <form id="input-tab" class="form-inline span8">
+        <div class="well" ng-controller="ProcessStepController">
+            <h4>Inputs</h4>
 
-    <div ng-repeat="condition in state.attributes.process.required_conditions">
-        <div class="well" ng-controller="InputStepController" ng-init="init(condition)">
+            <div ng-repeat="condition in state.attributes.process.required_conditions">
+                <div class="well" ng-controller="InputStepController" ng-init="init(condition)">
 
-            <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{condition_name}}</a>
+                    <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{condition_name}}</a>
 
-            <p style="float: right" ng-show="state.attributes.input_conditions[condition_name]">
-                <button class="btn btn-success">Saved</button>
-            </p>
-            <br>
+                    <p style="float: right" ng-show="state.attributes.input_conditions[condition_name]">
+                        <button class="btn btn-success">Saved</button>
+                    </p>
+                    <br>
                                         <span ng-show="showDetails">
                                                <label>Pick one: </label>
                                             <select ng-model="use_condition">
@@ -373,7 +373,8 @@
                                              <br>
                                              <div ng-show="condition.template_pick">
                                                  <div class="well">
-                                                     <b>From what material this sample was drawn?:<a href="#modalMaterial" data-toggle="modal">{{condition.material.name}}</a></b>
+                                                     <b>From what material this sample was drawn?:<a
+                                                             href="#modalMaterial" data-toggle="modal">{{condition.material.name}}</a></b>
 
                                                      <p style="float: right" ng-show="material_added">
                                                          <button class="btn btn-success">Saved</button>
@@ -387,20 +388,27 @@
                                                              <button type="button" class="close" data-dismiss="modal"
                                                                      aria-hidden="true">×
                                                              </button>
-                                                             <h3 id="modalMaterialLabel">{{condition.material.name}}</h3>
+                                                             <h3 id="modalMaterialLabel">
+                                                                 {{condition.material.name}}</h3>
                                                          </div>
                                                          <div class="modal-body">
                                                              <div>
                                                                  <label>Name:</label><span>{{condition.material.name}}</span>
                                                                  <br>
+                                                                 <label>Alloy:</label><span>{{condition.material.alloy_name}}</span>
+                                                                 <br>
+
+                                                                 <label>composition:</label>
+                                                                 <span>{{condition.material.composition}}</span>   <br>
                                                                  <label>Contact:</label>
-                                                                 <span>{{condition.material.contact_email}}</span>
-                                                                 <label>Notes:</label> <span>{{condition.materialnotes}}</span>
+                                                                 <span>{{condition.material.contact_email}}</span> <br>
+                                                                 <label>Notes:</label>
+                                                                 <span>{{condition.materialnotes}}</span>       <br>
                                                                  <!--<label>Model:</label>-->
 
                                                                  <!--<div ng-repeat="kv in process.material.model">-->
-                                                                     <!--<label>{{kv.name}}</label> --->
-                                                                     <!--<span>{{kv.value}}</span>-->
+                                                                 <!--<label>{{kv.name}}</label> --->
+                                                                 <!--<span>{{kv.value}}</span>-->
                                                                  <!--</div>-->
                                                              </div>
                                                          </div>
@@ -423,7 +431,7 @@
                                                              <option ng-repeat="m in materials" value="{{m}}"
                                                                      ng-click="material_select()">{{m.name}}
                                                              </option>
-                                                             <option disabled></option>
+                                                             <option></option>
                                                              <option ng-click="clear_material()" value="clear">clear
                                                              </option>
                                                          </select><br>
@@ -434,6 +442,14 @@
                                                                  ng-model="condition.material.name"
                                                                  placeholder="Name your material"
                                                                  type="text"></span> <br>
+                                                             <label>Alloy:</label><span><input
+                                                                 ng-model="condition.material.alloy_name"
+                                                                 placeholder="alloy....."
+                                                                 type="text"></span><br>
+                                                             <label>Composition</label><span><input
+                                                                 ng-model="condition.material.composition"
+                                                                 placeholder="material composition.."
+                                                                 type="text"></span><br>
                                                              <label>Contact: </label><span><input
                                                                  ng-model="condition.material.contact_email"
                                                                  placeholder="email.."
@@ -443,7 +459,7 @@
                                                                  ng-model="condition.material.notes"
                                                                  placeholder="Type your notes.."
                                                                  type="text"></span> <br>
-                 <br>
+                                                             <br>
                                                              <button ng-disabled="!condition.material.name"
                                                                      ng-click="add_material_to_db()">Save Material
                                                              </button>
@@ -459,7 +475,7 @@
                                               <br>
 
                                             <div class="well">
-                                                Add Custom Properties:
+                                                Add Custom Properties(sample):
                                                 <input ng-model="additional_prop" type="text">
                                                 <button ng-click="custom_property()">Add Property</button>
                                             </div>
@@ -468,41 +484,41 @@
                                             <br>
                                         </span>
 
-        </div>
-    </div>
-    <div ng-show="state.attributes.process.required_input_files=='yes'">
-        <div class="well" ng-controller="InputStepController">
-            <a style="cursor:pointer" ng-click="showDetails=!showDetails">Input files</a><br>
+                </div>
+            </div>
+            <div ng-show="state.attributes.process.required_input_files=='yes'">
+                <div class="well" ng-controller="InputStepController">
+                    <a style="cursor:pointer" ng-click="showDetails=!showDetails">Input files</a><br>
                                 <span ng-show="showDetails">
                                         <b>Select the files from project tree shown below</b><br>
                                         <button ng-click="add_input_files()">Add Files</button>
                                 </span>
 
-            <li ng-repeat="item in state.attributes.checked_input_filenames">
-                <i class="fa fa-check-square"></i>{{item.name}}
-                <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
-                <br>
-            </li>
-        </div>
-    </div>
+                    <li ng-repeat="item in state.attributes.checked_input_filenames">
+                        <i class="fa fa-check-square"></i>{{item.name}}
+                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+                        <br>
+                    </li>
+                </div>
+            </div>
 
 
-    <div ng-controller="InputStepController">
-        <div ng-show="warning"><br>
-            <b style="color:orange">WARNING: Required properties should atleast have a name.</b>
-        </div>
-        <div ng-hide="verified">
-            <button ng-click="verify_inputs()">Verify Inputs</button>
+            <div ng-controller="InputStepController">
+                <div ng-show="warning"><br>
+                    <b style="color:orange">WARNING: Required properties should atleast have a name.</b>
+                </div>
+                <div ng-hide="verified">
+                    <button ng-click="verify_inputs()">Verify Inputs</button>
+
+                </div>
+                <div ng-show="verified">
+                    <b>required inputs have been verified!</b>
+                    <button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>
+                </div>
+            </div>
 
         </div>
-        <div ng-show="verified">
-            <b>required inputs have been verified!</b>
-            <button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>
-        </div>
-    </div>
-
-</div>
-</form>
+    </form>
 
 </div>
 <div class="block" ng-show="isCurrentStep('nav_choose_outputs')">
@@ -563,7 +579,8 @@
                                             <br>
                                             <div ng-show="condition.template_pick">
                                                 <div class="well">
-                                                    <b>From what material this sample was drawn?:<a href="#modalMaterial_op" data-toggle="modal">{{condition.material.name}}</a></b>
+                                                    <b>From what material this sample was drawn?:<a
+                                                            href="#modalMaterial_op" data-toggle="modal">{{condition.material.name}}</a></b>
 
                                                     <p style="float: right" ng-show="material_added">
                                                         <button class="btn btn-success">Saved</button>
@@ -577,15 +594,22 @@
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                     aria-hidden="true">×
                                                             </button>
-                                                            <h3 id="modalMaterial_opLabel">{{condition.material.name}}</h3>
+                                                            <h3 id="modalMaterial_opLabel">
+                                                                {{condition.material.name}}</h3>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div>
                                                                 <label>Name:</label><span>{{condition.material.name}}</span>
                                                                 <br>
+                                                                <label>Alloy:</label><span>{{condition.material.alloy_name}}</span>
+                                                                <br>
+
+                                                                <label>composition:</label>
+                                                                <span>{{condition.material.composition}}</span>   <br>
                                                                 <label>Contact:</label>
-                                                                <span>{{condition.material.contact_email}}</span>
-                                                                <label>Notes:</label> <span>{{condition.material.notes}}</span>
+                                                                <span>{{condition.material.contact_email}}</span>   <br>
+                                                                <label>Notes:</label>
+                                                                <span>{{condition.material.notes}}</span>      <br>
 
                                                             </div>
                                                         </div>
@@ -608,7 +632,7 @@
                                                             <option ng-repeat="m in materials" value="{{m}}"
                                                                     ng-click="material_select()">{{m.name}}
                                                             </option>
-                                                            <option disabled></option>
+                                                            <option></option>
                                                             <option ng-click="clear_material()" value="clear">clear
                                                             </option>
                                                         </select><br>
@@ -619,6 +643,14 @@
                                                                 ng-model="condition.material.name"
                                                                 placeholder="Name your material"
                                                                 type="text"></span> <br>
+                                                            <label>Alloy:</label><span><input
+                                                                ng-model="condition.material.alloy_name"
+                                                                placeholder="alloy....."
+                                                                type="text"></span><br>
+                                                            <label>Composition</label><span><input
+                                                                ng-model="condition.material.composition"
+                                                                placeholder="material composition.."
+                                                                type="text"></span><br>
                                                             <label>Contact: </label><span><input
                                                                 ng-model="condition.material.contact_email"
                                                                 placeholder="email.."
@@ -643,7 +675,7 @@
 
                                             <br>
                                             <div class="well">
-                                                Add Custom Properties:
+                                                Add Custom Properties(sample):
                                                 <input ng-model="additional_prop" type="text">
                                                 <button ng-click="custom_property()">Add Property</button>
                                             </div>
