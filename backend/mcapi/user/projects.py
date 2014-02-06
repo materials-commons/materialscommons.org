@@ -31,10 +31,16 @@ def get_all_projects():
 def get_all_group_projects():
     user = access.get_user()
     list_projects = []
-    allowedUsers = list(r.table('usergroups')
-                        .filter(r.row['users'].contains(user))
-                        .concat_map(lambda g: g['users'])
-                        .distinct().run(g.conn))
+    if access.is_administrator(user):
+        all_users = list(r.table('users').pluck('email').run(g.conn))
+        allowedUsers = []
+        for u in all_users:
+            allowedUsers.append(u['email'])
+    else:
+        allowedUsers = list(r.table('usergroups')
+                            .filter(r.row['users'].contains(user))
+                            .concat_map(lambda g: g['users'])
+                            .distinct().run(g.conn))
     users = '(' + '|'.join(allowedUsers) + ')'
     if allowedUsers == []:
         rr = r.table('projects').filter({'owner': user})

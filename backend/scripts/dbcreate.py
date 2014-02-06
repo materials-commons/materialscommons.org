@@ -38,6 +38,7 @@ def create_tables():
     run(r.table_create("datadirs_denorm"))
     run(r.table_create("materials"))
 
+
 def create_indices():
     run(r.table('datadirs').index_create('name'))
     run(r.table('project2datadir').index_create('datadir_id'))
@@ -49,6 +50,7 @@ def create_indices():
     run(r.table('projects').index_create('name'))
     run(r.table('projects').index_create('owner'))
     run(r.table('usergroups').index_create('owner'))
+    run(r.table('usergroups').index_create('name'))
 
 
 def run(rql):
