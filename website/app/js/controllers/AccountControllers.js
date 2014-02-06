@@ -19,12 +19,14 @@ function LoginController($scope, $state, User, alertService, mcapi) {
     }
 }
 
-function LogOutController($rootScope, $state,  $cookieStore, User, Stater) {
+function LogOutController($rootScope, $state,  $cookieStore, User, Stater, Thumbnails, Projects) {
     Stater.clear();
     $rootScope.email_address = '';
     User.setAuthenticated(false, '', '');
     $state.transitionTo('home')
     $cookieStore.remove('mcuser');
+    Thumbnails.clear();
+    Projects.clear();
 }
 
 function CreateAccountController($scope, mcapi, $state, alertService) {
