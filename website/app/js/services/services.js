@@ -314,16 +314,15 @@ materialsCommonsServices.factory('decodeAlerts', function () {
 });
 
 
-materialsCommonsServices.factory('Thumbnail', function () {
+materialsCommonsServices.factory('Thumbnail', function (User) {
     var fileType = '';
     var fileSrc = '';
     return {
         fetch_images: function (datafiles) {
             var images = [];
             datafiles.forEach(function (item) {
-                fileType = determineFileType(item.mediatype);
-                if (fileType == 'image') {
-                    fileSrc = filePath(fileType, item.mediatype, item.location, item.name);
+                if (isImage(item.name)) {
+                    fileSrc = "datafiles/static/" + item.id+"?apikey=" + User.apikey();
                     images.push({'file': item, 'link': fileSrc})
                 }
 
