@@ -24,7 +24,6 @@ function CreateNewMachineController($scope, mcapi) {
 
     $scope.save = function () {
         var new_machine = $scope.machine;
-        console.log(new_machine);
         mcapi('/machines/new')
             .success(function (data) {
                 mcapi('/machines/%', data.id)
