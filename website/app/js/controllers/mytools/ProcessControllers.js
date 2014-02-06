@@ -20,7 +20,6 @@ function ProcessReportController($scope, $stateParams, mcapi) {
                     data.forEach(function (item) {
                         $scope.output_files.push(item.right);
                     });
-
                 })
                 .error(function (e) {
                 }).jsonp();
