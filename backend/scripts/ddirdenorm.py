@@ -22,6 +22,8 @@ if __name__ == "__main__":
         ddir['datafiles'] = []
         for dfid in datadir['datafiles']:
             datafile = r.table('datafiles').get(dfid).run(conn)
+            if datafile is None:
+                continue
             df = {}
             df['id'] = datafile['id']
             df['name'] = datafile['name']
