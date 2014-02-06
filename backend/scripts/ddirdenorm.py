@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 
 import rethinkdb as r
+import optparse
 
-conn = r.connect('localhost', 30815, db='materialscommons')
 
 if __name__ == "__main__":
+    parser = optparse.OptionParser()
+    parser.add_option("-p", "--port", dest="port",
+                      help="rethinkdb port", default=30815)
+    (options, args) = parser.parse_args()
+    conn = r.connect('localhost', int(options.port), db='materialscommons')
+
     selection = list(r.table('datadirs').run(conn))
     for datadir in selection:
         print "Updating datadir %s" % (datadir['name'])
