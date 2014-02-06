@@ -14,7 +14,6 @@ function CreateNewMaterialController($scope,mcapi){
 
     $scope.save = function () {
         var temp = $scope.material;
-        console.log(temp)
         mcapi('/materials/new')
             .success(function (data) {
                 mcapi('/materials/%', data.id)
@@ -33,7 +32,6 @@ function CreateNewMaterialController($scope,mcapi){
     }
 
     $scope.custom_property = function () {
-        console.log($scope.additional_prop)
         if (!('model' in $scope.material)) {
             $scope.material.model = [];
         }
