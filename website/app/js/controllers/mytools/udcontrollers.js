@@ -320,7 +320,6 @@ function UploadWizardFileOutputController($scope, wizard, mcapi, Stater, alertSe
         }
         mcapi('/projects/%/datadirs/tree', $scope.state.attributes.project.id)
             .success(function (datadirs) {
-                console.log(datadirs) ;
                 $scope.tree = datadirs;
             })
             .error(function () {
