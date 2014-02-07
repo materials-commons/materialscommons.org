@@ -21,12 +21,15 @@ class Template:
 
 if __name__ == "__main__":
     parser = optparse.OptionParser()
-    parse.add_option("-p", "--port", dest="port", help="rethinkdb port", default=30815)
-    parse.add_option("-f", "--file", dest="file", type="string", help="json file")
+    parser.add_option("-p", "--port", dest="port", help="rethinkdb port", default=30815)
+    parser.add_option("-f", "--file", dest="filename", 
+                      help="json file", type="string")
     (options, args) = parser.parse_args()
+    if options.filename is None:
+        print "You must specify json file"
+        sys.exit(1)
     conn = r.connect('localhost', int(options.port), db='materialscommons')
-    json_data=open(options.file)
-    #json_data=open(sys.argv[1])
+    json_data=open(options.filename)
     data = json.load(json_data)
     model = data["model"]
     template_name = data["template_name"]
