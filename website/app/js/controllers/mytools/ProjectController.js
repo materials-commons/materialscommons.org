@@ -328,7 +328,12 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             }
 
         })
-        $scope.process = {'notes': [], 'runs': [], 'citations': [], 'template': template.id, 'machine': {'model': []} };
+        var now = new Date();
+        var dd = ("0" + now.getDate()).slice(-2);
+        var mm = ("0" + (now.getMonth() + 1)).slice(-2);
+        var today = now.getFullYear() + "-" + (mm) + "-" + (dd);
+        var make_name = template.template_name +':'+ today
+        $scope.process = {'name': make_name, 'notes': [], 'runs': [], 'citations': [], 'template': template.id, 'machine': {'model': []} };
     });
 
     $scope.add_property_to_machine = function () {
@@ -511,12 +516,20 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
     }
 
     $scope.selected_condition = function (cond) {
+        var now = new Date();
+        var dd = ("0" + now.getDate()).slice(-2);
+        var mm = ("0" + (now.getMonth() + 1)).slice(-2);
+        var today = now.getFullYear() + "-" + (mm) + "-" + (dd);
+        var make_name = cond.name +':'+ today
         $scope.selected_cond = cond;
-        $scope.condition.name = '';
+        $scope.condition.name = make_name;
         $scope.condition.description = cond.description
         $scope.condition.model = cond.model
         if (cond.material) {
             $scope.condition.material = cond.material;
+        }
+        else{
+            $scope.condition.material = {};
         }
 
     }
@@ -699,12 +712,20 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
     }
 
     $scope.selected_condition = function (cond) {
+        var now = new Date();
+        var dd = ("0" + now.getDate()).slice(-2);
+        var mm = ("0" + (now.getMonth() + 1)).slice(-2);
+        var today = now.getFullYear() + "-" + (mm) + "-" + (dd);
+        var make_name = cond.name +':'+ today
         $scope.selected_cond = cond;
-        $scope.condition.name = '';
+        $scope.condition.name = make_name
         $scope.condition.description = cond.description
         $scope.condition.model = cond.model
         if (cond.material) {
             $scope.condition.material = cond.material;
+        }
+        else{
+            $scope.condition.material = {};
         }
 
     }
