@@ -22,7 +22,7 @@ function start_servers()
 
     if [ $TESTSERVER = true ]; then
         if [ $(get_hostname) != "materialscommons.eecs.umich.edu" ]; then
-            ../website/web-server.js 8000 > /tmp/webserver.out.${SERVERTYPE} 2>&1&
+            (cd ../website; ./web-server.js 8000 > /tmp/webserver.out.${SERVERTYPE} 2>&1&)
         fi
     fi
     disown -a
