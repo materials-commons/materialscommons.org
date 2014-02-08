@@ -8,9 +8,9 @@ SERVERTYPE="production"
 function start_servers()
 {
     echo Starting $SERVERTYPE servers...
-    nohup ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
+    ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
     (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
-
+     
     sleep 3
     
     if [ $TESTSERVER = true ]; then
@@ -18,7 +18,14 @@ function start_servers()
         rethinkdb restore $MCDB_DIR/rethinkdb_dump_test_data.tar.gz --connect localhost:$MCDB_PORT
     fi
     scripts/dbcreate.py
-    nohup mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
+    mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
+
+    if [ $TESTSERVER = true ]; then
+        if [ $(get_hostname) != "materialscommons.eecs.umich.edu" ]; then
+            ../website/web-server.js 8000 > /tmp/webserver.out.${SERVERTYPE} 2>&1&
+        fi
+    fi
+    disown -a
     echo Started $SERVERTYPE.
 }
 
@@ -41,6 +48,12 @@ function stop_servers()
 
     if [ $TESTSERVER = true ]; then
         (cd $MCDB_DIR; rm -rf rethinkdb_data)
+        if [ $(get_hostname) != "materialscommons.eecs.umich.edu" ]; then
+            WEBSERVER_PID=$(ps -eo "pid,command" | grep web-server.js | grep 8000 | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+            if [ "$WEBSERVER_PID" != "" ]; then
+                kill $WEBSERVER_PID
+            fi
+        fi
     fi
     echo Stopped $SERVERTYPE.
 }
@@ -69,6 +82,11 @@ function status_servers()
     echo
     echo "MCFS Server (test):"
     ps -ef | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    if [ $(get_hostname) != "materialscommons.eecs.umich.edu" ]; then
+        echo
+        echo "Webserver (test):"
+        ps -ef | grep web-server.js | grep 8000 | grep -v grep
+    fi
     echo
 }
 
