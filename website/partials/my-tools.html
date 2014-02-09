@@ -4,13 +4,18 @@
             <div class="sidebar-nav-fixed">
                 <div class="well">
                     <ul class="nav nav-list">
-
+                        <li class="nav-header"><i class="fa fa-book"></i> Provenance</li>
+                        <li ng-controller="DraftsCountController">
+                            <a href="#/mytools/drafts">Drafts ({{drafts.length}})</a>
+                        </li>
                         <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
 
                         <!--<li><a href="">Search</a></li>-->
                         <!--<li><a href="">Messages</a></li>-->
                         <li id="my-data-tab"><a href="" style="cursor:pointer"
-                                                ng-click="showProjs=!showProjs">Projects</a>
+                                                ng-click="showProjs=!showProjs">
+                            <i ng-show="showProjs" class="fa fa-folder-open"></i>
+                            <i ng-show="!showProjs" class="fa fa-folder"></i> Projects</a>
 
                             <div ng-show="showProjs" class="project-scrollbar">
                                 <ul ng-repeat="proj in projects">

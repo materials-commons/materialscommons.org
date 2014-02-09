@@ -1,4 +1,4 @@
-function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mcapi, Stater, wizard, alertService, treeToggle, $state) {
+function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, watcher, mcapi, Stater, wizard, alertService, treeToggle, $state) {
     $scope.all_templates = [];
     $scope.model = Projects.model;
 
@@ -8,6 +8,10 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mc
             .success(function (data) {
                 $scope.all_templates = data;
             }).jsonp();
+    }
+
+    $scope.projClass = function () {
+        return "fa fa-folder";
     }
 
     mcapi('/projects/by_group')
@@ -39,6 +43,17 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mc
         $scope.dir = item.children;
     }
 
+    watcher.watch($scope, 'add_to', function(choice) {
+        if (choice === "prov") {
+            Stater.newId("prov", "create prov", "", function(status, state) {
+               if (status) {
+                   $scope.state = state;
+                   $scope.state.attributes.process = {};
+                   wizard.fireStep('nav_choose_process');
+               }
+            });
+        }
+    });
 
     $scope.selected_project = function (proj_id) {
         $scope.done = false;
@@ -50,20 +65,8 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mc
         trackSavedProv.mark_outputs(false);
         $scope.outputs_saved = trackSavedProv.get_output_status();
 
-        Stater.newId("prov", "create prov", "type", function (status, state) {
-            if (status) {
-                $scope.state = state;
-                $scope.state.attributes.process = {};
-                wizard.fireStep('nav_choose_process');
-
-            }
-        });
-
         $scope.tree_data = [];
         $scope.trail = [];
-        $scope.state = Stater.retrieve();
-        //$scope.state.attributes.project_id = proj_id;
-        //Stater.persist($scope.state);
         $scope.selected_proj = true;
         $rootScope.project_id = proj_id;
         mcapi('/projects/%', proj_id)
@@ -99,24 +102,11 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mc
         mcapi('/processes/project/%', proj_id)
             .success(function (data) {
                 $scope.tree_process = $scope.process_processes(data);
-                //$scope.tree_process = $scope.convert_into_tree($scope.proj_processes);
-                //$scope.tree_p = [{"template_description":"Collect data using an SEM.","template_name":"Run SEM","template_type":"process","template_birthtime":{"timezone":"+00:00","epoch_time":1384454393.733},"owner":"gtarcea@umich.edu","model":[{"name":"required_conditions","value":["sem_equipment_conditions","material_conditions"]},{"name":"name","value":""},{"name":"owner","value":""},{"name":"description","value":""},{"name":"birthtime","value":""},{"name":"mtime","value":""},{"name":"machine","value":""},{"name":"process_type","value":""},{"name":"version","value":""},{"name":"parent","value":""},{"name":"notes","value":[]},{"name":"inputs","value":[]},{"name":"outputs","value":[]},{"name":"runs","value":[]},{"name":"citations","value":[]},{"name":"status","value":""},{"name":"required_output_conditions","value":["material_conditions"]}],"template_mtime":{"timezone":"+00:00","epoch_time":1384454393.733},"id":"a71eecb5-f9ba-4da7-8129-5309a428bb42","c_id":"1","parent_id":""},{"name":"dfg","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"91f58f49-64ca-47b0-a1b0-2084bdcf4f27","c_id":"2","parent_id":"1"},{"name":"*****Process****","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"8ae9fbba-9ee5-4a7f-ad8f-d97bf08d1ab3","c_id":"3","parent_id":"1"},{"name":"light","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"ae4ff8d9-0621-4e4f-b285-5b36cd1d51ed","c_id":"4","parent_id":"1"},{"name":"test 8 process************","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"fafa9432-0763-412b-923e-3c7523233211","c_id":"5","parent_id":"1"},{"name":"fdg","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"0a5a6e1f-bbff-4413-9bf4-9a02ee10a2f6","c_id":"6","parent_id":"1"},{"name":"gem","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"4f83ce2c-07db-473c-9fbc-795f89596864","c_id":"7","parent_id":"1"},{"name":"pr -1","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"bc4f1379-2fdc-4d45-b4da-8626a4516322","c_id":"8","parent_id":"1"},{"name":"qaz","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"c246b768-1d08-4d56-bf2d-08622592cca0","c_id":"9","parent_id":"1"},{"name":"fantastic process","template":"a71eecb5-f9ba-4da7-8129-5309a428bb42","id":"ea1df4a0-3ee7-485f-859a-001e281a73e6","c_id":"10","parent_id":"1"}]
             })
             .error(function (data) {
 
             }).jsonp();
     }
-
-    $scope.flattenTree = function (tree) {
-        var flatTree = [],
-            treeModel = new TreeModel(),
-            root = treeModel.parse(tree[0]);
-        root.walk({strategy: 'pre'}, function (node) {
-            flatTree.push(node.model);
-        });
-        return flatTree;
-    };
-
 
     $scope.process_processes = function (processes) {
         $scope.temp_proc = {};
@@ -271,7 +261,7 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, mc
 
 }
 
-function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, Stater, wizard, alertService) {
+function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, pubsub, Stater, wizard, alertService) {
 
     $scope.myradio = 'select';
 
@@ -332,7 +322,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         var dd = ("0" + now.getDate()).slice(-2);
         var mm = ("0" + (now.getMonth() + 1)).slice(-2);
         var today = now.getFullYear() + "-" + (mm) + "-" + (dd);
-        var make_name = template.template_name +':'+ today
+        var make_name = template.template_name + ':' + today
         $scope.process = {'name': make_name, 'notes': [], 'runs': [], 'citations': [], 'template': template.id, 'machine': {'model': []} };
     });
 
@@ -386,31 +376,29 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             .error(function (e) {
 
             }).post(temp);
-
-    }
+    };
 
     $scope.add_notes = function () {
         $scope.process.notes.push($scope.new_note);
         $scope.new_note = "";
-    }
+    };
+
     $scope.add_run = function () {
         $scope.process.runs.push({'started': $scope.start_run, 'stopped': $scope.stop_run, 'error_messages': $scope.new_err_msg});
         $scope.new_err_msg = "";
         $scope.start_run = "";
         $scope.stop_run = "";
-    }
+    };
 
     $scope.remove_run = function (index) {
         $scope.process.runs.splice(index, 1);
 
-    }
-
+    };
 
     $scope.add_citations = function () {
         $scope.process.citations.push($scope.new_citation);
         $scope.new_citation = "";
-    }
-
+    };
 
     $scope.save_process = function () {
         trackSavedProv.mark_process(true);
@@ -437,8 +425,12 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
                 $scope.state.attributes.process.machine = $scope.process.machine.id
             }
 
+            $scope.state.name = $scope.process.name;
+            $scope.state.description = $scope.process.description;
             $scope.state.attributes.project_id = $rootScope.project_id;
-            Stater.persist($scope.state);
+            Stater.persist($scope.state, function() {
+                pubsub.send('drafts.update', '');
+            });
             $scope.project_warning = false;
             wizard.fireStep('nav_choose_inputs');
 
@@ -520,7 +512,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         var dd = ("0" + now.getDate()).slice(-2);
         var mm = ("0" + (now.getMonth() + 1)).slice(-2);
         var today = now.getFullYear() + "-" + (mm) + "-" + (dd);
-        var make_name = cond.name +':'+ today
+        var make_name = cond.name + ':' + today
         $scope.selected_cond = cond;
         $scope.condition.name = make_name;
         $scope.condition.description = cond.description
@@ -528,7 +520,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         if (cond.material) {
             $scope.condition.material = cond.material;
         }
-        else{
+        else {
             $scope.condition.material = {};
         }
 
@@ -716,7 +708,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         var dd = ("0" + now.getDate()).slice(-2);
         var mm = ("0" + (now.getMonth() + 1)).slice(-2);
         var today = now.getFullYear() + "-" + (mm) + "-" + (dd);
-        var make_name = cond.name +':'+ today
+        var make_name = cond.name + ':' + today
         $scope.selected_cond = cond;
         $scope.condition.name = make_name
         $scope.condition.description = cond.description
@@ -724,7 +716,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         if (cond.material) {
             $scope.condition.material = cond.material;
         }
-        else{
+        else {
             $scope.condition.material = {};
         }
 
