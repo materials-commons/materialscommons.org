@@ -2,7 +2,9 @@ var stateServices = angular.module('stateServices', ['ngResource']);
 
 stateServices.
     factory('Stater', function (mcapi) {
-        var S = {};
+        var S = {
+            all: []
+        };
         S.newId = function (name, description, type, f) {
             mcapi('/stater')
                 .success(function (data) {
@@ -16,7 +18,6 @@ stateServices.
         }
 
         S.save = function (state) {
-            //console.dir(state);
             S.state = state;
         }
 
@@ -24,10 +25,24 @@ stateServices.
             return S.state;
         }
 
-        S.persist = function (state) {
+        S.persist = function (state, f) {
             S.state = state;
+            var callfunc = false;
+            if (arguments.length == 2) {
+               callfunc = true;
+            }
             if ('id' in S.state) {
-                mcapi('/stater/%', S.state.id).put({attributes: S.state.attributes});
+                mcapi('/stater/%', S.state.id)
+                    .success(function() {
+                        if (callfunc) {
+                            f();
+                        }
+                    })
+                    .put({
+                        attributes: S.state.attributes,
+                        name: S.state.name,
+                        description: S.state.description
+                    });
             }
         }
 
@@ -50,8 +65,31 @@ stateServices.
             mcapi('/stater').delete();
         }
 
-        S.clearRemote = function () {
-            mcapi('/stater/%', S.state.id).delete();
+        S.clearRemote = function (stateId, f) {
+            var callfunc = arguments.length == 2;
+            mcapi('/stater/%', stateId)
+                .success(function() {
+                    if (callfunc) {
+                        f();
+                    }
+                }).delete();
+        }
+
+        S.retrieveAll = function (username, f) {
+            var callfunc = false;
+            if (arguments.length == 2) {
+                callfunc = true;
+            }
+            mcapi('/stater/user/%', username)
+                .success(function (data) {
+                    S.all = data;
+                    if (callfunc) {
+                        f(data);
+                    }
+                })
+                .error(function () {
+                    S.all = [];
+                }).jsonp();
         }
 
         return S;
@@ -82,7 +120,7 @@ stateServices.factory('Projects', [function () {
             projects: {}
         },
 
-        clear: function() {
+        clear: function () {
             service.model.projects = {};
         }
     };

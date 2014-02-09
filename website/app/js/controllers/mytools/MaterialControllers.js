@@ -1,5 +1,4 @@
 function CreateNewMaterialController($scope,mcapi){
-
     mcapi('/materials')
         .success(function (data) {
             $scope.materials_list = data;

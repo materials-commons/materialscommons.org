@@ -70,6 +70,14 @@ app.config(function ($stateProvider) {
     /**
      * Mytools - Subpage is the parent and the rest inherit
      */
+
+        //Provenance
+        .state('mytools.drafts', {
+            url: '/drafts',
+            templateUrl: 'partials/provenance/drafts-list.html',
+            controller: DraftsListController
+        })
+
         .state('mytools.projects.process', {
             url: '/projects/process/new',
             templateUrl: 'partials/process.html'
@@ -282,14 +290,6 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
             }
 
             $rootScope.stompClient = ngstomp(chatConnection);
-        }
-
-        if (mcglobals.bypasslogin) {
-            if (mcglobals.username) {
-                User.setAuthenticated(true, mcglobals.apikey, mcglobals.username);
-                $rootScope.email_address = mcglobals.username;
-            }
-            return;
         }
 
         if (!User.isAuthenticated()) {
