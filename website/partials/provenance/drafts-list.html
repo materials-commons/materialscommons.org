@@ -1,0 +1,17 @@
+<h1>Provenance Drafts</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="draft in drafts | filter:query">
+            <td><a href="#/mytools/projects/{{draft.attributes.project_id}}">{{draft.name}}</td>
+            <td>{{draft.birthtime | toDateString}}</td>
+            <td>{{draft.description}}<button type="button" class="close" ng-click="delete(draft.id);">&times;</button></td>
+        </tr>
+    </tbody>
+</table>
