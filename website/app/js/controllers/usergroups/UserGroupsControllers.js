@@ -3,7 +3,6 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService,
         var u_group = {};
         u_group.access = $scope.access;
         u_group.description = $scope.desc;
-        u_group.id = $scope.name;
         u_group.name = $scope.name;
         u_group.users = [User.u()];
         u_group.owner = User.u();
@@ -14,7 +13,7 @@ function CreateUserGroupController($scope, User, mcapi, $location, alertService,
                 $state.transitionTo('myusergoups');
             })
             .error(function (errorMsg) {
-                alertService.sendMessage("Please enter Usergroup");
+                alertService.sendMessage(errorMsg.error);
             }).post(u_group);
     }
 }
@@ -34,15 +33,16 @@ function ListUserController($scope, mcapi, $stateParams, $dialog, User, alertSer
         .error(function () {
         }).jsonp();
 
-    $scope.ug_name =  $stateParams.id;
-    mcapi('/usergroup/%', $scope.ug_name)
+
+    mcapi('/usergroup/%', $stateParams.id)
         .success(function (data) {
             $scope.user_group = data;
             $scope.owner = $scope.user_group.owner
             $scope.signed_in_user = User.u();
+            $scope.ug_name =  $scope.user_group.name;
         }).jsonp();
 
-    mcapi('/usergroup/%/users', $scope.ug_name)
+    mcapi('/usergroup/%/users', $stateParams.id)
         .success(function (data) {
             $scope.users_by_usergroup = data.users;
         })
@@ -60,7 +60,7 @@ function ListUserController($scope, mcapi, $stateParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    mcapi('/usergroup/%/selected_name/%', $scope.ug_name, $scope.user_name)
+                    mcapi('/usergroup/%/selected_name/%', $stateParams.id, $scope.user_name)
                         .success(function (data) {
                             $scope.users_by_usergroup.push(data.id);
                         }).error(function (data) {
@@ -82,7 +82,7 @@ function ListUserController($scope, mcapi, $stateParams, $dialog, User, alertSer
             .open()
             .then(function (result) {
                 if (result == 'yes') {
-                    mcapi('/usergroup/%/selected_name/%/remove', $scope.ug_name, $scope.users_by_usergroup[index])
+                    mcapi('/usergroup/%/selected_name/%/remove', $stateParams.id, $scope.users_by_usergroup[index])
                         .success(function (data) {
                             $scope.users_by_usergroup = data.users;
                         }).error(function () {

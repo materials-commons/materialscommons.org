@@ -1,3 +1,4 @@
+
 from ..mcapp import app
 from ..decorators import apikey, jsonp, crossdomain
 import json
@@ -69,6 +70,7 @@ class DItem:
     def __init__(self, id, name, type, owner, birthtime, size):
         self.id = id
         self.c_id = ""
+        self.level = 0
         self.parent_id = ""
         self.name = name
         self.owner = owner
@@ -151,6 +153,7 @@ def buildTreeFromSelection(selection):
                     allDataDirs[dd.name] = dd
                     dirToAddTo = allDataDirs[dirname(dd.name)]
                     dd.parent_id = dirToAddTo.c_id
+                    dd.level = dirToAddTo.level+1
                     dirToAddTo.children.append(dd)
                 currentDataDir = dd
             else:

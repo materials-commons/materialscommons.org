@@ -1,3 +1,4 @@
+
 import json
 import error
 import rethinkdb as r
@@ -51,7 +52,6 @@ def insert_status(rv, return_created=False):
 def get_all_from_table(table_name, filter_by=None):
     rr = r.table(table_name)
     if filter_by:
-        print 'filter by'
         rr = rr.filter(filter_by)
     rr = add_all_arg_options(rr)
     items = list(rr.run(g.conn, time_format='raw'))

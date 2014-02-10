@@ -85,7 +85,6 @@ Version: 3.3.1 Timestamp: Wed Feb 20 09:57:22 PST 2013
     margin-right: 26px;
     display: block;
     overflow: hidden;
-
     white-space: nowrap;
 
     -ms-text-overflow: ellipsis;

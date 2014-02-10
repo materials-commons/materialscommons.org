@@ -13,12 +13,13 @@ import os.path
 @apikey(shared=True)
 @jsonp
 def datafiles_for_user():
+    df_dg = {}
     user = access.get_user()
     rr = r.table('datafiles').filter({'owner': user})
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
-
+    
 
 @app.route('/datafiles/tag/<tag>')
 @apikey(shared=True)

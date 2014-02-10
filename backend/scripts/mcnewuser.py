@@ -34,6 +34,8 @@ if __name__ == "__main__":
                       help="user password", type="string")
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port")
+    #parser.add_option("-u", "--update", dest="update", type="bool",
+    #                  help="Reset users password")
 
     (options, args) = parser.parse_args()
     if options.email is None:

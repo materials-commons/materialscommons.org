@@ -35,6 +35,8 @@ def create_tables():
     run(r.table_create("project2processes"))
     run(r.table_create("project2conditions"))
     run(r.table_create("review2datafile"))
+    run(r.table_create("datadirs_denorm"))
+    run(r.table_create("materials"))
 
 
 def create_indices():
@@ -43,10 +45,12 @@ def create_indices():
     run(r.table('project2datadir').index_create('project_id'))
     run(r.table('datafiles').index_create('name'))
     run(r.table('datafiles').index_create('owner'))
+    run(r.table('datafiles').index_create('checksum'))
     run(r.table('users').index_create('apikey'))
     run(r.table('projects').index_create('name'))
     run(r.table('projects').index_create('owner'))
     run(r.table('usergroups').index_create('owner'))
+    run(r.table('usergroups').index_create('name'))
 
 
 def run(rql):

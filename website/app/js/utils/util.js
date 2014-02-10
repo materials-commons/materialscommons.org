@@ -11,6 +11,23 @@ function determineFileType(mediaType) {
     }
 }
 
+var recognized_images = ["jpg", "png", "jpeg", "gif"];
+
+function isImage(name) {
+    var s = name.toLowerCase();
+    for (var i = 0; i < recognized_images.length; i++) {
+        if (endsWith(s, recognized_images[i])) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
 function _add_json_callback(url) {
     return url + "&callback=JSON_CALLBACK";
 }
