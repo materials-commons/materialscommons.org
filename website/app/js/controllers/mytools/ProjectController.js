@@ -1,4 +1,4 @@
-function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, watcher, mcapi, Stater, wizard, alertService, treeToggle, $state) {
+function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, watcher, mcapi, Stater, wizard, alertService, treeToggle, $stateParams, $state) {
     $scope.all_templates = [];
     $scope.model = Projects.model;
 
@@ -9,18 +9,6 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, wa
                 $scope.all_templates = data;
             }).jsonp();
     }
-
-    $scope.projClass = function () {
-        return "fa fa-folder";
-    }
-
-    mcapi('/projects/by_group')
-        .success(function (data) {
-            $scope.projects = data;
-        })
-        .error(function (data) {
-
-        }).jsonp();
 
     $scope.openFolder = function (item) {
         var e = _.find($scope.trail, function (item1) {
@@ -43,14 +31,27 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, wa
         $scope.dir = item.children;
     }
 
-    watcher.watch($scope, 'add_to', function(choice) {
+    if ($stateParams.state_id !== "") {
+        console.log("state_id:" + $stateParams.state_id);
+        Stater.retrieveRemote($stateParams.state_id, function (status, data) {
+            if (status) {
+                console.log("Retrieved the state!")
+                Stater.save(data);
+                $scope.state = Stater.retrieve();
+                $scope.add_to = 'prov';
+                wizard.fireStep('nav_choose_process');
+            }
+        })
+    }
+
+    watcher.watch($scope, 'add_to', function (choice) {
         if (choice === "prov") {
-            Stater.newId("prov", "create prov", "", function(status, state) {
-               if (status) {
-                   $scope.state = state;
-                   $scope.state.attributes.process = {};
-                   wizard.fireStep('nav_choose_process');
-               }
+            Stater.newId("prov", "create prov", "", function (status, state) {
+                if (status) {
+                    $scope.state = state;
+                    $scope.state.attributes.process = {};
+                    wizard.fireStep('nav_choose_process');
+                }
             });
         }
     });
@@ -107,6 +108,8 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, wa
 
             }).jsonp();
     }
+
+    $scope.selected_project($stateParams.id);
 
     $scope.process_processes = function (processes) {
         $scope.temp_proc = {};
@@ -176,7 +179,6 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, wa
     };
 
     wizard.setSteps(steps);
-
 
     $scope.isCurrentStep = function (step) {
         $scope.process_saved = trackSavedProv.get_process_status();
@@ -254,11 +256,7 @@ function ListProjectsController($scope, $rootScope, Projects, trackSavedProv, wa
 
     $scope.remove_instructions = function () {
         $scope.display = true
-
-
     }
-
-
 }
 
 function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, pubsub, Stater, wizard, alertService) {
@@ -268,7 +266,6 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     mcapi('/machines')
         .success(function (data) {
             $scope.machines_list = data;
-
         })
         .error(function (data) {
         }).jsonp();
@@ -428,7 +425,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             $scope.state.name = $scope.process.name;
             $scope.state.description = $scope.process.description;
             $scope.state.attributes.project_id = $rootScope.project_id;
-            Stater.persist($scope.state, function() {
+            Stater.persist($scope.state, function () {
                 pubsub.send('drafts.update', '');
             });
             $scope.project_warning = false;
