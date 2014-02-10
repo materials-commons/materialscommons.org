@@ -1,3 +1,7 @@
+function MyToolsController($scope) {
+    $scope.show_drafts = false;
+}
+
 function MyToolsProjectsController($scope, mcapi, pubsub, User) {
     mcapi('/projects/by_group')
         .success(function (data) {
