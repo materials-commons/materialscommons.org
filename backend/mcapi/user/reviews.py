@@ -72,7 +72,8 @@ def mark_review(reviewid, markas):
 @apikey(shared=True)
 @jsonp
 def get_reviews_for_datafile(datafile_id):
-    selection = list(r.table('review2datafile').filter({'datafile_id': datafile_id}).eq_join('review_id', r.table('reviews')).run(g.conn, time_format='raw'))
+    selection = list(r.table('review2datafile').filter({'datafile_id': datafile_id})
+                     .eq_join('review_id', r.table('reviews')).run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
 

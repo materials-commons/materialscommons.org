@@ -102,3 +102,28 @@ def get_datafile_by_name(datadir_id, name):
             return args.json_as_format_arg(df)
     return error.not_found(
         "No such file %s in datadir %s" % (name, datadir_id))
+
+def find_match(row, df_id):
+    if row['input_files'].contains(df_id):
+        return True
+    if row['output_files'].contains(df_id):
+        return True
+    else:
+        return False
+
+@app.route('/processes/datafile/<df_id>', methods=['GET'])
+@jsonp
+def get_processes(df_id):
+    print df_id
+    rr = r.table('processes').filter(
+        lambda row: find_match(row, df_id)
+        )
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return  args.json_as_format_arg(selection)
+
+
+
+
+
+
+
