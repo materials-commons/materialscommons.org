@@ -102,6 +102,14 @@ function DataEditController($scope, $window, mcapi, alertService, $stateParams, 
         $scope.new_note = "";
     }
 
+    mcapi('/processes/datafile/%', $scope.id)
+        .success(function(data){
+            $scope.processes = data;
+        })
+        .error(function(e){
+            console.log('err')
+        }).jsonp()
+
 
 }
 
