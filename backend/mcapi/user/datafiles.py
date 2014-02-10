@@ -108,8 +108,6 @@ def find_match(row, df_id):
         return True
     if row['output_files'].contains(df_id):
         return True
-    else:
-        return False
 
 @app.route('/processes/datafile/<df_id>', methods=['GET'])
 @jsonp
