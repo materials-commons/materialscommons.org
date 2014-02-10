@@ -97,95 +97,98 @@
               <b style="color: orange">Project was not selected</b>
         </span>
 
-<div class="well">
-<h4>Process Information</h4>
-<label>process type :</label> <select ng-model="process_type">
-    <option disabled>Select Process Type:</option>
-    <option ng-repeat="p in process_templates" value="{{p}}">
-        {{p.template_name}}
-    </option>
-</select>
-
-
-<div ng-show="process_type">
-    <hr/>
-    <label style="color:red">Name: [required]</label> <input ng-model="process.name"
-                                                             placeholder="Name your process"
-                                                             type="text"><br>
-    <label>Description:</label>
-    <textarea class="input-large" placeholder="Describe your process...."
-              ng-model="process.description"/> <br>
-    <label>Version:</label> <input ng-model="process.version" placeholder="Version V1.1 ...."
-                                   type="text"><br>
-
-
     <div class="well">
-        <b>Selected Machine:<a href="#modalMachine" data-toggle="modal">{{process.machine.name}}</a></b>
+        <h4>Process Information</h4>
+        <label>process type :</label> <select ng-model="process_type">
+        <option disabled>Select Process Type:</option>
+        <option ng-repeat="p in process_templates" value="{{p}}">
+            {{p.template_name}}
+        </option>
+    </select>
 
-        <p style="float: right" ng-show="machine_added">
-            <button class="btn btn-success">Saved</button>
-        </p>
-        <br> <br>
-        <!-- Modal -->
-        <div id="modalMachine" class="modal hide fade" tabindex="-1" role="dialog"
-             aria-labelledby="modalMachineLabel" aria-hidden="true">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="modalMachineLabel">{{process.machine.name}}</h3>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <label>Name:</label><span>{{process.machine.name}}</span> <br>
-                    <label>Type:</label><span>{{process.machine.contact_email}}</span><br>
-                    <label>birthtime:</label><span>{{process.machine.birthtime | toDateString}}</span><br>
-                    <label>Description:</label><span>{{process.machine.longname}}</span><br>
-                    <label>notes:</label><span>{{process.machine.notes}}</span><br>
 
-                    <label>Model:</label>
+        <div ng-show="process_type">
+            <hr/>
+            <label style="color:red">Name: [required]</label> <input ng-model="process.name"
+                                                                     placeholder="Name your process"
+                                                                     type="text"><br>
+            <label>Description:</label>
+            <textarea class="input-large" placeholder="Describe your process...."
+                      ng-model="process.description"/> <br>
+            <label>Version:</label> <input ng-model="process.version" placeholder="Version V1.1 ...."
+                                           type="text"><br>
 
-                    <div ng-repeat="kv in process.machine.model">
-                        <label>{{kv.name}}</label> - <span>{{kv.value}}</span>
+
+            <div class="well">
+                <b>Selected Machine:<a href="#modalMachine" data-toggle="modal">{{process.machine.name}}</a></b>
+
+                <p style="float: right" ng-show="machine_added">
+                    <button class="btn btn-success">Saved</button>
+                </p>
+                <br> <br>
+                <!-- Modal -->
+                <div id="modalMachine" class="modal hide fade" tabindex="-1" role="dialog"
+                     aria-labelledby="modalMachineLabel" aria-hidden="true">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="modalMachineLabel">{{process.machine.name}}</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <label>Name:</label><span>{{process.machine.name}}</span> <br>
+                            <label>Type:</label><span>{{process.machine.contact_email}}</span><br>
+                            <label>birthtime:</label><span>{{process.machine.birthtime | toDateString}}</span><br>
+                            <label>Description:</label><span>{{process.machine.longname}}</span><br>
+                            <label>notes:</label><span>{{process.machine.notes}}</span><br>
+
+                            <label>Model:</label>
+
+                            <div ng-repeat="kv in process.machine.model">
+                                <label>{{kv.name}}</label> - <span>{{kv.value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
-        </div>
 
 
-        <input type="radio" ng-model="myradio" value="select">Use Existing Machine<br>
-        <input type="radio" ng-model="myradio" value="create">Create New Machine
+                <input type="radio" ng-model="myradio" value="select">Use Existing Machine<br>
+                <input type="radio" ng-model="myradio" value="create">Create New Machine
 
-        <div ng-show="myradio=='select'">
-            select existing machine:
-            <select ng-model="machine_selected">
-                <option disabled>pick a machine:</option>
-                <option ng-repeat="m in machines_list" value="{{m}}"
-                        ng-click="machine_select()">{{m.name}}
-                </option>
-                <option disabled></option>
-                <option ng-click="clear_machine()" value="clear">clear</option>
-            </select><br>
-        </div>
-        <div ng-show="myradio=='create'">
-            <div class="well">
-                <label>Name:</label> <span><input ng-model="process.machine.name" placeholder="Name your machine"
-                                                  type="text"></span> <br>
-                <label>Contact: </label><span><input ng-model="process.machine.contact_email" placeholder="email.."
-                                                     type="text"></span><br>
-                <label>Long Name: </label><span><input ng-model="process.machine.longname" placeholder=""
-                                                       type="text"></span> <br>
+                <div ng-show="myradio=='select'">
+                    select existing machine:
+                    <select ng-model="machine_selected">
+                        <option disabled>pick a machine:</option>
+                        <option ng-repeat="m in machines_list" value="{{m}}"
+                                ng-click="machine_select()">{{m.name}}
+                        </option>
+                        <option disabled></option>
+                        <option ng-click="clear_machine()" value="clear">clear</option>
+                    </select><br>
+                </div>
+                <div ng-show="myradio=='create'">
+                    <div class="well">
+                        <label>Name:</label> <span><input ng-model="process.machine.name"
+                                                          placeholder="Name your machine"
+                                                          type="text"></span> <br>
+                        <label>Contact: </label><span><input ng-model="process.machine.contact_email"
+                                                             placeholder="email.."
+                                                             type="text"></span><br>
+                        <label>Long Name: </label><span><input ng-model="process.machine.longname" placeholder=""
+                                                               type="text"></span> <br>
 
-                <label>Notes:</label><span><input ng-model="process.machine.notes" placeholder="Type your notes.."
-                                                  type="text"></span> <br>
-                <label>---------Additional/Custom-----------</label><br>
+                        <label>Notes:</label><span><input ng-model="process.machine.notes"
+                                                          placeholder="Type your notes.."
+                                                          type="text"></span> <br>
+                        <label>---------Additional/Custom-----------</label><br>
 
                                         <span ng-repeat="pv in process.machine.model">
                                             <label>{{pv.name}}</label><span><input type="text"
                                                                                    ng-model="pv.value"></span><br>
                                         </span>
-                <label>Additional Properties:</label>
+                        <label>Additional Properties:</label>
                             <span>
                                 <select ng-model="p_name">
                                     <option ng-repeat="each in machine_template.model" value="{{each.name}}">
@@ -194,85 +197,69 @@
                                 </select><button ng-click="add_property_to_machine()">add</button>
                             </span>
 
-                <label>Add Custom Properties:</label>
+                        <label>Add Custom Properties:</label>
                                <span>
                                     <input ng-model="additional_prop" placeholder="type property name ....."
                                            type="text">
                                     <button ng-click="custom_property()">add</button>
                                </span>
 
-                <br><br>
-                <button ng-disabled="!process.machine.name" ng-click="add_machine_to_db()">Save Machine</button>
-                <button ng-click="clear_machine()">clear</button>
+                        <br><br>
+                        <button ng-disabled="!process.machine.name" ng-click="add_machine_to_db()">Save Machine
+                        </button>
+                        <button ng-click="clear_machine()">clear</button>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
+            <div class="well">
+                <label> Runs:</label> <br>
+                <label>Start: </label>
+                <datepicker ng-model='start_run'></datepicker>
+                <br>
+                <label> stop: </label>
+                <datepicker ng-model='stop_run'></datepicker>
+                <br>
+                <label>Error Msg:</label><textarea class="input-large"
+                                                   placeholder="type in error messages ....."
+                                                   ng-model="new_err_msg"/><br>
+                <button ng-click="add_run()" ng-disabled="!start_run">Add Run</button>
 
-    </div>
+                <a style="cursor:pointer" ng-click="customruns=!customruns">view runs</a>
+                <br>
 
+                <div ng-show="customruns">
+                    <table class="treetable">
+                        <thead>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Error Message</th>
+                        <th></th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="run in process.runs">
+                            <td>{{run.started | date:'medium'}}</td>
+                            <td>{{run.stopped | date:'medium'}}</td>
+                            <td>{{run.error_messages}}</td>
+                            <td>
+                                <button type="button" class="close" ng-click="remove_run($index);">&times;</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <!--<label><b>Selected Machine: {{process.machine.name}}</b></label>-->
-    <!--<br>-->
-    <!--<label>select existing:</label>-->
-    <!--<select ng-model="machine_selected">-->
-    <!--<option disabled>pick a machine:</option>-->
-    <!--<option ng-repeat="m in machines_list" value="{{m}}">{{m.name}}</option>-->
-    <!--</select>-->
-    <!--<br>-->
-    <!--<label>OR</label> <br>-->
-    <!--<label>Create New Machine:</label>-->
-    <!--<input ng-model="new_machine" placeholder="Type in machine name..."-->
-    <!--type="text">-->
-    <!--<button ng-click="add_machine_to_db()" ng-disabled="!new_machine">Add</button>-->
-    <!--<br>-->
+            </div>
 
+            <br>
+            <label>Notes:</label><br><textarea class="input-xlarge" placeholder="enter notes here ....."
+                                               ng-model="new_note"/><br>
+            <button ng-click="add_notes()" ng-disabled="!new_note">Add Notes</button>
 
-    <div class="well">
-        <label> Runs:</label> <br>
-        <label>Start: </label>
-        <datepicker ng-model='start_run'></datepicker>
-        <br>
-        <label> stop: </label>
-        <datepicker ng-model='stop_run'></datepicker>
-        <br>
-        <label>Error Msg:</label><textarea class="input-large"
-                                           placeholder="type in error messages ....."
-                                           ng-model="new_err_msg"/><br>
-        <button ng-click="add_run()" ng-disabled="!start_run">Add Run</button>
-
-        <a style="cursor:pointer" ng-click="customruns=!customruns">view runs</a>
-        <br>
-
-        <div ng-show="customruns">
-            <table class="treetable">
-                <thead>
-                <th>Start</th>
-                <th>End</th>
-                <th>Error Message</th>
-                <th></th>
-                </thead>
-                <tbody>
-                <tr ng-repeat="run in process.runs">
-                    <td>{{run.started | date:'medium'}}</td>
-                    <td>{{run.stopped | date:'medium'}}</td>
-                    <td>{{run.error_messages}}</td>
-                    <td>
-                        <button type="button" class="close" ng-click="remove_run($index);">&times;</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-    <br>
-    <label>Notes:</label><br><textarea class="input-xlarge" placeholder="enter notes here ....."
-                                       ng-model="new_note"/><br>
-    <button ng-click="add_notes()" ng-disabled="!new_note">Add Notes</button>
-
-    <a style="cursor:pointer" ng-click="customnote=!customnote">previous notes</a> <br>
+            <a style="cursor:pointer" ng-click="customnote=!customnote">previous notes</a> <br>
                                         <span ng-show="customnote">
                                             <br><b>Notes</b>
                                              <li ng-repeat="note in process.notes">
@@ -280,12 +267,12 @@
                                              </li>
 
                                         </span>
-    <br>
-    <label>Citations:</label><br><textarea class="input-xlarge"
-                                           placeholder="Provide citations here..." ng-model="new_citation"/><br>
-    <button ng-click="add_citations()" ng-disabled="!new_citation">Add Citations</button>
-    <a style="cursor:pointer" ng-click="customcitations=!customcitations">previous citations</a>
-    <br>
+            <br>
+            <label>Citations:</label><br><textarea class="input-xlarge"
+                                                   placeholder="Provide citations here..." ng-model="new_citation"/><br>
+            <button ng-click="add_citations()" ng-disabled="!new_citation">Add Citations</button>
+            <a style="cursor:pointer" ng-click="customcitations=!customcitations">previous citations</a>
+            <br>
                                         <span ng-show="customcitations">
                                             <br><b>Citations</b>
                                              <li ng-repeat="cit in process.citations">
@@ -293,225 +280,223 @@
                                              </li>
 
                                         </span>
-    <br>
+            <br>
 
-    <div>
-        <button ng-click="save_process()" ng-disabled="!process.name"> Save Process
-        </button>
+            <div>
+                <button ng-click="save_process()" ng-disabled="!process.name"> Save Process
+                </button>
+            </div>
+
+
+        </div>
+
     </div>
-
-
-</div>
-
-</div>
 </form>
 </div>
 <div class="block" ng-show="isCurrentStep('nav_choose_inputs')">
-    <form id="input-tab" class="form-inline span8">
-        <div class="well" ng-controller="ProcessStepController">
-            <h4>Inputs</h4>
+<form id="input-tab" class="form-inline span8">
+<div class="well" ng-controller="ProcessStepController">
+<h4>Inputs</h4>
 
-            <div ng-repeat="condition in state.attributes.process.required_conditions">
-                <div class="well" ng-controller="InputStepController" ng-init="init(condition)">
+<div ng-repeat="condition in state.attributes.process.required_conditions">
+    <div class="well" ng-controller="InputStepController" ng-init="init(condition)">
 
-                    <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{condition_name}}</a>
+        <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{condition_name}}</a>
 
-                    <p style="float: right" ng-show="state.attributes.input_conditions[condition_name]">
+        <p style="float: right" ng-show="state.attributes.input_conditions[condition_name]">
+            <button class="btn btn-success">Saved</button>
+        </p>
+        <br>
+
+        <div ng-show="showDetails">
+            <div ng-show="condition.template_pick">
+                <div class="well">
+                    <b>From what material this sample was drawn?:<a
+                            href="#modalMaterial" data-toggle="modal">{{condition.material.name}}</a></b>
+
+                    <p style="float: right" ng-show="material_added">
                         <button class="btn btn-success">Saved</button>
                     </p>
-                    <br>
-                                        <span ng-show="showDetails">
-                                               <label>Pick one: </label>
-                                            <select ng-model="use_condition">
-                                                <option ng-repeat="ec in existing_conditions" value="{{ec}}"
-                                                        ng-click="selected_condition(ec)"> {{ec.name}}
-                                                <option disabled> -------------------</option>
-                                                <option ng-click="clear_condition()" value="clear">Clear</option>
+                    <br> <br>
+                    <!-- Modal -->
+                    <div id="modalMaterial" class="modal hide fade" tabindex="-1"
+                         role="dialog"
+                         aria-labelledby="modalMaterialLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">×
+                            </button>
+                            <h3 id="modalMaterialLabel">
+                                {{condition.material.name}}</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <label>Name:</label><span>{{condition.material.name}}</span>
+                                <br>
+                                <label>Alloy:</label><span>{{condition.material.alloy_name}}</span>
+                                <br>
 
-                                                </option>
-                                            </select> <br>
+                                <label>composition:</label>
+                                <span>{{condition.material.composition}}</span> <br>
+                                <label>Contact:</label>
+                                <span>{{condition.material.contact_email}}</span> <br>
+                                <label>Notes:</label>
+                                <span>{{condition.materialnotes}}</span> <br>
+                                <!--<label>Model:</label>-->
 
-                                            <b style="color: lightseagreen"> OR you can create your own by filling out
-                                                the form below</b><br>
-                                            <br> <br>
-                                            <label style="color: red">Name: [required]</label><input
-                                                placeholder="Give a name to your property" ng-model="condition.name"
-                                                type="text"> <br>
-                                            <label>Description</label> <input ng-model="condition.description"
-                                                                              type="text">
-                                            <br>
+                                <!--<div ng-repeat="kv in process.material.model">-->
+                                <!--<label>{{kv.name}}</label> --->
+                                <!--<span>{{kv.value}}</span>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal"
+                                    aria-hidden="true">Close
+                            </button>
+                        </div>
+                    </div>
 
-                                            {{condition.template_description}}<br>   <br>
-                                        <div ng-repeat="property in condition.model">
+                    <input type="radio" ng-model="myradio" value="select">Use Existing
+                    Material<br>
+                    <input type="radio" ng-model="myradio" value="create">Create New
+                    Material
 
-                                            <label>{{property.name}}</label>
-                                            <span ng-if="property.value_choice.length!=0">
-                                                <select ng-model="property.value">
+                    <div ng-show="myradio=='select'">
+                        select existing material:
+                        <select ng-model="material_selected">
+                            <option disabled>pick a material:</option>
+                            <option ng-repeat="m in materials" value="{{m}}"
+                                    ng-click="material_select()">{{m.name}}
+                            </option>
+                            <option></option>
+                            <option ng-click="clear_material()" value="clear">clear
+                            </option>
+                        </select><br>
+                    </div>
+                    <div ng-show="myradio=='create'">
+                        <div class="well">
+                            <label>Name:</label><span><input
+                                ng-model="condition.material.name"
+                                placeholder="Name your material"
+                                type="text"></span> <br>
+                            <label>Composition</label><span><input
+                                ng-model="condition.material.composition"
+                                placeholder="material composition.."
+                                type="text"></span><br>
+                            <label>Contact:</label><span><input
+                                ng-model="condition.material.contact_email"
+                                placeholder="email.."
+                                type="text"></span><br>
 
-                                                    <option ng-repeat="val in property.value_choice"> {{val}}
-                                                    </option>
-                                                </select>
-                                            </span>
-                                            <span ng-if="property.value_choice.length==0">
-                                                <input ng-model="property.value" type="text">
-                                            </span>
-                                            <span ng-if="property.unit_choice.length!=0">
-                                                   <label>Units:</label>
-                                            <select style="width:80px" ng-model="property.unit">
-                                                <option ng-repeat="unit in property.unit_choice"> {{unit}}
-                                                </option>
-                                            </select>
-                                            </span>
-                                        </div>
-                                             <br>
-                                             <div ng-show="condition.template_pick">
-                                                 <div class="well">
-                                                     <b>From what material this sample was drawn?:<a
-                                                             href="#modalMaterial" data-toggle="modal">{{condition.material.name}}</a></b>
+                            <label>Notes:</label><span><input
+                                ng-model="condition.material.notes"
+                                placeholder="Type your notes.."
+                                type="text"></span> <br>
+                            <br>
+                            <button ng-disabled="!condition.material.name"
+                                    ng-click="add_material_to_db()">Save Material
+                            </button>
+                            <button ng-click="clear_material()">clear</button>
 
-                                                     <p style="float: right" ng-show="material_added">
-                                                         <button class="btn btn-success">Saved</button>
-                                                     </p>
-                                                     <br> <br>
-                                                     <!-- Modal -->
-                                                     <div id="modalMaterial" class="modal hide fade" tabindex="-1"
-                                                          role="dialog"
-                                                          aria-labelledby="modalMaterialLabel" aria-hidden="true">
-                                                         <div class="modal-header">
-                                                             <button type="button" class="close" data-dismiss="modal"
-                                                                     aria-hidden="true">×
-                                                             </button>
-                                                             <h3 id="modalMaterialLabel">
-                                                                 {{condition.material.name}}</h3>
-                                                         </div>
-                                                         <div class="modal-body">
-                                                             <div>
-                                                                 <label>Name:</label><span>{{condition.material.name}}</span>
-                                                                 <br>
-                                                                 <label>Alloy:</label><span>{{condition.material.alloy_name}}</span>
-                                                                 <br>
+                        </div>
 
-                                                                 <label>composition:</label>
-                                                                 <span>{{condition.material.composition}}</span>   <br>
-                                                                 <label>Contact:</label>
-                                                                 <span>{{condition.material.contact_email}}</span> <br>
-                                                                 <label>Notes:</label>
-                                                                 <span>{{condition.materialnotes}}</span>       <br>
-                                                                 <!--<label>Model:</label>-->
-
-                                                                 <!--<div ng-repeat="kv in process.material.model">-->
-                                                                 <!--<label>{{kv.name}}</label> --->
-                                                                 <!--<span>{{kv.value}}</span>-->
-                                                                 <!--</div>-->
-                                                             </div>
-                                                         </div>
-                                                         <div class="modal-footer">
-                                                             <button class="btn" data-dismiss="modal"
-                                                                     aria-hidden="true">Close
-                                                             </button>
-                                                         </div>
-                                                     </div>
-
-                                                     <input type="radio" ng-model="myradio" value="select">Use Existing
-                                                     Material<br>
-                                                     <input type="radio" ng-model="myradio" value="create">Create New
-                                                     Material
-
-                                                     <div ng-show="myradio=='select'">
-                                                         select existing material:
-                                                         <select ng-model="material_selected">
-                                                             <option disabled>pick a material:</option>
-                                                             <option ng-repeat="m in materials" value="{{m}}"
-                                                                     ng-click="material_select()">{{m.name}}
-                                                             </option>
-                                                             <option></option>
-                                                             <option ng-click="clear_material()" value="clear">clear
-                                                             </option>
-                                                         </select><br>
-                                                     </div>
-                                                     <div ng-show="myradio=='create'">
-                                                         <div class="well">
-                                                             <label>Name:</label> <span><input
-                                                                 ng-model="condition.material.name"
-                                                                 placeholder="Name your material"
-                                                                 type="text"></span> <br>
-                                                             <label>Alloy:</label><span><input
-                                                                 ng-model="condition.material.alloy_name"
-                                                                 placeholder="alloy....."
-                                                                 type="text"></span><br>
-                                                             <label>Composition</label><span><input
-                                                                 ng-model="condition.material.composition"
-                                                                 placeholder="material composition.."
-                                                                 type="text"></span><br>
-                                                             <label>Contact: </label><span><input
-                                                                 ng-model="condition.material.contact_email"
-                                                                 placeholder="email.."
-                                                                 type="text"></span><br>
-
-                                                             <label>Notes:</label><span><input
-                                                                 ng-model="condition.material.notes"
-                                                                 placeholder="Type your notes.."
-                                                                 type="text"></span> <br>
-                                                             <br>
-                                                             <button ng-disabled="!condition.material.name"
-                                                                     ng-click="add_material_to_db()">Save Material
-                                                             </button>
-                                                             <button ng-click="clear_material()">clear</button>
-
-                                                         </div>
-
-                                                     </div>
-
-                                                 </div>
-                                             </div>
-
-                                              <br>
-
-                                            <div class="well">
-                                                Add Custom Properties(sample):
-                                                <input ng-model="additional_prop" type="text">
-                                                <button ng-click="custom_property()">Add Property</button>
-                                            </div>
-                                            <button ng-click="save_condition()" ng-disabled="!condition.name">Save
-                                            </button>
-                                            <br>
-                                        </span>
+                    </div>
 
                 </div>
             </div>
-            <div ng-show="state.attributes.process.required_input_files=='yes'">
-                <div class="well" ng-controller="InputStepController">
-                    <a style="cursor:pointer" ng-click="showDetails=!showDetails">Input files</a><br>
+            <label>Pick existing sample: </label>
+            <select ng-model="use_condition">
+                <option ng-repeat="ec in existing_conditions" value="{{ec}}"
+                        ng-click="selected_condition(ec)"> {{ec.name}}
+                <option disabled> -------------------</option>
+                <option ng-click="clear_condition()" value="clear">Clear</option>
+
+                </option>
+            </select> <br>
+
+            <b style="color: lightseagreen"> OR you can create one by filling out
+                the form below</b><br>
+            <br> <br>
+            <label style="color: red">Name: [required]</label><input
+                placeholder="Give a name to your property" ng-model="condition.name"
+                type="text"> <br>
+            <label>Description</label> <input ng-model="condition.description"
+                                              type="text">
+            <br>
+
+            {{condition.template_description}}<br> <br>
+
+            <div ng-repeat="property in condition.model">
+
+                <label>{{property.name}}</label>
+
+                <span ng-if="property.value_choice.length!=0">
+                    <select ng-model="property.value">
+
+                        <option ng-repeat="val in property.value_choice"> {{val}}
+                        </option>
+                    </select>
+                </span>
+                <span ng-if="property.value_choice.length==0">
+                    <input ng-model="property.value" type="text">
+                </span>
+                <span ng-if="property.unit_choice.length!=0">
+                    <label>Units:</label>
+                    <select style="width:80px" ng-model="property.unit">
+                        <option ng-repeat="unit in property.unit_choice"> {{unit}}
+                        </option>
+                    </select>
+                </span>
+            </div>
+
+            <br>
+
+            <div class="well">
+                Add Custom Properties(sample):
+                <input ng-model="additional_prop" type="text">
+                <button ng-click="custom_property()">Add Property</button>
+            </div>
+            <button ng-click="save_condition()" ng-disabled="!condition.name">Save
+            </button>
+            <br>
+        </div>
+
+    </div>
+</div>
+<div ng-show="state.attributes.process.required_input_files=='yes'">
+    <div class="well" ng-controller="InputStepController">
+        <a style="cursor:pointer" ng-click="showDetails=!showDetails">Input files</a><br>
                                 <span ng-show="showDetails">
                                         <b>Select the files from project tree shown below</b><br>
                                         <button ng-click="add_input_files()">Add Files</button>
                                 </span>
 
-                    <li ng-repeat="item in state.attributes.checked_input_filenames">
-                        <i class="fa fa-check-square"></i>{{item.name}}
-                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
-                        <br>
-                    </li>
-                </div>
-            </div>
+        <li ng-repeat="item in state.attributes.checked_input_filenames">
+            <i class="fa fa-check-square"></i>{{item.name}}
+            <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+            <br>
+        </li>
+    </div>
+</div>
 
 
-            <div ng-controller="InputStepController">
-                <div ng-show="warning"><br>
-                    <b style="color:orange">WARNING: Required properties should atleast have a name.</b>
-                </div>
-                <div ng-hide="verified">
-                    <button ng-click="verify_inputs()">Verify Inputs</button>
+<div ng-controller="InputStepController">
+    <div ng-show="warning"><br>
+        <b style="color:orange">WARNING: Required properties should atleast have a name.</b>
+    </div>
+    <div ng-hide="verified">
+        <button ng-click="verify_inputs()">Verify Inputs</button>
 
-                </div>
-                <div ng-show="verified">
-                    <b>required inputs have been verified!</b>
-                    <button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>
-                </div>
-            </div>
+    </div>
+    <div ng-show="verified">
+        <b>required inputs have been verified!</b>
+        <button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>
+    </div>
+</div>
 
-        </div>
-    </form>
+</div>
+</form>
 
 </div>
 <div class="block" ng-show="isCurrentStep('nav_choose_outputs')">
@@ -598,11 +583,11 @@
                                                                 <br>
 
                                                                 <label>composition:</label>
-                                                                <span>{{condition.material.composition}}</span>   <br>
+                                                                <span>{{condition.material.composition}}</span> <br>
                                                                 <label>Contact:</label>
-                                                                <span>{{condition.material.contact_email}}</span>   <br>
+                                                                <span>{{condition.material.contact_email}}</span> <br>
                                                                 <label>Notes:</label>
-                                                                <span>{{condition.material.notes}}</span>      <br>
+                                                                <span>{{condition.material.notes}}</span> <br>
 
                                                             </div>
                                                         </div>

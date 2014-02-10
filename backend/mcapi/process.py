@@ -5,13 +5,14 @@ import rethinkdb as r
 import error
 import dmutil
 import access
-from args import add_all_arg_options, json_as_format_arg
+import args
 
 
 @app.route('/processes/<process_id>', methods=['GET'])
 @jsonp
 def get_process(process_id):
     return dmutil.get_single_from_table('processes', process_id)
+
 
 @app.route('/processes', methods=['GET'])
 @jsonp
@@ -24,7 +25,7 @@ def get_all_processes():
 def get_all_processes_for_template(template_id):
     rr = r.table('processes').filter({'template': template_id})
     selection = list(rr.run(g.conn, time_format='raw'))
-    return json_as_format_arg(selection)
+    return args.json_as_format_arg(selection)
 
 
 @app.route('/processes/new', methods=['POST'])
@@ -55,12 +56,15 @@ def create_process():
     p['status'] = dmutil.get_optional('status', j)
     return dmutil.insert_entry('processes', p)
 
+
 @app.route('/processes/project/<project_id>', methods=['GET'])
 @jsonp
 def get_all_processes_for_project(project_id):
-    rr = r.table('processes').filter({'project': project_id}).pluck('id', 'name','template', 'description')
+    rr = r.table('processes').filter({'project': project_id}) \
+                             .pluck('id', 'name', 'template', 'description')
     selection = list(rr.run(g.conn, time_format='raw'))
-    return  json_as_format_arg(selection)
+    return args.json_as_format_arg(selection)
+
 
 @app.route('/processes/extract/<process_id>/<object_type>', methods=['GET'])
 @apikey
@@ -68,33 +72,34 @@ def get_all_processes_for_project(project_id):
 def get_datafile_objects(process_id, object_type):
     rr = r.table('processes').filter({'id': process_id})
     if object_type == 'input_files':
-        rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
-                       lambda ddrow, drow: ddrow['input_files']
-                       .contains(drow['id']))
+        rr = rr.outer_join(r.table('datafiles')
+                           .pluck('id', 'name', 'size', 'owner', 'birthtime'),
+                           lambda ddrow, drow: ddrow['input_files']
+                           .contains(drow['id']))
     elif object_type == 'output_files':
-        rr = rr.outer_join(r.table('datafiles').pluck('id', 'name','size', 'owner', 'birthtime'),
-                       lambda ddrow, drow: ddrow['output_files']
-                       .contains(drow['id']))
+        rr = rr.outer_join(r.table('datafiles')
+                           .pluck('id', 'name', 'size', 'owner', 'birthtime'),
+                           lambda ddrow, drow: ddrow['output_files']
+                           .contains(drow['id']))
     elif object_type == 'input_conditions':
         rr = rr.outer_join(r.table('conditions'),
-                       lambda ddrow, drow: ddrow['input_conditions']
-                       .contains(drow['id']))
+                           lambda ddrow, drow: ddrow['input_conditions']
+                           .contains(drow['id']))
     elif object_type == 'output_conditions':
         rr = rr.outer_join(r.table('conditions'),
-                       lambda ddrow, drow: ddrow['output_conditions']
-                       .contains(drow['id']))
+                           lambda ddrow, drow: ddrow['output_conditions']
+                           .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
-    return  json_as_format_arg(selection)
+    return  args.json_as_format_arg(selection)
 
 
 @app.route('/process/datafiles/<process_id>', methods=['GET'])
 @apikey
 @jsonp
 def get_files(process_id):
-    print process_id
     rr = r.table('processes').filter({'id': process_id})
     rr = rr.outer_join(r.table('datafiles'),
                      lambda prow, frow: prow['output_files']
                      .contains(frow['id'])).zip()
     selection = list(rr.run(g.conn, time_format='raw'))
-    return json_as_format_arg(selection)
+    return args.json_as_format_arg(selection)
