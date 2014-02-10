@@ -46,14 +46,19 @@ stateServices.
             }
         }
 
-        S.retrieveRemote = function (f) {
-            mcapi('/stater')
+        S.retrieveRemote = function (state_id, f) {
+            var callfunc = arguments.length == 2;
+            mcapi('/stater/%', state_id)
                 .success(function (data) {
                     S.state = data;
-                    f(true, data);
+                    if (callfunc) {
+                        f(true, data);
+                    }
                 })
                 .error(function () {
-                    f(false);
+                    if (callfunc) {
+                        f(false);
+                    }
                 }).jsonp();
         }
 

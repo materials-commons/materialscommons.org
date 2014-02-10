@@ -17,16 +17,13 @@ app.config(function ($stateProvider) {
         })
         .state('mytools', {
             url: '/mytools',
-            templateUrl: 'partials/my-tools.html',
-            controller: 'ListProjectsController'
+            templateUrl: 'partials/my-tools.html'
         })
 
         .state('mytools.projects', {
-            url: '/projects/:project_id',
+            url: '/projects/:id/:state_id',
             templateUrl: 'partials/project/project-report.html',
-            controller: function ($scope, $stateParams) {
-                $scope.project_id = $stateParams.project_id;
-            }
+            controller: 'ProjectEditController'
         })
         .state('mytools.dataedit', {
             url: '/data/edit/:id',
