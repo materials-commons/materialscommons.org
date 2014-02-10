@@ -22,16 +22,8 @@
             "value_choice": [ ]
         } ,
         {
-            "name": "specimen" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": [ ],
-            "value": "" ,
-            "value_choice": [ ]
-        } ,
-        {
             "name": "specimen_prep" ,
-            "type": "" ,
+            "type": "multi" ,
             "unit": "" ,
             "unit_choice": [ ],
             "value": "" ,
@@ -45,7 +37,7 @@
     "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_description": "" ,
     "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
-    "template_name": "Material Properties" ,
+    "template_name": "Sample Properties" ,
     "template_pick": "material" ,
     "template_type": "condition"
 
