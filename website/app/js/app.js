@@ -1,6 +1,6 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance']);
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance', 'ngQuickDate']);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -18,15 +18,13 @@ app.config(function ($stateProvider) {
         .state('mytools', {
             url: '/mytools',
             templateUrl: 'partials/my-tools.html',
-            controller: 'ListProjectsController'
+            controller:'MyToolsController'
         })
 
         .state('mytools.projects', {
-            url: '/projects/:project_id',
+            url: '/projects/:id/:state_id',
             templateUrl: 'partials/project/project-report.html',
-            controller: function ($scope, $stateParams) {
-                $scope.project_id = $stateParams.project_id;
-            }
+            controller: 'ProjectEditController'
         })
         .state('mytools.dataedit', {
             url: '/data/edit/:id',
@@ -70,6 +68,14 @@ app.config(function ($stateProvider) {
     /**
      * Mytools - Subpage is the parent and the rest inherit
      */
+
+        //Provenance
+        .state('mytools.drafts', {
+            url: '/drafts',
+            templateUrl: 'partials/provenance/drafts-list.html',
+            controller: DraftsListController
+        })
+
         .state('mytools.projects.process', {
             url: '/projects/process/new',
             templateUrl: 'partials/process.html'
@@ -174,8 +180,16 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/data/data-edit.html',
             controller: 'DataEditController'
         })
-
-
+        .state('mytools.machine', {
+            url: '/machine',
+            templateUrl: 'partials/machine/create-machine.html',
+            controller: 'CreateNewMachineController'
+        })
+        .state('mytools.material', {
+            url: '/material',
+            templateUrl: 'partials/material/create-material.html',
+            controller: 'CreateNewMaterialController'
+        })
 
 
     /**
@@ -274,14 +288,6 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
             }
 
             $rootScope.stompClient = ngstomp(chatConnection);
-        }
-
-        if (mcglobals.bypasslogin) {
-            if (mcglobals.username) {
-                User.setAuthenticated(true, mcglobals.apikey, mcglobals.username);
-                $rootScope.email_address = mcglobals.username;
-            }
-            return;
         }
 
         if (!User.isAuthenticated()) {

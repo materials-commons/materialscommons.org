@@ -10,18 +10,20 @@
                     <label>Name:</label><span>{{process.name}}</span><br>
                     <label>Description:</label><span>{{process.description}}</span> <br>
                     <label>Notes:</label>
-                    <span ng-repeat="n in process.notes">
-                     {{n}}
-                    </span> <br>
+                    <ul ng-repeat="n in process.notes">
+                        <li>{{n}}</li>
+                    </ul> <br>
                     <label>Runs:</label>
                 <span ng-repeat="r in process.runs">
-                    {{r.started}}  -
-                    {{r.stopped}}
-                    {{r.error_messages}}
-                </span> <br>
-                    <label>Machine:</label><span>{{process.machine.name}}</span> <br>
-                    <label>Version:</label><span>{{process.version}}</span> <br>
+                    <li>
+                        {{r.started | date:'medium' }}  -
+                        {{r.stopped | date:'medium'}} <br> Error Messages:
+                        {{r.error_messages}}
+                    </li>
 
+                </span> <br>
+                    <label>Machine:</label><span>{{machine.name}}</span> <br>
+                    <label>Version:</label><span>{{process.version}}</span> <br>
                 </div>
                 <h5>Inputs</h5>
 
@@ -57,10 +59,20 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <div ng-repeat="key in all_keys">
-                            <label>{{key}}</label> - <span>{{display_condition[key]}}</span>
-                        </div>
 
+                        <label>Name:</label><span>{{display_condition.name}}</span> <br>
+                        <label>Description:</label><span>{{display_condition.description}}</span><br>
+                        <span ng-if="display_condition.material">
+                                  <label>Material:</label><span>{{display_condition.material.name}}</span><br>
+                            </span>
+                        <label>Model:</label>
+
+                        <div ng-repeat="prop in display_condition.model">
+                            <label>{{prop.name}}</label> - <span>{{prop.value}}</span>
+                            <span ng-if="prop.unit!=''">
+                                {{prop.unit}}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

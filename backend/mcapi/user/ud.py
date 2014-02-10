@@ -21,6 +21,7 @@ class StateCreateSaver(object):
     def __init__(self):
         self.objects = {}
 
+
     def insert(self, table, entry):
         rv = r.table('saver').insert(entry).run(g.conn)
         id = rv['generated_keys'][0]
@@ -134,6 +135,7 @@ def create_process_from_template(j, saver):
     saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
 
 
+
 def create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver):
     for condition_name in input_conditions:
         condition = input_conditions[condition_name]
@@ -150,14 +152,20 @@ def create_condition_from_template(process_id, user, j, saver):
     m = j['model']
     type_of_condition = dmutil.get_required('condition_type', j)
     c['owner'] = user
+    c['material'] = dmutil.get_optional('material', j)
     c['template'] = dmutil.get_required('id', j)
     c['name'] = dmutil.get_required('name', j) #dmutil.get_required('template_name', j) = every condition instance should have its own name
     c['description'] = dmutil.get_optional('description', j)
+    c['model'] = list()
     for attr in m:
-        c[attr['name']] = attr['value']
+        add_model_item(c, attr['name'],attr['value'], attr['unit'], attr['value_choice'],attr['unit_choice'],attr['type'])
+        #c[attr['name']] = attr['value']
     c_id = saver.insert('conditions', c)
     new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run(g.conn)
     r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
+
+def add_model_item(c, name, value,unit, value_choice, unit_choice,value_type):
+    c['model'].append({'name':name, 'value':value,'unit':unit, 'value_choice':value_choice, 'unit_choice':unit_choice, 'type':value_type})
 
 
 @app.route('/import', methods=['POST'])
