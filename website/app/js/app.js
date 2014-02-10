@@ -17,7 +17,8 @@ app.config(function ($stateProvider) {
         })
         .state('mytools', {
             url: '/mytools',
-            templateUrl: 'partials/my-tools.html'
+            templateUrl: 'partials/my-tools.html',
+            controller:'MyToolsController'
         })
 
         .state('mytools.projects', {
