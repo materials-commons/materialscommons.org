@@ -27,6 +27,30 @@
             "value_choice": ""
         } ,
         {
+            "name": "Gun Type" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ["Field Emission"]
+        } ,
+        {
+            "name": "Detector Type" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ["Secondary Electron", "Back Scatter"]
+        } ,
+        {
+            "name": "Vacuum Level (Range)" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": ["Hight", "Low"]
+        } ,
+        {
             "name": "manufacturer" ,
             "type": "" ,
             "unit": "" ,

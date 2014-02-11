@@ -94,8 +94,11 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/thumbnail.html',
             controller: 'DataGroupGridController'
         })
-
-
+        .state('mytools.provenance', {
+            url:'/provenance/:id',
+            templateUrl: 'partials/project/add-provenance.html',
+            controller: 'ProvenanceController'
+        })
 
         .state('mytools.tagstab', {
             url: '/tagstab',
