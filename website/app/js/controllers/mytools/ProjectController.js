@@ -32,10 +32,8 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
     }
 
     if ($stateParams.state_id !== "") {
-        console.log("state_id:" + $stateParams.state_id);
         Stater.retrieveRemote($stateParams.state_id, function (status, data) {
             if (status) {
-                console.log("Retrieved the state!")
                 Stater.save(data);
                 $scope.state = Stater.retrieve();
                 $scope.add_to = 'prov';
@@ -46,13 +44,14 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
 
     watcher.watch($scope, 'add_to', function (choice) {
         if (choice === "prov") {
-            Stater.newId("prov", "create prov", "", function (status, state) {
-                if (status) {
-                    $scope.state = state;
-                    $scope.state.attributes.process = {};
-                    wizard.fireStep('nav_choose_process');
-                }
-            });
+            $state.transitionTo('mytools.provenance', {id: $rootScope.project_id});
+//            Stater.newId("prov", "create prov", "", function (status, state) {
+//                if (status) {
+//                    $scope.state = state;
+//                    $scope.state.attributes.process = {};
+//                    wizard.fireStep('nav_choose_process');
+//                }
+//            });
         }
     });
 
@@ -168,32 +167,6 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
         return tree, count
     }
 
-
-    var steps = {
-        step: 'nav_choose_process',
-        children: [
-            {step: 'nav_choose_inputs'},
-            {step: 'nav_choose_outputs'},
-            {step: 'nav_choose_upload'}
-        ]
-    };
-
-    wizard.setSteps(steps);
-
-    $scope.isCurrentStep = function (step) {
-        $scope.process_saved = trackSavedProv.get_process_status();
-        $scope.inputs_saved = trackSavedProv.get_input_status();
-        $scope.outputs_saved = trackSavedProv.get_output_status();
-
-        return wizard.currentStep() == step;
-
-    }
-
-    $scope.process_saved = trackSavedProv.get_process_status();
-    $scope.inputs_saved = trackSavedProv.get_input_status();
-    $scope.outputs_saved = trackSavedProv.get_output_status();
-
-
     $scope.check = function (t) {
         $scope.checked_items = treeToggle.get_all_checked_items();
         if (t.type == 'datafile') {
@@ -252,10 +225,6 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
                 alert('no')
             }).jsonp();
 
-    }
-
-    $scope.remove_instructions = function () {
-        $scope.display = true
     }
 }
 
@@ -439,9 +408,6 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
     }
 
-    $scope.edit_process = function () {
-        wizard.fireStep('nav_choose_process');
-    }
 
 
 }
@@ -660,9 +626,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.state.attributes.input_files.splice(index, 1);
         $scope.state.attributes.checked_input_filenames.splice(index, 1);
     }
-    $scope.edit_input = function () {
-        wizard.fireStep('nav_choose_inputs');
-    }
+
 
 
 }
@@ -852,9 +816,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
         $scope.state = Stater.retrieve();
         wizard.fireStep('nav_choose_upload');
     }
-    $scope.edit_output = function () {
-        wizard.fireStep('nav_choose_outputs');
-    }
+
 }
 
 function UploadStepController($scope, wizard, Stater, mcapi) {
