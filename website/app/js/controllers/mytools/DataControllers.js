@@ -132,6 +132,30 @@ function DataEditController($scope, $window, mcapi, alertService, $stateParams, 
 
                 }).jsonp()
         }
+        if (p.input_conditions != []){
+            mcapi('/processes/extract/%/%', p.id, "input_conditions")
+                .success(function(data){
+                    $scope.ip_conditions = data;
+                })
+                .error(function(e){
+
+                }).jsonp()
+        }
+        if (p.output_conditions != []){
+            mcapi('/processes/extract/%/%', p.id, "output_conditions")
+                .success(function(data){
+                    $scope.op_conditions = data;
+                })
+                .error(function(e){
+
+                }).jsonp()
+        }
+    }
+
+    $scope.get_mode_condition = function (cond) {
+        console.log(cond);
+
+        $scope.display_condition = cond;
     }
 
 

@@ -137,7 +137,7 @@
             <hr/>
 
             <div class="row-fluid">
-                <div class="span7">
+                <div class="span10">
                     <div class="well">
                         <h4>Processes:</h4>
                         <span ng-repeat="p in processes">
@@ -150,36 +150,78 @@
             </div>
             <div class="row-fluid">
                 <div ng-show="show_pr">
-                    <div class="span7">
+                    <div class="span5">
                         <div class="well">
-                            <h5>{{process.name}}</h5>
-                            <label>Description</label><span>{{process.description}}</span> <br>
-                            <label>Version:</label><span>{{process.version}}</span> <br>
+                            <div class="well">
+                                Process : <span><b>{{process.name}}</b></span><br>
+                                Description :<span>{{process.description}}</span> <br>
+                                Version:<span>{{process.version}}</span> <br>
+                                Notes:
+                                <ul ng-repeat="n in process.notes">
+                                    <li>{{n}}</li>
+                                </ul>
+                                <br>
+                                Runs:
+                                <ul ng-repeat="r in process.runs">
+                                    <li>{{r.started | date:'medium'}} -
+                                        {{r.stopped | date:'medium'}} <br> Error Messages:
+                                        {{r.error_messages}}
+                                    </li>
+                                </ul> <br>
 
-                            <label>Notes:</label>
-                            <ul ng-repeat="n in process.notes">
-                                <li>{{n}}</li>
+
+                            </div>
+
+                            <div class="well">
+                                <h5><u>Inputs:</u></h5>
+                                <b>Properties:</b><br>
+                                    <ul style="list-style-position: inside"  ng-repeat="f in ip_conditions">
+                                        <li style="list-style-type: circle"><a href="#modalCondition" data-toggle="modal" ng-click="get_mode_condition(f.right)">{{f.right.name}}</a></li>
+                                    </ul>
+                                <b>Files:</b>
+                                <ul style="list-style-position: inside"  ng-repeat="f in ip_files">
+                                    <li style="list-style-type: circle"><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
+                                </ul>
+                            </div>
+                            <div class="well">
+                            <h5><u>Outputs:</u></h5>
+                            <b>Properties:</b>
+                                <ul style="list-style-position: inside"  ng-repeat="f in op_conditions">
+                                        <li style="list-style-type: circle"><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
+                                </ul> <br>
+                            <b>Files:</b>
+                            <ul style="list-style-position: inside"  ng-repeat="f in op_files">
+                                    <li style="list-style-type: circle"><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
                             </ul>
-                            <br>
-                           <label>Runs:</label>
-                            <ul ng-repeat="r in process.runs">
-                                <li>{{r.started | date:'medium'}} -
-                                    {{r.stopped | date:'medium'}} <br> Error Messages:
-                                    {{r.error_messages}}
-                                </li>
-                            </ul> <br>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div id="modalCondition" class="modal hide fade" tabindex="-1" role="dialog"
+                         aria-labelledby="modalConditionLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 id="modalConditionLabel">{{display_condition.name}}</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="block">
+                                <label>Name:</label><span>{{display_condition.name}}</span> <br>
+                                <label>Description:</label><span>{{display_condition.description}}</span><br>
+                                    <span ng-if="display_condition.material!={}">
+                                        <label>Material:</label><span>{{display_condition.material.name}}</span><br>
+                                    </span>
+                                <label>Model:</label>
 
-                            <b>Inputs </b>
-                            <span ng-repeat="f in ip_files">
-                                    <li><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
-
+                                <div ng-repeat="prop in display_condition.model">
+                                    <label>{{prop.name}}</label>  <span>{{prop.value}}</span>
+                            <span ng-if="prop.unit!=''">
+                                {{prop.unit}}
                             </span>
-
-                            <b>Outputs </b>
-                            <span ng-repeat="f in op_files">
-                                    <li><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
-                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                         </div>
                     </div>
                 </div>
