@@ -104,6 +104,7 @@ def get_datafile_by_name(datadir_id, name):
 
 
 @app.route('/processes/datafile/<df_id>', methods=['GET'])
+@apikey
 @jsonp
 def get_processes(df_id):
     rr = r.table('processes') \
