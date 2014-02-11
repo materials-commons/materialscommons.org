@@ -13,13 +13,12 @@ import os.path
 @apikey(shared=True)
 @jsonp
 def datafiles_for_user():
-    df_dg = {}
     user = access.get_user()
     rr = r.table('datafiles').filter({'owner': user})
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
-    
+
 
 @app.route('/datafiles/tag/<tag>')
 @apikey(shared=True)
@@ -103,25 +102,12 @@ def get_datafile_by_name(datadir_id, name):
     return error.not_found(
         "No such file %s in datadir %s" % (name, datadir_id))
 
-def find_match(row, df_id):
-    if row['input_files'].contains(df_id):
-        return True
-    if row['output_files'].contains(df_id):
-        return True
 
 @app.route('/processes/datafile/<df_id>', methods=['GET'])
 @jsonp
 def get_processes(df_id):
-    print df_id
-    rr = r.table('processes').filter(
-        lambda row: find_match(row, df_id)
-        )
+    rr = r.table('processes') \
+          .filter(lambda row: (row['input_files'].contains(df_id)
+                               | row['output_files'].contains(df_id)))
     selection = list(rr.run(g.conn, time_format='raw'))
-    return  args.json_as_format_arg(selection)
-
-
-
-
-
-
-
+    return args.json_as_format_arg(selection)
