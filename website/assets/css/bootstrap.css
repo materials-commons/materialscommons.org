@@ -315,6 +315,7 @@ a:focus {
 
 .span10 {
     width: 780px;
+    width: 780px;
 }
 
 .span9 {
@@ -2981,13 +2982,13 @@ table th[class*="span"],
 
 .well {
     min-height: 20px;
-    padding: 19px;
-    margin-bottom: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #e3e3e3;
+    padding: 10px; /* from 19px to 10px*/
+    margin-bottom: 10px;           /* from 20px to 5px*/
+    background-color: #eff3e5;
+    border: 1px solid #9b9b72;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
-    border-radius: 4px;
+    border-radius: 8px;  /* from 4 to 12px*/
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
