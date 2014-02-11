@@ -9,7 +9,7 @@ _admins = []
 
 
 def check(user, owner, id="Unknown"):
-    if not check_project_access(user, owner, id):
+    if not allowed(user, owner):
         raise mcexceptions.AccessNotAllowedException(id)
 
 
@@ -82,7 +82,7 @@ def get_user():
     return request.args.get('user', default=apiuser)
 
 
-def check_project_access(user, owner, id="Unknown"):
+def allowed(user, owner):
     if user == owner:
         return True
     if _user_in_owner_group(user, owner):
