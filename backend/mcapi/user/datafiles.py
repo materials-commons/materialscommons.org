@@ -25,11 +25,14 @@ def datafiles_for_user():
 @jsonp
 def datafiles_for_user_by_tag(tag):
     user = access.get_user()
-    rr = r.table('datafiles').filter({'owner': user})\
-                             .filter(r.row['tags'].contains(tag))
+    rr = r.table('datafiles').filter(r.row['tags'].contains(tag))
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
+    datafiles = []
+    for df in selection:
+        if access.allowed(user, df['owner']):
+            datafiles.append(df)
+    return args.json_as_format_arg(datafiles)
 
 
 @app.route('/datafile/update/<path:datafileid>', methods=['PUT'])

@@ -52,7 +52,7 @@ def get_all_group_projects():
         rr = args.add_all_arg_options(rr)
         selection = list(rr.run(g.conn, time_format='raw'))
         for proj in selection:
-            if access.check_project_access(user, proj[u'owner']):
+            if access.allowed(user, proj[u'owner']):
                 list_projects.append(proj)
         return args.json_as_format_arg(list_projects)
 
