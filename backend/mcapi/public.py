@@ -3,10 +3,9 @@ from decorators import crossdomain, apikey, jsonp
 import json
 from flask import jsonify, g, request
 import rethinkdb as r
-import uuid
 from loader.model import user
 import dmutil
-from utils import create_tag_count, make_password_hash, set_dates
+from utils import create_tag_count, make_password_hash
 import error
 
 
@@ -15,7 +14,7 @@ import error
 def tag():
     inserted = r.table('tags').insert(request.json).run(g.conn)
     if (inserted[u'inserted'] == 1):
-        return {'status': 'SUCCESS'}
+        return json.dumps({'status': 'SUCCESS'})
     else:
         return error.bad_request("Unable to insert tag")
 
