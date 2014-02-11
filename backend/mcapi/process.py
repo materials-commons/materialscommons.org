@@ -90,7 +90,7 @@ def get_datafile_objects(process_id, object_type):
                            lambda ddrow, drow: ddrow['output_conditions']
                            .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
-    return  args.json_as_format_arg(selection)
+    return args.json_as_format_arg(selection)
 
 
 @app.route('/process/datafiles/<process_id>', methods=['GET'])
@@ -99,7 +99,7 @@ def get_datafile_objects(process_id, object_type):
 def get_files(process_id):
     rr = r.table('processes').filter({'id': process_id})
     rr = rr.outer_join(r.table('datafiles'),
-                     lambda prow, frow: prow['output_files']
-                     .contains(frow['id'])).zip()
+                       lambda prow, frow: prow['output_files']
+                       .contains(frow['id'])).zip()
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
