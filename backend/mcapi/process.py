@@ -90,5 +90,4 @@ def get_datafile_objects(process_id, object_type):
                            lambda ddrow, drow: ddrow['output_conditions']
                            .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
-    return  args.json_as_format_arg(selection)
-
+    return args.json_as_format_arg(selection)
