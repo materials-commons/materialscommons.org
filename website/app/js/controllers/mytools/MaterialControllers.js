@@ -1,4 +1,4 @@
-function CreateNewMaterialController($scope,mcapi){
+function CreateNewMaterialController($scope, mcapi) {
     mcapi('/materials')
         .success(function (data) {
             $scope.materials_list = data;
@@ -18,7 +18,7 @@ function CreateNewMaterialController($scope,mcapi){
                 mcapi('/materials/%', data.id)
                     .success(function (material_obj) {
                         $scope.mat = material_obj;
-                        $scope.materials_list.push(material_obj)
+                        $scope.materials_list.unshift(material_obj)
                     })
                     .error(function (e) {
 
