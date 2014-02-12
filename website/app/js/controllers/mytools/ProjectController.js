@@ -56,6 +56,7 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
     });
 
     $scope.selected_project = function (proj_id) {
+        console.log("selected_project");
         $scope.done = false;
         $scope.notdone = false;
         trackSavedProv.mark_process(false);
@@ -407,6 +408,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
                 pubsub.send('drafts.update', '');
             });
             $scope.project_warning = false;
+            console.log("firing nav_choose_inputs");
             wizard.fireStep('nav_choose_inputs');
 
         }
@@ -631,8 +633,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
         $scope.state.attributes.input_files.splice(index, 1);
         $scope.state.attributes.checked_input_filenames.splice(index, 1);
     }
-
-
 
 }
 
