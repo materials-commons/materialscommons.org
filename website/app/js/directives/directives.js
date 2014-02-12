@@ -1,6 +1,6 @@
-var materialsdirective = angular.module("materialsdirective", []);
+var md = angular.module("materialsdirective", []);
 
-materialsdirective.directive('wordcloud', function () {
+md.directive('wordcloud', function () {
     return {
         restrict: 'A',
         transclude: true,
@@ -17,7 +17,7 @@ materialsdirective.directive('wordcloud', function () {
     };
 });
 
-materialsdirective.directive('datepicker', function () {
+md.directive('datepicker', function () {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -31,14 +31,14 @@ materialsdirective.directive('datepicker', function () {
     };
 });
 
-materialsdirective.directive('bs:popover', function (expression, compiledElement) {
+md.directive('bs:popover', function (expression, compiledElement) {
     return function (linkElement) {
         linkElement.popover();
     };
 });
 
 
-materialsdirective.directive('notification', function ($timeout) {
+md.directive('notification', function ($timeout) {
     return {
         restrict: 'E',
         replace: true,
@@ -57,7 +57,7 @@ materialsdirective.directive('notification', function ($timeout) {
     }
 });
 
-materialsdirective.directive('paged', function () {
+md.directive('paged', function () {
     return {
         template: '<div>' +
             '<div ng-transclude=""></div>' +
@@ -128,6 +128,21 @@ materialsdirective.directive('paged', function () {
             } catch (e) {
             }
         }
+    }
+});
+
+md.directive('cgroup', function () {
+    return {
+        restrict: "E",
+        transclude: true,
+        scope: {
+            label: '@'
+        },
+        template: '<div class="control-group">' +
+            '<label class="control-label">{{ label }}</label>' +
+            '<div class="controls" ng-transclude>' +
+            '</div>' +
+            '</div>'
     }
 });
 
