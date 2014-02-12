@@ -11,7 +11,7 @@ function CreateNewMachineController($scope, mcapi) {
 
     mcapi('/machines')
         .success(function (data) {
-            $scope.machines_list = data;
+            $scope.machines_list = data
 
         })
         .error(function (data) {
@@ -25,6 +25,7 @@ function CreateNewMachineController($scope, mcapi) {
     $scope.save = function () {
         var new_machine = $scope.machine;
         mcapi('/machines/new')
+            .arg('order_by=birthtime')
             .success(function (data) {
                 mcapi('/machines/%', data.id)
                     .success(function (machine_obj) {

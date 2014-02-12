@@ -9,7 +9,9 @@ import json
 @app.route('/machines', methods=['GET'])
 @jsonp
 def get_all_machines():
-    return dmutil.get_all_from_table('machines')
+    rr = r.table('machines').order_by(r.desc('birthtime'))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 @app.route('/machines/<machine_id>', methods=['GET'])
 @jsonp
