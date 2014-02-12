@@ -3,8 +3,9 @@
         <h4>Machine:</h4>
         <ul class="muted">
             <b>Instructions:</b>
-            <li> Form shown below will help you to create a new machine.</li>
-            <li> Usage: you can select this newly created machine while creating  your provenance.</li>
+            <li> table below provides  list of various machines in the database. </li>
+            <li> If you would like to create a new one then click the button "Create New Machine" and fill out the form. </li>
+            <li> Usage: machines will be available as a drop-down list  while creating provenance.</li>
         </ul>
     </div>
 </div>
@@ -24,25 +25,31 @@
          </tr>
          </thead>
          <tbody>
-            <tr ng-repeat="machine in machines_list | orderBy:predicate:reverse | page:currentDataPage:5">
-                <td>{{machine.name}}</td>
-                <td>{{machine.contact_email}}</td>
-                <td>{{machine.birthtime | toDateString}}</td>
-                <td ng-if="machine.notes.length==0">
-                    {{}}
-                </td>
-                <td ng-if="machine.notes.length!=0">
-                    {{machine.notes}}
+            <p ng-if="machines_list.length==0">
+                 <b>No available machines in the database</b>
+            </p>
+            <p ng-if="machines_list.length!=0">
+                <tr ng-repeat="machine in machines_list | orderBy:predicate:reverse | page:currentDataPage:5">
+                    <td>{{machine.name}}</td>
+                    <td>{{machine.contact_email}}</td>
+                    <td>{{machine.birthtime | toDateString}}</td>
+                    <td ng-if="machine.notes.length==0">
+                        {{}}
+                    </td>
+                    <td ng-if="machine.notes.length!=0">
+                        {{machine.notes}}
 
-                </td>
-                <td>
-                    <ul ng-repeat="kv in machine.model">
-                        <li>{{kv.name}} - {{kv.value}}</li>
-                    </ul>
-                </td>
+                    </td>
+                    <td>
+                        <ul ng-repeat="kv in machine.model">
+                            <li>{{kv.name}} - {{kv.value}}</li>
+                        </ul>
+                    </td>
 
 
-        </tr>
+                </tr>
+            </p>
+
      </tbody>
  </table>
  </paged>
@@ -53,6 +60,7 @@
 
 </div>
 <br>
+<div class="row-fluid">
 <div ng-show="showForm" class="span6">
 <div class="well">
 
@@ -64,7 +72,7 @@
 
     </div>
     <div class="control-group">
-        <label class="control-label">Contact:</label> <div class="controls"><input ng-model="machine.contact_email" placeholder="email.."
+        <label class="control-label">Contact:</label> <div class="controls"><input ng-model="machine.contact_email" placeholder="contact .."
                                                                                            type="text"></div>
 
 
@@ -112,7 +120,7 @@
 </form>
     </div>
 </div>
-
+</div>
 <!--<div class="row-fluid">-->
         <!--<div class="span7">-->
             <!--<div class="block" >-->

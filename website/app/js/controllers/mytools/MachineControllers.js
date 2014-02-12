@@ -11,7 +11,7 @@ function CreateNewMachineController($scope, mcapi) {
 
     mcapi('/machines')
         .success(function (data) {
-            $scope.machines_list = data
+            $scope.machines_list = data;
 
         })
         .error(function (data) {
@@ -30,7 +30,7 @@ function CreateNewMachineController($scope, mcapi) {
                 mcapi('/machines/%', data.id)
                     .success(function (machine_obj) {
                        $scope.mach = machine_obj;
-                       $scope.machines_list.push(machine_obj)
+                       $scope.machines_list.unshift(machine_obj)
                     })
                     .error(function (e) {
 
