@@ -35,14 +35,14 @@ function CreateReviewController($scope, mcapi, User, $stateParams, alertService,
             .success(function (data) {
                 $scope.all_reviews = [];
                 $scope.data_file_id  = data;
-                $scope.msg = "Review/Followup has been added"
+                $scope.msg = "Review/Followup has been added";
                 alertService.sendMessage($scope.msg);
-                pubsub.send('reviews.change', 'review.change')
+                pubsub.send('reviews.change', 'review.change');
                 mcapi('/datafile/%/reviews', $scope.data_file_id)
-                    .success(function(data){
-                        data.forEach(function(item){
-                            $scope.all_reviews.push(item.right)
-                        })
+                    .success(function (data) {
+                        data.forEach(function (item) {
+                            $scope.all_reviews.push(item.right);
+                        });
                     }).jsonp();
             }).post(review);
         $scope.schedule_for_self = false;

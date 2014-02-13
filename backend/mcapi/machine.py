@@ -1,15 +1,18 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request
+from flask import request, g
 import error
 import rethinkdb as r
 import dmutil
 import json
+import args
 
 @app.route('/machines', methods=['GET'])
 @jsonp
 def get_all_machines():
-    return dmutil.get_all_from_table('machines')
+    rr = r.table('machines').order_by(r.desc('birthtime'))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 @app.route('/machines/<machine_id>', methods=['GET'])
 @jsonp
@@ -45,7 +48,9 @@ def add_numbers():
 @apikey(shared=True)
 @jsonp
 def get_all_materials():
-    return dmutil.get_all_from_table('materials')
+    rr = r.table('materials').order_by(r.desc('birthtime'))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 
 @app.route('/materials/new', methods=['POST'])
