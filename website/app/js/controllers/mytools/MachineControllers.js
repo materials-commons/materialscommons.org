@@ -25,11 +25,12 @@ function CreateNewMachineController($scope, mcapi) {
     $scope.save = function () {
         var new_machine = $scope.machine;
         mcapi('/machines/new')
+            .arg('order_by=birthtime')
             .success(function (data) {
                 mcapi('/machines/%', data.id)
                     .success(function (machine_obj) {
                        $scope.mach = machine_obj;
-                       $scope.machines_list.push(machine_obj)
+                       $scope.machines_list.unshift(machine_obj)
                     })
                     .error(function (e) {
 

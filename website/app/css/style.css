@@ -430,8 +430,8 @@ hr{
     background-color: red;
 }
 
-.blue{
-    color:blue;
+.muted{
+    font-style: italic;
 }
 
 
