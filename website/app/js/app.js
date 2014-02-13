@@ -1,6 +1,7 @@
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance', 'ngQuickDate']);
+        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance',
+        'ngQuickDate', 'mctree']);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -18,7 +19,7 @@ app.config(function ($stateProvider) {
         .state('mytools', {
             url: '/mytools',
             templateUrl: 'partials/my-tools.html',
-            controller:'MyToolsController'
+            controller: 'MyToolsController'
         })
 
         .state('mytools.projects', {
@@ -95,7 +96,7 @@ app.config(function ($stateProvider) {
             controller: 'DataGroupGridController'
         })
         .state('mytools.provenance', {
-            url:'/provenance/:id',
+            url: '/provenance/:id',
             templateUrl: 'partials/project/add-provenance.html',
             controller: 'ProvenanceController'
         })
@@ -120,7 +121,6 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/tags/tagcloud.html',
             controller: 'GlobalTagCloudController'
         })
-
 
 
         .state('mytools.conditionstab', {
@@ -165,7 +165,7 @@ app.config(function ($stateProvider) {
         .state('mytools.uploadfile', {
             url: '/uploadfile',
             templateUrl: 'partials/updownload/upload-file.html',
-            controller:'UploadFileController'
+            controller: 'UploadFileController'
 
         })
         .state('mytools.reviewstab', {
@@ -257,9 +257,7 @@ app.config(function ($stateProvider) {
         })
 
 
-
     ;
-
 
 
 });

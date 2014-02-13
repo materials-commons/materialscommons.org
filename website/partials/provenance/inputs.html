@@ -31,7 +31,7 @@
                                     <select>
                                         <option disabled>Pick a material:</option>
                                         <option ng-repeat="m in materials" value="{{ m }}"
-                                                ng-click="materials_select(m)">
+                                                ng-click="material_select(m)">
                                             {{ m.name }}
                                         </option>
                                         <option disabled></option>
@@ -102,7 +102,8 @@
                                         </select>
                                     </div>
                                     <div ng-if="property.value_choice.length === 0">
-                                        <input ng-model="property.value" placeholder="{{ property.name }}..." type="text">
+                                        <input ng-model="property.value" placeholder="{{ property.name }}..."
+                                               type="text">
                                     </div>
                                 </cgroup>
                                 <div ng-if="property.unit_choice.length !== 0">
@@ -137,7 +138,7 @@
 
             <div ng-show="showDetails">
                 <form ng-show="showDetails" class="form-horizontal">
-                    <cgroup label="Select files from project tree">
+                    <cgroup label="Select files from project tree:">
                         <button ng-click="add_input_files()">Add Files</button>
                     </cgroup>
                 </form>
@@ -152,7 +153,7 @@
 
     <div class="row-fluid span10" ng-controller="InputStepController">
         <div ng-show="warning"><br>
-            <b style="color:orange">WARNING: Required properties should atleast have a name.</b>
+            <b style="color:orange">WARNING: Required properties should at least have a name.</b>
         </div>
         <div ng-hide="verified">
             <button ng-click="verify_inputs()">Verify Inputs</button>

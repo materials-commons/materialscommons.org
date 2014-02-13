@@ -1,4 +1,7 @@
-function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService, $dialog) {
+function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService, $dialog, watcher) {
+
+    $scope.useExisting = "yes";
+    $scope.state = Stater.retrieve();
 
     mcapi('/materials')
         .success(function (data) {
@@ -8,8 +11,7 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
 
         }).jsonp()
 
-    $scope.material_select = function () {
-        var material = JSON.parse($scope.material_selected)
+    $scope.material_select = function (material) {
         $scope.condition.material = material;
     }
 
@@ -30,6 +32,18 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
             }).post(temp);
     }
 
+    /*
+     ** Filter out the samples a user can choose based on the material they are using. Since samples
+     ** can come from different materials, we only want to show the samples for the chosen material.
+     */
+    watcher.watch($scope, 'condition.material', function (value) {
+        var filteredConditions = _.filter($scope.all_conditions, function (item) {
+            if (item.material.id == $scope.condition.material.id) {
+                return item;
+            }
+        });
+        $scope.existing_conditions = filteredConditions;
+    });
 
     $scope.init = function (condition_name) {
         $scope.condition_name = condition_name;
@@ -41,7 +55,9 @@ function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tre
                 mcapi('/conditions/template/%', $scope.condition.id)
                     .success(function (data) {
                         $scope.existing_conditions = data;
-
+                        // Save for later filtering of items to present
+                        // See watcher.watch on condition.material above.
+                        $scope.all_conditions = data;
                     })
                     .error(function (e) {
                     }).jsonp();

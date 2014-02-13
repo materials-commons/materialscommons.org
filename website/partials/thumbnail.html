@@ -4,7 +4,7 @@
 
         <div style="margin-bottom:10px">
             <select class="span6" ng-model="model.datadir"
-                    ng-options="ddir.name for ddir in model.datadirs | orderBy:name"
+                    ng-options="ddir.name for ddir in model.datadirs | orderBy:'name'"
                     ng-change="display_images()">
             </select>
 

@@ -1,0 +1,56 @@
+<div ng-show="loaded===true" class="row-fluid">
+    <div class="span12">
+        <button ng-click="backToFolder(trailitem)"
+                ng-repeat="trailitem in trail">{{trailitem.displayname}}
+        </button>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <h4>Project Files:</h4>
+            <table class="table">
+                <thead>
+                <tr ng-show="selected_proj">
+                    <th></th>
+                    <th></th>
+                    <th>Project</th>
+                    <th>Type</th>
+                    <th>Size(kb)</th>
+                    <th>Owner</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr ng-repeat="entry in dir" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+                    <td ng-if="entry.type=='datafile'">
+                        <!--<span ng-if="isChecked(entry)==true">-->
+                                <!--<input type="checkbox" ng-click="check(entry)" checked/>-->
+                        <!--</span>-->
+                        <!--<span ng-if="isChecked(entry)==false">-->
+                                <!--<input type="checkbox" ng-click="check(entry)"/>-->
+                        <!--</span>-->
+                        <!--<input type="checkbox" ng-click="check(entry)">-->
+                        <input type="checkbox">
+                    </td>
+
+                    <td ng-if="entry.type=='datadir'">
+                        <input type="checkbox" disabled/>
+                    </td>
+                    <td ng-if="entry.type=='datadir'">
+                        <button ng-dblclick="openFolder(entry)"><i class="fa fa-folder fa-4x"></i>{{entry.displayname}}
+                        </button>
+                    </td>
+                    <td ng-if="entry.type=='datafile'">
+                        <p><i class="fa fa-file fa-4x"></i>{{entry.displayname}}</p>
+                    </td>
+                    <td><a href="#/mytools/data/edit/{{entry.id}}">{{entry.name}}</a></td>
+                    <td>{{entry.type}}</td>
+                    <td>{{entry.size}}</td>
+                    <td>{{entry.owner}}</td>
+                    <td>{{entry.birthtime | toDateString}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
