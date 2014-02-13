@@ -56,7 +56,6 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
     });
 
     $scope.selected_project = function (proj_id) {
-        console.log("selected_project");
         $scope.done = false;
         $scope.notdone = false;
         trackSavedProv.mark_process(false);
@@ -274,9 +273,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         }).jsonp();
 
     wizard.waitOn($scope, 'nav_choose_process', function () {
-        console.log("nav_choose_process retrieving state");
         $scope.state = Stater.retrieve();
-        console.dir($scope.state);
         if ('process' in $scope.state.attributes) {
             $scope.process = $scope.state.attributes.process;
         }
@@ -400,7 +397,6 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             wizard.addStep('nav_choose_outputs', s);
         });
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
-        console.dir($scope.state);
         if ($scope.state) {
             $scope.state.attributes.process = $scope.process;
             if ($scope.process.machine) {
@@ -415,7 +411,6 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
                 pubsub.send('drafts.update', '');
             });
             $scope.project_warning = false;
-            console.log("firing nav_choose_inputs");
             wizard.fireStep('nav_choose_inputs');
 
         }
@@ -426,26 +421,11 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
 }
 
-function StateScopeController($scope, Stater, pubsub) {
-    console.log("StateScopeController");
-    $scope.state = Stater.retrieve();
-
-    pubsub.waitOn($scope, 'nav_choose_inputs', function() {
-        console.log("StateScope Controller: pubsub.waitOn nav_choose_inputs");
-        $scope.state = Stater.retrieve();
-        console.dir($scope.state);
-    });
-}
-
 function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher, $dialog, $rootScope) {
     $rootScope.checked = false;
     $scope.state = Stater.retrieve();
     $scope.useExisting = "yes";
 
-    // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
-    $scope.bk = {
-
-    };
 
     $scope.loadMaterials = function () {
         mcapi('/materials')
@@ -659,6 +639,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
 
 function UploadStepController($scope, wizard, Stater, mcapi) {
+    $scope.state = Stater.retrieve();
 
     wizard.waitOn($scope, 'nav_choose_upload', function () {
         $scope.state = Stater.retrieve();

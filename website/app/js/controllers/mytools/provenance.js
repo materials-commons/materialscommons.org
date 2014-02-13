@@ -14,11 +14,8 @@ function DraftsListController($scope, pubsub, Stater) {
 }
 
 function ProvenanceController($scope, trackSavedProv, wizard, $stateParams, Stater) {
-    console.log("Provenance Controller");
     wizard.waitOn($scope, 'nav_choose_inputs', function() {
-        console.log("pubsub.waitOn nav_choose_inputs");
         $scope.state = Stater.retrieve();
-        console.dir($scope.state);
     });
 
     $scope.project_id = $stateParams.id;
