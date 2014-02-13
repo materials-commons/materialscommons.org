@@ -231,6 +231,7 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
 
 function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, pubsub, Stater, wizard, alertService) {
 
+    console.log("ProcessStepController");
     // To communicate with transcluded elements that contain an ng-model.
     $scope.bk = {
         p_name: '',
@@ -242,6 +243,11 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
     };
 
     $scope.useExisting = "yes";
+
+    $scope.state = Stater.retrieve();
+    if ('process' in $scope.state.attributes) {
+        $scope.process = $scope.state.attributes.process;
+    }
 
     mcapi('/machines')
         .success(function (data) {
@@ -270,7 +276,9 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         }).jsonp();
 
     wizard.waitOn($scope, 'nav_choose_process', function () {
+        console.log("nav_choose_process retrieving state");
         $scope.state = Stater.retrieve();
+        console.dir($scope.state);
         if ('process' in $scope.state.attributes) {
             $scope.process = $scope.state.attributes.process;
         }
@@ -394,6 +402,7 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
             wizard.addStep('nav_choose_outputs', s);
         });
         wizard.addStep('nav_choose_outputs', {step: 'nav_output_files'});
+        console.dir($scope.state);
         if ($scope.state) {
             $scope.state.attributes.process = $scope.process;
             if ($scope.process.machine) {
@@ -417,6 +426,17 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
         }
     }
 
+}
+
+function StateScopeController($scope, Stater, pubsub) {
+    console.log("StateScopeController");
+    $scope.state = Stater.retrieve();
+
+    pubsub.waitOn($scope, 'nav_choose_inputs', function() {
+        console.log("StateScope Controller: pubsub.waitOn nav_choose_inputs");
+        $scope.state = Stater.retrieve();
+        console.dir($scope.state);
+    });
 }
 
 function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher, $dialog, $rootScope) {

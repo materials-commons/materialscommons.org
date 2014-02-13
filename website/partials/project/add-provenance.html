@@ -59,7 +59,9 @@
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
                                 Process
                             </a>
-                            <a ng-show="process_saved" ng-controller="ProcessStepController"
+                            <!--<a ng-show="process_saved" ng-controller="ProcessStepController"-->
+                               <!--ng-click="editProcess()">(edit)</a>-->
+                            <a ng-show="process_saved"
                                ng-click="editProcess()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_inputs')}">
