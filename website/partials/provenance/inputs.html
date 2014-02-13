@@ -1,7 +1,7 @@
 <div>
     <h4>Inputs</h4>
     <div ng-repeat="condition in state.attributes.process.required_conditions">
-        <div class="row-fluid well" ng-controller="InputStepController" ng-init="init(condition)">
+        <div class="row-fluid well span10" ng-controller="InputStepController" ng-init="init(condition)">
             <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{ condition_name }}</a>
             <p style="float: right" ng-show="state.attributes.input_conditions[condition_name]">
                 <button class="btn btn-success">Saved</button>
@@ -14,11 +14,11 @@
                             <label>From what materials was sample drawn?: <a href="#modalMaterial">{{ condition.material.name }}</a></label>
                             <label class="radio">
                                 <input type="radio" ng-model="useExisting" value="yes">
-                                Use existing machine
+                                Use existing material
                             </label>
                             <label class="radio">
                                 <input type="radio" ng-model="useExisting" value="no">
-                                Create new machine
+                                Create new material
                             </label>
 
                             <div ng-show="useExisting == 'yes'">

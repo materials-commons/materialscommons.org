@@ -230,9 +230,7 @@ function ProjectEditController($scope, $rootScope, Projects, trackSavedProv, wat
 }
 
 function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watcher, pubsub, Stater, wizard, alertService) {
-
-    console.log("ProcessStepController");
-    // To communicate with transcluded elements that contain an ng-model.
+    // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
     $scope.bk = {
         p_name: '',
         start_run: '',
@@ -442,10 +440,13 @@ function StateScopeController($scope, Stater, pubsub) {
 function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher, $dialog, $rootScope) {
     $rootScope.checked = false;
     $scope.state = Stater.retrieve();
-    /**
-     *
-     * @param condition_name
-     */
+    $scope.useExisting = "yes";
+
+    // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
+    $scope.bk = {
+
+    };
+
     $scope.loadMaterials = function () {
         mcapi('/materials')
             .success(function (data) {
@@ -458,8 +459,7 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
 
     $scope.loadMaterials();
 
-    $scope.material_select = function () {
-        var material = JSON.parse($scope.material_selected)
+    $scope.material_select = function (material) {
         $scope.condition.material = material;
     }
 
