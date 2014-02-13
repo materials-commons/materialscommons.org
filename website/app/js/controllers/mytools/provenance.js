@@ -13,8 +13,14 @@ function DraftsListController($scope, pubsub, Stater) {
     }
 }
 
-function ProvenanceController($scope, trackSavedProv, wizard, $stateParams, pubsub, Stater) {
+function ProvenanceController($scope, trackSavedProv, wizard, $stateParams, Stater) {
     console.log("Provenance Controller");
+    wizard.waitOn($scope, 'nav_choose_inputs', function() {
+        console.log("pubsub.waitOn nav_choose_inputs");
+        $scope.state = Stater.retrieve();
+        console.dir($scope.state);
+    });
+
     $scope.project_id = $stateParams.id;
     var steps = {
         step: 'nav_choose_process',
@@ -35,13 +41,6 @@ function ProvenanceController($scope, trackSavedProv, wizard, $stateParams, pubs
         return wizard.currentStep() == step;
 
     }
-
-    pubsub.waitOn($scope, 'nav_choose_inputs', function() {
-        console.log("pubsub.waitOn nav_choose_inputs");
-        $scope.state = Stater.retrieve();
-        console.dir($scope.state);
-    });
-
 
     $scope.process_saved = trackSavedProv.get_process_status();
     $scope.inputs_saved = trackSavedProv.get_input_status();
