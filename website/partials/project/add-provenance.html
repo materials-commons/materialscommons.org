@@ -59,25 +59,20 @@
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
                                 Process
                             </a>
-                            <!--<a ng-show="process_saved" ng-controller="ProcessStepController"-->
-                               <!--ng-click="editProcess()">(edit)</a>-->
-                            <a ng-show="process_saved"
-                               ng-click="editProcess()">(edit)</a>
+                            <a style="cursor:pointer" ng-show="process_saved" ng-click="editProcess()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_inputs')}">
                             <a><i ng-show="inputs_saved"
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
                                 Inputs
                             </a>
-                            <a ng-show="inputs_saved" ng-controller="InputStepController"
-                               ng-click="editInputs()">(edit)</a>
+                            <a style="cursor:pointer" ng-show="inputs_saved" ng-click="editInputs()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_outputs')}">
                             <a><i ng-show="outputs_saved"
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
                                 Outputs
-                            </a> <a ng-show="outputs_saved" ng-controller="OutputStepController"
-                                    ng-click="editOutputs()">(edit)</a>
+                            </a> <a style="cursor:pointer" ng-show="outputs_saved" ng-click="editOutputs()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('nav_choose_upload')}">
                             <a>Submit</a>
