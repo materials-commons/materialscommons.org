@@ -178,7 +178,6 @@ var mctree = angular.module('mctree', ['materialsCommonsServices', 'stateService
 mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "$attrs",
     function ($scope, mcapi, Projects, $attrs) {
         $scope.model = Projects.model;
-        console.log("controller: projectId = " + $scope.project);
 
         $scope.openFolder = function (item) {
             var e = _.find($scope.trail, function (trailItem) {
@@ -225,6 +224,11 @@ mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "$att
                 $scope.dir = $scope.model.projects[projectId].dir;
             }
         };
+
+        $scope.fileSelected = function(entry) {
+            entry.selected = !entry.selected;
+            console.dir(entry);
+        }
 
         $scope.selectProject($scope.project);
     }]);

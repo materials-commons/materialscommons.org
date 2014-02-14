@@ -124,6 +124,7 @@ def get_project_tree2(project_id):
 class DItem2:
     def __init__(self, id, name, type, owner, birthtime, size):
         self.id = id
+        self.selected = False
         self.c_id = ""
         self.level = 0
         self.parent_id = ""
