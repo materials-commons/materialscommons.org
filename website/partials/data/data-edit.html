@@ -126,7 +126,7 @@
                             <a ng-href="{{ fileSrc }}">View full size</a>
                             <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
                         </div>
-                        <a ng-switch-when="other" ng-href="{{ fileSrc }}">{{ doc.name }}</a>
+                        <a ng-switch-when="other" ng-href="{{ fileSrc }}" download="{{ fileName }}">{{ doc.name }}</a>
                     </div>
                 </div>
             </div>
