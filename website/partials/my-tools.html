@@ -18,7 +18,7 @@
                             <i ng-show="!showProjs" class="fa fa-folder"></i> Projects</a>
 
                             <div ng-show="showProjs" class="project-scrollbar">
-                                <ul ng-repeat="proj in projects">
+                                <ul ng-repeat="proj in projects|orderBy:'name'">
                                     <li style="list-style-type: circle">
                                         <a href="#/mytools/projects/{{proj.id}}/">{{proj.name}}</a>
                                     </li>
