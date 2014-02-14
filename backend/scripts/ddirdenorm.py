@@ -2,16 +2,27 @@
 
 import rethinkdb as r
 import optparse
+import sys
 
 
 if __name__ == "__main__":
     parser = optparse.OptionParser()
-    parser.add_option("-p", "--port", dest="port",
+    parser.add_option("-P", "--port", dest="port",
                       help="rethinkdb port", default=30815)
+    parser.add_option("-p", "--project", dest="project",
+                      help="project to build denorm for")
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', int(options.port), db='materialscommons')
 
-    selection = list(r.table('datadirs').run(conn))
+    if options.project is None:
+        print "You must specify a project id"
+        sys.exit(1)
+
+    rql = r.table('project2datadir')
+    rql = rql.get_all(options.project, index="project_id")
+    rql = rql.eq_join('datadir_id', r.table('datadirs')).zip()
+
+    selection = list(rql.run(conn))
     for datadir in selection:
         print "Updating datadir %s" % (datadir['name'])
         ddir = {}
