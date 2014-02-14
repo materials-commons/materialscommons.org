@@ -175,8 +175,8 @@ mod.directive('checkFocus', function () {
 });
 
 var mctree = angular.module('mctree', ['materialsCommonsServices', 'stateServices']);
-mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "$attrs",
-    function ($scope, mcapi, Projects, $attrs) {
+mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "pubsub",
+    function ($scope, mcapi, Projects, pubsub) {
         $scope.model = Projects.model;
 
         $scope.openFolder = function (item) {
@@ -227,7 +227,11 @@ mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "$att
 
         $scope.fileSelected = function(entry) {
             entry.selected = !entry.selected;
-            console.dir(entry);
+            var channel = Projects.channel;
+            if (channel != null) {
+                pubsub.send(channel, entry);
+            }
+
         }
 
         $scope.selectProject($scope.project);

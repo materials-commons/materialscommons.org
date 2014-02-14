@@ -1,3 +1,49 @@
+function OutputSubstepChooseFilesController($scope, Stater, pubsub, Projects) {
+    $scope.showDetails = false;
+    var channel = 'choose.outputs.files';
+    $scope.outputFiles = [];
+
+    $scope.show = function() {
+        $scope.showDetails = !$scope.showDetails;
+        if ($scope.showDetails) {
+            Projects.setChannel(channel);
+        } else {
+            Projects.setChannel(null);
+        }
+    };
+
+    pubsub.waitOn($scope, channel, function(fileentry) {
+        console.log("waitOn fileentry selected = " + fileentry.selected);
+        if (fileentry.selected) {
+            $scope.outputFiles.push(fileentry);
+        } else {
+            var i = $scope.indexOfFile(fileentry.id);
+            if (i != -1) {
+                $scope.outputFiles.splice(i, 1);
+            }
+        }
+    });
+
+    $scope.removeFile = function(index) {
+        $scope.outputFiles[index].selected = false;
+        $scope.outputFiles.splice(index, 1);
+    };
+
+    $scope.indexOfFile = function(id) {
+        for(var i = 0; i < $scope.outputFiles.length; i++) {
+            if ($scope.outputFiles[i].id == id) {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+    $scope.saveFiles = function() {
+        var state = Stater.retrieve();
+
+    };
+}
+
 function OutputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, alertService, $dialog, watcher) {
 
     $scope.useExisting = "yes";
