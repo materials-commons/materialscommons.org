@@ -124,9 +124,14 @@ stateServices.factory('Projects', [function () {
         model: {
             projects: {}
         },
+        channel: null,
 
         clear: function () {
             service.model.projects = {};
+        },
+
+        setChannel: function(what) {
+            service.channel = what;
         }
     };
     return service;

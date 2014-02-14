@@ -133,20 +133,27 @@
     </div>
 
     <div ng-show="state.attributes.process.required_output_files==='yes'">
-        <div class="row-fluid span10 well" ng-controller="OutputStepController">
-            <a style="cursor:pointer" ng-click="showDetails=!showDetails">Output files</a>
+        <!--<div class="row-fluid span10 well" ng-controller="OutputStepController">-->
+        <div class="row-fluid span10 well" ng-controller="OutputSubstepChooseFilesController">
+            <!--<a style="cursor:pointer" ng-click="showDetails=!showDetails">Output files</a>-->
+            <a style="cursor:pointer" ng-click="show()">Output files</a>
 
             <div ng-show="showDetails">
-                <form ng-show="showDetails" class="form-horizontal">
-                    <cgroup label="Select files from project tree:">
-                        <button ng-click="add_output_files()">Add Files</button>
+                <h6>Selected files:</h6>
+                <ul>
+                    <li ng-repeat="item in outputFiles">
+                        <i class="fa fa-check-square"></i>{{item.displayname}}
+                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+                        <br>
+                    </li>
+                </ul>
+                <!--<li ng-repeat="item in state.attributes.checked_output_filenames">-->
+
+                <form class="form">
+                    <cgroup>
+                        <button ng-click="saveFiles()">Save</button>
                     </cgroup>
                 </form>
-                <li ng-repeat="item in state.attributes.checked_output_filenames">
-                    <i class="fa fa-check-square"></i>{{item.name}}
-                    <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
-                    <br>
-                </li>
             </div>
         </div>
     </div>

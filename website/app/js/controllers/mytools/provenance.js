@@ -18,6 +18,10 @@ function ProvenanceController($scope, trackSavedProv, wizard, $stateParams, Stat
         $scope.state = Stater.retrieve();
     });
 
+    wizard.waitOn($scope, 'nav_choose_outputs', function() {
+        $scope.state = Stater.retrieve();
+    });
+
     $scope.project_id = $stateParams.id;
     var steps = {
         step: 'nav_choose_process',

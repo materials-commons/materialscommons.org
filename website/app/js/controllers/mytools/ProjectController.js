@@ -421,6 +421,10 @@ function ProcessStepController($scope, $rootScope, trackSavedProv, mcapi, watche
 
 }
 
+function InputsChooseFilesSubstepController($scope, Stater, pubsub) {
+
+}
+
 function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, treeToggle, watcher, $dialog, $rootScope) {
     $rootScope.checked = false;
     $scope.state = Stater.retrieve();
@@ -635,8 +639,6 @@ function InputStepController($scope, trackSavedProv, mcapi, wizard, Stater, tree
     }
 
 }
-
-
 
 function UploadStepController($scope, wizard, Stater, mcapi) {
     $scope.state = Stater.retrieve();
