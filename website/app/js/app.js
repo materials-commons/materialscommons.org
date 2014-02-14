@@ -282,14 +282,14 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
         else if (matchesPartial(toState, "partials/help", "HelpController")) {
             setActiveMainNav("#help-nav");
         }
-        if (!$rootScope.stompClient) {
-            var chatConnection = "http://" + document.location.hostname + ":15674/stomp";
-            if (document.location.hostname == "materialscommons.org") {
-                chatConnection = "https://materialscommons.org:55674/stomp";
-            }
-
-            $rootScope.stompClient = ngstomp(chatConnection);
-        }
+//        if (!$rootScope.stompClient) {
+//            var chatConnection = "http://" + document.location.hostname + ":15674/stomp";
+//            if (document.location.hostname == "materialscommons.org") {
+//                chatConnection = "https://materialscommons.org:55674/stomp";
+//            }
+//
+//            $rootScope.stompClient = ngstomp(chatConnection);
+//        }
 
         if (!User.isAuthenticated()) {
             if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") != -1) {
