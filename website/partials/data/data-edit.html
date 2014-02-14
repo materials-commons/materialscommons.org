@@ -158,19 +158,34 @@ See Tags: <input type="checkbox" ng-model="seeTags">
                         Description :<span>{{process.description}}</span> <br>
                         Version:<span>{{process.version}}</span> <br>
                         Notes:
-                        <ul ng-repeat="n in process.notes">
-                            <li>{{n}}</li>
+                        <ul>
+                            <li ng-repeat="n in process.notes">{{n}}</li>
                         </ul>
                         <br>
                         Runs:
-                        <ul ng-repeat="r in process.runs">
-                            <li>{{r.started | date:'medium'}} -
+                        <ul>
+                            <li ng-repeat="r in process.runs">{{r.started | date:'medium'}} -
                                 {{r.stopped | date:'medium'}} <br> Error Messages:
                                 {{r.error_messages}}
                             </li>
                         </ul>
                         <br>
 
+
+                        Notes: <br>
+                        <li ng-repeat="note in doc.notes">
+                            {{note}}
+                        </li>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div ng-switch on="fileType">
+                        <div ng-switch-when="image">
+                            <img ng-src="{{ fileSrc }}">
+                            <a ng-href="{{ fileSrc }}">View full size</a>
+                            <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
+                        </div>
+                        <a ng-switch-when="other" ng-href="{{ fileSrc }}" download="{{ fileName }}">{{ doc.name }}</a>
 
                     </div>
 
@@ -232,7 +247,6 @@ See Tags: <input type="checkbox" ng-model="seeTags">
         </div>
 
     </div>
-
-
+</div>
 </div>
 </div>
