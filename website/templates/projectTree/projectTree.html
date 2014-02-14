@@ -23,18 +23,11 @@
 
                 <tr ng-repeat="entry in dir" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
                     <td ng-if="entry.type=='datafile'">
-                        <!--<span ng-if="isChecked(entry)==true">-->
-                                <!--<input type="checkbox" ng-click="check(entry)" checked/>-->
-                        <!--</span>-->
-                        <!--<span ng-if="isChecked(entry)==false">-->
-                                <!--<input type="checkbox" ng-click="check(entry)"/>-->
-                        <!--</span>-->
-                        <!--<input type="checkbox" ng-click="check(entry)">-->
-                        <input type="checkbox">
+                        <input ng-model="entry.selected" ng-click="fileSelected(entry)" ng-change="entry.selected = !entry.selected" type="checkbox">
                     </td>
 
                     <td ng-if="entry.type=='datadir'">
-                        <input type="checkbox" disabled/>
+                        <!--<input type="checkbox" disabled/>-->
                     </td>
                     <td ng-if="entry.type=='datadir'">
                         <button ng-dblclick="openFolder(entry)"><i class="fa fa-folder fa-4x"></i>{{entry.displayname}}
