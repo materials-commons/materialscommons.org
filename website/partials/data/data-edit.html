@@ -175,23 +175,25 @@
                             <div class="well">
                                 <h5><u>Inputs:</u></h5>
                                 <b>Properties:</b><br>
-                                    <ul style="list-style-position: inside"  ng-repeat="f in ip_conditions">
-                                        <li style="list-style-type: circle"><a href="#modalCondition" data-toggle="modal" ng-click="get_mode_condition(f.right)">{{f.right.name}}</a></li>
-                                    </ul>
+
+                                <ul style="list-style-position: inside"  ng-repeat="f in ip_conditions">
+                                   <a href="#modalCondition" data-toggle="modal" ng-click="get_mode_condition(f.right)">{{f.right.name}}</a>
+                                </ul>
+
                                 <b>Files:</b>
                                 <ul style="list-style-position: inside"  ng-repeat="f in ip_files">
-                                    <li style="list-style-type: circle"><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
+                                   <a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a>
                                 </ul>
                             </div>
                             <div class="well">
                             <h5><u>Outputs:</u></h5>
                             <b>Properties:</b>
                                 <ul style="list-style-position: inside"  ng-repeat="f in op_conditions">
-                                        <li style="list-style-type: circle"><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
+                                       <a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a>
                                 </ul> <br>
                             <b>Files:</b>
                             <ul style="list-style-position: inside"  ng-repeat="f in op_files">
-                                    <li style="list-style-type: circle"><a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a></li>
+                                   <a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a>
                             </ul>
                             </div>
                         </div>
