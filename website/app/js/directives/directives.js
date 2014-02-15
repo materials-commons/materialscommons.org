@@ -136,7 +136,7 @@ md.directive('cgroup', function () {
         restrict: "E",
         transclude: true,
         scope: {
-            label: '@'
+            label: '=label'
         },
         template: '<div class="control-group">' +
             '<label class="control-label">{{ label }}</label>' +
@@ -199,7 +199,6 @@ mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "pubs
         };
 
         $scope.selectProject = function(projectId) {
-            console.log("calling selectProject: " + projectId);
             $scope.trail = [];
             $scope.projectId = projectId;
             $scope.tree_data = [];
@@ -207,7 +206,6 @@ mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "pubs
             if (!(projectId in $scope.model.projects)) {
                 mcapi('/projects/%/tree2', projectId)
                     .success(function(data) {
-                        console.dir(data);
                         if (data[0]) {
                             $scope.tree_data = data;
                             $scope.dir = $scope.tree_data[0].children;
@@ -219,7 +217,6 @@ mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "pubs
                         }
                     }).jsonp();
             } else {
-                console.log("Project already loaded");
                 $scope.loaded = true;
                 $scope.dir = $scope.model.projects[projectId].dir;
             }
@@ -232,10 +229,11 @@ mctree.controller("ProjectTreeController", ["$scope", "mcapi", "Projects", "pubs
                 pubsub.send(channel, entry);
             }
 
-        }
+        };
 
         $scope.selectProject($scope.project);
     }]);
+
 mctree.directive('projectTree', function () {
     return {
         restrict: "E",
