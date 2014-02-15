@@ -22,10 +22,18 @@ app.config(function ($stateProvider) {
             controller: 'MyToolsController'
         })
 
+//        .state('mytools.projects', {
+//            url: '/projects/:id/:state_id',
+//            templateUrl: 'partials/project/project-report.html',
+//            controller: 'ProjectEditController'
+//        })
         .state('mytools.projects', {
-            url: '/projects/:id/:state_id',
-            templateUrl: 'partials/project/project-report.html',
-            controller: 'ProjectEditController'
+            url:'/projects/:id/:draft_id',
+            templateUrl:'partials/project/project.html'
+        })
+        .state('mytools.projects.overview', {
+            url:'/overview',
+            templateUrl:'partials/project/overview.html'
         })
         .state('mytools.dataedit', {
             url: '/data/edit/:id',

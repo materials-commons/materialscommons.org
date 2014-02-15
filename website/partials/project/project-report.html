@@ -5,7 +5,7 @@
     </div>
 
     <div class="span6">
-            <span ng-show="selected_proj">
+            <div ng-show="selected_proj">
                       <select ng-model="add_to"
                               ui-select2="{placeholder: 'Add', allowClear: true, width:'element'}"
                               ng-multiple="false">
@@ -15,22 +15,12 @@
                           <!--<option value="to_project">To Project</option>-->
 
                       </select>
-            </span>
+            </div>
 
     </div>
-    <!--</div>-->
 </div>
 
 <div ng-show="add_to=='prov'">
-    <div class="row-fluid">
-        <div class="span10">
-
-            <!--</form>-->
-        </div>
-
-        <!--</form>-->
-
-    </div>
 
     <div class="block" ng-show="isCurrentStep('nav_choose_upload')">
         <!--<form id="submit-tab" class="form-inline span8">-->
