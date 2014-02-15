@@ -3,31 +3,45 @@ function ProjectController($scope, $stateParams, mcapi, $state, watcher) {
     $scope.bk = {
         action: ''
     };
-    watcher.watch($scope, 'bk.action', function(choice) {
-        console.log("choice = '" + choice +"'");
+    watcher.watch($scope, 'bk.action', function (choice) {
+        console.log("choice = '" + choice + "'");
         if (choice === 'prov') {
             $state.go('mytools.projects.provenance');
         }
     });
-    $scope.init = function() {
+    $scope.init = function () {
         mcapi('/projects/%', $scope.project_id)
-            .success(function(project) {
+            .success(function (project) {
                 $scope.project = project;
                 $state.go('mytools.projects.overview');
             }).jsonp();
     };
 
-
-
     $scope.init();
+}
+
+function ProvController($scope, $state) {
+
+
+    $scope.isCurrentStep = function (step) {
+        return $scope.currentStep === step;
+    }
+
+    $scope.init = function() {
+        $scope.currentStep = 'process';
+        $scope.processSaved = false;
+        $scope.inputsSaved = false
+        $scope.outputsSaved = false;
+        $state.go('mytools.projects.provenance.process');
+    }
 }
 
 function ProjectOverviewController($scope, $stateParams, mcapi) {
     $scope.project_id = $stateParams.id;
     $scope.processes = [];
-    $scope.init = function() {
+    $scope.init = function () {
         /*
-        ** Figure out how we are going to display the processes.
+         ** Figure out how we are going to display the processes.
          */
 //        mcapi('/processes/project/%s', $scope.project_id)
 //            .success(function(data) {
@@ -35,7 +49,7 @@ function ProjectOverviewController($scope, $stateParams, mcapi) {
 //            });
     };
 
-    $scope.process = function(processes) {
+    $scope.process = function (processes) {
         var temp_proc = {};
         var tree_p;
         processes.forEach(function (pr) {
@@ -54,7 +68,7 @@ function ProjectOverviewController($scope, $stateParams, mcapi) {
         return tree_p
     };
 
-    $scope.convertToTree = function(data) {
+    $scope.convertToTree = function (data) {
         var tree = [];
         var count = 0;
         var processes = data;

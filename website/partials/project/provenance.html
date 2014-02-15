@@ -1,3 +1,36 @@
-<div>
-    Hello world provenance
+<div ng-controller="ProvController">
+    <div class="span2">
+        <div class="well">
+            <ul class="nav nav-list">
+                <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
+                <li ng-class="{'active':isCurrentStep('process')}">
+                    <a><i ng-show="processSaved"
+                          ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
+                        Process
+                    </a>
+                    <a style="cursor:pointer" ng-show="process_saved" ng-click="editProcess()">(edit)</a>
+                </li>
+                <li ng-class="{'active' : isCurrentStep('inputs')}">
+                    <a><i ng-show="inputsSaved"
+                          ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
+                        Inputs
+                    </a>
+                    <a style="cursor:pointer" ng-show="inputs_saved" ng-click="editInputs()">(edit)</a>
+                </li>
+                <li ng-class="{'active' : isCurrentStep('outputs')}">
+                    <a><i ng-show="outputsSaved"
+                          ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
+                        Outputs
+                    </a> <a style="cursor:pointer" ng-show="outputs_saved" ng-click="editOutputs()">(edit)</a>
+                </li>
+                <li ng-class="{'active' : isCurrentStep('submit')}">
+                    <a>Submit</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div ui-view></div>
+    </div>
 </div>
