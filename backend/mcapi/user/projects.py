@@ -61,10 +61,14 @@ def get_all_group_projects():
 @apikey(shared=True)
 @jsonp
 def get_project(id):
-    rr = r.table('projects').filter({'id': id})
-    rr = args.add_all_arg_options(rr)
-    items = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(items)
+    proj = r.table('projects').get(id) \
+                              .run(g.conn, time_format='raw')
+    if proj is None:
+        return error.not_found("No such project %s" % (id))
+    user = access.get_user()
+    if not access.allowed(user, proj['owner']):
+        return error.not_authorized("No access to project %s" % (id))
+    return args.json_as_format_arg(proj)
 
 
 @app.route('/projects/<project_id>/datafiles')
