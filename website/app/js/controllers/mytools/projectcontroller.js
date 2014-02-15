@@ -1,5 +1,14 @@
-function ProjectController($scope, $stateParams, mcapi, $state) {
+function ProjectController($scope, $stateParams, mcapi, $state, watcher) {
     $scope.project_id = $stateParams.id;
+    $scope.bk = {
+        action: ''
+    };
+    watcher.watch($scope, 'bk.action', function(choice) {
+        console.log("choice = '" + choice +"'");
+        if (choice === 'prov') {
+            $state.go('mytools.projects.provenance');
+        }
+    });
     $scope.init = function() {
         mcapi('/projects/%', $scope.project_id)
             .success(function(project) {
@@ -8,6 +17,8 @@ function ProjectController($scope, $stateParams, mcapi, $state) {
             }).jsonp();
     };
 
+
+
     $scope.init();
 }
 
@@ -15,6 +26,9 @@ function ProjectOverviewController($scope, $stateParams, mcapi) {
     $scope.project_id = $stateParams.id;
     $scope.processes = [];
     $scope.init = function() {
+        /*
+        ** Figure out how we are going to display the processes.
+         */
 //        mcapi('/processes/project/%s', $scope.project_id)
 //            .success(function(data) {
 //                $scope.processes = $scope.process(data);

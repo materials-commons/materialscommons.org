@@ -22,11 +22,7 @@ app.config(function ($stateProvider) {
             controller: 'MyToolsController'
         })
 
-//        .state('mytools.projects', {
-//            url: '/projects/:id/:state_id',
-//            templateUrl: 'partials/project/project-report.html',
-//            controller: 'ProjectEditController'
-//        })
+        // Projects views
         .state('mytools.projects', {
             url:'/projects/:id/:draft_id',
             templateUrl:'partials/project/project.html'
@@ -35,6 +31,11 @@ app.config(function ($stateProvider) {
             url:'/overview',
             templateUrl:'partials/project/overview.html'
         })
+        .state('mytools.projects.provenance', {
+            url:'/provenance',
+            templateUrl: 'partials/project/provenance.html'
+        })
+
         .state('mytools.dataedit', {
             url: '/data/edit/:id',
             templateUrl: 'partials/data/data-edit.html',
