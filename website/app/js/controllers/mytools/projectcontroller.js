@@ -1,4 +1,4 @@
-function ProjectController($scope, $stateParams, mcapi, $state, watcher) {
+function ProjectController($scope, $stateParams, Stater, mcapi, $state, watcher) {
     $scope.project_id = $stateParams.id;
     $scope.bk = {
         action: ''
@@ -6,7 +6,15 @@ function ProjectController($scope, $stateParams, mcapi, $state, watcher) {
     watcher.watch($scope, 'bk.action', function (choice) {
         console.log("choice = '" + choice + "'");
         if (choice === 'prov') {
-            $state.go('mytools.projects.provenance');
+            Stater.newId("prov", "create prov", "", function (status, state) {
+                if (status) {
+                    $scope.state = state;
+                    $scope.state.attributes.process = {};
+                    //wizard.fireStep('nav_choose_process');
+                    $state.go('mytools.projects.provenance');
+                }
+            });
+
         }
     });
     $scope.init = function () {
@@ -21,8 +29,6 @@ function ProjectController($scope, $stateParams, mcapi, $state, watcher) {
 }
 
 function ProvController($scope, $state) {
-
-
     $scope.isCurrentStep = function (step) {
         return $scope.currentStep === step;
     }
@@ -34,6 +40,8 @@ function ProvController($scope, $state) {
         $scope.outputsSaved = false;
         $state.go('mytools.projects.provenance.process');
     }
+
+    $scope.init();
 }
 
 function ProjectOverviewController($scope, $stateParams, mcapi) {

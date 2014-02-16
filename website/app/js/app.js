@@ -35,7 +35,10 @@ app.config(function ($stateProvider) {
             url:'/provenance',
             templateUrl: 'partials/project/provenance.html'
         })
-
+        .state('mytools.projects.provenance.process', {
+            url:'/process',
+            templateUrl: 'partials/project/provenance/process.html'
+        })
         .state('mytools.dataedit', {
             url: '/data/edit/:id',
             templateUrl: 'partials/data/data-edit.html',
