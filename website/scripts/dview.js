@@ -6,7 +6,7 @@
 
 var request = require('/usr/local/lib/node_modules/request');
 
-request.get({url:'http://localhost:5984/materialscommons/_design/materialscommons-app/_view/all_experiments', json:true},
+request.get({url:'http://localhost:5984/materialscommons/_design/materialscommons-app-old/_view/all_experiments', json:true},
         function(err, req, body)
         {
             for (i = 0; i < body.rows.length; i++)

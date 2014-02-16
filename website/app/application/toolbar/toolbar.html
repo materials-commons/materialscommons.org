@@ -1,15 +1,15 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-controller="toolbar">
     <div class="row-fluid">
         <div class="span2">
             <div class="sidebar-nav-fixed">
                 <div class="well">
                     <ul class="nav nav-list">
-                        <li ng-show="show_drafts" class="nav-header"><i class="fa fa-book"></i> Provenance</li>
-                        <li ng-show="show_drafts" ng-controller="MyToolsDraftsController">
+                        <li ng-show="showDrafts" class="nav-header"><i class="fa fa-book"></i> Provenance</li>
+                        <li ng-show="showDrafts" ng-controller="toolbarDrafts">
                             <a href="#/mytools/drafts">Drafts ({{drafts.length}})</a>
                         </li>
                         <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
-                        <li ng-controller="MyToolsProjectsController" id="my-data-tab"><a href="" style="cursor:pointer"
+                        <li ng-controller="toolbarProjects" id="my-data-tab"><a href="" style="cursor:pointer"
                                                                                           ng-click="showProjs=!showProjs">
                             <i ng-show="showProjs" class="fa fa-folder-open"></i>
                             <i ng-show="!showProjs" class="fa fa-folder"></i> Projects</a>
@@ -24,7 +24,7 @@
                         </li>
                         <li id="data-tab"><a href="#/mytools/datatab">My Data</a></li>
                         <li id="tags-tab"><a href="#/mytools/tagstab">Tags</a></li>
-                        <li ng-controller="MyToolsReviewsController" id="reviews-tab">
+                        <li ng-controller="toolbarReviews" id="reviews-tab">
                             <a href="#/mytools/reviewlist">Reviews ({{reviewstoConduct.length}})</a>
                         </li>
 
@@ -32,7 +32,7 @@
                         <li><a href="#/mytools/material">Materials</a></li>
 
                         <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
-                        <div ng-controller="MyToolsTagsController">
+                        <div ng-controller="toolbarTags">
                             <span style="cursor:pointer" class="label label-info custom"
                                   ng-repeat="tag in tags | limitTo: 10">
                             <a href="#/mytools/data/bytag/{{tag.name}}" style="color: white">{{ tag.name }}

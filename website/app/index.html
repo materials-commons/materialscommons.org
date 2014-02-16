@@ -27,7 +27,7 @@
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
-    <link href="app/css/style.css" rel="stylesheet">
+    <link href="../app-old/css/style.css" rel="stylesheet">
     <!--<link href="assets/css/treeview.css" rel="stylesheet">-->
     <link href="assets/css/thumbnail.css" rel="stylesheet">
     <!--<link href="assets/css/ng-grid.css" rel="stylesheet">-->
@@ -45,36 +45,14 @@
 
 <body>
 
-<!--<div style="background-color: #CDAF95"><img src="assets/img/MaterialsCommonsLogo_274x75.png"></div>-->
-<!--<div ng-controller="FrontPageController">-->
-    <!--<div style="background-color: #fefefe">   &lt;!&ndash;sravya CDCDB4 &ndash;&gt;-->
-        <!--<a href="index.html#/home"><img style="" src="assets/img/MaterialsCommonsLogo_274x75.png"></a>-->
-        <!--<span style="font-size: 200%;font-style: italic;">The source for <span-->
-                <!--class="mc-logo"> materials</span> data </span>-->
-        <!--<span ng-show="false">-->
-                <!--<form class="form-search text-center pull-right" style="padding-top: 20px; padding-right: 10px">-->
-                    <!--<div class="input-append">-->
-
-                        <!--<input type="search" class="span3 search-query" ng-model="keyword" name="q" autocomplete="off"-->
-                               <!--placeholder="SEARCH" tabindex="1">-->
-                        <!--<button type="submit" ng-click="search_key();" class="btn"><i class="icon-search"></i> Search-->
-                        <!--</button>-->
-                    <!--</div>-->
-
-                <!--</form>-->
-        <!--</span>-->
-    <!--</div>-->
-<!--</div>-->
-
 <div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <!--<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-            <!--</a>-->
-            <!--</a>-->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
 
             <div class="nav-collapse collapse">
                 <div ng-hide="email_address">
@@ -92,7 +70,6 @@
                 </div>
             </div>
 
-
             <ul id="mc-main-navs" class="nav nav-pills">
                 <li class="active">
                     <a class="brand" href="#">MaterialsCommons</a>
@@ -100,8 +77,7 @@
                 <li id="home-nav" class="active">
                     <a href="#/home"><i class="icon-home"></i> Home</a>
                 </li>
-                <li id="user-nav"><a href="#/mytools"><i class="icon-wrench"></i>My Tools</a></li>
-                <!--<li id="explore-nav"><a href="#/explore"><i class="icon-road"></i>Explore</a></li>-->
+                <li id="user-nav"><a href="#/toolbar"><i class="icon-wrench"></i>My Tools</a></li>
                 <li id="about-nav"><a href="#/about"><i class="icon-info-sign"></i>About</a></li>
                 <li id="contact-nav"><a href="#/contact"><i class="icon-phone"></i> Contact</a></li>
                 <li id="help-nav"><a href="#/help"><i class="icon-question-sign"></i>Help</a></li>
@@ -117,10 +93,9 @@
     </div>
 </div>
 
-<div ui-view>
-
+<div class="row-fluid">
+    <div ui-view></div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <!--<script src="assets/js/jquery.js"></script>-->
@@ -142,38 +117,51 @@
 <script src="assets/js/angular/angular-stomp.js"></script>
 <script src="assets/js/angular/angular-ui-router.js"></script>
 <script src="assets/js/raphael.js"></script>
-<script src="app/js/services/services.js"></script>
-<script src="app/js/services/state.js"></script>
-<script src="app/js/app.js"></script>
-<script src="app/js/controllers/controllers.js"></script>
-<script src="app/js/controllers/labcontroller.js"></script>
-<script src="app/js/utils/util.js"></script>
+<script src="../app-old/js/services/services.js"></script>
+<script src="../app-old/js/services/state.js"></script>
+<script src="../app-old/js/app.js"></script>
+<script src="../app-old/js/controllers/controllers.js"></script>
+<script src="../app-old/js/controllers/labcontroller.js"></script>
+<script src="../app-old/js/utils/util.js"></script>
 <script src="assets/js/angular/angular-resource.js"></script>
-<script src="app/js/filters/filters.js"></script>
+<script src="../app-old/js/filters/filters.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
 <script src="assets/js/jquery.tablesorter.min.js"></script>
-<script src="app/js/directives/directives.js"></script>
-<script src="app/js/directives/tree.js"></script>
-<script src="app/js/directives/provenance.js"></script>
-<script src="app/js/controllers/searchindex/searchindex.js"></script>
-<script src="app/js/controllers/mytools/DataGroupsControllers.js"></script>
-<script src="app/js/controllers/tags/tags.js"></script>
-<script src="app/js/controllers/mytools/DataControllers.js"></script>
-<script src="app/js/controllers/mytools/udcontrollers.js"></script>
-<script src="app/js/controllers/mytools/ChatControllers.js"></script>
-<script src="app/js/controllers/reviews/ReviewController.js"></script>
-<script src="app/js/controllers/AccountControllers.js"></script>
-<script src="app/js/controllers/usergroups/UserGroupsControllers.js"></script>
-<script src="app/js/controllers/SwitchableGridControllers.js"></script>
-<script src="app/js/controllers/ConditionControllers.js"></script>
-<script src="app/js/controllers/mytools/ProjectController.js"></script>
-<script src="app/js/controllers/mytools/ProcessControllers.js"></script>
-<script src="app/js/controllers/mytools/MachineControllers.js"></script>
-<script src="app/js/controllers/mytools/MaterialControllers.js"></script>
-<script src="app/js/controllers/mytools/provenance.js"></script>
-<script src="app/js/controllers/mytools/MyToolsControllers.js"></script>
-<script src="app/js/controllers/mytools/OutputStep.js"></script>
-<script src="app/js/controllers/mytools/projectcontroller.js"></script>
+<script src="../app-old/js/directives/directives.js"></script>
+<script src="../app-old/js/directives/tree.js"></script>
+<script src="../app-old/js/directives/provenance.js"></script>
+<script src="../app-old/js/controllers/searchindex/searchindex.js"></script>
+<script src="../app-old/js/controllers/mytools/DataGroupsControllers.js"></script>
+<script src="../app-old/js/controllers/tags/tags.js"></script>
+<script src="../app-old/js/controllers/mytools/DataControllers.js"></script>
+<script src="../app-old/js/controllers/mytools/udcontrollers.js"></script>
+<script src="../app-old/js/controllers/mytools/ChatControllers.js"></script>
+<script src="../app-old/js/controllers/reviews/ReviewController.js"></script>
+<script src="../app-old/js/controllers/AccountControllers.js"></script>
+<script src="../app-old/js/controllers/usergroups/UserGroupsControllers.js"></script>
+<script src="../app-old/js/controllers/SwitchableGridControllers.js"></script>
+<script src="../app-old/js/controllers/ConditionControllers.js"></script>
+<script src="../app-old/js/controllers/mytools/ProjectController.js"></script>
+<script src="../app-old/js/controllers/mytools/ProcessControllers.js"></script>
+<script src="../app-old/js/controllers/mytools/MachineControllers.js"></script>
+<script src="../app-old/js/controllers/mytools/MaterialControllers.js"></script>
+<script src="../app-old/js/controllers/mytools/provenance.js"></script>
+<script src="../app-old/js/controllers/mytools/OutputStep.js"></script>
+<script src="../app-old/js/controllers/mytools/projectcontroller.js"></script>
+
+<!-- Navbar -->
+<script src="application/help/help-controller.js"></script>
+<script src="application/about/about-controller.js"></script>
+<script src="application/contact/contact-controller.js"></script>
+<script src="application/home/home-controller.js"></script>
+
+<!-- Toolbar -->
+<script src="application/toolbar/toolbar-controller.js"></script>
+<script src="application/toolbar/toolbar-drafts-controller.js"></script>
+<script src="application/toolbar/toolbar-projects-controller.js"></script>
+<script src="application/toolbar/toolbar-reviews-controller.js"></script>
+<script src="application/toolbar/toolbar-tags-controller.js"></script>
+
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/angular/angular-strap.min.js"></script>
 <script src="assets/js/bootstrap-datepicker.js"></script>
@@ -183,7 +171,7 @@
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/d3.v3.js"></script>
 <script src="assets/js/ng-quick-date.js"></script>
-<script src="app/js/config/config.js"></script>
+<script src="../app-old/js/config/config.js"></script>
 <script type="text/javascript" src="assets/js/dracula_graffle.js"></script>
 <script type="text/javascript" src="assets/js/dracula_graph.js"></script>
 

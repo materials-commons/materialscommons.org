@@ -421,7 +421,7 @@ dialogModule.provider("$dialog", function(){
 
     // The `options({})` allows global configuration of all dialogs in the application.
     //
-    //      var app = angular.module('App', ['ui.bootstrap.dialog'], function($dialogProvider){
+    //      var app-old = angular.module('App', ['ui.bootstrap.dialog'], function($dialogProvider){
     //        // don't close dialog when backdrop is clicked by default
     //        $dialogProvider.options({backdropClick: false});
     //      });

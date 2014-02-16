@@ -3,10 +3,10 @@ module.exports = function(config){
         basePath : '../',
 
         files : [
-            'assets/js/angular/angular.js',
-            'assets/js/angular/angular-*.js',
-            //'app/js/controllers/UnitControllers.js',
-            'app/js/controllers/controllers.js',
+            '../app/assets/js/angular/angular.js',
+            '../app/assets/js/angular/angular-*.js',
+            //'app-old/js/controllers/UnitControllers.js',
+            '../app-old/js/controllers/controllers.js',
             'unit-test/ControllersSpec.js'
         ],
 

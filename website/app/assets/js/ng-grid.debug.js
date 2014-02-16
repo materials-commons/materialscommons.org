@@ -25,7 +25,7 @@ var TEMPLATE_REGEXP = /<.+>/;
 window.ngGrid = {};
 window.ngGrid.i18n = {};
 
-// Declare app level module which depends on filters, and services
+// Declare app-old level module which depends on filters, and services
 var ngGridServices = angular.module('ngGrid.services', []);
 var ngGridDirectives = angular.module('ngGrid.directives', []);
 var ngGridFilters = angular.module('ngGrid.filters', []);

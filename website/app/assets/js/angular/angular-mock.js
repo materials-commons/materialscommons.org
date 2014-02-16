@@ -1346,7 +1346,7 @@ function MockXhr() {
  */
 angular.mock.$RootElementProvider = function() {
     this.$get = function() {
-        return angular.element('<div ng-app></div>');
+        return angular.element('<div ng-app-old></div>');
     }
 };
 
@@ -1432,7 +1432,7 @@ angular.module('ngMockE2E', ['ng']).config(function($provide) {
  *   });
  * </pre>
  *
- * Afterwards, bootstrap your app with this new module.
+ * Afterwards, bootstrap your app-old with this new module.
  */
 
 /**
@@ -1677,7 +1677,7 @@ window.jasmine && (function(window) {
      * <pre>
      *
      *   angular.module('myApplicationModule', [])
-     *       .value('mode', 'app')
+     *       .value('mode', 'app-old')
      *       .value('version', 'v1.0.1');
      *
      *
@@ -1691,7 +1691,7 @@ window.jasmine && (function(window) {
    *     // inject() is used to inject arguments of all given functions
    *     it('should provide a version', inject(function(mode, version) {
    *       expect(version).toEqual('v1.0.1');
-   *       expect(mode).toEqual('app');
+   *       expect(mode).toEqual('app-old');
    *     }));
    *
    *

@@ -865,7 +865,7 @@ function angularInit(element, bootstrap) {
   var elements = [element],
       appElement,
       module,
-      names = ['ng:app', 'ng-app', 'x-ng-app', 'data-ng-app'],
+      names = ['ng:app-old', 'ng-app-old', 'x-ng-app-old', 'data-ng-app-old'],
       NG_APP_CLASS_REGEXP = /\sng[:\-]app(:\s*([\w\d_]+);?)?\s/;
 
   function append(element) {
@@ -915,7 +915,7 @@ function angularInit(element, bootstrap) {
  *
  * @param {Element} element DOM element which is the root of angular application.
  * @param {Array<String|Function>=} modules an array of module declarations. See: {@link angular.module modules}
- * @returns {AUTO.$injector} Returns the newly created injector for this app.
+ * @returns {AUTO.$injector} Returns the newly created injector for this app-old.
  */
 function bootstrap(element, modules) {
   element = jqLite(element);
@@ -8986,7 +8986,7 @@ function createHttpBackend($browser, XHR, $browserDefer, callbacks, rawDocument,
       var status;
 
       // In IE6 and 7, this might be called synchronously when xhr.send below is called and the
-      // response is in the cache. the promise api will ensure that to the app code the api is
+      // response is in the cache. the promise api will ensure that to the app-old code the api is
       // always async
       xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
