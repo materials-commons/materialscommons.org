@@ -1,7 +1,19 @@
+var Application = Application || {};
+
+Application.Constants = angular.module('application.constants', []);
+Application.Services = angular.module('application.services', []);
+Application.Controllers = angular.module('application.controllers', []);
+Application.Filters = angular.module('application.filters', []);
+Application.Directives = angular.module('application.directives', []);
+
 var app = angular.module('materialscommons',
-    ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective', 'stateServices', 'jqyoui', 'AngularStomp',
-        'ui.bootstrap', 'NgTree', 'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives', 'Provenance',
-        'ngQuickDate', 'mctree']);
+    ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective',
+     'stateServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap', 'NgTree',
+     'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives',
+     'Provenance', 'ngQuickDate', 'mctree', 'application.constants',
+     'application.services', 'application.controllers', 'application.filters',
+     'application.directives'
+    ]);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -13,15 +25,16 @@ app.config(function ($stateProvider) {
      */
         .state('home', {
             url: '/home',
-            templateUrl: 'partials/home.html',
-            controller: 'HomeController'
+            templateUrl: 'application/home/home.html'
         })
-        .state('mytools', {
-            url: '/mytools',
-            templateUrl: 'partials/my-tools.html',
-            controller: 'MyToolsController'
+        .state('toolbar', {
+            url: '/toolbar',
+            templateUrl: 'application/toolbar/toolbar.html'
         })
 
+        .state('mytools', {
+
+        })
         // Projects views
         .state('mytools.projects', {
             url:'/projects/:id/:draft_id',
@@ -57,21 +70,15 @@ app.config(function ($stateProvider) {
 
         .state('about', {
             url: '/about',
-            templateUrl: 'partials/about.html',
-            controller: 'AboutController'
-
+            templateUrl: 'application/about/about.html'
         })
         .state('contact', {
             url: '/contact',
-            templateUrl: 'partials/contact.html',
-            controller: 'ContactController'
-
+            templateUrl: 'application/contact/contact.html'
         })
         .state('help', {
             url: '/help',
-            templateUrl: 'partials/help.html',
-            controller: 'HelpController'
-
+            templateUrl: 'application/help/help.html'
         })
     /**
      * End To level navigation

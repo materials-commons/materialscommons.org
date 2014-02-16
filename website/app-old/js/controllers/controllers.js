@@ -8,34 +8,6 @@ function FrontPageController($scope, $location) {
     }
 }
 
-function HomeController($scope, mcapi) {
-    mcapi('/news')
-        .success(function (data) {
-            $scope.news = data;
-        }).jsonp();
-}
-
-function ExploreController($scope) {
-    $scope.pageDescription = "Explore";
-}
-
-function AboutController($scope) {
-    $scope.pageDescription = "About";
-
-
-}
-
-function ContactController($scope) {
-    $scope.pageDescription = "Contact";
-
-}
-
-function HelpController($scope) {
-    $scope.pageDescription = "Help";
-
-
-}
-
 
 function EventController($scope, alertService) {
     $scope.message = '';
