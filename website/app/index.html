@@ -57,7 +57,7 @@
             <div class="nav-collapse collapse">
                 <div ng-hide="email_address">
                     <p class="navbar-text pull-right">
-                        <a href="#/account/login" class="navbar-link"><i class="icon-user"></i> Login</a>
+                        <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
                     </p>
                 </div>
 
@@ -65,7 +65,7 @@
                 <div ng-show="email_address">
                     <p class="navbar-text pull-right">
                         <a href="#/account/details" class="navbar-link"><i class="icon-user"></i>{{email_address}}</a>
-                        <a href="#/account/logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
+                        <a href="#/logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
                     </p>
                 </div>
             </div>
@@ -154,6 +154,8 @@
 <script src="application/about/about-controller.js"></script>
 <script src="application/contact/contact-controller.js"></script>
 <script src="application/home/home-controller.js"></script>
+<script src="application/login/login-controller.js"></script>
+<script src="application/logout/logout-controller.js"></script>
 
 <!-- Toolbar -->
 <script src="application/toolbar/toolbar-controller.js"></script>

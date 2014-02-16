@@ -8,11 +8,11 @@ Application.Directives = angular.module('application.directives', []);
 
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective',
-     'stateServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap', 'NgTree',
-     'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives',
-     'Provenance', 'ngQuickDate', 'mctree', 'application.constants',
-     'application.services', 'application.controllers', 'application.filters',
-     'application.directives'
+        'stateServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap', 'NgTree',
+        'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives',
+        'Provenance', 'ngQuickDate', 'mctree', 'application.constants',
+        'application.services', 'application.controllers', 'application.filters',
+        'application.directives'
     ]);
 
 app.config(function ($stateProvider) {
@@ -20,9 +20,7 @@ app.config(function ($stateProvider) {
     mcglobals = {};
     doConfig();
     $stateProvider
-    /**
-     * Top level navigation
-     */
+        // Navbar
         .state('home', {
             url: '/home',
             templateUrl: 'application/home/home.html'
@@ -31,25 +29,48 @@ app.config(function ($stateProvider) {
             url: '/toolbar',
             templateUrl: 'application/toolbar/toolbar.html'
         })
-
+        .state('about', {
+            url: '/about',
+            templateUrl: 'application/about/about.html'
+        })
+        .state('contact', {
+            url: '/contact',
+            templateUrl: 'application/contact/contact.html'
+        })
+        .state('help', {
+            url: '/help',
+            templateUrl: 'application/help/help.html'
+        })
+        .state('login', {
+            url: '/login',
+            templateUrl: 'application/login/login.html'
+        })
+        .state('logout', {
+            url: '/logout',
+            controller: 'logout'
+        })
+        .state('account', {
+            url: '/account',
+            templateUrl: 'application/account/account.html'
+        })
         .state('mytools', {
 
         })
         // Projects views
         .state('mytools.projects', {
-            url:'/projects/:id/:draft_id',
-            templateUrl:'partials/project/project.html'
+            url: '/projects/:id/:draft_id',
+            templateUrl: 'partials/project/project.html'
         })
         .state('mytools.projects.overview', {
-            url:'/overview',
-            templateUrl:'partials/project/overview.html'
+            url: '/overview',
+            templateUrl: 'partials/project/overview.html'
         })
         .state('mytools.projects.provenance', {
-            url:'/provenance',
+            url: '/provenance',
             templateUrl: 'partials/project/provenance.html'
         })
         .state('mytools.projects.provenance.process', {
-            url:'/process',
+            url: '/process',
             templateUrl: 'partials/project/provenance/process.html'
         })
         .state('mytools.dataedit', {
@@ -68,18 +89,7 @@ app.config(function ($stateProvider) {
             controller: 'TagDataController'
         })
 
-        .state('about', {
-            url: '/about',
-            templateUrl: 'application/about/about.html'
-        })
-        .state('contact', {
-            url: '/contact',
-            templateUrl: 'application/contact/contact.html'
-        })
-        .state('help', {
-            url: '/help',
-            templateUrl: 'application/help/help.html'
-        })
+
     /**
      * End To level navigation
      */
@@ -218,38 +228,26 @@ app.config(function ($stateProvider) {
      * END Subpage
      */
 
-        .state('account/create-account', {
+        .state('account2/create-account', {
             url: '/account/create-account',
             templateUrl: 'partials/account/create-account.html',
             controller: 'CreateAccountController'
         })
 
-        .state('account/details', {
+        .state('account2/details', {
             url: '/account/details',
-            templateUrl: 'partials/account/account-details.html',
+            templateUrl: 'partials/account/account.html',
             controller: 'AccountDetailsController'
         })
-        .state('account/details/apikey/view', {
+        .state('account2/details/apikey/view', {
             url: '/account/details/apikey/view',
             templateUrl: 'partials/account/details/apikeyview.html',
             controller: 'ApiKeyController'
         })
-        .state('account/details/apikey/reset', {
+        .state('account2/details/apikey/reset', {
             url: '/account/details/apikey/reset',
             templateUrl: 'partials/account/details/apikeyreset.html',
             controller: 'ApiKeyResetController'
-        })
-        .state('account/logout', {
-            url: '/account/logout',
-            templateUrl: 'partials/about.html',
-            controller: 'LogOutController'
-
-        })
-        .state('account/login', {
-            url: '/account/login',
-            templateUrl: 'partials/account/login.html',
-            controller: 'LoginController'
-
         })
         .state('createusergroup', {
             url: '/createusergroup',
@@ -301,18 +299,10 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
         else if (matchesPartial(toState, "partials/help", "HelpController")) {
             setActiveMainNav("#help-nav");
         }
-//        if (!$rootScope.stompClient) {
-//            var chatConnection = "http://" + document.location.hostname + ":15674/stomp";
-//            if (document.location.hostname == "materialscommons.org") {
-//                chatConnection = "https://materialscommons.org:55674/stomp";
-//            }
-//
-//            $rootScope.stompClient = ngstomp(chatConnection);
-//        }
 
         if (!User.isAuthenticated()) {
             if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") != -1) {
-                $location.path("/account/login");
+                $location.path("/login");
             }
         }
         else {

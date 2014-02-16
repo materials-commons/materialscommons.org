@@ -1,0 +1,47 @@
+<div ng-controller="account">
+    <div class="row-fluid">
+        <img width="100" height="150" src="">
+
+        <div class="span8 offset1">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputPassword">Password</label>
+
+                    <div class="controls">
+                        <input type="password" id="inputPassword" placeholder="New Password..." ng-model="new_password">
+                        <input type="password" placeholder="Verify Password..." ng-model="verify_new_password">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button ng-click="saveChanges()" class="btn">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row-fluid">
+        <div class="span8 offset1">
+            <table>
+                <tr>
+                    <td><h4>API Key:</h4></td>
+                    <td><a href="#/account/details/apikey/view">View API Key</a></td>
+                    <td><a href="#/account/details/apikey/reset">Reset API Key</a></td>
+                </tr>
+                <tr>
+                    <td><h4>Data:</h4></td>
+                    <td><a href="#/account/details/data/udload/history">View Upload/Download History</a></td>
+                    <td><a href="#/account/details/data/details">View Details</a></td>
+                </tr>
+                <tr>
+                    <td><h4>User Groups:</h4></td>
+                    <td><a href="#/createusergroup">Create Usergroup</a></td>
+                    <td><a href="#/myusergoups">My Usergroups</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
