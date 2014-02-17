@@ -1,64 +1,132 @@
 {
 
     "id": "0c9680cb-25a3-404f-b53e-ead2fc358e84" ,
-    "model": [
-        {
-            "name": "model" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ""
-        } ,
-        {
-            "name": "status" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ""
-        } ,
-        {
-            "name": "location" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ""
-        } ,
-        {
-            "name": "Gun Type" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ["Field Emission"]
-        } ,
-        {
-            "name": "Detector Type" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ["Secondary Electron", "Back Scatter"]
-        } ,
-        {
-            "name": "Vacuum Level (Range)" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ["Hight", "Low"]
-        } ,
-        {
-            "name": "manufacturer" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ""
-        }
-    ] ,
+    "model": {
+        "default": [
+            {
+                "name": "Name" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Notes" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            }              
+        ],
+       
+        "additional": [
+            {
+                "name": "Vacuumm Level" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": ["High", "Low"],
+                "required": "False"
+            },
+            {
+                "name": "Gun Type" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": ["Field emission selection"],
+                "required": "False"
+            },
+            {
+                "name": "Detector Type" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": "False"
+            },
+            {
+                "name": "Operator" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": "False"
+            },
+            {
+                "name": "Model#" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": "False"
+            } ,
+            {
+                "name": "Status" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": "False"
+            } ,
+            {
+                "name": "Location" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": "False"
+            } ,
+            {
+                "name": "manufacturer" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": "False"
+            },
+            {
+                "name": "Force Type" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": ["Screw", "Hydraulic"],
+                "required": "False"
+            },
+            {
+                "name": "Rigaku" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": ["left side", "right side"],
+                "required": "False"
+            },
+            {
+                "name": "Type" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": ["Rotating anode"],
+                "required": "False"
+            }
+        ]
+        
+
+    } ,
     "owner": "gtarcea@umich.edu",
     "template_birthtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,
     "template_description": "" ,

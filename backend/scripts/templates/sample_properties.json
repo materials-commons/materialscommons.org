@@ -1,38 +1,120 @@
 {
 
     "id": "de23bfc8-2c8b-4720-b0cf-f054ff68a474" ,
-    "model": [
-        {
-            "name": "manufacturing_condition" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": [ ],
-            "value": "" ,
-            "value_choice": [ ]
-        } ,
-        {
-            "name": "heat_treatment" ,
-            "type": "number" ,
-            "unit": "" ,
-            "unit_choice": [
-                "C" ,
-                "F"
-            ] ,
-            "value": "" ,
-            "value_choice": [ ]
-        } ,
-        {
-            "name": "specimen_prep" ,
-            "type": "multi" ,
-            "unit": "" ,
-            "unit_choice": [ ],
-            "value": "" ,
-            "value_choice": [
-                "Electropolish" ,
-                "Silica finish"
-            ]
-        }
-    ] ,
+    "model": {
+        "default": [
+            {
+                "name": "Sample name" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Alloy composition" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            }
+            
+        ],
+        "additional":[
+            {
+                "name": "Heat treatment" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [
+                    "C" ,
+                    "F"
+                ] ,
+                "value": "" ,
+                "value_choice": ["T6", "T7"],
+                "required": "False"
+            },
+            {
+                "name": "Compression" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice":[],
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Orientation" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+
+            {
+                "name": "Manufacturing Condition" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            } ,
+         
+            {
+                "name": "Specimen Prep" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [
+                    "Electropolish" ,
+                    "Silica finish"
+                ],
+                "required": "False"
+            },
+            {
+                "name": "Material State" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": ["wrought", "cast", "other"],
+                "required": "False"
+            },
+            {
+                "name": "Gage length" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Cross sectional area" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Sample Geometry" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            }
+        ]
+    } ,
     "owner": "gtarcea@umich.edu", 
     "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_description": "" ,
