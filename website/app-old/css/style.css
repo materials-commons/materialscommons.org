@@ -355,7 +355,7 @@ img.data-img {
 }
 
 hr{
-    border-color: black;
+    -moz-border-top-colors: gray;
 }
 
 /*.gridStyle {*/
