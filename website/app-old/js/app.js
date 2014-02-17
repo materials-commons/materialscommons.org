@@ -1,18 +1,25 @@
 var Application = Application || {};
 
-Application.Constants = angular.module('application.constants', []);
-Application.Services = angular.module('application.services', []);
-Application.Controllers = angular.module('application.controllers', []);
-Application.Filters = angular.module('application.filters', []);
-Application.Directives = angular.module('application.directives', []);
+Application.Provenance = {};
+Application.Provenance.Constants = angular.module('application.provenance.constants', []);
+Application.Provenance.Constants = angular.module('application.provenance.services', []);
+Application.Provenance.Constants = angular.module('application.provenance.controllers', []);
+Application.Provenance.Constants = angular.module('application.provenance.filters', []);
+Application.Provenance.Constants = angular.module('application.provenance.directives', []);
+
+Application.Constants = angular.module('application.core.constants', []);
+Application.Services = angular.module('application.core.services', []);
+Application.Controllers = angular.module('application.core.controllers', []);
+Application.Filters = angular.module('application.core.filters', []);
+Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective',
         'stateServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap', 'NgTree',
         'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives',
-        'Provenance', 'ngQuickDate', 'mctree', 'application.constants',
-        'application.services', 'application.controllers', 'application.filters',
-        'application.directives'
+        'Provenance', 'ngQuickDate', 'mctree', 'application.core.constants',
+        'application.core.services', 'application.core.controllers', 'application.core.filters',
+        'application.core.directives'
     ]);
 
 app.config(function ($stateProvider) {
@@ -23,27 +30,27 @@ app.config(function ($stateProvider) {
         // Navbar
         .state('home', {
             url: '/home',
-            templateUrl: 'application/home/home.html'
+            templateUrl: 'application/core/home/home.html'
         })
         .state('toolbar', {
             url: '/toolbar',
-            templateUrl: 'application/toolbar/toolbar.html'
+            templateUrl: 'application/core/toolbar/toolbar.html'
         })
         .state('about', {
             url: '/about',
-            templateUrl: 'application/about/about.html'
+            templateUrl: 'application/core/about/about.html'
         })
         .state('contact', {
             url: '/contact',
-            templateUrl: 'application/contact/contact.html'
+            templateUrl: 'application/core/contact/contact.html'
         })
         .state('help', {
             url: '/help',
-            templateUrl: 'application/help/help.html'
+            templateUrl: 'application/core/help/help.html'
         })
         .state('login', {
             url: '/login',
-            templateUrl: 'application/login/login.html'
+            templateUrl: 'application/core/login/login.html'
         })
         .state('logout', {
             url: '/logout',
@@ -53,83 +60,83 @@ app.config(function ($stateProvider) {
         // Account
         .state('account', {
             url: '/account',
-            templateUrl: 'application/account/account.html'
+            templateUrl: 'application/core/account/account.html'
         })
         .state('account.groupcreate', {
             url: '/groupcreate',
-            templateUrl: 'application/account/groupcreate/groupcreate.html'
+            templateUrl: 'application/core/account/groupcreate/groupcreate.html'
         })
         .state('account.groupusers', {
             url: '/groupusers/:id',
-            templateUrl: 'application/account/groupusers/groupusers.html'
+            templateUrl: 'application/core/account/groupusers/groupusers.html'
         })
 
         // Toolbar Data Views
         .state('toolbar.mydatapage', {
             url: '/mydatapage',
-            templateUrl: 'application/toolbar/mydatapage/mydatapage.html'
+            templateUrl: 'application/core/toolbar/mydatapage/mydatapage.html'
         })
         .state('toolbar.mydata', {
             url: '/mydata',
-            templateUrl: 'application/toolbar/mydata/mydata.html'
+            templateUrl: 'application/core/toolbar/mydata/mydata.html'
         })
         .state('toolbar.thumbnails', {
             url: '/thumbnails',
-            templateUrl: 'application/toolbar/thumbnails/thumbnails.html'
+            templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
         })
         .state('toolbar.dataedit', {
             url:'/dataedit/:id',
-            templateUrl: 'application/toolbar/dataedit/dataedit.html'
+            templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
         })
         .state('toolbar.databytag', {
             url: '/databytag/:name',
-            templateUrl: 'application/toolbar/databytag/databytag.html'
+            templateUrl: 'application/core/toolbar/databytag/databytag.html'
         })
 
         // Toolbar tag views
         .state('toolbar.tagspage', {
             url:'/tagspage',
-            templateUrl: 'application/toolbar/tagspage/tagspage.html'
+            templateUrl: 'application/core/toolbar/tagspage/tagspage.html'
         })
         .state('toolbar.tags', {
             url: '/tags',
-            templateUrl: 'application/toolbar/tags/tags.html'
+            templateUrl: 'application/core/toolbar/tags/tags.html'
         })
         .state('toolbar.globaltagcloud', {
             url: '/globaltagcloud',
-            templateUrl: 'application/toolbar/globaltagcloud/globaltagcloud.html'
+            templateUrl: 'application/core/toolbar/globaltagcloud/globaltagcloud.html'
         })
 
         // Toolbar review views
         .state('toolbar.reviews', {
             url: '/reviews',
-            templateUrl: 'application/toolbar/reviews/reviews.html'
+            templateUrl: 'application/core/toolbar/reviews/reviews.html'
         })
 
         // Toolbar machine views
         .state('toolbar.machines', {
             url: '/machines',
-            templateUrl: 'application/toolbar/machines/machines.html'
+            templateUrl: 'application/core/toolbar/machines/machines.html'
         })
 
         // Toolbar materials views
         .state('toolbar.materials', {
             url: '/materials',
-            templateUrl: 'application/toolbar/materials/materials.html'
+            templateUrl: 'application/core/toolbar/materials/materials.html'
         })
 
         // Toolbar projectspage views
         .state('toolbar.projectspage', {
             url: '/projectspage/:id/:draft_id',
-            templateUrl: 'application/toolbar/projectspage/projectspage.html'
+            templateUrl: 'application/core/toolbar/projectspage/projectspage.html'
         })
         .state('toolbar.projectspage.overview', {
             url: '/overview',
-            templateUrl: 'application/toolbar/projectspage/overview/overview.html'
+            templateUrl: 'application/core/toolbar/projectspage/overview/overview.html'
         })
         .state('toolbar.projectspage.provenance', {
             url: '/provenance',
-            templateUrl: 'application/toolbar/projectspage/provenance/provenance.html'
+            templateUrl: 'application/core/toolbar/projectspage/provenance/provenance.html'
         })
 
         // Views
