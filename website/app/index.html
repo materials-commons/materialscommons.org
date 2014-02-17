@@ -88,9 +88,10 @@
 </div>
 
 <div class="row-fluid">
-    <div ng-show="message" ng-controller="EventController">
-        <notification ng-model="message"></notification>
+        <div ng-show="message" ng-controller="EventController">
+            <notification message="message"></notification>
     </div>
+
 </div>
 
 <div class="row-fluid">
@@ -152,6 +153,8 @@
 <script src="application/core/logout/logout-controller.js"></script>
 <script src="application/core/account/account-controller.js"></script>
 
+<script src="application/global-directive.js"></script>
+
 <!-- Views -->
 <!-- View: Account Groups -->
 <script src="application/core/account/account-groups-controller.js"></script>
@@ -178,12 +181,15 @@
 <script src="application/core/toolbar/tagspage/tagspage-controller.js"></script>
 <script src="application/core/toolbar/tags/tags-controller.js"></script>
 <script src="application/core/toolbar/globaltagcloud/globaltagcloud-controller.js"></script>
+<script src="application/core/toolbar/globaltagcloud/globaltagcloud-directive.js"></script>
 
 <!-- Toolbar reviews -->
 <script src="application/core/toolbar/reviews/reviews-controller.js"></script>
 
 <!-- Toolbar machines -->
 <script src="application/core/toolbar/machines/machines-controller.js"></script>
+<script src="application/core/toolbar/machines/machine-directive.js"></script>
+
 
 <!-- Toolbar materials -->
 <script src="application/core/toolbar/materials/materials-controller.js"></script>

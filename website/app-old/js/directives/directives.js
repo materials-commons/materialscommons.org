@@ -1,61 +1,5 @@
 var md = angular.module("materialsdirective", []);
 
-md.directive('wordcloud', function () {
-    return {
-        restrict: 'A',
-        transclude: true,
-        scope: { list: '=wordcloud' },
-
-        link: function (scope, element) {
-            scope.$watch('list', function (list) {
-                if (list) {
-                    $(element).jQCloud(list, {});
-                }
-            });
-
-        }
-    };
-});
-
-md.directive('datepicker', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            element.datepicker();
-            element.bind('changeDate', function () {
-                scope.$apply(function () {
-                    scope[attrs.ngModel] = element.val()
-                });
-            })
-        }
-    };
-});
-
-md.directive('bs:popover', function (expression, compiledElement) {
-    return function (linkElement) {
-        linkElement.popover();
-    };
-});
-
-
-md.directive('notification', function ($timeout) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            ngModel: '='
-        },
-        template: '<div class="alert fade" bs-alert="ngModel"></div>',
-        link: function (scope, element) {
-            scope.$watch('ngModel', function () {
-                element.show();
-                $timeout(function () {
-                    element.hide();
-                }, 3000);
-            });
-        }
-    }
-});
 
 md.directive('paged', function () {
     return {
@@ -252,30 +196,4 @@ mctree.directive('projectTree', function () {
     }
 });
 
-mctree.directive('dfProperties', function () {
-    return {
-        restrict: "A",
-        scope: {
-            defaultProperties: '='
-        },
-        template: "<span ng-repeat='df in defaultProperties'>"+
-            "<div class='control-group'>"+
-            "<label class='control-label'>{{df.name}}:</label>" +
-            "<div class='controls'>" +
-            "<p ng-if='df.value_choice.length!=0'>"+
-            "<select ng-model='df.value'>" +
-            "<option ng-repeat='each in df.value_choice' value='{{each}}'> {{each}} </option></select>"+
-            "</p>"+
-            "<p ng-if='df.value_choice.length==0'>"+
-            "<input ng-model='df.value' placeholder='{{df.name}} ...' type='text'>"+
-            "</p>"+
-            "</div>"+
-            "</div>"+
-            "</span>"
-    ,
-        link: function (scope, element, attrs) {
-
-        }
-    }
-});
 
