@@ -1,4 +1,4 @@
-<div ng-controller="ProvController">
+<div ng-controller="provenance">
     <div class="row-fluid">
         <div class="span12">
             <div ng-show="isCurrentStep('process') && !display">
@@ -60,20 +60,20 @@
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
                                 Process
                             </a>
-                            <a style="cursor:pointer" ng-show="process_saved" ng-click="editProcess()">(edit)</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editProcess()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('inputs')}">
                             <a><i ng-show="inputsSaved"
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
                                 Inputs
                             </a>
-                            <a style="cursor:pointer" ng-show="inputs_saved" ng-click="editInputs()">(edit)</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('inputs')" ng-click="editInputs()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('outputs')}">
                             <a><i ng-show="outputsSaved"
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
                                 Outputs
-                            </a> <a style="cursor:pointer" ng-show="outputs_saved" ng-click="editOutputs()">(edit)</a>
+                            </a> <a style="cursor:pointer" ng-show="isFinishedStep('outputs')" ng-click="editOutputs()">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('submit')}">
                             <a>Submit</a>
