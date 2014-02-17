@@ -53,6 +53,16 @@ app.config(function ($stateProvider) {
             url: '/account',
             templateUrl: 'application/account/account.html'
         })
+        .state('account.groupcreate', {
+            url:'/groupcreate',
+            templateUrl:'application/account/groupcreate/groupcreate.html'
+        })
+        .state('account.groupusers', {
+            url:'/groupusers/:id',
+            templateUrl: 'application/account/groupusers/groupusers.html'
+        })
+
+        // Views
         .state('mytools', {
 
         })
@@ -239,34 +249,11 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/account/account.html',
             controller: 'AccountDetailsController'
         })
-        .state('account2/details/apikey/view', {
-            url: '/account/details/apikey/view',
-            templateUrl: 'partials/account/details/apikeyview.html',
-            controller: 'ApiKeyController'
-        })
-        .state('account2/details/apikey/reset', {
-            url: '/account/details/apikey/reset',
-            templateUrl: 'partials/account/details/apikeyreset.html',
-            controller: 'ApiKeyResetController'
-        })
         .state('createusergroup', {
             url: '/createusergroup',
-            templateUrl: 'partials/usergroups/usergroup-create.html',
+            templateUrl: 'partials/usergroups/groupcreate.html',
             controller: 'CreateUserGroupController'
         })
-
-        .state('myusergoups', {
-            url: '/myusergoups',
-            templateUrl: 'partials/usergroups/my_usergroups.html',
-            controller: 'ListUserGroupController'
-        })
-        .state('each_usergroup', {
-            url: '/myusergoups/:id',
-            templateUrl: 'partials/usergroups/usergroup_list_users.html',
-            controller: 'ListUserController'
-        })
-
-
         .state('datagroups/data/:id', {
             url: '/datagroups/data/:id',
             templateUrl: 'partials/datagroups/datareport.html',
