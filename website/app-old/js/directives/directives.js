@@ -272,6 +272,10 @@ mctree.directive('dfProperties', function () {
             "</div>"+
             "</div>"+
             "</span>"
+    ,
+        link: function (scope, element, attrs) {
+
+        }
     }
 });
 
