@@ -58,8 +58,13 @@ def make_json_obj_for_join(selection, use_name):
 @jsonp
 def get_usergroup(usergroup):
     user = access.get_user()
-    selection = r.table('usergroups').get(usergroup).run(g.conn, time_format='raw')
-    return args.json_as_format_arg(selection)
+    ugroup = r.table('usergroups').get(usergroup) \
+                                  .run(g.conn, time_format='raw')
+    if ugroup:
+        access.check(user, ugroup['owner'])
+        return args.json_as_format_arg(ugroup)
+    else:
+        error.bad_request("No such usergroup: %s" % (usergroup))
 
 
 @app.route('/usergroup/<usergroup>/users', methods=['GET'])

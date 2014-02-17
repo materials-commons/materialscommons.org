@@ -136,7 +136,7 @@ md.directive('cgroup', function () {
         restrict: "E",
         transclude: true,
         scope: {
-            label: '@'
+            label: '@label'
         },
         template: '<div class="control-group">' +
             '<label class="control-label">{{ label }}</label>' +

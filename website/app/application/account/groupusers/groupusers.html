@@ -1,8 +1,9 @@
-<div class="span10 offset1">
-    <h4>List of Users in {{ug_name}}</h4>
+<div class="span10 offset1" ng-controller="accountGroupUsers">
+    <hr>
+    <h4>Users in {{ug_name}}</h4>
 
     <div class="row-fluid">
-        <div class="well">
+        <div>
             <paged data="users_by_usergroup" current-page="currentUsersPage" page-size="10">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
@@ -32,6 +33,7 @@
                 <option ng-repeat="user in all_users">{{ user.email }}</option>
             </select>
             <button class="btn" ng-click="add_user_to_usergroup()">Add User</button>
+            <button class="btn" ng-click="done()">Done</button>
         </div>
     </div>
 </div>
