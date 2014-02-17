@@ -39,6 +39,16 @@ Application.Provenance.Services.factory('ProvDrafts', [function () {
                     break;
                 }
             }
+        },
+
+        findDraft: function (id) {
+            var i;
+            for (i = 0; i < service.drafts.length; i++) {
+                if (service.drafts[i].id === id) {
+                    return service.drafts[i];
+                }
+            }
+            return null;
         }
     };
 
