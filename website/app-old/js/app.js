@@ -2,10 +2,10 @@ var Application = Application || {};
 
 Application.Provenance = {};
 Application.Provenance.Constants = angular.module('application.provenance.constants', []);
-Application.Provenance.Constants = angular.module('application.provenance.services', []);
-Application.Provenance.Constants = angular.module('application.provenance.controllers', []);
-Application.Provenance.Constants = angular.module('application.provenance.filters', []);
-Application.Provenance.Constants = angular.module('application.provenance.directives', []);
+Application.Provenance.Services = angular.module('application.provenance.services', []);
+Application.Provenance.Controllers = angular.module('application.provenance.controllers', []);
+Application.Provenance.Filters = angular.module('application.provenance.filters', []);
+Application.Provenance.Directives = angular.module('application.provenance.directives', []);
 
 Application.Constants = angular.module('application.core.constants', []);
 Application.Services = angular.module('application.core.services', []);
@@ -19,7 +19,8 @@ var app = angular.module('materialscommons',
         'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives',
         'Provenance', 'ngQuickDate', 'mctree', 'application.core.constants',
         'application.core.services', 'application.core.controllers', 'application.core.filters',
-        'application.core.directives'
+        'application.core.directives', 'application.provenance.constants','application.provenance.services',
+        'application.provenance.controllers', 'application.provenance.filters', 'application.provenance.directives'
     ]);
 
 app.config(function ($stateProvider) {
@@ -136,7 +137,11 @@ app.config(function ($stateProvider) {
         })
         .state('toolbar.projectspage.provenance', {
             url: '/provenance',
-            templateUrl: 'application/core/toolbar/projectspage/provenance/provenance.html'
+            templateUrl: 'application/provenance/provenance.html'
+        })
+        .state('toolbar.projectspage.provenance.process', {
+            url: '/process',
+            templateUrl: 'application/provenance/process/process.html'
         })
 
         // Views
