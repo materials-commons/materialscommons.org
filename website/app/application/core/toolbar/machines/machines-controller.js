@@ -1,10 +1,14 @@
 Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", function ($scope, mcapi) {
+        $scope.machine = {};
 
         mcapi('/templates')
             .argWithValue('filter_by', '"template_type":"machine"')
             .success(function (data) {
                 $scope.machine_template = data[0];
+                $scope.default_properties = $scope.machine_template.model.default;
+                $scope.additional_properties = $scope.machine_template.model.additional;
+
             })
             .error(function (e) {
 
@@ -23,7 +27,8 @@ Application.Controllers.controller('toolbarMachines',
         }
 
         $scope.save = function () {
-            var new_machine = $scope.machine;
+            $scope.machine.model.default = $scope.default_properties;
+            $scope.machine.model.additional = $scope.machine.model.additional;
             mcapi('/machines/new')
                 .arg('order_by=birthtime')
                 .success(function (data) {
@@ -39,27 +44,26 @@ Application.Controllers.controller('toolbarMachines',
                 })
                 .error(function (e) {
 
-                }).post(new_machine);
+                }).post($scope.machine);
         }
 
         $scope.add_property_to_machine = function () {
             if (!('model' in $scope.machine)) {
-                $scope.machine.model = [];
+                $scope.machine.model= {
+                    "default": [],
+                    "additional": []
+                }
+
             }
             if ($scope.p_name || $scope.p_name == ' ') {
-                $scope.machine.model.push({'name': $scope.p_name, 'value': ''});
+                $scope.machine.model.additional.push(JSON.parse($scope.p_name));
                 $scope.p_name = '';
             }
-
-        }
-
-        $scope.custom_property = function () {
-            if (!('model' in $scope.machine)) {
-                $scope.machine.model = [];
-            }
             if ($scope.additional_prop || $scope.additional_prop == ' ') {
-                $scope.machine.model.push({'name': $scope.additional_prop, 'value': ''})
+                $scope.machine.model.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
+                    'unit_choice': [], 'unit': '', 'required': 'False',"type": ""});
                 $scope.additional_prop = '';
             }
+
         }
     }]);
