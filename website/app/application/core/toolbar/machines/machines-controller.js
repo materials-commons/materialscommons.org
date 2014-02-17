@@ -1,6 +1,10 @@
 Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", function ($scope, mcapi) {
-        $scope.machine = {};
+        $scope.machine = { "model": {
+            "default": [],
+            "additional": []
+        }
+        }
 
         mcapi('/templates')
             .argWithValue('filter_by', '"template_type":"machine"')
@@ -23,7 +27,11 @@ Application.Controllers.controller('toolbarMachines',
             }).jsonp();
 
         $scope.clear_machine = function () {
-            $scope.machine = '';
+            $scope.machine = { "model": {
+                "default":  [],
+                "additional": []
+            }
+            };
         }
 
         $scope.save = function () {
