@@ -1,28 +1,94 @@
 {
 
     "id": "59602cf2-3aa3-4b18-a69c-f32e0ff76391" ,
-    "model": [
-        {
-            "name": "voltage" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": [
-                "V"
-            ] ,
-            "value": "" ,
-            "value_choice": [ ]
-        } ,
-        {
-            "name": "current" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": [
-                "Amp"
-            ] ,
-            "value": "" ,
-            "value_choice": [ ]
-        }
-    ] ,
+    "model": {
+        "default": [
+            {
+                "name": "Voltage" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["V", "KV"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Pixel Size" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["microns"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            }
+        ],
+        "additional":[
+            {
+                "name": "Image mode" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": ["SEI", "BSE"],
+                "required": "False" 
+            },
+            {
+                "name": "Beam Current" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["Amp"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Spot size" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["nm"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Dwell Time" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["hrs", "mins", "sec"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Image Integrations" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Brightness" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            },
+            {
+                "name": "Contrast" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": "False"
+            }
+        ]
+
+    } ,
     "owner": "gtarcea@umich.edu", 
     "template_description": "" ,
     "template_name": "SEM Equipment Properties" ,
