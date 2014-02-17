@@ -100,6 +100,24 @@ app.config(function ($stateProvider) {
             templateUrl: 'application/toolbar/globaltagcloud/globaltagcloud.html'
         })
 
+        // Toolbar review views
+        .state('toolbar.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/toolbar/reviews/reviews.html'
+        })
+
+        // Toolbar machine views
+        .state('toolbar.machines', {
+            url: '/machines',
+            templateUrl: 'application/toolbar/machines/machines.html'
+        })
+
+        // Toolbar materials views
+        .state('toolbar.materials', {
+            url: '/materials',
+            templateUrl: 'application/toolbar/materials/materials.html'
+        })
+
         // Views
         .state('mytools', {
 
@@ -158,33 +176,13 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/project/add-provenance.html',
             controller: 'ProvenanceController'
         })
-        .state('mytools.tags', {
-            url: '/tags',
-            templateUrl: 'partials/tags/tags.html',
-            controller: 'AllTagsController'
-        })
+
         .state('mytools.mytagslist', {
             url: '/mytagslist',
             templateUrl: 'partials/tags/my-tags.html',
             controller: 'MyTagsController'
         })
-        .state('mytools.globaltagcloud', {
-            url: '/globaltagcloud',
-            templateUrl: 'partials/tags/globaltagcloud.html',
-            controller: 'GlobalTagCloudController'
-        })
 
-
-        .state('mytools.conditionstab', {
-            url: '/conditionstab',
-            templateUrl: 'partials/conditions/conditions-subpage.html'
-
-        })
-        .state('mytools.createtemplate', {
-            url: '/createtemplate',
-            templateUrl: 'partials/conditions/create-template.html',
-            controller: 'CreateConditionControllers'
-        })
         .state('mytools.listtemplate', {
             url: '/listtemplate',
             templateUrl: 'partials/conditions/list-condition-template.html',
@@ -209,40 +207,14 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/provenance/provenance.html',
             controller: 'ProvenanceController'
         })
-        .state('mytools.uploadtab', {
-            url: '/uploadtab',
-            templateUrl: 'partials/updownload/upload-subpage.html'
-
-        })
-        .state('mytools.uploadfile', {
-            url: '/uploadfile',
-            templateUrl: 'partials/updownload/upload-file.html',
-            controller: 'UploadFileController'
-
-        })
-        .state('mytools.reviewstab', {
-            url: '/reviewstab',
-            templateUrl: 'partials/reviews/review-subpage.html'
-
-        })
-        .state('mytools.reviewlist', {
-            url: '/reviewlist',
-            templateUrl: 'partials/reviews/review-list.html',
-            controller: 'ReviewListController'
-        })
-        .state('mytools.eachreview', {
-            url: '/review/:id',
-            templateUrl: 'partials/data/dataedit.html',
-            controller: 'DataEditController'
-        })
         .state('mytools.machine', {
             url: '/machine',
-            templateUrl: 'partials/machine/create-machine.html',
+            templateUrl: 'partials/machine/machines.html',
             controller: 'CreateNewMachineController'
         })
         .state('mytools.material', {
             url: '/material',
-            templateUrl: 'partials/material/create-material.html',
+            templateUrl: 'partials/material/materials.html',
             controller: 'CreateNewMaterialController'
         })
         .state('account2/create-account', {

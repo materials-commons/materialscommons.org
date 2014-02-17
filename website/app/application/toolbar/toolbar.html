@@ -25,11 +25,11 @@
                         <li id="data-tab"><a ui-sref="toolbar.mydatapage">My Data</a></li>
                         <li id="tags-tab"><a ui-sref="toolbar.tagspage">Tags</a></li>
                         <li ng-controller="toolbarReviews" id="reviews-tab">
-                            <a href="#/mytools/reviewlist">Reviews ({{reviewstoConduct.length}})</a>
+                            <a ui-sref="toolbar.reviews">Reviews ({{reviewstoConduct.length}})</a>
                         </li>
 
-                        <li><a href="#/mytools/machine">Machines</a></li>
-                        <li><a href="#/mytools/material">Materials</a></li>
+                        <li><a ui-sref="toolbar.machines">Machines</a></li>
+                        <li><a ui-sref="toolbar.materials">Materials</a></li>
 
                         <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
                         <div ng-controller="toolbarTags">
