@@ -1,4 +1,4 @@
-<div class="span8 offset1">
+<div class="span8 offset1" ng-controller="toolbarTags">
     <h3>{{ tagHeader }}</h3>
 
     <div ng-hide="tags">
@@ -17,13 +17,13 @@
                         <thead>
                         <tr>
                             <th>Tag</th>
-                            <th># items tagged</th>
+                            <th># Items Tagged</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="tag in tags | filter:query | page:currentTagsPage:10" style="cursor:pointer"
                            >
-                            <td><a href="#/mytools/data/bytag/{{tag.name}}">{{ tag.name }}</a></td>
+                            <td><a ui-sref="toolbar.databytag({name: tag.name})">{{ tag.name }}</a></td>
                             <td>{{ tag.count }}</td>
                         </tr>
                         </tbody>
