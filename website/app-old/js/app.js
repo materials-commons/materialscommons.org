@@ -49,17 +49,37 @@ app.config(function ($stateProvider) {
             url: '/logout',
             controller: 'logout'
         })
+
+        // Account
         .state('account', {
             url: '/account',
             templateUrl: 'application/account/account.html'
         })
         .state('account.groupcreate', {
-            url:'/groupcreate',
-            templateUrl:'application/account/groupcreate/groupcreate.html'
+            url: '/groupcreate',
+            templateUrl: 'application/account/groupcreate/groupcreate.html'
         })
         .state('account.groupusers', {
-            url:'/groupusers/:id',
+            url: '/groupusers/:id',
             templateUrl: 'application/account/groupusers/groupusers.html'
+        })
+
+        // Toolbar Data Views
+        .state('toolbar.mydatapage', {
+            url: '/mydatapage',
+            templateUrl: 'application/toolbar/mydatapage/mydatapage.html'
+        })
+        .state('toolbar.mydata', {
+            url: '/mydata',
+            templateUrl: 'application/toolbar/mydata/mydata.html'
+        })
+        .state('toolbar.thumbnails', {
+            url: '/thumbnails',
+            templateUrl: 'application/toolbar/thumbnails/thumbnails.html'
+        })
+        .state('toolbar.dataedit', {
+            url:'/dataedit/:id',
+            templateUrl: 'application/toolbar/dataedit/dataedit.html'
         })
 
         // Views
@@ -85,7 +105,7 @@ app.config(function ($stateProvider) {
         })
         .state('mytools.dataedit', {
             url: '/data/edit/:id',
-            templateUrl: 'partials/data/data-edit.html',
+            templateUrl: 'partials/data/dataedit.html',
             controller: 'DataEditController'
         })
         .state('mytools.processreport', {
@@ -119,20 +139,6 @@ app.config(function ($stateProvider) {
         .state('mytools.projects.process', {
             url: '/projects/process/new',
             templateUrl: 'partials/process.html'
-        })
-        .state('mytools.datatab', {
-            url: '/datatab',
-            templateUrl: 'partials/data/data-subpage.html'
-        })
-        .state('mytools.mydata', {
-            url: '/mydata',
-            templateUrl: 'partials/data/my-data.html',
-            controller: 'MyDataController'
-        })
-        .state('mytools.thumbnail', {
-            url: '/thumbnail',
-            templateUrl: 'partials/thumbnail.html',
-            controller: 'DataGroupGridController'
         })
         .state('mytools.provenance', {
             url: '/provenance/:id',
@@ -219,7 +225,7 @@ app.config(function ($stateProvider) {
         })
         .state('mytools.eachreview', {
             url: '/review/:id',
-            templateUrl: 'partials/data/data-edit.html',
+            templateUrl: 'partials/data/dataedit.html',
             controller: 'DataEditController'
         })
         .state('mytools.machine', {
@@ -232,36 +238,11 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/material/create-material.html',
             controller: 'CreateNewMaterialController'
         })
-
-
-    /**
-     * END Subpage
-     */
-
         .state('account2/create-account', {
             url: '/account/create-account',
             templateUrl: 'partials/account/create-account.html',
             controller: 'CreateAccountController'
-        })
-
-        .state('account2/details', {
-            url: '/account/details',
-            templateUrl: 'partials/account/account.html',
-            controller: 'AccountDetailsController'
-        })
-        .state('createusergroup', {
-            url: '/createusergroup',
-            templateUrl: 'partials/usergroups/groupcreate.html',
-            controller: 'CreateUserGroupController'
-        })
-        .state('datagroups/data/:id', {
-            url: '/datagroups/data/:id',
-            templateUrl: 'partials/datagroups/datareport.html',
-            controller: 'DataDirReportController'
-        })
-
-
-    ;
+        });
 
 
 });

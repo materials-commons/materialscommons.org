@@ -1,0 +1,38 @@
+<div ng-controller="toolbarMyData">
+    <h1>My Data </h1>
+
+    Filter by: <input ng-model="query">
+    <paged data="data_by_user" current-page="currentDataPage" page-size="10">
+        <table class="table table-striped ">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>DataGroup</th>
+                <th>Created At</th>
+                <th>Tags</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="row in data_by_user  | orderBy:predicate:reverse | filter:query | page:currentDataPage:10"
+                style="cursor:pointer">
+                <td><a ui-sref="toolbar.dataedit({id: row.id})">{{row.name}}</a></td>
+                <td>
+                    <ul>
+                        <li ng-repeat="dg in row.datadirs" ng-init="get_dg(dg)">
+                            {{dir.name}}
+                        </li>
+                    </ul>
+                </td>
+                <td>{{row.birthtime | toDateString}}</td>
+                <td>
+                    <ul style="list-style-type:none">
+                        <li ng-repeat="tag in row.tags" ng-click="editData(row.id);"><span class="label label-info">{{ tag }}</span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </paged>
+</div>
