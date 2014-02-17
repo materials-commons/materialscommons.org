@@ -318,7 +318,7 @@ function UploadWizardFileOutputController($scope, wizard, mcapi, Stater, alertSe
         if (!('output_files' in $scope.state.attributes)) {
             $scope.state.attributes.output_files = [];
         }
-        mcapi('/projects/%/datadirs/tree', $scope.state.attributes.project.id)
+        mcapi('/projectspage/%/datadirs/tree', $scope.state.attributes.project.id)
             .success(function (datadirs) {
                 $scope.tree = datadirs;
             })

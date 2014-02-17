@@ -118,14 +118,28 @@ app.config(function ($stateProvider) {
             templateUrl: 'application/toolbar/materials/materials.html'
         })
 
+        // Toolbar projectspage views
+        .state('toolbar.projectspage', {
+            url: '/projectspage/:id/:draft_id',
+            templateUrl: 'application/toolbar/projectspage/projectspage.html'
+        })
+        .state('toolbar.projectspage.overview', {
+            url: '/overview',
+            templateUrl: 'application/toolbar/projectspage/overview/overview.html'
+        })
+        .state('toolbar.projectspage.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/toolbar/projectspage/provenance/provenance.html'
+        })
+
         // Views
         .state('mytools', {
 
         })
         // Projects views
         .state('mytools.projects', {
-            url: '/projects/:id/:draft_id',
-            templateUrl: 'partials/project/project.html'
+            url: '/projectspage/:id/:draft_id',
+            templateUrl: 'partials/project/projectspage.html'
         })
         .state('mytools.projects.overview', {
             url: '/overview',
@@ -168,7 +182,7 @@ app.config(function ($stateProvider) {
         })
 
         .state('mytools.projects.process', {
-            url: '/projects/process/new',
+            url: '/projectspage/process/new',
             templateUrl: 'partials/process.html'
         })
         .state('mytools.provenance', {

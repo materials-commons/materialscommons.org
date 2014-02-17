@@ -17,7 +17,7 @@
                             <div ng-show="showProjs" class="project-scrollbar">
                                 <ul ng-repeat="proj in projects|orderBy:'name'">
                                     <li style="list-style-type: circle">
-                                        <a href="#/mytools/projects/{{proj.id}}/">{{proj.name}}</a>
+                                        <a ui-sref="toolbar.projectspage({id: proj.id, draft_id: ''})">{{proj.name}}</a>
                                     </li>
                                 </ul>
                             </div>
