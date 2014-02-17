@@ -248,7 +248,7 @@ mctree.directive('projectTree', function () {
             ngModel: "@",
             project: "@project"
         },
-        templateUrl: "templates/projectTree/projectTree.html"
+        templateUrl: "../templates/projectTree/projectTree.html"
     }
 });
 
