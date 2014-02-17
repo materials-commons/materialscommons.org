@@ -23,7 +23,7 @@
                             </div>
                         </li>
                         <li id="data-tab"><a ui-sref="toolbar.mydatapage">My Data</a></li>
-                        <li id="tags-tab"><a href="#/mytools/tagstab">Tags</a></li>
+                        <li id="tags-tab"><a ui-sref="toolbar.tagspage">Tags</a></li>
                         <li ng-controller="toolbarReviews" id="reviews-tab">
                             <a href="#/mytools/reviewlist">Reviews ({{reviewstoConduct.length}})</a>
                         </li>
@@ -35,7 +35,7 @@
                         <div ng-controller="toolbarTags">
                             <span style="cursor:pointer" class="label label-info custom"
                                   ng-repeat="tag in tags | limitTo: 10">
-                            <a href="#/mytools/data/bytag/{{tag.name}}" style="color: white">{{ tag.name }}
+                            <a ui-sref="toolbar.databytag({name: tag.name})" style="color: white">{{ tag.name }}
                                 ({{tag.count}})</a>
                         </span>
                         </div>

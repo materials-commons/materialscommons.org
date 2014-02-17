@@ -81,6 +81,24 @@ app.config(function ($stateProvider) {
             url:'/dataedit/:id',
             templateUrl: 'application/toolbar/dataedit/dataedit.html'
         })
+        .state('toolbar.databytag', {
+            url: '/databytag/:name',
+            templateUrl: 'application/toolbar/databytag/databytag.html'
+        })
+
+        // Toolbar tag views
+        .state('toolbar.tagspage', {
+            url:'/tagspage',
+            templateUrl: 'application/toolbar/tagspage/tagspage.html'
+        })
+        .state('toolbar.tags', {
+            url: '/tags',
+            templateUrl: 'application/toolbar/tags/tags.html'
+        })
+        .state('toolbar.globaltagcloud', {
+            url: '/globaltagcloud',
+            templateUrl: 'application/toolbar/globaltagcloud/globaltagcloud.html'
+        })
 
         // Views
         .state('mytools', {
@@ -103,11 +121,6 @@ app.config(function ($stateProvider) {
             url: '/process',
             templateUrl: 'partials/project/provenance/process.html'
         })
-        .state('mytools.dataedit', {
-            url: '/data/edit/:id',
-            templateUrl: 'partials/data/dataedit.html',
-            controller: 'DataEditController'
-        })
         .state('mytools.processreport', {
             url: '/process/report/:process_id',
             templateUrl: 'partials/process/report.html',
@@ -115,7 +128,7 @@ app.config(function ($stateProvider) {
         })
         .state('mytools.tagbyname', {
             url: '/data/bytag/:name',
-            templateUrl: 'partials/tags/data-for-tag.html',
+            templateUrl: 'partials/tags/databytag.html',
             controller: 'TagDataController'
         })
 
@@ -145,25 +158,19 @@ app.config(function ($stateProvider) {
             templateUrl: 'partials/project/add-provenance.html',
             controller: 'ProvenanceController'
         })
-
-        .state('mytools.tagstab', {
-            url: '/tagstab',
-            templateUrl: 'partials/tags/tags-subpage.html'
-
-        })
-        .state('mytools.listtags', {
-            url: '/listtags',
-            templateUrl: 'partials/tags/tags-list.html',
+        .state('mytools.tags', {
+            url: '/tags',
+            templateUrl: 'partials/tags/tags.html',
             controller: 'AllTagsController'
         })
         .state('mytools.mytagslist', {
             url: '/mytagslist',
-            templateUrl: 'partials/tags/my-tags-list.html',
+            templateUrl: 'partials/tags/my-tags.html',
             controller: 'MyTagsController'
         })
         .state('mytools.globaltagcloud', {
             url: '/globaltagcloud',
-            templateUrl: 'partials/tags/tagcloud.html',
+            templateUrl: 'partials/tags/globaltagcloud.html',
             controller: 'GlobalTagCloudController'
         })
 
