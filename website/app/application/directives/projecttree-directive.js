@@ -6,7 +6,7 @@ Application.Controllers.controller('ProjectTreeController',
             var e = _.find($scope.trail, function (trailItem) {
                 return trailItem.id === item.id;
             });
-            if ( typeof e === 'undefined') {
+            if (typeof e === 'undefined') {
                 // first level is 0 so we need to add 1 to our test
                 if (item.level + 1 <= $scope.trail.length) {
                     // Remove everything at this level and above
@@ -48,7 +48,7 @@ Application.Controllers.controller('ProjectTreeController',
         $scope.fileSelected = function (entry) {
             entry.selected = !entry.selected;
             var channel = Projects.channel;
-            if (channel != null) {
+            if (channel !== null) {
                 pubsub.send(channel, entry);
             }
 
@@ -64,16 +64,14 @@ Application.Directives.directive('projectTree',
             controller: "ProjectTreeController",
             transclude: false,
             link: function ($scope, $element, $attrs) {
-                //$scope.project = $attrs.project;
-                //console.log("link project = " + $scope.project);
             },
             replace: true,
             scope: {
                 ngModel: "@",
                 project: "@project"
             },
-            templateUrl: "../templates/projectTree/projectTree.html"
-        }
+            templateUrl: "application/directives/projecttree.html"
+        };
     });
 
 

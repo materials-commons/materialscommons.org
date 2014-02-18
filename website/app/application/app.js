@@ -1,17 +1,17 @@
 var Application = Application || {};
 
+Application.Constants = angular.module('application.core.constants', []);
+Application.Services = angular.module('application.core.services', []);
+Application.Controllers = angular.module('application.core.controllers', []);
+Application.Filters = angular.module('application.core.filters', []);
+Application.Directives = angular.module('application.core.directives', []);
+
 Application.Provenance = {};
 Application.Provenance.Constants = angular.module('application.provenance.constants', []);
 Application.Provenance.Services = angular.module('application.provenance.services', []);
 Application.Provenance.Controllers = angular.module('application.provenance.controllers', []);
 Application.Provenance.Filters = angular.module('application.provenance.filters', []);
 Application.Provenance.Directives = angular.module('application.provenance.directives', []);
-
-Application.Constants = angular.module('application.core.constants', []);
-Application.Services = angular.module('application.core.services', []);
-Application.Controllers = angular.module('application.core.controllers', []);
-Application.Filters = angular.module('application.core.filters', []);
-Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
     ['ui', 'Filter', 'materialsCommonsServices',
