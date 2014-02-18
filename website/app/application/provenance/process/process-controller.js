@@ -57,9 +57,9 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     } else if (item.name === "required_output_conditions") {
                         $scope.process.required_output_conditions = item.value;
                     } else if (item.name === "required_input_files") {
-                        $scope.process.required_input_files = item.value;
+                        $scope.process.required_input_files = item.required;
                     } else if (item.name === "required_output_files") {
-                        $scope.process.required_output_files = item.value;
+                        $scope.process.required_output_files = item.required;
                     }
 
                 });

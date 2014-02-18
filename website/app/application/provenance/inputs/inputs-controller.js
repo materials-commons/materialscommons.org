@@ -31,7 +31,7 @@ Application.Provenance.Controllers.controller('provenanceInputs',
                     $scope.inputSteps.push(condition);
                 });
 
-                if ($scope.doc.attributes.process.required_input_files === 'no') {
+                if (!$scope.doc.attributes.process.required_input_files) {
                     $scope.inputSteps.push("Files");
                 }
 
