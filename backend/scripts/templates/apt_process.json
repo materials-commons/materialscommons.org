@@ -23,16 +23,18 @@
             "type": "" ,
             "unit": "" ,
             "unit_choice": "" ,
-            "value": "yes" ,
-            "value_choice": ""
+            "value": "" ,
+            "value_choice": "",
+            "required": true
         } ,
         {
             "name": "required_output_files" ,
             "type": "" ,
             "unit": "" ,
             "unit_choice": "" ,
-            "value": "yes" ,
-            "value_choice": ""
+            "value": "" ,
+            "value_choice": "",
+            "required": true
         } ,
         {
             "name": "name" ,
@@ -40,7 +42,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": true
         } ,
         {
             "name": "description" ,
@@ -48,7 +51,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "birthtime" ,
@@ -56,7 +60,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "mtime" ,
@@ -64,7 +69,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "machine" ,
@@ -72,7 +78,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "process_type" ,
@@ -80,7 +87,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "version" ,
@@ -88,7 +96,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "parent" ,
@@ -96,7 +105,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "notes" ,
@@ -104,7 +114,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": [ ],
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "runs" ,
@@ -112,7 +123,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": [ ],
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "citations" ,
@@ -120,7 +132,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": [ ],
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         } ,
         {
             "name": "status" ,
@@ -128,7 +141,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
-            "value_choice": ""
+            "value_choice": "",
+            "required": false
         }
     ] ,
     "owner": "gtarcea@umich.edu",

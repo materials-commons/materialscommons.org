@@ -11,7 +11,7 @@
                 "unit_choice": ["hrs", "mins", "secs"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False" 
+                "required":  false  
             },
             {
                 "name": "Failure mode" ,
@@ -20,7 +20,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": ["In", "Out", "Knife edge"],
-                "required": "False" 
+                "required":  false  
             },
             {
                 "name": "Yield force" ,
@@ -29,7 +29,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Peak force" ,
@@ -38,7 +38,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "F/D slope" ,
@@ -47,7 +47,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Yield strength" ,
@@ -56,7 +56,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Brightness" ,
@@ -65,7 +65,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "UTS" ,
@@ -74,7 +74,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Elongation at Break" ,
@@ -83,7 +83,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Elongation at yield" ,
@@ -92,7 +92,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Elongation at peak stress" ,
@@ -101,7 +101,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
         ]
     } ,

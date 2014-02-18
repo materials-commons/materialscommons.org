@@ -10,7 +10,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": true
             },
             {
                 "name": "Alloy composition" ,
@@ -19,7 +19,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
             
         ],
@@ -34,7 +34,7 @@
                 ] ,
                 "value": "" ,
                 "value_choice": ["T6", "T7"],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Compression" ,
@@ -43,7 +43,7 @@
                 "unit_choice":[],
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Orientation" ,
@@ -52,7 +52,7 @@
                 "unit_choice": [],
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
 
             {
@@ -62,7 +62,7 @@
                 "unit_choice": [],
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             } ,
          
             {
@@ -75,7 +75,7 @@
                     "Electropolish" ,
                     "Silica finish"
                 ],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Material State" ,
@@ -84,7 +84,7 @@
                 "unit_choice": [],
                 "value": "" ,
                 "value_choice": ["wrought", "cast", "other"],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Gage length" ,
@@ -93,7 +93,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Cross sectional area" ,
@@ -102,7 +102,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Sample Geometry" ,
@@ -111,7 +111,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
         ]
     } ,

@@ -10,7 +10,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": true
             },
             {
                 "name": "Notes" ,
@@ -19,7 +19,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }              
         ],
        
@@ -31,7 +31,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": ["High", "Low"],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Gun Type" ,
@@ -40,7 +40,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": ["Field emission selection"],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Detector Type" ,
@@ -49,7 +49,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": "",
-                "required": "False"
+                "required": "false"
             },
             {
                 "name": "Operator" ,
@@ -58,7 +58,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": "",
-                "required": "False"
+                "required": "false"
             },
             {
                 "name": "Model#" ,
@@ -67,7 +67,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": "",
-                "required": "False"
+                "required": false
             } ,
             {
                 "name": "Status" ,
@@ -76,7 +76,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": "",
-                "required": "False"
+                "required": false
             } ,
             {
                 "name": "Location" ,
@@ -85,7 +85,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": "",
-                "required": "False"
+                "required": false
             } ,
             {
                 "name": "manufacturer" ,
@@ -94,7 +94,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": "",
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Force Type" ,
@@ -103,7 +103,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": ["Screw", "Hydraulic"],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Rigaku" ,
@@ -112,7 +112,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": ["left side", "right side"],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Type" ,
@@ -121,7 +121,7 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": ["Rotating anode"],
-                "required": "False"
+                "required": false
             }
         ]
         

@@ -10,7 +10,7 @@
                 "unit_choice": ["V", "KV"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Pixel Size" ,
@@ -19,7 +19,7 @@
                 "unit_choice": ["microns"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
         ],
         "additional":[
@@ -31,7 +31,7 @@
                 "unit_choice": ["C", "F"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Humidity" ,
@@ -40,7 +40,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Test rate" ,
@@ -49,7 +49,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Control method" ,
@@ -58,7 +58,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
         ]
 

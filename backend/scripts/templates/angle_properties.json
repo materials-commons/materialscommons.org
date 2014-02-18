@@ -11,7 +11,7 @@
                 "unit_choice": ["degrees"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False" 
+                "required": false 
             },
             {
                 "name": "End angle" ,
@@ -20,7 +20,7 @@
                 "unit_choice": ["degrees"] ,
                 "value": "" ,
                 "value_choice": ["In", "Out", "Knife edge"],
-                "required": "False" 
+                "required": false 
             },
             {
                 "name": "Rate" ,
@@ -29,7 +29,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Step size" ,
@@ -38,7 +38,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
            
         ]
