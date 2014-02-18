@@ -4383,9 +4383,9 @@ input[type="submit"].btn.btn-mini {
   background-image: linear-gradient(to bottom, #2c3e50, #2c3e50);
   background-repeat: repeat-x;
   border: 1px solid #233140;
-  -webkit-border-radius: 0px;
-     -moz-border-radius: 0px;
-          border-radius: 0px;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2c3e50', endColorstr='#ff2c3e50', GradientType=0);
   *zoom: 1;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
