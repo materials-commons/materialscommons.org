@@ -1,51 +1,54 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
-    ["$scope", "mcapi", "watcher", "pubsub", "alertService", "ProvSteps", "ProvDrafts", "Model",
-        function ($scope, mcapi, watcher, pubsub, alertService, ProvSteps, ProvDrafts, Model) {
-            // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
-            $scope.bk = {
-                p_name: '',
-                start_run: '',
-                stop_run: '',
-                new_err_msg: '',
-                new_note: '',
-                new_citation: ''
+    ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts",
+        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts) {
+
+            $scope.init = function () {
+                // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
+                $scope.bk = {
+                    p_name: '',
+                    start_run: '',
+                    stop_run: '',
+                    new_err_msg: '',
+                    new_note: '',
+                    new_citation: ''
+                };
+
+                $scope.process = ProvDrafts.current.attributes.process;
+
+                $scope.useExisting = "yes";
+
+                mcapi('/machines')
+                    .success(function (data) {
+                        $scope.machines_list = data;
+                    })
+                    .error(function (data) {
+                    }).jsonp();
+
+                mcapi('/templates')
+                    .argWithValue('filter_by', '"template_type":"machine"')
+                    .success(function (data) {
+                        $scope.machine_template = data[0];
+                    })
+                    .error(function (e) {
+
+                    }).jsonp();
+
+
+                mcapi('/templates')
+                    .argWithValue('filter_by', '"template_type":"process"')
+                    .success(function (processes) {
+                        $scope.process_templates = processes;
+                    })
+                    .error(function () {
+                        alertService.sendMessage("Unable to retrieve processes from database.");
+                    }).jsonp();
+
             };
 
-            $scope.process = Model.newProcess();
-            ProvDrafts.current.attributes.process = $scope.process;
-
-            $scope.useExisting = "yes";
-
-            mcapi('/machines')
-                .success(function (data) {
-                    $scope.machines_list = data;
-                })
-                .error(function (data) {
-                }).jsonp();
-
-            mcapi('/templates')
-                .argWithValue('filter_by', '"template_type":"machine"')
-                .success(function (data) {
-                    $scope.machine_template = data[0];
-                })
-                .error(function (e) {
-
-                }).jsonp();
-
-
-            mcapi('/templates')
-                .argWithValue('filter_by', '"template_type":"process"')
-                .success(function (processes) {
-                    $scope.process_templates = processes;
-                })
-                .error(function () {
-                    alertService.sendMessage("Unable to retrieve processes from database.");
-                }).jsonp();
-
+            $scope.init();
 
             watcher.watch($scope, 'process_type', function (template) {
                 template = JSON.parse(template);
-                console.dir(template);
                 template.model.forEach(function (item) {
                     if (item.name === "required_conditions") {
                         $scope.process.required_input_conditions = item.value;
@@ -134,7 +137,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
 
             $scope.save_process = function () {
                 ProvSteps.setStepFinished('process');
-                console.dir(ProvDrafts.current);
             };
 
         }]);
