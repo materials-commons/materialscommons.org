@@ -14,10 +14,10 @@ Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
-    ['ui', 'Filter', 'materialsCommonsServices', 'materialsdirective',
+    ['ui', 'Filter', 'materialsCommonsServices',
         'stateServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap', 'NgTree',
-        'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives',
-        'Provenance', 'ngQuickDate', 'mctree', 'application.core.constants',
+        'ngCookies', '$strap.directives', 'ngGrid', 'ui.router',
+        'Provenance', 'ngQuickDate', 'application.core.constants',
         'application.core.services', 'application.core.controllers', 'application.core.filters',
         'application.core.directives', 'application.provenance.constants', 'application.provenance.services',
         'application.provenance.controllers', 'application.provenance.filters', 'application.provenance.directives']);
