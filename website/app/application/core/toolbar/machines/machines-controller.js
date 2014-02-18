@@ -1,10 +1,11 @@
 Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", function ($scope, mcapi) {
-        $scope.machine = { "model": {
-            "default": [],
-            "additional": []
-        }
-        }
+        $scope.machine = {
+            "model": {
+                "default": [],
+                "additional": []
+            }
+        };
 
         mcapi('/templates')
             .argWithValue('filter_by', '"template_type":"machine"')
@@ -27,23 +28,24 @@ Application.Controllers.controller('toolbarMachines',
             }).jsonp();
 
         $scope.clear_machine = function () {
-            $scope.machine = { "model": {
-                "default":  [],
-                "additional": []
-            }
+            $scope.machine = {
+                "model": {
+                    "default": [],
+                    "additional": []
+                }
             };
-        }
+        };
 
         $scope.save = function () {
             $scope.machine.model.default = $scope.default_properties;
-            $scope.machine.model.additional = $scope.machine.model.additional;
+            //$scope.machine.model.additional = $scope.machine.model.additional;
             mcapi('/machines/new')
                 .arg('order_by=birthtime')
                 .success(function (data) {
                     mcapi('/machines/%', data.id)
                         .success(function (machine_obj) {
                             $scope.mach = machine_obj;
-                            $scope.machines_list.unshift(machine_obj)
+                            $scope.machines_list.unshift(machine_obj);
                         })
                         .error(function (e) {
 
@@ -53,25 +55,25 @@ Application.Controllers.controller('toolbarMachines',
                 .error(function (e) {
 
                 }).post($scope.machine);
-        }
+        };
 
         $scope.add_property_to_machine = function () {
             if (!('model' in $scope.machine)) {
-                $scope.machine.model= {
+                $scope.machine.model = {
                     "default": [],
                     "additional": []
-                }
+                };
 
             }
-            if ($scope.p_name || $scope.p_name == ' ') {
+            if ($scope.p_name || $scope.p_name === ' ') {
                 $scope.machine.model.additional.push(JSON.parse($scope.p_name));
                 $scope.p_name = '';
             }
-            if ($scope.additional_prop || $scope.additional_prop == ' ') {
+            if ($scope.additional_prop || $scope.additional_prop === ' ') {
                 $scope.machine.model.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
-                    'unit_choice': [], 'unit': '', 'required': 'False',"type": ""});
+                    'unit_choice': [], 'unit': '', 'required': 'False', "type": ""});
                 $scope.additional_prop = '';
             }
 
-        }
+        };
     }]);

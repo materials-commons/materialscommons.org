@@ -19,9 +19,8 @@ var app = angular.module('materialscommons',
         'ngCookies', '$strap.directives', 'ngGrid', 'ui.router', 'mcdirectives',
         'Provenance', 'ngQuickDate', 'mctree', 'application.core.constants',
         'application.core.services', 'application.core.controllers', 'application.core.filters',
-        'application.core.directives', 'application.provenance.constants','application.provenance.services',
-        'application.provenance.controllers', 'application.provenance.filters', 'application.provenance.directives'
-    ]);
+        'application.core.directives', 'application.provenance.constants', 'application.provenance.services',
+        'application.provenance.controllers', 'application.provenance.filters', 'application.provenance.directives']);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -86,7 +85,7 @@ app.config(function ($stateProvider) {
             templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
         })
         .state('toolbar.dataedit', {
-            url:'/dataedit/:id',
+            url: '/dataedit/:id',
             templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
         })
         .state('toolbar.databytag', {
@@ -96,7 +95,7 @@ app.config(function ($stateProvider) {
 
         // Toolbar tag views
         .state('toolbar.tagspage', {
-            url:'/tagspage',
+            url: '/tagspage',
             templateUrl: 'application/core/toolbar/tagspage/tagspage.html'
         })
         .state('toolbar.tags', {
@@ -142,6 +141,22 @@ app.config(function ($stateProvider) {
         .state('toolbar.projectspage.provenance.process', {
             url: '/process',
             templateUrl: 'application/provenance/process/process.html'
+        })
+        .state('toolbar.projectspage.provenance.inputs', {
+            url: '/inputs',
+            templateUrl: 'application/provenance/inputs/inputs.html'
+        })
+        .state('toolbar.projectspage.provenance.inputs.input', {
+            url: '/input:step',
+            templateUrl: 'application/provenance/inputs/input/input.html'
+        })
+        .state('toolbar.projectspage.provenance.outputs', {
+            url: '/outputs',
+            templateUrl: 'application/provenance/outputs/outputs.html'
+        })
+        .state('toolbar.projectspage.provenance.finish', {
+            url: '/finish',
+            templateUrl: 'application/provenance/finish/finish.html'
         })
 
         // Views
@@ -252,33 +267,27 @@ app.config(function ($stateProvider) {
 
 });
 
-app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User, ngstomp) {
+app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User) {
     $rootScope.$on('$stateChangeStart', function (event, toState) {
         if (matchesPartial(toState, "partials/front-page", "HomeController")) {
             setActiveMainNav("#home-nav");
-        }
-        else if (matchesPartial(toState, "partials/my-tools", "FrontPageController")) {
+        } else if (matchesPartial(toState, "partials/my-tools", "FrontPageController")) {
             setActiveMainNav("#user-nav");
-        }
-        else if (matchesPartial(toState, "partials/explore", "ExploreController")) {
+        } else if (matchesPartial(toState, "partials/explore", "ExploreController")) {
             setActiveMainNav("#explore-nav");
-        }
-        else if (matchesPartial(toState, "partials/about", "AboutController")) {
+        } else if (matchesPartial(toState, "partials/about", "AboutController")) {
             setActiveMainNav('#about-nav');
-        }
-        else if (matchesPartial(toState, "partials/contact", "ContactController")) {
+        } else if (matchesPartial(toState, "partials/contact", "ContactController")) {
             setActiveMainNav('#contact-nav');
-        }
-        else if (matchesPartial(toState, "partials/help", "HelpController")) {
+        } else if (matchesPartial(toState, "partials/help", "HelpController")) {
             setActiveMainNav("#help-nav");
         }
 
         if (!User.isAuthenticated()) {
-            if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") != -1) {
+            if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") !== -1) {
                 $location.path("/login");
             }
-        }
-        else {
+        } else {
             $rootScope.email_address = User.u();
         }
     });
@@ -289,22 +298,22 @@ function matchesPartial(next, what, controller) {
     if (!next.templateUrl) {
         return false;
     }
-    else {
-        var value = next.templateUrl.indexOf(what) != -1;
-        /*
-         Hack to look at controller name to figure out tab. We do this so that partials can be
-         shared by controllers, but we need to show which tab is active. So, we look at the
-         name of the controller (only if controller != 'ignore').
-         */
-        if (controller == "ignore") {
-            return value;
-        }
-        else if (value) {
-            return true;
-        }
-        else {
-            // return next.controller.toString().indexOf(controller) != -1;
-            return value;
-        }
+
+
+    var value = next.templateUrl.indexOf(what) !== -1;
+    /*
+     Hack to look at controller name to figure out tab. We do this so that partials can be
+     shared by controllers, but we need to show which tab is active. So, we look at the
+     name of the controller (only if controller != 'ignore').
+     */
+    if (controller === "ignore") {
+        return value;
     }
+
+    if (value) {
+        return true;
+    }
+
+    // return next.controller.toString().indexOf(controller) != -1;
+    return value;
 }

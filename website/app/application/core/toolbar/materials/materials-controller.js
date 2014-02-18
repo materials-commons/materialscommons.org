@@ -10,7 +10,7 @@ Application.Controllers.controller('toolbarMaterials',
 
         $scope.clear_material = function () {
             $scope.material = '';
-        }
+        };
 
         $scope.save = function () {
             var temp = $scope.material;
@@ -19,7 +19,7 @@ Application.Controllers.controller('toolbarMaterials',
                     mcapi('/materials/%', data.id)
                         .success(function (material_obj) {
                             $scope.mat = material_obj;
-                            $scope.materials_list.unshift(material_obj)
+                            $scope.materials_list.unshift(material_obj);
                         })
                         .error(function (e) {
 
@@ -29,16 +29,16 @@ Application.Controllers.controller('toolbarMaterials',
                 })
                 .error(function (e) {
                 }).post(temp);
-        }
+        };
 
         $scope.custom_property = function () {
             if (!('model' in $scope.material)) {
                 $scope.material.model = [];
             }
-            if ($scope.additional_prop || $scope.additional_prop == ' ') {
-                $scope.material.model.push({'name': $scope.additional_prop, 'value': ''})
+            if ($scope.additional_prop || $scope.additional_prop === ' ') {
+                $scope.material.model.push({'name': $scope.additional_prop, 'value': ''});
                 $scope.additional_prop = '';
             }
 
-        }
+        };
     }]);
