@@ -51,7 +51,8 @@
                 </tbody>
             </table>
         </paged>
-    </div><br>
+    </div>
+    <br>
     <button class="btn btn-primary" ng-click="showForm=!showForm">Create New Machine</button>
     <div ng-show="mach">
         <b>Machine {{mach.name}} has been created</b>
@@ -69,6 +70,7 @@
                     <div ng-repeat="pv in machine.model.additional">
                         <div class="control-group">
                             <label class="control-label">{{pv.name}}</label>
+
                             <div class="controls">
                             <span ng-if="pv.value_choice.length!=0">
                                  <select ng-model="pv.value">
@@ -94,9 +96,11 @@
 
                     <div class="control-group">
                         <label class="control-label">Additional Properties:</label>
+
                         <div class="controls">
                             <select ng-model="p_name">
-                                <option ng-repeat="each_additional in additional_properties" value="{{each_additional}}">
+                                <option ng-repeat="each_additional in additional_properties"
+                                        value="{{each_additional}}">
                                     {{each_additional.name}}
                                 </option>
                             </select>
@@ -121,4 +125,4 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
