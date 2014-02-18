@@ -6,7 +6,7 @@
                 <label>Process Type: </label>
                 <select ng-model="process_type">
                     <option disabled>Select Process Type:</option>
-                    <option ng-repeat="p in process_templates" value="{{ p }}">
+                    <option ng-repeat="p in process_templates|orderBy:'template_name'" value="{{ p }}">
                         {{ p.template_name }}
                     </option>
                 </select>
