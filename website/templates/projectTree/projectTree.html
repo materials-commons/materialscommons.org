@@ -6,9 +6,10 @@
     </div>
     <div ng-show="loaded===true" class="row-fluid">
         <div class="span12">
-            <button ng-click="backToFolder(trailitem)"
-                    ng-repeat="trailitem in trail">{{trailitem.displayname}}
-            </button>
+            <a style="cursor: pointer" ng-click="backToFolder(trailitem)"
+                    ng-repeat="trailitem in trail">
+                <i class="fa fa-folder fa-2x"></i><span style="margin-right: 7px">{{trailitem.displayname}}/ </span>
+            </a>
         </div>
         <div class="row-fluid">
             <div class="span12">
@@ -36,11 +37,11 @@
                         </td>
 
                         <td ng-if="entry.type=='datadir'">
-                            <button ng-click="openFolder(entry)"><i class="fa fa-folder fa-4x"></i>{{entry.displayname}}
-                            </button>
+                            <a style="cursor: pointer" ng-click="openFolder(entry)"><i class="fa fa-folder fa-2x"></i>{{entry.displayname}}
+                            </a>
                         </td>
                         <td ng-if="entry.type=='datafile'">
-                            <p><i class="fa fa-file fa-4x"></i>{{entry.displayname}}</p>
+                            <p><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</p>
                         </td>
 
                         <td><a href="#/mytools/data/edit/{{entry.id}}">{{entry.name}}</a></td>

@@ -1,16 +1,33 @@
 <div class="row" ng-controller="login">
     <div class="span6 offset2">
-        <form>
-            <h2>Please sign in</h2>
-            <form class="form-inline">
-                <input ng-model="email" type="email" name="email" required class="input-block-level" placeholder="Email address">
-                <input ng-model="password" type="password" required="" class="input-block-level" placeholder="Password">
+        <form class="form-horizontal">
+            <fieldset>
+                <legend>Materials Commons Login</legend>
+                <div class="control-group">
+                    <label class="control-label">Email:</label>
 
-                <button class="btn btn-large btn-primary" ng-click="login()">Submit</button>
-                <button class="btn btn-large btn-danger" ng-click="cancel()">Cancel</button>
-            </form>
+                    <div class="controls">
+                        <input ng-model="email" type="email" name="email" required class="input-block-level"
+                               placeholder="Email...">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Password:</label>
+                    <div class="controls">
+                        <input ng-model="password" type="password" required="" class="input-block-level"
+                               placeholder="Password...">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-large btn-primary" ng-click="login()">Login</button>
+                        <button class="btn btn-large btn-danger" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+
+            </fieldset>
         </form>
-
         <div ng-show="form.uemail.$error.email" class="alert alert-error">
             <strong>Error:</strong> Invalid email address
         </div>
