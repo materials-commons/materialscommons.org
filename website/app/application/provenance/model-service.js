@@ -5,7 +5,7 @@ Application.Provenance.Services.factory('Model', [function () {
                 citations: [],
                 name: '',
                 notes: [],
-                required_input_conditions: [],
+                required_conditions: [],
                 required_output_conditions: [],
                 required_input_files: false,
                 required_output_files: false,

@@ -53,7 +53,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 template = JSON.parse(template);
                 template.model.forEach(function (item) {
                     if (item.name === "required_conditions") {
-                        $scope.process.required_input_conditions = item.value;
+                        $scope.process.required_conditions = item.value;
                     } else if (item.name === "required_output_conditions") {
                         $scope.process.required_output_conditions = item.value;
                     } else if (item.name === "required_input_files") {

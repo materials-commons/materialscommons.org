@@ -1,0 +1,26 @@
+<div ng-controller="provenanceInputs">
+    <h4>Inputs</h4>
+
+    <div class="row-fluid well span10">
+        <ul class="nav nav-tabs">
+            <li ng-class="{'active' : isActiveStep(step)}" ng-repeat="step in inputSteps">
+                <a style="cursor: pointer" ng-click="showStep(step)">{{ step }}</a>
+            </li>
+        </ul>
+        <div ui-view></div>
+    </div>
+
+    <div class="row-fluid span10">
+        <div ng-show="warning"><br>
+            <b style="color:orange">WARNING: Required properties should at least have a name.</b>
+        </div>
+        <div ng-hide="verified">
+            <button ng-click="verify_inputs()">Verify Inputs</button>
+
+        </div>
+        <div ng-show="verified">
+            <b>Required inputs have been verified!</b>
+            <button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>
+        </div>
+    </div>
+</div>

@@ -51,6 +51,7 @@ def create_indices():
     run(r.table('projects').index_create('owner'))
     run(r.table('usergroups').index_create('owner'))
     run(r.table('usergroups').index_create('name'))
+    run(r.table('templates').index_create('template_name'))
 
 
 def run(rql):
