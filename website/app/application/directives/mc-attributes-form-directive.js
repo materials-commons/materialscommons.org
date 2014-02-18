@@ -8,6 +8,9 @@ Application.Directives.directive('mcAttributesForm',
                 doc: '=',
                 doneName: '='
             },
+            link: function ($scope) {
+                console.log("doneName = " + $scope.doneName);
+            },
             templateUrl: 'application/directives/mc-attributes-form.html'
         };
     }]);
