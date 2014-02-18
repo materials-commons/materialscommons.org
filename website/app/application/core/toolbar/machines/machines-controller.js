@@ -31,7 +31,7 @@ Application.Controllers.controller('toolbarMachines',
                 "default":  [],
                 "additional": []
             }
-            };
+            }
         }
 
         $scope.save = function () {
@@ -48,7 +48,11 @@ Application.Controllers.controller('toolbarMachines',
                         .error(function (e) {
 
                         }).jsonp();
-                    $scope.machine = "";
+                    $scope.machine = { "model": {
+                        "default": [],
+                        "additional": []
+                    }
+                    }
                 })
                 .error(function (e) {
 
@@ -56,13 +60,6 @@ Application.Controllers.controller('toolbarMachines',
         }
 
         $scope.add_property_to_machine = function () {
-            if (!('model' in $scope.machine)) {
-                $scope.machine.model= {
-                    "default": [],
-                    "additional": []
-                }
-
-            }
             if ($scope.p_name || $scope.p_name == ' ') {
                 $scope.machine.model.additional.push(JSON.parse($scope.p_name));
                 $scope.p_name = '';

@@ -20,8 +20,9 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th>Name</th>
+                    <th>Notes</th>
                     <th>Date Created</th>
-                    <th>Default Properties</th>
                     <th>Additional properties</th>
                 </tr>
                 </thead>
@@ -32,12 +33,15 @@
 
                 <p ng-if="machines_list.length!=0">
                     <tr ng-repeat="machine in machines_list | orderBy:predicate:reverse | page:currentDataPage:5">
+                        <span ng-if='machine.model.default[0].name=="Name"'>
+                            <td>{{machine.model.default[0].value}}</td>
+                        </span>
+                        <div ng-if="machine.model.default[1].name=='Notes'">
+                            <td>{{machine.model.default[1].value}}</td>
+                        </div>
+
                         <td>{{machine.birthtime | toDateString}}</td>
-                        <td>
-                            <ul ng-repeat="kv in machine.model.default">
-                                <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
-                            </ul>
-                        </td>
+
                         <td>
                             <ul ng-repeat="kv in machine.model.additional">
                                 <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
