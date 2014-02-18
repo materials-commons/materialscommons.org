@@ -28,6 +28,8 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     .argWithValue('filter_by', '"template_type":"machine"')
                     .success(function (data) {
                         $scope.machine_template = data[0];
+                        $scope.default_properties = $scope.machine_template.model.default;
+                        $scope.additional_properties = $scope.machine_template.model.additional;
                     })
                     .error(function (e) {
 
