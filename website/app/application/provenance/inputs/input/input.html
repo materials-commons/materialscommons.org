@@ -1,13 +1,12 @@
 <div ng-controller="provenanceInputsInput">
     <div class="row-fluid">
-        {{ doc.model.default }}
-        <div ng-show="showForm" class="span8">
+        <div class="span8">
             <div class="well">
                 <form class="form-horizontal">
                     <div df-properties default-properties="doc.model.default"></div>
-                    <hr align="left" width="50%">
+                    <hr align="left">
 
-                    <div ng-repeat="pv in machine.model.additional">
+                    <div ng-repeat="pv in doc.model.additional">
                         <div class="control-group">
                             <label class="control-label">{{pv.name}}</label>
 
@@ -44,7 +43,7 @@
                                     {{each_additional.name}}
                                 </option>
                             </select>
-                            <button ng-click="add_property_to_machine()">add</button>
+                            <button ng-click="addProperty()" class="btn">add</button>
                         </div>
                     </div>
 
@@ -54,12 +53,11 @@
                         <div class="controls">
                             <input ng-model="additional_prop" placeholder="type property name ....."
                                    type="text">
-                            <button ng-click="add_property_to_machine()">add</button>
+                            <button ng-click="addProperty()" class="btn">add</button>
                         </div>
                     </div>
 
-                    <button ng-disabled="!default_properties[0].value" ng-click="save()">Save Machine</button>
-                    <button ng-click="clear_machine()">clear additional properties</button>
+                    <button ng-disabled="!default_properties[0].value" ng-click="done()" class="btn btn-success">Done</button>
                 </form>
 
             </div>

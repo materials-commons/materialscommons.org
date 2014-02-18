@@ -11,14 +11,10 @@
 
 
     <!-- Le styles -->
-    <!--<link href="assets/css/bootstrap.css" rel="stylesheet">-->
     <link href="assets/css/bootstrap.flatly.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/select2/select2.css" rel="stylesheet">
 
-
-    <!--<link href="assets/css/bootstrap-combined.min.css" rel="stylesheet">-->
-    <!--<link href="assets/css/datepicker.css" rel="stylesheet">-->
     <link href="assets/css/jqcloud.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -28,11 +24,9 @@
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
-    <link href="../app-old/css/style.css" rel="stylesheet">
-    <!--<link href="assets/css/treeview.css" rel="stylesheet">-->
+
     <link href="assets/css/thumbnail.css" rel="stylesheet">
-    <!--<link href="assets/css/ng-grid.css" rel="stylesheet">-->
-    <!--<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">-->
+
     <!--Treetable -->
     <link rel="stylesheet" href="assets/css/jquery.treetable.css"/>
     <link rel="stylesheet" href="assets/css/jquery.treetable.theme.default.css"/>
@@ -40,6 +34,8 @@
     <link href="assets/css/ng-quick-date-default-theme.css" rel="stylesheet" media="all">
     <link href="assets/css/ng-quick-date.css" rel="stylesheet" media="all">
 
+    <!-- Application style sheet -->
+    <link href="style.css" rel="stylesheet">
 
 
 </head>
@@ -100,7 +96,6 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<!--<script src="assets/js/jquery.js"></script>-->
 <script src="assets/js/jquery-ui-1.10.1.custom.js"></script>
 <script src="assets/js/jquery.fileupload.js"></script>
 <script src="assets/js/select2.min.js"></script>
@@ -108,11 +103,7 @@
 <script src="assets/js/TreeModel-min.js"></script>
 <script src="assets/js/jquery.treetable.js"></script>
 <script src="assets/js/stomp.js"></script>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>-->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-cookies.min.js"></script>-->
-<!--<script  src="assets/js/angular/angular.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.min.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-cookies.min.js"></script>
 <script src="assets/js/angular/angular-ui.js"></script>
 <script src="assets/js/angular/angular-dragdrop.js"></script>
@@ -129,7 +120,6 @@
 <script src="../app-old/js/filters/filters.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
 <script src="assets/js/jquery.tablesorter.min.js"></script>
-<script src="../app-old/js/directives/tree.js"></script>
 <script src="../app-old/js/directives/provenance.js"></script>
 <script src="../app-old/js/controllers/searchindex/searchindex.js"></script>
 <script src="../app-old/js/controllers/mytools/udcontrollers.js"></script>
@@ -198,8 +188,7 @@
 <!-- Toolbar projectspage -->
 <script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/overview-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/treetable.js"></script>
-<script src="application/core/toolbar/projectspage/overview/projecttree-directive.js"></script>
+<script src="application/core/toolbar/projectspage/overview/treetable-directive.js"></script>
 
 <!------------------------------ Provenance app ------------------------------>
 
@@ -235,6 +224,7 @@
 <script src="application/directives/notification-directive.js"></script>
 <script src="application/directives/cgroup-directive.js"></script>
 <script src="application/directives/dfproperties-directive.js"></script>
+<script src="application/directives/projecttree-directive.js"></script>
 
 
 </body>
