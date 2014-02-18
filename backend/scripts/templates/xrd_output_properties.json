@@ -11,7 +11,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False" 
+                "required": false 
             },
             {
                 "name": "Texture Analysis" ,
@@ -20,7 +20,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False" 
+                "required": false 
             }
         ]
     } ,

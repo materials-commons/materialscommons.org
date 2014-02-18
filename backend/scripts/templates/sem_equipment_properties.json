@@ -10,7 +10,7 @@
                 "unit_choice": ["V", "KV"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Pixel Size" ,
@@ -19,7 +19,7 @@
                 "unit_choice": ["microns"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
         ],
         "additional":[
@@ -30,7 +30,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": ["SEI", "BSE"],
-                "required": "False" 
+                "required": false 
             },
             {
                 "name": "Beam Current" ,
@@ -39,7 +39,7 @@
                 "unit_choice": ["Amp"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Spot size" ,
@@ -48,7 +48,7 @@
                 "unit_choice": ["nm"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Dwell Time" ,
@@ -57,7 +57,7 @@
                 "unit_choice": ["hrs", "mins", "sec"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Image Integrations" ,
@@ -66,7 +66,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Brightness" ,
@@ -75,7 +75,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             },
             {
                 "name": "Contrast" ,
@@ -84,7 +84,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "False"
+                "required": false
             }
         ]
 
