@@ -1,6 +1,9 @@
 <div class="row-fluid">
     <div class="span8">
         <div class="well">
+            <div ng-if="doc.template_pick=='material'">
+                <ng-include src="'application/directives/templates/mc-attributes-form/material.html'"></ng-include>
+            </div>
             <form class="form-horizontal">
                 <div df-properties default-properties="defaultProperties"></div>
                 <hr align="left">
