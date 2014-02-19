@@ -1,14 +1,19 @@
-Application.Controllers.controller('toolbarProjects', ["$scope", "mcapi",
-    function ($scope, mcapi) {
-        $scope.init = function () {
-            mcapi('/projects/by_group')
-                .success(function (data) {
-                    $scope.projects = data;
-                })
-                .error(function (data) {
+Application.Controllers.controller('toolbarProjects',
+    ["$scope", "mcapi", "$state",
+        function ($scope, mcapi, $state) {
+            $scope.init = function () {
+                mcapi('/projects/by_group')
+                    .success(function (data) {
+                        $scope.projects = data;
+                    })
+                    .error(function (data) {
 
-                }).jsonp();
-        };
+                    }).jsonp();
+            };
 
-        $scope.init();
-    }]);
+            $scope.gotoProject = function (projectId) {
+                $state.go("toolbar.projectspage.overview", {id: projectId, draft_id: ''});
+            };
+
+            $scope.init();
+        }]);

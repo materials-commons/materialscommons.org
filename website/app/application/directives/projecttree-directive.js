@@ -33,7 +33,7 @@ Application.Controllers.controller('ProjectTreeController',
                             $scope.tree_data = data;
                             $scope.dir = $scope.tree_data[0].children;
                             var obj = {};
-                            obj.dir = $scope.dir;
+                            obj.dir = $scope.tree_data[0];
                             $scope.model.projects[projectId] = obj;
                             $scope.loaded = true;
                             $scope.trail.push(data[0]);
@@ -41,7 +41,8 @@ Application.Controllers.controller('ProjectTreeController',
                     }).jsonp();
             } else {
                 $scope.loaded = true;
-                $scope.dir = $scope.model.projects[projectId].dir;
+                $scope.dir = $scope.model.projects[projectId].dir.children;
+                $scope.trail.push($scope.model.projects[projectId].dir);
             }
         };
 

@@ -44,7 +44,10 @@
                             <p><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</p>
                         </td>
 
-                        <td><a href="#/mytools/data/edit/{{entry.id}}">{{entry.name}}</a></td>
+                        <td ng-if="entry.type=='datafile'">
+                            <a ui-sref="toolbar.dataedit({id: entry.id})">{{entry.name}}</a>
+                        </td>
+                        <td ng-if="entry.type=='datadir'"></td>
                         <td>{{entry.size}}</td>
                         <td>{{entry.owner}}</td>
                     </tr>
