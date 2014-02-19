@@ -11,6 +11,7 @@ Application.Controllers.controller('navigation', ["$scope", "$location", functio
                 return "active";
             }
         } else {
+            console.log('yes')
             return "";
         }
     };
