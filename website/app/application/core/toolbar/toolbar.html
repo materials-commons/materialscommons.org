@@ -1,6 +1,6 @@
 
 
-<div class="container-fluid" ng-controller="navigation">
+<div class="container-fluid" ng-controller="toolbar">
     <div class="row-fluid">
         <div class="span2">
             <div class="sidebar-nav-fixed">
@@ -11,6 +11,7 @@
                             <a href="#/mytools/drafts">Drafts ({{drafts.length}})</a>
                         </li>
                         <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
+
                         <li ng-controller="toolbarProjects" id="my-data-tab">
                             <a href="" style="cursor:pointer" ng-click="showProjs=!showProjs">
                             <i ng-show="showProjs" class="fa fa-folder-open"></i>
@@ -18,20 +19,20 @@
 
                             <div ng-show="showProjs" class="project-scrollbar">
                                 <ul ng-repeat="proj in projects|orderBy:'name'">
-                                    <li style="list-style-type: circle">
+                                    <li  style="list-style-type: circle">
                                         <a style="cursor: pointer" ng-click="gotoProject(proj.id)">{{proj.name}}</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <li id="data-tab" ><a ui-sref="toolbar.mydatapage">My Data</a></li>
-                        <li id="tags-tab"><a ui-sref="toolbar.tagspage">Tags</a></li>
-                        <li ng-controller="toolbarReviews" id="reviews-tab">
-                            <a ui-sref="toolbar.reviews">Reviews ({{reviewstoConduct.length}})</a>
+                        <li  ng-class="{ active: isActiveStep('data-tab') }"><a ng-click="showStep('data-tab')" ui-sref="toolbar.mydatapage">My Data</a></li>
+                        <li id="tags-tab" ng-class="{ active: isActiveStep('tags-tab') }"><a ng-click="showStep('tags-tab')" ui-sref="toolbar.tagspage">Tags</a></li>
+                        <li id="reviews-tab"  ng-class="{ active: isActiveStep('reviews-tab') }" ng-controller="toolbarReviews">
+                            <a ng-click="showStep('reviews-tab')" ui-sref="toolbar.reviews">Reviews ({{reviewstoConduct.length}})</a>
                         </li>
 
-                        <li><a ui-sref="toolbar.machines">Machines</a></li>
-                        <li><a ui-sref="toolbar.materials">Materials</a></li>
+                        <li id="machine-tab" ng-class="{ active: isActiveStep('machine-tab') }" ><a ng-click="showStep('machine-tab')"ui-sref="toolbar.machines">Machines</a></li>
+                        <li id="material-tab" ng-class="{ active: isActiveStep('material-tab') }" ><a  ng-click="showStep('material-tab')" ui-sref="toolbar.materials">Materials</a></li>
 
                         <li class="nav-header"><i class="icon-tags"></i>Common Tags</li>
                         <div ng-controller="toolbarTags">
