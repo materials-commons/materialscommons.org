@@ -20,8 +20,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 mcapi('/machines')
                     .success(function (data) {
                         $scope.machines_list = data;
-                    })
-                    .error(function (data) {
                     }).jsonp();
 
                 mcapi('/templates')
