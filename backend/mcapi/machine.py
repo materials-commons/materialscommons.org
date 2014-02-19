@@ -27,7 +27,9 @@ def get_machine(machine_id):
 def create_machine():
     j = request.get_json()
     machine = dict()
-    machine['model'] = dmutil.get_required('model', j)
+    machine['additional'] = dmutil.get_required('additional', j)
+    machine['name'] = dmutil.get_required('Name', j)
+    machine['notes'] = dmutil.get_required('Notes', j)
     machine['birthtime'] = r.now()
     return dmutil.insert_entry('machines', machine)
 
@@ -47,13 +49,11 @@ def get_all_materials():
 def create_material():
     j = request.get_json()
     material = dict()
-    material['name'] = dmutil.get_required('name', j)
+    material['additional'] = dmutil.get_required('additional', j)
+    material['name'] = dmutil.get_required('Name', j)
+    material['alloy'] = dmutil.get_required('Alloy', j)
+    material['notes'] = dmutil.get_required('Notes', j)
     material['birthtime'] = r.now()
-    material['notes'] = dmutil.get_optional('notes', j, [])
-    material['contact_email'] = dmutil.get_optional('contact_email', j)
-    material['alloy_name'] = dmutil.get_optional('alloy_name', j)
-    material['composition'] = dmutil.get_optional('composition', j)
-    material['model'] =  dmutil.get_optional('model', j)
     return dmutil.insert_entry('materials', material)
 
 

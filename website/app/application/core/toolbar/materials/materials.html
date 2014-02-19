@@ -10,107 +10,230 @@
         </div>
     </div>
 
-    <div class="row-fluid" >
-        <div class="span7">
-            <h4>List of available materials: </h4>
-            <paged data="materials_list" current-page="currentDataPage" page-size="5">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Alloy</th>
-                        <th>Date</th>
-                        <th>Notes</th>
-                        <th>Additional/Custom</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <p ng-if="materials_list.length==0">
-                        <b>No available materials in the database</b>
-                    </p>
-                    <p ng-if="materials_list.length!=0">
-                        <tr ng-repeat="material in materials_list | page:currentDataPage:5">
+
+
+    <div class="row-fluid">
+        <h4>List of available materials: </h4>
+        <paged data="materials_list" current-page="currentDataPage" page-size="5">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Alloy</th>
+                    <th>Notes</th>
+                    <th>Date Created</th>
+                    <th>Additional properties</th>
+                </tr>
+                </thead>
+                <tbody>
+                <p ng-if="materials_list.length==0">
+                    <b>No available materials in the database</b>
+                </p>
+                <p ng-if="materials_list.length!=0">
+                    <tr ng-repeat="material in materials_list | orderBy:predicate:reverse | page:currentDataPage:5">
                             <td>{{material.name}}</td>
-                            <td>{{material.alloy_name}}</td>
-                            <td>{{material.birthtime | toDateString}}</td>
-                            <td ng-if="material.notes.length==0">
-                                {{}}
-                            </td>
-                            <td ng-if="material.notes.length!=0">
-                                {{material.notes}}
-                            </td>
-                            <td>
-                                <ul ng-repeat="kv in material.model">
-                                    <li>{{kv.name}} - {{kv.value}}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </p>
-                    </tbody>
-                </table>
-            </paged>
-        </div>
-    </div><br>
+                            <td>{{material.alloy}}</td>
+                            <td>{{material.notes}}</td>
+
+                        <td>{{material.birthtime | toDateString}}</td>
+
+                        <td>
+                            <ul ng-repeat="kv in material.additional">
+                                <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
+                            </ul>
+                        </td>
+
+
+                    </tr>
+                </p>
+
+                </tbody>
+            </table>
+        </paged>
+    </div>
+    <br>
     <button class="btn btn-primary" ng-click="showForm=!showForm">Create New Material</button>
-    <div ng-show="mat">
-        <b>Machine {{mat.name}} has been created</b>
+    <div ng-show="mach">
+        <b>Material {{mat.name}} has been created</b>
 
     </div>
     <br>
+
     <div class="row-fluid">
-
-        <div ng-show="showForm" class="span7">
+        <div ng-show="showForm" class="span8">
+            <!--<div mc-attributes-form-->
+                 <!--default-properties="defaultProperties"-->
+                 <!--additional-properties="additionalProperties"-->
+                 <!--doc="material"-->
+                 <!--done-name="doneName">-->
+            <!--</div>-->
             <div class="well">
-
                 <form class="form-horizontal">
-                    <div class="control-group">
-                        <label class="control-label">Name:</label> <div class="controls"><input ng-model="material.name" placeholder="Name your material"
-                                                                                                type="text"><i style="color: lightcoral" class="fa fa-asterisk"></i></div>
+                    <div df-properties default-properties="default_properties"></div>
+                    <hr align="left" width="50%">
 
+                    <div ng-repeat="pv in material.additional">
+                        <div class="control-group">
+                            <label class="control-label">{{pv.name}}</label>
 
+                            <div class="controls">
+                            <span ng-if="pv.value_choice.length!=0">
+                                 <select ng-model="pv.value">
+
+                                     <option ng-repeat="val in pv.value_choice"> {{val}}
+                                     </option>
+                                 </select>
+                            </span>
+                            <span ng-if="pv.value_choice.length==0">
+                                <input type="text" ng-model="pv.value">
+                            </span>
+                            <span ng-if="pv.unit_choice.length!=0">
+                                <select style="width:80px" ng-model="pv.unit">
+                                    <option ng-repeat="unit in pv.unit_choice"> {{unit}}
+                                    </option>
+                                </select>
+                            </span>
+
+                            </div>
+                        </div>
                     </div>
+
+
                     <div class="control-group">
-                        <label class="control-label">Alloy:</label> <div class="controls"><input ng-model="material.alloy_name" placeholder="alloy.."
-                                                                                                 type="text"></div>
+                        <label class="control-label">Additional Properties:</label>
 
-
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Contact:</label> <div class="controls"><input ng-model="material.contact_email" placeholder="contact.."
-                                                                                                   type="text"></div>
-
-
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Notes:</label> <div class="controls"><input ng-model="material.notes" placeholder="Type your notes here...."
-                                                                                                 type="text"></div>
-
-
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Additional/Custom</label>
                         <div class="controls">
-                    <span ng-repeat="pv in material.model">
-                        <label>{{pv.name}}:</label><span>
-                        <input type="text" ng-model="pv.value">
-                    </span>
+                            <select ng-model="p_name">
+                                <option ng-repeat="each_additional in additional_properties"
+                                        value="{{each_additional}}">
+                                    {{each_additional.name}}
+                                </option>
+                            </select>
+                            <button ng-click="add_property_to_machine()">add</button>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">Add Custom Properties:</label>
+
                         <div class="controls">
                             <input ng-model="additional_prop" placeholder="type property name ....."
                                    type="text">
-                            <button ng-click="custom_property()">add</button>
+                            <button ng-click="add_property_to_machine()">add</button>
                         </div>
                     </div>
 
-                    <button ng-disabled="!material.name" ng-click="save()">Save Material</button>
-                    <button ng-click="clear_material()">clear</button>
-
+                    <button ng-disabled="!default_properties[0].value" ng-click="save()">Save Material</button>
+                    <button ng-click="clear_machine()">clear additional properties</button>
                 </form>
+
             </div>
         </div>
     </div>
 </div>
+
+<!--<div class="row-fluid" >-->
+        <!--<div class="span7">-->
+            <!--<h4>List of available materials: </h4>-->
+            <!--<paged data="materials_list" current-page="currentDataPage" page-size="5">-->
+                <!--<table class="table table-striped">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Name</th>-->
+                        <!--<th>Alloy</th>-->
+                        <!--<th>Date</th>-->
+                        <!--<th>Notes</th>-->
+                        <!--<th>Additional/Custom</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<p ng-if="materials_list.length==0">-->
+                        <!--<b>No available materials in the database</b>-->
+                    <!--</p>-->
+                    <!--<p ng-if="materials_list.length!=0">-->
+                        <!--<tr ng-repeat="material in materials_list | page:currentDataPage:5">-->
+                            <!--<td>{{material.name}}</td>-->
+                            <!--<td>{{material.alloy_name}}</td>-->
+                            <!--<td>{{material.birthtime | toDateString}}</td>-->
+                            <!--<td ng-if="material.notes.length==0">-->
+                                <!--{{}}-->
+                            <!--</td>-->
+                            <!--<td ng-if="material.notes.length!=0">-->
+                                <!--{{material.notes}}-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<ul ng-repeat="kv in material.model">-->
+                                    <!--<li>{{kv.name}} - {{kv.value}}</li>-->
+                                <!--</ul>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</p>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</paged>-->
+        <!--</div>-->
+    <!--</div><br>-->
+    <!--<button class="btn btn-primary" ng-click="showForm=!showForm">Create New Material</button>-->
+    <!--<div ng-show="mat">-->
+        <!--<b>Machine {{mat.name}} has been created</b>-->
+
+    <!--</div>-->
+    <!--<br>-->
+    <!--<div class="row-fluid">-->
+
+        <!--<div ng-show="showForm" class="span7">-->
+            <!--<div class="well">-->
+
+                <!--<form class="form-horizontal">-->
+                    <!--<div class="control-group">-->
+                        <!--<label class="control-label">Name:</label> <div class="controls"><input ng-model="material.name" placeholder="Name your material"-->
+                                                                                                <!--type="text"><i style="color: lightcoral" class="fa fa-asterisk"></i></div>-->
+
+
+                    <!--</div>-->
+                    <!--<div class="control-group">-->
+                        <!--<label class="control-label">Alloy:</label> <div class="controls"><input ng-model="material.alloy_name" placeholder="alloy.."-->
+                                                                                                 <!--type="text"></div>-->
+
+
+                    <!--</div>-->
+                    <!--<div class="control-group">-->
+                        <!--<label class="control-label">Contact:</label> <div class="controls"><input ng-model="material.contact_email" placeholder="contact.."-->
+                                                                                                   <!--type="text"></div>-->
+
+
+                    <!--</div>-->
+                    <!--<div class="control-group">-->
+                        <!--<label class="control-label">Notes:</label> <div class="controls"><input ng-model="material.notes" placeholder="Type your notes here...."-->
+                                                                                                 <!--type="text"></div>-->
+
+
+                    <!--</div>-->
+                    <!--<div class="control-group">-->
+                        <!--<label class="control-label">Additional/Custom</label>-->
+                        <!--<div class="controls">-->
+                    <!--<span ng-repeat="pv in material.model">-->
+                        <!--<label>{{pv.name}}:</label><span>-->
+                        <!--<input type="text" ng-model="pv.value">-->
+                    <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="control-group">-->
+                        <!--<label class="control-label">Add Custom Properties:</label>-->
+                        <!--<div class="controls">-->
+                            <!--<input ng-model="additional_prop" placeholder="type property name ....."-->
+                                   <!--type="text">-->
+                            <!--<button ng-click="custom_property()">add</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<button ng-disabled="!material.name" ng-click="save()">Save Material</button>-->
+                    <!--<button ng-click="clear_material()">clear</button>-->
+
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

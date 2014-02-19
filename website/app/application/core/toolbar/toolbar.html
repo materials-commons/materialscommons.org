@@ -1,6 +1,6 @@
 
 
-<div class="container-fluid" ng-controller="toolbar">
+<div class="container-fluid" ng-controller="navigation">
     <div class="row-fluid">
         <div class="span2">
             <div class="sidebar-nav-fixed">
@@ -24,7 +24,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li id="data-tab"><a ui-sref="toolbar.mydatapage">My Data</a></li>
+                        <li id="data-tab" ><a ui-sref="toolbar.mydatapage">My Data</a></li>
                         <li id="tags-tab"><a ui-sref="toolbar.tagspage">Tags</a></li>
                         <li ng-controller="toolbarReviews" id="reviews-tab">
                             <a ui-sref="toolbar.reviews">Reviews ({{reviewstoConduct.length}})</a>
