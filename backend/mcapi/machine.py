@@ -38,6 +38,7 @@ def create_machine():
 def get_all_materials():
     rr = r.table('materials').order_by(r.desc('birthtime'))
     selection = list(rr.run(g.conn, time_format='raw'))
+    print selection
     return args.json_as_format_arg(selection)
 
 
@@ -47,13 +48,8 @@ def get_all_materials():
 def create_material():
     j = request.get_json()
     material = dict()
-    material['name'] = dmutil.get_required('name', j)
+    material['model'] = dmutil.get_required('model', j)
     material['birthtime'] = r.now()
-    material['notes'] = dmutil.get_optional('notes', j, [])
-    material['contact_email'] = dmutil.get_optional('contact_email', j)
-    material['alloy_name'] = dmutil.get_optional('alloy_name', j)
-    material['composition'] = dmutil.get_optional('composition', j)
-    material['model'] =  dmutil.get_optional('model', j)
     return dmutil.insert_entry('materials', material)
 
 
