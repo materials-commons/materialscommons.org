@@ -4,22 +4,22 @@
     <div class="row-fluid">
         <div class="span2">
             <div class="sidebar-nav-fixed">
-                <div class="well">
+                <div class="">
                     <ul class="nav nav-list">
                         <li ng-show="showDrafts" class="nav-header"><i class="fa fa-book"></i> Provenance</li>
                         <li ng-show="showDrafts" ng-controller="toolbarDrafts">
                             <a href="#/mytools/drafts">Drafts ({{drafts.length}})</a>
                         </li>
                         <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
-                        <li ng-controller="toolbarProjects" id="my-data-tab"><a href="" style="cursor:pointer"
-                                                                                          ng-click="showProjs=!showProjs">
+                        <li ng-controller="toolbarProjects" id="my-data-tab">
+                            <a href="" style="cursor:pointer" ng-click="showProjs=!showProjs">
                             <i ng-show="showProjs" class="fa fa-folder-open"></i>
                             <i ng-show="!showProjs" class="fa fa-folder"></i> Projects</a>
 
                             <div ng-show="showProjs" class="project-scrollbar">
                                 <ul ng-repeat="proj in projects|orderBy:'name'">
                                     <li style="list-style-type: circle">
-                                        <a ui-sref="toolbar.projectspage({id: proj.id, draft_id: ''})">{{proj.name}}</a>
+                                        <a style="cursor: pointer" ng-click="gotoProject(proj.id)">{{proj.name}}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -33,7 +33,7 @@
                         <li><a ui-sref="toolbar.machines">Machines</a></li>
                         <li><a ui-sref="toolbar.materials">Materials</a></li>
 
-                        <li class="nav-header"><i class="icon-tags"></i>Commonly Used Tags</li>
+                        <li class="nav-header"><i class="icon-tags"></i>Common Tags</li>
                         <div ng-controller="toolbarTags">
                             <span style="cursor:pointer" class="label label-info custom"
                                   ng-repeat="tag in tags | limitTo: 10">
