@@ -1,9 +1,9 @@
-<div ng-controller="provenanceInputs">
-    <h4>Inputs</h4>
+<div ng-controller="provenanceIOSteps">
+    <h4>{{ stepsName }}</h4>
 
     <div class="row-fluid well span10">
         <ul class="nav nav-tabs">
-            <li ng-class="{'active' : isActiveStep(step)}" ng-repeat="step in inputSteps">
+            <li ng-class="{'active' : isActiveStep(step)}" ng-repeat="step in steps">
                 <a style="cursor: pointer" ng-click="showStep(step)">{{ step }}</a>
             </li>
         </ul>

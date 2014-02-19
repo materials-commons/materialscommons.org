@@ -142,17 +142,13 @@ app.config(function ($stateProvider) {
             url: '/process',
             templateUrl: 'application/provenance/process/process.html'
         })
-        .state('toolbar.projectspage.provenance.inputs', {
-            url: '/inputs',
-            templateUrl: 'application/provenance/inputs/inputs.html'
+        .state('toolbar.projectspage.provenance.iosteps', {
+            url: '/iosteps:iosteps',
+            templateUrl: 'application/provenance/iosteps/iosteps.html'
         })
-        .state('toolbar.projectspage.provenance.inputs.input', {
-            url: '/input:step',
-            templateUrl: 'application/provenance/inputs/input/input.html'
-        })
-        .state('toolbar.projectspage.provenance.outputs', {
-            url: '/outputs',
-            templateUrl: 'application/provenance/outputs/outputs.html'
+        .state('toolbar.projectspage.provenance.iosteps.iostep', {
+            url: '/iostep:iostep',
+            templateUrl: 'application/provenance/iosteps/iostep/iostep.html'
         })
         .state('toolbar.projectspage.provenance.finish', {
             url: '/finish',
