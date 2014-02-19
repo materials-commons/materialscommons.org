@@ -4,6 +4,7 @@ import json
 import rethinkdb as r
 import sys
 import optparse
+from ..mcapi import dmutil
 
 
 class Template:
@@ -39,6 +40,11 @@ if __name__ == "__main__":
     template_pick = data["template_pick"]
     template_obj = Template(template_name, template_type, template_description, 
                             template_owner, model, template_pick)
-    rr = r.table('templates').insert(template_obj.__dict__).run(conn)
+    existing = dmutil.get_single_from_table('templates', template_obj.__dict__.id)
+    if existing:
+        r.table('templates').delete(existing.id).run(conn)
+        rr = r.table('templates').insert(template_obj.__dict__).run(conn)
+    else:
+        rr = r.table('templates').insert(template_obj.__dict__).run(conn)
     print rr
 
