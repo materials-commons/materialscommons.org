@@ -17,12 +17,15 @@ Application.Provenance.Controllers.controller('provenance',
             $scope.stepFinished = function (step) {
                 switch (step) {
                 case "process":
-                    $state.go('toolbar.projectspage.provenance.inputs');
+                    ProvSteps.setCurrentStep('inputs');
+                    $state.go('toolbar.projectspage.provenance.iosteps', {iosteps: 'inputs'});
                     break;
                 case "inputs":
-                    $state.go('toolbar.projectspage.provenance.outputs');
+                    ProvSteps.setCurrentStep('outputs');
+                    $state.go('toolbar.projectspage.provenance.iosteps', {iosteps: 'outputs'});
                     break;
                 case "outputs":
+                    ProvStesp.setCurrentStep('submit');
                     $state.go('toolbar.projectspage.provenance.finish');
                     break;
                 default:
