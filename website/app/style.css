@@ -164,5 +164,9 @@ textarea[readonly] {
     border-right: 1px solid #ccc;
 }
 
+.is-active{
+    background: blue;
+}
+
 
 
