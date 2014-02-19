@@ -1,10 +1,7 @@
 Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", function ($scope, mcapi) {
         $scope.machine = {
-            "model": {
-                "default": [],
-                "additional": []
-            }
+            "additional": []
         };
 
         mcapi('/templates')
@@ -30,16 +27,15 @@ Application.Controllers.controller('toolbarMachines',
         $scope.clear_machine = function () {
 
             $scope.machine = {
-                "model": {
-                    "default": [],
-                    "additional": []
-                }
+                "additional": []
+
             };
         };
 
         $scope.save = function () {
-            $scope.machine.model.default = $scope.default_properties;
-            //$scope.machine.model.additional = $scope.machine.model.additional;
+            $scope.default_properties.forEach(function (item) {
+                $scope.machine[item.name] = item.value;
+            });
             mcapi('/machines/new')
                 .arg('order_by=birthtime')
                 .success(function (data) {
@@ -52,10 +48,7 @@ Application.Controllers.controller('toolbarMachines',
 
                         }).jsonp();
                     $scope.machine = {
-                        "model": {
-                            "default": [],
-                            "additional": []
-                        }
+                        "additional": []
                     };
                 })
                 .error(function (e) {
@@ -65,11 +58,11 @@ Application.Controllers.controller('toolbarMachines',
 
         $scope.add_property_to_machine = function () {
             if ($scope.p_name || $scope.p_name === ' ') {
-                $scope.machine.model.additional.push(JSON.parse($scope.p_name));
+                $scope.machine.additional.push(JSON.parse($scope.p_name));
                 $scope.p_name = '';
             }
             if ($scope.additional_prop || $scope.additional_prop === ' ') {
-                $scope.machine.model.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
+                $scope.machine.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
                     'unit_choice': [], 'unit': '', 'required': 'False', "type": ""});
                 $scope.additional_prop = '';
             }

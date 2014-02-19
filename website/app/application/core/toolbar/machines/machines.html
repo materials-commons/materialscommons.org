@@ -33,17 +33,14 @@
 
                 <p ng-if="machines_list.length!=0">
                     <tr ng-repeat="machine in machines_list | orderBy:predicate:reverse | page:currentDataPage:5">
-                        <span ng-if='machine.model.default[0].name=="Name"'>
-                            <td>{{machine.model.default[0].value}}</td>
-                        </span>
-                        <div ng-if="machine.model.default[1].name=='Notes'">
-                            <td>{{machine.model.default[1].value}}</td>
-                        </div>
+
+                            <td>{{machine.name}}</td>
+                            <td>{{machine.notes}}</td>
 
                         <td>{{machine.birthtime | toDateString}}</td>
 
                         <td>
-                            <ul ng-repeat="kv in machine.model.additional">
+                            <ul ng-repeat="kv in machine.additional">
                                 <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
                             </ul>
                         </td>
@@ -71,7 +68,7 @@
                     <div df-properties default-properties="default_properties"></div>
                     <hr align="left" width="50%">
 
-                    <div ng-repeat="pv in machine.model.additional">
+                    <div ng-repeat="pv in machine.additional">
                         <div class="control-group">
                             <label class="control-label">{{pv.name}}</label>
 

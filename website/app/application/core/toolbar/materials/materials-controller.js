@@ -1,55 +1,7 @@
-//Application.Controllers.controller('toolbarMaterials',
-//    ["$scope", "mcapi", function ($scope, mcapi) {
-//        mcapi('/materials')
-//            .success(function (data) {
-//                $scope.materials_list = data;
-//            })
-//            .error(function () {
-//
-//            }).jsonp();
-//
-//        $scope.clear_material = function () {
-//            $scope.material = '';
-//        };
-//
-//        $scope.save = function () {
-//            var temp = $scope.material;
-//            mcapi('/materials/new')
-//                .success(function (data) {
-//                    mcapi('/materials/%', data.id)
-//                        .success(function (material_obj) {
-//                            $scope.mat = material_obj;
-//                            $scope.materials_list.unshift(material_obj);
-//                        })
-//                        .error(function (e) {
-//
-//                        }).jsonp();
-//                    $scope.material = "";
-//
-//                })
-//                .error(function (e) {
-//                }).post(temp);
-//        };
-//
-//        $scope.custom_property = function () {
-//            if (!('model' in $scope.material)) {
-//                $scope.material.model = [];
-//            }
-//            if ($scope.additional_prop || $scope.additional_prop === ' ') {
-//                $scope.material.model.push({'name': $scope.additional_prop, 'value': ''});
-//                $scope.additional_prop = '';
-//            }
-//
-//        };
-//    }]);
-
 Application.Controllers.controller('toolbarMaterials',
     ["$scope", "mcapi", function ($scope, mcapi) {
         $scope.material = {
-            "model": {
-                "default": [],
-                "additional": []
-            }
+            "additional": []
         };
 
         mcapi('/templates')
@@ -75,48 +27,46 @@ Application.Controllers.controller('toolbarMaterials',
         $scope.clear_material = function () {
 
             $scope.material = {
-                "model": {
-                    "default": [],
-                    "additional": []
-                }
+                "additional": []
             };
-        };
+        }
 
-        $scope.save = function () {
-            $scope.material.model.default = $scope.default_properties;
-            mcapi('/materials/new')
-                .arg('order_by=birthtime')
-                .success(function (data) {
-                    mcapi('/materials/%', data.id)
-                        .success(function (material_obj) {
-                            $scope.mat = material_obj;
-                            $scope.materials_list.unshift(material_obj);
-                        })
-                        .error(function (e) {
+            $scope.save = function () {
+                $scope.default_properties.forEach(function (item) {
+                    $scope.material[item.name] = item.value;
+                });
+                mcapi('/materials/new')
+                    .arg('order_by=birthtime')
+                    .success(function (data) {
+                        mcapi('/materials/%', data.id)
+                            .success(function (material_obj) {
+                                $scope.mat = material_obj;
+                                $scope.materials_list.unshift(material_obj);
+                            })
+                            .error(function (e) {
 
-                        }).jsonp();
-                    $scope.material = {
-                        "model": {
-                            "default": [],
+                            }).jsonp();
+                        $scope.material = {
                             "additional": []
-                        }
-                    };
-                })
-                .error(function (e) {
+                        };
+                    })
+                    .error(function (e) {
 
-                }).post($scope.material);
-        };
+                    }).post($scope.material);
+            };
 
-        $scope.add_property_to_machine = function () {
-            if ($scope.p_name || $scope.p_name === ' ') {
-                $scope.material.model.additional.push(JSON.parse($scope.p_name));
-                $scope.p_name = '';
-            }
-            if ($scope.additional_prop || $scope.additional_prop === ' ') {
-                $scope.material.model.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
-                    'unit_choice': [], 'unit': '', 'required': 'False', "type": ""});
-                $scope.additional_prop = '';
-            }
+            $scope.add_property_to_machine = function () {
+                if ($scope.p_name || $scope.p_name === ' ') {
+                    $scope.material.additional.push(JSON.parse($scope.p_name));
+                    $scope.p_name = '';
+                }
+                if ($scope.additional_prop || $scope.additional_prop === ' ') {
+                    $scope.material.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
+                        'unit_choice': [], 'unit': '', 'required': 'False', "type": ""});
+                    $scope.additional_prop = '';
+                }
 
-        };
-    }]);
+            };
+        }
+        ])
+        ;
