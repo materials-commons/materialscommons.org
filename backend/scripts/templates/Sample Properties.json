@@ -1,0 +1,126 @@
+{
+
+    "id": "Sample Properties" ,
+    "model": {
+        "default": [
+            {
+                "name": "Sample name" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Alloy composition" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+            
+        ],
+        "additional":[
+            {
+                "name": "Heat treatment" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [
+                    "C" ,
+                    "F"
+                ] ,
+                "value": "" ,
+                "value_choice": ["T6", "T7"],
+                "required": false
+            },
+            {
+                "name": "Compression" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice":[],
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Orientation" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+
+            {
+                "name": "Manufacturing Condition" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            } ,
+         
+            {
+                "name": "Specimen Prep" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [
+                    "Electropolish" ,
+                    "Silica finish"
+                ],
+                "required": false
+            },
+            {
+                "name": "Material State" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": ["wrought", "cast", "other"],
+                "required": false
+            },
+            {
+                "name": "Gage length" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Cross sectional area" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Sample Geometry" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ]
+    } ,
+    "owner": "gtarcea@umich.edu", 
+    "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_description": "" ,
+    "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_name": "Sample Properties" ,
+    "template_pick": "material" ,
+    "template_type": "condition"
+
+}
