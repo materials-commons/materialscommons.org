@@ -51,3 +51,7 @@ function originalFilePath(location, name) {
     var filePath = "assets/materialscommons/";
     return filePath + location + '/' + name;
 }
+
+String.prototype.capitalize = function() {
+    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
