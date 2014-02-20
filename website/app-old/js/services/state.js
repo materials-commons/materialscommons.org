@@ -100,24 +100,6 @@ stateServices.
         return S;
     });
 
-stateServices.factory('Thumbnails', [function () {
-    var service = {
-        model: {
-            datadir: '',
-            datadirs: [],
-            layout: 'grid',
-            pics: []
-        },
-
-        clear: function () {
-            service.model.datadirs = [];
-            service.model.datadir = '';
-            service.model.pics = [];
-            service.model.layout = 'grid';
-        }
-    };
-    return service;
-}]);
 
 stateServices.factory('Projects', [function () {
     var service = {

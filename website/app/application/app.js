@@ -14,9 +14,9 @@ Application.Provenance.Filters = angular.module('application.provenance.filters'
 Application.Provenance.Directives = angular.module('application.provenance.directives', []);
 
 var app = angular.module('materialscommons',
-    ['ui', 'Filter', 'materialsCommonsServices',
+    ['ui', 'Filter',
         'stateServices', 'jqyoui', 'AngularStomp', 'ui.bootstrap',
-        'ngCookies', '$strap.directives', 'ui.router',
+        'ngCookies', '$strap.directives', 'ui.router', 'ngResource',
         'Provenance', 'ngQuickDate', 'application.core.constants',
         'application.core.services', 'application.core.controllers', 'application.core.filters',
         'application.core.directives', 'application.provenance.constants', 'application.provenance.services',
