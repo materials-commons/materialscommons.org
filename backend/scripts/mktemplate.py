@@ -4,12 +4,12 @@ import json
 import rethinkdb as r
 import sys
 import optparse
-from ..mcapi import dmutil
 
 
 class Template:
-    def __init__(self,template_name, template_type, template_description, template_owner, model, 
+    def __init__(self,id, template_name, template_type, template_description, template_owner, model, 
                       template_pick):
+        self.id = id
         self.template_type = template_type
         self.template_name = template_name
         self.template_pick = template_pick
@@ -32,19 +32,22 @@ if __name__ == "__main__":
     conn = r.connect('localhost', int(options.port), db='materialscommons')
     json_data=open(options.filename)
     data = json.load(json_data)
+    id = data["id"]
     model = data["model"]
     template_name = data["template_name"]
     template_type = data["template_type"]
     template_description = data["template_description"]
     template_owner = data["owner"]
     template_pick = data["template_pick"]
-    template_obj = Template(template_name, template_type, template_description, 
+    template_obj = Template(id, template_name, template_type, template_description, 
                             template_owner, model, template_pick)
-    existing = dmutil.get_single_from_table('templates', template_obj.__dict__.id)
+    template_dict = template_obj.__dict__
+    existing = r.table('templates').get(template_dict['template_name']).run(conn)
     if existing:
-        r.table('templates').delete(existing.id).run(conn)
-        rr = r.table('templates').insert(template_obj.__dict__).run(conn)
+        print 'template deleted and re-inserted into the database'
+        r.table('templates').get(template_dict['template_name']).delete().run(conn)
+        rr = r.table('templates').insert(template_dict).run(conn)
     else:
-        rr = r.table('templates').insert(template_obj.__dict__).run(conn)
-    print rr
-
+        print 'template inserted into the database'
+        rr = r.table('templates').insert(template_dict).run(conn)
+    #print rr
