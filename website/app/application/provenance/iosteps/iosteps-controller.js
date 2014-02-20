@@ -13,7 +13,9 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.showStepInputs = function (stepName) {
-                if (stepName in $scope.doc.attributes.input_conditions) {
+                if (stepName === "Files") {
+                    $scope.gotoStep(stepName);
+                } else if (stepName in $scope.doc.attributes.input_conditions) {
                     $scope.gotoStep(stepName);
                 } else {
                     mcapi('/templates/name/%', stepName)
@@ -26,7 +28,10 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.showStepOutputs = function (stepName) {
-                if (stepName in $scope.doc.attributes.output_conditions) {
+                console.log("showStepOutputs = " + stepName);
+                if (stepName === "Files") {
+                    $scope.gotoStep(stepName);
+                } else if (stepName in $scope.doc.attributes.output_conditions) {
                     $scope.gotoStep(stepName);
                 } else {
                     mcapi('/templates/name/%', stepName)
@@ -39,10 +44,26 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.showStep = function (stepName) {
+                var attrib;
                 if ($stateParams.iosteps === "inputs") {
-                    $scope.showStepInputs(stepName);
+                    attrib = "input_conditions";
+                    //$scope.showStepInputs(stepName);
                 } else {
-                    $scope.showStepOutputs(stepName);
+                    attrib = "output_conditions";
+                    //$scope.showStepOutputs(stepName);
+                }
+
+                if (stepName === "Files") {
+                    $scope.gotoStep(stepName);
+                } else if (stepName in $scope.doc.attributes[attrib]) {
+                    $scope.gotoStep(stepName);
+                } else {
+                    mcapi('/templates/name/%', stepName)
+                        .success(function (data) {
+                            data.model.added_properties = [];
+                            $scope.doc.attributes[attrib][stepName] = data;
+                            $scope.gotoStep(stepName);
+                        }).jsonp();
                 }
             };
 
@@ -61,6 +82,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.loadSteps = function () {
+                console.log("loadSteps = " + $stateParams.iosteps);
                 if ($stateParams.iosteps === "inputs") {
                     $scope.stepsName = "Inputs";
                     $scope.doc.attributes.process.required_conditions.forEach(function (condition) {
