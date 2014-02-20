@@ -1,0 +1,72 @@
+{
+
+    "id": "Tensile Equipment Properties" ,
+    "model": {
+        "default": [
+            {
+                "name": "Voltage" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["V", "KV"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Pixel Size" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["microns"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ],
+        "additional":[
+           
+            {
+                "name": "Temperature" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["C", "F"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Humidity" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Test rate" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Control method" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ]
+
+    } ,
+    "owner": "gtarcea@umich.edu", 
+    "template_description": "" ,
+    "template_name": "Tensile Equipment Properties" ,
+    "template_type": "condition",
+    "template_pick": ""
+
+}

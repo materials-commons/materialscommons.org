@@ -1,0 +1,156 @@
+{
+    "id": "SEM",
+    "model": [
+        {
+            "name": "required_conditions" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [
+                "Sample Properties" ,
+                "SEM Equipment Properties"
+            ] ,
+            "value_choice": ""
+        } ,
+        {
+            "name": "required_output_conditions" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": ""
+        } ,
+        {
+            "name": "required_input_files" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "required_output_files",
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": true
+        } ,
+        {
+            "name": "name" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": true
+        } ,
+        {
+            "name": "description" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "birthtime" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "mtime" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "machine" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "process_type" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "version" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "parent" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "notes" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "runs" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "citations" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": [ ],
+            "value_choice": "",
+            "required": false
+        } ,
+        {
+            "name": "status" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        }
+    ] ,
+    "owner": "gtarcea@umich.edu", 
+    "template_description": "" ,
+    "template_name": "SEM" ,
+    "template_type": "process",
+    "template_pick": ""
+
+}
