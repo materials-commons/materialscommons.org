@@ -1,13 +1,17 @@
-Application.Provenance.Controllers.controller('provenanceInputsInput',
+Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
     ["$scope", "ProvDrafts", "$stateParams",
         function ($scope, ProvDrafts, $stateParams) {
 
             $scope.init = function () {
-                $scope.stepName = $stateParams.step;
-                $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
+                $scope.stepName = $stateParams.iostep;
+                if ($stateParams.iosteps === 'inputs') {
+                    $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
+                } else {
+                    $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
+                }
+
                 $scope.defaultProperties = $scope.doc.model.default;
                 $scope.additionalProperties = [];
-                $scope.doneName = "Done";
                 $scope.useExisting = "yes";
             };
 

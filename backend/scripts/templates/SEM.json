@@ -25,7 +25,7 @@
             "type": "" ,
             "unit": "" ,
             "unit_choice": "" ,
-            "value": "" ,
+            "value": [] ,
             "value_choice": "",
             "required": false
         } ,
@@ -34,7 +34,7 @@
             "type": "" ,
             "unit": "" ,
             "unit_choice": "" ,
-            "value": "" ,
+            "value": [],
             "value_choice": "",
             "required": true
         } ,
