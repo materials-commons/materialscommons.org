@@ -11,7 +11,27 @@ Application.Provenance.Controllers.controller('provenance',
             };
 
             $scope.editStep = function (step) {
-
+                var state;
+                switch (step) {
+                case "process":
+                    state = 'toolbar.projectspage.provenance.process';
+                    break;
+                case "inputs":
+                    state = 'toolbar.projectspage.provenance.iosteps';
+                    break;
+                case "outputs":
+                    state = 'toolbar.projectspage.provenance.iosteps';
+                    break;
+                case "submit":
+                    state = 'toolbar.projectspage.provenance.finish';
+                    break;
+                }
+                ProvSteps.setCurrentStep(step);
+                if (step === "inputs" || step == "outputs") {
+                    $state.go(state, {iosteps: step});
+                } else {
+                    $state.go(state);
+                }
             };
 
             $scope.stepFinished = function (step) {
@@ -25,7 +45,7 @@ Application.Provenance.Controllers.controller('provenance',
                     $state.go('toolbar.projectspage.provenance.iosteps', {iosteps: 'outputs'});
                     break;
                 case "outputs":
-                    ProvStesp.setCurrentStep('submit');
+                    ProvSteps.setCurrentStep('submit');
                     $state.go('toolbar.projectspage.provenance.finish');
                     break;
                 default:
