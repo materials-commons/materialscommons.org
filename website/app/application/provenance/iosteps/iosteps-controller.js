@@ -21,7 +21,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.showStepOutputs = function (stepName) {
-                console.log("showStepOutputs = " + stepName)
                 if (stepName in $scope.doc.attributes.output_conditions) {
                     $scope.gotoStep(stepName);
                 } else {
@@ -57,8 +56,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.loadSteps = function () {
-                console.log("loadSteps");
-                console.dir($scope.doc.attributes.process);
                 if ($stateParams.iosteps === "inputs") {
                     $scope.stepsName = "Inputs";
                     $scope.doc.attributes.process.required_conditions.forEach(function (condition) {
