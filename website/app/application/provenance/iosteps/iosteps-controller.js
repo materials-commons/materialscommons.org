@@ -3,8 +3,13 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
         function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams) {
 
             $scope.gotoStep = function (stepName) {
+                var filesStepType = $stateParams.iosteps;
                 $scope.activeStep = stepName;
-                $state.go('toolbar.projectspage.provenance.iosteps.iostep', {iostep: stepName});
+                if (stepName === "Files") {
+                    $state.go('toolbar.projectspage.provenance.iosteps.files', {iostep: filesStepType});
+                } else {
+                    $state.go('toolbar.projectspage.provenance.iosteps.iostep', {iostep: stepName});
+                }
             };
 
             $scope.showStepInputs = function (stepName) {

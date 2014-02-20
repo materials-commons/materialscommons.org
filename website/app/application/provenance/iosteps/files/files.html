@@ -1,16 +1,10 @@
 <div class="row-fluid span10 well" ng-controller="provenanceIOStepsFiles">
-    <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{ stepName }} files</a>
-
-    <div ng-show="showDetails">
-        <form ng-show="showDetails" class="form-horizontal">
-            <cgroup label="Select files from project tree:">
-                <button ng-click="addFiles()">Add Files</button>
-            </cgroup>
-        </form>
-        <li ng-repeat="item in state.attributes.checked_input_filenames">
-            <i class="fa fa-check-square"></i>{{item.name}}
+    <h6>Selected files:</h6>
+    <ul>
+        <li ng-repeat="item in files">
+            <i class="fa fa-check-square"></i>{{item.displayname}}
             <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
             <br>
         </li>
-    </div>
+    </ul>
 </div>
