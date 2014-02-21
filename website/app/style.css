@@ -159,6 +159,21 @@ hr {
     background-color: #67889d;
 }
 
+.btn-success {
+    background-color: #16a085;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+    color: #ffffff;
+    background-color: #16a060;
+    *background-color: #1bd3af;
+}
+
 input[disabled],
 input[readonly],
 textarea[disabled],
