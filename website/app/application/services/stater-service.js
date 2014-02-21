@@ -1,7 +1,5 @@
-var stateServices = angular.module('stateServices', ['ngResource']);
-
-stateServices.
-    factory('Stater', function (mcapi) {
+Application.Services.factory('Stater',
+    ["mcapi", function (mcapi) {
         var S = {
             all: []
         };
@@ -29,7 +27,7 @@ stateServices.
             S.state = state;
             var callfunc = false;
             if (arguments.length == 2) {
-               callfunc = true;
+                callfunc = true;
             }
             if ('id' in S.state) {
                 mcapi('/stater/%', S.state.id)
@@ -98,23 +96,6 @@ stateServices.
         }
 
         return S;
-    });
+    }]);
 
 
-stateServices.factory('Projects', [function () {
-    var service = {
-        model: {
-            projects: {}
-        },
-        channel: null,
-
-        clear: function () {
-            service.model.projects = {};
-        },
-
-        setChannel: function(what) {
-            service.channel = what;
-        }
-    };
-    return service;
-}]);
