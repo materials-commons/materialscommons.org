@@ -150,42 +150,46 @@ app.config(function ($stateProvider) {
             url: '/iostep:iostep',
             templateUrl: 'application/provenance/iosteps/iostep/iostep.html'
         })
+        .state('toolbar.projectspage.provenance.iosteps.files', {
+            url: '/files:iostep',
+            templateUrl: 'application/provenance/iosteps/files/files.html'
+        })
         .state('toolbar.projectspage.provenance.finish', {
             url: '/finish',
             templateUrl: 'application/provenance/finish/finish.html'
-        })
+        });
 
-        // Views
-        .state('mytools', {
-
-        })
-        // Projects views
-        .state('mytools.projects', {
-            url: '/projectspage/:id/:draft_id',
-            templateUrl: 'partials/project/projectspage.html'
-        })
-        .state('mytools.projects.overview', {
-            url: '/overview',
-            templateUrl: 'partials/project/overview.html'
-        })
-        .state('mytools.projects.provenance', {
-            url: '/provenance',
-            templateUrl: 'partials/project/provenance.html'
-        })
-        .state('mytools.projects.provenance.process', {
-            url: '/process',
-            templateUrl: 'partials/project/provenance/process.html'
-        })
-        .state('mytools.processreport', {
-            url: '/process/report/:process_id',
-            templateUrl: 'partials/process/report.html',
-            controller: 'ProcessReportController'
-        })
-        .state('mytools.tagbyname', {
-            url: '/data/bytag/:name',
-            templateUrl: 'partials/tags/databytag.html',
-            controller: 'TagDataController'
-        })
+//        // Views
+//        .state('mytools', {
+//
+//        })
+//        // Projects views
+//        .state('mytools.projects', {
+//            url: '/projectspage/:id/:draft_id',
+//            templateUrl: 'partials/project/projectspage.html'
+//        })
+//        .state('mytools.projects.overview', {
+//            url: '/overview',
+//            templateUrl: 'partials/project/overview.html'
+//        })
+//        .state('mytools.projects.provenance', {
+//            url: '/provenance',
+//            templateUrl: 'partials/project/provenance.html'
+//        })
+//        .state('mytools.projects.provenance.process', {
+//            url: '/process',
+//            templateUrl: 'partials/project/provenance/process.html'
+//        })
+//        .state('mytools.processreport', {
+//            url: '/process/report/:process_id',
+//            templateUrl: 'partials/process/report.html',
+//            controller: 'ProcessReportController'
+//        })
+//        .state('mytools.tagbyname', {
+//            url: '/data/bytag/:name',
+//            templateUrl: 'partials/tags/databytag.html',
+//            controller: 'TagDataController'
+//        })
 
 
     /**
@@ -198,67 +202,18 @@ app.config(function ($stateProvider) {
      */
 
         //Provenance
-        .state('mytools.drafts', {
-            url: '/drafts',
-            templateUrl: 'partials/provenance/drafts-list.html',
-            controller: DraftsListController
-        })
-
-        .state('mytools.projects.process', {
-            url: '/projectspage/process/new',
-            templateUrl: 'partials/process.html'
-        })
-        .state('mytools.provenance', {
-            url: '/provenance/:id',
-            templateUrl: 'partials/project/add-provenance.html',
-            controller: 'ProvenanceController'
-        })
-
-        .state('mytools.mytagslist', {
-            url: '/mytagslist',
-            templateUrl: 'partials/tags/my-tags.html',
-            controller: 'MyTagsController'
-        })
-
-        .state('mytools.listtemplate', {
-            url: '/listtemplate',
-            templateUrl: 'partials/conditions/list-condition-template.html',
-            controller: 'ListConditionControllers'
-        })
-        .state('mytools.templatereport', {
-            url: '/templatereport/:id',
-            templateUrl: 'partials/conditions/template-report.html',
-            controller: 'TemplateReportController'
-        })
-
-
-        .state('mytools.provenancetab', {
-            url: '/provenancetab',
-            templateUrl: 'partials/provenance/provenance-subpage.html',
-            controller: 'ProvenanceController'
-
-        })
-
-        .state('mytools.provtrack', {
-            url: '/provtrack',
-            templateUrl: 'partials/provenance/provenance.html',
-            controller: 'ProvenanceController'
-        })
-        .state('mytools.machine', {
-            url: '/machine',
-            templateUrl: 'partials/machine/machines.html',
-            controller: 'CreateNewMachineController'
-        })
-        .state('mytools.material', {
-            url: '/material',
-            templateUrl: 'partials/material/materials.html',
-            controller: 'CreateNewMaterialController'
-        })
-        .state('account2/create-account', {
-            url: '/account/create-account',
-            templateUrl: 'partials/account/create-account.html',
-            controller: 'CreateAccountController'
-        });
+//        .state('mytools.drafts', {
+//            url: '/drafts',
+//            templateUrl: 'partials/provenance/drafts-list.html',
+//            controller: DraftsListController
+//        })
+//
+//
+//        .state('mytools.mytagslist', {
+//            url: '/mytagslist',
+//            templateUrl: 'partials/tags/my-tags.html',
+//            controller: 'MyTagsController'
+//        });
 
 
 });

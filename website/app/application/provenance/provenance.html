@@ -27,21 +27,20 @@
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
                                 Process
                             </a>
-                            <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editProcess()">(edit)</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editStep('process')">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('inputs')}">
                             <a><i ng-show="inputsSaved"
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
                                 Inputs
                             </a>
-                            <a style="cursor:pointer" ng-show="isFinishedStep('inputs')"
-                               ng-click="editInputs()">(edit)</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('inputs')" ng-click="editStep('inputs')">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('outputs')}">
                             <a><i ng-show="outputsSaved"
                                   ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
                                 Outputs
-                            </a> <a style="cursor:pointer" ng-show="isFinishedStep('outputs')" ng-click="editOutputs()">(edit)</a>
+                            </a> <a style="cursor:pointer" ng-show="isFinishedStep('outputs')" ng-click="editStep('outputs')">(edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('submit')}">
                             <a>Submit</a>
@@ -54,4 +53,5 @@
             </div>
         </div>
     </div>
+    <project-tree project="{{ project_id }}"></project-tree>
 </div>

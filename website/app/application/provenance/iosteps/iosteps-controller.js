@@ -3,12 +3,19 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
         function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams) {
 
             $scope.gotoStep = function (stepName) {
+                var filesStepType = $stateParams.iosteps;
                 $scope.activeStep = stepName;
-                $state.go('toolbar.projectspage.provenance.iosteps.iostep', {iostep: stepName});
+                if (stepName === "Files") {
+                    $state.go('toolbar.projectspage.provenance.iosteps.files', {iostep: filesStepType});
+                } else {
+                    $state.go('toolbar.projectspage.provenance.iosteps.iostep', {iostep: stepName});
+                }
             };
 
             $scope.showStepInputs = function (stepName) {
-                if (stepName in $scope.doc.attributes.input_conditions) {
+                if (stepName === "Files") {
+                    $scope.gotoStep(stepName);
+                } else if (stepName in $scope.doc.attributes.input_conditions) {
                     $scope.gotoStep(stepName);
                 } else {
                     mcapi('/templates/name/%', stepName)
@@ -21,7 +28,9 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.showStepOutputs = function (stepName) {
-                if (stepName in $scope.doc.attributes.output_conditions) {
+                if (stepName === "Files") {
+                    $scope.gotoStep(stepName);
+                } else if (stepName in $scope.doc.attributes.output_conditions) {
                     $scope.gotoStep(stepName);
                 } else {
                     mcapi('/templates/name/%', stepName)
@@ -34,10 +43,26 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.showStep = function (stepName) {
+                var attrib;
                 if ($stateParams.iosteps === "inputs") {
-                    $scope.showStepInputs(stepName);
+                    attrib = "input_conditions";
+                    //$scope.showStepInputs(stepName);
                 } else {
-                    $scope.showStepOutputs(stepName);
+                    attrib = "output_conditions";
+                    //$scope.showStepOutputs(stepName);
+                }
+
+                if (stepName === "Files") {
+                    $scope.gotoStep(stepName);
+                } else if (stepName in $scope.doc.attributes[attrib]) {
+                    $scope.gotoStep(stepName);
+                } else {
+                    mcapi('/templates/name/%', stepName)
+                        .success(function (data) {
+                            data.model.added_properties = [];
+                            $scope.doc.attributes[attrib][stepName] = data;
+                            $scope.gotoStep(stepName);
+                        }).jsonp();
                 }
             };
 
