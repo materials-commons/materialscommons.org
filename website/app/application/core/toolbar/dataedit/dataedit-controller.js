@@ -26,7 +26,7 @@ Application.Controllers.controller('toolbarDataEdit',
                     alertService.sendMessage(data.error);
                 }).jsonp();
 
-            $scope.tagchoices = new Array();
+            $scope.tagchoices = [];
             $scope.originalTags = [];
             mcapi('/tags')
                 .success(function (data) {
