@@ -38,6 +38,9 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {
                         $scope.process_templates = processes;
+                        if ($scope.process.template != "") {
+                            $scope.process_type = $scope.process.template;
+                        }
                     })
                     .error(function () {
                         alertService.sendMessage("Unable to retrieve processes from database.");
@@ -47,8 +50,8 @@ Application.Provenance.Controllers.controller('provenanceProcess',
 
             $scope.init();
 
-            watcher.watch($scope, 'process_type', function (template) {
-                template = JSON.parse(template);
+            watcher.watch($scope, 'process_type', function (template_name) {
+                var template = _.findWhere($scope.process_templates, {template_name: template_name});
                 template.model.forEach(function (item) {
                     if (item.name === "required_conditions") {
                         $scope.process.required_conditions = item.value;

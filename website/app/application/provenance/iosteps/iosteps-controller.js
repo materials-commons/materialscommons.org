@@ -28,7 +28,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.showStepOutputs = function (stepName) {
-                console.log("showStepOutputs = " + stepName);
                 if (stepName === "Files") {
                     $scope.gotoStep(stepName);
                 } else if (stepName in $scope.doc.attributes.output_conditions) {
@@ -82,7 +81,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.loadSteps = function () {
-                console.log("loadSteps = " + $stateParams.iosteps);
                 if ($stateParams.iosteps === "inputs") {
                     $scope.stepsName = "Inputs";
                     $scope.doc.attributes.process.required_conditions.forEach(function (condition) {
