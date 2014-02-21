@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="span8">
+    <div class="span10">
         <div class="well">
             <div ng-if="doc.template_pick=='material'">
                 <form class="form-horizontal">
@@ -27,7 +27,7 @@
             </form>
             <hr align="left">
 
-            <form class="form-horizonal">
+            <form class="form-inline">
                 <fieldset>
                     <legend>Additional Properties</legend>
                     <div ng-repeat="pv in doc.model.added_properties">
@@ -35,22 +35,21 @@
                             <label class="control-label">{{pv.name}}</label>
 
                             <div class="controls">
-                            <span ng-if="pv.value_choice.length!=0">
-                                 <select ng-model="pv.value">
-
-                                     <option ng-repeat="val in pv.value_choice"> {{val}}
-                                     </option>
-                                 </select>
-                            </span>
-                            <span ng-if="pv.value_choice.length==0">
-                                <input type="text" ng-model="pv.value">
-                            </span>
-                            <span ng-if="pv.unit_choice.length!=0">
-                                <select style="width:80px" ng-model="pv.unit">
-                                    <option ng-repeat="unit in pv.unit_choice"> {{unit}}
-                                    </option>
-                                </select>
-                            </span>
+                                <div ng-if="pv.value_choice.length!=0">
+                                    <select ng-model="pv.value">
+                                        <option ng-repeat="val in pv.value_choice"> {{val}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div ng-if="pv.value_choice.length==0">
+                                    <input type="text" ng-model="pv.value">
+                                </div>
+                                <div ng-if="pv.unit_choice.length!=0">
+                                    <select class="span2" ng-model="pv.unit">
+                                        <option ng-repeat="unit in pv.unit_choice"> {{unit}}
+                                        </option>
+                                    </select>
+                                </div>
 
                             </div>
                         </div>
@@ -66,7 +65,7 @@
                                     {{property.name}}
                                 </option>
                             </select>
-                            <button ng-click="addAdditionalProperty()" class="btn">Add</button>
+                            <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
                         </div>
                     </div>
 
@@ -76,7 +75,7 @@
                         <div class="controls">
                             <input ng-model="customPropertyName" placeholder="Name..." type="text">
                             <input ng-model="customPropertyValue" placeholder="Value..." type="text">
-                            <button ng-click="addCustomProperty()" class="btn">Add</button>
+                            <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
                         </div>
                     </div>
                 </fieldset>

@@ -14,7 +14,7 @@ Application.Directives.directive('dfProperties',
                 "<option ng-repeat='each in df.value_choice' value='{{each}}'> {{each}} </option></select>" +
                 "</p>" +
                 "<p ng-if='df.value_choice.length==0'>" +
-                "<input ng-model='df.value' placeholder='{{df.name}} ...' type='text'>" +
+                "<input ng-model='df.value' placeholder='{{df.name}}...' type='text'>" +
                 "</p>" +
                 "</div>" +
                 "</div>" +

@@ -151,6 +151,14 @@ hr {
     background-color: #0c84cc;
 }
 
+.btn-primary {
+    background-color: #0c5c86;
+}
+
+.btn-info {
+    background-color: #67889d;
+}
+
 input[disabled],
 input[readonly],
 textarea[disabled],
@@ -161,11 +169,19 @@ textarea[readonly] {
 .toolbar-border
 {
     padding-right:20px;
-    border-right: 1px solid #ccc;
+    /*border-right: 1px solid #ccc;*/
 }
 
 .is-active{
     background: blue;
+}
+
+.active {
+    outline: none;
+}
+
+a:focus {
+    outline: none;
 }
 
 

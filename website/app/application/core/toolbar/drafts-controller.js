@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarDrafts',
+Application.Controllers.controller('_toolbarDrafts',
     ["$scope", "Stater", "pubsub", "User", function ($scope, Stater, pubsub, User) {
         pubsub.waitOn($scope, 'drafts.change', function () {
             $scope.drafts = Stater.all;

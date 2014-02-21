@@ -42,10 +42,10 @@ if __name__ == "__main__":
     template_obj = Template(id, template_name, template_type, template_description, 
                             template_owner, model, template_pick)
     template_dict = template_obj.__dict__
-    existing = r.table('templates').get(template_dict['template_name']).run(conn)
+    existing = r.table('templates').get(template_dict['id']).run(conn)
     if existing:
         print 'template deleted and re-inserted into the database'
-        r.table('templates').get(template_dict['template_name']).delete().run(conn)
+        r.table('templates').get(template_dict['id']).delete().run(conn)
         rr = r.table('templates').insert(template_dict).run(conn)
     else:
         print 'template inserted into the database'

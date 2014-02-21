@@ -6,7 +6,7 @@
                 <label>Process Type: </label>
                 <select ng-model="process_type">
                     <option disabled>Select Process Type:</option>
-                    <option ng-repeat="p in process_templates|orderBy:'template_name'" value="{{ p }}">
+                    <option ng-repeat="p in process_templates|orderBy:'template_name'" value="{{ p.template_name }}">
                         {{ p.template_name }}
                     </option>
                 </select>
@@ -95,7 +95,7 @@
                                   ng-model="bk.new_err_msg"></textarea>
                     </cgroup>
                     <cgroup>
-                        <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn">Add</button>
+                        <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-info">Add</button>
                     </cgroup>
                 </form>
                 <div ng-show="process.runs.length > 0">
@@ -124,7 +124,7 @@
                         <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
                     </cgroup>
                     <cgroup>
-                        <button ng-click="add_notes()" ng-disabled="!bk.new_note" class="btn">Add</button>
+                        <button ng-click="add_notes()" ng-disabled="!bk.new_note" class="btn btn-info">Add</button>
                     </cgroup>
                 </form>
                 <ul>
@@ -139,7 +139,7 @@
                         <textarea class="span8" rows="4" placeholder="Citation..." ng-model="bk.new_citation"/>
                     </cgroup>
                     <cgroup>
-                        <button ng-click="add_citations()" ng-disabled="!bk.new_citation" class="btn">Add</button>
+                        <button ng-click="add_citations()" ng-disabled="!bk.new_citation" class="btn btn-info">Add</button>
                     </cgroup>
                 </form>
                 <ul>

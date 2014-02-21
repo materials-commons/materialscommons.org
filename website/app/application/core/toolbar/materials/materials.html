@@ -53,7 +53,7 @@
         </paged>
     </div>
     <br>
-    <button class="btn btn-primary" ng-click="showForm=!showForm">Create New Material</button>
+    <button class="btn btn-primary" ng-click="showForm=!showForm">New</button>
     <div ng-show="mach">
         <b>Material {{mat.name}} has been created</b>
 
@@ -110,7 +110,7 @@
                                     {{each_additional.name}}
                                 </option>
                             </select>
-                            <button ng-click="add_property_to_machine()">add</button>
+                            <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
                         </div>
                     </div>
 
@@ -120,12 +120,12 @@
                         <div class="controls">
                             <input ng-model="additional_prop" placeholder="type property name ....."
                                    type="text">
-                            <button ng-click="add_property_to_machine()">add</button>
+                            <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
                         </div>
                     </div>
 
-                    <button ng-disabled="!default_properties[0].value" ng-click="save()">Save Material</button>
-                    <button ng-click="clear_machine()">clear additional properties</button>
+                    <button ng-disabled="!default_properties[0].value" ng-click="save()" class="btn btn-primary">Save</button>
+                    <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
                 </form>
 
             </div>

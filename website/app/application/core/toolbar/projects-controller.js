@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarProjects',
+Application.Controllers.controller('_toolbarProjects',
     ["$scope", "mcapi", "$state",
         function ($scope, mcapi, $state) {
             $scope.init = function () {
