@@ -1,7 +1,7 @@
 Application.Controllers.controller("toolbarThumbnails",
-    ["$scope", "mcapi", "Thumbnails", Thumbnail,
-        function ($scope, mcapi, Thumbnails, Thumbnail) {
-            $scope.init = function() {
+    ["$scope", "mcapi", "Thumbnail", "Thumbnails",
+        function ($scope, mcapi, Thumbnail, Thumbnails) {
+            $scope.init = function () {
                 $scope.model = Thumbnails.model;
                 if ($scope.model.datadir.length === 0) {
                     mcapi('/datadirs')
