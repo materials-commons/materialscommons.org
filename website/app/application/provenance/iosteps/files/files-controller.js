@@ -3,7 +3,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
         function ($scope, ProvDrafts, $stateParams, pubsub, Projects) {
 
             $scope.init = function () {
-                console.dir(ProvDrafts.current);
                 if ($stateParams.iostep === "inputs") {
                     $scope.channel = 'provenance.inputs.files';
                     $scope.files = ProvDrafts.current.attributes.input_files;
@@ -17,7 +16,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
             $scope.init();
 
             pubsub.waitOn($scope, $scope.channel, function (fileentry) {
-                console.log("waitOn fileentry selected = " + fileentry.selected);
                 if (fileentry.selected) {
                     $scope.files.push(fileentry);
                 } else {
@@ -41,6 +39,4 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
                 }
                 return -1;
             };
-
-
         }]);
