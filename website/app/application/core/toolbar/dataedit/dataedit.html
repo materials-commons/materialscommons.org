@@ -74,7 +74,7 @@
                                 <option></option>
                                 <option ng-repeat="tag in tagchoices">{{ tag }}</option>
                             </select>
-                            <button ng-click="addTag()">Add Tag</button>
+                            <button ng-click="addTag()" class="btn btn-info">Add</button>
                         </form>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             Owner:<br><input ng-model="doc.owner" type="text" readonly><br>
                             Access:<br><input ng-model="doc.access" type="text" readonly><br>
                             Add Note:<br><textarea class="input-xlarge span10" rows="4" ng-model="new_note"/>
-                            <button ng-click="add_notes()" ng-disabled="!new_note">Add Notes</button>
+                            <button ng-click="add_notes()" ng-disabled="!new_note" class="btn btn-info">Add</button>
                             <br>
                             Notes: <br>
                             <li ng-repeat="note in doc.notes">
@@ -110,8 +110,8 @@
                     </div>
                 </div>
                 <div class="row-fluid" style="margin-top: 20px">
-                    <button type="button" class="btn btn-primary" ng-click="saveData()">Save</button>
-                    <button type="button" class="btn btn-danger" ng-click="cancel()">Cancel</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveData()" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-danger" ng-click="cancel()" class="btn btn-danger">Cancel</button>
                 </div>
                 <hr/>
 
@@ -122,7 +122,7 @@
                         <span ng-repeat="p in processes">
                             <li ng-class="{'active_t': process.name == 'Data Analysis:2014-02-10'}"
                                 style="display: inline">
-                                <button ng-click="show_process(p)">{{p.name}}</button>
+                                <button ng-click="show_process(p)" class="btn btn-inverse">{{p.name}}</button>
                             </li> <p><i class="fa fa-long-arrow-right" fa-4x></i></p>
                          </span>
                         </div>
@@ -206,7 +206,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                <button class="btn" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Close</button>
                             </div>
                         </div>
                     </div>
