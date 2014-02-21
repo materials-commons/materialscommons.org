@@ -184,5 +184,9 @@ a:focus {
     outline: none;
 }
 
+.tabs-right > .nav-tabs > li > a{
+    padding-right: 50px;
+}
+
 
 
