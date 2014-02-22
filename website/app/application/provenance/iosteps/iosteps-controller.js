@@ -2,6 +2,10 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
     ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams",
         function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams) {
 
+            $scope.saveDraft = function () {
+                ProvDrafts.saveDraft();
+            };
+
             $scope.gotoStep = function (stepName) {
                 var filesStepType = $stateParams.iosteps;
                 $scope.activeStep = stepName;
