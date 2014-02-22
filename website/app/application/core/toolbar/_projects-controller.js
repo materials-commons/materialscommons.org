@@ -12,7 +12,7 @@ Application.Controllers.controller('_toolbarProjects',
             };
 
             $scope.gotoProject = function (projectId) {
-                $state.go("toolbar.projectspage.overview", {id: projectId, draft_id: ''});
+                $state.go("toolbar.projectspage.overview", {id: projectId});
             };
 
             $scope.init();

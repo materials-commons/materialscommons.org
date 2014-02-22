@@ -58,8 +58,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
 
             saveDraft: function () {
                 if (service.current.id === "") {
-                    console.log("service.current.name = " + service.current.name)
-;                    // We haven't saved this draft before
+                    // We haven't saved this draft before
                     mcapi('/drafts')
                         .success(function (draft) {
                             service.current.id = draft.id;
