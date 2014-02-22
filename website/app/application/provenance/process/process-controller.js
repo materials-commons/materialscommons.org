@@ -29,6 +29,10 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 }
             });
 
+            $scope.saveDraft = function () {
+                ProvDrafts.saveDraft();
+            };
+
             $scope.add_property_to_machine = function () {
                 if ($scope.bk.p_name || $scope.bk.p_name === ' ') {
                     $scope.process.machine.model.push({'name': $scope.bk.p_name, 'value': ''});

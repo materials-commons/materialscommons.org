@@ -4,6 +4,7 @@
             <fieldset>
                 <legend>Process</legend>
                 <label>Process Type: </label>
+                <!--<select ng-model="process_type" ng-options="p.template_name for p in process_templates|orderBy:'template_name'">-->
                 <select ng-model="process_type">
                     <option selected disabled>Select Process Type:</option>
                     <option ng-repeat="p in process_templates|orderBy:'template_name'" value="{{ p.template_name }}">
@@ -77,7 +78,9 @@
                             </select>
                             <button ng-click="add_property_to_machine()" class="btn">Add</button>
                         </cgroup>
-                        <button ng-disabled="!process.machine.name" ng-click="add_machine_to_db()" class="btn-primary">Save</button>
+                        <button ng-disabled="!process.machine.name" ng-click="add_machine_to_db()" class="btn-primary">
+                            Save
+                        </button>
                         <button ng-click="clear_machine()" class="btn-danger">Clear</button>
                     </div>
                 </form>
@@ -140,7 +143,8 @@
                         <textarea class="span8" rows="4" placeholder="Citation..." ng-model="bk.new_citation"/>
                     </cgroup>
                     <cgroup>
-                        <button ng-click="add_citations()" ng-disabled="!bk.new_citation" class="btn btn-info">Add</button>
+                        <button ng-click="add_citations()" ng-disabled="!bk.new_citation" class="btn btn-info">Add
+                        </button>
                     </cgroup>
                 </form>
                 <ul>
@@ -151,7 +155,7 @@
             </div>
             <div class="row-fluid span10">
                 <button ng-click="done()" ng-disabled="!process.name" class="btn btn-primary">Done</button>
-                <button ng-click="saveAsDraft()" class="btn btn-success">Save Draft</button>
+                <button ng-click="saveDraft()" class="btn btn-success">Save Draft</button>
             </div>
         </div>
     </div>
