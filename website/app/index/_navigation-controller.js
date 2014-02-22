@@ -1,6 +1,4 @@
-Application.Controllers.controller('toolbar', ["$scope", function ($scope) {
-    $scope.showDrafts = true;
-
+Application.Controllers.controller('_indexNavigation', ["$scope", function ($scope) {
     $scope.isActiveStep = function (nav) {
         return $scope.activeStep === nav;
     };
@@ -9,12 +7,3 @@ Application.Controllers.controller('toolbar', ["$scope", function ($scope) {
         $scope.activeStep = step;
     };
 }]);
-
-
-
-
-
-
-
-
-
