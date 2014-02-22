@@ -4,12 +4,9 @@
             <fieldset>
                 <legend>Process</legend>
                 <label>Process Type: </label>
-                <!--<select ng-model="process_type" ng-options="p.template_name for p in process_templates|orderBy:'template_name'">-->
-                <select ng-model="process_type">
-                    <option selected disabled>Select Process Type:</option>
-                    <option ng-repeat="p in process_templates|orderBy:'template_name'" value="{{ p.template_name }}">
-                        {{ p.template_name }}
-                    </option>
+                <select ng-model="process_type"
+                        ng-options="p.template_name for p in process_templates|orderBy:'template_name'">
+                    <option value="">Select Process Type:</option>
                 </select>
                 <label>Process: {{ process.template.template_name }}</label>
             </fieldset>

@@ -9,8 +9,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="draft in drafts | filter:query">
-            <td><a href="#/mytools/projects/{{draft.attributes.project_id}}/{{draft.id}}">{{draft.name}}</td>
+        <tr ng-repeat="draft in drafts | filter:query | orderBy:'name'">
+            <td><a style="cursor: pointer"
+                   ui-sref="toolbar.projectspage({id: draft.attributes.project_id, draft_id: draft.id})">
+                {{draft.name}}</a>
+            </td>
             <td>{{draft.birthtime | toDateString}}</td>
             <td>{{draft.description}}
                 <button type="button" class="close" ng-click="delete(draft.id);">&times;</button>

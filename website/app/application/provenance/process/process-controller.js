@@ -1,36 +1,32 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
     ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts",
         function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts) {
-            watcher.watch($scope, 'process_type', function (template_name) {
-//                console.log('template_name =' + template_name);
-//                console.dir(template_name);
-                var template = _.findWhere($scope.process_templates, {template_name: template_name});
-//                console.log("template =");
-//                console.dir(template);
-                if (template) {
-                    template.model.forEach(function (item) {
-                        if (item.name === "required_conditions") {
-                            $scope.process.required_conditions = item.value;
-                        } else if (item.name === "required_output_conditions") {
-                            $scope.process.required_output_conditions = item.value;
-                        } else if (item.name === "required_input_files") {
-                            $scope.process.required_input_files = item.required;
-                        } else if (item.name === "required_output_files") {
-                            $scope.process.required_output_files = item.required;
-                        }
-
-                    });
-                    var now = new Date();
-                    var dd = ("0" + now.getDate()).slice(-2);
-                    var mm = ("0" + (now.getMonth() + 1)).slice(-2);
-                    var today = now.getFullYear() + "-" + mm + "-" + dd;
-                    $scope.process.name = template.template_name + ':' + today;
-                    $scope.process.template = template;
+            watcher.watch($scope, 'process_type', function (template) {
+                if ($scope.process.template == template.template_name) {
+                    // All attributes already loaded from a draft
+                    return;
                 }
+
+                template.model.forEach(function (item) {
+                    if (item.name === "required_conditions") {
+                        $scope.process.required_conditions = item.value;
+                    } else if (item.name === "required_output_conditions") {
+                        $scope.process.required_output_conditions = item.value;
+                    } else if (item.name === "required_input_files") {
+                        $scope.process.required_input_files = item.required;
+                    } else if (item.name === "required_output_files") {
+                        $scope.process.required_output_files = item.required;
+                    }
+                });
+                var now = new Date();
+                var dd = ("0" + now.getDate()).slice(-2);
+                var mm = ("0" + (now.getMonth() + 1)).slice(-2);
+                var today = now.getFullYear() + "-" + mm + "-" + dd;
+                $scope.process.name = template.template_name + ':' + today;
+                $scope.process.template = template;
             });
 
             $scope.saveDraft = function () {
-                console.dir($scope.process);
                 ProvDrafts.current.name = $scope.process.name;
                 ProvDrafts.saveDraft();
             };
@@ -117,8 +113,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 };
 
                 $scope.process = ProvDrafts.current.attributes.process;
-                console.dir($scope.process);
-
                 $scope.useExisting = "yes";
 
                 mcapi('/machines')
@@ -141,9 +135,14 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {
+                        var t;
                         $scope.process_templates = processes;
                         if ($scope.process.template != "") {
-                            $scope.process_type = $scope.process.template.template_name;
+                            t = _.findWhere($scope.process_templates, {template_name: $scope.process.template.template_name});
+                            if (t) {
+                                $scope.process_type = t;
+                            }
+                            //$scope.process_type = $scope.process.template.template_name;
                         }
                     })
                     .error(function () {
