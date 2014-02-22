@@ -2,11 +2,11 @@ Application.Provenance.Controllers.controller('provenanceProcess',
     ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts",
         function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts) {
             watcher.watch($scope, 'process_type', function (template_name) {
-                console.log('template_name =' + template_name);
-                console.dir(template_name);
+//                console.log('template_name =' + template_name);
+//                console.dir(template_name);
                 var template = _.findWhere($scope.process_templates, {template_name: template_name});
-                console.log("template =");
-                console.dir(template);
+//                console.log("template =");
+//                console.dir(template);
                 if (template) {
                     template.model.forEach(function (item) {
                         if (item.name === "required_conditions") {
