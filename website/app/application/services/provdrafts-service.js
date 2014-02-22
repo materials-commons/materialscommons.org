@@ -1,8 +1,9 @@
-Application.Provenance.Services.factory('ProvDrafts', ["mcapi",
-    function (mcapi) {
+Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
+    function (mcapi, pubsub) {
         var service = {
             current: null,
             drafts: [],
+            channel: 'drafts.update',
 
             newDraft: function () {
                 var draft = {
@@ -51,12 +52,20 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi",
                 return null;
             },
 
+            _publishChange: function () {
+                pubsub.send(service.channel, '');
+            },
+
             saveDraft: function () {
                 if (service.current.id === "") {
-                    // We haven't saved this draft before
+                    console.log("service.current.name = " + service.current.name)
+;                    // We haven't saved this draft before
                     mcapi('/drafts')
                         .success(function (draft) {
                             service.current.id = draft.id;
+                            service.current.birthtime = draft.birthtime;
+                            service.drafts.push(service.current);
+                            service._publishChange();
                         }).post({
                             name: service.current.name,
                             description: service.current.description,
@@ -74,17 +83,22 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi",
                 }
             },
 
-            loadRemoteDrafts: function () {
+            loadRemoteDrafts: function (f) {
+                var callfunc = arguments.length == 1;
                 mcapi('/drafts')
                     .success(function (drafts) {
                         drafts.forEach(function (draft) {
                             service.drafts.push(draft);
                         });
+                        service._publishChange();
                     }).jsonp();
             },
 
             deleteRemoteDraft: function (draft_id) {
-                mcapi('/drafts/%', draft_id).delete();
+                mcapi('/drafts/%', draft_id)
+                    .success(function () {
+                        service._publishChange();
+                    }).delete();
             }
         };
 

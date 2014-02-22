@@ -13,6 +13,7 @@ from .. import args
 class Draft(object):
     def __init__(self, owner, name, project_id, description):
         self.owner = owner
+        self.name = name
         self.birthtime = r.now()
         self.mtime = self.birthtime
         self.project_id = project_id

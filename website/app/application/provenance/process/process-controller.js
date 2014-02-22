@@ -30,6 +30,8 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             });
 
             $scope.saveDraft = function () {
+                console.dir($scope.process);
+                ProvDrafts.current.name = $scope.process.name;
                 ProvDrafts.saveDraft();
             };
 
