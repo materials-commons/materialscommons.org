@@ -8,20 +8,23 @@
             </li>
         </ul>
         <div ui-view></div>
-        <button ng-click="nextStep()" class="btn btn-primary">Done</button>
+        <div class="row-fluid">
+            <button ng-click="nextStep()" class="btn btn-primary">Done</button>
+            <button ng-click="saveDraft()" class="btn btn-success">Save Draft</button>
+        </div>
     </div>
 
     <!--<div class="row-fluid span10">-->
-        <!--<div ng-show="warning"><br>-->
-            <!--<b style="color:orange">WARNING: Required properties should at least have a name.</b>-->
-        <!--</div>-->
-        <!--<div ng-hide="verified">-->
-            <!--<button ng-click="verify_inputs()">Verify Inputs</button>-->
+    <!--<div ng-show="warning"><br>-->
+    <!--<b style="color:orange">WARNING: Required properties should at least have a name.</b>-->
+    <!--</div>-->
+    <!--<div ng-hide="verified">-->
+    <!--<button ng-click="verify_inputs()">Verify Inputs</button>-->
 
-        <!--</div>-->
-        <!--<div ng-show="verified">-->
-            <!--<b>Required inputs have been verified!</b>-->
-            <!--<button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>-->
-        <!--</div>-->
+    <!--</div>-->
+    <!--<div ng-show="verified">-->
+    <!--<b>Required inputs have been verified!</b>-->
+    <!--<button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>-->
+    <!--</div>-->
     <!--</div>-->
 </div>
