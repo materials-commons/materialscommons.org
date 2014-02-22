@@ -96,7 +96,16 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             deleteRemoteDraft: function (draft_id) {
                 mcapi('/drafts/%', draft_id)
                     .success(function () {
-                        service._publishChange();
+                        var i = _.indexOf(service.drafts, function (item) {
+                            if (item.id === draft_id) {
+                                return true;
+                            }
+                            return false;
+                        });
+                        if (i !== -1) {
+                            service.drafts.splice(i, 1);
+                            service._publishChange();
+                        }
                     }).delete();
             }
         };

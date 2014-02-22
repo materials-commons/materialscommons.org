@@ -8,16 +8,6 @@ function FrontPageController($scope, $location) {
     }
 }
 
-
-function EventController($scope, alertService) {
-    $scope.message = '';
-    $scope.$on('handleBroadcast', function () {
-        $scope.message = {"type": "info",
-            "content": alertService.message};
-    });
-
-}
-
 function ProvenanceController($scope) {
     $scope.process = [
         {
