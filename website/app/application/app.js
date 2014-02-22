@@ -74,7 +74,11 @@ app.config(function ($stateProvider) {
             url: '/groupusers/:id',
             templateUrl: 'application/core/account/groupusers/groupusers.html'
         })
-
+        // Toolbar drafts
+        .state('toolbar.drafts', {
+            url: '/drafts',
+            templateUrl: 'application/core/toolbar/drafts/drafts.html'
+        })
         // Toolbar Data Views
         .state('toolbar.mydatapage', {
             url: '/mydatapage',

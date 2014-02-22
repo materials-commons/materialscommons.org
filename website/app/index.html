@@ -158,12 +158,16 @@
 
 <!-- Toolbar -->
 <script src="application/core/toolbar/toolbar-controller.js"></script>
-<script src="application/core/toolbar/drafts-controller.js"></script>
-<script src="application/core/toolbar/projects-controller.js"></script>
-<script src="application/core/toolbar/reviews-controller.js"></script>
-<script src="application/core/toolbar/tags-controller.js"></script>
+<script src="application/core/toolbar/_drafts-controller.js"></script>
+<script src="application/core/toolbar/_projects-controller.js"></script>
+<script src="application/core/toolbar/_reviews-controller.js"></script>
+<script src="application/core/toolbar/_tags-controller.js"></script>
 
 <!-- Toolbar Views -->
+
+<!-- Toolbar drafts -->
+<script src="application/core/toolbar/drafts/drafts-controller.js"></script>
+
 <!-- Toolbar data -->
 <script src="application/core/toolbar/mydatapage/toolbar-mydatapage-controller.js"></script>
 <script src="application/core/toolbar/mydata/toolbar-mydata-controller.js"></script>
@@ -187,7 +191,6 @@
 <!-- Toolbar machines -->
 <script src="application/core/toolbar/machines/machines-controller.js"></script>
 
-
 <!-- Toolbar materials -->
 <script src="application/core/toolbar/materials/materials-controller.js"></script>
 
@@ -202,7 +205,6 @@
 <!-- Provenance -->
 <script src="application/provenance/provenance-controller.js"></script>
 <script src="application/provenance/provsteps-service.js"></script>
-<script src="application/provenance/provdrafts-service.js"></script>
 <script src="application/provenance/model-service.js"></script>
 
 <!-- Provenance Process -->
@@ -236,6 +238,7 @@
 <script src="application/services/mcapi-service.js"></script>
 <script src="application/services/project-service.js"></script>
 <script src="application/services/stater-service.js"></script>
+<script src="application/services/provdrafts-service.js"></script>
 
 <!-------------------------------- Global filters --------------------------------->
 <script src="application/filters/page-filter.js"></script>

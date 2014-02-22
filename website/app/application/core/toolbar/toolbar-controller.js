@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbar', ["$scope", function ($scope) {
-    $scope.showDrafts = false;
+    $scope.showDrafts = true;
 
     $scope.isActiveStep = function (nav) {
         return $scope.activeStep === nav;
