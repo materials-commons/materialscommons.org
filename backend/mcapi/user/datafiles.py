@@ -106,6 +106,21 @@ def get_datafile_by_name(datadir_id, name):
         "No such file %s in datadir %s" % (name, datadir_id))
 
 
+@app.route('/datafiles/<datafile_id>/reviews')
+@apikey(shared=True)
+@jsonp
+def get_reviews_for_datafile(datafile_id):
+    user = access.get_user()
+    df = r.table('datafiles').get(datafile_id).run(g.conn)
+    if df is None:
+        return error.not_found('No such datafile: %s' % (datafile_id))
+    access.check(user, df['owner'])
+    reviews = list(r.table('reviews')
+                   .get_all(datafile_id, index='item_id')
+                   .run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(reviews)
+
+
 @app.route('/processes/datafile/<df_id>', methods=['GET'])
 @apikey
 @jsonp

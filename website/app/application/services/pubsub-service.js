@@ -4,7 +4,11 @@ Application.Services.factory('pubsub',
         pubsubService.message = '';
 
         pubsubService.send = function (channel, msg) {
-            this.message = msg;
+            if (arguments.length == 2) {
+                this.message = msg;
+            } else {
+                this.message = '';
+            }
             $rootScope.$broadcast(channel);
         }
 

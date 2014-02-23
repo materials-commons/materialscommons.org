@@ -195,9 +195,16 @@ textarea[readonly] {
     outline: none;
 }
 
+/*
+** Remove outline on selected items (eg in a tab pill)
+*/
 a:focus {
     outline: none;
 }
 
+.nav,
+.pagination,
+.carousel,
+.panel-title a { cursor: pointer; }
 
 

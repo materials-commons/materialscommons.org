@@ -7,7 +7,7 @@
 
         <div class="row-fluid">
             <div ng-show="seeReviews==true" id="review-section" class="row-fluid">
-                <div class="well" ng-controller="toolbarDataEditCreateReview">
+                <div class="well" ng-controller="_toolbarDataEditCreateReview">
                     <h4>Reviews Scheduled</h4>
 
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -25,7 +25,7 @@
                             <td>{{ review.requested_by }}</td>
                             <td>{{ review.requested_to }}</td>
                             <td>{{ review.note }}</td>
-                            <td>{{ review.marked_on | toDateString }}</td>
+                            <td>{{ review.birthtime | toDateString }}</td>
                             <td>{{review.status}}</td>
                             <td ng-show="review.requested_to==signed_user">
                                 <input type="checkbox" ng-model="review.status" ng-click="reviewStatusChanged($index)"
