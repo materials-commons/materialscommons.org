@@ -1,6 +1,6 @@
 <div ng-controller="toolbarDrafts">
     <h1>Provenance Drafts</h1>
-    <table class="table table-striped">
+    <table class="table table-striped mc-table-hover table-condensed mc-table">
         <thead>
         <tr>
             <th>Name</th>
@@ -19,7 +19,7 @@
             <td>{{draft.description}}</td>
             <td>
                 <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
                         Action
                         <span class="caret"></span>
                     </a>
@@ -37,18 +37,33 @@
         </tbody>
     </table>
 
-    <div id="toolbarDraftsReviewModal" class="modal hide fade">
+    <div id="toolbarDraftsReviewModal" class="modal hide fade in" modal-dismiss ng-controller="_toolbarDraftsReviewModal">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeReviews()">×</button>
-            <h3>I'm a modal!</h3>
+            <h3>Create Review</h3>
         </div>
-        <div class="modal-body">
-            {{ draft }}
+        <div class="modal-body form-horizontal">
+            <form>
+                <fieldset>
+                    <legend>Review</legend>
+                    <label>Mark for follow up</label>
+            <input type="text" ng-model="reviewNoteSelf"
+                   ui-keypress="{13: 'addReviewNoteKeypress($event)'}"
+                   placeholder="Note...">
+                    <span class="help-block">Request review</span>
+                    <input type="text" ng-model="reviewNoteOther" placeholder="Note...">
+                    <select ng-model="userForReview"
+                            ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
+                            ng-multiple="false">
+                        <option></option>
+                        <option ng-repeat="user in users">{{ user }}</option>
+                    </select>
+                </fieldset>
+            </form>
         </div>
 
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true" ng-click="closeReviews()">Close</button>
-            <button class="btn btn-primary" ng-click="closeReviews()">Save changes</button>
+            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" ng-click="finish()">Finish</button>
         </div>
     </div>
 </div>

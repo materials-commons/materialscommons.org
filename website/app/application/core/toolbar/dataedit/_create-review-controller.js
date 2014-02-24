@@ -16,11 +16,10 @@ Application.Controllers.controller('_toolbarDataEditCreateReview',
                 mcapi('/reviews')
                     .success(function (data) {
                         var msg = "Review/Followup has been added";
-                        $scope.all_reviews = [];
                         $scope.data_file_id = data;
                         alertService.sendMessage(msg);
                         pubsub.send('reviews.change', 'review.change');
-                        mcapi('/datafiles/%/reviews', $scope.data_file_id)
+                        mcapi('/datafiles/%/reviews', $stateParams.id)
                             .success(function (reviews) {
                                 $scope.all_reviews = reviews;
                             }).jsonp();
@@ -34,7 +33,7 @@ Application.Controllers.controller('_toolbarDataEditCreateReview',
                 $scope.addReview();
             };
 
-            $scope.addReviewNoteKeypressCallback = function (event) {
+            $scope.addReviewNoteKeypressCallback = function () {
                 $scope.schedule_for_self = true;
                 $scope.review_note = $scope.review_note_self;
                 $scope.review_note_self = "";

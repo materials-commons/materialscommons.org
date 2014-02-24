@@ -26,6 +26,7 @@ Application.Controllers.controller('toolbarReviews',
                     $state.go('toolbar.dataedit', {id: review.item_id});
                     break;
                 case "draft":
+                    console.dir(review);
                     $state.go('toolbar.projectspage', {id: review.project_id, draft_id: review.item_id});
                     break;
                 default:

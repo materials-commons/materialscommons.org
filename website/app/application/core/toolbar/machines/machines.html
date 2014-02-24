@@ -71,9 +71,9 @@
 
         <div class="span7">
             <h4>Machines: </h4>
-            <paged data="machines_list" current-page="currentDataPage" page-size="5">
+            <paged data="machines_list" current-page="currentDataPage" page-size="20">
 
-                <table class="table table-striped">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -87,7 +87,7 @@
                     </p>
 
                     <p ng-if="machines_list.length!=0">
-                        <tr ng-repeat="machine in machines_list | orderBy:'name' | page:currentDataPage:5">
+                        <tr ng-repeat="machine in machines_list | orderBy:'name' | page:currentDataPage:20">
                             <td>{{machine.name}}</td>
                             <td>
                                 <ul ng-repeat="kv in machine.additional">
