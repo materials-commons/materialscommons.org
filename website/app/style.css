@@ -181,13 +181,12 @@ textarea[readonly] {
     color: #252525;
 }
 
-.toolbar-border
-{
-    padding-right:20px;
+.toolbar-border {
+    padding-right: 20px;
     /*border-right: 1px solid #ccc;*/
 }
 
-.is-active{
+.is-active {
     background: blue;
 }
 
@@ -205,9 +204,11 @@ a:focus {
 .nav,
 .pagination,
 .carousel,
-.panel-title a { cursor: pointer; }
+.panel-title a {
+    cursor: pointer;
+}
 
-.modal.fade{
+.modal.fade {
     -webkit-transition: opacity .2s linear, none;
     -moz-transition: opacity .2s linear, none;
     -ms-transition: opacity .2s linear, none;
@@ -215,5 +216,12 @@ a:focus {
     transition: opacity .2s linear, none;
     top: 50%;
 }
+
+/*input[disabled] {*/
+    /*border: 2px solid black;*/
+    /*-webkit-border-radius: 6px;*/
+    /*-moz-border-radius: 6px;*/
+    /*border-radius: 6px;*/
+/*}*/
 
 
