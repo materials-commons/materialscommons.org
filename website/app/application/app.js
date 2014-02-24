@@ -133,6 +133,12 @@ app.config(function ($stateProvider) {
             templateUrl: 'application/core/toolbar/materials/materials.html'
         })
 
+        // Toolbar overview
+        .state('toolbar.overview', {
+            url: '/overview',
+            templateUrl: 'application/core/toolbar/overview/overview.html'
+        })
+
         // Toolbar projectspage views
         .state('toolbar.projectspage', {
             url: '/projectspage/:id/:draft_id',
