@@ -58,6 +58,8 @@ def create_indices():
     run(r.table('reviews').index_create('requested_to'))
     run(r.table('reviews').index_create('requested_by'))
     run(r.table('reviews').index_create('item_id'))
+    run(r.table('project2datafile').index_create('project_id'))
+    run(r.table('project2datafile').index_create('datafile_id'))
 
 
 def run(rql):
