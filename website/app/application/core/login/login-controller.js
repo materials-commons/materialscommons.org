@@ -7,14 +7,14 @@ Application.Controllers.controller('login',
                         User.setAuthenticated(true, apikey.apikey, $scope.email);
                         $scope.msg = "Logged in Successfully";
                         alertService.sendMessage($scope.msg);
-                        $state.transitionTo('toolbar')
+                        $state.transitionTo('toolbar.overview');
                     })
                     .error(function (data) {
                         alertService.sendMessage(data.error);
                     }).jsonp();
-            }
+            };
 
             $scope.cancel = function () {
-                $state.transitionTo('home')
-            }
+                $state.transitionTo('home');
+            };
         }]);

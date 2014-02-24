@@ -53,15 +53,15 @@
             <div class="nav-collapse collapse">
                 <div ng-hide="email_address">
                     <p class="navbar-text pull-right">
-                        <a href="#/login" class="navbar-link"><i class="icon-user"></i> Login</a>
+                        <a ui-sref="login" class="navbar-link"><i class="icon-user"></i> Login</a>
                     </p>
                 </div>
 
 
                 <div ng-show="email_address">
                     <p class="navbar-text pull-right">
-                        <a href="#/account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i> {{email_address}}</a>
-                        <a href="#/logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
+                        <a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i> {{email_address}}</a>
+                        <a ui-sref="logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
                     </p>
                 </div>
             </div>
@@ -71,19 +71,19 @@
                     <a class="brand" href="#">MaterialsCommons</a>
                 </li>
                 <li id="home-nav" ng-class="{ active: isActiveStep('home-nav') }">
-                    <a ng-click="showStep('home-nav')" href="#/home"><i class="icon-home"></i> Home</a>
+                    <a ng-click="showStep('home-nav')" ui-sref="home"><i class="icon-home"></i> Home</a>
                 </li>
                 <li id="user-nav" ng-class="{ active: isActiveStep('user-nav') }">
-                    <a ng-click="showStep('user-nav')" href="#/toolbar"><i class="icon-wrench"></i>My Tools</a>
+                    <a ng-click="showStep('user-nav')" ui-sref="toolbar.overview"><i class="icon-wrench"></i>My Tools</a>
                 </li>
                 <li id="about-nav" ng-class="{ active: isActiveStep('about-nav') }">
-                    <a ng-click="showStep('about-nav')" href="#/about"><i class="icon-info-sign"></i>About</a>
+                    <a ng-click="showStep('about-nav')" ui-sref="about"><i class="icon-info-sign"></i>About</a>
                 </li>
                 <li id="contact-nav" ng-class="{ active: isActiveStep('contact-nav') }">
-                    <a ng-click="showStep('contact-nav')" href="#/contact"><i class="icon-phone"></i> Contact</a>
+                    <a ng-click="showStep('contact-nav')" ui-sref="contact"><i class="icon-phone"></i> Contact</a>
                 </li>
                 <li id="help-nav" ng-class="{ active: isActiveStep('help-nav') }">
-                    <a ng-click="showStep('help-nav')" href="#/help"><i class="icon-question-sign"></i>Help</a>
+                    <a ng-click="showStep('help-nav')" ui-sref="help"><i class="icon-question-sign"></i>Help</a>
                 </li>
             </ul>
             <!--/.nav-collapse -->
@@ -193,6 +193,9 @@
 <script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/overview-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/treetable-directive.js"></script>
+
+<!-- Toolbar overview -->
+<script src="application/core/toolbar/overview/overview-controller.js"></script>
 
 <!------------------------------ Provenance app ------------------------------>
 

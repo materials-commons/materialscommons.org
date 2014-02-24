@@ -27,21 +27,6 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 return draft;
             },
 
-            addDraft: function (draft) {
-                service.drafts.push(draft);
-            },
-
-            removeCurrent: function () {
-                var id = service.current.id,
-                    i;
-                for (i = 0; i < service.drafts.length; i++) {
-                    if (service.drafts[i].id === id) {
-                        service.drafts.splice(i, 1);
-                        break;
-                    }
-                }
-            },
-
             findDraft: function (id) {
                 var i;
                 for (i = 0; i < service.drafts.length; i++) {
@@ -78,15 +63,16 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                         description: service.current.description,
                         project_id: service.current.project_id,
                         attributes: service.current.attributes
-                    })
+                    });
                 }
             },
 
             loadRemoteDrafts: function (f) {
-                var callfunc = arguments.length == 1;
+                var callfunc = arguments.length === 1;
                 mcapi('/drafts')
                     .success(function (drafts) {
                         drafts.forEach(function (draft) {
+                            service.drafts = [];
                             service.drafts.push(draft);
                         });
                         service._publishChange();
