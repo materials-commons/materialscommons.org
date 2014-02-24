@@ -56,7 +56,6 @@ Application.Provenance.Controllers.controller('provenance',
 
             $scope.init = function () {
                 var draft;
-
                 if ($stateParams.draft_id !== "") {
                     draft = ProvDrafts.findDraft($stateParams.draft_id);
                 } else {

@@ -25,10 +25,10 @@
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                         <thead>
                         <tr>
-                        <th>Requested by</th>
-                        <th>Requested To</th>
+                        <th>From</th>
+                        <th>Who?</th>
                         <th>Message</th>
-                        <th>Created on</th>
+                        <th>Date Created</th>
                         <th>Status</th>
                         <th>Mark as Done</th>
                         </thead>
@@ -37,7 +37,7 @@
                             <td>{{ review.requested_by }}</td>
                             <td>{{ review.requested_to }}</td>
                             <td>{{ review.note }}</td>
-                            <td>{{ review.marked_on | toDateString }}</td>
+                            <td>{{ review.birthtime | toDateString }}</td>
                             <td>{{review.status}}</td>
                             <td ng-show="review.requested_to==signed_user">
                                 <input type="checkbox" ng-model="review.status" ng-click="reviewStatusChanged($index)"
@@ -64,7 +64,7 @@
                         <option></option>
                         <option ng-repeat="user in users">{{ user }}</option>
                     </select>
-                    <button style="position:absolute" ng-click="addReviewForOther()">Request Review</button>
+                    <button style="position:absolute" ng-click="addReviewForOther()" class="btn btn-info">Request Review</button>
                 </div>
                 <div class="tab-pane" id="tags">
                     <h4>Tags</h4>

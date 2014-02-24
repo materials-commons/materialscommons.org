@@ -42,7 +42,7 @@
 <body>
 
 <div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse">
-    <div class="navbar-inner" ng-controller="navigation">
+    <div class="navbar-inner" ng-controller="_indexNavigation">
         <div class="container-fluid">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <span class="icon-bar"></span>
@@ -60,7 +60,7 @@
 
                 <div ng-show="email_address">
                     <p class="navbar-text pull-right">
-                        <a href="#/account" class="navbar-link"><i class="icon-user"></i>{{email_address}}</a>
+                        <a href="#/account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i> {{email_address}}</a>
                         <a href="#/logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
                     </p>
                 </div>
@@ -93,7 +93,7 @@
 
 <div class="row-fluid">
 
-    <div ng-show="message" ng-controller="EventController">
+    <div ng-show="message" ng-controller="_indexAlerts">
         <notification message="message"></notification>
     </div>
 
@@ -117,26 +117,18 @@
 <script src="assets/js/angular/angular-dragdrop.js"></script>
 <script src="assets/js/angular/angular-stomp.js"></script>
 <script src="assets/js/angular/angular-ui-router.js"></script>
-<!--<script src="assets/js/raphael.js"></script>-->
 
-<script src="../app-old/js/controllers/controllers.js"></script>
-<script src="../app-old/js/controllers/labcontroller.js"></script>
-<script src="../app-old/js/utils/util.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/angular/angular-strap.min.js"></script>
+<script src="assets/js/bootstrap-select.js"></script>
+<script src="assets/js/jqcloud-1.0.4.js"></script>
+<script src="assets/js/underscore-min.js"></script>
+<script src="assets/js/ng-quick-date.js"></script>
+
+
 <script src="assets/js/angular/angular-resource.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
 <script src="assets/js/jquery.tablesorter.min.js"></script>
-<script src="../app-old/js/directives/provenance.js"></script>
-<script src="../app-old/js/controllers/searchindex/searchindex.js"></script>
-<script src="../app-old/js/controllers/mytools/udcontrollers.js"></script>
-<script src="../app-old/js/controllers/mytools/ChatControllers.js"></script>
-
-<script src="../app-old/js/controllers/AccountControllers.js"></script>
-<script src="../app-old/js/controllers/ConditionControllers.js"></script>
-<script src="../app-old/js/controllers/mytools/ProjectController.js"></script>
-<script src="../app-old/js/controllers/mytools/ProcessControllers.js"></script>
-
-<script src="../app-old/js/controllers/mytools/provenance.js"></script>
-<script src="../app-old/js/controllers/mytools/OutputStep.js"></script>
 
 <!------------------------------ Application --------------------------->
 <script src="application/app.js"></script>
@@ -160,12 +152,17 @@
 
 <!-- Toolbar -->
 <script src="application/core/toolbar/toolbar-controller.js"></script>
-<script src="application/core/toolbar/drafts-controller.js"></script>
-<script src="application/core/toolbar/projects-controller.js"></script>
-<script src="application/core/toolbar/reviews-controller.js"></script>
-<script src="application/core/toolbar/tags-controller.js"></script>
+<script src="application/core/toolbar/_drafts-controller.js"></script>
+<script src="application/core/toolbar/_projects-controller.js"></script>
+<script src="application/core/toolbar/_reviews-controller.js"></script>
+<script src="application/core/toolbar/_tags-controller.js"></script>
 
 <!-- Toolbar Views -->
+
+<!-- Toolbar drafts -->
+<script src="application/core/toolbar/drafts/drafts-controller.js"></script>
+<script src="application/core/toolbar/drafts/_review-modal-controller.js"></script>
+
 <!-- Toolbar data -->
 <script src="application/core/toolbar/mydatapage/toolbar-mydatapage-controller.js"></script>
 <script src="application/core/toolbar/mydata/toolbar-mydata-controller.js"></script>
@@ -176,7 +173,7 @@
 <script src="application/core/toolbar/dataedit/dataedit-controller.js"></script>
 <script src="application/core/toolbar/dataedit/review-table-directive.js"></script>
 <script src="application/core/toolbar/dataedit/tag-directive.js"></script>
-<script src="application/core/toolbar/dataedit/createreview-controller.js"></script>
+<script src="application/core/toolbar/dataedit/_create-review-controller.js"></script>
 <script src="application/core/toolbar/databytag/databytag-controller.js"></script>
 
 <!-- Toolbar tags -->
@@ -190,7 +187,6 @@
 
 <!-- Toolbar machines -->
 <script src="application/core/toolbar/machines/machines-controller.js"></script>
-
 
 <!-- Toolbar materials -->
 <script src="application/core/toolbar/materials/materials-controller.js"></script>
@@ -206,9 +202,7 @@
 <!-- Provenance -->
 <script src="application/provenance/provenance-controller.js"></script>
 <script src="application/provenance/provsteps-service.js"></script>
-<script src="application/provenance/provdrafts-service.js"></script>
 <script src="application/provenance/model-service.js"></script>
-<script src="application/provenance/directives/mc-attributes-form-directive.js"></script>
 
 <!-- Provenance Process -->
 <script src="application/provenance/process/process-controller.js"></script>
@@ -218,13 +212,8 @@
 <script src="application/provenance/iosteps/iostep/iostep-controller.js"></script>
 <script src="application/provenance/iosteps/files/files-controller.js"></script>
 
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/angular/angular-strap.min.js"></script>
-<script src="assets/js/bootstrap-select.js"></script>
-<script src="assets/js/jqcloud-1.0.4.js"></script>
-<script src="assets/js/underscore-min.js"></script>
-<script src="assets/js/ng-quick-date.js"></script>
-<script src="../app-old/js/config/config.js"></script>
+<!-- Provenance Finish -->
+<script src="application/provenance/finish/finish-controller.js"></script>
 
 <!-------------------------------- Global directives ------------------------------->
 <script src="application/directives/paged-directive.js"></script>
@@ -232,8 +221,9 @@
 <script src="application/directives/cgroup-directive.js"></script>
 <script src="application/directives/dfproperties-directive.js"></script>
 <script src="application/directives/projecttree-directive.js"></script>
+<script src="application/directives/modal-dismiss-directive.js"></script>
 
-<!-------------------------------- Global services ------------------------------->
+<!-------------------------------- Global services --------------------------------->
 <script src="application/services/user-service.js"></script>
 <script src="application/services/alert-service.js"></script>
 <script src="application/services/watcher-service.js"></script>
@@ -241,17 +231,20 @@
 <script src="application/services/mcapi-service.js"></script>
 <script src="application/services/project-service.js"></script>
 <script src="application/services/stater-service.js"></script>
+<script src="application/services/provdrafts-service.js"></script>
 
-<!-------------------------------- Global filters ------------------------------->
+<!-------------------------------- Global filters --------------------------------->
 <script src="application/filters/page-filter.js"></script>
 <script src="application/filters/todatestring-filter.js"></script>
 <script src="application/filters/reverse-filter.js"></script>
 
+<!-- Index -->
+<script src="index/_navigation-controller.js"></script>
+<script src="index/_alerts-controller.js"></script>
 
-
-
-
-
+<!-- Util -->
+<script src="../app-old/js/utils/util.js"></script>
+<script src="../app-old/js/config/config.js"></script>
 
 </body>
 </html>

@@ -1,11 +1,15 @@
-<div class="row-fluid span10 well" ng-controller="provenanceIOStepsFiles">
-    <label>Please select files below.</label>
-    <h6>Selected files:</h6>
-    <ul>
-        <li ng-repeat="item in files">
-            <i class="fa fa-check-square"></i>{{item.displayname}}
-            <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
-            <br>
-        </li>
-    </ul>
+<div ng-controller="provenanceIOStepsFiles">
+    <div class="row-fluid">
+        <div class="span10">
+            <label>Please select files below.</label>
+            <h6>Selected files:</h6>
+            <ul>
+                <li ng-repeat="item in files">
+                    <i class="fa fa-check-square"></i>{{item.displayname}}
+                    <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+                    <br>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 <div ng-controller="toolbarMachines">
 
     <div class="row-fluid">
-        <div class="span4">
+        <div class="span5">
             <div class="">
                 <form class="form-horizontal">
                     <fieldset>
@@ -21,10 +21,10 @@
                                  </select>
                             </span>
                             <span ng-if="pv.value_choice.length==0">
-                                <input type="text" ng-model="pv.value">
+                                <input type="text" ng-model="pv.value" placeholder="Value...">
                             </span>
                             <span ng-if="pv.unit_choice.length!=0">
-                                <select style="width:80px" ng-model="pv.unit">
+                                <select ng-model="pv.unit">
                                     <option ng-repeat="unit in pv.unit_choice"> {{unit}}
                                     </option>
                                 </select>
@@ -35,10 +35,11 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label">Additional Properties:</label>
+                            <label class="control-label">Additional:</label>
 
                             <div class="controls">
                                 <select ng-model="p_name">
+                                    <option value="" disabled selected>Additional...</option>
                                     <option ng-repeat="each_additional in additional_properties"
                                             value="{{each_additional}}">
                                         {{each_additional.name}}
@@ -49,10 +50,10 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label">Add Custom Properties:</label>
+                            <label class="control-label">Custom:</label>
 
                             <div class="controls">
-                                <input ng-model="additional_prop" placeholder="type property name ....."
+                                <input ng-model="additional_prop" placeholder="Name..."
                                        type="text">
                                 <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
                             </div>
@@ -68,11 +69,11 @@
             </div>
         </div>
 
-        <div class="span8">
+        <div class="span7">
             <h4>Machines: </h4>
-            <paged data="machines_list" current-page="currentDataPage" page-size="5">
+            <paged data="machines_list" current-page="currentDataPage" page-size="20">
 
-                <table class="table table-striped">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -86,7 +87,7 @@
                     </p>
 
                     <p ng-if="machines_list.length!=0">
-                        <tr ng-repeat="machine in machines_list | orderBy:'name' | page:currentDataPage:5">
+                        <tr ng-repeat="machine in machines_list | orderBy:'name' | page:currentDataPage:20">
                             <td>{{machine.name}}</td>
                             <td>
                                 <ul ng-repeat="kv in machine.additional">

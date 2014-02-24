@@ -4,7 +4,7 @@
             <div ng-show="reviewsToConduct.length > 0">
                 <h4>Reviews to conduct</h4>
 
-                <paged data="reviews" current-page="currentReviewPage" page-size="5">
+                <paged data="reviews" current-page="currentReviewPage" page-size="10">
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                         <thead>
                         <tr>
@@ -18,13 +18,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="review in reviewsToConduct | page:currentReviewPage:5">
-                            <td><a style="cursor:pointer" ui-sref="toolbar.dataedit({id: review.item_id})">view</a></td>
-                            <td>{{ review.requested_by }}
-                            </td>
+                        <tr ng-repeat="review in reviewsToConduct | page:currentReviewPage:10">
+                            <td><a style="cursor:pointer" ng-click="gotoReview(review)">View</a></td>
+                            <td>{{ review.requested_by }}</td>
                             <td>{{ review.requested_to }}</td>
                             <td>{{ review.note }}</td>
-                            <td>{{ review.marked_on | toDateString }}</td>
+                            <td>{{ review.birthtime | toDateString }}</td>
                             <td>{{ review.item_name }}</td>
                             <td>{{ review.status }}</td>
                         </tr>
@@ -44,7 +43,7 @@
         <div class="span12">
             <div ng-show="reviewsRequested.length > 0">
                 <h4>Reviews you have requested</h4>
-                <paged data="reviewsRequested" current-page="currentRequestedReviewPage" page-size="5">
+                <paged data="reviewsRequested" current-page="currentRequestedReviewPage" page-size="10">
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                         <thead>
                         <tr>
@@ -58,13 +57,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="review in reviewsRequested | page:currentRequestedReviewPage:5">
-                            <td><a style="cursor:pointer" href="toolbar.dataedit({id: review.item_id})">view file</a>
+                        <tr ng-repeat="review in reviewsRequested | page:currentRequestedReviewPage:10">
+                            <td><a style="cursor:pointer" ng-click="gotoReview(review)">View</a>
                             </td>
                             <td>{{review.requested_by}}</td>
                             <td>{{ review.requested_to }}</td>
                             <td>{{ review.note }}</td>
-                            <td>{{ review.marked_on | toDateString }}</td>
+                            <td>{{ review.birthtime | toDateString }}</td>
                             <td>{{ review.item_name }}</td>
                             <td>{{ review.status }}</td>
                         </tr>
