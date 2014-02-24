@@ -14,9 +14,9 @@
 
     <div class="row-fluid">
         <h4>List of available materials: </h4>
-        <paged data="materials_list" current-page="currentDataPage" page-size="5">
+        <paged data="materials_list" current-page="currentDataPage" page-size="20">
 
-            <table class="table table-striped">
+            <table class="table table-striped mc-table-hover table-condensed mc-table">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -31,7 +31,7 @@
                     <b>No available materials in the database</b>
                 </p>
                 <p ng-if="materials_list.length!=0">
-                    <tr ng-repeat="material in materials_list | orderBy:predicate:reverse | page:currentDataPage:5">
+                    <tr ng-repeat="material in materials_list | orderBy:predicate:reverse | page:currentDataPage:20">
                             <td>{{material.name}}</td>
                             <td>{{material.alloy}}</td>
                             <td>{{material.notes}}</td>
