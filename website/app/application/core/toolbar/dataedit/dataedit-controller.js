@@ -1,10 +1,6 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$stateParams", "pubsub", "User",
-        function ($scope, $window, mcapi, alertService, $stateParams, pubsub, User) {
-            $scope.count = 0;
-            $scope.grid_options = [];
-            $scope.id = $stateParams.id;
-
+    ["$scope", "$window", "mcapi", "alertService", "$stateParams", "pubsub", "User", "dateGenerate",
+        function ($scope, $window, mcapi, alertService, $stateParams, pubsub, User, dateGenerate) {
 
             $scope.setupAccessToUserFile = function () {
                 if (isImage($scope.doc.name)) {
@@ -16,25 +12,6 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.originalFileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey();
                 $scope.fileName = $scope.doc.name;
             }
-
-            mcapi('/datafile/%', $scope.id)
-                .success(function (data) {
-                    $scope.doc = data;
-                    $scope.setupAccessToUserFile();
-                })
-                .error(function (data) {
-                    alertService.sendMessage(data.error);
-                }).jsonp();
-
-            $scope.tagchoices = [];
-            $scope.originalTags = [];
-            mcapi('/tags')
-                .success(function (data) {
-                    data.forEach(function (item) {
-                        $scope.tagchoices.push(item.id);
-                        $scope.originalTags.push(item.id);
-                    })
-                }).jsonp();
 
             $scope.removeTag = function (index) {
                 $scope.doc.tags.splice(index, 1);
@@ -86,28 +63,21 @@ Application.Controllers.controller('toolbarDataEdit',
             }
 
             $scope.addTagKeypressCallback = function (event) {
-                if (!_.contains($scope.tagchoices, $scope.new_tag)) {
-                    $scope.tagchoices.push($scope.new_tag);
+                if ($scope.new_tag.length != 0) {
+                    if (!_.contains($scope.tagchoices, $scope.new_tag)) {
+                        $scope.tagchoices.push($scope.new_tag);
+                    }
+
+                    $scope.tag_to_add = $scope.new_tag;
+                    $scope.addTag();
+                    $scope.new_tag = "";
                 }
-
-                $scope.tag_to_add = $scope.new_tag;
-                $scope.addTag();
-                $scope.new_tag = "";
             }
 
-            $scope.addNoteKeypressCallback = function (event) {
-                $scope.doc.notes.push($scope.new_note);
-                $scope.new_note = "";
-            }
             $scope.add_notes = function () {
-                $scope.doc.notes.push($scope.new_note);
+                $scope.doc.notes.push({'message': $scope.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
                 $scope.new_note = "";
             }
-
-            mcapi('/processes/datafile/%', $scope.id)
-                .success(function (data) {
-                    $scope.processes = data;
-                }).jsonp()
 
 
             $scope.show_process = function (p) {
@@ -154,4 +124,42 @@ Application.Controllers.controller('toolbarDataEdit',
             $scope.get_mode_condition = function (cond) {
                 $scope.display_condition = cond;
             }
+
+            $scope.init = function () {
+                $scope.tagchoices = [];
+                $scope.originalTags = [];
+                $scope.id = $stateParams.id;
+
+                mcapi('/datafile/%', $scope.id)
+                    .success(function (data) {
+                        $scope.doc = data;
+                        $scope.setupAccessToUserFile();
+                        mcapi('/datadirs/%/datafile', $scope.doc.id)
+                            .success(function (data) {
+                                $scope.trail = data[0].name.split('/')
+
+                            })
+                            .error(function (e) {
+
+                            }).jsonp();
+                    })
+                    .error(function (data) {
+                        alertService.sendMessage(data.error);
+                    }).jsonp();
+
+                mcapi('/tags')
+                    .success(function (data) {
+                        data.forEach(function (item) {
+                            $scope.tagchoices.push(item.id);
+                            $scope.originalTags.push(item.id);
+                        })
+                    }).jsonp();
+
+                mcapi('/processes/datafile/%', $scope.id)
+                    .success(function (data) {
+                        $scope.processes = data;
+                    }).jsonp()
+
+            }
+            $scope.init();
         }]);

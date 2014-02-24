@@ -47,6 +47,7 @@ def list_public_datafiles():
     selection = list(r.table('datafiles').
                      filter({'access': 'public'}).
                      run(g.conn, time_format='raw'))
+
     return json.dumps(selection)
 
 
