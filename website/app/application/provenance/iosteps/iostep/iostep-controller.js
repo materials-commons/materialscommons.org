@@ -15,7 +15,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
 
             $scope.materialSelect = function (material) {
                 $scope.doc.material = material;
-            }
+            };
 
             $scope.init = function () {
                 $scope.stepName = $stateParams.iostep;
