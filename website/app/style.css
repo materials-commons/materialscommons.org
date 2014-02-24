@@ -159,6 +159,21 @@ hr {
     background-color: #67889d;
 }
 
+.btn-success {
+    background-color: #16a085;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+    color: #ffffff;
+    background-color: #16a060;
+    *background-color: #1bd3af;
+}
+
 input[disabled],
 input[readonly],
 textarea[disabled],
@@ -166,13 +181,12 @@ textarea[readonly] {
     color: #252525;
 }
 
-.toolbar-border
-{
-    padding-right:20px;
+.toolbar-border {
+    padding-right: 20px;
     /*border-right: 1px solid #ccc;*/
 }
 
-.is-active{
+.is-active {
     background: blue;
 }
 
@@ -180,13 +194,41 @@ textarea[readonly] {
     outline: none;
 }
 
+/*
+** Remove outline on selected items (eg in a tab pill)
+*/
 a:focus {
     outline: none;
 }
 
+<<<<<<< HEAD
 .tabs-right > .nav-tabs > li > a{
     padding-right: 50px;
 }
 
+=======
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+    cursor: pointer;
+}
+
+.modal.fade {
+    -webkit-transition: opacity .2s linear, none;
+    -moz-transition: opacity .2s linear, none;
+    -ms-transition: opacity .2s linear, none;
+    -o-transition: opacity .2s linear, none;
+    transition: opacity .2s linear, none;
+    top: 50%;
+}
+
+/*input[disabled] {*/
+    /*border: 2px solid black;*/
+    /*-webkit-border-radius: 6px;*/
+    /*-moz-border-radius: 6px;*/
+    /*border-radius: 6px;*/
+/*}*/
+>>>>>>> new-layout
 
 

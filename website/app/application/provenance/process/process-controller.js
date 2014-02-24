@@ -1,57 +1,12 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
     ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts",
         function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts) {
+            watcher.watch($scope, 'process_type', function (template) {
+                if ($scope.process.template == template.template_name) {
+                    // All attributes already loaded from a draft
+                    return;
+                }
 
-            $scope.init = function () {
-                // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
-                $scope.bk = {
-                    p_name: '',
-                    start_run: '',
-                    stop_run: '',
-                    new_err_msg: '',
-                    new_note: '',
-                    new_citation: ''
-                };
-
-                $scope.process = ProvDrafts.current.attributes.process;
-
-                $scope.useExisting = "yes";
-
-                mcapi('/machines')
-                    .success(function (data) {
-                        $scope.machines_list = data;
-                    }).jsonp();
-
-                mcapi('/templates')
-                    .argWithValue('filter_by', '"template_type":"machine"')
-                    .success(function (data) {
-                        $scope.machine_template = data[0];
-                        $scope.default_properties = $scope.machine_template.model.default;
-                        $scope.additional_properties = $scope.machine_template.model.additional;
-                    })
-                    .error(function (e) {
-
-                    }).jsonp();
-
-
-                mcapi('/templates')
-                    .argWithValue('filter_by', '"template_type":"process"')
-                    .success(function (processes) {
-                        $scope.process_templates = processes;
-                        if ($scope.process.template != "") {
-                            $scope.process_type = $scope.process.template;
-                        }
-                    })
-                    .error(function () {
-                        alertService.sendMessage("Unable to retrieve processes from database.");
-                    }).jsonp();
-
-            };
-
-            $scope.init();
-
-            watcher.watch($scope, 'process_type', function (template_name) {
-                var template = _.findWhere($scope.process_templates, {template_name: template_name});
                 template.model.forEach(function (item) {
                     if (item.name === "required_conditions") {
                         $scope.process.required_conditions = item.value;
@@ -62,15 +17,19 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     } else if (item.name === "required_output_files") {
                         $scope.process.required_output_files = item.required;
                     }
-
                 });
                 var now = new Date();
                 var dd = ("0" + now.getDate()).slice(-2);
                 var mm = ("0" + (now.getMonth() + 1)).slice(-2);
                 var today = now.getFullYear() + "-" + mm + "-" + dd;
                 $scope.process.name = template.template_name + ':' + today;
-                $scope.process.template = template.id;
+                $scope.process.template = template;
             });
+
+            $scope.saveDraft = function () {
+                ProvDrafts.current.name = $scope.process.name;
+                ProvDrafts.saveDraft();
+            };
 
             $scope.add_property_to_machine = function () {
                 if ($scope.bk.p_name || $scope.bk.p_name === ' ') {
@@ -138,8 +97,59 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.bk.new_citation = "";
             };
 
-            $scope.save_process = function () {
+            $scope.done = function () {
                 ProvSteps.setStepFinished('process');
             };
 
+            $scope.init = function () {
+                // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
+                $scope.bk = {
+                    p_name: '',
+                    start_run: '',
+                    stop_run: '',
+                    new_err_msg: '',
+                    new_note: '',
+                    new_citation: ''
+                };
+
+                $scope.process = ProvDrafts.current.attributes.process;
+                $scope.useExisting = "yes";
+
+                mcapi('/machines')
+                    .success(function (data) {
+                        $scope.machines_list = data;
+                    }).jsonp();
+
+                mcapi('/templates')
+                    .argWithValue('filter_by', '"template_type":"machine"')
+                    .success(function (data) {
+                        $scope.machine_template = data[0];
+                        $scope.default_properties = $scope.machine_template.model.default;
+                        $scope.additional_properties = $scope.machine_template.model.additional;
+                    })
+                    .error(function (e) {
+
+                    }).jsonp();
+
+
+                mcapi('/templates')
+                    .argWithValue('filter_by', '"template_type":"process"')
+                    .success(function (processes) {
+                        var t;
+                        $scope.process_templates = processes;
+                        if ($scope.process.template != "") {
+                            t = _.findWhere($scope.process_templates, {template_name: $scope.process.template.template_name});
+                            if (t) {
+                                $scope.process_type = t;
+                            }
+                            //$scope.process_type = $scope.process.template.template_name;
+                        }
+                    })
+                    .error(function () {
+                        alertService.sendMessage("Unable to retrieve processes from database.");
+                    }).jsonp();
+
+            };
+
+            $scope.init();
         }]);

@@ -8,7 +8,7 @@
                     <ul class="nav nav-list">
                         <li ng-show="showDrafts" class="nav-header"><i class="fa fa-book"></i> Provenance</li>
                         <li ng-show="showDrafts" ng-controller="_toolbarDrafts">
-                            <a href="#/mytools/drafts">Drafts ({{drafts.length}})</a>
+                            <a ui-sref="toolbar.drafts">Drafts ({{drafts.length}})</a>
                         </li>
                         <li class="nav-header"><i class="icon-wrench"></i>MyTools</li>
 

@@ -14,13 +14,17 @@ Application.Provenance.Filters = angular.module('application.provenance.filters'
 Application.Provenance.Directives = angular.module('application.provenance.directives', []);
 
 var app = angular.module('materialscommons',
-    ['ui',
-         'ui.bootstrap',
-        'ngCookies', '$strap.directives', 'ui.router', 'ngResource',
-        'Provenance', 'ngQuickDate', 'application.core.constants',
-        'application.core.services', 'application.core.controllers', 'application.core.filters',
-        'application.core.directives', 'application.provenance.constants', 'application.provenance.services',
-        'application.provenance.controllers', 'application.provenance.filters', 'application.provenance.directives']);
+    [
+        'ui',
+        'ui.bootstrap',
+        'ngCookies',
+        '$strap.directives',
+        'ui.router', 'ngResource',
+        'ngQuickDate',
+        'application.core.constants', 'application.core.services', 'application.core.controllers',
+        'application.core.filters', 'application.core.directives',
+        'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
+        'application.provenance.filters', 'application.provenance.directives']);
 
 app.config(function ($stateProvider) {
     Stomp.WebSocketClass = SockJS;
@@ -70,7 +74,11 @@ app.config(function ($stateProvider) {
             url: '/groupusers/:id',
             templateUrl: 'application/core/account/groupusers/groupusers.html'
         })
-
+        // Toolbar drafts
+        .state('toolbar.drafts', {
+            url: '/drafts',
+            templateUrl: 'application/core/toolbar/drafts/drafts.html'
+        })
         // Toolbar Data Views
         .state('toolbar.mydatapage', {
             url: '/mydatapage',
@@ -201,7 +209,7 @@ app.config(function ($stateProvider) {
      * Mytools - Subpage is the parent and the rest inherit
      */
 
-        //Provenance
+    //Provenance
 //        .state('mytools.drafts', {
 //            url: '/drafts',
 //            templateUrl: 'partials/provenance/drafts-list.html',

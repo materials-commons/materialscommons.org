@@ -1,6 +1,6 @@
 Application.Controllers.controller('accountGroupCreate',
-    ["$scope", "User", "mcapi", "alertService", "$state",
-        function ($scope, User, mcapi, alertService, $state) {
+    ["$scope", "User", "mcapi", "alertService", "$state", "pubsub",
+        function ($scope, User, mcapi, alertService, $state, pubsub) {
             $scope.create_usergroup = function () {
                 var u_group = {};
                 u_group.access = $scope.group.access;
@@ -11,19 +11,19 @@ Application.Controllers.controller('accountGroupCreate',
                 mcapi('/usergroups/new', User.u())
                     .success(function () {
                         alertService.sendMessage("UserGroup has been created successfully");
-                        $state.transitionTo('account');
+                        pubsub.send('usergroups.change');
                     })
                     .error(function (errorMsg) {
                         alertService.sendMessage(errorMsg.error);
                     }).post(u_group);
             };
 
-            $scope.init = function() {
+            $scope.init = function () {
                 $scope.group = {
                     name: null,
                     access: null,
                     description: null
-                }
+                };
             };
 
             $scope.init();
