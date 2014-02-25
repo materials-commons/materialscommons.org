@@ -15,7 +15,7 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.fileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey();
                 $scope.originalFileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey();
                 $scope.fileName = $scope.doc.name;
-            }
+            };
 
             mcapi('/datafile/%', $scope.id)
                 .success(function (data) {
@@ -33,12 +33,12 @@ Application.Controllers.controller('toolbarDataEdit',
                     data.forEach(function (item) {
                         $scope.tagchoices.push(item.id);
                         $scope.originalTags.push(item.id);
-                    })
+                    });
                 }).jsonp();
 
             $scope.removeTag = function (index) {
                 $scope.doc.tags.splice(index, 1);
-            }
+            };
 
             $scope.addTag = function () {
                 if (!$scope.doc.tags) {
