@@ -172,82 +172,10 @@ app.config(function ($stateProvider) {
             url: '/finish',
             templateUrl: 'application/provenance/finish/finish.html'
         });
-
-//        // Views
-//        .state('mytools', {
-//
-//        })
-//        // Projects views
-//        .state('mytools.projects', {
-//            url: '/projectspage/:id/:draft_id',
-//            templateUrl: 'partials/project/projectspage.html'
-//        })
-//        .state('mytools.projects.overview', {
-//            url: '/overview',
-//            templateUrl: 'partials/project/overview.html'
-//        })
-//        .state('mytools.projects.provenance', {
-//            url: '/provenance',
-//            templateUrl: 'partials/project/provenance.html'
-//        })
-//        .state('mytools.projects.provenance.process', {
-//            url: '/process',
-//            templateUrl: 'partials/project/provenance/process.html'
-//        })
-//        .state('mytools.processreport', {
-//            url: '/process/report/:process_id',
-//            templateUrl: 'partials/process/report.html',
-//            controller: 'ProcessReportController'
-//        })
-//        .state('mytools.tagbyname', {
-//            url: '/data/bytag/:name',
-//            templateUrl: 'partials/tags/databytag.html',
-//            controller: 'TagDataController'
-//        })
-
-
-    /**
-     * End To level navigation
-     */
-
-
-    /**
-     * Mytools - Subpage is the parent and the rest inherit
-     */
-
-    //Provenance
-//        .state('mytools.drafts', {
-//            url: '/drafts',
-//            templateUrl: 'partials/provenance/drafts-list.html',
-//            controller: DraftsListController
-//        })
-//
-//
-//        .state('mytools.mytagslist', {
-//            url: '/mytagslist',
-//            templateUrl: 'partials/tags/my-tags.html',
-//            controller: 'MyTagsController'
-//        });
-
-
 });
 
 app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User) {
     $rootScope.$on('$stateChangeStart', function (event, toState) {
-        if (matchesPartial(toState, "partials/front-page", "HomeController")) {
-            setActiveMainNav("#home-nav");
-        } else if (matchesPartial(toState, "partials/my-tools", "FrontPageController")) {
-            setActiveMainNav("#user-nav");
-        } else if (matchesPartial(toState, "partials/explore", "ExploreController")) {
-            setActiveMainNav("#explore-nav");
-        } else if (matchesPartial(toState, "partials/about", "AboutController")) {
-            setActiveMainNav('#about-nav');
-        } else if (matchesPartial(toState, "partials/contact", "ContactController")) {
-            setActiveMainNav('#contact-nav');
-        } else if (matchesPartial(toState, "partials/help", "HelpController")) {
-            setActiveMainNav("#help-nav");
-        }
-
         if (!User.isAuthenticated()) {
             if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") !== -1) {
                 $location.path("/login");
@@ -258,27 +186,3 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
     });
 
 });
-
-function matchesPartial(next, what, controller) {
-    if (!next.templateUrl) {
-        return false;
-    }
-
-
-    var value = next.templateUrl.indexOf(what) !== -1;
-    /*
-     Hack to look at controller name to figure out tab. We do this so that partials can be
-     shared by controllers, but we need to show which tab is active. So, we look at the
-     name of the controller (only if controller != 'ignore').
-     */
-    if (controller === "ignore") {
-        return value;
-    }
-
-    if (value) {
-        return true;
-    }
-
-    // return next.controller.toString().indexOf(controller) != -1;
-    return value;
-}
