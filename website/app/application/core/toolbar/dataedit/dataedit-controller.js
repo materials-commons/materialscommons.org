@@ -158,6 +158,7 @@ Application.Controllers.controller('toolbarDataEdit',
                 mcapi('/processes/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.processes = data;
+                        console.log($scope.processes)
                     }).jsonp()
 
             }
