@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceFinish',
-    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi",
-        function ($scope, ProvDrafts, $dialog, $state, mcapi) {
+    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService",
+        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService) {
 
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
@@ -25,9 +25,8 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                             .success(function (data) {
                                 $scope.done = true;
                                 $scope.process_id = data.process;
-                                console.log($scope.process_id);
-                                //Stater.clear();
-                                //$scope.state = Stater.retrieve();
+                                ProvDrafts.deleteRemoteDraft($scope.doc.id);
+
                                 alertService.sendMessage("Your Provenance was Created Successfully.");
 
                             })
