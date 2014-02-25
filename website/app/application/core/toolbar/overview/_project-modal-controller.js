@@ -2,7 +2,6 @@ Application.Controllers.controller('_toolbarOverviewProjectModal',
     ["$scope", "mcapi",
         function ($scope, mcapi) {
             $scope.updateProject = function () {
-                console.log("update project =" + $scope.description);
                 if ($scope.description !== "") {
                     $scope.whichProject.description = $scope.description;
                     mcapi('/projects/%/update', $scope.whichProject.id)

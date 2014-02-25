@@ -147,7 +147,7 @@ hr {
 .navbar-inverse .nav .active > a,
 .navbar-inverse .nav .active > a:hover,
 .navbar-inverse .nav .active > a:focus {
-    color: yellow;
+    color: antiquewhite;
     background-color: #0c84cc;
 }
 
@@ -161,6 +161,10 @@ hr {
 
 .btn-success {
     background-color: #16a085;
+}
+
+.toolbar-item {
+    margin-left: 10px;
 }
 
 .btn-success:hover,
