@@ -41,7 +41,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 pubsub.send(service.channel, '');
             },
 
-            saveDraft: function () {
+            saveDraft: function (f) {
+                var callfunc = arguments.length === 1;
                 if (service.current.id === "") {
                     // We haven't saved this draft before
                     mcapi('/drafts')
@@ -50,6 +51,9 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             service.current.birthtime = draft.birthtime;
                             service.drafts.push(service.current);
                             service._publishChange();
+                            if (callfunc) {
+                                f();
+                            }
                         }).post({
                             name: service.current.name,
                             description: service.current.description,
@@ -58,12 +62,17 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                         });
                 } else {
                     // Need to update the draft
-                    mcapi('/drafts/%', service.current.id).put({
-                        name: service.current.name,
-                        description: service.current.description,
-                        project_id: service.current.project_id,
-                        attributes: service.current.attributes
-                    });
+                    mcapi('/drafts/%', service.current.id)
+                        .success(function () {
+                            if (callfunc) {
+                                f();
+                            }
+                        }).put({
+                            name: service.current.name,
+                            description: service.current.description,
+                            project_id: service.current.project_id,
+                            attributes: service.current.attributes
+                        });
                 }
             },
 
@@ -77,6 +86,19 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                         });
                         service._publishChange();
                     }).jsonp();
+            },
+
+            deleteDraft: function (draft_id) {
+                var i = _.indexOf(service.drafts, function (item) {
+                    if (item.id === draft_id) {
+                        return true;
+                    }
+                    return false;
+                });
+                if (i !== -1) {
+                    service.drafts.splice(i, 1);
+                    service._publishChange();
+                }
             },
 
             deleteRemoteDraft: function (draft_id) {
