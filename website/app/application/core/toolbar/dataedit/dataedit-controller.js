@@ -113,28 +113,30 @@ Application.Controllers.controller('toolbarDataEdit',
             $scope.show_process = function (p) {
                 $scope.process = p
                 $scope.show_pr = true;
-                if (p.input_files.length != 0) {
-                    mcapi('/processes/extract/%/%', p.id, "input_files")
-                        .success(function (data) {
-                            $scope.ip_files = data;
-                        })
-                        .error(function (e) {
-
-                        }).jsonp()
-                }
-                if (p.output_files.length != 0) {
-                    mcapi('/processes/extract/%/%', p.id, "output_files")
-                        .success(function (data) {
-                            $scope.op_files = data;
-                        })
-                        .error(function (e) {
-
-                        }).jsonp()
-                }
+//                if (p.input_files.length != 0) {
+//                    mcapi('/processes/extract/%/%', p.id, "input_files")
+//                        .success(function (data) {
+//                            $scope.ip_files = data;
+//                        })
+//                        .error(function (e) {
+//
+//                        }).jsonp()
+//                }
+//                if (p.output_files.length != 0) {
+//                    mcapi('/processes/extract/%/%', p.id, "output_files")
+//                        .success(function (data) {
+//                            $scope.op_files = data;
+//                            console.log($scope.op_files)
+//                        })
+//                        .error(function (e) {
+//
+//                        }).jsonp()
+//                }
                 if (p.input_conditions.length != 0) {
                     mcapi('/processes/extract/%/%', p.id, "input_conditions")
                         .success(function (data) {
                             $scope.ip_conditions = data;
+
                         })
                         .error(function (e) {
 
