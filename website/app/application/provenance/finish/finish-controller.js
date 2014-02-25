@@ -17,28 +17,26 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                     .open()
                     .then(function (result) {
                         if (result === "no") {
-                            console.log("Not submitting");
                             return;
                         }
-                        //console.log("Submitting provenance");
-                        mcapi('/upload')
-                            .success(function (data) {
-                                $scope.done = true;
-                                $scope.process_id = data.process;
-                                ProvDrafts.deleteRemoteDraft($scope.doc.id);
+                        ProvDrafts.saveDraft(function () {
+                            mcapi('/upload')
+                                .success(function (data) {
+                                    $scope.done = true;
+                                    $scope.process_id = data.process;
+                                    ProvDrafts.deleteDraft($scope.doc.id);
+                                    alertService.sendMessage("Your Provenance was Created Successfully.");
 
-                                alertService.sendMessage("Your Provenance was Created Successfully.");
+                                })
+                                .error(function () {
+                                    $scope.notdone = true;
+                                    //Stater.clear();
+                                    //$scope.state = Stater.retrieve();
+                                    alertService.sendMessage("Sorry - Your Provenance upload failed.");
+                                })
+                                .post({state_id: $scope.doc.id});
 
-                            })
-                            .error(function () {
-                                $scope.notdone = true;
-                                //Stater.clear();
-                                //$scope.state = Stater.retrieve();
-                                alertService.sendMessage("Sorry - Your Provenance upload failed.");
-                            })
-                            .post({state_id: $scope.doc.id});
-
-
+                        });
                     });
             };
 
