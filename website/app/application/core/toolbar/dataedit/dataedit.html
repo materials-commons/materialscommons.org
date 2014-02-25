@@ -159,24 +159,24 @@
 
                                     <ul style="list-style-position: inside" ng-repeat="f in ip_conditions">
                                         <a href="#modalCondition" data-toggle="modal"
-                                           ng-click="get_mode_condition(f.right)">{{f.right.name}}</a>
+                                           ng-click="get_mode_condition(f.right)">{{f.right.model.default[0].value}}</a>
                                     </ul>
 
                                     <b>Files:</b>
-                                    <ul style="list-style-position: inside" ng-repeat="f in ip_files">
-                                        <a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a>
+                                    <ul style="list-style-position: inside" ng-repeat="f in process.input_files">
+                                        <a style="cursor: pointer;" ui-sref="toolbar.dataedit({id: f.id})">{{f.displayname}}</a>
                                     </ul>
                                 </div>
                                 <div class="well">
                                     <h5><u>Outputs:</u></h5>
                                     <b>Properties:</b>
                                     <ul style="list-style-position: inside" ng-repeat="f in op_conditions">
-                                        <a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a>
+                                        <a ng-click="get_mode_condition(f.right)">{{f.right.model.default[0].value}}</a>
                                     </ul>
                                     <br>
                                     <b>Files:</b>
-                                    <ul style="list-style-position: inside" ng-repeat="f in op_files">
-                                        <a href="#/mytools/data/edit/{{f.right.id}}">{{f.right.name}}</a>
+                                    <ul style="list-style-position: inside" ng-repeat="f in process.output_files">
+                                        <a style="cursor: pointer;" ui-sref="toolbar.dataedit({id: f.id})">{{f.displayname}}</a>
                                     </ul>
                                 </div>
                             </div>
@@ -186,23 +186,31 @@
                              aria-labelledby="modalConditionLabel" aria-hidden="true">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h3 id="modalConditionLabel">{{display_condition.name}}</h3>
+                                <h3 id="modalConditionLabel">{{display_condition.model.default[0].value}}</h3>
                             </div>
                             <div class="modal-body">
                                 <div class="block">
-                                    <label>Name:</label><span>{{display_condition.name}}</span> <br>
-                                    <label>Description:</label><span>{{display_condition.description}}</span><br>
+                                    <label>Name:</label><span>{{display_condition.model.default[0].value}}</span> <br>
                                     <span ng-if="display_condition.material!={}">
                                         <label>Material:</label><span>{{display_condition.material.name}}</span><br>
                                     </span>
-                                    <label>Model:</label>
+                                    <label><u>Default Properties:</u></label>
 
-                                    <div ng-repeat="prop in display_condition.model">
+                                    <div ng-repeat="prop in display_condition.model.default">
                                         <label>{{prop.name}}</label> <span>{{prop.value}}</span>
-                            <span ng-if="prop.unit!=''">
-                                {{prop.unit}}
-                            </span>
+                                            <span ng-if="prop.unit!=''">
+                                                {{prop.unit}}
+                                            </span>
                                     </div>
+
+                                    <label><u>Additional Properties:</u></label>
+
+                                        <div ng-repeat="prop in display_condition.model.added_properties">
+                                            <label>{{prop.name}}</label> <span>{{prop.value}}</span>
+                                                         <span ng-if="prop.unit!=''">
+                                                         {{prop.unit}}
+                                            </span>
+                                        </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
