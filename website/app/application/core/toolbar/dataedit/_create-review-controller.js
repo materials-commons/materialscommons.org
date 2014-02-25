@@ -22,6 +22,10 @@ Application.Controllers.controller('_toolbarDataEditCreateReview',
                         mcapi('/datafiles/%/reviews', $stateParams.id)
                             .success(function (reviews) {
                                 $scope.all_reviews = reviews;
+                                console.log($scope.all_reviews);
+                            })
+                            .error(function(e){
+                                console.log('error')
                             }).jsonp();
                     }).post(review);
                 $scope.schedule_for_self = false;
