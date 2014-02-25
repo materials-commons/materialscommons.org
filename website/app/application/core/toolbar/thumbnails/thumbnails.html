@@ -32,7 +32,7 @@
             </div>
             <li ng-repeat="p in model.pics">
                 <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"/></a>
-                <a ui-sref="toolbar.dataedit/({id: p.file.id})">Edit</a>
+                <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: p.file.id})">{{ p.file.name }}</a>
             </li>
         </ul>
 
@@ -47,7 +47,7 @@
                 <span>Name : {{p.file.name}}</span><br>
                 <span>Size: {{p.file.size}}</span><br>
                 <span>Owner: {{p.file.owner}} </span><br>
-                <a ui-sref="toolbar.dataedit({id: p.file.id})">Edit</a>
+                <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: p.file.id})">Edit</a>
             </li>
         </ul>
 
