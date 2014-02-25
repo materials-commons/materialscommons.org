@@ -65,6 +65,8 @@ def upload_state():
     process_id = load_data_dir(user, state_id)
     if (process_id):
         return jsonify({'success': True, 'process': process_id})
+    else:
+        return error.bad_request('unable to create process')
 
 
 def load_data_dir(user, state_id):
@@ -86,14 +88,14 @@ def load_data_dir(user, state_id):
 
 def load_data(user, state_id, state_saver):
     process_id = load_provenance_from_state(state_id, state_saver)
-    r.table('state').get(state_id).delete().run(g.conn)
-    state_saver.move_to_tables()
-    state_saver.delete_tables()
+    #r.table('state').get(state_id).delete().run(g.conn)
+    #state_saver.move_to_tables()
+    #state_saver.delete_tables()
     return process_id
     
 
 def load_provenance_from_state(state_id, saver):
-    state = r.table('state').get(state_id).run(g.conn)
+    state = r.table('drafts').get(state_id).run(g.conn)
     attributes = state['attributes']
     user = state['owner']
     project_id = attributes['project_id']

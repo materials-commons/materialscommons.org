@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceFinish',
-    ["$scope", "ProvDrafts", "$dialog", "$state",
-        function ($scope, ProvDrafts, $dialog, $state) {
+    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi",
+        function ($scope, ProvDrafts, $dialog, $state, mcapi) {
 
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
@@ -20,7 +20,26 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                             console.log("Not submitting");
                             return;
                         }
-                        console.log("Submitting provenance");
+                        //console.log("Submitting provenance");
+                        mcapi('/upload')
+                            .success(function (data) {
+                                $scope.done = true;
+                                $scope.process_id = data.process;
+                                console.log($scope.process_id);
+                                //Stater.clear();
+                                //$scope.state = Stater.retrieve();
+                                alertService.sendMessage("Your Provenance was Created Successfully.");
+
+                            })
+                            .error(function () {
+                                $scope.notdone = true;
+                                //Stater.clear();
+                                //$scope.state = Stater.retrieve();
+                                alertService.sendMessage("Sorry - Your Provenance upload failed.");
+                            })
+                            .post({state_id: $scope.doc.id});
+
+
                     });
             };
 
