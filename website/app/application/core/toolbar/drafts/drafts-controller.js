@@ -3,6 +3,7 @@ Application.Controllers.controller('toolbarDrafts',
         function ($scope, pubsub, ProvDrafts, $state) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
+                console.dir($scope.drafts);
             });
 
             $scope.gotoDraft = function (draft) {
