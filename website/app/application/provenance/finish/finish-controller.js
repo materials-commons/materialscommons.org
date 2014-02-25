@@ -1,9 +1,10 @@
 Application.Provenance.Controllers.controller('provenanceFinish',
-    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService",
-        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService) {
+    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService", "$stateParams",
+        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService, $stateParams) {
 
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
+                $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
             };
 
             $scope.submitProvenance = function () {
@@ -26,12 +27,10 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                                     $scope.process_id = data.process;
                                     ProvDrafts.deleteDraft($scope.doc.id);
                                     alertService.sendMessage("Your Provenance was Created Successfully.");
-
+                                    $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
                                 })
                                 .error(function () {
                                     $scope.notdone = true;
-                                    //Stater.clear();
-                                    //$scope.state = Stater.retrieve();
                                     alertService.sendMessage("Sorry - Your Provenance upload failed.");
                                 })
                                 .post({state_id: $scope.doc.id});
@@ -42,6 +41,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
 
             $scope.deleteDraft = function () {
                 ProvDrafts.deleteRemoteDraft($scope.doc.id);
+                $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
             };
 
             $scope.init = function () {
