@@ -90,7 +90,7 @@ def load_data(user, state_id, state_saver):
     process_id = load_provenance_from_state(state_id, state_saver)
     r.table('drafts').get(state_id).delete().run(g.conn)
     state_saver.move_to_tables()
-    state_saver.delete_tables()
+    #state_saver.delete_tables()
     return process_id
     
 
@@ -108,7 +108,7 @@ def load_provenance_from_state(state_id, saver):
         r.table('saver').get(process_id).update({'output_files': attributes['output_files']}).run(g.conn)
     input_conditions = dmutil.get_optional('input_conditions', attributes, [])
     output_conditions = dmutil.get_optional('output_conditions', attributes, [])
-    create_conditions_from_templates(process_id, user, input_conditions, output_conditions, saver)
+    create_conditions_from_templates_modified(process_id, user, input_conditions, output_conditions, saver)
     return process_id
 
 
@@ -142,11 +142,11 @@ def create_conditions_from_templates(process_id, user, input_conditions, output_
     for condition_name in input_conditions:
         condition = input_conditions[condition_name]
         condition[u'condition_type'] = 'input_conditions'
-        create_condition_from_template(process_id, user, condition, saver)
+        create_condition_from_template_modified(process_id, user, condition, saver)
     for condition_name in output_conditions:
         condition = output_conditions[condition_name]
         condition[u'condition_type'] = 'output_conditions'
-        create_condition_from_template(process_id, user, condition, saver)
+        create_condition_from_template_modified(process_id, user, condition, saver)
 
 
 def create_condition_from_template(process_id, user, j, saver):
@@ -168,6 +168,29 @@ def create_condition_from_template(process_id, user, j, saver):
 
 def add_model_item(c, name, value,unit, value_choice, unit_choice,value_type):
     c['model'].append({'name':name, 'value':value,'unit':unit, 'value_choice':value_choice, 'unit_choice':unit_choice, 'type':value_type})
+
+
+def create_conditions_from_templates_modified(process_id, user, input_conditions, output_conditions, saver):
+    for key  in input_conditions:
+        values = input_conditions[key]
+        values['condition_type'] = 'input_conditions'
+        create_condition_from_template_modified(process_id, user, values, saver)
+    for key  in output_conditions:
+        values = output_conditions[key]
+        values['condition_type'] = 'output_conditions'
+        create_condition_from_template_modified(process_id, user, values, saver)
+
+
+def create_condition_from_template_modified(process_id, user, j, saver):
+    c = dict()
+    type_of_condition = dmutil.get_required('condition_type', j)
+    c['owner'] = dmutil.get_optional('owner', j)
+    c['material'] = dmutil.get_optional('material', j)
+    c['model'] = dmutil.get_optional('model', j)
+    c['template'] = dmutil.get_required('template_name', j)
+    c_id = saver.insert('conditions', c)
+    new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run(g.conn)
+    r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
 
 
 @app.route('/import', methods=['POST'])
