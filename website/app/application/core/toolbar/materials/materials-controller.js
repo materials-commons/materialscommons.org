@@ -7,6 +7,7 @@ Application.Controllers.controller('toolbarMaterials',
         mcapi('/templates')
             .argWithValue('filter_by', '"template_type":"material"')
             .success(function (data) {
+                console.dir(data);
                 $scope.material_template = data[0];
                 $scope.default_properties = $scope.material_template.model.default;
                 $scope.additional_properties = $scope.material_template.model.additional;

@@ -1,56 +1,60 @@
 <div ng-controller="toolbarThumbnails">
-    <div class="row-fluid">
-        <div class="offset1">
-            <h5>Pick the datadir to view thumbnail images:</h5>
+    <div ng-show="model.datadirs.length > 0">
+        <div class="row-fluid">
+            <div class="offset1">
+                <h5>Pick the datadir to view thumbnail images:</h5>
 
-            <div style="margin-bottom:10px">
-                <select class="span6" ng-model="model.datadir"
-                        ng-options="ddir.name for ddir in model.datadirs | orderBy:'name'"
-                        ng-change="display_images()">
-                </select>
+                <div style="margin-bottom:10px">
+                    <select class="span6" ng-model="model.datadir"
+                            ng-options="ddir.name for ddir in model.datadirs | orderBy:'name'"
+                            ng-change="display_images()">
+                    </select>
 
 
+                </div>
             </div>
         </div>
-    </div>
-    <div ng-show="model.datadir">
-        <div class="bar">
-            <!-- These two buttons switch the layout varaible,
-                 which causes the correct UL to be shown. -->
+        <div ng-show="model.datadir">
+            <div class="bar">
+                <!-- These two buttons switch the layout varaible,
+                     which causes the correct UL to be shown. -->
 
-            <a class="list-icon" ng-class="{active: model.layout == 'list'}" ng-click="model.layout = 'list'"></a>
-            <a class="grid-icon" ng-class="{active: model.layout == 'grid'}" ng-click="model.layout = 'grid'"></a>
+                <a class="list-icon" ng-class="{active: model.layout == 'list'}" ng-click="model.layout = 'list'"></a>
+                <a class="grid-icon" ng-class="{active: model.layout == 'grid'}" ng-click="model.layout = 'grid'"></a>
+            </div>
+
+            <!-- We have two layouts. We choose which one to show depending on the "layout" binding -->
+
+
+            <ul ng-show="model.layout == 'grid'" class="grid">
+                <!-- A view with big photos and no text -->
+                <div ng-hide="model.pics">
+                    <span>No images</span>
+                </div>
+                <li ng-repeat="p in model.pics">
+                    <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"/></a>
+                    <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: p.file.id})">{{ p.file.name }}</a>
+                </li>
+            </ul>
+
+            <ul ng-show="model.layout == 'list'" class="list">
+                <!-- A compact view smaller photos and titles -->
+                <div ng-hide="model.pics">
+                    <span>No images</span>
+                </div>
+                <li ng-repeat="p in model.pics">
+                    <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"/></a>
+                    <a></a>
+                    <span>Name : {{p.file.name}}</span><br>
+                    <span>Size: {{p.file.size}}</span><br>
+                    <span>Owner: {{p.file.owner}} </span><br>
+                    <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: p.file.id})">Edit</a>
+                </li>
+            </ul>
+
         </div>
-
-        <!-- We have two layouts. We choose which one to show depending on the "layout" binding -->
-
-
-        <ul ng-show="model.layout == 'grid'" class="grid">
-            <!-- A view with big photos and no text -->
-            <div ng-hide="model.pics">
-                <span>No images</span>
-            </div>
-            <li ng-repeat="p in model.pics">
-                <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"/></a>
-                <a ui-sref="toolbar.dataedit/({id: p.file.id})">Edit</a>
-            </li>
-        </ul>
-
-        <ul ng-show="model.layout == 'list'" class="list">
-            <!-- A compact view smaller photos and titles -->
-            <div ng-hide="model.pics">
-                <span>No images</span>
-            </div>
-            <li ng-repeat="p in model.pics">
-                <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"/></a>
-                <a></a>
-                <span>Name : {{p.file.name}}</span><br>
-                <span>Size: {{p.file.size}}</span><br>
-                <span>Owner: {{p.file.owner}} </span><br>
-                <a ui-sref="toolbar.dataedit({id: p.file.id})">Edit</a>
-            </li>
-        </ul>
-
     </div>
-
+    <div ng-show="model.datadirs.length === 0">
+        You have no files.
+    </div>
 </div>

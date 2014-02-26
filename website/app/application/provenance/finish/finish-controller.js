@@ -1,9 +1,10 @@
 Application.Provenance.Controllers.controller('provenanceFinish',
-    ["$scope", "ProvDrafts", "$dialog", "$state",
-        function ($scope, ProvDrafts, $dialog, $state) {
+    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService", "$stateParams",
+        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService, $stateParams) {
 
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
+                $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
             };
 
             $scope.submitProvenance = function () {
@@ -17,15 +18,30 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                     .open()
                     .then(function (result) {
                         if (result === "no") {
-                            console.log("Not submitting");
                             return;
                         }
-                        console.log("Submitting provenance");
+                        ProvDrafts.saveDraft(function () {
+                            mcapi('/upload')
+                                .success(function (data) {
+                                    $scope.done = true;
+                                    $scope.process_id = data.process;
+                                    ProvDrafts.deleteDraft($scope.doc.id);
+                                    alertService.sendMessage("Your Provenance was Created Successfully.");
+                                    $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
+                                })
+                                .error(function () {
+                                    $scope.notdone = true;
+                                    alertService.sendMessage("Sorry - Your Provenance upload failed.");
+                                })
+                                .post({state_id: $scope.doc.id});
+
+                        });
                     });
             };
 
             $scope.deleteDraft = function () {
                 ProvDrafts.deleteRemoteDraft($scope.doc.id);
+                $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
             };
 
             $scope.init = function () {
