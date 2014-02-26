@@ -44,12 +44,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 }
             };
 
-
-            $scope.clear_machine = function () {
-                $scope.process.machine = {'model': []};
-                $scope.machine_added = false;
-            };
-
             $scope.add_machine_to_db = function () {
                 var temp = $scope.process.machine;
                 mcapi('/machines/new')
