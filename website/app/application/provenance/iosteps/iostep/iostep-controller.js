@@ -6,15 +6,25 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 $scope.doc.model.added_properties.push(JSON.parse($scope.additionalProperty));
             };
 
+            $scope.addCustomProperty = function () {
+                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, 'unit': '', 'value_choice': [], 'unit_choice': []});
+            };
+
             $scope.loadMaterials = function () {
                 mcapi('/materials')
                     .success(function (data) {
                         $scope.materials = data;
-                    }).jsonp();
-            };
 
-            $scope.materialSelect = function (material) {
-                $scope.doc.material = material;
+                        if ($scope.doc.material) {
+                            var i = _.indexOf($scope.materials, function (item) {
+                                return (item.name === $scope.doc.material.name);
+                            });
+
+                            if (i !== -1) {
+                                $scope.doc.material = $scope.materials[i];
+                            }
+                        }
+                    }).jsonp();
             };
 
             $scope.init = function () {
@@ -32,6 +42,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 $scope.defaultProperties = $scope.doc.model.default;
                 $scope.additionalProperties = [];
                 $scope.useExisting = "yes";
+
             };
 
             $scope.init();
