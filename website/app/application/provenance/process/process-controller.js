@@ -29,6 +29,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             $scope.saveDraft = function () {
                 ProvDrafts.current.name = $scope.process.name;
                 ProvDrafts.saveDraft();
+                $scope.message = "Your draft has been saved!";
             };
 
             $scope.add_property_to_machine = function () {
@@ -92,6 +93,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             };
 
             $scope.init = function () {
+                $scope.message = '';
                 // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
                 $scope.bk = {
                     p_name: '',
