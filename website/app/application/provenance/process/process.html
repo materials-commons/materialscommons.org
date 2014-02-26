@@ -41,17 +41,22 @@
                     <!--</label>-->
 
                     <div ng-show="useExisting == 'yes'">
-                        <cgroup label="Select existing machine:">
-                            <select>
-                                <option disabled>Pick a machine:</option>
-                                <option ng-repeat="m in machines_list" value="{{ m }}"
-                                        ng-click="machine_select(m)">
-                                    {{ m.name }}
-                                </option>
-                                <option disabled></option>
-                                <option ng-click="clear_machine()" value="clear">clear</option>
+                        <label>Select existing machine: </label>
+
+                            <select ng-model="process.machine"
+                                ng-options="mach.name for mach in machines_list">
                             </select>
-                        </cgroup>
+
+                            <!--<select>-->
+                            <!--<option disabled>Pick a machine:</option>-->
+                            <!--<option ng-repeat="m in machines_list" value="{{ m }}"-->
+                            <!--ng-click="machine_select(m)">-->
+                            <!--{{ m.name }}-->
+                            <!--</option>-->
+                            <!--<option disabled></option>-->
+                            <!--<option ng-click="clear_machine()" value="clear">clear</option>-->
+                            <!--</select>-->
+                        </label>
                     </div>
                     <div ng-show="useExisting == 'no'">
                         <cgroup label="Name:">
