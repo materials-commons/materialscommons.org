@@ -27,10 +27,6 @@
                                     <td>{{ project.datadirs_count }}/{{ project.datafiles_count }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Size:</td>
-                                    <td>{{ project.size }}</td>
-                                </tr>
-                                <tr>
                                     <td>Reviews Due:</td>
                                     <td>{{ project.reviews_count }}</td>
                                 </tr>
@@ -106,7 +102,7 @@
     <div id="toolbarOverviewProjectModal" class="modal hide fade in" modal-dismiss ng-controller="_toolbarOverviewProjectModal">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3>Add Todo</h3>
+            <h3>{{ whichProject.name }}</h3>
         </div>
         <div class="modal-body form-horizontal">
             <form>

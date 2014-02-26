@@ -121,12 +121,22 @@ def get_reviews_for_datafile(datafile_id):
     return args.json_as_format_arg(reviews)
 
 
-@app.route('/processes/datafile/<df_id>', methods=['GET'])
+@app.route('/processes/output/datafile/<df_id>', methods=['GET'])
 @apikey
 @jsonp
-def get_processes(df_id):
+def get_output_process(df_id):
     rr = r.table('processes') \
-          .filter(lambda row: (row['input_files'].contains(df_id)
-                               | row['output_files'].contains(df_id)))
+          .filter(lambda row: (row['output_files']['id'].contains(df_id)))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    print selection
+    return args.json_as_format_arg(selection)
+
+
+@app.route('/processes/input/datafile/<df_id>', methods=['GET'])
+@apikey
+@jsonp
+def get_input_processes(df_id):
+    rr = r.table('processes') \
+          .filter(lambda row: (row['input_files']['id'].contains(df_id)))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)

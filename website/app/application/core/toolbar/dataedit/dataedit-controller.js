@@ -11,11 +11,11 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.fileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey();
                 $scope.originalFileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey();
                 $scope.fileName = $scope.doc.name;
-            }
+            };
 
             $scope.removeTag = function (index) {
                 $scope.doc.tags.splice(index, 1);
-            }
+            };
 
             $scope.addTag = function () {
                 if (!$scope.doc.tags) {
@@ -83,28 +83,30 @@ Application.Controllers.controller('toolbarDataEdit',
             $scope.show_process = function (p) {
                 $scope.process = p
                 $scope.show_pr = true;
-                if (p.input_files.length != 0) {
-                    mcapi('/processes/extract/%/%', p.id, "input_files")
-                        .success(function (data) {
-                            $scope.ip_files = data;
-                        })
-                        .error(function (e) {
-
-                        }).jsonp()
-                }
-                if (p.output_files.length != 0) {
-                    mcapi('/processes/extract/%/%', p.id, "output_files")
-                        .success(function (data) {
-                            $scope.op_files = data;
-                        })
-                        .error(function (e) {
-
-                        }).jsonp()
-                }
+//                if (p.input_files.length != 0) {
+//                    mcapi('/processes/extract/%/%', p.id, "input_files")
+//                        .success(function (data) {
+//                            $scope.ip_files = data;
+//                        })
+//                        .error(function (e) {
+//
+//                        }).jsonp()
+//                }
+//                if (p.output_files.length != 0) {
+//                    mcapi('/processes/extract/%/%', p.id, "output_files")
+//                        .success(function (data) {
+//                            $scope.op_files = data;
+//                            console.log($scope.op_files)
+//                        })
+//                        .error(function (e) {
+//
+//                        }).jsonp()
+//                }
                 if (p.input_conditions.length != 0) {
                     mcapi('/processes/extract/%/%', p.id, "input_conditions")
                         .success(function (data) {
                             $scope.ip_conditions = data;
+
                         })
                         .error(function (e) {
 
@@ -155,9 +157,15 @@ Application.Controllers.controller('toolbarDataEdit',
                         })
                     }).jsonp();
 
-                mcapi('/processes/datafile/%', $scope.id)
+                mcapi('/processes/output/datafile/%', $scope.id)
                     .success(function (data) {
-                        $scope.processes = data;
+                        $scope.output_process = data;
+                        console.log($scope.output_process)
+                    }).jsonp()
+
+                mcapi('/processes/input/datafile/%', $scope.id)
+                    .success(function (data) {
+                        $scope.input_processes = data;
                         console.log($scope.processes)
                     }).jsonp()
 
