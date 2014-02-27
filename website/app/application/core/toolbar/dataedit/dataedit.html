@@ -130,14 +130,13 @@
                 </div>
                 <div class="tab-pane" id="provenance">
                     <form class="form-inline">
-                        <input type="button" ng-model="output_process[0].name">
-                        <button class="btn btn-info">{{output_process[0].name}}</button>
+                        <button class="btn btn-info" ng-click="show_process(output_process[0])">{{output_process[0].name}}</button>
                         <span class="circle">{{doc.name}}</span>
                         <select ng-model="selected_input_process"
                                 ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
                                 ng-multiple="false">
                             <option></option>
-                            <option ng-repeat="process in input_processes">{{ process.name }}</option>
+                            <option  value={{process}} ng-repeat="process in input_processes">{{ process.name }}</option>
                         </select>
                     </form>
                     <!--<form class="form-inline">-->
