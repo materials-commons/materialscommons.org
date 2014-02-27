@@ -1,0 +1,56 @@
+{
+
+    "id": "APT Sample Preparation" ,
+    "model": {
+        "default": [
+            {
+                "name": "Sample name" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Alloy composition" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+            "name": "Preparation" ,
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [
+                "Electropolish" ,
+                "FIB"
+            ],
+            "required": false
+            },
+            {
+                "name": "Notes" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ],
+        "additional":[
+        ]
+    } ,
+    "owner": "admin@materialscommons.org", 
+    "template_birthtime": "" ,
+    "template_description": "Sample preparation for APT from Emmanuelle" ,
+    "template_mtime": "" ,
+    "template_name": "APT Sample Preparation" ,
+    "template_pick": "material" ,
+    "template_type": "condition"
+}
