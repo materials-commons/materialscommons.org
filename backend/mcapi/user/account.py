@@ -1,6 +1,6 @@
 from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
-from ..access import remove_user
+from .. import access
 import json
 from flask import jsonify, g
 import rethinkdb as r
@@ -8,6 +8,7 @@ import uuid
 from ..utils import make_password_hash, make_salted_password_hash
 from ..args import json_as_format_arg
 from .. import error
+from .. import apikeydb
 
 
 @app.route('/user/<user>', methods=['GET'])
@@ -33,6 +34,15 @@ def get_api_key_for_user(user, password):
         return error.not_authorized("Bad username or password")
 
 
+@app.route('/users/init', methods=['PUT'])
+@apikey
+@jsonp
+def user_init():
+    apikeydb.reset()
+    access.reset()
+    return json_as_format_arg({"status": "success"})
+
+
 @app.route('/user/<user>/password/<newpw>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
@@ -48,7 +58,7 @@ def change_password(user, newpw):
 def reset_apikey(user):
     new_apikey = uuid.uuid1().hex
     r.table('users').get(user).update({'apikey': new_apikey}).run(g.conn)
-    remove_user(user)
+    access.remove_user(user)
     return jsonify({'apikey': new_apikey})
 
 
