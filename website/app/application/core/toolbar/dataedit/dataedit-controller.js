@@ -81,37 +81,17 @@ Application.Controllers.controller('toolbarDataEdit',
 
             watcher.watch($scope, 'selected_input_process', function(){
                 $scope.show_process(JSON.parse($scope.selected_input_process));
-
             })
 
             $scope.show_process = function (p) {
-                console.log(p)
                 $scope.process = p
                 $scope.show_pr = true;
-//                if (p.input_files.length != 0) {
-//                    mcapi('/processes/extract/%/%', p.id, "input_files")
-//                        .success(function (data) {
-//                            $scope.ip_files = data;
-//                        })
-//                        .error(function (e) {
-//
-//                        }).jsonp()
-//                }
-//                if (p.output_files.length != 0) {
-//                    mcapi('/processes/extract/%/%', p.id, "output_files")
-//                        .success(function (data) {
-//                            $scope.op_files = data;
-//                            console.log($scope.op_files)
-//                        })
-//                        .error(function (e) {
-//
-//                        }).jsonp()
-//                }
+                $scope.input_files = $scope.process.input_files;
+                $scope.output_files = $scope.process.output_files;
                 if (p.input_conditions.length != 0) {
                     mcapi('/processes/extract/%/%', p.id, "input_conditions")
                         .success(function (data) {
                             $scope.ip_conditions = data;
-
                         })
                         .error(function (e) {
 
@@ -144,7 +124,6 @@ Application.Controllers.controller('toolbarDataEdit',
                         mcapi('/datadirs/%/datafile', $scope.doc.id)
                             .success(function (data) {
                                 $scope.trail = data[0].name.split('/')
-
                             })
                             .error(function (e) {
 
@@ -165,13 +144,11 @@ Application.Controllers.controller('toolbarDataEdit',
                 mcapi('/processes/output/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.output_process = data;
-                        console.log($scope.output_process[0].name)
                     }).jsonp()
 
                 mcapi('/processes/input/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.input_processes = data;
-                        console.log($scope.input_processes)
                     }).jsonp()
 
             }

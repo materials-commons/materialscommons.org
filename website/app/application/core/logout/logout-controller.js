@@ -4,7 +4,7 @@ Application.Controllers.controller('logout',
             Stater.clear();
             $rootScope.email_address = '';
             User.setAuthenticated(false, '', '');
-            $state.transitionTo('home')
+            $state.transitionTo('home');
             $cookieStore.remove('mcuser');
             Thumbnails.clear();
             Projects.clear();
