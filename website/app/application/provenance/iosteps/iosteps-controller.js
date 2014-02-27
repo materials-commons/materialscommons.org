@@ -1,9 +1,10 @@
 Application.Provenance.Controllers.controller('provenanceIOSteps',
-    ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams",
-        function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams) {
+    ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams", "alertService",
+        function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams, alertService) {
 
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
+                $scope.message = "your draft has been saved!";
             };
 
             $scope.gotoStep = function (stepName) {
@@ -107,6 +108,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.init = function () {
+                $scope.message = '';
                 $scope.doc = ProvDrafts.current;
                 $scope.steps = [];
                 $scope.loadSteps();

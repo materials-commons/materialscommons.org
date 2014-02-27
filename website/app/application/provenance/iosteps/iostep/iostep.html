@@ -7,12 +7,8 @@
                         <fieldset>
                             <h5>From what material was your sample drawn?</h5>
                             <cgroup label="Material:">
-                                <select>
-                                    <option value="" selected disabled>Pick a material:</option>
-                                    <option ng-repeat="m in materials" value="{{ m }}"
-                                            ng-click="materialSelect(m)">
-                                        {{ m.name }}
-                                    </option>
+                                <select ng-model="doc.material"
+                                        ng-options="mat.name for mat in materials">
                                 </select>
                             </cgroup>
                         </fieldset>

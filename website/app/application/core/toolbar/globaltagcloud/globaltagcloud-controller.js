@@ -5,7 +5,7 @@ Application.Controllers.controller('toolbarGlobalTagCloud',
             .success(function (data) {
                 $scope.word_list = [];
                 angular.forEach(data, function (tag) {
-                    $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/mytools/data/bytag/" + tag.name});
+                    $scope.word_list.push({text: tag.name, weight: tag.count, link: "#/toolbar/databytag/" + tag.name});
                 });
             }).jsonp();
     }]);
