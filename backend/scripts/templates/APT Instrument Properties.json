@@ -66,6 +66,16 @@
                 "required": true
             },
             {
+                "name": "Evaporation Rate",
+                "attribute": "evaporation_rate",
+                "type": "",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": ["Atom", "Pulse"],
+                "required": true
+            },
+            {
                 "name": "Vacuum Level" ,
                 "attribute": "vacuum_level",
                 "type": "" ,
@@ -82,7 +92,7 @@
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
-                "value_choice": ["He", "Ar", "Ne", "Other"],
+                "value_choice": ["He", "Ar", "Ne", "Other", "None"],
                 "required": true
             },
             {
