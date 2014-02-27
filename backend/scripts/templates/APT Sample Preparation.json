@@ -19,7 +19,7 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": false
+                "required": true
             },
             {
             "name": "Preparation" ,
@@ -29,9 +29,22 @@
             "value": "" ,
             "value_choice": [
                 "Electropolish" ,
-                "FIB"
+                "Electropolish + FIB Milling",
+                "FIB Milling Only",
+                "Liftout Only",
+                "Liftout + FIB Milling",
+                "Other"
             ],
-            "required": false
+            "required": true
+            },
+            {
+                "name": "Preparation Note",
+                "type": "textarea",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
             },
             {
                 "name": "Notes" ,
@@ -40,7 +53,7 @@
                 "unit_choice": [],
                 "value": "" ,
                 "value_choice": [],
-                "required": false
+                "required": true
             }
         ],
         "additional":[
