@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$stateParams", "pubsub", "User", "dateGenerate",
-        function ($scope, $window, mcapi, alertService, $stateParams, pubsub, User, dateGenerate) {
+    ["$scope", "$window", "mcapi", "alertService", "$stateParams", "pubsub", "User", "dateGenerate", "watcher",
+        function ($scope, $window, mcapi, alertService, $stateParams, pubsub, User, dateGenerate, watcher) {
 
             $scope.setupAccessToUserFile = function () {
                 if (isImage($scope.doc.name)) {
@@ -79,8 +79,13 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.new_note = "";
             }
 
+            watcher.watch($scope, 'selected_input_process', function(){
+                $scope.show_process(JSON.parse($scope.selected_input_process));
+
+            })
 
             $scope.show_process = function (p) {
+                console.log(p)
                 $scope.process = p
                 $scope.show_pr = true;
 //                if (p.input_files.length != 0) {
@@ -160,13 +165,13 @@ Application.Controllers.controller('toolbarDataEdit',
                 mcapi('/processes/output/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.output_process = data;
-                        console.log($scope.output_process)
+                        console.log($scope.output_process[0].name)
                     }).jsonp()
 
                 mcapi('/processes/input/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.input_processes = data;
-                        console.log($scope.processes)
+                        console.log($scope.input_processes)
                     }).jsonp()
 
             }
