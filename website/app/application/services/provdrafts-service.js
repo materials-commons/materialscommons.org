@@ -115,6 +115,11 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             service._publishChange();
                         }
                     }).delete();
+            },
+
+            clear: function () {
+                service.drafts = [];
+                service.current = null;
             }
         };
 
