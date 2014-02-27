@@ -2,7 +2,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
     ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts",
         function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts) {
             watcher.watch($scope, 'process_type', function (template) {
-                if ($scope.process.template == template.template_name) {
+                if ($scope.process.template.template_name == template.template_name) {
                     // All attributes already loaded from a draft
                     return;
                 }
@@ -29,6 +29,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             $scope.saveDraft = function () {
                 ProvDrafts.current.name = $scope.process.name;
                 ProvDrafts.saveDraft();
+                $scope.message = "Your draft has been saved!";
             };
 
             $scope.add_property_to_machine = function () {
@@ -42,16 +43,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 if ($scope.additional_prop || $scope.additional_prop === ' ') {
                     $scope.process.machine.model.push({'name': $scope.additional_prop, 'value': ''});
                 }
-
-            };
-
-            $scope.machine_select = function (m) {
-                $scope.process.machine = m;
-            };
-
-            $scope.clear_machine = function () {
-                $scope.process.machine = {'model': []};
-                $scope.machine_added = false;
             };
 
             $scope.add_machine_to_db = function () {
@@ -102,6 +93,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             };
 
             $scope.init = function () {
+                $scope.message = '';
                 // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
                 $scope.bk = {
                     p_name: '',
@@ -115,9 +107,20 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.process = ProvDrafts.current.attributes.process;
                 $scope.useExisting = "yes";
 
+
                 mcapi('/machines')
                     .success(function (data) {
                         $scope.machines_list = data;
+
+                        if ($scope.process.machine) {
+                            var i = _.indexOf($scope.machines_list, function (item) {
+                                return (item.name === $scope.process.machine.name);
+                            });
+
+                            if (i !== -1) {
+                                $scope.process.machine = $scope.machines_list[i];
+                            }
+                        }
                     }).jsonp();
 
                 mcapi('/templates')
@@ -148,6 +151,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     .error(function () {
                         alertService.sendMessage("Unable to retrieve processes from database.");
                     }).jsonp();
+
 
             };
 

@@ -80,8 +80,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 var callfunc = arguments.length === 1;
                 mcapi('/drafts')
                     .success(function (drafts) {
+                        service.drafts = [];
                         drafts.forEach(function (draft) {
-                            service.drafts = [];
                             service.drafts.push(draft);
                         });
                         service._publishChange();

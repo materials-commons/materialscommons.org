@@ -32,26 +32,31 @@
                 <form class="form-horizontal">
                     <label>Selected Machine: <a href="#modalMachine">{{ process.machine.name }}</a></label>
                     <!--<label class="radio">-->
-                        <!--<input type="radio" ng-model="useExisting" value="yes">-->
-                        <!--Use existing machine-->
+                    <!--<input type="radio" ng-model="useExisting" value="yes">-->
+                    <!--Use existing machine-->
                     <!--</label>-->
                     <!--<label class="radio">-->
-                        <!--<input type="radio" ng-model="useExisting" value="no">-->
-                        <!--Create new machine-->
+                    <!--<input type="radio" ng-model="useExisting" value="no">-->
+                    <!--Create new machine-->
                     <!--</label>-->
 
                     <div ng-show="useExisting == 'yes'">
-                        <cgroup label="Select existing machine:">
-                            <select>
-                                <option disabled>Pick a machine:</option>
-                                <option ng-repeat="m in machines_list" value="{{ m }}"
-                                        ng-click="machine_select(m)">
-                                    {{ m.name }}
-                                </option>
-                                <option disabled></option>
-                                <option ng-click="clear_machine()" value="clear">clear</option>
-                            </select>
-                        </cgroup>
+                        <label>Select existing machine: </label>
+
+                        <select ng-model="process.machine"
+                                ng-options="mach.name for mach in machines_list">
+                        </select>
+
+                        <!--<select>-->
+                        <!--<option disabled>Pick a machine:</option>-->
+                        <!--<option ng-repeat="m in machines_list" value="{{ m }}"-->
+                        <!--ng-click="machine_select(m)">-->
+                        <!--{{ m.name }}-->
+                        <!--</option>-->
+                        <!--<option disabled></option>-->
+                        <!--<option ng-click="clear_machine()" value="clear">clear</option>-->
+                        <!--</select>-->
+                        </label>
                     </div>
                     <div ng-show="useExisting == 'no'">
                         <cgroup label="Name:">
@@ -150,9 +155,18 @@
                     </li>
                 </ul>
             </div>
-            <div class="row-fluid span10">
-                <button ng-click="done()" ng-disabled="!process.name" class="btn btn-primary">Done</button>
-                <button ng-click="saveDraft()" class="btn btn-success">Save Draft</button>
+            <div class="row-fluid">
+                <div class="span4">
+                    <button ng-click="done()" ng-disabled="!process.name" class="btn btn-primary">Done</button>
+                    <button ng-click="saveDraft()" class="btn btn-success">Save Draft</button>
+                </div>
+                <div ng-show="message" class="span4">
+                    <div class="alert alert-dismissable alert-info">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{message}}
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

@@ -9,8 +9,16 @@
         </ul>
         <div ui-view></div>
         <div class="row-fluid">
-            <button ng-click="nextStep()" class="btn btn-primary">Done</button>
-            <button ng-click="saveDraft()" class="btn btn-success">Save Draft</button>
+            <div class="span4">
+                <button ng-click="nextStep()" class="btn btn-primary">Done</button>
+                <button ng-click="saveDraft()" class="btn btn-success">Save Draft</button>
+            </div>
+            <div ng-show="message" class="span4">
+                <div class="alert alert-dismissable alert-info">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                   {{message}}
+                </div>
+            </div>
         </div>
     </div>
 

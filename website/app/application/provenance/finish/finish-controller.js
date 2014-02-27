@@ -4,6 +4,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
 
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
+                alertService.sendMessage("Your draft has been saved!");
                 $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
             };
 
