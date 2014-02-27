@@ -40,3 +40,7 @@ def _lookup_key(what):
     if what in _apikeys:
         return _apikeys[what]
     return None
+
+
+def reset():
+    _apikeys.clear()
