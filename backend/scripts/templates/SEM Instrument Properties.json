@@ -1,0 +1,98 @@
+{
+
+    "id": "SEM Instrument Properties" ,
+    "model": {
+        "default": [
+            {
+                "name": "Detector",
+                "attribute": "dectector",
+                "type": "",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": ["SEI - Evozbart-Thornley", "BE - Scizlhate", "BE - Solid State"],
+                "required": true
+            },
+            {
+                "name": "Voltage(kV)",
+                "attribute": "voltage",
+                "type": "number",
+                "unit": "kV",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Current(A)",
+                "attribute": "current",
+                "type": "number",
+                "unit": "A",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Tilt(Degrees)",
+                "attribute": "tilt",
+                "type": "number",
+                "unit": "o",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Magnification",
+                "attribute": "magnification",
+                "type": "number",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Specimen/Stage Bias(V)",
+                "attribute": "specimen_stage_bias",
+                "type": "",
+                "unit": "V",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Column Bias(V)",
+                "attribute": "column_bias",
+                "type": "",
+                "unit": "V",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Notes" ,
+                "attribute": "notes",
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ],
+        "additional":[
+        ]
+
+    } ,
+    "owner": "admin@materialscommons.org", 
+    "template_description": "" ,
+    "template_birthtime": "",
+    "template_mtime": "",
+    "template_name": "SEM Instrument Properties" ,
+    "template_type": "condition",
+    "template_pick": ""
+}
