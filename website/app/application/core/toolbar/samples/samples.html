@@ -1,0 +1,84 @@
+<div ng-controller="toolbarSamples">
+    <div class="row-fluid">
+        <div class="span5">
+            <form class="form-horizontal">
+                <fieldset>
+                    <legend>Create Sample</legend>
+                    <cgroup label="Select Material:">
+                        <select ng-model="doc.material"
+                                ng-options="mat.name for mat in materials">
+                        </select>
+                    </cgroup>
+                    <div class="control-group">
+                        <label class="control-label">Select Template:</label>
+                        <div class="controls">
+                            <select ng-model="template"
+                                    ng-options="temp as temp.template_name for temp in templates"
+                                    ng-change="update()">
+                            </select>
+                        </div>
+                    </div>
+
+                    <legend>Required Properties</legend>
+                    <div df-properties default-properties="doc.model.default"></div>
+                    <hr align="left">
+                    <legend>Additional Properties</legend>
+                    <div ng-repeat="pv in doc.model.added_properties">
+                        <div class="control-group">
+                            <label class="control-label">{{pv.name}}</label>
+
+                            <div class="controls">
+                                <div ng-if="pv.value_choice.length!=0">
+                                    <select ng-model="pv.value">
+                                        <option ng-repeat="val in pv.value_choice"> {{val}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div ng-if="pv.value_choice.length==0">
+                                    <input type="text" ng-model="pv.value">
+                                </div>
+                                <div ng-if="pv.unit_choice.length!=0">
+                                    <select class="span2" ng-model="pv.unit">
+                                        <option ng-repeat="unit in pv.unit_choice"> {{unit}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Additional Properties:</label>
+
+                        <div class="controls">
+                            <select ng-model="additionalProperty">
+                                <option ng-repeat="property in doc.model.additional"
+                                        value="{{property}}">
+                                    {{property.name}}
+                                </option>
+                            </select>
+                            <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Custom Properties:</label>
+
+                        <div class="controls">
+                            <input ng-model="customPropertyName" placeholder="Name..." type="text">
+                            <input ng-model="customPropertyValue" placeholder="Value..." type="text">
+                            <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
+                        </div>
+                    </div>
+                    <button  ng-click="save()" class="btn btn-primary">
+                        Save
+                    </button>
+                    <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
+
+                </fieldset>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
