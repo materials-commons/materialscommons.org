@@ -133,6 +133,12 @@ app.config(function ($stateProvider) {
             templateUrl: 'application/core/toolbar/materials/materials.html'
         })
 
+        // Toolbar materials views
+        .state('toolbar.samples', {
+            url: '/samples',
+            templateUrl: 'application/core/toolbar/samples/samples.html'
+        })
+
         // Toolbar overview
         .state('toolbar.overview', {
             url: '/overview',

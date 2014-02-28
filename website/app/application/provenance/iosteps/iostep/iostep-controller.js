@@ -2,14 +2,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
     ["$scope", "ProvDrafts", "$stateParams", "mcapi",
         function ($scope, ProvDrafts, $stateParams, mcapi) {
 
-            $scope.addAdditionalProperty = function () {
-                $scope.doc.model.added_properties.push(JSON.parse($scope.additionalProperty));
-            };
-
-            $scope.addCustomProperty = function () {
-                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, 'unit': '', 'value_choice': [], 'unit_choice': []});
-            };
-
             $scope.loadMaterials = function () {
                 mcapi('/materials')
                     .success(function (data) {
@@ -28,7 +20,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.init = function () {
-                console.dir($scope.doc)
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
                     $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
