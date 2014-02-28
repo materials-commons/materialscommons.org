@@ -42,6 +42,9 @@
                         <li class="toolbar-item" ng-class="{ active: isActiveStep('material-tab') }" >
                             <a  ng-click="showStep('material-tab')" ui-sref="toolbar.materials">Materials</a>
                         </li>
+                        <li class="toolbar-item" ng-class="{ active: isActiveStep('sample-tab') }" >
+                            <a  ng-click="showStep('sample-tab')" ui-sref="toolbar.samples">Samples</a>
+                        </li>
 
                         <li class="nav-header"><i class="fa fa-tags"></i> Common Tags</li>
                         <div ng-controller="_toolbarTags">
