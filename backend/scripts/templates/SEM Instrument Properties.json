@@ -10,7 +10,10 @@
                 "unit": "",
                 "unit_choice": [],
                 "value": "",
-                "value_choice": ["SEI - Evozbart-Thornley", "BE - Scizlhate", "BE - Solid State"],
+                "value_choice": ["SEI - Everhart-Thornley",
+                                 "BSE - Scintillator",
+                                 "BSE - Solid State",
+                                 "Other - Please Indicate"],
                 "required": true
             },
             {
@@ -34,8 +37,8 @@
                 "required": true
             },
             {
-                "name": "Tilt(Degrees)",
-                "attribute": "tilt",
+                "name": "Stage Tilt(Degrees)",
+                "attribute": "stage_tilt",
                 "type": "number",
                 "unit": "o",
                 "unit_choice": [],
