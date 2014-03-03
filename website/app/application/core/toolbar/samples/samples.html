@@ -72,13 +72,42 @@
                         Save
                     </button>
                     <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
-
                 </fieldset>
-
             </form>
-
         </div>
 
+        <div class="span7">
+            <h4>Samples: </h4>
+            <paged data="samples_list" current-page="currentDataPage" page-size="10">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>Sample</th>
+                        <th>Alloy</th>
+                        <th>Material</th>
+                        <th>Added Properties</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <p ng-if="samples_list.length==0">
+                        <b>No available samples in the database</b>
+                    </p>
+                    <p ng-if="samples_list.length!=0">
+                        <tr ng-repeat="sample in samples_list | orderBy:'birthtime' | page:currentDataPage:10">
+                            <td>{{sample.model.default[0].value}}</td>
+                            <td>{{sample.model.default[1].value}}</td>
+                            <td>{{sample.material.name}}</td>
+                            <td>
+                                <ul ng-repeat="kv in sample.model.added_properties">
+                                    <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </p>
+                    </tbody>
+                </table>
+            </paged>
+        </div>
     </div>
 
 </div>

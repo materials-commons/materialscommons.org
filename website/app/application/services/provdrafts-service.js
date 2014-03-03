@@ -62,6 +62,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                         });
                 } else {
                     // Need to update the draft
+                    console.log(service.current)
                     mcapi('/drafts/%', service.current.id)
                         .success(function () {
                             if (callfunc) {
