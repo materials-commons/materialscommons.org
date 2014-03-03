@@ -31,31 +31,21 @@
             <div class="row-fluid well span10">
                 <form class="form-horizontal">
                     <label>Selected Machine: <a href="#modalMachine">{{ process.machine.name }}</a></label>
-                    <!--<label class="radio">-->
-                    <!--<input type="radio" ng-model="useExisting" value="yes">-->
-                    <!--Use existing machine-->
-                    <!--</label>-->
-                    <!--<label class="radio">-->
-                    <!--<input type="radio" ng-model="useExisting" value="no">-->
-                    <!--Create new machine-->
-                    <!--</label>-->
 
                     <div ng-show="useExisting == 'yes'">
                         <label>Select existing machine: </label>
-
                         <select ng-model="process.machine"
                                 ng-options="mach.name for mach in machines_list">
                         </select>
+                        </label>
+                    </div>
+                    <label>Selected Material: <a href="#modalMachine">{{ process.material.name }}</a></label>
 
-                        <!--<select>-->
-                        <!--<option disabled>Pick a machine:</option>-->
-                        <!--<option ng-repeat="m in machines_list" value="{{ m }}"-->
-                        <!--ng-click="machine_select(m)">-->
-                        <!--{{ m.name }}-->
-                        <!--</option>-->
-                        <!--<option disabled></option>-->
-                        <!--<option ng-click="clear_machine()" value="clear">clear</option>-->
-                        <!--</select>-->
+                    <div ng-show="useExisting == 'yes'">
+                        <label>Select existing material: </label>
+                        <select ng-model="process.material"
+                                ng-options="mat.name for mat in materials_list">
+                        </select>
                         </label>
                     </div>
                     <div ng-show="useExisting == 'no'">

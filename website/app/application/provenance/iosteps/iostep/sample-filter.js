@@ -1,10 +1,10 @@
 Application.Filters.filter('samplefilter', function () {
 
-    return function (samples, doc) {
-        if (samples && doc.material) {
+    return function (samples, process) {
+        if (samples && process.material) {
             var i, return_samples = [];
             for (i = 0; i < samples.length; i++) {
-                if (samples[i].material.name === doc.material.name) {
+                if (samples[i].material.name === process.material.name) {
                     return_samples.push(samples[i]);
                 }
             }
