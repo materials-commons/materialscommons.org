@@ -1,9 +1,0 @@
-[
-{"type":"event","etype":"model-change","description":"Phase Field Model improved","_id":"191244a7839bbec9c21f5685241f02d5"},
-{"type":"event","etype":"experiment-added","description":"EMP Stress Test Experiment","_id":"191244a7839bbec9c21f5685241f0e87"},
-{"type":"event","etype":"experiment-added","description":"Tensile Testing Under Pres..","_id":"191244a7839bbec9c21f5685241f1b41"},
-{"type":"event","etype":"model-added","description":"DFT Model Added","_id":"191244a7839bbec9c21f5685241f2375"},
-{"type":"event","etype":"user-added","description":"gtarcea Joined","_id":"191244a7839bbec9c21f5685241f28aa"},
-{"type":"event","etype":"user-added","description":"jag Joined","_id":"191244a7839bbec9c21f5685241f298c"},
-{"type":"event","etype":"model-change","description":"Discrete Dislocations Impr..","_id":"191244a7839bbec9c21f5685241f2cd8"}
-]

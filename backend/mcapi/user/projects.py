@@ -30,41 +30,69 @@ def get_all_projects():
 @jsonp
 def get_all_group_projects():
     user = access.get_user()
-    list_projects = []
+    projects = []
     if access.is_administrator(user):
         all_users = list(r.table('users').pluck('email').run(g.conn))
-        allowedUsers = []
+        allowed_users = []
         for u in all_users:
-            allowedUsers.append(u['email'])
+            allowed_users.append(u['email'])
     else:
-        allowedUsers = list(r.table('usergroups')
-                            .filter(r.row['users'].contains(user))
-                            .concat_map(lambda g: g['users'])
-                            .distinct().run(g.conn))
-    users = '(' + '|'.join(allowedUsers) + ')'
-    if allowedUsers == []:
+        allowed_users = list(r.table('usergroups')
+                             .filter(r.row['users'].contains(user))
+                             .concat_map(lambda g: g['users'])
+                             .distinct().run(g.conn))
+    users = '(' + '|'.join(allowed_users) + ')'
+    if allowed_users == []:
         rr = r.table('projects').filter({'owner': user})
         rr = args.add_all_arg_options(rr)
-        items = list(rr.run(g.conn, time_format='raw'))
-        return args.json_as_format_arg(items)
+        projects = list(rr.run(g.conn, time_format='raw'))
     else:
         rr = r.table('projects').filter(r.row['owner'].match(users))
         rr = args.add_all_arg_options(rr)
         selection = list(rr.run(g.conn, time_format='raw'))
         for proj in selection:
-            if access.check_project_access(user, proj[u'owner']):
-                list_projects.append(proj)
-        return args.json_as_format_arg(list_projects)
+            if access.allowed(user, proj[u'owner']):
+                projects.append(proj)
+    for proj in projects:
+        add_project_info(proj)
+    return args.json_as_format_arg(projects)
+
+
+def add_project_info(project):
+    project_id = project['id']
+    if 'todos' not in project:
+        project['todos'] = []
+    reviews_count = r.table('reviews').filter({'project_id': project_id})\
+                                      .count().run(g.conn)
+    datadirs_count = r.table('project2datadir')\
+                      .get_all(project_id, index='project_id')\
+                      .count().run(g.conn)
+    datafiles_count = r.table('project2datafile')\
+                       .get_all(project_id, index='project_id')\
+                       .count().run(g.conn)
+    drafts_count = r.table('drafts')\
+                    .filter({"attributes": {"project_id": project_id}})\
+                    .count().run(g.conn)
+    project['reviews_count'] = reviews_count
+    project['datadirs_count'] = datadirs_count
+    project['datafiles_count'] = datafiles_count
+    project['drafts_count'] = drafts_count
+    project['provenance_count'] = 0
+    project['size'] = "N/A"
 
 
 @app.route('/projects/<id>', methods=['GET'])
 @apikey(shared=True)
 @jsonp
 def get_project(id):
-    rr = r.table('projects').filter({'id': id})
-    rr = args.add_all_arg_options(rr)
-    items = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(items)
+    proj = r.table('projects').get(id) \
+                              .run(g.conn, time_format='raw')
+    if proj is None:
+        return error.not_found("No such project %s" % (id))
+    user = access.get_user()
+    if not access.allowed(user, proj['owner']):
+        return error.not_authorized("No access to project %s" % (id))
+    return args.json_as_format_arg(proj)
 
 
 @app.route('/projects/<project_id>/datafiles')
@@ -124,6 +152,7 @@ def get_project_tree2(project_id):
 class DItem2:
     def __init__(self, id, name, type, owner, birthtime, size):
         self.id = id
+        self.selected = False
         self.c_id = ""
         self.level = 0
         self.parent_id = ""
@@ -163,6 +192,8 @@ def build_tree(datadirs):
         if ditem.level == 0:
             top_level_dirs.append(ditem)
         for df in ddir['datafiles']:
+            if df['name'][0] == ".":
+                continue
             dfitem = DItem2(df['id'], df['name'], 'datafile',
                             df['owner'], df['birthtime'], df['size'])
             dfitem.c_id = next_id
@@ -301,6 +332,37 @@ def get_otherfiles(files):
     for id in files:
         result.append(dmutil.get_single_from_table('conditions', id))
     return result
+
+
+@app.route('/projects/<id>/update', methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def update_project(id):
+    item = {}
+    do_update = False
+    user = access.get_user()
+    j = request.get_json()
+
+    description = dmutil.get_optional('description', j, None)
+    if description:
+        item['description'] = description
+        do_update = True
+
+    todos = dmutil.get_optional('todos', j, None)
+    if todos:
+        item['todos'] = todos
+        do_update = True
+
+    proj = r.table('projects').get(id).run(g.conn)
+    if proj is None:
+        return error.not_found('Project not found %s' % (id))
+    if user != proj['owner']:
+        return error.not_authorized("No access to project %s" % (id))
+
+    if do_update:
+        r.table('projects').get(id)\
+                           .update(item).run(g.conn)
+    return args.json_as_format_arg({'id': id})
 
 
 @app.route('/projects', methods=['POST'])

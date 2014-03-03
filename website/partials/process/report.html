@@ -62,13 +62,13 @@
 
                         <label>Name:</label><span>{{display_condition.name}}</span> <br>
                         <label>Description:</label><span>{{display_condition.description}}</span><br>
-                        <span ng-if="display_condition.material">
+                        <span ng-if="display_condition.material!={}">
                                   <label>Material:</label><span>{{display_condition.material.name}}</span><br>
                             </span>
                         <label>Model:</label>
 
                         <div ng-repeat="prop in display_condition.model">
-                            <label>{{prop.name}}</label> - <span>{{prop.value}}</span>
+                            <label>{{prop.name}}</label>  <span>{{prop.value}}</span>
                             <span ng-if="prop.unit!=''">
                                 {{prop.unit}}
                             </span>

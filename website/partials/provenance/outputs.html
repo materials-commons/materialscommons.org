@@ -1,0 +1,174 @@
+<div>
+    <h4>Inputs</h4>
+
+    <div ng-repeat="condition in state.attributes.process.required_conditions">
+        <div class="row-fluid well span10" ng-controller="OutputStepController" ng-init="init(condition)">
+            <a style="cursor:pointer" ng-click="showDetails=!showDetails">{{ condition_name }}</a>
+
+            <p style="float: right" ng-show="state.attributes.output_conditions[condition_name]">
+                <button class="btn btn-success">Saved</button>
+            </p>
+            <br>
+
+            <div ng-show="showDetails">
+                <div ng-show="condition.template_pick=='material'">
+                    <div class="row-fluid well span10">
+                        <form class=form-horizontal>
+                            <label>From what materials was sample drawn?:
+                                <a href="#modalMaterial">{{condition.material.name }}</a>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" ng-model="useExisting" value="yes">
+                                Use existing material
+                            </label>
+                            <label class="radio">
+                                <input type="radio" ng-model="useExisting" value="no">
+                                Create new material
+                            </label>
+
+                            <div ng-show="useExisting == 'yes'">
+                                <cgroup label="Select existing material:">
+                                    <select>
+                                        <option disabled>Pick a material:</option>
+                                        <option ng-repeat="m in materials" value="{{ m }}"
+                                                ng-click="material_select(m)">
+                                            {{ m.name }}
+                                        </option>
+                                        <option disabled></option>
+                                        <option ng-click="clear_material()" value="clear">clear</option>
+                                    </select>
+                                </cgroup>
+                            </div>
+                            <div ng-show="useExisting == 'no'">
+                                <cgroup label="Name:">
+                                    <input ng-model="condition.material.name" placeholder="Name your material"
+                                           type="text">
+                                </cgroup>
+                                <cgroup label="Composition">
+                                    <input ng-model="condition.material.composition" placeholder="Composition..."
+                                           type="text">
+                                </cgroup>
+                                <cgroup label="Contact:">
+                                    <input ng-model="process.machine.contact_email" placeholder="email.." type="text">
+                                </cgroup>
+                                <cgroup label="Notes:">
+                                    <textarea ng-model="process.machine.notes" class="span8" rows="4"
+                                              placeholder="Notes..."></textarea>
+                                </cgroup>
+                                <cgroup ng-repeat="pv in condition.material.model" label="{{ pv.name }}">
+                                    <input type="text" ng-model="pv.value">
+                                </cgroup>
+                                <cgroup label="Additional properties:">
+                                    <select ng-model="bk.p_name">
+                                        <option ng-repeat="prop in material_template.model" value="{{ prop.name }}">
+                                            {{ prop.name }}
+                                        </option>
+                                    </select>
+                                    <button ng-click="add_property_to_material()">Add</button>
+                                </cgroup>
+                                <button ng-disabled="!process.machine.name" ng-click="add_material_to_db()">Save
+                                </button>
+                                <button ng-click="clear_material()">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="row-fluid span10">
+                        <form class="form-horizontal">
+                            <cgroup label="Pick existing:">
+                                <select>
+                                    <option ng-repeat="ec in existing_conditions" value="{{ ec }}"
+                                            ng-click="selected_condition(ec)">
+                                        {{ ec.name }}
+                                    </option>
+                                    <option disabled> -------------------</option>
+                                    <option ng-click="clear_condition()" value="clear">Clear</option>
+                                </select>
+                            </cgroup>
+                            <label>Or you can create a new one:</label>
+                            <cgroup label="Name: [required]">
+                                <input ng-model="condition.name" placeholder="Name..." type="text">
+                            </cgroup>
+                            <cgroup label="Description">
+                                <input ng-model="condition.description" placeholder="Description..." type="text">
+                            </cgroup>
+                            <div ng-repeat="property in condition.model" label="{{ property.name }}">
+                                <cgroup label="{{ property.name }}">
+                                    <div ng-if="property.value_choice.length != 0">
+                                        <select ng-model="property.value">
+                                            <option ng-repeat="val in property.value_choice">{{ val }}</option>
+                                        </select>
+                                    </div>
+                                    <div ng-if="property.value_choice.length === 0">
+                                        <input ng-model="property.value" placeholder="{{ property.name }}..."
+                                               type="text">
+                                    </div>
+                                </cgroup>
+                                <div ng-if="property.unit_choice.length !== 0">
+                                    <cgroup label="Units:">
+                                        <select class="span2" ng-model="property.unit">
+                                            <option ng-repeat="unit in property.unit_choice">
+                                                {{ unit }}
+                                            </option>
+                                        </select>
+                                    </cgroup>
+                                </div>
+                            </div>
+                            <div class="well">
+                                <cgroup label="Add custom properties:">
+                                    <input ng-model="additional_prop" type="text">
+                                    <button ng-click="custom_property()">Add Property</button>
+                                </cgroup>
+                            </div>
+                            <cgroup>
+                                <button ng-click="save_condition()" ng-disabled="!condition.name">Save</button>
+                            </cgroup>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="state.attributes.process.required_output_files==='yes'">
+        <!--<div class="row-fluid span10 well" ng-controller="OutputStepController">-->
+        <div class="row-fluid span10 well" ng-controller="OutputSubstepChooseFilesController">
+            <!--<a style="cursor:pointer" ng-click="showDetails=!showDetails">Output files</a>-->
+            <a style="cursor:pointer" ng-click="show()">Output files</a>
+
+            <div ng-show="showDetails">
+                <h6>Selected files:</h6>
+                <ul>
+                    <li ng-repeat="item in outputFiles">
+                        <i class="fa fa-check-square"></i>{{item.displayname}}
+                        <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+                        <br>
+                    </li>
+                </ul>
+                <!--<li ng-repeat="item in state.attributes.checked_output_filenames">-->
+
+                <form class="form">
+                    <cgroup>
+                        <button ng-click="saveFiles()">Save</button>
+                    </cgroup>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid span10" ng-controller="OutputStepController">
+        <div ng-show="warning"><br>
+            <b style="color:orange">WARNING: Required properties should at least have a name.</b>
+        </div>
+        <div ng-hide="verified">
+            <button ng-click="verify_outputs()">Verify Outputs</button>
+
+        </div>
+        <div ng-show="verified">
+            <b>Required inputs have been verified!</b>
+            <button class="btn btn-small btn-primary" ng-click="next_step()">Move to Next Step</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="row-fluid" ng-controller="accountGroupCreate">
+    <hr>
+    <div class="span5 offset2">
+        <div class="well">
+            <h4>Create Group</h4>
+            <form class="form-horizontal">
+                <cgroup label="Name:">
+                    <input ng-model="group.name" placeholder="Name..." >
+                </cgroup>
+                <cgroup label="Access:">
+                    <select ng-model="group.access">
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                    </select>
+                </cgroup>
+                <cgroup label="Description:">
+                    <textarea class="input-xlarge" placeholder="Description..."
+                              ng-model="group.description" />
+                </cgroup>
+                <cgroup>
+                    <button class="btn btn-primary" ng-click="create_usergroup()">Create Group</button>
+                </cgroup>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+

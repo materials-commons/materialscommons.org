@@ -1,0 +1,222 @@
+p {
+    display: inline;
+}
+
+nav li {
+    display: inline-block;
+    padding: 0px;
+    background: gainsboro;
+}
+
+hr.horizontal_line {
+    border: 0;
+    color: #a4a7a2;
+    background: #a4a7a2;
+    height: 1px;
+}
+
+body {
+    padding-top: 0px;
+}
+
+td {
+    padding-right: 40px;
+}
+
+.mc-table {
+    color: black;
+}
+
+.mc-table-hover tbody tr:hover td,
+.mc-table-hover tbody tr:hover th {
+    background-color: #CCCCCC;
+}
+
+.people-heading {
+    margin-top: 25px;
+}
+
+.pagination {
+    text-align: center;
+    cursor: pointer;
+}
+
+.chat-box {
+    width: 440px;
+    float: left;
+    margin: 0 20px 0 20px;
+}
+
+.chat-box div, .chat-box input {
+    border: 1px solid;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 100%;
+    padding: 5px;
+    margin: 3px 0 10px 0;
+}
+
+.chat-box div {
+    border-color: grey;
+    height: 150px;
+    overflow: auto;
+}
+
+hr {
+    -moz-border-top-colors: gray;
+}
+
+.label-info.custom {
+    background-color: #3A87AD;
+    font-size: 10px;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    line-height: 14px;
+}
+
+.h1.custom {
+    background-color: white;
+    font: 180% sans-serif;
+    color: #226;
+    border-bottom: 3px dotted #77d
+}
+
+.line {
+    display: block;
+    border: none;
+    color: #333;
+    background: transparent;
+    border-bottom: 1px dotted black;
+    padding: 5px 2px 0 2px;
+}
+
+.line:focus {
+    outline: none;
+    border-color: #51CBEE;
+}
+
+.project-scrollbar {
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.prov-img-flow {
+    background-color: #20b942;
+}
+
+.prov-flow {
+    background-color: #40b9b7;
+
+}
+
+.block label {
+    display: inline-block;
+    padding-top: 10px;
+    width: 250px;
+    text-align: left;
+}
+
+.icon-autoscroll {
+    display: inline-block;
+    background-color: green;
+}
+
+.icon-autoscroll-disabled {
+    display: inline-block;
+    background-color: red;
+}
+
+.muted {
+    font-style: italic;
+}
+
+.btn {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.navbar-inverse .navbar-inner {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    background-color: #0c5c86;
+    background-image: linear-gradient(to bottom, #0c5c86, #0c5c86);
+}
+
+.navbar-inverse .nav .active > a,
+.navbar-inverse .nav .active > a:hover,
+.navbar-inverse .nav .active > a:focus {
+    color: antiquewhite;
+    background-color: #0c84cc;
+}
+
+.btn-primary {
+    background-color: #0c5c86;
+}
+
+.btn-info {
+    background-color: #67889d;
+}
+
+.btn-success {
+    background-color: #16a085;
+}
+
+.toolbar-item {
+    margin-left: 10px;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+    color: #ffffff;
+    background-color: #16a060;
+    *background-color: #1bd3af;
+}
+
+input[disabled],
+input[readonly],
+textarea[disabled],
+textarea[readonly] {
+    color: #252525;
+}
+
+.toolbar-border {
+    padding-right: 20px;
+    /*border-right: 1px solid #ccc;*/
+}
+
+.is-active {
+    background: blue;
+}
+
+.active {
+    outline: none;
+}
+
+/*
+** Remove outline on selected items (eg in a tab pill)
+*/
+a:focus {
+    outline: none;
+}
+
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+    cursor: pointer;
+}
+
+.modal.fade {
+    -webkit-transition: opacity .2s linear, none;
+    -moz-transition: opacity .2s linear, none;
+    -ms-transition: opacity .2s linear, none;
+    -o-transition: opacity .2s linear, none;
+    transition: opacity .2s linear, none;
+    top: 50%;
+}

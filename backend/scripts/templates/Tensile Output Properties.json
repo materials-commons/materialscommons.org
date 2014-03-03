@@ -1,0 +1,117 @@
+{
+    "id": "Tensile Output Properties",
+    "model": {
+        "default": [
+        ],
+       
+        "additional":[
+            {
+                "name": "Run Time" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["hrs", "mins", "secs"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required":  false  
+            },
+            {
+                "name": "Failure mode" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": ["In", "Out", "Knife edge"],
+                "required":  false  
+            },
+            {
+                "name": "Yield force" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Peak force" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "F/D slope" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Yield strength" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Brightness" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "UTS" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Elongation at Break" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Elongation at yield" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Elongation at peak stress" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ]
+    } ,
+    "owner": "gtarcea@umich.edu", 
+    "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_description": "" ,
+    "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_name": "Tensile Output Properties" ,
+    "template_pick": "" ,
+    "template_type": "condition"
+
+}

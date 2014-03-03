@@ -13,24 +13,26 @@ import os.path
 @apikey(shared=True)
 @jsonp
 def datafiles_for_user():
-    df_dg = {}
     user = access.get_user()
     rr = r.table('datafiles').filter({'owner': user})
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
-    
+
 
 @app.route('/datafiles/tag/<tag>')
 @apikey(shared=True)
 @jsonp
 def datafiles_for_user_by_tag(tag):
     user = access.get_user()
-    rr = r.table('datafiles').filter({'owner': user})\
-                             .filter(r.row['tags'].contains(tag))
+    rr = r.table('datafiles').filter(r.row['tags'].contains(tag))
     rr = args.add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
+    datafiles = []
+    for df in selection:
+        if access.allowed(user, df['owner']):
+            datafiles.append(df)
+    return args.json_as_format_arg(datafiles)
 
 
 @app.route('/datafile/update/<path:datafileid>', methods=['PUT'])
@@ -102,3 +104,29 @@ def get_datafile_by_name(datadir_id, name):
             return args.json_as_format_arg(df)
     return error.not_found(
         "No such file %s in datadir %s" % (name, datadir_id))
+
+
+@app.route('/datafiles/<datafile_id>/reviews')
+@apikey(shared=True)
+@jsonp
+def get_reviews_for_datafile(datafile_id):
+    user = access.get_user()
+    df = r.table('datafiles').get(datafile_id).run(g.conn)
+    if df is None:
+        return error.not_found('No such datafile: %s' % (datafile_id))
+    access.check(user, df['owner'])
+    reviews = list(r.table('reviews')
+                   .get_all(datafile_id, index='item_id')
+                   .run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(reviews)
+
+
+@app.route('/processes/datafile/<df_id>', methods=['GET'])
+@apikey
+@jsonp
+def get_processes(df_id):
+    rr = r.table('processes') \
+          .filter(lambda row: (row['input_files']['id'].contains(df_id)
+                               | row['output_files']['id'].contains(df_id)))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
