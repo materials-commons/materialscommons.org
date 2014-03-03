@@ -123,6 +123,21 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                         }
                     }).jsonp();
 
+                mcapi('/materials')
+                    .success(function (data) {
+                        $scope.materials_list = data;
+
+                        if ($scope.process.material) {
+                            var i = _.indexOf($scope.materials_list, function (item) {
+                                return (item.name === $scope.process.material.name);
+                            });
+
+                            if (i !== -1) {
+                                $scope.process.material = $scope.materials_list[i];
+                            }
+                        }
+                    }).jsonp();
+
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"machine"')
                     .success(function (data) {

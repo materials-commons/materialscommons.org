@@ -188,7 +188,6 @@ def create_condition_from_template_modified(process_id, user, j, saver):
     c['material'] = dmutil.get_optional('material', j)
     c['model'] = dmutil.get_optional('model', j)
     c['template'] = dmutil.get_required('template_name', j)
-    c['sample_id'] = dmutil.get_optional('sample_id', j)
     c_id = saver.insert('conditions', c)
     new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run(g.conn)
     r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
