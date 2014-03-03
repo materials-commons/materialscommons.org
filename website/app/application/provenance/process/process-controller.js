@@ -2,7 +2,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
     ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts",
         function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts) {
             watcher.watch($scope, 'process_type', function (template) {
-                if ($scope.process.template.template_name == template.template_name) {
+                if ($scope.process.template.template_name === template.template_name) {
                     // All attributes already loaded from a draft
                     return;
                 }
