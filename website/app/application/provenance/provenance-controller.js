@@ -54,17 +54,27 @@ Application.Provenance.Controllers.controller('provenance',
                 }
             };
 
+            $scope.markAllStepsFinished = function () {
+                ProvSteps.setStepFinished('process');
+                ProvSteps.setStepFinished('inputs');
+                ProvSteps.setStepFinished('outputs');
+            };
+
             $scope.init = function () {
                 var draft;
+
+                // Reset steps state
+                ProvSteps.clear();
+
                 if ($stateParams.draft_id !== "") {
                     draft = ProvDrafts.findDraft($stateParams.draft_id);
+                    $scope.markAllStepsFinished();
                 } else {
                     draft = ProvDrafts.newDraft();
                     draft.attributes.project_id = $stateParams.id;
                     draft.attributes.process = Model.newProcess();
                 }
                 ProvDrafts.current = draft;
-                ProvSteps.clear();
                 ProvSteps.setCurrentStep('process');
                 ProvSteps.onStepFinished($scope.stepFinished);
                 $state.go('toolbar.projectspage.provenance.process');

@@ -2,13 +2,14 @@ from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
 from .. import access
 import json
-from flask import jsonify, g
+from flask import jsonify, g, request
 import rethinkdb as r
 import uuid
 from ..utils import make_password_hash, make_salted_password_hash
 from ..args import json_as_format_arg
 from .. import error
 from .. import apikeydb
+from .. import dmutil
 
 
 @app.route('/user/<user>', methods=['GET'])
@@ -19,9 +20,11 @@ def get_user_details(user):
     return json_as_format_arg(u)
 
 
-@app.route('/user/<user>/<password>/apikey')
-@jsonp
-def get_api_key_for_user(user, password):
+@app.route('/user/<user>/apikey', methods=['PUT'])
+@crossdomain(origin='*')
+def get_api_key_for_user(user):
+    j = request.get_json()
+    password = dmutil.get_required('password', j)
     u = r.table('users').get(user).run(g.conn)
     if u is None:
         return error.not_authorized("Bad username or password")
@@ -43,10 +46,12 @@ def user_init():
     return json_as_format_arg({"status": "success"})
 
 
-@app.route('/user/<user>/password/<newpw>', methods=['PUT'])
+@app.route('/user/<user>/password', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
-def change_password(user, newpw):
+def change_password(user):
+    j = request.get_json()
+    newpw = dmutil.get_required('password', j)
     hash = make_password_hash(newpw)
     rv = r.table('users').get(user).update({'password': hash}).run(g.conn)
     return jsonify(rv)
