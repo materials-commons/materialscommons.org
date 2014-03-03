@@ -15,28 +15,18 @@ Application.Controllers.controller('toolbarSamples',
         };
 
         $scope.save = function () {
-            console.log('yes')
             $scope.doc.owner = User.u();
             mcapi('/samples/new')
-                .success(function (data){
-                    console.log(data);
+                .success(function (data) {
                     mcapi('/samples/%', data.id)
                         .success(function (sample_obj) {
                             $scope.sample = sample_obj;
-                            $scope.sample_list.unshift(sample_obj);
-                            console.log($scope.sample_list);
+                            $scope.samples_list.unshift(sample_obj);
                         })
                         .error(function (e) {
 
                         }).jsonp();
-                    $scope.doc = {
-                        'material': {},
-                        'model': {
-                            'added_properties': [],
-                            'default': [],
-                            'additional': []
-                        }
-                    };
+                    $scope.init();
                 })
                 .error(function (e) {
 
@@ -53,14 +43,20 @@ Application.Controllers.controller('toolbarSamples',
             mcapi('/materials')
                 .success(function (data) {
                     $scope.materials = data;
-                })
-                .error(function (data) {
                 }).jsonp();
 
             mcapi('/templates')
                 .argWithValue('filter_by', '"owner":"gtarcea@umich.edu", "template_pick":"material"')
                 .success(function (data) {
                     $scope.templates = data;
+                })
+                .error(function (data) {
+                }).jsonp();
+
+            mcapi('/samples')
+                .argWithValue('filter_by', '"owner": User.u()')
+                .success(function (data) {
+                    $scope.samples_list = data;
                 })
                 .error(function (data) {
                 }).jsonp();
