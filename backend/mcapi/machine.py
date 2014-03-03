@@ -1,20 +1,25 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request
+from flask import request, g
 import error
 import rethinkdb as r
 import dmutil
 import json
+import args
+
 
 @app.route('/machines', methods=['GET'])
 @jsonp
 def get_all_machines():
-    return dmutil.get_all_from_table('machines')
+    rr = r.table('machines').order_by(r.desc('birthtime'))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 @app.route('/machines/<machine_id>', methods=['GET'])
 @jsonp
 def get_machine(machine_id):
     return dmutil.get_single_from_table('machines', machine_id)
+
 
 @app.route('/machines/new', methods=['POST'])
 @apikey
@@ -22,30 +27,20 @@ def get_machine(machine_id):
 def create_machine():
     j = request.get_json()
     machine = dict()
-    machine['name'] = dmutil.get_required('name', j)
-    machine['longname'] = dmutil.get_optional('longname', j)
+    machine['additional'] = dmutil.get_required('additional', j)
+    machine['name'] = dmutil.get_required('Name', j)
+    machine['notes'] = dmutil.get_required('Notes', j)
     machine['birthtime'] = r.now()
-    machine['notes'] = dmutil.get_optional('notes', j, [])
-    #contact_id = dmutil.get_required('contact', j)
-    #if not dmutil.entry_exists('contacts', contact_id):
-        #return error.bad_request("You must specify the contacts")
-    #machine['contact'] = contact_id
-    machine['contact_email'] = dmutil.get_optional('contact_email', j)
-    machine['model'] = dmutil.get_optional('model', j)
     return dmutil.insert_entry('machines', machine)
 
-
-@app.route('/add_two_numbers', methods=['GET'])
-def add_numbers():
-    x = request.args.get('a', 0, type=int)
-    y = request.args.get('b', 0, type=int)
-    return jsonify(result=x+y)
 
 @app.route('/materials', methods=['GET'])
 @apikey(shared=True)
 @jsonp
 def get_all_materials():
-    return dmutil.get_all_from_table('materials')
+    rr = r.table('materials').order_by(r.desc('birthtime'))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 
 @app.route('/materials/new', methods=['POST'])
@@ -54,13 +49,11 @@ def get_all_materials():
 def create_material():
     j = request.get_json()
     material = dict()
-    material['name'] = dmutil.get_required('name', j)
+    material['additional'] = dmutil.get_required('additional', j)
+    material['name'] = dmutil.get_required('Name', j)
+    material['alloy'] = dmutil.get_required('Alloy', j)
+    material['notes'] = dmutil.get_required('Notes', j)
     material['birthtime'] = r.now()
-    material['notes'] = dmutil.get_optional('notes', j, [])
-    material['contact_email'] = dmutil.get_optional('contact_email', j)
-    material['alloy_name'] = dmutil.get_optional('alloy_name', j)
-    material['composition'] = dmutil.get_optional('composition', j)
-    material['model'] =  dmutil.get_optional('model', j)
     return dmutil.insert_entry('materials', material)
 
 

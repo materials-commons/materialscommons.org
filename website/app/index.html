@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="materialscommons">
+<head>
+    <meta charset="utf-8">
+
+    <title>Materials Commons</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Materials Repository">
+    <meta name="author" content="">
+
+
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.flatly.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="assets/css/select2/select2.css" rel="stylesheet">
+
+    <link href="assets/css/jqcloud.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
+
+    <link href="assets/css/thumbnail.css" rel="stylesheet">
+
+    <!--Treetable -->
+    <link rel="stylesheet" href="assets/css/jquery.treetable.css"/>
+    <link rel="stylesheet" href="assets/css/jquery.treetable.theme.default.css"/>
+    <!-- date select -->
+    <link href="assets/css/ng-quick-date-default-theme.css" rel="stylesheet" media="all">
+    <link href="assets/css/ng-quick-date.css" rel="stylesheet" media="all">
+
+    <!-- Application style sheet -->
+    <link href="style.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse">
+    <div class="navbar-inner" ng-controller="_indexNavigation">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <div class="nav-collapse collapse">
+                <div ng-hide="email_address">
+                    <p class="navbar-text pull-right">
+                        <a ui-sref="login" class="navbar-link"><i class="icon-user"></i> Login</a>
+                    </p>
+                </div>
+
+
+                <div ng-show="email_address">
+                    <p class="navbar-text pull-right">
+                        <a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i> {{email_address}}</a>
+                        <a ui-sref="logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
+                    </p>
+                </div>
+            </div>
+
+            <ul id="mc-main-navs" class="nav nav-pills">
+                <li class="">
+                    <a class="brand" style="color: #FDDF5B;" href="#">MaterialsCommons</a>
+                </li>
+                <li id="home-nav" ng-class="{ active: isActiveStep('home') }">
+                    <a ng-click="goHome(); showStep('home')"><i class="fa fa-home"></i> Home</a>
+                </li>
+                <li id="about-nav" ng-class="{ active: isActiveStep('about') }">
+                    <a ng-click="showStep('about')" ui-sref="about"><i class="fa fa-info-circle"></i> About</a>
+                </li>
+                <li id="contact-nav" ng-class="{ active: isActiveStep('contact') }">
+                    <a ng-click="showStep('contact')" ui-sref="contact"><i class="fa fa-phone-square"></i> Contact</a>
+                </li>
+                <li id="help-nav" ng-class="{ active: isActiveStep('help') }">
+                    <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-cirle"></i> Help</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid">
+
+    <div ng-show="message" ng-controller="_indexAlerts">
+        <notification message="message"></notification>
+    </div>
+
+</div>
+
+<div class="row-fluid">
+    <div ui-view></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="assets/js/jquery-ui-1.10.1.custom.js"></script>
+<script src="assets/js/jquery.fileupload.js"></script>
+<script src="assets/js/select2.min.js"></script>
+<script src="assets/js/sockjs-0.3.min.js"></script>
+<script src="assets/js/TreeModel-min.js"></script>
+<script src="assets/js/jquery.treetable.js"></script>
+<script src="assets/js/stomp.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
+<script src="assets/js/angular/angular-ui.js"></script>
+<script src="assets/js/angular/angular-dragdrop.js"></script>
+<script src="assets/js/angular/angular-stomp.js"></script>
+<script src="assets/js/angular/angular-ui-router.js"></script>
+
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/angular/angular-strap.min.js"></script>
+<script src="assets/js/bootstrap-select.js"></script>
+<script src="assets/js/jqcloud-1.0.4.js"></script>
+<script src="assets/js/underscore-min.js"></script>
+<script src="assets/js/ng-quick-date.js"></script>
+
+
+<script src="assets/js/angular/angular-resource.js"></script>
+<script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
+<script src="assets/js/jquery.tablesorter.min.js"></script>
+
+<!------------------------------ Application --------------------------->
+<script src="application/app.js"></script>
+
+<!------------------------------ Core app ------------------------------>
+<!-- Navbar -->
+<script src="application/core/help/help-controller.js"></script>
+<script src="application/core/about/about-controller.js"></script>
+<script src="application/core/contact/contact-controller.js"></script>
+<script src="application/core/home/home-controller.js"></script>
+<script src="application/core/login/login-controller.js"></script>
+<script src="application/core/logout/logout-controller.js"></script>
+<script src="application/core/account/account-controller.js"></script>
+
+
+<!-- Views -->
+<!-- View: Account Groups -->
+<script src="application/core/account/account-groups-controller.js"></script>
+<script src="application/core/account/groupcreate/account-groupcreate-controller.js"></script>
+<script src="application/core/account/groupusers/account-groupusers-controller.js"></script>
+
+<!-- Toolbar -->
+<script src="application/core/toolbar/toolbar-controller.js"></script>
+<script src="application/core/toolbar/_drafts-controller.js"></script>
+<script src="application/core/toolbar/_projects-controller.js"></script>
+<script src="application/core/toolbar/_reviews-controller.js"></script>
+<script src="application/core/toolbar/_tags-controller.js"></script>
+
+<!-- Toolbar Views -->
+
+<!-- Toolbar drafts -->
+<script src="application/core/toolbar/drafts/drafts-controller.js"></script>
+<script src="application/core/toolbar/drafts/_review-modal-controller.js"></script>
+
+<!-- Toolbar data -->
+<script src="application/core/toolbar/mydatapage/toolbar-mydatapage-controller.js"></script>
+<script src="application/core/toolbar/mydata/toolbar-mydata-controller.js"></script>
+<script src="application/core/toolbar/mydata/databyuser-filter.js"></script>
+<script src="application/core/toolbar/thumbnails/toolbar-thumbnails-controller.js"></script>
+<script src="application/core/toolbar/thumbnails/thumbnail-service.js"></script>
+<script src="application/core/toolbar/thumbnails/thumbnails-service.js"></script>
+<script src="application/core/toolbar/dataedit/dataedit-controller.js"></script>
+<script src="application/core/toolbar/dataedit/_create-review-controller.js"></script>
+<script src="application/core/toolbar/databytag/databytag-controller.js"></script>
+
+<!-- Toolbar tags -->
+<script src="application/core/toolbar/tagspage/tagspage-controller.js"></script>
+<script src="application/core/toolbar/tags/tags-controller.js"></script>
+<script src="application/core/toolbar/globaltagcloud/globaltagcloud-controller.js"></script>
+<script src="application/core/toolbar/globaltagcloud/wordcloud-directive.js"></script>
+
+<!-- Toolbar reviews -->
+<script src="application/core/toolbar/reviews/reviews-controller.js"></script>
+
+<!-- Toolbar machines -->
+<script src="application/core/toolbar/machines/machines-controller.js"></script>
+
+<!-- Toolbar materials -->
+<script src="application/core/toolbar/materials/materials-controller.js"></script>
+
+<!-- Toolbar projectspage -->
+<script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
+<script src="application/core/toolbar/projectspage/overview/overview-controller.js"></script>
+<script src="application/core/toolbar/projectspage/overview/treetable-directive.js"></script>
+
+<!-- Toolbar overview -->
+<script src="application/core/toolbar/overview/overview-controller.js"></script>
+<script src="application/core/toolbar/overview/_todo-modal-controller.js"></script>
+<script src="application/core/toolbar/overview/_project-modal-controller.js"></script>
+
+<!------------------------------ Provenance app ------------------------------>
+
+<!-- Views -->
+<!-- Provenance -->
+<script src="application/provenance/provenance-controller.js"></script>
+<script src="application/provenance/provsteps-service.js"></script>
+<script src="application/provenance/model-service.js"></script>
+
+<!-- Provenance Process -->
+<script src="application/provenance/process/process-controller.js"></script>
+
+<!-- Provenance Inputs/Outputs Steps -->
+<script src="application/provenance/iosteps/iosteps-controller.js"></script>
+<script src="application/provenance/iosteps/iostep/iostep-controller.js"></script>
+<script src="application/provenance/iosteps/files/files-controller.js"></script>
+
+<!-- Provenance Finish -->
+<script src="application/provenance/finish/finish-controller.js"></script>
+
+<!-------------------------------- Global directives ------------------------------->
+<script src="application/directives/paged-directive.js"></script>
+<script src="application/directives/notification-directive.js"></script>
+<script src="application/directives/cgroup-directive.js"></script>
+<script src="application/directives/dfproperties-directive.js"></script>
+<script src="application/directives/projecttree-directive.js"></script>
+<script src="application/directives/modal-dismiss-directive.js"></script>
+
+<!-------------------------------- Global services --------------------------------->
+<script src="application/services/user-service.js"></script>
+<script src="application/services/alert-service.js"></script>
+<script src="application/services/watcher-service.js"></script>
+<script src="application/services/pubsub-service.js"></script>
+<script src="application/services/mcapi-service.js"></script>
+<script src="application/services/project-service.js"></script>
+<script src="application/services/stater-service.js"></script>
+<script src="application/services/provdrafts-service.js"></script>
+<script src="application/services/nav-service.js"></script>
+
+<!-------------------------------- Global filters --------------------------------->
+<script src="application/filters/page-filter.js"></script>
+<script src="application/filters/todatestring-filter.js"></script>
+<script src="application/filters/reverse-filter.js"></script>
+
+<!-- Index -->
+<script src="index/_navigation-controller.js"></script>
+<script src="index/_alerts-controller.js"></script>
+
+<!-- Util -->
+<script src="index/util.js"></script>
+<script src="index/config.js"></script>
+
+</body>
+</html>

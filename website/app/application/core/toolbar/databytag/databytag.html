@@ -1,0 +1,54 @@
+<div ng-controller="toolbarDataByTag">
+    <div class="span10 offset1">
+        <h3>Data for tag: {{ tag }}</h3>
+
+        <div class="row-fluid">
+            Search: <input ui-keypress="{13: 'keypressCallback($event)'}" ng-model="query">
+        </div>
+        <div class="row-fluid">
+            <div class="well">
+                <paged data="reviews" current-page="currentTagDataPage" page-size="10">
+                    <table class="table table-striped mc-table-hover table-condensed mc-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Tags</th>
+                            <th>Meta Tags</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in docs | filter:query | page:currentTagDataPage:10">
+                            <td style="cursor:pointer"><a ui-sref="toolbar.dataedit({id: row.id})">{{ row.name }}</a></td>
+                            <td>{{ row.description }}</td>
+                            <td>
+                                <ul style="list-style-type:none">
+                                    <li ng-repeat="tag in row.tags"><span class="label label-info">{{ tag }}</span></li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li ng-repeat="metatag in row.metatags | limitTo:10">
+                                        {{ metatag.name }}:{{ metatag.value}}
+                                    </li>
+                                    <div ng-show="row.metatags.length > 10">
+                                        <accordion>
+                                            <accordion-group heading="... more">
+
+                                                <li ng-repeat="metatag in row.metatags.slice(10)">
+                                                    {{metatag.name}}
+                                                    {{metatag.value}}
+                                                </li>
+                                            </accordion-group>
+                                        </accordion>
+                                    </div>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </paged>
+            </div>
+        </div>
+    </div>
+</div>

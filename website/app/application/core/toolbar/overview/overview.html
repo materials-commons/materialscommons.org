@@ -1,0 +1,124 @@
+<div ng-controller="toolbarOverview">
+    <div class="span12">
+        <div class="row-fluid" ng-repeat="project in projects | orderBy:'name'">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><a ui-sref="toolbar.projectspage.overview({id: project.id})">{{ project.name }}</a></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row-fluid">
+                        <div class="span3">
+                            <a ui-sref="toolbar.projectspage.overview({id: project.id})"><i class="fa fa-tasks fa-5x"></i></a>
+                        </div>
+                        <div class="span5">
+                            <strong>Details</strong><br>
+                            <table class="table table-condensed table-responsive mc-table-hover">
+                                <tbody>
+                                <tr>
+                                    <td>Description:</td>
+                                    <td>{{ project.description }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Created:</td>
+                                    <td>{{ project.birthtime | toDateString }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Dirs/Files:</td>
+                                    <td>{{ project.datadirs_count }}/{{ project.datafiles_count }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Reviews Due:</td>
+                                    <td>{{ project.reviews_count }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Drafts:</td>
+                                    <td>{{ project.drafts_count }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Provenance:</td>
+                                    <td>{{ project.provenance_count }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="span4">
+                            <strong>Todos</strong>
+                            <table class="table table-condensed table-responsive mc-table-hover">
+                                <tbody>
+                                <tr ng-repeat="todo in project.todos">
+                                    <td><input type="checkbox" ng-click="deleteTodo(project, $index)"> {{ todo.name }}</td>
+                                    <td>{{ todo.description }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a class="btn btn-primary" type="button"
+                            data-toggle="modal"
+                            data-target="#toolbarOverviewProjectModal"
+                            ng-click="setProject(project)"
+                            tooltip="Edit project details"
+                            data-original-title="Edit project"><i class="fa fa-pencil-square-o"></i></a>
+                    <a class="btn  btn-info" type="button"
+                            data-toggle="modal"
+                            data-target="#toolbarOverviewTodoModal"
+                            ng-click="setProject(project)"
+                            tooltip="New Todo"
+                            data-original-title="Create todo"><i class="fa fa-check-square-o"></i></a>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+    <div id="toolbarOverviewTodoModal" class="modal hide fade in" modal-dismiss ng-controller="_toolbarOverviewTodoModal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Add Todo</h3>
+        </div>
+        <div class="modal-body form-horizontal">
+            <form>
+                <fieldset>
+                    <legend>Todo</legend>
+                    <input type="text" ng-model="name"
+                           ui-keypress="{13: 'addTodoKeypress($event)'}"
+                           placeholder="Name...">
+                    <input type="text" ng-model="description"
+                           ui-keypress="{13: 'addTodoKeypress($event)'}"
+                           placeholder="Description...">
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true"
+                    ng-click="addTodo()">Add</button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden=true>Cancel</button>
+        </div>
+    </div>
+
+    <div id="toolbarOverviewProjectModal" class="modal hide fade in" modal-dismiss ng-controller="_toolbarOverviewProjectModal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>{{ whichProject.name }}</h3>
+        </div>
+        <div class="modal-body form-horizontal">
+            <form>
+                <fieldset>
+                    <legend>Project</legend>
+                    <input type="text" ng-model="description"
+                           ui-keypress="{13: 'editProjectKeypress($event)'}"
+                           placeholder="Description...">
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true"
+                    ng-click="editProject()">Add</button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden=true>Cancel</button>
+        </div>
+    </div>
+</div>

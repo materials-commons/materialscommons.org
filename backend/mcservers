@@ -14,8 +14,10 @@ function start_servers()
     sleep 3
     
     if [ $TESTSERVER = true ]; then
-        cp ../test_data/rethinkdb_dump_test_data.tar.gz $MCDB_DIR
-        rethinkdb restore $MCDB_DIR/rethinkdb_dump_test_data.tar.gz --connect localhost:$MCDB_PORT
+        echo "Restoring from file $MCDB_FILE"
+        cp $MCDB_FILE $MCDB_DIR
+        FILE=$(basename $MCDB_FILE)
+        rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT
     fi
     scripts/dbcreate.py
     mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
@@ -124,6 +126,9 @@ if [ $TESTSERVER = true ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MCFS_PORT=35882
+    if [ "$MCDB_FILE" = "" ]; then
+        export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+    fi
     if [ $(hostname) = "materialscommons" ]; then
         export MCDIR=/mcfs/data/test
     else

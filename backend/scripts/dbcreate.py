@@ -29,6 +29,7 @@ def create_tables():
     run(r.table_create("notes"))
     run(r.table_create("templates"))
     run(r.table_create("state"))
+    run(r.table_create("drafts"))
     run(r.table_create("saver"))
     run(r.table_create("project2datadir"))
     run(r.table_create("project2datafile"))
@@ -51,6 +52,14 @@ def create_indices():
     run(r.table('projects').index_create('owner'))
     run(r.table('usergroups').index_create('owner'))
     run(r.table('usergroups').index_create('name'))
+    run(r.table('templates').index_create('template_name'))
+    run(r.table('drafts').index_create('owner'))
+    run(r.table('drafts').index_create('project_id'))
+    run(r.table('reviews').index_create('requested_to'))
+    run(r.table('reviews').index_create('requested_by'))
+    run(r.table('reviews').index_create('item_id'))
+    run(r.table('project2datafile').index_create('project_id'))
+    run(r.table('project2datafile').index_create('datafile_id'))
 
 
 def run(rql):

@@ -1,0 +1,79 @@
+<div ng-controller="toolbarReviews">
+    <div class="row-fluid">
+        <div class="span12">
+            <div ng-show="reviewsToConduct.length > 0">
+                <h4>Reviews to conduct</h4>
+
+                <paged data="reviews" current-page="currentReviewPage" page-size="10">
+                    <table class="table table-striped mc-table-hover table-condensed mc-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Requested by</th>
+                            <th>Requested To</th>
+                            <th>Message</th>
+                            <th>Created on</th>
+                            <th>Item</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="review in reviewsToConduct | page:currentReviewPage:10">
+                            <td><a style="cursor:pointer" ng-click="gotoReview(review)">View</a></td>
+                            <td>{{ review.requested_by }}</td>
+                            <td>{{ review.requested_to }}</td>
+                            <td>{{ review.note }}</td>
+                            <td>{{ review.birthtime | toDateString }}</td>
+                            <td>{{ review.item_name }}</td>
+                            <td>{{ review.status }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </paged>
+            </div>
+            <div ng-show="reviewsToConduct.length === 0">
+                <h4>Reviews to conduct: None</h4>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <div ng-show="reviewsRequested.length > 0">
+                <h4>Reviews you have requested</h4>
+                <paged data="reviewsRequested" current-page="currentRequestedReviewPage" page-size="10">
+                    <table class="table table-striped mc-table-hover table-condensed mc-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Requested by</th>
+                            <th>Requested To</th>
+                            <th>Message</th>
+                            <th>Created on</th>
+                            <th>Item</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="review in reviewsRequested | page:currentRequestedReviewPage:10">
+                            <td><a style="cursor:pointer" ng-click="gotoReview(review)">View</a>
+                            </td>
+                            <td>{{review.requested_by}}</td>
+                            <td>{{ review.requested_to }}</td>
+                            <td>{{ review.note }}</td>
+                            <td>{{ review.birthtime | toDateString }}</td>
+                            <td>{{ review.item_name }}</td>
+                            <td>{{ review.status }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </paged>
+            </div>
+            <div ng-show="reviewsRequested.length === 0">
+                <h4>Reviews you have requested: None</h4>
+            </div>
+        </div>
+    </div>
+</div>

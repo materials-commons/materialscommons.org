@@ -1,0 +1,55 @@
+{
+    "id": "Angle Properties",
+    "model": {
+        "default": [
+        ],
+       
+        "additional":[
+            {
+                "name": "Start angle" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["degrees"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false 
+            },
+            {
+                "name": "End angle" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": ["degrees"] ,
+                "value": "" ,
+                "value_choice": ["In", "Out", "Knife edge"],
+                "required": false 
+            },
+            {
+                "name": "Rate" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Step size" ,
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+           
+        ]
+    } ,
+    "owner": "gtarcea@umich.edu", 
+    "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_description": "" ,
+    "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_name": "Angle Properties" ,
+    "template_pick": "" ,
+    "template_type": "condition"
+
+}

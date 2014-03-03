@@ -1,0 +1,54 @@
+<div>
+    <div ng-show="loaded===false" class="row-fluid">
+        <div class="span4 offset5">
+            <p><i class="fa fa-spinner fa-spin fa-4x"></i> Loading...</p>
+        </div>
+    </div>
+    <div ng-show="loaded===true" class="row-fluid">
+        <div class="span12">
+            <a style="cursor: pointer" ng-click="backToFolder(trailitem)"
+                    ng-repeat="trailitem in trail">
+                <i class="fa fa-folder fa-2x"></i><span style="margin-right: 7px">{{trailitem.displayname}}/ </span>
+            </a>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <h4>Project Files:</h4>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Owner</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id={{t.c_id}} data-tt-parent-id={{t.parent_id}}>
+                        <td ng-if="entry.type=='datafile'">
+                            <input ng-model="entry.selected" ng-click="fileSelected(entry)"
+                                   ng-change="entry.selected = !entry.selected" type="checkbox">
+                        </td>
+
+                        <td ng-if="entry.type=='datadir'">
+                            <!--<input type="checkbox" disabled/>-->
+                        </td>
+
+                        <td ng-if="entry.type=='datadir'">
+                            <a style="cursor: pointer" ng-click="openFolder(entry)"><i class="fa fa-folder fa-2x"></i>{{entry.displayname}}
+                            </a>
+                        </td>
+                        <td ng-if="entry.type=='datafile'">
+                            <a ui-sref="toolbar.dataedit({id: entry.id})"><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</a>
+                        </td>
+                        <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
+                        <td ng-if="entry.type=='datadir'">-</td>
+                        <td>{{entry.owner}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

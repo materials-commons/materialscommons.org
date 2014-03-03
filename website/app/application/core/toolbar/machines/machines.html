@@ -1,0 +1,106 @@
+<div ng-controller="toolbarMachines">
+
+    <div class="row-fluid">
+        <div class="span5">
+            <div class="">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend>Create Machine</legend>
+                        <div df-properties default-properties="default_properties"></div>
+
+                        <div ng-repeat="pv in machine.additional">
+                            <div class="control-group">
+                                <label class="control-label">{{pv.name}}</label>
+
+                                <div class="controls">
+                            <span ng-if="pv.value_choice.length!=0">
+                                 <select ng-model="pv.value">
+
+                                     <option ng-repeat="val in pv.value_choice"> {{val}}
+                                     </option>
+                                 </select>
+                            </span>
+                            <span ng-if="pv.value_choice.length==0">
+                                <input type="text" ng-model="pv.value" placeholder="Value...">
+                            </span>
+                            <span ng-if="pv.unit_choice.length!=0">
+                                <select ng-model="pv.unit">
+                                    <option ng-repeat="unit in pv.unit_choice"> {{unit}}
+                                    </option>
+                                </select>
+                            </span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Additional:</label>
+
+                            <div class="controls">
+                                <select ng-model="p_name">
+                                    <option value="" disabled selected>Additional...</option>
+                                    <option ng-repeat="each_additional in additional_properties"
+                                            value="{{each_additional}}">
+                                        {{each_additional.name}}
+                                    </option>
+                                </select>
+                                <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Custom:</label>
+
+                            <div class="controls">
+                                <input ng-model="additional_prop" placeholder="Name..."
+                                       type="text">
+                                <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
+                            </div>
+                        </div>
+
+                        <button ng-disabled="!default_properties[0].value" ng-click="save()" class="btn btn-primary">
+                            Save
+                        </button>
+                        <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
+                    </fieldset>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="span7">
+            <h4>Machines: </h4>
+            <paged data="machines_list" current-page="currentDataPage" page-size="20">
+
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Properties</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <p ng-if="machines_list.length==0">
+                        <b>No available machines in the database</b>
+                    </p>
+
+                    <p ng-if="machines_list.length!=0">
+                        <tr ng-repeat="machine in machines_list | orderBy:'name' | page:currentDataPage:20">
+                            <td>{{machine.name}}</td>
+                            <td>
+                                <ul ng-repeat="kv in machine.additional">
+                                    <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
+                                </ul>
+                            </td>
+                            <td>{{machine.notes}}</td>
+                        </tr>
+                    </p>
+
+                    </tbody>
+                </table>
+            </paged>
+        </div>
+    </div>
+</div>

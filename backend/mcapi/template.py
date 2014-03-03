@@ -1,6 +1,6 @@
 from mcapp import app
 from decorators import crossdomain, jsonp, apikey
-from flask import request
+from flask import request, g
 import rethinkdb as r
 import error
 import dmutil
@@ -12,6 +12,19 @@ import json
 @jsonp
 def get_template(template_id):
     return dmutil.get_single_from_table('templates', template_id)
+
+
+@app.route('/templates/name/<template_name>', methods=['GET'])
+#@apikey
+@jsonp
+def get_template_by_name(template_name):
+    items = list(r.table('templates')
+                 .get_all(template_name, index='template_name')
+                 .run(g.conn, time_format='raw'))
+    if not items:
+        return error.not_found("Template %s not found" % template_name)
+    return json.dumps(items[0])
+
 
 @app.route('/templates', methods=['GET'])
 @apikey(shared=True)
@@ -29,17 +42,18 @@ def create_template():
 
 
 def create_template_for_type(template_type, j):
-    template_table = {\
-                      "process": create_process_template,\
-                      "machine": create_machine_template,\
-                      "condition": create_condition_template\
+    template_table = {
+        "process": create_process_template,
+        "machine": create_machine_template,
+        "condition": create_condition_template
     }
     if template_type in template_table:
         template_func = template_table[template_type]
         template = template_func(j)
         return dmutil.insert_entry('templates', template)
     else:
-        return error.bad_request("Unrecognized template type: " + template_type)    
+        return error.bad_request(
+            "Unrecognized template type: " + template_type)
 
 
 def create_process_template(j):
@@ -52,7 +66,7 @@ def create_process_template(j):
     add_model_item(template, 'required_output_conditions', required_output_conditions, "", "")
     add_model_item(template, 'required_input_files', required_input_files, "", "")
     add_model_item(template, 'required_output_files', required_output_files, "", "")
-    add_model_item(template, 'name', "","","")
+    add_model_item(template, 'name', "", "", "")
     add_model_item(template, 'description', "", "", "")
     add_model_item(template, 'birthtime', "", "", "")
     add_model_item(template, 'mtime', "", "", "")
@@ -66,6 +80,7 @@ def create_process_template(j):
     add_model_item(template, 'status', "", "", "")
     return template
 
+
 def create_machine_template(j):
     template = common_template_elements("machine", j)
     add_model_item(template, 'shortname', "")
@@ -76,6 +91,7 @@ def create_machine_template(j):
     add_model_item(template, 'notes', [])
     return template
 
+
 def create_condition_template(j):
     template = common_template_elements("condition", j)
     properties = j[u'properties']
@@ -83,7 +99,7 @@ def create_condition_template(j):
         prop_name = prop['name']
         prop_value = prop['value']
         prop_units = prop['units']
-        prop_type  = prop['type']
+        prop_type = prop['type']
         add_model_item(template, prop_name, prop_value, prop_units, prop_type)
     return template
 
@@ -100,6 +116,6 @@ def common_template_elements(template_type, j):
     template['model'] = list()
     return template
 
-def add_model_item(template, name, value, unit, value_type):
-    template['model'].append({'name':name, 'value':value, 'units': unit, 'type': value_type})
 
+def add_model_item(template, name, value, unit, value_type):
+    template['model'].append({'name': name, 'value': value, 'units': unit, 'type': value_type})
