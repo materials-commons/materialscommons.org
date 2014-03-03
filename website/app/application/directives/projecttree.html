@@ -19,7 +19,6 @@
                     <tr>
                         <th>Select</th>
                         <th>Name</th>
-                        <th>View</th>
                         <th>Size</th>
                         <th>Owner</th>
                     </tr>
@@ -41,14 +40,10 @@
                             </a>
                         </td>
                         <td ng-if="entry.type=='datafile'">
-                            <p><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</p>
+                            <a ui-sref="toolbar.dataedit({id: entry.id})"><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</a>
                         </td>
-
-                        <td ng-if="entry.type=='datafile'">
-                            <a ui-sref="toolbar.dataedit({id: entry.id})">{{entry.name}}</a>
-                        </td>
-                        <td ng-if="entry.type=='datadir'"></td>
-                        <td>{{entry.size}}</td>
+                        <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
+                        <td ng-if="entry.type=='datadir'">-</td>
                         <td>{{entry.owner}}</td>
                     </tr>
                     </tbody>

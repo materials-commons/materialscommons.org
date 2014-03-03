@@ -148,7 +148,15 @@ app.config(function ($stateProvider) {
         // Toolbar projectspage views
         .state('toolbar.projectspage', {
             url: '/projectspage/:id/:draft_id',
-            templateUrl: 'application/core/toolbar/projectspage/projectspage.html'
+            templateUrl: 'application/core/toolbar/projectspage/projectspage.html',
+            resolve: {
+                ProvDrafts: "ProvDrafts"
+            },
+            onExit: function (ProvDrafts) {
+                if (ProvDrafts.current) {
+                    ProvDrafts.saveDraft();
+                }
+            }
         })
         .state('toolbar.projectspage.overview', {
             url: '/overview',
@@ -161,6 +169,7 @@ app.config(function ($stateProvider) {
         .state('toolbar.projectspage.provenance.process', {
             url: '/process',
             templateUrl: 'application/provenance/process/process.html'
+
         })
         .state('toolbar.projectspage.provenance.iosteps', {
             url: '/iosteps:iosteps',
@@ -181,7 +190,7 @@ app.config(function ($stateProvider) {
 });
 
 app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User) {
-    $rootScope.$on('$stateChangeStart', function (event, toState) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
         if (!User.isAuthenticated()) {
             if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") !== -1) {
                 $location.path("/login");
@@ -190,5 +199,4 @@ app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, Use
             $rootScope.email_address = User.u();
         }
     });
-
 });
