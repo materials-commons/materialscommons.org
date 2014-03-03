@@ -1,0 +1,120 @@
+{
+
+    "id": "APT Instrument Properties" ,
+    "model": {
+        "default": [
+            {
+                "name": "Mode",
+                "attribute": "mode",
+                "type": "",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": ["FIM", "Voltage", "Laser"],
+                "required": true
+            },
+            {
+                "name": "Specimen Temperature(K)",
+                "attribute": "specimen_temperature",
+                "type": "number",
+                "unit": "K",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Voltage Pulse Fraction(%)",
+                "attribute": "voltage_pulse_fraction",
+                "type": "number",
+                "unit": "%",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Laser Pulse Energy(pJ)",
+                "attribute": "laser_pulse_energe",
+                "type": "number",
+                "unit": "pJ",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Pulse Frequence(kHz)",
+                "attribute": "pulse_frequency",
+                "type": "number",
+                "unit": "kHz",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Evaporation Control",
+                "attribute": "evaporation_control",
+                "type": "",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": ["Constant Detector Rate",
+                                 "Constant Evaporation Rate",
+                                "Constant Charge Rate Ratio"],
+                "required": true
+            },
+            {
+                "name": "Evaporation Rate",
+                "attribute": "evaporation_rate",
+                "type": "",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": ["Atom", "Pulse"],
+                "required": true
+            },
+            {
+                "name": "Vacuum Level" ,
+                "attribute": "vacuum_level",
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": ["High", "Low"],
+                "required": true
+            },
+            {
+                "name": "Imaging Gas" ,
+                "attribute": "imaging_gas",
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": ["He", "Ar", "Ne", "Other", "None"],
+                "required": true
+            },
+            {
+                "name": "Notes" ,
+                "attribute": "notes",
+                "type": "" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ],
+        "additional":[
+        ]
+
+    } ,
+    "owner": "admin@materialscommons.org", 
+    "template_description": "" ,
+    "template_birthtime": "",
+    "template_mtime": "",
+    "template_name": "APT Instrument Properties" ,
+    "template_type": "condition",
+    "template_pick": ""
+}
