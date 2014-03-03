@@ -28,7 +28,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.init = function () {
-                console.dir($scope.doc)
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
                     $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
