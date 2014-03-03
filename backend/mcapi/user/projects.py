@@ -192,6 +192,8 @@ def build_tree(datadirs):
         if ditem.level == 0:
             top_level_dirs.append(ditem)
         for df in ddir['datafiles']:
+            if df['name'][0] == ".":
+                continue
             dfitem = DItem2(df['id'], df['name'], 'datafile',
                             df['owner'], df['birthtime'], df['size'])
             dfitem.c_id = next_id
