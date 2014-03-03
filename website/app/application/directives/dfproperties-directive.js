@@ -5,19 +5,23 @@ Application.Directives.directive('dfProperties',
             scope: {
                 defaultProperties: '='
             },
-            template: "<span ng-repeat='df in defaultProperties'>" +
-                "<div class='control-group'>" +
+            template:
+                "<div class='control-group' ng-repeat='df in defaultProperties'>" +
                 "<label class='control-label'>{{df.name}}:</label>" +
                 "<div class='controls'>" +
-                "<p ng-if='df.value_choice.length!=0'>" +
+                "<div ng-if='df.value_choice.length!=0'>" +
                 "<select ng-model='df.value'>" +
-                "<option ng-repeat='each in df.value_choice' value='{{each}}'> {{each}} </option></select>" +
-                "</p>" +
-                "<p ng-if='df.value_choice.length==0'>" +
+                "<option ng-repeat='each in df.value_choice'> {{each}} </option></select>" +
+                "</div>" +
+                "<div ng-if='df.value_choice.length==0'>" +
                 "<input ng-model='df.value' placeholder='{{df.name}}...' type='text'>" +
-                "</p>" +
+                "</div>" +
+                "<div ng-if='df.unit_choice.length!=0'>" +
+                "<select ng-model='df.unit'>" +
+                "<option ng-repeat='each in df.unit_choice'> {{each}} </option></select>" +
                 "</div>" +
                 "</div>" +
-                "</span>"
+                "</div>"
+
         };
     });

@@ -13,6 +13,11 @@ def check(user, owner, id="Unknown"):
         raise mcexceptions.AccessNotAllowedException(id)
 
 
+def reset():
+    _user_access_matrix.clear()
+
+
+
 def _user_in_owner_group(user, owner):
     if is_administrator(user):
         return True

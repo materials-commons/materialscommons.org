@@ -1,5 +1,5 @@
 {
-    "id": "SEM",
+    "id": "SEM Imaging",
     "model": [
         {
             "name": "required_conditions" ,
@@ -7,8 +7,8 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": [
-                "Sample Properties" ,
-                "SEM Equipment Properties"
+                "SEM Sample Preparation" ,
+                "SEM Instrument Properties"
             ] ,
             "value_choice": ""
         } ,
@@ -27,7 +27,7 @@
             "unit_choice": "" ,
             "value": [] ,
             "value_choice": "",
-            "required": false
+            "required": true
         } ,
         {
             "name": "required_output_files",
@@ -149,7 +149,7 @@
     ] ,
     "owner": "gtarcea@umich.edu", 
     "template_description": "" ,
-    "template_name": "SEM" ,
+    "template_name": "SEM Imaging" ,
     "template_type": "process",
     "template_pick": ""
 
