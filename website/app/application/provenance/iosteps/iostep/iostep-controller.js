@@ -2,6 +2,14 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
     ["$scope", "ProvDrafts", "$stateParams", "mcapi",
         function ($scope, ProvDrafts, $stateParams, mcapi) {
 
+            $scope.addAdditionalProperty = function () {
+                $scope.doc.model.added_properties.push(JSON.parse($scope.additionalProperty));
+            };
+
+            $scope.addCustomProperty = function () {
+                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, 'unit': '', 'value_choice': [], 'unit_choice': []});
+            };
+
             $scope.update_sample = function () {
                 $scope.doc.model = $scope.doc.sample.model;
                 $scope.doc.owner = $scope.doc.sample.owner;
