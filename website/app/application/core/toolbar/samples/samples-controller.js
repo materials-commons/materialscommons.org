@@ -46,7 +46,7 @@ Application.Controllers.controller('toolbarSamples',
                 }).jsonp();
 
             mcapi('/templates')
-                .argWithValue('filter_by', '"owner":"gtarcea@umich.edu", "template_pick":"material"')
+                .argWithValue('filter_by', '"template_pick":"material"')
                 .success(function (data) {
                     $scope.templates = data;
                 })
