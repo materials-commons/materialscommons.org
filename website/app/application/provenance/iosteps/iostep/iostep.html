@@ -96,11 +96,8 @@
                             <label class="control-label">Additional Properties:</label>
 
                             <div class="controls">
-                                <select ng-model="model.additionalProperty">
-                                    <option ng-repeat="property in doc.model.additional"
-                                            value="{{property}}">
-                                        {{property.name}}
-                                    </option>
+                                <select ng-model="model.additionalProperty"
+                                        ng-options="property.name for property in doc.model.additional">
                                 </select>
                                 <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
                             </div>
