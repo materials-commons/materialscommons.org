@@ -32,8 +32,8 @@
                 <li class="divider"></li>
 
                 <li class="nav-header">Reviews</li>
-                <li class="toolbar-item">
-                    <a ui-sref="toolbar.reviews">List Reviews</a>
+                <li ng-controller="_toolbarReviews" class="toolbar-item">
+                    <a ui-sref="toolbar.reviews">Reviews({{reviewsToConduct.length}})</a>
                 </li>
                 <li class="divider"></li>
 
@@ -41,8 +41,16 @@
                 <li class="toolbar-item"><a ui-sref="toolbar.machines">Machines</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.materials">Materials</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.samples">Samples</a></li>
+                <li class="divider"></li>
 
-
+                <li class="nav-header">Commonly Used Tags</li>
+                <div ng-controller="_toolbarTags">
+                            <span style="cursor:pointer" class="label label-info custom"
+                                  ng-repeat="tag in tags | limitTo: 10">
+                            <a ui-sref="toolbar.databytag({name: tag.name})" style="color: white">{{ tag.name }}
+                                ({{tag.count}})</a>
+                        </span>
+                </div>
             </ul>
 
         </div>
