@@ -1,5 +1,8 @@
 Application.Controllers.controller('toolbarSamples',
     ["$scope", "mcapi", "User", function ($scope, mcapi, User) {
+        $scope.model = {
+            additionalProperty: {}
+        };
 
         $scope.update = function () {
             $scope.doc.model.default = $scope.template.model.default;
