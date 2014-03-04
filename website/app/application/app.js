@@ -18,7 +18,7 @@ var app = angular.module('materialscommons',
         'ui',
         'ui.bootstrap',
         'ngCookies',
-        'ui.router', 'ngResource',
+        'ui.router',
         'ngQuickDate',
         'application.core.constants', 'application.core.services', 'application.core.controllers',
         'application.core.filters', 'application.core.directives',
@@ -26,7 +26,6 @@ var app = angular.module('materialscommons',
         'application.provenance.filters', 'application.provenance.directives']);
 
 app.config(function ($stateProvider) {
-    Stomp.WebSocketClass = SockJS;
     mcglobals = {};
     doConfig();
     $stateProvider
