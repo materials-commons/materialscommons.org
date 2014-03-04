@@ -11,6 +11,7 @@
                     </cgroup>
                     <div class="control-group">
                         <label class="control-label">Select Template:</label>
+
                         <div class="controls">
                             <select ng-model="template"
                                     ng-options="temp as temp.template_name for temp in templates"
@@ -22,7 +23,7 @@
                     <legend>Required Properties</legend>
                     <div df-properties default-properties="doc.model.default"></div>
                     <hr align="left">
-                    <legend>Additional Properties</legend>
+                    <legend>Added Properties</legend>
                     <div ng-repeat="pv in doc.model.added_properties">
                         <div class="control-group">
                             <label class="control-label">{{pv.name}}</label>
@@ -46,20 +47,8 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-show="doc.model.additional.length > 0" class="control-group">
-                        <label class="control-label">Additional Properties:</label>
 
-                        <div class="controls">
-                            <select ng-model="model.additionalProperty">
-                                <option ng-repeat="property in doc.model.additional"
-                                        value="{{property}}">
-                                    {{property.name}}
-                                </option>
-                            </select>
-                            <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
-                        </div>
-                    </div>
-                    <div class="control-group">
+                    <div ng-show="doc.model.additional.length > 0" class="control-group">
                         <label class="control-label">Additional Properties:</label>
 
                         <div class="controls">
@@ -78,7 +67,7 @@
                             <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
                         </div>
                     </div>
-                    <button  ng-click="save()" class="btn btn-primary">
+                    <button ng-click="save()" class="btn btn-primary">
                         Save
                     </button>
                     <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
@@ -102,6 +91,7 @@
                     <p ng-if="samples_list.length==0">
                         <b>No available samples in the database</b>
                     </p>
+
                     <p ng-if="samples_list.length!=0">
                         <tr ng-repeat="sample in samples_list | orderBy:'birthtime' | page:currentDataPage:10">
                             <td>{{sample.model.default[0].value}}</td>
