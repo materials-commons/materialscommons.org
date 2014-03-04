@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceIOSteps',
-    ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams", "alertService",
-        function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams, alertService) {
+    ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams",
+        function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams) {
 
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
@@ -17,44 +17,12 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 }
             };
 
-            $scope.showStepInputs = function (stepName) {
-                if (stepName === "Files") {
-                    $scope.gotoStep(stepName);
-                } else if (stepName in $scope.doc.attributes.input_conditions) {
-                    $scope.gotoStep(stepName);
-                } else {
-                    mcapi('/templates/name/%', stepName)
-                        .success(function (data) {
-                            data.model.added_properties = [];
-                            $scope.doc.attributes.input_conditions[stepName] = data;
-                            $scope.gotoStep(stepName);
-                        }).jsonp();
-                }
-            };
-
-            $scope.showStepOutputs = function (stepName) {
-                if (stepName === "Files") {
-                    $scope.gotoStep(stepName);
-                } else if (stepName in $scope.doc.attributes.output_conditions) {
-                    $scope.gotoStep(stepName);
-                } else {
-                    mcapi('/templates/name/%', stepName)
-                        .success(function (data) {
-                            data.model.added_properties = [];
-                            $scope.doc.attributes.output_conditions[stepName] = data;
-                            $scope.gotoStep(stepName);
-                        }).jsonp();
-                }
-            };
-
             $scope.showStep = function (stepName) {
                 var attrib;
                 if ($stateParams.iosteps === "inputs") {
                     attrib = "input_conditions";
-                    //$scope.showStepInputs(stepName);
                 } else {
                     attrib = "output_conditions";
-                    //$scope.showStepOutputs(stepName);
                 }
 
                 if (stepName === "Files") {
