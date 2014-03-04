@@ -23,30 +23,33 @@
                     <legend>Required Properties</legend>
                     <div df-properties default-properties="doc.model.default"></div>
                     <hr align="left">
-                    <legend>Added Properties</legend>
-                    <div ng-repeat="pv in doc.model.added_properties">
-                        <div class="control-group">
-                            <label class="control-label">{{pv.name}}</label>
+                    <fieldset>
+                        <legend>Added Properties</legend>
+                        <div ng-repeat="pv in doc.model.added_properties">
+                            <div class="control-group">
+                                <label class="control-label">{{pv.name}}</label>
 
-                            <div class="controls">
-                                <div ng-if="pv.value_choice.length!=0">
-                                    <select ng-model="pv.value">
-                                        <option ng-repeat="val in pv.value_choice"> {{val}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div ng-if="pv.value_choice.length==0">
-                                    <input type="text" ng-model="pv.value">
-                                </div>
-                                <div ng-if="pv.unit_choice.length!=0">
-                                    <select class="span2" ng-model="pv.unit">
-                                        <option ng-repeat="unit in pv.unit_choice"> {{unit}}
-                                        </option>
-                                    </select>
+                                <div class="controls">
+                                    <div ng-if="pv.value_choice.length!=0">
+                                        <select ng-model="pv.value">
+                                            <option ng-repeat="val in pv.value_choice"> {{val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div ng-if="pv.value_choice.length==0">
+                                        <input type="text" ng-model="pv.value">
+                                    </div>
+                                    <div ng-if="pv.unit_choice.length!=0">
+                                        <select class="span2" ng-model="pv.unit">
+                                            <option ng-repeat="unit in pv.unit_choice"> {{unit}}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
+
 
                     <div ng-show="doc.model.additional.length > 0" class="control-group">
                         <label class="control-label">Additional Properties:</label>
@@ -58,6 +61,7 @@
                             <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
                         </div>
                     </div>
+
                     <div class="control-group">
                         <label class="control-label">Custom Properties:</label>
 
