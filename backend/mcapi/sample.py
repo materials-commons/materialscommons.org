@@ -25,7 +25,6 @@ def get_sample(sample_id):
 @crossdomain(origin='*')
 def create_sample():
     j = request.get_json()
-    print j
     sample = dict()
     sample['model'] = dmutil.get_required('model', j)
     sample['material'] = dmutil.get_required('material', j)
