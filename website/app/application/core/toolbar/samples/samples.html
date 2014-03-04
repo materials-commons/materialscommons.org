@@ -97,7 +97,7 @@
                     </p>
 
                     <p ng-if="samples_list.length!=0">
-                        <tr ng-repeat="sample in samples_list | orderBy:'birthtime' | page:currentDataPage:10">
+                        <tr ng-repeat="sample in samples_list | orderBy:'model.default[0].value' | page:currentDataPage:10">
                             <td>{{sample.model.default[0].value}}</td>
                             <td>{{sample.model.default[1].value}}</td>
                             <td>{{sample.material.name}}</td>

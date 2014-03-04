@@ -24,7 +24,7 @@ Application.Controllers.controller('toolbarSamples',
                     mcapi('/samples/%', data.id)
                         .success(function (sample_obj) {
                             $scope.sample = sample_obj;
-                            $scope.samples_list.unshift(sample_obj);
+                            $scope.samples_list.push(sample_obj);
                         })
                         .error(function (e) {
 
