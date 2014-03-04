@@ -1,9 +1,12 @@
 Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
     ["$scope", "ProvDrafts", "$stateParams", "mcapi",
         function ($scope, ProvDrafts, $stateParams, mcapi) {
+            $scope.model = {
+                additionalProperty: {}
+            };
 
             $scope.addAdditionalProperty = function () {
-                $scope.doc.model.added_properties.push(JSON.parse($scope.additionalProperty));
+                $scope.doc.model.added_properties.push($scope.model.additionalProperty);
             };
 
             $scope.addCustomProperty = function () {
@@ -70,10 +73,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     $scope.load_selected_samples();
                     //$scope.loadMaterials();
                 }
-
-                $scope.defaultProperties = $scope.doc.model.default;
-                $scope.additionalProperties = [];
-                $scope.useExisting = "yes";
+                console.dir($scope.doc)
 
             };
 
