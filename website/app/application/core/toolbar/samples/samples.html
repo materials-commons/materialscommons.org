@@ -6,15 +6,15 @@
                     <legend>Create Sample</legend>
                     <cgroup label="Select Material:">
                         <select ng-model="doc.material"
-                                ng-options="mat.name for mat in materials">
+                                ng-options="mat.name for mat in materials | orderBy:'name'">
                         </select>
                     </cgroup>
                     <div class="control-group">
                         <label class="control-label">Select Template:</label>
 
                         <div class="controls">
-                            <select ng-model="template"
-                                    ng-options="temp as temp.template_name for temp in templates"
+                            <select ng-model="model.template"
+                                    ng-options="temp as temp.template_name for temp in templates | orderBy:'template_name'"
                                     ng-change="update()">
                             </select>
                         </div>
@@ -66,8 +66,8 @@
                         <label class="control-label">Custom Properties:</label>
 
                         <div class="controls">
-                            <input ng-model="customPropertyName" placeholder="Name..." type="text">
-                            <input ng-model="customPropertyValue" placeholder="Value..." type="text">
+                            <input ng-model="model.customPropertyName" placeholder="Name..." type="text">
+                            <input ng-model="model.customPropertyValue" placeholder="Value..." type="text">
                             <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
                         </div>
                     </div>
