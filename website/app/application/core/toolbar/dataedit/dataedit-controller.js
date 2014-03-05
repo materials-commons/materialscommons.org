@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$stateParams", "pubsub", "User", "dateGenerate", "watcher",
-        function ($scope, $window, mcapi, alertService, $stateParams, pubsub, User, dateGenerate, watcher) {
+    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "dateGenerate", "watcher",
+        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, dateGenerate, watcher) {
 
             $scope.setupAccessToUserFile = function () {
                 if (isImage($scope.doc.name)) {
@@ -68,9 +68,25 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.display_condition = cond;
             };
 
+            $scope.showtab = function (tab) {
+                switch (tab) {
+                case "reviews":
+                    $state.go('toolbar.dataedit.reviews');
+                    break;
+                case "tags":
+                    $state.go('toolbar.dataedit.tags');
+                    break;
+                case "notes":
+                    $state.go('toolbar.dataedit.notes');
+                    break;
+                case "provenance":
+                    $state.go('toolbar.dataedit.provenance');
+                    break;
+                }
+            };
+
             $scope.init = function () {
                 $scope.id = $stateParams.id;
-
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.doc = data;

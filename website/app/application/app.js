@@ -90,9 +90,26 @@ app.config(function ($stateProvider) {
             url: '/thumbnails',
             templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
         })
+        //DataEdit Page
         .state('toolbar.dataedit', {
             url: '/dataedit/:id',
             templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
+        })
+        .state('toolbar.dataedit.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/toolbar/dataedit/reviews.html'
+        })
+        .state('toolbar.dataedit.tags', {
+            url: '/tags',
+            templateUrl: 'application/core/toolbar/dataedit/tags.html'
+        })
+        .state('toolbar.dataedit.notes', {
+            url: '/notes',
+            templateUrl: 'application/core/toolbar/dataedit/notes.html'
+        })
+        .state('toolbar.dataedit.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/core/toolbar/dataedit/provenance.html'
         })
         .state('toolbar.databytag', {
             url: '/databytag/:name',

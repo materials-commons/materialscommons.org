@@ -44,13 +44,12 @@ Application.Controllers.controller('_toolbarDataEditCreateTag',
             };
 
             $scope.addNewTag = function (item_id, item_type) {
-                console.log(item_id)
                 var tagObj = {};
                 tagObj.id = $scope.tag_model.new_tag;
                 if ($scope.tag_model.new_tag.length !== 0) {
                     if (!_.contains($scope.tagchoices, $scope.tag_model.new_tag)) {
                         $scope.tagchoices.push($scope.tag_model.new_tag);
-                        mcapi('/tag/%/%', item_type,  item_id)
+                        mcapi('/tag/%/%', item_type, item_id)
                             .success(function (data) {
                                 $scope.msg = "Data has been tagged !";
                                 alertService.sendMessage($scope.msg);
@@ -63,8 +62,9 @@ Application.Controllers.controller('_toolbarDataEditCreateTag',
             };
 
             $scope.init = function () {
+                console.log($scope.doc)
                 $scope.tag_model = {
-                    new_tag : "",
+                    new_tag: "",
                     tag_to_add: {}
                 };
                 $scope.tagchoices = [];
@@ -75,6 +75,11 @@ Application.Controllers.controller('_toolbarDataEditCreateTag',
                             $scope.tagchoices.push(item.id);
                             $scope.originalTags.push(item.id);
                         });
+                    }).jsonp();
+                mcapi('/tags/%/%', 'datafile', $scope.doc.id)
+                    .success(function (data) {
+                        console.log(data)
+                        $scope.datafile_tags = data;
                     }).jsonp();
             };
             $scope.init();

@@ -7,22 +7,22 @@ from loader.model import user
 import dmutil
 from utils import create_tag_count, make_password_hash
 import error
+from args import json_as_format_arg
 
 
 @app.route('/tag/<item_type>/<item_id>', methods=['POST'])
 @crossdomain(origin='*')
 def tag(item_type, item_id):
     j = request.get_json()
-    tag_id = dmutil.insert_entry('tags', j)
+    c = dict()
+    c['id'] = dmutil.get_required('id', j)
+    tag_id = dmutil.insert_entry_id('tags', c)
     if (tag_id):
         return join_tag_and_item(tag_id, item_id, item_type)
 
 
 def join_tag_and_item(tag_id, item_id, item_type):
-    tag_to_item = dict()
-    tag_to_item['tag_id'] = tag_id
-    tag_to_item['item_id'] = item_id
-    tag_to_item['item_type'] = item_type
+    tag_to_item = {'tag_id': tag_id, 'item_id': item_id, 'item_type': item_type}
     tag2item_id = dmutil.insert_entry('tag2item', tag_to_item)
     return tag2item_id
     
@@ -39,6 +39,12 @@ def delete_tag(tag):
 def all_tags():
     selection = list(r.table('tags').run(g.conn))
     return json.dumps(selection)
+
+@app.route('/tags/<item_type>/<item_id>')
+@jsonp
+def tags_for_item(item_type, item_id):
+    rr = list(r.table('tag2item').filter({'item_id': item_id, 'item_type': item_type}))
+    return json_as_format_arg(rr)
 
 
 @app.route('/tags/count')
