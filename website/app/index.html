@@ -40,7 +40,6 @@
 </head>
 
 <body>
-
 <div id="stop-toolbar" class="navbar navbar-wrapper navbar-inverse">
     <div class="navbar-inner" ng-controller="_indexNavigation">
         <div class="container-fluid">
@@ -57,7 +56,6 @@
                     </p>
                 </div>
 
-
                 <div ng-show="email_address">
                     <p class="navbar-text pull-right">
                         <a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i> {{email_address}}</a>
@@ -68,10 +66,7 @@
 
             <ul id="mc-main-navs" class="nav nav-pills">
                 <li class="">
-                    <a class="brand" style="color: #FDDF5B;" href="#">MaterialsCommons</a>
-                </li>
-                <li id="home-nav" ng-class="{ active: isActiveStep('home') }">
-                    <a ng-click="goHome(); showStep('home')"><i class="fa fa-home"></i> Home</a>
+                    <a class="brand" style="color: #FDDF5B;" ng-click="goHome(); showStep('home')">MaterialsCommons</a>
                 </li>
                 <li id="about-nav" ng-class="{ active: isActiveStep('about') }">
                     <a ng-click="showStep('about')" ui-sref="about"><i class="fa fa-info-circle"></i> About</a>
