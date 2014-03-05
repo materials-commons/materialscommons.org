@@ -7,41 +7,33 @@
                 <li class="toolbar-item" ng-show="showDrafts" ng-controller="_toolbarDrafts">
                     <a ui-sref="toolbar.drafts">Drafts ({{drafts.length}})</a>
                 </li>
-                <li class="divider">
+
+                <li class="nav-header">Reviews</li>
+                <li ng-controller="_toolbarReviews" class="toolbar-item">
+                    <a ui-sref="toolbar.reviews">Reviews({{reviewsToConduct.length}})</a>
+                </li>
 
                 <li class="nav-header">Projects</li>
-                <li ng-controller="_toolbarProjects">
+                <li ng-controller="_toolbarProjects" class="project-scrollbar">
                     <ul ng-repeat="proj in projects | orderBy: 'name'">
                         <li class="active" style="list-style-type: circle">
                             <a ui-sref="toolbar.projectspage({id: proj.id, draft_id: ''})">{{proj.name}}</a>
                         </li>
                     </ul>
                 </li>
-                <li class="divider"></li>
 
                 <li class="nav-header">Data</li>
                 <li class="toolbar-item"><a ui-sref="toolbar.mydata">My Files</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.thumbnails">Images</a></li>
 
-                <li class="divider"></li>
-
                 <li class="nav-header">Tags</li>
                 <li class="toolbar-item"><a ui-sref="toolbar.tags">List Tags</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.globaltagcloud">Tag Cloud</a></li>
-
-                <li class="divider"></li>
-
-                <li class="nav-header">Reviews</li>
-                <li ng-controller="_toolbarReviews" class="toolbar-item">
-                    <a ui-sref="toolbar.reviews">Reviews({{reviewsToConduct.length}})</a>
-                </li>
-                <li class="divider"></li>
 
                 <li class="nav-header">Resources</li>
                 <li class="toolbar-item"><a ui-sref="toolbar.machines">Machines</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.materials">Materials</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.samples">Samples</a></li>
-                <li class="divider"></li>
 
                 <li class="nav-header">Commonly Used Tags</li>
                 <div ng-controller="_toolbarTags">
