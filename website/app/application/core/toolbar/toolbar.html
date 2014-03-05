@@ -1,59 +1,52 @@
-
-
 <div class="container-fluid" ng-controller="toolbar">
     <div class="row-fluid">
         <div class="span2">
-            <div class="sidebar-nav-fixed">
-                <div class="">
-                    <ul class="nav nav-list">
-                        <li ng-show="showDrafts" class="nav-header"><i class="fa fa-book"></i> Provenance</li>
-                        <li class="toolbar-item" ng-show="showDrafts" ng-controller="_toolbarDrafts">
-                            <a ui-sref="toolbar.drafts">Drafts ({{drafts.length}})</a>
-                        </li>
-                        <li class="nav-header"><i class="fa fa-archive"></i> MyData</li>
+            <ul class="nav nav-list navbar-fixed-sidebar">
 
-                        <li class="toolbar-item" ng-controller="_toolbarProjects">
-                            <a href="" style="cursor:pointer" ng-click="showProjs=!showProjs">
-                            <i ng-show="showProjs" class="fa fa-folder-open"></i>
-                            <i ng-show="!showProjs" class="fa fa-folder"></i> Projects</a>
+                <li class="nav-header">
+                    <a ui-sref="toolbar.overview"><i class="fa fa-home"></i> Home</a>
+                </li>
 
-                            <div ng-show="showProjs" class="project-scrollbar">
-                                <ul ng-repeat="proj in projects|orderBy:'name'">
-                                    <li  style="list-style-type: circle">
-                                        <a style="cursor: pointer" ng-click="gotoProject(proj.id)">{{proj.name}}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="toolbar-item" ng-class="{ active: isActiveStep('data-tab') }">
-                            <a ng-click="showStep('data-tab')" ui-sref="toolbar.mydatapage">My Files</a>
-                        </li>
-                        <li class="toolbar-item" ng-class="{ active: isActiveStep('tags-tab') }">
-                            <a ng-click="showStep('tags-tab')" ui-sref="toolbar.tagspage">Tags</a>
-                        </li>
-                        <li class="toolbar-item"  ng-class="{ active: isActiveStep('reviews-tab') }" ng-controller="_toolbarReviews">
-                            <a ng-click="showStep('reviews-tab')" ui-sref="toolbar.reviews">Reviews ({{reviewsToConduct.length}})</a>
-                        </li>
+                <li class="nav-header">Inbox</li>
+                <li class="toolbar-item" ng-show="showDrafts" ng-controller="_toolbarDrafts">
+                    <a ui-sref="toolbar.drafts">Drafts ({{drafts.length}})</a>
+                </li>
+                <li ng-controller="_toolbarReviews" class="toolbar-item">
+                    <a ui-sref="toolbar.reviews">Reviews({{reviewsToConduct.length}})</a>
+                </li>
 
-                        <li class="nav-header"><i class="fa fa-gear"></i> Resources</li>
-                        <li class="toolbar-item" ng-class="{ active: isActiveStep('machine-tab') }" >
-                            <a ng-click="showStep('machine-tab')"ui-sref="toolbar.machines">Machines</a>
+                <li class="nav-header">Projects</li>
+                <li ng-controller="_toolbarProjects" class="project-scrollbar">
+                    <ul ng-repeat="proj in projects | orderBy: 'name'">
+                        <li class="active" style="list-style-type: circle">
+                            <a ui-sref="toolbar.projectspage({id: proj.id, draft_id: ''})">{{proj.name}}</a>
                         </li>
-                        <li class="toolbar-item" ng-class="{ active: isActiveStep('material-tab') }" >
-                            <a  ng-click="showStep('material-tab')" ui-sref="toolbar.materials">Materials</a>
-                        </li>
+                    </ul>
+                </li>
 
-                        <li class="nav-header"><i class="fa fa-tags"></i> Common Tags</li>
-                        <div ng-controller="_toolbarTags">
+                <li class="nav-header">Resources</li>
+                <li class="toolbar-item"><a ui-sref="toolbar.machines">Machines</a></li>
+                <li class="toolbar-item"><a ui-sref="toolbar.materials">Materials</a></li>
+                <!--<li class="toolbar-item"><a ui-sref="toolbar.samples">Samples</a></li>-->
+
+                <li class="nav-header">Data</li>
+                <li class="toolbar-item"><a ui-sref="toolbar.mydata">My Files</a></li>
+                <li class="toolbar-item"><a ui-sref="toolbar.thumbnails">Images</a></li>
+
+                <li class="nav-header">Tags</li>
+                <li class="toolbar-item"><a ui-sref="toolbar.tags">List Tags</a></li>
+                <li class="toolbar-item"><a ui-sref="toolbar.globaltagcloud">Tag Cloud</a></li>
+
+                <li class="nav-header">Commonly Used Tags</li>
+                <div ng-controller="_toolbarTags">
                             <span style="cursor:pointer" class="label label-info custom"
                                   ng-repeat="tag in tags | limitTo: 10">
                             <a ui-sref="toolbar.databytag({name: tag.name})" style="color: white">{{ tag.name }}
                                 ({{tag.count}})</a>
                         </span>
-                        </div>
-                    </ul>
                 </div>
-            </div>
+            </ul>
+
         </div>
         <div class="span10">
             <div ui-view></div>
