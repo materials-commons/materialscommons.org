@@ -15,7 +15,7 @@ def tag(item_type, item_id):
     j = request.get_json()
     tag_id = dmutil.insert_entry('tags', j)
     if (tag_id):
-        join_tag_and_item(tag_id, item_id, item_type)
+        return join_tag_and_item(tag_id, item_id, item_type)
 
 
 def join_tag_and_item(tag_id, item_id, item_type):
@@ -23,7 +23,8 @@ def join_tag_and_item(tag_id, item_id, item_type):
     tag_to_item['tag_id'] = tag_id
     tag_to_item['item_id'] = item_id
     tag_to_item['item_type'] = item_type
-    dmutil.insert_entry('tag2item', tag_to_item)
+    tag2item_id = dmutil.insert_entry('tag2item', tag_to_item)
+    return tag2item_id
     
 
 @app.route('/tag/<tag>', methods=['DELETE'])
