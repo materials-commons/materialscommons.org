@@ -3,12 +3,14 @@
         <div class="span2">
             <ul class="nav nav-list navbar-fixed-sidebar">
 
-                <li class="nav-header">Drafts</li>
+                <li class="nav-header">
+                    <a ui-sref="toolbar.overview"><i class="fa fa-home"></i> Home</a>
+                </li>
+
+                <li class="nav-header">Inbox</li>
                 <li class="toolbar-item" ng-show="showDrafts" ng-controller="_toolbarDrafts">
                     <a ui-sref="toolbar.drafts">Drafts ({{drafts.length}})</a>
                 </li>
-
-                <li class="nav-header">Reviews</li>
                 <li ng-controller="_toolbarReviews" class="toolbar-item">
                     <a ui-sref="toolbar.reviews">Reviews({{reviewsToConduct.length}})</a>
                 </li>
@@ -22,6 +24,11 @@
                     </ul>
                 </li>
 
+                <li class="nav-header">Resources</li>
+                <li class="toolbar-item"><a ui-sref="toolbar.machines">Machines</a></li>
+                <li class="toolbar-item"><a ui-sref="toolbar.materials">Materials</a></li>
+                <!--<li class="toolbar-item"><a ui-sref="toolbar.samples">Samples</a></li>-->
+
                 <li class="nav-header">Data</li>
                 <li class="toolbar-item"><a ui-sref="toolbar.mydata">My Files</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.thumbnails">Images</a></li>
@@ -29,11 +36,6 @@
                 <li class="nav-header">Tags</li>
                 <li class="toolbar-item"><a ui-sref="toolbar.tags">List Tags</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.globaltagcloud">Tag Cloud</a></li>
-
-                <li class="nav-header">Resources</li>
-                <li class="toolbar-item"><a ui-sref="toolbar.machines">Machines</a></li>
-                <li class="toolbar-item"><a ui-sref="toolbar.materials">Materials</a></li>
-                <li class="toolbar-item"><a ui-sref="toolbar.samples">Samples</a></li>
 
                 <li class="nav-header">Commonly Used Tags</li>
                 <div ng-controller="_toolbarTags">

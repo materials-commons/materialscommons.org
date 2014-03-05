@@ -97,7 +97,7 @@ hr {
 
 .project-scrollbar {
     max-height: 200px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .prov-img-flow {
