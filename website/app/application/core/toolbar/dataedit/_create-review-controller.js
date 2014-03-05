@@ -24,7 +24,7 @@ Application.Controllers.controller('_toolbarDataEditCreateReview',
                                 $scope.all_reviews = reviews;
                                 console.log($scope.all_reviews);
                             })
-                            .error(function(e){
+                            .error(function (e){
                                 console.log('error')
                             }).jsonp();
                     }).post(review);

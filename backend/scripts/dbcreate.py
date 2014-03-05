@@ -38,6 +38,7 @@ def create_tables():
     run(r.table_create("review2datafile"))
     run(r.table_create("datadirs_denorm"))
     run(r.table_create("materials"))
+    run(r.table_create("tag2item"))
 
 
 def create_indices():

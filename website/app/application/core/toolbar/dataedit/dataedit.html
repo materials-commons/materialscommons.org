@@ -81,33 +81,39 @@
                         Review
                     </button>
                 </div>
-                <div class="tab-pane" id="tags">
+                <div class="tab-pane" id="tags" ng-controller="_toolbarDataEditCreateTag">
                     <div class="span5">
                         <h3>Tags</h3>
-                        <label>Create new tag:</label>
-
                         <form class="form-horizontal">
-                            <input ui-keypress="{13: 'addTagKeypressCallback($event)'}" ng-model="new_tag"
-                                   placeholder="Tag...">
-                            <label>Choose from existing tags:</label>
-                            <select ng-model="tag_to_add"
-                                    ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
-                                    ng-multiple="false">
-                                <option></option>
-                                <option ng-repeat="tag in tagchoices">{{ tag }}</option>
-                            </select>
-                            <button ng-click="addTag()" ng-disabled="!tag_to_add" class="btn btn-info">Add</button>
+                            <fieldset>
+                                <cgroup label="Create new:">
+                                <input ui-keypress="{13: 'addNewTag()'}" ng-model="tag_model.new_tag"
+                                       placeholder="Tag...">
+                                    <button ng-click="addNewTag(doc.id, 'datafile')" ng-disabled="!tag_model.new_tag" class="btn btn-info">Add</button>
+                                </cgroup>
+                            </fieldset>
+                            <fieldset>
+                                <cgroup label="Pick existing :">
+                                <select ng-model="tag_model.tag_to_add"
+                                        ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
+                                        ng-multiple="false">
+                                    <option></option>
+                                    <option ng-repeat="tag in tagchoices">{{ tag }}</option>
+                                </select>
+                                    <button ng-click="addExistingTag()" ng-disabled="!tag_to_add" class="btn btn-info">Add</button>
+
+                                </cgroup>
+                            </fieldset>
                         </form>
                     </div>
                     <div class="span5">
                         <h3>List of Tags:</h3>
                              <span class="label label-info" style="margin-left: 5px" ng-repeat="tag in doc.tags">
-                                        <button type="button" class="close"
-                                                ng-click="removeTag($index);">&times;</button>{{ tag }}
+                                        <button type="button" class="close" ng-click="removeTag($index);">&times;</button>{{ tag }}
                              </span>
                     </div>
-
                 </div>
+
                 <div class="tab-pane" id="notes">
                     <div class="span5">
                         <h3>Note:</h3>
