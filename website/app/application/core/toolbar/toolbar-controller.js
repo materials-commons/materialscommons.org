@@ -1,7 +1,5 @@
 Application.Controllers.controller('toolbar',
-    ["$scope", "Nav", function ($scope, Nav) {
-        $scope.showDrafts = true;
-
+    ["$scope", "Nav", "msocket", function ($scope, Nav, msocket) {
         $scope.isActiveStep = function (nav) {
             return Nav.isActiveToolbar(nav);
         };
@@ -9,6 +7,17 @@ Application.Controllers.controller('toolbar',
         $scope.showStep = function (step) {
             Nav.setActiveToolbar(step);
         };
+
+        $scope.$on('socket:file', function (ev, data) {
+            console.dir(ev);
+            console.dir(data);
+        });
+
+        $scope.init = function () {
+            $scope.showDrafts = true;
+        };
+
+        $scope.init();
     }]);
 
 

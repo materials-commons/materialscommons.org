@@ -20,12 +20,21 @@ var app = angular.module('materialscommons',
         'ngCookies',
         'ui.router',
         'ngQuickDate',
+        'btford.socket-io',
         'application.core.constants', 'application.core.services', 'application.core.controllers',
         'application.core.filters', 'application.core.directives',
         'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
         'application.provenance.filters', 'application.provenance.directives']);
+// This factory needs to hang off of this module for some reason
+app.factory('msocket', ["socketFactory", function (socketFactory) {
+    var msocket = socketFactory({
+        ioSocket: io.connect('http://localhost:8082')
+    });
+    msocket.forward('file');
+    return msocket;
+}]);
 
-app.config(function ($stateProvider) {
+app.config(["$stateProvider", function ($stateProvider) {
     mcglobals = {};
     doConfig();
     $stateProvider
@@ -179,16 +188,12 @@ app.config(function ($stateProvider) {
             url: '/finish',
             templateUrl: 'application/provenance/finish/finish.html'
         });
-});
+}]);
 
-app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User) {
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
-        if (!User.isAuthenticated()) {
-            if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") !== -1) {
-                $location.path("/login");
-            }
-        } else {
+app.run(["$rootScope", "User", function ($rootScope, User) {
+    $rootScope.$on('$stateChangeStart', function () {
+        if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
         }
     });
-});
+}]);
