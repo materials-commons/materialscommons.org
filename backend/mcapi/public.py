@@ -9,15 +9,22 @@ from utils import create_tag_count, make_password_hash
 import error
 
 
-@app.route('/tag', methods=['POST'])
+@app.route('/tag/<item_type>/<item_id>', methods=['POST'])
 @crossdomain(origin='*')
-def tag():
-    inserted = r.table('tags').insert(request.json).run(g.conn)
-    if (inserted[u'inserted'] == 1):
-        return json.dumps({'status': 'SUCCESS'})
-    else:
-        return error.bad_request("Unable to insert tag")
+def tag(item_type, item_id):
+    j = request.get_json()
+    tag_id = dmutil.insert_entry('tags', j)
+    if (tag_id):
+        join_tag_and_item(tag_id, item_id, item_type)
 
+
+def join_tag_and_item(tag_id, item_id, item_type):
+    tag_to_item = dict()
+    tag_to_item['tag_id'] = tag_id
+    tag_to_item['item_id'] = item_id
+    tag_to_item['item_type'] = item_type
+    dmutil.insert_entry('tag2item', tag_to_item)
+    
 
 @app.route('/tag/<tag>', methods=['DELETE'])
 @crossdomain(origin='*')
