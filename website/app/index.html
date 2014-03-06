@@ -94,6 +94,8 @@
     <div ui-view></div>
 </div>
 
+<!------------------------------ External dependencies ----------------->
+
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="assets/js/select2.min.js"></script>
 <script src="assets/js/TreeModel-min.js"></script>
@@ -108,6 +110,9 @@
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/ng-quick-date.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
+
+<script src="assets/js/angular/socket.js"></script>
+<script src="assets/js/socket.io.js"></script>
 
 <!------------------------------ Application --------------------------->
 <script src="application/app.js"></script>
@@ -181,6 +186,11 @@
 <script src="application/core/toolbar/overview/_todo-modal-controller.js"></script>
 <script src="application/core/toolbar/overview/_project-modal-controller.js"></script>
 
+<!-- Toolbar File Services -->
+<script src="application/core/toolbar/fileservices/projects/projects-controller.js"></script>
+<script src="application/core/toolbar/fileservices/events/events-controller.js"></script>
+<script src="application/core/toolbar/fileservices/config/config-controller.js"></script>
+
 <!------------------------------ Provenance app ------------------------------>
 
 <!-- Views -->
@@ -218,6 +228,7 @@
 <script src="application/services/project-service.js"></script>
 <script src="application/services/provdrafts-service.js"></script>
 <script src="application/services/nav-service.js"></script>
+<script src="application/services/materials-service.js"></script>
 
 <!-------------------------------- Global filters --------------------------------->
 <script src="application/filters/page-filter.js"></script>
