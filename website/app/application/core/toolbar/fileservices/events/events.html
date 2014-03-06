@@ -1,0 +1,6 @@
+<div class="row-fluid" ng-controller="toolbarFileServicesEvents">
+    <div class="span10">
+        <h4>Events</h4>
+        <alert ng-repeat="event in events" type="event.type" close="closeEvent($index)">{{ event.msg }} ({{ event.count }}): {{event.event}}</alert>
+    </div>
+</div>

@@ -9,7 +9,7 @@ Application.Services.factory('materials', ["$http",
         }
 
         MaterialsApi.prototype._makeUrl = function () {
-            var apihost = 'http://' + window.location.hostname + ':' + window.location.port;
+            var apihost = 'http://localhost:8081';
 
             if (arguments.length < 1) {
                 throw "Invalid url spec";
