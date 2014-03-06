@@ -126,6 +126,10 @@ hr {
     background-color: red;
 }
 
+.not-connected {
+    color: red;
+}
+
 .muted {
     font-style: italic;
 }
