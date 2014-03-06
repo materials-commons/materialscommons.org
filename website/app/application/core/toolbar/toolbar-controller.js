@@ -8,13 +8,23 @@ Application.Controllers.controller('toolbar',
             Nav.setActiveToolbar(step);
         };
 
-        $scope.$on('socket:file', function (ev, data) {
-            console.dir(ev);
-            console.dir(data);
+        $scope.$on('socket:connect', function (ev, data) {
+            $scope.service.status = "Connected";
+        });
+
+        $scope.$on('socket:disconnect', function () {
+            $scope.service.status = "Not Connected";
+        });
+
+        $scope.$on('socket:error', function (ev, data) {
+            $scope.service.status = "Not Connected";
         });
 
         $scope.init = function () {
             $scope.showDrafts = true;
+            $scope.service = {
+                status: "Not Connected"
+            };
         };
 
         $scope.init();

@@ -31,6 +31,9 @@ app.factory('msocket', ["socketFactory", function (socketFactory) {
         ioSocket: io.connect('http://localhost:8082')
     });
     msocket.forward('file');
+    msocket.forward('connect');
+    msocket.forward('disconnect');
+    msocket.forward('error');
     return msocket;
 }]);
 
@@ -187,6 +190,23 @@ app.config(["$stateProvider", function ($stateProvider) {
         .state('toolbar.projectspage.provenance.finish', {
             url: '/finish',
             templateUrl: 'application/provenance/finish/finish.html'
+        })
+        // File services
+        .state('toolbar.fileservices', {
+            url: '/fileservices',
+            templateUrl: 'application/core/toolbar/fileservices/fileservices.html'
+        })
+        .state('toolbar.fileservices.projects', {
+            url: '/projects',
+            templateUrl: 'application/core/toolbar/fileservices/projects/projects.html'
+        })
+        .state('toolbar.fileservices.events', {
+            url: '/events',
+            templateUrl: 'application/core/toolbar/fileservices/events/events.html'
+        })
+        .state('toolbar.fileservices.config', {
+            url: '/config',
+            templateUrl: 'application/core/toolbar/fileservices/config/config.html'
         });
 }]);
 
