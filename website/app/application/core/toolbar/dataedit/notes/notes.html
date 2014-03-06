@@ -1,0 +1,20 @@
+<div class="tab-pane" id="notes">
+    <div class="span5">
+        <legend>Note:</legend>
+        <textarea class="field span10" rows="6" placeholder="Enter a short synopsis"
+                  ng-model="model.new_note"></textarea> <br>
+
+        <button ng-click="add_notes()" class="btn btn-primary">Enter</button>
+    </div>
+    <div class="span7">
+        <legend>Previous notes:</legend>
+
+        <div ng-repeat="n in doc.notes | orderBy: date">
+            <textarea class="field span10" rows="1">{{n.message}}</textarea>
+
+            <div style="float: right; font-size: 10px">
+                {{n.date}}<br>{{n.who}}
+            </div>
+        </div>
+    </div>
+</div>

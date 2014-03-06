@@ -97,19 +97,19 @@ app.config(function ($stateProvider) {
         })
         .state('toolbar.dataedit.reviews', {
             url: '/reviews',
-            templateUrl: 'application/core/toolbar/dataedit/reviews.html'
+            templateUrl: 'application/core/toolbar/dataedit/reviews/reviews.html'
         })
         .state('toolbar.dataedit.tags', {
             url: '/tags',
-            templateUrl: 'application/core/toolbar/dataedit/tags.html'
+            templateUrl: 'application/core/toolbar/dataedit/tags/tags.html'
         })
         .state('toolbar.dataedit.notes', {
             url: '/notes',
-            templateUrl: 'application/core/toolbar/dataedit/notes.html'
+            templateUrl: 'application/core/toolbar/dataedit/notes/notes.html'
         })
         .state('toolbar.dataedit.provenance', {
             url: '/provenance',
-            templateUrl: 'application/core/toolbar/dataedit/provenance.html'
+            templateUrl: 'application/core/toolbar/dataedit/provenance/provenance.html'
         })
         .state('toolbar.databytag', {
             url: '/databytag/:name',
