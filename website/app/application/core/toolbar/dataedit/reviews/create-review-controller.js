@@ -1,4 +1,4 @@
-Application.Controllers.controller('_toolbarDataEditCreateReview',
+Application.Controllers.controller('toolbarDataEditCreateReview',
     ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
         function ($scope, mcapi, User, $stateParams, alertService, pubsub) {
             $scope.addReview = function () {
@@ -25,7 +25,7 @@ Application.Controllers.controller('_toolbarDataEditCreateReview',
                                 console.log($scope.all_reviews);
                             })
                             .error(function (e){
-                                console.log('error')
+                                console.log('error');
                             }).jsonp();
                     }).post(review);
                 $scope.schedule_for_self = false;

@@ -8,30 +8,7 @@ import dmutil
 from utils import create_tag_count, make_password_hash
 import error
 from args import json_as_format_arg
-
-
-@app.route('/tag/<item_type>/<item_id>', methods=['POST'])
-@crossdomain(origin='*')
-def tag(item_type, item_id):
-    j = request.get_json()
-    c = dict()
-    c['id'] = dmutil.get_required('id', j)
-    tag_id = dmutil.insert_entry_id('tags', c)
-    if (tag_id):
-        return join_tag_and_item(tag_id, item_id, item_type)
-
-
-def join_tag_and_item(tag_id, item_id, item_type):
-    tag_to_item = {'tag_id': tag_id, 'item_id': item_id, 'item_type': item_type}
-    tag2item_id = dmutil.insert_entry('tag2item', tag_to_item)
-    return tag2item_id
-    
-
-@app.route('/tag/<tag>', methods=['DELETE'])
-@crossdomain(origin='*')
-@apikey
-def delete_tag(tag):
-    pass
+from mcexceptions import NoSuchItem
 
 
 @app.route('/tags')
@@ -40,12 +17,6 @@ def all_tags():
     selection = list(r.table('tags').run(g.conn))
     return json.dumps(selection)
 
-@app.route('/tags/<item_type>/<item_id>')
-@jsonp
-def tags_for_item(item_type, item_id):
-    rr = list(r.table('tag2item').filter({'item_id': item_id, 'item_type': item_type}))
-    return json_as_format_arg(rr)
-
 
 @app.route('/tags/count')
 @jsonp
@@ -53,6 +24,48 @@ def tags_by_count():
     selection = list(r.table('datafiles').
                      concat_map(lambda item: item['tags']).run(g.conn))
     return create_tag_count(selection)
+
+
+@app.route('/tag/<item_type>/<item_id>', methods=['POST'])
+@crossdomain(origin='*')
+@apikey
+def tag(item_type, item_id):
+    j = request.get_json()
+    tag = dict()
+    tag['id'] = dmutil.get_required('id', j)
+    entry = dmutil.entry_exists('tags', tag['id'])
+    if entry:
+        tag2item_id =  join_tag_and_item(tag['id'], item_id, item_type)
+        return dmutil.get_single_from_table('tag2item', tag2item_id)
+    else:
+        tag_id = dmutil.insert_entry_id('tags', tag)
+        if (tag_id):
+            tag2item_id =  join_tag_and_item(tag_id, item_id, item_type)
+            return dmutil.get_single_from_table('tag2item', tag2item_id)
+
+
+def join_tag_and_item(tag_id, item_id, item_type):
+    tag_to_item = {'tag_id': tag_id, 'item_id': item_id, 'item_type': item_type}
+    tag2item_id = dmutil.insert_entry_id('tag2item', tag_to_item)
+    return tag2item_id
+    
+
+@app.route('/tag/<tag>', methods=['DELETE'])
+@crossdomain(origin='*')
+@apikey
+def delete_tag(tag):
+    entry = dmutil.item_exists('tag2item', tag)
+    if entry:
+        rr = r.table('tag2item').get(tag).delete().run(g.conn)
+        return json.dumps(entry)
+    raise NoSuchItem()
+
+
+@app.route('/tags/list/<item_type>/<item_id>', methods=['GET'])
+@jsonp
+def tags_for_item(item_type, item_id):
+    rr = list(r.table('tag2item').filter({'item_id': item_id}).run(g.conn))
+    return json.dumps(rr)
 
 
 @app.route('/public/datafiles')
