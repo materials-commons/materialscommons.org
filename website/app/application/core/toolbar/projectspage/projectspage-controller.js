@@ -2,11 +2,11 @@ Application.Controllers.controller('toolbarProjectsPage',
     ["$scope", "$stateParams", "mcapi", "$state", "watcher",
         function ($scope, $stateParams, mcapi, $state, watcher) {
             $scope.project_id = $stateParams.id;
-            $scope.bk = {
+            $scope.model = {
                 action: ''
             };
 
-            watcher.watch($scope, 'bk.action', function (choice) {
+            watcher.watch($scope, 'model.action', function (choice) {
                 if (choice === 'prov') {
                     $state.go('toolbar.projectspage.provenance');
                 }
