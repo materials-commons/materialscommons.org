@@ -16,7 +16,7 @@ Application.Controllers.controller('toolbarProjectsPage',
                 mcapi('/projects/%', $scope.project_id)
                     .success(function (project) {
                         $scope.project = project;
-                        if ($stateParams.draft_id != "") {
+                        if ($stateParams.draft_id !== "") {
                             $state.go('toolbar.projectspage.provenance');
                         } else {
                             $state.go('toolbar.projectspage.overview');
