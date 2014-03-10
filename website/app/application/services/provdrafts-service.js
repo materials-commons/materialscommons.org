@@ -91,42 +91,46 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             },
 
             prepareClone: function (df, clone_num) {
-                var new_draft = {}, clones_numbers = [];
+                var clone_numbers = service.get_existing_clones();
+                var new_draft = {}, count = 0, pattern = '', split_name = [], count_list = [], largest = 0;
                 if (clone_num === '') {
-                    new_draft = df;
-                    new_draft.id = '';
-                    new_draft.clone_number = df.attributes.process.name + '---' + 1;
-                    new_draft.attributes.process.name = new_draft.clone_number;
-                    new_draft.attributes.input_files = [];
-                    new_draft.attributes.output_files = [];
-                    return new_draft;
-
+                    pattern = df.attributes.process.name;
                 } else {
-                    clones_numbers = service.get_existing_clones();
-                    var make_name = '', i = 0, split_item = [];
-                    while (i < 1000) {
-                        split_item = df.clone_number.split('---');
-                        make_name = split_item[0] + '---' + (parseInt(split_item[1]) + 1);
-                        if (clones_numbers.indexOf(make_name) === -1) {
-                            new_draft = df;
-                            new_draft.id = '';
-                            new_draft.clone_number = make_name;
-                            new_draft.attributes.process.name = new_draft.clone_number;
-                            new_draft.attributes.input_files = [];
-                            new_draft.attributes.output_files = [];
-                            return new_draft;
-                        }
-                        i = i + 1;
-                    }
-                    ;
-
+                    split_name = df.clone_number.split('---');
+                    pattern = split_name[0];
                 }
+
+                for (i = 0; i < clone_numbers.length; i++) {
+                    if (clone_numbers[i].indexOf(pattern) > -1) {
+                        split_name = clone_numbers[i].split('---');
+                        if (split_name !== [""]) {
+                            count_list.push(parseInt(split_name[1]));
+                        }
+                    }
+                }
+                if (count_list.length !== 0) {
+                    largest = Math.max.apply(Math, count_list);
+                    count = largest + 1;
+                } else {
+                    count = largest + 1;
+                }
+                new_draft = df;
+                new_draft.id = '';
+                new_draft.clone_number = pattern + '---' + count;
+                new_draft.attributes.process.name = new_draft.clone_number;
+                new_draft.attributes.input_files = [];
+                new_draft.attributes.output_files = [];
+                return new_draft;
+
             },
 
             get_existing_clones: function () {
                 var clones = [];
                 service.drafts.forEach(function (item) {
-                    clones.push(item.clone_number);
+                    if (item.clone_number) {
+                        clones.push(item.clone_number);
+                    }
+
                 });
                 return clones;
             },

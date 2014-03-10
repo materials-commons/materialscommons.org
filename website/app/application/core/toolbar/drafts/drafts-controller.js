@@ -25,22 +25,14 @@ Application.Controllers.controller('toolbarDrafts',
                 var copy_draft = angular.copy(draft), new_draft = {};
                 if (copy_draft.clone_number) {
                     new_draft = ProvDrafts.prepareClone(copy_draft, draft.clone_number);
-                    if (new_draft) {
-                        ProvDrafts.current = new_draft;
-                        ProvDrafts.saveDraft();
-                    } else {
-                        alertService.sendMessage("Draft already exists !");
-                    }
-
                 } else {
                     new_draft = ProvDrafts.prepareClone(copy_draft, '');
-                    if (new_draft) {
-                        ProvDrafts.current = new_draft;
-                        ProvDrafts.saveDraft();
-                    } else {
-                        alertService.sendMessage("Draft already exists !");
-
-                    }
+                }
+                if (new_draft) {
+                    ProvDrafts.current = new_draft;
+                    ProvDrafts.saveDraft();
+                } else {
+                    alertService.sendMessage("Draft already exists !");
                 }
 
             };
