@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDrafts',
-    ["$scope", "pubsub", "ProvDrafts", "$state",
-        function ($scope, pubsub, ProvDrafts, $state) {
+    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService",
+        function ($scope, pubsub, ProvDrafts, $state, alertService) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
             });
@@ -22,13 +22,15 @@ Application.Controllers.controller('toolbarDrafts',
             };
 
             $scope.cloneProvenance = function (draft) {
-                var new_draft = {};
-                if (draft.clone_number) {
-                    new_draft = ProvDrafts.prepareClone(draft, draft.clone_number);
-                    console.log(new_draft);
+                var copy_draft = angular.copy(draft), new_draft = {};
+                if (copy_draft.clone_number) {
+                    new_draft = ProvDrafts.prepareClone(copy_draft, draft.clone_number);
+                    ProvDrafts.current = new_draft;
+                    ProvDrafts.saveDraft();
                 } else {
-                    new_draft = ProvDrafts.prepareClone(draft, '');
-                    console.log(new_draft);
+                    new_draft = ProvDrafts.prepareClone(copy_draft, '');
+                    ProvDrafts.current = new_draft;
+                    ProvDrafts.saveDraft();
 
                 }
 

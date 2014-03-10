@@ -58,7 +58,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
-                            attributes: service.current.attributes
+                            attributes: service.current.attributes,
+                            clone_number: service.current.clone_number
                         });
                 } else {
                     // Need to update the draft
@@ -71,7 +72,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
-                            attributes: service.current.attributes
+                            attributes: service.current.attributes,
+                            clone_number: service.current.clone_number
                         });
                 }
             },
@@ -91,56 +93,32 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             prepareClone: function (df, clone_num) {
                 var new_draft = {}, clones_numbers = [];
                 if (clone_num === '') {
-                    console.log('first one ');
                     new_draft = df;
                     new_draft.id = '';
-                    new_draft.clone_number = df.attributes.process.name + '-' + 1;
+                    new_draft.clone_number = df.attributes.process.name + '---' + 1;
                     new_draft.attributes.process.name = new_draft.clone_number;
-                    console.log(new_draft.attributes.input_conditions)
-                    if (new_draft.attributes.input_conditions) {
-                        for(var i = 0; i< new_draft.attributes.input_conditions.length; i++){
-                            console.log(new_draft.attributes.input_conditions[i]);
-                        }
-//                        new_draft.attributes.input_conditions.forEach(function (cond) {
-//                            new_draft.attributes.input_conditions[cond].default[0].value = df.attributes.input_conditions[cond].default[0].value + '-' + 1;
-//                        });
-                    }
-                    if (new_draft.attributes.output_conditions) {
-//                        new_draft.attributes.output_conditions.forEach(function (cond) {
-//                            new_draft.attributes.output_conditions[cond].default[0].value = df.attributes.output_conditions[cond].default[0].value + '-' + 1;
-//                        });
-                    }
                     new_draft.attributes.input_files = [];
                     new_draft.attributes.output_files = [];
                     return new_draft;
 
                 } else {
-                    console.log('second one');
-                    clones_numbers = ProvDrafts.get_existing_clones();
+                    clones_numbers = service.get_existing_clones();
                     var make_name = '', i = 0, split_item = [];
-                    while (i < 5) {
-                        split_item = df.clone_number;
-                        make_name = split_item[0] + (split_item[1] + 1);
+                    while (i < 1000) {
+                        split_item = df.clone_number.split('---');
+                        make_name = split_item[0] + '---' + (parseInt(split_item[1]) + 1);
                         if (clones_numbers.indexOf(make_name) === -1) {
                             new_draft = df;
                             new_draft.id = '';
                             new_draft.clone_number = make_name;
                             new_draft.attributes.process.name = new_draft.clone_number;
-                            if (new_draft.attributes.input_conditions) {
-                                new_draft.attributes.input_conditions.forEach(function (cond) {
-                                    new_draft.attributes.input_conditions[cond].default[0].value = df.attributes.input_conditions[cond].default[0].value + '-' + (split_item[1] + 1);
-                                });
-                            }
-                            if (new_draft.attributes.output_conditions) {
-                                new_draft.attributes.output_conditions.forEach(function (cond) {
-                                    new_draft.attributes.output_conditions[cond].default[0].value = df.attributes.output_conditions[cond].default[0].value + '-' + (split_item[1] + 1);
-                                });
-                            }
                             new_draft.attributes.input_files = [];
                             new_draft.attributes.output_files = [];
                             return new_draft;
                         }
-                    };
+                        i = i + 1;
+                    }
+                    ;
 
                 }
             },
