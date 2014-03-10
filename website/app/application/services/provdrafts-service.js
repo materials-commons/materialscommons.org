@@ -91,8 +91,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             },
 
             prepareClone: function (df, clone_num) {
-                var clone_numbers = service.get_existing_clones();
-                var new_draft = {}, count = 0, pattern = '', split_name = [], count_list = [], largest = 0;
+                var clone_numbers = service.get_existing_clones(), new_draft = {}, count = 0, pattern = '', split_name = [], count_list = [], largest = 0;
                 if (clone_num === '') {
                     pattern = df.attributes.process.name;
                 } else {
