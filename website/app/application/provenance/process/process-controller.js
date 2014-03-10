@@ -88,7 +88,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.bk.new_citation = "";
             };
 
-            $scope.done = function () {
+            $scope.next = function () {
                 ProvSteps.setStepFinished('process');
             };
 
