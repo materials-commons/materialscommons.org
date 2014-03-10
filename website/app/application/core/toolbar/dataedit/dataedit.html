@@ -3,38 +3,45 @@
         <div class="span8">
             <form class="form-inline">
                 <a ng-repeat="trailitem in trail">
-                    <i class="fa fa-folder fa-2x"></i><span style="margin-right: 7px">{{trailitem}}/ </span>
+                    <span><b>{{trailitem}}/ </b></span>
                 </a>
-
-                <h3>{{doc.name}}</h3>
+                <a href="#/mytools/data/edit/{{doc.id}}" ><b><u>{{doc.name}}</u></b></a>
             </form>
         </div>
     </div>
     <div class="row-fluid">
-        <div class="span4">
+        <div class="span3">
             <div ng-switch on="fileType">
                 <div ng-switch-when="image">
-                    <img ng-src="{{ fileSrc }}">
                     <a ng-href="{{ fileSrc }}">View full size</a>
                     <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
+                    <img ng-src="{{ fileSrc }}">
                 </div>
-                <a ng-switch-when="other" ng-href="{{ fileSrc }}" download="{{ fileName }}">{{ doc.name}}</a>
+                <div ng-switch-when="other">
+                    <img style="width: 300px" src="assets/img/no_img_1.png" class="img-polaroid">
+                </div>
+                <!--<a ng-switch-when="other" ng-href="{{ fileSrc }}" download="{{ fileName }}">{{ doc.name}}</a>-->
             </div>
         </div>
-        <div class="span8">
+        <div class="span9">
+            <form class="form-horizontal">
+                <fieldset>
+                    <legend>Basic Information</legend>
+                    <cgroup label="Description:">
+                        <textarea ng-if="doc.description != ''" class="span4" ng-model="doc.description"
+                                  rows="4">
+                        </textarea>
+                    </cgroup>
+                    <cgroup label="Owner:">
+                        <input class="input-xlarge" ng-model="doc.owner" type="text" ng-disabled="true">
+                    </cgroup>
+                    <button type="button" class="btn btn-primary" ng-click="saveData()" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-danger" ng-click="cancel()" class="btn btn-danger">Cancel</button>
+                </fieldset>
+            </form>
 
         </div>
-    </div>
-    <!--<div class="row-fluid">-->
-    <!--<div class="span3">-->
-    <!--<img src="assets/img/2H-10X1.JPG">-->
-    <!--<button type="button" class="btn btn-primary" ng-click="saveData()" class="btn btn-primary">Save</button>-->
-    <!--<button type="button" class="btn btn-danger" ng-click="cancel()" class="btn btn-danger">Cancel</button>-->
-    <!--</div>-->
-    <!--<div class="span8">-->
-
-    <!--</div>-->
-    <!--</div><br>-->
+    </div><br>
     <div class="row-fluid">
         <div class="span8">
             <div ui-view></div>
