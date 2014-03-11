@@ -7,6 +7,8 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
             $scope.pick_sample = function () {
                 $scope.doc.model = $scope.model.pick_sample.model;
+                $scope.doc.owner = $scope.model.pick_sample.owner;
+
                 console.log($scope.doc);
             };
 

@@ -140,10 +140,10 @@ app.config(["$stateProvider", function ($stateProvider) {
         })
 
         // Toolbar materials views
-        .state('toolbar.materials', {
-            url: '/materials',
-            templateUrl: 'application/core/toolbar/materials/materials.html'
-        })
+//        .state('toolbar.materials', {
+//            url: '/materials',
+//            templateUrl: 'application/core/toolbar/materials/materials.html'
+//        })
 
         // Toolbar materials views
         .state('toolbar.samples', {
