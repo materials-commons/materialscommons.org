@@ -58,7 +58,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
-                            attributes: service.current.attributes
+                            attributes: service.current.attributes,
+                            clone_number: service.current.clone_number
                         });
                 } else {
                     // Need to update the draft
@@ -72,7 +73,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
-                            attributes: service.current.attributes
+                            attributes: service.current.attributes,
+                            clone_number: service.current.clone_number
                         });
                 }
             },
@@ -87,6 +89,50 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                         });
                         service._publishChange();
                     }).jsonp();
+            },
+
+            prepareClone: function (df, clone_num) {
+                var clone_numbers = service.get_existing_clones(), new_draft = {}, count = 0, pattern = '', split_name = [], count_list = [], largest = 0;
+                if (clone_num === '') {
+                    pattern = df.attributes.process.name;
+                } else {
+                    split_name = df.clone_number.split('---');
+                    pattern = split_name[0];
+                }
+
+                for (i = 0; i < clone_numbers.length; i++) {
+                    if (clone_numbers[i].indexOf(pattern) > -1) {
+                        split_name = clone_numbers[i].split('---');
+                        if (split_name !== [""]) {
+                            count_list.push(parseInt(split_name[1]));
+                        }
+                    }
+                }
+                if (count_list.length !== 0) {
+                    largest = Math.max.apply(Math, count_list);
+                    count = largest + 1;
+                } else {
+                    count = largest + 1;
+                }
+                new_draft = df;
+                new_draft.id = '';
+                new_draft.clone_number = pattern + '---' + count;
+                new_draft.attributes.process.name = new_draft.clone_number;
+                new_draft.attributes.input_files = [];
+                new_draft.attributes.output_files = [];
+                return new_draft;
+
+            },
+
+            get_existing_clones: function () {
+                var clones = [];
+                service.drafts.forEach(function (item) {
+                    if (item.clone_number) {
+                        clones.push(item.clone_number);
+                    }
+
+                });
+                return clones;
             },
 
             deleteDraft: function (draft_id) {

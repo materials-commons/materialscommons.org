@@ -11,13 +11,14 @@ from .. import args
 
 
 class Draft(object):
-    def __init__(self, owner, name, project_id, description):
+    def __init__(self, owner, name, project_id, description, clone_number):
         self.owner = owner
         self.name = name
         self.birthtime = r.now()
         self.mtime = self.birthtime
         self.project_id = project_id
         self.description = description
+        self.clone_number = clone_number
 
 
 class DraftEncoder(json.JSONEncoder):
@@ -35,8 +36,9 @@ def create_draft():
     description = dmutil.get_optional('description', j,
                                       "Saved draft for " + user)
     project_id = dmutil.get_required('project_id', j)
+    clone_number = dmutil.get_optional('clone_number', j)
     attributes = dmutil.get_optional('attributes', j, [])
-    d = Draft(user, name, project_id, description)
+    d = Draft(user, name, project_id, description, clone_number)
     d.attributes = attributes
     return dmutil.insert_entry('drafts', d.__dict__, return_created=True)
 
