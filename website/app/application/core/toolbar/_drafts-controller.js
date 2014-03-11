@@ -5,10 +5,10 @@ Application.Controllers.controller('_toolbarDrafts',
                 $scope.drafts = ProvDrafts.drafts;
             });
 
-            $scope.init = function () {
+            function init() {
                 $scope.drafts = ProvDrafts.drafts;
                 ProvDrafts.loadRemoteDrafts();
-            };
+            }
 
-            $scope.init();
+            init();
         }]);
