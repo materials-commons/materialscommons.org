@@ -63,6 +63,7 @@ def delete_tag(tag):
 
 @app.route('/tags/list/<item_type>/<item_id>', methods=['GET'])
 @jsonp
+@apikey
 def tags_for_item(item_type, item_id):
     rr = list(r.table('tag2item').filter({'item_id': item_id}).run(g.conn))
     return json.dumps(rr)

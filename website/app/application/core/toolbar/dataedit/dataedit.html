@@ -18,6 +18,7 @@
                     <img ng-src="{{ fileSrc }}">
                 </div>
                 <div ng-switch-when="other">
+                    <a ng-href="{{ fileSrc }}" download="{{ fileName }}">{{doc.name}}</a>
                     <img style="width: 300px" src="assets/img/no_img_1.png" class="img-polaroid">
                 </div>
                 <!--<a ng-switch-when="other" ng-href="{{ fileSrc }}" download="{{ fileName }}">{{ doc.name}}</a>-->
@@ -29,14 +30,25 @@
                     <legend>Basic Information</legend>
                     <cgroup label="Description:">
                         <textarea ng-if="doc.description != ''" class="span4" ng-model="doc.description"
-                                  rows="4">
+                                  rows="4" ng-disabled="model.is_disabled">
                         </textarea>
+                        <a class="btn btn-primary" type="button"
+                           data-toggle="modal"
+                           data-target="#toolbarOverviewProjectModal"
+                           ng-click="edit_details()"
+                           tooltip="Edit Description"
+                           data-original-title="Edit project"><i class="fa fa-pencil-square-o"></i></a>
+                    </cgroup>
+                    <cgroup label="Size(kb):">
+                        <input class="input-xlarge" ng-model="doc.size" type="text" ng-disabled="true">
                     </cgroup>
                     <cgroup label="Owner:">
                         <input class="input-xlarge" ng-model="doc.owner" type="text" ng-disabled="true">
                     </cgroup>
-                    <button type="button" class="btn btn-primary" ng-click="saveData()" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-danger" ng-click="cancel()" class="btn btn-danger">Cancel</button>
+                    <div ng-hide="model.is_disabled">
+                        <button type="button" class="btn btn-primary" ng-click="saveData()" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-danger" ng-click="cancel()" class="btn btn-danger">Cancel</button>
+                    </div>
                 </fieldset>
             </form>
 
@@ -49,10 +61,10 @@
         <div class="span2">
             <div class="tabbable tabs-right">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="" ng-click="showtab('reviews')" data-toggle="tab">Reviews</a></li>
-                    <li><a href="" ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
                     <li><a href="" ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
                     <li><a href="" ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
+                    <li><a href="" ng-click="showtab('reviews')" data-toggle="tab">Reviews</a></li>
+                    <li><a href="" ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
                 </ul>
             </div>
         </div>

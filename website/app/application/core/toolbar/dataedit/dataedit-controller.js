@@ -2,7 +2,8 @@ Application.Controllers.controller('toolbarDataEdit',
     ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "dateGenerate",
         function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, dateGenerate) {
             $scope.model = {
-                new_note : ''
+                new_note: '',
+                is_disabled: true
             };
 
             $scope.setupAccessToUserFile = function () {
@@ -19,10 +20,9 @@ Application.Controllers.controller('toolbarDataEdit',
             $scope.saveData = function () {
                 mcapi('/datafile/update/%', $scope.doc.id)
                     .success(function (data) {
-                        //$scope.addNewTags();
-                        //$scope.msg = "Data has been saved";
-                        //alertService.sendMessage($scope.msg);
-                        //pubsub.send('tags.change', '');
+                        $scope.model.is_disabled = true;
+                        $scope.msg = "Data has been saved";
+                        alertService.sendMessage($scope.msg);
                     }).error(function (data) {
                         alertService.sendMessage(data.error);
                     }).put($scope.doc);
@@ -30,7 +30,7 @@ Application.Controllers.controller('toolbarDataEdit',
             };
 
             $scope.cancel = function () {
-                $window.history.back();
+                $scope.model.is_disabled = true;
             };
 
             $scope.add_notes = function () {
@@ -41,19 +41,23 @@ Application.Controllers.controller('toolbarDataEdit',
 
             $scope.showtab = function (tab) {
                 switch (tab) {
-                case "reviews":
-                    $state.go('toolbar.dataedit.reviews');
-                    break;
-                case "tags":
-                    $state.go('toolbar.dataedit.tags');
-                    break;
-                case "notes":
-                    $state.go('toolbar.dataedit.notes');
-                    break;
-                case "provenance":
-                    $state.go('toolbar.dataedit.provenance');
-                    break;
+                    case "reviews":
+                        $state.go('toolbar.dataedit.reviews');
+                        break;
+                    case "tags":
+                        $state.go('toolbar.dataedit.tags');
+                        break;
+                    case "notes":
+                        $state.go('toolbar.dataedit.notes');
+                        break;
+                    case "provenance":
+                        $state.go('toolbar.dataedit.provenance');
+                        break;
                 }
+            };
+
+            $scope.edit_details = function () {
+                $scope.model.is_disabled = false;
             };
 
             $scope.init = function () {
