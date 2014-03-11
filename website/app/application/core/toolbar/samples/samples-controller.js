@@ -52,10 +52,6 @@ Application.Controllers.controller('toolbarSamples',
                 'default': [],
                 'additional': []
             }};
-            mcapi('/materials')
-                .success(function (data) {
-                    $scope.materials = data;
-                }).jsonp();
 
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_pick":"material"')

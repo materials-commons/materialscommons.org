@@ -4,11 +4,6 @@
             <form class="form-horizontal">
                 <fieldset>
                     <legend>Create Sample</legend>
-                    <cgroup label="Select Material:">
-                        <select ng-model="doc.material"
-                                ng-options="mat.name for mat in materials | orderBy:'name'">
-                        </select>
-                    </cgroup>
                     <div class="control-group">
                         <label class="control-label">Select Template:</label>
 
@@ -87,7 +82,6 @@
                     <tr>
                         <th>Sample</th>
                         <th>Alloy</th>
-                        <th>Material</th>
                         <th>Added Properties</th>
                     </tr>
                     </thead>
@@ -100,7 +94,6 @@
                         <tr ng-repeat="sample in samples_list | orderBy:'model.default[0].value' | page:currentDataPage:10">
                             <td>{{sample.model.default[0].value}}</td>
                             <td>{{sample.model.default[1].value}}</td>
-                            <td>{{sample.material.name}}</td>
                             <td>
                                 <ul ng-repeat="kv in sample.model.added_properties">
                                     <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>

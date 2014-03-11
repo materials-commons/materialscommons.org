@@ -38,14 +38,6 @@
                                 ng-options="mach.name for mach in machines_list">
                         </select>
                     </div>
-                    <label>Selected Material: <a href="#modalMachine">{{ process.material.name }}</a></label>
-
-                    <div ng-show="useExisting == 'yes'">
-                        <label>Select existing material: </label>
-                        <select ng-model="process.material"
-                                ng-options="mat.name for mat in materials_list">
-                        </select>
-                    </div>
                     <div ng-show="useExisting == 'no'">
                         <cgroup label="Name:">
                             <input ng-model="process.machine.name" placeholder="Name your machine" type="text">

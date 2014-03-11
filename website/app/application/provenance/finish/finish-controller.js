@@ -52,6 +52,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                 $scope.outputs = $scope.doc.attributes.output_conditions;
                 $scope.input_files = $scope.doc.attributes.input_files;
                 $scope.output_files = $scope.doc.attributes.output_files;
+                console.log($scope.inputs);
             };
 
             $scope.init();

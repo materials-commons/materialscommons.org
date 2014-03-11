@@ -27,7 +27,6 @@ def create_sample():
     j = request.get_json()
     sample = dict()
     sample['model'] = dmutil.get_required('model', j)
-    sample['material'] = dmutil.get_required('material', j)
     sample['birthtime'] = r.now()
     sample['owner'] = dmutil.get_required('owner', j)
     return dmutil.insert_entry('samples', sample)
