@@ -1,7 +1,7 @@
 Application.Controllers.controller('_toolbarDraftsReviewModal',
     ["$scope", "User", "pubsub", "mcapi", function ($scope, User, pubsub, mcapi) {
 
-        $scope.newReview = function (userToReview, note) {
+        function newReview (userToReview, note) {
             var review = {};
             review.note = note;
             review.item_type = "draft";
@@ -11,18 +11,18 @@ Application.Controllers.controller('_toolbarDraftsReviewModal',
             review.item_id = $scope.draft.id;
             review.project_id = $scope.draft.attributes.project_id;
             return review;
-        };
+        }
 
-        $scope.addReview = function (review) {
+        function addReview(review) {
             mcapi('/reviews')
                 .success(function () {
                     pubsub.send('reviews.change');
                 }).post(review);
-        };
+        }
 
         $scope.addReviewNoteKeypress = function () {
-            var review = $scope.newReview(User.u(), $scope.reviewNoteSelf);
-            $scope.addReview(review);
+            var review = newReview(User.u(), $scope.reviewNoteSelf);
+            addReview(review);
             $scope.reviewNoteSelf = "";
             $scope.dismissModal();
         };
@@ -30,19 +30,19 @@ Application.Controllers.controller('_toolbarDraftsReviewModal',
         $scope.finish = function () {
             var review;
             if ($scope.reviewNoteOther !== "" && $scope.userForReview !== "") {
-                review = $scope.newReview($scope.userForReview, $scope.reviewNoteOther);
-                $scope.addReview(review);
+                review = newReview($scope.userForReview, $scope.reviewNoteOther);
+                addReview(review);
             }
             $scope.reviewNoteOther = "";
             $scope.userForReview = "";
         };
 
-        $scope.init = function () {
+        function init() {
             mcapi('/selected_users')
                 .success(function (data) {
                     $scope.users = data;
                 }).jsonp();
-        };
+        }
 
-        $scope.init();
+        init();
     }]);
