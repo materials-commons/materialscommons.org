@@ -4,6 +4,7 @@
         <thead>
         <tr>
             <th>Name</th>
+            <th>Clone Number</th>
             <th>Date</th>
             <th>Description</th>
             <th>Action</th>
@@ -16,6 +17,7 @@
                    ui-sref="toolbar.projectspage({id: draft.attributes.project_id, draft_id: draft.id})">
                 {{draft.attributes.process.name}}</a>
             </td>
+            <td>{{draft.attributes.process.name.split('---')[1]}}</td>
             <td>{{draft.birthtime | toDateString}}</td>
             <td>{{draft.attributes.process.description}}</td>
             <td>
@@ -31,6 +33,7 @@
                                data-target="#toolbarDraftsReviewModal"
                                ng-click="markForReview(draft)">Mark For Review</a>
                         </li>
+                        <li><a ng-click="cloneProvenance(draft)">Clone</a></li>
                     </ul>
                 </div>
             </td>
