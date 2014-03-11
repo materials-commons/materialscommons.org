@@ -2,7 +2,12 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
     ["$scope", "ProvDrafts", "$stateParams", "mcapi",
         function ($scope, ProvDrafts, $stateParams, mcapi) {
             $scope.model = {
-                additionalProperty: {}
+                additionalProperty: {},
+                pick_sample: {}
+            };
+            $scope.pick_sample = function () {
+                $scope.doc.model = $scope.model.pick_sample.model;
+                console.log($scope.doc);
             };
 
             $scope.addAdditionalProperty = function () {
@@ -41,21 +46,10 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
 //                    }).jsonp();
 //            };
 
-
-            $scope.load_selected_samples = function () {
+            $scope.load_all_samples = function () {
                 mcapi('/samples')
                     .success(function (data) {
                         $scope.samples_list = data;
-                        if ($scope.doc.model.sample) {
-                            var i = _.indexOf($scope.samples_list, function (item) {
-                                return (item.id === $scope.doc.model.sample.id);
-                            });
-
-                            if (i !== -1) {
-                                $scope.doc.model.sample = $scope.samples_list[i];
-                                $scope.doc.model.default[0].value = $scope.doc.model.sample.model.default[0].value;
-                            }
-                        }
                     }).jsonp();
             }
 
@@ -63,18 +57,12 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
                     $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
-                    $scope.process = ProvDrafts.current.attributes.process     //used in sample filter
                 } else {
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
-                    $scope.process = ProvDrafts.current.attributes.process     //used in sample filter
                 }
-
-                if ($scope.doc.template_pick === 'sample') {
-                    $scope.load_selected_samples();
-                    //$scope.loadMaterials();
-                }
-                console.dir($scope.doc)
-
+                $scope.load_all_samples();
+                console.log($scope.doc)
+                //$scope.loadMaterials();
             };
 
             $scope.init();
