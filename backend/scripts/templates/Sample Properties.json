@@ -120,7 +120,7 @@
     "template_description": "" ,
     "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_name": "Sample Properties" ,
-    "template_pick": "material" ,
+    "template_pick": "sample" ,
     "template_type": "condition"
 
 }
