@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDataEditDisplayProvenance',
-    ["$scope", "mcapi", "User", "$stateParams", "alertService", "watcher",
-        function ($scope, mcapi, User, $stateParams, alertService, watcher) {
+    ["$scope", "mcapi", "User", "$state", "$stateParams", "alertService", "watcher",
+        function ($scope, mcapi, User, $state, $stateParams, alertService, watcher) {
 
             watcher.watch($scope, 'model.selected_input_process', function () {
                 $scope.show_process(JSON.parse($scope.model.selected_input_process));
@@ -33,6 +33,10 @@ Application.Controllers.controller('toolbarDataEditDisplayProvenance',
 
             $scope.get_mode_condition = function (cond) {
                 $scope.display_condition = cond;
+            };
+
+            $scope.showProcessDetails = function (process_id) {
+                $state.go('toolbar.process', {id: process_id});
             };
 
             $scope.init = function () {
