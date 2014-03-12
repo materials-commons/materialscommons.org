@@ -59,7 +59,17 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 mcapi('/samples')
                     .success(function (data) {
                         $scope.samples_list = data;
+                        if ($scope.doc.sample) {
+                            var i = _.indexOf($scope.samples_list, function (item) {
+                                return (item.id === $scope.doc.sample.id);
+                            });
+
+                            if (i !== -1) {
+                                $scope.doc.sample = $scope.samples_list[i];
+                            }
+                        }
                     }).jsonp();
+
             };
 
             $scope.init = function () {
@@ -69,8 +79,10 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 } else {
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
                 }
-                $scope.load_all_samples();
-                //$scope.loadMaterials();
+                if ($scope.doc.template_pick === 'sample') {
+                    $scope.load_all_samples();
+
+                }
             };
 
             $scope.init();
