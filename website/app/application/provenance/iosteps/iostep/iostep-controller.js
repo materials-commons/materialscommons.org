@@ -5,11 +5,18 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 additionalProperty: {},
                 pick_sample: {}
             };
-            $scope.pick_sample = function () {
-                $scope.doc.model = $scope.model.pick_sample.model;
-                $scope.doc.owner = $scope.model.pick_sample.owner;
 
-                console.log($scope.doc);
+            $scope.pick_sample = function () {
+                var i = _.indexOf($scope.samples_list, function (item) {
+                    return (item.id === $scope.doc.sample.id);
+                });
+
+                if (i !== -1) {
+                    $scope.doc.sample = $scope.samples_list[i];
+                    $scope.doc.model = $scope.doc.sample.model;
+                    $scope.doc.owner = $scope.doc.sample.owner;
+                    $scope.doc.sample_id = $scope.doc.sample.id;
+                }
             };
 
             $scope.addAdditionalProperty = function () {
@@ -53,7 +60,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     .success(function (data) {
                         $scope.samples_list = data;
                     }).jsonp();
-            }
+            };
 
             $scope.init = function () {
                 $scope.stepName = $stateParams.iostep;
@@ -62,8 +69,9 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 } else {
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
                 }
-                $scope.load_all_samples();
                 console.log($scope.doc)
+
+                $scope.load_all_samples();
                 //$scope.loadMaterials();
             };
 

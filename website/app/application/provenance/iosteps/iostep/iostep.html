@@ -49,12 +49,12 @@
                 </form>
                 <form ng-show="doc.template_pick=='sample'" class="form-inline">
                     <cgroup label="Pick Sample:">
-                        <select ng-model="model.pick_sample"
+                        <select ng-model="doc.sample"
                                 ng-options="samp.model.default[0].value for samp in samples_list"
                                 ng-change="pick_sample()">
                         </select>
                     </cgroup>
-                    <label>Sample: {{ doc.model.sample.model.default[0].value}}</label>
+                    <label>Sample:</label> <a>{{ doc.sample.model.default[0].value}}</a>
                 </form>
 
             </div>
