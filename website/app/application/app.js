@@ -113,9 +113,9 @@ app.config(function ($stateProvider) {
             url: '/provenance',
             templateUrl: 'application/core/toolbar/dataedit/provenance/provenance.html'
         })
-        .state('toolbar.dataedit.process', {
-            url: '/process',
-            templateUrl: 'application/core/toolbar/dataedit/process/process.html'
+        .state('toolbar.process', {
+            url: '/process/:id',
+            templateUrl: 'application/core/toolbar/process/process.html'
         })
         .state('toolbar.databytag', {
             url: '/databytag/:name',
