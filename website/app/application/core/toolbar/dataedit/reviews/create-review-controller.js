@@ -24,7 +24,7 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                                 $scope.all_reviews = reviews;
                                 console.log($scope.all_reviews);
                             })
-                            .error(function (e){
+                            .error(function (e) {
                                 console.log('error');
                             }).jsonp();
                     }).post(review);
@@ -52,6 +52,20 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                     }).delete();
             };
 
+            $scope.reviewsCount = function () {
+                mcapi('/reviews/to_conduct')
+                    .success(function (data) {
+                        $scope.reviewsToConduct = _.filter(data, function (item) {
+                            if (item.status !== "Finished" && item.item_id === $stateParams.id) {
+                                return item;
+                            }
+                        });
+                    }).jsonp();
+            };
+
+            pubsub.waitOn($scope, 'reviews.change', function () {
+                $scope.reviewsCount();
+            });
             $scope.init = function () {
                 $scope.all_reviews = [];
                 $scope.signed_in_user = User.u();
@@ -63,10 +77,8 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                         $scope.all_reviews = reviews;
                     }).jsonp();
 
-                mcapi('/selected_users')
-                    .success(function (data) {
-                        $scope.users = data;
-                    }).jsonp();
+                $scope.reviewsCount();
+
             };
 
             $scope.init();
