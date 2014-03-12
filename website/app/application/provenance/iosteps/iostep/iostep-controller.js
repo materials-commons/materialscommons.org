@@ -69,8 +69,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 } else {
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
                 }
-                console.log($scope.doc)
-
                 $scope.load_all_samples();
                 //$scope.loadMaterials();
             };
