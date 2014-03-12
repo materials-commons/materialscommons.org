@@ -82,12 +82,12 @@
                         </div>
                     </cgroup>
                     <cgroup label="Files:">
-                        <div ng-if="input_files.length!=0">
+                        <div ng-if="output_files.length!=0">
                             <ul style="list-style-position: inside" ng-repeat="f in output_files">
                                 <a href="#/mytools/data/edit/{{f.id}}">{{f.name}}</a>
                             </ul>
                         </div>
-                        <div ng-if="input_files.length==0">
+                        <div ng-if="output_files.length==0">
                             no output files.
                         </div>
 
