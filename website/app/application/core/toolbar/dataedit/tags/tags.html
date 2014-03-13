@@ -1,32 +1,25 @@
 <div class="tab-pane" id="tags" ng-controller="toolbarDataEditCreateTag">
     <div class="span5">
         <h3>Tags</h3>
+        <cgroup label="Create new:">
+            <input ui-keypress="{13: 'addNewTag()'}" ng-model="tag_model.new_tag"
+                   placeholder="Tag...">
+        </cgroup>
+        <button ng-click="addNewTag(doc.id, 'datafile')" ng-disabled="!tag_model.new_tag"
+                class="btn btn-info">Add
+        </button>
+        <cgroup label="Pick existing :">
+            <select ng-model="tag_model.tag_to_add"
+                    ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
+                    ng-multiple="false">
+                <option></option>
+                <option ng-repeat="tag in tagchoices">{{ tag }}</option>
+            </select>
+        </cgroup>
+        <button ng-click="addExistingTag(doc.id, 'datafile')" ng-disabled="!tag_model.tag_to_add"
+                class="btn btn-info">Add
+        </button>
 
-        <form class="form-horizontal">
-            <fieldset>
-                <cgroup label="Create new:">
-                    <input ui-keypress="{13: 'addNewTag()'}" ng-model="tag_model.new_tag"
-                           placeholder="Tag...">
-                    <button ng-click="addNewTag(doc.id, 'datafile')" ng-disabled="!tag_model.new_tag"
-                            class="btn btn-info">Add
-                    </button>
-                </cgroup>
-            </fieldset>
-            <fieldset>
-                <cgroup label="Pick existing :">
-                    <select ng-model="tag_model.tag_to_add"
-                            ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
-                            ng-multiple="false">
-                        <option></option>
-                        <option ng-repeat="tag in tagchoices">{{ tag }}</option>
-                    </select>
-                    <button ng-click="addExistingTag(doc.id, 'datafile')" ng-disabled="!tag_model.tag_to_add"
-                            class="btn btn-info">Add
-                    </button>
-
-                </cgroup>
-            </fieldset>
-        </form>
     </div>
     <div class="span5">
         <h3>List of Tags:</h3>
