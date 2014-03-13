@@ -19,23 +19,23 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="row in docs | filter:query | page:currentTagDataPage:10">
-                            <td style="cursor:pointer"><a ui-sref="toolbar.dataedit({id: row.id})">{{ row.name }}</a></td>
-                            <td>{{ row.description }}</td>
+                            <td style="cursor:pointer"><a ui-sref="toolbar.dataedit({id: row.datafile.id})">{{ row.datafile.name }}</a></td>
+                            <td>{{ row.datafile.description }}</td>
                             <td>
                                 <ul style="list-style-type:none">
-                                    <li ng-repeat="tag in row.tags"><span class="label label-info">{{ tag }}</span></li>
+                                    <li ng-repeat="tag in row.tags_list"><span class="label label-info">{{ tag.tag_id }}</span></li>
                                 </ul>
                             </td>
                             <td>
                                 <ul>
-                                    <li ng-repeat="metatag in row.metatags | limitTo:10">
+                                    <li ng-repeat="metatag in row.datafile.metatags | limitTo:10">
                                         {{ metatag.name }}:{{ metatag.value}}
                                     </li>
-                                    <div ng-show="row.metatags.length > 10">
+                                    <div ng-show="row.datafile.metatags.length > 10">
                                         <accordion>
                                             <accordion-group heading="... more">
 
-                                                <li ng-repeat="metatag in row.metatags.slice(10)">
+                                                <li ng-repeat="metatag in row.datafile.metatags.slice(10)">
                                                     {{metatag.name}}
                                                     {{metatag.value}}
                                                 </li>

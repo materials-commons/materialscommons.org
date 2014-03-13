@@ -5,7 +5,7 @@ from flask import jsonify, g, request
 import rethinkdb as r
 from loader.model import user
 import dmutil
-from utils import create_tag_count, make_password_hash
+from utils import  make_password_hash
 import error
 from args import json_as_format_arg
 from mcexceptions import NoSuchItem
@@ -21,9 +21,16 @@ def all_tags():
 @app.route('/tags/count')
 @jsonp
 def tags_by_count():
-    selection = list(r.table('datafiles').
-                     concat_map(lambda item: item['tags']).run(g.conn))
-    return create_tag_count(selection)
+    selection = list(r.table('tags').run(g.conn))
+    return get_the_count(selection)
+
+
+def get_the_count(selection):
+    tagsCount = []
+    for tag in selection:
+        c = r.table('tag2item').get_all(tag[u'id'], index='tag_id').count().run(g.conn)
+        tagsCount.append({'name': tag[u'id'], 'count': c})
+    return json_as_format_arg(tagsCount)
 
 
 @app.route('/tag/<item_type>/<item_id>', methods=['POST'])
