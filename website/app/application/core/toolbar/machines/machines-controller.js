@@ -19,7 +19,6 @@ Application.Controllers.controller('toolbarMachines',
         mcapi('/machines')
             .success(function (data) {
                 $scope.machines_list = data;
-
             })
             .error(function (data) {
             }).jsonp();
