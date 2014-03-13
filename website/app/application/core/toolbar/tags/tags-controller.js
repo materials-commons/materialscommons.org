@@ -11,7 +11,7 @@ Application.Controllers.controller('toolbarTags',
                 .success(function (data) {
                     $scope.tags = data;
                 }).jsonp();
-        }
+        };
 
         $scope.tagsCount();
     }]);
