@@ -67,7 +67,6 @@ Application.Controllers.controller('toolbarDataEditCreateTag',
                 mcapi('/tags/list/%/%', 'datafile', $scope.id)
                     .success(function (data) {
                         $scope.datafile_tags = data;
-                        console.log($scope.datafile_tags)
                     }).jsonp();
             };
             $scope.init();

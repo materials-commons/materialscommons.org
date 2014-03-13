@@ -2,7 +2,6 @@ from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request
 import rethinkdb as r
-from ..utils import create_tag_count
 from .. import args
 from .. import error
 from .. import access
@@ -24,15 +23,15 @@ def datafiles_for_user():
 @apikey(shared=True)
 @jsonp
 def datafiles_for_user_by_tag(tag):
+    datafile_tags = []
     user = access.get_user()
-    rr = r.table('datafiles').filter(r.row['tags'].contains(tag))
+    rr = r.table('tag2item').get_all(tag, index='tag_id').eq_join('item_id', r.table('datafiles')).zip()
     rr = args.add_all_arg_options(rr)
-    selection = list(rr.run(g.conn, time_format='raw'))
-    datafiles = []
-    for df in selection:
-        if access.allowed(user, df['owner']):
-            datafiles.append(df)
-    return args.json_as_format_arg(datafiles)
+    datafiles = list(rr.run(g.conn, time_format='raw'))
+    for df in datafiles:
+        rr = list(r.table('tag2item').get_all(df['id'], index='item_id').pluck('tag_id').run(g.conn))
+        datafile_tags.append({'datafile': df, 'tags_list':rr})
+    return args.json_as_format_arg(datafile_tags)
 
 
 @app.route('/datafile/update/<path:datafileid>', methods=['PUT'])

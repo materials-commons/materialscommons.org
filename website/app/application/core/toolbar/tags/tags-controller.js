@@ -14,4 +14,5 @@ Application.Controllers.controller('toolbarTags',
         };
 
         $scope.tagsCount();
+
     }]);
