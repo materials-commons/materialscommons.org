@@ -27,6 +27,7 @@ var app = angular.module('materialscommons',
         'application.core.filters', 'application.core.directives',
         'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
         'application.provenance.filters', 'application.provenance.directives']);
+/*
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
     var msocket = socketFactory({
@@ -38,6 +39,7 @@ app.factory('msocket', ["socketFactory", function (socketFactory) {
     msocket.forward('error');
     return msocket;
 }]);
+*/
 
 app.config(["$stateProvider", function ($stateProvider) {
     mcglobals = {};
