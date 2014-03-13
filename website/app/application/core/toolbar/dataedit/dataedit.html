@@ -5,7 +5,7 @@
                 <a ng-repeat="trailitem in trail">
                     <span><b>{{trailitem}}/ </b></span>
                 </a>
-                <a href="#/mytools/data/edit/{{doc.id}}" ><b><u>{{doc.name}}</u></b></a>
+                <a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>
             </form>
         </div>
     </div>
@@ -29,15 +29,23 @@
                 <fieldset>
                     <legend>Basic Information</legend>
                     <cgroup label="Description:">
-                        <textarea ng-if="doc.description != ''" class="span4" ng-model="doc.description"
-                                  rows="4" ng-disabled="model.is_disabled">
+                        <textarea ng-if="doc.description != ''" class="span4" ng-model="model.desc"
+                                  rows="3" ng-disabled="model.is_disabled">
                         </textarea>
-                        <a class="btn btn-primary" type="button"
-                           data-toggle="modal"
-                           data-target="#toolbarOverviewProjectModal"
-                           ng-click="edit_details()"
-                           tooltip="Edit Description"
-                           data-original-title="Edit project"><i class="fa fa-pencil-square-o"></i></a>
+                    </cgroup>
+                    <cgroup label="">
+                        <div ng-show="model.is_disabled">
+                            <button tooltip="Edit Description" ng-click="edit_details()" class="btn btn-primary">Edit
+                            </button>
+                        </div>
+                        <div ng-hide="model.is_disabled">
+                            <button type="button" class="btn btn-primary" ng-click="saveData()" class="btn btn-primary">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-danger" ng-click="cancel()" class="btn btn-danger">
+                                Cancel
+                            </button>
+                        </div>
                     </cgroup>
                     <cgroup label="Size(kb):">
                         <input class="input-xlarge" ng-model="doc.size" type="text" ng-disabled="true">
@@ -45,15 +53,13 @@
                     <cgroup label="Owner:">
                         <input class="input-xlarge" ng-model="doc.owner" type="text" ng-disabled="true">
                     </cgroup>
-                    <div ng-hide="model.is_disabled">
-                        <button type="button" class="btn btn-primary" ng-click="saveData()" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-danger" ng-click="cancel()" class="btn btn-danger">Cancel</button>
-                    </div>
+
                 </fieldset>
             </form>
-
         </div>
-    </div><br>
+    </div>
+    <br>
+
     <div class="row-fluid">
         <div class="span8">
             <div ui-view></div>
@@ -61,12 +67,12 @@
         <div class="span2">
             <div class="tabbable tabs-right">
                 <ul class="nav nav-tabs">
-                    <li><a href="" ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
-                    <li><a href="" ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
+                    <li class="active"><a ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
+                    <li><a ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
                     <li ng-controller="toolbarDataEditCreateReview">
-                        <a href="" ng-click="showtab('reviews')" data-toggle="tab">Reviews({{reviewsToConduct.length}})</a>
+                        <a ng-click="showtab('reviews')" data-toggle="tab">Reviews({{reviewsToConduct.length}})</a>
                     </li>
-                    <li><a href="" ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
+                    <li><a ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
                 </ul>
             </div>
         </div>

@@ -3,7 +3,8 @@ Application.Controllers.controller('toolbarDataEdit',
         function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, dateGenerate) {
             $scope.model = {
                 new_note: '',
-                is_disabled: true
+                is_disabled: true,
+                desc: ''
             };
 
             $scope.setupAccessToUserFile = function () {
@@ -18,6 +19,7 @@ Application.Controllers.controller('toolbarDataEdit',
             };
 
             $scope.saveData = function () {
+                $scope.doc.description = $scope.model.desc;
                 mcapi('/datafile/update/%', $scope.doc.id)
                     .success(function (data) {
                         $scope.model.is_disabled = true;
@@ -31,6 +33,8 @@ Application.Controllers.controller('toolbarDataEdit',
 
             $scope.cancel = function () {
                 $scope.model.is_disabled = true;
+                $scope.model.desc = $scope.doc.description;
+
             };
 
             $scope.add_notes = function () {
@@ -65,6 +69,7 @@ Application.Controllers.controller('toolbarDataEdit',
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.doc = data;
+                        $scope.model.desc = $scope.doc.description;
                         $scope.setupAccessToUserFile();
                         mcapi('/datadirs/%/datafile', $scope.doc.id)
                             .success(function (data) {
@@ -74,6 +79,7 @@ Application.Controllers.controller('toolbarDataEdit',
                     .error(function (data) {
                         alertService.sendMessage(data.error);
                     }).jsonp();
+                $scope.showtab('notes');
             };
             $scope.init();
         }]);

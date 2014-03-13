@@ -30,19 +30,22 @@
         </tbody>
     </table>
     <!--<div review-table></div>-->
-    <h4>Mark For Followup</h4>
-    <input type="text" ng-model="review_note_self"
-           ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
-           placeholder="Review Note...">
+    <cgroup label="Mark For Followup">
+        <input type="text" ng-model="model.review_note_self"
+               ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
+               placeholder="Review Note...">
+    </cgroup>
 
-    <h4>Request to Review</h4>
-    <input type="text" ng-model="review_note_other" placeholder="Review Note...">
-    <select ng-model="user_for_review"
-            ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
-            ng-multiple="false">
-        <option></option>
-        <option ng-repeat="user in users">{{ user }}</option>
-    </select>
+    <cgroup label="Request to Review">
+        <input type="text" ng-model="model.review_note_other" placeholder="Review Note...">
+        <select ng-model="user_for_review"
+                ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
+                ng-multiple="false">
+            <option></option>
+            <option ng-repeat="user in users">{{ user }}</option>
+        </select>
+    </cgroup>
+
     <button style="position:absolute" ng-click="addReviewForOther()" class="btn btn-info">Request
         Review
     </button>

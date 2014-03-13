@@ -51,6 +51,10 @@ Application.Controllers.controller('toolbarDataEditDisplayProvenance',
                 mcapi('/processes/output/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.output_process = data;
+                        if ($scope.output_process.length !== 0) {
+                            $scope.show_pr = true;
+                            $scope.show_process($scope.output_process[0]);
+                        }
                     }).jsonp();
 
                 mcapi('/processes/input/datafile/%', $scope.id)
