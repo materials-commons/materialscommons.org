@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Name" ,
-                "type": "" ,
+                "type": "required" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -14,7 +14,7 @@
             },
             {
                 "name": "Notes" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -44,7 +44,7 @@
             },
             {
                 "name": "Detector Type" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -53,7 +53,7 @@
             },
             {
                 "name": "Operator" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -61,8 +61,8 @@
                 "required": "false"
             },
             {
-                "name": "Model#" ,
-                "type": "" ,
+                "name": "Model" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -71,7 +71,7 @@
             } ,
             {
                 "name": "Status" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -80,7 +80,7 @@
             } ,
             {
                 "name": "Location" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -89,7 +89,7 @@
             } ,
             {
                 "name": "manufacturer" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,

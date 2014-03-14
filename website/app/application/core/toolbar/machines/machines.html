@@ -6,6 +6,9 @@
                 <form class="form-horizontal">
                     <fieldset>
                         <legend>Create Machine</legend>
+                        <!--<cgroup label="Name-1:">-->
+                            <!--<input  type="text" ng-model="name" validator="custom">-->
+                        <!--</cgroup>-->
                         <div df-properties default-properties="default_properties"></div>
 
                         <div ng-repeat="pv in machine.additional">
@@ -15,13 +18,12 @@
                                 <div class="controls">
                             <span ng-if="pv.value_choice.length!=0">
                                  <select ng-model="pv.value">
-
                                      <option ng-repeat="val in pv.value_choice"> {{val}}
                                      </option>
                                  </select>
                             </span>
                             <span ng-if="pv.value_choice.length==0">
-                                <input type="text" ng-model="pv.value" placeholder="Value...">
+                                <input type="text" ng-model="pv.value" validator="{{pv.type}}" placeholder="Value...">
                             </span>
                             <span ng-if="pv.unit_choice.length!=0">
                                 <select ng-model="pv.unit">

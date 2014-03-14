@@ -1,9 +1,22 @@
 Application.Controllers.controller('toolbarMachines',
-    ["$scope", "mcapi", function ($scope, mcapi) {
+    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
         $scope.machine = {
             "additional": []
         };
+        var $validationProvider = $injector.get('$validation');
 
+        $validationProvider.setExpression({
+            text: function (value) {
+                return value;
+            }
+        });
+
+        $validationProvider.setDefaultMsg({
+            text: {
+                error: '',
+                success: 'Thanks'
+            }
+        });
         mcapi('/templates')
             .argWithValue('filter_by', '"template_type":"machine"')
             .success(function (data) {
@@ -62,7 +75,7 @@ Application.Controllers.controller('toolbarMachines',
             }
             if ($scope.additional_prop || $scope.additional_prop === ' ') {
                 $scope.machine.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
-                    'unit_choice': [], 'unit': '', 'required': 'False', "type": ""});
+                    'unit_choice': [], 'unit': '', 'required': 'False', "type": "text"});
                 $scope.additional_prop = '';
             }
 
