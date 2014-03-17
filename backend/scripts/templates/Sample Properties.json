@@ -38,7 +38,7 @@
             },
             {
                 "name": "Compression" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice":[],
                 "value": "" ,
@@ -47,7 +47,7 @@
             },
             {
                 "name": "Orientation" ,
-                "type": "text" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,
@@ -57,7 +57,7 @@
 
             {
                 "name": "Manufacturing Condition" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,

@@ -38,7 +38,7 @@
                                         </select>
                                     </div>
                                     <div ng-if="pv.value_choice.length==0">
-                                        <input type="text" ng-model="pv.value">
+                                        <input type="text" validator="{{pv.type}}" ng-model="pv.value">
                                     </div>
                                     <div ng-if="pv.unit_choice.length!=0">
                                         <select class="span2" ng-model="pv.unit">
