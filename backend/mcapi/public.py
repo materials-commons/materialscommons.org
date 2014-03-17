@@ -5,25 +5,10 @@ from flask import jsonify, g, request
 import rethinkdb as r
 from loader.model import user
 import dmutil
-from utils import create_tag_count, make_password_hash
+from utils import  make_password_hash
 import error
-
-
-@app.route('/tag', methods=['POST'])
-@crossdomain(origin='*')
-def tag():
-    inserted = r.table('tags').insert(request.json).run(g.conn)
-    if (inserted[u'inserted'] == 1):
-        return json.dumps({'status': 'SUCCESS'})
-    else:
-        return error.bad_request("Unable to insert tag")
-
-
-@app.route('/tag/<tag>', methods=['DELETE'])
-@crossdomain(origin='*')
-@apikey
-def delete_tag(tag):
-    pass
+from args import json_as_format_arg
+from mcexceptions import NoSuchItem
 
 
 @app.route('/tags')
@@ -36,9 +21,59 @@ def all_tags():
 @app.route('/tags/count')
 @jsonp
 def tags_by_count():
-    selection = list(r.table('datafiles').
-                     concat_map(lambda item: item['tags']).run(g.conn))
-    return create_tag_count(selection)
+    selection = list(r.table('tags').run(g.conn))
+    return get_the_count(selection)
+
+
+def get_the_count(selection):
+    tagsCount = []
+    for tag in selection:
+        c = r.table('tag2item').get_all(tag[u'id'], index='tag_id').count().run(g.conn)
+        tagsCount.append({'name': tag[u'id'], 'count': c})
+    return json_as_format_arg(tagsCount)
+
+
+@app.route('/tag/<item_type>/<item_id>', methods=['POST'])
+@crossdomain(origin='*')
+@apikey
+def tag(item_type, item_id):
+    j = request.get_json()
+    tag = dict()
+    tag['id'] = dmutil.get_required('id', j)
+    entry = dmutil.entry_exists('tags', tag['id'])
+    if entry:
+        tag2item_id =  join_tag_and_item(tag['id'], item_id, item_type)
+        return dmutil.get_single_from_table('tag2item', tag2item_id)
+    else:
+        tag_id = dmutil.insert_entry_id('tags', tag)
+        if (tag_id):
+            tag2item_id =  join_tag_and_item(tag_id, item_id, item_type)
+            return dmutil.get_single_from_table('tag2item', tag2item_id)
+
+
+def join_tag_and_item(tag_id, item_id, item_type):
+    tag_to_item = {'tag_id': tag_id, 'item_id': item_id, 'item_type': item_type}
+    tag2item_id = dmutil.insert_entry_id('tag2item', tag_to_item)
+    return tag2item_id
+    
+
+@app.route('/tag/<tag>', methods=['DELETE'])
+@crossdomain(origin='*')
+@apikey
+def delete_tag(tag):
+    entry = dmutil.item_exists('tag2item', tag)
+    if entry:
+        rr = r.table('tag2item').get(tag).delete().run(g.conn)
+        return json.dumps(entry)
+    raise NoSuchItem()
+
+
+@app.route('/tags/list/<item_type>/<item_id>', methods=['GET'])
+@jsonp
+@apikey
+def tags_for_item(item_type, item_id):
+    rr = list(r.table('tag2item').filter({'item_id': item_id}).run(g.conn))
+    return json.dumps(rr)
 
 
 @app.route('/public/datafiles')
@@ -47,6 +82,7 @@ def list_public_datafiles():
     selection = list(r.table('datafiles').
                      filter({'access': 'public'}).
                      run(g.conn, time_format='raw'))
+
     return json.dumps(selection)
 
 

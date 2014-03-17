@@ -38,6 +38,8 @@ def create_tables():
     run(r.table_create("review2datafile"))
     run(r.table_create("datadirs_denorm"))
     run(r.table_create("materials"))
+    run(r.table_create("tag2item"))
+    run(r.table_create("samples"))
 
 
 def create_indices():
@@ -60,6 +62,8 @@ def create_indices():
     run(r.table('reviews').index_create('item_id'))
     run(r.table('project2datafile').index_create('project_id'))
     run(r.table('project2datafile').index_create('datafile_id'))
+    run(r.table('tag2item').index_create('tag_id'))
+    run(r.table('tag2item').index_create('item_id'))
 
 
 def run(rql):

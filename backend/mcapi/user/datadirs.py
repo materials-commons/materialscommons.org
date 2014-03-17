@@ -224,3 +224,12 @@ def construct_datadir(j, user):
     access = dmutil.get_optional('access', j, "private")
     name = dmutil.get_required('name', j)
     return datadir.DataDir(name, access, user, parent)
+
+
+@app.route('/datadirs/<datafile_id>/datafile')
+@apikey
+@jsonp
+def get_datadir(datafile_id):
+    rr = r.table('datadirs').filter(lambda drow: drow['datafiles'].contains(datafile_id))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return json_as_format_arg(selection)
