@@ -1,8 +1,7 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "dateGenerate",
-        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, dateGenerate) {
+    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User",
+        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User) {
             $scope.model = {
-                new_note: '',
                 is_disabled: true,
                 desc: ''
             };
@@ -23,8 +22,7 @@ Application.Controllers.controller('toolbarDataEdit',
                 mcapi('/datafile/update/%', $scope.doc.id)
                     .success(function (data) {
                         $scope.model.is_disabled = true;
-                        $scope.msg = "Data has been saved";
-                        alertService.sendMessage($scope.msg);
+                        alertService.sendMessage("Data has been saved");
                     }).error(function (data) {
                         alertService.sendMessage(data.error);
                     }).put($scope.doc);
@@ -35,12 +33,6 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.model.is_disabled = true;
                 $scope.model.desc = $scope.doc.description;
 
-            };
-
-            $scope.add_notes = function () {
-                $scope.doc.notes.push({'message': $scope.model.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
-                $scope.saveData();
-                $scope.model.new_note = "";
             };
 
             $scope.showtab = function (tab) {

@@ -81,17 +81,16 @@
         </div>
     </div>
 </div>
-
-<div class="row-fluid">
-
-    <div ng-show="message" ng-controller="_indexAlerts">
-        <notification message="message"></notification>
+<div class="row-fluid" ng-controller="_indexAlerts">
+    <div ng-show="message" >
+        <notification ng-model="message"></notification>
     </div>
 
 </div>
-
 <div class="row-fluid">
-    <div ui-view></div>
+    <div ui-view>
+
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -156,7 +155,8 @@
 <script src="application/core/toolbar/dataedit/tags/tag-directive.js"></script>
 <script src="application/core/toolbar/dataedit/reviews/create-review-controller.js"></script>
 <script src="application/core/toolbar/dataedit/tags/create-tag-controller.js"></script>
-<script src="application/core/toolbar/dataedit/provenance/display-provenance-controller.js"></script>
+<script src="application/core/toolbar/dataedit/notes/note-controller.js"></script>
+<script src="application/core/toolbar/dataedit/provenance/provenance-controller.js"></script>
 <script src="application/core/toolbar/process/process-controller.js"></script>
 <script src="application/core/toolbar/databytag/databytag-controller.js"></script>
 
