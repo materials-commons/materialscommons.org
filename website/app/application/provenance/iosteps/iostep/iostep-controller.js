@@ -8,7 +8,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
 
             $scope.addCustomProperty = function () {
                 $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': []});
-                console.log($scope.doc.model.added_properties);
             };
 
             $scope.loadMaterials = function () {

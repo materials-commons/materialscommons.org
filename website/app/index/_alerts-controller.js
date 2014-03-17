@@ -5,5 +5,4 @@ Application.Controllers.controller('_indexAlerts',
             $scope.message = {"type": "info",
                 "content": alertService.message};
         });
-        console.log($scope.message);
     }]);

@@ -26,7 +26,7 @@
         "additional": [
             {
                 "name": "Vacuumm Level" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -35,7 +35,7 @@
             },
             {
                 "name": "Gun Type" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -89,7 +89,7 @@
             } ,
             {
                 "name": "manufacturer" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -98,7 +98,7 @@
             },
             {
                 "name": "Force Type" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -107,7 +107,7 @@
             },
             {
                 "name": "Rigaku" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -116,7 +116,7 @@
             },
             {
                 "name": "Type" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,

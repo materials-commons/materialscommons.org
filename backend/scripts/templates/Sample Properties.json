@@ -26,7 +26,7 @@
         "additional":[
             {
                 "name": "Heat treatment" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [
                     "C" ,
@@ -67,7 +67,7 @@
          
             {
                 "name": "Specimen Prep" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,
@@ -79,7 +79,7 @@
             },
             {
                 "name": "Material State" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,
