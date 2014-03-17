@@ -70,7 +70,7 @@
             },
             {
                 "name": "Image Integrations" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -79,7 +79,7 @@
             },
             {
                 "name": "Brightness" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -88,7 +88,7 @@
             },
             {
                 "name": "Contrast" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
