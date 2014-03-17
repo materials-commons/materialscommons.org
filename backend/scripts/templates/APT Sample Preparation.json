@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Sample name" ,
-                "type": "required" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -35,7 +35,7 @@
                 "Liftout + FIB Milling",
                 "Other"
             ],
-            "required": true
+            "required": false
             },
             {
                 "name": "Preparation Note",
@@ -44,7 +44,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Notes" ,
@@ -53,7 +53,7 @@
                 "unit_choice": [],
                 "value": "" ,
                 "value_choice": [],
-                "required": true
+                "required": false
             }
         ],
         "additional":[

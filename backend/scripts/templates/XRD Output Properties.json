@@ -4,7 +4,7 @@
         "default": [
             {
                 "name": "Name" ,
-                "type": "required" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
