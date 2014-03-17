@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Sample name" ,
-                "type": "" ,
+                "type": "required" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -14,7 +14,7 @@
             },
             {
                 "name": "Alloy composition" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -47,7 +47,7 @@
             },
             {
                 "name": "Orientation" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,
@@ -88,7 +88,7 @@
             },
             {
                 "name": "Gage length" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -97,7 +97,7 @@
             },
             {
                 "name": "Cross sectional area" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -106,7 +106,7 @@
             },
             {
                 "name": "Sample Geometry" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

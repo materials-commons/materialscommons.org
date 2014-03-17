@@ -89,7 +89,7 @@
             } ,
             {
                 "name": "manufacturer" ,
-                "type": "text" ,
+                "type": "" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,

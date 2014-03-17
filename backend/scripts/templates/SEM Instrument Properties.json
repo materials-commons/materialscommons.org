@@ -4,6 +4,15 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "type": "required" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
                 "name": "Detector",
                 "attribute": "dectector",
                 "type": "",
@@ -59,7 +68,7 @@
             {
                 "name": "Specimen/Stage Bias(V)",
                 "attribute": "specimen_stage_bias",
-                "type": "",
+                "type": "number",
                 "unit": "V",
                 "unit_choice": [],
                 "value": "",
@@ -69,7 +78,7 @@
             {
                 "name": "Column Bias(V)",
                 "attribute": "column_bias",
-                "type": "",
+                "type": "number",
                 "unit": "V",
                 "unit_choice": [],
                 "value": "",
@@ -79,7 +88,7 @@
             {
                 "name": "Notes" ,
                 "attribute": "notes",
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

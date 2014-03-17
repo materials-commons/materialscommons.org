@@ -4,6 +4,15 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "type": "required" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
                 "name": "Mode",
                 "attribute": "mode",
                 "type": "",
@@ -98,7 +107,7 @@
             {
                 "name": "Notes" ,
                 "attribute": "notes",
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

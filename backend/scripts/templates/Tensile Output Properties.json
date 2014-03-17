@@ -2,6 +2,15 @@
     "id": "Tensile Output Properties",
     "model": {
         "default": [
+            {
+                "name": "Name" ,
+                "type": "required" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }
         ],
        
         "additional":[
@@ -25,7 +34,7 @@
             },
             {
                 "name": "Yield force" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -34,7 +43,7 @@
             },
             {
                 "name": "Peak force" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -52,7 +61,7 @@
             },
             {
                 "name": "Yield strength" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -88,7 +97,7 @@
             },
             {
                 "name": "Elongation at yield" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -97,7 +106,7 @@
             },
             {
                 "name": "Elongation at peak stress" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

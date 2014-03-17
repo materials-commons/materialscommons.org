@@ -2,12 +2,21 @@
     "id": "Angle Properties",
     "model": {
         "default": [
+            {
+                "name": "Name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }
         ],
        
         "additional":[
             {
                 "name": "Start angle" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["degrees"] ,
                 "value": "" ,
@@ -16,7 +25,7 @@
             },
             {
                 "name": "End angle" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["degrees"] ,
                 "value": "" ,
@@ -34,7 +43,7 @@
             },
             {
                 "name": "Step size" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
