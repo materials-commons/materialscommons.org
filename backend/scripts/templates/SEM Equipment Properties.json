@@ -4,8 +4,17 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "type": "required" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
                 "name": "Voltage" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["V", "KV"] ,
                 "value": "" ,
@@ -14,7 +23,7 @@
             },
             {
                 "name": "Pixel Size" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["microns"] ,
                 "value": "" ,

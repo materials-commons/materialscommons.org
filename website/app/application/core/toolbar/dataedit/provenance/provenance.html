@@ -1,4 +1,4 @@
-<div class="tab-pane" id="provenance" ng-controller="toolbarDataEditDisplayProvenance">
+<div class="tab-pane" id="provenance" ng-controller="toolbarDataEditProvenance">
     <div class="row-fluid"><br>
 
         <div class="span8 offset1">
@@ -13,7 +13,7 @@
             <div class="fr">
                 <div ng-if="input_processes.length!=0">
                     <select ng-model="model.selected_input_process"
-                            ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
+                            ui-select2="{placeholder: 'Select user',  width:'element'}"
                             ng-multiple="false">
                         <option></option>
                         <option value={{process}} ng-repeat="process in input_processes">{{ process.name }}</option>
@@ -30,8 +30,8 @@
                     <legend>Process</legend>
                     <cgroup label="Name:">
                         <input class="input-xlarge" ng-model="process.name" type="text" ng-disabled="true">
-                        <a ng-click="showProcessDetails(process.id)"
-                           style="cursor:pointer">link</a>
+                        <!--<a ng-click="showProcessDetails(process.id)"-->
+                           <!--style="cursor:pointer">link</a>-->
                     </cgroup>
                     <cgroup label="Notes:">
                         <input class="input-xlarge" ng-repeat="note in process.notes"

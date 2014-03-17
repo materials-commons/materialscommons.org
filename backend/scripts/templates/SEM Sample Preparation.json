@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Sample name" ,
-                "type": "" ,
+                "type": "required" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -14,7 +14,7 @@
             },
             {
                 "name": "Alloy composition" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -38,7 +38,7 @@
             },
             {
                 "name": "Preparation Note",
-                "type": "textarea",
+                "type": "text",
                 "unit": "",
                 "unit_choice": [],
                 "value": "",
@@ -47,7 +47,7 @@
             },
             {
                 "name": "Notes" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,

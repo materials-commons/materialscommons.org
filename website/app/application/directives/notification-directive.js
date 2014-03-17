@@ -32,7 +32,7 @@ Application.Directives.directive('notification', function ($timeout) {
                 element.show();
                 $timeout(function () {
                     element.hide();
-                }, 3000);
+                }, 5000);
             });
         }
     };
