@@ -23,7 +23,7 @@
             },
             {
             "name": "Preparation" ,
-            "type": "" ,
+            "type": "text" ,
             "unit": "" ,
             "unit_choice": [],
             "value": "" ,

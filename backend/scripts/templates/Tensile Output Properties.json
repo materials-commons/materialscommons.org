@@ -16,7 +16,7 @@
         "additional":[
             {
                 "name": "Run Time" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["hrs", "mins", "secs"] ,
                 "value": "" ,
@@ -25,7 +25,7 @@
             },
             {
                 "name": "Failure mode" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -52,7 +52,7 @@
             },
             {
                 "name": "F/D slope" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -70,7 +70,7 @@
             },
             {
                 "name": "Brightness" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -79,7 +79,7 @@
             },
             {
                 "name": "UTS" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -88,7 +88,7 @@
             },
             {
                 "name": "Elongation at Break" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

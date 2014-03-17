@@ -34,7 +34,7 @@
         "additional":[
             {
                 "name": "Image mode" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -43,7 +43,7 @@
             },
             {
                 "name": "Beam Current" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["Amp"] ,
                 "value": "" ,
@@ -52,7 +52,7 @@
             },
             {
                 "name": "Spot size" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["nm"] ,
                 "value": "" ,
@@ -61,7 +61,7 @@
             },
             {
                 "name": "Dwell Time" ,
-                "type": "" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["hrs", "mins", "sec"] ,
                 "value": "" ,

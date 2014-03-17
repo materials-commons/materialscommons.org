@@ -53,7 +53,7 @@
             },
             {
                 "name": "Test rate" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -62,7 +62,7 @@
             },
             {
                 "name": "Control method" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

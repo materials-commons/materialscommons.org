@@ -16,7 +16,7 @@
         "additional":[
             {
                 "name": "Start angle" ,
-                "type": "number" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": ["degrees"] ,
                 "value": "" ,
@@ -25,7 +25,7 @@
             },
             {
                 "name": "End angle" ,
-                "type": "number" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": ["degrees"] ,
                 "value": "" ,
@@ -34,7 +34,7 @@
             },
             {
                 "name": "Rate" ,
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
