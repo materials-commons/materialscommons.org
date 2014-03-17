@@ -20,6 +20,10 @@ Application.Controllers.controller('toolbarDataEditNotes',
                 $scope.model = {
                     new_note: ''
                 };
+                mcapi('/datafile/%', $scope.id)
+                    .success(function (data) {
+                        $scope.doc = data;
+                    }).jsonp();
             }
 
             init();
