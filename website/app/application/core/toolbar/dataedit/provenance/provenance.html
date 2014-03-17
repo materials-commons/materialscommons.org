@@ -2,15 +2,15 @@
     <div class="row-fluid"><br>
 
         <div class="span8 offset1">
-            <div class="fl">
+            <div class="">
                 <a style="cursor: pointer" ng-click="show_process(output_process[0])">{{output_process[0].name}}</a>
             </div>
-            <div class="fl">
+            <div class="">
                 <i class="fa fa-long-arrow-right"></i>
                 <b>{{doc.name}}</b>
                 <i class="fa fa-long-arrow-right"></i>
             </div>
-            <div class="fr">
+            <div class="">
                 <div ng-if="input_processes.length!=0">
                     <select ng-model="model.selected_input_process"
                             ui-select2="{placeholder: 'Select user',  width:'element'}"
