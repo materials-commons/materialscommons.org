@@ -1,20 +1,39 @@
-Application.Directives.directive('notification',
-    function ($timeout) {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                message: '='
-            },
-            template: '<div class="alert fade" bs-alert="message"></div>',
-            link: function (scope, element) {
-                scope.$watch('message', function () {
-                    element.show();
-                    $timeout(function () {
-                        element.hide();
-                    }, 5000);
-                });
-            }
-        };
+//Application.Directives.directive('notification',
+//    function ($timeout) {
+//        return {
+//            restrict: 'E',
+//            replace: true,
+//            scope: {
+//                ngModel: '='
+//            },
+//            template: '<div class="alert fade" bs-alert="ngModel"></div>',
+//            link: function (scope, element) {
+//                scope.$watch('ngModel', function () {
+//                    element.show();
+//                    $timeout(function () {
+//                        element.hide();
+//                    }, 3500);
+//                });
+//            }
+//        };
+//
+//    });
 
-    });
+Application.Directives.directive('notification', function ($timeout) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            ngModel: '='
+        },
+        template: '<div class="alert fade" bs-alert="ngModel"></div>',
+        link: function (scope, element) {
+            scope.$watch('ngModel', function () {
+                element.show();
+                $timeout(function () {
+                    element.hide();
+                }, 3000);
+            });
+        }
+    };
+});
