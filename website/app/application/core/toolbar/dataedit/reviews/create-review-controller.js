@@ -1,12 +1,19 @@
-Application.Controllers.controller('_toolbarDataEditCreateReview',
+Application.Controllers.controller('toolbarDataEditCreateReview',
     ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
         function ($scope, mcapi, User, $stateParams, alertService, pubsub) {
+            $scope.model = {
+                review_note_self: '',
+                review_note_other: '',
+                review_note: '',
+                schedule_for_self: false
+            };
+
             $scope.addReview = function () {
                 var review = {};
-                review.note = $scope.review_note;
+                review.note = $scope.model.review_note;
                 review.item_type = "datafile";
                 review.requested_by = User.u();
-                if ($scope.schedule_for_self) {
+                if ($scope.model.schedule_for_self) {
                     review.requested_to = User.u();
                 } else {
                     review.requested_to = $scope.user_for_review;
@@ -22,22 +29,25 @@ Application.Controllers.controller('_toolbarDataEditCreateReview',
                         mcapi('/datafiles/%/reviews', $stateParams.id)
                             .success(function (reviews) {
                                 $scope.all_reviews = reviews;
+                            })
+                            .error(function (e) {
                             }).jsonp();
                     }).post(review);
-                $scope.schedule_for_self = false;
+                $scope.model.schedule_for_self = false;
             };
 
             $scope.addReviewForOther = function () {
-                $scope.review_note = $scope.review_note_other;
-                $scope.review_note_other = "";
+                $scope.model.review_note = $scope.model.review_note_other;
                 $scope.addReview();
+                $scope.model.review_note_other = "";
             };
 
             $scope.addReviewNoteKeypressCallback = function () {
-                $scope.schedule_for_self = true;
-                $scope.review_note = $scope.review_note_self;
-                $scope.review_note_self = "";
+                $scope.model.schedule_for_self = true;
+                $scope.model.review_note = $scope.model.review_note_self;
                 $scope.addReview();
+                $scope.model.review_note_self = "";
+
             };
 
             $scope.reviewStatusChanged = function (index) {
@@ -48,21 +58,32 @@ Application.Controllers.controller('_toolbarDataEditCreateReview',
                     }).delete();
             };
 
+            $scope.reviewsCount = function () {
+                mcapi('/reviews/to_conduct')
+                    .success(function (data) {
+                        $scope.reviewsToConduct = _.filter(data, function (item) {
+                            if (item.status !== "Finished" && item.item_id === $stateParams.id) {
+                                return item;
+                            }
+                        });
+                    }).jsonp();
+            };
+
+            pubsub.waitOn($scope, 'reviews.change', function () {
+                $scope.reviewsCount();
+            });
+
             $scope.init = function () {
                 $scope.all_reviews = [];
                 $scope.signed_in_user = User.u();
-                $scope.review_note = "";
-                $scope.schedule_for_self = false;
                 $scope.signed_user = User.u();
                 mcapi('/datafiles/%/reviews', $stateParams.id)
                     .success(function (reviews) {
                         $scope.all_reviews = reviews;
                     }).jsonp();
 
-                mcapi('/selected_users')
-                    .success(function (data) {
-                        $scope.users = data;
-                    }).jsonp();
+                $scope.reviewsCount();
+
             };
 
             $scope.init();

@@ -7,23 +7,6 @@ import rethinkdb as r
 import datetime
 
 
-def create_tag_count(selection):
-    tagsByCount = []
-    tagsCountDict = {}
-    for tag in selection:
-        if tag not in tagsCountDict:
-            tagsCountDict[tag] = 1
-        else:
-            tagsCountDict[tag] = tagsCountDict[tag]+1
-    for key in tagsCountDict.keys():
-        tag = {}
-        tag['name'] = key
-        tag['count'] = tagsCountDict[key]
-        tagsByCount.append(tag)
-    sorted_list = sorted(tagsByCount, key=sort_by_count, reverse=True)
-    return json_as_format_arg(sorted_list)
-
-
 def mkdirp(path):
     try:
         os.makedirs(path)
