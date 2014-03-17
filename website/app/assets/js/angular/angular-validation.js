@@ -44,23 +44,23 @@
              */
             var defaultMsg = {
                 required: {
-                    error: 'Required!',
+                    error: 'This field is required',
                     success: ''
                 },
                 url: {
-                    error: 'This should be Url!',
+                    error: 'Please enter a valid URL.',
                     success: ''
                 },
                 email: {
-                    error: 'This should be Email!',
+                    error: 'Please enter a valid email.',
                     success: ''
                 },
                 number: {
-                    error: 'This should be Number!',
+                    error: 'Please enter a valid number.',
                     success: ''
                 },
                 text: {
-                    error: 'This should be text!',
+                    error: 'Please enter valid text.',
                     success: ''
                 }
             };
