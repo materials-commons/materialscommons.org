@@ -10,7 +10,11 @@
 
                         <div ng-repeat="pv in machine.additional">
                             <div class="control-group">
-                                <label class="control-label">{{pv.name}}</label>
+                                <label class="control-label">{{pv.name}}
+                                    <p ng-if="pv.required==true">
+                                        <i class="fa fa-asterisk" style="color: red"></i>
+                                    </p>
+                                </label>
 
                                 <div class="controls">
                                     <div ng-if="pv.value_choice.length!=0">
@@ -20,15 +24,28 @@
                                         </select>
                                     </div>
                                     <div ng-if="pv.value_choice.length==0">
-                                <span ng-if="pv.type=='text'">  <!-- if i do not implement this then it is the case that every field has to be filled in  -->
-                                         <input type="text" ng-model="pv.value"
-                                                placeholder="Value...">
-                                </span>
-                                 <span ng-if="pv.type!=='text'">
-                                    <input name="{{pv.type}}Blur" type="text" ng-model="pv.value"
-                                           validator="{{pv.type}}"
-                                           placeholder="Value..." valid-method="blur">
-                                     </span>
+                                        <div ng-if="pv.type==='text'">
+                                            <div ng-if="pv.required===false">
+                                                <input type='text' ng-model='pv.value'
+                                                       placeholder='{{pv.name}}...'>
+                                            </div>
+                                            <div ng-if="pv.required===true">
+                                                <input type='text' ng-model='pv.value'
+                                                       placeholder='{{pv.name}}...' required>
+                                            </div>
+                                        </div>
+                                        <div ng-if="pv.type!=='text'">
+                                            <div ng-if="pv.required===false">
+                                                <input type='text' name="{{pv.type}}Blur" ng-model='pv.value'
+                                                       validator='{{pv.type}}'
+                                                       placeholder='{{pv.name}}...' valid-method="blur">
+                                            </div>
+                                            <div ng-if="pv.required===true">
+                                                <input type='text' name="{{pv.type}}Blur" ng-model='pv.value'
+                                                       validator='{{pv.type}}'
+                                                       placeholder='{{pv.name}}...' valid-method="blur" required>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div ng-if="pv.unit_choice.length!=0">
                                         <select ng-model="pv.unit">

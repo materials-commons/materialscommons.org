@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Name" ,
-                "type": "number" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

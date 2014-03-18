@@ -19,7 +19,7 @@
                 </div>
                 <div ng-if="df.required===true">
                     <input type='text' ng-model='df.value'
-                           placeholder='{{df.name}}...' required class="input-block-level">
+                           placeholder='{{df.name}}...' required>
                 </div>
             </div>
             <div ng-if="df.type!=='text'">
@@ -29,7 +29,7 @@
                 </div>
                 <div ng-if="df.required===true">
                     <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
-                           placeholder='{{df.name}}...' valid-method="blur" required class="input-block-level">
+                           placeholder='{{df.name}}...' valid-method="blur" required>
                 </div>
             </div>
         </div>
