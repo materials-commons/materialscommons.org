@@ -3,7 +3,7 @@
     <div class="row-fluid">
         <div class="span5">
             <div class="">
-                <form name="form" class="form-horizontal">
+                <form name="Form" class="form-horizontal">
                     <fieldset>
                         <legend>Create Machine</legend>
                         <div df-properties default-properties="default_properties"></div>
@@ -13,21 +13,29 @@
                                 <label class="control-label">{{pv.name}}</label>
 
                                 <div class="controls">
-                            <span ng-if="pv.value_choice.length!=0">
-                                 <select ng-model="pv.value">
-                                     <option ng-repeat="val in pv.value_choice"> {{val}}
-                                     </option>
-                                 </select>
-                            </span>
-                            <span ng-if="pv.value_choice.length==0">
-                                <input type="text" ng-model="pv.value" validator="{{pv.type}}" placeholder="Value...">
-                            </span>
-                            <span ng-if="pv.unit_choice.length!=0">
-                                <select ng-model="pv.unit">
-                                    <option ng-repeat="unit in pv.unit_choice"> {{unit}}
-                                    </option>
-                                </select>
-                            </span>
+                                    <div ng-if="pv.value_choice.length!=0">
+                                        <select ng-model="pv.value">
+                                            <option ng-repeat="val in pv.value_choice"> {{val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div ng-if="pv.value_choice.length==0">
+                                <span ng-if="pv.type=='text'">  <!-- if i do not implement this then it is the case that every field has to be filled in  -->
+                                         <input type="text" ng-model="pv.value"
+                                                placeholder="Value...">
+                                </span>
+                                 <span ng-if="pv.type!=='text'">
+                                    <input name="{{pv.type}}Blur" type="text" ng-model="pv.value"
+                                           validator="{{pv.type}}"
+                                           placeholder="Value..." valid-method="blur">
+                                     </span>
+                                    </div>
+                                    <div ng-if="pv.unit_choice.length!=0">
+                                        <select ng-model="pv.unit">
+                                            <option ng-repeat="unit in pv.unit_choice"> {{unit}}
+                                            </option>
+                                        </select>
+                                    </div>
 
                                 </div>
                             </div>
@@ -58,13 +66,12 @@
                             </div>
                         </div>
 
-                        <button ng-disabled="!default_properties[0].value" ng-click="save(form)" class="btn btn-primary">
+                        <button ng-click="save(Form)" class="btn btn-primary">
                             Save
                         </button>
                         <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
                     </fieldset>
                 </form>
-
             </div>
         </div>
 
