@@ -33,7 +33,6 @@ Application.Controllers.controller('toolbarMachines',
 
         $scope.save = function (form) {
             var check = $validationProvider.checkValid(form);
-            console.log(check);
             if (check === true) {
                 mcapi('/machines/new')
                     .arg('order_by=birthtime')
