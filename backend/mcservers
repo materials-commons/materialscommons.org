@@ -104,17 +104,17 @@ function status_servers()
     echo
     export MCDB_PORT=30815
     export MC_SERVICE_PORT=5002
-    echo "RethinkDB (test):"
+    echo "RethinkDB (test/unit):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
-    echo "MCAPI Server (test):"
+    echo "MCAPI Server (test/unit):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCFS Server (test):"
+    echo "MCFS Server (test/unit):"
     ps -ef | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     if [ $(hostname) != "materialscommons" ]; then
         echo
-        echo "Webserver (test):"
+        echo "Webserver (test/unit):"
         ps -ef | grep web-server.js | grep 8000 | grep -v grep
     fi
     echo
