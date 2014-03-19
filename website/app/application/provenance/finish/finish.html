@@ -6,16 +6,30 @@
                 <cgroup label="Name:">
                     <input class="input-xlarge" ng-model="process.name" type="text" ng-disabled="true">
                 </cgroup>
-                <cgroup label="Notes:">
-                    <input class="input-xlarge" ng-repeat="note in process.notes"
-                           ng-model="note" type="text" ng-disabled="true">
-                </cgroup>
                 <cgroup label="Description:">
                     <textarea ng-if="process.description != ''" class="span4" ng-model="process.description"
                               rows="4" ng-disabled="true">
-
                     </textarea>
                 </cgroup>
+                <cgroup label="Notes:">
+                    <div class="span6" ng-show="process.notes.length > 0">
+                        <table class="table">
+                            <thead>
+                            <th>Message</th>
+                            <th>Who</th>
+                            <th>Date Created</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="note in process.notes">
+                                <td>{{note.message}}</td>
+                                <td>{{note.who}}</td>
+                                <td>{{note.date}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </cgroup>
+
             </fieldset>
         </form>
     </div>

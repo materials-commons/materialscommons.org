@@ -9,6 +9,8 @@ from utils import  make_password_hash
 import error
 from args import json_as_format_arg
 from mcexceptions import NoSuchItem
+import access
+import args
 
 
 @app.route('/tags')
@@ -68,12 +70,32 @@ def delete_tag(tag):
     raise NoSuchItem()
 
 
-@app.route('/tags/list/<item_type>/<item_id>', methods=['GET'])
+@app.route('/tags/list/<item_type>/<item_id>', methods=['GET']) 
 @jsonp
 @apikey
 def tags_for_item(item_type, item_id):
     rr = list(r.table('tag2item').filter({'item_id': item_id}).run(g.conn))
     return json.dumps(rr)
+
+
+@app.route('/tags/byitem/<tag>', methods=['GET']) 
+@jsonp
+@apikey(shared=True)
+def tags_by_itemtype(tag):
+    all_tags = []
+    rr = r.table('tag2item').get_all(tag, index='tag_id').eq_join('item_id', r.table('datafiles')).zip()
+    rr = args.add_all_arg_options(rr)
+    datafiles = list(rr.run(g.conn, time_format='raw'))
+    for df in datafiles:
+        rr = list(r.table('tag2item').get_all(df['id'], index='item_id').pluck('tag_id').run(g.conn))
+        all_tags.append({'item': df, 'tags_list':rr, 'type': 'datafile'})
+    pv = r.table('tag2item').get_all(tag, index='tag_id').eq_join('item_id', r.table('processes')).zip()
+    pv = args.add_all_arg_options(pv)
+    processes = list(pv.run(g.conn, time_format='raw'))
+    for p in processes:
+        rr = list(r.table('tag2item').get_all(p['id'], index='item_id').pluck('tag_id').run(g.conn))
+        all_tags.append({'item': p, 'tags_list':rr, 'type':'process'})
+    return args.json_as_format_arg(all_tags)
 
 
 @app.route('/public/datafiles')

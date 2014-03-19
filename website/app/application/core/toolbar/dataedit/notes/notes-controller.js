@@ -25,6 +25,5 @@ Application.Controllers.controller('toolbarDataEditNotes',
                         $scope.doc = data;
                     }).jsonp();
             }
-
             init();
         }]);

@@ -5,13 +5,13 @@ Application.Controllers.controller('toolbarProcess',
             $scope.showtab = function (tab) {
                 switch (tab) {
                     case "tags":
-                        $state.go('toolbar.dataedit.tags');
+                        $state.go('toolbar.process.tags');
                         break;
                     case "notes":
-                        $state.go('toolbar.dataedit.notes');
+                        $state.go('toolbar.process.notes');
                         break;
                     case "provenance":
-                        $state.go('toolbar.dataedit.provenance');
+                        $state.go('toolbar.process.provenance');
                         break;
                 }
             };
@@ -23,6 +23,7 @@ Application.Controllers.controller('toolbarProcess',
                         $scope.process = data;
                         $scope.birthtime = $filter('toDateString')($scope.process.birthtime);
                     }).jsonp();
+                $scope.showtab('notes');
             }
 
             init();

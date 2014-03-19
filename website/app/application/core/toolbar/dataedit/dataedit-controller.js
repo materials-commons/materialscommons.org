@@ -56,7 +56,7 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.model.is_disabled = false;
             };
 
-            $scope.init = function () {
+            function init() {
                 $scope.id = $stateParams.id;
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
@@ -72,6 +72,6 @@ Application.Controllers.controller('toolbarDataEdit',
                         alertService.sendMessage(data.error);
                     }).jsonp();
                 $scope.showtab('notes');
-            };
-            $scope.init();
+            }
+            init();
         }]);
