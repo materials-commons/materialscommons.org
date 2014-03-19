@@ -13,7 +13,7 @@ Application.Controllers.controller('toolbarDataEdit',
                     $scope.fileType = "other";
                 }
                 $scope.fileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey();
-                $scope.originalFileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey();
+                $scope.originalFileSrc = "datafiles/static/" + $scope.doc.id + "?apikey=" + User.apikey() + "&download=true";
                 $scope.fileName = $scope.doc.name;
             };
 
