@@ -1,4 +1,4 @@
-var recognized_images = ["jpg", "png", "jpeg", "gif"];
+var recognized_images = ["jpg", "png", "jpeg", "gif", "tif", "tiff"];
 
 function isImage(name) {
     var i;
