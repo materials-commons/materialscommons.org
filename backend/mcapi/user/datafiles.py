@@ -19,21 +19,6 @@ def datafiles_for_user():
     return args.json_as_format_arg(selection)
 
 
-@app.route('/datafiles/tag/<tag>')
-@apikey(shared=True)
-@jsonp
-def datafiles_for_user_by_tag(tag):
-    datafile_tags = []
-    user = access.get_user()
-    rr = r.table('tag2item').get_all(tag, index='tag_id').eq_join('item_id', r.table('datafiles')).zip()
-    rr = args.add_all_arg_options(rr)
-    datafiles = list(rr.run(g.conn, time_format='raw'))
-    for df in datafiles:
-        rr = list(r.table('tag2item').get_all(df['id'], index='item_id').pluck('tag_id').run(g.conn))
-        datafile_tags.append({'datafile': df, 'tags_list':rr})
-    return args.json_as_format_arg(datafile_tags)
-
-
 @app.route('/datafile/update/<path:datafileid>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')

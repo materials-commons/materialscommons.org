@@ -91,3 +91,15 @@ def get_datafile_objects(process_id, object_type):
                            .contains(drow['id']))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
+
+
+@app.route('/process/update/<path:processid>', methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def update_process(processid):
+    rv = r.table('processes').get(processid).update(request.json).run(g.conn)
+    if (rv['replaced'] == 1 or rv['unchanged'] == 1):
+        return ''
+    else:
+        error.update_conflict("Unable to update process: " + processid)
+

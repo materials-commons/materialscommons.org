@@ -117,6 +117,18 @@ app.config(function ($stateProvider) {
             url: '/process/:id',
             templateUrl: 'application/core/toolbar/process/process.html'
         })
+        .state('toolbar.process.notes', {
+            url: '/notes',
+            templateUrl: 'application/core/toolbar/process/notes/notes.html'
+        })
+        .state('toolbar.process.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/core/toolbar/process/provenance/provenance.html'
+        })
+        .state('toolbar.process.tags', {
+            url: '/tags',
+            templateUrl: 'application/core/toolbar/process/tags/tags.html'
+        })
         .state('toolbar.databytag', {
             url: '/databytag/:name',
             templateUrl: 'application/core/toolbar/databytag/databytag.html'

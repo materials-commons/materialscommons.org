@@ -1,4 +1,4 @@
-<div class="tab-pane active" id="notes" ng-controller="toolbarDataEditNotes">
+<div class="tab-pane active" id="notes" ng-controller="toolbarProcessNotes">
     <div class="span5">
         <legend>Note:</legend>
         <textarea class="field span10" rows="6" placeholder="Enter a short synopsis"
@@ -8,7 +8,6 @@
     </div>
     <div class="span7">
         <legend>Previous notes:</legend>
-
         <div ng-repeat="n in doc.notes | orderBy: date">
             <textarea class="field span9" rows="3">{{n.message}}</textarea>
 
