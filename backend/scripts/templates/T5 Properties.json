@@ -1,0 +1,44 @@
+{
+
+    "id": "T5 Properties" ,
+    "model": {
+        "default": [
+            {
+                "name": "Temperature" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": ["C", "F"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Time" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Quench" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }
+        ],
+        "additional":[
+        ]
+    } ,
+    "owner": "admin@materialscommons.org", 
+    "template_birthtime": "" ,
+    "template_description": "Heat treatment of type T5" ,
+    "template_mtime": "" ,
+    "template_name": "T5 Properties" ,
+    "template_pick": "" ,
+    "template_type": "condition"
+}
