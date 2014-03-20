@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Sample name" ,
-                "type": "required" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
