@@ -1,6 +1,6 @@
 <div ng-controller="toolbarDataByTag">
     <div class="span10 offset1">
-        <h3>Data for tag: {{ tag }}</h3>
+        <h3>Items Tagged by: {{ tag }}</h3>
 
         <div class="row-fluid">
             Search: <input ui-keypress="{13: 'keypressCallback($event)'}" ng-model="query">
@@ -20,14 +20,12 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="row in docs | page:currentTagDataPage:10">
-
                             <td ng-if="row.type=='datafile'">
                                 <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: row.item.id})">{{ row.item.name }}</a>
                             </td>
                             <td ng-if="row.type=='process'">
                             <a style="cursor: pointer" ui-sref="toolbar.process({id: row.item.id})">{{ row.item.name }}</a>
                             </td>
-
                             <td>{{row.type}}</td>
                             <td>{{ row.item.description }}</td>
                             <td>
