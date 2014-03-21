@@ -1,10 +1,16 @@
 Application.Provenance.Controllers.controller('provenanceIOSteps',
-    ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams",
-        function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams) {
+    ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams", "$injector",
+        function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams, $injector) {
 
-            $scope.saveDraft = function () {
-                ProvDrafts.saveDraft();
-                $scope.message = "your draft has been saved!";
+            $scope.saveDraft = function (form) {
+                var $validationProvider = $injector.get('$validation');
+                var check = $validationProvider.checkValid(form);
+                if (check === true) {
+                    ProvDrafts.saveDraft();
+                    $scope.message = "your draft has been saved!";
+                } else {
+                    $validationProvider.validate(form);
+                }
             };
 
             $scope.gotoStep = function (stepName) {
@@ -43,13 +49,19 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 return $scope.activeStep === stepName;
             };
 
-            $scope.nextStep = function () {
-                var i = _.indexOf($scope.steps, $scope.activeStep);
-                if (i < $scope.steps.length - 1) {
-                    var next = i + 1;
-                    $scope.showStep($scope.steps[next]);
+            $scope.nextStep = function (form) {
+                var $validationProvider = $injector.get('$validation');
+                var check = $validationProvider.checkValid(form);
+                if (check === true) {
+                    var i = _.indexOf($scope.steps, $scope.activeStep);
+                    if (i < $scope.steps.length - 1) {
+                        var next = i + 1;
+                        $scope.showStep($scope.steps[next]);
+                    } else {
+                        ProvSteps.setStepFinished($stateParams.iosteps);
+                    }
                 } else {
-                    ProvSteps.setStepFinished($stateParams.iosteps);
+                    $validationProvider.validate(form);
                 }
             };
 
