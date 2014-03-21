@@ -49,13 +49,19 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 return $scope.activeStep === stepName;
             };
 
-            $scope.nextStep = function () {
-                var i = _.indexOf($scope.steps, $scope.activeStep);
-                if (i < $scope.steps.length - 1) {
-                    var next = i + 1;
-                    $scope.showStep($scope.steps[next]);
+            $scope.nextStep = function (form) {
+                var $validationProvider = $injector.get('$validation');
+                var check = $validationProvider.checkValid(form);
+                if (check === true) {
+                    var i = _.indexOf($scope.steps, $scope.activeStep);
+                    if (i < $scope.steps.length - 1) {
+                        var next = i + 1;
+                        $scope.showStep($scope.steps[next]);
+                    } else {
+                        ProvSteps.setStepFinished($stateParams.iosteps);
+                    }
                 } else {
-                    ProvSteps.setStepFinished($stateParams.iosteps);
+                    $validationProvider.validate(form);
                 }
             };
 
