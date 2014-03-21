@@ -52,15 +52,6 @@
                 "required": "false"
             },
             {
-                "name": "Operator" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": "false"
-            },
-            {
                 "name": "Model" ,
                 "type": "number" ,
                 "unit": "" ,

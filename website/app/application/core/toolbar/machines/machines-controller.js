@@ -69,7 +69,7 @@ Application.Controllers.controller('toolbarMachines',
             }
             if ($scope.additional_prop || $scope.additional_prop === ' ') {
                 $scope.machine.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
-                    'unit_choice': [], 'unit': '', 'required': 'False', "type": "text"});
+                    'unit_choice': [], 'unit': '', 'required': false, "type": "text"});
                 $scope.additional_prop = '';
             }
 
