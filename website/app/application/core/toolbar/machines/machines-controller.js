@@ -1,8 +1,9 @@
 Application.Controllers.controller('toolbarMachines',
-    ["$scope", "mcapi", function ($scope, mcapi) {
+    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
         $scope.machine = {
             "additional": []
         };
+        var $validationProvider = $injector.get('$validation');
 
         mcapi('/templates')
             .argWithValue('filter_by', '"template_type":"machine"')
@@ -30,28 +31,35 @@ Application.Controllers.controller('toolbarMachines',
             };
         };
 
-        $scope.save = function () {
+        $scope.save = function (form) {
+            var check = $validationProvider.checkValid(form);
+            if (check === true) {
+                mcapi('/machines/new')
+                    .arg('order_by=birthtime')
+                    .success(function (data) {
+                        mcapi('/machines/%', data.id)
+                            .success(function (machine_obj) {
+                                $scope.mach = machine_obj;
+                                $scope.machines_list.unshift(machine_obj);
+                            })
+                            .error(function (e) {
+
+                            }).jsonp();
+                        $scope.machine = {
+                            "additional": []
+                        };
+                    })
+                    .error(function (e) {
+
+                    }).post($scope.machine);
+            } else {
+                $validationProvider.validate(form);
+            }
+
             $scope.default_properties.forEach(function (item) {
                 $scope.machine[item.name] = item.value;
             });
-            mcapi('/machines/new')
-                .arg('order_by=birthtime')
-                .success(function (data) {
-                    mcapi('/machines/%', data.id)
-                        .success(function (machine_obj) {
-                            $scope.mach = machine_obj;
-                            $scope.machines_list.unshift(machine_obj);
-                        })
-                        .error(function (e) {
 
-                        }).jsonp();
-                    $scope.machine = {
-                        "additional": []
-                    };
-                })
-                .error(function (e) {
-
-                }).post($scope.machine);
         };
 
         $scope.add_property_to_machine = function () {
@@ -61,7 +69,7 @@ Application.Controllers.controller('toolbarMachines',
             }
             if ($scope.additional_prop || $scope.additional_prop === ' ') {
                 $scope.machine.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
-                    'unit_choice': [], 'unit': '', 'required': 'False', "type": "text"});
+                    'unit_choice': [], 'unit': '', 'required': false, "type": "text"});
                 $scope.additional_prop = '';
             }
 
