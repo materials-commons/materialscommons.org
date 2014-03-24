@@ -147,7 +147,7 @@
             "required": false
         }
     ] ,
-    "owner": "gtarcea@umich.edu", 
+    "owner": "admin@materialscommons.org", 
     "template_description": "" ,
     "template_name": "SEM Imaging" ,
     "template_type": "process",
