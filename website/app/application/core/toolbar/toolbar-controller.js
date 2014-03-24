@@ -1,7 +1,5 @@
 Application.Controllers.controller('toolbar',
-    ["$scope", "Nav", "alertService", function ($scope, Nav, alertService) {
-        $scope.showDrafts = true;
-
+    ["$scope", "Nav", "msocket", function ($scope, Nav, msocket) {
         $scope.isActiveStep = function (nav) {
             return Nav.isActiveToolbar(nav);
         };
@@ -10,6 +8,26 @@ Application.Controllers.controller('toolbar',
             Nav.setActiveToolbar(step);
         };
 
+        $scope.$on('socket:connect', function (ev, data) {
+            $scope.service.status = "Connected";
+        });
+
+        $scope.$on('socket:disconnect', function () {
+            $scope.service.status = "Not Connected";
+        });
+
+        $scope.$on('socket:error', function (ev, data) {
+            $scope.service.status = "Not Connected";
+        });
+
+        $scope.init = function () {
+            $scope.showDrafts = true;
+            $scope.service = {
+                status: "Not Connected"
+            };
+        };
+
+        $scope.init();
     }]);
 
 
