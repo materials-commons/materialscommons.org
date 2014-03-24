@@ -2,17 +2,6 @@
     <div class="row-fluid">
         <div class="span10">
             <div class="well">
-                <div ng-if="doc.template_pick==='Pick Sample'">
-                    <fieldset>
-                        <h5>Pick a sample which you wanted to Heat Treat:</h5>
-                        <cgroup label="Sample:">
-                            <select ng-model="doc.picked_sample"
-                                    ng-options="samp.name for samp in samples">
-                            </select>
-                        </cgroup>
-                    </fieldset>
-                    <label>Material: {{ doc.material.name }}</label>
-                </div>
                 <div ng-if="doc.template_pick==='material'">
                     <fieldset>
                         <h5>From what material was your sample drawn?</h5>
