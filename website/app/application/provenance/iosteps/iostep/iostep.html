@@ -76,7 +76,7 @@
                 <div ng-show="doc.template_pick=='sample'" class="form-inline">
                     <cgroup label="Pick Sample:">
                         <i class="fa fa-asterisk" style="color: red"></i>
-                        <select ng-model="doc.sample"  valid-method="blur"   name="textBlur"  validator='text'
+                        <select ng-model="doc.sample"
                                 ng-options="samp.model.default[0].value for samp in samples_list"
                                 ng-change="pick_sample()" required>
                         </select>
