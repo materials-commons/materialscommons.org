@@ -2,7 +2,7 @@
     <div class="row-fluid">
         <div class="span10">
             <div class="well">
-                <form ng-hide="doc.template_pick==''sample'" class="form-horizontal">
+                <div ng-if="doc.template_pick!=='sample'">
                     <fieldset>
                         <legend>Default Properties</legend>
                         <div df-properties default-properties="doc.model.default"></div>
@@ -61,41 +61,35 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div ng-show="doc.model.additional.length > 0" class="control-group">
-                            <label class="control-label">Additional Properties:</label>
-
-                            <div class="controls">
-                                <select ng-model="additionalProperty">
-                                    <option ng-repeat="property in doc.model.additional"
-                                            value="{{property}}">
-                                        {{property.name}}
-                                    </option>
-                                </select>
-                                <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
-
                         <div class="control-group">
-                            <label class="control-label">Custom Properties:</label>
+                            <div ng-if="doc.model.additional.length!==0">
+                                <label class="control-label">Additional Properties:</label>
 
-                            <div class="controls">
-                                <input ng-model="customPropertyName" placeholder="Name..." type="text">
-                                <input ng-model="customPropertyValue" placeholder="Value..." type="text">
-                                <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
+                                <div class="controls">
+                                    <select ng-model="model.additionalProperty"
+                                            ng-options="property.name for property in doc.model.additional">
+                                    </select>
+                                    <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
+                                </div>
                             </div>
                         </div>
                     </fieldset>
-                </form>
-                <form ng-show="doc.template_pick=='sample'" class="form-inline">
-                    <cgroup label="Pick Sample:">
-                        <select ng-model="doc.sample"
+                </div>
+                <div ng-if="doc.template_pick=='sample'">
+                    <cgroup label="Pick a sample">
+                        <i class="fa fa-asterisk" style="color: red"></i>
+                        <select ng-model="doc.sample" type="text"
                                 ng-options="samp.model.default[0].value for samp in samples_list"
-                                ng-change="pick_sample()">
+                                ng-change="pick_sample()" required>
+                            <option value="">-- Select Samples --</option>
+
                         </select>
                     </cgroup>
                     <label>Sample:</label> <a>{{ doc.sample.model.default[0].value}}</a>
-                </form>
+                </div>
+                <div ng-if="doc.template_pick=='new sample '">
+
+                </div>
             </div>
         </div>
     </div>

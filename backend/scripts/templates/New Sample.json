@@ -1,0 +1,14 @@
+{
+    "id": "New Sample",
+    "model": {
+        "default": [],
+        "additional":[]
+    },
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_description": "" ,
+    "template_mtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_name": "New Sample" ,
+    "template_type": "condition",
+    "template_pick": "new sample"
+}
