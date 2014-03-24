@@ -26,7 +26,6 @@
 
                 <li class="nav-header">Resources</li>
                 <li class="toolbar-item"><a ui-sref="toolbar.machines">Machines</a></li>
-                <!--<li class="toolbar-item"><a ui-sref="toolbar.materials">Materials</a></li>-->
                 <li class="toolbar-item"><a ui-sref="toolbar.samples">Samples</a></li>
 
                 <li class="nav-header">Data</li>
@@ -36,6 +35,11 @@
                 <li class="nav-header">Tags</li>
                 <li class="toolbar-item"><a ui-sref="toolbar.tags">List Tags</a></li>
                 <li class="toolbar-item"><a ui-sref="toolbar.globaltagcloud">Tag Cloud</a></li>
+
+                <li class="nav-header">File Services <span ng-class="{'not-connected': service.status === 'Not Connected'}">({{ service.status }})</span></li>
+                <li class="toolbar-item"><a ui-sref="toolbar.fileservices.projects">Local Projects</a></li>
+                <li class="toolbar-item"><a ui-sref="toolbar.fileservices.events">Events</a></li>
+                <li class="toolbar-item"><a ui-sref="toolbar.fileservices.config">Configuration</a></li>
 
                 <li class="nav-header">Commonly Used Tags</li>
                 <div ng-controller="_toolbarTags">

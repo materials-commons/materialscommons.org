@@ -1,9 +1,8 @@
 Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
-    ["$scope", "ProvDrafts", "$stateParams", "mcapi",
-        function ($scope, ProvDrafts, $stateParams, mcapi) {
+    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone",
+        function ($scope, ProvDrafts, $stateParams, mcapi, Clone) {
             $scope.model = {
-                additionalProperty: {},
-                pick_sample: {}
+                additionalProperty: {}
             };
 
             $scope.pick_sample = function () {
@@ -20,11 +19,11 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.addAdditionalProperty = function () {
-                $scope.doc.model.added_properties.push(JSON.parse($scope.model.additionalProperty));
+                $scope.doc.model.added_properties.push($scope.model.additionalProperty);
             };
 
             $scope.addCustomProperty = function () {
-                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': []});
+                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'required': false, 'unit': '', 'value_choice': [], 'unit_choice': []});
             };
 
             $scope.load_all_samples = function () {
@@ -48,17 +47,19 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
                     $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
+
                 } else {
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
+                    if ($scope.stepName === 'New Sample') {
+                        $scope.doc  = Clone.get_clone($scope.doc, ProvDrafts.current);
+                    }
                 }
-
                 if ($scope.doc.template_pick === 'sample') {
                     $scope.load_all_samples();
+
                 }
-//
-//                $scope.defaultProperties = $scope.doc.model.default;
-//                $scope.additionalProperties = [];
-//                $scope.useExisting = "yes";
             }
+
             init();
+
         }]);
