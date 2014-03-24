@@ -3,7 +3,9 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
         function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams, $injector) {
 
             $scope.saveDraft = function (form) {
+                console.log(form);
                 var $validationProvider = $injector.get('$validation'), check = $validationProvider.checkValid(form);
+                console.log(check);
                 if (check === true) {
                     ProvDrafts.saveDraft();
                     $scope.message = "your draft has been saved!";

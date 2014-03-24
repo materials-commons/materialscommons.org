@@ -2,8 +2,7 @@
     <div class="row-fluid">
         <div class="span10">
             <div class="well">
-<<<<<<< HEAD
-                <form ng-hide="doc.template_pick==''sample'" class="form-horizontal">
+                <div ng-hide="doc.template_pick=='sample'" class="form-horizontal">
                     <fieldset>
                         <legend>Default Properties</legend>
                         <div df-properties default-properties="doc.model.default"></div>
@@ -73,16 +72,17 @@
                                 </div>
                             </div>
                     </fieldset>
-                </form>
-                <form ng-show="doc.template_pick=='sample'" class="form-inline">
+                </div>
+                <div ng-show="doc.template_pick=='sample'" class="form-inline">
                     <cgroup label="Pick Sample:">
-                        <select ng-model="doc.sample"
+                        <i class="fa fa-asterisk" style="color: red"></i>
+                        <select ng-model="doc.sample"  valid-method="blur"   name="textBlur"  validator='text'
                                 ng-options="samp.model.default[0].value for samp in samples_list"
-                                ng-change="pick_sample()">
+                                ng-change="pick_sample()" required>
                         </select>
                     </cgroup>
                     <label>Sample:</label> <a>{{ doc.sample.model.default[0].value}}</a>
-                </form>
+                </div>
             </div>
         </div>
     </div>
