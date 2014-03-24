@@ -47,7 +47,8 @@ def load_admins():
     if admin_group is None:
         _admins = ['gtarcea@umich.edu', 'tammasr@umich.edu']
     else:
-        _admins.append(admin_group['users'])
+        for u in admin_group['users']:
+            _admins.append(u)
 
 
 def _load_user(user):
