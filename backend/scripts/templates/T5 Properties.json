@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Temperature" ,
-                "type": "text" ,
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["C", "F"] ,
                 "value": "" ,
@@ -14,9 +14,9 @@
             },
             {
                 "name": "Time" ,
-                "type": "text" ,
+                "type": "number" ,
                 "unit": "" ,
-                "unit_choice": [] ,
+                "unit_choice": ["hours", "minutes", "seconds"] ,
                 "value": "" ,
                 "value_choice": [],
                 "required": true

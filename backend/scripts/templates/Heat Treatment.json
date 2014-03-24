@@ -27,7 +27,7 @@
             "value": "" ,
             "value_choice": "",
             "required": false
-        } , Sa
+        } ,
         {
             "name": "required_output_files" ,
             "type": "" ,
@@ -153,5 +153,4 @@
     "template_name": "Heat Treatment" ,
     "template_type": "process",
     "template_pick": ""
-
 }
