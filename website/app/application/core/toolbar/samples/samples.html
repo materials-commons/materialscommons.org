@@ -1,0 +1,110 @@
+<div ng-controller="toolbarSamples">
+    <div class="row-fluid">
+        <div class="span5">
+            <form class="form-horizontal">
+                <fieldset>
+                    <legend>Create Sample</legend>
+                    <div class="control-group">
+                        <label class="control-label">Select Template:</label>
+
+                        <div class="controls">
+                            <select ng-model="model.template"
+                                    ng-options="temp as temp.template_name for temp in templates | orderBy:'template_name'"
+                                    ng-change="update()">
+                            </select>
+                        </div>
+                    </div>
+
+                    <legend>Required Properties</legend>
+                    <div df-properties default-properties="doc.model.default"></div>
+                    <hr align="left">
+                    <fieldset>
+                        <legend>Added Properties</legend>
+                        <div ng-repeat="pv in doc.model.added_properties">
+                            <div class="control-group">
+                                <label class="control-label">{{pv.name}}</label>
+
+                                <div class="controls">
+                                    <div ng-if="pv.value_choice.length!=0">
+                                        <select ng-model="pv.value">
+                                            <option ng-repeat="val in pv.value_choice"> {{val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div ng-if="pv.value_choice.length==0">
+                                        <input type="text" ng-model="pv.value">
+                                    </div>
+                                    <div ng-if="pv.unit_choice.length!=0">
+                                        <select class="span2" ng-model="pv.unit">
+                                            <option ng-repeat="unit in pv.unit_choice"> {{unit}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                    <div ng-show="doc.model.additional.length > 0" class="control-group">
+                        <label class="control-label">Additional Properties:</label>
+
+                        <div class="controls">
+                            <select ng-model="model.additionalProperty"
+                                    ng-options="property.name for property in doc.model.additional">
+                            </select>
+                            <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Custom Properties:</label>
+
+                        <div class="controls">
+                            <input ng-model="model.customPropertyName" placeholder="Name..." type="text">
+                            <input ng-model="model.customPropertyValue" placeholder="Value..." type="text">
+                            <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
+                        </div>
+                    </div>
+                    <button ng-click="save()" class="btn btn-primary">
+                        Save
+                    </button>
+                    <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="span7">
+            <h4>Samples: </h4>
+            <paged data="samples_list" current-page="currentDataPage" page-size="10">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>Sample</th>
+                        <th>Alloy</th>
+                        <th>Added Properties</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <p ng-if="samples_list.length==0">
+                        <b>No available samples in the database</b>
+                    </p>
+
+                    <p ng-if="samples_list.length!=0">
+                        <tr ng-repeat="sample in samples_list | orderBy:'model.default[0].value' | page:currentDataPage:10">
+                            <td>{{sample.model.default[0].value}}</td>
+                            <td>{{sample.model.default[1].value}}</td>
+                            <td>
+                                <ul ng-repeat="kv in sample.model.added_properties">
+                                    <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </p>
+                    </tbody>
+                </table>
+            </paged>
+        </div>
+    </div>
+
+</div>

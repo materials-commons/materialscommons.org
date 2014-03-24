@@ -93,6 +93,8 @@
     </div>
 </div>
 
+<!------------------------------ External dependencies ----------------->
+
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="assets/js/select2.min.js"></script>
 <script src="assets/js/TreeModel-min.js"></script>
@@ -110,6 +112,8 @@
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/ng-quick-date.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
+<script src="assets/js/angular/socket.js"></script>
+<script src="assets/js/socket.io.js"></script>
 <!------------------------------ Application --------------------------->
 <script src="application/app.js"></script>
 
@@ -177,6 +181,9 @@
 <!-- Toolbar materials -->
 <script src="application/core/toolbar/materials/materials-controller.js"></script>
 
+<!-- Toolbar samples -->
+<script src="application/core/toolbar/samples/samples-controller.js"></script>
+
 <!-- Toolbar projectspage -->
 <script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/overview-controller.js"></script>
@@ -186,6 +193,11 @@
 <script src="application/core/toolbar/overview/overview-controller.js"></script>
 <script src="application/core/toolbar/overview/_todo-modal-controller.js"></script>
 <script src="application/core/toolbar/overview/_project-modal-controller.js"></script>
+
+<!-- Toolbar File Services -->
+<script src="application/core/toolbar/fileservices/projects/projects-controller.js"></script>
+<script src="application/core/toolbar/fileservices/events/events-controller.js"></script>
+<script src="application/core/toolbar/fileservices/config/config-controller.js"></script>
 
 <!------------------------------ Provenance app ------------------------------>
 
@@ -202,8 +214,9 @@
 <script src="application/provenance/iosteps/iosteps-controller.js"></script>
 <script src="application/provenance/iosteps/iostep/iostep-controller.js"></script>
 <script src="application/provenance/iosteps/files/files-controller.js"></script>
+<script src="application/provenance/iosteps/iostep/sample-filter.js"></script>
 
-<!-- Provenance Finish -->
+<!--finish controller-->
 <script src="application/provenance/finish/finish-controller.js"></script>
 
 <!-------------------------------- Global directives ------------------------------->
@@ -224,6 +237,7 @@
 <script src="application/services/provdrafts-service.js"></script>
 <script src="application/services/date-generate-service.js"></script>
 <script src="application/services/nav-service.js"></script>
+<script src="application/services/materials-service.js"></script>
 <script src="application/services/cached-service-factory-service.js"></script>
 
 <!-------------------------------- Global model services -------------------------->

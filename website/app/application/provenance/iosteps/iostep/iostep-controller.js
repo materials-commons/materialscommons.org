@@ -51,14 +51,11 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 } else {
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
                 }
-
                 if ($scope.doc.template_pick === 'sample') {
                     $scope.load_all_samples();
+
                 }
-//
-//                $scope.defaultProperties = $scope.doc.model.default;
-//                $scope.additionalProperties = [];
-//                $scope.useExisting = "yes";
             }
             init();
+
         }]);

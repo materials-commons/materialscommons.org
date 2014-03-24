@@ -20,6 +20,16 @@ function _add_json_callback(url) {
     return url + "&callback=JSON_CALLBACK";
 }
 
+function _add_json_callback2(url) {
+    var qIndex = url.indexOf("?");
+    var argSeparator = "&";
+    if (qIndex == -1) {
+        argSeparator = "?";
+    }
+
+    return url + argSeparator + "callback=JSON_CALLBACK";
+}
+
 String.prototype.capitalize = function () {
     return this.replace(/(?:^|\s)\S/g, function (a) {
         return a.toUpperCase();
