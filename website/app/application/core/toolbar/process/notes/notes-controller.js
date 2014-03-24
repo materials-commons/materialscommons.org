@@ -1,13 +1,13 @@
-Application.Controllers.controller('toolbarDataEditNotes',
+Application.Controllers.controller('toolbarProcessNotes',
     ["$scope", "mcapi", "$state", "$stateParams", "User", "dateGenerate", "alertService",
         function ($scope, mcapi, $state, $stateParams, User, dateGenerate, alertService) {
             $scope.add_notes = function () {
                 $scope.doc.notes.push({'message': $scope.model.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
-                $scope.saveData();
+                $scope.saveProcess();
                 $scope.model.new_note = "";
             };
-            $scope.saveData = function () {
-                mcapi('/datafile/update/%', $scope.id)
+            $scope.saveProcess = function () {
+                mcapi('/process/update/%', $scope.id)
                     .success(function (data) {
                         alertService.sendMessage("Notes has been added");
                     }).error(function (data) {
@@ -20,7 +20,7 @@ Application.Controllers.controller('toolbarDataEditNotes',
                 $scope.model = {
                     new_note: ''
                 };
-                mcapi('/datafile/%', $scope.id)
+                mcapi('/processes/%', $scope.id)
                     .success(function (data) {
                         $scope.doc = data;
                     }).jsonp();

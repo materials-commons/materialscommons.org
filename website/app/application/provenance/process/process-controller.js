@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
-    ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts",
-        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts) {
+    ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User",
+        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts, dateGenerate, User) {
             watcher.watch($scope, 'process_type', function (template) {
                 if ($scope.process.template.template_name === template.template_name) {
                     // All attributes already loaded from a draft
@@ -67,7 +67,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             };
 
             $scope.add_notes = function () {
-                $scope.process.notes.push($scope.bk.new_note);
+                $scope.process.notes.push({'message': $scope.bk.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
                 $scope.bk.new_note = "";
             };
 

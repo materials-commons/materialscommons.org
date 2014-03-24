@@ -5,7 +5,7 @@
         "default": [
             {
                 "name": "Name" ,
-                "type": "required" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -33,7 +33,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Current(A)",
@@ -43,7 +43,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Stage Tilt(Degrees)",
@@ -53,7 +53,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Magnification",
@@ -63,7 +63,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Specimen/Stage Bias(V)",
@@ -73,7 +73,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Column Bias(V)",
@@ -83,7 +83,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Notes" ,
