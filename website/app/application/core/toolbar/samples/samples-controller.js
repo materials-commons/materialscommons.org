@@ -17,7 +17,7 @@ Application.Controllers.controller('toolbarSamples',
         };
 
         $scope.addCustomProperty = function () {
-            $scope.doc.model.added_properties.push({'name': $scope.model.customPropertyName, 'value': $scope.model.customPropertyValue, 'unit': '', 'value_choice': [], 'unit_choice': []});
+            $scope.doc.model.added_properties.push({'name': $scope.model.customPropertyName, 'value': $scope.model.customPropertyValue, 'type': 'text', 'required': false, 'unit': '', 'value_choice': [], 'unit_choice': []});
         };
 
         $scope.save = function () {

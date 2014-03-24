@@ -1,11 +1,10 @@
 Application.Provenance.Controllers.controller('provenanceIOSteps',
     ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams", "$injector",
         function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams, $injector) {
+            var $validationProvider = $injector.get('$validation'), check;
 
             $scope.saveDraft = function (form) {
-                console.log(form);
-                var $validationProvider = $injector.get('$validation'), check = $validationProvider.checkValid(form);
-                console.log(check);
+                check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvDrafts.saveDraft();
                     $scope.message = "your draft has been saved!";
@@ -51,8 +50,8 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.nextStep = function (form) {
-                var $validationProvider = $injector.get('$validation'), check = $validationProvider.checkValid(form),
-                    i, next;
+                check = $validationProvider.checkValid(form);
+                var i, next;
                 if (check === true) {
                     i = _.indexOf($scope.steps, $scope.activeStep);
                     if (i < $scope.steps.length - 1) {
