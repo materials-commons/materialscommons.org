@@ -45,12 +45,17 @@ def main():
         name, ext = os.path.splitext(datafile['name'])
         ext_lower = ext.lower()
         if ext_lower == ".tif" or ext_lower == ".tiff":
-            if datafile['usesid'] != "":
+            if 'usesid' in datafile and datafile['usesid'] != "":
+                continue
+            if datafile['name'][0] == '.':
                 continue
             filedir = datafile_dir(options.dir, datafile['id'])
             image_file = os.path.join(filedir, datafile['id'])
             print "  Opening: %s" % (image_file)
-            im = Image.open(image_file)
+            try:
+                im = Image.open(image_file)
+            except:
+                continue
             conversion_dir = os.path.join(filedir, ".conversion")
             converted_file_path = os.path.join(conversion_dir, datafile['id'] + ".jpg")
             if os.path.isfile(converted_file_path):
