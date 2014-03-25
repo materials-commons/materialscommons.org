@@ -4,6 +4,15 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
                 "name": "Temperature" ,
                 "type": "number" ,
                 "unit": "" ,
