@@ -27,7 +27,7 @@ function start_servers()
      
         sleep 3
     
-        if [ $TESTSERVER != "" ]; then
+        if [ $TESTSERVER != false ]; then
             echo "  Restoring from file $MCDB_FILE..."
             cp $MCDB_FILE $MCDB_DIR
             FILE=$(basename $MCDB_FILE)
