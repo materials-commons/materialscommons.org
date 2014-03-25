@@ -132,7 +132,7 @@ def create_process_from_template(j, saver):
     p['runs'] = dmutil.get_optional('runs', j, [])
     p['citations'] = dmutil.get_optional('citations', j, [])
     p['status'] = dmutil.get_optional('status', j)
-    process_id = saver.insert('processes', p)
+    process_id = saver.insert('processes', p)      
     saver.process_id = process_id
     saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
 
@@ -189,6 +189,8 @@ def create_condition_from_template_modified(process_id, user, j, saver):
     c['model'] = dmutil.get_optional('model', j)
     c['template'] = dmutil.get_required('template_name', j)
     c['sample_id'] = dmutil.get_optional('sample_id', j)
+    if (c['template'] == 'Heat Treatment'):
+        c['sample_id'] = r.table('samples').insert(dmutil.get_required('sample', j)).run(g.conn)
     c_id = saver.insert('conditions', c)
     new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run(g.conn)
     r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
