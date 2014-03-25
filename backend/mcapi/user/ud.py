@@ -12,7 +12,7 @@ from .. import error
 from .. import dmutil
 from .. import validate
 from .. import mcdir
-from loader.model import datafile
+from loader.model import datafile, sample
 from mcapi import mcexceptions
 import traceback
 
@@ -189,8 +189,11 @@ def create_condition_from_template_modified(process_id, user, j, saver):
     c['model'] = dmutil.get_optional('model', j)
     c['template'] = dmutil.get_required('template_name', j)
     c['sample_id'] = dmutil.get_optional('sample_id', j)
-    if (c['template'] == 'Heat Treatment'):
-        c['sample_id'] = r.table('samples').insert(dmutil.get_required('sample', j)).run(g.conn)
+    if (c['template'] == 'New Sample'):
+        s = sample.Sample(c['model'],c['owner'])
+        sample_id = dmutil.insert_entry_id('samples', s.__dict__)
+        c['sample_id']= sample_id 
+        print sample_id
     c_id = saver.insert('conditions', c)
     new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run(g.conn)
     r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
