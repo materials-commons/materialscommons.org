@@ -184,7 +184,7 @@ def create_conditions_from_templates_modified(process_id, user, input_conditions
 def create_condition_from_template_modified(process_id, user, j, saver):
     c = dict()
     type_of_condition = dmutil.get_required('condition_type', j)
-    c['owner'] = dmutil.get_optional('owner', j)
+    c['owner'] = user
     c['material'] = dmutil.get_optional('material', j)
     c['model'] = dmutil.get_optional('model', j)
     c['template'] = dmutil.get_required('template_name', j)
@@ -193,7 +193,6 @@ def create_condition_from_template_modified(process_id, user, j, saver):
         s = sample.Sample(c['model'],c['owner'])
         sample_id = dmutil.insert_entry_id('samples', s.__dict__)
         c['sample_id']= sample_id 
-        print sample_id
     c_id = saver.insert('conditions', c)
     new_conditions = r.table('saver').get(process_id)[type_of_condition].append(c_id).run(g.conn)
     r.table('saver').get(process_id).update({type_of_condition:new_conditions}).run(g.conn)
