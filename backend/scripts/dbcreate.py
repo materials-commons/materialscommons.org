@@ -11,7 +11,7 @@ def create_database():
     run(r.db_create("history"))
     
 
-def create_table(table):
+def create_tables(table):
     #print "create_table(%s)" % (table)
     run(r.db('materialscommons').table_create(table))
     run(r.db('history').table_create(table))
