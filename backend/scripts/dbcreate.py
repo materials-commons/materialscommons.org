@@ -15,7 +15,6 @@ def create_tables():
     create_table("users")
     create_table("usergroups")
     create_table("datafiles")
-    create_table("dataparams")
     create_table("datadirs")
     create_table("tags")
     create_table("news")
