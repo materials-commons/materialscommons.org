@@ -148,9 +148,9 @@
         }
     ] ,
     "owner": "gtarcea@umich.edu",
-    "template_birthtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_birthtime": "" ,
     "template_description": "" ,
-    "template_mtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_mtime": "" ,
     "template_name": "APT" ,
     "template_type": "process",
     "template_pick": ""
