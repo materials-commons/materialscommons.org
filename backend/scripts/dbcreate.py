@@ -11,7 +11,38 @@ def create_database():
     run(r.db_create("history"))
     
 
-def create_tables(table):
+def create_tables():
+    create_table("users")
+    create_table("usergroups")
+    create_table("datafiles")
+    create_table("datadirs")
+    create_table("tags")
+    create_table("news")
+    create_table("udqueue")
+    create_table("reviews")
+    create_table("conditions")
+    create_table("processes")
+    create_table("machines")
+    create_table("projects")
+    create_table("datasets")
+    create_table("citations")
+    create_table("notes")
+    create_table("templates")
+    create_table("state")
+    create_table("drafts")
+    create_table("saver")
+    create_table("project2datadir")
+    create_table("project2datafile")
+    create_table("project2processes")
+    create_table("project2conditions")
+    create_table("review2datafile")
+    create_table("datadirs_denorm")
+    create_table("materials")
+    create_table("tag2item")
+    create_table("samples")
+
+
+def create_table(table):
     #print "create_table(%s)" % (table)
     run(r.db('materialscommons').table_create(table))
     run(r.db('history').table_create(table))

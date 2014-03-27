@@ -1,70 +1,86 @@
 Application.Controllers.controller('toolbarMaterials',
-    ["$scope", "mcapi", function ($scope, mcapi) {
-        $scope.material = {
-            "additional": []
+    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
+        var $validationProvider = $injector.get('$validation');
+        $scope.showForm = function () {
+            $scope.default_properties = $scope.model.selected_treatment.model.default;
+            $scope.model.tab_item = '';
         };
 
-        mcapi('/templates')
-            .argWithValue('filter_by', '"template_type":"material"')
-            .success(function (data) {
-                $scope.material_template = data[0];
-                $scope.default_properties = $scope.material_template.model.default;
-                $scope.additional_properties = $scope.material_template.model.additional;
+        $scope.showTab = function (item) {
+            $scope.model.tab_item = item;
+            $scope.model.tab_details = $scope.doc.treatments[item];
+            $scope.default_properties = $scope.doc.treatments[item];
+            $scope.model.selected_treatment = {};
+        };
 
-            })
-            .error(function (e) {
+        $scope.addTreatment = function () {
+            $scope.doc.treatments_order.push($scope.model.selected_treatment.template_name);
+            $scope.doc.treatments[$scope.model.selected_treatment.template_name] = $scope.default_properties;
+        };
 
-            }).jsonp();
+        $scope.save = function (form) {
+            var check = $validationProvider.checkValid(form);
+            if (check === true) {
+                mcapi('/materials/new')
+                    .arg('order_by=birthtime')
+                    .success(function (data) {
+                        mcapi('/materials/%', data.id)
+                            .success(function (material_obj) {
+                                $scope.materials_list.unshift(material_obj);
+                            })
+                            .error(function (e) {
+                            }).jsonp();
+                        $scope.doc = {
+                            name: '',
+                            alloy: '',
+                            notes: '',
+                            treatments_order: [],
+                            treatments: {
+                            }
+                        };
+                        $scope.model = {
+                            selected_treatment: '',
+                            tab_details: []
+                        };
+                    })
+                    .error(function (e) {
 
-        mcapi('/materials')
-            .success(function (data) {
-                $scope.materials_list = data;
+                    }).post($scope.doc);
+            } else {
+                $validationProvider.validate(form);
+            }
+        };
 
-            })
-            .error(function (data) {
-            }).jsonp();
-
-        $scope.clear_material = function () {
-
-            $scope.material = {
-                "additional": []
+        function init() {
+            $scope.doc = {
+                name: '',
+                alloy: '',
+                notes: '',
+                treatments_order: [],
+                treatments: {
+                }
             };
-        };
-
-        $scope.save = function () {
-            $scope.default_properties.forEach(function (item) {
-                $scope.material[item.name] = item.value;
-            });
-            mcapi('/materials/new')
-                .arg('order_by=birthtime')
+            $scope.model = {
+                selected_treatment: '',
+                tab_details: [],
+                tab_item: ''
+            };
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"treatment"')
                 .success(function (data) {
-                    mcapi('/materials/%', data.id)
-                        .success(function (material_obj) {
-                            $scope.mat = material_obj;
-                            $scope.materials_list.unshift(material_obj);
-                        })
-                        .error(function (e) {
-
-                        }).jsonp();
-                    $scope.material = {
-                        "additional": []
-                    };
+                    $scope.templates = data;
                 })
                 .error(function (e) {
 
-                }).post($scope.material);
-        };
+                }).jsonp();
 
-        $scope.add_property_to_machine = function () {
-            if ($scope.p_name || $scope.p_name === ' ') {
-                $scope.material.additional.push(JSON.parse($scope.p_name));
-                $scope.p_name = '';
-            }
-            if ($scope.additional_prop || $scope.additional_prop === ' ') {
-                $scope.material.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
-                    'unit_choice': [], 'unit': '', 'required': 'False', "type": ""});
-                $scope.additional_prop = '';
-            }
+            mcapi('/materials')
+                .success(function (data) {
+                    $scope.materials_list = data;
+                })
+                .error(function (data) {
+                }).jsonp();
+        }
 
-        };
+        init();
     }]);
