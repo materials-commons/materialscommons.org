@@ -3,11 +3,11 @@ Application.Controllers.controller('toolbarMaterials',
         var $validationProvider = $injector.get('$validation');
         $scope.showForm = function () {
             $scope.default_properties = $scope.model.selected_treatment.model.default;
-            $scope.tab_item = '';
+            $scope.model.tab_item = '';
         };
 
         $scope.showTab = function (item) {
-            $scope.tab_item = item;
+            $scope.model.tab_item = item;
             $scope.model.tab_details = $scope.doc.treatments[item];
             $scope.default_properties = $scope.doc.treatments[item];
             $scope.model.selected_treatment = {};
@@ -38,6 +38,10 @@ Application.Controllers.controller('toolbarMaterials',
                             treatments: {
                             }
                         };
+                        $scope.model = {
+                            selected_treatment: '',
+                            tab_details: []
+                        };
                     })
                     .error(function (e) {
 
@@ -58,7 +62,8 @@ Application.Controllers.controller('toolbarMaterials',
             };
             $scope.model = {
                 selected_treatment: '',
-                tab_details: []
+                tab_details: [],
+                tab_item: ''
             };
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_type":"treatment"')
@@ -78,5 +83,4 @@ Application.Controllers.controller('toolbarMaterials',
         }
 
         init();
-    }])
-;
+    }]);
