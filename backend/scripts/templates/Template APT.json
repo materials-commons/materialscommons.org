@@ -1,6 +1,6 @@
 {
-    "id": "Test APT Process",
-    "model": [
+    "id": "Template APT",
+    "model": {
         "default": [
             {
                 "name": "name" ,
@@ -21,65 +21,55 @@
                 "required": false
             },
             {
-                "name": "version" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
                 "name": "notes" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
-                "value": [ ],
-                "value_choice": "",
+                "value": "",
+                "value_choice": [],
                 "required": false
-            } 
+            }
         ],
         "additional":[
+            {
+                "name": "citations" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "",
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "version" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "",
+                "value_choice": [],
+                "required": false
+            },
             {
                 "name": "runs" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
-                "value": [ ],
-                "value_choice": "",
-                "required": false
-            } ,
-            {
-                "name": "citations" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": [ ],
-                "value_choice": "",
-                "required": false
-            } ,
-            {
-                "name": "status" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
+                "value": "",
+                "value_choice": [],
                 "required": false
             }
         ]
-    ] ,
+    } ,
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Test APT Process" ,
+    "template_name": "Template APT" ,
     "template_type": "process",
-    "template_pick": ""
+    "template_pick": "experiment",
     "required_input_conditions": ["APT Sample Preparation", "APT Instrument Properties"],
     "required_output_conditions": [],
     "required_input_files": true,
-    "required_output_files": true,
+    "required_output_files": true,  
     "machine": {}
-    
 }
