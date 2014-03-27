@@ -1,0 +1,35 @@
+{
+
+    "id": "Etching" ,
+    "model": {
+        "default": [
+            {
+                "name": "Temperature" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["C", "F"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Time" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["hours", "minutes", "seconds"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }
+        ],
+        "additional":[
+        ]
+    } ,
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "This is an initial treatment applied to material" ,
+    "template_mtime": "" ,
+    "template_name": "Etching" ,
+    "template_pick": "" ,
+    "template_type": "treatment"
+}

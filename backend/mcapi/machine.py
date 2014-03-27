@@ -49,11 +49,12 @@ def get_all_materials():
 def create_material():
     j = request.get_json()
     material = dict()
-    material['additional'] = dmutil.get_required('additional', j)
-    material['name'] = dmutil.get_required('Name', j)
-    material['alloy'] = dmutil.get_required('Alloy', j)
-    material['notes'] = dmutil.get_required('Notes', j)
+    material['name'] = dmutil.get_required('name', j)
+    material['alloy'] = dmutil.get_required('alloy', j)
+    material['notes'] = dmutil.get_required('notes', j)
     material['birthtime'] = r.now()
+    material['treatments_order'] = dmutil.get_optional('treatments_order',j)
+    material['treatments'] = dmutil.get_optional('treatments', j)
     return dmutil.insert_entry('materials', material)
 
 
