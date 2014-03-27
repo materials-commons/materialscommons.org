@@ -92,7 +92,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 ProvSteps.setStepFinished('process');
             };
 
-            $scope.init = function () {
+            function init() {
                 $scope.message = '';
                 // Book keeping values to preserve to communicate with transcluded elements that contain an ng-model.
                 $scope.bk = {
@@ -107,16 +107,13 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.process = ProvDrafts.current.attributes.process;
                 $scope.useExisting = "yes";
 
-
                 mcapi('/machines')
                     .success(function (data) {
                         $scope.machines_list = data;
-
                         if ($scope.process.machine) {
                             var i = _.indexOf($scope.machines_list, function (item) {
                                 return (item.name === $scope.process.machine.name);
                             });
-
                             if (i !== -1) {
                                 $scope.process.machine = $scope.machines_list[i];
                             }
@@ -153,7 +150,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     }).jsonp();
 
 
-            };
+            }
 
-            $scope.init();
+            init();
         }]);
