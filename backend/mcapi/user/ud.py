@@ -189,7 +189,7 @@ def create_condition_from_template_modified(process_id, user, j, saver):
     c['model'] = dmutil.get_optional('model', j)
     c['template'] = dmutil.get_required('template_name', j)
     c['sample_id'] = dmutil.get_optional('sample_id', j)
-    if (c['template'] == 'New Sample'):
+    if (c['template'] == 'Transformed Sample'):
         s = sample.Sample(c['model'],c['owner'])
         sample_id = dmutil.insert_entry_id('samples', s.__dict__)
         c['sample_id']= sample_id 

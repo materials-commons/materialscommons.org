@@ -7,7 +7,7 @@
             "unit": "" ,
             "unit_choice": "" ,
             "value": [
-                "T5 Properties","Pick Sample"
+                "Heat Treatment Conditions","Pick Sample"
             ] ,
             "value_choice": ""
         } ,
@@ -16,7 +16,7 @@
             "type": "" ,
             "unit": "" ,
             "unit_choice": "" ,
-            "value": ["New Sample"],
+            "value": ["Transformed Sample"],
             "value_choice": ""
         } ,
         {
