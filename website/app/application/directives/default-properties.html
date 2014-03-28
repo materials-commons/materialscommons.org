@@ -12,7 +12,8 @@
             </select>
         </div>
         <div ng-if='df.value_choice.length==0'>
-            <div ng-if="df.type==='text'">  <!-- if i do not implement this then it is the case that every field has to be filled in  -->
+            <div ng-if="df.type==='text'">
+                <!-- if i do not implement this then it is the case that every field has to be filled in  -->
                 <div ng-if="df.required===false">
                     <input type='text' ng-model='df.value'
                            placeholder='{{df.name}}...'>
