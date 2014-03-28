@@ -7,7 +7,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.addCustomProperty = function () {
-                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': []});
+                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
             };
 
             $scope.loadMaterials = function () {
@@ -44,6 +44,5 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 $scope.useExisting = "yes";
 
             };
-
             $scope.init();
         }]);
