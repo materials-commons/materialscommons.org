@@ -3,7 +3,7 @@
     "model": {
         "default": [
             {
-                "name": "name" ,
+                "name": "Name" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -12,27 +12,18 @@
                 "required": true
             } ,
             {
-                "name": "description" ,
+                "name": "Description" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": "",
                 "required": false
-            },
-            {
-                "name": "notes" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "",
-                "value_choice": [],
-                "required": false
             }
         ],
         "additional":[
             {
-                "name": "citations" ,
+                "name": "Citations" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -41,7 +32,7 @@
                 "required": false
             },
             {
-                "name": "version" ,
+                "name": "Version" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -50,7 +41,7 @@
                 "required": false
             },
             {
-                "name": "runs" ,
+                "name": "Runs" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,

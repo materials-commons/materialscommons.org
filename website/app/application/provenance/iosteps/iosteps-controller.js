@@ -68,7 +68,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             $scope.loadSteps = function () {
                 if ($stateParams.iosteps === "inputs") {
                     $scope.stepsName = "Inputs";
-                    $scope.doc.attributes.process.required_conditions.forEach(function (condition) {
+                    $scope.doc.attributes.process.required_input_conditions.forEach(function (condition) {
                         $scope.steps.push(condition);
                     });
 
@@ -90,6 +90,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             $scope.init = function () {
                 $scope.message = '';
                 $scope.doc = ProvDrafts.current;
+                console.log($scope.doc);
                 $scope.steps = [];
                 $scope.loadSteps();
                 $scope.activeStep = $scope.steps[0];
