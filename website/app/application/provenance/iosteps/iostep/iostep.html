@@ -20,55 +20,8 @@
 
                 <hr align="left">
                 <fieldset>
-                    <legend>Additional Properties</legend>
-                    <div ng-repeat="pv in doc.model.added_properties">
-                        <div class="control-group">
-                            <label class="control-label">{{pv.name}}
-                                <p ng-if="pv.required==true">
-                                    <i class="fa fa-asterisk" style="color: red"></i>
-                                </p>
-                            </label>
-
-                            <div class="controls">
-                                <div ng-if="pv.value_choice.length!=0">
-                                    <select ng-model="pv.value">
-                                        <option ng-repeat="val in pv.value_choice"> {{val}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div ng-if="pv.value_choice.length==0">
-                                    <div ng-if="pv.type==='text'">
-                                        <div ng-if="pv.required===false">
-                                            <input type='text' ng-model='pv.value'
-                                                   placeholder='{{pv.name}}...'>
-                                        </div>
-                                        <div ng-if="pv.required===true">
-                                            <input type='text' ng-model='pv.value'
-                                                   placeholder='{{pv.name}}...' required>
-                                        </div>
-                                    </div>
-                                    <div ng-if="pv.type!=='text'">
-                                        <div ng-if="pv.required===false">
-                                            <input type='text' name="{{pv.type}}Blur" ng-model='pv.value'
-                                                   validator='{{pv.type}}'
-                                                   placeholder='{{pv.name}}...' valid-method="blur">
-                                        </div>
-                                        <div ng-if="pv.required===true">
-                                            <input type='text' name="{{pv.type}}Blur" ng-model='pv.value'
-                                                   validator='{{pv.type}}'
-                                                   placeholder='{{pv.name}}...' valid-method="blur" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div ng-if="pv.unit_choice.length!=0">
-                                    <select class="span2" ng-model="pv.unit">
-                                        <option ng-repeat="unit in pv.unit_choice"> {{unit}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <legend>Added Properties:</legend>
+                    <div ad-properties added-properties="doc.model.added_properties"></div>
 
                     <div ng-show="doc.model.additional.length > 0" class="control-group">
                         <label class="control-label">Additional Properties:</label>

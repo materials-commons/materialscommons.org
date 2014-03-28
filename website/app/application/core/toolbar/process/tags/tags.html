@@ -2,7 +2,7 @@
     <div class="span5">
         <h3>Tags</h3>
         <cgroup label="Create new:">
-            <input ui-keypress="{13: 'addNewTag()'}" ng-model="tag_model.new_tag"
+            <input ui-keypress="{13: 'addNewTag(doc.id, \'process\')'}" ng-model="tag_model.new_tag"
                    placeholder="Tag...">
         </cgroup>
         <button ng-click="addNewTag(doc.id, 'process')" ng-disabled="!tag_model.new_tag"
