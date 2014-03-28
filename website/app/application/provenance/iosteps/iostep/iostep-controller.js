@@ -44,6 +44,5 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 $scope.useExisting = "yes";
 
             };
-
             $scope.init();
         }]);
