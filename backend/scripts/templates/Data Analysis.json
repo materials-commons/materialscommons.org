@@ -1,158 +1,39 @@
 {
-
-    "id": "Data Analysis" ,
-    "model": [
-        {
-            "name": "required_conditions" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false 
-        } ,
-        {
-            "name": "required_output_conditions" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "required_input_files" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true 
-        } ,
-        {
-            "name": "required_output_files" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true 
-        } ,
-        {
-            "name": "name" ,
-            "type": "required" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "description" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "birthtime" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "mtime" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "machine" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "process_type" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "version" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "parent" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "notes" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "runs" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "citations" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "status" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        }
-    ] ,
-    "owner": "gtarcea@umich.edu", 
-    "template_birthtime": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
+    "id": "Data Analysis",
+    "model": {
+        "default": [
+            {
+                "name": "Name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": true
+            } ,
+            {
+                "name": "Description" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": false
+            }
+        ],
+        "additional":[
+        ]
+    } ,
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
     "template_description": "" ,
-    "template_mtime": "Fri Jan 31 2014 19:39:59 GMT+00:00" ,
+    "template_mtime": "" ,
     "template_name": "Data Analysis" ,
     "template_type": "process",
-    "template_pick": ""
-
+    "template_pick": "",
+    "required_input_conditions": [],
+    "required_output_conditions": [],
+    "required_input_files": true,
+    "required_output_files": true,  
+    "machine": {}
 }

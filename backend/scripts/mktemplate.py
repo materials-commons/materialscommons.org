@@ -4,7 +4,7 @@ import json
 import rethinkdb as r
 import sys
 import optparse
-
+import dmutil
 
 class Template:
     def __init__(self,id, template_name, template_type, template_description, template_owner, model, 
@@ -43,10 +43,10 @@ if __name__ == "__main__":
     template_description = data["template_description"]
     template_owner = data["owner"]
     template_pick = data["template_pick"]
-    required_input_conditions = data["required_input_conditions"]
-    required_output_conditions = data["required_output_conditions"]
-    required_input_files = data["required_input_files"]
-    required_output_files = data["required_output_files"]
+    required_input_conditions = dmutil.get_optional("required_input_conditions", data, [])
+    required_output_conditions = dmutil.get_optional("required_output_conditions", data, [])
+    required_input_files = dmutil.get_optional("required_input_files", data)
+    required_output_files = dmutil.get_optional("required_output_files", data)
     template_obj = Template(id, template_name, template_type, template_description, 
                             template_owner, model, template_pick, required_input_conditions, required_output_conditions, required_input_files, required_output_files)
     template_dict = template_obj.__dict__

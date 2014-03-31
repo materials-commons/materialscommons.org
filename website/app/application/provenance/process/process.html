@@ -17,6 +17,11 @@
                 <fieldset>
                     <legend>Default Properties</legend>
                     <div df-properties default-properties="process.model.default_properties"></div>
+                    <cgroup label="Machine:">
+                        <select ng-model="process.machine"
+                                ng-options="mach.name for mach in machines_list">
+                        </select>
+                    </cgroup>
                     <cgroup label="Notes:">
                         <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
                     </cgroup>
@@ -40,6 +45,7 @@
                             </tbody>
                         </table>
                     </div>
+
                     <div ng-if="process.template.template_pick=='experiment'">
                         <cgroup label="Run Date">
                             <datepicker ng-model='process.experiment_run_date'></datepicker>
