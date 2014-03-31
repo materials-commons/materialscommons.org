@@ -6,13 +6,13 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     // All attributes already loaded from a draft
                     return;
                 }
-                console.log(template)
+                console.log(template);
                 $scope.process.model.default_properties = template.model.default;
                 $scope.process.required_input_conditions = template.required_input_conditions;
                 $scope.process.required_output_conditions = template.required_output_conditions;
                 $scope.process.required_input_files = template.input_files;
                 $scope.process.required_output_files = template.output_files;
-                console.dir($scope.process)
+                console.log($scope.process);
                 var now = new Date();
                 var dd = ("0" + now.getDate()).slice(-2);
                 var mm = ("0" + (now.getMonth() + 1)).slice(-2);
@@ -48,8 +48,8 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             };
 
             $scope.saveDraft = function () {
-                console.dir($scope.process);
-                ProvDrafts.current.name = $scope.process.model.default_properties[0].name;
+                console.log($scope.process);
+                ProvDrafts.current.name = $scope.process.model.default_properties[0].value;
                 ProvDrafts.saveDraft();
                 $scope.message = "Your draft has been saved!";
             };
