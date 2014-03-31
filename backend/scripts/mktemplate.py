@@ -8,7 +8,7 @@ import optparse
 
 class Template:
     def __init__(self,id, template_name, template_type, template_description, template_owner, model, 
-                      template_pick):
+                      template_pick, required_input_conditions, required_output_conditions, required_input_files, required_output_files):
         self.id = id
         self.template_type = template_type
         self.template_name = template_name
@@ -19,6 +19,10 @@ class Template:
         self.template_birthtime = now
         self.template_mtime = now
         self.model = model
+        self.required_input_files = required_input_files
+        self.required_output_files = required_output_files
+        self.required_input_conditions = required_input_conditions
+        self.required_output_conditions = required_output_conditions
 
 if __name__ == "__main__":
     parser = optparse.OptionParser()
@@ -39,8 +43,12 @@ if __name__ == "__main__":
     template_description = data["template_description"]
     template_owner = data["owner"]
     template_pick = data["template_pick"]
+    required_input_conditions = data["required_input_conditions"]
+    required_output_conditions = data["required_output_conditions"]
+    required_input_files = data["required_input_files"]
+    required_output_files = data["required_output_files"]
     template_obj = Template(id, template_name, template_type, template_description, 
-                            template_owner, model, template_pick)
+                            template_owner, model, template_pick, required_input_conditions, required_output_conditions, required_input_files, required_output_files)
     template_dict = template_obj.__dict__
     existing = r.table('templates').get(template_dict['id']).run(conn)
     if existing:
