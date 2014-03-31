@@ -44,7 +44,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             saveDraft: function (f) {
                 var callfunc = arguments.length === 1;
                 if (service.current.id === "") {
-                    console.log('if');
+                    console.log(service.current);
 
                     // We haven't saved this draft before
                     mcapi('/drafts')
