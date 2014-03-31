@@ -2,8 +2,12 @@ Application.Provenance.Services.factory('Model', [function () {
     var service = {
         newProcess: function () {
             return {
-                citations: [],
+                //citations: [],
                 name: '',
+                model: {
+                    default_properties: [],
+                    added_properties: []
+                },
                 notes: [],
                 required_input_conditions: [],
                 required_output_conditions: [],
@@ -11,7 +15,8 @@ Application.Provenance.Services.factory('Model', [function () {
                 required_output_files: false,
                 runs: [],
                 template: "",
-                machine: { model: [] }
+                experiment_run_date: ''
+                //machine: { model: [] }
             };
         },
 

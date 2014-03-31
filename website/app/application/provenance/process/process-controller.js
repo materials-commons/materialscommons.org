@@ -6,13 +6,11 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     // All attributes already loaded from a draft
                     return;
                 }
-                console.log(template);
                 $scope.process.model.default_properties = template.model.default;
                 $scope.process.required_input_conditions = template.required_input_conditions;
                 $scope.process.required_output_conditions = template.required_output_conditions;
-                $scope.process.required_input_files = template.input_files;
-                $scope.process.required_output_files = template.output_files;
-                console.log($scope.process);
+                $scope.process.required_input_files = template.required_input_files;
+                $scope.process.required_output_files = template.required_output_files;
                 var now = new Date();
                 var dd = ("0" + now.getDate()).slice(-2);
                 var mm = ("0" + (now.getMonth() + 1)).slice(-2);
@@ -48,7 +46,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             };
 
             $scope.saveDraft = function () {
-                console.log($scope.process);
                 ProvDrafts.current.name = $scope.process.model.default_properties[0].value;
                 ProvDrafts.saveDraft();
                 $scope.message = "Your draft has been saved!";
@@ -63,20 +60,9 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     new_note: '',
                     new_err_msg: '',
                     start_run: '',
-                    stop_run: '',
-                    exp_run_date: ''
+                    stop_run: ''
                 };
-                $scope.process = {
-                    model: {
-                        added_properties: [],
-                        default_properties: []
-                    },
-                    template: {},
-                    process_type: '',
-                    notes: [],
-                    runs: [],
-                    experiment_run_date: ''
-                };
+                $scope.process = ProvDrafts.current.attributes.process;
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {
@@ -85,12 +71,27 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                         if ($scope.process.template !== "") {
                             t = _.findWhere($scope.process_templates, {template_name: $scope.process.template.template_name});
                             if (t) {
-                                $scope.process_type = t;
+                                $scope.process.process_type = t;
                             }
                         }
                     })
                     .error(function () {
                         alertService.sendMessage("Unable to retrieve processes from database.");
+                    }).jsonp();
+
+                mcapi('/machines')
+                    .success(function (data) {
+                        $scope.machines_list = data;
+
+                        if ($scope.process.machine) {
+                            var i = _.indexOf($scope.machines_list, function (item) {
+                                return (item.name === $scope.process.machine.name);
+                            });
+
+                            if (i !== -1) {
+                                $scope.process.machine = $scope.machines_list[i];
+                            }
+                        }
                     }).jsonp();
 
             }

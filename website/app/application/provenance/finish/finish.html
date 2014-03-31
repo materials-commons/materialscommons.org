@@ -3,13 +3,13 @@
         <form class="form-horizontal">
             <fieldset>
                 <legend>Process</legend>
-                <cgroup label="Name:">
-                    <input class="input-xlarge" ng-model="process.name" type="text" ng-disabled="true">
-                </cgroup>
-                <cgroup label="Description:">
-                    <textarea ng-if="process.description != ''" class="span4" ng-model="process.description"
-                              rows="4" ng-disabled="true">
-                    </textarea>
+                <div ng-repeat="item in process.model.default_properties">
+                    <cgroup label="{{item.name}}:">
+                        <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                    </cgroup>
+                </div>
+                <cgroup label="Machine:">
+                    <input class="input-xlarge" ng-model="process.machine.name" type="text" ng-disabled="true">
                 </cgroup>
                 <cgroup label="Notes:">
                     <div class="span6" ng-show="process.notes.length > 0">
@@ -29,6 +29,13 @@
                         </table>
                     </div>
                 </cgroup>
+                <div ng-if="process.model.added_properties.length!=0">
+                    <div ng-repeat="item in process.model.added_properties">
+                        <cgroup label="{{item.name}}:">
+                            <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
+                </div>
 
             </fieldset>
         </form>

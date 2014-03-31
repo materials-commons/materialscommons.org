@@ -3,7 +3,8 @@ Application.Directives.directive('adProperties',
         return {
             restrict: "A",
             scope: {
-                addedProperties: '='
+                addedProperties: '=',
+                bkNote: '='
             },
             templateUrl: 'application/directives/added-properties.html'
         };

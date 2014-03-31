@@ -117,12 +117,11 @@ def create_process_from_template(j, saver):
     p = dict()
     p['project'] = project_id
     p['name'] = dmutil.get_required('name', j)
+    p['model'] = dmutil.get_required('model', j)
     p['birthtime'] = r.now()
     p['mtime'] = p['birthtime']
     p['machine'] = dmutil.get_optional('machine', j)
     p['process_type'] = dmutil.get_optional('process_type', j)
-    p['description'] = dmutil.get_optional('description', j)
-    p['version'] = dmutil.get_optional('version', j)
     p['template'] = dmutil.get_required('template', j)
     p['notes'] = dmutil.get_optional('notes', j, [])
     p['input_conditions'] = dmutil.get_optional('input_conditions', j, [])
@@ -130,8 +129,7 @@ def create_process_from_template(j, saver):
     p['output_conditions'] = dmutil.get_optional('output_conditions', j, [])
     p['output_files'] = dmutil.get_optional('output_files', j, [])
     p['runs'] = dmutil.get_optional('runs', j, [])
-    p['citations'] = dmutil.get_optional('citations', j, [])
-    p['status'] = dmutil.get_optional('status', j)
+    p['experiment_run_date'] = dmutil.get_optional('experiment_run_date', j)
     process_id = saver.insert('processes', p)
     saver.process_id = process_id
     saver.insert('project2processes', {'project_id': project_id, 'process_id': process_id})
