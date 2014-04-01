@@ -7,7 +7,7 @@ import optparse
 import dmutil
 
 class Template:
-    def __init__(self,id, template_name, template_type, template_description, template_owner, model, 
+    def __init__(self,id, template_name, template_type, template_description, template_owner, model,
                       template_pick, required_input_conditions, required_output_conditions, required_input_files, required_output_files):
         self.id = id
         self.template_type = template_type
@@ -27,7 +27,7 @@ class Template:
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-p", "--port", dest="port", help="rethinkdb port", default=30815)
-    parser.add_option("-f", "--file", dest="filename", 
+    parser.add_option("-f", "--file", dest="filename",
                       help="json file", type="string")
     (options, args) = parser.parse_args()
     if options.filename is None:
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     required_output_conditions = dmutil.get_optional("required_output_conditions", data, [])
     required_input_files = dmutil.get_optional("required_input_files", data)
     required_output_files = dmutil.get_optional("required_output_files", data)
-    template_obj = Template(id, template_name, template_type, template_description, 
+    template_obj = Template(id, template_name, template_type, template_description,
                             template_owner, model, template_pick, required_input_conditions, required_output_conditions, required_input_files, required_output_files)
     template_dict = template_obj.__dict__
     existing = r.table('templates').get(template_dict['id']).run(conn)

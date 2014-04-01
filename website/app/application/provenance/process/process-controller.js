@@ -7,6 +7,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     return;
                 }
                 $scope.process.model.default_properties = template.model.default;
+                console.log($scope.process);
                 $scope.process.required_input_conditions = template.required_input_conditions;
                 $scope.process.required_output_conditions = template.required_output_conditions;
                 $scope.process.required_input_files = template.required_input_files;
