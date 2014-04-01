@@ -23,7 +23,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.addCustomProperty = function () {
-                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'required': false, 'unit': '', 'value_choice': [], 'unit_choice': []});
+                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
             };
 
             $scope.load_all_samples = function () {
@@ -51,7 +51,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 } else {
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
                     if ($scope.stepName === 'Transformed Sample') {
-                        $scope.doc  = Clone.get_clone($scope.doc, ProvDrafts.current);
+                        $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
                     }
                 }
                 if ($scope.doc.template_pick === 'sample') {
@@ -60,6 +60,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 }
             }
 
-            init();
 
+            init();
         }]);

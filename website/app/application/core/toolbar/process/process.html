@@ -6,20 +6,26 @@
                 <legend>{{process.name}}</legend>
 
                 <fieldset>
-                    <cgroup label="Name:">
-                        <input class="input-xlarge" ng-model="process.name" type="text" ng-disabled="true">
-                    </cgroup>
+                    <div ng-repeat="item in process.model.default_properties">
+                        <cgroup label="{{item.name}}:">
+                            <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
+                    <div ng-if="process.model.added_properties.length!=0">
+                        <div ng-repeat="item in process.model.added_properties">
+                            <cgroup label="{{item.name}}:">
+                                <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                            </cgroup>
+                        </div>
+                    </div>
                     <cgroup label="Date Created:">
                         <input class="input-xlarge" ng-model="birthtime" type="text" ng-disabled="true">
                     </cgroup>
-                    <cgroup label="Description:">
-                        <textarea ng-if="process.description != ''"  ng-model="process.description"
-                                  rows="4" ng-disabled="true">
-                        </textarea>
-                    </cgroup>
-                    <cgroup label="Version:">
-                        <input class="input-xlarge" ng-model="process.version" type="text" ng-disabled="true">
-                    </cgroup>
+                    <div ng-if="process.template.template_pick=='experiment'">
+                        <cgroup label="RunDate:">
+                            <input class="input-xlarge" ng-model="process.experiment_run_date" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
 
                 </fieldset>
             </form>
@@ -34,7 +40,7 @@
                     <div ng-if="process.machine.additional.length!=0">
                         <div ng-repeat="item in process.machine.additional">
                             <cgroup label="{{item.name}}:">
-                                <input ng-model="item.value" type="text" ng-disabled="true">
+                                <input class="input-xxlarge" ng-model="item.value" type="text" ng-disabled="true">
                             </cgroup>
                         </div>
                     </div>

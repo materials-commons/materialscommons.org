@@ -1,33 +1,9 @@
 Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
-        $scope.machine = {
-            "additional": []
-        };
         var $validationProvider = $injector.get('$validation');
-
-        mcapi('/templates')
-            .argWithValue('filter_by', '"template_type":"machine"')
-            .success(function (data) {
-                $scope.machine_template = data[0];
-                $scope.default_properties = $scope.machine_template.model.default;
-                $scope.additional_properties = $scope.machine_template.model.additional;
-            })
-            .error(function (e) {
-
-            }).jsonp();
-
-        mcapi('/machines')
-            .success(function (data) {
-                $scope.machines_list = data;
-            })
-            .error(function (data) {
-            }).jsonp();
-
         $scope.clear_machine = function () {
-
             $scope.machine = {
                 "additional": []
-
             };
         };
 
@@ -74,4 +50,30 @@ Application.Controllers.controller('toolbarMachines',
             }
 
         };
+
+        function init() {
+            $scope.machine = {
+                "additional": []
+            };
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"machine"')
+                .success(function (data) {
+                    $scope.machine_template = data[0];
+                    $scope.default_properties = $scope.machine_template.model.default;
+                    $scope.additional_properties = $scope.machine_template.model.additional;
+                })
+                .error(function (e) {
+
+                }).jsonp();
+
+            mcapi('/machines')
+                .success(function (data) {
+                    $scope.machines_list = data;
+                })
+                .error(function (data) {
+                }).jsonp();
+
+        }
+
+        init();
     }]);

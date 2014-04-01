@@ -46,18 +46,18 @@
                 "name": "Detector Type" ,
                 "type": "text" ,
                 "unit": "" ,
-                "unit_choice": "" ,
+                "unit_choice": [] ,
                 "value": "" ,
-                "value_choice": "",
+                "value_choice": [],
                 "required": "false"
             },
             {
                 "name": "Model" ,
                 "type": "number" ,
                 "unit": "" ,
-                "unit_choice": "" ,
+                "unit_choice": [],
                 "value": "" ,
-                "value_choice": "",
+                "value_choice": [],
                 "required": false
             } ,
             {
@@ -97,15 +97,6 @@
                 "required": false
             },
             {
-                "name": "Rigaku" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": ["left side", "right side"],
-                "required": false
-            },
-            {
                 "name": "Type" ,
                 "type": "text" ,
                 "unit": "" ,
@@ -125,5 +116,4 @@
     "template_name": "Machine" ,
     "template_type": "machine",
     "template_pick": ""
-
 }
