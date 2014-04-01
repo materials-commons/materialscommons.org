@@ -1,157 +1,57 @@
 {
     "id": "XRD",
-    "model": [
-        {
-            "name": "required_conditions" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [
-                "Sample Properties","Angle Properties"
-            ] ,
-            "value_choice": ""
-        } ,
-        {
-            "name": "required_output_conditions" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": ["XRD Output Properties"],
-            "value_choice": ""
-        } ,
-        {
-            "name": "required_input_files" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "required_output_files" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "name" ,
-            "type": "required" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "description" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "birthtime" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "mtime" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "machine" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "process_type" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "version" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "parent" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "notes" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "runs" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "citations" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "status" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        }
-    ] ,
+    "model": {
+        "default": [
+            {
+                "name": "Name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": true
+            } ,
+            {
+                "name": "Description" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": false
+            }
+        ],
+        "additional":[
+            {
+                "name": "Citations" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "",
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Version" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "",
+                "value_choice": [],
+                "required": false
+            }
+        ]
+    } ,
     "owner": "admin@materialscommons.org",
-    "template_birthtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_birthtime": "" ,
     "template_description": "" ,
-    "template_mtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_mtime": "" ,
     "template_name": "XRD" ,
     "template_type": "process",
-    "template_pick": ""
-
+    "template_pick": "experiment",
+    "required_input_conditions": ["Sample Properties",  "Angle Properties" ],
+    "required_output_conditions": ["XRD Output Properties"],
+    "required_input_files": true,
+    "required_output_files": true,  
+    "machine": {}
 }
