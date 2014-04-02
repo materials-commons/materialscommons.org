@@ -25,15 +25,6 @@
        
         "additional": [
             {
-                "name": "Vacuumm Level" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": ["High", "Low"],
-                "required": false
-            },
-            {
                 "name": "Gun Type" ,
                 "type": "text" ,
                 "unit": "" ,
@@ -79,7 +70,7 @@
                 "required": false
             } ,
             {
-                "name": "manufacturer" ,
+                "name": "Manufacturer" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -117,7 +108,7 @@
             {
                 "name": "Force Capacity(kN)" ,
                 "type": "number" ,
-                "unit": "" ,
+                "unit": "kN" ,
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": [],
