@@ -1,0 +1,34 @@
+{
+    "id": "Plate" ,
+    "model": {
+        "default_properties": [
+            {
+                "name": "Length" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["cm", "m"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Width" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["cm","m"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ],
+        "additional_properties":[
+        ]
+    } ,
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "Describe your initial object" ,
+    "template_mtime": "" ,
+    "template_name": "Plate" ,
+    "template_pick": "" ,
+    "template_type": "material"
+}
