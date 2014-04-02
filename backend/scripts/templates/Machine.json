@@ -49,11 +49,11 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "false"
+                "required": false
             },
             {
                 "name": "Model" ,
-                "type": "number" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,
