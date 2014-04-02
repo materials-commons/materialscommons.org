@@ -49,11 +49,11 @@
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": "false"
+                "required": false
             },
             {
                 "name": "Model" ,
-                "type": "number" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,
@@ -103,6 +103,15 @@
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": ["Rotating anode"],
+                "required": false
+            },
+            {
+                "name": "Serial Number" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": [],
                 "required": false
             }
         ]
