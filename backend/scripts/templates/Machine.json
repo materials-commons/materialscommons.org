@@ -113,6 +113,15 @@
                 "value": "" ,
                 "value_choice": [],
                 "required": false
+            },
+            {
+                "name": "Force Capacity(kN)" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
             }
         ]
         
