@@ -4,6 +4,7 @@
         "default": [
             {
                 "name": "Name" ,
+                "attribute": "name",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -16,6 +17,7 @@
         "additional":[
             {
                 "name": "Start angle" ,
+                "attribute":"start_angle",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": ["degrees"] ,
@@ -25,6 +27,7 @@
             },
             {
                 "name": "End angle" ,
+                "attribute": "end_angle",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": ["degrees"] ,
@@ -34,6 +37,7 @@
             },
             {
                 "name": "Rate" ,
+                "attribute": "rate",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -43,6 +47,7 @@
             },
             {
                 "name": "Step size" ,
+                "attribute": "step_size",
                 "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
