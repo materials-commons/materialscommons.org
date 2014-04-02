@@ -51,6 +51,10 @@ Application.Controllers.controller('toolbarMaterials',
             }
         };
 
+        $scope.showTreatmentDetails = function (material) {
+            $scope.material = material;
+
+        };
         function init() {
             $scope.doc = {
                 name: '',

@@ -11,6 +11,7 @@ a, a:visited {
 
 a:hover{
     text-decoration:none;
+    cursor: pointer;
 }
 
 section, footer, header, aside, nav{

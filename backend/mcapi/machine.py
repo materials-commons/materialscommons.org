@@ -6,6 +6,7 @@ import rethinkdb as r
 import dmutil
 import json
 import args
+import access
 
 
 @app.route('/machines', methods=['GET'])
@@ -49,10 +50,12 @@ def get_all_materials():
 def create_material():
     j = request.get_json()
     material = dict()
+    user = access.get_user()
     material['name'] = dmutil.get_required('name', j)
     material['alloy'] = dmutil.get_required('alloy', j)
     material['notes'] = dmutil.get_required('notes', j)
     material['birthtime'] = r.now()
+    material['created_by'] = user
     material['treatments_order'] = dmutil.get_optional('treatments_order',j)
     material['treatments'] = dmutil.get_optional('treatments', j)
     return dmutil.insert_entry('materials', material)
