@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarMaterials',
-    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
+    ["$scope", "mcapi", "$injector", "User", "dateGenerate", function ($scope, mcapi, $injector, User, dateGenerate) {
         var $validationProvider = $injector.get('$validation');
         $scope.showForm = function () {
             $scope.default_properties = $scope.model.selected_treatment.model.default;
@@ -50,34 +50,56 @@ Application.Controllers.controller('toolbarMaterials',
                 $validationProvider.validate(form);
             }
         };
-
+        $scope.setProperties = function () {
+            $scope.doc.model.default_properties = $scope.model.classification.model;
+        };
         $scope.showTreatmentDetails = function (material) {
             $scope.material = material;
 
         };
+        $scope.add_notes = function () {
+            $scope.doc.notes.push({'message': $scope.bk.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
+            $scope.bk.new_note = "";
+        };
+
         function init() {
             $scope.doc = {
                 name: '',
                 alloy: '',
-                notes: '',
+                notes: [],
                 treatments_order: [],
                 treatments: {
+                },
+                model: {
+                    default_properties: [],
+                    added_properties: []
                 }
             };
             $scope.model = {
                 selected_treatment: '',
                 tab_details: [],
-                tab_item: ''
+                tab_item: '',
+                classification: ''
+            };
+            $scope.bk = {
+                new_note: ''
             };
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_type":"treatment"')
                 .success(function (data) {
-                    $scope.templates = data;
+                    $scope.treatment_templates = data;
                 })
                 .error(function (e) {
 
                 }).jsonp();
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"material"')
+                .success(function (data) {
+                    $scope.material_templates = data;
+                })
+                .error(function (e) {
 
+                }).jsonp();
             mcapi('/materials')
                 .success(function (data) {
                     $scope.materials_list = data;

@@ -54,6 +54,7 @@ def create_material():
     material['name'] = dmutil.get_required('name', j)
     material['alloy'] = dmutil.get_required('alloy', j)
     material['notes'] = dmutil.get_required('notes', j)
+    material['model'] = dmutil.get_required('model', j)
     material['birthtime'] = r.now()
     material['created_by'] = user
     material['treatments_order'] = dmutil.get_optional('treatments_order',j)
