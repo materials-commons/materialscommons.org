@@ -4,6 +4,7 @@
         "default": [
             {
                 "name": "Name" ,
+                "attribute": "name",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -16,6 +17,7 @@
         "additional":[
             {
                 "name": "Run Time" ,
+                "attribute": "run_time",
                 "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["hrs", "mins", "secs"] ,
@@ -25,6 +27,7 @@
             },
             {
                 "name": "Failure mode" ,
+                "attribute": "failure_mode",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -34,6 +37,7 @@
             },
             {
                 "name": "Yield force" ,
+                "attribute": "yield_force",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -43,6 +47,7 @@
             },
             {
                 "name": "Peak force" ,
+                "attribute": "peak_force",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -52,6 +57,7 @@
             },
             {
                 "name": "F/D slope" ,
+                "attribute": "f_d_slope",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -61,6 +67,7 @@
             },
             {
                 "name": "Yield strength" ,
+                "attribute": "yield_strength",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -70,6 +77,7 @@
             },
             {
                 "name": "Brightness" ,
+                "attribute": "brightness",
                 "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -79,6 +87,7 @@
             },
             {
                 "name": "UTS" ,
+                "attribute": "uts",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -88,6 +97,7 @@
             },
             {
                 "name": "Elongation at Break" ,
+                "attribute": "elongation_at_break",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -97,6 +107,7 @@
             },
             {
                 "name": "Elongation at yield" ,
+                "attribute": "elongation_at_yield",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -106,6 +117,7 @@
             },
             {
                 "name": "Elongation at peak stress" ,
+                "attribute": "elongation_at_peak_stress",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
