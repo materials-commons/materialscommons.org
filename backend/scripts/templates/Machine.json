@@ -5,6 +5,7 @@
         "default": [
             {
                 "name": "Name" ,
+                "attribute" : "name",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -14,6 +15,7 @@
             },
             {
                 "name": "Notes" ,
+                "attribute": "notes",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -26,6 +28,7 @@
         "additional": [
             {
                 "name": "Gun Type" ,
+                "attribute": "gun_type",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -35,6 +38,7 @@
             },
             {
                 "name": "Detector Type" ,
+                "attribute": "detector_type",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -44,6 +48,7 @@
             },
             {
                 "name": "Model" ,
+                "attribute": "model",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
@@ -53,6 +58,7 @@
             } ,
             {
                 "name": "Status" ,
+                "attribute": "status",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -62,6 +68,7 @@
             } ,
             {
                 "name": "Location" ,
+                "attribute": "location",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -71,6 +78,7 @@
             } ,
             {
                 "name": "Manufacturer" ,
+                "attribute": "manufacturer",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -80,6 +88,7 @@
             },
             {
                 "name": "Force Type" ,
+                "attribute": "force_type",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -89,6 +98,7 @@
             },
             {
                 "name": "Type" ,
+                "attribute": "type",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -98,6 +108,7 @@
             },
             {
                 "name": "Serial Number" ,
+                "attribute": "serial_number",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
@@ -107,6 +118,7 @@
             },
             {
                 "name": "Force Capacity(kN)" ,
+                "attribute": "force_capacity",
                 "type": "number" ,
                 "unit": "kN" ,
                 "unit_choice": "" ,
@@ -115,8 +127,6 @@
                 "required": false
             }
         ]
-        
-
     } ,
     "owner": "gtarcea@umich.edu",
     "template_birthtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,

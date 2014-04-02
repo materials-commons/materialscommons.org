@@ -5,6 +5,7 @@
         "default": [
             {
                 "name": "Sample name" ,
+                "attribute": "sample_name",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -13,7 +14,8 @@
                 "required": true
             },
             {
-                "name": "Alloy composition" ,
+                "name": "Composition" ,
+                "attribute": "composition",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -26,6 +28,7 @@
         "additional":[
             {
                 "name": "Heat treatment" ,
+                "attribute": "heat_treatment",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [
@@ -38,6 +41,7 @@
             },
             {
                 "name": "Compression" ,
+                "attribute": "compression",
                 "type": "number" ,
                 "unit": "" ,
                 "unit_choice":[],
@@ -47,6 +51,7 @@
             },
             {
                 "name": "Orientation" ,
+                "attribute": "orientation",
                 "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [],
@@ -57,6 +62,7 @@
 
             {
                 "name": "Manufacturing Condition" ,
+                "attribute": "manufacturing_condition",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
@@ -67,6 +73,7 @@
          
             {
                 "name": "Specimen Prep" ,
+                "attribute": "specimen_prep",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
@@ -79,6 +86,7 @@
             },
             {
                 "name": "Material State" ,
+                "attribute": "material_state",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
@@ -88,6 +96,7 @@
             },
             {
                 "name": "Gage length" ,
+                "attribute": "gage_length",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -97,6 +106,7 @@
             },
             {
                 "name": "Cross sectional area" ,
+                "attribute": "cross_sectional_area",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -106,6 +116,7 @@
             },
             {
                 "name": "Sample Geometry" ,
+                "attribute": "sample_geometry",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
