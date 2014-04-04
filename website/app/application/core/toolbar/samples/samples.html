@@ -1,110 +1,155 @@
 <div ng-controller="toolbarSamples">
     <div class="row-fluid">
-        <div class="span5">
-            <form class="form-horizontal">
+        <form name="Sample" class="form-horizontal">
+            <legend>Create New Raw Material</legend>
+            <div class="span12">
                 <fieldset>
-                    <legend>Create Sample</legend>
+                    <cgroup label="Classification">
+                        <select ng-model="model.classification" ng-change="setProperties()"
+                                ng-options="temp.template_name for temp in sample_templates">
+                        </select>
+                    </cgroup>
                     <div class="control-group">
-                        <label class="control-label">Select Template:</label>
+                        <div ng-show="model.classification">
+                            <cgrouprequired label="Name">
+                                <input ng-model="doc.name" type="text" placeholder='name...' required>
+                            </cgrouprequired>
 
-                        <div class="controls">
-                            <select ng-model="model.template"
-                                    ng-options="temp as temp.template_name for temp in templates | orderBy:'template_name'"
-                                    ng-change="update()">
-                            </select>
-                        </div>
-                    </div>
+                            <cgrouprequired label="Composition">
+                                <input ng-model="doc.composition" type="text" placeholder='composition...' required>
+                            </cgrouprequired>
 
-                    <legend>Required Properties</legend>
-                    <div df-properties default-properties="doc.model.default"></div>
-                    <hr align="left">
-                    <fieldset>
-                        <legend>Added Properties</legend>
-                        <div ng-repeat="pv in doc.model.added_properties">
-                            <div class="control-group">
-                                <label class="control-label">{{pv.name}}</label>
+                            <cgroup label="Notes">
+                                <textarea class="span6" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
+                                <button ng-click="add_notes()" ng-disabled="!bk.new_note" class="btn btn-info">Add
+                                </button>
+                            </cgroup>
 
-                                <div class="controls">
-                                    <div ng-if="pv.value_choice.length!=0">
-                                        <select ng-model="pv.value">
-                                            <option ng-repeat="val in pv.value_choice"> {{val}}
-                                            </option>
-                                        </select>
+                            <div ng-show="doc.notes.length > 0">
+                                <h5>Previous Notes:</h5>
+                                <table class="table">
+                                    <thead>
+                                    <th>Message</th>
+                                    <th>Who</th>
+                                    <th>Date Created</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="note in doc.notes">
+                                        <td>{{note.message}}</td>
+                                        <td>{{note.who}}</td>
+                                        <td>{{note.date}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div df-properties default-properties="doc.model.default_properties"></div>
+                            <cgroup label="Treatments">
+                                <select ng-model="model.selected_treatment"
+                                        ng-options="treat.template_name for treat in treatment_templates"
+                                        ng-change="showForm()">
+                                </select>
+                            </cgroup>
+
+                            <label class='control-label'><strong>{{model.selected_treatment.template_name ||
+                                model.tab_item}} </strong></label>
+
+                            <div class='controls'>
+                                <div class="span6">
+                                    <div ng-show="model.selected_treatment!==''">
+                                        <div class="well">
+                                            <div df-properties default-properties="default_properties"></div>
+                                            <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
+                                        </div>
                                     </div>
-                                    <div ng-if="pv.value_choice.length==0">
-                                        <input type="text" ng-model="pv.value">
-                                    </div>
-                                    <div ng-if="pv.unit_choice.length!=0">
-                                        <select class="span2" ng-model="pv.unit">
-                                            <option ng-repeat="unit in pv.unit_choice"> {{unit}}
-                                            </option>
-                                        </select>
+                                </div>
+                                <div class="span2">
+                                    <label>Treatments Order:</label>
+                                    <div class="tabbable tabs-right">
+                                        <ul class="nav nav-tabs" ng-repeat="each_item in doc.treatments_order">
+                                            <li><a ng-click="showTab(each_item)"
+                                                   data-toggle="tab"><strong>{{each_item}}</strong></a></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </fieldset>
-
-
-                    <div ng-show="doc.model.additional.length > 0" class="control-group">
-                        <label class="control-label">Additional Properties:</label>
-
-                        <div class="controls">
-                            <select ng-model="model.additionalProperty"
-                                    ng-options="property.name for property in doc.model.additional">
-                            </select>
-                            <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
-                        </div>
                     </div>
-
-                    <div class="control-group">
-                        <label class="control-label">Custom Properties:</label>
-
-                        <div class="controls">
-                            <input ng-model="model.customPropertyName" placeholder="Name..." type="text">
-                            <input ng-model="model.customPropertyValue" placeholder="Value..." type="text">
-                            <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
-                        </div>
-                    </div>
-                    <button ng-click="save()" class="btn btn-primary">
-                        Save
-                    </button>
-                    <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
                 </fieldset>
-            </form>
-        </div>
+            </div>
+        </form>
+        <button ng-click="save(Sample)" class="btn btn-primary">Create Material</button>
+        <button ng-click="clear()" class="btn btn-danger">Clear</button>
+    </div>
 
-        <div class="span7">
-            <h4>Samples: </h4>
-            <paged data="samples_list" current-page="currentDataPage" page-size="10">
-                <table class="table table-striped mc-table-hover table-condensed mc-table">
+    <div class="row-fluid">
+        <div class="span6">
+            <legend>List of available materials:</legend>
+            <paged data="samples_list" current-page="currentDataPage" page-size="20">
+                <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>Sample</th>
-                        <th>Alloy</th>
-                        <th>Added Properties</th>
+                        <th>Name</th>
+                        <th>Composition</th>
+                        <th>Date Created</th>
+                        <th>Treatment Details</th>
                     </tr>
                     </thead>
                     <tbody>
                     <p ng-if="samples_list.length==0">
-                        <b>No available samples in the database</b>
+                        <b>No available materials in the database</b>
                     </p>
 
                     <p ng-if="samples_list.length!=0">
-                        <tr ng-repeat="sample in samples_list | orderBy:'model.default[0].value' | page:currentDataPage:10">
-                            <td>{{sample.model.default[0].value}}</td>
-                            <td>{{sample.model.default[1].value}}</td>
-                            <td>
-                                <ul ng-repeat="kv in sample.model.added_properties">
-                                    <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
-                                </ul>
-                            </td>
+                        <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:20">
+                            <td>{{sample.name}}</td>
+                            <td>{{sample.composition}}</td>
+                            <td>{{sample.birthtime | toDateString}}</td>
+                            <td><a ng-click="showTreatmentDetails(sample)">view</a></td>
                         </tr>
                     </p>
                     </tbody>
                 </table>
             </paged>
         </div>
+        <div class="span6">
+            <form class="form-horizontal" ng-show="sample">
+                <div ng-if="sample.treatments_order.length==0">
+                    No Treatments applied to the material {{sample.name}}
+                </div>
+                <div ng-if="sample.treatments_order.length!==0">
+                    <legend>{{sample.name}} Treatment Details:</legend>
+                    <div ng-repeat="key in sample.treatments_order">
+                        <b>{{key}}:</b>
+                        <fieldset>
+                            <div ng-repeat="item in sample.treatments[key]">
+                                <cgroup label="{{item.name}}">
+                                    <input class="input-large" ng-model="item.value" type="text"
+                                           ng-disabled="true">
+                                </cgroup>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div ng-if="sample.model.default_properties.length!=0">
+                    <legend>Default Properties:</legend>
+                    <div ng-repeat="item in sample.model.default_properties">
+                        <cgroup label="{{item.name}}">
+                            <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
+                </div>
+                <div ng-if="sample.model.added_properties.length!=0">
+                    <legend>Additional Properties:</legend>
+                    <div ng-repeat="item in sample.model.added_properties">
+                        <cgroup label="{{item.name}}">
+                            <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </div>
+
 
 </div>

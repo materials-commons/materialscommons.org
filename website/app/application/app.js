@@ -174,12 +174,6 @@ app.config(["$stateProvider", function ($stateProvider) {
             templateUrl: 'application/core/toolbar/machines/machines.html'
         })
 
-        //Toolbar materials views
-        .state('toolbar.materials', {
-            url: '/materials',
-            templateUrl: 'application/core/toolbar/materials/materials.html'
-        })
-
         // Toolbar materials views
         .state('toolbar.samples', {
             url: '/samples',

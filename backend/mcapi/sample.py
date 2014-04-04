@@ -6,6 +6,7 @@ import rethinkdb as r
 import dmutil
 import json
 import args
+import access
 
 @app.route('/samples', methods=['GET'])
 @jsonp
@@ -26,7 +27,14 @@ def get_sample(sample_id):
 def create_sample():
     j = request.get_json()
     sample = dict()
+    user = access.get_user()
+    sample['name'] = dmutil.get_required('name', j)
+    sample['composition'] = dmutil.get_required('composition', j)
+    sample['notes'] = dmutil.get_required('notes', j)
     sample['model'] = dmutil.get_required('model', j)
     sample['birthtime'] = r.now()
-    sample['owner'] = dmutil.get_required('owner', j)
+    sample['created_by'] = user
+    sample['owner'] = user
+    sample['treatments_order'] = dmutil.get_optional('treatments_order',j)
+    sample['treatments'] = dmutil.get_optional('treatments', j)
     return dmutil.insert_entry('samples', sample)

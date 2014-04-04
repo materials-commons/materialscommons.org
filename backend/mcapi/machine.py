@@ -33,36 +33,3 @@ def create_machine():
     machine['notes'] = dmutil.get_required('Notes', j)
     machine['birthtime'] = r.now()
     return dmutil.insert_entry('machines', machine)
-
-
-@app.route('/materials', methods=['GET'])
-@apikey(shared=True)
-@jsonp
-def get_all_materials():
-    rr = r.table('materials').order_by(r.desc('birthtime'))
-    selection = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
-
-
-@app.route('/materials/new', methods=['POST'])
-@apikey
-@crossdomain(origin='*')
-def create_material():
-    j = request.get_json()
-    material = dict()
-    user = access.get_user()
-    material['name'] = dmutil.get_required('name', j)
-    material['alloy'] = dmutil.get_required('alloy', j)
-    material['notes'] = dmutil.get_required('notes', j)
-    material['model'] = dmutil.get_required('model', j)
-    material['birthtime'] = r.now()
-    material['created_by'] = user
-    material['treatments_order'] = dmutil.get_optional('treatments_order',j)
-    material['treatments'] = dmutil.get_optional('treatments', j)
-    return dmutil.insert_entry('materials', material)
-
-
-@app.route('/materials/<material_id>', methods=['GET'])
-@jsonp
-def get_material(material_id):
-    return dmutil.get_single_from_table('materials', material_id)
