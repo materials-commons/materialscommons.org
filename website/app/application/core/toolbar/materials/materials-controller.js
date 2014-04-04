@@ -51,7 +51,7 @@ Application.Controllers.controller('toolbarMaterials',
             }
         };
         $scope.setProperties = function () {
-            $scope.doc.model.default_properties = $scope.model.classification.model;
+            $scope.doc.model.default_properties = $scope.model.classification.model.default_properties;
         };
         $scope.showTreatmentDetails = function (material) {
             $scope.material = material;

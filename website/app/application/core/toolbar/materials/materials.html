@@ -122,9 +122,9 @@
                     No Treatments applied to the material {{material.name}}
                 </div>
                 <div ng-if="material.treatments_order.length!==0">
-                    <legend><u>{{material.name}} Treatment Details:</u></legend>
+                    <legend>{{material.name}} Treatment Details:</legend>
                     <div ng-repeat="key in material.treatments_order">
-                        <legend>{{key}}:</legend>
+                        <b>{{key}}:</b>
                         <fieldset>
                             <div ng-repeat="item in material.treatments[key]">
                                 <cgroup label="{{item.name}}">
@@ -136,7 +136,16 @@
                     </div>
                 </div>
                 <div ng-if="material.model.default_properties.length!=0">
-                    <div ng-repeat="item in material.model.default_properties.default_properties">
+                    <legend>Default Properties:</legend>
+                    <div ng-repeat="item in material.model.default_properties">
+                        <cgroup label="{{item.name}}:">
+                            <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
+                </div>
+                <div ng-if="material.model.added_properties.length!=0">
+                    <legend>Additional Properties:</legend>
+                    <div ng-repeat="item in material.model.added_properties">
                         <cgroup label="{{item.name}}:">
                             <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
                         </cgroup>
