@@ -1,6 +1,6 @@
 {
     "id": "Data Analysis",
-    "default": [
+    "default_properties": [
         {
             "name": "Name" ,
             "attribute": "name",
@@ -22,8 +22,8 @@
             "required": false
         }
     ],
-    "additional":[
-    ]
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,

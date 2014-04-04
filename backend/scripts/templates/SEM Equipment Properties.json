@@ -1,113 +1,110 @@
 {
 
     "id": "SEM Equipment Properties" ,
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "attribute": "name",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Voltage" ,
-                "attribute": "voltage",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["V", "KV"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Pixel Size" ,
-                "attribute": "pixel_size",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["microns"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            }
-        ],
-        "additional":[
-            {
-                "name": "Image mode" ,
-                "attribute": "image_mode",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": ["SEI", "BSE"],
-                "required": false 
-            },
-            {
-                "name": "Beam Current" ,
-                "attribute": "beam_current",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["Amp"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Spot size" ,
-                "attribute": "spot_size",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["nm"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Dwell Time" ,
-                "attribute": "dwell_time",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["hrs", "mins", "sec"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Image Integrations" ,
-                "attribute": "image_integrations",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Brightness" ,
-                "attribute": "brightness",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Contrast" ,
-                "attribute": "contrast",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ]
-
-    } ,
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Voltage" ,
+            "attribute": "voltage",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["V", "KV"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Pixel Size" ,
+            "attribute": "pixel_size",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["microns"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],
+    "additional_properties":[
+        {
+            "name": "Image mode" ,
+            "attribute": "image_mode",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": ["SEI", "BSE"],
+            "required": false 
+        },
+        {
+            "name": "Beam Current" ,
+            "attribute": "beam_current",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["Amp"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Spot size" ,
+            "attribute": "spot_size",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["nm"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Dwell Time" ,
+            "attribute": "dwell_time",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["hrs", "mins", "sec"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Image Integrations" ,
+            "attribute": "image_integrations",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Brightness" ,
+            "attribute": "brightness",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Contrast" ,
+            "attribute": "contrast",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
     "owner": "admin@materialscommons.org", 
     "template_description": "" ,
     "template_name": "SEM Equipment Properties" ,

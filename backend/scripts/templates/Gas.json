@@ -1,32 +1,32 @@
 {
     "id": "Gas" ,
-    "model": {
-        "default_properties": [
-            {
-                "name": "Temperature(K)" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Pressure(Pa)" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ],
-        "additional_properties":[
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "Temperature(K)" ,
+            "attribute" : "temperature",
+            "type": "number" ,
+            "unit": "K" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Pressure(Pa)" ,
+            "attribute": "pressure",
+            "type": "number" ,
+            "unit": "Pa" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
-    "template_description": "Describe your initial object" ,
+    "template_description": "Properties for A Gas" ,
     "template_mtime": "" ,
     "template_name": "Gas" ,
     "template_pick": "" ,

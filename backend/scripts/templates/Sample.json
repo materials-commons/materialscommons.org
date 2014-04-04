@@ -9,7 +9,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [], // get from material
+            "value_choice": [], 
             "required": true
         },
         {

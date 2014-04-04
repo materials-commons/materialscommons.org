@@ -1,9 +1,7 @@
 {
     "id": "Transformed Sample",
-    "model": {
-        "default": [],
-        "additional":[]
-    },
+    "default_properties": [],
+    "additional_properties": [],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
     "template_description": "" ,

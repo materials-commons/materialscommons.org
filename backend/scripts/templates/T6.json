@@ -1,39 +1,40 @@
 {
 
     "id": "T6" ,
-    "model": {
-        "default": [
-            {
-                "name": "T6 Temperature" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["C", "F"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Time" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["hours", "minutes", "seconds"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Quench" ,
-                "type": "text",
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            }
-        ],
-        "additional":[
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "T6 Temperature" ,
+            "attribute": "t6_temperature",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Time" ,
+            "attribute": "time",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["hours", "minutes", "seconds"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Quench" ,
+            "attribute": "quench",
+            "type": "text",
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "This is an initial treatment applied to material" ,
