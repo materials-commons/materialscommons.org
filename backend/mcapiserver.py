@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from mcapi.mcapp import app
-from mcapi import tservices, public, utils, private, access, process, machine, template
+from mcapi import tservices, public, utils, private, access, process, machine, template, materials
 from mcapi.user import account, datadirs, datafiles, reviews, ud, usergroups, projects, conditions, drafts
 from mcapi.stater import stater
 import sys
