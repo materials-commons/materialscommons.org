@@ -1,4 +1,4 @@
-Application.Services.factory('template.TransformFactory',
+Application.Services.factory('template.transform',
     [function () {
         return {
             toModelItem: function (item) {
@@ -10,7 +10,7 @@ Application.Services.factory('template.TransformFactory',
                 return [modelItem, item.attribute];
             },
 
-            convert: function (template) {
+            toModel: function (template) {
                 var model = {};
 
                 function addToModel(what) {
@@ -20,10 +20,10 @@ Application.Services.factory('template.TransformFactory',
                     model[key] = val;
                 }
 
-                template.default.forEach(function (prop) {
+                template.default_properties.forEach(function (prop) {
                     addToModel(prop);
                 });
-                template.additional.forEach(function (prop) {
+                template.additional_properties.forEach(function (prop) {
                     addToModel(prop);
                 });
 
