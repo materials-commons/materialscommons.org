@@ -1,6 +1,7 @@
 {
 
     "id": "Etching" ,
+    "attribute": "etching",
     "model": {
         "default": [
             {
