@@ -1,6 +1,6 @@
 {
     "id": "APT Sample Preparation" ,
-    "default": [
+    "default_properties": [
         {
             "name": "Sample name" ,
             "attribute": "sample_name",
@@ -40,6 +40,7 @@
         },
         {
             "name": "Preparation Note",
+            "attribute": "preparation_note",
             "type": "text",
             "unit": "",
             "unit_choice": [],
@@ -49,6 +50,7 @@
         },
         {
             "name": "Notes" ,
+            "attribute": "notes",
             "type": "text" ,
             "unit": "" ,
             "unit_choice": [],
@@ -57,8 +59,8 @@
             "required": false
         }
     ],
-    "additional":[
-    ]
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org", 
     "template_birthtime": "" ,
     "template_description": "Sample preparation for APT from Emmanuelle" ,

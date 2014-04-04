@@ -1,6 +1,6 @@
 {
     "id": "Machine" ,
-    "default": [
+    "default_properties": [
         {
             "name": "Name" ,
             "attribute" : "name",
@@ -22,8 +22,7 @@
             "required": false
         }              
     ],
-    
-    "additional": [
+    "additional_properties": [
         {
             "name": "Gun Type" ,
             "attribute": "gun_type",

@@ -1,29 +1,28 @@
 {
 
     "id": "SEM Sample Preparation" ,
-    "model": {
-        "default": [
-            {
-                "name": "Sample name" ,
-                "attribute": "sample_name",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Composition" ,
-                "attribute": "composition",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
+    "default_properties": [
+        {
+            "name": "Sample name" ,
+            "attribute": "sample_name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Composition" ,
+            "attribute": "composition",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
             "name": "Preparation" ,
             "attribute": "preparation",
             "type": "text" ,
@@ -38,31 +37,30 @@
                 "None"
             ],
             "required": false
-            },
-            {
-                "name": "Preparation Note",
-                "attribute": "preparation_note",
-                "type": "text",
-                "unit": "",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Notes" ,
-                "attribute": "notes",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [],
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ],
-        "additional":[
-        ]
-    } ,
+        },
+        {
+            "name": "Preparation Note",
+            "attribute": "preparation_note",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Notes" ,
+            "attribute": "notes",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org", 
     "template_birthtime": "" ,
     "template_description": "Sample preparation for SEM from Emmanuelle" ,

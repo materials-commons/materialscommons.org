@@ -43,7 +43,7 @@
         },
         {
             "name": "Laser Pulse Energy(pJ)",
-            "attribute": "laser_pulse_energe",
+            "attribute": "laser_pulse_energy",
             "type": "number",
             "unit": "pJ",
             "unit_choice": [],
