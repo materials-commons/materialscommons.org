@@ -11,8 +11,7 @@
             "value_choice": [],
             "required": true
         }
-    ],
-       
+    ],   
     "additional_properties":[
         {
             "name": "Start angle" ,

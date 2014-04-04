@@ -4,7 +4,6 @@ from mcapi.mcapp import app
 from mcapi import tservices, public, utils, private, access, process, machine, template, sample
 from mcapi.user import account, datadirs, datafiles, reviews, ud, usergroups, projects, conditions, drafts
 from mcapi.stater import stater
-import sys
 from os import environ
 import optparse
 
