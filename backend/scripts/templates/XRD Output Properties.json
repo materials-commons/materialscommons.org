@@ -4,6 +4,7 @@
         "default": [
             {
                 "name": "Name" ,
+                "attribute":"name",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -16,6 +17,7 @@
         "additional":[
             {
                 "name": "Whole pattern fitting" ,
+                "attribute":"whole_pattern_fitting",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
@@ -25,6 +27,7 @@
             },
             {
                 "name": "Texture Analysis" ,
+                "attribute":"texture_analysis",
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
