@@ -6,7 +6,7 @@
                 <fieldset>
                     <cgroup label="Classification">
                         <select ng-model="model.classification" ng-change="setProperties()"
-                                ng-options="temp.template_name for temp in sample_templates">
+                                ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
                         </select>
                     </cgroup>
                     <div class="control-group">

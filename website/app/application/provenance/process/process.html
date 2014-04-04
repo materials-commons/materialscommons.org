@@ -16,7 +16,7 @@
                 <hr>
                 <fieldset>
                     <legend>Default Properties</legend>
-                    <div df-properties default-properties="process.model.default_properties"></div>
+                    <div df-properties default-properties="process.default_properties"></div>
                     <cgroup label="Machine:">
                         <select ng-model="process.machine"
                                 ng-options="mach.name for mach in machines_list">
@@ -94,12 +94,12 @@
                     <legend>Added Properties:</legend>
                     <div ad-properties added-properties="process.model.added_properties"></div>
 
-                    <div ng-show="process.template.model.additional.length > 0" class="control-group">
+                    <div ng-show="process.template.additional_properties.length > 0" class="control-group">
                         <label class="control-label">Additional Properties:</label>
 
                         <div class="controls">
                             <select ng-model="additionalProperty">
-                                <option ng-repeat="property in process.template.model.additional"
+                                <option ng-repeat="property in process.template.additional_properties"
                                         value="{{property}}">
                                     {{property.name}}
                                 </option>
