@@ -1,28 +1,30 @@
 {
 
     "id": "APT Sample Preparation" ,
-    "model": {
-        "default": [
-            {
-                "name": "Sample name" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Alloy composition" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
+    "default": [
+        {
+            "name": "Sample name" ,
+            "attribute": "sample_name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Composition" ,
+            "attribute": "composition",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
             "name": "Preparation" ,
+            "attribute": "preparation",
             "type": "text" ,
             "unit": "" ,
             "unit_choice": [],
@@ -36,29 +38,28 @@
                 "Other"
             ],
             "required": false
-            },
-            {
-                "name": "Preparation Note",
-                "type": "text",
-                "unit": "",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Notes" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [],
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ],
-        "additional":[
-        ]
-    } ,
+        },
+        {
+            "name": "Preparation Note",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Notes" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional":[
+    ]
     "owner": "admin@materialscommons.org", 
     "template_birthtime": "" ,
     "template_description": "Sample preparation for APT from Emmanuelle" ,
