@@ -52,6 +52,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
                     if ($scope.stepName === 'Transformed Sample') {
                         $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
+                        console.log($scope.doc);
                     }
                 }
                 if ($scope.doc.template_pick === 'sample') {
