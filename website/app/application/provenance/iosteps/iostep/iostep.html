@@ -30,7 +30,7 @@
                 <cgroup label="Pick a sample">
                     <i class="fa fa-asterisk" style="color: red"></i>
                     <select ng-model="doc.sample" type="text"
-                            ng-options="samp.model.default[0].value for samp in samples_list"
+                            ng-options="samp.name for samp in samples_list"
                             ng-change="pick_sample()" required>
                         <option value="">-- Select Samples --</option>
 
