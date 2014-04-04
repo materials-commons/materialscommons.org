@@ -1,10 +1,8 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
 from flask import request, g
-import error
 import rethinkdb as r
 import dmutil
-import json
 import args
 import access
 
@@ -15,6 +13,7 @@ def get_all_machines():
     rr = r.table('machines').order_by(r.desc('birthtime'))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
+
 
 @app.route('/machines/<machine_id>', methods=['GET'])
 @jsonp
@@ -57,7 +56,7 @@ def create_material():
     material['model'] = dmutil.get_required('model', j)
     material['birthtime'] = r.now()
     material['created_by'] = user
-    material['treatments_order'] = dmutil.get_optional('treatments_order',j)
+    material['treatments_order'] = dmutil.get_optional('treatments_order', j)
     material['treatments'] = dmutil.get_optional('treatments', j)
     return dmutil.insert_entry('materials', material)
 
