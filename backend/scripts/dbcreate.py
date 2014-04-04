@@ -37,7 +37,6 @@ def create_tables():
     create_table("project2conditions")
     create_table("review2datafile")
     create_table("datadirs_denorm")
-    create_table("materials")
     create_table("tag2item")
     create_table("samples")
 
@@ -72,7 +71,6 @@ def create_table(table):
     run(r.table_create("project2conditions"))
     run(r.table_create("review2datafile"))
     run(r.table_create("datadirs_denorm"))
-    run(r.table_create("materials"))
     run(r.table_create("samples"))
     run(r.table_create("tag2item"))
 
@@ -82,7 +80,8 @@ def create_indices():
     create_index('project2datadir', 'datadir_id')
     create_index('project2datadir', 'project_id')
     create_index('datafiles', 'name')
-    create_index('datafiles', 'owner')
+    c
+reate_index('datafiles', 'owner')
     create_index('datafiles', 'checksum')
     create_index('users', 'apikey')
     create_index('projects', 'name')
