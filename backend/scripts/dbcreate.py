@@ -80,8 +80,7 @@ def create_indices():
     create_index('project2datadir', 'datadir_id')
     create_index('project2datadir', 'project_id')
     create_index('datafiles', 'name')
-    c
-reate_index('datafiles', 'owner')
+    create_index('datafiles', 'owner')
     create_index('datafiles', 'checksum')
     create_index('users', 'apikey')
     create_index('projects', 'name')
