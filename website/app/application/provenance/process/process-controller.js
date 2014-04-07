@@ -26,10 +26,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.process.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
             };
 
-            $scope.add_notes = function () {
-                $scope.process.notes.push({'message': $scope.bk.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
-                $scope.bk.new_note = "";
-            };
+
             $scope.add_run = function () {
                 if ($scope.process.template.template_pick === 'experiment') {
                     $scope.process.runs.push({'started': $scope.bk.exp_run_date, 'stopped': '', 'error_messages': ''});

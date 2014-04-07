@@ -22,29 +22,6 @@
                                 ng-options="mach.name for mach in machines_list">
                         </select>
                     </cgroup>
-                    <cgroup label="Notes:">
-                        <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
-                    </cgroup>
-                    <cgroup>
-                        <button ng-click="add_notes()" ng-disabled="!bk.new_note" class="btn btn-info">Add</button>
-                    </cgroup>
-                    <div ng-show="process.notes.length > 0">
-                        <h5>Previous Notes:</h5>
-                        <table class="table">
-                            <thead>
-                            <th>Message</th>
-                            <th>Who</th>
-                            <th>Date Created</th>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="note in process.notes">
-                                <td>{{note.message}}</td>
-                                <td>{{note.who}}</td>
-                                <td>{{note.date}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
 
                     <div ng-if="process.template.template_pick=='experiment'">
                         <cgroup label="Run Date">

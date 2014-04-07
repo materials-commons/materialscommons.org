@@ -12,7 +12,6 @@ Application.Services.factory('Clone',
                 doc.model = input_sample_copy.sample.model;
                 doc.model.name =  doc.model.name + ' : ' + draft.attributes.process.name;
                 return doc;
-
             }
         };
     }]);
