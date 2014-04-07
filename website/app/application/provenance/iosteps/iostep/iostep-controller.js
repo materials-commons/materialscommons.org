@@ -19,11 +19,11 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.addAdditionalProperty = function () {
-                $scope.doc.model.added_properties.push($scope.model.additionalProperty);
+                $scope.doc.added_properties.push($scope.model.additionalProperty);
             };
 
             $scope.addCustomProperty = function () {
-                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
+                $scope.doc.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
             };
 
             $scope.load_all_samples = function () {
@@ -59,7 +59,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
 
                 }
             }
-
 
             init();
         }]);

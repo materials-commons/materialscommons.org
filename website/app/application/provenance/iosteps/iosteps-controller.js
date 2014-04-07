@@ -38,7 +38,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 } else {
                     mcapi('/templates/name/%', stepName)
                         .success(function (data) {
-                            data.model.added_properties = [];
+                            data.added_properties = [];
                             $scope.doc.attributes[attrib][stepName] = data;
                             $scope.gotoStep(stepName);
                         }).jsonp();
@@ -90,7 +90,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             $scope.init = function () {
                 $scope.message = '';
                 $scope.doc = ProvDrafts.current;
-                console.log($scope.doc);
                 $scope.steps = [];
                 $scope.loadSteps();
                 $scope.activeStep = $scope.steps[0];
