@@ -121,7 +121,6 @@ def create_process_from_template(j, saver):
     p['birthtime'] = r.now()
     p['mtime'] = p['birthtime']
     p['machine'] = dmutil.get_optional('machine', j)
-    p['process_type'] = dmutil.get_optional('process_type', j)
     p['template'] = dmutil.get_required('template', j)
     p['notes'] = dmutil.get_optional('notes', j, [])
     p['input_conditions'] = dmutil.get_optional('input_conditions', j, [])
@@ -183,7 +182,7 @@ def create_condition_from_template_modified(process_id, user, j, saver):
     c = dict()
     type_of_condition = dmutil.get_required('condition_type', j)
     c['owner'] = user
-    c['material'] = dmutil.get_optional('material', j)
+    #c['material'] = dmutil.get_optional('material', j)
     c['model'] = dmutil.get_optional('model', j)
     c['template'] = dmutil.get_required('template_name', j)
     c['sample_id'] = dmutil.get_optional('sample_id', j)
