@@ -7,6 +7,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvDrafts.saveDraft();
+                    console.log(ProvDrafts.current);
                     $scope.message = "your draft has been saved!";
                 } else {
                     $validationProvider.validate(form);

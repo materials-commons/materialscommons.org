@@ -47,6 +47,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
 
             $scope.init = function () {
                 $scope.doc = ProvDrafts.current;
+                console.dir($scope.doc)
                 $scope.process = $scope.doc.attributes.process;
                 $scope.inputs = $scope.doc.attributes.input_conditions;
                 $scope.outputs = $scope.doc.attributes.output_conditions;

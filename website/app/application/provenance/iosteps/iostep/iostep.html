@@ -2,7 +2,24 @@
     <div class="row-fluid">
         <div class="span10">
             <div class="well">
-                <div ng-if="doc.template_pick!=='sample'">
+
+                <div ng-if="doc.template_pick=='transformed sample'">
+                    <div sample-view doc="doc" ng-disabled="false"></div>
+                </div>
+                <div ng-if="doc.template_pick=='pick sample'">
+                    <cgroup label="Pick a sample">
+                        <i class="fa fa-asterisk" style="color: red"></i>
+                        <select ng-model="doc.sample" type="text"
+                                ng-options="samp.name for samp in samples_list"
+                                ng-change="pick_sample()" required>
+                            <option value="">-- Select Samples --</option>
+
+                        </select>
+                    </cgroup>
+                    <label>Sample:</label> <a>{{ doc.sample.name}}</a>
+                </div>
+
+                <div ng-if="doc.template_pick==''">
                     <fieldset>
                         <legend>Default Properties</legend>
                         <div df-properties default-properties="doc.model.default"></div>
@@ -26,21 +43,8 @@
                 </div>
                 </fieldset>
             </div>
-            <div ng-if="doc.template_pick=='sample'">
-                <cgroup label="Pick a sample">
-                    <i class="fa fa-asterisk" style="color: red"></i>
-                    <select ng-model="doc.sample" type="text"
-                            ng-options="samp.name for samp in samples_list"
-                            ng-change="pick_sample()" required>
-                        <option value="">-- Select Samples --</option>
 
-                    </select>
-                </cgroup>
-                <label>Sample:</label> <a>{{ doc.sample.model.default[0].value}}</a>
-            </div>
-            <div ng-if="doc.template_pick=='transformed sample'">
 
-            </div>
         </div>
     </div>
 </div>

@@ -4,31 +4,22 @@
     "model": {
         "default": [
             {
-                "name": "T5 Temperature" ,
-                "type": "number" ,
+                "name": "Name" ,
+                "type": "text" ,
                 "unit": "" ,
-                "unit_choice": ["C", "F"] ,
+                "unit_choice": "" ,
                 "value": "" ,
-                "value_choice": [],
+                "value_choice": "",
                 "required": true
             },
             {
-                "name": "Time" ,
-                "type": "number" ,
+                "name": "Description" ,
+                "type": "text" ,
                 "unit": "" ,
-                "unit_choice": ["hours", "minutes", "seconds"] ,
+                "unit_choice": "" ,
                 "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Quench" ,
-                "type": "text",
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
+                "value_choice": "",
+                "required": false
             }
         ],
         "additional":[
@@ -40,5 +31,9 @@
     "template_mtime": "" ,
     "template_name": "T5" ,
     "template_pick": "" ,
-    "template_type": "treatment"
+    "template_type": "process",
+    "required_input_conditions": ["Heat Treatment Conditions","Pick Sample"],
+    "required_output_conditions": ["Transformed Sample"],
+    "required_input_files": true,
+    "required_output_files": true  
 }
