@@ -1,7 +1,7 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
     ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User",
         function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts, dateGenerate, User) {
-            watcher.watch($scope, 'process.process_type', function (template) {
+            watcher.watch($scope, 'bk.process_type', function (template) {
                 if ($scope.process.template.template_name === template.template_name) {
                     // All attributes already loaded from a draft
                     return;
@@ -60,9 +60,11 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     new_note: '',
                     new_err_msg: '',
                     start_run: '',
-                    stop_run: ''
+                    stop_run: '',
+                    process_type: ''
                 };
                 $scope.process = ProvDrafts.current.attributes.process;
+
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {
@@ -71,7 +73,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                         if ($scope.process.template !== "") {
                             t = _.findWhere($scope.process_templates, {template_name: $scope.process.template.template_name});
                             if (t) {
-                                $scope.process.process_type = t;
+                                $scope.bk.process_type = t;
                             }
                         }
                     })
