@@ -9,6 +9,7 @@ from mcexceptions import RequiredAttributeException, DatabaseError
 
 def get_required(what, d):
     if what not in d:
+        print "get_required not found: %s" % (what)
         raise RequiredAttributeException(what)
     return d[what]
 

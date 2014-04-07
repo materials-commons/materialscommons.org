@@ -35,7 +35,7 @@ def teardown_request(exception):
 @app.errorhandler(mcexceptions.RequiredAttributeException)
 def required_attribute_exception_handler(e):
     print "Missing attribute: " + e.attr
-    return error.not_acceptable("Missing required attribute: " + error.attr)
+    return error.not_acceptable("Missing required attribute: " + e.attr)
 
 
 @app.errorhandler(RqlDriverError)
