@@ -5,7 +5,7 @@
                 <div ng-if="doc.template_pick!=='sample'">
                     <fieldset>
                         <legend>Default Properties</legend>
-                        <div df-properties default-properties="doc.model.default"></div>
+                        <div df-properties default-properties="doc.default_properties"></div>
                     </fieldset>
 
                     <hr align="left">
@@ -13,12 +13,12 @@
                     <legend>Added Properties:</legend>
                     <div ad-properties added-properties="doc.model.added_properties"></div>
 
-                    <div ng-show="doc.model.additional.length > 0" class="control-group">
+                    <div ng-show="doc.additional_properties.length > 0" class="control-group">
                         <label class="control-label">Additional Properties:</label>
 
                         <div class="controls">
                             <select ng-model="model.additionalProperty"
-                                    ng-options="property.name for property in doc.model.additional">
+                                    ng-options="property.name for property in doc.additional_properties">
                             </select>
                             <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
                         </div>
@@ -30,13 +30,13 @@
                 <cgroup label="Pick a sample">
                     <i class="fa fa-asterisk" style="color: red"></i>
                     <select ng-model="doc.sample" type="text"
-                            ng-options="samp.model.default[0].value for samp in samples_list"
+                            ng-options="sample.name for sample in samples_list"
                             ng-change="pick_sample()" required>
                         <option value="">-- Select Samples --</option>
 
                     </select>
                 </cgroup>
-                <label>Sample:</label> <a>{{ doc.sample.model.default[0].value}}</a>
+                <label>Sample:</label> <a>{{ doc.sample.name}}</a>
             </div>
             <div ng-if="doc.template_pick=='transformed sample'">
 
