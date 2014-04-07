@@ -51,7 +51,7 @@
     "template_name": "APT" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["APT Sample Preparation", "APT Instrument Properties"],
+    "required_input_conditions": ["Pick Sample", "APT Instrument Properties"],
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true,  

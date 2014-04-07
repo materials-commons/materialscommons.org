@@ -4,7 +4,7 @@
             <fieldset>
                 <legend>Process</legend>
                 <label>Process Type: </label>
-                <select ng-model="process.process_type"
+                <select ng-model="bk.process_type"
                         ng-options="p.template_name for p in process_templates|orderBy:'template_name'">
                     <option value="">Select Process Type:</option>
                 </select>
@@ -12,7 +12,7 @@
             </fieldset>
         </div>
         <div class="row-fluid">
-            <div ng-show="process.process_type">
+            <div ng-show="bk.process_type">
                 <hr>
                 <fieldset>
                     <legend>Default Properties</legend>

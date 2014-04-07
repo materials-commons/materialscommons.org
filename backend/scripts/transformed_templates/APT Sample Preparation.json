@@ -1,0 +1,69 @@
+{
+
+    "id": "APT Sample Preparation" ,
+    "model": {
+        "default": [
+            {
+                "name": "Sample name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Alloy composition" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+            "name": "Preparation" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [
+                "Electropolish" ,
+                "Electropolish + FIB Milling",
+                "FIB Milling Only",
+                "Liftout Only",
+                "Liftout + FIB Milling",
+                "Other"
+            ],
+            "required": false
+            },
+            {
+                "name": "Preparation Note",
+                "type": "text",
+                "unit": "",
+                "unit_choice": [],
+                "value": "",
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Notes" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            }
+        ],
+        "additional":[
+        ]
+    } ,
+    "owner": "admin@materialscommons.org", 
+    "template_birthtime": "" ,
+    "template_description": "Sample preparation for APT from Emmanuelle" ,
+    "template_mtime": "" ,
+    "template_name": "APT Sample Preparation" ,
+    "template_pick": "sample" ,
+    "template_type": "condition"
+}
