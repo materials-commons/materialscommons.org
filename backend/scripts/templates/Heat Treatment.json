@@ -53,5 +53,4 @@
     "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
     "required_output_files": true,  
-    "machine": {}
 }
