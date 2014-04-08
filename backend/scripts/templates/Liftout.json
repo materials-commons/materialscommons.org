@@ -43,6 +43,5 @@
     "required_input_conditions": ["Pick Sample"],
     "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
-    "required_output_files": true,  
-    "machine": {}
+    "required_output_files": true
 }

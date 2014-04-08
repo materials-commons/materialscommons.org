@@ -52,6 +52,5 @@
     "required_input_conditions": ["Sample Properties",  "Angle Properties" ],
     "required_output_conditions": ["XRD Output Properties"],
     "required_input_files": true,
-    "required_output_files": true,  
-    "machine": {}
+    "required_output_files": true
 }
