@@ -37,9 +37,9 @@ def create_draft():
                                       "Saved draft for " + user)
     project_id = dmutil.get_required('project_id', j)
     clone_number = dmutil.get_optional('clone_number', j)
-    attributes = dmutil.get_optional('attributes', j, [])
+    process = dmutil.get_optional('process', j, [])
     d = Draft(user, name, project_id, description, clone_number)
-    d.attributes = attributes
+    d.process = process
     return dmutil.insert_entry('drafts', d.__dict__, return_created=True)
 
 

@@ -10,14 +10,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="draft in drafts | filter:query | orderBy:'attributes.process.name'">
+        <tr ng-repeat="draft in drafts | filter:query | orderBy:'process.name'">
 
             <td><a style="cursor: pointer"
-                   ui-sref="toolbar.projectspage({id: draft.attributes.project_id, draft_id: draft.id})">
-                {{draft.attributes.process.name}}</a>
+                   ui-sref="toolbar.projectspage({id: draft.project_id, draft_id: draft.id})">
+                {{draft.process.name}}</a>
             </td>
             <td>{{draft.birthtime | toDateString}}</td>
-            <td>{{draft.attributes.process.description}}</td>
+            <td>{{draft.process.description}}</td>
             <td>
                 <div class="btn-group">
                     <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">

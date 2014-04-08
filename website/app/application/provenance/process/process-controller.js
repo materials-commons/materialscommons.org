@@ -63,7 +63,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     stop_run: '',
                     process_type: ''
                 };
-                $scope.process = ProvDrafts.current.attributes.process;
+                $scope.process = ProvDrafts.current.process;
 
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')

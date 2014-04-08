@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
-    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone", "User",
-        function ($scope, ProvDrafts, $stateParams, mcapi, Clone, User) {
+    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone",
+        function ($scope, ProvDrafts, $stateParams, mcapi, Clone) {
             $scope.model = {
                 additionalProperty: {}
             };
@@ -46,10 +46,10 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             function init() {
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
-                    $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
+                    $scope.doc = ProvDrafts.current.process.input_conditions[$scope.stepName];
 
                 } else {
-                    $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
+                    $scope.doc = ProvDrafts.current.process.output_conditions[$scope.stepName];
                     if ($scope.stepName === 'Transformed Sample') {
                         $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
                     }

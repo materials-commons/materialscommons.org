@@ -6,7 +6,7 @@ Application.Controllers.controller('toolbarDrafts',
             });
 
             $scope.gotoDraft = function (draft) {
-                $state.go('toolbar.projectspage', {id: draft.attributes.project_id, draft_id: draft.id});
+                $state.go('toolbar.projectspage', {id: draft.project_id, draft_id: draft.id});
             };
 
             $scope.markForReview = function (draft) {

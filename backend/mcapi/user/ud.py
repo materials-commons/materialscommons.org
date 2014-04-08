@@ -67,15 +67,14 @@ class ProvenanceSaver(object):
 
     def _load_provenance_from_draft(self):
             draft = r.table('drafts').get(self.draft_id).run(g.conn)
-            attributes = draft['attributes']
             self.owner = draft['owner']
-            self.project_id = attributes['project_id']
-            self._create_process(attributes['process'])
-            input_conditions = dmutil.get_optional('input_conditions',
-                                                   attributes, [])
-            output_conditions = dmutil.get_optional('output_conditions',
-                                                    attributes, [])
-            self._create_conditions(input_conditions, output_conditions)
+            self.project_id = draft['project_id']
+            self._create_process(draft['process'])
+            #input_conditions = dmutil.get_optional('input_conditions',
+            #                                       attributes, [])
+            #output_conditions = dmutil.get_optional('output_conditions',
+            #                                        attributes, [])
+            #self._create_conditions(input_conditions, output_conditions)
 
     def _create_process(self, j):
         process = self._new_process(j)
@@ -158,7 +157,6 @@ class ProvenanceSaver(object):
         c = dict()
         c['owner'] = self.owner
         c['template'] = dmutil.get_required('template_name', j)
-        c['sample_id'] = dmutil.get_optional('sample_id', j)
         c['properties'] = {}
 
         default_properties = dmutil.get_required('default_properties', j)
