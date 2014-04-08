@@ -76,6 +76,6 @@
     "template_description": "" ,
     "template_name": "Tensile Equipment Properties" ,
     "template_type": "condition",
-    "template_pick": ""
+    "template_pick": "instrument"
 
 }

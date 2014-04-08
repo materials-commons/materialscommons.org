@@ -52,5 +52,5 @@
     "required_input_conditions": ["Heat Treatment Conditions","Pick Sample"],
     "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
-    "required_output_files": true,  
+    "required_output_files": true  
 }
