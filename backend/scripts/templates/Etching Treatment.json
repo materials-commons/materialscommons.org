@@ -1,0 +1,35 @@
+{
+
+    "id": "Etching Conditions" ,
+    "model": {
+        "default": [
+            {
+                "name": "Temperature" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["C", "F"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Time" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["hours", "minutes", "seconds"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }
+        ],
+        "additional":[
+        ]
+    } ,
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Etching Conditions" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}
