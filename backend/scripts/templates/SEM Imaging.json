@@ -52,6 +52,5 @@
     "required_input_conditions": [ "SEM Sample Preparation", "SEM Instrument Properties"],
     "required_output_conditions": [],
     "required_input_files": true,
-    "required_output_files": true,  
-    "machine": {}
+    "required_output_files": true  
 }

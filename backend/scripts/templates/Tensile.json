@@ -52,6 +52,5 @@
     "required_input_conditions": ["Sample Properties", "Tensile Equipment Properties"],
     "required_output_conditions": ["Tensile Output Properties"],
     "required_input_files": true,
-    "required_output_files": true,  
-    "machine": {}
+    "required_output_files": true  
 }
