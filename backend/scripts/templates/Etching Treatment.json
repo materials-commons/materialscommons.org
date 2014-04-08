@@ -1,6 +1,6 @@
 {
 
-    "id": "Etching Conditions" ,
+    "id": "Etching Treatment" ,
     "model": {
         "default": [
             {
@@ -29,7 +29,7 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Etching Conditions" ,
+    "template_name": "Etching Treatment" ,
     "template_pick": "treatment" ,
     "template_type": "condition"
 }

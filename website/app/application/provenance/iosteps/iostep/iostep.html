@@ -19,7 +19,7 @@
                     <label>Sample:</label> <a>{{ doc.sample.name}}</a>
                 </div>
 
-                <div ng-if="doc.template_pick=='treatment'">
+                <div ng-if="doc.template_pick=='instrument || 'treatment''">
                     <fieldset>
                         <legend>Default Properties</legend>
                         <div df-properties default-properties="doc.model.default"></div>

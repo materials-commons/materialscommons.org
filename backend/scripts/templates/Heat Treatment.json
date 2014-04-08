@@ -1,45 +1,46 @@
 {
-    "id": "Heat Treatment",
+
+    "id": "Heat Treatment" ,
     "model": {
         "default": [
             {
                 "name": "Name" ,
                 "type": "text" ,
                 "unit": "" ,
-                "unit_choice": "" ,
+                "unit_choice": [] ,
                 "value": "" ,
-                "value_choice": "",
+                "value_choice": [],
                 "required": true
-            } ,
+            },
             {
-                "name": "Description" ,
+                "name": "Temperature" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["C", "F"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Time" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["hours", "minutes", "seconds"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Quench" ,
                 "type": "text" ,
                 "unit": "" ,
-                "unit_choice": "" ,
+                "unit_choice": [],
                 "value": "" ,
-                "value_choice": "",
-                "required": false
+                "value_choice": [],
+                "required": true
             }
         ],
         "additional":[
-            {
-                "name": "Citations" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "",
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Version" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "",
-                "value_choice": [],
-                "required": false
-            }
         ]
     } ,
     "owner": "admin@materialscommons.org",
@@ -47,10 +48,6 @@
     "template_description": "" ,
     "template_mtime": "" ,
     "template_name": "Heat Treatment" ,
-    "template_type": "process",
-    "template_pick": "experiment",
-    "required_input_conditions": ["Heat Treatment Conditions","Pick Sample"],
-    "required_output_conditions": ["Transformed Sample"],
-    "required_input_files": true,
-    "required_output_files": true  
+    "template_pick": "treatment" ,
+    "template_type": "condition"
 }

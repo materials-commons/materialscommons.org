@@ -81,7 +81,7 @@ Application.Controllers.controller('toolbarSamples',
         function init() {
             $scope.clear();
             mcapi('/templates')
-                .argWithValue('filter_by', '"template_type":"treatment"')
+                .argWithValue('filter_by', '"template_pick":"treatment"')
                 .success(function (data) {
                     $scope.treatment_templates = data;
                 })
