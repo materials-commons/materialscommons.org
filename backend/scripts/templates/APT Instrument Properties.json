@@ -125,5 +125,5 @@
     "template_mtime": "",
     "template_name": "APT Instrument Properties" ,
     "template_type": "condition",
-    "template_pick": ""
+    "template_pick": "instrument"
 }
