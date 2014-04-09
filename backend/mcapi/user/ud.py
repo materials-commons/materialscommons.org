@@ -155,8 +155,8 @@ class ProvenanceSaver(object):
         c['properties'] = {}
         attr_name = dmutil.get_optional("attribute", j, None)
 
-        default_properties = dmutil.get_required('default_properties', j)
-        self._add_properties(default_properties, c)
+        default_props = dmutil.get_optional('default_properties', j, [])
+        self._add_properties(default_props, c)
 
         added_properties = dmutil.get_optional('added_properties', j, [])
         self._add_properties(added_properties, c)
