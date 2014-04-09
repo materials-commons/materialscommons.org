@@ -1,124 +1,120 @@
 {
-
     "id": "APT Instrument Properties" ,
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Mode",
-                "attribute": "mode",
-                "type": "text",
-                "unit": "",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": ["FIM", "Voltage", "Laser"],
-                "required": true
-            },
-            {
-                "name": "Specimen Temperature(K)",
-                "attribute": "specimen_temperature",
-                "type": "number",
-                "unit": "K",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Voltage Pulse Fraction(%)",
-                "attribute": "voltage_pulse_fraction",
-                "type": "number",
-                "unit": "%",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Laser Pulse Energy(pJ)",
-                "attribute": "laser_pulse_energe",
-                "type": "number",
-                "unit": "pJ",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Pulse Frequence(kHz)",
-                "attribute": "pulse_frequency",
-                "type": "number",
-                "unit": "kHz",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Evaporation Control",
-                "attribute": "evaporation_control",
-                "type": "text",
-                "unit": "",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": ["Constant Detector Rate",
-                                 "Constant Evaporation Rate",
-                                "Constant Charge Rate Ratio"],
-                "required": false
-            },
-            {
-                "name": "Evaporation Rate",
-                "attribute": "evaporation_rate",
-                "type": "text",
-                "unit": "",
-                "unit_choice": [],
-                "value": "",
-                "value_choice": ["Atom", "Pulse"],
-                "required": false
-            },
-            {
-                "name": "Vacuum Level" ,
-                "attribute": "vacuum_level",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": ["High", "Low"],
-                "required": false
-            },
-            {
-                "name": "Imaging Gas" ,
-                "attribute": "imaging_gas",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": ["He", "Ar", "Ne", "Other", "None"],
-                "required": false
-            },
-            {
-                "name": "Notes" ,
-                "attribute": "notes",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ],
-        "additional":[
-        ]
-
-    } ,
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Mode",
+            "attribute": "mode",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": ["FIM", "Voltage", "Laser"],
+            "required": true
+        },
+        {
+            "name": "Specimen Temperature(K)",
+            "attribute": "specimen_temperature",
+            "type": "number",
+            "unit": "K",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Voltage Pulse Fraction(%)",
+            "attribute": "voltage_pulse_fraction",
+            "type": "number",
+            "unit": "%",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Laser Pulse Energy(pJ)",
+            "attribute": "laser_pulse_energy",
+            "type": "number",
+            "unit": "pJ",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Pulse Frequence(kHz)",
+            "attribute": "pulse_frequency",
+            "type": "number",
+            "unit": "kHz",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Evaporation Control",
+            "attribute": "evaporation_control",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": ["Constant Detector Rate",
+                             "Constant Evaporation Rate",
+                             "Constant Charge Rate Ratio"],
+            "required": false
+        },
+        {
+            "name": "Evaporation Rate",
+            "attribute": "evaporation_rate",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": ["Atom", "Pulse"],
+            "required": false
+        },
+        {
+            "name": "Vacuum Level" ,
+            "attribute": "vacuum_level",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": ["High", "Low"],
+            "required": false
+        },
+        {
+            "name": "Imaging Gas" ,
+            "attribute": "imaging_gas",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": ["He", "Ar", "Ne", "Other", "None"],
+            "required": false
+        },
+        {
+            "name": "Notes" ,
+            "attribute": "notes",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
     "owner": "admin@materialscommons.org", 
     "template_description": "" ,
     "template_birthtime": "",

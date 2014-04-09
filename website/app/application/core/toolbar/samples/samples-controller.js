@@ -3,6 +3,7 @@ Application.Controllers.controller('toolbarSamples',
         $scope.showForm = function () {
             $scope.default_properties = $scope.bk.selected_treatment.model.default;
             $scope.bk.tab_item = '';
+
         };
 
         $scope.showTab = function (item) {
@@ -44,6 +45,7 @@ Application.Controllers.controller('toolbarSamples',
         };
         $scope.setProperties = function () {
             $scope.doc.model.default_properties = $scope.bk.classification.model.default_properties;
+
         };
         $scope.showTreatmentDetails = function (sample) {
             $scope.sample = sample;

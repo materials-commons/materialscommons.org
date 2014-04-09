@@ -1,20 +1,19 @@
 {
     "id": "Powder" ,
-    "model": {
-        "default_properties": [
-            {
-                "name": "Texture" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["F", "C"] ,
-                "value": "" ,
-                "value_choice": ["Fine", "Coarse", "Moderately Fine", "Moderately Coarse"],
-                "required": false
-            }
-        ],
-        "additional_properties":[
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "Texture" ,
+            "attribute": "texture",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["F", "C"] ,
+            "value": "" ,
+            "value_choice": ["Fine", "Coarse", "Moderately Fine", "Moderately Coarse"],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "Describe your initial object" ,

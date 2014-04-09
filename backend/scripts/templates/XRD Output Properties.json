@@ -1,39 +1,40 @@
 {
     "id": "XRD Output Properties",
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            }                
-        ],
-        
-        "additional":[
-            {
-                "name": "Whole pattern fitting" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false 
-            },
-            {
-                "name": "Texture Analysis" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false 
-            }
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute":"name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }                
+    ],
+    
+    "additional_properties":[
+        {
+            "name": "Whole pattern fitting" ,
+            "attribute":"whole_pattern_fitting",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false 
+        },
+        {
+            "name": "Texture Analysis" ,
+            "attribute":"texture_analysis",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false 
+        }
+    ],
     "owner": "admin@materialscommons.org", 
     "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_description": "" ,
