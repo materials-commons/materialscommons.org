@@ -47,7 +47,7 @@
             <fieldset>
                 <legend>{{ name }}</legend>
                 <div ng-if="name=='Pick Sample'">
-                    <div sample-view doc="vals" ng-disabled="true"></div>
+                    <div sample-view doc="vals" edit="true"></div>
                 </div>
                 <div ng-if="name!=='Pick Sample'">
                     <div ng-repeat="value in vals.model.default">
@@ -79,7 +79,7 @@
             <fieldset>
                 <legend>{{ name }}</legend>
                 <div ng-if="name=='Transformed Sample'">
-                    <div sample-view doc="vals" ng-disabled="true"></div>
+                    <div sample-view doc="vals" edit="true"></div>
                 </div>
                 <div ng-if="name!=='Pick Sample'">
                     <div ng-repeat="value in vals.model.default">

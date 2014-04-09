@@ -31,6 +31,7 @@ def create_sample():
     sample['name'] = dmutil.get_required('name', j)
     sample['composition'] = dmutil.get_required('composition', j)
     sample['notes'] = dmutil.get_required('notes', j)
+    sample['available'] = dmutil.get_optional('available', j)
     sample['model'] = dmutil.get_required('model', j)
     sample['birthtime'] = r.now()
     sample['created_by'] = user

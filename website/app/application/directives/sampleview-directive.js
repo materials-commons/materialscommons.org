@@ -4,7 +4,7 @@ Application.Directives.directive('sampleView',
             restrict: "A",
             scope: {
                 doc: '=',
-                ngDisabled: '='
+                edit: '='
             },
             templateUrl: 'application/directives/prov-sample.html'
         };
