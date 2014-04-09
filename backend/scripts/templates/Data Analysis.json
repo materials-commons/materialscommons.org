@@ -1,29 +1,29 @@
 {
     "id": "Data Analysis",
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": true
-            } ,
-            {
-                "name": "Description" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": false
-            }
-        ],
-        "additional":[
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": true
+        } ,
+        {
+            "name": "Description" ,
+            "attribute": "description",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,

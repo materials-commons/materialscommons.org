@@ -1,7 +1,6 @@
 {
     "id": "Heat Treatments",
-    "model": {
-        "default": [
+    "default_properties": [
             {
                 "name": "Name" ,
                 "type": "text" ,
@@ -19,29 +18,19 @@
                 "value": "" ,
                 "value_choice": "",
                 "required": false
-            }
-        ],
-        "additional":[
-            {
-                "name": "Citations" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "",
-                "value_choice": [],
-                "required": false
             },
             {
-                "name": "Version" ,
+                "name": "Notes" ,
                 "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
-                "value": "",
-                "value_choice": [],
+                "value": "" ,
+                "value_choice": "",
                 "required": false
             }
-        ]
-    } ,
+        ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,

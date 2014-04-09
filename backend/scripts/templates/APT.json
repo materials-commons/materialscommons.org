@@ -1,29 +1,49 @@
 {
     "id": "APT",
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": true
-            } ,
-            {
-                "name": "Description" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": false
-            }
-        ],
-        "additional":[
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": true
+        } ,
+        {
+            "name": "Description" ,
+            "attribute": "description",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        }
+    ],
+    "additional_properties":[
+        {
+            "name": "Citations" ,
+            "attribute": "citations",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Version" ,
+            "attribute": "version",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "",
+            "value_choice": [],
+            "required": false
+        }
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
@@ -34,5 +54,5 @@
     "required_input_conditions": ["Pick Sample", "APT Instrument Properties"],
     "required_output_conditions": [],
     "required_input_files": true,
-    "required_output_files": true  
+    "required_output_files": true
 }

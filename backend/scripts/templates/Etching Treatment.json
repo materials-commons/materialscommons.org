@@ -1,30 +1,29 @@
 {
 
     "id": "Etching Treatment" ,
-    "model": {
-        "default": [
-            {
-                "name": "Temperature" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["C", "F"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Time" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["hours", "minutes", "seconds"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            }
-        ],
-        "additional":[
-        ]
-    } ,
+    "attribute": "etching",
+    "default_properties": [
+        {
+            "name": "Temperature" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Time" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["hours", "minutes", "seconds"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,

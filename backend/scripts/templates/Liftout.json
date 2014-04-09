@@ -1,7 +1,6 @@
 {
     "id": "Liftout",
-    "model": {
-        "default": [
+    "default_properties": [
             {
                 "name": "Name" ,
                 "type": "text" ,
@@ -30,9 +29,8 @@
                 "required": false
             }
         ],
-        "additional":[
-        ]
-    } ,
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
