@@ -38,7 +38,7 @@
     "template_name": "Heat Treatments" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["Heat Treatment","Pick Sample"],
+    "required_input_conditions": ["Pick Sample", "Heat Treatment"],
     "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
     "required_output_files": true  

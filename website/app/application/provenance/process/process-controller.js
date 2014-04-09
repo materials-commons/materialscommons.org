@@ -1,12 +1,14 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
-    ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User",
-        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts, dateGenerate, User) {
+    ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User", "$injector",
+        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts, dateGenerate, User,  $injector) {
+            var $validationProvider = $injector.get('$validation'), check;
+
             watcher.watch($scope, 'bk.process_type', function (template) {
                 if ($scope.process.template.template_name === template.template_name) {
                     // All attributes already loaded from a draft
                     return;
                 }
-                $scope.process.model.default_properties = template.default_properties;
+                $scope.process.default_properties = template.default_properties;
                 $scope.process.required_input_conditions = template.required_input_conditions;
                 $scope.process.required_output_conditions = template.required_output_conditions;
                 $scope.process.required_input_files = template.required_input_files;
@@ -15,15 +17,15 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 var dd = ("0" + now.getDate()).slice(-2);
                 var mm = ("0" + (now.getMonth() + 1)).slice(-2);
                 var today = now.getFullYear() + "-" + mm + "-" + dd;
-                $scope.process.name = template.template_name + ':' + today;
+                $scope.process.default_properties[0].value = template.template_name + ':' + today;
                 $scope.process.template = template;
             });
             $scope.addAdditionalProperty = function () {
-                $scope.process.model.added_properties.push(JSON.parse($scope.additionalProperty));
+                $scope.process.added_properties.push(JSON.parse($scope.additionalProperty));
             };
 
             $scope.addCustomProperty = function () {
-                $scope.process.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
+                $scope.process.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
             };
 
             $scope.add_notes = function () {
@@ -45,14 +47,23 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.process.runs.splice(index, 1);
             };
 
-            $scope.saveDraft = function () {
-                ProvDrafts.current.name = $scope.process.model.default_properties[0].value;
-                ProvDrafts.saveDraft();
-                $scope.message = "Your draft has been saved!";
+            $scope.saveDraft = function (form) {
+                check = $validationProvider.checkValid(form);
+                if (check === true) {
+                    ProvDrafts.current.name = $scope.process.default_properties[0].value;
+                    ProvDrafts.saveDraft();
+                    $scope.message = "Your draft has been saved!";
+                } else {
+                    $validationProvider.validate(form);
+                }
+
             };
 
-            $scope.next = function () {
-                ProvSteps.setStepFinished('process');
+            $scope.next = function (form) {
+                check = $validationProvider.checkValid(form);
+                if (check === true) {
+                    ProvSteps.setStepFinished('process');
+                }
             };
 
             function init() {
@@ -64,7 +75,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     process_type: ''
                 };
                 $scope.process = ProvDrafts.current.attributes.process;
-
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {

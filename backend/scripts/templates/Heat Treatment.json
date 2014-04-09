@@ -3,47 +3,44 @@
     "attribute": "heat_treatment",
     "default_properties": [
         {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "Description" ,
-            "attribute": "description",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        }
+                "name": "Name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Temperature" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["C", "F"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Time" ,
+                "type": "number" ,
+                "unit": "" ,
+                "unit_choice": ["hours", "minutes", "seconds"] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
+                "name": "Quench" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }
     ],
     "additional_properties":[
-        {
-            "name": "Citations" ,
-            "attribute": "citations",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Version" ,
-            "attribute": "version",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "",
-            "value_choice": [],
-            "required": false
-        }
+        
     ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,

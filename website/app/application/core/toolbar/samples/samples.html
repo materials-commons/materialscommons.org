@@ -6,7 +6,7 @@
                 <fieldset>
                     <cgroup label="Classification">
                         <select ng-model="bk.classification" ng-change="setProperties()"
-                                ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'"" >
+                                ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'" >
 
                         </select>
                     </cgroup>
@@ -43,7 +43,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div df-properties default-properties="doc.model.default_properties"></div>
+                            <div df-properties default-properties="doc.default_properties"></div>
                             <cgroup label="Treatments">
                                 <select ng-model="bk.selected_treatment"
                                         ng-options="treat.template_name for treat in treatment_templates"
@@ -132,17 +132,17 @@
                         </fieldset>
                     </div>
                 </div>
-                <div ng-if="sample.model.default_properties.length!=0">
+                <div ng-if="sample.default_properties.length!=0">
                     <legend>Default Properties:</legend>
-                    <div ng-repeat="item in sample.model.default_properties">
+                    <div ng-repeat="item in sample.default_properties">
                         <cgroup label="{{item.name}}">
                             <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
                         </cgroup>
                     </div>
                 </div>
-                <div ng-if="sample.model.added_properties.length!=0">
+                <div ng-if="sample.added_properties.length!=0">
                     <legend>Additional Properties:</legend>
-                    <div ng-repeat="item in sample.model.added_properties">
+                    <div ng-repeat="item in sample.added_properties">
                         <cgroup label="{{item.name}}">
                             <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
                         </cgroup>

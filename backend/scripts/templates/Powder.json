@@ -6,7 +6,7 @@
             "attribute": "texture",
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["F", "C"] ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": ["Fine", "Coarse", "Moderately Fine", "Moderately Coarse"],
             "required": false
