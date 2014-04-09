@@ -1,5 +1,5 @@
 {
-    "id": "Fib Milling",
+    "id": "Heat Treatments",
     "default_properties": [
             {
                 "name": "Name" ,
@@ -29,16 +29,16 @@
                 "required": false
             }
         ],
-        "additional_properties":[
-        ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Fib Milling" ,
+    "template_name": "Heat Treatments" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["Pick Sample"],
+    "required_input_conditions": ["Pick Sample", "Heat Treatment"],
     "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
     "required_output_files": true  

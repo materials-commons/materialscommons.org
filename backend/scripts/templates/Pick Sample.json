@@ -1,12 +1,10 @@
 {
     "id": "Pick Sample",
-    "default_properties": [],
-    "additional_properties": [],
     "owner": "admin@materialscommons.org",
-    "template_birthtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_birthtime": "" ,
     "template_description": "" ,
-    "template_mtime": "Fri Jan 31 2014 19:37:42 GMT+00:00" ,
+    "template_mtime": "" ,
     "template_name": "Pick Sample" ,
     "template_type": "condition",
-    "template_pick": "sample"
+    "template_pick": "pick sample"
 }

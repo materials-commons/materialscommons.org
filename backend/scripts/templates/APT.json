@@ -34,5 +34,5 @@
     "required_input_conditions": ["Pick Sample", "APT Instrument Properties"],
     "required_output_conditions": [],
     "required_input_files": true,
-    "required_output_files": true,  
+    "required_output_files": true
 }

@@ -1,36 +1,46 @@
 {
 
     "id": "Etching" ,
-    "attribute": "etching",
     "default_properties": [
-        {
-            "name": "Temperature" ,
-            "attribute": "temperature",
-            "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["C", "F"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
-            "name": "Time" ,
-            "attribute": "time",
-            "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["hours", "minutes", "seconds"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        }
-    ],
+            {
+                "name": "Name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": true
+            } ,
+            {
+                "name": "Description" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": false
+            },
+            {
+                "name": "Notes" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": false
+            }
+        ],
     "additional_properties":[
     ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
-    "template_description": "This is an initial treatment applied to material" ,
+    "template_description": "" ,
     "template_mtime": "" ,
     "template_name": "Etching" ,
-    "template_pick": "" ,
-    "template_type": "treatment"
+    "template_type": "process",
+    "template_pick": "experiment",
+    "required_input_conditions": ["Etching Treatment", "Pick Sample"],
+    "required_output_conditions": ["Transformed Sample"],
+    "required_input_files": true,
+    "required_output_files": true
 }

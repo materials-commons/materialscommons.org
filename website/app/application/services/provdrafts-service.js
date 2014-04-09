@@ -16,7 +16,6 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                     process: {},
                     project_id: ""
                 };
-
                 return draft;
             },
 

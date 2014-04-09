@@ -29,8 +29,8 @@
                         </table>
                     </div>
                 </cgroup>
-                <div ng-if="process.model.added_properties.length!=0">
-                    <div ng-repeat="item in process.model.added_properties">
+                <div ng-if="process.added_properties.length!=0">
+                    <div ng-repeat="item in process.added_properties">
                         <cgroup label="{{item.name}}:">
                             <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
                         </cgroup>
@@ -46,15 +46,20 @@
         <form class="form-horizontal" ng-repeat="(name, vals) in inputs">
             <fieldset>
                 <legend>{{ name }}</legend>
-                <div ng-repeat="value in vals.default_properties">
-                    <cgroup ng-if="value.value !== ''" label="{{value.name}}">
-                        <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
-                    </cgroup>
+                <div ng-if="name=='Pick Sample'">
+                    <div sample-view doc="vals" edit="true"></div>
                 </div>
-                <div ng-repeat="value in vals.added_properties">
-                    <cgroup ng-if="value.value !== ''" label="{{value.name}}">
-                        <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
-                    </cgroup>
+                <div ng-if="name!=='Pick Sample'">
+                    <div ng-repeat="value in vals.default_properties">
+                        <cgroup ng-if="value.value !== ''" label="{{value.name}}:">
+                            <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
+                    <div ng-repeat="value in vals.added_properties">
+                        <cgroup ng-if="value.value !== ''" label="{{value.name}}:">
+                            <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
                 </div>
             </fieldset>
         </form>
@@ -73,15 +78,20 @@
         <form class="form-horizontal" ng-repeat="(name, vals) in outputs">
             <fieldset>
                 <legend>{{ name }}</legend>
-                <div ng-repeat="value in vals.default_properties">
-                    <cgroup ng-if="value.value !== ''" label="{{value.name}}">
-                        <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
-                    </cgroup>
+                <div ng-if="name=='Transformed Sample'">
+                    <div sample-view doc="vals" edit="true"></div>
                 </div>
-                <div ng-repeat="value in vals.added_properties">
-                    <cgroup ng-if="value.value !== ''" label="{{value.name}}">
-                        <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
-                    </cgroup>
+                <div ng-if="name!=='Pick Sample'">
+                    <div ng-repeat="value in vals.default_properties">
+                        <cgroup ng-if="value.value !== ''" label="{{value.name}}">
+                            <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
+                    <div ng-repeat="value in vals.added_properties">
+                        <cgroup ng-if="value.value !== ''" label="{{value.name}}">
+                            <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="true">
+                        </cgroup>
+                    </div>
                 </div>
             </fieldset>
         </form>

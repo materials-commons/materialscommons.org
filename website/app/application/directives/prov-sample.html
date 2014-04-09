@@ -1,0 +1,19 @@
+<cgroup label="Name:">
+    <input class="input-xlarge" ng-model="doc.sample.name" type="text" ng-disabled="edit">
+</cgroup>
+<cgroup label="Composition:">
+    <input class="input-xlarge" ng-model="doc.sample.composition" type="text" ng-disabled="edit">
+</cgroup>
+<cgroup label="Treatments:">
+    <input class="input-xlarge" ng-model="doc.sample.treatments_order" type="text" ng-disabled="edit">
+</cgroup>
+<div ng-repeat="value in doc.sample.model.default_properties">
+    <cgroup label="{{value.name}}:">
+        <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="edit">
+    </cgroup>
+</div>
+<div ng-repeat="value in doc.sample.model.added_properties">
+    <cgroup  label="{{value.name}}:">
+        <input class="input-xlarge" ng-model="value.value" type="text" ng-disabled="edit">
+    </cgroup>
+</div>

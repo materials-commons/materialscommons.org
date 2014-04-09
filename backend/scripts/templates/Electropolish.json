@@ -1,38 +1,36 @@
 {
     "id": "Electropolish",
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": true
-            } ,
-            {
-                "name": "Description" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": false
-            },
-            {
-                "name": "Notes" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": false
-            }
-        ],
-        "additional":[
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": true
+        } ,
+        {
+            "name": "Description" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        },
+        {
+            "name": "Notes" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
@@ -43,6 +41,5 @@
     "required_input_conditions": ["Pick Sample"],
     "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
-    "required_output_files": true,  
-    "machine": {}
+    "required_output_files": true  
 }

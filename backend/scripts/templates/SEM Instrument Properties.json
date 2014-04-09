@@ -104,5 +104,5 @@
     "template_mtime": "",
     "template_name": "SEM Instrument Properties" ,
     "template_type": "condition",
-    "template_pick": ""
+    "template_pick": "instrument"
 }
