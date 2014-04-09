@@ -13,17 +13,9 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                     description: "",
                     name: "",
                     birthtime: "",
-                    attributes: {
-                        process: {},
-                        input_conditions: {},
-                        output_conditions: {},
-                        input_files: [],
-                        output_files: [],
-                        machine: {},
-                        project_id: ""
-                    }
+                    process: {},
+                    project_id: ""
                 };
-
                 return draft;
             },
 
