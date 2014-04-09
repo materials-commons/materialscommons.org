@@ -6,7 +6,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     // All attributes already loaded from a draft
                     return;
                 }
-                $scope.process.model.default_properties = template.default_properties;
+                $scope.process.default_properties = template.default_properties;
                 $scope.process.required_input_conditions = template.required_input_conditions;
                 $scope.process.required_output_conditions = template.required_output_conditions;
                 $scope.process.required_input_files = template.required_input_files;
@@ -46,7 +46,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             };
 
             $scope.saveDraft = function () {
-                ProvDrafts.current.name = $scope.process.model.default_properties[0].value;
+                ProvDrafts.current.name = $scope.process.default_properties[0].value;
                 ProvDrafts.saveDraft();
                 $scope.message = "Your draft has been saved!";
             };
