@@ -1,5 +1,6 @@
 {
     "id": "APT Instrument Properties" ,
+    "attribute": "instrument_settings",
     "default_properties": [
         {
             "name": "Name" ,
