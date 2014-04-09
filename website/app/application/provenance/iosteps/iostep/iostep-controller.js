@@ -46,7 +46,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 } else {
                     $scope.doc = ProvDrafts.current.process.output_conditions[$scope.stepName];
                     //To check whether the input picked sample and output transformed sample are same or not
-                    $scope.input_doc = ProvDrafts.current.attributes.input_conditions['Pick Sample'];
+                    $scope.input_doc = ProvDrafts.current.process.input_conditions['Pick Sample'];
                     if ($scope.stepName === 'Transformed Sample') {
                         if ('sample' in $scope.doc) {
                             if ($scope.doc.sample.id === $scope.input_doc.sample.id) {
