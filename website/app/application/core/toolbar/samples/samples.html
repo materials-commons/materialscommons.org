@@ -5,12 +5,12 @@
             <div class="span12">
                 <fieldset>
                     <cgroup label="Classification">
-                        <select ng-model="model.classification" ng-change="setProperties()"
+                        <select ng-model="bk.classification" ng-change="setProperties()"
                                 ng-options="temp.template_name for temp in sample_templates">
                         </select>
                     </cgroup>
                     <div class="control-group">
-                        <div ng-show="model.classification">
+                        <div ng-show="bk.classification">
                             <cgrouprequired label="Name">
                                 <input ng-model="doc.name" type="text" placeholder='name...' required>
                             </cgrouprequired>
@@ -44,18 +44,18 @@
                             </div>
                             <div df-properties default-properties="doc.model.default_properties"></div>
                             <cgroup label="Treatments">
-                                <select ng-model="model.selected_treatment"
+                                <select ng-model="bk.selected_treatment"
                                         ng-options="treat.template_name for treat in treatment_templates"
                                         ng-change="showForm()">
                                 </select>
                             </cgroup>
 
-                            <label class='control-label'><strong>{{model.selected_treatment.template_name ||
-                                model.tab_item}} </strong></label>
+                            <label class='control-label'><strong>{{bk.selected_treatment.template_name ||
+                                bk.tab_item}} </strong></label>
 
                             <div class='controls'>
                                 <div class="span6">
-                                    <div ng-show="model.selected_treatment!==''">
+                                    <div ng-show="bk.selected_treatment!==''">
                                         <div class="well">
                                             <div df-properties default-properties="default_properties"></div>
                                             <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
@@ -64,6 +64,7 @@
                                 </div>
                                 <div class="span2">
                                     <label>Treatments Order:</label>
+
                                     <div class="tabbable tabs-right">
                                         <ul class="nav nav-tabs" ng-repeat="each_item in doc.treatments_order">
                                             <li><a ng-click="showTab(each_item)"
@@ -148,8 +149,5 @@
                 </div>
             </form>
         </div>
-
     </div>
-
-
 </div>

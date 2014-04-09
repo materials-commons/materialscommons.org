@@ -1,23 +1,23 @@
 Application.Controllers.controller('toolbarSamples',
     ["$scope", "mcapi", "$injector", "User", "dateGenerate", function ($scope, mcapi, $injector, User, dateGenerate) {
         $scope.showForm = function () {
-            $scope.default_properties = $scope.model.selected_treatment.model.default;
-            $scope.model.tab_item = '';
+            $scope.default_properties = $scope.bk.selected_treatment.model.default;
+            $scope.bk.tab_item = '';
         };
 
         $scope.showTab = function (item) {
-            $scope.model.tab_item = item;
-            $scope.model.tab_details = $scope.doc.treatments[item];
+            $scope.bk.tab_item = item;
+            $scope.bk.tab_details = $scope.doc.treatments[item];
             $scope.default_properties = $scope.doc.treatments[item];
-            $scope.model.selected_treatment = {};
+            $scope.bk.selected_treatment = {};
         };
 
         $scope.addTreatment = function () {
-            $scope.doc.treatments_order.push($scope.model.selected_treatment.template_name);
+            $scope.doc.treatments_order.push($scope.bk.selected_treatment.template_name);
             $scope.default_properties.forEach(function (item) {
 
             });
-            $scope.doc.treatments[$scope.model.selected_treatment.template_name] = $scope.default_properties;
+            $scope.doc.treatments[$scope.bk.selected_treatment.template_name] = $scope.default_properties;
         };
 
         $scope.save = function (form) {
@@ -43,7 +43,7 @@ Application.Controllers.controller('toolbarSamples',
             }
         };
         $scope.setProperties = function () {
-            $scope.doc.model.default_properties = $scope.model.classification.model.default_properties;
+            $scope.doc.model.default_properties = $scope.bk.classification.model.default_properties;
         };
         $scope.showTreatmentDetails = function (sample) {
             $scope.sample = sample;
@@ -57,24 +57,24 @@ Application.Controllers.controller('toolbarSamples',
         $scope.clear = function () {
             $scope.doc = {
                 name: '',
-                alloy: '',
+                composition: '',
                 notes: [],
                 treatments_order: [],
                 treatments: {
                 },
+                available: true,
                 model: {
                     default_properties: [],
                     added_properties: []
                 }
             };
-            $scope.model = {
+            $scope.bk = {
                 selected_treatment: '',
                 tab_details: [],
                 tab_item: '',
-                classification: ''
-            };
-            $scope.bk = {
+                classification: '',
                 new_note: ''
+
             };
         };
 
