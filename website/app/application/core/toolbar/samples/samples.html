@@ -4,7 +4,7 @@
             <legend>Create New Raw Material</legend>
             <div class="span12">
                 <fieldset>
-                    <cgroup label="Classification">
+                    <cgroup label="Classification:">
                         <select ng-model="bk.classification" ng-change="setProperties()"
                                 ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'" >
 
@@ -12,15 +12,15 @@
                     </cgroup>
                     <div class="control-group">
                         <div ng-show="bk.classification">
-                            <cgrouprequired label="Name">
+                            <cgrouprequired label="Name:">
                                 <input ng-model="doc.name" type="text" placeholder='name...' required>
                             </cgrouprequired>
 
-                            <cgrouprequired label="Composition">
+                            <cgrouprequired label="Composition:">
                                 <input ng-model="doc.composition" type="text" placeholder='composition...' required>
                             </cgrouprequired>
 
-                            <cgroup label="Notes">
+                            <cgroup label="Notes:">
                                 <textarea class="span6" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
                                 <button ng-click="add_notes()" ng-disabled="!bk.new_note" class="btn btn-info">Add
                                 </button>
@@ -44,7 +44,7 @@
                                 </table>
                             </div>
                             <div df-properties default-properties="doc.default_properties"></div>
-                            <cgroup label="Treatments">
+                            <cgroup label="Treatments:">
                                 <select ng-model="bk.selected_treatment"
                                         ng-options="treat.template_name for treat in treatment_templates"
                                         ng-change="showForm()">

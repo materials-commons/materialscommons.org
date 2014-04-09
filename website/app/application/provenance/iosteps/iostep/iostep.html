@@ -2,50 +2,71 @@
     <div class="row-fluid">
         <div class="span10">
             <div class="well">
-
-                <div ng-if="doc.template_pick=='transformed sample'">
-                    <cgroup label="Mark Input Sample:">
-                        <input type="radio" ng-model="doc.is_active" value='true'>  available <br/>
-                        <input type="radio" ng-model="doc.is_active" value='false'>   not available
-                    </cgroup>
-                    <div sample-view doc="doc" edit="false"></div>
-
-                </div>
-                <div ng-if="doc.template_pick=='pick sample'">
-                    <cgroup label="Pick a sample:">
-                        <i class="fa fa-asterisk" style="color: red"></i>
-                        <select ng-model="doc.sample" type="text"
-                                ng-options="samp.name for samp in samples_list"
-                                ng-change="pick_sample()" required>
-                            <option value="">-- Select Samples --</option>
-                        </select>
-                    </cgroup>
-                    <label>Sample:</label> <a>{{ doc.sample.name}}</a>
-                </div>
-
-                <div ng-if="doc.template_pick=='instrument' || 'treatment'">
-                    <fieldset>
-                        <legend>Default Properties</legend>
-                        <div df-properties default-properties="doc.default_properties"></div>
-                    </fieldset>
-
-                    <hr align="left">
-
-                    <legend>Added Properties</legend>
-                    <div ad-properties added-properties="doc.added_properties"></div>
-
-                    <div ng-show="doc.additional_properties.length > 0" class="control-group">
-                        <label class="control-label">Additional Properties:</label>
-
-                        <div class="controls">
-                            <select ng-model="bk.additionalProperty"
-                                    ng-options="property.name for property in doc.additional_properties">
+                <div ng-switch on="doc.template_pick">
+                    <div ng-switch-when="transformed sample">
+                        <cgroup label="Mark Input Sample:">
+                            <input type="radio" ng-model="doc.is_active" value='true'>  available <br/>
+                            <input type="radio" ng-model="doc.is_active" value='false'>   not available
+                        </cgroup>
+                        <div sample-view doc="doc" edit="false"></div>
+                    </div>
+                    <div ng-switch-when="pick sample">
+                        <cgroup label="Pick a sample:">
+                            <i class="fa fa-asterisk" style="color: red"></i>
+                            <select ng-model="doc.sample" type="text"
+                                    ng-options="samp.name for samp in samples_list"
+                                    ng-change="pick_sample()" required>
+                                <option value="">-- Select Samples --</option>
                             </select>
-                            <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
+                        </cgroup>
+                        <label>Sample:</label> <a>{{ doc.sample.name}}</a>
+                    </div>
+                    <div ng-switch-when="instrument">
+                        <fieldset>
+                            <legend>Default Properties</legend>
+                            <div df-properties default-properties="doc.default_properties"></div>
+                        </fieldset>
+
+                        <hr align="left">
+
+                        <legend>Added Properties</legend>
+                        <div ad-properties added-properties="doc.added_properties"></div>
+
+                        <div ng-show="doc.additional_properties.length > 0" class="control-group">
+                            <label class="control-label">Additional Properties:</label>
+
+                            <div class="controls">
+                                <select ng-model="bk.additionalProperty"
+                                        ng-options="property.name for property in doc.additional_properties">
+                                </select>
+                                <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-when="treatment">
+                        <fieldset>
+                            <legend>Default Properties</legend>
+                            <div df-properties default-properties="doc.default_properties"></div>
+                        </fieldset>
+
+                        <hr align="left">
+
+                        <legend>Added Properties</legend>
+                        <div ad-properties added-properties="doc.added_properties"></div>
+
+                        <div ng-show="doc.additional_properties.length > 0" class="control-group">
+                            <label class="control-label">Additional Properties:</label>
+
+                            <div class="controls">
+                                <select ng-model="bk.additionalProperty"
+                                        ng-options="property.name for property in doc.additional_properties">
+                                </select>
+                                <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </fieldset>
+
             </div>
         </div>
     </div>
