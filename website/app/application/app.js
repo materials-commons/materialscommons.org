@@ -194,7 +194,7 @@ app.config(["$stateProvider", function ($stateProvider) {
                 ProvDrafts: "ProvDrafts"
             },
             onExit: function (ProvDrafts) {
-                if (ProvDrafts.current && ProvDrafts.current.attributes.process.name !== "") {
+                if (ProvDrafts.current && ProvDrafts.current.process.name !== "") {
                     ProvDrafts.saveDraft();
                 }
             }

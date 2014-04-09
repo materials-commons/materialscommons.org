@@ -5,10 +5,10 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
             $scope.init = function () {
                 if ($stateParams.iostep === "inputs") {
                     $scope.channel = 'provenance.inputs.files';
-                    $scope.files = ProvDrafts.current.attributes.input_files;
+                    $scope.files = ProvDrafts.current.process.input_files;
                 } else {
                     $scope.channel = 'provenance.outputs.files';
-                    $scope.files = ProvDrafts.current.attributes.output_files;
+                    $scope.files = ProvDrafts.current.process.output_files;
                 }
                 Projects.setChannel($scope.channel);
             };

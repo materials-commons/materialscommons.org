@@ -12,7 +12,11 @@ Application.Provenance.Services.factory('Model', [function () {
                 required_output_files: false,
                 runs: [],
                 template: "",
-                experiment_run_date: ''
+                experiment_run_date: '',
+                input_conditions: {},
+                output_conditions: {},
+                input_files: [],
+                output_files: []
             };
         },
 

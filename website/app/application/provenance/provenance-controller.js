@@ -71,8 +71,8 @@ Application.Provenance.Controllers.controller('provenance',
                     $scope.markAllStepsFinished();
                 } else {
                     draft = ProvDrafts.newDraft();
-                    draft.attributes.project_id = $stateParams.id;
-                    draft.attributes.process = Model.newProcess();
+                    draft.project_id = $stateParams.id;
+                    draft.process = Model.newProcess();
                 }
                 ProvDrafts.current = draft;
                 ProvSteps.setCurrentStep('process');
