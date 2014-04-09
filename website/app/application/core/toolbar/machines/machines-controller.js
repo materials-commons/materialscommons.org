@@ -59,8 +59,8 @@ Application.Controllers.controller('toolbarMachines',
                 .argWithValue('filter_by', '"template_type":"machine"')
                 .success(function (data) {
                     $scope.machine_template = data[0];
-                    $scope.default_properties = $scope.machine_template.model.default;
-                    $scope.additional_properties = $scope.machine_template.model.additional;
+                    $scope.default_properties = $scope.machine_template.default_properties;
+                    $scope.additional_properties = $scope.machine_template.additional_properties;
                 })
                 .error(function (e) {
 

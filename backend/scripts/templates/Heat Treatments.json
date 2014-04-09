@@ -1,0 +1,56 @@
+{
+    "id": "Heat Treatments",
+    "model": {
+        "default": [
+            {
+                "name": "Name" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": true
+            } ,
+            {
+                "name": "Description" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": "",
+                "required": false
+            }
+        ],
+        "additional":[
+            {
+                "name": "Citations" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "",
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Version" ,
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "",
+                "value_choice": [],
+                "required": false
+            }
+        ]
+    } ,
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Heat Treatments" ,
+    "template_type": "process",
+    "template_pick": "experiment",
+    "required_input_conditions": ["Heat Treatment","Pick Sample"],
+    "required_output_conditions": ["Transformed Sample"],
+    "required_input_files": true,
+    "required_output_files": true  
+}

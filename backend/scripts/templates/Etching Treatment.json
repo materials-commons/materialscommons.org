@@ -1,6 +1,6 @@
 {
 
-    "id": "Etching" ,
+    "id": "Etching Treatment" ,
     "model": {
         "default": [
             {
@@ -27,9 +27,9 @@
     } ,
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
-    "template_description": "This is an initial treatment applied to material" ,
+    "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Etching" ,
-    "template_pick": "" ,
-    "template_type": "treatment"
+    "template_name": "Etching Treatment" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
 }

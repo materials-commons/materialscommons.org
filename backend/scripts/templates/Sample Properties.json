@@ -1,120 +1,128 @@
 {
 
     "id": "Sample Properties" ,
-    "model": {
-        "default": [
-            {
-                "name": "Sample name" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Alloy composition" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-            
-        ],
-        "additional":[
-            {
-                "name": "Heat treatment" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [
-                    "C" ,
-                    "F"
-                ] ,
-                "value": "" ,
-                "value_choice": ["T6", "T7"],
-                "required": false
-            },
-            {
-                "name": "Compression" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice":[],
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Orientation" ,
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": [],
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-
-            {
-                "name": "Manufacturing Condition" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [],
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            } ,
-         
-            {
-                "name": "Specimen Prep" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [],
-                "value": "" ,
-                "value_choice": [
-                    "Electropolish" ,
-                    "Silica finish"
-                ],
-                "required": false
-            },
-            {
-                "name": "Material State" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [],
-                "value": "" ,
-                "value_choice": ["wrought", "cast", "other"],
-                "required": false
-            },
-            {
-                "name": "Gage length" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Cross sectional area" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Sample Geometry" ,
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ]
-    } ,
+    "default_properties": [
+        {
+            "name": "Sample name" ,
+            "attribute": "sample_name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Composition" ,
+            "attribute": "composition",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+        
+    ],
+    "additional_properties":[
+        {
+            "name": "Heat treatment" ,
+            "attribute": "heat_treatment",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [
+                "C" ,
+                "F"
+            ] ,
+            "value": "" ,
+            "value_choice": ["T6", "T7"],
+            "required": false
+        },
+        {
+            "name": "Compression" ,
+            "attribute": "compression",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice":[],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Orientation" ,
+            "attribute": "orientation",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Manufacturing Condition" ,
+            "attribute": "manufacturing_condition",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        } ,
+        
+        {
+            "name": "Specimen Prep" ,
+            "attribute": "specimen_prep",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [
+                "Electropolish" ,
+                "Silica finish"
+            ],
+            "required": false
+        },
+        {
+            "name": "Material State" ,
+            "attribute": "material_state",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": ["wrought", "cast", "other"],
+            "required": false
+        },
+        {
+            "name": "Gage length" ,
+            "attribute": "gage_length",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Cross sectional area" ,
+            "attribute": "cross_sectional_area",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Sample Geometry" ,
+            "attribute": "sample_geometry",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
     "owner": "admin@materialscommons.org", 
     "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_description": "" ,
