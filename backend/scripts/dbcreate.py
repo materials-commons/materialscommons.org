@@ -8,8 +8,8 @@ r.connect("localhost", int(MCDB_PORT)).repl()
 
 def create_database():
     run(r.db_create("materialscommons"))
-    run(r.db_create("history"))
-    
+    #run(r.db_create("history"))
+
 
 def create_tables():
     create_table("users")
@@ -44,7 +44,7 @@ def create_tables():
 def create_table(table):
     #print "create_table(%s)" % (table)
     run(r.db('materialscommons').table_create(table))
-    run(r.db('history').table_create(table))
+    #run(r.db('history').table_create(table))
     run(r.table_create("users"))
     run(r.table_create("usergroups"))
     run(r.table_create("datafiles"))
@@ -102,7 +102,7 @@ def create_indices():
 def create_index(table, name):
     #print "create_index(%s, %s)" % (table, name)
     run(r.db('materialscommons').table(table).index_create(name))
-    run(r.db('history').table(table).index_create(name))
+    #run(r.db('history').table(table).index_create(name))
 
 
 def run(rql):

@@ -1,7 +1,7 @@
 Application.Controllers.controller('toolbarSamples',
     ["$scope", "mcapi", "$injector", "User", "dateGenerate", function ($scope, mcapi, $injector, User, dateGenerate) {
         $scope.showForm = function () {
-            $scope.default_properties = $scope.model.selected_treatment.model.default;
+            $scope.default_properties = $scope.model.selected_treatment.default_properties;
             $scope.model.tab_item = '';
         };
 
@@ -43,7 +43,7 @@ Application.Controllers.controller('toolbarSamples',
             }
         };
         $scope.setProperties = function () {
-            $scope.doc.model.default_properties = $scope.model.classification.model.default_properties;
+            $scope.doc.model.default_properties = $scope.model.classification.default_properties;
         };
         $scope.showTreatmentDetails = function (sample) {
             $scope.sample = sample;

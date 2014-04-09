@@ -1,12 +1,9 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
 from flask import request, g
-import error
 import rethinkdb as r
 import dmutil
-import json
 import args
-import access
 
 
 @app.route('/machines', methods=['GET'])
@@ -15,6 +12,7 @@ def get_all_machines():
     rr = r.table('machines').order_by(r.desc('birthtime'))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
+
 
 @app.route('/machines/<machine_id>', methods=['GET'])
 @jsonp

@@ -1,51 +1,51 @@
 {
 
     "id": "Sample" ,
-    "model": {
-        "default": [
-            {
-                "name": "Pick Sample" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": ["get from material"],
-                "required": true
-            },
-            {
-                "name": "Notes" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }              
-        ],
-       
-        "additional": [
-            {
-                "name": "Example property 1" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Example property 2" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ]
-        
-
-    } ,
+    "default_properties": [
+        {
+            "name": "Pick Sample" ,
+            "attribute": "name",
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [], 
+            "required": true
+        },
+        {
+            "name": "Notes" ,
+            "attribute": "notes",
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }              
+    ],
+    
+    "additional_properties": [
+        {
+            "name": "Example property 1" ,
+            "attribute": "",
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Example property 2" ,
+            "attribute": "",
+            "type": "" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
     "owner": "gtarcea@umich.edu",
     "template_birthtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,
     "template_description": "" ,
@@ -53,5 +53,4 @@
     "template_name": "Sample" ,
     "template_type": "",
     "template_pick": ""
-
 }
