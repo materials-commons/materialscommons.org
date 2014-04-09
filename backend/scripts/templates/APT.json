@@ -1,27 +1,7 @@
 {
     "id": "APT",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "Description" ,
-            "attribute": "description",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        }
-    ],
+     ],
     "additional_properties":[
         {
             "name": "Citations" ,
@@ -55,5 +35,4 @@
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true,  
-    "machine": {}
 }
