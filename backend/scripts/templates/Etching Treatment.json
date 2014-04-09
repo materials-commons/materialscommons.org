@@ -1,10 +1,10 @@
 {
 
-    "id": "T6" ,
+    "id": "Etching Treatment" ,
+    "attribute": "etching",
     "default_properties": [
         {
-            "name": "T6 Temperature" ,
-            "attribute": "t6_temperature",
+            "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
             "unit_choice": ["C", "F"] ,
@@ -14,20 +14,9 @@
         },
         {
             "name": "Time" ,
-            "attribute": "time",
             "type": "number" ,
             "unit": "" ,
             "unit_choice": ["hours", "minutes", "seconds"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
-            "name": "Quench" ,
-            "attribute": "quench",
-            "type": "text",
-            "unit": "" ,
-            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": true
@@ -37,9 +26,9 @@
     ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
-    "template_description": "This is an initial treatment applied to material" ,
+    "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "T6" ,
-    "template_pick": "" ,
-    "template_type": "treatment"
+    "template_name": "Etching Treatment" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
 }

@@ -1,20 +1,12 @@
 Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
-    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone",
-        function ($scope, ProvDrafts, $stateParams, mcapi, Clone) {
-            $scope.model = {
-                additionalProperty: {}
-            };
-
+    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone", "watcher",
+        function ($scope, ProvDrafts, $stateParams, mcapi, Clone, watcher) {
             $scope.pick_sample = function () {
                 var i = _.indexOf($scope.samples_list, function (item) {
                     return (item.id === $scope.doc.sample.id);
                 });
-
                 if (i !== -1) {
                     $scope.doc.sample = $scope.samples_list[i];
-                    $scope.doc.model = $scope.doc.sample.model;
-                    $scope.doc.owner = $scope.doc.sample.owner;
-                    $scope.doc.sample_id = $scope.doc.sample.id;
                 }
             };
 
@@ -40,21 +32,36 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                             }
                         }
                     }).jsonp();
-
             };
 
             function init() {
+                $scope.bk = {
+                    is_active: '',
+                    additionalProperty: {}
+                };
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
                     $scope.doc = ProvDrafts.current.process.input_conditions[$scope.stepName];
 
                 } else {
                     $scope.doc = ProvDrafts.current.process.output_conditions[$scope.stepName];
+                    //To check whether the input picked sample and output transformed sample are same or not
+                    $scope.input_doc = ProvDrafts.current.attributes.input_conditions['Pick Sample'];
                     if ($scope.stepName === 'Transformed Sample') {
-                        $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
+                        if ('sample' in $scope.doc) {
+                            if ($scope.doc.sample.id === $scope.input_doc.sample.id) {
+
+                            }
+                            else {
+                                $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
+                            }
+                        } else {
+                            $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
+
+                        }
                     }
                 }
-                if ($scope.doc.template_pick === 'sample') {
+                if ($scope.doc.template_pick === 'pick sample') {
                     $scope.load_all_samples();
 
                 }
