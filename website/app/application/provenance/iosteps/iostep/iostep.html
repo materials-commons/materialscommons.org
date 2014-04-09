@@ -5,7 +5,7 @@
                 <div ng-switch on="doc.template_pick">
                     <div ng-switch-when="transformed sample">
                         <cgroup label="Mark Input Sample:">
-                            <input type="radio" ng-model="doc.is_active" value='true'> available <br/>
+                            <input type="radio" ng-model="doc.is_active" value=true> available <br/>
                             <input type="radio" ng-model="doc.is_active" value='false'> not available
                         </cgroup>
                         <div sample-view doc="doc" edit="false"></div>

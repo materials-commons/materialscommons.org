@@ -33,13 +33,13 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
 
                 if (stepName === "Files") {
                     $scope.gotoStep(stepName);
-                } else if (stepName in $scope.doc.attributes[attrib]) {
+                } else if (stepName in $scope.doc.process[attrib]) {
                     $scope.gotoStep(stepName);
                 } else {
                     mcapi('/templates/name/%', stepName)
                         .success(function (data) {
                             data.added_properties = [];
-                            $scope.doc.attributes[attrib][stepName] = data;
+                            $scope.doc.process[attrib][stepName] = data;
                             $scope.gotoStep(stepName);
                         }).jsonp();
                 }
@@ -68,20 +68,20 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             $scope.loadSteps = function () {
                 if ($stateParams.iosteps === "inputs") {
                     $scope.stepsName = "Inputs";
-                    $scope.doc.attributes.process.required_input_conditions.forEach(function (condition) {
+                    $scope.doc.process.required_input_conditions.forEach(function (condition) {
                         $scope.steps.push(condition);
                     });
 
-                    if ($scope.doc.attributes.process.required_input_files) {
+                    if ($scope.doc.process.required_input_files) {
                         $scope.steps.push("Files");
                     }
                 } else {
                     $scope.stepsName = "Outputs";
-                    $scope.doc.attributes.process.required_output_conditions.forEach(function (condition) {
+                    $scope.doc.process.required_output_conditions.forEach(function (condition) {
                         $scope.steps.push(condition);
                     });
 
-                    if ($scope.doc.attributes.process.required_output_files) {
+                    if ($scope.doc.process.required_output_files) {
                         $scope.steps.push("Files");
                     }
                 }

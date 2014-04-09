@@ -22,7 +22,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                             return;
                         }
                         ProvDrafts.saveDraft(function () {
-                            mcapi('/upload')
+                            mcapi('/provenance')
                                 .success(function (data) {
                                     $scope.done = true;
                                     $scope.process_id = data.process;
@@ -34,7 +34,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                                     $scope.notdone = true;
                                     alertService.sendMessage("Sorry - Your Provenance upload failed.");
                                 })
-                                .post({state_id: $scope.doc.id});
+                                .post({draft_id: $scope.doc.id});
 
                         });
                     });
@@ -47,12 +47,11 @@ Application.Provenance.Controllers.controller('provenanceFinish',
 
             $scope.init = function () {
                 $scope.doc = ProvDrafts.current;
-                console.dir($scope.doc)
-                $scope.process = $scope.doc.attributes.process;
-                $scope.inputs = $scope.doc.attributes.input_conditions;
-                $scope.outputs = $scope.doc.attributes.output_conditions;
-                $scope.input_files = $scope.doc.attributes.input_files;
-                $scope.output_files = $scope.doc.attributes.output_files;
+                $scope.process = $scope.doc.process;
+                $scope.inputs = $scope.doc.process.input_conditions;
+                $scope.outputs = $scope.doc.process.output_conditions;
+                $scope.input_files = $scope.doc.process.input_files;
+                $scope.output_files = $scope.doc.process.output_files;
             };
 
             $scope.init();
