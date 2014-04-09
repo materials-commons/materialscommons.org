@@ -7,7 +7,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvDrafts.saveDraft();
-                    console.log(ProvDrafts.current);
                     $scope.message = "your draft has been saved!";
                 } else {
                     $validationProvider.validate(form);
@@ -39,7 +38,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 } else {
                     mcapi('/templates/name/%', stepName)
                         .success(function (data) {
-                            data.model.added_properties = [];
+                            data.added_properties = [];
                             $scope.doc.attributes[attrib][stepName] = data;
                             $scope.gotoStep(stepName);
                         }).jsonp();

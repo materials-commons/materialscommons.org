@@ -32,7 +32,8 @@ def create_sample():
     sample['composition'] = dmutil.get_required('composition', j)
     sample['notes'] = dmutil.get_required('notes', j)
     sample['available'] = dmutil.get_optional('available', j)
-    sample['model'] = dmutil.get_required('model', j)
+    sample['default_properties'] = dmutil.get_optional('default_properties', j)
+    sample['added_properties'] = dmutil.get_optional('added_properties', j)
     sample['birthtime'] = r.now()
     sample['created_by'] = user
     sample['owner'] = user

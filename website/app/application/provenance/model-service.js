@@ -3,10 +3,8 @@ Application.Provenance.Services.factory('Model', [function () {
         newProcess: function () {
             return {
                 name: '',
-                model: {
-                    default_properties: [],
-                    added_properties: []
-                },
+                default_properties: [],
+                added_properties: [],
                 notes: [],
                 required_input_conditions: [],
                 required_output_conditions: [],

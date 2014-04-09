@@ -12,7 +12,7 @@
 
                 </div>
                 <div ng-if="doc.template_pick=='pick sample'">
-                    <cgroup label="Pick a sample">
+                    <cgroup label="Pick a sample:">
                         <i class="fa fa-asterisk" style="color: red"></i>
                         <select ng-model="doc.sample" type="text"
                                 ng-options="samp.name for samp in samples_list"
@@ -25,21 +25,21 @@
 
                 <div ng-if="doc.template_pick=='instrument' || 'treatment'">
                     <fieldset>
-                        <legend>Default Propertiess</legend>
-                        <div df-properties default-properties="doc.model.default"></div>
+                        <legend>Default Properties</legend>
+                        <div df-properties default-properties="doc.default_properties"></div>
                     </fieldset>
 
                     <hr align="left">
 
-                    <legend>Added Propertiess:</legend>
-                    <div ad-properties added-properties="doc.model.added_properties"></div>
+                    <legend>Added Properties</legend>
+                    <div ad-properties added-properties="doc.added_properties"></div>
 
-                    <div ng-show="doc.model.additional.length > 0" class="control-group">
+                    <div ng-show="doc.additional_properties.length > 0" class="control-group">
                         <label class="control-label">Additional Properties:</label>
 
                         <div class="controls">
                             <select ng-model="bk.additionalProperty"
-                                    ng-options="property.name for property in doc.model.additional">
+                                    ng-options="property.name for property in doc.additional_properties">
                             </select>
                             <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
                         </div>
