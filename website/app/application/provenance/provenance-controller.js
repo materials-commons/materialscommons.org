@@ -1,5 +1,5 @@
 Application.Provenance.Controllers.controller('provenance',
-    ["$scope", "$state", "$stateParams", "ProvSteps", "ProvDrafts", "Model",
+    ["$scope", "$state", "$stateParams", "ProvSteps", "ProvDrafts", "process.Model",
         function ($scope, $state, $stateParams, ProvSteps, ProvDrafts, Model) {
 
             $scope.isCurrentStep = function (step) {

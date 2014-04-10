@@ -125,21 +125,36 @@ class ProvenanceSaver(object):
         return fattrs
 
     def _create_conditions(self, input_conditions, output_conditions, p):
-        p['input_conditions'] = {}
+        p['input_conditions'] = []
         for key in input_conditions:
+            print key
             values = input_conditions[key]
-            attr, c = self._new_condition(values)
-            if attr is not None:
-                p['input_conditions'][attr] = c
-        p['output_conditions'] = {}
+            if key == "Pick Sample":
+                c = self._new_sample_condition(values)
+            else:
+                c = self._new_condition(values)
+            if c is not None:
+                p['input_conditions'].append(c)
+        p['output_conditions'] = []
         for key in output_conditions:
             values = output_conditions[key]
-            attr, c = self._new_condition(values)
-            if attr is not None:
-                p['output_conditions'][attr] = c
+            c = self._new_condition(values)
+            if c is not None:
+                p['output_conditions'].append(c)
 
-    def _create_condition(self, j):
-        pass
+    def _new_sample_condition(self, j):
+        s = dmutil.get_required('sample', j)
+        c = dict()
+        properties = {}
+        properties['name'] = dmutil.get_required('name', s)
+        properties['id'] = dmutil.get_required('id', s)
+        c['properties'] = properties
+        c['template'] = dmutil.get_required('template_name', j)
+        c['attribute'] = "sample"
+        c['type'] = "object"
+        return c
+
+    #def _create_condition(self, j):
         # condition = self._new_condition(j)
         # type_of_condition = dmutil.get_required('condition_type', j)
         # if (condition['template'] == 'Transformed Sample'):
@@ -150,17 +165,20 @@ class ProvenanceSaver(object):
 
     def _new_condition(self, j):
         c = dict()
-        c['owner'] = self.owner
         c['template'] = dmutil.get_required('template_name', j)
         c['properties'] = {}
-        attr_name = dmutil.get_optional("attribute", j, None)
+        c['type'] = 'condition'
+        attr = dmutil.get_optional("attribute", j, None)
+        if attr is None:
+            return None
+        c['attribute'] = attr
 
         default_props = dmutil.get_optional('default_properties', j, [])
         self._add_properties(default_props, c)
 
         added_properties = dmutil.get_optional('added_properties', j, [])
         self._add_properties(added_properties, c)
-        return attr_name, c
+        return c
 
     def _add_properties(self, properties, what):
         for prop in properties:
