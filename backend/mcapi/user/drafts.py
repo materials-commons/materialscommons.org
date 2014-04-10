@@ -49,7 +49,7 @@ def create_draft():
 def update_draft(draft_id):
     j = request.get_json()
     need_to_update = False
-    attributes = dmutil.get_optional('attributes', j, None)
+    process = dmutil.get_optional('process', j, None)
     name = dmutil.get_optional('name', j, None)
     description = dmutil.get_optional('description', j, None)
     attrs = {}
@@ -67,8 +67,8 @@ def update_draft(draft_id):
         attrs['description'] = description
         need_to_update = True
 
-    if attributes:
-        attrs['attributes'] = attributes
+    if process:
+        attrs['process'] = process
         need_to_update = True
 
     if need_to_update:
