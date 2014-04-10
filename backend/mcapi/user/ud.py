@@ -70,11 +70,6 @@ class ProvenanceSaver(object):
             self.owner = draft['owner']
             self.project_id = draft['project_id']
             self._create_process(draft['process'])
-            #input_conditions = dmutil.get_optional('input_conditions',
-            #                                       attributes, [])
-            #output_conditions = dmutil.get_optional('output_conditions',
-            #                                        attributes, [])
-            #self._create_conditions(input_conditions, output_conditions)
 
     def _create_process(self, j):
         process = self._new_process(j)
@@ -84,31 +79,27 @@ class ProvenanceSaver(object):
 
     def _new_process(self, j):
         p = dict()
+        p['birthtime'] = r.now()
         p['project'] = self.project_id
         p['name'] = dmutil.get_required('name', j)
-        self._process_properties(p, j)
-        p['birthtime'] = r.now()
+        p['description'] = dmutil.get_optional('description', j)
         p['machine'] = self._extract_id('machine', j)
         p['template'] = self._extract_id('template', j)
         p['notes'] = dmutil.get_optional('notes', j, [])
-        p['input_conditions'] = dmutil.get_optional('input_conditions', j, [])
-        p['input_files'] = self._process_files('input_files', j)
-        p['output_conditions'] = dmutil.get_optional('output_conditions',
-                                                     j, [])
-        p['output_files'] = self._process_files('output_files', j)
         p['runs'] = dmutil.get_optional('runs', j, [])
-        p['experiment_run_date'] = dmutil.get_optional(
-            'experiment_run_date', j, "")
+        self._process_properties(p, j)
+        input_conditions = dmutil.get_optional('input_conditions', j, [])
+        output_conditions = dmutil.get_optional('output_conditions', j, [])
+        self._create_conditions(input_conditions, output_conditions, p)
+        p['input_files'] = self._process_files('input_files', j)
+        p['output_files'] = self._process_files('output_files', j)
         return p
 
     def _process_properties(self, process, j):
         process['properties'] = {}
-        m = dmutil.get_optional("model", j, None)
-        if m is None:
-            return
-        default_props = dmutil.get_required('default_properties', m)
+        default_props = dmutil.get_required('default_properties', j)
         self._add_properties(default_props, process)
-        added_props = dmutil.get_optional('added_properties', m, [])
+        added_props = dmutil.get_optional('added_properties', j, [])
         self._add_properties(added_props, process)
 
     def _extract_id(self, key, j):
@@ -119,7 +110,6 @@ class ProvenanceSaver(object):
         return item_id
 
     def _process_files(self, key, j):
-        print "_process_files"
         files_list = dmutil.get_optional(key, j, [])
         files = []
         for f in files_list:
@@ -134,37 +124,43 @@ class ProvenanceSaver(object):
         fattrs['displayname'] = dmutil.get_optional('displayname', f)
         return fattrs
 
-    def _create_conditions(self, input_conditions, output_conditions):
+    def _create_conditions(self, input_conditions, output_conditions, p):
+        p['input_conditions'] = {}
         for key in input_conditions:
             values = input_conditions[key]
-            values['condition_type'] = 'input_conditions'
-            self._create_condition(values)
+            attr, c = self._new_condition(values)
+            if attr is not None:
+                p['input_conditions'][attr] = c
+        p['output_conditions'] = {}
         for key in output_conditions:
             values = output_conditions[key]
-            values['condition_type'] = 'output_conditions'
-            self._create_condition(values)
+            attr, c = self._new_condition(values)
+            if attr is not None:
+                p['output_conditions'][attr] = c
 
     def _create_condition(self, j):
-        condition = self._new_condition(j)
-        type_of_condition = dmutil.get_required('condition_type', j)
-        if (condition['template'] == 'Transformed Sample'):
-            s = self._new_sample(condition)
-            sample_id = dmutil.insert_entry_id('samples', s.__dict__)
-            condition['sample_id'] = sample_id
-        self._insert_condition(condition, type_of_condition)
+        pass
+        # condition = self._new_condition(j)
+        # type_of_condition = dmutil.get_required('condition_type', j)
+        # if (condition['template'] == 'Transformed Sample'):
+        #     s = self._new_sample(condition)
+        #     sample_id = dmutil.insert_entry_id('samples', s.__dict__)
+        #     condition['sample_id'] = sample_id
+        # return self._insert_condition(condition, type_of_condition)
 
     def _new_condition(self, j):
         c = dict()
         c['owner'] = self.owner
         c['template'] = dmutil.get_required('template_name', j)
         c['properties'] = {}
+        attr_name = dmutil.get_optional("attribute", j, None)
 
-        default_properties = dmutil.get_required('default_properties', j)
-        self._add_properties(default_properties, c)
+        default_props = dmutil.get_optional('default_properties', j, [])
+        self._add_properties(default_props, c)
 
         added_properties = dmutil.get_optional('added_properties', j, [])
         self._add_properties(added_properties, c)
-        return c
+        return attr_name, c
 
     def _add_properties(self, properties, what):
         for prop in properties:
@@ -191,12 +187,13 @@ class ProvenanceSaver(object):
 
     def _insert_condition(self, condition, type_of_condition):
         c_id = self.saver.insert('conditions', condition)
-        new_conditions = r.table('saver')\
-                          .get(self.process_id)[type_of_condition]\
-                          .append(c_id).run(g.conn)
-        r.table('saver').get(self.process_id)\
-                        .update({type_of_condition: new_conditions})\
-                        .run(g.conn)
+        return c_id
+        #new_conditions = r.table('saver')\
+        #                  .get(self.process_id)[type_of_condition]\
+        #                  .append(c_id).run(g.conn)
+        #r.table('saver').get(self.process_id)\
+        #                .update({type_of_condition: new_conditions})\
+        #                .run(g.conn)
 
 
 @app.route('/provenance', methods=['POST'])

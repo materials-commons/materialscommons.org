@@ -30,11 +30,10 @@ Application.Controllers.controller('toolbarFileServicesEvents',
             $scope.events.splice(index, 1);
         };
 
-        $scope.init = function () {
-            console.log("toolbarFileServicesEvents");
+        function init() {
             $scope.events = [];
             $scope.filepathLookup = [];
-        };
+        }
 
-        $scope.init();
+        init();
     }]);
