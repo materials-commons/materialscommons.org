@@ -3,7 +3,8 @@ Application.Directives.directive('dfProperties',
         return {
             restrict: "A",
             scope: {
-                defaultProperties: '='
+                defaultProperties: '=',
+                machinesList: '='
             },
             templateUrl: 'application/directives/default-properties.html'
         };

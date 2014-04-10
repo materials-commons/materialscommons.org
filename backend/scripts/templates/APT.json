@@ -1,18 +1,19 @@
 {
     "id": "APT",
     "default_properties": [
-     ],
-    "additional_properties":[
-        {
+         {
             "name": "Machine" ,
             "attribute": "machine",
-            "type": "text" ,
+            "type": "choose" ,
             "unit": "" ,
             "unit_choice": "" ,
             "value": "",
             "value_choice": [],
             "required": false
-        },
+        }
+     ],
+    "additional_properties":[
+       
         {
             "name": "Citations" ,
             "attribute": "citations",
