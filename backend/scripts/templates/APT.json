@@ -4,6 +4,16 @@
      ],
     "additional_properties":[
         {
+            "name": "Machine" ,
+            "attribute": "machine",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
             "name": "Citations" ,
             "attribute": "citations",
             "type": "text" ,

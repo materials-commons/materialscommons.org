@@ -1,26 +1,6 @@
 {
     "id": "Machine" ,
-    "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute" : "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
-            "name": "Notes" ,
-            "attribute": "notes",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
-        }              
+    "default_properties": [         
     ],
     "additional_properties": [
         {

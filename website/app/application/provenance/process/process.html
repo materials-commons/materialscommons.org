@@ -1,7 +1,6 @@
 <div ng-controller="provenanceProcess">
     <form name="Form" class="form-horizontal">
         <div class="row-fluid">
-            <fieldset>
                 <legend>Process</legend>
                 <cgroup label="Process Type:">
                     <select ng-model="bk.process_type"
@@ -9,88 +8,17 @@
                         <option value="">Select Process Type:</option>
                     </select>
                 </cgroup>
-
                 <label>Selected Process: {{ process.template.template_name }}</label>
-            </fieldset>
         </div>
         <div class="row-fluid">
             <div ng-show="bk.process_type">
                 <hr>
-                <fieldset>
-                    <legend>Default Properties</legend>
-                    <div df-properties default-properties="process.default_properties"></div>
-                    <cgroup label="Machine:">
-                        <select ng-model="process.machine"
-                                ng-options="mach.name for mach in machines_list">
-                        </select>
-                    </cgroup>
-                    <cgroup label="Notes:">
-                        <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
-                    </cgroup>
-                    <cgroup>
-                        <button ng-click="add_notes()" ng-disabled="!bk.new_note" class="btn btn-info">Add</button>
-                    </cgroup>
-                    <div ng-show="process.notes.length > 0">
-                        <h5>Previous Notes:</h5>
-                        <table class="table">
-                            <thead>
-                            <th>Message</th>
-                            <th>Who</th>
-                            <th>Date Created</th>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="note in process.notes">
-                                <td>{{note.message}}</td>
-                                <td>{{note.who}}</td>
-                                <td>{{note.date}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div ng-if="process.template.template_pick=='experiment'">
-                        <cgroup label="Run Date:">
-                            <datepicker ng-model='process.experiment_run_date'></datepicker>
-                        </cgroup>
-
-                    </div>
-                    <div ng-if="process.template.template_pick=='computation'">
-                        <cgroup label="Start:">
-                            <datepicker ng-model='bk.start_run'></datepicker>
-                        </cgroup>
-                        <cgroup label="Stop:">
-                            <datepicker ng-model='bk.stop_run'></datepicker>
-                        </cgroup>
-                        <cgroup label="Errors:">
-                            <textarea class="span8" rows="4" placeholder="Errors..."
-                                      ng-model="bk.new_err_msg"></textarea>
-                        </cgroup>
-                        <cgroup>
-                            <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-info">Add</button>
-                        </cgroup>
-                        <div ng-show="process.runs.length > 0">
-                            <h5>Previous Runs:</h5>
-                            <table class="table">
-                                <thead>
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Error Message</th>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="run in process.runs">
-                                    <td>{{run.started | date:'medium'}}</td>
-                                    <td>{{run.stopped | date:'medium'}}</td>
-                                    <td>{{run.error_messages}}
-                                        <button type="button" class="close"
-                                                ng-click="remove_run($index);">&times;</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </fieldset>
-
+                <div process-view process="process" addnotes-fn="add_notes()" addruns-fn="add_run()"  bk="bk" edit="false"></div>
+                    <!--<cgroup label="Machine:">-->
+                        <!--<select ng-model="process.machine"-->
+                                <!--ng-options="mach.name for mach in machines_list">-->
+                        <!--</select>-->
+                    <!--</cgroup>-->
                 <hr align="left">
                 <fieldset>
                     <legend>Added Properties</legend>
