@@ -6,42 +6,58 @@
             </p>
         </label>
 
-        <div class='controls'>
-            <div ng-if='df.value_choice.length!==0'>
-                <select ng-model='df.value'>
-                    <option ng-repeat='each in df.value_choice'> {{each}}</option>
-                </select>
+        <div  ng-switch on='df.type' class='controls'>
+            <div ng-switch-when="text">
+                <div ng-if="df.required===false">
+                    <input type='text' ng-model='df.value'
+                           placeholder='{{df.name}}...'>
+                </div>
+                <div ng-if="df.required===true">
+                    <input type='text' ng-model='df.value'
+                           placeholder='{{df.name}}...' required>
+                </div>
             </div>
-            <div ng-if='df.value_choice.length===0'>
-                <div ng-if="df.type==='text'">
-                    <!-- if i do not implement this then it is the case that every field has to be filled in  -->
-                    <div ng-if="df.required===false">
-                        <input type='text' ng-model='df.value'
-                               placeholder='{{df.name}}...'>
-                    </div>
-                    <div ng-if="df.required===true">
-                        <input type='text' ng-model='df.value'
-                               placeholder='{{df.name}}...' required>
-                    </div>
+            <div ng-switch-when="number">
+                <div ng-if="df.required===false">
+                    <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
+                           placeholder='{{df.name}}...' valid-method="blur">
                 </div>
-                <div ng-if="df.type!=='text'">
-                    <div ng-if="df.type==='choose'">
-                        <select ng-model="df.value"
-                                ng-options="mach.name for mach in machinesList">
-                        </select>
-                    </div>
-                    <div ng-if="df.type!=='choose'">
-                        <div ng-if="df.required===false">
-                            <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
-                                   placeholder='{{df.name}}...' valid-method="blur">
-                        </div>
-                        <div ng-if="df.required===true">
-                            <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
-                                   placeholder='{{df.name}}...' valid-method="blur" required>
-                        </div>
-                    </div>
+                <div ng-if="df.required===true">
+                    <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
+                           placeholder='{{df.name}}...' valid-method="blur" required>
                 </div>
-
+            </div>
+            <div ng-switch-when="url">
+                <div ng-if="df.required===false">
+                    <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
+                           placeholder='{{df.name}}...' valid-method="blur">
+                </div>
+                <div ng-if="df.required===true">
+                    <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
+                           placeholder='{{df.name}}...' valid-method="blur" required>
+                </div>
+            </div>
+            <div ng-switch-when="email">
+                <div ng-if="df.required===false">
+                    <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
+                           placeholder='{{df.name}}...' valid-method="blur">
+                </div>
+                <div ng-if="df.required===true">
+                    <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
+                           placeholder='{{df.name}}...' valid-method="blur" required>
+                </div>
+            </div>
+            <div ng-switch-when="select">
+                <div ng-if='df.value_choice.length!==0'>
+                    <select ng-model='df.value'>
+                        <option ng-repeat='each in df.value_choice'> {{each}}</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-switch-when="machines">
+                <select ng-model="df.value"
+                        ng-options="mach.name for mach in machinesList">
+                </select>
             </div>
             <div ng-if='df.unit_choice.length!=0'>
                 <select ng-model='df.unit'>

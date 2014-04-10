@@ -10,7 +10,7 @@
             <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
         </cgroup>
         <cgroup>
-            <button ng-click="addnotesFn()"  class="btn btn-info">Add</button>
+            <button ng-click="add_notes()"  class="btn btn-info">Add</button>
         </cgroup>
     </div>
 
@@ -49,7 +49,7 @@
                       ng-model="bk.new_err_msg" ng-disabled="edit"></textarea>
         </cgroup>
         <cgroup>
-            <button ng-click="addrunFn()" ng-disabled="!bk.start_run" class="btn btn-info">Add</button>
+            <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-info">Add</button>
         </cgroup>
         <div ng-show="process.runs.length > 0">
             <h5>Previous Runs:</h5>

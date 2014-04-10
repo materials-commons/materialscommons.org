@@ -15,7 +15,7 @@
         {
             "name": "Detector",
             "attribute": "dectector",
-            "type": "text",
+            "type": "select",
             "unit": "",
             "unit_choice": [],
             "value": "",

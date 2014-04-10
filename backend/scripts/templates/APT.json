@@ -4,7 +4,7 @@
          {
             "name": "Machine" ,
             "attribute": "machine",
-            "type": "choose" ,
+            "type": "machines" ,
             "unit": "" ,
             "unit_choice": "" ,
             "value": "",
