@@ -13,13 +13,8 @@
         <div class="row-fluid">
             <div ng-show="bk.process_type">
                 <hr>
-                <div process-view process="process" addnotes-fn="add_notes()" addruns-fn="add_run()"  bk="bk" edit="false"></div>
+                <div process-view process="process"  bk="bk" edit="false"></div>
                 <div df-properties default-properties="process.default_properties" machines-list="machines_list"></div>
-                    <!--<cgroup label="Machine:">-->
-                        <!--<select ng-model="process.machine"-->
-                                <!--ng-options="mach.name for mach in machines_list">-->
-                        <!--</select>-->
-                    <!--</cgroup>-->
                 <hr align="left">
                 <fieldset>
                     <legend>Added Properties</legend>
