@@ -1,33 +1,6 @@
 {
     "id": "Electropolish",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "Description" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        },
-        {
-            "name": "Notes" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        }
     ],
     "additional_properties":[
     ],

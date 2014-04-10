@@ -49,21 +49,16 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     $scope.input_doc = ProvDrafts.current.process.input_conditions['Pick Sample'];
                     if ($scope.stepName === 'Transformed Sample') {
                         if ('sample' in $scope.doc) {
-                            if ($scope.doc.sample.id === $scope.input_doc.sample.id) {
-
-                            }
-                            else {
+                            if (!($scope.doc.sample.id === $scope.input_doc.sample.id)) {
                                 $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
                             }
                         } else {
                             $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
-
                         }
                     }
                 }
                 if ($scope.doc.template_pick === 'pick sample') {
                     $scope.load_all_samples();
-
                 }
             }
 
