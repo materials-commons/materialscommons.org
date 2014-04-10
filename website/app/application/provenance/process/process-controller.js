@@ -17,7 +17,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 var dd = ("0" + now.getDate()).slice(-2);
                 var mm = ("0" + (now.getMonth() + 1)).slice(-2);
                 var today = now.getFullYear() + "-" + mm + "-" + dd;
-                $scope.process.default_properties[0].value = template.template_name + ':' + today;
+                $scope.process.name = template.template_name + ':' + today;
                 $scope.process.template = template;
             });
             $scope.addAdditionalProperty = function () {
@@ -50,7 +50,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             $scope.saveDraft = function (form) {
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
-                    ProvDrafts.current.name = $scope.process.default_properties[0].value;
+                    ProvDrafts.current.name = $scope.process.name;
                     ProvDrafts.saveDraft();
                     $scope.message = "Your draft has been saved!";
                 } else {

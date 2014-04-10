@@ -1,27 +1,7 @@
 {
     "id": "APT",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "Description" ,
-            "attribute": "description",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        }
-    ],
+     ],
     "additional_properties":[
         {
             "name": "Citations" ,
