@@ -22,45 +22,15 @@
                         <label>Sample:</label> <a>{{ doc.sample.name}}</a>
                     </div>
                     <div ng-switch-when="instrument">
-                        <fieldset>
-                            <legend>Default Properties</legend>
-                            <div df-properties default-properties="doc.default_properties"></div>
-                        </fieldset>
+                        <div df-properties default-properties="doc.default_properties" edit="false"></div>
                         <hr align="left">
-                        <legend>Added Properties</legend>
-                        <div ad-properties added-properties="doc.added_properties"></div>
-                        <div ng-show="doc.additional_properties.length > 0" class="control-group">
-                            <label class="control-label">Additional Properties:</label>
+                        <div ad-properties doc="doc" edit="false" bk="bk"></div>
 
-                            <div class="controls">
-                                <select ng-model="bk.additionalProperty"
-                                        ng-options="property.name for property in doc.additional_properties">
-                                </select>
-                                <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
                     </div>
                     <div ng-switch-when="treatment">
-                        <fieldset>
-                            <legend>Default Properties</legend>
-                            <div df-properties default-properties="doc.default_properties"></div>
-                        </fieldset>
-
+                        <div df-properties default-properties="doc.default_properties"></div>
                         <hr align="left">
-
-                        <legend>Added Properties</legend>
-                        <div ad-properties added-properties="doc.added_properties"></div>
-
-                        <div ng-show="doc.additional_properties.length > 0" class="control-group">
-                            <label class="control-label">Additional Properties:</label>
-
-                            <div class="controls">
-                                <select ng-model="bk.additionalProperty"
-                                        ng-options="property.name for property in doc.additional_properties">
-                                </select>
-                                <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
+                        <div ad-properties doc="doc" edit="false" bk="bk"></div>
                     </div>
                 </div>
             </div>

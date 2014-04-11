@@ -50,10 +50,7 @@ Application.Controllers.controller('toolbarSamples',
             $scope.sample = sample;
 
         };
-        $scope.add_notes = function () {
-            $scope.doc.notes.push({'message': $scope.bk.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
-            $scope.bk.new_note = "";
-        };
+
 
         $scope.clear = function () {
             $scope.doc = {

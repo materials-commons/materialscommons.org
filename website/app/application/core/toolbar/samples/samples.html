@@ -2,7 +2,6 @@
     <div class="row-fluid">
         <form name="Sample" class="form-horizontal">
             <legend>Create New Object</legend>
-            <div class="span12">
                 <fieldset>
                     <cgroup label="Classification:">
                         <select ng-model="bk.classification" ng-change="setProperties()"
@@ -12,38 +11,9 @@
                     </cgroup>
                     <div class="control-group">
                         <div ng-show="bk.classification">
-                            <cgrouprequired label="Name:">
-                                <input ng-model="doc.name" type="text" placeholder='name...' required>
-                            </cgrouprequired>
-
-                            <cgrouprequired label="Composition:">
-                                <input ng-model="doc.composition" type="text" placeholder='composition...' required>
-                            </cgrouprequired>
-
-                            <cgroup label="Notes:">
-                                <textarea class="span6" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
-                                <button ng-click="add_notes()" ng-disabled="!bk.new_note" class="btn btn-info">Add
-                                </button>
-                            </cgroup>
-
-                            <div ng-show="doc.notes.length > 0">
-                                <h5>Previous Notes:</h5>
-                                <table class="table">
-                                    <thead>
-                                    <th>Message</th>
-                                    <th>Who</th>
-                                    <th>Date Created</th>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="note in doc.notes">
-                                        <td>{{note.message}}</td>
-                                        <td>{{note.who}}</td>
-                                        <td>{{note.date}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <div upperlevel-sample   bk="bk" doc="doc" edit="false"></div>
                             <div df-properties default-properties="doc.default_properties"></div>
+
                             <cgroup label="Treatments:">
                                 <select ng-model="bk.selected_treatment"
                                         ng-options="treat.template_name for treat in treatment_templates"
@@ -77,7 +47,6 @@
                         </div>
                     </div>
                 </fieldset>
-            </div>
         </form>
         <button ng-click="save(Sample)" class="btn btn-primary">New</button>
         <button ng-click="clear()" class="btn btn-danger">Clear</button>
@@ -132,22 +101,8 @@
                         </fieldset>
                     </div>
                 </div>
-                <div ng-if="sample.default_properties.length!=0">
-                    <legend>Default Properties:</legend>
-                    <div ng-repeat="item in sample.default_properties">
-                        <cgroup label="{{item.name}}">
-                            <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
-                        </cgroup>
-                    </div>
-                </div>
-                <div ng-if="sample.added_properties.length!=0">
-                    <legend>Additional Properties:</legend>
-                    <div ng-repeat="item in sample.added_properties">
-                        <cgroup label="{{item.name}}">
-                            <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
-                        </cgroup>
-                    </div>
-                </div>
+                <div df-properties default-properties="sample.default_properties" edit="true"></div>
+                <div ad-properties added-properties="sample.added_properties" edit="true"></div>
             </form>
         </div>
     </div>
