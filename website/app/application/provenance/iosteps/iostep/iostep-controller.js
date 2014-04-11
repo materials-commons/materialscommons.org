@@ -37,7 +37,10 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             function init() {
                 $scope.bk = {
                     is_active: '',
-                    additionalProperty: {}
+                    additional_property: '',
+                    customPropertyName: '',
+                    customPropertyValue: ''
+
                 };
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
