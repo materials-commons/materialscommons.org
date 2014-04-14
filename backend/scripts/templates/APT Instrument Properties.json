@@ -20,7 +20,7 @@
             "unit_choice": [],
             "value": "",
             "value_choice": ["FIM", "Voltage", "Laser"],
-            "required": true
+            "required": false
         },
         {
             "name": "Specimen Temperature(K)",
@@ -30,7 +30,7 @@
             "unit_choice": [],
             "value": "",
             "value_choice": [],
-            "required": true
+            "required": false
         },
         {
             "name": "Voltage Pulse Fraction(%)",
