@@ -76,6 +76,21 @@ class ProvenanceSaver(object):
         self.process_id = self.saver.insert('processes', process)
         self.saver.insert('project2processes', {'project_id': self.project_id,
                                                 'process_id': self.process_id})
+        self._conditions_denorm(process)
+
+    def _conditions_denorm(self, process):
+        for attr in process['inputs']:
+            self._insert_conditions_denorm(attr, 'input')
+        for attr in process['outputs']:
+            self._insert_conditions_denorm(attr, 'output')
+
+    def _insert_conditions_denorm(self, attr, step):
+        for key in attr['properties']:
+            prop = attr['properties'][key]
+            prop['process_id'] = self.process_id
+            prop['attribute'] = attr['attribute']
+            prop['step'] = step
+            self.saver.insert('conditions', prop)
 
     def _new_process(self, j):
         p = dict()
@@ -233,16 +248,6 @@ class ProvenanceSaver(object):
     def _new_sample(self, c):
         model = dmutil.get_required("model", c)
         return sample.Sample(model, self.owner)
-
-    def _insert_condition(self, condition, type_of_condition):
-        c_id = self.saver.insert('conditions', condition)
-        return c_id
-        #new_conditions = r.table('saver')\
-        #                  .get(self.process_id)[type_of_condition]\
-        #                  .append(c_id).run(g.conn)
-        #r.table('saver').get(self.process_id)\
-        #                .update({type_of_condition: new_conditions})\
-        #                .run(g.conn)
 
 
 @app.route('/provenance', methods=['POST'])
