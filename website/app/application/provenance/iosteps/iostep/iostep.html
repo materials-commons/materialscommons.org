@@ -3,14 +3,14 @@
         <div class="span10">
             <div class="well">
                 <div ng-switch on="doc.template_pick">
-                    <div ng-switch-when="transformed sample">
+                    <div ng-switch-when="transformed_sample">
                         <cgroup label="Mark Input Sample:">
                             <input type="radio" ng-model="doc.is_active" value=true> available <br/>
                             <input type="radio" ng-model="doc.is_active" value='false'> not available
                         </cgroup>
                         <div sample-view doc="doc" edit="false"></div>
                     </div>
-                    <div ng-switch-when="pick sample">
+                    <div ng-switch-when="pick_sample">
                         <cgroup label="Pick a sample:">
                             <i class="fa fa-asterisk" style="color: red"></i>
                             <select ng-model="doc.sample" type="text"

@@ -60,7 +60,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                         }
                     }
                 }
-                if ($scope.doc.template_pick === 'pick sample') {
+                if ($scope.doc.template_pick === 'pick_sample') {
                     $scope.load_all_samples();
                 }
             }
