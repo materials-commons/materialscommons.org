@@ -28,6 +28,7 @@
                            placeholder='{{df.name}}...' valid-method="blur" ng-disabled="edit" required>
                 </div>
             </div>
+
             <div ng-switch-when="url">
                 <div ng-if="df.required===false">
                     <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'

@@ -91,8 +91,10 @@ class ProvenanceSaver(object):
         input_conditions = dmutil.get_optional('input_conditions', j, [])
         output_conditions = dmutil.get_optional('output_conditions', j, [])
         self._create_conditions(input_conditions, output_conditions, p)
-        p['input_files'] = self._process_files('input_files', j)
-        p['output_files'] = self._process_files('output_files', j)
+        for f in self._process_files('input_files', j):
+            p['inputs'].append(f)
+        for f in self._process_files('output_files', j):
+            p['outputs'].append(f)
         return p
 
     def _process_properties(self, process, j):
@@ -119,48 +121,68 @@ class ProvenanceSaver(object):
 
     def _new_file(self, f):
         fattrs = {}
-        fattrs['id'] = dmutil.get_optional('id', f)
-        fattrs['name'] = dmutil.get_optional('name', f)
-        fattrs['displayname'] = dmutil.get_optional('displayname', f)
+        fattrs['attribute'] = "file"
+        fattrs['type'] = "file"
+        fattrs['template'] = ""
+        properties = {}
+        fid = dmutil.get_optional('id', f)
+        name = dmutil.get_optional('name', f)
+        displayname = dmutil.get_optional('displayname', f)
+        properties['id'] = self._new_prop_attrs("Id", "", fid, "id")
+        properties['name'] = self._new_prop_attrs("Name", "", name, "text")
+        properties['displayname'] = self._new_prop_attrs("Displayname", "",
+                                                         displayname, "text")
+        fattrs['properties'] = properties
         return fattrs
 
     def _create_conditions(self, input_conditions, output_conditions, p):
-        p['input_conditions'] = {}
+        p['inputs'] = []
         for key in input_conditions:
+            print key
             values = input_conditions[key]
-            attr, c = self._new_condition(values)
-            if attr is not None:
-                p['input_conditions'][attr] = c
-        p['output_conditions'] = {}
+            if key == "Pick Sample":
+                c = self._new_sample_condition(values)
+            else:
+                c = self._new_condition(values)
+            if c is not None:
+                p['inputs'].append(c)
+        p['outputs'] = []
         for key in output_conditions:
             values = output_conditions[key]
-            attr, c = self._new_condition(values)
-            if attr is not None:
-                p['output_conditions'][attr] = c
+            c = self._new_condition(values)
+            if c is not None:
+                p['outputs'].append(c)
 
-    def _create_condition(self, j):
-        pass
-        # condition = self._new_condition(j)
-        # type_of_condition = dmutil.get_required('condition_type', j)
-        # if (condition['template'] == 'Transformed Sample'):
-        #     s = self._new_sample(condition)
-        #     sample_id = dmutil.insert_entry_id('samples', s.__dict__)
-        #     condition['sample_id'] = sample_id
-        # return self._insert_condition(condition, type_of_condition)
+    def _new_sample_condition(self, j):
+        s = dmutil.get_required('sample', j)
+        c = dict()
+        properties = {}
+        value = dmutil.get_required('name', s)
+        properties['name'] = self._new_prop_attrs("Name", "", value, "text")
+        value = dmutil.get_required('id', s)
+        properties['id'] = self._new_prop_attrs("Id", "", value, "id")
+        c['properties'] = properties
+        c['template'] = dmutil.get_required('template_name', j)
+        c['attribute'] = "sample"
+        c['type'] = "id"
+        return c
 
     def _new_condition(self, j):
         c = dict()
-        c['owner'] = self.owner
         c['template'] = dmutil.get_required('template_name', j)
         c['properties'] = {}
-        attr_name = dmutil.get_optional("attribute", j, None)
+        c['type'] = 'condition'
+        attr = dmutil.get_optional("attribute", j, None)
+        if attr is None:
+            return None
+        c['attribute'] = attr
 
         default_props = dmutil.get_optional('default_properties', j, [])
         self._add_properties(default_props, c)
 
         added_properties = dmutil.get_optional('added_properties', j, [])
         self._add_properties(added_properties, c)
-        return attr_name, c
+        return c
 
     def _add_properties(self, properties, what):
         for prop in properties:
@@ -172,14 +194,41 @@ class ProvenanceSaver(object):
         attr_name = dmutil.get_optional('attribute', attrs, None)
         if attr_name is None:
             return None, None
-        attr_props = {}
-        value = dmutil.get_optional('value', attrs, "")
+        value = self._get_value(attrs)
         if value == "":
             return None, None
-        attr_props['value'] = value
-        attr_props['unit'] = dmutil.get_optional('unit', attrs)
-        attr_props['name'] = dmutil.get_optional('name', attrs)
+        name = dmutil.get_optional('name', attrs)
+        unit = dmutil.get_optional('unit', attrs)
+        prop_type = dmutil.get_required('type', attrs)
+        prop_type = self._map_property_type(prop_type)
+        attr_props = self._new_prop_attrs(name, unit, value, prop_type)
         return attr_name, attr_props
+
+    def _get_value(self, attrs):
+        value = dmutil.get_optional('value', attrs, None)
+        if value is None:
+            return ""
+        attrs_type = dmutil.get_required('type', attrs)
+        # For object types we just get the id
+        if attrs_type == "machines":
+            return dmutil.get_required('id', value)
+        return value
+
+    def _new_prop_attrs(self, name, unit, value, prop_type):
+        prop_attrs = {}
+        prop_attrs['name'] = name
+        prop_attrs['unit'] = unit
+        prop_attrs['value'] = value
+        prop_attrs['type'] = prop_type
+        return prop_attrs
+
+    def _map_property_type(self, prop_type):
+        if prop_type == "machines":
+            return "id"
+        elif prop_type == "samples":
+            return "id"
+        else:
+            return prop_type
 
     def _new_sample(self, c):
         model = dmutil.get_required("model", c)

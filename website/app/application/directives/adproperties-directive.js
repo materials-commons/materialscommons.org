@@ -5,7 +5,16 @@ Application.Controllers.controller('AddPropertyController',
         };
 
         $scope.addCustomProperty = function () {
-            $scope.doc.added_properties.push({'name': $scope.bk.customPropertyName, 'value': $scope.bk.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
+            var attr = $scope.bk.customPropertyName;
+            $scope.doc.added_properties.push({
+                'name': $scope.bk.customPropertyName,
+                'attribute': attr.replace(/ /g, '_'),
+                'value': $scope.bk.customPropertyValue,
+                'type': "text",
+                'unit': '',
+                'value_choice': [],
+                'unit_choice': [],
+                'required': false});
         };
 
     }]);
