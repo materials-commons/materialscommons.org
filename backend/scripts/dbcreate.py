@@ -97,6 +97,8 @@ def create_indices():
     create_index('project2datafile', 'datafile_id')
     create_index('tag2item', 'tag_id')
     create_index('tag2item', 'item_id')
+    create_index('conditions', 'value')
+    create_index('conditions', 'process_id')
 
 
 def create_index(table, name):
