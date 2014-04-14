@@ -112,7 +112,6 @@ def get_output_process(df_id):
     rr = r.table('processes') \
           .filter(lambda row: (row['output_files']['id'].contains(df_id)))
     selection = list(rr.run(g.conn, time_format='raw'))
-    print selection
     return args.json_as_format_arg(selection)
 
 
