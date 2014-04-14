@@ -91,8 +91,10 @@ class ProvenanceSaver(object):
         input_conditions = dmutil.get_optional('input_conditions', j, [])
         output_conditions = dmutil.get_optional('output_conditions', j, [])
         self._create_conditions(input_conditions, output_conditions, p)
-        p['input_files'] = self._process_files('input_files', j)
-        p['output_files'] = self._process_files('output_files', j)
+        for f in self._process_files('input_files', j):
+            p['inputs'].append(f)
+        for f in self._process_files('output_files', j):
+            p['outputs'].append(f)
         return p
 
     def _process_properties(self, process, j):
@@ -119,13 +121,22 @@ class ProvenanceSaver(object):
 
     def _new_file(self, f):
         fattrs = {}
-        fattrs['id'] = dmutil.get_optional('id', f)
-        fattrs['name'] = dmutil.get_optional('name', f)
-        fattrs['displayname'] = dmutil.get_optional('displayname', f)
+        fattrs['attribute'] = "file"
+        fattrs['type'] = "file"
+        fattrs['template'] = ""
+        properties = {}
+        fid = dmutil.get_optional('id', f)
+        name = dmutil.get_optional('name', f)
+        displayname = dmutil.get_optional('displayname', f)
+        properties['id'] = self._new_prop_attrs("Id", "", fid)
+        properties['name'] = self._new_prop_attrs("Name", "", name)
+        properties['displayname'] = self._new_prop_attrs("Displayname", "",
+                                                         displayname)
+        fattrs['properties'] = properties
         return fattrs
 
     def _create_conditions(self, input_conditions, output_conditions, p):
-        p['input_conditions'] = []
+        p['inputs'] = []
         for key in input_conditions:
             print key
             values = input_conditions[key]
@@ -134,34 +145,27 @@ class ProvenanceSaver(object):
             else:
                 c = self._new_condition(values)
             if c is not None:
-                p['input_conditions'].append(c)
-        p['output_conditions'] = []
+                p['inputs'].append(c)
+        p['outputs'] = []
         for key in output_conditions:
             values = output_conditions[key]
             c = self._new_condition(values)
             if c is not None:
-                p['output_conditions'].append(c)
+                p['outputs'].append(c)
 
     def _new_sample_condition(self, j):
         s = dmutil.get_required('sample', j)
         c = dict()
         properties = {}
-        properties['name'] = dmutil.get_required('name', s)
-        properties['id'] = dmutil.get_required('id', s)
+        value = dmutil.get_required('name', s)
+        properties['name'] = self._new_prop_attrs("Name", "", value)
+        value = dmutil.get_required('id', s)
+        properties['id'] = self._new_prop_attrs("Id", "", value)
         c['properties'] = properties
         c['template'] = dmutil.get_required('template_name', j)
         c['attribute'] = "sample"
         c['type'] = "object"
         return c
-
-    #def _create_condition(self, j):
-        # condition = self._new_condition(j)
-        # type_of_condition = dmutil.get_required('condition_type', j)
-        # if (condition['template'] == 'Transformed Sample'):
-        #     s = self._new_sample(condition)
-        #     sample_id = dmutil.insert_entry_id('samples', s.__dict__)
-        #     condition['sample_id'] = sample_id
-        # return self._insert_condition(condition, type_of_condition)
 
     def _new_condition(self, j):
         c = dict()
@@ -190,14 +194,20 @@ class ProvenanceSaver(object):
         attr_name = dmutil.get_optional('attribute', attrs, None)
         if attr_name is None:
             return None, None
-        attr_props = {}
         value = dmutil.get_optional('value', attrs, "")
         if value == "":
             return None, None
-        attr_props['value'] = value
-        attr_props['unit'] = dmutil.get_optional('unit', attrs)
-        attr_props['name'] = dmutil.get_optional('name', attrs)
+        name = dmutil.get_optional('name', attrs)
+        unit = dmutil.get_optional('unit', attrs)
+        attr_props = self._new_prop_attrs(name, unit, value)
         return attr_name, attr_props
+
+    def _new_prop_attrs(self, name, unit, value):
+        prop_attrs = {}
+        prop_attrs['name'] = name
+        prop_attrs['unit'] = unit
+        prop_attrs['value'] = value
+        return prop_attrs
 
     def _new_sample(self, c):
         model = dmutil.get_required("model", c)
