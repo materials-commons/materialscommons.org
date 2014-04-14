@@ -15,7 +15,7 @@
         {
             "name": "Mode",
             "attribute": "mode",
-            "type": "text",
+            "type": "select",
             "unit": "",
             "unit_choice": [],
             "value": "",
@@ -65,7 +65,7 @@
         {
             "name": "Evaporation Control",
             "attribute": "evaporation_control",
-            "type": "text",
+            "type": "select",
             "unit": "",
             "unit_choice": [],
             "value": "",
@@ -77,7 +77,7 @@
         {
             "name": "Evaporation Rate",
             "attribute": "evaporation_rate",
-            "type": "text",
+            "type": "select",
             "unit": "",
             "unit_choice": [],
             "value": "",
@@ -87,7 +87,7 @@
         {
             "name": "Vacuum Level" ,
             "attribute": "vacuum_level",
-            "type": "text" ,
+            "type": "select" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
@@ -97,7 +97,7 @@
         {
             "name": "Imaging Gas" ,
             "attribute": "imaging_gas",
-            "type": "text" ,
+            "type": "select" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,

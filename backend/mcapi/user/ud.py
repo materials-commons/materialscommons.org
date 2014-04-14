@@ -128,10 +128,10 @@ class ProvenanceSaver(object):
         fid = dmutil.get_optional('id', f)
         name = dmutil.get_optional('name', f)
         displayname = dmutil.get_optional('displayname', f)
-        properties['id'] = self._new_prop_attrs("Id", "", fid)
-        properties['name'] = self._new_prop_attrs("Name", "", name)
+        properties['id'] = self._new_prop_attrs("Id", "", fid, "id")
+        properties['name'] = self._new_prop_attrs("Name", "", name, "text")
         properties['displayname'] = self._new_prop_attrs("Displayname", "",
-                                                         displayname)
+                                                         displayname, "text")
         fattrs['properties'] = properties
         return fattrs
 
@@ -158,13 +158,13 @@ class ProvenanceSaver(object):
         c = dict()
         properties = {}
         value = dmutil.get_required('name', s)
-        properties['name'] = self._new_prop_attrs("Name", "", value)
+        properties['name'] = self._new_prop_attrs("Name", "", value, "text")
         value = dmutil.get_required('id', s)
-        properties['id'] = self._new_prop_attrs("Id", "", value)
+        properties['id'] = self._new_prop_attrs("Id", "", value, "id")
         c['properties'] = properties
         c['template'] = dmutil.get_required('template_name', j)
         c['attribute'] = "sample"
-        c['type'] = "object"
+        c['type'] = "id"
         return c
 
     def _new_condition(self, j):
@@ -194,20 +194,41 @@ class ProvenanceSaver(object):
         attr_name = dmutil.get_optional('attribute', attrs, None)
         if attr_name is None:
             return None, None
-        value = dmutil.get_optional('value', attrs, "")
+        value = self._get_value(attrs)
         if value == "":
             return None, None
         name = dmutil.get_optional('name', attrs)
         unit = dmutil.get_optional('unit', attrs)
-        attr_props = self._new_prop_attrs(name, unit, value)
+        prop_type = dmutil.get_required('type', attrs)
+        prop_type = self._map_property_type(prop_type)
+        attr_props = self._new_prop_attrs(name, unit, value, prop_type)
         return attr_name, attr_props
 
-    def _new_prop_attrs(self, name, unit, value):
+    def _get_value(self, attrs):
+        value = dmutil.get_optional('value', attrs, None)
+        if value is None:
+            return ""
+        attrs_type = dmutil.get_required('type', attrs)
+        # For object types we just get the id
+        if attrs_type == "machines":
+            return dmutil.get_required('id', value)
+        return value
+
+    def _new_prop_attrs(self, name, unit, value, prop_type):
         prop_attrs = {}
         prop_attrs['name'] = name
         prop_attrs['unit'] = unit
         prop_attrs['value'] = value
+        prop_attrs['type'] = prop_type
         return prop_attrs
+
+    def _map_property_type(self, prop_type):
+        if prop_type == "machines":
+            return "id"
+        elif prop_type == "samples":
+            return "id"
+        else:
+            return prop_type
 
     def _new_sample(self, c):
         model = dmutil.get_required("model", c)
