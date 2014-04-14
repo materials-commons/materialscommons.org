@@ -8,5 +8,5 @@
     "template_mtime": "" ,
     "template_name": "Pick Sample" ,
     "template_type": "condition",
-    "template_pick": "pick sample"
+    "template_pick": "pick_sample"
 }
