@@ -20,14 +20,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.doc.name = template.template_name + ':' + today;
                 $scope.doc.template = template;
             });
-//            $scope.addAdditionalProperty = function () {
-//                $scope.doc.added_properties.push(JSON.parse($scope.bk.additional_property));
-//            };
-//
-//            $scope.addCustomProperty = function () {
-//                $scope.doc.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
-//            };
-
 
             $scope.remove_run = function (index) {
                 $scope.doc.runs.splice(index, 1);
