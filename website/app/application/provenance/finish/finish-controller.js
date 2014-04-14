@@ -1,11 +1,9 @@
 Application.Provenance.Controllers.controller('provenanceFinish',
-    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService", "$stateParams",
-        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService, $stateParams) {
-
+    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService", "$stateParams", "Action",
+        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService, $stateParams, Action) {
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
                 alertService.sendMessage("Your draft has been saved!");
-                $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
             };
 
             $scope.submitProvenance = function () {
@@ -28,7 +26,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                                     $scope.process_id = data.process;
                                     ProvDrafts.deleteDraft($scope.doc.id);
                                     alertService.sendMessage("Your Provenance was Created Successfully.");
-                                    $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
+                                    $state.go("toolbar.overview");
                                 })
                                 .error(function () {
                                     $scope.notdone = true;
@@ -47,6 +45,8 @@ Application.Provenance.Controllers.controller('provenanceFinish',
 
             $scope.init = function () {
                 $scope.doc = ProvDrafts.current;
+
+                console.dir($scope.doc)
                 $scope.process = $scope.doc.process;
                 $scope.inputs = $scope.doc.process.input_conditions;
                 $scope.outputs = $scope.doc.process.output_conditions;

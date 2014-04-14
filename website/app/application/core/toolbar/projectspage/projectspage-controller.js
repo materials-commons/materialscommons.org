@@ -12,17 +12,17 @@ Application.Controllers.controller('toolbarProjectsPage',
                 }
             });
 
-            $scope.init = function () {
+            function init() {
                 mcapi('/projects/%', $scope.project_id)
                     .success(function (project) {
                         $scope.project = project;
                         if ($stateParams.draft_id !== "") {
                             $state.go('toolbar.projectspage.provenance');
                         } else {
-                            $state.go('toolbar.projectspage.overview');
+                            $state.go('toolbar.projectspage.overview', {id: $scope.project_id, 'draft_id': ''});
                         }
                     }).jsonp();
-            };
+            }
 
-            $scope.init();
+            init();
         }]);

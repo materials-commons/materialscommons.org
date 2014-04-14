@@ -8,7 +8,10 @@
                             <input type="radio" ng-model="doc.is_active" value=true> available <br/>
                             <input type="radio" ng-model="doc.is_active" value='false'> not available
                         </cgroup>
-                        <div sample-view doc="doc" edit="false"></div>
+                        <div upperlevel-sample doc="doc.sample" bk="bk" edit="false"></div>
+                        <div df-properties default-properties="doc.sample.default_properties" edit="false"></div>
+                        <div ad-properties doc="doc.sample" edit="false" bk="bk"></div>
+
                     </div>
                     <div ng-switch-when="pick_sample">
                         <cgroup label="Pick a sample:">
