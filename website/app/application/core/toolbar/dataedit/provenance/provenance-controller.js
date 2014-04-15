@@ -12,11 +12,13 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                 mcapi('/processes/output/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.output_process = data;
+                        console.log($scope.output_process);
                     }).jsonp();
 
                 mcapi('/processes/input/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.input_processes = data;
+                        console.log($scope.input_processes);
                     }).jsonp();
             };
             $scope.init();

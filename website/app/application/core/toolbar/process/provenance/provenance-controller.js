@@ -11,26 +11,7 @@ Application.Controllers.controller('toolbarProcessProvenance',
                 mcapi('/processes/%', $scope.id)
                     .success(function (data) {
                         $scope.process = data;
-                        $scope.input_files = $scope.process.input_files;
-                        $scope.output_files = $scope.process.output_files;
-                        if ($scope.process.input_conditions.length !== 0) {
-                            mcapi('/processes/extract/%/%', $scope.process.id, "input_conditions")
-                                .success(function (data) {
-                                    $scope.input_properties = data;
-                                })
-                                .error(function (e) {
-
-                                }).jsonp();
-                        }
-                        if ($scope.process.output_conditions.length !== 0) {
-                            mcapi('/processes/extract/%/%', $scope.process.id, "output_conditions")
-                                .success(function (data) {
-                                    $scope.output_properties = data;
-                                })
-                                .error(function (e) {
-
-                                }).jsonp();
-                        }
+                        $scope.input_files = $scope.process.inputs
                     }).jsonp();
             };
             $scope.init();
