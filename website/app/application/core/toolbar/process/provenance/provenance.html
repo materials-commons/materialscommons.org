@@ -1,21 +1,16 @@
 <div class="tab-pane" id="provenance" ng-controller="toolbarProcessProvenance">
-    <form class="form-inline">
-        <div class="span3">
-            <legend>Inputs</legend>
-            <div ng-repeat="ip in process.inputs">
-                <div class="well"><a>{{ip.properties.name.value}}</a></div>
-            </div>
+    <div class="span4">
+        <legend>Inputs</legend>
+        <div input-step conditions="input_conditions" files="input_files"></div>
+    </div>
+    <div class="span3">
+        <div class="circle-text" style="margin-left: 100px;margin-right: 0px">
+            <div>{{process.name}}</div>
         </div>
-        <div class="span4">
-            <div class="circle-text" style="margin-left: 100px;margin-right: 0px">
-                <div>{{process.name}}</div>
-            </div>
-        </div>
+    </div>
 
-        <div class="span3">
-            <div class="well">
-                <legend>Outputs</legend>
-            </div>
-        </div>
-    </form>
+    <div class="span4">
+        <legend>Outputs</legend>
+        <div output-step conditions="output_conditions" files="output_files"></div>
+    </div>
 </div>
