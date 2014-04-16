@@ -5,13 +5,13 @@ Application.Directives.directive('notification', function ($timeout) {
         scope: {
             ngModel: '='
         },
-        template: '<div class="alert fade" bs-alert="ngModel">Hello world</div>',
+        template: '<div class="alert fade" bs-alert="ngModel"></div>',
         link: function (scope, element) {
             scope.$watch('ngModel', function () {
                 element.show();
                 $timeout(function () {
                     element.hide();
-                }, 5000);
+                }, 3000);
             });
         }
     };
