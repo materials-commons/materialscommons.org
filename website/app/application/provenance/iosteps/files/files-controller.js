@@ -2,19 +2,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
     ["$scope", "ProvDrafts", "$stateParams", "pubsub", "Projects",
         function ($scope, ProvDrafts, $stateParams, pubsub, Projects) {
 
-            $scope.init = function () {
-                if ($stateParams.iostep === "inputs") {
-                    $scope.channel = 'provenance.inputs.files';
-                    $scope.files = ProvDrafts.current.process.input_files;
-                } else {
-                    $scope.channel = 'provenance.outputs.files';
-                    $scope.files = ProvDrafts.current.process.output_files;
-                }
-                Projects.setChannel($scope.channel);
-            };
-
-            $scope.init();
-
             pubsub.waitOn($scope, $scope.channel, function (fileentry) {
                 if (fileentry.selected) {
                     $scope.files.push(fileentry);
@@ -39,4 +26,18 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
                 }
                 return -1;
             };
+
+            function init() {
+                Projects.clearSelectedFiles(ProvDrafts.current.project_id);
+                if ($stateParams.iostep === "inputs") {
+                    $scope.channel = 'provenance.inputs.files';
+                    $scope.files = ProvDrafts.current.process.input_files;
+                } else {
+                    $scope.channel = 'provenance.outputs.files';
+                    $scope.files = ProvDrafts.current.process.output_files;
+                }
+                Projects.setChannel($scope.channel);
+            }
+
+            init();
         }]);
