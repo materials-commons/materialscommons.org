@@ -1,18 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
     ["$scope", "ProvDrafts", "$stateParams", "pubsub", "Projects",
         function ($scope, ProvDrafts, $stateParams, pubsub, Projects) {
-
-            pubsub.waitOn($scope, $scope.channel, function (fileentry) {
-                if (fileentry.selected) {
-                    $scope.files.push(fileentry);
-                } else {
-                    var i = $scope.indexOfFile(fileentry.id);
-                    if (i != -1) {
-                        $scope.files.splice(i, 1);
-                    }
-                }
-            });
-
             $scope.removeFile = function (index) {
                 $scope.files[index].selected = false;
                 $scope.files.splice(index, 1);
@@ -28,7 +16,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
             };
 
             function init() {
-                Projects.clearSelectedFiles(ProvDrafts.current.project_id);
                 if ($stateParams.iostep === "inputs") {
                     $scope.channel = 'provenance.inputs.files';
                     $scope.files = ProvDrafts.current.process.input_files;
@@ -36,8 +23,20 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
                     $scope.channel = 'provenance.outputs.files';
                     $scope.files = ProvDrafts.current.process.output_files;
                 }
+                Projects.resetSelectedFiles($scope.files, ProvDrafts.current.project_id);
                 Projects.setChannel($scope.channel);
             }
 
             init();
+
+            pubsub.waitOn($scope, $scope.channel, function (fileentry) {
+                if (fileentry.selected) {
+                    $scope.files.push(fileentry);
+                } else {
+                    var i = $scope.indexOfFile(fileentry.id);
+                    if (i != -1) {
+                        $scope.files.splice(i, 1);
+                    }
+                }
+            });
         }]);
