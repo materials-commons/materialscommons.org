@@ -1,0 +1,55 @@
+    <ul class="nav nav-tabs">
+        <li ng-repeat="ip in conditions">
+            <a href="#{{ip.type}}" ng-click="showtab(ip, ip.type)" data-toggle="tab">{{ip.properties.name.value}}</a>
+        </li>
+            <li class="dropdown">
+                <a id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Files <b
+                        class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+                    <li ng-repeat="f in files">
+                        <a href="#ip" ng-click="showtab(f, f.type)" tabindex="-1" data-toggle="tab">{{f.properties.name.value}}</a>
+                    </li>
+                </ul>
+            </li>
+
+    </ul>
+
+    <div class="tab-content">
+        <div id="condition" class="tab-pane fade ">
+            <div ng-repeat="p in item.properties">
+                <cgroup label="{{p.name}}:">
+                    <input ng-model="p.value" type="text" ng-disabled="true">
+                </cgroup>
+            </div>
+        </div>
+        <div id="id" class="tab-pane fade ">
+            <div upperlevel-sample bk="bk" doc="item" edit="true"></div>
+            <div df-properties default-properties="item.default_properties" edit="true"></div>
+            <div ad-properties doc="item" edit="true" bk=""></div>
+        </div>
+        <div id="ip" class="tab-pane fade">
+            <cgroup label="Name:">
+                <input ng-model="item.name" type="text" ng-disabled="true">
+            </cgroup>
+            <cgroup label="Owner:">
+                <input ng-model="item.owner" type="text" ng-disabled="true">
+            </cgroup>
+            <div ng-show="item.notes.length > 0">
+                <h5>Previous Notes:</h5>
+                <table class="table">
+                    <thead>
+                    <th>Message</th>
+                    <th>Who</th>
+                    <th>Date Created</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="note in item.notes">
+                        <td>{{note.message}}</td>
+                        <td>{{note.who}}</td>
+                        <td>{{note.date}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
