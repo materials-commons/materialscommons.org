@@ -26,7 +26,6 @@ Application.Controllers.controller('toolbarProcess',
                             mcapi('/machines/%', $scope.process.properties.machine.value)
                                 .success(function (data) {
                                     $scope.machine = data;
-                                    console.log($scope.machine);
                                 }).jsonp();
                         }
                     }).jsonp();
