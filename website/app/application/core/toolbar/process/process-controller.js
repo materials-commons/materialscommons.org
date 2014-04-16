@@ -28,8 +28,6 @@ Application.Controllers.controller('toolbarProcess',
                             }).jsonp();
 
                     }).jsonp();
-
-
                 $scope.showtab('notes');
             }
 
