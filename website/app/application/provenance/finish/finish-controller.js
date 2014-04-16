@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceFinish',
-    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService", "$stateParams", "Action",
-        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService, $stateParams, Action) {
+    ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService", "$stateParams",
+        function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService, $stateParams) {
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
                 alertService.sendMessage("Your draft has been saved!");
@@ -26,6 +26,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                                     $scope.process_id = data.process;
                                     ProvDrafts.deleteDraft($scope.doc.id);
                                     alertService.sendMessage("Your Provenance was Created Successfully.");
+                                    ProvDrafts.current = null;
                                     $state.go("toolbar.overview");
                                 })
                                 .error(function () {
