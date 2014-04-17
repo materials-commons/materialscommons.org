@@ -11,7 +11,7 @@
                     </cgroup>
                     <div class="control-group">
                         <div ng-show="bk.classification">
-                            <div upperlevel-sample   bk="bk" doc="doc" edit="false"></div>
+                            <div upperlevel-object   bk="bk" doc="doc" edit="false"></div>
                             <div df-properties default-properties="doc.default_properties"></div>
 
                             <cgroup label="Treatments:">
@@ -62,7 +62,7 @@
                         <th>Name</th>
                         <th>Composition</th>
                         <th>Date Created</th>
-                        <th>Treatment Details</th>
+                        <th>Details</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,11 +84,11 @@
         </div>
         <div class="span6">
             <form class="form-horizontal" ng-show="sample">
+                <legend>{{sample.name}}</legend>
                 <div ng-if="sample.treatments.length==0">
                     No Treatments applied to the material {{sample.name}}
                 </div>
                 <div ng-if="sample.treatments.length!==0">
-                    <legend>{{sample.name}} Treatment Details:</legend>
                     <div ng-repeat="treatment in sample.treatments">
                         <b>{{treatment.template}}:</b>
                         <fieldset>
@@ -102,6 +102,32 @@
                         </fieldset>
                     </div>
                 </div>
+                <div ng-show="sample.notes.length > 0">
+                    <h5>Previous Notes:</h5>
+                    <table class="table">
+                        <thead>
+                        <th>Message</th>
+                        <th>Who</th>
+                        <th>Date Created</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="note in sample.notes">
+                            <td>{{note.message}}</td>
+                            <td>{{note.who}}</td>
+                            <td>{{note.date}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <legend>Properties:</legend>
+                <div ng-repeat="property in sample.properties">
+                    <cgroup label="{{property.name}}">
+                        <input class="input-large" ng-model="property.value" type="text"
+                               ng-disabled="true">
+                        {{ property.unit }}
+                    </cgroup>
+                </div>
+
             </form>
         </div>
     </div>

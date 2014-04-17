@@ -1,6 +1,11 @@
 <cgrouprequired label="Name:">
-    <input ng-model="doc.name" type="text" placeholder='name...' ng-disabled="edit" required>
+    <input ng-model="doc.name" type="text" placeholder='Name...' ng-disabled="edit" required>
 </cgrouprequired>
+
+<cgroup label="Description:">
+    <textarea class="span8" rows="4" placeholder="Description..."
+              ng-model="doc.description" ng-disabled="edit"></textarea>
+</cgroup>
 
 <div ng-if="edit===false">
     <cgroup label="Notes:">
