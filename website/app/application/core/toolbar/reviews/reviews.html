@@ -66,6 +66,7 @@
                             <td>{{ review.birthtime | toDateString }}</td>
                             <td>{{ review.item_name }}</td>
                             <td>{{ review.status }}</td>
+                            <td> <button type="button" ng-class="close" ng-click="removeReview($index)" >&times;</button></td>
                         </tr>
                         </tbody>
                     </table>
