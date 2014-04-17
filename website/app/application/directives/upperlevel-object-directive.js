@@ -1,4 +1,4 @@
-Application.Directives.directive('upperlevelSample',
+Application.Directives.directive('upperlevelObject',
     function () {
         return {
             restrict: "A",
@@ -8,6 +8,6 @@ Application.Directives.directive('upperlevelSample',
                 edit: '=',
                 bk: '='
             },
-            templateUrl: 'application/directives/upperlevel-sample.html'
+            templateUrl: 'application/directives/upperlevel-object.html'
         };
     });

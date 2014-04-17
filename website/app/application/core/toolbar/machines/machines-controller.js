@@ -2,18 +2,21 @@ Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
         var $validationProvider = $injector.get('$validation');
         $scope.clear_machine = function () {
-            $scope.doc = {
-                name: '',
-                notes: [],
-                description: '',
-                default_properties: [],
-                added_properties: []
-            };
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"machine"')
+                .success(function (data) {
+                    $scope.machine_template = data[0];
+                    $scope.doc = {
+                        name: '',
+                        notes: [],
+                        description: '',
+                        default_properties: $scope.machine_template.default_properties,
+                        added_properties: []
+                    };
+                }).jsonp();
+
             $scope.bk = {
-                new_note: '',
-                additional_property: '',
-                customPropertyName: '',
-                customPropertyValue: ''
+                new_note: ''
             };
         };
 
@@ -26,6 +29,7 @@ Application.Controllers.controller('toolbarMachines',
                             .success(function (machine_obj) {
                                 $scope.mach = machine_obj;
                                 $scope.machines_list.unshift(machine_obj);
+                                $scope.clear_machine();
                             })
                             .error(function (e) {
 
@@ -40,6 +44,15 @@ Application.Controllers.controller('toolbarMachines',
 
         };
 
+        $scope.moreDetails = function (machine) {
+            $scope.machine = machine;
+            $scope.flag = false;
+            if ((Object.keys($scope.machine.properties)).length === 0) {
+                $scope.flag = true;
+            }
+
+        };
+
         function init() {
             $scope.doc = {
                 name: '',
@@ -49,10 +62,7 @@ Application.Controllers.controller('toolbarMachines',
                 added_properties: []
             };
             $scope.bk = {
-                new_note: '',
-                additional_property: '',
-                customPropertyName: '',
-                customPropertyValue: ''
+                new_note: ''
             };
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_type":"machine"')
@@ -70,4 +80,5 @@ Application.Controllers.controller('toolbarMachines',
         }
 
         init();
-    }]);
+    }])
+;
