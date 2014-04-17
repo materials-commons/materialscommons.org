@@ -177,9 +177,9 @@ app.config(["$stateProvider", function ($stateProvider) {
         })
 
         // Toolbar materials views
-        .state('toolbar.samples', {
-            url: '/samples',
-            templateUrl: 'application/core/toolbar/samples/samples.html'
+        .state('toolbar.objects', {
+            url: '/objects',
+            templateUrl: 'application/core/toolbar/objects/objects.html'
         })
 
         // Toolbar overview

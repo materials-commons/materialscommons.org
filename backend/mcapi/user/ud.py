@@ -5,6 +5,7 @@ import rethinkdb as r
 from .. import access
 from .. import error
 from .. import dmutil
+from .. import doc
 from loader.model import sample
 from mcapi import mcexceptions
 import traceback
@@ -115,9 +116,9 @@ class ProvenanceSaver(object):
     def _process_properties(self, process, j):
         process['properties'] = {}
         default_props = dmutil.get_required('default_properties', j)
-        self._add_properties(default_props, process)
+        doc.add_properties(default_props, process)
         added_props = dmutil.get_optional('added_properties', j, [])
-        self._add_properties(added_props, process)
+        doc.add_properties(added_props, process)
 
     def _extract_id(self, key, j):
         item = dmutil.get_optional(key, j, None)
@@ -143,17 +144,16 @@ class ProvenanceSaver(object):
         fid = dmutil.get_optional('id', f)
         name = dmutil.get_optional('name', f)
         displayname = dmutil.get_optional('displayname', f)
-        properties['id'] = self._new_prop_attrs("Id", "", fid, "id")
-        properties['name'] = self._new_prop_attrs("Name", "", name, "text")
-        properties['displayname'] = self._new_prop_attrs("Displayname", "",
-                                                         displayname, "text")
+        properties['id'] = doc.new_prop_attrs("Id", "", fid, "id")
+        properties['name'] = doc.new_prop_attrs("Name", "", name, "text")
+        properties['displayname'] = doc.new_prop_attrs("Displayname", "",
+                                                       displayname, "text")
         fattrs['properties'] = properties
         return fattrs
 
     def _create_conditions(self, input_conditions, output_conditions, p):
         p['inputs'] = []
         for key in input_conditions:
-            print key
             values = input_conditions[key]
             if key == "Pick Sample":
                 c = self._new_sample_condition(values)
@@ -193,57 +193,11 @@ class ProvenanceSaver(object):
         c['attribute'] = attr
 
         default_props = dmutil.get_optional('default_properties', j, [])
-        self._add_properties(default_props, c)
+        doc.add_properties(default_props, c)
 
         added_properties = dmutil.get_optional('added_properties', j, [])
-        self._add_properties(added_properties, c)
+        doc.add_properties(added_properties, c)
         return c
-
-    def _add_properties(self, properties, what):
-        for prop in properties:
-            attr_name, prop_vals = self._new_property_attributes(prop)
-            if attr_name is not None:
-                what['properties'][attr_name] = prop_vals
-
-    def _new_property_attributes(self, attrs):
-        attr_name = dmutil.get_optional('attribute', attrs, None)
-        if attr_name is None:
-            return None, None
-        value = self._get_value(attrs)
-        if value == "":
-            return None, None
-        name = dmutil.get_optional('name', attrs)
-        unit = dmutil.get_optional('unit', attrs)
-        prop_type = dmutil.get_required('type', attrs)
-        prop_type = self._map_property_type(prop_type)
-        attr_props = self._new_prop_attrs(name, unit, value, prop_type)
-        return attr_name, attr_props
-
-    def _get_value(self, attrs):
-        value = dmutil.get_optional('value', attrs, None)
-        if value is None:
-            return ""
-        attrs_type = dmutil.get_required('type', attrs)
-        # For object types we just get the id
-        if attrs_type == "machines":
-            return dmutil.get_required('id', value)
-        return value
-
-    def _new_prop_attrs(self, name, unit, value, prop_type):
-        prop_attrs = {}
-        prop_attrs['name'] = name
-        prop_attrs['unit'] = unit
-        prop_attrs['value'] = value
-        prop_attrs['type'] = prop_type
-        return prop_attrs
-
-    def _map_property_type(self, prop_type):
-        if prop_type == "machines":
-            return "id"
-        elif prop_type == "samples":
-            return "id"
-        else:
-            return prop_type
 
     def _new_sample(self, c):
         model = dmutil.get_required("model", c)

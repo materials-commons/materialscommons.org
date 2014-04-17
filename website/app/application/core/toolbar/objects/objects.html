@@ -1,4 +1,4 @@
-<div ng-controller="toolbarSamples">
+<div ng-controller="toolbarObjects">
     <div class="row-fluid">
         <form name="Sample" class="form-horizontal">
             <legend>Create New Object</legend>
@@ -37,9 +37,9 @@
                                     <label>Treatments Order:</label>
 
                                     <div class="tabbable tabs-right">
-                                        <ul class="nav nav-tabs" ng-repeat="each_item in doc.treatments_order">
-                                            <li><a ng-click="showTab(each_item)"
-                                                   data-toggle="tab"><strong>{{each_item}}</strong></a></li>
+                                        <ul class="nav nav-tabs" ng-repeat="treatment in doc.treatments">
+                                            <li><a ng-click="showTab(treatment, $index)"
+                                                   data-toggle="tab"><strong>{{treatment.template_name}}</strong></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                     </div>
                 </fieldset>
         </form>
-        <button ng-click="save(Sample)" class="btn btn-primary">New</button>
+        <button ng-click="save(Sample)" class="btn btn-primary">Save</button>
         <button ng-click="clear()" class="btn btn-danger">Clear</button>
     </div>
 
@@ -84,25 +84,24 @@
         </div>
         <div class="span6">
             <form class="form-horizontal" ng-show="sample">
-                <div ng-if="sample.treatments_order.length==0">
+                <div ng-if="sample.treatments.length==0">
                     No Treatments applied to the material {{sample.name}}
                 </div>
-                <div ng-if="sample.treatments_order.length!==0">
+                <div ng-if="sample.treatments.length!==0">
                     <legend>{{sample.name}} Treatment Details:</legend>
-                    <div ng-repeat="key in sample.treatments_order">
-                        <b>{{key}}:</b>
+                    <div ng-repeat="treatment in sample.treatments">
+                        <b>{{treatment.template}}:</b>
                         <fieldset>
-                            <div ng-repeat="item in sample.treatments[key]">
-                                <cgroup label="{{item.name}}">
-                                    <input class="input-large" ng-model="item.value" type="text"
+                            <div ng-repeat="property in treatment.properties">
+                                <cgroup label="{{property.name}}">
+                                    <input class="input-large" ng-model="property.value" type="text"
                                            ng-disabled="true">
+                                    {{ property.unit }}
                                 </cgroup>
                             </div>
                         </fieldset>
                     </div>
                 </div>
-                <div df-properties default-properties="sample.default_properties" edit="true"></div>
-                <div ad-properties added-properties="sample.added_properties" edit="true"></div>
             </form>
         </div>
     </div>
