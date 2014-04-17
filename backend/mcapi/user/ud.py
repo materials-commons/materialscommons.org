@@ -89,7 +89,8 @@ class ProvenanceSaver(object):
         for key in attr['properties']:
             prop = attr['properties'][key]
             prop['process_id'] = self.process_id
-            prop['attribute'] = attr['attribute']
+            prop['attribute'] = key
+            prop['property'] = attr['attribute']
             prop['step'] = step
             self.saver.insert('conditions', prop)
 
@@ -173,9 +174,9 @@ class ProvenanceSaver(object):
         c = dict()
         properties = {}
         value = dmutil.get_required('name', s)
-        properties['name'] = self._new_prop_attrs("Name", "", value, "text")
+        properties['name'] = doc.new_prop_attrs("Name", "", value, "text")
         value = dmutil.get_required('id', s)
-        properties['id'] = self._new_prop_attrs("Id", "", value, "id")
+        properties['id'] = doc.new_prop_attrs("Id", "", value, "id")
         c['properties'] = properties
         c['template'] = dmutil.get_required('template_name', j)
         c['attribute'] = "sample"
