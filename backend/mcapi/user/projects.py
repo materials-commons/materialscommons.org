@@ -3,7 +3,6 @@ from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request
 import rethinkdb as r
 from .. import args
-from datadirs import DItem, DEncoder, buildTreeFromSelection
 from os.path import dirname, basename
 import json
 from .. import access

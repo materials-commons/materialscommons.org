@@ -20,14 +20,14 @@ Application.Controllers.controller('toolbar',
             $scope.service.status = "Not Connected";
         });
 
-        $scope.init = function () {
-            $scope.showDrafts = true;
+        function init() {
+            $scope.showFileServices = false;
             $scope.service = {
                 status: "Not Connected"
             };
-        };
+        }
 
-        $scope.init();
+        init();
     }]);
 
 

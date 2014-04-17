@@ -5,11 +5,10 @@ from flask import jsonify, g, request
 import rethinkdb as r
 from loader.model import user
 import dmutil
-from utils import  make_password_hash
+from utils import make_password_hash
 import error
 from args import json_as_format_arg
 from mcexceptions import NoSuchItem
-import access
 import args
 
 
@@ -30,7 +29,8 @@ def tags_by_count():
 def get_the_count(selection):
     tagsCount = []
     for tag in selection:
-        c = r.table('tag2item').get_all(tag[u'id'], index='tag_id').count().run(g.conn)
+        c = r.table('tag2item').get_all(tag[u'id'], index='tag_id')\
+                               .count().run(g.conn)
         tagsCount.append({'name': tag[u'id'], 'count': c})
     return json_as_format_arg(tagsCount)
 
@@ -44,20 +44,21 @@ def tag(item_type, item_id):
     tag['id'] = dmutil.get_required('id', j)
     entry = dmutil.entry_exists('tags', tag['id'])
     if entry:
-        tag2item_id =  join_tag_and_item(tag['id'], item_id, item_type)
+        tag2item_id = join_tag_and_item(tag['id'], item_id, item_type)
         return dmutil.get_single_from_table('tag2item', tag2item_id)
     else:
         tag_id = dmutil.insert_entry_id('tags', tag)
         if (tag_id):
-            tag2item_id =  join_tag_and_item(tag_id, item_id, item_type)
+            tag2item_id = join_tag_and_item(tag_id, item_id, item_type)
             return dmutil.get_single_from_table('tag2item', tag2item_id)
 
 
 def join_tag_and_item(tag_id, item_id, item_type):
-    tag_to_item = {'tag_id': tag_id, 'item_id': item_id, 'item_type': item_type}
+    tag_to_item = {'tag_id': tag_id, 'item_id': item_id,
+                   'item_type': item_type}
     tag2item_id = dmutil.insert_entry_id('tag2item', tag_to_item)
     return tag2item_id
-    
+
 
 @app.route('/tag/<tag>', methods=['DELETE'])
 @crossdomain(origin='*')
@@ -65,12 +66,12 @@ def join_tag_and_item(tag_id, item_id, item_type):
 def delete_tag(tag):
     entry = dmutil.item_exists('tag2item', tag)
     if entry:
-        rr = r.table('tag2item').get(tag).delete().run(g.conn)
+        r.table('tag2item').get(tag).delete().run(g.conn)
         return json.dumps(entry)
     raise NoSuchItem()
 
 
-@app.route('/tags/list/<item_type>/<item_id>', methods=['GET']) 
+@app.route('/tags/list/<item_type>/<item_id>', methods=['GET'])
 @jsonp
 @apikey
 def tags_for_item(item_type, item_id):
@@ -78,23 +79,27 @@ def tags_for_item(item_type, item_id):
     return json.dumps(rr)
 
 
-@app.route('/tags/byitem/<tag>', methods=['GET']) 
+@app.route('/tags/byitem/<tag>', methods=['GET'])
 @jsonp
 @apikey(shared=True)
 def tags_by_itemtype(tag):
     all_tags = []
-    rr = r.table('tag2item').get_all(tag, index='tag_id').eq_join('item_id', r.table('datafiles')).zip()
+    rr = r.table('tag2item').get_all(tag, index='tag_id')\
+                            .eq_join('item_id', r.table('datafiles')).zip()
     rr = args.add_all_arg_options(rr)
     datafiles = list(rr.run(g.conn, time_format='raw'))
     for df in datafiles:
-        rr = list(r.table('tag2item').get_all(df['id'], index='item_id').pluck('tag_id').run(g.conn))
-        all_tags.append({'item': df, 'tags_list':rr, 'type': 'datafile'})
-    pv = r.table('tag2item').get_all(tag, index='tag_id').eq_join('item_id', r.table('processes')).zip()
+        rr = list(r.table('tag2item').get_all(df['id'], index='item_id')
+                  .pluck('tag_id').run(g.conn))
+        all_tags.append({'item': df, 'tags_list': rr, 'type': 'datafile'})
+    pv = r.table('tag2item').get_all(tag, index='tag_id')\
+                            .eq_join('item_id', r.table('processes')).zip()
     pv = args.add_all_arg_options(pv)
     processes = list(pv.run(g.conn, time_format='raw'))
     for p in processes:
-        rr = list(r.table('tag2item').get_all(p['id'], index='item_id').pluck('tag_id').run(g.conn))
-        all_tags.append({'item': p, 'tags_list':rr, 'type':'process'})
+        rr = list(r.table('tag2item').get_all(p['id'], index='item_id')
+                  .pluck('tag_id').run(g.conn))
+        all_tags.append({'item': p, 'tags_list': rr, 'type': 'process'})
     return args.json_as_format_arg(all_tags)
 
 
