@@ -37,8 +37,7 @@ def get_reviews_to_be_conducted():
 def delete_review(id):
     user = access.get_user()
     rr = r.table('reviews').get_all(id)
-    rr = rr.filter(lambda row: (row['requested_to'] == user |
-                                row['requested_by'] == user))
+    rr = rr.filter(lambda row: (row['requested_by'] == user))
     rv = rr.delete().run(g.conn)
     return jsonify(rv)
 
