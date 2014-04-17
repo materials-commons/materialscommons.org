@@ -52,7 +52,7 @@
             <div ng-switch-when="select">
                 <div ng-if='df.value_choice.length!==0'>
                     <select ng-model='df.value' ng-disabled="edit">
-                        <option ng-repeat='each in df.value_choice'> {{each}}</option>
+                        <option ng-repeat='each in df.value_choice'>{{each}}</option>
                     </select>
                 </div>
             </div>
@@ -63,7 +63,7 @@
             </div>
             <div ng-if='df.unit_choice.length!=0'>
                 <select ng-model='df.unit' ng-disabled="edit">
-                    <option ng-repeat='each in df.unit_choice'> {{each}}</option>
+                    <option ng-repeat='each in df.unit_choice'>{{each}}</option>
                 </select>
             </div>
         </div>

@@ -4,6 +4,7 @@
     "attribute": "etching",
     "default_properties": [
         {
+            "attribute": "temperature",
             "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
@@ -13,6 +14,7 @@
             "required": true
         },
         {
+            "attribute": "time",
             "name": "Time" ,
             "type": "number" ,
             "unit": "" ,

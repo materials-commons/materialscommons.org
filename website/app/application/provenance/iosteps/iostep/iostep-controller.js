@@ -19,7 +19,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.load_all_samples = function () {
-                mcapi('/samples')
+                mcapi('/objects')
                     .success(function (data) {
                         $scope.samples_list = data;
                         if ($scope.doc.sample) {
