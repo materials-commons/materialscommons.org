@@ -1,34 +1,22 @@
 {
     "id": "Machine" ,
-    "default_properties": [         
-    ],
-    "additional_properties": [
+    "default_properties": [
         {
-            "name": "Gun Type" ,
-            "attribute": "gun_type",
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": ["Field emission selection"],
-            "required": false
-        },
-        {
-            "name": "Detector Type" ,
-            "attribute": "detector_type",
+            "name": "Serial Number" ,
+            "attribute": "serial_number",
             "type": "text" ,
             "unit": "" ,
-            "unit_choice": [] ,
+            "unit_choice": "" ,
             "value": "" ,
             "value_choice": [],
             "required": false
         },
         {
-            "name": "Model" ,
-            "attribute": "model",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [],
+            "name": "Force Capacity(kN)" ,
+            "attribute": "force_capacity",
+            "type": "number" ,
+            "unit": "kN" ,
+            "unit_choice": "" ,
             "value": "" ,
             "value_choice": [],
             "required": false
@@ -52,52 +40,15 @@
             "value": "" ,
             "value_choice": "",
             "required": false
-        },
-        {
-            "name": "Force Type" ,
-            "attribute": "force_type",
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ["Screw", "Hydraulic"],
-            "required": false
-        },
-        {
-            "name": "Type" ,
-            "attribute": "type",
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": ["Rotating anode"],
-            "required": false
-        },
-        {
-            "name": "Serial Number" ,
-            "attribute": "serial_number",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Force Capacity(kN)" ,
-            "attribute": "force_capacity",
-            "type": "number" ,
-            "unit": "kN" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
         }
     ],
+    "additional_properties": [
+        
+    ],
     "owner": "admin@materialscommons.org",
-    "template_birthtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,
+    "template_birthtime": "" ,
     "template_description": "" ,
-    "template_mtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,
+    "template_mtime": "" ,
     "template_name": "Machine" ,
     "template_type": "machine",
     "template_pick": ""

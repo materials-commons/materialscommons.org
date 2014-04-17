@@ -51,7 +51,6 @@ Application.Controllers.controller('toolbarSamples',
 
         };
 
-
         $scope.clear = function () {
             $scope.doc = {
                 name: '',
@@ -63,7 +62,6 @@ Application.Controllers.controller('toolbarSamples',
                 available: true,
                 default_properties: [],
                 added_properties: []
-
             };
             $scope.bk = {
                 selected_treatment: '',
@@ -71,7 +69,6 @@ Application.Controllers.controller('toolbarSamples',
                 tab_item: '',
                 classification: '',
                 new_note: ''
-
             };
         };
 
