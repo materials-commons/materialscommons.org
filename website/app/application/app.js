@@ -95,15 +95,6 @@ app.config(["$stateProvider", function ($stateProvider) {
             url: '/drafts',
             templateUrl: 'application/core/toolbar/drafts/drafts.html'
         })
-        // Toolbar Data Views
-        .state('toolbar.mydatapage', {
-            url: '/mydatapage',
-            templateUrl: 'application/core/toolbar/mydatapage/mydatapage.html'
-        })
-        .state('toolbar.mydata', {
-            url: '/mydata',
-            templateUrl: 'application/core/toolbar/mydata/mydata.html'
-        })
         .state('toolbar.thumbnails', {
             url: '/thumbnails',
             templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
