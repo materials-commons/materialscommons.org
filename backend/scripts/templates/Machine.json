@@ -2,36 +2,6 @@
     "id": "Machine" ,
     "default_properties": [
         {
-            "name": "Serial Number" ,
-            "attribute": "serial_number",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Force Capacity(kN)" ,
-            "attribute": "force_capacity",
-            "type": "number" ,
-            "unit": "kN" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Location" ,
-            "attribute": "location",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
             "name": "Manufacturer" ,
             "attribute": "manufacturer",
             "type": "text" ,
@@ -39,12 +9,20 @@
             "unit_choice": "" ,
             "value": "" ,
             "value_choice": "",
-            "required": false
+            "required": true
+        },
+        {
+            "name": "Model Number" ,
+            "attribute": "model_number",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
         }
     ],
-    "additional_properties": [
-        
-    ],
+    "additional_properties": [],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
