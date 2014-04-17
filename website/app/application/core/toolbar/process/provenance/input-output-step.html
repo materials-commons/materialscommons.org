@@ -1,32 +1,32 @@
     <ul class="nav nav-tabs">
         <li ng-repeat="ip in conditions">
-            <a href="#{{ip.type}}" ng-click="showtab(ip, ip.type)" data-toggle="tab"><b>{{ip.properties.name.value}}</b></a>
+           <a href="#{{stepType}}-{{ip.type}}" ng-click="showtab(ip, ip.type)" data-toggle="tab"><b> {{ip.properties.name.value}}</b></a>
         </li>
             <li class="dropdown">
                 <a id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Files <b
                         class="caret"></b></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
                     <li ng-repeat="f in files">
-                        <a href="#file" ng-click="showtab(f, f.type)" tabindex="-1" data-toggle="tab">{{f.properties.name.value}}</a>
+                        <a href="#{{stepType}}-file" ng-click="showtab(f, f.type)" tabindex="-1" data-toggle="tab">{{f.properties.name.value}}</a>
                     </li>
                 </ul>
             </li>
     </ul>
 
     <div class="tab-content">
-        <div id="condition" class="tab-pane fade ">
+        <div id="{{stepType}}-condition" class="tab-pane fade ">
             <div ng-repeat="p in item.properties">
                 <cgroup label="{{p.name}}:">
                     <input ng-model="p.value" type="text" ng-disabled="true">
                 </cgroup>
             </div>
         </div>
-        <div id="id" class="tab-pane fade ">
+        <div id="{{stepType}}-id" class="tab-pane fade ">
             <div upperlevel-sample bk="bk" doc="item" edit="true"></div>
             <div df-properties default-properties="item.default_properties" edit="true"></div>
             <div ad-properties doc="item" edit="true" bk=""></div>
         </div>
-        <div id="file" class="tab-pane fade">
+        <div id="{{stepType}}-file" class="tab-pane fade">
             <cgroup label="Name:">
                 <input ng-model="item.name" type="text" ng-disabled="true">
             </cgroup>
