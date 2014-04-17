@@ -60,7 +60,7 @@ Application.Provenance.Controllers.controller('provenance',
                 ProvSteps.setStepFinished('outputs');
             };
 
-            $scope.init = function () {
+            function init() {
                 var draft;
 
                 // Reset steps state
@@ -78,7 +78,7 @@ Application.Provenance.Controllers.controller('provenance',
                 ProvSteps.setCurrentStep('process');
                 ProvSteps.onStepFinished($scope.stepFinished);
                 $state.go('toolbar.projectspage.provenance.process');
-            };
+            }
 
-            $scope.init();
+            init();
         }]);
