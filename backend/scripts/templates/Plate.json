@@ -2,6 +2,16 @@
     "id": "Plate" ,
     "default_properties": [
         {
+            "name": "Composition" ,
+            "attribute": "composition",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
             "name": "Length" ,
             "attribute": "length",
             "type": "number" ,
