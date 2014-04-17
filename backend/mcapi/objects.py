@@ -6,6 +6,7 @@ import dmutil
 import args
 import access
 import doc
+import json
 
 
 @app.route('/objects', methods=['GET'])
@@ -43,4 +44,20 @@ def create_object():
     for treatment in dmutil.get_optional('treatments', j, []):
         t = doc.add_template_properties(treatment, 'treatment')
         sample['treatments'].append(t)
-    return dmutil.insert_entry('samples', sample)
+    sample_id = dmutil.insert_entry_id('samples', sample)
+    _create_treatments_denorm(sample['treatments'], sample_id)
+    return json.dumps({'id': sample_id})
+
+
+def _create_treatments_denorm(treatments, sample_id):
+    for treatment in treatments:
+        _add_treatment_entries(treatment, sample_id)
+
+
+def _add_treatment_entries(treatment, sample_id):
+    for key in treatment['properties']:
+        prop = treatment['properties'][key]
+        prop['sample_id'] = sample_id
+        prop['attribute'] = key
+        prop['property'] = treatment['attribute']
+        dmutil.insert_entry('treatments', prop)
