@@ -73,7 +73,7 @@
                     <p ng-if="samples_list.length!=0">
                         <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:20">
                             <td>{{sample.name}}</td>
-                            <td>{{sample.composition}}</td>
+                            <td>{{sample.properties.composition.value}}</td>
                             <td>{{sample.birthtime | toDateString}}</td>
                             <td><a ng-click="showTreatmentDetails(sample)">view</a></td>
                         </tr>
