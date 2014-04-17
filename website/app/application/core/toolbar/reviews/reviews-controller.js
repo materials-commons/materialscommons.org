@@ -13,6 +13,15 @@ Application.Controllers.controller('toolbarReviews',
                     }).jsonp();
             };
 
+            $scope.removeReview = function (index) {
+                mcapi('/reviews/%', $scope.reviewsRequested[index].id)
+                    .success(function () {
+                        $scope.reviewsRequested.splice(index, 1);
+                        pubsub.send('reviews.change', 'review.change');
+                    }).delete();
+            };
+
+
             $scope.retrieveReviewsRequested = function () {
                 mcapi('/reviews/requested')
                     .success(function (reviews) {
