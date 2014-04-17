@@ -1,41 +1,17 @@
 <div ng-controller="toolbarMachines">
-
     <div class="row-fluid">
         <div class="span5">
             <div class="">
                 <form name="Form" class="form-horizontal">
-                    <fieldset>
                         <legend>Create Machine</legend>
-                        <div df-properties default-properties="default_properties"></div>
-                        <div ad-properties added-properties="machine.additional"></div>
-                        <div class="control-group">
-                            <label class="control-label">Additional:</label>
+                        <div upperlevel-machine bk="bk" doc="doc" edit="false"></div>
+                        <div df-properties default-properties="doc.default_properties"></div>
+                        <div ad-properties doc="doc" bk="bk" edit="false"></div>
 
-                            <div class="controls">
-                                <select ng-model="p_name">
-                                    <option value="" disabled selected>Additional...</option>
-                                    <option ng-repeat="each_additional in additional_properties"
-                                            value="{{each_additional}}">
-                                        {{each_additional.name}}
-                                    </option>
-                                </select>
-                                <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label">Custom:</label>
-
-                            <div class="controls">
-                                <input ng-model="additional_prop" placeholder="Name..."
-                                       type="text">
-                                <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
                         <button ng-click="save(Form)" class="btn btn-primary">
                             Save
                         </button>
                         <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
-                    </fieldset>
                 </form>
             </div>
         </div>

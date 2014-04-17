@@ -67,7 +67,6 @@ Application.Controllers.controller('toolbarObjects',
 
         };
 
-
         $scope.clear = function () {
             $scope.doc = {
                 name: '',
@@ -77,7 +76,6 @@ Application.Controllers.controller('toolbarObjects',
                 available: true,
                 default_properties: [],
                 added_properties: []
-
             };
             $scope.bk = {
                 selected_treatment: '',
