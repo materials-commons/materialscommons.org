@@ -39,40 +39,12 @@ def create_tables():
     create_table("datadirs_denorm")
     create_table("tag2item")
     create_table("samples")
+    create_table("treatments")
 
 
 def create_table(table):
-    #print "create_table(%s)" % (table)
     run(r.db('materialscommons').table_create(table))
     #run(r.db('history').table_create(table))
-    run(r.table_create("users"))
-    run(r.table_create("usergroups"))
-    run(r.table_create("datafiles"))
-    run(r.table_create("dataparams"))
-    run(r.table_create("datadirs"))
-    run(r.table_create("tags"))
-    run(r.table_create("news"))
-    run(r.table_create("udqueue"))
-    run(r.table_create("reviews"))
-    run(r.table_create("conditions"))
-    run(r.table_create("processes"))
-    run(r.table_create("machines"))
-    run(r.table_create("projects"))
-    run(r.table_create("datasets"))
-    run(r.table_create("citations"))
-    run(r.table_create("notes"))
-    run(r.table_create("templates"))
-    run(r.table_create("state"))
-    run(r.table_create("drafts"))
-    run(r.table_create("saver"))
-    run(r.table_create("project2datadir"))
-    run(r.table_create("project2datafile"))
-    run(r.table_create("project2processes"))
-    run(r.table_create("project2conditions"))
-    run(r.table_create("review2datafile"))
-    run(r.table_create("datadirs_denorm"))
-    run(r.table_create("samples"))
-    run(r.table_create("tag2item"))
 
 
 def create_indices():
@@ -99,6 +71,8 @@ def create_indices():
     create_index('tag2item', 'item_id')
     create_index('conditions', 'value')
     create_index('conditions', 'process_id')
+    create_index('treatments', 'value')
+    create_index('treatments', 'sample_id')
 
 
 def create_index(table, name):

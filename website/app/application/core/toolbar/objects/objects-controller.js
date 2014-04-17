@@ -1,33 +1,49 @@
-Application.Controllers.controller('toolbarSamples',
-    ["$scope", "mcapi", "$injector", "User", "dateGenerate", function ($scope, mcapi, $injector, User, dateGenerate) {
+Application.Controllers.controller('toolbarObjects',
+    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
         $scope.showForm = function () {
             $scope.default_properties = $scope.bk.selected_treatment.default_properties;
             $scope.bk.tab_item = '';
         };
 
-        $scope.showTab = function (item) {
+        $scope.showTab = function (item, index) {
             $scope.bk.tab_item = item;
-            $scope.bk.tab_details = $scope.doc.treatments[item];
-            $scope.default_properties = $scope.doc.treatments[item];
+            $scope.bk.tab_details = $scope.doc.treatments[index];
+            $scope.default_properties = $scope.doc.treatments[index];
             $scope.bk.selected_treatment = {};
         };
 
-        $scope.addTreatment = function () {
-            $scope.doc.treatments_order.push($scope.bk.selected_treatment.template_name);
-            $scope.default_properties.forEach(function (item) {
-
+        function clearTreatment(treatment) {
+            treatment.additional_properties.forEach(function(attr) {
+                attr.value = "";
+                if (attr.unit_choice.length > 0) {
+                    attr.unit = "";
+                }
             });
-            $scope.doc.treatments[$scope.bk.selected_treatment.template_name] = $scope.default_properties;
+
+            treatment.default_properties.forEach(function(attr) {
+                attr.value = "";
+                if (attr.unit_choice.length > 0) {
+                    attr.unit = "";
+                }
+            });
+        }
+
+        $scope.addTreatment = function () {
+            var o = angular.copy($scope.bk.selected_treatment);
+            clearTreatment($scope.bk.selected_treatment);
+            $scope.bk.selected_treatment = '';
+            $scope.default_properties = "";
+            $scope.doc.treatments.push(o);
         };
 
         $scope.save = function (form) {
             var $validationProvider = $injector.get('$validation');
             var check = $validationProvider.checkValid(form);
             if (check === true) {
-                mcapi('/samples/new')
+                mcapi('/objects/new')
                     .arg('order_by=birthtime')
                     .success(function (data) {
-                        mcapi('/samples/%', data.id)
+                        mcapi('/objects/%', data.id)
                             .success(function (sample_obj) {
                                 $scope.samples_list.unshift(sample_obj);
                             })
@@ -56,9 +72,7 @@ Application.Controllers.controller('toolbarSamples',
                 name: '',
                 composition: '',
                 notes: [],
-                treatments_order: [],
-                treatments: {
-                },
+                treatments: [],
                 available: true,
                 default_properties: [],
                 added_properties: []
@@ -90,7 +104,7 @@ Application.Controllers.controller('toolbarSamples',
                 .error(function (e) {
 
                 }).jsonp();
-            mcapi('/samples')
+            mcapi('/objects')
                 .success(function (data) {
                     $scope.samples_list = data;
                 })

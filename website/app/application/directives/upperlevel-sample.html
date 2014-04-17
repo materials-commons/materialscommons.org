@@ -2,10 +2,6 @@
     <input ng-model="doc.name" type="text" placeholder='name...' ng-disabled="edit" required>
 </cgrouprequired>
 
-<cgrouprequired label="Composition:">
-    <input ng-model="doc.composition" type="text" placeholder='composition...' ng-disabled="edit" required>
-</cgrouprequired>
-
 <div ng-if="edit===false">
     <cgroup label="Notes:">
         <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>

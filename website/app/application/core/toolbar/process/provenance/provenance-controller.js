@@ -5,7 +5,7 @@ Application.Controllers.controller('toolbarProcessProvenance',
             $scope.showtab = function (tab, type) {
                 switch (type) {
                     case "id":
-                        mcapi('/samples/%', tab.properties.id.value)
+                        mcapi('/objects/%', tab.properties.id.value)
                             .success(function (data) {
                                 $scope.item = data;
                             }).jsonp();
