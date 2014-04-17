@@ -33,16 +33,6 @@ def update_datafile_for_user(datafileid):
         error.update_conflict("Unable to update datafile: " + datafileid)
 
 
-@app.route('/tags/count')
-@apikey
-@jsonp
-def tags_by_count_for_user():
-    user = access.get_user()
-    selection = list(r.table('datafiles').get_all(user, index='owner')
-                     .concat_map(lambda item: item['tags']).run(g.conn))
-    return create_tag_count(selection)
-
-
 @app.route('/datafile/<datafileid>')
 @apikey(shared=True)
 @jsonp
@@ -109,8 +99,10 @@ def get_reviews_for_datafile(datafile_id):
 @apikey
 @jsonp
 def get_output_process(df_id):
-    rv = r.table('conditions').get_all(df_id, index='value').filter({'step': 'output'}).eq_join('process_id', \
-         r.table('processes')).zip()
+    rv = r.table('conditions').get_all(df_id, index='value')\
+                              .filter({'step': 'output'})\
+                              .eq_join('process_id',
+                                       r.table('processes')).zip()
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -119,6 +111,9 @@ def get_output_process(df_id):
 @apikey
 @jsonp
 def get_input_processes(df_id):
-    rv = r.table('conditions').get_all(df_id, index='value').filter({'step': 'input'}).eq_join('process_id', r.table('processes')).zip()
+    rv = r.table('conditions').get_all(df_id, index='value')\
+                              .filter({'step': 'input'})\
+                              .eq_join('process_id', r.table('processes'))\
+                              .zip()
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
