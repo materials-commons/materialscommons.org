@@ -21,7 +21,6 @@ Application.Controllers.controller('toolbarMachines',
             var check = $validationProvider.checkValid(form);
             if (check === true) {
                 mcapi('/machines/new')
-                    .arg('order_by=birthtime')
                     .success(function (data) {
                         mcapi('/machines/%', data.id)
                             .success(function (machine_obj) {
@@ -34,7 +33,7 @@ Application.Controllers.controller('toolbarMachines',
                     })
                     .error(function (e) {
 
-                    }).post($scope.machine);
+                    }).post($scope.doc);
             } else {
                 $validationProvider.validate(form);
             }
