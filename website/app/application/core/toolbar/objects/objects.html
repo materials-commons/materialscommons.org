@@ -85,6 +85,14 @@
         <div class="span6">
             <form class="form-horizontal" ng-show="sample">
                 <legend>{{sample.name}}</legend>
+                <div ng-repeat="property in sample.properties">
+                    <cgroup label="{{property.name}}">
+                        <input class="input-large" ng-model="property.value" type="text"
+                               ng-disabled="true">
+                        {{ property.unit }}
+                    </cgroup>
+                </div>
+
                 <div ng-if="sample.treatments.length==0">
                     No Treatments applied to the material {{sample.name}}
                 </div>
@@ -119,14 +127,7 @@
                         </tbody>
                     </table>
                 </div>
-                <legend>Properties:</legend>
-                <div ng-repeat="property in sample.properties">
-                    <cgroup label="{{property.name}}">
-                        <input class="input-large" ng-model="property.value" type="text"
-                               ng-disabled="true">
-                        {{ property.unit }}
-                    </cgroup>
-                </div>
+
 
             </form>
         </div>
