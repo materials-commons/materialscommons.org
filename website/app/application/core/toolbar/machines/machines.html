@@ -19,7 +19,6 @@
         <div class="span7">
             <h4>Machines: </h4>
             <paged data="machines_list" current-page="currentDataPage" page-size="20">
-
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
@@ -32,7 +31,6 @@
                     <p ng-if="machines_list.length==0">
                         <b>No available machines in the database</b>
                     </p>
-
                     <p ng-if="machines_list.length!=0">
                         <tr ng-repeat="machine in machines_list | orderBy:'name' | page:currentDataPage:20">
                             <td>{{machine.name}}</td>
