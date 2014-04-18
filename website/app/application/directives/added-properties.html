@@ -52,12 +52,12 @@
 </div>
 <div ng-if="edit===false">
 
-    <div ng-show="doc.template.additional_properties.length > 0" class="control-group">
+    <div ng-show="additionalProperties.length > 0" class="control-group">
         <label class="control-label">Additional Properties:</label>
 
         <div class="controls">
             <select ng-model="bk.additional_property">
-                <option ng-repeat="property in doc.template.additional_properties"
+                <option ng-repeat="property in additionalProperties"
                         value="{{property}}">
                     {{property.name}}
                 </option>

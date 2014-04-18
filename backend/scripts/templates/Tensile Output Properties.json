@@ -1,5 +1,6 @@
 {
     "id": "Tensile Output Properties",
+    "attribute": "instrument_settings",
     "default_properties": [
         {
             "name": "Name" ,
@@ -125,9 +126,7 @@
         }
     ],
     "owner": "admin@materialscommons.org", 
-    "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_description": "" ,
-    "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_name": "Tensile Output Properties" ,
     "template_pick": "instrument" ,
     "template_type": "condition"

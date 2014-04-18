@@ -75,3 +75,14 @@ def update_process(processid):
         return ''
     else:
         error.update_conflict("Unable to update process: " + processid)
+
+
+@app.route('/processes/sample/<sample_id>', methods=['GET'])
+@jsonp
+def get_processes_for_sample(sample_id):
+    rv = r.table('conditions').get_all(sample_id, index='value') \
+                              .eq_join('process_id', r.table('processes'))
+    selection = list(rv.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+                 
+
