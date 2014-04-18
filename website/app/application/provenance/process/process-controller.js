@@ -44,6 +44,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 }
             };
 
+
             function init() {
                 $scope.bk = {
                     new_note: '',

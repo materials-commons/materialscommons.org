@@ -31,6 +31,7 @@ Application.Controllers.controller('toolbarMachines',
                                 $scope.mach = machine_obj;
                                 $scope.machines_list.unshift(machine_obj);
                                 $scope.clear_machine();
+                                $scope.toggleCustom = false;
                                 $scope.message = "Machine has been saved.";
                             })
                             .error(function (e) {
