@@ -9,7 +9,14 @@
                             <input type="radio" ng-model="doc.is_active" value='false'> not available
                         </cgroup>
                         <div upperlevel-sample doc="doc.sample" bk="bk" edit="false"></div>
-                        <div df-properties default-properties="doc.sample.default_properties" edit="false"></div>
+                        <!--<div df-properties default-properties="doc.sample.default_properties" edit="false"></div>-->
+                        <div ng-repeat="property in doc.sample.properties">
+                            <cgroup label="{{property.name}}">
+                                <input class="input-large" ng-model="property.value" type="text"
+                                       ng-disabled="false">
+                                {{ property.unit }}
+                            </cgroup>
+                        </div>
                         <div ad-properties doc="doc.sample" edit="false" bk="bk"></div>
 
                     </div>
