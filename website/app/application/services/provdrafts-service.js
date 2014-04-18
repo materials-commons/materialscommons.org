@@ -9,12 +9,12 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 var draft = {
                     id: "",
                     project_id: "",
+                    project_name: "",
                     owner: "",
                     description: "",
                     name: "",
                     birthtime: "",
-                    process: {},
-                    project_id: ""
+                    process: {}
                 };
                 return draft;
             },
@@ -50,6 +50,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
+                            project_name: service.current.project_name,
                             process: service.current.process,
                             clone_number: service.current.clone_number
                         });
@@ -64,6 +65,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
+                            project_name: service.current.project_name,
                             process: service.current.process,
                             clone_number: service.current.clone_number
                         });
