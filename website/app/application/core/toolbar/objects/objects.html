@@ -8,7 +8,6 @@
                 <cgroup label="Classification:">
                     <select ng-model="bk.classification" ng-change="setProperties()"
                             ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
-
                     </select>
                 </cgroup>
                 <div class="control-group">
@@ -69,6 +68,7 @@
                         <th>Name</th>
                         <th>Composition</th>
                         <th>Date Created</th>
+                        <th>Processes</th>
                         <th>Details</th>
                     </tr>
                     </thead>
@@ -82,6 +82,7 @@
                             <td>{{sample.name}}</td>
                             <td>{{sample.properties.composition.value}}</td>
                             <td>{{sample.birthtime | toDateString}}</td>
+                            <td><a ng-click="showProcesses(sample)">view</a></td>
                             <td><a ng-click="showTreatmentDetails(sample)">view</a></td>
                         </tr>
                     </p>
@@ -138,5 +139,12 @@
 
             </form>
         </div>
+        <div class="span6" ng-show="object">
+            <legend>Processes associated with object {{object.name}}</legend>
+            <div ng-repeat="process in processes_list">
+                <a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a>
+            </div>
+        </div>
+
     </div>
 </div>

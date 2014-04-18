@@ -1,6 +1,7 @@
 {
 
     "id": "Tensile Equipment Properties" ,
+    "attribute": "instrument_settings",
     "default_properties": [
         {
             "name": "Name" ,

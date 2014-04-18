@@ -27,7 +27,8 @@ Application.Directives.directive('adProperties',
             scope: {
                 edit: "=",
                 doc: '=',
-                bk: "="
+                bk: "=",
+                additionalProperties: "="
             },
             templateUrl: 'application/directives/added-properties.html'
         };

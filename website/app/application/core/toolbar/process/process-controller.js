@@ -22,10 +22,13 @@ Application.Controllers.controller('toolbarProcess',
                     .success(function (data) {
                         $scope.process = data;
                         $scope.birthtime = $filter('toDateString')($scope.process.birthtime);
-                        mcapi('/machines/%', $scope.process.properties.machine.value)
-                            .success(function (data) {
-                                $scope.machine = data;
-                            }).jsonp();
+                        if ('machine' in $scope.process.properties) {
+                            mcapi('/machines/%', $scope.process.properties.machine.value)
+                                .success(function (data) {
+                                    $scope.machine = data;
+                                }).jsonp();
+                        }
+
 
                     }).jsonp();
                 $scope.showtab('notes');

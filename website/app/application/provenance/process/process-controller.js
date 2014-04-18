@@ -58,7 +58,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
 
                 };
                 $scope.doc = ProvDrafts.current.process;
-
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {

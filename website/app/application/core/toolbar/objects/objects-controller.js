@@ -13,14 +13,14 @@ Application.Controllers.controller('toolbarObjects',
         };
 
         function clearTreatment(treatment) {
-            treatment.additional_properties.forEach(function(attr) {
+            treatment.additional_properties.forEach(function (attr) {
                 attr.value = "";
                 if (attr.unit_choice.length > 0) {
                     attr.unit = "";
                 }
             });
 
-            treatment.default_properties.forEach(function(attr) {
+            treatment.default_properties.forEach(function (attr) {
                 attr.value = "";
                 if (attr.unit_choice.length > 0) {
                     attr.unit = "";
@@ -65,7 +65,14 @@ Application.Controllers.controller('toolbarObjects',
         };
         $scope.showTreatmentDetails = function (sample) {
             $scope.sample = sample;
+        };
 
+        $scope.showProcesses = function (sample) {
+            $scope.object = sample;
+            mcapi('/processes/sample/%', sample.id)
+                .success(function (data) {
+                    $scope.processes_list = data;
+                }).jsonp();
         };
 
         $scope.clear = function () {

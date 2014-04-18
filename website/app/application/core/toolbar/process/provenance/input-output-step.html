@@ -22,8 +22,15 @@
             </div>
         </div>
         <div id="{{stepType}}-id" class="tab-pane fade ">
-            <div upperlevel-sample bk="bk" doc="item" edit="true"></div>
-            <div df-properties default-properties="item.default_properties" edit="true"></div>
+            <div upperlevel-object bk="bk" doc="item" edit="true"></div>
+            <!--<div df-properties default-properties="item.properties" edit="true"></div>-->
+            <div ng-repeat="property in item.properties">
+                <cgroup label="{{property.name}}">
+                    <input class="input-large" ng-model="property.value" type="text"
+                           ng-disabled="true">
+                    {{ property.unit }}
+                </cgroup>
+            </div>
             <div ad-properties doc="item" edit="true" bk=""></div>
         </div>
         <div id="{{stepType}}-file" class="tab-pane fade">
