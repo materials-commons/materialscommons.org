@@ -16,10 +16,17 @@
             <div ng-if="name=='Pick Sample'">
                 <div class="row-fluid">
                     <div class="span6">
-                        <div upperlevel-sample bk="bk" doc="vals.sample" edit="true"></div>
+                        <div upperlevel-object bk="bk" doc="vals.sample" edit="true"></div>
                     </div>
                     <div class="span6">
-                        <div df-properties default-properties="vals.sample.default_properties" edit="true"></div>
+                        <!--<div df-properties default-properties="vals.sample.properties" edit="true"></div>-->
+                        <div ng-repeat="property in vals.sample.properties">
+                            <cgroup label="{{property.name}}">
+                                <input class="input-large" ng-model="property.value" type="text"
+                                       ng-disabled="true">
+                                {{ property.unit }}
+                            </cgroup>
+                        </div>
                         <div ad-properties doc="vals.sample" edit="true" bk="bk"></div>
                     </div>
                 </div>
@@ -53,10 +60,17 @@
             <div ng-if="name=='Transformed Sample'">
                 <div class="row-fluid">
                     <div class="span6">
-                        <div upperlevel-sample bk="bk" doc="vals.sample" edit="true"></div>
+                        <div upperlevel-object bk="bk" doc="vals.sample" edit="true"></div>
                     </div>
                     <div class="span6">
-                        <div df-properties default-properties="vals.sample.default_properties" edit="true"></div>
+                        <!--<div df-properties default-properties="vals.sample.properties" edit="true"></div>-->
+                        <div ng-repeat="property in vals.sample.properties">
+                            <cgroup label="{{property.name}}">
+                                <input class="input-large" ng-model="property.value" type="text"
+                                       ng-disabled="true">
+                                {{ property.unit }}
+                            </cgroup>
+                        </div>
                         <div ad-properties doc="vals.sample" edit="true" bk="bk"></div>
                     </div>
                 </div>

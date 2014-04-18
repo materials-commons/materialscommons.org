@@ -60,6 +60,7 @@
                 <select ng-model="df.value"
                         ng-options="mach.name for mach in machinesList" ng-disabled="edit">
                 </select>
+
             </div>
             <div ng-if='df.unit_choice.length!=0'>
                 <select ng-model='df.unit' ng-disabled="edit">
