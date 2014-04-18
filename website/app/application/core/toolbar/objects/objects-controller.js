@@ -45,6 +45,7 @@ Application.Controllers.controller('toolbarObjects',
                     .success(function (data) {
                         mcapi('/objects/%', data.id)
                             .success(function (sample_obj) {
+                                $scope.message = "Object has been saved.";
                                 $scope.samples_list.unshift(sample_obj);
                             })
                             .error(function (e) {
