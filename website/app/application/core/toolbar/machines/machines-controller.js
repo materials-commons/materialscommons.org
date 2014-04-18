@@ -1,6 +1,7 @@
 Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
         var $validationProvider = $injector.get('$validation');
+
         $scope.clear_machine = function () {
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_type":"machine"')
@@ -30,6 +31,7 @@ Application.Controllers.controller('toolbarMachines',
                                 $scope.mach = machine_obj;
                                 $scope.machines_list.unshift(machine_obj);
                                 $scope.clear_machine();
+                                $scope.message = "Machine has been saved.";
                             })
                             .error(function (e) {
 

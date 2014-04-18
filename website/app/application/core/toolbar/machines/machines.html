@@ -1,16 +1,20 @@
 <div ng-controller="toolbarMachines">
-    <div class="row-fluid">
+    <button class="btn btn-primary" ng-click="toggleCustom = !toggleCustom">Create New Machine</button>
+
+    <div ng-init="toggleCustom = false" ng-show="toggleCustom" class="row-fluid">
         <div class="span6">
             <div class="">
                 <form name="Form" class="form-horizontal">
                     <legend>Create Machine</legend>
                     <div upperlevel-object bk="bk" doc="doc" edit="false"></div>
                     <div df-properties default-properties="doc.default_properties"></div>
-
-                    <button ng-click="save(Form)" class="btn btn-primary">
-                        Save
-                    </button>
-                    <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <button ng-click="save(Form)" class="btn btn-primary">Save</button>
+                            <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
+                        </div>
+                        <div saved-notification message="message"></div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -18,35 +22,35 @@
     <div class="row-fluid">
         <div class="span6">
             <legend>List of available machines:</legend>
-            <paged data="machines_list" current-page="currentDataPage" page-size="20">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date Created</th>
-                        <th>Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <p ng-if="machines_list.length==0">
-                        <b>No available machines in the database</b>
-                    </p>
-
-                    <p ng-if="machines_list.length!=0">
-                        <tr ng-repeat="machine in machines_list | orderBy:predicate:reverse | page:currentDataPage:20">
+            <div ng-if="machines_list.length==0">
+                <b>No available machines in the database</b>
+            </div>
+            <div ng-if="machines_list.length!=0">
+                <paged data="machines_list" current-page="currentDataPage" page-size="10">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date Created</th>
+                            <th>Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="machine in machines_list | orderBy:predicate:reverse | page:currentDataPage:10">
                             <td>{{machine.name}}</td>
                             <td>{{machine.birthtime | toDateString}}</td>
                             <td><a ng-click="moreDetails(machine)">view</a></td>
                         </tr>
-                    </p>
-                    </tbody>
-                </table>
-            </paged>
+                        </tbody>
+                    </table>
+                </paged>
+            </div>
+
         </div>
         <div class="span6">
             <form class="form-horizontal" ng-show="machine">
                 <legend>{{machine.name}}</legend>
-                <div ng-show="flag" >
+                <div ng-show="flag">
                     No specific details have been entered for {{machine.name}}
                 </div>
                 <div ng-hide="flag">
