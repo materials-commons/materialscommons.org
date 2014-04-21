@@ -1,5 +1,6 @@
 {
     "id": "Angle Properties",
+    "attribute": "angle_properties",
     "default_properties": [
         {
             "name": "Name" ,
@@ -26,11 +27,11 @@
         {
             "name": "End angle" ,
             "attribute": "end_angle",
-            "type": "select" ,
+            "type": "text" ,
             "unit": "" ,
             "unit_choice": ["degrees"] ,
             "value": "" ,
-            "value_choice": ["In", "Out", "Knife edge"],
+            "value_choice": [],
             "required": false 
         },
         {

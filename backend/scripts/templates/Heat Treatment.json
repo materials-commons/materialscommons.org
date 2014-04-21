@@ -3,6 +3,16 @@
     "attribute": "heat_treatment",
     "default_properties": [
         {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
             "attribute": "temperature",
             "name": "Temperature" ,
             "type": "number" ,
