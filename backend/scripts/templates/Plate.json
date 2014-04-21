@@ -12,6 +12,16 @@
             "required": true
         },
         {
+            "name": "Supplier" ,
+            "attribute": "supplier",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
             "name": "Length" ,
             "attribute": "length",
             "type": "number" ,
