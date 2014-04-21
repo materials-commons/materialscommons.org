@@ -102,7 +102,7 @@
                 </div>
                 <legend>Treatments</legend>
                 <div ng-if="sample.treatments.length==0">
-                    No Treatments applied to the material {{sample.name}}
+                    <p class="muted">No treatments applied to the material {{sample.name}}</p>
                 </div>
                 <div ng-if="sample.treatments.length!==0">
                     <div ng-repeat="treatment in sample.treatments">
@@ -120,7 +120,7 @@
                 </div>
                 <legend>Processes</legend>
                 <div ng-if="processes_list.length === 0">
-                    object {{sample.name}} has not been used in any process
+                    <p class="muted">object {{sample.name}} has not been used in any process</p>
                 </div>
                 <div ng-if="processes_list.length !== 0">
                     <ul ng-repeat="process in processes_list">
