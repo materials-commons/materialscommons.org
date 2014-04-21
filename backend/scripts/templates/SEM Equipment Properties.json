@@ -4,8 +4,19 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "attribute": "name",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
                 "name": "Voltage" ,
-                "type": "" ,
+                "attribute": "voltage",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["V", "KV"] ,
                 "value": "" ,
@@ -14,18 +25,20 @@
             },
             {
                 "name": "Pixel Size" ,
-                "type": "" ,
+                "attribute": "pixel_size",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["microns"] ,
                 "value": "" ,
                 "value_choice": [],
-                "required": false
+                "required": true
             }
         ],
         "additional":[
             {
                 "name": "Image mode" ,
-                "type": "" ,
+                "attribute": "image_mode",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -34,7 +47,8 @@
             },
             {
                 "name": "Beam Current" ,
-                "type": "" ,
+                "attribute": "beam_current",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["Amp"] ,
                 "value": "" ,
@@ -43,7 +57,8 @@
             },
             {
                 "name": "Spot size" ,
-                "type": "" ,
+                "attribute": "spot_size",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["nm"] ,
                 "value": "" ,
@@ -52,7 +67,8 @@
             },
             {
                 "name": "Dwell Time" ,
-                "type": "" ,
+                "attribute": "dwell_time",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["hrs", "mins", "sec"] ,
                 "value": "" ,
@@ -61,7 +77,8 @@
             },
             {
                 "name": "Image Integrations" ,
-                "type": "" ,
+                "attribute": "image_integrations",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -70,7 +87,8 @@
             },
             {
                 "name": "Brightness" ,
-                "type": "" ,
+                "attribute": "brightness",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -79,7 +97,8 @@
             },
             {
                 "name": "Contrast" ,
-                "type": "" ,
+                "attribute": "contrast",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

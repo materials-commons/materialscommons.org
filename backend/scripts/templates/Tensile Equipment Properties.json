@@ -4,8 +4,19 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "attribute": "name",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },                
+            {
                 "name": "Voltage" ,
-                "type": "" ,
+                "attribute": "voltage",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["V", "KV"] ,
                 "value": "" ,
@@ -14,7 +25,8 @@
             },
             {
                 "name": "Pixel Size" ,
-                "type": "" ,
+                "attribute": "pixel_number",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["microns"] ,
                 "value": "" ,
@@ -26,7 +38,8 @@
            
             {
                 "name": "Temperature" ,
-                "type": "" ,
+                "attribute": "temperature",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["C", "F"] ,
                 "value": "" ,
@@ -35,7 +48,8 @@
             },
             {
                 "name": "Humidity" ,
-                "type": "" ,
+                "attribute": "humidity",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -44,7 +58,8 @@
             },
             {
                 "name": "Test rate" ,
-                "type": "" ,
+                "attribute": "test_rate",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -53,7 +68,8 @@
             },
             {
                 "name": "Control method" ,
-                "type": "" ,
+                "attribute": "control_method",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

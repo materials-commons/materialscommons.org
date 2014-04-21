@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbar',
-    ["$scope", "Nav", function ($scope, Nav) {
+    ["$scope", "Nav", "alertService", function ($scope, Nav, alertService) {
         $scope.showDrafts = true;
 
         $scope.isActiveStep = function (nav) {
@@ -9,6 +9,7 @@ Application.Controllers.controller('toolbar',
         $scope.showStep = function (step) {
             Nav.setActiveToolbar(step);
         };
+
     }]);
 
 

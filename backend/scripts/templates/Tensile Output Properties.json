@@ -2,12 +2,23 @@
     "id": "Tensile Output Properties",
     "model": {
         "default": [
+            {
+                "name": "Name" ,
+                "attribute": "name",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }
         ],
        
         "additional":[
             {
                 "name": "Run Time" ,
-                "type": "" ,
+                "attribute": "run_time",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": ["hrs", "mins", "secs"] ,
                 "value": "" ,
@@ -16,7 +27,8 @@
             },
             {
                 "name": "Failure mode" ,
-                "type": "" ,
+                "attribute": "failure_mode",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -25,7 +37,8 @@
             },
             {
                 "name": "Yield force" ,
-                "type": "" ,
+                "attribute": "yield_force",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -34,7 +47,8 @@
             },
             {
                 "name": "Peak force" ,
-                "type": "" ,
+                "attribute": "peak_force",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -43,7 +57,8 @@
             },
             {
                 "name": "F/D slope" ,
-                "type": "" ,
+                "attribute": "f_d_slope",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -52,7 +67,8 @@
             },
             {
                 "name": "Yield strength" ,
-                "type": "" ,
+                "attribute": "yield_strength",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -61,7 +77,8 @@
             },
             {
                 "name": "Brightness" ,
-                "type": "" ,
+                "attribute": "brightness",
+                "type": "number" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -70,7 +87,8 @@
             },
             {
                 "name": "UTS" ,
-                "type": "" ,
+                "attribute": "uts",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -79,7 +97,8 @@
             },
             {
                 "name": "Elongation at Break" ,
-                "type": "" ,
+                "attribute": "elongation_at_break",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -88,7 +107,8 @@
             },
             {
                 "name": "Elongation at yield" ,
-                "type": "" ,
+                "attribute": "elongation_at_yield",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -97,7 +117,8 @@
             },
             {
                 "name": "Elongation at peak stress" ,
-                "type": "" ,
+                "attribute": "elongation_at_peak_stress",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

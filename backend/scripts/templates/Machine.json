@@ -5,7 +5,8 @@
         "default": [
             {
                 "name": "Name" ,
-                "type": "" ,
+                "attribute" : "name",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -14,7 +15,8 @@
             },
             {
                 "name": "Notes" ,
-                "type": "" ,
+                "attribute": "notes",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -25,17 +27,9 @@
        
         "additional": [
             {
-                "name": "Vacuumm Level" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": ["High", "Low"],
-                "required": false
-            },
-            {
                 "name": "Gun Type" ,
-                "type": "" ,
+                "attribute": "gun_type",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -44,34 +38,28 @@
             },
             {
                 "name": "Detector Type" ,
-                "type": "" ,
+                "attribute": "detector_type",
+                "type": "text" ,
                 "unit": "" ,
-                "unit_choice": "" ,
+                "unit_choice": [] ,
                 "value": "" ,
-                "value_choice": "",
-                "required": "false"
+                "value_choice": [],
+                "required": false
             },
             {
-                "name": "Operator" ,
-                "type": "" ,
+                "name": "Model" ,
+                "attribute": "model",
+                "type": "text" ,
                 "unit": "" ,
-                "unit_choice": "" ,
+                "unit_choice": [],
                 "value": "" ,
-                "value_choice": "",
-                "required": "false"
-            },
-            {
-                "name": "Model#" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
+                "value_choice": [],
                 "required": false
             } ,
             {
                 "name": "Status" ,
-                "type": "" ,
+                "attribute": "status",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -80,7 +68,8 @@
             } ,
             {
                 "name": "Location" ,
-                "type": "" ,
+                "attribute": "location",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -88,8 +77,9 @@
                 "required": false
             } ,
             {
-                "name": "manufacturer" ,
-                "type": "" ,
+                "name": "Manufacturer" ,
+                "attribute": "manufacturer",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -98,7 +88,8 @@
             },
             {
                 "name": "Force Type" ,
-                "type": "" ,
+                "attribute": "force_type",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
@@ -106,26 +97,36 @@
                 "required": false
             },
             {
-                "name": "Rigaku" ,
-                "type": "" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": ["left side", "right side"],
-                "required": false
-            },
-            {
                 "name": "Type" ,
-                "type": "" ,
+                "attribute": "type",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": "" ,
                 "value": "" ,
                 "value_choice": ["Rotating anode"],
                 "required": false
+            },
+            {
+                "name": "Serial Number" ,
+                "attribute": "serial_number",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
+            },
+            {
+                "name": "Force Capacity(kN)" ,
+                "attribute": "force_capacity",
+                "type": "number" ,
+                "unit": "kN" ,
+                "unit_choice": "" ,
+                "value": "" ,
+                "value_choice": [],
+                "required": false
             }
         ]
-        
-
     } ,
     "owner": "gtarcea@umich.edu",
     "template_birthtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,
@@ -134,5 +135,4 @@
     "template_name": "Machine" ,
     "template_type": "machine",
     "template_pick": ""
-
 }

@@ -3,80 +3,50 @@
         <div class="span10">
             <div class="well">
                 <div ng-if="doc.template_pick==='material'">
-                    <form class="form-horizontal">
-                        <fieldset>
-                            <h5>From what material was your sample drawn?</h5>
-                            <cgroup label="Material:">
-                                <select ng-model="doc.material"
-                                        ng-options="mat.name for mat in materials">
-                                </select>
-                            </cgroup>
-                        </fieldset>
-                        <label>Material: {{ doc.material.name }}</label>
-                    </form>
+                    <fieldset>
+                        <h5>From what material was your sample drawn?</h5>
+                        <cgroup label="Material:">
+                            <select ng-model="doc.material"
+                                    ng-options="mat.name for mat in materials">
+                            </select>
+                        </cgroup>
+                    </fieldset>
+                    <label>Material: {{ doc.material.name }}</label>
                 </div>
-                <form class="form-horizontal">
-                    <fieldset>
-                        <legend>Default Properties</legend>
-                        <div df-properties default-properties="defaultProperties"></div>
-                    </fieldset>
-                </form>
+                <fieldset>
+                    <legend>Default Properties</legend>
+                    <div df-properties default-properties="defaultProperties"></div>
+                </fieldset>
+
                 <hr align="left">
+                <fieldset>
+                    <legend>Added Properties:</legend>
+                    <div ad-properties added-properties="doc.model.added_properties"></div>
 
-                <form class="form-inline">
-                    <fieldset>
-                        <legend>Additional Properties</legend>
-                        <div ng-repeat="pv in doc.model.added_properties">
-                            <div class="control-group">
-                                <label class="control-label">{{pv.name}}</label>
+                    <div ng-show="doc.model.additional.length > 0" class="control-group">
+                        <label class="control-label">Additional Properties:</label>
 
-                                <div class="controls">
-                                    <div ng-if="pv.value_choice.length!=0">
-                                        <select ng-model="pv.value">
-                                            <option ng-repeat="val in pv.value_choice"> {{val}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div ng-if="pv.value_choice.length==0">
-                                        <input type="text" ng-model="pv.value">
-                                    </div>
-                                    <div ng-if="pv.unit_choice.length!=0">
-                                        <select class="span2" ng-model="pv.unit">
-                                            <option ng-repeat="unit in pv.unit_choice"> {{unit}}
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                </div>
-                            </div>
+                        <div class="controls">
+                            <select ng-model="additionalProperty">
+                                <option ng-repeat="property in doc.model.additional"
+                                        value="{{property}}">
+                                    {{property.name}}
+                                </option>
+                            </select>
+                            <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
                         </div>
+                    </div>
 
-                        <div ng-show="doc.model.additional.length > 0" class="control-group">
-                            <label class="control-label">Additional Properties:</label>
+                    <div class="control-group">
+                        <label class="control-label">Custom Properties:</label>
 
-                            <div class="controls">
-                                <select ng-model="additionalProperty">
-                                    <option ng-repeat="property in doc.model.additional"
-                                            value="{{property}}">
-                                        {{property.name}}
-                                    </option>
-                                </select>
-                                <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
-                            </div>
+                        <div class="controls">
+                            <input ng-model="customPropertyName" placeholder="Name..." type="text">
+                            <input ng-model="customPropertyValue" placeholder="Value..." type="text">
+                            <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
                         </div>
-
-                        <div class="control-group">
-                            <label class="control-label">Custom Properties:</label>
-
-                            <div class="controls">
-                                <input ng-model="customPropertyName" placeholder="Name..." type="text">
-                                <input ng-model="customPropertyValue" placeholder="Value..." type="text">
-                                <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-
+                    </div>
+                </fieldset>
             </div>
         </div>
     </div>

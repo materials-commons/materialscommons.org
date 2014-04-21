@@ -5,7 +5,8 @@
         "default": [
             {
                 "name": "Sample name" ,
-                "type": "" ,
+                "attribute": "sample_name",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -13,8 +14,9 @@
                 "required": true
             },
             {
-                "name": "Alloy composition" ,
-                "type": "" ,
+                "name": "Composition" ,
+                "attribute": "composition",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -22,38 +24,41 @@
                 "required": true
             },
             {
-            "name": "Preparation" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": [],
-            "value": "" ,
-            "value_choice": [
-                "Electropolish" ,
-                "Electropolish + FIB Milling",
-                "FIB Milling Only",
-                "Liftout Only",
-                "Liftout + FIB Milling",
-                "Other"
-            ],
-            "required": true
+                "name": "Preparation",
+                "attribute": "preparation",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [],
+                "value": "" ,
+                "value_choice": [
+                    "Electropolish" ,
+                    "Electropolish + FIB Milling",
+                    "FIB Milling Only",
+                    "Liftout Only",
+                    "Liftout + FIB Milling",
+                    "Other"
+                ],
+            "required": false
             },
             {
                 "name": "Preparation Note",
-                "type": "textarea",
+                "attribute": "preparation_note",
+                "type": "text",
                 "unit": "",
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Notes" ,
-                "type": "" ,
+                "attribute": "notes",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [],
                 "value": "" ,
                 "value_choice": [],
-                "required": true
+                "required": false
             }
         ],
         "additional":[

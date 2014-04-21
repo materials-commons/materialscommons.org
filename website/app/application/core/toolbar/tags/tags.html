@@ -23,8 +23,10 @@
                         <tbody>
                         <tr ng-repeat="tag in tags | filter:query | page:currentTagsPage:10" style="cursor:pointer"
                            >
-                            <td><a ui-sref="toolbar.databytag({name: tag.name})">{{ tag.name }}</a></td>
-                            <td>{{ tag.count }}</td>
+                            <!--<td><a ui-sref="toolbar.databytag({name: tag.name})">{{ tag.name }}</a></td>-->
+                            <!--<td>{{ tag.count }}</td>-->
+                            <td><a ui-sref="toolbar.databytag({name: tag.name})">{{tag.name}}</a></td>
+                            <td>{{tag.count}}</td>
                         </tr>
                         </tbody>
                     </table>

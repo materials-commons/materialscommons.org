@@ -4,7 +4,7 @@ Application.Controllers.controller('_toolbarReviews',
             mcapi('/reviews/to_conduct')
                 .success(function (data) {
                     $scope.reviewsToConduct = _.filter(data, function (item) {
-                        if (item.status != "Finished") {
+                        if (item.status !== "Finished") {
                             return item;
                         }
                     });
@@ -15,9 +15,9 @@ Application.Controllers.controller('_toolbarReviews',
             $scope.reviewsCount();
         });
 
-        $scope.init = function () {
+        function init() {
             $scope.reviewsCount();
-        };
+        }
 
-        $scope.init();
+        init();
     }]);
