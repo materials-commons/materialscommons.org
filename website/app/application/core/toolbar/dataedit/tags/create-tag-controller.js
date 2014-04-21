@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDataEditCreateTag',
-    ["$scope", "mcapi", "User", "$stateParams", "alertService",
-        function ($scope, mcapi, User, $stateParams, alertService) {
+    ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
+        function ($scope, mcapi, User, $stateParams, alertService, pubsub) {
             $scope.removeTag = function (id) {
                 mcapi('/tag/%', id)
                     .success(function (data) {

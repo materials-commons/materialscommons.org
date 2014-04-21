@@ -1,88 +1,85 @@
 {
 
     "id": "Tensile Equipment Properties" ,
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "attribute": "name",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },                
-            {
-                "name": "Voltage" ,
-                "attribute": "voltage",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["V", "KV"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Pixel Size" ,
-                "attribute": "pixel_number",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["microns"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ],
-        "additional":[
-           
-            {
-                "name": "Temperature" ,
-                "attribute": "temperature",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": ["C", "F"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Humidity" ,
-                "attribute": "humidity",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Test rate" ,
-                "attribute": "test_rate",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Control method" ,
-                "attribute": "control_method",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ]
-
-    } ,
-    "owner": "gtarcea@umich.edu", 
+    "attribute": "instrument_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },                
+        {
+            "name": "Voltage" ,
+            "attribute": "voltage",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["V", "KV"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Pixel Size" ,
+            "attribute": "pixel_number",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["microns"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+        {
+            "name": "Temperature" ,
+            "attribute": "temperature",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Humidity" ,
+            "attribute": "humidity",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Test rate" ,
+            "attribute": "test_rate",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Control method" ,
+            "attribute": "control_method",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "owner": "admin@materialscommons.org", 
     "template_description": "" ,
     "template_name": "Tensile Equipment Properties" ,
     "template_type": "condition",
-    "template_pick": ""
+    "template_pick": "instrument"
 
 }

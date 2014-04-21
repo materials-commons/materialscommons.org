@@ -11,13 +11,15 @@ from .. import args
 
 
 class Draft(object):
-    def __init__(self, owner, name, project_id, description, clone_number):
+    def __init__(self, owner, name, project_id, project_name,
+                 description, clone_number):
         self.owner = owner
         self.name = name
         self.birthtime = r.now()
         self.mtime = self.birthtime
         self.project_id = project_id
         self.description = description
+        self.project_name = project_name
         self.clone_number = clone_number
 
 
@@ -36,10 +38,11 @@ def create_draft():
     description = dmutil.get_optional('description', j,
                                       "Saved draft for " + user)
     project_id = dmutil.get_required('project_id', j)
+    project_name = dmutil.get_required('project_name', j)
     clone_number = dmutil.get_optional('clone_number', j)
-    attributes = dmutil.get_optional('attributes', j, [])
-    d = Draft(user, name, project_id, description, clone_number)
-    d.attributes = attributes
+    process = dmutil.get_optional('process', j, [])
+    d = Draft(user, name, project_id, project_name, description, clone_number)
+    d.process = process
     return dmutil.insert_entry('drafts', d.__dict__, return_created=True)
 
 
@@ -49,7 +52,7 @@ def create_draft():
 def update_draft(draft_id):
     j = request.get_json()
     need_to_update = False
-    attributes = dmutil.get_optional('attributes', j, None)
+    process = dmutil.get_optional('process', j, None)
     name = dmutil.get_optional('name', j, None)
     description = dmutil.get_optional('description', j, None)
     attrs = {}
@@ -67,8 +70,8 @@ def update_draft(draft_id):
         attrs['description'] = description
         need_to_update = True
 
-    if attributes:
-        attrs['attributes'] = attributes
+    if process:
+        attrs['process'] = process
         need_to_update = True
 
     if need_to_update:

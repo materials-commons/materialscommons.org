@@ -1,9 +1,23 @@
 Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
         var $validationProvider = $injector.get('$validation');
+
         $scope.clear_machine = function () {
-            $scope.machine = {
-                "additional": []
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"machine"')
+                .success(function (data) {
+                    $scope.machine_template = data[0];
+                    $scope.doc = {
+                        name: '',
+                        notes: [],
+                        description: '',
+                        default_properties: $scope.machine_template.default_properties,
+                        added_properties: []
+                    };
+                }).jsonp();
+
+            $scope.bk = {
+                new_note: ''
             };
         };
 
@@ -11,69 +25,63 @@ Application.Controllers.controller('toolbarMachines',
             var check = $validationProvider.checkValid(form);
             if (check === true) {
                 mcapi('/machines/new')
-                    .arg('order_by=birthtime')
                     .success(function (data) {
                         mcapi('/machines/%', data.id)
                             .success(function (machine_obj) {
                                 $scope.mach = machine_obj;
                                 $scope.machines_list.unshift(machine_obj);
+                                $scope.clear_machine();
+                                $scope.toggleCustom = false;
+                                $scope.message = "Machine has been saved.";
                             })
                             .error(function (e) {
 
                             }).jsonp();
-                        $scope.machine = {
-                            "additional": []
-                        };
                     })
                     .error(function (e) {
 
-                    }).post($scope.machine);
+                    }).post($scope.doc);
             } else {
                 $validationProvider.validate(form);
             }
 
-            $scope.default_properties.forEach(function (item) {
-                $scope.machine[item.name] = item.value;
-            });
-
         };
 
-        $scope.add_property_to_machine = function () {
-            if ($scope.p_name || $scope.p_name === ' ') {
-                $scope.machine.additional.push(JSON.parse($scope.p_name));
-                $scope.p_name = '';
-            }
-            if ($scope.additional_prop || $scope.additional_prop === ' ') {
-                $scope.machine.additional.push({'name': $scope.additional_prop, 'value': '', 'value_choice': [],
-                    'unit_choice': [], 'unit': '', 'required': false, "type": "text"});
-                $scope.additional_prop = '';
+        $scope.moreDetails = function (machine) {
+            $scope.machine = machine;
+            $scope.flag = false;
+            if ((Object.keys($scope.machine.properties)).length === 0) {
+                $scope.flag = true;
             }
 
         };
 
         function init() {
-            $scope.machine = {
-                "additional": []
+            $scope.doc = {
+                name: '',
+                notes: [],
+                description: '',
+                default_properties: [],
+                added_properties: []
+            };
+            $scope.bk = {
+                new_note: ''
             };
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_type":"machine"')
                 .success(function (data) {
                     $scope.machine_template = data[0];
-                    $scope.default_properties = $scope.machine_template.model.default;
-                    $scope.additional_properties = $scope.machine_template.model.additional;
-                })
-                .error(function (e) {
-
+                    $scope.doc.default_properties = $scope.machine_template.default_properties;
+                    $scope.doc.template = $scope.machine_template;     // using list of  additional properties in directive through doc
                 }).jsonp();
 
             mcapi('/machines')
                 .success(function (data) {
                     $scope.machines_list = data;
-                })
-                .error(function (data) {
                 }).jsonp();
 
         }
 
         init();
-    }]);
+    }])
+;

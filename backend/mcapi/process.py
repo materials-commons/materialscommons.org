@@ -66,33 +66,6 @@ def get_all_processes_for_project(project_id):
     return args.json_as_format_arg(selection)
 
 
-@app.route('/processes/extract/<process_id>/<object_type>', methods=['GET'])
-@apikey
-@jsonp
-def get_datafile_objects(process_id, object_type):
-    rr = r.table('processes').filter({'id': process_id})
-    if object_type == 'input_files':
-        rr = rr.outer_join(r.table('datafiles')
-                           .pluck('id', 'name', 'size', 'owner', 'birthtime'),
-                           lambda ddrow, drow: ddrow['input_files']
-                           .contains(drow['id']))
-    elif object_type == 'output_files':
-        rr = rr.outer_join(r.table('datafiles')
-                           .pluck('id', 'name', 'size', 'owner', 'birthtime'),
-                           lambda ddrow, drow: ddrow['output_files']
-                           .contains(drow['id']))
-    elif object_type == 'input_conditions':
-        rr = rr.outer_join(r.table('conditions'),
-                           lambda ddrow, drow: ddrow['input_conditions']
-                           .contains(drow['id']))
-    elif object_type == 'output_conditions':
-        rr = rr.outer_join(r.table('conditions'),
-                           lambda ddrow, drow: ddrow['output_conditions']
-                           .contains(drow['id']))
-    selection = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
-
-
 @app.route('/process/update/<path:processid>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
@@ -102,4 +75,14 @@ def update_process(processid):
         return ''
     else:
         error.update_conflict("Unable to update process: " + processid)
+
+
+@app.route('/processes/sample/<sample_id>', methods=['GET'])
+@jsonp
+def get_processes_for_sample(sample_id):
+    rv = r.table('conditions').get_all(sample_id, index='value') \
+                              .eq_join('process_id', r.table('processes'))
+    selection = list(rv.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+                 
 

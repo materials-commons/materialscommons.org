@@ -5,7 +5,8 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                 review_note_self: '',
                 review_note_other: '',
                 review_note: '',
-                schedule_for_self: false
+                schedule_for_self: false,
+                user_for_review: ''
             };
 
             $scope.addReview = function () {
@@ -16,7 +17,7 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                 if ($scope.model.schedule_for_self) {
                     review.requested_to = User.u();
                 } else {
-                    review.requested_to = $scope.user_for_review;
+                    review.requested_to = $scope.model.user_for_review;
                 }
                 review.item_name = $scope.doc.name;
                 review.item_id = $scope.doc.id;
@@ -58,6 +59,8 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                     }).delete();
             };
 
+
+
             $scope.reviewsCount = function () {
                 mcapi('/reviews/to_conduct')
                     .success(function (data) {
@@ -73,7 +76,7 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                 $scope.reviewsCount();
             });
 
-            $scope.init = function () {
+            function init() {
                 $scope.all_reviews = [];
                 $scope.signed_in_user = User.u();
                 $scope.signed_user = User.u();
@@ -81,11 +84,15 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                     .success(function (reviews) {
                         $scope.all_reviews = reviews;
                     }).jsonp();
+                mcapi('/selected_users')
+                    .success(function (data) {
+                        $scope.users = data;
+                    }).jsonp();
 
                 $scope.reviewsCount();
 
-            };
+            }
 
-            $scope.init();
+            init();
 
         }]);

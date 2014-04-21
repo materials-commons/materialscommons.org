@@ -1,62 +1,16 @@
 <div class="tab-pane" id="provenance" ng-controller="toolbarProcessProvenance">
-    <form class="form-inline">
-        <div class="span3">
-            <div class="well">
-                <legend>Inputs</legend>
-                <cgroup label="Properties:">
-                    <div ng-if="input_properties.length!=0">
-                        <ul style="list-style-position: inside" ng-repeat="f in input_properties">
-                            <a href="#modalCondition" data-toggle="modal"
-                               ng-click="get_mode_condition(f.right)">{{f.right.model.default[0].value}}</a>
-                        </ul>
-                    </div>
-                    <div ng-if="input_properties.length==0">
-                        <p class="muted">no input properties.</p>
-                    </div>
-                </cgroup>
-                <cgroup label="Files:">
-                    <div ng-if="input_files.length!=0">
-                        <ul style="list-style-position: inside" ng-repeat="f in input_files">
-                            <a ui-sref="toolbar.dataedit({id: f.id})">{{f.displayname}}</a>
-                        </ul>
-                    </div>
-                    <div ng-if="input_files.length==0">
-                        <p class="muted">no input files.</p>
-                    </div>
-                </cgroup>
-            </div>
+    <div class="span4">
+        <legend>Inputs</legend>
+        <div input-output-step conditions="input_conditions" files="input_files" step-type="input"></div>
+    </div>
+    <div class="span3">
+        <div class="circle-text" style="margin-left: 100px;margin-right: 0px">
+            <div>{{process.name}}</div>
         </div>
-        <div class="span4">
-            <div class="circle-text" style="margin-left: 100px;margin-right: 0px">
-                <div>{{process.name}}</div>
-            </div>
-        </div>
+    </div>
 
-        <div class="span3">
-            <div class="well">
-                <legend>Outputs</legend>
-                <cgroup label="Properties:">
-                    <div ng-if="output_properties.length!=0">
-                        <ul style="list-style-position: inside" ng-repeat="f in output_properties">
-                            <a href="#modalCondition" data-toggle="modal"
-                               ng-click="get_mode_condition(f.right)">{{f.right.model.default[0].value}}</a>
-                        </ul>
-                    </div>
-                    <div ng-if="output_properties.length==0">
-                        <p class="muted">no output properties.</p>
-                    </div>
-                </cgroup>
-                <cgroup label="Files:">
-                    <div ng-if="output_files.length!=0">
-                        <ul style="list-style-position: inside" ng-repeat="f in output_files">
-                            <a ui-sref="toolbar.dataedit({id:f.id})">{{f.displayname}}</a>
-                        </ul>
-                    </div>
-                    <div ng-if="output_files.length==0">
-                        <p class="muted">no output files.</p>
-                    </div>
-                </cgroup>
-            </div>
-        </div>
-    </form>
+    <div class="span4">
+        <legend>Outputs</legend>
+        <div input-output-step conditions="output_conditions" files="output_files" step-type="output"></div>
+    </div>
 </div>

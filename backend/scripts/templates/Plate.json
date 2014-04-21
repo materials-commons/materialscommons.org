@@ -1,0 +1,54 @@
+{
+    "id": "Plate" ,
+    "default_properties": [
+        {
+            "name": "Composition" ,
+            "attribute": "composition",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Supplier" ,
+            "attribute": "supplier",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Length" ,
+            "attribute": "length",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["cm", "m"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Width" ,
+            "attribute": "width",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["cm","m"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "Describe your initial object" ,
+    "template_mtime": "" ,
+    "template_name": "Plate" ,
+    "template_pick": "" ,
+    "template_type": "material"
+}

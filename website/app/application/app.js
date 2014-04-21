@@ -1,3 +1,4 @@
+
 var Application = Application || {};
 
 Application.Constants = angular.module('application.core.constants', []);
@@ -20,6 +21,7 @@ var app = angular.module('materialscommons',
         'ngCookies',
         'ui.router',
         'ngQuickDate',
+        'btford.socket-io',
         'restangular',
         'jmdobry.angular-cache',
         'validation',
@@ -29,7 +31,19 @@ var app = angular.module('materialscommons',
         'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
         'application.provenance.filters', 'application.provenance.directives']);
 
-app.config(function ($stateProvider) {
+// This factory needs to hang off of this module for some reason
+app.factory('msocket', ["socketFactory", function (socketFactory) {
+    var msocket = socketFactory({
+        ioSocket: io.connect('https://localhost:8082')
+    });
+    msocket.forward('file');
+    msocket.forward('connect');
+    msocket.forward('disconnect');
+    msocket.forward('error');
+    return msocket;
+}]);
+
+app.config(["$stateProvider", function ($stateProvider) {
     mcglobals = {};
     doConfig();
     $stateProvider
@@ -80,15 +94,6 @@ app.config(function ($stateProvider) {
         .state('toolbar.drafts', {
             url: '/drafts',
             templateUrl: 'application/core/toolbar/drafts/drafts.html'
-        })
-        // Toolbar Data Views
-        .state('toolbar.mydatapage', {
-            url: '/mydatapage',
-            templateUrl: 'application/core/toolbar/mydatapage/mydatapage.html'
-        })
-        .state('toolbar.mydata', {
-            url: '/mydata',
-            templateUrl: 'application/core/toolbar/mydata/mydata.html'
         })
         .state('toolbar.thumbnails', {
             url: '/thumbnails',
@@ -163,9 +168,9 @@ app.config(function ($stateProvider) {
         })
 
         // Toolbar materials views
-        .state('toolbar.materials', {
-            url: '/materials',
-            templateUrl: 'application/core/toolbar/materials/materials.html'
+        .state('toolbar.objects', {
+            url: '/objects',
+            templateUrl: 'application/core/toolbar/objects/objects.html'
         })
 
         // Toolbar overview
@@ -182,7 +187,7 @@ app.config(function ($stateProvider) {
                 ProvDrafts: "ProvDrafts"
             },
             onExit: function (ProvDrafts) {
-                if (ProvDrafts.current && ProvDrafts.current.attributes.process.name !== "") {
+                if (ProvDrafts.current && ProvDrafts.current.process.name !== "") {
                     ProvDrafts.saveDraft();
                 }
             }
@@ -215,17 +220,30 @@ app.config(function ($stateProvider) {
         .state('toolbar.projectspage.provenance.finish', {
             url: '/finish',
             templateUrl: 'application/provenance/finish/finish.html'
+        })
+        // File services
+        .state('toolbar.fileservices', {
+            url: '/fileservices',
+            templateUrl: 'application/core/toolbar/fileservices/fileservices.html'
+        })
+        .state('toolbar.fileservices.projects', {
+            url: '/projects',
+            templateUrl: 'application/core/toolbar/fileservices/projects/projects.html'
+        })
+        .state('toolbar.fileservices.events', {
+            url: '/events',
+            templateUrl: 'application/core/toolbar/fileservices/events/events.html'
+        })
+        .state('toolbar.fileservices.config', {
+            url: '/config',
+            templateUrl: 'application/core/toolbar/fileservices/config/config.html'
         });
-});
+}]);
 
-app.run(function ($rootScope, $state, $stateParams, $location, $cookieStore, User) {
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
-        if (!User.isAuthenticated()) {
-            if (toState.templateUrl && toState.templateUrl.indexOf("partials/my-tools") !== -1) {
-                $location.path("/login");
-            }
-        } else {
+app.run(["$rootScope", "User", function ($rootScope, User) {
+    $rootScope.$on('$stateChangeStart', function () {
+        if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
         }
     });
-});
+}]);

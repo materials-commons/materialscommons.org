@@ -21,16 +21,19 @@
                         <tbody>
                         <tr ng-repeat="row in docs | page:currentTagDataPage:10">
                             <td ng-if="row.type=='datafile'">
-                                <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: row.item.id})">{{ row.item.name }}</a>
+                                <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: row.item.id})">{{
+                                    row.item.name }}</a>
                             </td>
                             <td ng-if="row.type=='process'">
-                            <a style="cursor: pointer" ui-sref="toolbar.process({id: row.item.id})">{{ row.item.name }}</a>
+                                <a style="cursor: pointer" ui-sref="toolbar.process({id: row.item.id})">{{ row.item.name
+                                    }}</a>
                             </td>
                             <td>{{row.type}}</td>
                             <td>{{ row.item.description }}</td>
                             <td>
                                 <ul style="list-style-type:none">
-                                    <li ng-repeat="tag in row.tags_list"><span class="label label-info">{{ tag.tag_id }}</span></li>
+                                    <li ng-repeat="tag in row.tags_list"><span
+                                            class="label label-info">{{ tag.tag_id }}</span></li>
                                 </ul>
                             </td>
                             <td>

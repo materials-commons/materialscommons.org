@@ -1,156 +1,38 @@
 {
     "id": "SEM Imaging",
-    "model": [
+    "default_properties": [
+    ],
+    "additional_properties": [
         {
-            "name": "required_conditions" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [
-                "SEM Sample Preparation" ,
-                "SEM Instrument Properties"
-            ] ,
-            "value_choice": ""
-        } ,
-        {
-            "name": "required_output_conditions" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": ""
-        } ,
-        {
-            "name": "required_input_files" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [] ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "required_output_files",
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [],
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "name" ,
-            "type": "required" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": true
-        } ,
-        {
-            "name": "description" ,
+            "name": "Citations" ,
+            "attribute": "citations",
             "type": "text" ,
             "unit": "" ,
             "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
+            "value": "",
+            "value_choice": [],
             "required": false
-        } ,
+        },
         {
-            "name": "birthtime" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "mtime" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "machine" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "process_type" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "version" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "parent" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "notes" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "runs" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "citations" ,
-            "type": "" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": [ ],
-            "value_choice": "",
-            "required": false
-        } ,
-        {
-            "name": "status" ,
+            "name": "Version" ,
+            "attribute": "version",
             "type": "text" ,
             "unit": "" ,
             "unit_choice": "" ,
-            "value": "" ,
-            "value_choice": "",
+            "value": "",
+            "value_choice": [],
             "required": false
         }
-    ] ,
-    "owner": "gtarcea@umich.edu", 
+    ],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
     "template_description": "" ,
+    "template_mtime": "" ,
     "template_name": "SEM Imaging" ,
     "template_type": "process",
-    "template_pick": ""
-
+    "template_pick": "experiment",
+    "required_input_conditions": [ "Pick Sample", "SEM Instrument Properties"],
+    "required_output_conditions": [],
+    "required_input_files": true,
+    "required_output_files": true  
 }

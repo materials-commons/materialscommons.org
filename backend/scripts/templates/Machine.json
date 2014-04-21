@@ -1,137 +1,32 @@
 {
-
     "id": "Machine" ,
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "attribute" : "name",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            },
-            {
-                "name": "Notes" ,
-                "attribute": "notes",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }              
-        ],
-       
-        "additional": [
-            {
-                "name": "Gun Type" ,
-                "attribute": "gun_type",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": ["Field emission selection"],
-                "required": false
-            },
-            {
-                "name": "Detector Type" ,
-                "attribute": "detector_type",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Model" ,
-                "attribute": "model",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [],
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            } ,
-            {
-                "name": "Status" ,
-                "attribute": "status",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": false
-            } ,
-            {
-                "name": "Location" ,
-                "attribute": "location",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": false
-            } ,
-            {
-                "name": "Manufacturer" ,
-                "attribute": "manufacturer",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": "",
-                "required": false
-            },
-            {
-                "name": "Force Type" ,
-                "attribute": "force_type",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": ["Screw", "Hydraulic"],
-                "required": false
-            },
-            {
-                "name": "Type" ,
-                "attribute": "type",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": ["Rotating anode"],
-                "required": false
-            },
-            {
-                "name": "Serial Number" ,
-                "attribute": "serial_number",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Force Capacity(kN)" ,
-                "attribute": "force_capacity",
-                "type": "number" ,
-                "unit": "kN" ,
-                "unit_choice": "" ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-        ]
-    } ,
-    "owner": "gtarcea@umich.edu",
-    "template_birthtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,
+    "default_properties": [
+        {
+            "name": "Manufacturer" ,
+            "attribute": "manufacturer",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": "",
+            "required": true
+        },
+        {
+            "name": "Model Number" ,
+            "attribute": "model_number",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],
+    "additional_properties": [],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
     "template_description": "" ,
-    "template_mtime": "Tue Feb 04 2014 21:37:52 GMT+00:00" ,
+    "template_mtime": "" ,
     "template_name": "Machine" ,
     "template_type": "machine",
     "template_pick": ""

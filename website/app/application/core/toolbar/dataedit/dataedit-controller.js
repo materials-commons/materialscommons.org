@@ -73,5 +73,6 @@ Application.Controllers.controller('toolbarDataEdit',
                     }).jsonp();
                 $scope.showtab('notes');
             }
+
             init();
         }]);

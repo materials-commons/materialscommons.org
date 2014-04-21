@@ -1,69 +1,67 @@
 {
     "id": "Angle Properties",
-    "model": {
-        "default": [
-            {
-                "name": "Name" ,
-                "attribute": "name",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": true
-            }
-        ],
-       
-        "additional":[
-            {
-                "name": "Start angle" ,
-                "attribute":"start_angle",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": ["degrees"] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false 
-            },
-            {
-                "name": "End angle" ,
-                "attribute": "end_angle",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": ["degrees"] ,
-                "value": "" ,
-                "value_choice": ["In", "Out", "Knife edge"],
-                "required": false 
-            },
-            {
-                "name": "Rate" ,
-                "attribute": "rate",
-                "type": "text" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            },
-            {
-                "name": "Step size" ,
-                "attribute": "step_size",
-                "type": "number" ,
-                "unit": "" ,
-                "unit_choice": [] ,
-                "value": "" ,
-                "value_choice": [],
-                "required": false
-            }
-           
-        ]
-    } ,
-    "owner": "gtarcea@umich.edu", 
+    "attribute": "angle_properties",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],   
+    "additional_properties":[
+        {
+            "name": "Start angle" ,
+            "attribute": "start_angle",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": ["degrees"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false 
+        },
+        {
+            "name": "End angle" ,
+            "attribute": "end_angle",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": ["degrees"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false 
+        },
+        {
+            "name": "Rate" ,
+            "attribute": "rate",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Step size" ,
+            "attribute": "step_size",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+        
+    ],
+    "owner": "admin@materialscommons.org", 
     "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_description": "" ,
     "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_name": "Angle Properties" ,
-    "template_pick": "" ,
+    "template_pick": "instrument" ,
     "template_type": "condition"
 
 }

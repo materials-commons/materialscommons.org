@@ -1,0 +1,44 @@
+{
+    "id": "Powder" ,
+    "default_properties": [
+        {
+            "name": "Composition" ,
+            "attribute": "composition",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Supplier" ,
+            "attribute": "supplier",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Texture" ,
+            "attribute": "texture",
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": ["Fine", "Coarse", "Moderately Fine", "Moderately Coarse"],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "Describe your initial object" ,
+    "template_mtime": "" ,
+    "template_name": "Powder" ,
+    "template_pick": "" ,
+    "template_type": "material"
+}

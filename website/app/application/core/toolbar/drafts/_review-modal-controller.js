@@ -9,7 +9,7 @@ Application.Controllers.controller('_toolbarDraftsReviewModal',
             review.requested_to = userToReview;
             review.item_name = $scope.draft.name;
             review.item_id = $scope.draft.id;
-            review.project_id = $scope.draft.attributes.project_id;
+            review.project_id = $scope.draft.project_id;
             return review;
         }
 

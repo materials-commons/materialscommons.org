@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarProjectsPageOverview',
-    ["$scope", "$stateParams", function ($scope, $stateParams) {
+    ["$scope", "$stateParams", "Action", function ($scope, $stateParams, Action) {
         $scope.project_id = $stateParams.id;
         $scope.processes = [];
         $scope.init = function () {

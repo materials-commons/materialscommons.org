@@ -1,6 +1,27 @@
 Application.Controllers.controller('toolbarProcessProvenance',
-    ["$scope", "mcapi", "User", "$state", "$stateParams",
-        function ($scope, mcapi, User, $state, $stateParams) {
+    ["$scope", "mcapi", "User", "$state", "$stateParams", "$filter",
+        function ($scope, mcapi, User, $state, $stateParams, $filter) {
+
+            $scope.showtab = function (tab, type) {
+                switch (type) {
+                    case "id":
+                        mcapi('/objects/%', tab.properties.id.value)
+                            .success(function (data) {
+                                $scope.item = data;
+                            }).jsonp();
+                        break;
+                    case "condition":
+                        $scope.item = tab;
+                        break;
+                    case "file":
+                        mcapi('/datafile/%', tab.properties.id.value)
+                            .success(function (data) {
+                                $scope.item = data;
+                            }).jsonp();
+                        break;
+                }
+            };
+
 
             $scope.init = function () {
                 $scope.id = $stateParams.id;
@@ -8,30 +29,18 @@ Application.Controllers.controller('toolbarProcessProvenance',
                 $scope.input_properties = [];
                 $scope.input_files = [];
                 $scope.output_files = [];
+
+
                 mcapi('/processes/%', $scope.id)
                     .success(function (data) {
                         $scope.process = data;
-                        $scope.input_files = $scope.process.input_files;
-                        $scope.output_files = $scope.process.output_files;
-                        if ($scope.process.input_conditions.length !== 0) {
-                            mcapi('/processes/extract/%/%', $scope.process.id, "input_conditions")
-                                .success(function (data) {
-                                    $scope.input_properties = data;
-                                })
-                                .error(function (e) {
-
-                                }).jsonp();
-                        }
-                        if ($scope.process.output_conditions.length !== 0) {
-                            mcapi('/processes/extract/%/%', $scope.process.id, "output_conditions")
-                                .success(function (data) {
-                                    $scope.output_properties = data;
-                                })
-                                .error(function (e) {
-
-                                }).jsonp();
-                        }
+                        $scope.input_files = $filter('processFilter')($scope.process.inputs, 'file');
+                        $scope.output_files = $filter('processFilter')($scope.process.outputs, 'file');
+                        $scope.input_conditions = $filter('processFilter')($scope.process.inputs, 'condition', 'id');
+                        $scope.output_conditions = $filter('processFilter')($scope.process.outputs, 'condition', 'id');
                     }).jsonp();
+
+
             };
             $scope.init();
         }]);

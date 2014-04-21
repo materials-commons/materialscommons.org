@@ -19,4 +19,3 @@ do
     echo "Loading template: $line"
     mktemplate.py -p $PORT -f "templates/$line"
 done
-

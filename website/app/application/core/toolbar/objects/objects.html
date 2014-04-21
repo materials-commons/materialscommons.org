@@ -1,0 +1,133 @@
+<div ng-controller="toolbarObjects">
+    <button class="btn btn-primary" ng-click="toggleCustom = !toggleCustom">New</button>
+
+    <div ng-init="toggleCustom = false" ng-show="toggleCustom" class="row-fluid">
+        <form name="Sample" class="form-horizontal">
+            <legend>Create New Object</legend>
+            <fieldset>
+                <cgroup label="Classification:">
+                    <select ng-model="bk.classification" ng-change="setProperties()"
+                            ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
+                    </select>
+                </cgroup>
+                <div class="control-group">
+                    <div ng-show="bk.classification">
+                        <div upperlevel-object bk="bk" doc="doc" edit="false"></div>
+                        <div df-properties default-properties="doc.default_properties"></div>
+
+                        <cgroup label="Treatments:">
+                            <select ng-model="bk.selected_treatment"
+                                    ng-options="treat.template_name for treat in treatment_templates"
+                                    ng-change="showForm()">
+                            </select>
+                        </cgroup>
+
+                        <label class='control-label'><strong>{{bk.selected_treatment.template_name ||
+                            bk.tab_item}} </strong></label>
+
+                        <div class='controls'>
+                            <div class="span6">
+                                <div ng-show="bk.selected_treatment!==''">
+                                    <div class="well">
+                                        <div df-properties default-properties="default_properties"></div>
+                                        <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span2">
+                                <label>Treatments Order:</label>
+
+                                <div class="tabbable tabs-right">
+                                    <ul class="nav nav-tabs" ng-repeat="treatment in doc.treatments">
+                                        <li><a ng-click="showTab(treatment, $index)"
+                                               data-toggle="tab"><strong>{{treatment.template_name}}</strong></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div class="row-fluid">
+            <div class="span4">
+                <button ng-click="save(Sample)" class="btn btn-primary">Save</button>
+                <button ng-click="clear()" class="btn btn-danger">Clear</button>
+            </div>
+            <div saved-notification message="message"></div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span6">
+            <legend>List of available objects:</legend>
+            <paged data="samples_list" current-page="currentDataPage" page-size="10">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Composition</th>
+                        <th>Date Created</th>
+                        <th>Details and Processes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <p ng-if="samples_list.length==0">
+                        <b>No available objects in the database</b>
+                    </p>
+
+                    <p ng-if="samples_list.length!=0">
+                        <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:10">
+                            <td>{{sample.name}}</td>
+                            <td>{{sample.properties.composition.value}}</td>
+                            <td>{{sample.birthtime | toDateString}}</td>
+                            <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
+                        </tr>
+                    </p>
+                    </tbody>
+                </table>
+            </paged>
+        </div>
+        <div class="span6">
+            <form class="form-horizontal" ng-show="sample">
+                <legend>Details</legend>
+                <div upperlevel-object doc="sample" edit="true"></div>
+
+                <div ng-repeat="property in sample.properties">
+                    <cgroup label="{{property.name}}">
+                        <input class="input-large" ng-model="property.value" type="text"
+                               ng-disabled="true">
+                        {{ property.unit }}
+                    </cgroup>
+                </div>
+                <legend>Treatments</legend>
+                <div ng-if="sample.treatments.length==0">
+                    No Treatments applied to the material {{sample.name}}
+                </div>
+                <div ng-if="sample.treatments.length!==0">
+                    <div ng-repeat="treatment in sample.treatments">
+                        <b>{{treatment.template}}:</b>
+                        <fieldset>
+                            <div ng-repeat="property in treatment.properties">
+                                <cgroup label="{{property.name}}">
+                                    <input class="input-large" ng-model="property.value" type="text"
+                                           ng-disabled="true">
+                                    {{ property.unit }}
+                                </cgroup>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <legend>Processes</legend>
+                <div ng-if="processes_list.length === 0">
+                    object {{sample.name}} has not been used in any process
+                </div>
+                <div ng-if="processes_list.length !== 0">
+                    <ul ng-repeat="process in processes_list">
+                        <li><a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
