@@ -8,7 +8,7 @@
                             <input type="radio" ng-model="doc.is_active" value=true> available <br/>
                             <input type="radio" ng-model="doc.is_active" value='false'> not available
                         </cgroup>
-                        <div upperlevel-sample doc="doc.sample" bk="bk" edit="false"></div>
+                        <div upperlevel-object doc="doc.sample" bk="bk" edit="false"></div>
                         <!--<div df-properties default-properties="doc.sample.default_properties" edit="false"></div>-->
                         <div ng-repeat="property in doc.sample.properties">
                             <cgroup label="{{property.name}}">
