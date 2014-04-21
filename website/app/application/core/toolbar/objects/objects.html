@@ -141,9 +141,9 @@
         </div>
         <div class="span6" ng-show="object">
             <legend>Processes associated with object {{object.name}}</legend>
-            <div ng-repeat="process in processes_list">
-                <a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a>
-            </div>
+            <ul ng-repeat="process in processes_list">
+                <li><a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a></li>
+            </ul>
         </div>
 
     </div>
