@@ -62,6 +62,7 @@ Application.Controllers.controller('toolbarObjects',
         };
         $scope.setProperties = function () {
             $scope.doc.default_properties = $scope.bk.classification.default_properties;
+            $scope.doc.template = $scope.bk.classification.template_name;
 
         };
         $scope.showTreatmentDetails_and_processes = function (sample) {

@@ -1,6 +1,6 @@
 {
     "id": "XRD Output Properties",
-    "attribute": 'instrument_settings',
+    "attribute": "instrument_settings",
     "default_properties": [
         {
             "name": "Name" ,
