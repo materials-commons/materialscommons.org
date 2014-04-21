@@ -93,6 +93,8 @@
         <div class="span6">
             <form class="form-horizontal" ng-show="sample">
                 <legend>{{sample.name}}</legend>
+                <div upperlevel-object doc="sample" edit="true"></div>
+
                 <div ng-repeat="property in sample.properties">
                     <cgroup label="{{property.name}}">
                         <input class="input-large" ng-model="property.value" type="text"
@@ -118,25 +120,6 @@
                         </fieldset>
                     </div>
                 </div>
-                <div ng-show="sample.notes.length > 0">
-                    <h5>Previous Notes:</h5>
-                    <table class="table">
-                        <thead>
-                        <th>Message</th>
-                        <th>Who</th>
-                        <th>Date Created</th>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="note in sample.notes">
-                            <td>{{note.message}}</td>
-                            <td>{{note.who}}</td>
-                            <td>{{note.date}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
             </form>
         </div>
         <div class="span6" ng-show="object">

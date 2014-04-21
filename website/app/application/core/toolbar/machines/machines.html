@@ -52,6 +52,8 @@
                     No specific details have been entered for {{machine.name}}
                 </div>
                 <div ng-hide="flag">
+                    <div upperlevel-object doc="machine" edit="true"></div>
+
                     <div ng-repeat="property in machine.properties">
                         <cgroup label="{{property.name}}">
                             <input class="input-large" ng-model="property.value" type="text"
@@ -59,24 +61,6 @@
                             {{ property.unit }}
                         </cgroup>
                     </div>
-                </div>
-
-                <div ng-show="machine.notes.length > 0">
-                    <h5>Previous Notes:</h5>
-                    <table class="table">
-                        <thead>
-                        <th>Message</th>
-                        <th>Who</th>
-                        <th>Date Created</th>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="note in machine.notes">
-                            <td>{{note.message}}</td>
-                            <td>{{note.who}}</td>
-                            <td>{{note.date}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
             </form>
         </div>
