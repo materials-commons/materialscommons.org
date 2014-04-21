@@ -68,8 +68,7 @@
                         <th>Name</th>
                         <th>Composition</th>
                         <th>Date Created</th>
-                        <th>Processes</th>
-                        <th>Details</th>
+                        <th>Details and Processes</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -82,8 +81,7 @@
                             <td>{{sample.name}}</td>
                             <td>{{sample.properties.composition.value}}</td>
                             <td>{{sample.birthtime | toDateString}}</td>
-                            <td><a ng-click="showProcesses(sample)">view</a></td>
-                            <td><a ng-click="showTreatmentDetails(sample)">view</a></td>
+                            <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
                         </tr>
                     </p>
                     </tbody>
@@ -92,7 +90,7 @@
         </div>
         <div class="span6">
             <form class="form-horizontal" ng-show="sample">
-                <legend>{{sample.name}}</legend>
+                <legend>Details</legend>
                 <div upperlevel-object doc="sample" edit="true"></div>
 
                 <div ng-repeat="property in sample.properties">
@@ -102,7 +100,7 @@
                         {{ property.unit }}
                     </cgroup>
                 </div>
-
+                <legend>Treatments</legend>
                 <div ng-if="sample.treatments.length==0">
                     No Treatments applied to the material {{sample.name}}
                 </div>
@@ -120,14 +118,16 @@
                         </fieldset>
                     </div>
                 </div>
+                <legend>Processes</legend>
+                <div ng-if="processes_list.length === 0">
+                    object {{sample.name}} has not been used in any process
+                </div>
+                <div ng-if="processes_list.length !== 0">
+                    <ul ng-repeat="process in processes_list">
+                        <li><a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a></li>
+                    </ul>
+                </div>
             </form>
         </div>
-        <div class="span6" ng-show="object">
-            <legend>Processes associated with object {{object.name}}</legend>
-            <ul ng-repeat="process in processes_list">
-                <li><a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a></li>
-            </ul>
-        </div>
-
     </div>
 </div>

@@ -31,8 +31,8 @@ def create_object():
     sample = dict()
     user = access.get_user()
     sample['name'] = dmutil.get_required('name', j)
-    sample['composition'] = dmutil.get_required('composition', j)
-    sample['notes'] = dmutil.get_required('notes', j)
+    sample['description'] = dmutil.get_optional('description', j)
+    sample['notes'] = dmutil.get_optional('notes', j)
     sample['available'] = dmutil.get_optional('available', j)
     sample['properties'] = {}
     doc.add_properties(dmutil.get_optional('default_properties', j), sample)

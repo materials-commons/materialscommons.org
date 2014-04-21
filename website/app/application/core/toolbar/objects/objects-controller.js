@@ -6,9 +6,9 @@ Application.Controllers.controller('toolbarObjects',
         };
 
         $scope.showTab = function (item, index) {
-            $scope.bk.tab_item = item;
+            $scope.bk.tab_item = item.template_name;
             $scope.bk.tab_details = $scope.doc.treatments[index];
-            $scope.default_properties = $scope.doc.treatments[index];
+            $scope.default_properties = $scope.doc.treatments[index].default_properties;
             $scope.bk.selected_treatment = {};
         };
 
@@ -34,6 +34,7 @@ Application.Controllers.controller('toolbarObjects',
             $scope.bk.selected_treatment = '';
             $scope.default_properties = "";
             $scope.doc.treatments.push(o);
+            console.log($scope.doc)
         };
 
         $scope.save = function (form) {
@@ -63,16 +64,16 @@ Application.Controllers.controller('toolbarObjects',
             $scope.doc.default_properties = $scope.bk.classification.default_properties;
 
         };
-        $scope.showTreatmentDetails = function (sample) {
+        $scope.showTreatmentDetails_and_processes = function (sample) {
             $scope.sample = sample;
-        };
-
-        $scope.showProcesses = function (sample) {
-            $scope.object = sample;
             mcapi('/processes/sample/%', sample.id)
                 .success(function (data) {
                     $scope.processes_list = data;
                 }).jsonp();
+        };
+
+        $scope.showProcesses = function (sample) {
+
         };
 
         $scope.clear = function () {
