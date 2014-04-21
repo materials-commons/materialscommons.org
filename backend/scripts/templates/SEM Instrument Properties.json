@@ -4,9 +4,19 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "attribute": "name",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
                 "name": "Detector",
                 "attribute": "dectector",
-                "type": "",
+                "type": "text",
                 "unit": "",
                 "unit_choice": [],
                 "value": "",
@@ -24,7 +34,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Current(A)",
@@ -34,7 +44,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Stage Tilt(Degrees)",
@@ -44,7 +54,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Magnification",
@@ -54,32 +64,32 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Specimen/Stage Bias(V)",
                 "attribute": "specimen_stage_bias",
-                "type": "",
+                "type": "number",
                 "unit": "V",
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Column Bias(V)",
                 "attribute": "column_bias",
-                "type": "",
+                "type": "number",
                 "unit": "V",
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Notes" ,
                 "attribute": "notes",
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

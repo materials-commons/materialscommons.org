@@ -4,9 +4,19 @@
     "model": {
         "default": [
             {
+                "name": "Name" ,
+                "attribute": "name",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            },
+            {
                 "name": "Mode",
                 "attribute": "mode",
-                "type": "",
+                "type": "text",
                 "unit": "",
                 "unit_choice": [],
                 "value": "",
@@ -31,7 +41,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Laser Pulse Energy(pJ)",
@@ -41,7 +51,7 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Pulse Frequence(kHz)",
@@ -51,54 +61,54 @@
                 "unit_choice": [],
                 "value": "",
                 "value_choice": [],
-                "required": true
+                "required": false
             },
             {
                 "name": "Evaporation Control",
                 "attribute": "evaporation_control",
-                "type": "",
+                "type": "text",
                 "unit": "",
                 "unit_choice": [],
                 "value": "",
                 "value_choice": ["Constant Detector Rate",
                                  "Constant Evaporation Rate",
                                 "Constant Charge Rate Ratio"],
-                "required": true
+                "required": false
             },
             {
                 "name": "Evaporation Rate",
                 "attribute": "evaporation_rate",
-                "type": "",
+                "type": "text",
                 "unit": "",
                 "unit_choice": [],
                 "value": "",
                 "value_choice": ["Atom", "Pulse"],
-                "required": true
+                "required": false
             },
             {
                 "name": "Vacuum Level" ,
                 "attribute": "vacuum_level",
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": ["High", "Low"],
-                "required": true
+                "required": false
             },
             {
                 "name": "Imaging Gas" ,
                 "attribute": "imaging_gas",
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
                 "value_choice": ["He", "Ar", "Ne", "Other", "None"],
-                "required": true
+                "required": false
             },
             {
                 "name": "Notes" ,
                 "attribute": "notes",
-                "type": "" ,
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

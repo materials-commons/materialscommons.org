@@ -2,18 +2,11 @@ import rethinkdb as r
 
 class Note(object):
     def __init__(self, owner):
+        # Creation time of note
         self.birthtime = r.now()
-        self.owner = owner
-        self.notes = []
 
-    def add_note(self, note_entry):
-        self.notes.append(note_entry)
+        # Who entered the note
+        self.who = owner
 
-class NoteEntry(object):
-    def __init__(self, key, value, units=""):
-        self.key = key
-        self.value = value
-        self.units = units
-
-    def new_note_entry(value, key="", units=""):
-        return Entry(key, value, units)
+        # The text of the note
+        self.message = []

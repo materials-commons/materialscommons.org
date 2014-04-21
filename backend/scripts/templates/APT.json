@@ -40,7 +40,7 @@
         } ,
         {
             "name": "name" ,
-            "type": "" ,
+            "type": "required" ,
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
@@ -49,7 +49,7 @@
         } ,
         {
             "name": "description" ,
-            "type": "" ,
+            "type": "text" ,
             "unit": "" ,
             "unit_choice": "" ,
             "value": "" ,
@@ -112,7 +112,7 @@
         } ,
         {
             "name": "notes" ,
-            "type": "" ,
+            "type": "text" ,
             "unit": "" ,
             "unit_choice": "" ,
             "value": [ ],

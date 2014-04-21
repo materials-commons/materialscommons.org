@@ -2,12 +2,23 @@
     "id": "XRD Output Properties",
     "model": {
         "default": [
+            {
+                "name": "Name" ,
+                "attribute":"name",
+                "type": "text" ,
+                "unit": "" ,
+                "unit_choice": [] ,
+                "value": "" ,
+                "value_choice": [],
+                "required": true
+            }                
         ],
         
         "additional":[
             {
                 "name": "Whole pattern fitting" ,
-                "type": "" ,
+                "attribute":"whole_pattern_fitting",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,
@@ -16,7 +27,8 @@
             },
             {
                 "name": "Texture Analysis" ,
-                "type": "" ,
+                "attribute":"texture_analysis",
+                "type": "text" ,
                 "unit": "" ,
                 "unit_choice": [] ,
                 "value": "" ,

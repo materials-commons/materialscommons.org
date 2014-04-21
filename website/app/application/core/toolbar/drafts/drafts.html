@@ -10,7 +10,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="draft in drafts | filter:query | orderBy:'name'">
+        <tr ng-repeat="draft in drafts | filter:query | orderBy:'attributes.process.name'">
 
             <td><a style="cursor: pointer"
                    ui-sref="toolbar.projectspage({id: draft.attributes.project_id, draft_id: draft.id})">
@@ -31,6 +31,7 @@
                                data-target="#toolbarDraftsReviewModal"
                                ng-click="markForReview(draft)">Mark For Review</a>
                         </li>
+                        <li><a ng-click="cloneProvenance(draft)">Clone</a></li>
                     </ul>
                 </div>
             </td>

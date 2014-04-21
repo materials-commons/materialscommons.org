@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDrafts',
-    ["$scope", "pubsub", "ProvDrafts", "$state",
-        function ($scope, pubsub, ProvDrafts, $state) {
+    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService",
+        function ($scope, pubsub, ProvDrafts, $state, alertService) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
             });
@@ -21,9 +21,25 @@ Application.Controllers.controller('toolbarDrafts',
                 $state.go('toolbar.drafts');
             };
 
-            $scope.init = function () {
-                $scope.drafts = ProvDrafts.drafts;
+            $scope.cloneProvenance = function (draft) {
+                var copy_draft = angular.copy(draft), new_draft = {};
+                if (copy_draft.clone_number) {
+                    new_draft = ProvDrafts.prepareClone(copy_draft, draft.clone_number);
+                } else {
+                    new_draft = ProvDrafts.prepareClone(copy_draft, '');
+                }
+                if (new_draft) {
+                    ProvDrafts.current = new_draft;
+                    ProvDrafts.saveDraft();
+                } else {
+                    alertService.sendMessage("Draft already exists !");
+                }
+
             };
 
-            $scope.init();
+            function init() {
+                $scope.drafts = ProvDrafts.drafts;
+            }
+
+            init();
         }]);

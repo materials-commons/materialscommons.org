@@ -18,16 +18,18 @@ var app = angular.module('materialscommons',
         'ui',
         'ui.bootstrap',
         'ngCookies',
-        '$strap.directives',
-        'ui.router', 'ngResource',
+        'ui.router',
         'ngQuickDate',
+        'restangular',
+        'jmdobry.angular-cache',
+        'validation',
+        '$strap.directives',
         'application.core.constants', 'application.core.services', 'application.core.controllers',
         'application.core.filters', 'application.core.directives',
         'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
         'application.provenance.filters', 'application.provenance.directives']);
 
 app.config(function ($stateProvider) {
-    Stomp.WebSocketClass = SockJS;
     mcglobals = {};
     doConfig();
     $stateProvider
@@ -92,9 +94,42 @@ app.config(function ($stateProvider) {
             url: '/thumbnails',
             templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
         })
+        //DataEdit Page
         .state('toolbar.dataedit', {
             url: '/dataedit/:id',
             templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
+        })
+        .state('toolbar.dataedit.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/toolbar/dataedit/reviews/reviews.html'
+        })
+        .state('toolbar.dataedit.tags', {
+            url: '/tags',
+            templateUrl: 'application/core/toolbar/dataedit/tags/tags.html'
+        })
+        .state('toolbar.dataedit.notes', {
+            url: '/notes',
+            templateUrl: 'application/core/toolbar/dataedit/notes/notes.html'
+        })
+        .state('toolbar.dataedit.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/core/toolbar/dataedit/provenance/provenance.html'
+        })
+        .state('toolbar.process', {
+            url: '/process/:id',
+            templateUrl: 'application/core/toolbar/process/process.html'
+        })
+        .state('toolbar.process.notes', {
+            url: '/notes',
+            templateUrl: 'application/core/toolbar/process/notes/notes.html'
+        })
+        .state('toolbar.process.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/core/toolbar/process/provenance/provenance.html'
+        })
+        .state('toolbar.process.tags', {
+            url: '/tags',
+            templateUrl: 'application/core/toolbar/process/tags/tags.html'
         })
         .state('toolbar.databytag', {
             url: '/databytag/:name',
