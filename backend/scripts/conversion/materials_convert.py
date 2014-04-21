@@ -48,6 +48,17 @@ def main(conn):
         else:
             print "%s: %s has no property we can use for composition, skipping..." % (m.old_id, m.name)
             continue
+        if 'additional' in material:
+            prop_to_use = 'additional'
+        elif 'model' in material:
+            prop_to_use = 'model'
+        else:
+            print "%s: %s doesn't have additional skipping..." % (m.id, m.name)
+            continue
+        for prop in material[prop_to_use]:
+            if prop['name'] == "Supplier":
+                p = new_property("Supplier", "text", prop['value'])
+                m.properties['supplier'] = p
         if 'description' in material:
             m.description = material['description']
         else:
