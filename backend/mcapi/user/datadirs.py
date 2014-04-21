@@ -1,10 +1,8 @@
-
 from ..mcapp import app
 from ..decorators import apikey, jsonp, crossdomain
 import json
 from flask import g, request
 import rethinkdb as r
-from os.path import dirname, basename
 from ..utils import json_for_single_item_list
 from ..args import add_all_arg_options, json_as_format_arg
 from .. import access
@@ -19,7 +17,7 @@ from loader.model import datadir
 @jsonp
 def datadir_for_user(datadirid):
     user = access.get_user()
-    rr = r.table('datadirs').filter({'owner':user, 'id':datadirid})
+    rr = r.table('datadirs').filter({'owner': user, 'id': datadirid})
     rr = add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_for_single_item_list(selection)
@@ -41,8 +39,11 @@ def datadirs_for_user():
 @jsonp
 def list_datadirs_with_data_by_user():
     user = access.get_user()
-    selection = list(r.table('datadirs').filter({'owner': user}).outer_join(\
-            r.table('datafiles'), lambda ddirrow, drow: ddirrow['datafiles'].contains(drow['id']))\
+    selection = list(r.table('datadirs').filter({'owner': user})
+                     .outer_join(
+                         r.table('datafiles'),
+                         lambda ddirrow, drow: ddirrow['datafiles']
+                         .contains(drow['id']))
                      .run(g.conn, time_format='raw'))
     if not selection:
         return json.dumps(selection)
@@ -64,137 +65,6 @@ def list_datadirs_with_data_by_user():
                 current_datadir['datafiles'].append(item['right'])
             datadirs.append(current_datadir)
     return json_as_format_arg(datadirs)
-
-
-class DItem:
-    def __init__(self, id, name, type, owner, birthtime, size):
-        self.id = id
-        self.c_id = ""
-        self.level = 0
-        self.parent_id = ""
-        self.name = name
-        self.owner = owner
-        self.birthtime = birthtime
-        self.size = size
-        self.displayname = basename(name)
-        self.type = type
-        self.children = []
-
-
-class DEncoder(json.JSONEncoder):
-    def default(self, o):
-        return o.__dict__
-
-
-@app.route('/datadirs/tree/groups')
-@apikey
-@jsonp
-def group_datadirs_as_tree():
-    user = access.get_user()
-    allowedUsers = list(r.table('usergroups').filter(r.row['users'].contains(user))\
-                        .concat_map(lambda g: g['users']).distinct().run(g.conn))
-    users = '(' + '|'.join(allowedUsers) + ')'
-    selection = list(r.table('datadirs').filter(r.row['owner'].match(users))\
-                         .pluck('id', 'name', 'datafiles')\
-                         .order_by('name')\
-                         .outer_join(r.table('datafiles').pluck('id', 'name'), \
-                                         lambda ddrow, drow: ddrow['datafiles'].contains(drow['id']))\
-                         .run(g.conn, time_format='raw'))
-    return buildTreeFromSelection(selection)
-
-
-@app.route('/datadirs/tree')
-@apikey
-@jsonp
-def user_datadirs_as_tree():
-    user = access.get_user()
-    selection = list(r.table('datadirs').filter({'owner':user})\
-                         .pluck('id', 'name', 'datafiles')\
-                         .order_by('name')\
-                         .outer_join(r.table('datafiles').pluck('id', 'name'), \
-                                         lambda ddrow, drow: ddrow['datafiles'].contains(drow['id']))\
-                         .run(g.conn, time_format='raw'))
-    return buildTreeFromSelection(selection)
-
-
-def buildTreeFromSelection(selection):
-    if not selection:
-        return json.dumps(selection, indent=4)
-    topLevelDirs = []
-    allDataDirs = {}
-    # The first entry is a top level dir
-    ddir = selection[0]['left']
-    next_id = 1
-    currentDataDir = addToTopLevelDirs(ddir, topLevelDirs, next_id)
-    next_id = next_id + 1
-    allDataDirs[currentDataDir.name] = currentDataDir
-    for item in selection:
-        ddir = item['left']
-        if 'right' in item:
-            data = item['right']
-        else:
-            data = None
-        if ddir['name'] <> currentDataDir.name:
-            if ddir['name'] not in allDataDirs:
-                if isTopLevel(ddir):
-                    dd = addToTopLevelDirs(ddir, topLevelDirs, next_id)
-                    next_id = next_id + 1
-                    allDataDirs[dd.name] = dd
-                elif ddir['name'] in allDataDirs:
-                    dd = allDataDirs[ddir['name']]
-                else:
-                    if not 'birthtime' in ddir.keys():
-                        ddir['birthtime'] = '';
-                    if not 'size' in ddir.keys():
-                        ddir['size'] = ''; 
-                    dd = DItem(ddir['id'], ddir['name'], "datadir", ddir['owner'],ddir['birthtime'],ddir['size'])
-                    dd.c_id = str(next_id)
-                    next_id = next_id + 1
-                    allDataDirs[dd.name] = dd
-                    dirToAddTo = allDataDirs[dirname(dd.name)]
-                    dd.parent_id = dirToAddTo.c_id
-                    dd.level = dirToAddTo.level+1
-                    dirToAddTo.children.append(dd)
-                currentDataDir = dd
-            else:
-                currentDataDir = allDataDirs[ddir['name']]
-        if data:
-            if not 'birthtime' in data.keys():
-                data['birthtime'] = '';
-            if not 'size' in data.keys():
-                data['size'] = '';
-            data = DItem(data['id'], data['name'], "datafile",data['owner'],data['birthtime'],data['size'])
-            data.c_id = str(next_id)
-            next_id = next_id + 1
-            data.parent_id = currentDataDir.c_id
-            currentDataDir.children.append(data)
-    return json.dumps(topLevelDirs, indent=4, cls=DEncoder)
-
-
-def isTopLevel(ddir):
-    # Top level dirs don't have a '/' in their names
-    return "/" not in ddir['name']
-
-
-def addToTopLevelDirs(ddir, topLevelDirs, c_id):
-    item = find_in_ditem_list(ddir['name'], topLevelDirs)
-    if not item:
-        if not 'birthtime' in ddir.keys():
-            ddir['birthtime'] = '';
-        if not 'size' in ddir.keys():
-            ddir['size'] = '';
-        dd = DItem(ddir['id'], ddir['name'], "datadir", ddir['owner'], ddir['birthtime'], ddir['size'])
-        dd.c_id = str(c_id)
-        topLevelDirs.append(dd)
-        item = dd
-    return item
-
-
-def find_in_ditem_list(name, items):
-    for item in items:
-        if item.name == name:
-            return item
-    return None
 
 
 @app.route('/datadirs', methods=['POST'])
@@ -230,6 +100,7 @@ def construct_datadir(j, user):
 @apikey
 @jsonp
 def get_datadir(datafile_id):
-    rr = r.table('datadirs').filter(lambda drow: drow['datafiles'].contains(datafile_id))
+    rr = r.table('datadirs').filter(
+        lambda drow: drow['datafiles'].contains(datafile_id))
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_as_format_arg(selection)

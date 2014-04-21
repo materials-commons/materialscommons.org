@@ -26,9 +26,6 @@
 
     <link href="assets/css/thumbnail.css" rel="stylesheet">
 
-    <!--Treetable -->
-    <link rel="stylesheet" href="assets/css/jquery.treetable.css"/>
-    <link rel="stylesheet" href="assets/css/jquery.treetable.theme.default.css"/>
     <!-- date select -->
     <link href="assets/css/ng-quick-date-default-theme.css" rel="stylesheet" media="all">
     <link href="assets/css/ng-quick-date.css" rel="stylesheet" media="all">
@@ -82,10 +79,9 @@
     </div>
 </div>
 <div class="row-fluid" ng-controller="_indexAlerts">
-    <div ng-show="message" >
+    <div ng-show="message">
         <notification ng-model="message"></notification>
     </div>
-
 </div>
 <div class="row-fluid">
     <div ui-view>
@@ -93,10 +89,11 @@
     </div>
 </div>
 
+<!------------------------------ External dependencies ----------------->
+
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="assets/js/select2.min.js"></script>
 <script src="assets/js/TreeModel-min.js"></script>
-<script src="assets/js/jquery.treetable.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
 <script src="assets/js/angular/angular-ui.js"></script>
@@ -111,6 +108,8 @@
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/ng-quick-date.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.1.0.js"></script>
+<script src="assets/js/angular/socket.js"></script>
+<script src="assets/js/socket.io.js"></script>
 <!------------------------------ Application --------------------------->
 <script src="application/app.js"></script>
 
@@ -145,9 +144,6 @@
 <script src="application/core/toolbar/drafts/_review-modal-controller.js"></script>
 
 <!-- Toolbar data -->
-<script src="application/core/toolbar/mydatapage/toolbar-mydatapage-controller.js"></script>
-<script src="application/core/toolbar/mydata/toolbar-mydata-controller.js"></script>
-<script src="application/core/toolbar/mydata/databyuser-filter.js"></script>
 <script src="application/core/toolbar/thumbnails/toolbar-thumbnails-controller.js"></script>
 <script src="application/core/toolbar/thumbnails/thumbnail-service.js"></script>
 <script src="application/core/toolbar/thumbnails/thumbnails-service.js"></script>
@@ -160,6 +156,7 @@
 <script src="application/core/toolbar/process/process-controller.js"></script>
 <script src="application/core/toolbar/process/notes/notes-controller.js"></script>
 <script src="application/core/toolbar/process/provenance/provenance-controller.js"></script>
+<script src="application/core/toolbar/process/provenance/input-output-step-directive.js"></script>
 <script src="application/core/toolbar/process/tags/tag-controller.js"></script>
 <script src="application/core/toolbar/databytag/databytag-controller.js"></script>
 
@@ -175,18 +172,22 @@
 <!-- Toolbar machines -->
 <script src="application/core/toolbar/machines/machines-controller.js"></script>
 
-<!-- Toolbar materials -->
-<script src="application/core/toolbar/materials/materials-controller.js"></script>
+<!-- Toolbar objects -->
+<script src="application/core/toolbar/objects/objects-controller.js"></script>
 
 <!-- Toolbar projectspage -->
 <script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/overview-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/treetable-directive.js"></script>
 
 <!-- Toolbar overview -->
 <script src="application/core/toolbar/overview/overview-controller.js"></script>
 <script src="application/core/toolbar/overview/_todo-modal-controller.js"></script>
 <script src="application/core/toolbar/overview/_project-modal-controller.js"></script>
+
+<!-- Toolbar File Services -->
+<script src="application/core/toolbar/fileservices/projects/projects-controller.js"></script>
+<script src="application/core/toolbar/fileservices/events/events-controller.js"></script>
+<script src="application/core/toolbar/fileservices/config/config-controller.js"></script>
 
 <!------------------------------ Provenance app ------------------------------>
 
@@ -196,6 +197,7 @@
 <script src="application/provenance/provsteps-service.js"></script>
 <script src="application/provenance/model-service.js"></script>
 
+
 <!-- Provenance Process -->
 <script src="application/provenance/process/process-controller.js"></script>
 
@@ -203,8 +205,11 @@
 <script src="application/provenance/iosteps/iosteps-controller.js"></script>
 <script src="application/provenance/iosteps/iostep/iostep-controller.js"></script>
 <script src="application/provenance/iosteps/files/files-controller.js"></script>
+<script src="application/provenance/iosteps/iostep/sample-filter.js"></script>
+<script src="application/provenance/iosteps/iostep/clone-service.js"></script>
 
-<!-- Provenance Finish -->
+
+<!--finish controller-->
 <script src="application/provenance/finish/finish-controller.js"></script>
 
 <!-------------------------------- Global directives ------------------------------->
@@ -215,6 +220,10 @@
 <script src="application/directives/adproperties-directive.js"></script>
 <script src="application/directives/projecttree-directive.js"></script>
 <script src="application/directives/modal-dismiss-directive.js"></script>
+<script src="application/directives/upperlevel-process-directive.js"></script>
+<script src="application/directives/upperlevel-object-directive.js"></script>
+<script src="application/directives/saved-notification.js"></script>
+
 
 <!-------------------------------- Global services --------------------------------->
 <script src="application/services/user-service.js"></script>
@@ -222,11 +231,13 @@
 <script src="application/services/watcher-service.js"></script>
 <script src="application/services/pubsub-service.js"></script>
 <script src="application/services/mcapi-service.js"></script>
-<script src="application/services/project-service.js"></script>
+<script src="application/services/projects-service.js"></script>
 <script src="application/services/provdrafts-service.js"></script>
 <script src="application/services/date-generate-service.js"></script>
 <script src="application/services/nav-service.js"></script>
+<script src="application/services/materials-service.js"></script>
 <script src="application/services/cached-service-factory-service.js"></script>
+<script src="application/services/action-service.js"></script>
 
 <!-------------------------------- Global model services -------------------------->
 <script src="application/services/model/projects-service.js"></script>
@@ -236,6 +247,7 @@
 <script src="application/filters/page-filter.js"></script>
 <script src="application/filters/todatestring-filter.js"></script>
 <script src="application/filters/reverse-filter.js"></script>
+<script src="application/filters/process-filter.js"></script>
 
 <!-- Index -->
 <script src="index/_navigation-controller.js"></script>

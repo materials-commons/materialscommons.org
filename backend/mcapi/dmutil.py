@@ -9,14 +9,22 @@ from mcexceptions import RequiredAttributeException, DatabaseError
 
 def get_required(what, d):
     if what not in d:
+        print "get_required not found: %s" % (what)
         raise RequiredAttributeException(what)
-    return d[what]
+    val = d[what]
+    if val is None:
+        print "get_required attribute value %s is None" % (what)
+        raise RequiredAttributeException(what)
+    return val
 
 
 def get_optional(what, d, novalue=""):
     if what not in d:
         return novalue
-    return d[what]
+    val = d[what]
+    if val is None:
+        return novalue
+    return val
 
 
 def get_optional_prop(what, d, novalue=""):

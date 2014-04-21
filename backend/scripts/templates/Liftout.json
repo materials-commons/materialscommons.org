@@ -1,0 +1,18 @@
+{
+    "id": "Liftout",
+    "default_properties": [
+        ],
+    "additional_properties":[
+    ],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Liftout" ,
+    "template_type": "process",
+    "template_pick": "experiment",
+    "required_input_conditions": ["Pick Sample"],
+    "required_output_conditions": ["Transformed Sample"],
+    "required_input_files": true,
+    "required_output_files": true
+}

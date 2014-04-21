@@ -1,11 +1,9 @@
 Application.Provenance.Controllers.controller('provenanceFinish',
     ["$scope", "ProvDrafts", "$dialog", "$state", "mcapi", "alertService", "$stateParams",
         function ($scope, ProvDrafts, $dialog, $state, mcapi, alertService, $stateParams) {
-
             $scope.saveDraft = function () {
                 ProvDrafts.saveDraft();
                 alertService.sendMessage("Your draft has been saved!");
-                $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
             };
 
             $scope.submitProvenance = function () {
@@ -22,19 +20,20 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                             return;
                         }
                         ProvDrafts.saveDraft(function () {
-                            mcapi('/upload')
+                            mcapi('/provenance')
                                 .success(function (data) {
                                     $scope.done = true;
                                     $scope.process_id = data.process;
                                     ProvDrafts.deleteDraft($scope.doc.id);
                                     alertService.sendMessage("Your Provenance was Created Successfully.");
-                                    $state.go("toolbar.projectspage.overview", {id: $stateParams.id});
+                                    ProvDrafts.current = null;
+                                    $state.go("toolbar.overview");
                                 })
                                 .error(function () {
                                     $scope.notdone = true;
                                     alertService.sendMessage("Sorry - Your Provenance upload failed.");
                                 })
-                                .post({state_id: $scope.doc.id});
+                                .post({draft_id: $scope.doc.id});
 
                         });
                     });
@@ -47,11 +46,12 @@ Application.Provenance.Controllers.controller('provenanceFinish',
 
             $scope.init = function () {
                 $scope.doc = ProvDrafts.current;
-                $scope.process = $scope.doc.attributes.process;
-                $scope.inputs = $scope.doc.attributes.input_conditions;
-                $scope.outputs = $scope.doc.attributes.output_conditions;
-                $scope.input_files = $scope.doc.attributes.input_files;
-                $scope.output_files = $scope.doc.attributes.output_files;
+                console.dir($scope.doc);
+                $scope.process = $scope.doc.process;
+                $scope.inputs = $scope.doc.process.input_conditions;
+                $scope.outputs = $scope.doc.process.output_conditions;
+                $scope.input_files = $scope.doc.process.input_files;
+                $scope.output_files = $scope.doc.process.output_files;
             };
 
             $scope.init();

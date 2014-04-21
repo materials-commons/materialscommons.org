@@ -1,77 +1,68 @@
 <div ng-controller="toolbarMachines">
-
     <div class="row-fluid">
-        <div class="span5">
+        <div class="span2">
+            <button class="btn btn-primary" ng-click="toggleCustom = !toggleCustom">New</button>
+        </div>
+        <div saved-notification message="message"></div>
+    </div>
+
+    <div ng-init="toggleCustom = false" ng-show="toggleCustom" class="row-fluid">
+        <div class="span6">
             <div class="">
                 <form name="Form" class="form-horizontal">
-                    <fieldset>
-                        <legend>Create Machine</legend>
-                        <div df-properties default-properties="default_properties"></div>
-                        <div ad-properties added-properties="machine.additional"></div>
-                        <div class="control-group">
-                            <label class="control-label">Additional:</label>
+                    <legend>Create Machine</legend>
+                    <div upperlevel-object bk="bk" doc="doc" edit="false"></div>
+                    <div df-properties default-properties="doc.default_properties"></div>
+                    <button ng-click="save(Form)" class="btn btn-primary">Save</button>
+                    <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
 
-                            <div class="controls">
-                                <select ng-model="p_name">
-                                    <option value="" disabled selected>Additional...</option>
-                                    <option ng-repeat="each_additional in additional_properties"
-                                            value="{{each_additional}}">
-                                        {{each_additional.name}}
-                                    </option>
-                                </select>
-                                <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label">Custom:</label>
-
-                            <div class="controls">
-                                <input ng-model="additional_prop" placeholder="Name..."
-                                       type="text">
-                                <button ng-click="add_property_to_machine()" class="btn btn-info">Add</button>
-                            </div>
-                        </div>
-                        <button ng-click="save(Form)" class="btn btn-primary">
-                            Save
-                        </button>
-                        <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
-                    </fieldset>
                 </form>
             </div>
         </div>
-
-        <div class="span7">
-            <h4>Machines: </h4>
-            <paged data="machines_list" current-page="currentDataPage" page-size="20">
-
-                <table class="table table-striped mc-table-hover table-condensed mc-table">
+    </div>
+    <div class="row-fluid">
+        <div class="span6">
+            <legend>List of available machines:</legend>
+            <div ng-if="machines_list.length==0">
+                <b>No available machines in the database</b>
+            </div>
+            <paged data="machines_list" current-page="currentDataPage" page-size="10">
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Properties</th>
-                        <th>Notes</th>
+                        <th>Date Created</th>
+                        <th>Details</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <p ng-if="machines_list.length==0">
-                        <b>No available machines in the database</b>
-                    </p>
-
-                    <p ng-if="machines_list.length!=0">
-                        <tr ng-repeat="machine in machines_list | orderBy:'name' | page:currentDataPage:20">
-                            <td>{{machine.name}}</td>
-                            <td>
-                                <ul ng-repeat="kv in machine.additional">
-                                    <li>{{kv.name}} - {{kv.value}} {{kv.unit}}</li>
-                                </ul>
-                            </td>
-                            <td>{{machine.notes}}</td>
-                        </tr>
-                    </p>
-
+                    <tr ng-repeat="machine in machines_list | orderBy:predicate:reverse | page:currentDataPage:10">
+                        <td>{{machine.name}}</td>
+                        <td>{{machine.birthtime | toDateString}}</td>
+                        <td><a ng-click="moreDetails(machine)">view</a></td>
+                    </tr>
                     </tbody>
                 </table>
             </paged>
+        </div>
+        <div class="span6">
+            <form class="form-horizontal" ng-show="machine">
+                <legend>{{machine.name}}</legend>
+                <div ng-show="flag">
+                    No specific details have been entered for {{machine.name}}
+                </div>
+                <div ng-hide="flag">
+                    <div upperlevel-object doc="machine" edit="true"></div>
+
+                    <div ng-repeat="property in machine.properties">
+                        <cgroup label="{{property.name}}">
+                            <input class="input-large" ng-model="property.value" type="text"
+                                   ng-disabled="true">
+                            {{ property.unit }}
+                        </cgroup>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

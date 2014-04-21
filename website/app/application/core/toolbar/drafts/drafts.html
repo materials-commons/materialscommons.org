@@ -4,20 +4,22 @@
         <thead>
         <tr>
             <th>Name</th>
+            <th>Project</th>
             <th>Date</th>
             <th>Description</th>
             <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="draft in drafts | filter:query | orderBy:'attributes.process.name'">
 
+        <tr ng-repeat="draft in drafts | filter:query | orderBy:'process.name'">
             <td><a style="cursor: pointer"
-                   ui-sref="toolbar.projectspage({id: draft.attributes.project_id, draft_id: draft.id})">
-                {{draft.attributes.process.name}}</a>
+                   ui-sref="toolbar.projectspage({id: draft.project_id, draft_id: draft.id})">
+                {{draft.process.name}}</a>
             </td>
+            <td>{{ draft.project_name }}</td>
             <td>{{draft.birthtime | toDateString}}</td>
-            <td>{{draft.attributes.process.description}}</td>
+            <td>{{draft.process.description}}</td>
             <td>
                 <div class="btn-group">
                     <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
@@ -39,9 +41,11 @@
         </tbody>
     </table>
 
-    <div id="toolbarDraftsReviewModal" class="modal hide fade in" modal-dismiss ng-controller="_toolbarDraftsReviewModal">
+    <div id="toolbarDraftsReviewModal" class="modal hide fade in" modal-dismiss
+         ng-controller="_toolbarDraftsReviewModal">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeReviews()">×</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeReviews()">×
+            </button>
             <h3>Create Review</h3>
         </div>
         <div class="modal-body form-horizontal">
@@ -49,9 +53,9 @@
                 <fieldset>
                     <legend>Review</legend>
                     <label>Mark for follow up</label>
-            <input type="text" ng-model="reviewNoteSelf"
-                   ui-keypress="{13: 'addReviewNoteKeypress($event)'}"
-                   placeholder="Note...">
+                    <input type="text" ng-model="reviewNoteSelf"
+                           ui-keypress="{13: 'addReviewNoteKeypress($event)'}"
+                           placeholder="Note...">
                     <span class="help-block">Request review</span>
                     <input type="text" ng-model="reviewNoteOther" placeholder="Note...">
                     <select ng-model="userForReview"

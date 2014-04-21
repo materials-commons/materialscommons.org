@@ -1,0 +1,54 @@
+{
+    "id": "Heat Treatment",
+    "attribute": "heat_treatment",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "temperature",
+            "name": "Temperature" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "time",
+            "name": "Time" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["hours", "minutes", "seconds"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "quench",
+            "name": "Quench" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Heat Treatment" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}

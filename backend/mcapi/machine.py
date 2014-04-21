@@ -4,6 +4,8 @@ from flask import request, g
 import rethinkdb as r
 import dmutil
 import args
+import doc
+import access
 
 
 @app.route('/machines', methods=['GET'])
@@ -25,9 +27,14 @@ def get_machine(machine_id):
 @crossdomain(origin='*')
 def create_machine():
     j = request.get_json()
+    user = access.get_user()
     machine = dict()
-    machine['additional'] = dmutil.get_required('additional', j)
-    machine['name'] = dmutil.get_required('Name', j)
-    machine['notes'] = dmutil.get_required('Notes', j)
+    machine['name'] = dmutil.get_required('name', j)
+    machine['notes'] = dmutil.get_optional('notes', j)
+    machine['description'] = dmutil.get_optional("description", j)
     machine['birthtime'] = r.now()
+    machine['properties'] = {}
+    machine['created_by'] = user
+    doc.add_properties(dmutil.get_optional('default_properties', j), machine)
+    doc.add_properties(dmutil.get_optional('added_properties', j), machine)
     return dmutil.insert_entry('machines', machine)

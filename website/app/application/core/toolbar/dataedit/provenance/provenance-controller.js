@@ -1,3 +1,4 @@
+
 Application.Controllers.controller('toolbarDataEditProvenance',
     ["$scope", "mcapi", "User", "$state", "$stateParams",
         function ($scope, mcapi, User, $state, $stateParams) {

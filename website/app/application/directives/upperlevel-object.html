@@ -1,0 +1,35 @@
+<cgrouprequired label="Name:">
+    <input ng-model="doc.name" type="text" placeholder='Name...' ng-disabled="edit" required>
+</cgrouprequired>
+
+<cgroup label="Description:">
+    <textarea class="span8" rows="4" placeholder="Description..."
+              ng-model="doc.description" ng-disabled="edit"></textarea>
+</cgroup>
+
+<div ng-if="edit===false">
+    <cgroup label="Notes:">
+        <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
+    </cgroup>
+    <cgroup>
+        <button ng-click="add_notes()" class="btn btn-info">Add</button>
+    </cgroup>
+</div>
+
+<div ng-show="doc.notes.length > 0">
+    <h5>Previous Notes:</h5>
+    <table class="table">
+        <thead>
+        <th>Message</th>
+        <th>Who</th>
+        <th>Date Created</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="note in doc.notes">
+            <td>{{note.message}}</td>
+            <td>{{note.who}}</td>
+            <td>{{note.date}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

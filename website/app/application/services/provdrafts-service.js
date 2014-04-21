@@ -9,21 +9,13 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 var draft = {
                     id: "",
                     project_id: "",
+                    project_name: "",
                     owner: "",
                     description: "",
                     name: "",
                     birthtime: "",
-                    attributes: {
-                        process: {},
-                        input_conditions: {},
-                        output_conditions: {},
-                        input_files: [],
-                        output_files: [],
-                        machine: {},
-                        project_id: ""
-                    }
+                    process: {}
                 };
-
                 return draft;
             },
 
@@ -58,7 +50,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
-                            attributes: service.current.attributes,
+                            project_name: service.current.project_name,
+                            process: service.current.process,
                             clone_number: service.current.clone_number
                         });
                 } else {
@@ -72,7 +65,8 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                             name: service.current.name,
                             description: service.current.description,
                             project_id: service.current.project_id,
-                            attributes: service.current.attributes,
+                            project_name: service.current.project_name,
+                            process: service.current.process,
                             clone_number: service.current.clone_number
                         });
                 }
@@ -91,9 +85,10 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             },
 
             prepareClone: function (df, clone_num) {
+                var i;
                 var clone_numbers = service.get_existing_clones(), new_draft = {}, count = 0, pattern = '', split_name = [], count_list = [], largest = 0;
                 if (clone_num === '') {
-                    pattern = df.attributes.process.name;
+                    pattern = df.process.name;
                 } else {
                     split_name = df.clone_number.split('---');
                     pattern = split_name[0];
@@ -116,11 +111,10 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 new_draft = df;
                 new_draft.id = '';
                 new_draft.clone_number = pattern + '---' + count;
-                new_draft.attributes.process.name = new_draft.clone_number;
-                new_draft.attributes.input_files = [];
-                new_draft.attributes.output_files = [];
+                new_draft.process.name = new_draft.clone_number;
+                new_draft.process.input_files = [];
+                new_draft.process.output_files = [];
                 return new_draft;
-
             },
 
             get_existing_clones: function () {

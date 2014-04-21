@@ -4,37 +4,42 @@
         <div class="span4">
             <form class="form-horizontal">
                 <legend>{{process.name}}</legend>
-
                 <fieldset>
-                    <cgroup label="Name:">
-                        <input class="input-xlarge" ng-model="process.name" type="text" ng-disabled="true">
+                    <cgroup label="Description:">
+                        <textarea ng-if="process.description !== ''" class="span8" ng-model="process.description"
+                                  rows="3" ng-disabled="true">
+                        </textarea>
                     </cgroup>
                     <cgroup label="Date Created:">
                         <input class="input-xlarge" ng-model="birthtime" type="text" ng-disabled="true">
                     </cgroup>
-                    <cgroup label="Description:">
-                        <textarea ng-if="process.description != ''"  ng-model="process.description"
-                                  rows="4" ng-disabled="true">
-                        </textarea>
-                    </cgroup>
-                    <cgroup label="Version:">
-                        <input class="input-xlarge" ng-model="process.version" type="text" ng-disabled="true">
-                    </cgroup>
-
+                    <div ng-if="process.experiment_run_date">
+                        <cgroup label="RunDate:">
+                            <input class="input-xlarge" ng-model="process.experiment_run_date" type="text"
+                                   ng-disabled="true">
+                        </cgroup>
+                    </div>
+                    <div ng-repeat="item in process.properties">
+                        <div ng-if="item.name!=='Machine'">
+                            <cgroup label="{{item.name}}:">
+                                <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                            </cgroup>
+                        </div>
+                    </div>
                 </fieldset>
             </form>
         </div>
         <div class="span6">
-            <form class="form-horizontal">
+            <form class="form-horizontal"  ng-show="machine">
                 <legend>Machine</legend>
                 <fieldset>
                     <cgroup label="Machine Name:">
-                        <input class="input-xlarge" ng-model="process.machine.name" type="text" ng-disabled="true">
+                        <input class="input-xlarge" ng-model="machine.name" type="text" ng-disabled="true">
                     </cgroup>
-                    <div ng-if="process.machine.additional.length!=0">
-                        <div ng-repeat="item in process.machine.additional">
+                    <div ng-if="machine.additional.length!=0">
+                        <div ng-repeat="item in machine.additional">
                             <cgroup label="{{item.name}}:">
-                                <input ng-model="item.value" type="text" ng-disabled="true">
+                                <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
                             </cgroup>
                         </div>
                     </div>
@@ -68,9 +73,9 @@
         <div class="span2">
             <div class="tabbable tabs-right">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="" ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
-                    <li><a href="" ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
-                    <li><a href="" ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
+                    <li class="active"><a ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
+                    <li><a ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
+                    <li><a  ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
                 </ul>
             </div>
         </div>

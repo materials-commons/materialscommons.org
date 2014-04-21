@@ -1,48 +1,69 @@
 Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
-    ["$scope", "ProvDrafts", "$stateParams", "mcapi",
-        function ($scope, ProvDrafts, $stateParams, mcapi) {
+    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone", "watcher",
+        function ($scope, ProvDrafts, $stateParams, mcapi, Clone, watcher) {
+            $scope.pick_sample = function () {
+                var i = _.indexOf($scope.samples_list, function (item) {
+                    return (item.id === $scope.doc.sample.id);
+                });
+                if (i !== -1) {
+                    $scope.doc.sample = $scope.samples_list[i];
+                }
+            };
 
             $scope.addAdditionalProperty = function () {
-                $scope.doc.model.added_properties.push(JSON.parse($scope.additionalProperty));
+                $scope.doc.added_properties.push($scope.model.additionalProperty);
             };
 
             $scope.addCustomProperty = function () {
-                $scope.doc.model.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
+                $scope.doc.added_properties.push({'name': $scope.customPropertyName, 'value': $scope.customPropertyValue, "type": "text", 'unit': '', 'value_choice': [], 'unit_choice': [], 'required': false});
             };
 
-            $scope.loadMaterials = function () {
-                mcapi('/materials')
+            $scope.load_all_samples = function () {
+                mcapi('/objects')
                     .success(function (data) {
-                        $scope.materials = data;
-
-                        if ($scope.doc.material) {
-                            var i = _.indexOf($scope.materials, function (item) {
-                                return (item.name === $scope.doc.material.name);
+                        $scope.samples_list = data;
+                        if ($scope.doc.sample) {
+                            var i = _.indexOf($scope.samples_list, function (item) {
+                                return (item.id === $scope.doc.sample.id);
                             });
 
                             if (i !== -1) {
-                                $scope.doc.material = $scope.materials[i];
+                                $scope.doc.sample = $scope.samples_list[i];
                             }
                         }
                     }).jsonp();
             };
 
-            $scope.init = function () {
+            function init() {
+                $scope.bk = {
+                    is_active: '',
+                    additional_property: '',
+                    customPropertyName: '',
+                    customPropertyValue: ''
+
+                };
                 $scope.stepName = $stateParams.iostep;
                 if ($stateParams.iosteps === 'inputs') {
-                    $scope.doc = ProvDrafts.current.attributes.input_conditions[$scope.stepName];
+                    $scope.doc = ProvDrafts.current.process.input_conditions[$scope.stepName];
+
                 } else {
-                    $scope.doc = ProvDrafts.current.attributes.output_conditions[$scope.stepName];
+                    $scope.doc = ProvDrafts.current.process.output_conditions[$scope.stepName];
+                    //To check whether the input picked sample and output transformed sample are same or not
+                    $scope.input_doc = ProvDrafts.current.process.input_conditions['Pick Sample'];
+                    if ($scope.stepName === 'Transformed Sample') {
+                        if ('sample' in $scope.doc) {
+                            if (!($scope.doc.sample.id === $scope.input_doc.sample.id)) {
+                                $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
+                            }
+                        } else {
+                            $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
+                        }
+                    }
                 }
-
-                if ($scope.doc.template_pick === 'material') {
-                    $scope.loadMaterials();
+                if ($scope.doc.template_pick === 'pick_sample') {
+                    $scope.load_all_samples();
                 }
+            }
 
-                $scope.defaultProperties = $scope.doc.model.default;
-                $scope.additionalProperties = [];
-                $scope.useExisting = "yes";
-
-            };
-            $scope.init();
+            init();
         }]);

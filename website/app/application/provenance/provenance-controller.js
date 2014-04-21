@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenance',
-    ["$scope", "$state", "$stateParams", "ProvSteps", "ProvDrafts", "Model",
-        function ($scope, $state, $stateParams, ProvSteps, ProvDrafts, Model) {
+    ["$scope", "$state", "$stateParams", "ProvSteps", "ProvDrafts", "process.Model", "Projects",
+        function ($scope, $state, $stateParams, ProvSteps, ProvDrafts, Model, Projects) {
 
             $scope.isCurrentStep = function (step) {
                 return ProvSteps.isCurrentStep(step);
@@ -60,7 +60,7 @@ Application.Provenance.Controllers.controller('provenance',
                 ProvSteps.setStepFinished('outputs');
             };
 
-            $scope.init = function () {
+            function init() {
                 var draft;
 
                 // Reset steps state
@@ -71,14 +71,15 @@ Application.Provenance.Controllers.controller('provenance',
                     $scope.markAllStepsFinished();
                 } else {
                     draft = ProvDrafts.newDraft();
-                    draft.attributes.project_id = $stateParams.id;
-                    draft.attributes.process = Model.newProcess();
+                    draft.project_id = $stateParams.id;
+                    draft.process = Model.newProcess();
+                    draft.project_name = Projects.model.projects[draft.project_id].dir.name;
                 }
                 ProvDrafts.current = draft;
                 ProvSteps.setCurrentStep('process');
                 ProvSteps.onStepFinished($scope.stepFinished);
                 $state.go('toolbar.projectspage.provenance.process');
-            };
+            }
 
-            $scope.init();
+            init();
         }]);

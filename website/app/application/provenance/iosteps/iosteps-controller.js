@@ -1,10 +1,10 @@
 Application.Provenance.Controllers.controller('provenanceIOSteps',
     ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams", "$injector",
         function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams, $injector) {
+            var $validationProvider = $injector.get('$validation'), check;
 
             $scope.saveDraft = function (form) {
-                var $validationProvider = $injector.get('$validation');
-                var check = $validationProvider.checkValid(form);
+                check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvDrafts.saveDraft();
                     $scope.message = "your draft has been saved!";
@@ -33,13 +33,13 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
 
                 if (stepName === "Files") {
                     $scope.gotoStep(stepName);
-                } else if (stepName in $scope.doc.attributes[attrib]) {
+                } else if (stepName in $scope.doc.process[attrib]) {
                     $scope.gotoStep(stepName);
                 } else {
                     mcapi('/templates/name/%', stepName)
                         .success(function (data) {
-                            data.model.added_properties = [];
-                            $scope.doc.attributes[attrib][stepName] = data;
+                            data.added_properties = [];
+                            $scope.doc.process[attrib][stepName] = data;
                             $scope.gotoStep(stepName);
                         }).jsonp();
                 }
@@ -50,12 +50,12 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             };
 
             $scope.nextStep = function (form) {
-                var $validationProvider = $injector.get('$validation');
-                var check = $validationProvider.checkValid(form);
+                check = $validationProvider.checkValid(form);
+                var i, next;
                 if (check === true) {
-                    var i = _.indexOf($scope.steps, $scope.activeStep);
+                    i = _.indexOf($scope.steps, $scope.activeStep);
                     if (i < $scope.steps.length - 1) {
-                        var next = i + 1;
+                        next = i + 1;
                         $scope.showStep($scope.steps[next]);
                     } else {
                         ProvSteps.setStepFinished($stateParams.iosteps);
@@ -68,20 +68,20 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             $scope.loadSteps = function () {
                 if ($stateParams.iosteps === "inputs") {
                     $scope.stepsName = "Inputs";
-                    $scope.doc.attributes.process.required_conditions.forEach(function (condition) {
+                    $scope.doc.process.required_input_conditions.forEach(function (condition) {
                         $scope.steps.push(condition);
                     });
 
-                    if ($scope.doc.attributes.process.required_input_files) {
+                    if ($scope.doc.process.required_input_files) {
                         $scope.steps.push("Files");
                     }
                 } else {
                     $scope.stepsName = "Outputs";
-                    $scope.doc.attributes.process.required_output_conditions.forEach(function (condition) {
+                    $scope.doc.process.required_output_conditions.forEach(function (condition) {
                         $scope.steps.push(condition);
                     });
 
-                    if ($scope.doc.attributes.process.required_output_files) {
+                    if ($scope.doc.process.required_output_files) {
                         $scope.steps.push("Files");
                     }
                 }

@@ -8,7 +8,7 @@ r.connect("localhost", int(MCDB_PORT)).repl()
 
 def create_database():
     run(r.db_create("materialscommons"))
-    run(r.db_create("history"))
+    #run(r.db_create("history"))
 
 
 def create_tables():
@@ -37,15 +37,14 @@ def create_tables():
     create_table("project2conditions")
     create_table("review2datafile")
     create_table("datadirs_denorm")
-    create_table("materials")
     create_table("tag2item")
     create_table("samples")
+    create_table("treatments")
 
 
 def create_table(table):
-    #print "create_table(%s)" % (table)
     run(r.db('materialscommons').table_create(table))
-    run(r.db('history').table_create(table))
+    #run(r.db('history').table_create(table))
 
 
 def create_indices():
@@ -70,12 +69,16 @@ def create_indices():
     create_index('project2datafile', 'datafile_id')
     create_index('tag2item', 'tag_id')
     create_index('tag2item', 'item_id')
+    create_index('conditions', 'value')
+    create_index('conditions', 'process_id')
+    create_index('treatments', 'value')
+    create_index('treatments', 'sample_id')
 
 
 def create_index(table, name):
     #print "create_index(%s, %s)" % (table, name)
     run(r.db('materialscommons').table(table).index_create(name))
-    run(r.db('history').table(table).index_create(name))
+    #run(r.db('history').table(table).index_create(name))
 
 
 def run(rql):
