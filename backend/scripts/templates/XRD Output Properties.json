@@ -1,6 +1,6 @@
 {
     "id": "XRD Output Properties",
-    "attribute": 'instrument_settings',
+    "attribute": "instrument_settings",
     "default_properties": [
         {
             "name": "Name" ,
@@ -13,7 +13,6 @@
             "required": true
         }                
     ],
-    
     "additional_properties":[
         {
             "name": "Whole pattern fitting" ,
@@ -43,5 +42,4 @@
     "template_name": "XRD Output Properties" ,
     "template_pick": "instrument" ,
     "template_type": "condition"
-
 }
