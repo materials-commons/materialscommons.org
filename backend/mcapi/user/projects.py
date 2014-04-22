@@ -195,6 +195,7 @@ def build_tree(datadirs):
                 continue
             dfitem = DItem2(df['id'], df['name'], 'datafile',
                             df['owner'], df['birthtime'], df['size'])
+            dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
             ditem.children.append(dfitem)
