@@ -225,7 +225,7 @@ class ProvenanceSaver(object):
         for item in inputs:
             if item['attribute'] == 'heat_treatment':
                 transformed_sample['treatments'].append(item)
-            if item['attribute'] == 'irradiation':
+            if item['attribute'] == 'irraditation_treatment':
                 transformed_sample['treatments'].append(item)
         transformed_sample['template'] = dmutil.get_optional('template', s)
         transformed_sample_id = dmutil.insert_entry_id('samples', transformed_sample)
