@@ -5,8 +5,8 @@
                 <div ng-switch on="doc.template_pick">
                     <div ng-switch-when="transformed_sample">
                         <cgroup label="Mark Input Sample:">
-                            <input type="radio" ng-model="doc.is_active" value=true> available <br/>
-                            <input type="radio" ng-model="doc.is_active" value='false'> not available
+                            <input type="radio" ng-model="doc.is_active" ng-value="true"> available <br/>
+                            <input type="radio" ng-model="doc.is_active" ng-value="false"> not available
                         </cgroup>
                         <div upperlevel-object doc="doc.sample" bk="bk" edit="false"></div>
                         <!--<div df-properties default-properties="doc.sample.default_properties" edit="false"></div>-->

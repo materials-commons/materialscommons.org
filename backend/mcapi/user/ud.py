@@ -210,7 +210,9 @@ class ProvenanceSaver(object):
 
     def _create_transformed_sample(self, j, inputs):
         s = dmutil.get_required('sample', j)
-        is_available = dmutil.get_optional('is_active', j)
+        value = dmutil.get_optional('is_active', j)
+        if value == False:
+            self._set_availability(s['id'])
         transformed_sample = dict()
         user = access.get_user()
         transformed_sample['name'] = dmutil.get_required('name', s)
@@ -239,6 +241,10 @@ class ProvenanceSaver(object):
         c['attribute'] = "sample"
         c['type'] = "id"
         return c
+
+    def _set_availability(self, sample_id):
+        rr = r.table('samples').get(sample_id).update({'available': False}).run(g.conn)
+        return rr
 
 @app.route('/provenance', methods=['POST'])
 @apikey
