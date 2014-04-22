@@ -5,7 +5,7 @@
             <h6>Selected files:</h6>
             <ul>
                 <li ng-repeat="item in files">
-                    <i class="fa fa-check-square"></i>{{item.displayname}}
+                    <i class="fa fa-check-square"></i>{{item.fullname}}
                     <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
                     <br>
                 </li>
