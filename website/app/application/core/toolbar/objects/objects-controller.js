@@ -97,6 +97,7 @@ Application.Controllers.controller('toolbarObjects',
         };
 
         function init() {
+            $scope.showTreatments = false;
             $scope.clear();
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_pick":"treatment"')
