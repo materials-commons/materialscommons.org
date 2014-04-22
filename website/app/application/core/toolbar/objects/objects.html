@@ -15,7 +15,7 @@
                         <div upperlevel-object bk="bk" doc="doc" edit="false"></div>
                         <div df-properties default-properties="doc.default_properties"></div>
 
-                        <cgroup label="Treatments:">
+                        <cgroup ng-show="showTreatments" label="Treatments:">
                             <select ng-model="bk.selected_treatment"
                                     ng-options="treat.template_name for treat in treatment_templates"
                                     ng-change="showForm()">
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="span2">
+                            <div ng-show="showTreatments" class="span2">
                                 <label>Treatments Order:</label>
 
                                 <div class="tabbable tabs-right">
