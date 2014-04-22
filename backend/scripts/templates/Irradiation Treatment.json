@@ -1,0 +1,74 @@
+{
+    "id": "Irradiation Treatment",
+    "attribute": "irraditation_treatment",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "particle",
+            "name": "Particle" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": ["Electrons", "Ions", "Protons", "Neutrons"],
+            "required": true
+        },
+        {
+            "attribute": "temperature",
+            "name": "Temperature" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "energy",
+            "name": "Energy" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["KeV", "MeV"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "dose",
+            "name": "Dose(per cm^2)" ,
+            "type": "number" ,
+            "unit": "cm**2" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "duration",
+            "name": "Duration(s)" ,
+            "type": "number" ,
+            "unit": "seconds" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Irradiation Treatment" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}

@@ -9,6 +9,7 @@ from .. import doc
 from loader.model import sample
 from mcapi import mcexceptions
 import traceback
+from .. import args
 
 
 class StateCreateSaver(object):
@@ -104,6 +105,7 @@ class ProvenanceSaver(object):
         p['template'] = self._extract_id('template', j)
         p['notes'] = dmutil.get_optional('notes', j, [])
         p['runs'] = dmutil.get_optional('runs', j, [])
+        p['experiment_run_date'] = dmutil.get_optional('experiment_run_date', j)
         self._process_properties(p, j)
         input_conditions = dmutil.get_optional('input_conditions', j, [])
         output_conditions = dmutil.get_optional('output_conditions', j, [])
@@ -165,7 +167,10 @@ class ProvenanceSaver(object):
         p['outputs'] = []
         for key in output_conditions:
             values = output_conditions[key]
-            c = self._new_condition(values)
+            if key == "Transformed Sample":
+                c  = self._create_transformed_sample(values, p['inputs'])
+            else:
+                c = self._new_condition(values)
             if c is not None:
                 p['outputs'].append(c)
 
@@ -192,7 +197,6 @@ class ProvenanceSaver(object):
         if attr is None:
             return None
         c['attribute'] = attr
-
         default_props = dmutil.get_optional('default_properties', j, [])
         doc.add_properties(default_props, c)
 
@@ -204,6 +208,37 @@ class ProvenanceSaver(object):
         model = dmutil.get_required("model", c)
         return sample.Sample(model, self.owner)
 
+    def _create_transformed_sample(self, j, inputs):
+        s = dmutil.get_required('sample', j)
+        is_available = dmutil.get_optional('is_active', j)
+        transformed_sample = dict()
+        user = access.get_user()
+        transformed_sample['name'] = dmutil.get_required('name', s)
+        transformed_sample['description'] = dmutil.get_optional('description', s)
+        transformed_sample['notes'] = dmutil.get_optional('notes', s)
+        transformed_sample['available'] = dmutil.get_optional('available', s)
+        transformed_sample['properties'] = dmutil.get_optional('properties', s)
+        transformed_sample['birthtime'] = r.now()
+        transformed_sample['created_by'] = user
+        transformed_sample['owner'] = user
+        transformed_sample['treatments'] = []
+        for item in inputs:
+            if item['attribute'] == 'heat_treatment':
+                transformed_sample['treatments'].append(item)
+            if item['attribute'] == 'irraditation_treatment':
+                transformed_sample['treatments'].append(item)
+        transformed_sample['template'] = dmutil.get_optional('template', s)
+        transformed_sample_id = dmutil.insert_entry_id('samples', transformed_sample)
+        c = dict()
+        properties = {}
+        value = dmutil.get_required('name', transformed_sample)
+        properties['name'] = doc.new_prop_attrs("Name", "", value, "text")
+        properties['id'] = doc.new_prop_attrs("Id", "",  transformed_sample_id, "id")
+        c['properties'] = properties
+        c['template'] = transformed_sample['template']
+        c['attribute'] = "sample"
+        c['type'] = "id"
+        return c
 
 @app.route('/provenance', methods=['POST'])
 @apikey
