@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
-    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone", "watcher",
-        function ($scope, ProvDrafts, $stateParams, mcapi, Clone, watcher) {
+    ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone", "watcher", "$filter",
+        function ($scope, ProvDrafts, $stateParams, mcapi, Clone, watcher, $filter) {
             $scope.pick_sample = function () {
                 var i = _.indexOf($scope.samples_list, function (item) {
                     return (item.id === $scope.doc.sample.id);
@@ -21,7 +21,8 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             $scope.load_all_samples = function () {
                 mcapi('/objects')
                     .success(function (data) {
-                        $scope.samples_list = data;
+                        $scope.samples_list = $filter('available')(data);
+
                         if ($scope.doc.sample) {
                             var i = _.indexOf($scope.samples_list, function (item) {
                                 return (item.id === $scope.doc.sample.id);
