@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarProcessTag',
-    ["$scope", "mcapi", "User", "$stateParams", "alertService",
-        function ($scope, mcapi, User, $stateParams, alertService) {
+    ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
+        function ($scope, mcapi, User, $stateParams, alertService, pubsub) {
             $scope.removeTag = function (id) {
                 mcapi('/tag/%', id)
                     .success(function (data) {
@@ -9,6 +9,7 @@ Application.Controllers.controller('toolbarProcessTag',
                             if ($scope.process_tags[i].id === data.id) {
                                 index = i;
                                 $scope.process_tags.splice(index, 1);
+                                pubsub.send('tags.change');
                             }
                     })
                     .error(function (e) {
@@ -25,6 +26,7 @@ Application.Controllers.controller('toolbarProcessTag',
                             .success(function (new_tag) {
                                 $scope.process_tags.push(new_tag);
                                 $scope.msg = "Data has been tagged !";
+                                pubsub.send('tags.change');
                                 alertService.sendMessage($scope.msg);
                             })
                             .error(function (data) {
@@ -42,6 +44,7 @@ Application.Controllers.controller('toolbarProcessTag',
                         .success(function (new_tag) {
                             $scope.process_tags.push(new_tag);
                             $scope.msg = "Data has been tagged !";
+                            pubsub.send('tags.change');
                             alertService.sendMessage($scope.msg);
                         })
                         .error(function (data) {
