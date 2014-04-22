@@ -1,17 +1,12 @@
-//Application.Filters.filter('samplefilter', function () {
-//
-//    return function (samples, process) {
-//        if (samples && process.material) {
-//            var i, return_samples = [];
-//            for (i = 0; i < samples.length; i++) {
-//                if (samples[i].material.name === process.material.name) {
-//                    return_samples.push(samples[i]);
-//                }
-//            }
-//            return return_samples;
-//
-//
-//        }
-//
-//    };
-//});
+Application.Filters.filter('available', function () {
+
+    return function (items) {
+        var filtered_items = [], i;
+        for (i = 0; i < items.length; i++) {
+            if (items[i].available === true) {
+                filtered_items.push(items[i]);
+            }
+        }
+        return filtered_items;
+    };
+});
