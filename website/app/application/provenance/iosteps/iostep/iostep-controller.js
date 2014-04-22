@@ -36,7 +36,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
 
             function init() {
                 $scope.bk = {
-                    is_active: '',
+                    is_active: true,
                     additional_property: '',
                     customPropertyName: '',
                     customPropertyValue: ''
