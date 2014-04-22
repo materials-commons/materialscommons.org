@@ -9,6 +9,7 @@ Application.Controllers.controller('toolbarDataEditCreateTag',
                             if ($scope.datafile_tags[i].id === data.id) {
                                 index = i;
                                 $scope.datafile_tags.splice(index, 1);
+                                pubsub.send('tags.change');
                             }
                     })
                     .error(function (e) {
@@ -25,6 +26,7 @@ Application.Controllers.controller('toolbarDataEditCreateTag',
                             .success(function (new_tag) {
                                 $scope.datafile_tags.push(new_tag);
                                 $scope.msg = "Data has been tagged !";
+                                pubsub.send('tags.change');
                                 alertService.sendMessage($scope.msg);
                             })
                             .error(function (data) {
@@ -42,6 +44,7 @@ Application.Controllers.controller('toolbarDataEditCreateTag',
                         .success(function (new_tag) {
                             $scope.datafile_tags.push(new_tag);
                             $scope.msg = "Data has been tagged !";
+                            pubsub.send('tags.change');
                             alertService.sendMessage($scope.msg);
                         })
                         .error(function (data) {
