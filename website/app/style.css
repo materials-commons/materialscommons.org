@@ -282,3 +282,7 @@ available {
 notavailable{
     color: red;
 }
+.form-horizontal .control-group {
+    margin-bottom: 2px;
+}
+
