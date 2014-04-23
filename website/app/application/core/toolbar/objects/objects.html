@@ -82,10 +82,10 @@
                             <td>{{sample.name}}</td>
                             <td>{{sample.properties.composition.value}}</td>
                             <td ng-if="sample.available===true">
-                                <i style="color: limegreen" class="fa fa-check"></i>
+                                <i class="fa fa-check available" ></i>
                             </td>
                             <td ng-if="sample.available===false">
-                                <i style="color: red" class="fa fa-times"></i>
+                                <i class="fa fa-times notavailable"></i>
                             </td>
                             <td>{{sample.birthtime | toDateString}}</td>
                             <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
