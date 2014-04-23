@@ -17,6 +17,7 @@ hr.horizontal_line {
 
 body {
     padding-top: 0px;
+    font-size: 13px;
 }
 
 td {
@@ -144,6 +145,9 @@ hr {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
+    height: 30px;
+    font-size: 13px;
+    font-weight: bold;
     background-color: #0c5c86;
     background-image: linear-gradient(to bottom, #0c5c86, #0c5c86);
 }
@@ -153,6 +157,21 @@ hr {
 .navbar-inverse .nav .active > a:focus {
     color: antiquewhite;
     background-color: #0c84cc;
+}
+
+.navbar {
+    margin-bottom: 2px;
+}
+
+.navbar .brand,
+.navbar .nav > li > a {
+    padding: 8px 10px 0px 10px;
+}
+.navbar-inner {
+    min-height:16px;
+}
+.navbar .navbar-inner .brand {
+    margin-top: 0px;
 }
 
 .btn-primary {
@@ -285,4 +304,6 @@ notavailable{
 .form-horizontal .control-group {
     margin-bottom: 2px;
 }
-
+.row-fluid [class*="span"] {
+    margin-left: 10px;
+}
