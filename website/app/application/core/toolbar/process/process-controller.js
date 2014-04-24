@@ -31,7 +31,7 @@ Application.Controllers.controller('toolbarProcess',
 
 
                     }).jsonp();
-                $scope.showtab('notes');
+                $scope.showtab('provenance');
             }
 
             init();

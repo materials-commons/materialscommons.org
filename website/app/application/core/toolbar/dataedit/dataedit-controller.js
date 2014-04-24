@@ -71,7 +71,7 @@ Application.Controllers.controller('toolbarDataEdit',
                     .error(function (data) {
                         alertService.sendMessage(data.error);
                     }).jsonp();
-                $scope.showtab('notes');
+                $scope.showtab('provenance');
             }
 
             init();
