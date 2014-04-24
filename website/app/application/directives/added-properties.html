@@ -15,7 +15,7 @@
                         </option>
                     </select>
                     <span ng-if='pv.unit_choice.length!=0'>
-                        <select ng-model='pv.unit' ng-disabled="edit">
+                        <select style="width:130px" ng-model='pv.unit' ng-disabled="edit">
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
                         </select>
@@ -27,7 +27,7 @@
                             <input type='text' ng-model='pv.value'
                                    placeholder='{{pv.name}}...' ng-disabled="edit">
                             <span ng-if='pv.unit_choice.length!=0'>
-                        <select ng-model='pv.unit' ng-disabled="edit">
+                        <select style="width:130px" ng-model='pv.unit' ng-disabled="edit">
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
                         </select>
@@ -37,7 +37,7 @@
                             <input type='text' ng-model='pv.value'
                                    placeholder='{{pv.name}}...' ng-disabled="edit" required>
                             <span ng-if='pv.unit_choice.length!=0'>
-                        <select ng-model='pv.unit' ng-disabled="edit">
+                        <select style="width:130px" ng-model='pv.unit' ng-disabled="edit">
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
                         </select>
@@ -50,7 +50,7 @@
                                    validator='{{pv.type}}'
                                    placeholder='{{pv.name}}...' valid-method="blur" ng-disabled="edit">
                             <span ng-if='pv.unit_choice.length!=0'>
-                        <select ng-model='pv.unit' ng-disabled="edit">
+                        <select style="width:130px" ng-model='pv.unit' ng-disabled="edit">
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
                         </select>
@@ -61,7 +61,7 @@
                                    validator='{{pv.type}}'
                                    placeholder='{{pv.name}}...' valid-method="blur" ng-disabled="edit" required>
                             <span ng-if='pv.unit_choice.length!=0'>
-                        <select ng-model='pv.unit' ng-disabled="edit">
+                        <select style="width:130px" ng-model='pv.unit' ng-disabled="edit">
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
                         </select>
