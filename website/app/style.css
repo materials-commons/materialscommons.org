@@ -349,7 +349,9 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
     padding: 3px;
+    font-size: 13px;
 }
+
 
 textarea, .uneditable-input {
     width: 400px;
