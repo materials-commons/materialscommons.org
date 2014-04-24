@@ -215,7 +215,13 @@ app.config(["$stateProvider", function ($stateProvider) {
         })
         .state('toolbar.projectspage.provenance.iosteps.files', {
             url: '/files:iostep',
-            templateUrl: 'application/provenance/iosteps/files/files.html'
+            templateUrl: 'application/provenance/iosteps/files/files.html',
+            onEnter: function(pubsub) {
+                pubsub.send("project.tree", true);
+            },
+            onExit: function(pubsub) {
+                pubsub.send("project.tree", false);
+            }
         })
         .state('toolbar.projectspage.provenance.finish', {
             url: '/finish',
