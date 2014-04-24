@@ -3,7 +3,10 @@ Application.Controllers.controller('_toolbarTags',
         $scope.tagsCount = function () {
             mcapi('/tags/count')
                 .success(function (data) {
-                    $scope.tags = data;
+                    $scope.tags = data.sort(function (a, b) {
+                        return a.count - b.count;
+                    });
+                    $scope.tags = $scope.tags.reverse();
                 }).jsonp();
         };
 

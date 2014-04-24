@@ -371,6 +371,13 @@ label, input, button, select, textarea {
 .btn-group > .btn, .btn-group > .dropdown-menu, .btn-group > .popover {
     font-size: 13px;
 }
+/*#footer {*/
+    /*position:absolute;*/
+    /*bottom:0;*/
+    /*width:100%;*/
+    /*height:60px;   *//* Height of the footer */
+    /*background:#6cf;*/
+/*}*/
 
 
 
