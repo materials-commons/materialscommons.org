@@ -62,12 +62,17 @@
             </ul>
         </div>
 
-        <ul id="" class="nav nav-pills pull-right">
-            <li class="">
+        <ul ng-hide="email_address" class="nav nav-pills pull-right">
+            <li>
+               <a ui-sref="login" class="navbar-link"><i class="icon-user"></i> Login</a>
+            </li>
+        </ul>
+        <ul ng-show="email_address" class="nav nav-pills pull-right">
+            <li>
                 <a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i> {{email_address}}</a>
             </li>
             <li>
-                <a ui-sref="logout" class="navbar-link"><span style="margin-left:10px">logout</span></a>
+                <a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> Logout</span></a>
             </li>
         </ul>
     </div>
