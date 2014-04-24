@@ -2,6 +2,10 @@ Application.Controllers.controller('ProjectTreeController',
     ["$scope", "mcapi", "Projects", "pubsub", function ($scope, mcapi, Projects, pubsub) {
         $scope.model = Projects.model;
 
+        pubsub.waitOn($scope, "project.tree", function (treeVisible) {
+            $scope.treeActive = treeVisible;
+        });
+
         $scope.openFolder = function (item) {
             var e = _.find($scope.trail, function (trailItem) {
                 return trailItem.id === item.id;
@@ -69,7 +73,8 @@ Application.Directives.directive('projectTree',
             replace: true,
             scope: {
                 ngModel: "@",
-                project: "@project"
+                project: "@project",
+                treeActive: "@active"
             },
             templateUrl: "application/directives/projecttree.html"
         };
