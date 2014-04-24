@@ -1,5 +1,5 @@
 <div ng-if="doc.added_properties.length!=0">
-    <legend>Added Properties</legend>
+    <label><b>Additional/Custom Properties:</b></label>
     <div ng-repeat="pv in doc.added_properties">
         <div class="control-group">
             <label class="control-label">{{pv.name}}
@@ -14,16 +14,34 @@
                         <option ng-repeat="val in pv.value_choice">{{val}}
                         </option>
                     </select>
+                    <span ng-if='pv.unit_choice.length!=0'>
+                        <select ng-model='pv.unit' ng-disabled="edit">
+                            <option value="" disabled selected>Unit...</option>
+                            <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
+                        </select>
+                    </span>
                 </div>
                 <div ng-if="pv.value_choice.length==0">
                     <div ng-if="pv.type==='text'">
                         <div ng-if="pv.required===false">
                             <input type='text' ng-model='pv.value'
                                    placeholder='{{pv.name}}...' ng-disabled="edit">
+                            <span ng-if='pv.unit_choice.length!=0'>
+                        <select ng-model='pv.unit' ng-disabled="edit">
+                            <option value="" disabled selected>Unit...</option>
+                            <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
+                        </select>
+                    </span>
                         </div>
                         <div ng-if="pv.required===true">
                             <input type='text' ng-model='pv.value'
                                    placeholder='{{pv.name}}...' ng-disabled="edit" required>
+                            <span ng-if='pv.unit_choice.length!=0'>
+                        <select ng-model='pv.unit' ng-disabled="edit">
+                            <option value="" disabled selected>Unit...</option>
+                            <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
+                        </select>
+                    </span>
                         </div>
                     </div>
                     <div ng-if="pv.type!=='text'">
@@ -31,20 +49,26 @@
                             <input type='text' name="{{pv.type}}Blur" ng-model='pv.value'
                                    validator='{{pv.type}}'
                                    placeholder='{{pv.name}}...' valid-method="blur" ng-disabled="edit">
+                            <span ng-if='pv.unit_choice.length!=0'>
+                        <select ng-model='pv.unit' ng-disabled="edit">
+                            <option value="" disabled selected>Unit...</option>
+                            <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
+                        </select>
+                    </span>
                         </div>
                         <div ng-if="pv.required===true">
                             <input type='text' name="{{pv.type}}Blur" ng-model='pv.value'
                                    validator='{{pv.type}}'
                                    placeholder='{{pv.name}}...' valid-method="blur" ng-disabled="edit" required>
+                            <span ng-if='pv.unit_choice.length!=0'>
+                        <select ng-model='pv.unit' ng-disabled="edit">
+                            <option value="" disabled selected>Unit...</option>
+                            <option ng-repeat='each in pv.unit_choice'>{{each}}</option>
+                        </select>
+                    </span>
                         </div>
                     </div>
 
-                </div>
-                <div ng-if="pv.unit_choice.length!=0">
-                    <select ng-model="pv.unit" ng-disabled="edit">
-                        <option ng-repeat="unit in pv.unit_choice">{{unit}}
-                        </option>
-                    </select>
                 </div>
             </div>
         </div>
@@ -52,10 +76,8 @@
 </div>
 <div ng-if="edit===false">
 
-    <div ng-show="additionalProperties.length > 0" class="control-group">
-        <label class="control-label">Additional Properties:</label>
-
-        <div class="controls">
+    <div ng-show="additionalProperties.length > 0">
+        <cgroup label="Additional Properties">
             <select ng-model="bk.additional_property">
                 <option ng-repeat="property in additionalProperties"
                         value="{{property}}">
@@ -63,15 +85,13 @@
                 </option>
             </select>
             <button ng-click="addAdditionalProperty()" class="btn btn-info">Add</button>
-        </div>
+        </cgroup>
     </div>
-    <div class="control-group">
-        <label class="control-label">Custom Properties:</label>
-
-        <div class="controls">
-            <input ng-model="bk.customPropertyName" placeholder="Name..." type="text">
-            <input ng-model="bk.customPropertyValue" placeholder="Value..." type="text">
-            <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
-        </div>
-    </div>
+    <cgroup label="Custom Property:">
+        <input ng-model="bk.customPropertyName" placeholder="Name..." type="text">
+        <input ng-model="bk.customPropertyValue" placeholder="Value..." type="text">
+    </cgroup>
+    <cgroup>
+        <button ng-click="addCustomProperty()" class="btn btn-info">Add</button>
+    </cgroup>
 </div>

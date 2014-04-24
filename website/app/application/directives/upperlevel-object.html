@@ -3,13 +3,13 @@
 </cgrouprequired>
 
 <cgroup label="Description:">
-    <textarea class="span8" rows="4" placeholder="Description..."
+    <textarea  placeholder="Description..."
               ng-model="doc.description" ng-disabled="edit"></textarea>
 </cgroup>
 
 <div ng-if="edit===false">
     <cgroup label="Notes:">
-        <textarea class="span8" rows="4" placeholder="Notes..." ng-model="bk.new_note"/>
+        <textarea placeholder="Notes..." ng-model="bk.new_note"/>
     </cgroup>
     <cgroup>
         <button ng-click="add_notes()" class="btn btn-info">Add</button>
@@ -17,8 +17,8 @@
 </div>
 
 <div ng-show="doc.notes.length > 0">
-    <h5>Previous Notes:</h5>
-    <table class="table">
+    <h6>Previous Notes:</h6>
+    <table class="table table-bordered">
         <thead>
         <th>Message</th>
         <th>Who</th>
