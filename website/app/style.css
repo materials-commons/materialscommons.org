@@ -359,5 +359,9 @@ label, input, button, select, textarea {
     font-size: 13px;
 }
 
+.unit-select{
+    width:130px;
+}
+
 
 

@@ -12,7 +12,7 @@
                     <input type='text' ng-model='df.value'
                            placeholder='{{df.name}}...' ng-disabled="edit">
                     <span ng-if='df.unit_choice.length!=0'>
-                        <select style="width:130px" ng-model='df.unit' ng-disabled="edit" >
+                        <select  class="unit-select" ng-model='df.unit' ng-disabled="edit" >
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in df.unit_choice'>{{each}}</option>
                         </select>
@@ -22,7 +22,7 @@
                     <input type='text' ng-model='df.value'
                            placeholder='{{df.name}}...' ng-disabled="edit" required>
                     <span ng-if='df.unit_choice.length!=0'>
-                        <select style="width:130px" ng-model='df.unit' ng-disabled="edit" >
+                        <select class="unit-select" ng-model='df.unit' ng-disabled="edit" >
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in df.unit_choice'>{{each}}</option>
                         </select>
@@ -34,7 +34,7 @@
                     <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
                            placeholder='{{df.name}}...' valid-method="blur" ng-disabled="edit">
                     <span ng-if='df.unit_choice.length!=0'>
-                        <select style="width:130px" ng-model='df.unit' ng-disabled="edit" >
+                        <select  class="unit-select" ng-model='df.unit' ng-disabled="edit" >
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in df.unit_choice'>{{each}}</option>
                         </select>
@@ -44,7 +44,7 @@
                     <input type='text' name="{{df.type}}Blur" ng-model='df.value' validator='{{df.type}}'
                            placeholder='{{df.name}}...' valid-method="blur" ng-disabled="edit" required>
                     <span ng-if='df.unit_choice.length!=0'>
-                        <select style="width:130px" ng-model='df.unit' ng-disabled="edit" >
+                        <select  class="unit-select" ng-model='df.unit' ng-disabled="edit" >
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in df.unit_choice'>{{each}}</option>
                         </select>
@@ -74,7 +74,7 @@
                         <option ng-repeat='each in df.value_choice'>{{each}}</option>
                     </select>
                     <span ng-if='df.unit_choice.length!=0'>
-                        <select style="width:130px" ng-model='df.unit' ng-disabled="edit">
+                        <select class="unit-select" ng-model='df.unit' ng-disabled="edit">
                             <option value="" disabled selected>Unit...</option>
                             <option ng-repeat='each in df.unit_choice'>{{each}}</option>
                         </select>
