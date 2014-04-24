@@ -87,14 +87,14 @@
 
     </div>
 </div>
-<div class="footer navbar-fixed-bottom row-fluid well">
+<div class="footer navbar-fixed-bottom row-fluid well-footer">
     <div class="span2">
         <li class="nav-header">COMMONLY USED TAGS</li>
     </div>
     <div ng-controller="_toolbarTags">
         <p style="cursor:pointer" class="label label-info custom" ng-repeat="tag in tags | limitTo: 10">
             <a ui-sref="toolbar.databytag({name: tag.name})" style="color: white">{{ tag.name }} ({{tag.count}})</a>
-        </p><p><a ui-sref="toolbar.tags">.......</a></p>
+        </p><p><a ui-sref="toolbar.tags"> ...more...</a></p>
     </div>
 </div>
 
