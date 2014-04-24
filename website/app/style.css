@@ -379,5 +379,12 @@ label, input, button, select, textarea {
     /*background:#6cf;*/
 /*}*/
 
+.well{
+    padding : 0px;
+    background-color: grey;
+    border-radius: 0px;
+
+}
+
 
 
