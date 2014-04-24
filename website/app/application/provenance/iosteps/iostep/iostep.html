@@ -21,7 +21,7 @@
                         ng-options="samp.name for samp in samples_list"
                         ng-change="pick_sample()" required>
                     <option value="">-- Select Samples --</option>
-                </select><a>{{ doc.sample.name}}</a>
+                </select><a ui-sref="toolbar.objects">{{ doc.sample.name}}</a>
             </cgroup>
         </div>
         <div ng-switch-when="instrument">
