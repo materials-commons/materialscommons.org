@@ -1,6 +1,6 @@
 Application.Controllers.controller('_toolbarTags',
-    ["$rootScope", "$scope", "mcapi", "pubsub",
-        function ($rootScope, $scope, mcapi, pubsub) {
+    ["$scope", "mcapi", "pubsub", "User",
+        function ($scope, mcapi, pubsub, User) {
             function tagsCount() {
                 mcapi('/tags/count')
                     .success(function (data) {
@@ -16,7 +16,7 @@ Application.Controllers.controller('_toolbarTags',
             });
 
             function init() {
-                if ($rootScope.email_address) {
+                if (User.isAuthenticated()) {
                     tagsCount();
                 }
             }

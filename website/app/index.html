@@ -64,7 +64,7 @@
 
         <ul ng-hide="email_address" class="nav nav-pills pull-right">
             <li>
-                <a ui-sref="login" class="navbar-link"><i class="icon-user"></i> Login</a>
+                <a ui-sref="login" class="navbar-link"><i class="icon-user"></i> login</a>
             </li>
         </ul>
         <ul ng-show="email_address" class="nav nav-pills pull-right">
@@ -72,7 +72,7 @@
                 <a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i> {{email_address}}</a>
             </li>
             <li>
-                <a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> Logout</span></a>
+                <a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> logout</span></a>
             </li>
         </ul>
     </div>
@@ -87,14 +87,15 @@
 
     </div>
 </div>
-<div ng-show="email_address" class="footer navbar-fixed-bottom row-fluid well">
+
+<div ng-show="email_address" class="footer navbar-fixed-bottom row-fluid well-footer">
     <div class="span2">
         <li class="nav-header">COMMONLY USED TAGS</li>
     </div>
     <div ng-controller="_toolbarTags">
         <p style="cursor:pointer" class="label label-info custom" ng-repeat="tag in tags | limitTo: 10">
             <a ui-sref="toolbar.databytag({name: tag.name})" style="color: white">{{ tag.name }} ({{tag.count}})</a>
-        </p><p><a ui-sref="toolbar.tags">.......</a></p>
+        </p><p><a ui-sref="toolbar.tags"><b> ...more...</b></a></p>
     </div>
 </div>
 
