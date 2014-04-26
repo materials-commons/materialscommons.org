@@ -68,7 +68,7 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Heat Treatment" ,
+    "template_name": "Specimen Prep" ,
     "template_pick": "treatment" ,
     "template_type": "condition"
 }
