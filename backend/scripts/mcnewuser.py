@@ -58,8 +58,5 @@ if __name__ == "__main__":
         u = User(options.email, options.email, pwhash)
         r.table('users').insert(u.__dict__).run(conn)
         print "Add user: " + options.email
-    elif options.update:
-        u = r.table('user').get(options.email).run(conn)
-        if u is not None:
-            u['password'] = make_password_hash(options.password)
-            r.table('users').update(u).run(conn)
+    else:
+        print "Unknown option"

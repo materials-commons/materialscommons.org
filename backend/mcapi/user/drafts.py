@@ -103,6 +103,15 @@ def get_drafts_for_user():
     selection = list(r.table('drafts')
                      .get_all(user, index='owner')
                      .run(g.conn, time_format='raw'))
+    # Now get all the drafts that we have been asked to review
+    # TODO: This is a hack that we need to fix
+    drafts_for_review = list(r.table('reviews').run(g.conn, time_format='raw'))
+    for d in drafts_for_review:
+        if d['project_id'] != "":
+            if d['requested_to'] == user:
+                item = r.table('drafts').get(d['item_id'])\
+                                        .run(g.conn, time_format='raw')
+                selection.append(item)
     return args.json_as_format_arg(selection)
 
 
