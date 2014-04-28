@@ -24,7 +24,7 @@
                             <td>{{ review.note }}</td>
                             <td>{{ review.birthtime | toDateString }}</td>
                             <td>{{ review.item_name }}</td>
-                            <td>{{ review.status }}</td>
+                            <td>{{ review.status }} <button type="button" ng-class="close" ng-click="removeReviewToConduct($index)" >&times;</button></td>
                         </tr>
                         </tbody>
                     </table>
