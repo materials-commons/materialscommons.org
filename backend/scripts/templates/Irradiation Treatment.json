@@ -13,6 +13,16 @@
             "required": true
         },
         {
+            "name": "Preparation" ,
+            "attribute": "preparation",
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": ["Electropolish", "FIB Liftout", "Other"],
+            "required": true
+        },
+        {
             "attribute": "particle",
             "name": "Particle" ,
             "type": "select" ,
