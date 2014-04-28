@@ -17,9 +17,9 @@
             "name": "Preparation" ,
             "type": "select" ,
             "unit": "" ,
-            "unit_choice": ["Electropolish", "FIB Liftout", "Other"] ,
+            "unit_choice": [],
             "value": "" ,
-            "value_choice": [],
+            "value_choice": ["Electropolish", "FIB Liftout", "Other"],
             "required": true
         },
         {
