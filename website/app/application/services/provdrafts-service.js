@@ -72,8 +72,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 }
             },
 
-            loadRemoteDrafts: function (f) {
-                var callfunc = arguments.length === 1;
+            loadRemoteDrafts: function () {
                 mcapi('/drafts')
                     .success(function (drafts) {
                         service.drafts = [];
