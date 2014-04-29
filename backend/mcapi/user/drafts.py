@@ -112,7 +112,8 @@ def get_drafts_for_user():
                 if d['requested_to'] == user:
                     item = r.table('drafts').get(d['item_id'])\
                                             .run(g.conn, time_format='raw')
-                    selection.append(item)
+                    if item:
+                        selection.append(item)
     return args.json_as_format_arg(selection)
 
 
