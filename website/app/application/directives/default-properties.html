@@ -82,8 +82,9 @@
                 </div>
             </div>
             <div ng-switch-when="machines">
-                <select ng-model="df.value"
-                        ng-options="mach.name for mach in machinesList" ng-disabled="edit">
+                <select ng-model="m.machine"
+                        ng-options="mach.name for mach in machinesList"
+                        ng-disabled="edit">
                 </select>
             </div>
         </div>
