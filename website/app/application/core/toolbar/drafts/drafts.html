@@ -12,7 +12,7 @@
         </thead>
         <tbody>
 
-        <tr ng-repeat="draft in drafts track by $id(draft) | filter:query | orderBy:'process.name'">
+        <tr ng-repeat="draft in drafts | filter:query | orderBy:'process.name'">
             <td><a style="cursor: pointer"
                    ui-sref="toolbar.projectspage({id: draft.project_id, draft_id: draft.id})">
                 {{draft.process.name}}</a>
