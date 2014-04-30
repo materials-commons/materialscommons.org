@@ -77,11 +77,11 @@
         {
             "name": "Evaporation Rate",
             "attribute": "evaporation_rate",
-            "type": "select",
+            "type": "number",
             "unit": "",
-            "unit_choice": [],
+            "unit_choice": ["Atom", "Pulse"],
             "value": "",
-            "value_choice": ["Atom", "Pulse"],
+            "value_choice": [],
             "required": false
         },
         {
