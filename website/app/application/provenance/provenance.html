@@ -7,27 +7,21 @@
                     <ul class="nav nav-list">
                         <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
                         <li ng-class="{'active':isCurrentStep('process')}">
-                            <a><i ng-show="processSaved"
-                                  ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[process_saved]"></i>
-                                Process
-                            </a>
-                            <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editStep('process')">(edit)</a>
+                            <a style="cursor:text " ng-hide="isFinishedStep('process')">Process</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editStep('process')">Process (edit)</a>
+
                         </li>
                         <li ng-class="{'active' : isCurrentStep('inputs')}">
-                            <a><i ng-show="inputsSaved"
-                                  ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[inputs_saved]"></i>
-                                Inputs
-                            </a>
-                            <a style="cursor:pointer" ng-show="isFinishedStep('inputs')" ng-click="editStep('inputs')">(edit)</a>
+                            <a style="cursor:text " ng-hide="isFinishedStep('inputs')">Inputs</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('inputs')" ng-click="editStep('inputs')">Inputs (edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('outputs')}">
-                            <a><i ng-show="outputsSaved"
-                                  ng-class="{true: 'icon-autoscroll', false: 'icon-autoscroll-disabled'}[outputs_saved]"></i>
-                                Outputs
-                            </a> <a style="cursor:pointer" ng-show="isFinishedStep('outputs')" ng-click="editStep('outputs')">(edit)</a>
+                            <a style="cursor:text " ng-hide="isFinishedStep('outputs')">Outputs</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('outputs')" ng-click="editStep('outputs')">Outputs (edit)</a>
                         </li>
                         <li ng-class="{'active' : isCurrentStep('submit')}">
-                            <a>Submit</a>
+                            <a style="cursor:text " ng-hide="isFinishedStep('submit')">Submit</a>
+                            <a style="cursor:pointer" ng-show="isFinishedStep('submit')" ng-click="editStep('submit')">Submit (edit)</a>
                         </li>
                     </ul>
                 </div>
