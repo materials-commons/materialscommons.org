@@ -27,7 +27,7 @@ Application.Provenance.Controllers.controller('provenance',
                     break;
                 }
                 ProvSteps.setCurrentStep(step);
-                if (step === "inputs" || step == "outputs") {
+                if (step === "inputs" || step === "outputs") {
                     $state.go(state, {iosteps: step});
                 } else {
                     $state.go(state);
@@ -58,6 +58,7 @@ Application.Provenance.Controllers.controller('provenance',
                 ProvSteps.setStepFinished('process');
                 ProvSteps.setStepFinished('inputs');
                 ProvSteps.setStepFinished('outputs');
+                ProvSteps.setStepFinished('submit');
             };
 
             function init() {
