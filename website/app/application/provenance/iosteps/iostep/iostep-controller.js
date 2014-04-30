@@ -35,9 +35,19 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     }).jsonp();
             };
 
+            $scope.set_availability = function () {
+                if ($scope.bk.available === "1") {
+                    $scope.doc.is_active = true;
+                }
+                if ($scope.bk.available === "2") {
+                    $scope.doc.is_active = false;
+                }
+
+            };
+
             function init() {
                 $scope.bk = {
-                    is_active: true,
+                    available: "1",
                     additional_property: '',
                     customPropertyName: '',
                     customPropertyValue: ''
@@ -55,6 +65,11 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                         if ('sample' in $scope.doc) {
                             if (!($scope.doc.sample.id === $scope.input_doc.sample.id)) {
                                 $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);
+                            }
+                            if ($scope.doc.is_active === true) {
+                                $scope.bk.available = "1";
+                            } else {
+                                $scope.bk.available = "2";
                             }
                         } else {
                             $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);

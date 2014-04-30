@@ -2,8 +2,8 @@
     <div ng-switch on="doc.template_pick">
         <div ng-switch-when="transformed_sample">
             <cgroup label="Mark Input Sample:">
-                <input type="radio" ng-model="doc.is_active" ng-value="true"> available <br/>
-                <input type="radio" ng-model="doc.is_active" ng-value="false"> not available
+                <input ng-change="set_availability()" type="radio" ng-model="bk.available" value="1"> available <br/>
+                <input ng-change="set_availability()" type="radio" ng-model="bk.available" value="2"> not available
             </cgroup>
             <div upperlevel-object doc="doc.sample" bk="bk" edit="false"></div>
             <div ng-repeat="property in doc.sample.properties">
