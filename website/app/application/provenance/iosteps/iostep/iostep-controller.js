@@ -25,7 +25,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                 if ($scope.bk.available === "2") {
                     $scope.doc.is_active = false;
                 }
-
             };
 
             $scope.load_all_samples = function () {
