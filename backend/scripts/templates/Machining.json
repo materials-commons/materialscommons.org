@@ -1,19 +1,9 @@
 {
-    "id": "SEM Imaging",
-    "attribute": "sem_imaging",
+    "id": "Machining",
+    "attribute": "machining",
     "default_properties": [
-        {
-            "name": "Machine" ,
-            "attribute": "machine",
-            "type": "machines" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "",
-            "value_choice": [],
-            "required": false
-        }
-    ],
-    "additional_properties": [
+     ],
+    "additional_properties":[
         {
             "name": "Citations" ,
             "attribute": "citations",
@@ -39,11 +29,11 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "SEM Imaging" ,
+    "template_name": "Machining" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": [ "Pick Sample", "SEM Instrument Properties"],
-    "required_output_conditions": [],
+    "required_input_conditions": ["Pick Sample", "Machining Attributes"],
+    "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
-    "required_output_files": true  
+    "required_output_files": true
 }
