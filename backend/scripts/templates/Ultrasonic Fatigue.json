@@ -1,6 +1,6 @@
 {
-    "id": "SEM Imaging",
-    "attribute": "sem_imaging",
+    "id": "Ultrasonic Fatigue",
+    "attribute": "ultrasonic_fatigue",
     "default_properties": [
         {
             "name": "Machine" ,
@@ -39,11 +39,11 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "SEM Imaging" ,
+    "template_name": "Ultrasonic Fatigue" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": [ "Pick Sample", "SEM Instrument Properties"],
-    "required_output_conditions": [],
+    "required_input_conditions": [ "Pick Sample", "Ultrasonic Fatigue Instrument Properties"],
+    "required_output_conditions": ["Transformed Sample"],
     "required_input_files": true,
     "required_output_files": true  
 }
