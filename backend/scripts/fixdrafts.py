@@ -15,13 +15,13 @@ if __name__ == "__main__":
         if 'process' not in draft:
             continue
         input_conditions = draft['process']['input_conditions']
-        if 'Specimen Prep' in input_conditions:
-            sp = input_conditions['Specimen Prep']
-            for prop in sp['default_properties']:
-                if prop['attribute'] == 'preparation':
-                    prop['value_choice'] = ["Electropolish", "FIB Liftout",
-                                            "Other"]
-                    prop['unit_choice'] = []
-                    prop['value'] = prop['unit']
+        if 'APT Instrument Properties' in input_conditions:
+            what = input_conditions['APT Instrument Properties']
+            for prop in what['default_properties']:
+                if prop['attribute'] == 'evaporation_rate':
+                    prop['unit_choice'] = prop['value_choice']
+                    prop['value_choice'] = []
+                    prop['value'] = ""
                     prop['unit'] = ""
+                    prop['type'] = "number"
                     r.table('drafts').get(draft['id']).update(draft).run(conn)
