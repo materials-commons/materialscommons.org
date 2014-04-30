@@ -11,7 +11,7 @@
     "template_name": "Data Analysis" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": [],
+    "required_input_conditions": ["APT Data Reconstruction"],
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true  
