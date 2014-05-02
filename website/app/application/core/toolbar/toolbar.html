@@ -19,7 +19,7 @@
                 <li ng-controller="_toolbarProjects" class="project-scrollbar">
                     <ul ng-repeat="proj in projects | orderBy: 'name'">
                         <li class="active" style="list-style-type: circle">
-                            <a ui-sref="toolbar.projectspage.overview({id: proj.id, draft_id: ''})">{{proj.name}}</a>
+                            <a ui-sref="toolbar.projectspage.overview({id: proj.id, draft_id: '', from:''})">{{proj.name}}</a>
                         </li>
                     </ul>
                 </li>

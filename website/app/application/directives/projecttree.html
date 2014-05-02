@@ -6,7 +6,7 @@
     </div>
     <div ng-show="loaded===true" class="row-fluid">
         <div class="span12">
-            <a style="cursor: pointer" ng-click="backToFolder(trailitem)"
+            <a  ng-click="backToFolder(trailitem)"
                     ng-repeat="trailitem in trail">
                 <i class="fa fa-folder fa-2x"></i><span style="margin-right: 7px">{{trailitem.displayname}}/ </span>
             </a>
@@ -40,7 +40,7 @@
                             </a>
                         </td>
                         <td ng-if="entry.type=='datafile'">
-                            <a ui-sref="toolbar.dataedit({id: entry.id})"><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</a>
+                            <a ng-click="populatePath(entry)"><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</a>
                         </td>
                         <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
                         <td ng-if="entry.type=='datadir'">-</td>

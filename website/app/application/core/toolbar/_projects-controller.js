@@ -1,8 +1,9 @@
 Application.Controllers.controller('_toolbarProjects',
-    ["$scope", "$state", "model.Projects",
-        function ($scope, $state, Projects) {
+    ["$scope", "$state", "model.Projects", "ProjectPath",
+        function ($scope, $state, Projects, ProjectPath) {
             $scope.gotoProject = function (projectId) {
-                $state.go("toolbar.projectspage.overview", {id: projectId, draft_id: ''});
+                ProjectPath.set_project(projectId);
+                $state.go("toolbar.projectspage.overview", {id: projectId, draft_id: '', from: ''});
             };
 
             function init() {
