@@ -181,7 +181,7 @@ app.config(["$stateProvider", function ($stateProvider) {
 
         // Toolbar projectspage views
         .state('toolbar.projectspage', {
-            url: '/projectspage/:id/:draft_id',
+            url: '/projectspage/:id/:draft_id/:from',
             templateUrl: 'application/core/toolbar/projectspage/projectspage.html',
             resolve: {
                 ProvDrafts: "ProvDrafts"

@@ -14,7 +14,7 @@
 
         <tr ng-repeat="draft in drafts | filter:query | orderBy:'process.name'">
             <td><a style="cursor: pointer"
-                   ui-sref="toolbar.projectspage({id: draft.project_id, draft_id: draft.id})">
+                   ui-sref="toolbar.projectspage({id: draft.project_id, draft_id: draft.id, from: ''})">
                 {{draft.process.name}}</a>
             </td>
             <td>{{ draft.project_name }}</td>

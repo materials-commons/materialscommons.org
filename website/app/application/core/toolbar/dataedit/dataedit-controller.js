@@ -1,11 +1,6 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User",
-        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User) {
-            $scope.model = {
-                is_disabled: true,
-                desc: ''
-            };
-
+    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath", "Projects",
+        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath, Projects) {
             $scope.setupAccessToUserFile = function () {
                 if (isImage($scope.doc.name)) {
                     $scope.fileType = "image";
@@ -56,17 +51,25 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.model.is_disabled = false;
             };
 
+            $scope.backToFolder = function (item) {
+                $scope.dir = ProjectPath.update_dir(item);
+                var proj_id = ProjectPath.get_project();
+                $state.go("toolbar.projectspage.overview", {id: proj_id, draft_id: '', from: 'datafile'});
+            };
             function init() {
+                $scope.model = {
+                    is_disabled: true,
+                    desc: ''
+                };
                 $scope.id = $stateParams.id;
+                $scope.modal = Projects.model;
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.doc = data;
                         $scope.model.desc = $scope.doc.description;
                         $scope.setupAccessToUserFile();
-                        mcapi('/datadirs/%/datafile', $scope.doc.id)
-                            .success(function (data) {
-                                $scope.trail = data[0].name.split('/');
-                            }).jsonp();
+                        $scope.trail = ProjectPath.get_trail();
+                        $scope.dir = ProjectPath.get_dir();
                     })
                     .error(function (data) {
                         alertService.sendMessage(data.error);
