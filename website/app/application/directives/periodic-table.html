@@ -1,0 +1,134 @@
+<section ng-controller="PeriodicTableController">
+    <div id="container">
+        <div id="panelOne">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_one_elements">{{p}}</div>
+        </div>
+        <div id="panelTwo">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_1_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_2_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_3_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_4_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_5_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_6_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_7_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_8_elements">{{p}}</div>
+        </div>
+        <div id="panelThree">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_9_elements">{{p}}</div>
+        </div>
+        <div id="panelTwo">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_1_elements">{{p}}</div>
+        </div>
+        <div id="panelTwo">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_2_elements">{{p}}</div>
+        </div>
+        <div id="panelTwo">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_3_elements">{{p}}</div>
+        </div>
+        <div id="panelTwo">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_4_elements">{{p}}</div>
+        </div>
+        <div id="panelTwo">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_5_elements">{{p}}</div>
+        </div>
+        <div id="panelOne">
+            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_one_1_elements">{{p}}</div>
+        </div>
+    </div>
+    <div id="clear"></div>
+    <div id="lowerContainer">
+        <div class="bottom">
+            <div class="box"><a> La </a></div>
+            <div class="box"><a> Ac </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Ce </a></div>
+            <div class="box"><a> Th </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Pr </a></div>
+            <div class="box"><a> Pa </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Nd</a></div>
+            <div class="box"><a> U </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Pm </a></div>
+            <div class="box"><a> Np </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Sm </a></div>
+            <div class="box"><a> Pu </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Eu </a></div>
+            <div class="box"><a> Am </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Gd </a></div>
+            <div class="box"><a> Cm </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Tb</a></div>
+            <div class="box"><a> Bk</a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Dy </a></div>
+            <div class="box"><a> Cf </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a>Ho </a></div>
+            <div class="box"><a> Es</a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Er </a></div>
+            <div class="box"><a> Fm</a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Tm </a></div>
+            <div class="box"><a>Md </a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Yb </a></div>
+            <div class="box"><a> No</a></div>
+        </div>
+        <div class="bottom">
+            <div class="box"><a> Lu</a></div>
+            <div class="box"><a> Lr</a></div>
+        </div>
+    </div>
+    <table class="table table_small">
+        <thead>
+        <th>Element</th>
+        <th>%</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="each_ele in list">
+            <td>{{each_ele}}</td>
+            <td><input ng-model="value" style="width: 10%" type="number"></td>
+        </tr>
+        </tbody>
+    </table>
+    <button>Save composition</button>
+</section>
