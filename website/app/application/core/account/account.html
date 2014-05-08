@@ -1,18 +1,18 @@
 <div ng-controller="account">
-    <div class="row-fluid">
-        <div class="span8 offset1">
+    <div class="row">
+        <div class="col-lg-offset-1 col-sm-8 col-md-8">
             <form class="form-horizontal">
-                <div class="control-group">
+                <div class="form-group">
                     <label class="control-label" for="inputPassword">Password:</label>
 
                     <div class="controls">
-                        <input type="password" id="inputPassword" placeholder="New Password..." ng-model="new_password">
-                        <input type="password" placeholder="Verify Password..." ng-model="verify_new_password">
+                        <input class="form-control" id="inputPassword" placeholder="New Password..." ng-model="new_password" type="password">
+                        <input class="form-control" placeholder="Verify Password..." ng-model="verify_new_password" type="password">
                     </div>
                 </div>
-                <div class="control-group">
+                <div class="form-group">
                     <div class="controls">
-                        <button ng-click="changePassword()" class="btn btn-danger">Change Password</button>
+                        <button ng-click="changePassword()" class="btn btn-default btn-danger">Change Password</button>
                     </div>
                 </div>
             </form>
@@ -21,16 +21,16 @@
 
     <hr>
 
-    <div class="row-fluid">
-        <div class="span8 offset1">
+    <div class="row">
+        <div class="col-lg-offset-1 col-sm-8 col-md-8">
             <table class="pull-left">
-                <tr>
+                <tbody><tr>
                     <td><h4>API Key:</h4></td>
                     <td>
-                        <button ng-click="showApiKey()" class="btn btn-info">{{ showHideButton }}</button>
+                        <button ng-click="showApiKey()" class="btn btn-default btn-info">{{ showHideButton }}</button>
                     </td>
                     <td>
-                        <button ng-click="resetApiKey()" class="btn btn-danger">Reset API Key</button>
+                        <button ng-click="resetApiKey()" class="btn btn-default btn-danger">Reset API Key</button>
                     </td>
                 </tr>
                 <tr>
@@ -38,29 +38,29 @@
                         <span ng-show="showKey">Your current apikey is: {{ apikey }}</span>
                     </td>
                 </tr>
-            </table>
+                </tbody></table>
         </div>
     </div>
 </div>
 
-<div class="row-fluid">
+<div class="row">
     <div ng-controller="accountGroups">
-        <div class="span8 offset2">
+        <div class="col-lg-offset-2 col-sm-8 col-md-8">
             <div>
                 <form class="form-inline">
                     <fieldset>
                         <legend>Groups</legend>
-                        <button ng-click="createGroup()" class="btn btn-primary">Create Group</button>
+                        <button ng-click="createGroup()" class="btn btn-default btn-primary">Create Group</button>
                     </fieldset>
                 </form>
                 <table class="table table-striped mc-table">
                     <thead>
-                    <th>Group</th>
-                    <th>Date created</th>
-                    <th>Description</th>
-                    <th>Owner</th>
-                    <th></th>
-                    </thead>
+                    <tr><th>Group</th>
+                        <th>Date created</th>
+                        <th>Description</th>
+                        <th>Owner</th>
+                        <th></th>
+                    </tr></thead>
                     <tbody>
                     <tr ng-repeat="i in user_groups">
                         <td><b>{{i.name}}</b></td>
@@ -76,6 +76,6 @@
     </div>
 </div>
 
-<div class="row-fluid">
-    <div ui-view></div>
+<div class="row">
+    <div ui-view=""></div>
 </div>

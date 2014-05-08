@@ -1,53 +1,48 @@
 <div class="tab-content">
-<div class="tab-pane active" id="review" ng-controller="toolbarDataEditCreateReview">
-    <h3>Reviews:</h3>
-    <table class="table table-striped mc-table-hover table-condensed mc-table">
-        <thead>
-        <tr>
-        <th>From</th>
-        <th>Who?</th>
-        <th>Message</th>
-        <th>Date Created</th>
-        <th>Status</th>
-        <th>Mark as Done</th>
-        </thead>
-        <tbody>
-        <tr ng-repeat="review in all_reviews" style="cursor:pointer">
-            <td>{{ review.requested_by }}</td>
-            <td>{{ review.requested_to }}</td>
-            <td>{{ review.note }}</td>
-            <td>{{ review.birthtime | toDateString }}</td>
-            <td>{{review.status}}</td>
-            <td ng-show="review.requested_to==signed_user">
-                <input type="checkbox" ng-model="review.status" ng-click="reviewStatusChanged($index)"
-                       ng-true-value="Finished" ng-false-value="InProcess">
-            </td>
+    <div class="tab-pane active" id="review" ng-controller="toolbarDataEditCreateReview">
+        <h3>Reviews:</h3>
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <thead>
+            <tr>
+                <th>From</th>
+                <th>Who?</th>
+                <th>Message</th>
+                <th>Date Created</th>
+                <th>Status</th>
+                <th>Mark as Done</th>
+            </tr></thead>
+            <tbody>
+            <tr ng-repeat="review in all_reviews" style="cursor:pointer">
+                <td>{{ review.requested_by }}</td>
+                <td>{{ review.requested_to }}</td>
+                <td>{{ review.note }}</td>
+                <td>{{ review.birthtime | toDateString }}</td>
+                <td>{{review.status}}</td>
+                <td ng-show="review.requested_to==signed_user">
+                    <input ng-model="review.status" ng-click="reviewStatusChanged($index)" ng-true-value="Finished" ng-false-value="InProcess" type="checkbox">
+                </td>
 
-            <td ng-hide="review.requested_to==signed_user">
-                Not Authorized
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!--<div review-table></div>-->
-    <cgroup label="Mark For Followup">
-        <input type="text" ng-model="model.review_note_self"
-               ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
-               placeholder="Review Note...">
-    </cgroup>
+                <td ng-hide="review.requested_to==signed_user">
+                    Not Authorized
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--<div review-table></div>-->
+        <cgroup label="Mark For Followup">
+            <input class="form-control" ng-model="model.review_note_self" ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}" placeholder="Review Note..." type="text">
+        </cgroup>
 
-    <cgroup label="Request to Review">
-        <input type="text" ng-model="model.review_note_other" placeholder="Review Note...">
-        <select ng-model="model.user_for_review"
-                ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
-                ng-multiple="false">
-            <option></option>
-            <option ng-repeat="user in users">{{ user }}</option>
-        </select>
-    </cgroup>
+        <cgroup label="Request to Review">
+            <input class="form-control" ng-model="model.review_note_other" placeholder="Review Note..." type="text">
+            <select ng-model="model.user_for_review" ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}" ng-multiple="false">
+                <option></option>
+                <option ng-repeat="user in users">{{ user }}</option>
+            </select>
+        </cgroup>
 
-    <button style="position:absolute" ng-click="addReviewForOther()" class="btn btn-info">Request
-        Review
-    </button>
-</div>
+        <button style="position:absolute" ng-click="addReviewForOther()" class="btn btn-default btn-info">Request
+            Review
+        </button>
+    </div>
 </div>

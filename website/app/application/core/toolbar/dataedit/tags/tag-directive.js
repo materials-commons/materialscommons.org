@@ -13,6 +13,6 @@ Application.Directives.directive('selectTag',
                     "<option></option>" +
                     "<option ng-repeat='tag in tagchoices'>{{ tag }}</option> " +
                 "</select>" +
-                "<button ng-click='addTag()' class='btn btn-info'>Add</button>"
+                "<button ng-click='addTag()' class='btn btn-default btn-info'>Add</button>"
         };
     });

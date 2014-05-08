@@ -1,8 +1,8 @@
-<div class="span10 offset1" ng-controller="accountGroupUsers">
+<div class="col-lg-offset-1 col-sm-10 col-md-10" ng-controller="accountGroupUsers">
     <hr>
     <h4>Users in {{ug_name}}</h4>
 
-    <div class="row-fluid">
+    <div class="row">
         <div>
             <paged data="users_by_usergroup" current-page="currentUsersPage" page-size="10">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -16,7 +16,7 @@
                     <tr ng-repeat="i in users_by_usergroup | page:currentUsersPage:10">
                         <td>{{i}}</td>
                         <td ng-show="owner==signed_in_user">
-                            <button class="btn" ng-click="delete_user_from_usergroup($index)">Delete</button>
+                            <button class="btn btn-default btn-default" ng-click="delete_user_from_usergroup($index)">Delete</button>
                         </td>
                     </tr>
                     </tbody>
@@ -26,14 +26,12 @@
 
 
         <div ng-show="owner==signed_in_user">
-            <select class="span3" ng-model="user_name"
-                    ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
-                    ng-multiple="false">
+            <select class="span3" ng-model="user_name" ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}" ng-multiple="false">
                 <option></option>
                 <option ng-repeat="user in all_users">{{ user.email }}</option>
             </select>
-            <button class="btn" ng-click="add_user_to_usergroup()">Add User</button>
-            <button class="btn" ng-click="done()">Done</button>
+            <button class="btn btn-default btn-default" ng-click="add_user_to_usergroup()">Add User</button>
+            <button class="btn btn-default btn-default" ng-click="done()">Done</button>
         </div>
     </div>
 </div>

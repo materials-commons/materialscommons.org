@@ -1,23 +1,23 @@
 <div ng-controller="toolbarMachines">
-    <div class="row-fluid">
-        <div class="span2">
-            <button class="btn btn-primary" ng-click="toggleCustom = !toggleCustom">New</button>
+    <div class="row">
+        <div class="col-sm-2 col-md-2">
+            <button class="btn btn-default btn-primary" ng-click="toggleCustom = !toggleCustom">New</button>
         </div>
-        <div saved-notification message="message"></div>
+        <div saved-notification="" message="message"></div>
     </div>
 
-    <div ng-init="toggleCustom = false" ng-show="toggleCustom" class="row-fluid">
+    <div ng-init="toggleCustom = false" ng-show="toggleCustom">
         <form name="Form" class="form-horizontal">
             <legend>Create Machine</legend>
-            <div upperlevel-object bk="bk" doc="doc" edit="false"></div>
-            <div df-properties default-properties="doc.default_properties"></div>
-            <button ng-click="save(Form)" class="btn btn-primary">Save</button>
-            <button ng-click="clear_machine()" class="btn btn-danger">Clear</button>
+            <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
+            <div df-properties="" default-properties="doc.default_properties"></div>
+            <button ng-click="save(Form)" class="btn btn-default btn-primary">Save</button>
+            <button ng-click="clear_machine()" class="btn btn-default btn-danger">Clear</button>
 
         </form>
     </div>
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
             <legend>List of available machines:</legend>
             <div ng-if="machines_list.length==0">
                 <b>No available machines in the database</b>
@@ -41,19 +41,18 @@
                 </table>
             </paged>
         </div>
-        <div class="span6">
+        <div class="col-sm-6 col-md-6">
             <form class="form-horizontal" ng-show="machine">
                 <legend>{{machine.name}}</legend>
                 <div ng-show="flag">
                     No specific details have been entered for {{machine.name}}
                 </div>
                 <div ng-hide="flag">
-                    <div upperlevel-object doc="machine" edit="true"></div>
+                    <div upperlevel-object="" doc="machine" edit="true"></div>
 
                     <div ng-repeat="property in machine.properties">
                         <cgroup label="{{property.name}}">
-                            <input class="input-large" ng-model="property.value" type="text"
-                                   ng-disabled="true">
+                            <input class="input-large form-control" ng-model="property.value" ng-disabled="true" type="text">
                             {{ property.unit }}
                         </cgroup>
                     </div>

@@ -1,4 +1,4 @@
-<div class="span8 offset1" ng-controller="toolbarTags">
+<div class="col-lg-offset-1 col-sm-8 col-md-8" ng-controller="toolbarTags">
     <h3>{{ tagHeader }}</h3>
 
     <div ng-hide="tags">
@@ -7,10 +7,10 @@
 
 
     <div ng-show="tags">
-        <div class="row-fluid">
-            Search: <input ui-keypress="{13: 'keypressCallback($event)'}" ng-model="query">
+        <div class="row">
+            Search: <input class="form-control" ui-keypress="{13: 'keypressCallback($event)'}" ng-model="query">
         </div>
-        <div class="row-fluid">
+        <div class="row">
             <div class="well">
                 <paged data="reviews" current-page="currentTagsPage" page-size="10">
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -21,8 +21,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="tag in tags | filter:query | page:currentTagsPage:10" style="cursor:pointer"
-                           >
+                        <tr ng-repeat="tag in tags | filter:query | page:currentTagsPage:10" style="cursor:pointer">
                             <!--<td><a ui-sref="toolbar.databytag({name: tag.name})">{{ tag.name }}</a></td>-->
                             <!--<td>{{ tag.count }}</td>-->
                             <td><a ui-sref="toolbar.databytag({name: tag.name})">{{tag.name}}</a></td>
@@ -35,4 +34,3 @@
         </div>
     </div>
 </div>
-

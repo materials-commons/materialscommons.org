@@ -1,29 +1,24 @@
 <div class="tab-pane" id="tags" ng-controller="toolbarProcessTag">
-    <div class="span5">
+    <div class="col-sm-5 col-md-5">
         <h3>Tags</h3>
         <cgroup label="Create new:">
-            <input ui-keypress="{13: 'addNewTag(doc.id, \'process\')'}" ng-model="tag_model.new_tag"
-                   placeholder="Tag...">
+            <input class="form-control" ui-keypress="{13: 'addNewTag(doc.id, \'process\')'}" ng-model="tag_model.new_tag" placeholder="Tag...">
         </cgroup>
-        <button ng-click="addNewTag(doc.id, 'process')" ng-disabled="!tag_model.new_tag"
-                class="btn btn-info">Add
+        <button ng-click="addNewTag(doc.id, 'process')" ng-disabled="!tag_model.new_tag" class="btn btn-default btn-info">Add
         </button>
         <cgroup label="Pick existing :">
-            <select ng-model="tag_model.tag_to_add"
-                    ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}"
-                    ng-multiple="false">
+            <select ng-model="tag_model.tag_to_add" ui-select2="{placeholder: 'Select tag', allowClear: true, width:'element'}" ng-multiple="false">
                 <option></option>
                 <option ng-repeat="tag in tagchoices">{{ tag }}</option>
             </select>
         </cgroup>
-        <button ng-click="addExistingTag(doc.id, 'process')" ng-disabled="!tag_model.tag_to_add"
-                class="btn btn-info">Add
+        <button ng-click="addExistingTag(doc.id, 'process')" ng-disabled="!tag_model.tag_to_add" class="btn btn-default btn-info">Add
         </button>
     </div>
-    <div class="span5">
+    <div class="col-sm-5 col-md-5">
         <h3>List of Tags:</h3>
             <span class="label label-info custom" ng-repeat="tag in process_tags">
-                <button type="button" class="close" ng-click="removeTag(tag.id);">&times;</button>{{ tag.tag_id }}
+                <button type="button" class="close" ng-click="removeTag(tag.id);">×</button>{{ tag.tag_id }}
             </span>
     </div>
 </div>

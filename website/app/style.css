@@ -309,9 +309,7 @@ notavailable{
     width: 200px;
     padding-right: 10px;
 }
-.row-fluid [class*="span"] {
-    margin-left: 10px;
-}
+
 
 textarea,
 input[type="text"],

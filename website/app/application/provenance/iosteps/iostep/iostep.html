@@ -1,16 +1,15 @@
 <div ng-controller="provenanceIOStepsIOStep">
-    <div ng-switch on="doc.template_pick">
+    <div ng-switch="" on="doc.template_pick">
         <div ng-switch-when="transformed_sample">
             <cgroup label="Mark Input Sample:">
-                <input ng-change="set_availability()" type="radio" ng-model="bk.available" value="1"> available <br/>
-                <input ng-change="set_availability()" type="radio" ng-model="bk.available" value="2"> not available
+                <input ng-change="set_availability()" ng-model="bk.available" value="1" type="radio"> available <br>
+                <input ng-change="set_availability()" ng-model="bk.available" value="2" type="radio"> not available
 
             </cgroup>
-            <div upperlevel-object doc="doc.sample" bk="bk" edit="false"></div>
+            <div upperlevel-object="" doc="doc.sample" bk="bk" edit="false"></div>
             <div ng-repeat="property in doc.sample.properties">
                 <cgroup label="{{property.name}}">
-                    <input class="input-large" ng-model="property.value" type="text"
-                           ng-disabled="false">
+                    <input class="input-large form-control" ng-model="property.value" ng-disabled="false" type="text">
                     {{ property.unit }}
                 </cgroup>
             </div>
@@ -18,20 +17,18 @@
         <div ng-switch-when="pick_sample">
             <cgroup label="Pick a sample:">
                 <i class="fa fa-asterisk" style="color: red"></i>
-                <select ng-model="doc.sample" type="text"
-                        ng-options="samp.name for samp in samples_list"
-                        ng-change="pick_sample()" required>
+                <select ng-model="doc.sample" type="text" ng-options="samp.name for samp in samples_list" ng-change="pick_sample()" required="">
                     <option value="">-- Select Samples --</option>
                 </select><a ui-sref="toolbar.objects">{{ doc.sample.name}}</a>
             </cgroup>
         </div>
         <div ng-switch-when="instrument">
-            <div df-properties default-properties="doc.default_properties" edit="false"></div>
-            <div ad-properties doc="doc" additional-properties="doc.additional_properties" edit="false" bk="bk"></div>
+            <div df-properties="" default-properties="doc.default_properties" edit="false"></div>
+            <div ad-properties="" doc="doc" additional-properties="doc.additional_properties" edit="false" bk="bk"></div>
         </div>
         <div ng-switch-when="treatment">
-            <div df-properties default-properties="doc.default_properties"></div>
-            <div ad-properties doc="doc" edit="false" bk="bk"></div>
+            <div df-properties="" default-properties="doc.default_properties"></div>
+            <div ad-properties="" doc="doc" edit="false" bk="bk"></div>
         </div>
     </div>
 </div>

@@ -1,8 +1,8 @@
 <div ng-controller="provenance">
 
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="span2">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="col-sm-2 col-md-2">
                 <div class="well">
                     <ul class="nav nav-list">
                         <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
@@ -26,10 +26,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="span10">
-                <div ui-view></div>
+            <div class="col-sm-10 col-md-10">
+                <div ui-view=""></div>
             </div>
         </div>
     </div>
-    <project-tree project="{{ project_id }}" active=false></project-tree>
+    <project-tree project="{{ project_id }}" active="false"></project-tree>
 </div>

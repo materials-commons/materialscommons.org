@@ -1,26 +1,26 @@
 <div class="tab-pane" id="provenance" ng-controller="toolbarDataEditProvenance">
     <form class="form-inline">
-        <div class="span3" style="padding-top: 70px;text-align: center">
+        <div class="col-sm-3 col-md-3" style="padding-top: 70px;text-align: center">
             <div ng-if="output_process.length!==0">
                 <a style="cursor: pointer" ui-sref="toolbar.process({id: output_process[0].process_id})">{{output_process[0].name}}</a>
             </div>
             <div ng-if="output_process.length===0">
-                <p class="muted">There is no provenance created for this datafile</p>
+                <p class="text-muted">There is no provenance created for this datafile</p>
             </div>
         </div>
-        <div class="span4">
+        <div class="col-sm-4 col-md-4">
             <div class="circle-text" style="margin-left: 100px;margin-right: 0px">
                 <div>{{doc.name}}</div>
             </div>
         </div>
-        <div class="span3" style="padding-top: 70px">
+        <div class="col-sm-3 col-md-3" style="padding-top: 70px">
             <div ng-if="input_processes.length!==0">
                 <ul ng-repeat="pr in input_processes">
                     <li><a style="cursor: pointer" ui-sref="toolbar.process({id: pr.process_id})">{{pr.name}}</a></li>
                 </ul>
             </div>
             <div ng-if="input_processes.length===0">
-                <p class="muted">This datafile is not being used by any process</p>
+                <p class="text-muted">This datafile is not being used by any process</p>
             </div>
         </div>
     </form>
