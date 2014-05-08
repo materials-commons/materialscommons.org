@@ -1,12 +1,11 @@
 <div class="tab-pane active" id="notes" ng-controller="toolbarDataEditNotes">
-    <div class="span5">
+    <div class="col-sm-5 col-md-5">
         <legend>Note:</legend>
-        <textarea class="field span10" rows="6" placeholder="Enter a short synopsis..."
-                  ng-model="model.new_note"></textarea> <br>
+        <textarea class="field span10" rows="6" placeholder="Enter a short synopsis..." ng-model="model.new_note"></textarea> <br>
 
-        <button ng-click="add_notes()" class="btn btn-primary">Enter</button>
+        <button ng-click="add_notes()" class="btn btn-default btn-primary">Enter</button>
     </div>
-    <div class="span7">
+    <div class="col-sm-7 col-md-7">
         <legend>Previous notes:</legend>
 
         <div ng-repeat="n in doc.notes | orderBy: date">

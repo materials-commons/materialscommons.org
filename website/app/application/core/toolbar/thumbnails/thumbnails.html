@@ -1,13 +1,11 @@
 <div ng-controller="toolbarThumbnails">
     <div ng-show="model.datadirs.length > 0">
-        <div class="row-fluid">
-            <div class="offset1">
-                <h5>Pick the datadir to view thumbnail images:</h5>
+        <div class="row">
+            <div class="col-lg-offset-1">
+                <h5>Pick the datadir to view img-thumbnailimages:</h5>
 
                 <div style="margin-bottom:10px">
-                    <select class="span6" ng-model="model.datadir"
-                            ng-options="ddir.name for ddir in model.datadirs | orderBy:'name'"
-                            ng-change="display_images()">
+                    <select class="span6" ng-model="model.datadir" ng-options="ddir.name for ddir in model.datadirs | orderBy:'name'" ng-change="display_images()">
                     </select>
 
 
@@ -32,7 +30,7 @@
                     <span>No images</span>
                 </div>
                 <li ng-repeat="p in model.pics">
-                    <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"/></a>
+                    <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"></a>
                     <a style="cursor: pointer" ui-sref="toolbar.dataedit({id: p.file.id})">{{ p.file.name }}</a>
                 </li>
             </ul>
@@ -43,7 +41,7 @@
                     <span>No images</span>
                 </div>
                 <li ng-repeat="p in model.pics">
-                    <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"/></a>
+                    <a href="{{p.link}}" target="_blank"><img ng-src="{{p.link}}"></a>
                     <a></a>
                     <span>Name : {{p.file.name}}</span><br>
                     <span>Size: {{p.file.size}}</span><br>

@@ -1,11 +1,11 @@
-<div class="row-fluid" ng-controller="accountGroupCreate">
+<div class="row" ng-controller="accountGroupCreate">
     <hr>
-    <div class="span5 offset2">
+    <div class="col-lg-offset-2 col-sm-5 col-md-5">
         <div class="well">
             <h4>Create Group</h4>
             <form class="form-horizontal">
                 <cgroup label="Name:">
-                    <input ng-model="group.name" placeholder="Name..." >
+                    <input class="form-control" ng-model="group.name" placeholder="Name...">
                 </cgroup>
                 <cgroup label="Access:">
                     <select ng-model="group.access">
@@ -14,18 +14,12 @@
                     </select>
                 </cgroup>
                 <cgroup label="Description:">
-                    <textarea class="input-xlarge" placeholder="Description..."
-                              ng-model="group.description" />
+                    <textarea class="input-xlarge" placeholder="Description..." ng-model="group.description"></textarea>
                 </cgroup>
                 <cgroup>
-                    <button class="btn btn-primary" ng-click="create_usergroup()">Create Group</button>
+                    <button class="btn btn-default btn-primary" ng-click="create_usergroup()">Create Group</button>
                 </cgroup>
             </form>
         </div>
     </div>
 </div>
-
-
-
-
-

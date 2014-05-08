@@ -1,45 +1,42 @@
 <div ng-controller="toolbarProcess">
 
-    <div class="row-fluid">
-        <div class="span4">
+    <div class="row">
+        <div class="col-sm-4 col-md-4">
             <form class="form-horizontal">
                 <legend>{{process.name}}</legend>
                 <fieldset>
                     <cgroup label="Description:">
-                        <textarea ng-if="process.description !== ''" class="span8" ng-model="process.description"
-                                  rows="3" ng-disabled="true">
-                        </textarea>
+                        <textarea ng-if="process.description !== ''" class="span8" ng-model="process.description" rows="3" ng-disabled="true">                        </textarea>
                     </cgroup>
                     <cgroup label="Date Created:">
-                        <input class="input-xlarge" ng-model="birthtime" type="text" ng-disabled="true">
+                        <input class="input-xlarge form-control" ng-model="birthtime" ng-disabled="true" type="text">
                     </cgroup>
                     <div ng-if="process.experiment_run_date">
                         <cgroup label="RunDate:">
-                            <input class="input-xlarge" ng-model="process.experiment_run_date" type="text"
-                                   ng-disabled="true">
+                            <input class="input-xlarge form-control" ng-model="process.experiment_run_date" ng-disabled="true" type="text">
                         </cgroup>
                     </div>
                     <div ng-repeat="item in process.properties">
                         <div ng-if="item.name!=='Machine'">
                             <cgroup label="{{item.name}}:">
-                                <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                                <input class="input-xlarge form-control" ng-model="item.value" ng-disabled="true" type="text">
                             </cgroup>
                         </div>
                     </div>
                 </fieldset>
             </form>
         </div>
-        <div class="span6">
-            <form class="form-horizontal"  ng-show="machine">
+        <div class="col-sm-6 col-md-6">
+            <form class="form-horizontal" ng-show="machine">
                 <legend>Machine</legend>
                 <fieldset>
                     <cgroup label="Machine Name:">
-                        <input class="input-xlarge" ng-model="machine.name" type="text" ng-disabled="true">
+                        <input class="input-xlarge form-control" ng-model="machine.name" ng-disabled="true" type="text">
                     </cgroup>
                     <div ng-if="machine.additional.length!=0">
                         <div ng-repeat="item in machine.additional">
                             <cgroup label="{{item.name}}:">
-                                <input class="input-xlarge" ng-model="item.value" type="text" ng-disabled="true">
+                                <input class="input-xlarge form-control" ng-model="item.value" ng-disabled="true" type="text">
                             </cgroup>
                         </div>
                     </div>
@@ -47,10 +44,10 @@
                         <legend>Runs:</legend>
                         <table class="table table-bordered">
                             <thead>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Error Message</th>
-                            </thead>
+                            <tr><th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Error Message</th>
+                            </tr></thead>
                             <tbody>
                             <tr ng-repeat="run in process.runs">
                                 <td>{{run.started | date:'medium'}}</td>
@@ -66,16 +63,16 @@
         </div>
 
     </div>
-    <div class="row-fluid">
-        <div class="span10">
-            <div ui-view></div>
+    <div class="row">
+        <div class="col-sm-10 col-md-10">
+            <div ui-view=""></div>
         </div>
-        <div class="span2">
+        <div class="col-sm-2 col-md-2">
             <div class="tabbable tabs-right">
                 <ul class="nav nav-tabs">
                     <li class="active"><a ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
                     <li><a ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
-                    <li><a  ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
+                    <li><a ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
                 </ul>
             </div>
         </div>

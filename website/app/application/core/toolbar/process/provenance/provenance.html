@@ -1,16 +1,16 @@
 <div class="tab-pane" id="provenance" ng-controller="toolbarProcessProvenance">
-    <div class="span4">
+    <div class="col-sm-4 col-md-4">
         <legend>Inputs</legend>
-        <div input-output-step conditions="input_conditions" files="input_files" step-type="input"></div>
+        <div input-output-step="" conditions="input_conditions" files="input_files" step-type="input"></div>
     </div>
-    <div class="span3">
+    <div class="col-sm-3 col-md-3">
         <div class="circle-text" style="margin-left: 100px;margin-right: 0px">
             <div>{{process.name}}</div>
         </div>
     </div>
 
-    <div class="span4">
+    <div class="col-sm-4 col-md-4">
         <legend>Outputs</legend>
-        <div input-output-step conditions="output_conditions" files="output_files" step-type="output"></div>
+        <div input-output-step="" conditions="output_conditions" files="output_files" step-type="output"></div>
     </div>
 </div>

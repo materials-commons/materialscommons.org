@@ -1,12 +1,12 @@
 <div ng-controller="provenanceIOStepsFiles">
-    <div class="row-fluid">
-        <div class="span10">
+    <div class="row">
+        <div class="col-sm-10 col-md-10">
             <label>Please select files below.</label>
             <h6>Selected files:</h6>
             <ul>
                 <li ng-repeat="item in files">
                     <i class="fa fa-check-square"></i>{{item.fullname}}
-                    <button type="button" class="close" ng-click="removeFile($index);">&times;</button>
+                    <button type="button" class="close" ng-click="removeFile($index);">×</button>
                     <br>
                 </li>
             </ul>
