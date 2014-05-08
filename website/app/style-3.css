@@ -1,0 +1,99 @@
+body {
+    padding-top: 0px;
+    font-size: 13px;
+}
+
+.mc-table {
+    color: black;
+}
+
+.mc-table-hover tbody tr:hover td,
+.mc-table-hover tbody tr:hover th {
+    background-color: #CCCCCC;
+}
+
+.row {
+    margin-left: 5px;
+}
+
+.btn, btn-default {
+    padding: 4px 15px;
+    font-size: 13px;
+}
+
+textarea.form-control {
+    font-size: 13px;
+    padding: 3px;
+    margin-bottom: -5px;
+    margin-top: -5px;
+    border-radius: 6px;
+    font-weight: normal
+}
+
+input, select,
+.form-control {
+    font-size: 13px;
+    padding: 3px;
+    margin-bottom: -8px;
+    border-radius: 6px;
+    height: 35px;
+    line-height: 35px;
+    font-weight: normal
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #ECF0F1;
+    cursor: not-allowed;
+    opacity: 1;
+    width: 400px;
+}
+
+.fa-asterisk {
+    color: red;
+}
+
+.unit-select {
+    width: 130px;
+}
+
+.navbar-custom {
+    background-color:#0C5C86;
+    color:#ffffff;
+    border-radius:0;
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color:#fff;
+    padding-left:20px;
+    padding-right:20px;
+
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color:transparent;
+}
+
+.navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
+    text-decoration: none;
+    background-color: #0C5C86;
+
+}
+
+.navbar-custom .navbar-brand {
+    color:#eeeeee;
+    padding: 8px 15px 0px 10px;
+}
+.navbar-custom .navbar-toggle {
+    background-color:#eeeeee;
+}
+.navbar-custom .icon-bar {
+    background-color:#0C5C86;
+}
+.navbar .nav > li > a {
+    padding: 8px 15px 0px 8px;
+}
+.navbar{
+    margin-bottom: 2px;
+    min-height: 15px !important;
+
+}
