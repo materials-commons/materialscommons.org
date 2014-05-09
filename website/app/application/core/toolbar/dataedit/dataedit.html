@@ -15,7 +15,7 @@
                 <div ng-switch-when="image">
                     <a ng-href="{{ fileSrc }}">View full size</a>
                     <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
-                    <img ng-src="{{ fileSrc }}">
+                    <!--<img ng-src="{{ fileSrc }}">-->
                 </div>
                 <div ng-switch-when="other">
                     <a ng-href="{{ fileSrc }}" download="{{ fileName }}">{{doc.name}}</a>
@@ -63,17 +63,29 @@
             <div ui-view=""></div>
         </div>
         <div class="col-sm-2 col-md-2">
-            <div class="tabbable tabs-right">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
-                    <li><a ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
-                    <li ng-controller="toolbarDataEditCreateReview">
-                        <a ng-click="showtab('reviews')" data-toggle="tab">Reviews({{reviewsToConduct.length}})</a>
-                    </li>
-                    <li><a ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
-                </ul>
-            </div>
+
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a ng-click="showtab('provenance')">Provenance</a></li>
+            <li><a ng-click="showtab('notes')">Notes</a></li>
+            <li ng-controller="toolbarDataEditCreateReview">
+                <a ng-click="showtab('reviews')" >Reviews({{reviewsToConduct.length}})</a>
+            </li>
+            <li><a ng-click="showtab('tags')" >Tags</a></li>
+        </ul>
         </div>
+
+        <!--<div class="col-sm-2 col-md-2">-->
+            <!--<div class="tabbable tabs-right">-->
+                <!--<ul class="nav nav-tabs">-->
+                    <!--<li class="active"><a ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>-->
+                    <!--<li><a ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>-->
+                    <!--<li ng-controller="toolbarDataEditCreateReview">-->
+                        <!--<a ng-click="showtab('reviews')" data-toggle="tab">Reviews({{reviewsToConduct.length}})</a>-->
+                    <!--</li>-->
+                    <!--<li><a ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
     <br>
 </div>
