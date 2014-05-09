@@ -15,12 +15,11 @@
             </div>
         </div>
         <div ng-switch-when="pick_sample">
-            <cgroup label="Pick a sample:">
-                <i class="fa fa-asterisk" style="color: red"></i>
-                <select ng-model="doc.sample" type="text" ng-options="samp.name for samp in samples_list" ng-change="pick_sample()" required="">
+            <cgrouprequired label="Pick a sample:">
+                <select class="form-control" ng-model="doc.sample" type="text" ng-options="samp.name for samp in samples_list" ng-change="pick_sample()" required="">
                     <option value="">-- Select Samples --</option>
                 </select><a ui-sref="toolbar.objects">{{ doc.sample.name}}</a>
-            </cgroup>
+            </cgrouprequired>
         </div>
         <div ng-switch-when="instrument">
             <div df-properties="" default-properties="doc.default_properties" edit="false"></div>

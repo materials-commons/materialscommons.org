@@ -1,65 +1,82 @@
 <div ng-if="doc.added_properties.length!=0">
-    <label class="col-sm-2 control-label"><b>Additional/Custom Properties:</b></label>
+    <label> <b>Additional/Custom Properties:</b></label>
+
     <div ng-repeat="pv in doc.added_properties">
         <div class="form-group">
-            <label class="col-sm-2 control-labell">{{pv.name}}
+            <label class="col-sm-2 control-label">{{pv.name}}
                 <span ng-if="pv.required==true">
                     <i class="fa fa-asterisk"></i>
                 </span>
             </label>
 
-            <div  class="col-sm-2">
+            <div>
                 <div ng-if="pv.value_choice.length!=0">
-                    <select class="form-control" ng-model="pv.value" ng-disabled="edit">
-                        <option ng-repeat="val in pv.value_choice">{{val}}
-                        </option>
-                    </select>
-                    <span ng-if="pv.unit_choice.length!=0">
+                    <div class="col-sm-2">
+                        <select class="form-control" ng-model="pv.value" ng-disabled="edit">
+                            <option ng-repeat="val in pv.value_choice">{{val}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1" ng-if="pv.unit_choice.length!=0">
                         <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
                             <option value="" disabled="" selected="">Unit...</option>
                             <option ng-repeat="each in pv.unit_choice">{{each}}</option>
                         </select>
-                    </span>
+                    </div>
                 </div>
                 <div ng-if="pv.value_choice.length==0">
                     <div ng-if="pv.type==='text'">
                         <div ng-if="pv.required===false">
-                            <input class="form-control" ng-model="pv.value" placeholder="{{pv.name}}..." ng-disabled="edit" type="text">
-                            <span ng-if="pv.unit_choice.length!=0">
-                        <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
-                            <option value="" disabled="" selected="">Unit...</option>
-                            <option ng-repeat="each in pv.unit_choice">{{each}}</option>
-                        </select>
-                    </span>
+                            <div class="col-sm-2">
+                                <input class="form-control" ng-model="pv.value" placeholder="{{pv.name}}..."
+                                       ng-disabled="edit" type="text">
+                            </div>
+                            <div class="col-sm-2" ng-if="pv.unit_choice.length!=0">
+                                <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
+                                    <option value="" disabled="" selected="">Unit...</option>
+                                    <option ng-repeat="each in pv.unit_choice">{{each}}</option>
+                                </select>
+                            </div>
                         </div>
                         <div ng-if="pv.required===true">
-                            <input class="form-control" ng-model="pv.value" placeholder="{{pv.name}}..." ng-disabled="edit" required="" type="text">
-                            <span ng-if="pv.unit_choice.length!=0">
-                        <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
-                            <option value="" disabled="" selected="">Unit...</option>
-                            <option ng-repeat="each in pv.unit_choice">{{each}}</option>
-                        </select>
-                    </span>
+                            <div class="col-sm-2">
+                                <input class="form-control" ng-model="pv.value" placeholder="{{pv.name}}..."
+                                       ng-disabled="edit" required="" type="text">
+                            </div>
+                            <div class="col-sm-1" ng-if="pv.unit_choice.length!=0">
+                                <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
+                                    <option value="" disabled="" selected="">Unit...</option>
+                                    <option ng-repeat="each in pv.unit_choice">{{each}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div ng-if="pv.type!=='text'">
                         <div ng-if="pv.required===false">
-                            <input class="form-control" name="{{pv.type}}Blur" ng-model="pv.value" validator="{{pv.type}}" placeholder="{{pv.name}}..." valid-method="blur" ng-disabled="edit" type="text">
-                            <span ng-if="pv.unit_choice.length!=0">
-                        <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
-                            <option value="" disabled="" selected="">Unit...</option>
-                            <option ng-repeat="each in pv.unit_choice">{{each}}</option>
-                        </select>
-                    </span>
+                            <div class="col-sm-2">
+                                <input class="form-control" name="{{pv.type}}Blur" ng-model="pv.value"
+                                       validator="{{pv.type}}" placeholder="{{pv.name}}..." valid-method="blur"
+                                       ng-disabled="edit" type="text">
+                            </div>
+                            <div class="col-sm-1" ng-if="pv.unit_choice.length!=0">
+                                <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
+                                    <option value="" disabled="" selected="">Unit...</option>
+                                    <option ng-repeat="each in pv.unit_choice">{{each}}</option>
+                                </select>
+                            </div>
                         </div>
                         <div ng-if="pv.required===true">
-                            <input class="form-control" name="{{pv.type}}Blur" ng-model="pv.value" validator="{{pv.type}}" placeholder="{{pv.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
-                            <span ng-if="pv.unit_choice.length!=0">
-                        <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
-                            <option value="" disabled="" selected="">Unit...</option>
-                            <option ng-repeat="each in pv.unit_choice">{{each}}</option>
-                        </select>
-                    </span>
+                            <div class="col-sm-2">
+                                <input class="form-control" name="{{pv.type}}Blur" ng-model="pv.value"
+                                       validator="{{pv.type}}" placeholder="{{pv.name}}..." valid-method="blur"
+                                       ng-disabled="edit" required="" type="text">
+                            </div>
+                            <div class="col-sm-1" ng-if="pv.unit_choice.length!=0">
+                                <select class="form-control unit-select" ng-model="pv.unit" ng-disabled="edit">
+                                    <option value="" disabled="" selected="">Unit...</option>
+                                    <option ng-repeat="each in pv.unit_choice">{{each}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -69,20 +86,28 @@
     </div>
 </div>
 <div ng-if="edit===false">
+    <div class="form-group" ng-show="additionalProperties.length > 0">
+        <label class="col-sm-2 control-label">Additional Properties:</label>
 
-    <div ng-show="additionalProperties.length > 0">
-        <cgroup label="Additional Properties">
-            <select ng-model="bk.additional_property">
+        <div class="col-sm-2">
+            <select class="form-control" ng-model="bk.additional_property">
                 <option ng-repeat="property in additionalProperties" value="{{property}}">
                     {{property.name}}
                 </option>
             </select>
-            <button ng-click="addAdditionalProperty()" class="btn btn-default btn-info">Add</button>
-        </cgroup>
+        </div>
+        <button ng-click="addAdditionalProperty()" class="btn btn-default btn-info">Add</button>
     </div>
-    <cgroup label="Custom Property:">
-        <input class="form-control" ng-model="bk.customPropertyName" placeholder="Name..." type="text">
-        <input class="form-control" ng-model="bk.customPropertyValue" placeholder="Value..." type="text">
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Custom Property:</label>
+
+        <div class=" col-sm-2">
+            <input class="form-control" ng-model="bk.customPropertyName" placeholder="Name..." type="text">
+        </div>
+        <div class="col-sm-2">
+            <input class="form-control" ng-model="bk.customPropertyValue" placeholder="Value..." type="text">
+        </div>
         <button ng-click="addCustomProperty()" class="btn btn-default btn-info">Add</button>
-    </cgroup>
+    </div>
 </div>
