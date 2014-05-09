@@ -2,81 +2,100 @@
     <div class="form-group" ng-repeat="df in defaultProperties">
         <label class="col-sm-2 control-label">{{df.name}}:
             <span ng-if="df.required==true">
-                <i class="fa fa-asterisk" ></i>
+                <i class="fa fa-asterisk"></i>
             </span>
         </label>
 
-        <div ng-switch="" on="df.type"  class="col-sm-2">
+        <div ng-switch="" on="df.type">
             <div ng-switch-when="text">
                 <div ng-if="df.required===false">
-                    <input class="form-control" ng-model="df.value" placeholder="{{df.name}}..." ng-disabled="edit" type="text">
-                    <span ng-if="df.unit_choice.length!=0">
-                        <select class="unit-select" ng-model="df.unit" ng-disabled="edit">
+                    <div class="col-sm-2">
+                        <input class="form-control" ng-model="df.value" placeholder="{{df.name}}..." ng-disabled="edit"
+                               type="text">
+                    </div>
+                    <div class="col-sm-1" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
                             <option value="" disabled="" selected="">Unit...</option>
                             <option ng-repeat="each in df.unit_choice">{{each}}</option>
                         </select>
-                    </span>
+                    </div>
                 </div>
                 <div ng-if="df.required===true">
-                    <input class="form-control" ng-model="df.value" placeholder="{{df.name}}..." ng-disabled="edit" required="" type="text">
-                    <span ng-if="df.unit_choice.length!=0">
-                        <select class="unit-select" ng-model="df.unit" ng-disabled="edit">
+                    <div class="col-sm-2">
+                    <input class="form-control" ng-model="df.value" placeholder="{{df.name}}..." ng-disabled="edit"
+                           required="" type="text">
+                        </div>
+                    <div class="col-sm-1" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
                             <option value="" disabled="" selected="">Unit...</option>
                             <option ng-repeat="each in df.unit_choice">{{each}}</option>
                         </select>
-                    </span>
+                    </div>
                 </div>
             </div>
             <div ng-switch-when="number">
                 <div ng-if="df.required===false">
-                    <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}" placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
-                    <span ng-if="df.unit_choice.length!=0">
-                        <select class="unit-select" ng-model="df.unit" ng-disabled="edit">
+                    <div class="col-sm-1">
+                        <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                               placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
+                    </div>
+                    <div class="col-sm-1" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
                             <option value="" disabled="" selected="">Unit...</option>
                             <option ng-repeat="each in df.unit_choice">{{each}}</option>
                         </select>
-                    </span>
+                    </div>
                 </div>
                 <div ng-if="df.required===true">
-                    <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}" placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
-                    <span ng-if="df.unit_choice.length!=0">
-                        <select class="unit-select" ng-model="df.unit" ng-disabled="edit">
+                    <div class="col-sm-1">
+                        <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                           placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
+                        </div>
+                    <div class="col-sm-1" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
                             <option value="" disabled="" selected="">Unit...</option>
                             <option ng-repeat="each in df.unit_choice">{{each}}</option>
                         </select>
-                    </span>
+                    </div>
                 </div>
             </div>
 
             <div ng-switch-when="url">
-                <div ng-if="df.required===false">
-                    <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}" placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
+                <div class="col-sm-3" ng-if="df.required===false">
+                    <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                           placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
                 </div>
             </div>
             <div ng-switch-when="email">
-                <div ng-if="df.required===false">
-                    <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}" placeholder="{{df.name}}..." ng-disabled="edit" valid-method="blur" type="text">
+                <div class="col-sm-3" ng-if="df.required===false">
+                    <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                           placeholder="{{df.name}}..." ng-disabled="edit" valid-method="blur" type="text">
                 </div>
                 <div ng-if="df.required===true">
-                    <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}" placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
+                    <input class="col-sm-3" class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                           placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
                 </div>
             </div>
             <div ng-switch-when="select">
-                <div ng-if="df.value_choice.length!==0">
+                <div class="col-sm-2" ng-if="df.value_choice.length!==0">
                     <select class="form-control" ng-model="df.value" ng-disabled="edit">
                         <option ng-repeat="each in df.value_choice">{{each}}</option>
                     </select>
-                    <span ng-if="df.unit_choice.length!=0">
-                        <select class="unit-select" ng-model="df.unit" ng-disabled="edit">
+                    <div class="col-sm-1" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
                             <option value="" disabled="" selected="">Unit...</option>
                             <option ng-repeat="each in df.unit_choice">{{each}}</option>
                         </select>
-                    </span>
+                    </div>
                 </div>
             </div>
             <div ng-switch-when="machines">
-                <select class="form-control" ng-model="df.value" ng-options="mach.name for mach in machinesList" ng-disabled="edit">
+                <div class="col-sm-2">
+                <select class="form-control" ng-model="df.value" ng-options="mach.name for mach in machinesList"
+                        ng-disabled="edit">
                 </select>
+                </div>
+
             </div>
         </div>
     </div>

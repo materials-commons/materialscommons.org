@@ -3,7 +3,7 @@
         <div class="row">
             <legend>Process</legend>
             <cgroup label="Process Type:">
-                <select class="form-control input-sm" ng-model="bk.process_type" ng-options="p.template_name for p in process_templates|orderBy:'template_name'">
+                <select class="form-control" ng-model="bk.process_type" ng-options="p.template_name for p in process_templates|orderBy:'template_name'">
                     <option value="">Select Process Type:</option>
                 </select>
             </cgroup>
@@ -28,5 +28,4 @@
             </div>
         </div>
     </form>
-
 </div>

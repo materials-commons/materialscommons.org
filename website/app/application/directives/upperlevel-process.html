@@ -2,11 +2,11 @@
     <input class="form-control" ng-model="doc.name" placeholder="Name..." ng-disabled="edit" type="text">
 </cgroup>
 <cgroup label="Description:">
-    <textarea placeholder="Description..." ng-model="doc.description" ng-disabled="edit"></textarea>
+    <textarea class="form-control" placeholder="Description..." ng-model="doc.description" ng-disabled="edit"></textarea>
 </cgroup>
 <div ng-if="edit===false">
     <cgroup label="Notes:">
-        <textarea placeholder="Notes..." ng-model="bk.new_note"></textarea>
+        <textarea class="form-control" placeholder="Notes..." ng-model="bk.new_note"></textarea>
     </cgroup>
     <cgroup>
         <button ng-click="add_notes()" class="btn btn-default btn-info">Add</button>
