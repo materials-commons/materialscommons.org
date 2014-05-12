@@ -15,13 +15,12 @@
                 <div ng-switch-when="image">
                     <a ng-href="{{ fileSrc }}">View full size</a>
                     <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
-                    <!--<img ng-src="{{ fileSrc }}">-->
+                    <img class="img-responsive"  alt="Responsive image" ng-src="{{ fileSrc }}">
                 </div>
                 <div ng-switch-when="other">
-                    <a ng-href="{{ fileSrc }}" download="{{ fileName }}">{{doc.name}}</a>
-                    <img style="width: 300px" src="assets/img/no_img_1.png" class="img-polaroid">
+                    <a ng-href="{{ fileSrc }}" download="{{ fileName }}">Download</a>
+                    <img src="assets/img/no_img_1.png" alt="Responsive image" class="img-responsive">
                 </div>
-                <!--<a ng-switch-when="other" ng-href="{{ fileSrc }}" download="{{ fileName }}">{{ doc.name}}</a>-->
             </div>
         </div>
         <div class="col-sm-9 col-md-9">
@@ -29,7 +28,7 @@
                 <fieldset>
                     <legend>Basic Information</legend>
                     <cgroup label="Description:">
-                        <textarea ng-if="doc.description != ''" class="span4" ng-model="model.desc" rows="3" ng-disabled="model.is_disabled">                        </textarea>
+                        <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc" ng-disabled="model.is_disabled">                        </textarea>
                     </cgroup>
                     <cgroup label="">
                         <div ng-show="model.is_disabled">
@@ -45,11 +44,11 @@
                             </button>
                         </div>
                     </cgroup>
-                    <cgroup label="Size(kb):">
-                        <input class="input-xlarge form-control" ng-model="doc.size" ng-disabled="true" type="text">
+                    <cgroup label="Size(bytes):">
+                        <input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">
                     </cgroup>
                     <cgroup label="Owner:">
-                        <input class="input-xlarge form-control" ng-model="doc.owner" ng-disabled="true" type="text">
+                        <input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">
                     </cgroup>
 
                 </fieldset>
@@ -65,27 +64,14 @@
         <div class="col-sm-2 col-md-2">
 
         <ul class="nav nav-pills nav-stacked">
-            <li class="active"><a ng-click="showtab('provenance')">Provenance</a></li>
+            <li><a ng-click="showtab('provenance')">Provenance</a></li>
             <li><a ng-click="showtab('notes')">Notes</a></li>
             <li ng-controller="toolbarDataEditCreateReview">
-                <a ng-click="showtab('reviews')" >Reviews({{reviewsToConduct.length}})</a>
+                <a ng-click="showtab('reviews')" >Reviews<span class="badge">{{reviewsToConduct.length}}</span></a>
             </li>
             <li><a ng-click="showtab('tags')" >Tags</a></li>
         </ul>
         </div>
-
-        <!--<div class="col-sm-2 col-md-2">-->
-            <!--<div class="tabbable tabs-right">-->
-                <!--<ul class="nav nav-tabs">-->
-                    <!--<li class="active"><a ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>-->
-                    <!--<li><a ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>-->
-                    <!--<li ng-controller="toolbarDataEditCreateReview">-->
-                        <!--<a ng-click="showtab('reviews')" data-toggle="tab">Reviews({{reviewsToConduct.length}})</a>-->
-                    <!--</li>-->
-                    <!--<li><a ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>-->
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</div>-->
     </div>
     <br>
 </div>

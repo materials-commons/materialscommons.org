@@ -13,10 +13,7 @@
             <label><b>{{ name }}</b></label>
             <div ng-if="name=='Pick Sample'">
                 <div class="row">
-                    <div class="col-sm-6 col-md-6">
                         <div upperlevel-object="" bk="bk" doc="vals.sample" edit="true"></div>
-                    </div>
-                    <div class="col-sm-6 col-md-6">
                         <div ng-repeat="property in vals.sample.properties">
                             <cgroup label="{{property.name}}">
                                 <input class="input-large form-control" ng-model="property.value" ng-disabled="true" type="text">
@@ -24,17 +21,12 @@
                             </cgroup>
                         </div>
                         <div ad-properties="" doc="vals.sample" edit="true" bk="bk"></div>
-                    </div>
                 </div>
             </div>
             <div ng-if="name!=='Pick Sample'">
                 <div class="row">
-                    <div class="col-sm-6 col-md-6">
                         <div df-properties="" default-properties="vals.default_properties" edit="true"></div>
-                    </div>
-                    <div class="col-sm-6 col-md-6">
                         <div ad-properties="" doc="vals" edit="true" bk="bk"></div>
-                    </div>
                 </div>
             </div>
         </form>
@@ -52,10 +44,7 @@
             <label><b>{{ name }}</b></label>
             <div ng-if="name=='Transformed Sample'">
                 <div class="row">
-                    <div class="col-sm-6 col-md-6">
                         <div upperlevel-object="" bk="bk" doc="vals.sample" edit="true"></div>
-                    </div>
-                    <div class="col-sm-6 col-md-6">
                         <div ng-repeat="property in vals.sample.properties">
                             <cgroup label="{{property.name}}">
                                 <input class="input-large form-control" ng-model="property.value" ng-disabled="true" type="text">
@@ -63,17 +52,12 @@
                             </cgroup>
                         </div>
                         <div ad-properties="" doc="vals.sample" edit="true" bk="bk"></div>
-                    </div>
                 </div>
             </div>
             <div ng-if="name!=='Pick Sample'">
                 <div class="row">
-                    <div class="col-sm-6 col-md-6">
                         <div df-properties="" default-properties="vals.default_properties" edit="true"></div>
-                    </div>
-                    <div class="col-sm-6 col-md-6">
                         <div ad-properties="" doc="vals" edit="true" bk="bk"></div>
-                    </div>
                 </div>
             </div>
         </form>
