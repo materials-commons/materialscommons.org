@@ -105,29 +105,20 @@
 
                 <div ng-repeat="property in sample.properties">
                     <cgroup label="{{property.name}}">
-                        <input class="input-large" ng-model="property.value" type="text"
-                               ng-disabled="true">
-                        {{ property.unit }}
+                        <div ng-if="property.name=='Composition'">
+                            <ul ng-repeat="c in sample.properties.composition.value">
+                                <li style="list-style: none"><b>{{c.element}}</b> - {{c.value}} % {{c.unit}}</li>
+                            </ul>
+                        </div>
+                        <div ng-if="property.name!=='Composition'">
+                            <input class="input-large" ng-model="property.value" type="text"
+                                   ng-disabled="true">
+                            {{ property.unit }}
+                        </div>
+
                     </cgroup>
                 </div>
-                <legend>Treatments</legend>
-                <div ng-if="sample.treatments.length==0">
-                    <p class="muted">No treatments applied to the material {{sample.name}}</p>
-                </div>
-                <div ng-if="sample.treatments.length!==0">
-                    <div ng-repeat="treatment in sample.treatments">
-                        <b>{{treatment.template}}:</b>
-                        <fieldset>
-                            <div ng-repeat="property in treatment.properties">
-                                <cgroup label="{{property.name}}">
-                                    <input class="input-large" ng-model="property.value" type="text"
-                                           ng-disabled="true">
-                                    {{ property.unit }}
-                                </cgroup>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
+
                 <legend>Processes</legend>
                 <div ng-if="processes_list.length === 0">
                     <p class="muted">object {{sample.name}} has not been used in any process</p>
