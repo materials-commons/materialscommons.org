@@ -3,7 +3,7 @@
 
     <div ng-init="toggleCustom = false" ng-show="toggleCustom" class="row-fluid">
         <form name="Sample" class="form-horizontal">
-            <legend>Create New Object </legend>
+            <legend>Create New Object</legend>
             <fieldset>
                 <cgroup label="Classification:">
                     <select ng-model="bk.classification" ng-change="setProperties()"
@@ -13,7 +13,7 @@
                 <div class="control-group">
                     <div ng-show="bk.classification">
                         <div upperlevel-object bk="bk" doc="doc" edit="false"></div>
-                        <div df-properties default-properties="doc.default_properties"></div>
+                        <div df-properties default-properties="doc.default_properties" sample-object="doc"></div>
 
                         <cgroup ng-show="showTreatments" label="Treatments:">
                             <select ng-model="bk.selected_treatment"
@@ -80,9 +80,12 @@
                     <p ng-if="samples_list.length!=0">
                         <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:10">
                             <td>{{sample.name}}</td>
-                            <td>{{sample.properties.composition.value}}</td>
+                            <td><ul ng-repeat="c in sample.properties.composition.value">
+                                <li>{{c.element}} - {{c.value}} % {{c.unit}}</li>
+                            </ul>
+                            </td>
                             <td ng-if="sample.available===true">
-                                <i class="fa fa-check available" ></i>
+                                <i class="fa fa-check available"></i>
                             </td>
                             <td ng-if="sample.available===false">
                                 <i class="fa fa-times notavailable"></i>
@@ -138,4 +141,4 @@
         </div>
     </div>
 </div>
-        <div periodic-table></div>
+<!--<div periodic-table></div>-->
