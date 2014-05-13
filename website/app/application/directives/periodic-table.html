@@ -1,4 +1,27 @@
 <section ng-controller="PeriodicTableController">
+    <div class="col-sm-4 col-md-4">
+        <table class="table table_small">
+            <thead>
+            <th>Element</th>
+            <th>%</th>
+            <th>Unit</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="each in doc.value">
+                <td>{{each.element}}</td>
+                <td><input ng-model="each.value" style="width: 10%" type="number"></td>
+                <td>
+                    <input type="radio"
+                           value="atomic_weight" ng-model="each.unit"/>
+                    Atomic Wt  <br>
+                    <input type="radio"
+                           value="molecular_weight" ng-model="each.unit"/>
+                    Molecular Wt
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     <div id="container">
         <div id="panelOne">
             <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_one_elements">{{p}}</div>
@@ -118,17 +141,5 @@
             <div class="box"><a> Lr</a></div>
         </div>
     </div>
-    <table class="table table_small">
-        <thead>
-        <th>Element</th>
-        <th>%</th>
-        </thead>
-        <tbody>
-        <tr ng-repeat="each_ele in list">
-            <td>{{each_ele}}</td>
-            <td><input ng-model="value" style="width: 10%" type="number"></td>
-        </tr>
-        </tbody>
-    </table>
-    <button>Save composition</button>
+
 </section>

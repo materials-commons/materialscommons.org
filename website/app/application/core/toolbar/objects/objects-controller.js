@@ -37,6 +37,7 @@ Application.Controllers.controller('toolbarObjects',
         };
 
         $scope.save = function (form) {
+            console.log($scope.doc);
             var $validationProvider = $injector.get('$validation');
             var check = $validationProvider.checkValid(form);
             if (check === true) {
@@ -79,9 +80,7 @@ Application.Controllers.controller('toolbarObjects',
         $scope.clear = function () {
             $scope.doc = {
                 name: '',
-                composition: '',
                 notes: [],
-                treatments: [],
                 available: true,
                 default_properties: [],
                 added_properties: []

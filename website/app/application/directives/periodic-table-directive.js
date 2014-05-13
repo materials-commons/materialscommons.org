@@ -2,13 +2,9 @@ Application.Controllers.controller("PeriodicTableController",
     ["$scope", "watcher", function ($scope) {
 
         $scope.addElement = function (ele) {
-            $scope.list.push(ele);
-            console.log($scope.list);
+            $scope.doc.value.push({'element': ele, 'value': ''});
         };
-
-
         function init() {
-            $scope.list = [];
             $scope.panel_one_elements = ["H", "Li", "Na", "K", "Rb", "Cs", "Fr"];
             $scope.panel_two_elements = ["Be", "Mg", "Ca", "Sr", "Ba", "Ra"];
             $scope.panel_three_elements = ["Sc", "Y", "La-Lu", "Ac-Lr"];
@@ -27,8 +23,6 @@ Application.Controllers.controller("PeriodicTableController",
             $scope.panel_two_4_elements = ["O", "S", "Se", "Te", "Po", "Lv"];
             $scope.panel_two_5_elements = ["F", "Cl", "Br", "I", "At", "Uus"];
             $scope.panel_one_1_elements = ["He", "Ne", "Ar", "Kr", "Xe", "Rn", "Uuo"];
-
-
         }
 
         init();
@@ -39,9 +33,7 @@ Application.Directives.directive('periodicTable',
             restrict: "A",
             controller: 'PeriodicTableController',
             scope: {
-                defaultProperties: '=',
-                machinesList: '=',
-                edit: "="
+                doc: '='
             },
             templateUrl: 'application/directives/periodic-table.html'
         };

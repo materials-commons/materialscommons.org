@@ -65,9 +65,10 @@
                         <div ad-properties doc="vals" edit="true" bk="bk"></div>
                     </div>
                 </div>
-            </div>
         </form>
-        <form ng-if="output_files.length != 0" class="form-horizontal">
+    </div>
+
+    <form ng-if="output_files.length != 0" class="form-horizontal">
             <fieldset>
                 <label><b>Output Files</b></label>
                 <cgroup ng-repeat="file in output_files" label="File:">
