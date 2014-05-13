@@ -4,6 +4,9 @@ Application.Controllers.controller("PeriodicTableController",
         $scope.addElement = function (ele) {
             $scope.doc.value.push({'element': ele, 'value': ''});
         };
+        $scope.removeElement = function (i) {
+            $scope.doc.value.splice(i, 1);
+        };
         function init() {
             $scope.panel_one_elements = ["H", "Li", "Na", "K", "Rb", "Cs", "Fr"];
             $scope.panel_two_elements = ["Be", "Mg", "Ca", "Sr", "Ba", "Ra"];
