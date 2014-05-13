@@ -1,7 +1,7 @@
 body {
     padding-top: 0px;
     font-size: 13px;
-    line-height: 20px;
+    /*line-height: 20px;*/
 }
 
 /*************************************************All about table th, td, hover *************************/
@@ -44,6 +44,7 @@ body {
 .navbar-custom .navbar-brand {
     color:#eeeeee;
     padding: 8px 15px 0px 10px;
+    height: 40px;
 }
 .navbar-custom .navbar-toggle {
     background-color:#eeeeee;
@@ -118,4 +119,8 @@ textarea.form-control {
 }
 .label-primary{
     margin-right: 5px;
+}
+p{
+    color: red;
+    margin: 0px;
 }

@@ -35,7 +35,7 @@
             </div>
             <div ng-switch-when="number">
                 <div ng-if="df.required===false">
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
                                placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
                     </div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div ng-if="df.required===true">
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
                            placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
                         </div>
