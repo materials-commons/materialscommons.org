@@ -5,7 +5,7 @@ Application.Directives.directive('notification', function ($timeout) {
         scope: {
             ngModel: '='
         },
-        template: '<div class="alert fade" bs-alert="ngModel"></div>',
+        template: '<div class="alert" bs-alert="ngModel"></div>',
         link: function (scope, element) {
             scope.$watch('ngModel', function () {
                 element.show();
