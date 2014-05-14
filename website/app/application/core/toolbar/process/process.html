@@ -6,7 +6,7 @@
                 <legend>{{process.name}}</legend>
                 <fieldset>
                     <cgroup label="Description:">
-                        <textarea ng-if="process.description !== ''" class="span8" ng-model="process.description" rows="3" ng-disabled="true">                        </textarea>
+                        <textarea class="form-control" ng-if="process.description !== ''" class="span8" ng-model="process.description" rows="3" ng-disabled="true">                        </textarea>
                     </cgroup>
                     <cgroup label="Date Created:">
                         <input class="input-xlarge form-control" ng-model="birthtime" ng-disabled="true" type="text">
@@ -65,16 +65,16 @@
     </div>
     <div class="row">
         <div class="col-sm-10 col-md-10">
+            <form class="form-horizontal">
             <div ui-view=""></div>
+            </form>
         </div>
         <div class="col-sm-2 col-md-2">
-            <div class="tabbable tabs-right">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a ng-click="showtab('provenance')" data-toggle="tab">Provenance</a></li>
-                    <li><a ng-click="showtab('notes')" data-toggle="tab">Notes</a></li>
-                    <li><a ng-click="showtab('tags')" data-toggle="tab">Tags</a></li>
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a ng-click="showtab('provenance')" >Provenance</a></li>
+                    <li><a ng-click="showtab('notes')">Notes</a></li>
+                    <li><a ng-click="showtab('tags')">Tags</a></li>
                 </ul>
-            </div>
         </div>
     </div>
 </div>

@@ -11,8 +11,8 @@
         <div ng-repeat="n in doc.notes | orderBy: date">
             <textarea class="form-control">{{n.message}}</textarea>
 
-            <div style="float: right; font-size: 12px;">
-                {{n.date}}<br>{{n.who}}
+            <div style="padding-left: 220px; font-size: 12px;">
+                {{n.date}} ---{{n.who}}
             </div>
         </div>
     </div>
