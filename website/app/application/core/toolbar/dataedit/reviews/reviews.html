@@ -29,15 +29,13 @@
         </tr>
         </tbody>
     </table>
-    <!--<div review-table></div>-->
     <cgroup label="Mark For Followup">
-        <input type="text" ng-model="model.review_note_self"
-               ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
-               placeholder="Review Note...">
+        <textarea placeholder="Review Note..." ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}"
+                  ng-model="model.review_note_self"/>
     </cgroup>
 
     <cgroup label="Request to Review">
-        <input type="text" ng-model="model.review_note_other" placeholder="Review Note...">
+        <textarea placeholder="Review Note..." ng-model="model.review_note_other"/>
         <select ng-model="model.user_for_review"
                 ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
                 ng-multiple="false">
