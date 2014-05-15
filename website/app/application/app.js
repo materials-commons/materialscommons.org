@@ -29,7 +29,7 @@ var app = angular.module('materialscommons',
         'application.core.constants', 'application.core.services', 'application.core.controllers',
         'application.core.filters', 'application.core.directives',
         'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
-        'application.provenance.filters', 'application.provenance.directives', 'bootstrap-tagsinput']);
+        'application.provenance.filters', 'application.provenance.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
