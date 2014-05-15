@@ -72,26 +72,27 @@
     </div>
     <div class="row">
         <button ng-click="saveDraft()" class="btn btn-default btn-primary">Save Draft</button>
-        <button data-toggle="modal" data-target="#myModal" class="btn btn-success">Submit</button>
+        <button data-toggle="modal" data-target="#confirm" class="btn btn-success">Submit</button>
         <button ng-click="deleteDraft()" class="btn btn-danger">Delete</button>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+     <!--Modal-->
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="confirmLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{title}}</h4>
                 </div>
                 <div class="modal-body">
-                    ...
+                    {{message}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-click="ok()">Save changes</button>
+                    <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" ng-click="submitProvenance()">Yes</button>
                 </div>
             </div>
         </div>
     </div>
+
 
 </div>

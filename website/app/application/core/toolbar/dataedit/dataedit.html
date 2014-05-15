@@ -62,14 +62,15 @@
             <div ui-view=""></div>
         </div>
         <div class="col-sm-2 col-md-2">
-
+            <tabset vertical="true" type="pills">
+                <tab ng-click="showtab('provenance')" heading="Provenance"></tab>
+                <tab ng-click="showtab('notes')" heading="Notes"></tab>
+                <tab ng-controller="toolbarDataEditCreateReview" ng-click="showtab('reviews')" heading="Reviews - {{reviewsToConduct.length}}">
+                </tab>
+                <tab  ng-click="showtab('tags')" heading="Tags"></tab>
+            </tabset>
         <ul class="nav nav-pills nav-stacked">
-            <li><a ng-click="showtab('provenance')">Provenance</a></li>
-            <li><a ng-click="showtab('notes')">Notes</a></li>
-            <li ng-controller="toolbarDataEditCreateReview">
-                <a ng-click="showtab('reviews')" >Reviews<span class="badge">{{reviewsToConduct.length}}</span></a>
-            </li>
-            <li><a ng-click="showtab('tags')" >Tags</a></li>
+
         </ul>
         </div>
     </div>

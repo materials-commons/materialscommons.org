@@ -70,11 +70,11 @@
             </form>
         </div>
         <div class="col-sm-2 col-md-2">
-                <ul class="nav nav-pills nav-stacked">
-                    <li><a ng-click="showtab('provenance')" >Provenance</a></li>
-                    <li><a ng-click="showtab('notes')">Notes</a></li>
-                    <li><a ng-click="showtab('tags')">Tags</a></li>
-                </ul>
+            <tabset vertical="true" type="pills">
+                <tab ng-click="showtab('provenance')" heading="Provenance"></tab>
+                <tab ng-click="showtab('notes')" heading="Notes"></tab>
+                <tab ng-click="showtab('tags')" heading="Tags"></tab>
+            </tabset>
         </div>
     </div>
 </div>
