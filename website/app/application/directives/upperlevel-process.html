@@ -32,16 +32,18 @@
 </div>
 <div ng-if="doc.template.template_pick=='experiment'">
     <cgroup label="Run Date:">
-        <datepicker ng-model="doc.experiment_run_date" ng-disabled="edit"></datepicker>
+        <div style="display:inline-block; min-height:290px;">
+            <datepicker ng-model="dt" ></datepicker>
+        </div>
     </cgroup>
 </div>
 <div ng-if="doc.template.template_pick=='computation'">
-    <cgroup label="Start:">
-        <datepicker ng-model="bk.start_run" ng-disabled="edit"></datepicker>
-    </cgroup>
-    <cgroup label="Stop:">
-        <datepicker ng-model="bk.stop_run" ng-disabled="edit"></datepicker>
-    </cgroup>
+    <!--<cgroup label="Start:">-->
+        <!--<datepicker ng-model="bk.start_run" ng-disabled="edit"></datepicker>-->
+    <!--</cgroup>-->
+    <!--<cgroup label="Stop:">-->
+        <!--<datepicker ng-model="bk.stop_run" ng-disabled="edit"></datepicker>-->
+    <!--</cgroup>-->
     <cgroup label="Errors:">
         <textarea class="span8" rows="4" placeholder="Errors..." ng-model="bk.new_err_msg" ng-disabled="edit"></textarea>
     </cgroup>
