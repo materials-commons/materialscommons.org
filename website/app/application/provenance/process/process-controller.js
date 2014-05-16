@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
     ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User", "$injector",
-        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts, dateGenerate, User,  $injector) {
+        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts, dateGenerate, User, $injector) {
             var $validationProvider = $injector.get('$validation'), check;
 
             watcher.watch($scope, 'bk.process_type', function (template) {
@@ -20,10 +20,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.doc.name = template.template_name + ':' + today;
                 $scope.doc.template = template;
             });
-
-            $scope.remove_run = function (index) {
-                $scope.doc.runs.splice(index, 1);
-            };
 
             $scope.saveDraft = function (form) {
                 check = $validationProvider.checkValid(form);

@@ -6,7 +6,6 @@ Application.Controllers.controller('NoteRunController',
         };
 
         $scope.add_run = function () {
-            console.log('here');
             if ($scope.doc.template.template_pick === 'experiment') {
                 $scope.doc.runs.push({'started': $scope.bk.experiment_run_date, 'stopped': '', 'error_messages': ''});
             } else {
@@ -15,7 +14,9 @@ Application.Controllers.controller('NoteRunController',
                 $scope.bk.start_run = "";
                 $scope.bk.stop_run = "";
             }
-            console.log($scope.doc.runs);
+        };
+        $scope.remove_run = function (index) {
+            $scope.doc.runs.splice(index, 1);
         };
     }]);
 
