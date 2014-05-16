@@ -33,50 +33,67 @@
         </tbody>
     </table>
 </div>
-<div ng-if="doc.template.template_pick=='experiment'">
-    <cgroup label="Run Date:">
-        <datepicker ng-model="doc.experiment_run_date"></datepicker>
-    </cgroup>
-</div>
-<div ng-if="doc.template.template_pick=='computation'">
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Start Run:</label>
-        <div   class="col-sm-2">
-            <datepicker ng-model="bk.start_run"></datepicker>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Run Date:</label>
+
+    <div class="row">
+        <div ng-if="doc.template.template_pick=='experiment'">
+            <button ng-click="custom=!custom">+</button>
+            <div ng-show="custom">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-4">
+                    <datepicker ng-model="doc.experiment_run_date"></datepicker>
+                </div>
+            </div>
         </div>
-        <label class="col-sm-1 control-label">Stop Run:</label>
-        <div class="col-sm-2">
-            <datepicker ng-model="bk.stop_run"></datepicker>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Error messages:</label>
-        <div class="col-sm-2">
-            <textarea  class="form-control" placeholder="Error message..." ng-model="bk.new_err_msg"
-                      ng-disabled="edit"></textarea>
-            <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-default btn-info">Add</button>
+        <div ng-if="doc.template.template_pick=='computation'">
+            <button ng-click="custom=!custom">+</button>
+            <div ng-show="custom">
+                <label class="col-sm-2 control-label">Start Run:</label>
+                <div class="col-sm-4">
+                    <datepicker ng-model="bk.start_run"></datepicker>
+                </div>
+                <label class="col-sm-2 control-label">Stop Run:</label>
+                <div class="col-sm-4">
+                    <datepicker ng-model="bk.stop_run"></datepicker>
+                </div>
+                <label class="col-sm-2 control-label"></label>
+
+                <div class="input-group">
+                    <textarea class="form-control" placeholder="Error messages..." ng-model="bk.new_err_msg"
+                              ng-disabled="edit"></textarea>
+                    <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-default btn-info">Add
+                    </button>
+                </div>
+
+            </div>
+
         </div>
     </div>
 
-    <div ng-show="doc.runs.length > 0">
-        <h5>Previous Runs:</h5>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Start</th>
-                <th>End</th>
-                <th>Error Message</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="run in doc.runs">
-                <td>{{run.started | date:'fullDate'}}</td>
-                <td>{{run.stopped | date:'fullDate'}}</td>
-                <td>{{run.error_messages}}
-                    <button type="button" class="close" ng-click="remove_run($index);">×</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+
+</div>
+
+<div ng-show="doc.runs.length > 0">
+    <label class="col-sm-2 control-label">previous runs:</label>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>Error Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="run in doc.runs">
+            <td>{{run.started | date:'fullDate'}}</td>
+            <td>{{run.stopped | date:'fullDate'}}</td>
+            <td>{{run.error_messages}}
+                <button type="button" class="close" ng-click="remove_run($index);">×</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </div>
