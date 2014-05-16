@@ -1,31 +1,30 @@
 <div ng-controller="provenanceProcess">
-    <form name="Form" class="form-horizontal">
-        <div class="row">
-            <legend>Process</legend>
+    <h4>Process</h4>
+    <div class="row col-sm-8 col-md-8">
+        <form name="Form" class="form-horizontal">
             <cgroup label="Process Type:">
-                <select class="form-control" ng-model="bk.process_type" ng-options="p.template_name for p in process_templates|orderBy:'template_name'">
+                <select class="form-control" ng-model="bk.process_type"
+                        ng-options="p.template_name for p in process_templates|orderBy:'template_name'">
                     <option value="">Select Process Type:</option>
                 </select>
             </cgroup>
-        </div>
-        <div class="row">
             <div ng-show="bk.process_type">
                 <div upperlevel-process="" doc="doc" bk="bk" edit="false"></div>
                 <div df-properties="" default-properties="doc.default_properties" machines-list="machines_list"></div>
-                <div ad-properties="" doc="doc" additional-properties="doc.template.additional_properties" edit="false" bk="bk"></div>
+                <div ad-properties="" doc="doc" additional-properties="doc.template.additional_properties" edit="false"
+                     bk="bk"></div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 col-md-4">
-                <button ng-click="next(Form)" class="btn btn-default btn-primary">Next</button>
-                <button ng-click="saveDraft(Form)" class="btn btn-default btn-success">Save Draft</button>
-            </div>
-            <div ng-show="message" class="col-sm-4 col-md-4">
-                <div class="alert alert-dismissable alert-info">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    {{message}}
+            <div class="row">
+                    <button ng-click="next(Form)" class="btn btn-default btn-primary">Next</button>
+                    <button ng-click="saveDraft(Form)" class="btn btn-default btn-success">Save Draft</button>
+
+                <div ng-show="message" class="col-sm-4 col-md-4">
+                    <div class="alert alert-dismissable alert-info">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{message}}
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
