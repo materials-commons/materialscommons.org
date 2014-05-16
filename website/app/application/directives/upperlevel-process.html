@@ -56,21 +56,8 @@
                       ng-disabled="edit"></textarea>
             <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-default btn-info">Add</button>
         </div>
-
     </div>
-    <!--<cgroup label="Start and Stop Run date:">-->
-    <!--<datepicker ng-model="bk.start_run"></datepicker>-->
-    <!--<datepicker ng-model="bk.stop_run"></datepicker>-->
-    <!--</cgroup>-->
-    <!--<cgroup label="Stop:">-->
-    <!--</cgroup>-->
-    <!--<cgroup label="Errors:">-->
-        <!--<textarea class="span8" rows="4" placeholder="Errors..." ng-model="bk.new_err_msg"-->
-                  <!--ng-disabled="edit"></textarea>-->
-    <!--</cgroup>-->
-    <!--<cgroup>-->
-        <!--<button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-default btn-info">Add</button>-->
-    <!--</cgroup>-->
+
     <div ng-show="doc.runs.length > 0">
         <h5>Previous Runs:</h5>
         <table class="table">
@@ -82,7 +69,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="run in process.runs">
+            <tr ng-repeat="run in doc.runs">
                 <td>{{run.started | date:'fullDate'}}</td>
                 <td>{{run.stopped | date:'fullDate'}}</td>
                 <td>{{run.error_messages}}

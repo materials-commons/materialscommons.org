@@ -6,26 +6,17 @@ Application.Controllers.controller('NoteRunController',
         };
 
         $scope.add_run = function () {
+            console.log('here');
             if ($scope.doc.template.template_pick === 'experiment') {
-                $scope.doc.runs.push({'started': $scope.bk.exp_run_date, 'stopped': '', 'error_messages': ''});
+                $scope.doc.runs.push({'started': $scope.bk.experiment_run_date, 'stopped': '', 'error_messages': ''});
             } else {
                 $scope.doc.runs.push({'started': $scope.bk.start_run, 'stopped': $scope.bk.stop_run, 'error_messages': $scope.bk.new_err_msg});
                 $scope.bk.new_err_msg = "";
                 $scope.bk.start_run = "";
                 $scope.bk.stop_run = "";
             }
+            console.log($scope.doc.runs);
         };
-        $scope.open = function ($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $scope.opened = true;
-        };
-        $scope.format = 'yyyy/MM/dd';
-        $scope.dateOptions = {
-            formatYear: 'yy',
-            startingDay: 1
-        };
-
     }]);
 
 Application.Directives.directive('upperlevelProcess',
