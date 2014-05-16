@@ -1,7 +1,7 @@
 <div ng-controller="provenanceIOSteps">
     <h4>{{ stepsName }}</h4>
 
-    <div class="col-sm-10 col-md-10 row">
+    <div class="col-sm-8 col-md-8 row">
         <ul class="nav nav-tabs">
             <li ng-class="{'active' : isActiveStep(step)}" ng-repeat="step in steps">
                 <a style="cursor: pointer" ng-click="showStep(step)">{{ step }}</a>
