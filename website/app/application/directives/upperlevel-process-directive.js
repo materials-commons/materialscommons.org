@@ -15,6 +15,16 @@ Application.Controllers.controller('NoteRunController',
                 $scope.bk.stop_run = "";
             }
         };
+        $scope.open = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.opened = true;
+        };
+        $scope.format = 'yyyy/MM/dd';
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
 
     }]);
 
