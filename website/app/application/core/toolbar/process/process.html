@@ -6,20 +6,20 @@
                 <legend>{{process.name}}</legend>
                 <fieldset>
                     <cgroup label="Description:">
-                        <textarea class="form-control" ng-if="process.description !== ''" class="span8" ng-model="process.description" rows="3" ng-disabled="true">                        </textarea>
+                        <textarea class="form-control" ng-if="process.description !== ''" ng-model="process.description" ng-disabled="true">  </textarea>
                     </cgroup>
                     <cgroup label="Date Created:">
-                        <input class="input-xlarge form-control" ng-model="birthtime" ng-disabled="true" type="text">
+                        <input class="form-control" ng-model="birthtime" ng-disabled="true" type="text">
                     </cgroup>
                     <div ng-if="process.experiment_run_date">
                         <cgroup label="RunDate:">
-                            <input class="input-xlarge form-control" ng-model="process.experiment_run_date" ng-disabled="true" type="text">
+                            <input class="form-control" ng-model="process.experiment_run_date" ng-disabled="true" type="text">
                         </cgroup>
                     </div>
                     <div ng-repeat="item in process.properties">
                         <div ng-if="item.name!=='Machine'">
                             <cgroup label="{{item.name}}:">
-                                <input class="input-xlarge form-control" ng-model="item.value" ng-disabled="true" type="text">
+                                <input class="form-control" ng-model="item.value" ng-disabled="true" type="text">
                             </cgroup>
                         </div>
                     </div>
@@ -31,12 +31,12 @@
                 <legend>Machine</legend>
                 <fieldset>
                     <cgroup label="Machine Name:">
-                        <input class="input-xlarge form-control" ng-model="machine.name" ng-disabled="true" type="text">
+                        <input class="form-control" ng-model="machine.name" ng-disabled="true" type="text">
                     </cgroup>
                     <div ng-if="machine.additional.length!=0">
                         <div ng-repeat="item in machine.additional">
                             <cgroup label="{{item.name}}:">
-                                <input class="input-xlarge form-control" ng-model="item.value" ng-disabled="true" type="text">
+                                <input class="form-control" ng-model="item.value" ng-disabled="true" type="text">
                             </cgroup>
                         </div>
                     </div>

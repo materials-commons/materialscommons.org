@@ -9,7 +9,7 @@
         <div ng-switch="" on="df.type">
             <div ng-switch-when="text">
                 <div ng-if="df.required===false">
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <input class="form-control" ng-model="df.value" placeholder="{{df.name}}..." ng-disabled="edit"
                                type="text">
                     </div>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div ng-if="df.required===true">
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                     <input class="form-control" ng-model="df.value" placeholder="{{df.name}}..." ng-disabled="edit"
                            required="" type="text">
                         </div>
@@ -35,7 +35,7 @@
             </div>
             <div ng-switch-when="number">
                 <div ng-if="df.required===false">
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
                                placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
                     </div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div ng-if="df.required===true">
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
                            placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
                         </div>
@@ -61,13 +61,13 @@
             </div>
 
             <div ng-switch-when="url">
-                <div class="col-sm-3" ng-if="df.required===false">
+                <div class="col-sm-6" ng-if="df.required===false">
                     <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
                            placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
                 </div>
             </div>
             <div ng-switch-when="email">
-                <div class="col-sm-3" ng-if="df.required===false">
+                <div class="col-sm-6" ng-if="df.required===false">
                     <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
                            placeholder="{{df.name}}..." ng-disabled="edit" valid-method="blur" type="text">
                 </div>
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div ng-switch-when="select">
-                <div class="col-sm-2" ng-if="df.value_choice.length!==0">
+                <div class="col-sm-4" ng-if="df.value_choice.length!==0">
                     <select class="form-control" ng-model="df.value" ng-disabled="edit">
                         <option ng-repeat="each in df.value_choice">{{each}}</option>
                     </select>
@@ -90,7 +90,7 @@
                 </div>
             </div>
             <div ng-switch-when="machines">
-                <div class="col-sm-2">
+                <div class="col-sm-4">
                 <select class="form-control" ng-model="df.value" ng-options="mach.name for mach in machinesList"
                         ng-disabled="edit">
                 </select>
