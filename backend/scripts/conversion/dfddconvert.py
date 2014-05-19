@@ -10,6 +10,12 @@ def datafile_dir(mcdir, datafile_id):
     return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4])
 
 
+def id_to_use(f):
+    if f['usesid'] == "":
+        return f['id']
+    return f['usesid']
+
+
 def main(conn, mcdir):
     dirs = list(r.table('datadirs').run(conn))
     for d in dirs:
@@ -49,7 +55,7 @@ def main(conn, mcdir):
                                     'text'
                                 )
                             ).run(conn)
-        fid = f['id']
+        fid = id_to_use(f)
         fpath = datafile_dir(mcdir, fid)
         try:
             uploaded = os.path.getsize(fpath)
