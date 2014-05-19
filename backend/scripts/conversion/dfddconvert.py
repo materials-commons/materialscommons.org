@@ -2,9 +2,15 @@
 
 import rethinkdb as r
 from optparse import OptionParser
+import os
 
 
-def main(conn):
+def datafile_dir(mcdir, datafile_id):
+    pieces = datafile_id.split("-")
+    return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4])
+
+
+def main(conn, mcdir):
     dirs = list(r.table('datadirs').run(conn))
     for d in dirs:
         print "Updating datadir: %s" % (d['id'])
@@ -43,14 +49,24 @@ def main(conn):
                                     'text'
                                 )
                             ).run(conn)
-        r.table('datafiles').get(f['id']).update({'current': True}).run(conn)
+        fid = f['id']
+        fpath = datafile_dir(mcdir, fid)
+        try:
+            uploaded = os.path.getsize(fpath)
+        except:
+            uploaded = 0
+        r.table('datafiles').get(f['id']).update({'current': True,
+                                                  'uploaded': uploaded})\
+                                         .run(conn)
 
 
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port", default=30815)
+    parser.add_option("-d", "--directory", dest="dir", type="string",
+                      help="MCDIR location", default="/mcfs/data/test")
     (options, args) = parser.parse_args()
 
     conn = r.connect('localhost', options.port, db='materialscommons')
-    main(conn)
+    main(conn, options.dir)
