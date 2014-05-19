@@ -55,9 +55,11 @@ def main(conn, mcdir):
             uploaded = os.path.getsize(fpath)
         except:
             uploaded = 0
-        r.table('datafiles').get(f['id']).update({'current': True,
-                                                  'uploaded': uploaded})\
-                                         .run(conn)
+        r.table('datafiles').get(f['id'])\
+                            .update(
+                                {'current': uploaded == f['size'],
+                                 'uploaded': uploaded})\
+                            .run(conn)
 
 
 if __name__ == "__main__":
