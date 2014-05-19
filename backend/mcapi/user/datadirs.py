@@ -34,39 +34,6 @@ def datadirs_for_user():
     return json_as_format_arg(selection)
 
 
-@app.route('/datadirs/datafiles')
-@apikey(shared=True)
-@jsonp
-def list_datadirs_with_data_by_user():
-    user = access.get_user()
-    selection = list(r.table('datadirs').filter({'owner': user})
-                     .outer_join(
-                         r.table('datafiles'),
-                         lambda ddirrow, drow: ddirrow['datafiles']
-                         .contains(drow['id']))
-                     .run(g.conn, time_format='raw'))
-    if not selection:
-        return json.dumps(selection)
-    datadirs = []
-    current_datadir = selection[0]['left']
-    current_datadir['datafiles'] = []
-    currentid = current_datadir['id']
-    datadirs.append(current_datadir)
-    for item in selection:
-        id = item['left']['id']
-        if id == currentid:
-            if 'right' in item:
-                current_datadir['datafiles'].append(item['right'])
-        else:
-            current_datadir = item['left']
-            current_datadir['datafiles'] = []
-            currentid = current_datadir['id']
-            if 'right' in item:
-                current_datadir['datafiles'].append(item['right'])
-            datadirs.append(current_datadir)
-    return json_as_format_arg(datadirs)
-
-
 @app.route('/datadirs', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
