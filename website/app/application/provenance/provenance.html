@@ -1,11 +1,8 @@
 <div ng-controller="provenance">
-
     <div class="row">
-        <div class="col-sm-12 col-md-12">
-            <div class="col-sm-2 col-md-2">
-                <div class="well">
-                    <ul class="nav nav-list">
-                        <li class="nav-header"><i class="icon-wrench"></i>Steps</li>
+            <div class="col-sm-10">
+                <!--<div class="well">-->
+                    <ul class="nav nav-tabs">
                         <li ng-class="{'active':isCurrentStep('process')}">
                             <a style="cursor:text " ng-hide="isFinishedStep('process')">Process</a>
                             <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editStep('process')">Process (edit)</a>
@@ -24,12 +21,11 @@
                             <a style="cursor:pointer" ng-show="isFinishedStep('submit')" ng-click="editStep('submit')">Submit (edit)</a>
                         </li>
                     </ul>
-                </div>
+                <!--</div>-->
             </div>
-            <div class="col-sm-10 col-md-10">
-                <div ui-view=""></div>
-            </div>
-        </div>
+    </div>
+    <div class="row col-sm-10 col-md-10">
+        <div ui-view=""></div>
     </div>
     <project-tree project="{{ project_id }}" active="false"></project-tree>
 </div>
