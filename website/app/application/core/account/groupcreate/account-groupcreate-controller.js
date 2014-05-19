@@ -1,7 +1,7 @@
 Application.Controllers.controller('accountGroupCreate',
     ["$scope", "User", "mcapi", "alertService", "$state", "pubsub",
         function ($scope, User, mcapi, alertService, $state, pubsub) {
-            $scope.create_usergroup = function () {
+            $scope.createUsergroup = function () {
                 var u_group = {};
                 u_group.access = $scope.group.access;
                 u_group.description = $scope.group.description;

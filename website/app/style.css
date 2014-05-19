@@ -38,9 +38,9 @@ td {
 }
 
 .pagination {
-    text-align: center;
-    cursor: pointer;
-}
+     text-align: center;
+     cursor: pointer;
+ }
 
 .chat-box {
     width: 440px;

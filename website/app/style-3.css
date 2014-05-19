@@ -14,6 +14,10 @@ body {
 .mc-table-hover tbody tr:hover th {
     background-color: #CCCCCC;
 }
+.pagination {
+    text-align: center;
+    cursor: pointer;
+}
 /*******************************************************************************************************/
 
 
@@ -107,8 +111,6 @@ textarea.form-control {
     padding: 4px 15px;
     font-size: 13px;
 }
-
-
 
 .fa-asterisk {
     color: red;

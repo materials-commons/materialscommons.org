@@ -1,81 +1,77 @@
 <div ng-controller="account">
     <div class="row">
-        <div class="col-lg-offset-1 col-sm-8 col-md-8">
+        <div class="col-sm-4">
+            <legend>Change Password:</legend>
             <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label" for="inputPassword">Password:</label>
+                <input class="form-control" id="inputPassword" placeholder="New Password..." ng-model="new_password"
+                       type="password">
+                <input class="form-control" placeholder="Verify Password..." ng-model="verify_new_password"
+                       type="password">
+                <button ng-click="changePassword()" class="btn btn-default btn-danger">Change Password</button>
+            </form>
+        </div>
 
-                    <div class="controls">
-                        <input class="form-control" id="inputPassword" placeholder="New Password..." ng-model="new_password" type="password">
-                        <input class="form-control" placeholder="Verify Password..." ng-model="verify_new_password" type="password">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="controls">
-                        <button ng-click="changePassword()" class="btn btn-default btn-danger">Change Password</button>
-                    </div>
-                </div>
+    </div>
+    <!--<div class="row">-->
+    <!--<button ng-click="showApiKey()" class="btn btn-default btn-info">{{ showHideButton }}</button>-->
+    <!--<button ng-click="resetApiKey()" class="btn btn-default btn-danger">Reset API Key</button>-->
+    <!--<span ng-show="showKey">Your current apikey is: {{ apikey }}</span>-->
+    <!--</div>-->
+    <hr>
+    <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">Create Group</button>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-6" ng-controller="accountGroupCreate">
+            <form ng-show="toggleCustom" class="form-horizontal">
+                <cgroup label="Name:">
+                    <input class="form-control" ng-model="group.name" placeholder="Name...">
+                </cgroup>
+                <cgroup label="Access:">
+                    <select class="form-control" ng-model="group.access">
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                    </select>
+                </cgroup>
+                <cgroup label="Description:">
+                    <textarea class="form-control" placeholder="Description..." ng-model="group.description"></textarea>
+                </cgroup>
+                <cgroup>
+                    <button class="btn btn-default btn-primary" ng-click="createUsergroup()">Save</button>
+                </cgroup>
             </form>
         </div>
     </div>
 
-    <hr>
 
-    <div class="row">
-        <div class="col-lg-offset-1 col-sm-8 col-md-8">
-            <table class="pull-left">
-                <tbody><tr>
-                    <td><h4>API Key:</h4></td>
-                    <td>
-                        <button ng-click="showApiKey()" class="btn btn-default btn-info">{{ showHideButton }}</button>
-                    </td>
-                    <td>
-                        <button ng-click="resetApiKey()" class="btn btn-default btn-danger">Reset API Key</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span ng-show="showKey">Your current apikey is: {{ apikey }}</span>
-                    </td>
-                </tr>
-                </tbody></table>
-        </div>
-    </div>
 </div>
 
-<div class="row">
-    <div ng-controller="accountGroups">
-        <div class="col-lg-offset-2 col-sm-8 col-md-8">
-            <div>
-                <form class="form-inline">
-                    <fieldset>
-                        <legend>Groups</legend>
-                        <button ng-click="createGroup()" class="btn btn-default btn-primary">Create Group</button>
-                    </fieldset>
-                </form>
-                <table class="table table-striped mc-table">
-                    <thead>
-                    <tr><th>Group</th>
-                        <th>Date created</th>
-                        <th>Description</th>
-                        <th>Owner</th>
-                        <th></th>
-                    </tr></thead>
-                    <tbody>
-                    <tr ng-repeat="i in user_groups">
-                        <td><b>{{i.name}}</b></td>
-                        <td>{{i.birthtime | toDateString}}</td>
-                        <td>{{i.description}}</td>
-                        <td>{{i.owner}}</td>
-                        <td><a ui-sref="account.groupusers({id: i.id})">edit</a></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="row" ng-controller="accountGroups">-->
+<!--<legend>Groups</legend>-->
+<!--<table class="table table-striped mc-table">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th>Group</th>-->
+<!--<th>Date created</th>-->
+<!--<th>Description</th>-->
+<!--<th>Owner</th>-->
+<!--<th></th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr ng-repeat="i in user_groups">-->
+<!--<td><b>{{i.name}}</b></td>-->
+<!--<td>{{i.birthtime | toDateString}}</td>-->
+<!--<td>{{i.description}}</td>-->
+<!--<td>{{i.owner}}</td>-->
+<!--<td><a ui-sref="account.groupusers({id: i.id})">edit</a></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--<button ng-click="createGroup()" class="btn btn-default btn-primary">Create Group</button>-->
+<!--</div>-->
 
-<div class="row">
-    <div ui-view=""></div>
-</div>
+
+<!--<div class="row">-->
+<!--<div ui-view=""></div>-->
+<!--</div>-->
