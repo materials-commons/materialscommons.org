@@ -1,6 +1,8 @@
 body {
     padding-top: 0px;
     font-size: 13px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     /*line-height: 20px;*/
 }
 
