@@ -1,7 +1,7 @@
 <div ng-controller="toolbarOverview">
     <div class="col-sm-6 col-md-6">
         <div class="row" ng-repeat="project in projects | orderBy:'name'">
-            <div  class="panel panel-success">
+            <div  class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title" ><a style="color: white" ui-sref="toolbar.projectspage.overview({id: project.id})">{{ project.name }}</a></h3>
                 </div>
