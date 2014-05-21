@@ -23,7 +23,7 @@ Application.Controllers.controller('accountGroupUsers',
                 $scope.getGroups();
             });
 
-            $scope.add_user_to_usergroup = function () {
+            $scope.addUserToUsergroup = function () {
                 mcapi('/usergroup/%/selected_name/%', $stateParams.id, $scope.user_name)
                     .success(function (data) {
                         alertService.sendMessage("user has been added.");
@@ -37,7 +37,7 @@ Application.Controllers.controller('accountGroupUsers',
                 $state.transitionTo('account');
             };
 
-            $scope.delete_user_from_usergroup = function (index) {
+            $scope.deleteUserFromUsergroup = function (index) {
                 mcapi('/usergroup/%/selected_name/%/remove', $stateParams.id, $scope.users_by_usergroup[index])
                     .success(function (data) {
                         alertService.sendMessage("User has been deleted");
