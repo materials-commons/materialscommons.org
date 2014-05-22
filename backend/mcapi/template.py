@@ -33,13 +33,20 @@ def get_all_templates():
     return dmutil.get_all_from_table('templates')
 
 
+@app.route('/templates/by_pick/<pick>', methods=['GET'])
+@apikey(shared=True)
+@jsonp
+def get_templates_by_category(pick):
+    rr = list(r.table('templates').get_all(pick, index='template_pick').run(g.conn, time_format='raw'))
+    return json.dumps(rr)
+
+
 @app.route('/templates/new', methods=['POST'])
 @crossdomain(origin='*')
 def create_template():
     j = request.get_json()
     template_type = dmutil.get_required('template_type', j)
     return create_template_for_type(template_type, j)
-
 
 def create_template_for_type(template_type, j):
     template_table = {

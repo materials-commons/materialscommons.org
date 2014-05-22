@@ -1,9 +1,9 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
-    ["$scope", "mcapi", "watcher", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User", "$injector",
-        function ($scope, mcapi, watcher, alertService, ProvSteps, ProvDrafts, dateGenerate, User, $injector) {
+    ["$scope", "mcapi", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User", "$injector",
+        function ($scope, mcapi, alertService, ProvSteps, ProvDrafts, dateGenerate, User, $injector) {
             var $validationProvider = $injector.get('$validation'), check;
 
-            watcher.watch($scope, 'bk.process_type', function (template) {
+            $scope.change_process = function (template) {
                 if ($scope.doc.template.template_name === template.template_name) {
                     // All attributes already loaded from a draft
                     return;
@@ -19,8 +19,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 var today = now.getFullYear() + "-" + mm + "-" + dd;
                 $scope.doc.name = template.template_name + ':' + today;
                 $scope.doc.template = template;
-            });
-
+            };
             $scope.saveDraft = function (form) {
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
@@ -47,7 +46,6 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                     new_err_msg: '',
                     start_run: '',
                     stop_run: '',
-                    process_type: '',
                     additional_property: '',
                     customPropertyName: '',
                     customPropertyValue: ''
