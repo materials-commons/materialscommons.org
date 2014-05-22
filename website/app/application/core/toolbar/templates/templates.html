@@ -1,0 +1,34 @@
+<div class="row" ng-controller="toolbarTemplates">
+    <br>
+    <div class="col-sm-2" >
+        <label>Experimental Templates:</label>
+        <table class="table table-bordered mc-table">
+            <thead>
+            <th></th>
+            <th>Template name</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="t in experimental_templates" >
+                <td><input type="checkbox" ng-click="toggle_selection(t)"></td>
+                <td><a>{{t.template_name}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-2" >
+        <label>Computational Templates:</label>
+        <table class="table table-bordered">
+            <thead>
+            <th></th>
+            <th>Template name</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="t in experimental_templates" >
+                <td><input type="checkbox"></td>
+                <td><a ng-click="toggle_selection(t)">{{t.template_name}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

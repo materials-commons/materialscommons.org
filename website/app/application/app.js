@@ -150,6 +150,10 @@ app.config(["$stateProvider", function ($stateProvider) {
             url: '/tags',
             templateUrl: 'application/core/toolbar/tags/tags.html'
         })
+        .state('toolbar.templates', {
+            url: '/templates',
+            templateUrl: 'application/core/toolbar/templates/templates.html'
+        })
         .state('toolbar.globaltagcloud', {
             url: '/globaltagcloud',
             templateUrl: 'application/core/toolbar/globaltagcloud/globaltagcloud.html'

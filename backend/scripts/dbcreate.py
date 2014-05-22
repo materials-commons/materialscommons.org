@@ -73,6 +73,7 @@ def create_indices():
     create_index('conditions', 'process_id')
     create_index('treatments', 'value')
     create_index('treatments', 'sample_id')
+    create_index('templates', 'template_pick')
 
 
 def create_index(table, name):

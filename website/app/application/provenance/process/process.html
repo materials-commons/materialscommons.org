@@ -4,23 +4,25 @@
         <form name="Form" class="form-horizontal">
             <cgroup label="Process Type:">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <button  type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         Choose process <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
                         <li class="dropdown-submenu" >
-                            <a tabindex="-1" href="#">Experimental</a>
-                            <ul class="dropdown-menu"  ng-repeat="t in process_templates">
-                                <li><a href="#">{{t.template_name}}</a></li>
+                            <a  href="#">Experiment</a>
+                            <ul class="dropdown-menu" >
+                                <li ng-repeat="exp_temp in process_templates">
+                                <a ng-click="change_process(exp_temp)">{{exp_temp.template_name}}</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown-submenu" >
-                            <a tabindex="-1" href="#">Computational</a>
-                            <ul class="dropdown-menu"  ng-repeat="t in process_templates">
-                                <li><a href="#">{{t.template_name}}</a></li>
+                            <a  href="#">Computation</a>
+                            <ul class="dropdown-menu" >
+                                <li ng-repeat="comp_temp in process_templates">
+                                    <a ng-click="change_process(comp_temp)">{{comp_temp.template_name}}</a>
+                                </li>
+
                             </ul>
                         </li>
                     </ul>
@@ -28,7 +30,7 @@
 
             </cgroup>
 
-            <div ng-show="bk.process_type">
+            <div ng-show="doc.template">
                 <div upperlevel-process="" doc="doc" bk="bk" edit="false"></div>
                 <div df-properties="" default-properties="doc.default_properties" machines-list="machines_list"></div>
                 <div ad-properties="" doc="doc" additional-properties="doc.template.additional_properties" edit="false"
