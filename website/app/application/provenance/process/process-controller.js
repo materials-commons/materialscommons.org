@@ -52,20 +52,25 @@ Application.Provenance.Controllers.controller('provenanceProcess',
 
                 };
                 $scope.doc = ProvDrafts.current.process;
+
+                mcapi('/user/%/preferred_templates', User.u())
+                    .success(function (data) {
+                        $scope.preferred_templates = data.preferences.templates;
+                    }).jsonp();
+
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {
-                        var t;
                         $scope.process_templates = processes;
-                        if ($scope.doc.template !== "") {
-                            t = _.findWhere($scope.process_templates, {template_name: $scope.doc.template.template_name});
-                            if (t) {
-                                $scope.bk.process_type = t;
-                            }
-                        }
+
                     })
                     .error(function () {
                         alertService.sendMessage("Unable to retrieve processes from database.");
+                    }).jsonp();
+
+                mcapi('/user/%/preferred_templates', User.u())
+                    .success(function (data) {
+                        $scope.preferred_templates = data.preferences.templates;
                     }).jsonp();
 
                 mcapi('/machines')
