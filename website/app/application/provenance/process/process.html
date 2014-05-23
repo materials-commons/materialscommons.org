@@ -8,6 +8,10 @@
                         Choose process <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="p in preferred_templates">
+                        <a ng-click="change_process(p)">{{p.template_name}}</a>
+                        </li>
+                        <li class="divider"></li>
                         <li class="dropdown-submenu" >
                             <a  href="#">Experiment</a>
                             <ul class="dropdown-menu" >
@@ -27,7 +31,6 @@
                         </li>
                     </ul>
                 </div>
-
             </cgroup>
 
             <div ng-show="doc.template">

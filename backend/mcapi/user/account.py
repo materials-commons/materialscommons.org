@@ -75,3 +75,21 @@ def list_usergroups_for_user(user):
     res = list(r.table('usergroups').filter(r.row['users'].contains(user))
                .run(g.conn, time_format='raw'))
     return json.dumps(res)
+
+@app.route('/user/<user>/preferred_templates', methods=['GET'])
+@apikey
+@jsonp
+def preferred_templates(user):
+    u = r.table('users').get(user).pluck('preferences').run(g.conn)
+    return json_as_format_arg(u)
+
+
+@app.route('/user/<user>/templates', methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def update_preferred_templates(user):
+    j = request.get_json()
+    list = dmutil.get_required('templates', j)
+    print list
+    rv = r.table('users').get(user).update({'preferences': {'templates': list}}).run(g.conn)
+    return jsonify(rv)
