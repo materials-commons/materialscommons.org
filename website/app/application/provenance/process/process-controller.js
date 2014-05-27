@@ -1,6 +1,6 @@
 Application.Provenance.Controllers.controller('provenanceProcess',
-    ["$scope", "mcapi", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User", "$injector",
-        function ($scope, mcapi, alertService, ProvSteps, ProvDrafts, dateGenerate, User, $injector) {
+    ["$scope", "mcapi", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User", "$injector", "$filter",
+        function ($scope, mcapi, alertService, ProvSteps, ProvDrafts, dateGenerate, User, $injector, $filter) {
             var $validationProvider = $injector.get('$validation'), check;
 
             $scope.change_process = function (template) {
@@ -53,15 +53,12 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 };
                 $scope.doc = ProvDrafts.current.process;
 
-                mcapi('/user/%/preferred_templates', User.u())
-                    .success(function (data) {
-                        $scope.preferred_templates = data.preferences.templates;
-                    }).jsonp();
-
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
                     .success(function (processes) {
                         $scope.process_templates = processes;
+                        $scope.experimental_templates = $filter('templateFilter')($scope.process_templates, 'experiment');
+                        $scope.computational_templates = $filter('templateFilter')($scope.process_templates, 'computation');
 
                     })
                     .error(function () {

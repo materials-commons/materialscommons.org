@@ -1,7 +1,19 @@
 Application.Controllers.controller('toolbarTemplates',
-    ["$scope", "mcapi", "User", "alertService", function ($scope, mcapi, User, alertService) {
-        $scope.addSelection = function (t) {
-            $scope.preferred_templates.push(t);
+    ["$scope", "mcapi", "User", "alertService", "$filter", function ($scope, mcapi, User, alertService, $filter) {
+        $scope.check = function (t) {
+            var status = $scope.preferred_templates.filter(function (el) {
+                return el.template_name === t.template_name;
+            })[0];
+            if (status) {
+                for (var i = 0; i < $scope.preferred_templates.length; i++)
+                    if ($scope.preferred_templates[i].template_name === t.template_name) {
+                        $scope.preferred_templates.splice(i, 1);
+                        break;
+                    }
+            } else {
+                $scope.preferred_templates.push(t);
+
+            }
         };
 
         $scope.updatePreferences = function () {
@@ -11,32 +23,28 @@ Application.Controllers.controller('toolbarTemplates',
                 }).put({'templates': $scope.preferred_templates});
         };
 
-
-        $scope.remove_template = function () {
+        $scope.remove = function (t) {
 
         };
-
         $scope.is_checked = function (t) {
-            var i = _.indexOf($scope.preferred_templates, function (item) {
-                return (item.template_name === t.template_name);
-            });
-            if (i < -1){
-                return true;
-            }
+            for (var i = 0; i < $scope.preferred_templates.length; i++)
+                if ($scope.preferred_templates[i].template_name === t.template_name) {
+                    return true;
+                }
         };
-
 
         function init() {
             $scope.preferred_templates = [];
-            mcapi('/templates/by_pick/%', 'experiment')
-                .success(function (data) {
-                    $scope.experimental_templates = data;
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"process"')
+                .success(function (processes) {
+                    $scope.process_templates = processes;
+                    $scope.experimental_templates = $filter('templateFilter')($scope.process_templates, 'experiment');
+                    $scope.computational_templates = $filter('templateFilter')($scope.process_templates, 'computation');
 
-                }).jsonp();
-
-            mcapi('/templates/by_pick/%', 'computation')
-                .success(function (data) {
-                    $scope.computational_templates = data;
+                })
+                .error(function () {
+                    alertService.sendMessage("Unable to retrieve processes from database.");
                 }).jsonp();
 
             mcapi('/user/%/preferred_templates', User.u())
@@ -47,4 +55,6 @@ Application.Controllers.controller('toolbarTemplates',
 
         init();
 
-    }]);
+    }
+    ])
+;
