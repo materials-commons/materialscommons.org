@@ -1,0 +1,487 @@
+[
+    {
+        "project_name": "WE43 Heat Treatments",
+        "project_id": "904886a7-ea57-4de7-8125-6e18c9736fd0",
+        "process": {
+            "template": {
+                "template_type": "process",
+                "template_pick": "computation",
+                "template_name": "Computation",
+                "template_mtime": "",
+                "template_description": "",
+                "template_birthtime": "",
+                "required_output_files": true,
+                "required_output_conditions": [],
+                "required_input_files": true,
+                "required_input_conditions": ["Settings"],
+                "owner": "admin@materialscommons.org",
+                "id": "Computation",
+                "default_properties": [
+                    {
+                        "value_choice": [],
+                        "value": {
+                            "notes": "",
+                            "name": "EMAL Helios 1",
+                            "id": "3f1bcc95-5a16-4aae-b182-2568c5793938",
+                            "birthtime": {
+                                "timezone": "+00:00",
+                                "epoch_time": 1393435357.06
+                            },
+                            "additional": [
+                                {
+                                    "value_choice": "",
+                                    "value": "SEI: Everhart-Thornley Detector",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": "false",
+                                    "name": "Detector Type"
+                                },
+                                {
+                                    "value_choice": "",
+                                    "value": "SEI: through lens Detector (TLD)",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": "false",
+                                    "name": "Detector Type"
+                                },
+                                {
+                                    "value_choice": "",
+                                    "value": "BEI: Concentric Backscatter Deetector",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": "false",
+                                    "name": "Detector Type"
+                                },
+                                {
+                                    "value_choice": "",
+                                    "value": "EBSD - EDAX Hikari 450",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": "false",
+                                    "name": "Detector Type"
+                                },
+                                {
+                                    "value_choice": "",
+                                    "value": "X-ray - EDAX Apollo XL 30mm² UTW silicon drift detector",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": "false",
+                                    "name": "Detector Type"
+                                },
+                                {
+                                    "value_choice": ["Field emission selection"],
+                                    "value": " Field emission selection\n                                     ",
+                                    "unit_choice": [],
+                                    "unit": "",
+                                    "type": "",
+                                    "required": false,
+                                    "name": "Gun Type"
+                                },
+                                {
+                                    "value_choice": "",
+                                    "value": "EMAL",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": false,
+                                    "name": "Location"
+                                },
+                                {
+                                    "value_choice": "",
+                                    "value": "FEI",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": false,
+                                    "name": "manufacturer"
+                                },
+                                {
+                                    "value_choice": "",
+                                    "value": "Helios Nanolab 650 Dualbeam Focussed Ion Beam Workstation",
+                                    "unit_choice": "",
+                                    "unit": "",
+                                    "type": "",
+                                    "required": false,
+                                    "name": "Model#"
+                                },
+                                {
+                                    "value_choice": [],
+                                    "value": "2013",
+                                    "unit_choice": [],
+                                    "unit": "",
+                                    "type": "",
+                                    "required": "False",
+                                    "name": "Purchase year"
+                                }
+                            ]
+                        },
+                        "unit_choice": "",
+                        "unit": "",
+                        "type": "machines",
+                        "required": false,
+                        "name": "Machine",
+                        "attribute": "machine"
+                    },
+                    {
+                        "value_choice": [],
+                        "value": "test program",
+                        "unit_choice": "",
+                        "unit": "",
+                        "type": "text",
+                        "required": false,
+                        "name": "Program",
+                        "attribute": "program"
+                    },
+                    {
+                        "value_choice": [],
+                        "value": "test url",
+                        "unit_choice": "",
+                        "unit": "",
+                        "type": "text",
+                        "required": false,
+                        "name": "Program URL",
+                        "attribute": "program_url"
+                    },
+                    {
+                        "value_choice": [],
+                        "value": "test version",
+                        "unit_choice": "",
+                        "unit": "",
+                        "type": "text",
+                        "required": false,
+                        "name": "Program Version",
+                        "attribute": "program_version"
+                    },
+                    {
+                        "value_choice": [],
+                        "value": "",
+                        "unit_choice": "",
+                        "unit": "",
+                        "type": "number",
+                        "required": false,
+                        "name": "Start time",
+                        "attribute": "run_start_time"
+                    },
+                    {
+                        "value_choice": [],
+                        "value": "",
+                        "unit_choice": "",
+                        "unit": "",
+                        "type": "number",
+                        "required": false,
+                        "name": "End time",
+                        "attribute": "run_end_time"
+                    }
+                ],
+                "additional_properties": [
+                    {
+                        "value_choice": [],
+                        "value": "",
+                        "unit_choice": "",
+                        "unit": "",
+                        "type": "text",
+                        "required": false,
+                        "name": "Citations",
+                        "attribute": "citations"
+                    }
+                ]
+            },
+            "runs": [],
+            "required_output_files": true,
+            "required_output_conditions": [],
+            "required_input_files": true,
+            "required_input_conditions": ["Settings"],
+            "output_files": [
+                {
+                    "type": "datafile",
+                    "size": 1030022,
+                    "selected": true,
+                    "parent_id": "",
+                    "owner": "gtarcea@umich.edu",
+                    "name": "16-2.JPG",
+                    "level": 0,
+                    "id": "4011b0d0-f211-48bf-b2cd-f5e39a1817be",
+                    "fullname": "WE43 Heat Treatments/AT 250C/AT 16 hours/Optical Images/16-2.JPG",
+                    "displayname": "16-2.JPG",
+                    "children": [],
+                    "c_id": 10,
+                    "birthtime": {
+                        "timezone": "+00:00",
+                        "epoch_time": 1384967982.248
+                    }
+                }
+            ],
+            "output_conditions": {},
+            "notes": [
+                {
+                    "who": "tammasr@umich.edu",
+                    "message": "note 1",
+                    "date": "5/27/2014"
+                }
+            ],
+            "name": "CASM:2014-05-27",
+            "input_files": [
+                {
+                    "type": "datafile",
+                    "size": 1094276,
+                    "selected": false,
+                    "parent_id": "",
+                    "owner": "gtarcea@umich.edu",
+                    "name": "16-1.JPG",
+                    "level": 0,
+                    "id": "423211fd-1071-49ff-91a9-eaed641fa021",
+                    "fullname": "WE43 Heat Treatments/AT 250C/AT 16 hours/Optical Images/16-1.JPG",
+                    "displayname": "16-1.JPG",
+                    "children": [],
+                    "c_id": 11,
+                    "birthtime": {
+                        "timezone": "+00:00",
+                        "epoch_time": 1384968754.262
+                    }
+                }
+            ],
+            "input_conditions": {
+                "Settings": {
+                    "template_type": "condition",
+                    "template_pick": "instrument",
+                    "template_name": "Settings",
+                    "template_mtime": "",
+                    "template_description": "",
+                    "template_birthtime": "",
+                    "owner": "admin@materialscommons.org",
+                    "id": "Settings",
+                    "default_properties": [
+                        {
+                            "value_choice": [],
+                            "value": "test script",
+                            "unit_choice": [],
+                            "unit": "",
+                            "type": "text",
+                            "required": false,
+                            "name": "Submit Script",
+                            "attribute": "submit_script"
+                        },
+                        {
+                            "value_choice": [],
+                            "value": "3",
+                            "unit_choice": [],
+                            "unit": "",
+                            "type": "number",
+                            "required": false,
+                            "name": "Number of Processors",
+                            "attribute": "num_proc"
+                        },
+                        {
+                            "value_choice": [],
+                            "value": "1",
+                            "unit_choice": ["b", "kb", "mb", "gb"],
+                            "unit": "kb",
+                            "type": "number",
+                            "required": false,
+                            "name": "Memory per Processor",
+                            "attribute": "mem_per_proc"
+                        },
+                        {
+                            "value_choice": [],
+                            "value": "45",
+                            "unit_choice": ["s"],
+                            "unit": "s",
+                            "type": "number",
+                            "required": false,
+                            "name": "Walltime",
+                            "attribute": "walltime"
+                        }
+                    ],
+                    "attribute": "job_settings",
+                    "additional_properties": [],
+                    "added_properties": []
+                }
+            },
+            "experiment_run_date": "",
+            "description": "test desc...",
+            "default_properties": [
+                {
+                    "value_choice": [],
+                    "value": {
+                        "notes": "",
+                        "name": "EMAL Helios 1",
+                        "id": "3f1bcc95-5a16-4aae-b182-2568c5793938",
+                        "birthtime": {
+                            "timezone": "+00:00",
+                            "epoch_time": 1393435357.06
+                        },
+                        "additional": [
+                            {
+                                "value_choice": "",
+                                "value": "SEI: Everhart-Thornley Detector",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": "false",
+                                "name": "Detector Type"
+                            },
+                            {
+                                "value_choice": "",
+                                "value": "SEI: through lens Detector (TLD)",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": "false",
+                                "name": "Detector Type"
+                            },
+                            {
+                                "value_choice": "",
+                                "value": "BEI: Concentric Backscatter Deetector",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": "false",
+                                "name": "Detector Type"
+                            },
+                            {
+                                "value_choice": "",
+                                "value": "EBSD - EDAX Hikari 450",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": "false",
+                                "name": "Detector Type"
+                            },
+                            {
+                                "value_choice": "",
+                                "value": "X-ray - EDAX Apollo XL 30mm² UTW silicon drift detector",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": "false",
+                                "name": "Detector Type"
+                            },
+                            {
+                                "value_choice": ["Field emission selection"],
+                                "value": " Field emission selection\n                                     ",
+                                "unit_choice": [],
+                                "unit": "",
+                                "type": "",
+                                "required": false,
+                                "name": "Gun Type"
+                            },
+                            {
+                                "value_choice": "",
+                                "value": "EMAL",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": false,
+                                "name": "Location"
+                            },
+                            {
+                                "value_choice": "",
+                                "value": "FEI",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": false,
+                                "name": "manufacturer"
+                            },
+                            {
+                                "value_choice": "",
+                                "value": "Helios Nanolab 650 Dualbeam Focussed Ion Beam Workstation",
+                                "unit_choice": "",
+                                "unit": "",
+                                "type": "",
+                                "required": false,
+                                "name": "Model#"
+                            },
+                            {
+                                "value_choice": [],
+                                "value": "2013",
+                                "unit_choice": [],
+                                "unit": "",
+                                "type": "",
+                                "required": "False",
+                                "name": "Purchase year"
+                            }
+                        ]
+                    },
+                    "unit_choice": "",
+                    "unit": "",
+                    "type": "machines",
+                    "required": false,
+                    "name": "Machine",
+                    "attribute": "machine"
+                },
+                {
+                    "value_choice": [],
+                    "value": "test program",
+                    "unit_choice": "",
+                    "unit": "",
+                    "type": "text",
+                    "required": false,
+                    "name": "Program",
+                    "attribute": "program"
+                },
+                {
+                    "value_choice": [],
+                    "value": "test url",
+                    "unit_choice": "",
+                    "unit": "",
+                    "type": "text",
+                    "required": false,
+                    "name": "Program URL",
+                    "attribute": "program_url"
+                },
+                {
+                    "value_choice": [],
+                    "value": "test version",
+                    "unit_choice": "",
+                    "unit": "",
+                    "type": "text",
+                    "required": false,
+                    "name": "Program Version",
+                    "attribute": "program_version"
+                },
+                {
+                    "value_choice": [],
+                    "value": "",
+                    "unit_choice": "",
+                    "unit": "",
+                    "type": "number",
+                    "required": false,
+                    "name": "Start time",
+                    "attribute": "run_start_time"
+                },
+                {
+                    "value_choice": [],
+                    "value": "",
+                    "unit_choice": "",
+                    "unit": "",
+                    "type": "number",
+                    "required": false,
+                    "name": "End time",
+                    "attribute": "run_end_time"
+                }
+            ],
+            "added_properties": []
+        },
+        "owner": "tammasr@umich.edu",
+        "name": "CASM:2014-05-27",
+        "mtime": {
+            "timezone": "+00:00",
+            "epoch_time": 1401198590.577,
+            "$reql_type$": "TIME"
+        },
+        "id": "d2b168f7-4533-49d9-9c34-66ca6a8a3db8",
+        "description": "",
+        "clone_number": "",
+        "birthtime": {
+            "timezone": "+00:00",
+            "epoch_time": 1401198529.913,
+            "$reql_type$": "TIME"
+        }
+    }
+]

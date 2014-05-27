@@ -10,8 +10,8 @@
             </thead>
             <tbody>
             <tr ng-repeat="t in experimental_templates">
-                <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="addSelection(t)"></td>
-                <td><a>{{t.template_name}} - {{is_checked(t)}}</a></td>
+                <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
+                <td><a>{{t.template_name}}</a></td>
             </tr>
             </tbody>
         </table>
@@ -24,20 +24,24 @@
             <th>Template name</th>
             </thead>
             <tbody>
-            <tr ng-repeat="t in expermental_templates">
-                <td><input type="checkbox" ng-click="addSelection(t)"></td>
+            <tr ng-repeat="t in computational_templates">
+                <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
                 <td><a>{{t.template_name}}</a></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="col-sm-offset-6">
+    <div class="col-sm-offset-3">
         <form class="form-horizontal">
-            <label>Preferred templates are:</label>
+            <legend> Preferred templates are:</legend>
             <ul ng-repeat="t in preferred_templates">
-                <li>{{t.template_name}}</li>
+                <li>{{t.template_name}} </li>
+
             </ul>
-            <button class="btn btn-default btn-primary" ng-click="updatePreferences()">Save</button>
+            <div ng-if="preferred_templates.length !== 0">
+                <button class="btn btn-default btn-primary" ng-click="updatePreferences()">Save</button>
+
+            </div>
         </form>
     </div>
 

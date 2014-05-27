@@ -15,7 +15,7 @@
                         <li class="dropdown-submenu" >
                             <a  href="#">Experiment</a>
                             <ul class="dropdown-menu" >
-                                <li ng-repeat="exp_temp in process_templates">
+                                <li ng-repeat="exp_temp in experimental_templates">
                                 <a ng-click="change_process(exp_temp)">{{exp_temp.template_name}}</a>
                                 </li>
                             </ul>
@@ -23,7 +23,7 @@
                         <li class="dropdown-submenu" >
                             <a  href="#">Computation</a>
                             <ul class="dropdown-menu" >
-                                <li ng-repeat="comp_temp in process_templates">
+                                <li ng-repeat="comp_temp in computational_templates">
                                     <a ng-click="change_process(comp_temp)">{{comp_temp.template_name}}</a>
                                 </li>
 
