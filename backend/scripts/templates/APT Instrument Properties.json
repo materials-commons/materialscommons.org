@@ -25,12 +25,13 @@
         {
             "name": "Specimen Temperature(K)",
             "attribute": "specimen_temperature",
-            "type": "number",
+            "type": "range",
             "unit": "K",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
-            "required": false
+            "required": false,
+            "range": ["10", "100"]
         },
         {
             "name": "Voltage Pulse Fraction(%)",
@@ -40,7 +41,8 @@
             "unit_choice": [],
             "value": "",
             "value_choice": [],
-            "required": false
+            "required": false,
+            "range": []
         },
         {
             "name": "Laser Pulse Energy(pJ)",
@@ -50,7 +52,8 @@
             "unit_choice": [],
             "value": "",
             "value_choice": [],
-            "required": false
+            "required": false,
+            "range": []
         },
         {
             "name": "Pulse Frequence(kHz)",
@@ -60,7 +63,8 @@
             "unit_choice": [],
             "value": "",
             "value_choice": [],
-            "required": false
+            "required": false,
+            "range": []
         },
         {
             "name": "Evaporation Control",

@@ -5,7 +5,9 @@ body {
     overflow-x: hidden;
     /*line-height: 20px;*/
 }
-
+.validation-invalid {
+    color: #FF4136;
+}
 /*************************************************All about table th, td, hover *************************/
 
 .mc-table {
