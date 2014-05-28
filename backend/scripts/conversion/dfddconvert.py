@@ -5,12 +5,14 @@ from optparse import OptionParser
 import os
 
 
-def datafile_dir(mcdir, datafile_id):
+def datafile_path(mcdir, datafile_id):
     pieces = datafile_id.split("-")
-    return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4])
+    return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4], datafile_id)
 
 
 def id_to_use(f):
+    if 'usesid' not in f:
+        f['usesid'] = ""
     if f['usesid'] == "":
         return f['id']
     return f['usesid']
@@ -56,7 +58,7 @@ def main(conn, mcdir):
                                 )
                             ).run(conn)
         fid = id_to_use(f)
-        fpath = datafile_dir(mcdir, fid)
+        fpath = datafile_path(mcdir, fid)
         try:
             uploaded = os.path.getsize(fpath)
         except:
