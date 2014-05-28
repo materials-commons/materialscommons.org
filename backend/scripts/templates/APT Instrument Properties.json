@@ -25,13 +25,12 @@
         {
             "name": "Specimen Temperature(K)",
             "attribute": "specimen_temperature",
-            "type": "range",
+            "type": "number",
             "unit": "K",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
             "required": false,
-            "range": ["10", "100"]
         },
         {
             "name": "Voltage Pulse Fraction(%)",

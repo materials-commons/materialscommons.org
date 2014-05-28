@@ -97,16 +97,6 @@
                 </div>
 
             </div>
-            <div ng-switch-when="range">
-                <div class="col-sm-4" ng-if="df.required===false">
-                    <input class="form-control"  ng-model="df.value" type="range"  min="{{df.range[0]}}" max="{{df.range[1]}}"
-                           placeholder="{{df.name}}..." ng-disabled="edit" >
-                </div> <span>{{df.value}}</span>
-                <div class="col-sm-4" ng-if="df.required===true">
-                    <input class="form-control"  ng-model="df.value" type="range"  min="{{df.range[0]}}" max="{{df.range[1]}}"
-                           placeholder="{{df.name}}..." ng-disabled="edit" required="">
-                </div> <span>{{df.value}}</span>
-            </div>
         </div>
     </div>
 </div>
