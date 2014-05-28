@@ -105,6 +105,7 @@ textarea.form-control {
     height: 80px;
     width: 400px;
 }
+
 /************************************Other*************************************/
 
 .row {
@@ -169,4 +170,14 @@ h4, .h4, h5, .h5, h6, .h6 {
 .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
 .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
 
+
+.fa-check,
+available {
+    color: limegreen;
+}
+
+.fa-times,
+notavailable{
+    color: red;
+}
 

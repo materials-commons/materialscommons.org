@@ -3,53 +3,27 @@
 
     <div ng-init="toggleCustom = false" ng-show="toggleCustom" class="row">
         <div class="col-sm-6">
+
             <form name="Sample" class="form-horizontal">
                 <legend>Create New Object</legend>
-                <fieldset>
-                    <cgroup label="Classification:">
-                        <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
-                                ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
+                <cgroup label="Classification:">
+                    <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
+                            ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
+                    </select>
+                </cgroup>
+                <!--<div class="form-group">-->
+                <div ng-show="bk.classification">
+                    <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
+                    <div df-properties="" default-properties="doc.default_properties"></div>
+
+                    <cgroup ng-show="showTreatments" label="Treatments:">
+                        <select ng-model="bk.selected_treatment"
+                                ng-options="treat.template_name for treat in treatment_templates"
+                                ng-change="showForm()">
                         </select>
                     </cgroup>
-                    <!--<div class="form-group">-->
-                    <div ng-show="bk.classification">
-                        <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
-                        <div df-properties="" default-properties="doc.default_properties"></div>
-
-                        <cgroup ng-show="showTreatments" label="Treatments:">
-                            <select ng-model="bk.selected_treatment"
-                                    ng-options="treat.template_name for treat in treatment_templates"
-                                    ng-change="showForm()">
-                            </select>
-                        </cgroup>
-
-                        <label class="control-label"><strong>{{bk.selected_treatment.template_name ||
-                            bk.tab_item}} </strong></label>
-
-                        <div class="controls">
-                            <div class="col-sm-6 col-md-6">
-                                <div ng-show="bk.selected_treatment!==''">
-                                    <div class="well">
-                                        <div df-properties="" default-properties="default_properties"></div>
-                                        <button ng-click="addTreatment()" class="btn btn-default btn-primary">Add
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div ng-show="showTreatments" class="col-sm-2 col-md-2">
-                                <label>Treatments Order:</label>
-
-                                <div class="tabbable tabs-right">
-                                    <ul class="nav nav-tabs" ng-repeat="treatment in doc.treatments">
-                                        <li><a ng-click="showTab(treatment, $index)" data-toggle="tab"><strong>{{treatment.template_name}}</strong></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--</div>-->
-                </fieldset>
+                </div>
+                <!--</div>-->
             </form>
             <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
             <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
@@ -84,7 +58,11 @@
 
                     <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:10">
                         <td>{{sample.name}}</td>
-                        <td>{{sample.properties.composition.value}}</td>
+                        <td>
+                            <ul ng-repeat="c in sample.properties.composition.value">
+                                <li>{{c.element}} - {{c.value}} % {{sample.properties.composition.unit}}</li>
+                            </ul>
+                        </td>
                         <td ng-if="sample.available===true">
                             <i class="fa fa-check available"></i>
                         </td>
