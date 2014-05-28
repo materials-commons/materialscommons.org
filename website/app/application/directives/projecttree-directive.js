@@ -2,6 +2,7 @@ Application.Controllers.controller('ProjectTreeController',
     ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state) {
 
         $scope.openFolder = function (item) {
+            console.log(item)
             var e = _.find($scope.trail, function (trailItem) {
                 return trailItem.id === item.id;
             });
@@ -13,6 +14,7 @@ Application.Controllers.controller('ProjectTreeController',
                 }
                 $scope.trail.push(item);
             }
+            console.log(item)
             $scope.dir = item.children;
             $scope.loaded = true;
         };
