@@ -13,6 +13,7 @@ Application.Controllers.controller('ProjectTreeController',
                 }
                 $scope.trail.push(item);
             }
+            console.log(item);
             $scope.dir = item.children;
             $scope.loaded = true;
         };

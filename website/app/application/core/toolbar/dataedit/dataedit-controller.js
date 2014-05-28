@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User","ProjectPath",
+    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath",
         function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath) {
             $scope.model = {
                 is_disabled: true,

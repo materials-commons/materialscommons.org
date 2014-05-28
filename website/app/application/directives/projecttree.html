@@ -22,7 +22,7 @@
                         <th>Owner</th>
                     </tr>
                     </thead>
-                    <tbody>  {{dir}}
+                    <tbody>
                     <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}" data-tt-parent-id="{{t.parent_id}}">
                         <td ng-if="entry.type=='datafile'">
                             <input ng-model="entry.selected" ng-click="fileSelected(entry)" ng-change="entry.selected = !entry.selected" type="checkbox">
