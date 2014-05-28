@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-8 col-md-8">
             <form class="form-inline">
-                <a ng-repeat="trailitem in trail">
+                <a ng-repeat="trailitem in trail"  ng-click="backToFolder(trailitem)">
                     <span><b>{{trailitem}}/ </b></span>
                 </a>
                 <a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>

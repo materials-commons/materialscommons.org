@@ -1,10 +1,5 @@
 Application.Controllers.controller('ProjectTreeController',
-    ["$scope", "mcapi", "Projects", "pubsub", function ($scope, mcapi, Projects, pubsub) {
-        $scope.model = Projects.model;
-
-        pubsub.waitOn($scope, "project.tree", function (treeVisible) {
-            $scope.treeActive = treeVisible;
-        });
+    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state) {
 
         $scope.openFolder = function (item) {
             var e = _.find($scope.trail, function (trailItem) {
@@ -19,10 +14,16 @@ Application.Controllers.controller('ProjectTreeController',
                 $scope.trail.push(item);
             }
             $scope.dir = item.children;
+            $scope.loaded = true;
         };
 
         $scope.backToFolder = function (item) {
-            $scope.dir = item.children;
+            $scope.dir = ProjectPath.update_dir(item);
+        };
+
+        $scope.populatePath = function (entry) {
+            ProjectPath.populate($scope.trail, $scope.dir);
+            $state.go("toolbar.dataedit", {id: entry.id});
         };
 
         $scope.selectProject = function (projectId) {
@@ -47,6 +48,7 @@ Application.Controllers.controller('ProjectTreeController',
                 $scope.loaded = true;
                 $scope.dir = $scope.model.projects[projectId].dir.children;
                 $scope.trail.push($scope.model.projects[projectId].dir);
+
             }
         };
 
@@ -59,7 +61,20 @@ Application.Controllers.controller('ProjectTreeController',
 
         };
 
-        $scope.selectProject($scope.project);
+        function init() {
+            if ($scope.from === 'datafile') {
+                $scope.project = ProjectPath.get_project();
+                $scope.trail = ProjectPath.get_trail();
+                var item = ProjectPath.get_current_item();
+                $scope.openFolder(item);
+            } else {
+                $scope.model = Projects.model;
+                ProjectPath.set_project($scope.project);
+                $scope.selectProject($scope.project);
+            }
+        }
+
+        init();
     }]);
 
 Application.Directives.directive('projectTree',
@@ -74,7 +89,7 @@ Application.Directives.directive('projectTree',
             scope: {
                 ngModel: "@",
                 project: "@project",
-                treeActive: "@active"
+                from: "@from"
             },
             templateUrl: "application/directives/projecttree.html"
         };

@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User",
-        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User) {
+    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User","ProjectPath",
+        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath) {
             $scope.model = {
                 is_disabled: true,
                 desc: ''
@@ -54,6 +54,12 @@ Application.Controllers.controller('toolbarDataEdit',
 
             $scope.edit_details = function () {
                 $scope.model.is_disabled = false;
+            };
+
+            $scope.backToFolder = function (item) {
+                $scope.dir = ProjectPath.update_dir(item);
+                var proj_id = ProjectPath.get_project();
+                $state.go("toolbar.projectspage.overview", {id: proj_id, draft_id: '', from: 'datafile'});
             };
 
             function init() {
