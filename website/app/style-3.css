@@ -180,4 +180,7 @@ available {
 notavailable{
     color: red;
 }
+.modal-backdrop {
+    background-color: none;
+}
 
