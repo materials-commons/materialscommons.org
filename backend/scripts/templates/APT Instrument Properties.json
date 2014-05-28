@@ -30,7 +30,7 @@
             "unit_choice": [],
             "value": "",
             "value_choice": [],
-            "required": false,
+            "required": false
         },
         {
             "name": "Voltage Pulse Fraction(%)",
