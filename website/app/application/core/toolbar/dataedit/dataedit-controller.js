@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath",
-        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath) {
+    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath", "Projects",
+        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath, Projects) {
             $scope.model = {
                 is_disabled: true,
                 desc: ''
@@ -63,16 +63,19 @@ Application.Controllers.controller('toolbarDataEdit',
             };
 
             function init() {
+                $scope.model = {
+                    is_disabled: true,
+                    desc: ''
+                };
                 $scope.id = $stateParams.id;
+                $scope.modal = Projects.model;
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.doc = data;
                         $scope.model.desc = $scope.doc.description;
                         $scope.setupAccessToUserFile();
-                        mcapi('/datadirs/%/datafile', $scope.doc.id)
-                            .success(function (data) {
-                                $scope.trail = data[0].name.split('/');
-                            }).jsonp();
+                        $scope.trail = ProjectPath.get_trail();
+                        $scope.dir = ProjectPath.get_dir();
                     })
                     .error(function (data) {
                         alertService.sendMessage(data.error);
