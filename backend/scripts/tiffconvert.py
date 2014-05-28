@@ -5,6 +5,7 @@ from optparse import OptionParser
 import sys
 import os
 import errno
+import traceback
 
 
 def datafile_dir(mcdir, datafile_id):
@@ -55,6 +56,7 @@ def main():
             try:
                 im = Image.open(image_file)
             except:
+                traceback.print_exc()
                 continue
             conversion_dir = os.path.join(filedir, ".conversion")
             converted_file_path = os.path.join(conversion_dir,
