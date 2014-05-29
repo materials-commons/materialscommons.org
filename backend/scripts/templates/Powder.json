@@ -28,7 +28,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": ["Fine", "Coarse", "Moderately Fine", "Moderately Coarse"],
+            "value_choice": [{"name": "Fine", "value": "fine"},{"name": "Coarse", "value": "coarse"},{"name": "Moderately Fine", "value": "moderately_fine"},{"name": "Moderately Coarse", "value": "moderately_coarse"}],
             "required": false
         }
     ],

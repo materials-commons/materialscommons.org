@@ -20,10 +20,10 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": ["SEI - Everhart-Thornley",
-                             "BSE - Scintillator",
-                             "BSE - Solid State",
-                             "Other - Please Indicate"],
+            "value_choice": [{"name": "SEI - Everhart-Thornley", "value": "sei_everhart_thornley"},
+                             {"name": "BSE - Scintillator", "value": "bse_scintillator"},
+                             {"name": "BSE - Solid State", "value": "bse_solid_state"},
+                             {"name": "Other - Please Indicate", "value": "other_please_indicate"}],
             "required": true
         },
         {

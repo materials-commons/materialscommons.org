@@ -1,4 +1,5 @@
 import dmutil
+import json
 
 
 def add_properties(properties, what):
@@ -54,9 +55,15 @@ def _get_value(attrs):
 
 def new_prop_attrs(name, unit, value, prop_type):
     prop_attrs = {}
+    if prop_type == 'select':
+        x = json.loads(value)
+        prop_attrs['value_name'] = x[u'name']
+        prop_attrs['value'] = x[u'value']
+    else:
+         prop_attrs['value'] = value
+         prop_attrs['value_name'] = ""
     prop_attrs['name'] = name
     prop_attrs['unit'] = unit
-    prop_attrs['value'] = value
     prop_attrs['type'] = prop_type
     return prop_attrs
 
