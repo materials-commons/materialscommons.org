@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarMachines',
-    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
+    ["$scope", "mcapi", "$injector", "Nav", function ($scope, mcapi, $injector, Nav) {
         var $validationProvider = $injector.get('$validation');
 
         $scope.clear_machine = function () {
@@ -56,6 +56,7 @@ Application.Controllers.controller('toolbarMachines',
         };
 
         function init() {
+            Nav.setActiveNav('Machines');
             $scope.doc = {
                 name: '',
                 notes: [],

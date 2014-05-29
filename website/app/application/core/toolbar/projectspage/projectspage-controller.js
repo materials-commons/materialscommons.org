@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarProjectsPage',
-    ["$scope", "$stateParams", "mcapi", "$state", "watcher",
-        function ($scope, $stateParams, mcapi, $state, watcher) {
+    ["$scope", "$stateParams", "mcapi", "$state", "watcher","Nav",
+        function ($scope, $stateParams, mcapi, $state, watcher, Nav) {
             $scope.project_id = $stateParams.id;
             $scope.model = {
                 action: ''
@@ -13,6 +13,7 @@ Application.Controllers.controller('toolbarProjectsPage',
             });
 
             function init() {
+                Nav.setActiveNav('Projects');
                 mcapi('/projects/%', $scope.project_id)
                     .success(function (project) {
                         $scope.project = project;
