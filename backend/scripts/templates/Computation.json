@@ -44,7 +44,7 @@
 	{
             "name": "Start time" ,
             "attribute": "run_start_time",
-            "type": "number",
+            "type": "int",
             "unit": "" ,
             "unit_choice": "" ,
             "value": "",
@@ -54,7 +54,7 @@
 	{
             "name": "End time" ,
             "attribute": "run_end_time",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": "" ,
             "value": "",

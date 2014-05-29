@@ -16,7 +16,7 @@
         {
             "attribute": "temperature",
             "name": "Temperature" ,
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["C", "F"] ,
             "value": "" ,
@@ -26,7 +26,7 @@
         {
             "attribute": "time",
             "name": "Time" ,
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["hours", "minutes", "seconds"] ,
             "value": "" ,

@@ -47,7 +47,7 @@
         {
             "name": "Step size" ,
             "attribute": "step_size",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
