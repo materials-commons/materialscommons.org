@@ -16,7 +16,7 @@
         {
             "name": "Voltage" ,
             "attribute": "voltage",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["V", "KV"] ,
             "value": "" ,
@@ -26,7 +26,7 @@
         {
             "name": "Pixel Size" ,
             "attribute": "pixel_number",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["microns"] ,
             "value": "" ,
@@ -38,7 +38,7 @@
         {
             "name": "Temperature" ,
             "attribute": "temperature",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["C", "F"] ,
             "value": "" ,
@@ -48,7 +48,7 @@
         {
             "name": "Humidity" ,
             "attribute": "humidity",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,

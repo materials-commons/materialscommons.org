@@ -7,6 +7,7 @@
         </label>
 
         <div ng-switch="" on="df.type">
+            <!-------------------------------- text --------------------------------->
             <div ng-switch-when="text">
                 <div ng-if="df.required===false">
                     <div class="col-sm-4">
@@ -33,6 +34,7 @@
                     </div>
                 </div>
             </div>
+            <!-------------------------------- int --------------------------------->
             <div ng-switch-when="number">
                 <div ng-if="df.required===false">
                     <div class="col-sm-4">
@@ -59,13 +61,41 @@
                     </div>
                 </div>
             </div>
-
+            <!-------------------------------- float --------------------------------->
+            <div ng-switch-when="float">
+                <div ng-if="df.required===false">
+                    <div class="col-sm-4">
+                        <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                               placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
+                    </div>
+                    <div class="col-sm-2" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
+                            <option value="" disabled="" selected="">Unit...</option>
+                            <option ng-repeat="each in df.unit_choice">{{each}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div ng-if="df.required===true">
+                    <div class="col-sm-4">
+                        <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                               placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
+                    </div>
+                    <div class="col-sm-2" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
+                            <option value="" disabled="" selected="">Unit...</option>
+                            <option ng-repeat="each in df.unit_choice">{{each}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-------------------------------- url --------------------------------->
             <div ng-switch-when="url">
                 <div class="col-sm-6" ng-if="df.required===false">
                     <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
                            placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
                 </div>
             </div>
+            <!-------------------------------- email --------------------------------->
             <div ng-switch-when="email">
                 <div class="col-sm-6" ng-if="df.required===false">
                     <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
@@ -76,6 +106,7 @@
                            placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
                 </div>
             </div>
+            <!-------------------------------- select --------------------------------->
             <div ng-switch-when="select">
                 <div class="col-sm-4" ng-if="df.value_choice.length!==0">
                     <select class="form-control" ng-model="df.value" ng-disabled="edit">
@@ -89,6 +120,7 @@
                     </div>
                 </div>
             </div>
+            <!-------------------------------- machines --------------------------------->
             <div ng-switch-when="machines">
                 <div class="col-sm-4">
                 <select class="form-control" ng-model="df.value" ng-options="mach.name for mach in machinesList"
@@ -96,6 +128,7 @@
                 </select>
                 </div>
             </div>
+            <!-------------------------------- composition --------------------------------->
             <div ng-switch-when="composition">
                 <button ng-click="custom=!custom">+</button>
                 <div ng-show="custom">

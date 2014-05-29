@@ -15,7 +15,7 @@
 	{
             "name": "Number of Processors" ,
             "attribute": "num_proc",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
@@ -25,7 +25,7 @@
 	{
             "name": "Memory per Processor" ,
             "attribute": "mem_per_proc",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["b", "kb", "mb", "gb"],
             "value": "" ,
@@ -35,7 +35,7 @@
 	{
             "name": "Walltime" ,
             "attribute": "walltime",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["s"] ,
             "value": "" ,

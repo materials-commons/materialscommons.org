@@ -24,7 +24,7 @@
         {
             "name": "Length" ,
             "attribute": "length",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["cm", "m"] ,
             "value": "" ,
@@ -34,7 +34,7 @@
         {
             "name": "Width" ,
             "attribute": "width",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["cm","m"] ,
             "value": "" ,

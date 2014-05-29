@@ -29,7 +29,7 @@
         {
             "name": "Voltage(kV)",
             "attribute": "voltage",
-            "type": "number",
+            "type": "int",
             "unit": "kV",
             "unit_choice": [],
             "value": "",
@@ -39,7 +39,7 @@
         {
             "name": "Current(A)",
             "attribute": "current",
-            "type": "number",
+            "type": "int",
             "unit": "A",
             "unit_choice": [],
             "value": "",
@@ -49,7 +49,7 @@
         {
             "name": "Stage Tilt(Degrees)",
             "attribute": "stage_tilt",
-            "type": "number",
+            "type": "int",
             "unit": "o",
             "unit_choice": [],
             "value": "",
@@ -59,7 +59,7 @@
         {
             "name": "Magnification",
             "attribute": "magnification",
-            "type": "number",
+            "type": "int",
             "unit": "",
             "unit_choice": [],
             "value": "",
@@ -69,7 +69,7 @@
         {
             "name": "Specimen/Stage Bias(V)",
             "attribute": "specimen_stage_bias",
-            "type": "number",
+            "type": "int",
             "unit": "V",
             "unit_choice": [],
             "value": "",
@@ -79,7 +79,7 @@
         {
             "name": "Column Bias(V)",
             "attribute": "column_bias",
-            "type": "number",
+            "type": "int",
             "unit": "V",
             "unit_choice": [],
             "value": "",

@@ -17,7 +17,7 @@
         {
             "name": "Run Time" ,
             "attribute": "run_time",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": ["hrs", "mins", "secs"] ,
             "value": "" ,
@@ -79,7 +79,7 @@
         {
             "name": "Brightness" ,
             "attribute": "brightness",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,

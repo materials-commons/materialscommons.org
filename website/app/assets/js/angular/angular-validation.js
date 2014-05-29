@@ -33,8 +33,10 @@
                 required: /^.+$/,
                 url: /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/,
                 email: /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
-                number: /^$|^\d+$|^[-]?\d+(\.\d+)?$/,
-                text: /.*/
+                number: /^$|^\d+$/,
+                text: /.*/,
+//              float: /^[-]?\d+(\.\d+)?$/
+                float: /[+-]?([0-9]+\.([0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?/
             };
 
 
@@ -56,7 +58,11 @@
                     success: ''
                 },
                 number: {
-                    error: 'Please enter a valid number.',
+                    error: 'Please enter a valid integer.',
+                    success: ''
+                },
+                float: {
+                    error: 'Please enter a valid float.',
                     success: ''
                 },
                 text: {
