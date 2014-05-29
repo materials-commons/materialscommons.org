@@ -20,7 +20,7 @@
             "unit_choice": ["C", "F"] ,
             "value": "" ,
             "value_choice": [],
-            "required": true
+            "required": false
         },
         {
             "attribute": "time",
@@ -30,7 +30,7 @@
             "unit_choice": ["hours", "minutes", "seconds"] ,
             "value": "" ,
             "value_choice": [],
-            "required": true
+            "required": false
         },
         {
             "attribute": "quench",
@@ -40,7 +40,7 @@
             "unit_choice": [],
             "value": "" ,
             "value_choice": [],
-            "required": true
+            "required": false
         }
     ],
     "additional_properties":[],
