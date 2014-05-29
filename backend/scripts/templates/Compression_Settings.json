@@ -1,0 +1,34 @@
+{
+    "id": "Compression Settings",
+    "attribute": "compression_settings",
+    "default_properties": [
+        {
+            "name": "Strain" ,
+            "attribute": "strain",
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": ["mm/mm", "%"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "Strain rate",
+            "name": "strain_rate" ,
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": ["1/s", "mm/min"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Compression Settings" ,
+    "template_pick": "instrument" ,
+    "template_type": "condition"
+}

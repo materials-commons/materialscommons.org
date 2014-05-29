@@ -39,7 +39,6 @@
 
                 <p ng-if="samples_list.length!=0">
                 </p>
-
                 <p></p>
                 <table class="table table-striped">
                     <thead>
@@ -52,8 +51,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
-
                     <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:10">
                         <td>{{sample.name}}</td>
                         <td>
@@ -86,7 +83,7 @@
                             </ul>
                         </div>
                         <div ng-if="property.name!=='Composition'">
-                            <input class="input-large" ng-model="property.value" type="text"
+                            <input class="form-control" class="input-large" ng-model="property.value" type="text"
                                    ng-disabled="true">
                             {{ property.unit }}
                         </div>

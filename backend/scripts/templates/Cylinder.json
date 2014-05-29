@@ -1,0 +1,44 @@
+{
+    "id": "Cylinder" ,
+    "default_properties": [
+        {
+            "name": "Composition" ,
+            "attribute": "composition",
+            "type": "composition" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": [] ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Height" ,
+            "attribute": "height",
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": ["mm"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Diameter" ,
+            "attribute": "diameter",
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": ["mm"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "Describe your initial object" ,
+    "template_mtime": "" ,
+    "template_name": "Cylinder" ,
+    "template_pick": "" ,
+    "template_type": "material"
+}
