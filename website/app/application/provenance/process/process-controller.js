@@ -12,6 +12,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.doc.required_input_conditions = template.required_input_conditions;
                 $scope.doc.required_output_conditions = template.required_output_conditions;
                 $scope.doc.required_input_files = template.required_input_files;
+                console.log(template);
                 $scope.doc.required_output_files = template.required_output_files;
                 var now = new Date();
                 var dd = ("0" + now.getDate()).slice(-2);
