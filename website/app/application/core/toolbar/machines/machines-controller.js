@@ -44,7 +44,6 @@ Application.Controllers.controller('toolbarMachines',
             } else {
                 $validationProvider.validate(form);
             }
-
         };
 
         $scope.moreDetails = function (machine) {

@@ -50,14 +50,7 @@
                 </div>
                 <div ng-hide="flag">
                     <div upperlevel-object="" doc="machine" edit="true"></div>
-
-                    <div ng-repeat="property in machine.properties">
-                        <cgroup label="{{property.name}}">
-                            <input class="input-large form-control" ng-model="property.value" ng-disabled="true"
-                                   type="text">
-                            {{ property.unit }}
-                        </cgroup>
-                    </div>
+                    <div iterate-properties all-properties="machine.properties"></div>
                 </div>
             </form>
         </div>

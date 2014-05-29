@@ -31,7 +31,9 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": ["In", "Out", "Knife edge"],
+            "value_choice": [{"name": "In", "value": "in"},
+                             {"name": "Out", "value": "out"},
+                             {"name": "Knife edge", "value": "knife_edge"}],
             "required":  false  
         },
         {
