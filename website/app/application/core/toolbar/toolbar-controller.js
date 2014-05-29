@@ -1,11 +1,11 @@
 Application.Controllers.controller('toolbar',
-    ["$scope", "Nav", "msocket", function ($scope, Nav, msocket) {
+    ["$scope", "Nav", "msocket",  function ($scope, Nav, msocket) {
         $scope.isActiveStep = function (nav) {
-            return Nav.isActiveToolbar(nav);
+            return Nav.isActiveNav(nav);
         };
 
         $scope.showStep = function (step) {
-            Nav.setActiveToolbar(step);
+            Nav.setActiveNav(step);
         };
 
         $scope.$on('socket:connect', function (ev, data) {
@@ -19,6 +19,7 @@ Application.Controllers.controller('toolbar',
         $scope.$on('socket:error', function (ev, data) {
             $scope.service.status = "Not Connected";
         });
+
 
         function init() {
             $scope.showFileServices = false;

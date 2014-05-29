@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarTags',
-    ["$scope", "mcapi", "pubsub", function ($scope, mcapi, pubsub) {
+    ["$scope", "mcapi", "pubsub", "Nav", function ($scope, mcapi, pubsub, Nav) {
         $scope.tagHeader = "All Tags";
 
         pubsub.waitOn($scope, 'tags.change', function () {
@@ -12,10 +12,15 @@ Application.Controllers.controller('toolbarTags',
                     $scope.tags = data.sort(function (a, b) {
                         return a.count - b.count;
                     });
-                    $scope.tags  = $scope.tags.reverse();
+                    $scope.tags = $scope.tags.reverse();
                 }).jsonp();
         };
 
         $scope.tagsCount();
+        function init() {
+            Nav.setActiveNav('Tags');
+
+        }
+        init();
 
     }]);

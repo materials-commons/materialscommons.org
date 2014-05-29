@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarTemplates',
-    ["$scope", "mcapi", "User", "alertService", "$filter", function ($scope, mcapi, User, alertService, $filter) {
+    ["$scope", "mcapi", "User", "alertService", "$filter", "Nav", function ($scope, mcapi, User, alertService, $filter, Nav) {
         $scope.check = function (t) {
             var status = $scope.preferred_templates.filter(function (el) {
                 return el.template_name === t.template_name;
@@ -23,9 +23,7 @@ Application.Controllers.controller('toolbarTemplates',
                 }).put({'templates': $scope.preferred_templates});
         };
 
-        $scope.remove = function (t) {
 
-        };
         $scope.is_checked = function (t) {
             for (var i = 0; i < $scope.preferred_templates.length; i++)
                 if ($scope.preferred_templates[i].template_name === t.template_name) {
@@ -34,6 +32,7 @@ Application.Controllers.controller('toolbarTemplates',
         };
 
         function init() {
+            Nav.setActiveNav('Templates');
             $scope.preferred_templates = [];
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_type":"process"')

@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarObjects',
-    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
+    ["$scope", "mcapi", "$injector", "Nav", function ($scope, mcapi, $injector, Nav) {
         $scope.showForm = function () {
             $scope.default_properties = $scope.bk.selected_treatment.default_properties;
             $scope.bk.tab_item = '';
@@ -97,6 +97,7 @@ Application.Controllers.controller('toolbarObjects',
         };
 
         function init() {
+            Nav.setActiveNav('Objects');
             $scope.showTreatments = false;
             $scope.clear();
             mcapi('/templates')

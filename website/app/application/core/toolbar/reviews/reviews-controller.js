@@ -1,7 +1,7 @@
 Application.Controllers.controller('toolbarReviews',
-    ["$scope", "mcapi", "$state", "pubsub",
+    ["$scope", "mcapi", "$state", "pubsub", "Nav",
 
-        function ($scope, mcapi, $state, pubsub) {
+        function ($scope, mcapi, $state, pubsub, Nav) {
             pubsub.waitOn($scope, 'reviews.change', function () {
                 $scope.retrieveReviewsToConduct();
             });
@@ -43,6 +43,7 @@ Application.Controllers.controller('toolbarReviews',
             };
 
             $scope.init = function () {
+                Nav.setActiveNav('Reviews');
                 $scope.retrieveReviewsRequested();
                 $scope.retrieveReviewsToConduct();
             };
