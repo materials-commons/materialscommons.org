@@ -19,7 +19,7 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": ["FIM", "Voltage", "Laser"],
+            "value_choice": [{"name": "FIM", "value" : "fim"}, {"name": "Voltage", "value" : "voltage"}, {"name": "Laser", "value" : "laser"}],
             "required": false
         },
         {
@@ -72,9 +72,7 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": ["Constant Detector Rate",
-                             "Constant Evaporation Rate",
-                             "Constant Charge Rate Ratio"],
+            "value_choice": [{"name": "Constant Detector Rate", "value" : "constant_detector_rate"}, {"name": "Constant Evaporation Rate", "value" : "constant_evaporation_rate"}, {"name": "Constant Charge Rate Ratio", "value" : "constant_charge_rate_ratio"}],
             "required": false
         },
         {
@@ -84,7 +82,7 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": ["Atom", "Pulse"],
+            "value_choice": [{"name": "Atom", "value" : "atom"}, {"name": "Pulse", "value" : "pulse"}],
             "required": false
         },
         {
@@ -104,7 +102,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": ["He", "Ar", "Ne", "Other", "None"],
+            "value_choice": [{"name": "He", "value" : "He"},{"name": "Ar", "value" : "Ar"},{"name": "Ne", "value" : "Ne"},{"name": "Other", "value" : "other"},{"name": "None", "value" : "none"}],
             "required": false
         },
         {

@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarDrafts',
-    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService",
-        function ($scope, pubsub, ProvDrafts, $state, alertService) {
+    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService", "Nav",
+        function ($scope, pubsub, ProvDrafts, $state, alertService, Nav) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
 
@@ -39,6 +39,7 @@ Application.Controllers.controller('toolbarDrafts',
             };
 
             function init() {
+                Nav.setActiveNav('Drafts');
                 $scope.drafts = ProvDrafts.drafts;
             }
 
