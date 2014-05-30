@@ -1,4 +1,3 @@
-
 var Application = Application || {};
 
 Application.Constants = angular.module('application.core.constants', []);
@@ -43,7 +42,8 @@ app.factory('msocket', ["socketFactory", function (socketFactory) {
     return msocket;
 }]);
 
-app.config(["$stateProvider", function ($stateProvider) {
+app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $validationProvider) {
+
     mcglobals = {};
     doConfig();
     $stateProvider
@@ -220,10 +220,10 @@ app.config(["$stateProvider", function ($stateProvider) {
         .state('toolbar.projectspage.provenance.iosteps.files', {
             url: '/files:iostep',
             templateUrl: 'application/provenance/iosteps/files/files.html',
-            onEnter: function(pubsub) {
+            onEnter: function (pubsub) {
                 pubsub.send("project.tree", true);
             },
-            onExit: function(pubsub) {
+            onExit: function (pubsub) {
                 pubsub.send("project.tree", false);
             }
         })
@@ -248,7 +248,8 @@ app.config(["$stateProvider", function ($stateProvider) {
             url: '/config',
             templateUrl: 'application/core/toolbar/fileservices/config/config.html'
         });
-}]);
+}])
+;
 
 app.run(["$rootScope", "User", function ($rootScope, User) {
     $rootScope.$on('$stateChangeStart', function () {
