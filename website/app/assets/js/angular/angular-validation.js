@@ -40,7 +40,6 @@
 
             };
 
-
             /**
              * default error, success message
              * @type {{required: {error: string, success: string}, url: {error: string, success: string}, email: {error: string, success: string}, number: {error: string, success: string}}}
@@ -84,7 +83,6 @@
             this.setExpression = function (obj) {
                 angular.extend(expression, obj);
             };
-
 
             /**
              * Get the Expression
