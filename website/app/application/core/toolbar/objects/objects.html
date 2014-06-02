@@ -39,6 +39,7 @@
 
                 <p ng-if="samples_list.length!=0">
                 </p>
+
                 <p></p>
                 <table class="table table-striped">
                     <thead>
@@ -75,21 +76,32 @@
             <form class="form-horizontal" ng-show="sample">
                 <legend>Details</legend>
                 <div upperlevel-object="" doc="sample" edit="true"></div>
-                <div ng-repeat="property in sample.properties">
-                    <cgroup label="{{property.name}}">
-                        <div ng-if="property.name=='Composition'">
-                            <ul ng-repeat="c in sample.properties.composition.value">
-                                <li style="list-style: none"><b>{{c.element}}</b> - {{c.value}} % {{c.unit}}</li>
-                            </ul>
+                <div class="form-group" ng-repeat="p in sample.properties">
+                    <label class="col-sm-2 control-label">{{p.name}}</label>
+                    <div ng-if="p.name!=='Composition'">
+                        <div class="col-sm-4" ng-if="p.type === 'select'">
+                            <input class="input-small form-control" ng-model="p.value_name" ng-disabled="true" type="text">
                         </div>
-                        <div ng-if="property.name!=='Composition'">
-                            <input class="form-control" class="input-large" ng-model="property.value" type="text"
-                                   ng-disabled="true">
-                            {{ property.unit }}
+                        <div class="col-sm-4" ng-if="p.type !== 'select'">
+                            <input class="input-small form-control" ng-model="p.value" ng-disabled="true" type="text">
                         </div>
-
+                        <div class="col-sm-4">
+                            {{p.unit}}
+                        </div>
+                    </div>
+                    <div ng-if="p.name==='Composition'">
+                        <ul ng-repeat="c in sample.properties.composition.value">
+                            <li style="list-style: none"><b>{{c.element}}</b> - {{c.value}} % {{c.unit}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <cgroup label="Owner">
+                        <input class="form-control" class="input-large" ng-model="sample.owner" type="text"
+                               ng-disabled="true">
                     </cgroup>
                 </div>
+
                 <legend>Processes</legend>
                 <div ng-if="processes_list.length === 0">
                     <p class="text-muted">object {{sample.name}} has not been used in any process</p>
