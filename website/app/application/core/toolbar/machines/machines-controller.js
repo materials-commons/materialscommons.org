@@ -2,21 +2,6 @@ Application.Controllers.controller('toolbarMachines',
     ["$scope", "mcapi", "$injector", "Nav", function ($scope, mcapi, $injector, Nav) {
         var $validationProvider = $injector.get('$validation');
 
-        $validationProvider.setExpression({
-            range: function (value, min, max) {
-                console.log(min);
-                if (value > 10 && value < 100) {
-                    return value;
-                }
-            }
-        });
-
-        $validationProvider.setDefaultMsg({
-            range: {
-                error: 'This should be in range',
-                success: 'Thanks!'
-            }
-        });
         $scope.clear_machine = function () {
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_type":"machine"')
