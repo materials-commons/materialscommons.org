@@ -1,11 +1,10 @@
 <div ng-controller="toolbarObjects">
     <button class="btn btn-default btn-primary" ng-click="toggleCustom = !toggleCustom">New</button>
 
-    <div ng-init="toggleCustom = false" ng-show="toggleCustom" class="row">
-        <div class="col-sm-6">
-
-            <form name="Sample" class="form-horizontal">
-                <legend>Create New Object</legend>
+    <div ng-init="toggleCustom = false" ng-show="toggleCustom">
+        <form name="Sample" class="row form-horizontal">
+            <legend>Create New Object</legend>
+            <div class="col-sm-6">
                 <cgroup label="Classification:">
                     <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
                             ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
@@ -14,19 +13,42 @@
                 <div ng-show="bk.classification">
                     <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
                     <div df-properties="" default-properties="doc.default_properties"></div>
-
-                    <cgroup ng-show="showTreatments" label="Treatments:">
-                        <select ng-model="bk.selected_treatment"
+                </div>
+            </div>
+            <div ng-show="bk.classification">
+                <div class="col-sm-4">
+                    <cgroup label="Treatments:">
+                        <select class="form-control" ng-model="bk.selected_treatment"
                                 ng-options="treat.template_name for treat in treatment_templates"
                                 ng-change="showForm()">
                         </select>
                     </cgroup>
+                    <label class='control-label'><strong>{{bk.selected_treatment.template_name ||
+                        bk.tab_item}} </strong></label>
+
+                    <div ng-show="bk.selected_treatment!==''">
+                        <div class="well">
+                            <div df-properties default-properties="default_properties"></div>
+                            <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
                 </div>
-            </form>
+                <div class="col-sm-2">
+                    <label>Treatments Order:</label>
+                    <tabset vertical="true" type="pills">
+                        <tab ng-repeat="treatment in doc.treatments" ng-click="showTab(treatment, $index)"
+                             heading="{{treatment.template_name}}">
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </form>
+        <div class="row">
             <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
             <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
             <div saved-notification="" message="message"></div>
         </div>
+
     </div>
 
     <div class="row">
@@ -78,9 +100,11 @@
                 <div upperlevel-object="" doc="sample" edit="true"></div>
                 <div class="form-group" ng-repeat="p in sample.properties">
                     <label class="col-sm-2 control-label">{{p.name}}</label>
+
                     <div ng-if="p.name!=='Composition'">
                         <div class="col-sm-4" ng-if="p.type === 'select'">
-                            <input class="input-small form-control" ng-model="p.value_name" ng-disabled="true" type="text">
+                            <input class="input-small form-control" ng-model="p.value_name" ng-disabled="true"
+                                   type="text">
                         </div>
                         <div class="col-sm-4" ng-if="p.type !== 'select'">
                             <input class="input-small form-control" ng-model="p.value" ng-disabled="true" type="text">
@@ -90,9 +114,9 @@
                         </div>
                     </div>
                     <div ng-if="p.name==='Composition'">
-                        <ul ng-repeat="c in sample.properties.composition.value">
-                            <li style="list-style: none"><b>{{c.element}}</b> - {{c.value}} % {{c.unit}}</li>
-                        </ul>
+                        <li style="list-style: none" ng-repeat="c in sample.properties.composition.value">
+                            <span>{{c.element}} - {{c.value}} % {{sample.properties.composition.unit}}</span>
+                        </li>
                     </div>
                 </div>
                 <div>
@@ -101,7 +125,30 @@
                                ng-disabled="true">
                     </cgroup>
                 </div>
+                <legend>Treatments</legend>
+                <div ng-if="sample.treatments.length==0">
+                    <p class="muted">No treatments applied to the material {{sample.name}}</p>
+                </div>
+                <div ng-if="sample.treatments.length!==0">
+                    <div ng-repeat="treatment in sample.treatments">
+                        <i>{{treatment.template}}:</i>
+                            <div class="form-group" ng-repeat="property in treatment.properties">
+                                <cgroup label="{{property.name}}">
+                                    <div class="col-sm-6" ng-if="p.type === 'select'">
+                                        <input class="form-control" ng-model="property.value_name" ng-disabled="true"
+                                               type="text">
+                                    </div>
+                                    <div class="col-sm-6" ng-if="p.type !== 'select'">
+                                        <input class="form-control" ng-model="property.value" ng-disabled="true" type="text">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        {{ property.unit }}
+                                    </div>
 
+                                </cgroup>
+                            </div>
+                    </div>
+                </div>
                 <legend>Processes</legend>
                 <div ng-if="processes_list.length === 0">
                     <p class="text-muted">object {{sample.name}} has not been used in any process</p>
