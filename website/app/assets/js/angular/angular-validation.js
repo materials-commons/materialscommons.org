@@ -36,7 +36,13 @@
                 text: /.*/,
                 number: /^[-]?\d+(\.\d+)?$/,
                 float: /[+-]?([0-9]+\.([0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?/,
-                int: /^$|^\d+$/
+                int: /^$|^\d+$/,
+                range1: function (value, min, max) {
+                    if (value >= min && value <= max) {
+                        return true;
+                    }
+                    return false;
+                }
             };
 
             /**
@@ -71,6 +77,10 @@
                 int: {
                     error: 'Please enter a valid integer.',
                     success: ''
+                },
+                range1: {
+                    error: 'please enter number within range',
+                    success: 'verified'
                 }
             };
 
@@ -317,7 +327,8 @@
 
                 // Check with Function
                 if (expressionType === Function) {
-                    return $q.all([$validationProvider.getExpression(validation)(value)])
+                    console.dir(attrs)
+                    return $q.all([$validationProvider.getExpression(validation)(value, attrs.min, attrs.max)])
                         .then(function (data) {
                             if (data && data.length > 0 && data[0]) {
                                 return valid.success();
