@@ -1,10 +1,9 @@
 <div ng-controller="toolbarObjects">
     <button class="btn btn-default btn-primary" ng-click="toggleCustom = !toggleCustom">New</button>
-
     <div ng-init="toggleCustom = false" ng-show="toggleCustom">
         <form name="Sample" class="row form-horizontal">
             <legend>Create New Object</legend>
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <cgroup label="Classification:">
                     <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
                             ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
@@ -16,7 +15,7 @@
                 </div>
             </div>
             <div ng-show="bk.classification">
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <cgroup label="Treatments:">
                         <select class="form-control" ng-model="bk.selected_treatment"
                                 ng-options="treat.template_name for treat in treatment_templates"
@@ -27,10 +26,8 @@
                         bk.tab_item}} </strong></label>
 
                     <div ng-show="bk.selected_treatment!==''">
-                        <div class="well">
                             <div df-properties default-properties="default_properties"></div>
                             <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
-                        </div>
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -62,7 +59,6 @@
                 <p ng-if="samples_list.length!=0">
                 </p>
 
-                <p></p>
                 <table class="table table-striped">
                     <thead>
                     <tr>
