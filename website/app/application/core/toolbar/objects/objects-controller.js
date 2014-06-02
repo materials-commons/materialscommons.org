@@ -82,7 +82,8 @@ Application.Controllers.controller('toolbarObjects',
                 notes: [],
                 available: true,
                 default_properties: [],
-                added_properties: []
+                added_properties: [],
+                treatments: [],
             };
             $scope.bk = {
                 selected_treatment: '',
@@ -95,7 +96,7 @@ Application.Controllers.controller('toolbarObjects',
 
         function init() {
             Nav.setActiveNav('Objects');
-            $scope.showTreatments = false;
+            //$scope.showTreatments = false;
             $scope.clear();
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_pick":"treatment"')

@@ -1,34 +1,34 @@
-<cgrouprequired label="Name:">
-    <input class="form-control" ng-model="doc.name" placeholder="Name..." ng-disabled="edit" required="" type="text">
-</cgrouprequired>
+    <cgrouprequired label="Name:">
+        <input class="form-control" ng-model="doc.name" placeholder="Name..." ng-disabled="edit" required="" type="text">
+    </cgrouprequired>
 
-<cgroup label="Description:">
-    <textarea class="form-control" placeholder="Description..." ng-model="doc.description" ng-disabled="edit"></textarea>
-</cgroup>
-
-<div ng-if="edit===false">
-    <cgroup label="Notes:">
-        <textarea class="form-control" placeholder="Notes..." ng-model="bk.new_note"></textarea>
+    <cgroup label="Description:">
+        <textarea class="form-control" placeholder="Description..." ng-model="doc.description" ng-disabled="edit"></textarea>
     </cgroup>
-    <cgroup>
-        <button ng-click="add_notes()" class="btn btn-default btn-info">Add</button>
-    </cgroup>
-</div>
 
-<div ng-show="doc.notes.length > 0">
-    <h6>Previous Notes:</h6>
-    <table class="table table-bordered">
-        <thead>
-        <tr><th>Message</th>
-            <th>Who</th>
-            <th>Date Created</th>
-        </tr></thead>
-        <tbody>
-        <tr ng-repeat="note in doc.notes">
-            <td>{{note.message}}</td>
-            <td>{{note.who}}</td>
-            <td>{{note.date}}</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <div ng-if="edit===false">
+        <cgroup label="Notes:">
+            <textarea class="form-control" placeholder="Notes..." ng-model="bk.new_note"></textarea>
+        </cgroup>
+        <cgroup>
+            <button ng-click="add_notes()" class="btn btn-default btn-info">Add</button>
+        </cgroup>
+    </div>
+
+    <div ng-show="doc.notes.length > 0">
+        <h6>Previous Notes:</h6>
+        <table class="table table-bordered">
+            <thead>
+            <tr><th>Message</th>
+                <th>Who</th>
+                <th>Date Created</th>
+            </tr></thead>
+            <tbody>
+            <tr ng-repeat="note in doc.notes">
+                <td>{{note.message}}</td>
+                <td>{{note.who}}</td>
+                <td>{{note.date}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>

@@ -6,7 +6,8 @@ Application.Directives.directive('upperlevelObject',
             scope: {
                 doc: '=',
                 edit: '=',
-                bk: '='
+                bk: '=',
+                spanB: '='
             },
             templateUrl: 'application/directives/upperlevel-object.html'
         };
