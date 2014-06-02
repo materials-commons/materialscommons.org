@@ -17,6 +17,14 @@ def get_all_objects():
     return args.json_as_format_arg(selection)
 
 
+@app.route('/objects/user/<user>', methods=['GET'])
+@jsonp
+def get_objects_user(user):
+    rr = r.table('samples').filter({'owner': user}).order_by(r.desc('birthtime'))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+
+
 @app.route('/objects/<object_id>', methods=['GET'])
 @jsonp
 def get_object(object_id):

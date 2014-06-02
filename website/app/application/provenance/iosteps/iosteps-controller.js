@@ -71,7 +71,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                     $scope.doc.process.required_input_conditions.forEach(function (condition) {
                         $scope.steps.push(condition);
                     });
-                    console.log($scope.doc.process.required_input_files)
                     if ($scope.doc.process.required_input_files === true) {
                         $scope.steps.push("Files");
                     }
@@ -92,7 +91,6 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 $scope.doc = ProvDrafts.current;
                 $scope.steps = [];
                 $scope.loadSteps();
-                console.log($scope.steps);
                 $scope.activeStep = $scope.steps[0];
                 $scope.showStep($scope.activeStep);
             };
