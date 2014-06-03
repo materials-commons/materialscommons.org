@@ -68,7 +68,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
 
                 mcapi('/user/%/preferred_templates', User.u())
                     .success(function (data) {
-                            $scope.preferred_templates = data.preferences.templates;
+                        $scope.preferred_templates = data.preferences.templates;
                     }).jsonp();
 
                 mcapi('/machines')
