@@ -1,13 +1,37 @@
-<div class="form-group" ng-repeat="p in allProperties">
-    <label class="col-sm-2 control-label">{{p.name}}</label>
+    <div class="form-group" ng-repeat="p in allProperties">
+        <label class="col-sm-2 control-label">{{p.name}}</label>
 
-    <div class="col-sm-4" ng-if="p.type === 'select'">
-        <input class="input-small form-control" ng-model="p.value_name" ng-disabled="true" type="text">
+        <div ng-if="p.name!=='Composition'">
+            <div class="col-sm-4" ng-if="p.type === 'select'">
+                <input class="input-small form-control" ng-model="p.value_name" ng-disabled="edit"
+                       type="text">
+            </div>
+            <div class="col-sm-4" ng-if="p.type !== 'select'">
+                <input class="input-small form-control" ng-model="p.value" ng-disabled="edit" type="text">
+            </div>
+            <div class="col-sm-4">
+                {{p.unit}}
+            </div>
+        </div>
+        <div ng-if="p.name==='Composition'">
+            <li style="list-style: none" ng-repeat="c in allProperties.composition.value">
+                <span>{{c.element}} - {{c.value}} % {{allProperties.composition.unit}}</span>
+            </li>
+        </div>
     </div>
-    <div class="col-sm-4" ng-if="p.type !== 'select'">
-        <input class="input-small form-control" ng-model="p.value" ng-disabled="true" type="text">
-    </div>
-    <div class="col-sm-4">
-        {{p.unit}}
-    </div>
-</div>
+<!--<div ng-hide="composition">-->
+    <!--<div class="form-group" ng-repeat="p in allProperties">-->
+        <!--<label class="col-sm-2 control-label">{{p.name}}</label>-->
+
+        <!--<div class="col-sm-4" ng-if="p.type === 'select'">-->
+            <!--<input class="input-small form-control" ng-model="p.value_name" ng-disabled="edit" type="text">-->
+        <!--</div>-->
+        <!--<div class="col-sm-4" ng-if="p.type !== 'select'">-->
+            <!--<input class="input-small form-control" ng-model="p.value" ng-disabled="edit" type="text">-->
+        <!--</div>-->
+        <!--<div class="col-sm-4">-->
+            <!--{{p.unit}}-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+

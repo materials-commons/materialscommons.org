@@ -7,12 +7,7 @@
 
             </cgroup>
             <div upperlevel-object="" doc="doc.sample" bk="bk" edit="false"></div>
-            <div ng-repeat="property in doc.sample.properties">
-                <cgroup label="{{property.name}}">
-                    <input class="input-large form-control" ng-model="property.value" ng-disabled="false" type="text">
-                    {{ property.unit }}
-                </cgroup>
-            </div>
+            <div iterate-properties="" all-properties="doc.sample.properties"  edit="false"></div>
         </div>
         <div ng-switch-when="pick_sample">
             <cgrouprequired label="Pick a sample:">

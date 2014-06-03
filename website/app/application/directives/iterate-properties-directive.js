@@ -3,7 +3,8 @@ Application.Directives.directive('iterateProperties',
         return {
             restrict: "A",
             scope: {
-                allProperties: '='
+                allProperties: '=',
+                edit: '='
             },
             templateUrl: 'application/directives/iterate-properties.html'
         };
