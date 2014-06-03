@@ -44,7 +44,7 @@ function start_servers()
     R=$(is_running "mcfs" "db-connect=localhost:$MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcfs..."
-        mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
+        mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="$MCDB_CONNECTION" > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
     fi
 
     if [ $TESTSERVER = "u" ]; then
@@ -142,6 +142,9 @@ function show_env()
     echo "   mcfs command:           nohup mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:${MCDB_PORT} > /tmp/mcfs.out.${SERVERTYPE} 2>&1&"
 }
 
+export MCDB_NAME="materialscommons"
+export MCDB_TYPE="rethinkdb"
+
 if [ "$TESTING" = "-u" ]; then
     TESTSERVER=u
     SERVERTYPE="unit"
@@ -177,6 +180,7 @@ if [ $TESTSERVER = "t" ]; then
 elif [ $TESTSERVER = "u" ]; then
     export MC_SERVICE_PORT=5002
     export MCDB_PORT=30815
+    export MCDB_CONNECTION="localhost:$MCDB_PORT"
     export MCDB_DIR=~/testdb
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
@@ -194,6 +198,7 @@ elif [ $TESTSERVER = "u" ]; then
     (cd $MCDB_DIR; rm -rf rethinkdb_data)
 else
     export MCDB_PORT=28015
+    export MCDB_CONNECTION="localhost:$MCDB_PORT"
     export MC_SERVICE_PORT=5000
     export RETHINKDB_HTTP_PORT=8080
     export RETHINKDB_CLUSTER_PORT=29015
