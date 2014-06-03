@@ -2,9 +2,23 @@
 
 import rethinkdb as r
 from optparse import OptionParser
+import os
 
 
-def main(conn):
+def datafile_path(mcdir, datafile_id):
+    pieces = datafile_id.split("-")
+    return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4], datafile_id)
+
+
+def id_to_use(f):
+    if 'usesid' not in f:
+        f['usesid'] = ""
+    if f['usesid'] == "":
+        return f['id']
+    return f['usesid']
+
+
+def main(conn, mcdir):
     dirs = list(r.table('datadirs').run(conn))
     for d in dirs:
         print "Updating datadir: %s" % (d['id'])
@@ -43,14 +57,26 @@ def main(conn):
                                     'text'
                                 )
                             ).run(conn)
-        r.table('datafiles').get(f['id']).update({'current': True}).run(conn)
+        fid = id_to_use(f)
+        fpath = datafile_path(mcdir, fid)
+        try:
+            uploaded = os.path.getsize(fpath)
+        except:
+            uploaded = 0
+        r.table('datafiles').get(f['id'])\
+                            .update(
+                                {'current': uploaded == f['size'],
+                                 'uploaded': uploaded})\
+                            .run(conn)
 
 
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port", default=30815)
+    parser.add_option("-d", "--directory", dest="dir", type="string",
+                      help="MCDIR location", default="/mcfs/data/test")
     (options, args) = parser.parse_args()
 
     conn = r.connect('localhost', options.port, db='materialscommons')
-    main(conn)
+    main(conn, options.dir)

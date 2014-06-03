@@ -22,14 +22,16 @@ def newusergroup():
     if not exists:
         new_u_group = {}
         new_u_group['name'] = dmutil.get_required('name', u_group)
-        new_u_group['description'] = dmutil.get_optional('description', u_group)
+        new_u_group['description'] = dmutil.get_optional('description',
+                                                         u_group)
         new_u_group['access'] = dmutil.get_optional('access', u_group)
         new_u_group['users'] = u_group['users']
         new_u_group['owner'] = user
         set_dates(new_u_group)
         return dmutil.insert_entry('usergroups', new_u_group)
     else:
-        return error.bad_request("Usergroup already exists: " + u_group['name'])
+        return error.bad_request("Usergroup already exists: " +
+                                 u_group['name'])
 
 
 @app.route('/usergroup/<usergroup>/datafiles')
@@ -72,7 +74,8 @@ def get_usergroup(usergroup):
 @jsonp
 def list_users_by_usergroup(usergroup):
     user = access.get_user()
-    ugroup = r.table('usergroups').get(usergroup).run(g.conn, time_format='raw')
+    ugroup = r.table('usergroups').get(usergroup)\
+                                  .run(g.conn, time_format='raw')
     if ugroup:
         access.check(user, ugroup['owner'])
         return args.json_as_format_arg(ugroup)
@@ -80,16 +83,22 @@ def list_users_by_usergroup(usergroup):
         error.bad_request("No such usergroup: %s" % (usergroup))
 
 
-@app.route('/usergroup/<usergroup_id>/selected_name/<selected_name>', methods=['PUT'])
+@app.route('/usergroup/<usergroup_id>/selected_name/<selected_name>',
+           methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def add_user_to_u_group(usergroup_id, selected_name):
     user = access.get_user()
     if user_in_usergroup(selected_name, usergroup_id):
-        return error.not_acceptable("User %s already in group" % (selected_name))
+        return error.not_acceptable("User %s already in group" %
+                                    (selected_name))
     access.check_ownership(usergroup_id, user)
-    updated_users_list = r.table('usergroups').get(usergroup_id)['users'].append(selected_name).run(g.conn)
-    r.table('usergroups').get(usergroup_id).update({'users': updated_users_list}).run(g.conn)
+    updated_users_list = r.table('usergroups')\
+                          .get(usergroup_id)['users']\
+                          .append(selected_name).run(g.conn)
+    r.table('usergroups').get(usergroup_id)\
+                         .update({'users': updated_users_list}).run(g.conn)
+    access.reset()
     return args.json_as_format_arg({'id': selected_name})
 
 
@@ -98,10 +107,12 @@ def add_user_to_u_group(usergroup_id, selected_name):
 @apikey
 @crossdomain(origin='*')
 def remove_user_from_usergroup(usergroup_id, selected_name):
-    user = access.get_user()
-    res = r.table('usergroups').get(usergroup_id)['users'].difference([selected_name]).run(g.conn)
+    res = r.table('usergroups').get(usergroup_id)['users']\
+                               .difference([selected_name]).run(g.conn)
     r.table('usergroups').get(usergroup_id).update({'users': res}).run(g.conn)
-    ugroup = r.table('usergroups').get(usergroup_id).run(g.conn, time_format='raw')
+    ugroup = r.table('usergroups').get(usergroup_id)\
+                                  .run(g.conn, time_format='raw')
+    access.reset()
     return args.json_as_format_arg(ugroup)
 
 
