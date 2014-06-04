@@ -28,7 +28,7 @@ Application.Controllers.controller('toolbarProjectsPage',
                         .success(function (project) {
                             $scope.project = project;
                             if ($stateParams.draft_id !== "") {
-                                $state.go('toolbar.projectspage.provenance');
+                                $state.go('toolbar.projectspage.provenance.process');
                             } else {
                                 $state.go('toolbar.projectspage.overview', {id: $scope.project_id, 'draft_id': '', from: ''});
                             }
