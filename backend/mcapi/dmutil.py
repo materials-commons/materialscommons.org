@@ -70,11 +70,11 @@ def get_single_from_table(table_name, item_id, raw=False):
     rr = r.table(table_name).get(item_id)
     rr = add_pluck_when_fields(rr)
     item = rr.run(g.conn, time_format='raw')
-    if not item:
+    if raw:
+        return item
+    elif not item:
         return error.bad_request(
             "Unknown id %s for table %s" % (item_id, table_name))
-    elif raw:
-        return item
     else:
         return json_as_format_arg(item)
 
