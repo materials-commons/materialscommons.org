@@ -30,7 +30,6 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
             init();
 
             pubsub.waitOn($scope, $scope.channel, function (fileentry) {
-                console.dir(fileentry);
                 if (fileentry.selected) {
                     $scope.files.push(fileentry);
                 } else {
