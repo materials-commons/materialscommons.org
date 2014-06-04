@@ -26,8 +26,8 @@
                         bk.tab_item}} </strong></label>
 
                     <div ng-show="bk.selected_treatment!==''">
-                            <div df-properties default-properties="default_properties"></div>
-                            <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
+                        <div df-properties default-properties="default_properties"></div>
+                        <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -94,7 +94,7 @@
             <form class="form-horizontal" ng-show="sample">
                 <legend>Details</legend>
                 <div upperlevel-object="" doc="sample" edit="true"></div>
-                <div iterate-properties="" all-properties="sample.properties"  edit="true"></div>
+                <div iterate-properties="" all-properties="sample.properties" edit="true"></div>
                 <div>
                     <cgroup label="Owner">
                         <input class="form-control" class="input-large" ng-model="sample.owner" type="text"
@@ -108,21 +108,21 @@
                 <div ng-if="sample.treatments.length!==0">
                     <div ng-repeat="treatment in sample.treatments">
                         <i>{{treatment.template}}:</i>
-                            <div class="form-group" ng-repeat="property in treatment.properties">
-                                <cgroup label="{{property.name}}">
-                                    <div class="col-sm-6" ng-if="p.type === 'select'">
-                                        <input class="form-control" ng-model="property.value_name" ng-disabled="true"
-                                               type="text">
-                                    </div>
-                                    <div class="col-sm-6" ng-if="p.type !== 'select'">
-                                        <input class="form-control" ng-model="property.value" ng-disabled="true" type="text">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        {{ property.unit }}
-                                    </div>
+                        <div class="form-group" ng-repeat="property in treatment.properties">
+                            <cgroup label="{{property.name}}">
+                                <div class="col-sm-6" ng-if="p.type === 'select'">
+                                    <input class="form-control" ng-model="property.value_name" ng-disabled="true"
+                                           type="text">
+                                </div>
+                                <div class="col-sm-6" ng-if="p.type !== 'select'">
+                                    <input class="form-control" ng-model="property.value" ng-disabled="true" type="text">
+                                </div>
+                                <div class="col-sm-2">
+                                    {{ property.unit }}
+                                </div>
 
-                                </cgroup>
-                            </div>
+                            </cgroup>
+                        </div>
                     </div>
                 </div>
                 <legend>Processes</legend>
@@ -138,3 +138,4 @@
         </div>
     </div>
 </div>
+

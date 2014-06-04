@@ -123,12 +123,19 @@
             <!-------------------------------- machines --------------------------------->
             <div ng-switch-when="machines">
                 <div class="col-sm-4">
-                <select class="form-control" ng-model="df.value" ng-options="mach.name for mach in machinesList"
+                <select ng-model="m.machine"
+                        ng-options="mach.name for mach in machinesList"
                         ng-disabled="edit">
                 </select>
                 </div>
             </div>
             <!-------------------------------- composition --------------------------------->
+            <div ng-switch-when="composition">
+                <button ng-click="custom=!custom">+</button>
+                <div ng-show="custom">
+                    <div periodic-table doc="df"></div>
+                </div>
+            </div>
             <div ng-switch-when="composition">
                 <button ng-click="custom=!custom">+</button>
                 <div ng-show="custom">

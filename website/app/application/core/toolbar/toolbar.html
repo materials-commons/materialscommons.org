@@ -1,20 +1,30 @@
 <div class="container-fluid" ng-controller="toolbar">
     <ul class="nav nav-tabs">
-        <li ng-class="{'active':isActiveStep('Home')}"><a ui-sref="toolbar.overview" data-toggle="tab"><i class="fa fa-home"></i>Home</a></li>
+        <li ng-class="{'active':isActiveStep('Home')}"><a ui-sref="toolbar.overview" data-toggle="tab"><i
+                class="fa fa-home"></i>Home</a></li>
         <li ng-class="{'active':isActiveStep('Projects')}" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" ng-controller="_toolbarProjects">
                 <li ng-repeat="proj in projects | orderBy: 'name'">
-                    <a ui-sref="toolbar.projectspage.overview({id: proj.id, draft_id: ''})" tabindex="-1">{{proj.name}}</a>
+                    <a ui-sref="toolbar.projectspage.overview({id: proj.id, draft_id: ''})"
+                       tabindex="-1">{{proj.name}}</a>
                 </li>
             </ul>
+
         </li>
-        <li ng-class="{'active':isActiveStep('Machines')}" data-toggle="tab"><a ui-sref="toolbar.machines">Machines</a></li>
-        <li ng-class="{'active':isActiveStep('Objects')}" data-toggle="tab"><a ui-sref="toolbar.objects">Objects</a></li>
-        <li ng-class="{'active':isActiveStep('Drafts')}" ng-controller="_toolbarDrafts" data-toggle="tab"><a ui-sref="toolbar.drafts">Drafts({{drafts.length}})</a></li>
-        <li ng-class="{'active':isActiveStep('Reviews')}" ng-controller="_toolbarReviews"><a ui-sref="toolbar.reviews" data-toggle="tab"><i class="fa fa-edit"></i>Reviews({{reviewsToConduct.length}})</a></li>
-        <li ng-class="{'active':isActiveStep('Tags')}" data-toggle="tab"><a ui-sref="toolbar.tags"><i class="fa fa-tags"></i>Tags</a></li>
-        <li ng-class="{'active':isActiveStep('Templates')}" data-toggle="tab"><a ui-sref="toolbar.templates"><i class="fa fa-tags"></i>Templates</a></li>
+        <li ng-class="{'active':isActiveStep('Machines')}" data-toggle="tab"><a ui-sref="toolbar.machines">Machines</a>
+        </li>
+        <li ng-class="{'active':isActiveStep('Objects')}" data-toggle="tab"><a ui-sref="toolbar.objects">Objects</a>
+        </li>
+        <li ng-class="{'active':isActiveStep('Drafts')}" ng-controller="_toolbarDrafts" data-toggle="tab"><a
+                ui-sref="toolbar.drafts">Drafts({{drafts.length}})</a></li>
+        <li ng-class="{'active':isActiveStep('Reviews')}" ng-controller="_toolbarReviews"><a ui-sref="toolbar.reviews"
+                                                                                             data-toggle="tab"><i
+                class="fa fa-edit"></i>Reviews({{reviewsToConduct.length}})</a></li>
+        <li ng-class="{'active':isActiveStep('Tags')}" data-toggle="tab"><a ui-sref="toolbar.tags"><i
+                class="fa fa-tags"></i>Tags</a></li>
+        <li ng-class="{'active':isActiveStep('Templates')}" data-toggle="tab"><a ui-sref="toolbar.templates"><i
+                class="fa fa-tags"></i>Templates</a></li>
 
     </ul>
     <div ui-view=""></div>

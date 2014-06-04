@@ -5,7 +5,6 @@
                         <li ng-class="{'active':isCurrentStep('process')}">
                             <a style="cursor:text " ng-hide="isFinishedStep('process')">Process</a>
                             <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editStep('process')">Process (edit)</a>
-
                         </li>
                         <li ng-class="{'active' : isCurrentStep('inputs')}">
                             <a style="cursor:text " ng-hide="isFinishedStep('inputs')">Inputs</a>

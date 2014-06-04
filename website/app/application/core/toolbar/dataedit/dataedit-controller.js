@@ -1,10 +1,6 @@
 Application.Controllers.controller('toolbarDataEdit',
     ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath", "Projects",
         function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath, Projects) {
-            $scope.model = {
-                is_disabled: true,
-                desc: ''
-            };
 
             $scope.setupAccessToUserFile = function () {
                 if (isImage($scope.doc.name)) {
