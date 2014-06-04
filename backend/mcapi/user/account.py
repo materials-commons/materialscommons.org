@@ -17,10 +17,10 @@ from .. import dmutil
 @apikey
 @jsonp
 def get_user_details(user):
-    requesting_user = access.get_user()
+    apiuser = access.get_apiuser()
     u = r.table('users').get(user).pluck('apikey', 'email', 'name').run(g.conn)
     if u is not None:
-        if u['email'] != requesting_user:
+        if u['email'] != apiuser:
             return error.not_authorized("Bad username or password")
     return json_as_format_arg(u)
 
