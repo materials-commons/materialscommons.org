@@ -2,7 +2,6 @@ Application.Controllers.controller("PeriodicTableController",
     ["$scope", "watcher", function ($scope) {
 
         $scope.addElement = function (ele) {
-            console.log($scope.doc);
             $scope.doc.value.push({'element': ele, 'value': ''});
         };
         $scope.removeElement = function (i) {

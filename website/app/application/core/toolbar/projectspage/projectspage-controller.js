@@ -6,7 +6,6 @@ Application.Controllers.controller('toolbarProjectsPage',
             $scope.model = {
                 action: ''
             };
-
             watcher.watch($scope, 'model.action', function (choice) {
                 if (choice === 'prov') {
                     $state.go('toolbar.projectspage.provenance');
@@ -45,6 +44,7 @@ Application.Controllers.controller('toolbarProjectsPage',
                             $state.go('toolbar.projectspage.overview', {id: $scope.project_id, 'draft_id': ''});
                         }
                     }).jsonp();
+
             }
             init();
         }]);

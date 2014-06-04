@@ -44,6 +44,16 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     }).jsonp();
             };
 
+            $scope.set_availability = function () {
+                if ($scope.bk.available === "1") {
+                    $scope.doc.is_active = true;
+                }
+                if ($scope.bk.available === "2") {
+                    $scope.doc.is_active = false;
+                }
+
+            };
+
             function init() {
                 $scope.bk = {
                     available: "1",

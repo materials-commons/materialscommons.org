@@ -44,6 +44,10 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                 $scope.outputs = $scope.doc.process.output_conditions;
                 $scope.input_files = $scope.doc.process.input_files;
                 $scope.output_files = $scope.doc.process.output_files;
+                mcapi('/machines')
+                    .success(function (data) {
+                        $scope.machines_list = data;
+                    }).jsonp();
             };
 
             $scope.init();

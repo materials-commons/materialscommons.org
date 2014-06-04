@@ -50,7 +50,37 @@
             "unit_choice": [],
             "value": "" ,
             "value_choice": [],
-            "required": true
+            "required": false
+        },
+        {
+            "attribute": "dose_rate",
+            "name": "Dose rate(dpa/s)" ,
+            "type": "number" ,
+            "unit": "dpa/second" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "fluence",
+            "name": "Fluence(per cm^2)" ,
+            "type": "number" ,
+            "unit": "cm^2" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "fluence_rate",
+            "name": "Fluence Rate(per cm^2/s)" ,
+            "type": "number" ,
+            "unit": "cm^2/second" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
         },
         {
             "attribute": "duration",
@@ -60,7 +90,7 @@
             "unit_choice": [],
             "value": "" ,
             "value_choice": [],
-            "required": true
+            "required": false
         }
     ],
     "additional_properties":[],

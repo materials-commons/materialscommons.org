@@ -5,6 +5,7 @@ import rethinkdb as r
 from .. import args
 from .. import dmutil
 from .. import access
+from .. import error
 from loader.model import review
 
 
@@ -36,10 +37,14 @@ def get_reviews_to_be_conducted():
 @crossdomain(origin='*')
 def delete_review(id):
     user = access.get_user()
-    rr = r.table('reviews').get_all(id)
-    rr = rr.filter(lambda row: (row['requested_by'] == user))
-    rv = rr.delete().run(g.conn)
-    return jsonify(rv)
+    item = r.table('reviews').get(id).run(g.conn)
+    if item is None:
+        return error.not_found("No such review: %s" % id)
+    if item['requested_to'] == user or item['requested_by'] == user:
+        rv = r.table('reviews').get(id).delete().run(g.conn)
+        return jsonify(rv)
+    else:
+        return error.not_authorized("User %s does not have access" % user)
 
 
 @app.route('/reviews', methods=['POST'])

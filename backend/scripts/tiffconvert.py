@@ -5,6 +5,7 @@ from optparse import OptionParser
 import sys
 import os
 import errno
+import traceback
 
 
 def datafile_dir(mcdir, datafile_id):
@@ -55,15 +56,18 @@ def main():
             try:
                 im = Image.open(image_file)
             except:
+                traceback.print_exc()
                 continue
             conversion_dir = os.path.join(filedir, ".conversion")
-            converted_file_path = os.path.join(conversion_dir, datafile['id'] + ".jpg")
+            converted_file_path = os.path.join(conversion_dir,
+                                               datafile['id'] + ".jpg")
             if os.path.isfile(converted_file_path):
                 continue
             mkdirp(conversion_dir)
             if im.mode != 'RGB':
                 im = im.convert('RGB')
-            print "Converting file %s, id %s" % (datafile['name'], datafile['id'])
+            print "Converting file %s, id %s" % (datafile['name'],
+                                                 datafile['id'])
             im.save(converted_file_path)
 
 if __name__ == "__main__":

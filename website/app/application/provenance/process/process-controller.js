@@ -74,18 +74,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 mcapi('/machines')
                     .success(function (data) {
                         $scope.machines_list = data;
-
-                        if ($scope.doc.machine) {
-                            var i = _.indexOf($scope.machines_list, function (item) {
-                                return (item.name === $scope.doc.machine.name);
-                            });
-
-                            if (i !== -1) {
-                                $scope.doc.machine = $scope.machines_list[i];
-                            }
-                        }
                     }).jsonp();
-
             }
 
             init();
