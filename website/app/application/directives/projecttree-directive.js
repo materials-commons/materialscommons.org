@@ -93,7 +93,8 @@ Application.Directives.directive('projectTree',
             scope: {
                 ngModel: "@",
                 project: "@project",
-                from: "@from"
+                from: "@from",
+                treeOverview: "="
             },
             templateUrl: "application/directives/projecttree.html"
         };

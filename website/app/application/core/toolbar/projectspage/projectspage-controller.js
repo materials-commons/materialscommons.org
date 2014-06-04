@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarProjectsPage',
-    ["$scope", "$stateParams", "mcapi", "$state", "watcher", "ProjectPath", "Nav",
-        function ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, Nav) {
+    ["$scope", "$stateParams", "mcapi", "$state", "watcher", "ProjectPath", "Nav","pubsub",
+        function ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, Nav, pubsub) {
 
             $scope.project_id = $stateParams.id;
             $scope.model = {
@@ -13,6 +13,7 @@ Application.Controllers.controller('toolbarProjectsPage',
             });
 
             function init() {
+                pubsub.send("project.tree", true);
                 $scope.project_id = $stateParams.id;
                 $scope.model = {
                     action: ''
