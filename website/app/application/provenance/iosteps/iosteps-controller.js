@@ -36,7 +36,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 } else if (stepName in $scope.doc.process[attrib]) {
                     $scope.gotoStep(stepName);
                 } else {
-                    mcapi('/templates/name/%', stepName)
+                    mcapi('/templates/%', stepName)
                         .success(function (data) {
                             data.added_properties = [];
                             $scope.doc.process[attrib][stepName] = data;
@@ -92,7 +92,9 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 $scope.steps = [];
                 $scope.loadSteps();
                 $scope.activeStep = $scope.steps[0];
+                console.log($scope.activeStep)
                 $scope.showStep($scope.activeStep);
+                console.log($scope.doc)
             };
 
             $scope.init();

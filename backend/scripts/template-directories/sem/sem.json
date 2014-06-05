@@ -1,7 +1,8 @@
 {
-    "id": "APT",
+    "id": "sem",
+    "attribute": "process",
     "default_properties": [
-         {
+        {
             "name": "Machine" ,
             "attribute": "machine",
             "type": "machines" ,
@@ -11,8 +12,8 @@
             "value_choice": [],
             "required": false
         }
-     ],
-    "additional_properties":[
+    ],
+    "additional_properties": [
         {
             "name": "Citations" ,
             "attribute": "citations",
@@ -38,11 +39,11 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "APT" ,
+    "template_name": "sem" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["Pick Sample", "APT Instrument Properties"],
+    "required_input_conditions": ["sample", "sem-settings"],
     "required_output_conditions": [],
     "required_input_files": true,
-    "required_output_files": true
+    "required_output_files": true  
 }
