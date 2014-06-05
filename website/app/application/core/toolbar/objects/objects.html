@@ -74,7 +74,7 @@
                         <td>{{sample.name}}</td>
                         <td>
                             <ul ng-repeat="c in sample.properties.composition.value">
-                                <li>{{c.element}} - {{c.value}} % {{sample.properties.composition.unit}}</li>
+                                <li>{{c.element}} - {{c.value}}  {{sample.properties.composition.unit}}</li>
                             </ul>
                         </td>
                         <td ng-if="sample.available===true">
