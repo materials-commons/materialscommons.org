@@ -17,6 +17,7 @@ if __name__ == "__main__":
         sys.exit(1)
     conn = r.connect('localhost', int(options.port), db='materialscommons')
     json_data = open(options.filename)
+    print "Loading template file: %s" % (options.filename)
     data = json.load(json_data)
     existing = r.table('templates').get(data['id']).run(conn)
     if existing:
