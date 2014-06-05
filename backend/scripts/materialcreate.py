@@ -13,7 +13,7 @@ class Material:
 def construct_material():
     new_material = Material("Al Ni", "tammasr@umich.edu")
     rr = r.table('materials').insert(new_material.__dict__).run(conn)
-    print rr
+    
 
 if __name__ == "__main__":
     construct_material()

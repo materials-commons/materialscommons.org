@@ -88,6 +88,33 @@
                     </div>
                 </div>
             </div>
+            <!-------------------------------- number --------------------------------->
+            <div ng-switch-when="number">
+                <div ng-if="df.required===false">
+                    <div class="col-sm-4">
+                        <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                               placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" type="text">
+                    </div>
+                    <div class="col-sm-2" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
+                            <option value="" disabled="" selected="">Unit...</option>
+                            <option ng-repeat="each in df.unit_choice">{{each}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div ng-if="df.required===true">
+                    <div class="col-sm-4">
+                        <input class="form-control" name="{{df.type}}Blur" ng-model="df.value" validator="{{df.type}}"
+                               placeholder="{{df.name}}..." valid-method="blur" ng-disabled="edit" required="" type="text">
+                    </div>
+                    <div class="col-sm-2" ng-if="df.unit_choice.length!=0">
+                        <select class="form-control" ng-model="df.unit" ng-disabled="edit">
+                            <option value="" disabled="" selected="">Unit...</option>
+                            <option ng-repeat="each in df.unit_choice">{{each}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <!-------------------------------- url --------------------------------->
             <div ng-switch-when="url">
                 <div class="col-sm-6" ng-if="df.required===false">
