@@ -1,7 +1,7 @@
 {
 
-    "id": "SEM Instrument Properties" ,
-    "attribute": "instrument_settings",
+    "id": "sem-settings" ,
+    "attribute": "settings",
     "default_properties": [
         {
             "name": "Name" ,
@@ -103,7 +103,7 @@
     "template_description": "" ,
     "template_birthtime": "",
     "template_mtime": "",
-    "template_name": "SEM Instrument Properties" ,
+    "template_name": "settings" ,
     "template_type": "condition",
     "template_pick": "instrument"
 }
