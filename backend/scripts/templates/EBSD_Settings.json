@@ -29,7 +29,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{'name': 'Hexagonal', 'value': 'hexagonal'}, {'name': 'Square', 'value': 'square'}],
+            "value_choice": [{"name": "Hexagonal", "value": "hexagonal"}, {"name": "Square", "value": "square"}],
             "required": false
         },
         {
