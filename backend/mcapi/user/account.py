@@ -17,7 +17,11 @@ from .. import dmutil
 @apikey
 @jsonp
 def get_user_details(user):
+    apiuser = access.get_apiuser()
     u = r.table('users').get(user).pluck('apikey', 'email', 'name').run(g.conn)
+    if u is not None:
+        if u['email'] != apiuser:
+            return error.not_authorized("Bad username or password")
     return json_as_format_arg(u)
 
 
@@ -76,6 +80,7 @@ def list_usergroups_for_user(user):
                .run(g.conn, time_format='raw'))
     return json.dumps(res)
 
+
 @app.route('/user/<user>/preferred_templates', methods=['GET'])
 @apikey
 @jsonp
@@ -91,5 +96,6 @@ def update_preferred_templates(user):
     j = request.get_json()
     list = dmutil.get_required('templates', j)
     print list
-    rv = r.table('users').get(user).update({'preferences': {'templates': list}}).run(g.conn)
+    rv = r.table('users').get(user).update(
+        {'preferences': {'templates': list}}).run(g.conn)
     return jsonify(rv)

@@ -9,18 +9,19 @@ import args
 
 
 @app.route('/processes/<process_id>', methods=['GET'])
+@apikey(shared=True)
 @jsonp
 def get_process(process_id):
-    return dmutil.get_single_from_table('processes', process_id)
-
-
-@app.route('/processes', methods=['GET'])
-@jsonp
-def get_all_processes():
-    return dmutil.get_all_from_table('processes')
+    user = access.get_user()
+    process = dmutil.get_single_from_table('processes', process_id, raw=True)
+    if process is None:
+        return error.bad_request("Unknown process")
+    access.check(user, process['owner'])
+    return args.json_as_format_arg(process)
 
 
 @app.route('/processes/template/<template_id>', methods=['GET'])
+@apikey
 @jsonp
 def get_all_processes_for_template(template_id):
     rr = r.table('processes').filter({'template': template_id})
@@ -58,6 +59,7 @@ def create_process():
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
+@apikey
 @jsonp
 def get_all_processes_for_project(project_id):
     rr = r.table('processes').filter({'project': project_id}) \
@@ -84,5 +86,3 @@ def get_processes_for_sample(sample_id):
                               .eq_join('process_id', r.table('processes'))
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
-                 
-
