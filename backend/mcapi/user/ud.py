@@ -158,7 +158,7 @@ class ProvenanceSaver(object):
         p['inputs'] = []
         for key in input_conditions:
             values = input_conditions[key]
-            if key == "Pick Sample":
+            if key == "sample":
                 c = self._new_sample_condition(values)
             else:
                 c = self._new_condition(values)
@@ -167,7 +167,7 @@ class ProvenanceSaver(object):
         p['outputs'] = []
         for key in output_conditions:
             values = output_conditions[key]
-            if key == "Transformed Sample":
+            if key == "transformed-sample":
                 c  = self._create_transformed_sample(values, p['inputs'])
             else:
                 c = self._new_condition(values)

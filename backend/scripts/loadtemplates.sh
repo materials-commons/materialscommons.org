@@ -14,8 +14,8 @@ do
 done
 shift $((OPTIND-1))
 
-ls templates | while read line
+find templates -name '*.json' | while read line
 do
     echo "Loading template: $line"
-    mktemplate.py -p $PORT -f "templates/$line"
+    mktemplate.py -f "$line"
 done
