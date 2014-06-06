@@ -12,7 +12,7 @@
     "template_name": "Data Analysis" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["data-reconstruction"],
+    "required_input_conditions": [{"name": "Settings", "value": "data-reconstruction"}],
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true  

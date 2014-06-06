@@ -62,15 +62,15 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     customPropertyValue: ''
 
                 };
-                $scope.stepName = $stateParams.iostep;
+                $scope.stepName = {"name": $stateParams.stepname, "value": $stateParams.stepvalue}
                 if ($stateParams.iosteps === 'inputs') {
-                    $scope.doc = ProvDrafts.current.process.input_conditions[$scope.stepName];
+                    $scope.doc = ProvDrafts.current.process.input_conditions[$scope.stepName.value];
 
                 } else {
-                    $scope.doc = ProvDrafts.current.process.output_conditions[$scope.stepName];
+                    $scope.doc = ProvDrafts.current.process.output_conditions[$scope.stepName.value];
                     //To check whether the input picked sample and output transformed sample are same or not
-                    $scope.input_doc = ProvDrafts.current.process.input_conditions['Pick Sample'];
-                    if ($scope.stepName === 'Transformed Sample') {
+                    $scope.input_doc = ProvDrafts.current.process.input_conditions['sample'];
+                    if ($scope.stepName.value === "transformed-sample") {
                         if ('sample' in $scope.doc) {
                             if (!($scope.doc.sample.id === $scope.input_doc.sample.id)) {
                                 $scope.doc = Clone.get_clone($scope.doc, ProvDrafts.current);

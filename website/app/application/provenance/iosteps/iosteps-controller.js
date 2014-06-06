@@ -16,10 +16,10 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             $scope.gotoStep = function (stepName) {
                 var filesStepType = $stateParams.iosteps;
                 $scope.activeStep = stepName;
-                if (stepName === "Files") {
+                if (stepName.name === "Files") {
                     $state.go('toolbar.projectspage.provenance.iosteps.files', {iostep: filesStepType});
                 } else {
-                    $state.go('toolbar.projectspage.provenance.iosteps.iostep', {iostep: stepName});
+                    $state.go('toolbar.projectspage.provenance.iosteps.iostep', {stepname: stepName.name, stepvalue: stepName.value});
                 }
             };
 
@@ -31,15 +31,15 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                     attrib = "output_conditions";
                 }
 
-                if (stepName === "Files") {
+                if (stepName.name === "Files") {
                     $scope.gotoStep(stepName);
-                } else if (stepName in $scope.doc.process[attrib]) {
+                } else if (stepName.value in $scope.doc.process[attrib]) {
                     $scope.gotoStep(stepName);
                 } else {
-                    mcapi('/templates/%', stepName)
+                    mcapi('/templates/%', stepName.value)
                         .success(function (data) {
                             data.added_properties = [];
-                            $scope.doc.process[attrib][stepName] = data;
+                            $scope.doc.process[attrib][stepName.value] = data;
                             $scope.gotoStep(stepName);
                         }).jsonp();
                 }
@@ -72,7 +72,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                         $scope.steps.push(condition);
                     });
                     if ($scope.doc.process.required_input_files === true) {
-                        $scope.steps.push("Files");
+                        $scope.steps.push({"name": "Files", "value": "files"});
                     }
                 } else {
                     $scope.stepsName = "Outputs";
@@ -81,7 +81,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                     });
 
                     if ($scope.doc.process.required_output_files === true) {
-                        $scope.steps.push("Files");
+                        $scope.steps.push({"name": "Files", "value": "files"});
                     }
                 }
             };
@@ -92,9 +92,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
                 $scope.steps = [];
                 $scope.loadSteps();
                 $scope.activeStep = $scope.steps[0];
-                console.log($scope.activeStep)
                 $scope.showStep($scope.activeStep);
-                console.log($scope.doc)
             };
 
             $scope.init();

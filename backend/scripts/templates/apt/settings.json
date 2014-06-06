@@ -121,7 +121,7 @@
     "template_description": "" ,
     "template_birthtime": "",
     "template_mtime": "",
-    "template_name": "settings" ,
+    "template_name": "Settings" ,
     "template_type": "condition",
     "template_pick": "instrument"
 }
