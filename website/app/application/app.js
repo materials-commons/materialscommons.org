@@ -214,7 +214,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/provenance/iosteps/iosteps.html'
         })
         .state('toolbar.projectspage.provenance.iosteps.iostep', {
-            url: '/iostep:iostep',
+            url: '/name:stepname/value:stepvalue',
             templateUrl: 'application/provenance/iosteps/iostep/iostep.html'
         })
         .state('toolbar.projectspage.provenance.iosteps.files', {

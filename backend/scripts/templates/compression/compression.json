@@ -21,7 +21,7 @@
     "template_name": "compression" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["sample", "compression-settings"],
+    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "compression-settings"}],
     "required_output_conditions": ["transformed-sample"],
     "required_input_files": true,
     "required_output_files": true

@@ -17,7 +17,8 @@ Application.Provenance.Services.factory('process.Model', [function () {
                 input_conditions: {},
                 output_conditions: {},
                 input_files: [],
-                output_files: []
+                output_files: [],
+                owner: ''
             };
         },
 

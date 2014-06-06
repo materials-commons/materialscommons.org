@@ -105,6 +105,7 @@ class ProvenanceSaver(object):
         p['template'] = self._extract_id('template', j)
         p['notes'] = dmutil.get_optional('notes', j, [])
         p['runs'] = dmutil.get_optional('runs', j, [])
+        p['owner'] = dmutil.get_required('owner', j)
         p['experiment_run_date'] = dmutil.get_optional('experiment_run_date', j)
         self._process_properties(p, j)
         input_conditions = dmutil.get_optional('input_conditions', j, [])

@@ -11,8 +11,8 @@
     "template_name": "Irradiation" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["sample", "irradiation-settings"],
-    "required_output_conditions": ["transformed-sample"],
+    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "irradiation-settings"}],
+    "required_output_conditions": [{"name": "Trasnformed Sample", "value": "transformed-sample"}],
     "required_input_files": true,
     "required_output_files": true
 }

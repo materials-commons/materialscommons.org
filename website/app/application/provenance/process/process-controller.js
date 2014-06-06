@@ -19,6 +19,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 var today = now.getFullYear() + "-" + mm + "-" + dd;
                 $scope.doc.name = template.template_name + ':' + today;
                 $scope.doc.template = template;
+                $scope.doc.owner = User.u();
             };
             $scope.saveDraft = function (form) {
                 check = $validationProvider.checkValid(form);
