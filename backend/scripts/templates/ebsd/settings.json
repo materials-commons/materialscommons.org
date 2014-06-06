@@ -1,0 +1,84 @@
+{
+    "id": "ebsd-settings",
+    "attribute": "instrument_settings",
+    "default_properties": [
+        {
+            "name": "Step size" ,
+            "attribute": "step_size",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["microns"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "Working distance",
+            "name": "working_distance" ,
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Grid Type" ,
+            "attribute": "grid_type",
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [{"name": "Hexagonal", "value": "hexagonal"}, {"name": "Square", "value": "square"}],
+            "required": false
+        },
+        {
+            "attribute": "Phase",
+            "name": "phase" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "Dimensions-X(coordinate)",
+            "name": "dimension_x" ,
+            "type": "float" ,
+            "unit": "" ,
+            "unit_choice": ["microns"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "Dimensions-Y(coordinate)",
+            "name": "dimension_y" ,
+            "type": "float" ,
+            "unit": "" ,
+            "unit_choice": ["microns"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "Magnification",
+            "name": "magnification" ,
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "settings" ,
+    "template_pick": "instrument" ,
+    "template_type": "condition"
+}

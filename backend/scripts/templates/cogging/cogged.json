@@ -1,0 +1,17 @@
+{
+    "id": "cogged",
+    "attribute": "process",
+    "default_properties": [],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Cogged" ,
+    "template_type": "process",
+    "template_pick": "experiment",
+    "required_input_conditions": ["sample", "cogged-settings"],
+    "required_output_conditions": [],
+    "required_input_files": true,
+    "required_output_files": true
+}

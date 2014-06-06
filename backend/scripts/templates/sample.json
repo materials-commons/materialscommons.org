@@ -1,0 +1,12 @@
+{
+    "id": "sample",
+    "default_properties": [],
+    "additional_properties": [],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "sample" ,
+    "template_type": "condition",
+    "template_pick": "pick_sample"
+}

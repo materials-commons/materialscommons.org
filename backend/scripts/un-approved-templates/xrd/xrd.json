@@ -1,0 +1,39 @@
+{
+    "id": "xrd",
+    "attribute": "process",
+    "default_properties": [
+    ],
+    "additional_properties":[
+        {
+            "name": "Citations" ,
+            "attribute": "citations",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Version" ,
+            "attribute": "version",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "",
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "XRD" ,
+    "template_type": "process",
+    "template_pick": "experiment",
+    "required_input_conditions": ["sample",  "xrd-ip-settings"],
+    "required_output_conditions": ["xrd-op-settings"],
+    "required_input_files": true,
+    "required_output_files": true
+}
