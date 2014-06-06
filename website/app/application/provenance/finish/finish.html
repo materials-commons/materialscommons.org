@@ -2,7 +2,6 @@
     <div class="row">
         <form class="form-horizontal">
             <legend>Process</legend>
-
             <div upperlevel-process doc="process" bk="bk" edit="true"></div>
             <div df-properties default-properties="process.default_properties" machines-list="machines_list"
                  edit="true"></div>
@@ -15,14 +14,14 @@
         <form class="form-horizontal" ng-repeat="(name, vals) in inputs">
             <label><b>{{ name }}</b></label>
 
-            <div ng-if="name=='Pick Sample'">
+            <div ng-if="name=='sample'">
                 <div class="row">
                     <div upperlevel-object="" bk="bk" doc="vals.sample" edit="true"></div>
                     <div iterate-properties="" all-properties="vals.sample.properties" edit="true"></div>
                     <div ad-properties="" doc="vals.sample" edit="true" bk="bk"></div>
                 </div>
             </div>
-            <div ng-if="name!=='Pick Sample'">
+            <div ng-if="name!=='sample'">
                 <div class="row">
                     <div df-properties="" default-properties="vals.default_properties" edit="true"></div>
                     <div ad-properties="" doc="vals" edit="true" bk="bk"></div>
@@ -42,23 +41,17 @@
         <form class="form-horizontal" ng-repeat="(name, vals) in outputs">
             <label><b>{{ name }}</b></label>
 
-            <div ng-if="name=='Transformed Sample'">
+            <div ng-if="name=='transformed-sample'">
                 <div class="row">
                     <div upperlevel-object="" bk="bk" doc="vals.sample" edit="true"></div>
                     <div iterate-properties="" all-properties="vals.sample.properties" edit="true"></div>
                     <div ad-properties="" doc="vals.sample" edit="true" bk="bk"></div>
                 </div>
             </div>
-            <div ng-if="name!=='Pick Sample'">
+            <div ng-if="name!=='sample'">
                 <div class="row">
                     <div df-properties="" default-properties="vals.default_properties" edit="true"></div>
                     <div ad-properties="" doc="vals" edit="true" bk="bk"></div>
-                </div>
-                <div ng-if="name!=='Pick Sample'">
-                    <div class="row-fluid">
-                        <div df-properties default-properties="vals.default_properties" edit="true"></div>
-                        <div ad-properties doc="vals" edit="true" bk="bk"></div>
-                    </div>
                 </div>
             </div>
         </form>
