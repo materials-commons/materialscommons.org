@@ -1,0 +1,136 @@
+{
+    "id": "tensile-op-settings",
+    "attribute": "instrument_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+    ],
+    "additional_properties":[
+        {
+            "name": "Run Time" ,
+            "attribute": "run_time",
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": ["hrs", "mins", "secs"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required":  false  
+        },
+        {
+            "name": "Failure mode" ,
+            "attribute": "failure_mode",
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [{"name": "In", "value": "in"},
+                             {"name": "Out", "value": "out"},
+                             {"name": "Knife edge", "value": "knife_edge"}],
+            "required":  false  
+        },
+        {
+            "name": "Yield force" ,
+            "attribute": "yield_force",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Peak force" ,
+            "attribute": "peak_force",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "F/D slope" ,
+            "attribute": "f_d_slope",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Yield strength" ,
+            "attribute": "yield_strength",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Brightness" ,
+            "attribute": "brightness",
+            "type": "int" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "UTS" ,
+            "attribute": "uts",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Elongation at Break" ,
+            "attribute": "elongation_at_break",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Elongation at yield" ,
+            "attribute": "elongation_at_yield",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Elongation at peak stress" ,
+            "attribute": "elongation_at_peak_stress",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "owner": "admin@materialscommons.org", 
+    "template_description": "" ,
+    "template_name": "settings" ,
+    "template_pick": "instrument" ,
+    "template_type": "condition"
+
+}

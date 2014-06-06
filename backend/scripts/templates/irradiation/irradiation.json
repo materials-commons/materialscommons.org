@@ -1,0 +1,18 @@
+{
+
+    "id": "irradiation" ,
+    "attribute": "process",
+    "default_properties": [],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Irradiation" ,
+    "template_type": "process",
+    "template_pick": "experiment",
+    "required_input_conditions": ["sample", "irradiation-settings"],
+    "required_output_conditions": ["transformed-sample"],
+    "required_input_files": true,
+    "required_output_files": true
+}
