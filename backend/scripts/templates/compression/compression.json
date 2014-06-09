@@ -18,7 +18,7 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "compression" ,
+    "template_name": "Compression" ,
     "template_type": "process",
     "template_pick": "experiment",
     "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "compression-settings"}],
