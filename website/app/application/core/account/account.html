@@ -1,77 +1,15 @@
-<div class="row" ng-controller="account">
-    <div class="col-sm-4">
-        <legend>Change Password:</legend>
-        <form class="form-horizontal">
-            <input class="form-control" id="inputPassword" placeholder="New Password..." ng-model="new_password"
-                   type="password">
-            <input class="form-control" placeholder="Verify Password..." ng-model="verify_new_password"
-                   type="password">
-            <button ng-click="changePassword()" class="btn btn-default btn-danger">Change Password</button>
-        </form>
-    </div>
-    <div class="col-sm-4 col-sm-offset-2">
-        <button ng-click="showApiKey()" class="btn btn-default btn-info">{{ showHideButton }}</button>
-        <button ng-click="resetApiKey()" class="btn btn-default btn-danger">Reset API Key</button>
-        <span ng-show="showKey">Your current apikey is: {{ apikey }}</span>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New</button>
-</div>
-<div ng-controller="accountGroupUsers">
-    <div class="row">
-        <div class="col-sm-6">
-            <form ng-show="toggleCustom" class="form-horizontal">
-                <cgroup label="Name:">
-                    <input class="form-control" ng-model="group.name" placeholder="Name...">
-                </cgroup>
-                <cgroup label="Access:">
-                    <select class="form-control" ng-model="group.access">
-                        <option value="private">Private</option>
-                        <option value="public">Public</option>
-                    </select>
-                </cgroup>
-                <cgroup label="Description:">
-                    <textarea class="form-control" placeholder="Description..." ng-model="group.description"></textarea>
-                </cgroup>
-                <cgroup>
-                    <button class="btn btn-default btn-primary" ng-click="createUserGroup()">Save</button>
-                </cgroup>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <legend>Groups currently in the system:</legend>
-        <div class="col-sm-6">
-            <table class="table table-striped mc-table">
-                <thead>
-                <tr>
-                    <th>Group</th>
-                    <th>Date created</th>
-                    <th>Description</th>
-                    <th>Owner</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="i in user_groups">
-                    <td><b>{{i.name}}</b></td>
-                    <td>{{i.birthtime | toDateString}}</td>
-                    <td>{{i.description}}</td>
-                    <td>{{i.owner}}</td>
+<div class="container-fluid" ng-controller="account">
+    <ul class="nav nav-tabs">
+        <li ng-class="{'active':isActiveStep('change_password')}" data-toggle="tab"><a ui-sref="account.password"><i
+                class="fa fa-edit"></i>Change Password</a>
+        </li>
 
-                    <td ng-if="i.owner===signed_in_user">
-                        <td><a ui-sref="account.groupusers({id: i.id})">edit</a></td>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+        <li ng-class="{'active':isActiveStep('usergroups')}"><a
+                ui-sref="account.usergroup" data-toggle="tab"><i
+                class="fa fa-edit"></i>Usergroups</a></li>
 
-
-<div class="row">
+        <li ng-class="{'active':isActiveStep('apikey')}" data-toggle="tab"><a
+                ui-sref="account.apikey">Apikey</a></li>
+    </ul>
     <div ui-view=""></div>
 </div>

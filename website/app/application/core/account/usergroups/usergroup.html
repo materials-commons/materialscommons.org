@@ -1,0 +1,60 @@
+<div class="row">
+    <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New</button>
+</div>
+<div ng-controller="accountUserGroup">
+    <div class="row">
+        <div class="col-sm-6">
+            <form ng-show="toggleCustom" class="form-horizontal">
+                <cgroup label="Name:">
+                    <input class="form-control" ng-model="group.name" placeholder="Name...">
+                </cgroup>
+                <cgroup label="Access:">
+                    <select class="form-control" ng-model="group.access">
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                    </select>
+                </cgroup>
+                <cgroup label="Description:">
+                    <textarea class="form-control" placeholder="Description..." ng-model="group.description"></textarea>
+                </cgroup>
+                <cgroup>
+                    <button class="btn btn-default btn-primary" ng-click="createUserGroup()">Save</button>
+                </cgroup>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <legend>List of UserGroups:</legend>
+        <div class="col-sm-6">
+            <table class="table table-striped mc-table">
+                <thead>
+                <tr>
+                    <th>Group</th>
+                    <th>Date created</th>
+                    <th>Description</th>
+                    <th>Owner</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="i in user_groups">
+                    <td><b>{{i.name}}</b></td>
+                    <td>{{i.birthtime | toDateString}}</td>
+                    <td>{{i.description}}</td>
+                    <td>{{i.owner}}</td>
+                    <td ng-if="i.owner===signed_in_user">
+                        <a ui-sref="account.usergroup.users({id: i.id})">edit users</a>
+                    </td>
+                    <td ng-if="i.owner!==signed_in_user">
+                        <a ui-sref="account.usergroup.users({id: i.id})">view users</a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <div ui-view=""></div>
+        </div>
+    </div>
+</div>
