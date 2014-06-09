@@ -18,11 +18,11 @@
                 <div class="col-sm-5">
                     <cgroup label="Treatments:">
                         <select class="form-control" ng-model="bk.selected_treatment"
-                                ng-options="treat.template_name for treat in treatment_templates"
+                                ng-options="treat.id for treat in treatment_templates"
                                 ng-change="showForm()">
                         </select>
                     </cgroup>
-                    <label class='control-label'><strong>{{bk.selected_treatment.template_name ||
+                    <label class='control-label'><strong>{{bk.selected_treatment.id ||
                         bk.tab_item}} </strong></label>
 
                     <div ng-show="bk.selected_treatment!==''">
@@ -34,7 +34,7 @@
                     <label>Treatments Order:</label>
                     <tabset vertical="true" type="pills">
                         <tab ng-repeat="treatment in doc.treatments" ng-click="showTab(treatment, $index)"
-                             heading="{{treatment.template_name}}">
+                             heading="{{treatment.id}}">
                         </tab>
                     </tabset>
                 </div>

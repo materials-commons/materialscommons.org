@@ -11,7 +11,7 @@ def add_properties(properties, what):
 
 def add_template_properties(j, ttype):
     t = dict()
-    t['template'] = dmutil.get_required('template_name', j)
+    t['template'] = dmutil.get_required('id', j)
     t['properties'] = {}
     t['type'] = ttype
     attr = dmutil.get_optional("attribute", j, None)
