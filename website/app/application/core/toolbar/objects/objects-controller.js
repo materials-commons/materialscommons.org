@@ -34,7 +34,6 @@ Application.Controllers.controller('toolbarObjects',
             $scope.bk.selected_treatment = '';
             $scope.default_properties = "";
             $scope.doc.treatments.push(o);
-            console.log($scope.doc)
         };
 
         $scope.save = function (form) {
