@@ -1,10 +1,8 @@
 <div ng-controller="toolbarProcess">
-
     <div class="row">
-        <div class="col-sm-4 col-md-4">
+        <div class="col-sm-6 col-md-6">
             <form class="form-horizontal">
                 <legend>{{process.name}}</legend>
-                <fieldset>
                     <cgroup label="Description:">
                         <textarea class="form-control" ng-if="process.description !== ''" ng-model="process.description" ng-disabled="true">  </textarea>
                     </cgroup>
@@ -23,23 +21,15 @@
                             </cgroup>
                         </div>
                     </div>
-                </fieldset>
             </form>
         </div>
         <div class="col-sm-6 col-md-6">
             <form class="form-horizontal" ng-show="machine">
                 <legend>Machine</legend>
-                <fieldset>
                     <cgroup label="Machine Name:">
                         <input class="form-control" ng-model="machine.name" ng-disabled="true" type="text">
                     </cgroup>
-                    <div ng-if="machine.additional.length!=0">
-                        <div ng-repeat="item in machine.additional">
-                            <cgroup label="{{item.name}}:">
-                                <input class="form-control" ng-model="item.value" ng-disabled="true" type="text">
-                            </cgroup>
-                        </div>
-                    </div>
+                    <div iterate-properties all-properties="machine.properties" edit="true"></div>
                     <div ng-show="process.runs.length > 0">
                         <legend>Runs:</legend>
                         <table class="table table-bordered">
@@ -58,7 +48,6 @@
                             </tbody>
                         </table>
                     </div>
-                </fieldset>
             </form>
         </div>
 
