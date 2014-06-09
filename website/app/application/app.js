@@ -82,6 +82,22 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/account',
             templateUrl: 'application/core/account/account.html'
         })
+        .state('account.password', {
+            url: '/password',
+            templateUrl: 'application/core/account/password/password.html'
+        })
+        .state('account.apikey', {
+            url: '/apikey',
+            templateUrl: 'application/core/account/apikey/apikey.html'
+        })
+        .state('account.usergroup', {
+            url: '/usergroup',
+            templateUrl: 'application/core/account/usergroups/usergroup.html'
+        })
+        .state('account.usergroup.users', {
+            url: '/users/:id',
+            templateUrl: 'application/core/account/usergroups/users.html'
+        })
         .state('account.groupcreate', {
             url: '/groupcreate',
             templateUrl: 'application/core/account/groupcreate/groupcreate.html'

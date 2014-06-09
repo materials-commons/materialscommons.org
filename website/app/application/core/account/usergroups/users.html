@@ -1,0 +1,74 @@
+<div class="well" ng-controller="accountUserGroup">
+    <h4>Usergroup:  {{selected_usergroup.name}}</h4>
+    <div class="row">
+        <div class="col-sm-4">
+            <paged data="users_by_usergroup" current-page="currentUsersPage" page-size="10">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>User</th>
+                        <th ng-show="selected_usergroup.owner===signed_in_user"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in selected_usergroup.users | page:currentUsersPage:10">
+                        <td>{{i}}</td>
+                        <td ng-show="selected_usergroup.owner===signed_in_user">
+                            <button class="btn btn-default btn-danger" ng-click="deleteUser($index)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </paged>
+            <paged data="projects_by_usergroup" current-page="currentUsersPage" page-size="10">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in selected_usergroup.projects | page:currentUsersPage:10">
+                        <td>{{i.name}}</td>
+                        <td ng-show="selected_usergroup.owner===signed_in_user">
+                            <button class="btn btn-default btn-danger" ng-click="deleteProject($index)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </paged>
+        </div>
+    </div>
+    <br>
+    <div class="row" ng-show="selected_usergroup.owner==signed_in_user">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Select the User:</label>
+            <div class="col-sm-4">
+                <select class="form-control" ng-model="user_name"
+                        ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
+                        ng-multiple="false">
+                    <option></option>
+                    <option ng-repeat="user in all_users">{{ user.email }}</option>
+                </select>
+            </div>
+                <button class="btn btn-default btn-default" ng-click="addUser()">Add User</button>
+        </div><br>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Select the Project:</label>
+            <div class="col-sm-4">
+                <select class="form-control" ng-model="prj"
+                        ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
+                        ng-multiple="false">
+                    <option></option>
+                    <option ng-repeat="p in projects">{{ p.name }}</option>
+                </select>
+            </div>
+            <button class="btn btn-default btn-default" ng-click="addProject()">Add Project</button>
+        </div><br>
+    </div>
+</div>
