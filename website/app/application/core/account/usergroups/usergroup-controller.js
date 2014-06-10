@@ -4,9 +4,6 @@ Application.Controllers.controller('accountUserGroup',
             pubsub.waitOn($scope, 'usergroups.change', function () {
                 $scope.getGroups();
             });
-            pubsub.waitOn($scope, 'users_by_usergroup.change', function () {
-                $scope.refreshUsers();
-            });
 
             $scope.refreshUsers = function () {
                 mcapi('/usergroup/%', $stateParams.id)
@@ -17,7 +14,14 @@ Application.Controllers.controller('accountUserGroup',
                     }).jsonp();
 
             };
+            $scope.refreshProjects = function () {
+                mcapi('/usergroup/%', $stateParams.id)
+                    .success(function (data) {
+                        $scope.selected_usergroup = data;
+                        $scope.projects_by_usergroup = data.projects;
+                    }).jsonp();
 
+            };
             $scope.getGroups = function () {
                 mcapi('/user/%/usergroups', User.u())
                     .success(function (data) {
@@ -46,17 +50,16 @@ Application.Controllers.controller('accountUserGroup',
                 mcapi('/usergroup/%/selected_name/%', $stateParams.id, $scope.user_name)
                     .success(function (data) {
                         alertService.sendMessage("user has been added.");
-                        $scope.users_by_usergroup.push(data.id);
+                        $scope.refreshUsers();
                     }).error(function (data) {
                         alertService.sendMessage(data.error);
                     }).put();
             };
 
-            $scope.addProject = function () {
-                mcapi('/usergroup/%/selected_name/%', $stateParams.id, $scope.prj)
+            $scope.addProject = function (prj) {
+                mcapi('/usergroup/%/project/%', $stateParams.id, $scope.model.selected_project.id)
                     .success(function (data) {
-                        alertService.sendMessage("user has been added.");
-                        $scope.users_by_usergroup.push(data.id);
+                        $scope.refreshProjects()
                     }).error(function (data) {
                         alertService.sendMessage(data.error);
                     }).put();
@@ -69,7 +72,14 @@ Application.Controllers.controller('accountUserGroup',
                         $scope.refreshUsers();
                     }).error(function () {
                     }).put();
-
+            };
+            $scope.deleteProject = function (index) {
+                mcapi('/usergroup/%/project/%/remove', $stateParams.id, $scope.selected_usergroup.projects[index].id)
+                    .success(function (data) {
+                        alertService.sendMessage("Project has been deleted");
+                        $scope.refreshProjects();
+                    }).error(function () {
+                    }).put();
             };
 
             function init() {
@@ -79,6 +89,9 @@ Application.Controllers.controller('accountUserGroup',
                     description: null,
                     projects: []
                 };
+                $scope.model = {
+                    selected_project: ''
+                }
                 $scope.getGroups();
                 $scope.refreshUsers();
                 mcapi('/users')
