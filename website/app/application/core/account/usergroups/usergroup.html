@@ -26,7 +26,7 @@
     <div class="row">
         <legend>List of UserGroups:</legend>
         <div class="col-sm-6">
-            <table class="table table-striped mc-table">
+            <table class="table table-striped mc-table-hover mc-table">
                 <thead>
                 <tr>
                     <th>Group</th>
@@ -43,12 +43,11 @@
                     <td>{{i.description}}</td>
                     <td>{{i.owner}}</td>
                     <td ng-if="i.owner===signed_in_user">
-                        <a ui-sref="account.usergroup.users({id: i.id})">edit users</a>
+                        <a ng-class="" ui-sref="account.usergroup.users({id: i.id})">edit</a>
                     </td>
                     <td ng-if="i.owner!==signed_in_user">
-                        <a ui-sref="account.usergroup.users({id: i.id})">view users</a>
+                        <a ui-sref="account.usergroup.users({id: i.id})">view</a>
                     </td>
-
                 </tr>
                 </tbody>
             </table>

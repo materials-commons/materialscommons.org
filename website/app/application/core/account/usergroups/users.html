@@ -61,11 +61,9 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Select the Project:</label>
             <div class="col-sm-4">
-                <select class="form-control" ng-model="prj"
+                <select class="form-control"   ng-model="model.selected_project" ng-options="pr.name for pr in projects"
                         ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
                         ng-multiple="false">
-                    <option></option>
-                    <option ng-repeat="p in projects">{{ p.name }}</option>
                 </select>
             </div>
             <button class="btn btn-default btn-default" ng-click="addProject()">Add Project</button>

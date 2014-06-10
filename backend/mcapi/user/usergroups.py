@@ -27,6 +27,7 @@ def newusergroup():
         new_u_group['access'] = dmutil.get_optional('access', u_group)
         new_u_group['users'] = u_group['users']
         new_u_group['owner'] = user
+        new_u_group['projects'] = []
         set_dates(new_u_group)
         return dmutil.insert_entry('usergroups', new_u_group)
     else:
@@ -121,3 +122,32 @@ def user_in_usergroup(user, usergroup):
     if ugroup:
         return user in ugroup['users']
     return False
+
+
+@app.route('/usergroup/<usergroup_id>/project/<project_id>',
+           methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def add_project(usergroup_id, project_id):
+    project = r.table('projects').get(project_id).run(g.conn)
+    updated_projects_list = r.table('usergroups').get(usergroup_id)['projects'].append({'id': project["id"], 'name': project["name"]}).run(g.conn)
+    r.table('usergroups').get(usergroup_id).update({'projects': updated_projects_list }).run(g.conn)
+    return args.json_as_format_arg({'id': project['name']})
+
+
+@app.route('/usergroup/<usergroup_id>/project/<project_id>/remove',
+           methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def remove_project(usergroup_id, project_id):
+    project = r.table('projects').get(project_id).run(g.conn)
+    res = r.table('usergroups').get(usergroup_id)['projects']\
+                               .difference([{'id': project["id"], 'name': project["name"]}]).run(g.conn)
+    r.table('usergroups').get(usergroup_id).update({'projects': res}).run(g.conn)
+    ugroup = r.table('usergroups').get(usergroup_id)\
+                                  .run(g.conn, time_format='raw')
+    access.reset()
+    return args.json_as_format_arg(ugroup)
+
+
+
