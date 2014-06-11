@@ -3,7 +3,7 @@
     <div ng-init="toggleCustom = false" ng-show="toggleCustom">
         <form name="Sample" class="row form-horizontal">
             <legend>Create New Object</legend>
-            <div class="col-sm-5">
+            <div class="col-sm-4">
                 <cgroup label="Classification:">
                     <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
                             ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div ng-show="bk.classification">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <cgroup label="Treatments:">
                         <select class="form-control" ng-model="bk.selected_treatment"
                                 ng-options="treat.id for treat in treatment_templates"
@@ -30,7 +30,7 @@
                         <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-4">
                     <label>Treatments Order:</label>
                     <tabset vertical="true" type="pills">
                         <tab ng-repeat="treatment in doc.treatments" ng-click="showTab(treatment, $index)"
