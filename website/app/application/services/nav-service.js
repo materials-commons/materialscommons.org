@@ -8,6 +8,7 @@ Application.Services.factory('Nav',
             },
 
             setActiveNav: function (entry) {
+                console.log(entry)
                 this.currentNavbar = entry;
             }
         };

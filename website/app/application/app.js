@@ -98,14 +98,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/users/:id',
             templateUrl: 'application/core/account/usergroups/users.html'
         })
-        .state('account.groupcreate', {
-            url: '/groupcreate',
-            templateUrl: 'application/core/account/groupcreate/groupcreate.html'
-        })
-        .state('account.groupusers', {
-            url: '/groupusers/:id',
-            templateUrl: 'application/core/account/groupusers/groupusers.html'
-        })
         // Toolbar drafts
         .state('toolbar.drafts', {
             url: '/drafts',
@@ -271,6 +263,7 @@ app.run(["$rootScope", "User", function ($rootScope, User) {
     $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
+
         }
     });
 }]);

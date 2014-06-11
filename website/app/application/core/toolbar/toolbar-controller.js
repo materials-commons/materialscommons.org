@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbar',
-    ["$scope", "Nav", "msocket",  function ($scope, Nav, msocket) {
+    ["$scope", "Nav", "msocket", "$rootScope", "$state", function ($scope, Nav, msocket, $rootScope, $state) {
         $scope.isActiveStep = function (nav) {
             return Nav.isActiveNav(nav);
         };
