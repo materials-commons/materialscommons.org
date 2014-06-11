@@ -1,5 +1,20 @@
 Application.Controllers.controller('toolbarObjects',
-    ["$scope", "mcapi", "$injector", "Nav", function ($scope, mcapi, $injector, Nav) {
+    ["$scope", "mcapi", "$injector", "Nav", "model.Projects", "alertService","User",
+        function ($scope, mcapi, $injector, Nav, Projects, alertService, User) {
+
+        $scope.refreshProjects = function () {
+            mcapi('/objects/%', $scope.sample.id)
+                .success(function (data) {
+                    $scope.projects_by_sample = data.projects;
+                }).jsonp();
+
+        };
+        $scope.refreshProcesses = function(){
+            mcapi('/processes/sample/%', $scope.sample.id)
+                .success(function (data) {
+                    $scope.processes_list = data;
+                }).jsonp();
+        }
         $scope.showForm = function () {
             $scope.default_properties = $scope.bk.selected_treatment.default_properties;
             $scope.bk.tab_item = '';
@@ -66,10 +81,9 @@ Application.Controllers.controller('toolbarObjects',
         };
         $scope.showTreatmentDetails_and_processes = function (sample) {
             $scope.sample = sample;
-            mcapi('/processes/sample/%', sample.id)
-                .success(function (data) {
-                    $scope.processes_list = data;
-                }).jsonp();
+            $scope.refreshProcesses();
+            $scope.refreshProjects();
+
         };
 
 
@@ -91,8 +105,27 @@ Application.Controllers.controller('toolbarObjects',
             };
         };
 
+        $scope.addProject = function (prj) {
+            mcapi('/object/%/project/%', $scope.sample.id, $scope.model.selected_project.id)
+                .success(function (data) {
+                    $scope.refreshProjects()
+                }).error(function (data) {
+                    alertService.sendMessage(data.error);
+                }).put();
+        };
+
+        $scope.deleteProject = function (index) {
+            mcapi('/object/%/project/%/remove',$scope.sample.id, $scope.sample.projects[index].id)
+                .success(function (data) {
+                    alertService.sendMessage("Project has been deleted");
+                    $scope.refreshProjects();
+                }).error(function () {
+                }).put();
+        };
+
         function init() {
             Nav.setActiveNav('Objects');
+            $scope.signed_in_user = User.u()
             //$scope.showTreatments = false;
             $scope.clear();
             mcapi('/templates')
@@ -117,6 +150,9 @@ Application.Controllers.controller('toolbarObjects',
                 })
                 .error(function (data) {
                 }).jsonp();
+            Projects.getList().then(function (data) {
+                $scope.projects = data;
+            });
         }
 
         init();
