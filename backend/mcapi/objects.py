@@ -49,6 +49,7 @@ def create_object():
     sample['created_by'] = user
     sample['owner'] = user
     sample['treatments'] = []
+    sample['projects'] = []
     sample['template'] = dmutil.get_required('template', j)
     for treatment in dmutil.get_optional('treatments', j, []):
         t = doc.add_template_properties(treatment, 'treatment')
@@ -70,3 +71,29 @@ def _add_treatment_entries(treatment, sample_id):
         prop['attribute'] = key
         prop['property'] = treatment['attribute']
         dmutil.insert_entry('treatments', prop)
+        
+@app.route('/object/<object_id>/project/<project_id>',
+           methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def add_project_to_object(object_id, project_id):
+    project = r.table('projects').get(project_id).run(g.conn)
+    updated_projects_list = r.table('samples').get(object_id)['projects'].append({'id': project["id"], 'name': project["name"]}).run(g.conn)
+    r.table('samples').get(object_id).update({'projects': updated_projects_list }).run(g.conn)
+    return args.json_as_format_arg({'id': project['name']})
+
+
+@app.route('/object/<object_id>/project/<project_id>/remove',
+           methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def remove_project_from_object(object_id, project_id):
+    project = r.table('projects').get(project_id).run(g.conn)
+    res = r.table('samples').get(object_id)['projects']\
+                               .difference([{'id': project["id"], 'name': project["name"]}]).run(g.conn)
+    r.table('samples').get(object_id).update({'projects': res}).run(g.conn)
+    ugroup = r.table('samples').get(object_id)\
+                                  .run(g.conn, time_format='raw')
+    access.reset()
+    return args.json_as_format_arg(ugroup)
+

@@ -74,7 +74,7 @@
                         <td>{{sample.name}}</td>
                         <td>
                             <ul ng-repeat="c in sample.properties.composition.value">
-                                <li>{{c.element}} - {{c.value}}  {{sample.properties.composition.unit}}</li>
+                                <li>{{c.element}} - {{c.value}} {{sample.properties.composition.unit}}</li>
                             </ul>
                         </td>
                         <td ng-if="sample.available===true">
@@ -108,6 +108,7 @@
                 <div ng-if="sample.treatments.length!==0">
                     <div ng-repeat="treatment in sample.treatments">
                         <i>{{treatment.template}}:</i>
+
                         <div class="form-group" ng-repeat="property in treatment.properties">
                             <cgroup label="{{property.name}}">
                                 <div class="col-sm-6" ng-if="p.type === 'select'">
@@ -115,7 +116,8 @@
                                            type="text">
                                 </div>
                                 <div class="col-sm-6" ng-if="p.type !== 'select'">
-                                    <input class="form-control" ng-model="property.value" ng-disabled="true" type="text">
+                                    <input class="form-control" ng-model="property.value" ng-disabled="true"
+                                           type="text">
                                 </div>
                                 <div class="col-sm-2">
                                     {{ property.unit }}
@@ -133,6 +135,41 @@
                     <ul ng-repeat="process in processes_list">
                         <li><a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a></li>
                     </ul>
+                </div>
+                <div>
+
+                    <legend>Projects</legend>
+                    <paged data="projects_by_sample" current-page="currentUsersPage" page-size="10">
+                        <table class="table table-striped mc-table-hover table-condensed mc-table">
+                            <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="i in projects_by_sample | page:currentUsersPage:10">
+                                <td>{{i.name}}</td>
+                                <td ng-show="sample.owner===signed_in_user">
+                                    <button class="btn btn-default btn-danger" ng-click="deleteProject($index)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </paged>
+                    <label class="col-sm-2 control-label">Select the Project:</label>
+                    <div class="col-sm-6">
+                        <select style="width: 300%" class="form-control" ng-model="model.selected_project"
+                                ng-options="pr.name for pr in projects"
+                                ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
+                                ng-multiple="false">
+                        </select>
+                        <button class="btn btn-default btn-default" ng-click="addProject()">Add Project</button>
+
+                    </div>
+
                 </div>
             </form>
         </div>
