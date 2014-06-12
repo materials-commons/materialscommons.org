@@ -83,7 +83,7 @@
     "template_name": "Computation" ,
     "template_type": "process",
     "template_pick": "computation",
-    "required_input_conditions": [{"name": "Settings", "value": "computation-settings"}],
+    "required_input_conditions": [{"name": "Settings", "value": "computation-job-settings"}],
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true

@@ -98,7 +98,7 @@
     "template_description": "" ,
     "template_birthtime": "",
     "template_mtime": "",
-    "template_name": "data-reconstruction" ,
+    "template_name": "Data Reconstruction" ,
     "template_type": "condition",
     "template_pick": "instrument"
 }
