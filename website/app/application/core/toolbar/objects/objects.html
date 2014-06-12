@@ -154,7 +154,6 @@
                                 <div class="col-sm-2">
                                     {{ property.unit }}
                                 </div>
-
                             </cgroup>
                         </div>
                     </div>
@@ -191,16 +190,18 @@
                             </tbody>
                         </table>
                     </paged>
-                    <label class="col-sm-2 control-label">Select the Project:</label>
-                    <div class="col-sm-6">
-                        <select style="width: 300%" class="form-control" ng-model="model.selected_project"
-                                ng-options="pr.name for pr in projects"
-                                ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
-                                ng-multiple="false">
-                        </select>
-                        <button class="btn btn-default btn-default" ng-click="addProject()">Add Project</button>
-
+                    <div ng-show="sample.owner===signed_in_user">
+                        <label class="col-sm-2 control-label">Select the Project:</label>
+                        <div class="col-sm-6">
+                            <select style="width: 300%" class="form-control" ng-model="model.selected_project"
+                                    ng-options="pr.name for pr in projects"
+                                    ui-select2="{placeholder: 'Select project', allowClear: true, width:'element'}"
+                                    ng-multiple="false">
+                            </select>
+                            <button class="btn btn-default btn-default" ng-click="addProject()">Add Project</button>
+                        </div>
                     </div>
+
 
                 </div>
             </form>
