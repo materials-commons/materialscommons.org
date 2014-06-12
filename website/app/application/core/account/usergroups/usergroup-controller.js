@@ -100,6 +100,7 @@ Application.Controllers.controller('accountUserGroup',
             };
 
             function init() {
+                $scope.ug_id = $stateParams.id;
                 Nav.setActiveNav('usergroup');
                 $scope.group = {
                     name: null,
@@ -113,7 +114,9 @@ Application.Controllers.controller('accountUserGroup',
                     selected_project: ''
                 }
                 $scope.getGroups();
-                $scope.refreshUsers();
+                if($scope.ug_id){
+                    $scope.refreshUsers();
+                }
                 mcapi('/users')
                     .success(function (data) {
                         $scope.all_users = data;
