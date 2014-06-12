@@ -35,6 +35,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
             $scope.cancel = function () {
                 return;
             };
+
             $scope.init = function () {
                 $scope.message = "Once you submit the provenance you cannot change it. Do you wish to submit?";
                 $scope.title = "Confirmation Step";
