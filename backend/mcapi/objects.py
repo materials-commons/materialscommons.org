@@ -49,7 +49,7 @@ def create_object():
     sample['created_by'] = user
     sample['owner'] = user
     sample['treatments'] = []
-    sample['projects'] = []
+    sample['projects'] = dmutil.get_optional('projects', j, [])
     sample['template'] = dmutil.get_required('template', j)
     for treatment in dmutil.get_optional('treatments', j, []):
         t = doc.add_template_properties(treatment, 'treatment')

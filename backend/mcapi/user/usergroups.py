@@ -27,7 +27,7 @@ def newusergroup():
         new_u_group['access'] = dmutil.get_optional('access', u_group)
         new_u_group['users'] = u_group['users']
         new_u_group['owner'] = user
-        new_u_group['projects'] = []
+        new_u_group['projects'] = dmutil.get_optional('projects', u_group, [])
         set_dates(new_u_group)
         return dmutil.insert_entry('usergroups', new_u_group)
     else:

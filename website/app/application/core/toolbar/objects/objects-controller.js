@@ -14,7 +14,7 @@ Application.Controllers.controller('toolbarObjects',
                 .success(function (data) {
                     $scope.processes_list = data;
                 }).jsonp();
-        }
+        };
         $scope.showForm = function () {
             $scope.default_properties = $scope.bk.selected_treatment.default_properties;
             $scope.bk.tab_item = '';
@@ -94,10 +94,12 @@ Application.Controllers.controller('toolbarObjects',
                 available: true,
                 default_properties: [],
                 added_properties: [],
-                treatments: []
+                treatments: [],
+                projects: []
             };
             $scope.bk = {
                 selected_treatment: '',
+                selected_project: '',
                 tab_details: [],
                 tab_item: '',
                 classification: '',
@@ -105,7 +107,14 @@ Application.Controllers.controller('toolbarObjects',
             };
         };
 
-        $scope.addProject = function (prj) {
+            $scope.populateProjects = function () {
+                $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
+            };
+            $scope.removeProjects = function (index) {
+                $scope.doc.projects.splice(index, 1);
+            };
+
+            $scope.addProject = function (prj) {
             mcapi('/object/%/project/%', $scope.sample.id, $scope.model.selected_project.id)
                 .success(function (data) {
                     $scope.refreshProjects()
@@ -126,7 +135,20 @@ Application.Controllers.controller('toolbarObjects',
         function init() {
             Nav.setActiveNav('Objects');
             $scope.signed_in_user = User.u()
-            //$scope.showTreatments = false;
+            $scope.doc = {
+                name: '',
+                notes: [],
+                available: true,
+                default_properties: [],
+                added_properties: [],
+                treatments: [],
+                projects: []
+            };
+            $scope.bk = {
+                projects_by_sample: [],
+                selected_project: ''
+
+            }
             $scope.clear();
             mcapi('/templates')
                 .argWithValue('filter_by', '"template_pick":"treatment"')

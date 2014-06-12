@@ -1,15 +1,13 @@
 <div class="container-fluid" ng-controller="account">
     <ul class="nav nav-tabs">
-        <li ng-class="{'active':isActiveStep('change_password')}" data-toggle="tab"><a ui-sref="account.password"><i
+        <li ng-class="{'active':isActiveStep('password')}"><a ui-sref="account.password"  data-toggle="tab"><i
                 class="fa fa-edit"></i>Change Password</a>
         </li>
-
-        <li ng-class="{'active':isActiveStep('usergroups')}"><a
-                ui-sref="account.usergroup" data-toggle="tab"><i
-                class="fa fa-edit"></i>Usergroups</a></li>
-
-        <li ng-class="{'active':isActiveStep('apikey')}" data-toggle="tab"><a
-                ui-sref="account.apikey">Apikey</a></li>
+        <li ng-class="{'active':isActiveStep('usergroup')}"><a ui-sref="account.usergroup"  data-toggle="tab"><i
+                class="fa fa-edit"></i>Usergroup</a>
+        </li>
+        <li ng-class="{'active':isActiveStep('apikey')}"><a
+                ui-sref="account.apikey"  data-toggle="tab">Apikey</a></li>
     </ul>
     <div ui-view=""></div>
 </div>
