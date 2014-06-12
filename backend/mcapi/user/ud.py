@@ -184,14 +184,14 @@ class ProvenanceSaver(object):
         value = dmutil.get_required('id', s)
         properties['id'] = doc.new_prop_attrs("Id", "", value, "id")
         c['properties'] = properties
-        c['template'] = dmutil.get_required('template_name', j)
+        c['template'] = dmutil.get_required('id', j)
         c['attribute'] = "sample"
         c['type'] = "id"
         return c
 
     def _new_condition(self, j):
         c = dict()
-        c['template'] = dmutil.get_required('template_name', j)
+        c['template'] = dmutil.get_required('id', j)
         c['properties'] = {}
         c['type'] = 'condition'
         attr = dmutil.get_optional("attribute", j, None)

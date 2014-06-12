@@ -4,7 +4,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
             var $validationProvider = $injector.get('$validation'), check;
 
             $scope.change_process = function (template) {
-                if ($scope.doc.template.template_name === template.template_name) {
+                if ($scope.doc.template.id === template.id) {
                     // All attributes already loaded from a draft
                     return;
                 }
