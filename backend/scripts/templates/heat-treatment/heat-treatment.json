@@ -10,7 +10,7 @@
     "template_name": "Heat Treatment" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "heat-settings"}],
+    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "heat-treatment-instrument-settings"}],
     "required_output_conditions": ["transformed-sample"],
     "required_input_files": true,
     "required_output_files": true  
