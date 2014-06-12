@@ -1,6 +1,6 @@
 Application.Controllers.controller('accountUserGroup',
-    ["$scope", "mcapi", "$state", "$stateParams", "User", "alertService", "pubsub","model.Projects",
-        function ($scope, mcapi, $state, $stateParams, User, alertService, pubsub, Projects) {
+    ["$scope", "mcapi", "$state", "$stateParams", "User", "alertService", "pubsub","model.Projects", "Nav",
+        function ($scope, mcapi, $state, $stateParams, User, alertService, pubsub, Projects, Nav) {
             pubsub.waitOn($scope, 'usergroups.change', function () {
                 $scope.getGroups();
             });
@@ -28,22 +28,31 @@ Application.Controllers.controller('accountUserGroup',
                         $scope.user_groups = data;
                     }).jsonp();
             };
-
+            $scope.clear = function () {
+                $scope.group = {
+                    name: null,
+                    access: null,
+                    description: null,
+                    projects: [],
+                    users: [User.u()],
+                    owner: User.u()
+                };
+                $scope.model = {
+                    selected_project: ''
+                }
+            };
             $scope.createUserGroup = function () {
-                var u_group = {};
-                u_group.access = $scope.group.access;
-                u_group.description = $scope.group.description;
-                u_group.name = $scope.group.name;
-                u_group.users = [User.u()];
-                u_group.owner = User.u();
+
                 mcapi('/usergroups/new', User.u())
                     .success(function () {
                         alertService.sendMessage("UserGroup has been created successfully");
                         pubsub.send('usergroups.change');
+                        $scope.clear();
+
                     })
                     .error(function (errorMsg) {
                         alertService.sendMessage(errorMsg.error);
-                    }).post(u_group);
+                    }).post($scope.group);
             };
 
             $scope.addUser = function () {
@@ -82,12 +91,23 @@ Application.Controllers.controller('accountUserGroup',
                     }).put();
             };
 
+
+            $scope.populateProjects = function () {
+                $scope.group.projects.push({'id': $scope.model.selected_project.id, 'name': $scope.model.selected_project.name});
+            };
+            $scope.removeProjects = function (index) {
+                $scope.group.projects.splice(index, 1);
+            };
+
             function init() {
+                Nav.setActiveNav('usergroup');
                 $scope.group = {
                     name: null,
                     access: null,
                     description: null,
-                    projects: []
+                    projects: [],
+                    users: [User.u()],
+                    owner: User.u()
                 };
                 $scope.model = {
                     selected_project: ''
@@ -106,6 +126,5 @@ Application.Controllers.controller('accountUserGroup',
                 });
 
             }
-
             init();
         }]);

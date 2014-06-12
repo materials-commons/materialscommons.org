@@ -29,25 +29,57 @@
                         <div df-properties default-properties="default_properties"></div>
                         <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
                     </div>
+                    <hr/>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"> Projects:</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" ng-model="bk.selected_project"
+                                    ng-options="pr.name for pr in projects">
+                            </select>
+                        </div>
+
+                        <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project</button>
+                    </div>
                 </div>
+
                 <div class="col-sm-4">
                     <label>Treatments Order:</label>
                     <tabset vertical="true" type="pills">
-                        <tab ng-repeat="treatment in doc.treatments" ng-click="showTab(treatment, $index)"
+                        <tab class="col-sm-4" ng-repeat="treatment in doc.treatments" ng-click="showTab(treatment, $index)"
                              heading="{{treatment.id}}">
                         </tab>
                     </tabset>
+                    <hr/>
+                    <label>Added Projects:</label>
+                    <paged data="doc.projects" current-page="currentUsersPage" page-size="10">
+                        <table class="table table-striped mc-table-hover table-condensed mc-table">
+                            <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="i in doc.projects | page:currentUsersPage:10">
+                                <td>{{i.name}}</td>
+                                <td><button class="btn btn-default btn-danger" ng-click="removeProjects($index)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </paged>
                 </div>
             </div>
         </form>
-        <div class="row">
+        <div class="row"><br>
             <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
             <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
             <div saved-notification="" message="message"></div>
         </div>
-
     </div>
-
+    <hr/>
     <div class="row">
         <div class="col-sm-6 col-md-6">
             <legend>List of available objects:</legend>

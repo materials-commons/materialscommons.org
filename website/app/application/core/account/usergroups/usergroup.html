@@ -2,9 +2,9 @@
     <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New</button>
 </div>
 <div ng-controller="accountUserGroup">
-    <div class="row">
+    <div class="row"  ng-show="toggleCustom">
         <div class="col-sm-6">
-            <form ng-show="toggleCustom" class="form-horizontal">
+            <form  class="form-horizontal">
                 <cgroup label="Name:">
                     <input class="form-control" ng-model="group.name" placeholder="Name...">
                 </cgroup>
@@ -14,6 +14,16 @@
                         <option value="public">Public</option>
                     </select>
                 </cgroup>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Select the Project:</label>
+
+                    <div class="col-sm-4">
+                        <select class="form-control" ng-model="model.selected_project"
+                                ng-options="pr.name for pr in projects">
+                        </select>
+                    </div>
+                    <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project</button>
+                </div>
                 <cgroup label="Description:">
                     <textarea class="form-control" placeholder="Description..." ng-model="group.description"></textarea>
                 </cgroup>
@@ -21,6 +31,28 @@
                     <button class="btn btn-default btn-primary" ng-click="createUserGroup()">Save</button>
                 </cgroup>
             </form>
+        </div>
+
+        <div class="col-sm-4" ng-show="group.projects.length!==0">
+            <label>Projects:</label>
+            <table class="table table-striped mc-table-hover table-condensed mc-table">
+                <thead>
+                <tr>
+                    <th>Project</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="i in group.projects">
+                    <td>{{i.name}}</td>
+                    <td>
+                        <button class="btn btn-default btn-danger" ng-click="removeProjects($index)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="row">
