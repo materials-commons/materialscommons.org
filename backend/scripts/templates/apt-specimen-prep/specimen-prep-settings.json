@@ -1,0 +1,74 @@
+{
+    "id": "apt-specimen-prep-settings",
+    "attribute": "specimen_prep_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "preparation",
+            "name": "Preparation" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Electropolish", "value": "electropolish"},{"name": "FIB Liftout", "value": "fib_liftout"}, {"name": "Other", "value": "other"}],
+            "required": true
+        },
+        {
+            "attribute": "solution",
+            "name": "Solution" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "voltage",
+            "name": "Voltage(kV)" ,
+            "type": "number" ,
+            "unit": "kV" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "temperature",
+            "name": "Temperature" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "description",
+            "name": "Description",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Settings" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}
