@@ -77,7 +77,7 @@ def update_process(processid):
         return ''
     else:
         error.update_conflict("Unable to update process: " + processid)
-
+        
 
 @app.route('/processes/sample/<sample_id>', methods=['GET'])
 @jsonp
