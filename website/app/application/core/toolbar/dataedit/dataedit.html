@@ -1,76 +1,114 @@
+<!--<div ng-controller="toolbarDataEdit">-->
+    <!--<div class="row">-->
+        <!--<div class="col-sm-8 col-md-8">-->
+            <!--<form class="form-inline">-->
+                <!--<a ng-repeat="trailitem in trail"  ng-click="backToFolder(trailitem)">-->
+                    <!--<span><b>{{trailitem.displayname}}/ </b></span>-->
+                <!--</a>-->
+                <!--<a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>-->
+            <!--</form>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+        <!--<div class="col-sm-3 col-md-3">-->
+            <!--<div ng-switch="" on="fileType">-->
+                <!--<div ng-switch-when="image">-->
+                    <!--<a ng-href="{{ fileSrc }}">View full size</a>-->
+                    <!--<a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>-->
+                    <!--<img class="img-responsive"  alt="Responsive image" ng-src="{{ fileSrc }}">-->
+                <!--</div>-->
+                <!--<div ng-switch-when="other">-->
+                    <!--<a ng-href="{{ fileSrc }}" download="{{ fileName }}">Download</a>-->
+                    <!--<img src="assets/img/no_img_1.png" alt="Responsive image" class="img-responsive">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-9 col-md-9">-->
+            <!--<form class="form-horizontal">-->
+                <!--<fieldset>-->
+                    <!--<legend>Basic Information</legend>-->
+                    <!--<cgroup label="Description:">-->
+                        <!--<textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc" ng-disabled="model.is_disabled">                        </textarea>-->
+                    <!--</cgroup>-->
+                    <!--<cgroup label="">-->
+                        <!--<div ng-show="model.is_disabled">-->
+                            <!--<button tooltip="Edit Description" ng-click="edit_details()" class="btn btn-default btn-primary">Edit-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div ng-hide="model.is_disabled">-->
+                            <!--<button type="button" class="btn btn-default btn-primary" ng-click="saveData()">-->
+                                <!--Save-->
+                            <!--</button>-->
+                            <!--<button type="button" class="btn btn-default btn-danger" ng-click="cancel()">-->
+                                <!--Cancel-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</cgroup>-->
+                    <!--<cgroup label="Size(bytes):">-->
+                        <!--<input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">-->
+                    <!--</cgroup>-->
+                    <!--<cgroup label="Owner:">-->
+                        <!--<input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">-->
+                    <!--</cgroup>-->
+                <!--</fieldset>-->
+            <!--</form>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<br>-->
 
-<div ng-controller="toolbarDataEdit">
-    <div class="row">
-        <div class="col-sm-8 col-md-8">
-            <form class="form-inline">
-                <a ng-repeat="trailitem in trail"  ng-click="backToFolder(trailitem)">
-                    <span><b>{{trailitem.displayname}}/ </b></span>
-                </a>
-                <a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3 col-md-3">
-            <div ng-switch="" on="fileType">
-                <div ng-switch-when="image">
-                    <a ng-href="{{ fileSrc }}">View full size</a>
-                    <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
-                    <img class="img-responsive"  alt="Responsive image" ng-src="{{ fileSrc }}">
-                </div>
-                <div ng-switch-when="other">
-                    <a ng-href="{{ fileSrc }}" download="{{ fileName }}">Download</a>
-                    <img src="assets/img/no_img_1.png" alt="Responsive image" class="img-responsive">
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-9 col-md-9">
-            <form class="form-horizontal">
-                <fieldset>
-                    <legend>Basic Information</legend>
-                    <cgroup label="Description:">
-                        <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc" ng-disabled="model.is_disabled">                        </textarea>
-                    </cgroup>
-                    <cgroup label="">
-                        <div ng-show="model.is_disabled">
-                            <button tooltip="Edit Description" ng-click="edit_details()" class="btn btn-default btn-primary">Edit
-                            </button>
-                        </div>
-                        <div ng-hide="model.is_disabled">
-                            <button type="button" class="btn btn-default btn-primary" ng-click="saveData()">
-                                Save
-                            </button>
-                            <button type="button" class="btn btn-default btn-danger" ng-click="cancel()">
-                                Cancel
-                            </button>
-                        </div>
-                    </cgroup>
-                    <cgroup label="Size(bytes):">
-                        <input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">
-                    </cgroup>
-                    <cgroup label="Owner:">
-                        <input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">
-                    </cgroup>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-    <br>
+    <!--<div class="row">-->
+        <!--<div class="col-sm-8 col-md-8">-->
+            <!--<div ui-view=""></div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2 col-md-2">-->
+            <!--<tabset vertical="true" type="pills">-->
+                <!--<tab ng-click="showtab('provenance')" heading="Provenance"></tab>-->
+                <!--<tab ng-click="showtab('notes')" heading="Notes"></tab>-->
+                <!--<tab ng-controller="toolbarDataEditCreateReview" ng-click="showtab('reviews')" heading="Reviews - {{reviewsToConduct.length}}">-->
+                <!--</tab>-->
+                <!--<tab  ng-click="showtab('tags')" heading="Tags"></tab>-->
+            <!--</tabset>-->
 
-    <div class="row">
-        <div class="col-sm-8 col-md-8">
-            <div ui-view=""></div>
-        </div>
-        <div class="col-sm-2 col-md-2">
-            <tabset vertical="true" type="pills">
-                <tab ng-click="showtab('provenance')" heading="Provenance"></tab>
-                <tab ng-click="showtab('notes')" heading="Notes"></tab>
-                <tab ng-controller="toolbarDataEditCreateReview" ng-click="showtab('reviews')" heading="Reviews - {{reviewsToConduct.length}}">
-                </tab>
-                <tab  ng-click="showtab('tags')" heading="Tags"></tab>
-            </tabset>
+        <!--</div>-->
+    <!--</div>-->
+    <!--<br>-->
+<!--</div>-->
 
-        </div>
+<div class="row">
+    <div class="col-lg-1">
+
     </div>
-    <br>
+    <div class="col-lg-11">
+
+    </div>
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
