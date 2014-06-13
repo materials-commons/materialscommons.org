@@ -13,6 +13,7 @@ Application.Controllers.controller('toolbarObjects',
             mcapi('/processes/sample/%', $scope.sample.id)
                 .success(function (data) {
                     $scope.processes_list = data;
+                    console.log($scope.processes_list)
                 }).jsonp();
         };
         $scope.showForm = function () {
