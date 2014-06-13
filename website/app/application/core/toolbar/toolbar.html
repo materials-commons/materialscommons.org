@@ -1,29 +1,361 @@
-<div class="container-fluid" ng-controller="toolbar">
-    <ul class="nav nav-tabs">
-        <li ng-class="{'active':isActiveStep('Home')}"><a ui-sref="toolbar.overview" data-toggle="tab"><i
-                class="fa fa-home"></i>Home</a></li>
-        <li ng-class="{'active':isActiveStep('Projects')}" class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" ng-controller="_toolbarProjects">
-                <li ng-repeat="proj in projects | orderBy: 'name'">
-                    <a ui-sref="toolbar.projectspage.overview({id: proj.id, draft_id: ''})"
-                       tabindex="-1">{{proj.name}}</a>
-                </li>
-            </ul>
-        </li>
-        <li ng-class="{'active':isActiveStep('Machines')}" ><a ui-sref="toolbar.machines" data-toggle="tab">Machines</a>
-        </li>
-        <li ng-class="{'active':isActiveStep('Objects')}"><a ui-sref="toolbar.objects" data-toggle="tab">Objects</a>
-        </li>
-        <li ng-class="{'active':isActiveStep('Drafts')}" ng-controller="_toolbarDrafts"><a
-                ui-sref="toolbar.drafts" data-toggle="tab">Drafts({{drafts.length}})</a></li>
-        <li ng-class="{'active':isActiveStep('Reviews')}" ng-controller="_toolbarReviews"><a ui-sref="toolbar.reviews"
-                                                                                             data-toggle="tab"><i
-                class="fa fa-edit"></i>Reviews({{reviewsToConduct.length}})</a></li>
-        <li ng-class="{'active':isActiveStep('Tags')}"><a ui-sref="toolbar.tags"><i
-                class="fa fa-tags"></i>Tags</a></li>
-        <li ng-class="{'active':isActiveStep('Templates')}"><a ui-sref="toolbar.templates" data-toggle="tab"><i
-                class="fa fa-tags"></i>Templates</a></li>
-    </ul>
-    <div ui-view=""></div>
+<!--<div class="container-fluid" ng-controller="toolbar">-->
+<!--<ul class="nav nav-tabs">-->
+<!--<li ng-class="{'active':isActiveStep('Home')}"><a ui-sref="toolbar.overview" data-toggle="tab"><i-->
+<!--class="fa fa-home"></i>Home</a></li>-->
+<!--<li ng-class="{'active':isActiveStep('Projects')}" class="dropdown">-->
+<!--<a class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>-->
+<!--<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" ng-controller="_toolbarProjects">-->
+<!--<li ng-repeat="proj in projects | orderBy: 'name'">-->
+<!--<a ui-sref="toolbar.projectspage.overview({id: proj.id, draft_id: ''})"-->
+<!--tabindex="-1">{{proj.name}}</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</li>-->
+<!--<li ng-class="{'active':isActiveStep('Machines')}"><a ui-sref="toolbar.machines" data-toggle="tab">Machines</a>-->
+<!--</li>-->
+<!--<li ng-class="{'active':isActiveStep('Objects')}"><a ui-sref="toolbar.objects" data-toggle="tab">Objects</a>-->
+<!--</li>-->
+<!--<li ng-class="{'active':isActiveStep('Drafts')}" ng-controller="_toolbarDrafts"><a-->
+<!--ui-sref="toolbar.drafts" data-toggle="tab">Drafts({{drafts.length}})</a></li>-->
+<!--<li ng-class="{'active':isActiveStep('Reviews')}" ng-controller="_toolbarReviews"><a ui-sref="toolbar.reviews"-->
+<!--data-toggle="tab"><i-->
+<!--class="fa fa-edit"></i>Reviews({{reviewsToConduct.length}})</a></li>-->
+<!--<li ng-class="{'active':isActiveStep('Tags')}"><a ui-sref="toolbar.tags"><i-->
+<!--class="fa fa-tags"></i>Tags</a></li>-->
+<!--<li ng-class="{'active':isActiveStep('Templates')}"><a ui-sref="toolbar.templates" data-toggle="tab"><i-->
+<!--class="fa fa-tags"></i>Templates</a></li>-->
+<!--</ul>-->
+<!--<div ui-view=""></div>-->
+<!--</div>-->
+
+<div class="row">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-11">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body">
+                        <div class="col-sm-4">
+                            <button class="btn btn-danger"><i class="fa fa-tasks fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 30px;color: #708090; text-align: center">Projects</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 20px;color: #808080;text-align: center">( 1 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body">
+                        <div class="col-sm-4">
+                            <button class="btn btn-success"><i class="fa fa-desktop fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 30px;color: #708090;text-align: center">Machines</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 20px;color: #808080;text-align: center">( 1 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body">
+                        <div class="col-sm-4">
+                            <button class="btn btn-info"><i class="fa fa-copy fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 30px;color: #708090;text-align: center">Drafts</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 20px;color: #808080;text-align: center">( 1 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body">
+                        <div class="col-sm-4">
+                            <button class="btn btn-default"><i class="fa fa-rocket fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 30px;color: #708090;text-align: center">Samples</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 20px;color: #808080;text-align: center">( 1 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body">
+                        <div class="col-sm-4">
+                            <button class="btn btn-danger"><i class="fa fa-tasks fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 30px;color: #708090; text-align: center">Projects</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 20px;color: #808080;text-align: center">( 1 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-11">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-danger" style="margin: 8px 7px;" ><i class="fa fa-tasks fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090; text-align: left">Projects</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 1 )</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color: #d3d3d3; box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-success"  style="margin: 8px 7px;"><i class="fa fa-desktop fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090;text-align: left">Machines</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 1 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-info"  style="margin: 8px 7px;"><i class="fa fa-copy fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090;text-align: left">Drafts</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 9 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-default"  style="margin: 8px 7px;"><i class="fa fa-rocket fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090;text-align: left">Samples</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 15 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-danger"  style="margin: 8px 7px;"><i class="fa fa-tasks fa-3x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090; text-align: left">Projects</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 20 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-11">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-danger btn-circle btn-lg" style="margin: 8px 7px;" ><i class="fa fa-tasks fa-1x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090; text-align: left">Projects</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 1 )</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color: #d3d3d3; box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-success  btn-circle btn-lg"  style="margin: 8px 7px;"><i class="fa fa-desktop fa-1x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090;text-align: left">Machines</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 1 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-info  btn-circle btn-lg"  style="margin: 8px 7px;"><i class="fa fa-copy fa-1x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090;text-align: left">Drafts</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 9 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-default  btn-circle btn-lg"  style="margin: 8px 7px;"><i class="fa fa-rocket fa-1x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090;text-align: left">Samples</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 15 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="panel panel-default"
+                     style="border: 1px solid ; border-color:#d3d3d3;box-shadow: 1px 1px 4px #888888;">
+                    <div class="panel-body" style="padding: 8px;">
+                        <div class="col-sm-4">
+                            <button class="btn btn-danger  btn-circle btn-lg"  style="margin: 8px 7px;"><i class="fa fa-tasks fa-1x"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <p style="font-size: 25px;color: #708090; text-align: left">Projects</p>
+                            </div>
+                            <div class="row">
+                                <p style="font-size: 12px;color: #808080;text-align: left">( 20 )</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
