@@ -1,33 +1,7 @@
 <div class="row" ng-controller="toolbar">
-    <!--<ul class="nav nav-tabs">-->
-        <!--<li ng-class="{'active':isActiveStep('Home')}"><a ui-sref="toolbar.overview" data-toggle="tab"><i-->
-                <!--class="fa fa-home"></i>Home</a></li>-->
-        <!--<li ng-class="{'active':isActiveStep('Projects')}" class="dropdown">-->
-            <!--<a class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>-->
-            <!--<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" ng-controller="_toolbarProjects">-->
-                <!--<li ng-repeat="proj in projects | orderBy: 'name'">-->
-                    <!--<a ui-sref="toolbar.projectspage.overview({id: proj.id, draft_id: ''})"-->
-                       <!--tabindex="-1">{{proj.name}}</a>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</li>-->
-        <!--<li ng-class="{'active':isActiveStep('Machines')}"><a ui-sref="toolbar.machines" data-toggle="tab">Machines</a>-->
-        <!--</li>-->
-        <!--<li ng-class="{'active':isActiveStep('Objects')}"><a ui-sref="toolbar.objects" data-toggle="tab">Objects</a>-->
-        <!--</li>-->
-        <!--<li ng-class="{'active':isActiveStep('Drafts')}" ng-controller="_toolbarDrafts"><a-->
-                <!--ui-sref="toolbar.drafts" data-toggle="tab">Drafts({{drafts.length}})</a></li>-->
-        <!--<li ng-class="{'active':isActiveStep('Reviews')}" ng-controller="_toolbarReviews"><a ui-sref="toolbar.reviews"-->
-                                                                                             <!--data-toggle="tab"><i-->
-                <!--class="fa fa-edit"></i>Reviews({{reviewsToConduct.length}})</a></li>-->
-        <!--<li ng-class="{'active':isActiveStep('Tags')}"><a ui-sref="toolbar.tags"><i-->
-                <!--class="fa fa-tags"></i>Tags</a></li>-->
-        <!--<li ng-class="{'active':isActiveStep('Templates')}"><a ui-sref="toolbar.templates" data-toggle="tab"><i-->
-                <!--class="fa fa-tags"></i>Templates</a></li>-->
-    <!--</ul>-->
-    <div class="col-lg-1">
+    <div class="col-lg-2">
     </div>
-    <div class="col-lg-11">
+    <div class="col-lg-10">
         <div class="row">
             <button ng-class="{doit: disable1, doit2: !disable1}" class="col-lg-2 btn btn-info"
                     ng-mouseover="disable1 = callMouseOver('projects');" ng-mouseleave="callMouseLeave('projects')" ng-click="activateButton('projects')">

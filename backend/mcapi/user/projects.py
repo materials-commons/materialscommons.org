@@ -18,7 +18,7 @@ from loader.model import datadir
 @jsonp
 def get_all_projects():
     user = access.get_user()
-    rr = r.table('projects').filter({'owner': user})
+    rr = r.table('projects').filter({'owner': user}).order_by('name')
     rr = args.add_all_arg_options(rr)
     items = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(items)

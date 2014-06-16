@@ -28,7 +28,7 @@ Application.Controllers.controller('toolbar',
                     $scope.disable3 = true;
                     $scope.disable4 = true;
                     $scope.activebtn = 'projects';
-                    $state.go('toolbar.projects');
+                    $state.go('toolbar.projectspage');
                     break;
                 case "samples":
                     $scope.disable1 = true;
@@ -36,7 +36,7 @@ Application.Controllers.controller('toolbar',
                     $scope.disable3 = true;
                     $scope.disable4 = true;
                     $scope.activebtn = 'samples'
-                    $state.go('toolbar.samples');
+                    $state.go('toolbar.objects');
                     break;
                 case "provenance":
                     $scope.disable1 = true;

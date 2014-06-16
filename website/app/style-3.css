@@ -5,42 +5,45 @@ body {
     overflow-x: hidden;
     /*line-height: 20px;*/
 }
+
 .validation-invalid {
     color: #FF4136;
 }
+
 /*************************************************All about table th, td, hover *************************/
 
-.mc-table {
-    color: black;
-}
+/*.mc-table {*/
+/*color: black;*/
+/*}*/
 
-.mc-table-hover tbody tr:hover td,
-.mc-table-hover tbody tr:hover th {
-    background-color: #CCCCCC;
-}
+/*.mc-table-hover tbody tr:hover td,*/
+/*.mc-table-hover tbody tr:hover th {*/
+/*background-color: #CCCCCC;*/
+/*}*/
 .pagination {
     text-align: center;
     cursor: pointer;
 }
-/*******************************************************************************************************/
 
+/*******************************************************************************************************/
 
 /*************************************************All about top navigation bar *************************/
 .navbar-custom {
-    background-color:#0C5C86;
-    color:#ffffff;
-    border-radius:0;
+    background-color: #0C5C86;
+    color: #ffffff;
+    border-radius: 0;
 }
 
 .navbar-custom .navbar-nav > li > a {
-    color:#fff;
-    padding-left:20px;
-    padding-right:20px;
+    color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
 
 }
+
 .navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
     color: #ffffff;
-    background-color:transparent;
+    background-color: transparent;
 }
 
 .navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
@@ -50,20 +53,24 @@ body {
 }
 
 .navbar-custom .navbar-brand {
-    color:#eeeeee;
+    color: #eeeeee;
     padding: 8px 15px 0px 10px;
     height: 40px;
 }
+
 .navbar-custom .navbar-toggle {
-    background-color:#eeeeee;
+    background-color: #eeeeee;
 }
+
 .navbar-custom .icon-bar {
-    background-color:#0C5C86;
+    background-color: #0C5C86;
 }
+
 .navbar .nav > li > a {
     padding: 8px 15px 0px 8px;
 }
-.navbar{
+
+.navbar {
     margin-bottom: 2px;
     min-height: 15px !important;
 
@@ -71,10 +78,11 @@ body {
 
 /*************************************This controls the height,  padding, and border radius and space between(margin bottom) of all input elements******/
 .form-horizontal
-.control-label{
+.control-label {
     padding-top: 5px;
 }
-.form-control{
+
+.form-control {
     height: 30px;
     line-height: 20px;
     padding: 3px;
@@ -91,16 +99,20 @@ body {
     padding-left: 0;
     padding-right: 6px;
 }
+
 .form-group {
     margin-bottom: 2px;
 }
+
 .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
     border-radius: 6px;
 }
+
 .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
     border-radius: 6px;
 
 }
+
 textarea.form-control {
     height: 80px;
     width: 400px;
@@ -121,35 +133,56 @@ textarea.form-control {
     color: red;
 }
 
-.form-control:focus{
+.form-control:focus {
     border-color: #1ABC9C;
 }
-.form-control:focus:invalid:focus{
+
+.form-control:focus:invalid:focus {
     border-color: #E9322D;
 }
-.label-primary{
+
+.label-primary {
     margin-right: 5px;
     background-color: steelblue;
 }
-p{
+
+p {
     margin: 0px;
 }
+
 .col-sm-2 {
     width: 12%;
 }
+
 /*.nav > li > a {*/
-    /*display: block;*/
-    /*padding: 5px 8px;*/
-    /*position: relative;*/
+/*display: block;*/
+/*padding: 5px 8px;*/
+/*position: relative;*/
 /*}*/
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-    color: #2c3e50;
-    background-color: lightblue;
+/*.nav-tabs > li.active > a,*/
+/*.nav-tabs > li.active > a:hover,*/
+/*.nav-tabs > li.active > a:focus {*/
+    /*border: 1px solid #ecf0f1;*/
+    /*border-right: solid red;*/
+    /*cursor: default;*/
+    /*outline: none;*/
+/*}*/
+
+#individual-items.nav-tabs > li > a,
+#individual-items.nav-tabs > li.active > a:hover,
+#individual-items.nav-tabs > li.active > a:focus {
     border: 1px solid #ecf0f1;
-    border-bottom-color: transparent;
+    border-right: solid red;
     cursor: default;
+    outline: none;
+}
+.nav-tabs > li > a.top-level-items,
+.nav-tabs > li.active > a.top-level-items:hover,
+.nav-tabs > li.active > a.top-level-items:focus {
+    border: 1px solid black;
+    border-top: solid red;
+    cursor: default;
+    outline: none;
 }
 
 footer {
@@ -159,17 +192,59 @@ footer {
     height: 25px;
     background-color: lightgrey;
 }
+
 h4, .h4, h5, .h5, h6, .h6 {
     margin-bottom: 10.5px;
     margin-top: 3px;
 }
-.dropdown-submenu{position:relative;}
-.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
-.dropdown-submenu:hover>.dropdown-menu{display:block;}
-.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
-.dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
-.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
 
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #cccccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #ffffff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
 
 .fa-check,
 available {
@@ -177,12 +252,14 @@ available {
 }
 
 .fa-times,
-notavailable{
+notavailable {
     color: red;
 }
+
 .modal-backdrop {
     background-color: none;
 }
+
 .btn-circle {
     width: 30px;
     height: 30px;
@@ -210,10 +287,12 @@ notavailable{
     line-height: 1.33;
     border-radius: 35px;
 }
+
 .panel-body.mypanel:hover {
     opacity: 0.05;
     filter: alpha(opacity=5);
 }
+
 .panel-body.custom-background {
     background-color: papayawhip;
     color: white;
@@ -226,6 +305,7 @@ notavailable{
 .doit2 {
     opacity: 1;
 }
+
 /*
 ** Remove outline on selected items (eg in a tab pill)
 */
@@ -233,4 +313,52 @@ notavailable{
     outline: none;
 }
 
+.project-tabs {
+    margin-bottom: 10px !important;
+}
+
+.marginLeft {
+    margin-left: 10px !important;
+}
+
+/********* Custom table *********/
+.table-file-directory {
+    margin-top: -22px;
+    border-collapse: separate;
+    border: 1px solid lightgrey;
+    /*border-spacing: 0 1px;*/
+}
+
+.table-file-directory  > thead > th {
+    background-color: lightgrey;
+    color: black;
+}
+
+table-file-directory > tbody >td {
+    background-color: white;
+}
+
+.table-file-directory > thead > tr > th,
+.table-file-directory > thead > tr > th,
+.table-file-directory > tbody > tr > th,
+.table-file-directory > tbody > tr > th,
+.table-file-directory > tfoot > tr > th,
+table-file-directory > thead > tr > td,
+.table-file-directory > thead > tr > td,
+.table-file-directory > tbody > tr > td,
+.table-file-directory > tbody > tr > td, table-file-directory  > tfoot > tr > td,
+.table-file-directory > tfoot > tr > td {
+    border-bottom: 1px solid lightgrey;
+}
+
+.panel-default {
+    border-color: lightgrey;
+    color: darkgrey;
+}
+
+
+.file-heading {
+    padding: 17px 15px;
+
+}
 
