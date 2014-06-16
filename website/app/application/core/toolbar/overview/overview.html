@@ -1,170 +1,124 @@
-<div class="row"  ng-controller="toolbarProjectsPageOverview">
-    <div class="col-lg-1">
-    </div>
-    <div class="col-lg-11">
-        <div class="row">
-                <button ng-class="{doit: disable, doit2: !disable}" class="col-lg-2 btn btn-info" ng-mouseover="disable = callMe();" ng-mouseleave="disable=true">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div style="width:50px; height: 50px;border-radius: 50%;background-color: #E74C3C">
-                                <i class="fa fa-tasks fa-2x" style="color:white; margin: 13px 3px"></i>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <p style="font-size: 25px;color: #ffffff; text-align: center">Projects(12)</p>
-                            </div>
-                            <div class="row">
-                                <p>This is test</p>
-
-                            </div>
-                        </div>
-                    </div>
-                </button>
-            <button ng-class="{doit: disable, doit2: !disable}" class="col-lg-2 btn btn-info" ng-mouseover="disable = callMe();" ng-mouseleave="disable=true">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div style="width:50px; height: 50px;border-radius: 50%;background-color: #E74C3C">
-                            <i class="fa fa-tasks fa-2x" style="color:white; margin: 13px 3px"></i>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <p style="font-size: 25px;color: #ffffff; text-align: center">Drafts(12)</p>
-                        </div>
-                        <div class="row">
-                            <p>This is test</p>
-
-                        </div>
-                    </div>
-                </div>
-            </button>
-            <button ng-class="{doit: disable, doit2: !disable}" class="col-lg-2 btn btn-info" ng-mouseover="disable = callMe();" ng-mouseleave="disable=true">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div style="width:50px; height: 50px;border-radius: 50%;background-color: #E74C3C">
-                            <i class="fa fa-tasks fa-2x" style="color:white; margin: 13px 3px"></i>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <p style="font-size: 25px;color: #ffffff; text-align: center">Machines(2)</p>
-                        </div>
-                        <div class="row">
-                            <p>This is test</p>
-
-                        </div>
-                    </div>
-                </div>
-            </button>
-
-        </div>
-    </div>
-</div>
-
 <!--<div ng-controller="toolbarOverview">-->
-<!--<div class="col-sm-6 col-md-6">-->
-<!--<div class="row" ng-repeat="project in projects | orderBy:'name'">-->
-<!--<div  class="panel panel-primary">-->
-<!--<div class="panel-heading">-->
-<!--<h3 class="panel-title" ><a style="color: white" ui-sref="toolbar.projectspage.overview({id: project.id})">{{ project.name }}</a></h3>-->
-<!--</div>-->
-<!--<div class="panel-body">-->
-<!--<div class="row">-->
-<!--<div class="col-sm-3 col-md-3">-->
-<!--<a ui-sref="toolbar.projectspage.overview({id: project.id})"><i class="fa fa-tasks fa-5x"></i></a>-->
-<!--</div>-->
-<!--<div class="col-sm-5 col-md-5">-->
-<!--<strong>Details</strong><br>-->
-<!--<table class="table table-condensed table-responsive mc-table-hover">-->
-<!--<tbody>-->
-<!--<tr>-->
-<!--<td>Description:</td>-->
-<!--<td>{{ project.description }}</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Created:</td>-->
-<!--<td>{{ project.birthtime | toDateString }}</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Dirs/Files:</td>-->
-<!--<td>{{ project.datadirs_count }}/{{ project.datafiles_count }}</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Reviews Due:</td>-->
-<!--<td>{{ project.reviews_count }}</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Drafts:</td>-->
-<!--<td>{{ project.drafts_count }}</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Provenance:</td>-->
-<!--<td>{{ project.provenance_count }}</td>-->
-<!--</tr>-->
-<!--</tbody>-->
-<!--</table>-->
-<!--</div>-->
-<!--<div class="col-sm-4 col-md-4">-->
-<!--<strong>Todos</strong>-->
-<!--<table class="table table-condensed table-responsive mc-table-hover">-->
-<!--<tbody>-->
-<!--<tr ng-repeat="todo in project.todos">-->
-<!--<td><input ng-click="deleteTodo(project, $index)" type="checkbox"> {{ todo.name }}</td>-->
-<!--<td>{{ todo.description }}</td>-->
-<!--</tr>-->
-<!--</tbody>-->
-<!--</table>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="panel-footer">-->
-<!--<a class="btn btn-default btn-primary" type="button" data-toggle="modal" data-target="#toolbarOverviewProjectModal" ng-click="setProject(project)" tooltip="Edit project details" data-original-title="Edit project"><i class="fa fa-pencil-square-o"></i></a>-->
-<!--<a class="btn btn-default  btn-info" type="button" data-toggle="modal" data-target="#toolbarOverviewTodoModal" ng-click="setProject(project)" tooltip="New Todo" data-original-title="Create todo"><i class="fa fa-check-square-o"></i></a>-->
-<!--</div>-->
-<!--</div>-->
-<!--<hr>-->
-<!--</div>-->
-<!--</div>-->
+    <!--<div class="col-sm-6 col-md-6">-->
+        <!--<div class="row" ng-repeat="project in projects | orderBy:'name'">-->
+            <!--<div class="panel panel-primary">-->
+                <!--<div class="panel-heading">-->
+                    <!--<h3 class="panel-title"><a style="color: white"-->
+                                               <!--ui-sref="toolbar.projectspage.overview({id: project.id})">{{ project.name-->
+                        <!--}}</a></h3>-->
+                <!--</div>-->
+                <!--<div class="panel-body">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-sm-3 col-md-3">-->
+                            <!--<a ui-sref="toolbar.projectspage.overview({id: project.id})"><i-->
+                                    <!--class="fa fa-tasks fa-5x"></i></a>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-5 col-md-5">-->
+                            <!--<strong>Details</strong><br>-->
+                            <!--<table class="table table-condensed table-responsive mc-table-hover">-->
+                                <!--<tbody>-->
+                                <!--<tr>-->
+                                    <!--<td>Description:</td>-->
+                                    <!--<td>{{ project.description }}</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>Created:</td>-->
+                                    <!--<td>{{ project.birthtime | toDateString }}</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>Dirs/Files:</td>-->
+                                    <!--<td>{{ project.datadirs_count }}/{{ project.datafiles_count }}</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>Reviews Due:</td>-->
+                                    <!--<td>{{ project.reviews_count }}</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>Drafts:</td>-->
+                                    <!--<td>{{ project.drafts_count }}</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>Provenance:</td>-->
+                                    <!--<td>{{ project.provenance_count }}</td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-4 col-md-4">-->
+                            <!--<strong>Todos</strong>-->
+                            <!--<table class="table table-condensed table-responsive mc-table-hover">-->
+                                <!--<tbody>-->
+                                <!--<tr ng-repeat="todo in project.todos">-->
+                                    <!--<td><input ng-click="deleteTodo(project, $index)" type="checkbox"> {{ todo.name }}-->
+                                    <!--</td>-->
+                                    <!--<td>{{ todo.description }}</td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="panel-footer">-->
+                    <!--<a class="btn btn-default btn-primary" type="button" data-toggle="modal"-->
+                       <!--data-target="#toolbarOverviewProjectModal" ng-click="setProject(project)"-->
+                       <!--tooltip="Edit project details" data-original-title="Edit project"><i-->
+                            <!--class="fa fa-pencil-square-o"></i></a>-->
+                    <!--<a class="btn btn-default  btn-info" type="button" data-toggle="modal"-->
+                       <!--data-target="#toolbarOverviewTodoModal" ng-click="setProject(project)" tooltip="New Todo"-->
+                       <!--data-original-title="Create todo"><i class="fa fa-check-square-o"></i></a>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<hr>-->
+        <!--</div>-->
+    <!--</div>-->
 
-<!--<div id="toolbarOverviewTodoModal" class="modal hide fade in" modal-dismiss="" ng-controller="_toolbarOverviewTodoModal">-->
-<!--<div class="modal-header">-->
-<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
-<!--<h3>Add Todo</h3>-->
-<!--</div>-->
-<!--<div class="modal-body form-horizontal">-->
-<!--<form>-->
-<!--<fieldset>-->
-<!--<legend>Todo</legend>-->
-<!--<input class="form-control" ng-model="name" ui-keypress="{13: 'addTodoKeypress($event)'}" placeholder="Name..." type="text">-->
-<!--<input class="form-control" ng-model="description" ui-keypress="{13: 'addTodoKeypress($event)'}" placeholder="Description..." type="text">-->
-<!--</fieldset>-->
-<!--</form>-->
-<!--</div>-->
+    <!--<div id="toolbarOverviewTodoModal" class="modal hide fade in" modal-dismiss=""-->
+         <!--ng-controller="_toolbarOverviewTodoModal">-->
+        <!--<div class="modal-header">-->
+            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+            <!--<h3>Add Todo</h3>-->
+        <!--</div>-->
+        <!--<div class="modal-body form-horizontal">-->
+            <!--<form>-->
+                <!--<fieldset>-->
+                    <!--<legend>Todo</legend>-->
+                    <!--<input class="form-control" ng-model="name" ui-keypress="{13: 'addTodoKeypress($event)'}"-->
+                           <!--placeholder="Name..." type="text">-->
+                    <!--<input class="form-control" ng-model="description" ui-keypress="{13: 'addTodoKeypress($event)'}"-->
+                           <!--placeholder="Description..." type="text">-->
+                <!--</fieldset>-->
+            <!--</form>-->
+        <!--</div>-->
 
-<!--<div class="modal-footer">-->
-<!--<button class="btn btn-default btn-primary" data-dismiss="modal" aria-hidden="true" ng-click="addTodo()">Add</button>-->
-<!--<button class="btn btn-default btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>-->
-<!--</div>-->
-<!--</div>-->
+        <!--<div class="modal-footer">-->
+            <!--<button class="btn btn-default btn-primary" data-dismiss="modal" aria-hidden="true" ng-click="addTodo()">-->
+                <!--Add-->
+            <!--</button>-->
+            <!--<button class="btn btn-default btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>-->
+        <!--</div>-->
+    <!--</div>-->
 
-<!--<div id="toolbarOverviewProjectModal" class="modal hide fade in" modal-dismiss="" ng-controller="_toolbarOverviewProjectModal">-->
-<!--<div class="modal-header">-->
-<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
-<!--<h3>{{ whichProject.name }}</h3>-->
-<!--</div>-->
-<!--<div class="modal-body form-horizontal">-->
-<!--<form>-->
-<!--<fieldset>-->
-<!--<legend>Project</legend>-->
-<!--<input class="form-control" ng-model="description" ui-keypress="{13: 'editProjectKeypress($event)'}" placeholder="Description..." type="text">-->
-<!--</fieldset>-->
-<!--</form>-->
-<!--</div>-->
+    <!--<div id="toolbarOverviewProjectModal" class="modal hide fade in" modal-dismiss=""-->
+         <!--ng-controller="_toolbarOverviewProjectModal">-->
+        <!--<div class="modal-header">-->
+            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+            <!--<h3>{{ whichProject.name }}</h3>-->
+        <!--</div>-->
+        <!--<div class="modal-body form-horizontal">-->
+            <!--<form>-->
+                <!--<fieldset>-->
+                    <!--<legend>Project</legend>-->
+                    <!--<input class="form-control" ng-model="description" ui-keypress="{13: 'editProjectKeypress($event)'}"-->
+                           <!--placeholder="Description..." type="text">-->
+                <!--</fieldset>-->
+            <!--</form>-->
+        <!--</div>-->
 
-<!--<div class="modal-footer">-->
-<!--<button class="btn btn-default btn-primary" data-dismiss="modal" aria-hidden="true" ng-click="editProject()">Add</button>-->
-<!--<button class="btn btn-default btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>-->
-<!--</div>-->
-<!--</div>-->
+        <!--<div class="modal-footer">-->
+            <!--<button class="btn btn-default btn-primary" data-dismiss="modal" aria-hidden="true"-->
+                    <!--ng-click="editProject()">Add-->
+            <!--</button>-->
+            <!--<button class="btn btn-default btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>-->
+        <!--</div>-->
+    <!--</div>-->
 <!--</div>-->

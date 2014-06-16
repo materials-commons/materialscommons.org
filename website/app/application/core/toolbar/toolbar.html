@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="toolbar">
+<div class="row" ng-controller="toolbar">
     <!--<ul class="nav nav-tabs">-->
         <!--<li ng-class="{'active':isActiveStep('Home')}"><a ui-sref="toolbar.overview" data-toggle="tab"><i-->
                 <!--class="fa fa-home"></i>Home</a></li>-->
@@ -25,6 +25,87 @@
         <!--<li ng-class="{'active':isActiveStep('Templates')}"><a ui-sref="toolbar.templates" data-toggle="tab"><i-->
                 <!--class="fa fa-tags"></i>Templates</a></li>-->
     <!--</ul>-->
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-11">
+        <div class="row">
+            <button ng-class="{doit: disable1, doit2: !disable1}" class="col-lg-2 btn btn-info"
+                    ng-mouseover="disable1 = callMouseOver('projects');" ng-mouseleave="callMouseLeave('projects')" ng-click="activateButton('projects')">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div style="width:50px; height: 50px;border-radius: 50%;background-color: #E74C3C">
+                            <i class="fa fa-tasks fa-2x" style="color:white; margin: 13px 3px"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <p style="font-size: 25px;color: #ffffff; text-align: center">Projects</p>
+                        </div>
+                        <div class="row">
+                            <p>This is test</p>
+
+                        </div>
+                    </div>
+                </div>
+            </button>
+            <button ng-class="{doit: disable2, doit2: !disable2}" class="col-lg-2 btn btn-success"
+                    ng-mouseover="disable2 = callMouseOver('samples');" ng-mouseleave="callMouseLeave('samples')"  ng-click="activateButton('samples')">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div style="width:50px; height: 50px;border-radius: 50%;background-color: #2c3e50">
+                            <i class="fa fa-tasks fa-2x" style="color:white; margin: 13px 3px"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <p style="font-size: 25px;color: #ffffff; text-align: center">Samples</p>
+                        </div>
+                        <div class="row">
+                            <p>This is test</p>
+
+                        </div>
+                    </div>
+                </div>
+            </button>
+            <button ng-class="{doit: disable3, doit2: !disable3}" class="col-lg-2 btn btn-danger"
+                    ng-mouseover="disable3 = callMouseOver('provenance');"  ng-mouseleave="callMouseLeave('provenance')" ng-click="activateButton('provenance')">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div style="width:50px; height: 50px;border-radius: 50%;background-color: #3498DB">
+                            <i class="fa fa-tasks fa-2x" style="color:white; margin: 13px 3px"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <p style="font-size: 25px;color: #ffffff; text-align: center">Provenance</p>
+                        </div>
+                        <div class="row">
+                            <p>This is test</p>
+                        </div>
+                    </div>
+                </div>
+            </button>
+            <button ng-class="{doit: disable4, doit2: !disable4}" class="col-lg-2 btn btn-warning"
+                    ng-mouseover="disable4 = callMouseOver('machines');" ng-mouseleave="callMouseLeave('machines')"  ng-click="activateButton('machines')">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div style="width:50px; height: 50px;border-radius: 50%;background-color: #E74C3C">
+                            <i class="fa fa-tasks fa-2x" style="color:white; margin: 13px 3px"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <p style="font-size: 25px;color: #ffffff; text-align: center">Machines</p>
+                        </div>
+                        <div class="row">
+                            <p>This is test</p>
+                        </div>
+                    </div>
+                </div>
+            </button>
+
+        </div>
+    </div>
     <div ui-view=""></div>
 </div>
 
