@@ -226,5 +226,11 @@ notavailable{
 .doit2 {
     opacity: 1;
 }
+/*
+** Remove outline on selected items (eg in a tab pill)
+*/
+.btn:focus {
+    outline: none;
+}
 
 

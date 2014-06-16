@@ -6,7 +6,6 @@ Application.Controllers.controller('toolbarProjectsPageOverview',
         }
         function init() {
             $scope.disable = true;
-            console.log("toolbarProjectsPageOverview");
             $scope.project_id = $stateParams.id;
             $scope.from = $stateParams.from;
             $scope.processes = [];
