@@ -1,50 +1,54 @@
 <div ng-show="treeOverview || treeActive">
-    <div ng-show="loaded===false" class="row">
-        <div class="col-sm-4 col-md-4 col-lg-offset-5">
-            <p><i class="fa fa-spinner fa-spin fa-4x"></i> Loading...</p>
-        </div>
+    <div class="row">
+        <a style="cursor: pointer" ng-click="backToFolder(trailitem)" ng-repeat="trailitem in trail">
+            <i class="fa fa-folder fa-1x"></i><span style="margin-right: 7px; font-size: 14px">{{trailitem.displayname}}/ </span>
+        </a><br>
     </div>
-    <div ng-show="loaded===true" class="row">
-        <div class="col-sm-12 col-md-12">
-            <a style="cursor: pointer" ng-click="backToFolder(trailitem)" ng-repeat="trailitem in trail">
-                <i class="fa fa-folder fa-2x"></i><span style="margin-right: 7px">{{trailitem.displayname}}/ </span>
-            </a>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
-                <label><b>Project Files:</b></label>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Select</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Owner</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}" data-tt-parent-id="{{t.parent_id}}">
-                        <td ng-if="entry.type=='datafile'">
-                            <input ng-model="entry.selected" ng-click="fileSelected(entry)" ng-change="entry.selected = !entry.selected" type="checkbox">
-                        </td>
-                        <td ng-if="entry.type=='datadir'">
-                            <!--<input type="checkbox" disabled/>-->
-                        </td>
-
-                        <td ng-if="entry.type=='datadir'">
-                            <a style="cursor: pointer" ng-click="openFolder(entry)"><i class="fa fa-folder fa-2x"></i>{{entry.displayname}}
-                            </a>
-                        </td>
-                        <td ng-if="entry.type=='datafile'">
-                            <a ng-click="populatePath(entry)"><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</a>
-                        </td>
-                        <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
-                        <td ng-if="entry.type=='datadir'">-</td>
-                        <td>{{entry.owner}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading file-heading">
+                <a style="padding-right: 15px;" class="pull-right"><i class="fa fa-bar-chart-o"></i>Compare </a>
+                <a style="padding-right: 15px;" class="pull-right"><i class="fa fa-download"></i>Download </a>
+                <a style="padding-right: 15px;" class="pull-right"><i class="fa fa-upload"></i>Upload </a>
+                <a style="padding-right: 15px;" class="pull-right"><i class="fa fa-code-fork"></i>Add Prov </a>
+            </div>
+            <div class="panel-body">
+                Last Synced............
             </div>
         </div>
+        <div ng-show="loaded===false">
+            <div class="row col-lg-offset-5">
+                <p><i class="fa fa-spinner fa-spin fa-4x"></i> Loading...</p>
+            </div>
+        </div>
+        <div ng-show="loaded===true">
+            <table class="table  table-file-directory ">
+                <tbody>
+                <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
+                    data-tt-parent-id="{{t.parent_id}}">
+                    <!--<td ng-if="entry.type=='datafile'">-->
+                    <!--<input ng-model="entry.selected" ng-click="fileSelected(entry)"-->
+                    <!--ng-change="entry.selected = !entry.selected" type="checkbox">-->
+                    <!--</td>-->
+                    <!--<td ng-if="entry.type=='datadir'">-->
+                    <!--&lt;!&ndash;<input type="checkbox" disabled/>&ndash;&gt;-->
+                    <!--</td>-->
+
+                    <td ng-if="entry.type=='datadir'">
+                        <a style="cursor: pointer" ng-click="openFolder(entry)"><i class="fa fa-folder fa-2x"></i>{{entry.displayname}}
+                        </a>
+                    </td>
+                    <td ng-if="entry.type=='datafile'">
+                        <a ng-click="populatePath(entry)"><i class="fa fa-file fa-2x"></i>{{entry.displayname}}</a>
+                    </td>
+                    <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
+                    <td ng-if="entry.type=='datadir'">-</td>
+                    <td>{{entry.owner}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </div>
+

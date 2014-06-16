@@ -1,21 +1,19 @@
-<div ng-controller="toolbarProjectsPage">
-    <div class="row">
-        <div class="col-sm-4 col-md-4">
-            <legend>{{project.name}}</legend>
-        </div>
+<div class="row">
+        <div class="col-lg-2">
 
-        <div class="col-sm-6 col-md-6">
-            <form class="form-horizontal">
-                <cgroup label="Action">
-                    <select class="form-control input-sm" ng-model="model.action" ui-select2="{placeholder: 'Action', width:'element'}" ng-multiple="false">
-                        <option></option>
-                        <option value="prov">Create Provenance</option>
-                    </select>
-                </cgroup>
-            </form>
         </div>
+        <div class="col-lg-10" ng-controller="_toolbarProjects">
+            <br>
+            <div class="col-lg-8 project-tabs">
+                <tabset>
+                    <tab class="top-level-items" ng-repeat="p in projects" heading="{{p.name}}" active="p.active" disabled="p.disabled" ui-sref="toolbar.projectspage.overview({id: p.id, draft_id: ''})" >
+                        <div ui-view=''>
+
+                        </div>
+                    </tab>
+
+                </tabset>
+            </div>
     </div>
-    <div class="row">
-        <div ui-view=""></div>
-    </div>
+
 </div>

@@ -255,7 +255,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('toolbar.fileservices.config', {
             url: '/config',
             templateUrl: 'application/core/toolbar/fileservices/config/config.html'
-        });
+        })
+        .state('toolbar.projects', {
+            url: '/projects',
+            templateUrl: 'application/core/toolbar/projects/projects.html'
+        })
 }])
 ;
 
