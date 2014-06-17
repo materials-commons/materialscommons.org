@@ -13,6 +13,8 @@ Application.Controllers.controller('toolbarProjectsPage',
             });
 
             function init() {
+                $scope.list1 = {"title":"Drag Me"}
+
                 pubsub.send("project.tree", true);
                 $scope.project_id = $stateParams.id;
                 $scope.model = {
