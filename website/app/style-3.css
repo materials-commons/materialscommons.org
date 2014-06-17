@@ -154,8 +154,8 @@ p {
     width: 12%;
 }
 
-
 #individual-items.nav-tabs > li > a,
+#individual-items.nav-tabs > li.active > a,
 #individual-items.nav-tabs > li.active > a:hover,
 #individual-items.nav-tabs > li.active > a:focus {
     border: 1px solid #ecf0f1;
@@ -339,7 +339,8 @@ table-file-directory > thead > tr > td,
     padding: 17px 15px;
 
 }
-.oval{
+
+.oval {
     width: 100px;
     height: 50px;
     background: lightgreen;
@@ -347,17 +348,46 @@ table-file-directory > thead > tr > td,
     -webkit-border-radius: 50px / 25px;
     border-radius: 50px / 25px;
 }
-.row.project-tags{
+
+.row.project-tags {
     padding-bottom: 10px;
 }
 
-.btn.btn-info.tag-info,
-.btn.btn-success.tag-info,
-.btn.btn-primary.tag-info,
-.btn.btn-warning.tag-info,
-.btn.btn-danger.tag-info{
+.tag-info {
     width: 80px;
     height: 30px;
     border-radius: 10px;
 }
+
+.command-btn {
+    margin: 10px;
+}
+
+.command-symbol {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.command-name {
+    font-size: 25px;
+    color: #ffffff;
+    text-align: center
+}
+
+.command-symbol > i {
+    color: white;
+    margin: 13px 3px;
+}
+
+.tag-circle {
+    width: 15px;
+    height: 15px;
+    /*text-align: center;*/
+    /*padding: 6px 0;*/
+    /*font-size: 12px;*/
+    /*line-height: 1.428571429;*/
+    border-radius: 10px;
+}
+
 

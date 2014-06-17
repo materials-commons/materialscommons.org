@@ -1,73 +1,16 @@
 <div class="row">
-
-    <div class="col-lg-2" style="padding-right:60px" ng-controller="toolbarProjectsPage">
-        <br> <br>
-        <div class="panel panel-default">
-            <div class="panel panel-heading">
-                Tags
-            </div>
-            <div class="panel panel-body">
-                <div class="row project-tags">
-                    <div class="col-lg-6">
-                        <input type="text" class="form-control" ng-model="list1.title">
-                    </div>
-                    <div class="col-lg-6" >
-                        <div class="btn btn-info tag-info" data-drag="true"
-                                data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
-                                jqyoui-draggable="{animate:true}" ng-hide="!list1.title">
-                            {{list1.title}}</div>
-                    </div>
-                </div>
-                <div class="row project-tags">
-                    <div class="col-lg-6">
-                        <input type="text" class="form-control" ng-model="name_tag2">
-                    </div>
-                    <div class="col-lg-6">
-                        <button class="btn btn-success tag-info">{{name_tag2}}</button>
-                    </div>
-                </div>
-                <div class="row project-tags">
-                    <div class="col-lg-6">
-                        <input type="text" class="form-control" ng-model="name_tag3">
-                    </div>
-                    <div class="col-lg-6">
-                        <button class="btn btn-warning tag-info">{{name_tag3}}</button>
-                    </div>
-                </div>
-                <div class="row project-tags">
-                    <div class="col-lg-6">
-                        <input type="text" class="form-control" ng-model="name_tag4">
-                    </div>
-                    <div class="col-lg-6 ">
-                        <button class="btn btn-danger tag-info">{{name_tag4}}</button>
-                    </div>
-                </div>
-                <div class="row project-tags">
-                    <div class="col-lg-6">
-                        <input type="text" class="form-control" ng-model="name_tag5">
-                    </div>
-                    <div class="col-lg-6">
-                        <button class="btn btn-primary tag-info">{{name_tag5}}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="col-lg-2">
     </div>
     <div class="col-lg-10" ng-controller="_toolbarProjects">
         <br>
-
         <div class="col-lg-8 project-tabs">
-            <div class="top-level-items">
-                <tabset>
-                    <tab ng-repeat="p in projects" heading="{{p.name}}" active="p.active" disabled="p.disabled"
-                         ui-sref="toolbar.projectspage.overview({id: p.id, draft_id: ''})">
-                        <div ui-view=''>
-
-                        </div>
-                    </tab>
-                </tabset>
-            </div>
+            <tabset>
+                <tab ng-repeat="p in projects" heading="{{p.name}}" active="p.active" disabled="p.disabled"
+                     ui-sref="toolbar.projectspage.overview({id: p.id, draft_id: ''})">
+                </tab>
+            </tabset>
         </div>
     </div>
-
+    <div ui-view=''>
+    </div>
 </div>
