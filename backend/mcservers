@@ -156,6 +156,7 @@ fi
 if [ $TESTSERVER = "t" ]; then
     export MC_SERVICE_PORT=5002
     export MCDB_PORT=30815
+    export MCDB_CONNECTION="localhost:$MCDB_PORT"
     export MCDB_DIR=~/testdb
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
