@@ -7,7 +7,7 @@ Application.Directives.directive('cgroup',
                 label: '@label'
             },
             template: '<div class="form-group">' +
-                '<label class="col-sm-2 control-label">{{ label }}</label>' +
+                '<label class="control-label">{{ label }}</label>' +
                 '<div class="input-group col-sm-4" ng-transclude>' +
                 '</div>' +
                 '</div>'
