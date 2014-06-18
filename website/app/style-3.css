@@ -3,6 +3,7 @@ body {
     font-size: 13px;
     overflow-y: scroll;
     overflow-x: hidden;
+    background-color: #f3f3f3;
     /*line-height: 20px;*/
 }
 
@@ -29,21 +30,22 @@ body {
 
 /*************************************************All about top navigation bar *************************/
 .navbar-custom {
-    background-color: #0C5C86;
-    color: #ffffff;
+    /*background-color: #0C5C86;*/
+    background-color: #2c2c2c;
+    /*color: #ffffff;*/
     border-radius: 0;
 }
 
 .navbar-custom .navbar-nav > li > a {
-    color: #fff;
+    /*color: #fff;*/
     padding-left: 20px;
     padding-right: 20px;
 
 }
 
 .navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
-    color: #ffffff;
-    background-color: transparent;
+    /*color: #ffffff;*/
+    /*background-color: transparent;*/
 }
 
 .navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
@@ -336,7 +338,7 @@ table-file-directory > thead > tr > td,
 }
 
 .file-heading {
-    padding: 17px 15px;
+    padding: 22px 15px;
 
 }
 
@@ -383,11 +385,32 @@ table-file-directory > thead > tr > td,
 .tag-circle {
     width: 15px;
     height: 15px;
-    /*text-align: center;*/
-    /*padding: 6px 0;*/
-    /*font-size: 12px;*/
-    /*line-height: 1.428571429;*/
     border-radius: 10px;
 }
 
+.side-bar{
+    width: 200px;
+    position: fixed;
+    height: 100%;
+    /*background-color: #222222;*/
+    background-color: #2c2c2c;
+    margin-left: -12px;
+    margin-top: -4px;
+    box-shadow: 20px 0 5px -2px #f3f3f3;
+    border-right: 2px solid #dddddd;
+}
+.main-content{
+    margin-left:200px;
+    position: relative;
+}
 
+
+.nav-stacked > li > a,
+.nav-stacked > li.active > a,
+.nav-stacked > li.active > a:hover,
+.nav-stacked > li.active > a:focus {
+    border: 2px solid #ecf0f1;
+    border-right: solid #ffff00;
+    cursor: default;
+    outline: none;
+}

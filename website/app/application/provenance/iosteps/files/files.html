@@ -1,6 +1,6 @@
 <div ng-controller="provenanceIOStepsFiles">
     <div class="row">
-        <div class="col-sm-10 col-md-10">
+        <div >
             <label>Please select files below.</label>
             <h6>Selected files:</h6>
             <ul>
@@ -11,5 +11,10 @@
                 </li>
             </ul>
         </div>
+
     </div>
+    <div class="row">
+        <project-tree project="{{ project_id }}" from="" tree-overview="true" check-box="true"></project-tree>
+    </div>
+
 </div>

@@ -6,14 +6,14 @@
     </div>
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading file-heading">
+            <div ng-hide="checkBox" class="panel-heading file-heading">
                 <a style="padding-right: 15px;" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
                 <a style="padding-right: 15px;" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
                 <a style="padding-right: 15px;" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a>
-                <a style="padding-right: 15px;" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-code-fork"></i>Add Prov </a>
+                <a ui-sref="toolbar.projectspage.provenance" style="padding-right: 15px;" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-code-fork"></i>Add Prov </a>
             </div>
-            <div class="panel-body">
-                Last Synced............
+            <div class="panel-body" style="padding: 5px;background-color: #389DC1">
+                <p style="color:white">Last Synced............</p>
             </div>
         </div>
         <div ng-show="loaded===false">
@@ -27,13 +27,13 @@
                 <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
                     data-tt-parent-id="{{t.parent_id}}"
                     data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
-                    <!--<td ng-if="entry.type=='datafile'">-->
-                    <!--<input ng-model="entry.selected" ng-click="fileSelected(entry)"-->
-                    <!--ng-change="entry.selected = !entry.selected" type="checkbox">-->
-                    <!--</td>-->
-                    <!--<td ng-if="entry.type=='datadir'">-->
-                    <!--&lt;!&ndash;<input type="checkbox" disabled/>&ndash;&gt;-->
-                    <!--</td>-->
+                    <td ng-show="checkBox" ng-if="entry.type=='datafile'">
+                        <input ng-model="entry.selected" ng-click="fileSelected(entry)"
+                               ng-change="entry.selected = !entry.selected" type="checkbox">
+                    </td>
+                    <td ng-if="entry.type=='datadir'">
+                        <!--<input type="checkbox" disabled/>-->
+                    </td>
                     <!--<td> <div class="btn btn-info btn-draggable"-->
                               <!--ng-repeat="item in list2" ng-show="item.title"-->
                               <!--data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}"-->
@@ -55,6 +55,6 @@
             </table>
         </div>
     </div>
-
+    <div ui-view=''></div>
 </div>
 
