@@ -23,7 +23,6 @@
                                 </div>
                                 <div ng-switch-when="other">
                                      {{fileName}}
-                                    <a ng-href="{{ fileSrc }}" download="{{ fileName }}"><i  style="padding-right: 4px;" class="fa fa-download"></i>Download</a>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +30,9 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-offset-1">
-                            <a style="padding-right: 6px;" ng-href="{{ fileSrc }}"><i  style="padding-right: 4px;" class="fa fa-expand"></i>View full size</a>
+                            <div ng-if="fileType==='image'">
+                                <a style="padding-right: 6px;" ng-href="{{ fileSrc }}"><i  style="padding-right: 4px;" class="fa fa-expand"></i>View full size</a>
+                            </div>
                             <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download</a>
 
                         </div>
