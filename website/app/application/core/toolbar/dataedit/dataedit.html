@@ -1,77 +1,218 @@
 <div ng-controller="toolbarDataEdit">
-    <div class="row">
-        <div class="col-sm-8 col-md-8">
-            <form class="form-inline">
-                <a ng-repeat="trailitem in trail"  ng-click="backToFolder(trailitem)">
-                    <span><b>{{trailitem.displayname}}/ </b></span>
-                </a>
-                <a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>
-            </form>
-        </div>
+    <div class="row">         <br>
+        <form class="form-inline">
+            <a ng-repeat="trailitem in trail" ng-click="backToFolder(trailitem)">
+                <span><b>{{trailitem.displayname}}/ </b></span>
+            </a>
+            <a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>
+        </form>
+
     </div>
     <div class="row">
-        <div class="col-sm-3 col-md-3">
-            <div ng-switch="" on="fileType">
-                <div ng-switch-when="image">
-                    <a ng-href="{{ fileSrc }}">View full size</a>
-                    <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>
-                    <img class="img-responsive"  alt="Responsive image" ng-src="{{ fileSrc }}">
-                </div>
-                <div ng-switch-when="other">
-                    <a ng-href="{{ fileSrc }}" download="{{ fileName }}">Download</a>
-                    <img src="assets/img/no_img_1.png" alt="Responsive image" class="img-responsive">
+        <br>
+
+        <div class="col-lg-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div ng-switch="" on="fileType">
+                                <div ng-switch-when="image">
+                                    <a href="#" class="thumbnail">
+                                        <img class="img-responsive" alt="Not Available" ng-src="{{ fileSrc }}">
+                                    </a>
+                                </div>
+                                <div ng-switch-when="other">
+                                     {{fileName}}
+                                    <a ng-href="{{ fileSrc }}" download="{{ fileName }}"><i  style="padding-right: 4px;" class="fa fa-download"></i>Download</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-offset-1">
+                            <a style="padding-right: 6px;" ng-href="{{ fileSrc }}"><i  style="padding-right: 4px;" class="fa fa-expand"></i>View full size</a>
+                            <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download</a>
+
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <div class="tag-circle" style="background-color: red"></div>
+                            </div>
+                            <div class="col-sm-1">
+                                Red
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <div class="tag-circle" style="background-color: green"></div>
+                            </div>
+                            <div class="col-sm-1">
+                                green
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <div class="tag-circle" style="background-color: blue"></div>
+                            </div>
+                            <div class="col-sm-1">
+                                blue
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <div class="tag-circle" style="background-color: orange"></div>
+                            </div>
+                            <div class="col-sm-1">
+                                orange
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-9 col-md-9">
-            <form class="form-horizontal">
-                <fieldset>
-                    <legend>Basic Information</legend>
-                    <cgroup label="Description:">
-                        <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc" ng-disabled="model.is_disabled">                        </textarea>
-                    </cgroup>
-                    <cgroup label="">
-                        <div ng-show="model.is_disabled">
-                            <button tooltip="Edit Description" ng-click="edit_details()" class="btn btn-default btn-primary">Edit
-                            </button>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-offset-2 col-lg-5">
+                    <div ng-switch="" on="fileType">
+                        <div ng-switch-when="image">
+                            <img class="img-responsive"  ng-src="{{ fileSrc }}">
                         </div>
-                        <div ng-hide="model.is_disabled">
-                            <button type="button" class="btn btn-default btn-primary" ng-click="saveData()">
-                                Save
-                            </button>
-                            <button type="button" class="btn btn-default btn-danger" ng-click="cancel()">
-                                Cancel
-                            </button>
+                        <div ng-switch-when="other">
+                            <!--<img src="assets/img/no_img_1.png" alt="Responsive image" class="img-responsive">-->
                         </div>
-                    </cgroup>
-                    <cgroup label="Size(bytes):">
-                        <input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">
-                    </cgroup>
-                    <cgroup label="Owner:">
-                        <input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">
-                    </cgroup>
-                </fieldset>
-            </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-offset-2 col-lg-10">
+                    <fieldset>
+                        <legend>{{fileName}}</legend>
+                        <cgroup label="Description:">
+                            <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc"
+                                      ng-disabled="model.is_disabled"> </textarea>
+                        </cgroup>
+                        <cgroup label="">
+                            <div ng-show="model.is_disabled">
+                                <button tooltip="Edit Description" ng-click="edit_details()"
+                                        class="btn btn-default btn-primary">Edit
+                                </button>
+                            </div>
+                            <div ng-hide="model.is_disabled">
+                                <button type="button" class="btn btn-default btn-primary" ng-click="saveData()">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-default btn-danger" ng-click="cancel()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </cgroup>
+                        <cgroup label="Size(bytes):">
+                            <input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">
+                        </cgroup>
+                        <cgroup label="Owner:">
+                            <input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">
+                        </cgroup>
+                    </fieldset>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-lg-2">
+            <div id="individual-items">
+                <ul class="nav nav-tabs tabs-right">
+                    <li class="active"><a href="#details" data-toggle="tab">
+                        Details<i class="fa fa-file-text marginLeft pull-right"></i> </a></li>
+                    <li><a href="#provenance" data-toggle="tab">Provenance <i
+                            class="fa fa-code-fork marginLeft pull-right"></i> </a></li>
+                    <li><a href="#notes" data-toggle="tab">Notes <i class="fa fa-edit marginLeft pull-right"></i>
+                    </a></li>
+                    <li><a href="#reviews" data-toggle="tab">Reviews <i
+                            class="fa fa-comment marginLeft pull-right"></i></a></li>
+                </ul>
+            </div>
         </div>
     </div>
-    <br>
 
-    <div class="row">
-        <div class="col-sm-8 col-md-8">
-            <div ui-view=""></div>
-        </div>
-        <div class="col-sm-2 col-md-2">
-            <tabset vertical="true" type="pills">
-                <tab ng-click="showtab('provenance')" heading="Provenance"></tab>
-                <tab ng-click="showtab('notes')" heading="Notes"></tab>
-                <tab ng-controller="toolbarDataEditCreateReview" ng-click="showtab('reviews')" heading="Reviews - {{reviewsToConduct.length}}">
-                </tab>
-                <tab  ng-click="showtab('tags')" heading="Tags"></tab>
-            </tabset>
 
-        </div>
-    </div>
-    <br>
+    <!--<div class="row">-->
+    <!--<div class="col-sm-8 col-md-8">-->
+    <!--<form class="form-inline">-->
+    <!--<a ng-repeat="trailitem in trail"  ng-click="backToFolder(trailitem)">-->
+    <!--<span><b>{{trailitem.displayname}}/ </b></span>-->
+    <!--</a>-->
+    <!--<a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>-->
+    <!--</form>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+    <!--<div class="col-sm-3 col-md-3">-->
+    <!--<div ng-switch="" on="fileType">-->
+    <!--<div ng-switch-when="image">-->
+    <!--<a ng-href="{{ fileSrc }}">View full size</a>-->
+    <!--<a ng-href="{{ originalFileSrc }}" download="{{ fileName }}" style="margin-left: 15px">Download</a>-->
+    <!--<img class="img-responsive"  alt="Responsive image" ng-src="{{ fileSrc }}">-->
+    <!--</div>-->
+    <!--<div ng-switch-when="other">-->
+    <!--<a ng-href="{{ fileSrc }}" download="{{ fileName }}">Download</a>-->
+    <!--<img src="assets/img/no_img_1.png" alt="Responsive image" class="img-responsive">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-sm-9 col-md-9">-->
+    <!--<form class="form-horizontal">-->
+    <!--<fieldset>-->
+    <!--<legend>Basic Information</legend>-->
+    <!--<cgroup label="Description:">-->
+    <!--<textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc" ng-disabled="model.is_disabled">                        </textarea>-->
+    <!--</cgroup>-->
+    <!--<cgroup label="">-->
+    <!--<div ng-show="model.is_disabled">-->
+    <!--<button tooltip="Edit Description" ng-click="edit_details()" class="btn btn-default btn-primary">Edit-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div ng-hide="model.is_disabled">-->
+    <!--<button type="button" class="btn btn-default btn-primary" ng-click="saveData()">-->
+    <!--Save-->
+    <!--</button>-->
+    <!--<button type="button" class="btn btn-default btn-danger" ng-click="cancel()">-->
+    <!--Cancel-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</cgroup>-->
+    <!--<cgroup label="Size(bytes):">-->
+    <!--<input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">-->
+    <!--</cgroup>-->
+    <!--<cgroup label="Owner:">-->
+    <!--<input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">-->
+    <!--</cgroup>-->
+    <!--</fieldset>-->
+    <!--</form>-->
+    <!--</div>-->
+    <!--</div>-->
+
+
+    <!--<div class="row">-->
+    <!--<div class="col-sm-8 col-md-8">-->
+    <!--<div ui-view=""></div>-->
+    <!--</div>-->
+    <!--<div class="col-sm-2 col-md-2">-->
+    <!--<tabset vertical="true" type="pills">-->
+    <!--<tab ng-click="showtab('provenance')" heading="Provenance"></tab>-->
+    <!--<tab ng-click="showtab('notes')" heading="Notes"></tab>-->
+    <!--<tab ng-controller="toolbarDataEditCreateReview" ng-click="showtab('reviews')" heading="Reviews - {{reviewsToConduct.length}}">-->
+    <!--</tab>-->
+    <!--<tab  ng-click="showtab('tags')" heading="Tags"></tab>-->
+    <!--</tabset>-->
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--<br>-->
 </div>
 
 

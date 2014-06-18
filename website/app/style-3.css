@@ -403,14 +403,19 @@ table-file-directory > thead > tr > td,
     margin-left:200px;
     position: relative;
 }
-
-
 .nav-stacked > li > a,
-.nav-stacked > li.active > a,
 .nav-stacked > li.active > a:hover,
-.nav-stacked > li.active > a:focus {
-    border: 2px solid #ecf0f1;
-    border-right: solid #ffff00;
-    cursor: default;
-    outline: none;
+.nav-stacked > li.active > a:focus{
+    border-right: 2px solid yellow;
+
 }
+
+/*.nav-stacked > li > a,*/
+/*.nav-stacked > li.active > a,*/
+/*.nav-stacked > li.active > a:hover,*/
+/*.nav-stacked > li.active > a:focus {*/
+    /*border: 1px solid #ecf0f1;*/
+    /*border-right: solid #ffff00;*/
+    /*cursor: default;*/
+    /*outline: none;*/
+/*}*/
