@@ -1,7 +1,7 @@
 <br>
 <div class="row" ng-controller="toolbarProjectsPageOverview">
     <div class="col-lg-2">
-        <div style="padding-right:70px" ng-controller="toolbarProjectsPage">
+        <div ng-controller="toolbarProjectsPage">
             <div class="panel panel-default">
                 <div class="panel panel-heading">
                     Tags
@@ -44,49 +44,27 @@
             </div>
         </div>
     </div>
-<div class="col-lg-7">
-    <div class="tab-content">
-        <div class="tab-pane active" id="files">
-            <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true"></project-tree>
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-file-text-o fa-2x" style="padding-right: 3px;"></i> <span
-                            style="font-size: 16px;font-weight:bold">Read Me </span>
-                    </div>
-                    <div class="panel-body">
+    <div class="col-lg-10" style="padding-left: 40px">
+        <div class="tab-content">
+            <div class="tab-pane active" id="files">
+                <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true"></project-tree>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-file-text-o fa-2x" style="padding-right: 3px;"></i> <span
+                                style="font-size: 16px;font-weight:bold">Read Me </span>
+                        </div>
+                        <div class="panel-body">
 
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="tab-pane" id="provenance">Prov.</div>
+            <div class="tab-pane" id="reviews">Reviews.</div>
+            <div class="tab-pane" id="issues">Issues.</div>
+            <div class="tab-pane" id="settings">Settings.</div>
+            <div class="tab-pane" id="samples">Samples.</div>
         </div>
-        <div class="tab-pane" id="provenance">Prov.</div>
-        <div class="tab-pane" id="reviews">Reviews.</div>
-        <div class="tab-pane" id="issues">Issues.</div>
-        <div class="tab-pane" id="settings">Settings.</div>
-        <div class="tab-pane" id="samples">Samples.</div>
     </div>
-</div>
-
-<div class="col-lg-2">
-    <br>
-
-    <div style="padding-left:30px" id="individual-items">
-        <ul class="nav nav-tabs tabs-right">
-            <li class="active"><a href="#files" data-toggle="tab">
-                Files<i class="fa fa-file-text marginLeft pull-right"></i> </a></li>
-            <li><a href="#provenance" data-toggle="tab">Provenance <i
-                    class="fa fa-code-fork marginLeft pull-right"></i> </a></li>
-            <li><a href="#reviews" data-toggle="tab">Reviews <i class="fa fa-edit marginLeft pull-right"></i>
-            </a></li>
-            <li><a href="#issues" data-toggle="tab">Issues <i
-                    class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>
-            <li><a href="#settings" data-toggle="tab">Settings <i
-                    class="fa fa-cog marginLeft pull-right"></i></a></li>
-            <li><a href="#samples" data-toggle="tab">Samples <i
-                    class="fa fa-cubes marginLeft pull-right"></i></a></li>
-        </ul>
-    </div>
-
-</div>
 </div>

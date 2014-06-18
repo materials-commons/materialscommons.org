@@ -25,6 +25,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
                 }
                 Projects.resetSelectedFiles($scope.files, ProvDrafts.current.project_id);
                 Projects.setChannel($scope.channel);
+                $scope.project_id = ProvDrafts.current.project_id;
             }
 
             init();

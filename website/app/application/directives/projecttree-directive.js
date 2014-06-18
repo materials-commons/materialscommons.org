@@ -94,7 +94,8 @@ Application.Directives.directive('projectTree',
                 ngModel: "@",
                 project: "@project",
                 from: "@from",
-                treeOverview: "="
+                treeOverview: "=",
+                checkBox: "="
             },
             templateUrl: "application/directives/projecttree.html"
         };

@@ -1,9 +1,8 @@
+
 <div class="row">
-    <div class="col-lg-2">
-    </div>
-    <div class="col-lg-10" ng-controller="_toolbarProjects">
-        <br>
-        <div class="col-lg-8 project-tabs">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8" ng-controller="_toolbarProjects"><br>
+        <div class="project-tabs">
             <tabset>
                 <tab ng-repeat="p in projects" heading="{{p.name}}" active="p.active" disabled="p.disabled"
                      ui-sref="toolbar.projectspage.overview({id: p.id, draft_id: ''})">
@@ -11,6 +10,30 @@
             </tabset>
         </div>
     </div>
-    <div ui-view=''>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-10">
+        <div  ui-view=''></div>
+    </div>
+    <div class="col-lg-2">
+        <div style="padding-left:40px" id="individual-items">
+            <ul class="nav nav-tabs tabs-right">
+                <li class="active"><a href="#files" data-toggle="tab">
+                    Files<i class="fa fa-file-text marginLeft pull-right"></i> </a></li>
+                <li><a href="#provenance" data-toggle="tab">Provenance <i
+                        class="fa fa-code-fork marginLeft pull-right"></i> </a></li>
+                <li><a href="#reviews" data-toggle="tab">Reviews <i class="fa fa-edit marginLeft pull-right"></i>
+                </a></li>
+                <li><a href="#issues" data-toggle="tab">Issues <i
+                        class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>
+                <li><a href="#settings" data-toggle="tab">Settings <i
+                        class="fa fa-cog marginLeft pull-right"></i></a></li>
+                <li><a href="#samples" data-toggle="tab">Samples <i
+                        class="fa fa-cubes marginLeft pull-right"></i></a></li>
+            </ul>
+        </div>
     </div>
 </div>

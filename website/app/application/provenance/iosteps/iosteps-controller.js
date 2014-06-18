@@ -89,6 +89,7 @@ Application.Provenance.Controllers.controller('provenanceIOSteps',
             $scope.init = function () {
                 $scope.message = '';
                 $scope.doc = ProvDrafts.current;
+                console.dir($scope.doc)
                 $scope.steps = [];
                 $scope.loadSteps();
                 $scope.activeStep = $scope.steps[0];

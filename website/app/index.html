@@ -66,6 +66,7 @@
         <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
             <li><a ui-sref="login" class="navbar-link"><i class="icon-user"></i> login</a></li>
         </ul>
+
         <ul ng-show="email_address" class="nav navbar-nav navbar-right">
             <li><a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i>
                 {{email_address}}</a>
@@ -73,6 +74,7 @@
             <li><a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> logout</span></a>
             </li>
         </ul>
+
     </div>
 </nav>
 
@@ -87,20 +89,20 @@
 </div>
 
 <!--<div ng-show="email_address" ng-controller="_toolbarTags">-->
-    <!--<footer>-->
-        <!--<div class="col-sm-2">-->
-            <!--<b>Commonly Used Tags:</b>-->
-        <!--</div>-->
-        <!--<div class="col-sm-9">-->
-            <!--<h4><span class="label label-primary"  ui-sref="toolbar.databytag({name: tag.name})" ng-repeat="tag in tags | limitTo: 10">-->
-                 <!--{{ tag.name }} ({{tag.count}})-->
-            <!--</span>-->
-                <!--<span style="cursor: pointer" ui-sref="toolbar.tags"> ...more...</span>-->
-            <!--</h4>-->
+<!--<footer>-->
+<!--<div class="col-sm-2">-->
+<!--<b>Commonly Used Tags:</b>-->
+<!--</div>-->
+<!--<div class="col-sm-9">-->
+<!--<h4><span class="label label-primary"  ui-sref="toolbar.databytag({name: tag.name})" ng-repeat="tag in tags | limitTo: 10">-->
+<!--{{ tag.name }} ({{tag.count}})-->
+<!--</span>-->
+<!--<span style="cursor: pointer" ui-sref="toolbar.tags"> ...more...</span>-->
+<!--</h4>-->
 
-        <!--</div>-->
+<!--</div>-->
 
-    <!--</footer>-->
+<!--</footer>-->
 <!--</div>-->
 <!------------------------------ External dependencies ----------------->
 

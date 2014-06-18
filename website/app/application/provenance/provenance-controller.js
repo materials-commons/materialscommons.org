@@ -78,6 +78,7 @@ Application.Provenance.Controllers.controller('provenance',
                     draft.project_name = Projects.model.projects[draft.project_id].dir.name;
                 }
                 ProvDrafts.current = draft;
+                $scope.project_id = $stateParams.id
                 ProvSteps.setCurrentStep('process');
                 ProvSteps.onStepFinished($scope.stepFinished);
                 $state.go('toolbar.projectspage.provenance.process');
