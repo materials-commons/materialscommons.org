@@ -42,9 +42,9 @@ Application.Controllers.controller('toolbarDataEdit',
                     case "notes":
                         $state.go('toolbar.dataedit.notes');
                         break;
-                    case "provenance":
-                        $state.go('toolbar.dataedit.provenance');
-                        break;
+//                    case "provenance":
+//                        $state.go('toolbar.dataedit.provenance');
+//                        break;
                 }
             };
 
@@ -63,6 +63,7 @@ Application.Controllers.controller('toolbarDataEdit',
                     is_disabled: true,
                     desc: ''
                 };
+                console.log( $stateParams.id)
                 $scope.id = $stateParams.id;
                 $scope.modal = Projects.model;
                 mcapi('/datafile/%', $scope.id)

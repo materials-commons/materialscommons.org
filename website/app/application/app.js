@@ -113,6 +113,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/dataedit/:id',
             templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
         })
+        .state('toolbar.dataedit.details', {
+            url: '/details',
+            templateUrl: 'application/core/toolbar/dataedit/details.html'
+        })
         .state('toolbar.dataedit.reviews', {
             url: '/reviews',
             templateUrl: 'application/core/toolbar/dataedit/reviews/reviews.html'

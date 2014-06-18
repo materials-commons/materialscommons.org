@@ -1,5 +1,5 @@
-<div ng-controller="toolbarDataEdit">
-    <div class="row">         <br>
+<div  ng-controller="toolbarDataEdit">
+    <div class="row ">         <br>
         <form class="form-inline">
             <a ng-repeat="trailitem in trail" ng-click="backToFolder(trailitem)">
                 <span><b>{{trailitem.displayname}}/ </b></span>
@@ -10,7 +10,6 @@
     </div>
     <div class="row">
         <br>
-
         <div class="col-lg-2">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -75,9 +74,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-5" style="padding-left: 25px;">
             <div class="row">
-                <div class="col-lg-offset-2 col-lg-5">
+                <div class="col-lg-8">
                     <div ng-switch="" on="fileType">
                         <div ng-switch-when="image">
                             <img class="img-responsive"  ng-src="{{ fileSrc }}">
@@ -89,11 +88,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-offset-2 col-lg-10">
+                <div class="col-lg-10">
                     <fieldset>
                         <legend>{{fileName}}</legend>
                         <cgroup label="Description:">
-                            <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc"
+                            <textarea  ng-if="doc.description != ''" class="form-control" ng-model="model.desc"
                                       ng-disabled="model.is_disabled"> </textarea>
                         </cgroup>
                         <cgroup label="">
