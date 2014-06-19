@@ -1,27 +1,59 @@
 <div class="tab-pane" id="provenance" ng-controller="toolbarDataEditProvenance">
-    <form class="form-inline">
-        <div class="col-sm-3 col-md-3" style="padding-top: 70px;text-align: center">
-            <div ng-if="output_process.length!==0">
-                <a style="cursor: pointer" ui-sref="toolbar.process({id: output_process[0].process_id})">{{output_process[0].name}}</a>
-            </div>
-            <div ng-if="output_process.length===0">
-                <p class="text-muted">There is no provenance created for this datafile</p>
+    <div class="row">
+        <div class="col-lg-11">
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="row" ng-repeat="i in inputs">
+                                <div class="col-lg-3">
+                                    <div class="input-circle"></div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <a ng-click="showProvDetails(i, 'input')">{{i.display_name}}...</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="process-square">
+                                process
+                            </div>
+                        </div>
+                        <div class="col-lg-3" style="float: right">
+                            <div class="row" ng-repeat="i in outputs">
+                                <div class="col-lg-3">
+                                    <div class="output-circle"></div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <a ng-click="showProvDetails(i, 'output')">{{i.display_name}}...</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-sm-4 col-md-4">
-            <div class="circle-text" style="margin-left: 100px;margin-right: 0px">
-                <div>{{doc.name}}</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-11">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <input type="checkbox">Keep
+                            <div ng-show="sample">
+                             <div sample-report sample="sample"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-        <div class="col-sm-3 col-md-3" style="padding-top: 70px">
-            <div ng-if="input_processes.length!==0">
-                <ul ng-repeat="pr in input_processes">
-                    <li><a style="cursor: pointer" ui-sref="toolbar.process({id: pr.process_id})">{{pr.name}}</a></li>
-                </ul>
-            </div>
-            <div ng-if="input_processes.length===0">
-                <p class="text-muted">This datafile is not being used by any process</p>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>

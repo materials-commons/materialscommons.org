@@ -388,7 +388,7 @@ table-file-directory > thead > tr > td,
     border-radius: 10px;
 }
 
-.side-bar{
+.side-bar {
     width: 200px;
     position: fixed;
     height: 100%;
@@ -399,13 +399,15 @@ table-file-directory > thead > tr > td,
     box-shadow: 20px 0 5px -2px #f3f3f3;
     border-right: 2px solid #dddddd;
 }
-.main-content{
-    margin-left:200px;
+
+.main-content {
+    margin-left: 200px;
     position: relative;
 }
+
 .nav-stacked > li > a,
 .nav-stacked > li.active > a:hover,
-.nav-stacked > li.active > a:focus{
+.nav-stacked > li.active > a:focus {
     border-right: 2px solid yellow;
 
 }
@@ -414,8 +416,32 @@ table-file-directory > thead > tr > td,
 /*.nav-stacked > li.active > a,*/
 /*.nav-stacked > li.active > a:hover,*/
 /*.nav-stacked > li.active > a:focus {*/
-    /*border: 1px solid #ecf0f1;*/
-    /*border-right: solid #ffff00;*/
-    /*cursor: default;*/
-    /*outline: none;*/
+/*border: 1px solid #ecf0f1;*/
+/*border-right: solid #ffff00;*/
+/*cursor: default;*/
+/*outline: none;*/
 /*}*/
+
+.input-circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    background-color: lightgreen;
+}
+
+.process-square {
+    width: 100px;
+    height: 50px;
+    background: lightgrey;
+    margin-left: 50px
+}
+.output-circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    background-color: lightsalmon;
+}
+.limit-text{
+    width: 100px;
+    height: 10px;
+}

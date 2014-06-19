@@ -115,16 +115,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('toolbar.dataedit.details', {
             url: '/details',
-            templateUrl: 'application/core/toolbar/dataedit/details.html'
+            templateUrl: 'application/core/toolbar/dataedit/details/details.html'
         })
         .state('toolbar.dataedit.reviews', {
             url: '/reviews',
             templateUrl: 'application/core/toolbar/dataedit/reviews/reviews.html'
         })
-        .state('toolbar.dataedit.tags', {
-            url: '/tags',
-            templateUrl: 'application/core/toolbar/dataedit/tags/tags.html'
-        })
+//        .state('toolbar.dataedit.tags', {
+//            url: '/tags',
+//            templateUrl: 'application/core/toolbar/dataedit/tags/tags.html'
+//        })
         .state('toolbar.dataedit.notes', {
             url: '/notes',
             templateUrl: 'application/core/toolbar/dataedit/notes/notes.html'
