@@ -1,0 +1,21 @@
+<cgroup label="Sample Name:">
+    <input class="form-control" ng-model="sample.name"
+           ng-disabled="true">
+</cgroup>
+<cgroup label="Description:">
+    <textarea class="form-control" ng-model="sample.description"
+              ng-disabled="true"> </textarea>
+</cgroup>
+<div ng-repeat="p in sample.properties">
+    <div ng-if="p.name!=='Composition'">
+        <cgroup label="{{p.name}}:">
+            <input class="form-control" ng-model="p.value"
+                   ng-disabled="true">
+        </cgroup>
+    </div>
+    <div ng-if="p.name==='Composition'">
+        <li style="list-style: none" ng-repeat="c in allProperties.composition.value">
+            <span>{{c.element}} - {{c.value}} {{allProperties.composition.unit}}</span>
+        </li>
+    </div>
+</div>
