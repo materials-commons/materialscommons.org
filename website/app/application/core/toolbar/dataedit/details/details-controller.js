@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarDataEdit',
+Application.Controllers.controller('toolbarDataEditDetails',
     ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath", "Projects",
         function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath, Projects) {
 
@@ -13,28 +13,28 @@ Application.Controllers.controller('toolbarDataEdit',
                 $scope.fileName = $scope.doc.name;
             };
 
-            $scope.showTab = function (tab) {
-                switch (tab) {
-                    case "details":
-                        $state.go('toolbar.dataedit.details');
-                        break;
-                    case "provenance":
-                        $state.go('toolbar.dataedit.provenance');
-                        break;
-                    case "reviews":
-                        $state.go('toolbar.dataedit.reviews');
-                        break;
-                    case "notes":
-                        $state.go('toolbar.dataedit.notes');
-                        break;
-                }
+            $scope.saveData = function () {
+                $scope.doc.description = $scope.model.desc;
+                mcapi('/datafile/update/%', $scope.doc.id)
+                    .success(function (data) {
+                        $scope.model.is_disabled = true;
+                        alertService.sendMessage("Data has been saved");
+                    }).error(function (data) {
+                        alertService.sendMessage(data.error);
+                    }).put($scope.doc);
+//$window.history.back();
             };
 
-            $scope.backToFolder = function (item) {
-                $scope.dir = ProjectPath.update_dir(item);
-                var proj_id = ProjectPath.get_project();
-                $state.go("toolbar.projectspage.overview", {id: proj_id, draft_id: '', from: 'datafile'});
+            $scope.cancel = function () {
+                $scope.model.is_disabled = true;
+                $scope.model.desc = $scope.doc.description;
+
             };
+
+            $scope.edit_details = function () {
+                $scope.model.is_disabled = false;
+            };
+
 
             function init() {
                 $scope.model = {
@@ -54,7 +54,6 @@ Application.Controllers.controller('toolbarDataEdit',
                     .error(function (data) {
                         alertService.sendMessage(data.error);
                     }).jsonp();
-                //$scope.showTab('details');
             }
 
             init();
