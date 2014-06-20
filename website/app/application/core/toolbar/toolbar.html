@@ -1,18 +1,6 @@
 <div class="row" ng-controller="toolbar">
-    <div class="side-bar">
-        <ul class="nav nav-stacked">
-            <li class="active" style="border-top: 1px solid #373737"><a ui-sref="toolbar.projectspage">Projects</a></li>
-            <li  style="border-top: 1px solid #373737"><i></i><a ui-sref="toolbar.objects">Samples</a></li>
-            <li class="active" style="border-top: 1px solid #373737"><i></i><a ui-sref="toolbar.machines">Machines</a></li>
-            <li class="active" style="border-top: 1px solid #373737"><i></i><a ui-sref="toolbar.provenance">Provenance</a></li>
-            <li class="active" style="border-top: 1px solid #373737"><i></i><a ui-sref="toolbar.drafts">Drafts</a></li>
-            <li class="active" style="border-top: 1px solid #373737"><i></i><a ui-sref="toolbar.reviews">Reviews</a></li>
-            <li class="active" style="border-top: 1px solid #373737"><i></i><a ui-sref="toolbar.templates">Templates</a></li>
-        </ul>
-    </div>
-    <div class="col-lg-10 main-content">
-        <div ui-view=""></div>
-    </div>
-
+   <div class="container-fixed">
+       <div ui-view=""></div>
+   </div>
 </div>
 
