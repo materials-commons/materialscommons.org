@@ -445,3 +445,8 @@ table-file-directory > thead > tr > td,
     width: 100px;
     height: 10px;
 }
+
+.container-fixed {
+    margin: 0 auto;
+    max-width: 1000px;
+}

@@ -3,7 +3,7 @@ Application.Controllers.controller('_indexNavigation',
         function ($scope, User, $state, Nav) {
             $scope.goHome = function () {
                 if (User.isAuthenticated()) {
-                    $state.go("toolbar.overview");
+                    $state.go("toolbar.projectspage");
                 } else {
                     $state.go("home");
                 }
