@@ -3,6 +3,7 @@ Application.Controllers.controller('toolbarDataEditProvenance',
         function ($scope, mcapi, User, $state, $stateParams, $filter) {
 
             $scope.showProvDetails = function (item, category) {
+                console.log(item)
                 if (category == 'input') {
                     switch (item.type) {
                         case "id":
@@ -12,7 +13,11 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                                 }).jsonp();
                             break;
                         case "condition":
-                            //$scope.settings = $scope.process.inputs.
+                            $scope.process.inputs.forEach(function (each_ip) {
+                                if (each_ip.properties.name.value == item.name) {
+                                    $scope.settings = each_ip;
+                                }
+                            })
                             break;
                         case "file":
                             $state.go('toolbar.dataedit.provenance', ({'id': item.id}));
@@ -20,7 +25,6 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                     }
                 }
                 else {
-                    console.log(item)
                     switch (item.type) {
 
                         case "id":
@@ -61,7 +65,7 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                     }).jsonp();
                 mcapi('/processes/file/%', $stateParams.id)
                     .success(function (data2) {
-                       console.log(data2)
+                        console.log(data2)
                     }).jsonp();
 
             };
