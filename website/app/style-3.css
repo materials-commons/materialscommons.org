@@ -3,7 +3,7 @@ body {
     font-size: 13px;
     overflow-y: scroll;
     overflow-x: hidden;
-    background-color: #f3f3f3;
+    /*background-color: #f3f3f3;*/
     /*line-height: 20px;*/
 }
 
@@ -448,5 +448,26 @@ table-file-directory > thead > tr > td,
 
 .container-fixed {
     margin: 0 auto;
-    max-width: 1000px;
+    width: 1200px;
+    /*min-width: 1000px;*/
+}
+.nav-tabs {
+    border-bottom: 1px solid #d6d6d6;
+}
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px 4px 0 0;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    color: #2c3e50;
+    background-color: #e4e4e4;
+    border: 1px solid #ecf0f1;
+    border-bottom-color: transparent;
+    cursor: default;
 }
