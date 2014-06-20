@@ -8,11 +8,10 @@ Application.Controllers.controller('_toolbarProjects',
             };
 
             function init() {
-                console.log('init')
-                Projects.getList().then(function (data) {
-                    $scope.projects = data;
-                    $state.go("toolbar.projectspage.overview", {id: $scope.projects[0].id})
-                });
+//                Projects.getList().then(function (data) {
+//                    $scope.projects = data;
+//                });
+                $state.go("toolbar.projectspage.overview", {id: '', draft_id: '', from: ''});
             }
 
             init();
