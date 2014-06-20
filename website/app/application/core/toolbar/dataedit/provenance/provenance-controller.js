@@ -67,7 +67,6 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                     .success(function (data2) {
                         console.log(data2)
                     }).jsonp();
-
             };
             $scope.init();
         }
