@@ -12,7 +12,7 @@
     "template_type": "process",
     "template_pick": "experiment",
     "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "irradiation-instrument-settings"}],
-    "required_output_conditions": [{"name": "Trasnformed Sample", "value": "transformed-sample"}],
+    "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true
 }
