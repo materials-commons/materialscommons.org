@@ -16,7 +16,7 @@
         {
             "attribute": "temperature",
             "name": "Temperature" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["C", "F"] ,
             "value": "" ,
