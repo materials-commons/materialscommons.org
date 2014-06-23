@@ -1,0 +1,84 @@
+{
+    "id": "focused-ion-beam-milling-settings",
+    "attribute": "milling_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "ion_type",
+            "name": "Ion Type" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [{"name": "Ga", "value" : "ga"},{"name": "Ne", "value" : "ne"},{"name": "Ar", "value" : "ar"}],
+            "required": false
+        },
+        {
+            "attribute": "voltage",
+            "name": "Voltage" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["kV"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "current",
+            "name": "Current" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["nA"],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "working_distance",
+            "name": "Working Distance" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["mm"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "liftout",
+            "name": "LiftOut" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Yes", "value" : "yes"},{"name": "No", "value" : "no"}],
+            "required": false
+        },
+        {
+            "attribute": "deposition",
+            "name": "Deposition" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Pt", "value" : "pt"},{"name": "W", "value" : "w"},{"name": "C", "value" : "c"}],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Settings" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}

@@ -1,0 +1,46 @@
+{
+    "id": "xrd-instrument-settings",
+    "attribute": "instrument_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Source Wave Length" ,
+            "attribute": "source_wave_length",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Angle Step" ,
+            "attribute": "angle_step",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        }
+        
+    ],   
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org", 
+    "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_description": "" ,
+    "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
+    "template_name": "Settings" ,
+    "template_pick": "instrument" ,
+    "template_type": "condition"
+
+}
