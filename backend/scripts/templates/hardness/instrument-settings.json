@@ -1,0 +1,74 @@
+{
+    "id": "hardness-instrument-settings" ,
+    "attribute": "instrument_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "name": "Type",
+            "attribute": "type",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [{"name": "Vickers", "value" : "vickers"}, {"name": "Rockwell", "value" : "rockwell"}, {"name": "Micro", "value" : "micro"}],
+            "required": false
+        },
+        {
+            "name": "Load(g)",
+            "attribute": "load",
+            "type": "number",
+            "unit": "g",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Time(s)" ,
+            "attribute": "time",
+            "type": "number" ,
+            "unit": "secs" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Indenter" ,
+            "attribute": "indenter",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Loading Rate" ,
+            "attribute": "loading_rate",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org", 
+    "template_description": "" ,
+    "template_birthtime": "",
+    "template_mtime": "",
+    "template_name": "Settings" ,
+    "template_type": "condition",
+    "template_pick": "instrument"
+}

@@ -1,6 +1,7 @@
 {
-    "id": "broad-ion-beam-instrument-settings",
-    "attribute": "instrument_settings",
+
+    "id": "creep-settings" ,
+    "attribute": "creep_settings",
     "default_properties": [
         {
             "name": "Name" ,
@@ -10,40 +11,31 @@
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
-            "required": true
-        },
-        {
-            "attribute": "ion_type",
-            "name": "Ion Type" ,
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [{"name": "Ga", "value" : "ga"},{"name": "Ne", "value" : "ne"},{"name": "Ar", "value" : "ar"}],
             "required": false
         },
         {
-            "attribute": "energy",
-            "name": "Energy" ,
+            "attribute": "temperature",
+            "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["V"] ,
+            "unit_choice": ["C", "F"] ,
             "value": "" ,
             "value_choice": [],
             "required": false
         },
         {
-            "attribute": "time",
-            "name": "Time" ,
+            "name": "Load" ,
+            "attribute": "load",
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["secs"],
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false
         }
     ],
-    "additional_properties":[],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,

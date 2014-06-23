@@ -1,5 +1,5 @@
 {
-    "id": "data-analysis",
+    "id": "apt-data-reconstruction",
     "attribute": "process",
     "default_properties": [
     ],
@@ -9,10 +9,10 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Data Analysis" ,
+    "template_name": "APT Data Reconstruction" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": [{"name": "Settings", "value": "data-reconstruction"}],
+    "required_input_conditions": [{"name": "Settings", "value": "apt-data-reconstruction-settings"}],
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true  
