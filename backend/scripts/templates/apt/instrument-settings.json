@@ -25,7 +25,7 @@
         {
             "name": "Specimen Temperature(K)",
             "attribute": "specimen_temperature",
-            "type": "int",
+            "type": "number",
             "unit": "K",
             "unit_choice": [],
             "value": "",
@@ -35,7 +35,7 @@
         {
             "name": "Voltage Pulse Fraction(%)",
             "attribute": "voltage_pulse_fraction",
-            "type": "int",
+            "type": "number",
             "unit": "%",
             "unit_choice": [],
             "value": "",
@@ -46,7 +46,7 @@
         {
             "name": "Laser Pulse Energy(pJ)",
             "attribute": "laser_pulse_energy",
-            "type": "int",
+            "type": "number",
             "unit": "pJ",
             "unit_choice": [],
             "value": "",
@@ -57,7 +57,7 @@
         {
             "name": "Pulse Frequence(kHz)",
             "attribute": "pulse_frequency",
-            "type": "int",
+            "type": "number",
             "unit": "kHz",
             "unit_choice": [],
             "value": "",
