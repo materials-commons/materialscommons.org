@@ -1,0 +1,54 @@
+{
+    "id": "broad-ion-beam-instrument-settings",
+    "attribute": "instrument_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "ion_type",
+            "name": "Ion Type" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "energy",
+            "name": "Energy" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["V"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "time",
+            "name": "Time" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["secs"],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Settings" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}
