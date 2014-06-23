@@ -45,7 +45,7 @@
         {
             "attribute": "Dimensions-X(coordinate)",
             "name": "dimension_x" ,
-            "type": "float" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["microns"] ,
             "value": "" ,
@@ -55,7 +55,7 @@
         {
             "attribute": "Dimensions-Y(coordinate)",
             "name": "dimension_y" ,
-            "type": "float" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["microns"] ,
             "value": "" ,
@@ -65,7 +65,7 @@
         {
             "attribute": "Magnification",
             "name": "magnification" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,

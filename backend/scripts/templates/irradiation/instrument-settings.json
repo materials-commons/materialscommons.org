@@ -25,7 +25,7 @@
         {
             "attribute": "temperature",
             "name": "Temperature" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["C", "F"] ,
             "value": "" ,
@@ -35,7 +35,7 @@
         {
             "attribute": "energy",
             "name": "Energy" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["KeV", "MeV"] ,
             "value": "" ,
@@ -45,7 +45,7 @@
         {
             "attribute": "dose",
             "name": "Dose(per cm^2)" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "cm**2" ,
             "unit_choice": [],
             "value": "" ,
@@ -85,7 +85,7 @@
         {
             "attribute": "duration",
             "name": "Duration(secs)" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "secs" ,
             "unit_choice": [],
             "value": "" ,

@@ -5,7 +5,7 @@
         {
             "name": "Strain" ,
             "attribute": "strain",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["mm/mm", "%"] ,
             "value": "" ,
@@ -15,7 +15,7 @@
         {
             "attribute": "Strain rate",
             "name": "strain_rate" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["1/secs", "mm/min"] ,
             "value": "" ,
