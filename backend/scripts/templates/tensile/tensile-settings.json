@@ -1,7 +1,7 @@
 {
 
-    "id": "tensile-ip-settings" ,
-    "attribute": "instrument_settings",
+    "id": "tensile-settings" ,
+    "attribute": "tensile_settings",
     "default_properties": [
         {
             "name": "Name" ,
@@ -14,31 +14,29 @@
             "required": true
         },                
         {
-            "name": "Voltage" ,
-            "attribute": "voltage",
-            "type": "int" ,
+            "name": "Mode" ,
+            "attribute": "mode",
+            "type": "select" ,
             "unit": "" ,
-            "unit_choice": ["V", "KV"] ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [{"name": "Load Control", "value" : "load_control"},{"name": "Elongation Control", "value" : "elongation_control"}],
+            "required": false
+        },
+        {
+            "name": "Loading Rate" ,
+            "attribute": "loading_rate",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false
         },
         {
-            "name": "Pixel Size" ,
-            "attribute": "pixel_number",
-            "type": "int" ,
-            "unit": "" ,
-            "unit_choice": ["microns"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
-        }
-    ],
-    "additional_properties":[
-        {
             "name": "Temperature" ,
             "attribute": "temperature",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["C", "F"] ,
             "value": "" ,
@@ -46,9 +44,9 @@
             "required": false
         },
         {
-            "name": "Humidity" ,
-            "attribute": "humidity",
-            "type": "int" ,
+            "name": "Deformation Rate" ,
+            "attribute": "deformation_rate",
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
@@ -56,29 +54,20 @@
             "required": false
         },
         {
-            "name": "Test rate" ,
-            "attribute": "test_rate",
-            "type": "text" ,
+            "name": "Medium" ,
+            "attribute": "medium",
+            "type": "select" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Control method" ,
-            "attribute": "control_method",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
+            "value_choice": [{"name": "Air", "value" : "air"},{"name": "Vacuum", "value" : "vacuum"}],
             "required": false
         }
     ],
+    "additional_properties":[],
     "owner": "admin@materialscommons.org", 
     "template_description": "" ,
-    "template_name": "settings" ,
+    "template_name": "Settings" ,
     "template_type": "condition",
     "template_pick": "instrument"
 
