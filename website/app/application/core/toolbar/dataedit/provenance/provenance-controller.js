@@ -3,7 +3,6 @@ Application.Controllers.controller('toolbarDataEditProvenance',
         function ($scope, mcapi, User, $state, $stateParams, $filter) {
 
             $scope.showProvDetails = function (item, category) {
-                console.log(item)
                 if (category == 'input') {
                     switch (item.type) {
                         case "id":
@@ -20,7 +19,7 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                             })
                             break;
                         case "file":
-                            $state.go('toolbar.dataedit.provenance', ({'id': item.id}));
+                            $state.go('toolbar.projectspage.dataedit.provenance', ({'data_id': item.id}));
                             break;
                     }
                 }
@@ -37,13 +36,20 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                             //$scope.settings = $scope.process.inputs.
                             break;
                         case "file":
-                            $state.go('toolbar.dataedit.provenance', ({'id': item.id}));
+                            $state.go('toolbar.projectspage.dataedit.provenance', ({'data_id': item.id}));
                             break;
                     }
                 }
             }
             $scope.init = function () {
-                $scope.id = $stateParams.id;
+                $scope.id = $stateParams.data_id;
+                mcapi('/datafile/%', $scope.id)
+                    .success(function (data) {
+                        $scope.doc = data;
+                    })
+                    .error(function (data) {
+                        alertService.sendMessage(data.error);
+                    }).jsonp();
                 $scope.ip_conditions = [];
                 $scope.op_conditions = [];
                 $scope.output_process = [];
@@ -65,7 +71,6 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                     }).jsonp();
                 mcapi('/processes/file/%', $stateParams.id)
                     .success(function (data2) {
-                        console.log(data2)
                     }).jsonp();
             };
             $scope.init();

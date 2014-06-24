@@ -44,27 +44,25 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-10">
-        <div class="tab-content">
-            <div class="tab-pane active" id="files">
-                <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true"></project-tree>
-                <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-file-text-o fa-2x" style="padding-right: 3px;"></i> <span
-                                style="font-size: 16px;font-weight:bold">Read Me </span>
-                        </div>
-                        <div class="panel-body">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="provenance">Prov.</div>
-            <div class="tab-pane" id="reviews">Reviews.</div>
-            <div class="tab-pane" id="issues">Issues.</div>
-            <div class="tab-pane" id="settings">Settings.</div>
-            <div class="tab-pane" id="samples">Samples.</div>
+    <div class="col-lg-8">
+        <div ui-view></div>
+    </div>
+    <div class="col-lg-2">
+        <div style="padding-left:40px" class="individual-items">
+            <ul class="nav nav-tabs tabs-right">
+                <li class="active"><a ng-click="showTab('files')" data-toggle="tab">
+                    Files<i class="fa fa-file-text marginLeft pull-right"></i> </a></li>
+                <li><a ng-click="showTab('provenance')" data-toggle="tab">Provenance <i
+                        class="fa fa-code-fork marginLeft pull-right"></i> </a></li>
+                <li><a ng-click="showTab('reviews')" data-toggle="tab">Reviews <i class="fa fa-comment marginLeft pull-right"></i>
+                </a></li>
+                <li><a ng-click="showTab('issues')" data-toggle="tab">Issues <i
+                        class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>
+                <li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i
+                        class="fa fa-cog marginLeft pull-right"></i></a></li>
+                <li><a ng-click="showTab('samples')" data-toggle="tab">Samples <i
+                        class="fa fa-cubes marginLeft pull-right"></i></a></li>
+            </ul>
         </div>
     </div>
 </div>

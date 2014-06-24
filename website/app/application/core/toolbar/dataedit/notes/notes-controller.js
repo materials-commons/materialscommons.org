@@ -16,7 +16,7 @@ Application.Controllers.controller('toolbarDataEditNotes',
             };
 
             function init() {
-                $scope.id = $stateParams.id;
+                $scope.id = $stateParams.data_id;
                 $scope.model = {
                     new_note: ''
                 };

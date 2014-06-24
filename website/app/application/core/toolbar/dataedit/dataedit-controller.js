@@ -16,16 +16,16 @@ Application.Controllers.controller('toolbarDataEdit',
             $scope.showTab = function (tab) {
                 switch (tab) {
                     case "details":
-                        $state.go('toolbar.dataedit.details');
+                        $state.go('toolbar.projectspage.dataedit.details', {'data_id': $scope.doc.id});
                         break;
                     case "provenance":
-                        $state.go('toolbar.dataedit.provenance');
+                        $state.go('toolbar.projectspage.dataedit.provenance');
                         break;
                     case "reviews":
-                        $state.go('toolbar.dataedit.reviews');
+                        $state.go('toolbar.projectspage.dataedit.reviews');
                         break;
                     case "notes":
-                        $state.go('toolbar.dataedit.notes');
+                        $state.go('toolbar.projectspage.dataedit.notes');
                         break;
                 }
             };
@@ -41,7 +41,7 @@ Application.Controllers.controller('toolbarDataEdit',
                     is_disabled: true,
                     desc: ''
                 };
-                $scope.id = $stateParams.id;
+                $scope.id = $stateParams.data_id;
                 $scope.modal = Projects.model;
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
@@ -54,7 +54,7 @@ Application.Controllers.controller('toolbarDataEdit',
                     .error(function (data) {
                         alertService.sendMessage(data.error);
                     }).jsonp();
-                //$scope.showTab('details');
+//                $scope.showTab('details');
             }
 
             init();

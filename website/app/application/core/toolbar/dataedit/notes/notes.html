@@ -1,17 +1,19 @@
-<div class="tab-pane active" id="notes" ng-controller="toolbarDataEditNotes">
-    <div class="col-sm-5 col-md-5">
-        <legend>Note:</legend>
-        <textarea class="form-control" placeholder="Enter a short synopsis..." ng-model="model.new_note"></textarea> <br>
-
+<div class="row" ng-controller="toolbarDataEditNotes">
+    <div class="col-lg-5">
+        <h4>Note</h4>
+        <textarea class="form-control" placeholder="Enter a short synopsis..." ng-model="model.new_note"></textarea>
+        <br>
         <button ng-click="add_notes()" class="btn btn-default btn-primary">Enter</button>
     </div>
-    <div class="col-sm-7 col-md-7">
-        <legend>Previous notes:</legend>
+</div>
+<div class="row">
+    <div class="col-lg-offset-6">
+        <h4>Previous notes:</h4>
 
         <div ng-repeat="n in doc.notes | orderBy: date">
             <textarea class="form-control">{{n.message}}</textarea>
 
-            <div style="padding-left: 220px; font-size: 12px;">
+            <div style="padding-left: 200px; font-size: 12px;">
                 {{n.date}} ---{{n.who}}
             </div>
         </div>

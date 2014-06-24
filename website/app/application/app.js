@@ -108,31 +108,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/thumbnails',
             templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
         })
-        //DataEdit Page
-        .state('toolbar.dataedit', {
-            url: '/dataedit/:id',
-            templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
-        })
-        .state('toolbar.dataedit.details', {
-            url: '/details',
-            templateUrl: 'application/core/toolbar/dataedit/details/details.html'
-        })
-        .state('toolbar.dataedit.reviews', {
-            url: '/reviews',
-            templateUrl: 'application/core/toolbar/dataedit/reviews/reviews.html'
-        })
-//        .state('toolbar.dataedit.tags', {
-//            url: '/tags',
-//            templateUrl: 'application/core/toolbar/dataedit/tags/tags.html'
-//        })
-        .state('toolbar.dataedit.notes', {
-            url: '/notes',
-            templateUrl: 'application/core/toolbar/dataedit/notes/notes.html'
-        })
-        .state('toolbar.dataedit.provenance', {
-            url: '/provenance',
-            templateUrl: 'application/core/toolbar/dataedit/provenance/provenance.html'
-        })
         .state('toolbar.process', {
             url: '/process/:id',
             templateUrl: 'application/core/toolbar/process/process.html'
@@ -195,8 +170,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/overview',
             templateUrl: 'application/core/toolbar/overview/overview.html'
         })
-
-        // Toolbar projectspage views
+        /*
+        #######################################################################
+        ####################### Project page views
+        ########################################################################
+         */
         .state('toolbar.projectspage', {
             url: '/projectspage/:id/:draft_id/:from',
             templateUrl: 'application/core/toolbar/projectspage/projectspage.html',
@@ -213,6 +191,53 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/overview',
             templateUrl: 'application/core/toolbar/projectspage/overview/overview.html'
         })
+        .state('toolbar.projectspage.overview.files', {
+            url: '/files',
+            templateUrl: 'application/core/toolbar/projectspage/overview/files/files.html'
+        })
+        .state('toolbar.projectspage.overview.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/core/toolbar/projectspage/overview/provenance/provenance.html'
+        })
+        .state('toolbar.projectspage.overview.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/toolbar/projectspage/overview/reviews/reviews.html'
+        })
+        .state('toolbar.projectspage.overview.samples', {
+            url: '/samples',
+            templateUrl: 'application/core/toolbar/projectspage/overview/samples/samples.html'
+        })
+
+        /*
+         ########################################################################
+         ####################### Data page views ################################
+         ########################################################################
+         */
+        .state('toolbar.projectspage.dataedit', {
+            url: '/dataedit/:data_id',
+            templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
+        })
+        .state('toolbar.projectspage.dataedit.details', {
+            url: '/details',
+            templateUrl: 'application/core/toolbar/dataedit/details/details.html'
+        })
+        .state('toolbar.projectspage.dataedit.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/toolbar/dataedit/reviews/reviews.html'
+        })
+        .state('toolbar.projectspage.dataedit.notes', {
+            url: '/notes',
+            templateUrl: 'application/core/toolbar/dataedit/notes/notes.html'
+        })
+        .state('toolbar.projectspage.dataedit.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/core/toolbar/dataedit/provenance/provenance.html'
+        })
+        /*
+         ########################################################################
+         ####################### Provenance Creation ############################
+         ########################################################################
+         */
         .state('toolbar.projectspage.provenance', {
             url: '/provenance',
             templateUrl: 'application/provenance/provenance.html'
@@ -244,7 +269,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/finish',
             templateUrl: 'application/provenance/finish/finish.html'
         })
-        // File services
+        /*
+         ########################################################################
+         ####################### File Services ##################################
+         ########################################################################
+         */
         .state('toolbar.fileservices', {
             url: '/fileservices',
             templateUrl: 'application/core/toolbar/fileservices/fileservices.html'
