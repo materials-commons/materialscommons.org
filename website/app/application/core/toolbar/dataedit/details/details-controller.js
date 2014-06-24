@@ -34,8 +34,6 @@ Application.Controllers.controller('toolbarDataEditDetails',
             $scope.edit_details = function () {
                 $scope.model.is_disabled = false;
             };
-
-
             function init() {
                 $scope.model = {
                     is_disabled: true,

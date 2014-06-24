@@ -27,7 +27,8 @@ Application.Controllers.controller('ProjectTreeController',
 
         $scope.populatePath = function (entry) {
             ProjectPath.populate($scope.trail, $scope.dir);
-            $state.go("toolbar.dataedit", {id: entry.id});
+            //$state.go("toolbar.dataedit", {id: entry.id});
+            $state.go("toolbar.projectspage.dataedit", {data_id: entry.id});
         };
 
         $scope.selectProject = function (projectId) {

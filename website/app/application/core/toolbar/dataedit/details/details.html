@@ -1,7 +1,7 @@
 <div ng-controller="toolbarDataEditDetails">
     <div class="tab-pane" id="details">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <div ng-switch="" on="fileType">
                     <div ng-switch-when="image">
                         <img class="img-responsive" ng-src="{{ fileSrc }}">
@@ -13,7 +13,6 @@
         </div>
         <div class="row">
             <div class="col-lg-10">
-                <fieldset>
                     <legend>{{fileName}}</legend>
                     <cgroup label="Description:">
                         <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc"
@@ -40,17 +39,7 @@
                     <cgroup label="Owner:">
                         <input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">
                     </cgroup>
-                </fieldset>
             </div>
-
         </div>
     </div>
-
-
-    <div class="tab-pane" id="provenance">Prov.</div>
-    <div class="tab-pane" id="reviews">Reviews.</div>
-    <div class="tab-pane" id="issues">Issues.</div>
-    <div class="tab-pane" id="settings">Settings.</div>
-    <div class="tab-pane" id="samples">Samples.</div>
-
 </div>

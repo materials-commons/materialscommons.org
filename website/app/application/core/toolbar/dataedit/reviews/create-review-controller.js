@@ -58,9 +58,6 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                         pubsub.send('reviews.change', 'review.change');
                     }).delete();
             };
-
-
-
             $scope.reviewsCount = function () {
                 mcapi('/reviews/to_conduct')
                     .success(function (data) {
@@ -73,14 +70,20 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
             };
 
             pubsub.waitOn($scope, 'reviews.change', function () {
-                $scope.reviewsCount();
+                $scope.updateReviews();
             });
+            $scope.updateReviews = function () {
+                mcapi('/datafiles/%/reviews', $stateParams.data_id)
+                    .success(function (reviews) {
+                        $scope.all_reviews = reviews;
+                    }).jsonp();
+            }
 
             function init() {
                 $scope.all_reviews = [];
                 $scope.signed_in_user = User.u();
                 $scope.signed_user = User.u();
-                mcapi('/datafiles/%/reviews', $stateParams.id)
+                mcapi('/datafiles/%/reviews', $stateParams.data_id)
                     .success(function (reviews) {
                         $scope.all_reviews = reviews;
                     }).jsonp();

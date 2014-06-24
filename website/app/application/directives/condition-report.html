@@ -1,0 +1,12 @@
+<h4 plus-minus-toggle="slidecondition">
+    <i class="fa fa-minus-square"></i>
+    Setting/Condition
+</h4>
+<section id="slidecondition">
+    <div ng-repeat="p in condition.properties">
+        <cgroup label="{{p.name}}:">
+            <input class="form-control" ng-model="p.value"
+                   ng-disabled="true">
+        </cgroup>
+    </div>
+</section>

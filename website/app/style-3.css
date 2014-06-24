@@ -156,10 +156,10 @@ p {
     width: 12%;
 }
 
-#individual-items.nav-tabs > li > a,
-#individual-items.nav-tabs > li.active > a,
-#individual-items.nav-tabs > li.active > a:hover,
-#individual-items.nav-tabs > li.active > a:focus {
+.individual-items.nav-tabs > li > a,
+.individual-items.nav-tabs > li.active > a,
+.individual-items.nav-tabs > li.active > a:hover,
+.individual-items.nav-tabs > li.active > a:focus {
     border: 1px solid #ecf0f1;
     border-right: solid red;
     cursor: default;
