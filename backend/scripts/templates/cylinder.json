@@ -12,6 +12,19 @@
             "required": true
         },
         {
+            "name": "Preparation" ,
+            "attribute": "preparation",
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [{"name": "Casting", "value": "casting"},
+                             {"name": "Ball Milling", "value": "ball_milling"},
+                             {"name": "Powder Consolidation", "value": "powder_consolidation"},
+                             {"name": "Sputter Deposition", "value": "sputter_deposition"}],
+            "required": false
+        },
+        {
             "name": "Height" ,
             "attribute": "height",
             "type": "int" ,
@@ -27,6 +40,56 @@
             "type": "int" ,
             "unit": "" ,
             "unit_choice": ["mm"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Grain Size" ,
+            "attribute": "grain_size",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Grain Orientation" ,
+            "attribute": "grain_orientation",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Phase" ,
+            "attribute": "phase",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Phase Volume" ,
+            "attribute": "phase_volume",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Strain" ,
+            "attribute": "strain",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false
