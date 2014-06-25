@@ -102,8 +102,9 @@ body {
     padding-right: 6px;
 }
 
-.form-group {
+.form-horizontal .form-group {
     margin-bottom: 2px;
+    margin-left:10px;
 }
 
 .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
@@ -152,9 +153,9 @@ p {
     margin: 0px;
 }
 
-.col-sm-2 {
-    width: 12%;
-}
+/*.col-sm-2 {*/
+    /*width: 12%;*/
+/*}*/
 
 .individual-items.nav-tabs > li > a,
 .individual-items.nav-tabs > li.active > a,

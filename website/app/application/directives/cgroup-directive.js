@@ -7,7 +7,7 @@ Application.Directives.directive('cgroup',
                 label: '@label'
             },
             template: '<div class="form-group">' +
-                '<label class="control-label">{{ label }}</label>' +
+                '<label class="control-label col-sm-2">{{ label }}</label>' +
                 '<div class="input-group col-sm-4" ng-transclude>' +
                 '</div>' +
                 '</div>'
@@ -23,7 +23,7 @@ Application.Directives.directive('cgrouprequired',
                 label: '@label'
             },
             template: '<div class="form-group">' +
-                '<label class="col-sm-2 control-label">{{ label }} <i class="fa fa-asterisk" style="color: red"></i> </label>' +
+                '<label class="control-label col-sm-2">{{ label }} <i class="fa fa-asterisk" style="color: red"></i> </label>' +
                 '<div class="input-group col-sm-4" ng-transclude>' +
                 '</div>' +
                 '</div>'

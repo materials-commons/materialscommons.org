@@ -1,3 +1,256 @@
-<div class="row" ng-controller="toolbarProjectsPageOverviewSamples">
-       ******* Samples Coming soon ****************
+<div ng-controller="toolbarProjectsPageOverviewSamples">
+    <form name="Sample" class="form-horizontal">
+        <!--<button class="btn btn-default btn-primary" ng-click="toggleCustom = !toggleCustom">Create Sample</button>-->
+        <h4 plus-minus-toggle="slidesample">
+            <i class="fa fa-minus-square"></i>
+            Create Sample
+        </h4>
+
+        <div id="slidesample">
+            <div class="row">
+                <div class="col-lg-8">
+                    <label>Classification:</label>
+                    <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
+                            ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
+                    </select>
+                </div>
+            </div>
+            <div class="row"><br>
+
+                <div class="col-lg-10" ng-show="bk.classification">
+                    <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
+                    <div df-properties="" default-properties="doc.default_properties"></div>
+                </div>
+            </div>
+            <br>
+
+            <div ng-show="bk.classification">
+                <h4 plus-minus-toggle="slidetreatments">
+                    <i class="fa fa-minus-square"></i>
+                    Treatments
+                </h4>
+
+                <div id="slidetreatments">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label>Treatments:</label>
+                            <select class="form-control" ng-model="bk.selected_treatment"
+                                    ng-options="treat.id for treat in treatment_templates"
+                                    ng-change="showForm()">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <label class='control-label'><strong>{{bk.selected_treatment.id ||
+                                bk.tab_item}} </strong></label>
+
+                            <div ng-show="bk.selected_treatment!==''">
+                                <div df-properties default-properties="default_properties"></div>
+                                <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                        <div ng-show="doc.treatments.length !==0 " class="col-lg-4">
+                            <label>Treatments Order:</label>
+                            <tabset vertical="true" type="pills">
+                                <tab ng-repeat="treatment in doc.treatments"
+                                     ng-click="showTab(treatment, $index)"
+                                     heading="{{treatment.id}}">
+                                </tab>
+                            </tabset>
+                        </div>
+
+                    </div>
+                </div>
+                <br>
+                <h4 plus-minus-toggle="slideprojects">
+                    <i class="fa fa-minus-square"></i>
+                    Projects
+                </h4>
+
+                <div id="slideprojects">
+
+                    <div class="row form-group">
+                        <div class="col-lg-8">
+                            <div class="col-lg-5">
+                                <select class="form-control" ng-model="bk.selected_project"
+                                        ng-options="pr.name for pr in projects">
+                                </select>
+                            </div>
+                            <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div ng-show="doc.projects.length !==0 " class="col-lg-8">
+                            <paged data="doc.projects" current-page="currentUsersPage" page-size="10">
+                                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="i in doc.projects | page:currentUsersPage:10">
+                                        <td>{{i.name}}</td>
+                                        <td>
+                                            <button class="btn btn-default btn-danger"
+                                                    ng-click="removeProjects($index)">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </paged>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row" ng-show="bk.classification"><br>
+        <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
+        <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
+        <div saved-notification="" message="message"></div>
+    </div>
+    <br><br>
+    <h4 plus-minus-toggle="availablesamples">
+        <i class="fa fa-minus-square"></i>
+        Available Samples
+    </h4>
+
+    <div id="availablesamples">
+        <div class="row">
+            <paged data="samples_list" current-page="currentDataPage" page-size="10">
+                <p ng-if="samples_list.length==0">
+                    <b>No available objects in the database</b>
+                </p>
+
+                <p ng-if="samples_list.length!=0">
+                </p>
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Composition</th>
+                        <th>Availability</th>
+                        <th>Date Created</th>
+                        <th>Details and Processes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:10">
+                        <td>{{sample.name}}</td>
+                        <td>
+                            <ul ng-repeat="c in sample.properties.composition.value">
+                                <li>{{c.element}} - {{c.value}} {{sample.properties.composition.unit}}</li>
+                            </ul>
+                        </td>
+                        <td ng-if="sample.available===true">
+                            <i class="fa fa-check available"></i>
+                        </td>
+                        <td ng-if="sample.available===false">
+                            <i class="fa fa-times notavailable"></i>
+                        </td>
+                        <td>{{sample.birthtime | toDateString}}</td>
+                        <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </paged>
+        </div>
+        <br>
+
+        <div ng-show="sample" class="row">
+            <div class="panel panel-default">
+                <div class="panel-body">
+            <form class="form-horizontal" >
+                <h5><b><u>Details</u></b></h5>
+
+                <div upperlevel-object="" doc="sample" edit="true"></div>
+                <div iterate-properties="" all-properties="sample.properties" edit="true"></div>
+                <div>
+                    <cgroup label="Owner">
+                        <input class="form-control" class="input-large" ng-model="sample.owner" type="text"
+                               ng-disabled="true">
+                    </cgroup>
+                </div>
+                <h5><b><u>Treatments</u></b></h5>
+
+                <div ng-if="sample.treatments.length==0">
+                    <p class="text-muted">No treatments applied to the sample {{sample.name}}</p>
+                </div>
+                <div ng-if="sample.treatments.length!==0">
+                    <div ng-repeat="treatment in sample.treatments">
+                        <i>{{treatment.template}}:</i>
+
+                        <div class="form-group" ng-repeat="property in treatment.properties">
+                            <cgroup label="{{property.name}}">
+                                <div class="col-sm-6" ng-if="p.type === 'select'">
+                                    <input class="form-control" ng-model="property.value_name" ng-disabled="true"
+                                           type="text">
+                                </div>
+                                <div class="col-sm-6" ng-if="p.type !== 'select'">
+                                    <input class="form-control" ng-model="property.value" ng-disabled="true"
+                                           type="text">
+                                </div>
+                                <div class="col-sm-2">
+                                    {{ property.unit }}
+                                </div>
+                            </cgroup>
+                        </div>
+                    </div>
+                </div>
+                <h5><b><u>Processes</u></b></h5>
+
+                <div ng-if="processes_list.length === 0">
+                    <p class="text-muted">Sample {{sample.name}} has not been used in any process</p>
+                </div>
+                <div ng-if="processes_list.length !== 0">
+                    <ul ng-repeat="process in processes_list">
+                        <li><a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a></li>
+                    </ul>
+                </div>
+                <div>
+
+                    <h5><b><u>Projects</u></b></h5>
+                    <div ng-show="projects_by_sample.length !==0 ">
+                        <paged  data="projects_by_sample"
+                                current-page="currentUsersPage" page-size="10">
+                            <table class="table table-striped mc-table-hover table-condensed mc-table">
+                                <tbody>
+                                <tr ng-repeat="i in projects_by_sample | page:currentUsersPage:10">
+                                    <td>{{i.name}}</td>
+                                    <td ng-show="sample.owner===signed_in_user">
+                                        <button class="btn btn-default btn-danger" ng-click="deleteProject($index)">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </paged>
+                    </div>
+                    <div ng-show="sample.owner===signed_in_user" class="row form-group">
+                        <div class="col-lg-8">
+                            <div class="col-lg-5">
+                                <select class="form-control" ng-model="model.selected_project"
+                                        ng-options="pr.name for pr in projects">
+                                </select>
+                            </div>
+                            <button class="btn btn-default btn-default" ng-click="addProject()">Add Project</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+                    </div>
+                </div>
+        </div>
+    </div>
+
 </div>
