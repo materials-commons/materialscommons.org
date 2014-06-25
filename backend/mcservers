@@ -44,7 +44,7 @@ function start_servers()
     R=$(is_running "mcfs" "db-connect=localhost:$MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcfs..."
-        mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="$MCDB_CONNECTION" > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
+        mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
     fi
 
     if [ $TESTSERVER = "u" ]; then
