@@ -73,8 +73,10 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             },
 
             loadRemoteDrafts: function () {
+                console.log('yes')
                 mcapi('/drafts')
                     .success(function (drafts) {
+                        console.log(drafts)
                         service.drafts = [];
                         drafts.forEach(function (draft) {
                             service.drafts.push(draft);
