@@ -16,6 +16,14 @@ def get_all_objects():
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
+@app.route('/objects/project/<project_id>', methods=['GET'])
+@jsonp
+def get_all_objects_by_project(project_id):
+    rr = r.table('samples').filter(lambda sample: sample['projects'].map(lambda element: element['id'].eq(project_id))\
+    .reduce(lambda left, right:left+right)).order_by(r.desc('birthtime'))
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+
 
 @app.route('/objects/user/<user>', methods=['GET'])
 @jsonp

@@ -173,6 +173,12 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     })
                     .error(function (data) {
                     }).jsonp();
+//                mcapi('/objects/project/%',$scope.project_id)
+//                    .success(function (data) {
+//                        $scope.samples_list = data;
+//                    })
+//                    .error(function (data) {
+//                    }).jsonp();
                 Projects.getList().then(function (data) {
                     $scope.projects = data;
                 });

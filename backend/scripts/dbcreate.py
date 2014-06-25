@@ -70,6 +70,7 @@ def create_indices():
     create_index('treatments', 'value')
     create_index('treatments', 'sample_id')
     create_index('templates', 'template_pick')
+    create_index('samples', 'project_id')
 
 
 def create_index(table, name):

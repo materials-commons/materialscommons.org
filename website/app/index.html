@@ -40,7 +40,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-custom navbar-static-top" ng-controller="_indexNavigation">
+<nav class="navbar navbar-custom" ng-controller="_indexNavigation" >
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -67,8 +67,10 @@
             <li><a ui-sref="login" class="navbar-link"><i class="icon-user"></i> login</a></li>
         </ul>
 
-        <ul ng-show="email_address" class="nav navbar-nav navbar-right">
-            <li><a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i>
+        <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
+            <li><a ui-sref="login" class="navbar-link"><i class="fa fa-comment"></i> Reviews</a></li>
+            <li><a ui-sref="login" class="navbar-link"><i class="icon-user"></i> Machines</a></li>
+            <li style="border-left: 1px solid grey"><a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i>
                 {{email_address}}</a>
             </li>
             <li><a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> logout</span></a>
@@ -190,15 +192,12 @@
 <!-- Toolbar machines -->
 <script src="application/core/toolbar/machines/machines-controller.js"></script>
 
-<!-- Toolbar objects -->
-<script src="application/core/toolbar/objects/objects-controller.js"></script>
-
 <!-- Toolbar projectspage -->
 <script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/overview-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/samples/sample-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/provenance/provenance-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/reviews/reviews-controller.js"></script>
+<script src="application/core/toolbar/projectspage/overview/drafts/drafts-controller.js"></script>
 
 
 <!-- Toolbar overview -->

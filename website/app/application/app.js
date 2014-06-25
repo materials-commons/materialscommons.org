@@ -99,11 +99,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/users/:id',
             templateUrl: 'application/core/account/usergroups/users.html'
         })
-        // Toolbar drafts
-        .state('toolbar.drafts', {
-            url: '/drafts',
-            templateUrl: 'application/core/toolbar/drafts/drafts.html'
-        })
+//        // Toolbar drafts
+//        .state('toolbar.drafts', {
+//            url: '/drafts',
+//            templateUrl: 'application/core/toolbar/drafts/drafts.html'
+//        })
         .state('toolbar.thumbnails', {
             url: '/thumbnails',
             templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
@@ -199,9 +199,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/provenance',
             templateUrl: 'application/core/toolbar/projectspage/overview/provenance/provenance.html'
         })
-        .state('toolbar.projectspage.overview.reviews', {
+        .state('toolbar.projectspage.overview.drafts', {
             url: '/reviews',
-            templateUrl: 'application/core/toolbar/projectspage/overview/reviews/reviews.html'
+            templateUrl: 'application/core/toolbar/projectspage/overview/drafts/drafts.html'
         })
         .state('toolbar.projectspage.overview.samples', {
             url: '/samples',
