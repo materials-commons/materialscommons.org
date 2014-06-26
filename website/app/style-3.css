@@ -46,7 +46,7 @@ body {
 
 .navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
     text-decoration: none;
-    background-color: #0C5C86;
+    background-color: cornflowerblue;
 }
 
 .navbar-custom .navbar-brand {
