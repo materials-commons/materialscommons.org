@@ -99,11 +99,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/users/:id',
             templateUrl: 'application/core/account/usergroups/users.html'
         })
-//        // Toolbar drafts
-//        .state('toolbar.drafts', {
-//            url: '/drafts',
-//            templateUrl: 'application/core/toolbar/drafts/drafts.html'
-//        })
+        .state('account.templates', {
+            url: '/templates',
+            templateUrl: 'application/core/account/templates/templates.html'
+        })
         .state('toolbar.thumbnails', {
             url: '/thumbnails',
             templateUrl: 'application/core/toolbar/thumbnails/thumbnails.html'
@@ -138,21 +137,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/tags',
             templateUrl: 'application/core/toolbar/tags/tags.html'
         })
-        .state('toolbar.templates', {
-            url: '/templates',
-            templateUrl: 'application/core/toolbar/templates/templates.html'
-        })
         .state('toolbar.globaltagcloud', {
             url: '/globaltagcloud',
             templateUrl: 'application/core/toolbar/globaltagcloud/globaltagcloud.html'
         })
-
-        // Toolbar materials views
-        .state('toolbar.objects', {
-            url: '/objects',
-            templateUrl: 'application/core/toolbar/objects/objects.html'
-        })
-
         // Toolbar overview
         .state('toolbar.overview', {
             url: '/overview',

@@ -70,13 +70,16 @@
         <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
             <li><a ui-sref="toolbar.projectspage.reviews" class="navbar-link"><i class="fa fa-comment"></i> Reviews</a></li>
             <li><a ui-sref="toolbar.projectspage.machines" class="navbar-link"><i class="icon-user"></i> Machines</a></li>
-            <li style="border-left: 1px solid grey"><a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i>
-                {{email_address}}</a>
+            <li class="dropdown" style="border-left: 1px solid lightgray">
+                <a class="dropdown-toggle" ><i class="fa fa-gears fa-inverse"></i>{{email_address}} <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ui-sref="account.password">Change Password</a></li>
+                    <li><a ui-sref="account.usergroup">UserGroups</a></li>
+                    <li><a ui-sref="account.templates">Templates</a></li>
+                </ul>
             </li>
-            <li><a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> logout</span></a>
-            </li>
+            <li><a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> logout</span></a></li>
         </ul>
-
     </div>
 </nav>
 
@@ -177,7 +180,7 @@
 <!-- Toolbar tags -->
 <script src="application/core/toolbar/tagspage/tagspage-controller.js"></script>
 <script src="application/core/toolbar/tags/tags-controller.js"></script>
-<script src="application/core/toolbar/templates/templates-controller.js"></script>
+<script src="application/core/account/templates/templates-controller.js"></script>
 <script src="application/core/toolbar/globaltagcloud/globaltagcloud-controller.js"></script>
 <script src="application/core/toolbar/globaltagcloud/wordcloud-directive.js"></script>
 
