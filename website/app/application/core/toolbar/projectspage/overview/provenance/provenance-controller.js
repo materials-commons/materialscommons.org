@@ -1,5 +1,5 @@
 Application.Controllers.controller('toolbarProjectsPageOverviewProvenance',
-    ["$scope", "$stateParams", function ($scope, $stateParams) {
+    ["$scope", "$stateParams", "mcapi", function ($scope, $stateParams,mcapi) {
 
 
         function init() {
@@ -25,6 +25,11 @@ Application.Controllers.controller('toolbarProjectsPageOverviewProvenance',
             $scope.col_defs = [
                 { field: "Processes"}
             ];
+            mcapi('/processes/project/%', $scope.project_id)
+                .success(function (data) {
+                    $scope.processes = data;
+                    console.log($scope.processes)
+                }).jsonp();
 
 
         }
