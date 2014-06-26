@@ -462,3 +462,6 @@ table-file-directory > thead > tr > td,
     border-bottom-color: transparent;
     cursor: default;
 }
+#machines{
+    display: none;
+}

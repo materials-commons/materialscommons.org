@@ -147,18 +147,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/toolbar/globaltagcloud/globaltagcloud.html'
         })
 
-        // Toolbar review views
-        .state('toolbar.reviews', {
-            url: '/reviews',
-            templateUrl: 'application/core/toolbar/reviews/reviews.html'
-        })
-
-        // Toolbar machine views
-        .state('toolbar.machines', {
-            url: '/machines',
-            templateUrl: 'application/core/toolbar/machines/machines.html'
-        })
-
         // Toolbar materials views
         .state('toolbar.objects', {
             url: '/objects',
@@ -200,7 +188,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/toolbar/projectspage/overview/provenance/provenance.html'
         })
         .state('toolbar.projectspage.overview.drafts', {
-            url: '/reviews',
+            url: '/drafts',
             templateUrl: 'application/core/toolbar/projectspage/overview/drafts/drafts.html'
         })
         .state('toolbar.projectspage.overview.samples', {
@@ -215,23 +203,23 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          */
         .state('toolbar.projectspage.dataedit', {
             url: '/dataedit/:data_id',
-            templateUrl: 'application/core/toolbar/dataedit/dataedit.html'
+            templateUrl: 'application/core/toolbar/projectspage/dataedit/dataedit.html'
         })
         .state('toolbar.projectspage.dataedit.details', {
             url: '/details',
-            templateUrl: 'application/core/toolbar/dataedit/details/details.html'
+            templateUrl: 'application/core/toolbar/projectspage/dataedit/details/details.html'
         })
         .state('toolbar.projectspage.dataedit.reviews', {
             url: '/reviews',
-            templateUrl: 'application/core/toolbar/dataedit/reviews/reviews.html'
+            templateUrl: 'application/core/toolbar/projectspage/dataedit/reviews/reviews.html'
         })
         .state('toolbar.projectspage.dataedit.notes', {
             url: '/notes',
-            templateUrl: 'application/core/toolbar/dataedit/notes/notes.html'
+            templateUrl: 'application/core/toolbar/projectspage/dataedit/notes/notes.html'
         })
         .state('toolbar.projectspage.dataedit.provenance', {
             url: '/provenance',
-            templateUrl: 'application/core/toolbar/dataedit/provenance/provenance.html'
+            templateUrl: 'application/core/toolbar/projectspage/dataedit/provenance/provenance.html'
         })
         /*
          ########################################################################
@@ -240,24 +228,24 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          */
         .state('toolbar.projectspage.provenance', {
             url: '/provenance',
-            templateUrl: 'application/provenance/provenance.html'
+            templateUrl: 'application/core/toolbar/projectspage/provenance/provenance.html'
         })
         .state('toolbar.projectspage.provenance.process', {
             url: '/process',
-            templateUrl: 'application/provenance/process/process.html'
+            templateUrl: 'application/core/toolbar/projectspage/provenance/process/process.html'
 
         })
         .state('toolbar.projectspage.provenance.iosteps', {
             url: '/iosteps:iosteps',
-            templateUrl: 'application/provenance/iosteps/iosteps.html'
+            templateUrl: 'application/core/toolbar/projectspage/provenance/iosteps/iosteps.html'
         })
         .state('toolbar.projectspage.provenance.iosteps.iostep', {
             url: '/name:stepname/value:stepvalue',
-            templateUrl: 'application/provenance/iosteps/iostep/iostep.html'
+            templateUrl: 'application/core/toolbar/projectspage/provenance/iosteps/iostep/iostep.html'
         })
         .state('toolbar.projectspage.provenance.iosteps.files', {
             url: '/files:iostep',
-            templateUrl: 'application/provenance/iosteps/files/files.html',
+            templateUrl: 'application/core/toolbar/projectspage/provenance/iosteps/files/files.html',
             onEnter: function (pubsub) {
                 pubsub.send("project.tree", true);
             },
@@ -267,7 +255,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('toolbar.projectspage.provenance.finish', {
             url: '/finish',
-            templateUrl: 'application/provenance/finish/finish.html'
+            templateUrl: 'application/core/toolbar/projectspage/provenance/finish/finish.html'
         })
         /*
          ########################################################################
@@ -294,6 +282,25 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/projects',
             templateUrl: 'application/core/toolbar/projects/projects.html'
         })
+    /*
+     ########################################################################
+     ####################### Reviews ##################################
+     ########################################################################
+     */
+        .state('toolbar.projectspage.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/toolbar/projectspage/reviews/reviews.html'
+        })
+        /*
+         ########################################################################
+         ####################### Machines ##################################
+         ########################################################################
+         */
+        .state('toolbar.projectspage.machines', {
+            url: '/machines',
+            templateUrl: 'application/core/toolbar/projectspage/machines/machines.html'
+        })
+
 }])
 ;
 
