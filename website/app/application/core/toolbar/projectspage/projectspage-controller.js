@@ -43,6 +43,7 @@ Application.Controllers.controller('toolbarProjectsPage',
                                 }
                             }).jsonp();
                     }
+//                    $state.go('toolbar.projectspage.overview.files',{id: $stateParams.id, draft_id: ''});
                 });
             }
 

@@ -1,13 +1,13 @@
 Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
-    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService", "Nav", "$stateParams",
-        function ($scope, pubsub, ProvDrafts, $state, alertService, Nav, $stateParams) {
+    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService", "Nav", "$stateParams", "mcapi",
+        function ($scope, pubsub, ProvDrafts, $state, alertService, Nav, $stateParams, mcapi) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
 
             });
 
             $scope.gotoDraft = function (draft) {
-                $state.go('toolbar.projectspage', {id: draft.project_id, draft_id: draft.id});
+                $state.go('toolbar.projectspage.provenance', {id: draft.project_id, draft_id: draft.id});
             };
 
             $scope.markForReview = function (draft) {
@@ -35,12 +35,11 @@ Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
                 } else {
                     alertService.sendMessage("Draft already exists !");
                 }
-
             };
 
             function init() {
                 $scope.project_id = $stateParams.id;
-                $scope.drafts = ProvDrafts.drafts;
+                $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
             }
 
             init();

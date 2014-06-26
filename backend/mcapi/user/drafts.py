@@ -95,13 +95,13 @@ def get_draft(draft_id):
     return args.json_as_format_arg(draft)
 
 
-@app.route('/drafts', methods=['GET'])
+@app.route('/drafts/project/<project_id>', methods=['GET'])
 @jsonp
 @apikey
-def get_drafts_for_user():
+def get_drafts_for_user(project_id):
     user = access.get_user()
     selection = list(r.table('drafts')
-                     .get_all(user, index='owner')
+                     .get_all(user, index='owner').filter({'project_id': project_id})
                      .run(g.conn, time_format='raw'))
     # Now get all the drafts that we have been asked to review
     # TODO: This is a hack that we need to fix

@@ -4,8 +4,7 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
             current: null,
             drafts: [],
             channel: 'drafts.update',
-
-            newDraft: function () {
+        newDraft: function () {
                 var draft = {
                     id: "",
                     project_id: "",
@@ -72,11 +71,9 @@ Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
                 }
             },
 
-            loadRemoteDrafts: function () {
-                console.log('yes')
-                mcapi('/drafts')
+            loadRemoteDrafts: function (prj_id) {
+                mcapi('/drafts/project/%', prj_id)
                     .success(function (drafts) {
-                        console.log(drafts)
                         service.drafts = [];
                         drafts.forEach(function (draft) {
                             service.drafts.push(draft);

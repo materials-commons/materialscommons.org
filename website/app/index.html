@@ -68,8 +68,8 @@
         </ul>
 
         <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
-            <li><a ui-sref="login" class="navbar-link"><i class="fa fa-comment"></i> Reviews</a></li>
-            <li><a ui-sref="login" class="navbar-link"><i class="icon-user"></i> Machines</a></li>
+            <li><a ui-sref="toolbar.projectspage.reviews" class="navbar-link"><i class="fa fa-comment"></i> Reviews</a></li>
+            <li><a ui-sref="toolbar.projectspage.machines" class="navbar-link"><i class="icon-user"></i> Machines</a></li>
             <li style="border-left: 1px solid grey"><a ui-sref="account" class="navbar-link"><i class="fa fa-gears fa-inverse"></i>
                 {{email_address}}</a>
             </li>
@@ -155,23 +155,18 @@
 <script src="application/core/toolbar/_reviews-controller.js"></script>
 <script src="application/core/toolbar/_tags-controller.js"></script>
 
-<!-- Toolbar Views -->
-
-<!-- Toolbar drafts -->
-<script src="application/core/toolbar/drafts/drafts-controller.js"></script>
-<script src="application/core/toolbar/drafts/_review-modal-controller.js"></script>
 
 <!-- Toolbar data -->
 <script src="application/core/toolbar/thumbnails/toolbar-thumbnails-controller.js"></script>
 <script src="application/core/toolbar/thumbnails/thumbnail-service.js"></script>
 <script src="application/core/toolbar/thumbnails/thumbnails-service.js"></script>
-<script src="application/core/toolbar/dataedit/dataedit-controller.js"></script>
-<script src="application/core/toolbar/dataedit/tags/tag-directive.js"></script>
-<script src="application/core/toolbar/dataedit/reviews/create-review-controller.js"></script>
-<script src="application/core/toolbar/dataedit/tags/create-tag-controller.js"></script>
-<script src="application/core/toolbar/dataedit/notes/notes-controller.js"></script>
-<script src="application/core/toolbar/dataedit/provenance/provenance-controller.js"></script>
-<script src="application/core/toolbar/dataedit/details/details-controller.js"></script>
+<script src="application/core/toolbar/projectspage/dataedit/dataedit-controller.js"></script>
+<script src="application/core/toolbar/projectspage/dataedit/tags/tag-directive.js"></script>
+<script src="application/core/toolbar/projectspage/dataedit/reviews/create-review-controller.js"></script>
+<script src="application/core/toolbar/projectspage/dataedit/tags/create-tag-controller.js"></script>
+<script src="application/core/toolbar/projectspage/dataedit/notes/notes-controller.js"></script>
+<script src="application/core/toolbar/projectspage/dataedit/provenance/provenance-controller.js"></script>
+<script src="application/core/toolbar/projectspage/dataedit/details/details-controller.js"></script>
 <script src="application/core/toolbar/process/process-controller.js"></script>
 <script src="application/core/toolbar/process/notes/notes-controller.js"></script>
 <script src="application/core/toolbar/process/provenance/provenance-controller.js"></script>
@@ -187,10 +182,10 @@
 <script src="application/core/toolbar/globaltagcloud/wordcloud-directive.js"></script>
 
 <!-- Toolbar reviews -->
-<script src="application/core/toolbar/reviews/reviews-controller.js"></script>
+<script src="application/core/toolbar/projectspage/reviews/reviews-controller.js"></script>
 
 <!-- Toolbar machines -->
-<script src="application/core/toolbar/machines/machines-controller.js"></script>
+<script src="application/core/toolbar/projectspage/machines/machines-controller.js"></script>
 
 <!-- Toolbar projectspage -->
 <script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
@@ -198,6 +193,7 @@
 <script src="application/core/toolbar/projectspage/overview/samples/sample-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/provenance/provenance-controller.js"></script>
 <script src="application/core/toolbar/projectspage/overview/drafts/drafts-controller.js"></script>
+<script src="application/core/toolbar/projectspage/overview/drafts/_review-modal-controller.js"></script>
 
 
 <!-- Toolbar overview -->
@@ -214,24 +210,24 @@
 
 <!-- Views -->
 <!-- Provenance -->
-<script src="application/provenance/provenance-controller.js"></script>
-<script src="application/provenance/provsteps-service.js"></script>
-<script src="application/provenance/model-service.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/provenance-controller.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/provsteps-service.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/model-service.js"></script>
 
 
 <!-- Provenance Process -->
-<script src="application/provenance/process/process-controller.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/process/process-controller.js"></script>
 
 <!-- Provenance Inputs/Outputs Steps -->
-<script src="application/provenance/iosteps/iosteps-controller.js"></script>
-<script src="application/provenance/iosteps/iostep/iostep-controller.js"></script>
-<script src="application/provenance/iosteps/files/files-controller.js"></script>
-<script src="application/provenance/iosteps/iostep/sample-filter.js"></script>
-<script src="application/provenance/iosteps/iostep/clone-service.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/iosteps/iosteps-controller.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/iosteps/iostep/iostep-controller.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/iosteps/files/files-controller.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/iosteps/iostep/sample-filter.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/iosteps/iostep/clone-service.js"></script>
 
 
 <!--finish controller-->
-<script src="application/provenance/finish/finish-controller.js"></script>
+<script src="application/core/toolbar/projectspage/provenance/finish/finish-controller.js"></script>
 
 <!-------------------------------- Global directives ------------------------------->
 <script src="application/directives/paged-directive.js"></script>
