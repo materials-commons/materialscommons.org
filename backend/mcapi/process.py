@@ -28,6 +28,15 @@ def get_all_processes_for_template(template_id):
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
+@app.route('/processes/project/<project_id>', methods=['GET'])
+@apikey
+@jsonp
+def get_processes_by_project(project_id):
+    rr = r.table('processes').get_all(project_id, index='project')
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+
+
 
 @app.route('/processes/new', methods=['POST'])
 @apikey
