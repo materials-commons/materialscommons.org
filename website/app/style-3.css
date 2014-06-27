@@ -466,3 +466,14 @@ table-file-directory > thead > tr > td,
 #machines{
     display: none;
 }
+
+.ta-scroll-window .ta-bind {
+    padding: 6px 30px;
+}
+.ta-scroll-window.form-control {
+    height: 200px;
+    overflow: auto;
+    padding: 0;
+    position: relative;
+}
+
