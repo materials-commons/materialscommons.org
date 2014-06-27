@@ -2,7 +2,10 @@
     <!--<div class="col-lg-5">-->
         <h4>Note</h4>
         <!--<textarea class="form-control" placeholder="Enter a short synopsis..." ng-model="model.new_note"></textarea>-->
-        <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],['justifyLeft','justifyCenter','justifyRight','indent','outdent']]" model="model.new_note"></text-angular>
+        <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight','indent']]"
+                      ng-model="model.new_note"></text-angular>
         <br>
         <button ng-click="add_notes()" class="btn btn-default btn-primary">Enter</button>
     <!--</div>-->
@@ -13,7 +16,7 @@
 
         <div ng-repeat="n in doc.notes | orderBy: date">
             <!--<textarea class="form-control">{{n.message}}</textarea>-->
-            <text-angular ta-toolbar="[]" model="n.message"></text-angular>
+            <text-angular ta-toolbar="[]" ng-model="n.message"></text-angular>
 
             <div style="padding-left: 200px; font-size: 12px;">
                 {{n.date}} ---{{n.who}}
