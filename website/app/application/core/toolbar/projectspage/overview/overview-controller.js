@@ -29,7 +29,7 @@ Application.Controllers.controller('toolbarProjectsPageOverview',
             $scope.project_id = $stateParams.id;
             $scope.from = $stateParams.from;
             $scope.processes = [];
-            $state.go('toolbar.projectspage.overview.files');
+            $state.go('toolbar.projectspage.overview.files', {id: $scope.project_id});
         }
 
         init();

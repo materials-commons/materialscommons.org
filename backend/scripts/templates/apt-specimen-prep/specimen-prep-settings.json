@@ -3,16 +3,6 @@
     "attribute": "specimen_prep_settings",
     "default_properties": [
         {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
             "attribute": "preparation",
             "name": "Preparation" ,
             "type": "select" ,
