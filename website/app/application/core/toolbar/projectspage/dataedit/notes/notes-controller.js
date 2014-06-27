@@ -2,6 +2,7 @@ Application.Controllers.controller('toolbarDataEditNotes',
     ["$scope", "mcapi", "$state", "$stateParams", "User", "dateGenerate", "alertService",
         function ($scope, mcapi, $state, $stateParams, User, dateGenerate, alertService) {
             $scope.add_notes = function () {
+                console.log($scope.model.new_note);
                 $scope.doc.notes.push({'message': $scope.model.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
                 $scope.saveData();
                 $scope.model.new_note = "";
