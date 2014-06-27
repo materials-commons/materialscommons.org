@@ -18,8 +18,8 @@ Application.Filters.filter('slice', function () {
                     })
                 }
                 else if (items[i].type === 'condition') {
-                    new_array.push({'name': items[i].properties.name.value,
-                        'display_name': items[i].properties.name.value.slice(0, 30),
+                    new_array.push({'name': items[i].template,
+                        'display_name': items[i].template.slice(0, 30),
                         'type': items[i].type,
                         'id': ''})
                 }

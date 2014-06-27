@@ -13,7 +13,7 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                             break;
                         case "condition":
                             $scope.process.inputs.forEach(function (each_ip) {
-                                if (each_ip.properties.name.value == item.name) {
+                                if (each_ip.template == item.name) {
                                     $scope.settings = each_ip;
                                 }
                             })
@@ -63,15 +63,15 @@ Application.Controllers.controller('toolbarDataEditProvenance',
 //                    .success(function (data) {
 //                        $scope.input_processes = data;
 //                    }).jsonp();
-                mcapi('/processes/%', 'ee8fe4b4-4847-46a9-978f-59f6137b9250')
+                mcapi('/processes/%', 'd16516d8-f697-4072-8e85-8564d6460f29')
                     .success(function (data) {
                         $scope.process = data;
                         $scope.inputs = $filter('slice')($scope.process.inputs)
                         $scope.outputs = $filter('slice')($scope.process.outputs)
                     }).jsonp();
-                mcapi('/processes/file/%', $stateParams.id)
-                    .success(function (data2) {
-                    }).jsonp();
+//                mcapi('/processes/file/%', $stateParams.id)
+//                    .success(function (data2) {
+//                    }).jsonp();
             };
             $scope.init();
         }
