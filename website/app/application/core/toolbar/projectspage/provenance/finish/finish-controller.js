@@ -21,7 +21,7 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                             ProvDrafts.deleteDraft($scope.doc.id);
                             alertService.sendMessage("Your Provenance was Created Successfully.");
                             ProvDrafts.current = null;
-                            $state.go("toolbar.overview");
+                            $state.go("toolbar.projectspage.overview", {'id': $scope.doc.project_id});
                         })
                         .error(function () {
                             $scope.title = "Validation Error:";

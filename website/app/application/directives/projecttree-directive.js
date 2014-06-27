@@ -53,7 +53,6 @@ Application.Controllers.controller('ProjectTreeController',
                 $scope.loaded = true;
                 $scope.dir = $scope.model.projects[projectId].dir.children;
                 $scope.trail.push($scope.model.projects[projectId].dir);
-
             }
         };
 
