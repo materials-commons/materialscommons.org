@@ -10,10 +10,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
 
             };
             $scope.refreshProcesses = function () {
-                mcapi('/processes/sample/%', $scope.sample.id)
-                    .success(function (data) {
-                        $scope.bk.processes_list = data;
-                    }).jsonp();
+//
             };
             $scope.showForm = function () {
                 $scope.default_properties = $scope.bk.selected_treatment.default_properties;
@@ -27,25 +24,9 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                 $scope.bk.selected_treatment = {};
             };
 
-            function clearTreatment(treatment) {
-                treatment.additional_properties.forEach(function (attr) {
-                    attr.value = "";
-                    if (attr.unit_choice.length > 0) {
-                        attr.unit = "";
-                    }
-                });
-
-                treatment.default_properties.forEach(function (attr) {
-                    attr.value = "";
-                    if (attr.unit_choice.length > 0) {
-                        attr.unit = "";
-                    }
-                });
-            }
 
             $scope.addTreatment = function () {
                 var o = angular.copy($scope.bk.selected_treatment);
-                clearTreatment($scope.bk.selected_treatment);
                 $scope.bk.selected_treatment = '';
                 $scope.default_properties = "";
                 $scope.doc.treatments.push(o);
