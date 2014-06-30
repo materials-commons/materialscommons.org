@@ -149,9 +149,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/toolbar/overview/overview.html'
         })
         /*
-        #######################################################################
-        ####################### Project page views
-        ########################################################################
+         #######################################################################
+         ####################### Project page views
+         ########################################################################
          */
         .state('toolbar.projectspage', {
             url: '/projectspage/:id/:draft_id/:from',
@@ -272,33 +272,31 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/projects',
             templateUrl: 'application/core/toolbar/projects/projects.html'
         })
-    /*
-     ########################################################################
-     ####################### Reviews ##################################
-     ########################################################################
-     */
-        .state('toolbar.projectspage.reviews', {
+        /*
+         ########################################################################
+         ####################### Reviews ##################################
+         ########################################################################
+         */
+        .state('reviews', {
             url: '/reviews',
-            templateUrl: 'application/core/toolbar/projectspage/reviews/reviews.html'
+            templateUrl: 'application/core/reviews/reviews.html'
         })
         /*
          ########################################################################
          ####################### Machines ##################################
          ########################################################################
          */
-        .state('toolbar.projectspage.machines', {
+        .state('machines', {
             url: '/machines',
-            templateUrl: 'application/core/toolbar/projectspage/machines/machines.html'
+            templateUrl: 'application/core/machines/machines.html'
         })
 
-}])
-;
+}]);
 
 app.run(["$rootScope", "User", function ($rootScope, User) {
     $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
-
         }
     });
 }]);

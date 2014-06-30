@@ -32,7 +32,16 @@ Application.Controllers.controller('toolbarProjectsPage',
                             .success(function (project) {
                                 $scope.project = project;
                             }).jsonp();
-                    } else {
+                    }
+//                    else if($stateParams.from === 'review'){
+////                        console.log('yes')
+////                        $state.go('toolbar.projectspage.reviews');
+//
+//                    }else if($stateParams.from === 'machine'){
+//                        $state.go('toolbar.projectspage.machines');
+//                    }
+
+                    else {
                         mcapi('/projects/%', $scope.project_id)
                             .success(function (project) {
                                 $scope.project = project;
