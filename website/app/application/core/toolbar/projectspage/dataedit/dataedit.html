@@ -1,11 +1,17 @@
 <div ng-controller="toolbarDataEdit">
-    <div class="row "><br>
+    <div ng-hide="filepath.length===0" class="row "><br>
+        <div ng-repeat="p in file_path">
+            {{p}} / <a ><b><u>{{doc.name}}</u></b></a>
+        </div>
+    </div>
+
+    <div ng-show="file_path.length === 0" class="row "><br>
 
         <form class="form-inline">
             <a ng-repeat="trailitem in trail" ng-click="backToFolder(trailitem)">
                 <span><b>{{trailitem.displayname}}/ </b></span>
             </a>
-            <a href="#/mytools/data/edit/{{doc.id}}"><b><u>{{doc.name}}</u></b></a>
+            <a ><b><u>{{doc.name}}</u></b></a>
         </form>
     </div>
     <div class="row">

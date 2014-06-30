@@ -192,7 +192,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          ########################################################################
          */
         .state('toolbar.projectspage.dataedit', {
-            url: '/dataedit/:data_id',
+            url: '/dataedit/:data_id/:file_path',
             templateUrl: 'application/core/toolbar/projectspage/dataedit/dataedit.html'
         })
         .state('toolbar.projectspage.dataedit.details', {

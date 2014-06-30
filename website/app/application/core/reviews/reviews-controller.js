@@ -39,11 +39,11 @@ Application.Controllers.controller('toolbarReviews',
 
             $scope.gotoReview = function (review) {
                 switch (review.item_type) {
-                case "datafile":
-                    $state.go('toolbar.dataedit', {id: review.item_id});
+                    case "datafile":
+                    $state.go('toolbar.projectspage.dataedit.reviews', {data_id: review.item_id, from: 'datafile', file_path: 'global'});
                     break;
                 case "draft":
-                    $state.go('toolbar.projectspage', {id: review.project_id, draft_id: review.item_id});
+                    $state.go('toolbar.projectspage.overview.drafts', {id: review.project_id, draft_id: review.item_id});
                     break;
                 default:
                     console.log("Unknown type: " + review.item_type);

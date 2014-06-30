@@ -1,6 +1,6 @@
 <div class="container-fixed" ng-controller="toolbarReviews"> <br>
     <div class="row">
-        <div ng-show="reviewsToConduct.length > 0">
+        <div class="col-lg-10" ng-show="reviewsToConduct.length > 0">
             <h4>Reviews to conduct </h4>
 
             <paged data="reviews" current-page="currentReviewPage" page-size="10">
@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="row">
-        <div ng-show="reviewsRequested.length > 0">
+        <div class="col-lg-10" ng-show="reviewsRequested.length > 0">
             <h4>Reviews you have requested</h4>
             <paged data="reviewsRequested" current-page="currentRequestedReviewPage" page-size="10">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">

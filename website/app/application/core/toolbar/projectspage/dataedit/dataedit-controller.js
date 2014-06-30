@@ -36,13 +36,26 @@ Application.Controllers.controller('toolbarDataEdit',
                 $state.go("toolbar.projectspage.overview", {id: proj_id, draft_id: '', from: 'datafile'});
             };
 
+            $scope.pullDirectoryPath = function(){
+                mcapi('/datafile/%', $stateParams.data_id)
+                    .success(function (data) {
+                        $scope.datafile = data;
+                        $scope.datafile.datadirs.forEach(function(id){
+                            mcapi('/datadir/%', id)
+                                .success(function (data) {
+                                    $scope.file_path.push(data.name);
+                                }).jsonp();
+                        })
+                    }).jsonp();
+
+            }
             function init() {
                 $scope.model = {
                     is_disabled: true,
                     desc: ''
                 };
+                $scope.file_path = [];
                 $scope.id = $stateParams.data_id;
-                $scope.modal = Projects.model;
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.doc = data;
@@ -54,7 +67,11 @@ Application.Controllers.controller('toolbarDataEdit',
                     .error(function (data) {
                         alertService.sendMessage(data.error);
                     }).jsonp();
-//                $scope.showTab('details');
+
+                if($stateParams.file_path === 'global'){
+                    $scope.pullDirectoryPath();
+
+                }
             }
 
             init();
