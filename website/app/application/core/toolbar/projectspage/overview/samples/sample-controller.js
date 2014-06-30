@@ -129,6 +129,13 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     selected_project: ''
 
                 }
+                mcapi('/projects/%', $scope.project_id)
+                    .success(function (data) {
+                        $scope.default_project = {'id': data.id, 'name': data.name};
+                        $scope.doc.projects.push($scope.default_project);
+                    })
+                    .error(function (data) {
+                    }).jsonp();
                 $scope.processes_list =  [];
                 $scope.projects_by_sample =  [];
                 $scope.clear();
