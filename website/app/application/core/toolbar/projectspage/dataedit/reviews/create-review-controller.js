@@ -79,6 +79,7 @@ Application.Controllers.controller('toolbarDataEditCreateReview',
                     }).jsonp();
             }
 
+
             function init() {
                 $scope.all_reviews = [];
                 $scope.signed_in_user = User.u();

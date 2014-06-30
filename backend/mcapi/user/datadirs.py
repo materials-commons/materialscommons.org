@@ -17,7 +17,7 @@ from loader.model import datadir
 @jsonp
 def datadir_for_user(datadirid):
     user = access.get_user()
-    rr = r.table('datadirs').filter({'owner': user, 'id': datadirid})
+    rr = r.table('datadirs').filter({'id': datadirid})
     rr = add_all_arg_options(rr)
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_for_single_item_list(selection)
