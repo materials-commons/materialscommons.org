@@ -69,8 +69,8 @@
         </ul>
 
         <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
-            <li><a ui-sref="toolbar.projectspage.reviews" class="navbar-link"><i class="fa fa-comment"></i> Reviews</a></li>
-            <li><a ui-sref="toolbar.projectspage.machines" class="navbar-link"><i class="icon-user"></i> Machines</a></li>
+            <li><a ui-sref="reviews" class="navbar-link"><i class="fa fa-comment"></i> Reviews</a></li>
+            <li><a ui-sref="machines" class="navbar-link"><i class="icon-user"></i> Machines</a></li>
             <li class="dropdown" style="border-left: 1px solid lightgray">
                 <a class="dropdown-toggle" ><i class="fa fa-gears fa-inverse"></i>{{email_address}} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -190,10 +190,10 @@
 <script src="application/core/toolbar/globaltagcloud/wordcloud-directive.js"></script>
 
 <!-- Toolbar reviews -->
-<script src="application/core/toolbar/projectspage/reviews/reviews-controller.js"></script>
+<script src="application/core/reviews/reviews-controller.js"></script>
 
 <!-- Toolbar machines -->
-<script src="application/core/toolbar/projectspage/machines/machines-controller.js"></script>
+<script src="application/core/machines/machines-controller.js"></script>
 
 <!-- Toolbar projectspage -->
 <script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>

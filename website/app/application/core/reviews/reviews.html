@@ -1,7 +1,7 @@
-<div ng-controller="toolbarReviews">
-    <div class="col-sm-12 col-md-12 row">
+<div class="container-fixed" ng-controller="toolbarReviews"> <br>
+    <div class="row">
         <div ng-show="reviewsToConduct.length > 0">
-            <legend>Reviews to conduct </legend>
+            <h4>Reviews to conduct </h4>
 
             <paged data="reviews" current-page="currentReviewPage" page-size="10">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -34,9 +34,9 @@
             <h4>Reviews to conduct: None</h4>
         </div>
     </div>
-    <div class="col-sm-12 col-md-12 row">
+    <div class="row">
         <div ng-show="reviewsRequested.length > 0">
-            <legend>Reviews you have requested</legend>
+            <h4>Reviews you have requested</h4>
             <paged data="reviewsRequested" current-page="currentRequestedReviewPage" page-size="10">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
@@ -67,7 +67,7 @@
             </paged>
         </div>
         <div ng-show="reviewsRequested.length === 0">
-            <legend>Reviews you have requested: None </legend>
+            <h4>Reviews you have requested: None </h4>
         </div>
     </div>
 </div>
