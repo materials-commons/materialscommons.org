@@ -22,7 +22,6 @@ Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
                     }
                 });
                 modalInstance.result.then(function (selectedItem) {
-                    console.log('here' + selectedItem)
                     $scope.selected = selectedItem;
                 }, function () {
                     console.log('next')
