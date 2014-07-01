@@ -220,18 +220,18 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .fa-check,
-available {
+.available {
     color: limegreen;
 }
 
 .fa-times,
-notavailable {
+.notavailable {
     color: red;
 }
 
-.modal-backdrop {
-    background-color: none;
-}
+/*.modal-backdrop {*/
+    /*background-color: none;*/
+/*}*/
 
 .btn-circle {
     width: 30px;

@@ -2,17 +2,14 @@ Application.Controllers.controller('_toolbarDraftsReviewModal',
     ["$scope", "User", "pubsub", "mcapi",  '$modalInstance', 'draft', function ($scope, User, pubsub, mcapi, $modalInstance, draft ) {
 
         function newReview (userToReview, note) {
-            console.log(userToReview + note)
             var review = {};
             review.note = note;
             review.item_type = "draft";
             review.requested_by = User.u();
             review.requested_to = userToReview;
-            console.log($scope.selected.item)
             review.item_name = $scope.selected.item.process.name;
             review.item_id = $scope.selected.item.id;
             review.project_id = $scope.selected.item.project_id;
-            console.log(review);
             return review;
         }
 
