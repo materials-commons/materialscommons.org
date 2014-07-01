@@ -24,9 +24,7 @@ function start_servers()
     if [ "$R" = "" ]; then
         echo "  Starting rethinkdb..."
         (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
-     
         sleep 3
-    
         if [ $TESTSERVER != false ]; then
             echo "  Restoring from file $MCDB_FILE..."
             cp $MCDB_FILE $MCDB_DIR
@@ -185,7 +183,9 @@ elif [ $TESTSERVER = "u" ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MCFS_PORT=35882
-    export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+    if [ "$MCDB_FILE" = "" ]; then
+        export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+    fi
     export MCDIR=~/mcdir/mcfs/data/test
     export MCFS_HTTP_PORT=5012
 
