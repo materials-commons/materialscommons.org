@@ -1,6 +1,6 @@
 Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
-    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService", "Nav", "$stateParams", "mcapi",
-        function ($scope, pubsub, ProvDrafts, $state, alertService, Nav, $stateParams, mcapi) {
+    ["$scope", "pubsub", "ProvDrafts", "$state", "alertService", "Nav", "$stateParams", "mcapi", "$modal",
+        function ($scope, pubsub, ProvDrafts, $state, alertService, Nav, $stateParams, mcapi, $modal) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
 
@@ -12,6 +12,22 @@ Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
 
             $scope.markForReview = function (draft) {
                 $scope.draft = draft;
+                var modalInstance = $modal.open({
+                    templateUrl: 'application/core/toolbar/projectspage/overview/drafts/review.html',
+                    controller: '_toolbarDraftsReviewModal',
+                    resolve: {
+                        draft: function () {
+                            return $scope.draft;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (selectedItem) {
+                    console.log('here' + selectedItem)
+                    $scope.selected = selectedItem;
+                }, function () {
+                    console.log('next')
+                    //$log.info('Modal dismissed at: ' + new Date());
+                });
             };
 
             $scope.deleteDraft = function (draft) {

@@ -1,15 +1,18 @@
 Application.Controllers.controller('_toolbarDraftsReviewModal',
-    ["$scope", "User", "pubsub", "mcapi", function ($scope, User, pubsub, mcapi) {
+    ["$scope", "User", "pubsub", "mcapi",  '$modalInstance', 'draft', function ($scope, User, pubsub, mcapi, $modalInstance, draft ) {
 
         function newReview (userToReview, note) {
+            console.log(userToReview + note)
             var review = {};
             review.note = note;
             review.item_type = "draft";
             review.requested_by = User.u();
             review.requested_to = userToReview;
-            review.item_name = $scope.draft.name;
-            review.item_id = $scope.draft.id;
-            review.project_id = $scope.draft.project_id;
+            console.log($scope.selected.item)
+            review.item_name = $scope.selected.item.process.name;
+            review.item_id = $scope.selected.item.id;
+            review.project_id = $scope.selected.item.project_id;
+            console.log(review);
             return review;
         }
 
@@ -18,26 +21,35 @@ Application.Controllers.controller('_toolbarDraftsReviewModal',
                 .success(function () {
                     pubsub.send('reviews.change');
                 }).post(review);
+            $modalInstance.close($scope.selected.item);
         }
 
-        $scope.addReviewNoteKeypress = function () {
-            var review = newReview(User.u(), $scope.reviewNoteSelf);
-            addReview(review);
-            $scope.reviewNoteSelf = "";
-            $scope.dismissModal();
-        };
 
-        $scope.finish = function () {
+        $scope.addReviewForOther = function () {
             var review;
-            if ($scope.reviewNoteOther !== "" && $scope.userForReview !== "") {
-                review = newReview($scope.userForReview, $scope.reviewNoteOther);
+            if ($scope.bk.reviewNoteOther !== "" && $scope.bk.userForReview !== "") {
+                review = newReview($scope.bk.userForReview, $scope.bk.reviewNoteOther);
                 addReview(review);
             }
-            $scope.reviewNoteOther = "";
-            $scope.userForReview = "";
+            $scope.bk.reviewNoteOther = "";
+            $scope.bk.userForReview = "";
+        };
+
+        $scope.selected = {
+            item: draft
+        };
+
+
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
         };
 
         function init() {
+            $scope.bk = {
+                reviewNoteOther: '',
+                userForReview: ''
+            }
             mcapi('/selected_users')
                 .success(function (data) {
                     $scope.users = data;

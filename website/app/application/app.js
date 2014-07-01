@@ -16,7 +16,6 @@ Application.Provenance.Directives = angular.module('application.provenance.direc
 var app = angular.module('materialscommons',
     [
         'ui',
-        'ui.bootstrap',
         'ngCookies',
         'ui.router',
 //        'ngQuickDate',
@@ -27,7 +26,7 @@ var app = angular.module('materialscommons',
         'textAngular',
         'treeGrid',
         'ngDragDrop',
-        '$strap.directives',
+        '$strap.directives', 'ui.bootstrap',
         'application.core.constants', 'application.core.services', 'application.core.controllers',
         'application.core.filters', 'application.core.directives',
         'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
@@ -62,6 +61,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('about', {
             url: '/about',
             templateUrl: 'application/core/about/about.html'
+        })
+        .state('modal', {
+            url: '/modal',
+            templateUrl: 'application/core/modal/test.html'
+        })
+        .state('sub', {
+            url: '/sub',
+            templateUrl: 'application/core/modal/sub.html'
         })
         .state('contact', {
             url: '/contact',
