@@ -61,25 +61,28 @@
                 <a ng-click="showStep('contact')" ui-sref="contact"><i class="fa fa-phone-square"></i> Contact</a>
             </li>
             <li id="help-nav" ng-class="{ active: isActiveStep('help') }">
-                <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-cirle"></i> Help</a>
+                <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-circle"></i> Help</a>
             </li>
         </ul>
         <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
-            <li><a ui-sref="login" class="navbar-link"><i class="icon-user"></i> login</a></li>
+            <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
         </ul>
 
         <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
-            <li><a ui-sref="reviews" class="navbar-link"><i class="fa fa-comment"></i> Reviews</a></li>
-            <li><a ui-sref="machines" class="navbar-link"><i class="icon-user"></i> Machines</a></li>
+            <li><a ui-sref="toolbar.projectspage" class="navbar-link"><i class="fa fa-briefcase"></i> Projects</a></li>
+            <li><a ui-sref="reviews" class="navbar-link"><i style="padding-right: 5px" class="fa fa-comment"></i> Reviews</a></li>
+            <li><a ui-sref="machines" class="navbar-link"><i style="padding-right: 5px" class=""></i> Machines</a></li>
             <li class="dropdown" style="border-left: 1px solid lightgray">
                 <a class="dropdown-toggle" ><i class="fa fa-gears fa-inverse"></i>{{email_address}} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ui-sref="account.password">Change Password</a></li>
-                    <li><a ui-sref="account.usergroup">UserGroups</a></li>
-                    <li><a ui-sref="account.templates">Templates</a></li>
+                    <li><a ui-sref="account.password"><i class="fa fa-unlock-alt" style="padding-right: 5px"></i> Change Password</a></li>
+                    <li><a ui-sref="account.usergroup"><i style="padding-right: 5px" class="fa fa-user"></i>UserGroups</a></li>
+                    <li><a ui-sref="account.templates"><i style="padding-right: 5px" class="fa fa-list-alt"></i>Templates</a></li>
+                    <li><a ui-sref="account.apikey"><i style="padding-right: 5px" class="fa fa-key"></i>Apikey</a></li>
+                    <li class=divider></li>
+                    <li><a ui-sref="logout"> <i style="padding-right: 5px" class="fa fa-sign-out"></i> Logout</a></li>
                 </ul>
             </li>
-            <li><a ui-sref="logout" class="navbar-link"><span style="margin-left:10px"> logout</span></a></li>
         </ul>
     </div>
 </nav>
