@@ -1,0 +1,26 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">{{selected.item.process.name}}</h3>
+    </div>
+    <div class="modal-body">
+
+            <cgroup label="Request to Review">
+                <textarea class="form-control" ng-model="bk.reviewNoteOther"
+                          ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}" placeholder="Review Note to other..."
+                          type="text"></textarea>
+                <select class="form-control" ng-model="bk.userForReview"
+                        ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
+                        ng-multiple="false">
+                    <option></option>
+                    <option ng-repeat="user in users">{{ user }}</option>
+                </select>
+            </cgroup>
+
+        <!--Selected: <b>{{ selected.item }}</b>-->
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="addReviewForOther()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+
+</div>
