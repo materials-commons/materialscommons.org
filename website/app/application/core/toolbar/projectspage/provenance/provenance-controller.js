@@ -7,7 +7,10 @@ Application.Provenance.Controllers.controller('provenance',
             };
 
             $scope.isFinishedStep = function (step) {
+                $scope.provenanceView = ProvDrafts.current.process;
+                console.log($scope.provenanceView);
                 return ProvSteps.isFinishedStep(step);
+
             };
 
             $scope.editStep = function (step) {
