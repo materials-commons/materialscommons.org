@@ -1,5 +1,5 @@
-<div class="row">
-    <div style="padding-left:40px" class="col-lg-8" ng-controller="provenance">
+<div class="row" ng-controller="provenance">
+    <div style="padding-left:40px" class="col-lg-8">
         <div class="row">
             <h4>Create Provenance</h4>
             <ul class="nav nav-tabs">
@@ -37,24 +37,102 @@
                     <i class="fa fa-minus-square"></i>
                     Process
                 </h4><br>
+
                 <div id="process" class="row" ng-show="isFinishedStep('process')">
                     <div class="panel panel-default">
                         <div class="panel panel-body">
-                            <div upperlevel-process doc="provenanceView" bk="bk" edit="true"></div>
-                            <div df-properties default-properties="provenanceView.default_properties"
-                                 edit="true"></div>
-                            <div ad-properties doc="provenanceView" edit="true" bk="bk"></div>
+                            <display label="Name:"> {{provenanceView.name}}</display>
+                            <display label="Description:">
+                                {{provenanceView.description}}
+                            </display>
+                            <display label="Notes:">
+                                <ul ng-repeat=" note in provenanceView.notes">
+                                    <li style="word-break:break-all;">{{note.message}}</li>
+                                </ul>
+                            </display>
+                            <display label="Runs:">
+                                <div ng-if="provenanceView.template.template_pick=='experiment'">
+                                    {{provenanceView.experiment_run_date}}
+                                </div>
+                                <div ng-if="provenanceView.template.template_pick=='computation'">
+                                    <ul ng-repeat=" run in provenanceView.runs">
+                                        <li style="word-break:break-all;">{{run.start_run}} - {{run.stop_run}}</li>
+                                    </ul>
+                                </div>
+                            </display>
+                            <div df-report default-properties="provenanceView.default_properties"></div>
+
+                            <div ng-repeat="ad in provenanceView.added_properties">
+                                <display label="{{ad.name}}"> {{ad.value}}</display>
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 <h4 plus-minus-toggle="inputs">
                     <i class="fa fa-minus-square"></i>
                     Inputs
                 </h4><br>
+
+                <div id="inputs" class="row" ng-show="isFinishedStep('inputs')">
+                    <div class="panel panel-default">
+                        <div class="panel panel-body">
+                            <form class="form-horizontal" ng-repeat="(name, vals) in inputs">
+                                <label><u>{{ name }}</u></label>
+
+                                <div ng-if="name=='sample'">
+                                    <div class="row">
+                                        <display label="Name:"> {{vals.sample.name}}</display>
+                                        <display label="Description:">
+                                            {{vals.sample.description}}
+                                        </display>
+                                        <div df-report default-properties="vals.sample.properties"></div>
+                                    </div>
+                                </div>
+                                <div ng-if="name!=='sample'">
+                                    <div class="row">
+                                        <div df-report default-properties="vals.default_properties"></div>
+                                        <div ng-repeat="ad in vals.added_properties">
+                                            <display label="{{ad.name}}"> {{ad.value}}</display>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
                 <h4 plus-minus-toggle="outputs">
                     <i class="fa fa-minus-square"></i>
                     Outputs
                 </h4>
+                <div id="outputs" class="row" ng-show="isFinishedStep('outputs')">
+                    <div class="panel panel-default">
+                        <div class="panel panel-body">
+                            <form class="form-horizontal" ng-repeat="(name, vals) in outputs">
+                                <label><u>{{ name }}</u></label>
+
+                                <div ng-if="name=='transformed-sample'">
+                                    <div class="row">
+                                        <display label="Name:"> {{vals.sample.name}}</display>
+                                        <display label="Description:">
+                                            {{vals.sample.description}}
+                                        </display>
+                                        <div df-report default-properties="vals.sample.properties"></div>
+                                    </div>
+                                </div>
+                                <div ng-if="name!=='transformed-sample'">
+                                    <div class="row">
+                                        <div df-report default-properties="vals.default_properties"></div>
+                                        <div ng-repeat="ad in vals.added_properties">
+                                            <display label="{{ad.name}}"> {{ad.value}}</display>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

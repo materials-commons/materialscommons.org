@@ -1,6 +1,6 @@
 from mcapp import app
-from decorators import crossdomain, jsonp, apikey
-from flask import request, g
+from decorators import jsonp, apikey
+from flask import g
 import rethinkdb as r
 import error
 import dmutil
@@ -15,7 +15,7 @@ def get_template(template_id):
 
 
 @app.route('/templates/name/<template_name>', methods=['GET'])
-#@apikey
+@apikey
 @jsonp
 def get_template_by_name(template_name):
     items = list(r.table('templates')
@@ -37,97 +37,6 @@ def get_all_templates():
 @apikey(shared=True)
 @jsonp
 def get_templates_by_category(pick):
-    rr = list(r.table('templates').get_all(pick, index='template_pick').run(g.conn, time_format='raw'))
+    rr = list(r.table('templates').get_all(pick, index='template_pick')
+              .run(g.conn, time_format='raw'))
     return json.dumps(rr)
-
-
-@app.route('/templates/new', methods=['POST'])
-@crossdomain(origin='*')
-def create_template():
-    j = request.get_json()
-    template_type = dmutil.get_required('template_type', j)
-    return create_template_for_type(template_type, j)
-
-def create_template_for_type(template_type, j):
-    template_table = {
-        "process": create_process_template,
-        "machine": create_machine_template,
-        "condition": create_condition_template
-    }
-    if template_type in template_table:
-        template_func = template_table[template_type]
-        template = template_func(j)
-        return dmutil.insert_entry('templates', template)
-    else:
-        return error.bad_request(
-            "Unrecognized template type: " + template_type)
-
-
-def create_process_template(j):
-    template = common_template_elements("process", j)
-    #required_input_conditions = dmutil.get_optional('required_input_conditions', j, [])
-    #required_output_conditions = dmutil.get_optional('required_output_conditions', j, [])
-    #required_input_files = dmutil.get_optional('required_input_files', j, [])
-    #required_output_files = dmutil.get_optional('required_output_files', j, [])
-    #add_model_item(template, 'required_input_conditions', required_input_conditions, "", "")
-    # add_model_item(template, 'required_output_conditions', required_output_conditions, "", "")
-    #add_model_item(template, 'required_input_files', required_input_files, "", "")
-    #add_model_item(template, 'required_output_files', required_output_files, "", "")
-    #add_model_item(template, 'name', "", "", "")
-    #add_model_item(template, 'description', "", "", "")
-    #add_model_item(template, 'birthtime', "", "", "")
-    #add_model_item(template, 'mtime', "", "", "")
-    #add_model_item(template, 'machine', "", "", "")
-    #add_model_item(template, 'process_type', "", "", "")
-    #add_model_item(template, 'version', "", "", "")
-    #add_model_item(template, 'parent', "", "", "")
-    #add_model_item(template, 'notes', [], "", "")
-    #add_model_item(template, 'runs', [], "", "")
-    #add_model_item(template, 'citations', [], "", "")
-    #add_model_item(template, 'status', "", "", "")
-    return template
-
-
-def create_machine_template(j):
-    template = common_template_elements("machine", j)
-    add_model_item(template, 'shortname', "")
-    add_model_item(template, 'longname', "")
-    add_model_item(template, 'birthtime', "")
-    add_model_item(template, 'contact', "")
-    add_model_item(template, 'description', "")
-    add_model_item(template, 'notes', [])
-    return template
-
-
-def create_condition_template(j):
-    template = common_template_elements("condition", j)
-    properties = j[u'properties']
-    for prop in properties:
-        prop_name = prop['name']
-        prop_value = prop['value']
-        prop_units = prop['units']
-        prop_type = prop['type']
-        add_model_item(template, prop_name, prop_value, prop_units, prop_type)
-    return template
-
-
-def common_template_elements(template_type, j):
-    template = dict()
-    template['template_type'] = template_type
-    template['template_name'] = dmutil.get_required('template_name', j)
-    template['owner'] = dmutil.get_required('owner', j)
-    template['template_description'] = dmutil.get_required('template_description', j)
-    template['required_input_conditions'] = dmutil.get_required('required_input_conditions', j, [])
-    template['required_output_conditions'] = dmutil.get_optional('required_output_conditions', j, [])
-    template['required_input_files'] = dmutil.get_optional('required_input_files', j, [])
-    template['required_output_files'] = dmutil.get_optional('required_output_files', j, [])
-    template['template_pick'] = dmutil.get_optional('template_type', j)
-    now = r.now()
-    template['template_birthtime'] = now
-    template['template_mtime'] = now
-    template['model'] = list()
-    return template
-
-
-def add_model_item(template, name, value, unit, value_type):
-    template['model'].append({'name': name, 'value': value, 'units': unit, 'type': value_type})
