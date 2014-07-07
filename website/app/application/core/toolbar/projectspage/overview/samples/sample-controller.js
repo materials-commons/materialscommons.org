@@ -67,7 +67,6 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
 
             };
 
-
             $scope.clear = function () {
                 $scope.doc = {
                     name: '',
@@ -98,7 +97,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
             $scope.addProject = function (prj) {
                 mcapi('/object/%/project/%', $scope.sample.id, $scope.model.selected_project.id)
                     .success(function (data) {
-                        $scope.refreshProjects()
+                        $scope.refreshProjects();
                     }).error(function (data) {
                         alertService.sendMessage(data.error);
                     }).put();
@@ -115,7 +114,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
 
             function init() {
                 $scope.project_id = $stateParams.id;
-                $scope.signed_in_user = User.u()
+                $scope.signed_in_user = User.u();
                 $scope.doc = {
                     name: '',
                     notes: [],
@@ -128,7 +127,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                 $scope.bk = {
                     selected_project: ''
 
-                }
+                };
                 mcapi('/projects/%', $scope.project_id)
                     .success(function (data) {
                         $scope.default_project = {'id': data.id, 'name': data.name};
@@ -161,12 +160,6 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     })
                     .error(function (data) {
                     }).jsonp();
-//                mcapi('/objects/project/%',$scope.project_id)
-//                    .success(function (data) {
-//                        $scope.samples_list = data;
-//                    })
-//                    .error(function (data) {
-//                    }).jsonp();
                 Projects.getList().then(function (data) {
                     $scope.projects = data;
                 });

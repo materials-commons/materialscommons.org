@@ -5,8 +5,15 @@ Application.Provenance.Controllers.controller('provenance',
                 return ProvSteps.isCurrentStep(step);
             };
             $scope.isFinishedStep = function (step) {
-                $scope.provenanceView = ProvDrafts.current.process;
-                console.log($scope.provenanceView);
+                if(step == 'process'){
+                    $scope.provenanceView = ProvDrafts.current.process;
+                }
+                if(step == 'inputs'){
+                    $scope.inputs = ProvDrafts.current.process.input_conditions;
+                }
+                if(step == 'outputs'){
+                    $scope.outputs = ProvDrafts.current.process.output_conditions;
+                }
                 return ProvSteps.isFinishedStep(step);
             };
             $scope.editStep = function (step) {

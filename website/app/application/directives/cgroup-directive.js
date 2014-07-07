@@ -29,3 +29,21 @@ Application.Directives.directive('cgrouprequired',
                 '</div>'
         };
     });
+
+Application.Directives.directive('display',
+    function () {
+        return {
+            restrict: "E",
+            transclude: true,
+            scope: {
+                label: '@label'
+            },
+            template: '<div class="row" style="word-wrap: break-word">' +
+                '<div class="col-lg-4">' +
+                '<label> {{ label }}</label>' +
+                '</div>' +
+                '<div class="col-lg-8" ng-transclude>' +
+                '</div> ' +
+                '</div>'
+        };
+    });
