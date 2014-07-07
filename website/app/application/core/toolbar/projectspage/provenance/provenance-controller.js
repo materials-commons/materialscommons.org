@@ -1,15 +1,14 @@
 Application.Provenance.Controllers.controller('provenance',
     ["$scope", "$state", "$stateParams", "ProvSteps", "ProvDrafts", "process.Model", "Projects", "ProjectPath",
         function ($scope, $state, $stateParams, ProvSteps, ProvDrafts, Model, Projects, ProjectPath) {
-
             $scope.isCurrentStep = function (step) {
                 return ProvSteps.isCurrentStep(step);
             };
-
             $scope.isFinishedStep = function (step) {
+                $scope.provenanceView = ProvDrafts.current.process;
+                console.log($scope.provenanceView);
                 return ProvSteps.isFinishedStep(step);
             };
-
             $scope.editStep = function (step) {
                 var state;
                 switch (step) {
@@ -33,7 +32,6 @@ Application.Provenance.Controllers.controller('provenance',
                     $state.go(state);
                 }
             };
-
             $scope.stepFinished = function (step) {
                 switch (step) {
                     case "process":
@@ -53,14 +51,12 @@ Application.Provenance.Controllers.controller('provenance',
                         break;
                 }
             };
-
             $scope.markAllStepsFinished = function () {
                 ProvSteps.setStepFinished('process');
                 ProvSteps.setStepFinished('inputs');
                 ProvSteps.setStepFinished('outputs');
                 ProvSteps.setStepFinished('submit');
             };
-
             function init() {
                 var draft;
                 // Reset steps state

@@ -37,16 +37,21 @@
                     <i class="fa fa-minus-square"></i>
                     Process
                 </h4><br>
-                <!--<div id="process" class="row">-->
-                        <!--<label>process:</label> {{$scope.doc.process.name}}-->
-                        <!--<label>Description:</label> {{$scope.doc.process.description}}-->
-                        <!--<label>process:</label> {{$scope.doc.process.name}}-->
-                <!--</div>-->
-                <h4 plus-minus-toggle="availablesamples">
+                <div id="process" class="row" ng-show="isFinishedStep('process')">
+                    <div class="panel panel-default">
+                        <div class="panel panel-body">
+                            <div upperlevel-process doc="provenanceView" bk="bk" edit="true"></div>
+                            <div df-properties default-properties="provenanceView.default_properties"
+                                 edit="true"></div>
+                            <div ad-properties doc="provenanceView" edit="true" bk="bk"></div>
+                        </div>
+                    </div>
+                </div>
+                <h4 plus-minus-toggle="inputs">
                     <i class="fa fa-minus-square"></i>
                     Inputs
                 </h4><br>
-                <h4 plus-minus-toggle="availablesamples">
+                <h4 plus-minus-toggle="outputs">
                     <i class="fa fa-minus-square"></i>
                     Outputs
                 </h4>
