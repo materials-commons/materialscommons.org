@@ -28,9 +28,8 @@
         <div class="row">
             <div ui-view=""></div>
         </div>
-
     </div>
-    <div class="col-lg-4">
+    <div ng-hide="isFinishedStep('submit')" class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-body">
                 <h4 plus-minus-toggle="process">
@@ -86,7 +85,18 @@
                                         <display label="Description:">
                                             {{vals.sample.description}}
                                         </display>
-                                        <div df-report default-properties="vals.sample.properties"></div>
+                                        <div  ng-repeat="(name, vals) in vals.sample.properties">
+                                            <div ng-if="name==='composition'">
+                                                <display label="{{name}}">
+                                                    <ul ng-repeat="c in vals.value">
+                                                        <li>{{c.element}} - {{c.value}} {{p.unit}}</li>
+                                                    </ul>
+                                                </display>
+                                            </div>
+                                            <div ng-if="name!=='composition'">
+                                                <display label="{{name}}"> {{vals.value}}</display>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div ng-if="name!=='sample'">
@@ -106,6 +116,7 @@
                     <i class="fa fa-minus-square"></i>
                     Outputs
                 </h4>
+
                 <div id="outputs" class="row" ng-show="isFinishedStep('outputs')">
                     <div class="panel panel-default">
                         <div class="panel panel-body">

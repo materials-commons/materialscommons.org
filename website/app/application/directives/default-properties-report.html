@@ -1,13 +1,17 @@
 <div ng-if="defaultProperties.length!=0">
     <div ng-repeat="df in defaultProperties">
         <display label="{{df.name}}:">
-            <div ng-if="df.attribute==='machine'">
-                {{df.value.name}}
+            <div ng-switch="" on="df.type">
+                <div ng-switch-when="select">
+                    {{df.value.name}} {{df.unit}}
+                </div>
+                <div ng-switch-when="machines">
+                    {{df.value.name}} {{df.unit}}
+                </div>
+                <div ng-switch-default>
+                    {{df.value}} {{df.unit}}
+                </div>
             </div>
-            <div ng-if="df.attribute!=='machine'">
-                {{df.value}}
-            </div>
-        </display>
-    </div>
-
+    </display>
+</div>
 </div>
