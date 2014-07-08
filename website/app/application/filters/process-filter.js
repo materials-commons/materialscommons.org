@@ -14,3 +14,18 @@ Application.Filters.filter('processFilter', function () {
         }
     };
 });
+
+Application.Filters.filter('inputOutput', function () {
+    return function (items, type) {
+        if (items) {
+            arr = [];
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].file_type == type) {
+                    arr.push(items[i])
+                }
+            }
+            return arr
+        }
+    };
+});
+

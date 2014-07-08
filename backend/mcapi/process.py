@@ -91,7 +91,8 @@ def update_process(processid):
 @app.route('/processes/file/<file_id>', methods=['GET'])
 @jsonp
 def get_processes_by_file(file_id):
-    rv = r.table('processes').concat_map(lambda doc: doc['inputs']).filter(lambda entry : entry['properties']['id']['value'].match('423211fd-1071-49ff-91a9-eaed641fa021'))
+    #rv = r.table('processes').concat_map(lambda doc: doc['inputs']).filter(lambda entry : entry['properties']['id']['value'].match('423211fd-1071-49ff-91a9-eaed641fa021'))
+    rv = r.table('datafiles_denorm').filter({'df_id': file_id}).eq_join('process_id', r.table('processes'))
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 

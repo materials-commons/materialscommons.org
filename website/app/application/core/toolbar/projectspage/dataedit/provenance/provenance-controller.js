@@ -46,32 +46,18 @@ Application.Controllers.controller('toolbarDataEditProvenance',
                 mcapi('/datafile/%', $scope.id)
                     .success(function (data) {
                         $scope.doc = data;
-                    })
-                    .error(function (data) {
-                        alertService.sendMessage(data.error);
                     }).jsonp();
                 $scope.ip_conditions = [];
                 $scope.op_conditions = [];
                 $scope.output_process = [];
                 $scope.input_process = [];
-//                mcapi('/processes/output/datafile/%', $scope.id)
-//                    .success(function (data) {
-//                        $scope.output_process = data;
-//                    }).jsonp();
-//
-//                mcapi('/processes/input/datafile/%', $scope.id)
-//                    .success(function (data) {
-//                        $scope.input_processes = data;
-//                    }).jsonp();
-                mcapi('/processes/%', 'd16516d8-f697-4072-8e85-8564d6460f29')
+                mcapi('/processes/file/%', $scope.id)
                     .success(function (data) {
-                        $scope.process = data;
-                        $scope.inputs = $filter('slice')($scope.process.inputs)
-                        $scope.outputs = $filter('slice')($scope.process.outputs)
+                        $scope.df_denorm = data;
+                        console.log($scope.df_denorm[0].right)
+//                        $scope.input_processes = $filter('inputOutput')($scope.df_denorm, 'input')
+//                        $scope.output_processes = $filter('inputOutput')($scope.df_denorm, 'output')
                     }).jsonp();
-//                mcapi('/processes/file/%', $stateParams.id)
-//                    .success(function (data2) {
-//                    }).jsonp();
             };
             $scope.init();
         }
