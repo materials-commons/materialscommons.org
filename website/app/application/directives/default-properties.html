@@ -151,7 +151,7 @@
             <!-------------------------------- machines --------------------------------->
             <div ng-switch-when="machines">
                 <div class="col-sm-4">
-                <select ng-model="m.machine"
+                <select class="form-control" ng-model="m.machine"
                         ng-options="mach.name for mach in machinesList"
                         ng-disabled="edit">
                 </select>

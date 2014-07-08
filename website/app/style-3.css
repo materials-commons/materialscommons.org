@@ -326,8 +326,9 @@ table-file-directory > thead > tr > td,
 
 .panel-default {
     border-color: lightgrey;
-    color: darkgrey;
+    color: grey;
 }
+
 
 .file-heading {
     padding: 22px 15px;
@@ -337,7 +338,7 @@ table-file-directory > thead > tr > td,
 .oval {
     width: 100px;
     height: 50px;
-    background: lightgreen;
+    background: #eecfbf;
     -moz-border-radius: 50px / 25px;
     -webkit-border-radius: 50px / 25px;
     border-radius: 50px / 25px;
