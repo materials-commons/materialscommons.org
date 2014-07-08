@@ -1,4 +1,4 @@
-Application.Filters.filter('slice', function () {
+Application.Filters.filter('proc', function () {
     return function (items) {
         var new_array = [];
         if (items) {
