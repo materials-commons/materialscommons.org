@@ -10,9 +10,11 @@ Application.Provenance.Controllers.controller('provenance',
                 }
                 if (step == 'inputs') {
                     $scope.inputs = ProvDrafts.current.process.input_conditions;
+                    $scope.input_files = ProvDrafts.current.process.input_files;
                 }
                 if (step == 'outputs') {
                     $scope.outputs = ProvDrafts.current.process.output_conditions;
+                    $scope.output_files = ProvDrafts.current.process.output_files;
                 }
                 return ProvSteps.isFinishedStep(step);
             };
