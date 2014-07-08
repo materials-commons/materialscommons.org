@@ -5,13 +5,13 @@ Application.Provenance.Controllers.controller('provenance',
                 return ProvSteps.isCurrentStep(step);
             };
             $scope.isFinishedStep = function (step) {
-                if(step == 'process'){
+                if (step == 'process') {
                     $scope.provenanceView = ProvDrafts.current.process;
                 }
-                if(step == 'inputs'){
+                if (step == 'inputs') {
                     $scope.inputs = ProvDrafts.current.process.input_conditions;
                 }
-                if(step == 'outputs'){
+                if (step == 'outputs') {
                     $scope.outputs = ProvDrafts.current.process.output_conditions;
                 }
                 return ProvSteps.isFinishedStep(step);
@@ -81,10 +81,11 @@ Application.Provenance.Controllers.controller('provenance',
                     draft.project_name = Projects.model.projects[draft.project_id].dir.name;
                 }
                 ProvDrafts.current = draft;
-                $scope.project_id = $stateParams.id
+                $scope.project_id = $stateParams.id;
                 ProvSteps.setCurrentStep('process');
                 ProvSteps.onStepFinished($scope.stepFinished);
                 $state.go('toolbar.projectspage.provenance.process');
             }
+
             init();
         }]);

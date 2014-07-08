@@ -1,67 +1,121 @@
-<div class="col-sm-8" ng-controller="provenanceFinish">
-    <div class="row">
-        <form class="form-horizontal">
-            <legend>Process</legend>
-            <div upperlevel-process doc="process" bk="bk" edit="true"></div>
-            <div df-properties default-properties="process.default_properties" machines-list="machines_list"
-                 edit="true"></div>
-            <div ad-properties doc="process" edit="true" bk="bk"></div>
-        </form>
+<div class="col-lg-12" ng-controller="provenanceFinish">
+    <div class="row"><br>
+
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                Process
+            </div>
+            <div class="panel panel-body">
+                <display label="Name:"> {{process.name}}</display>
+                <display label="Description:">
+                    {{process.description}}
+                </display>
+                <display label="Notes:">
+                    <ul ng-repeat=" note in process.notes">
+                        <li style="word-break:break-all;">{{note.message}}</li>
+                    </ul>
+                </display>
+                <display label="Runs:">
+                    <div ng-if="process.template.template_pick=='experiment'">
+                        {{process.experiment_run_date}}
+                    </div>
+                    <div ng-if="process.template.template_pick=='computation'">
+                        <ul ng-repeat=" run in process.runs">
+                            <li style="word-break:break-all;">{{run.start_run}} - {{run.stop_run}}</li>
+                        </ul>
+                    </div>
+                </display>
+                <div df-report default-properties="process.default_properties"></div>
+
+                <div ng-repeat="ad in process.added_properties">
+                    <display label="{{ad.name}}"> {{ad.value}}</display>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
-        <legend>Inputs</legend>
-        <hr>
-        <form class="form-horizontal" ng-repeat="(name, vals) in inputs">
-            <label><b>{{ name }}</b></label>
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                Inputs
+            </div>
+            <div class="panel panel-body">
+                <form class="form-horizontal" ng-repeat="(name, vals) in inputs">
+                    <label><u>{{ name }}</u></label>
 
-            <div ng-if="name=='sample'">
-                <div class="row">
-                    <div upperlevel-object="" bk="bk" doc="vals.sample" edit="true"></div>
-                    <div iterate-properties="" all-properties="vals.sample.properties" edit="true"></div>
-                    <div ad-properties="" doc="vals.sample" edit="true" bk="bk"></div>
-                </div>
+                    <div ng-if="name=='sample'">
+                        <div class="row">
+                            <display label="Name:"> {{vals.sample.name}}</display>
+                            <display label="Description:">
+                                {{vals.sample.description}}
+                            </display>
+                            <div ng-repeat="(name, vals) in vals.sample.properties">
+                                <div ng-if="name==='composition'">
+                                    <display label="{{name}}">
+                                        <ul ng-repeat="c in vals.value">
+                                            <li>{{c.element}} - {{c.value}} {{p.unit}}</li>
+                                        </ul>
+                                    </display>
+                                </div>
+                                <div ng-if="name!=='composition'">
+                                    <display label="{{name}}"> {{vals.value}}</display>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="name!=='sample'">
+                        <div class="row">
+                            <div df-report default-properties="vals.default_properties"></div>
+                            <div ng-repeat="ad in vals.added_properties">
+                                <display label="{{ad.name}}"> {{ad.value}}</display>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form ng-if="input_files.length != 0" class="form-horizontal">
+                    <label><u>Input Files</u></label>
+                    <display ng-repeat="file in input_files" label="File:">
+                        {{file.name}}
+                    </display>
+                </form>
             </div>
-            <div ng-if="name!=='sample'">
-                <div class="row">
-                    <div df-properties="" default-properties="vals.default_properties" edit="true"></div>
-                    <div ad-properties="" doc="vals" edit="true" bk="bk"></div>
-                </div>
-            </div>
-        </form>
-        <form ng-if="input_files.length != 0" class="form-horizontal">
-            <label><b>Input Files</b></label>
-            <cgroup ng-repeat="file in input_files" label="File:">
-                <input class="input-xlarge form-control" ng-model="file.name" ng-disabled="true" type="text">
-            </cgroup>
-        </form>
+        </div>
     </div>
     <div class="row">
-        <legend>Outputs</legend>
-        <hr>
-        <form class="form-horizontal" ng-repeat="(name, vals) in outputs">
-            <label><b>{{ name }}</b></label>
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                Outputs
+            </div>
+            <div class="panel panel-body">
+                <form class="form-horizontal" ng-repeat="(name, vals) in outputs">
+                    <label><u>{{ name }}</u></label>
 
-            <div ng-if="name=='transformed-sample'">
-                <div class="row">
-                    <div upperlevel-object="" bk="bk" doc="vals.sample" edit="true"></div>
-                    <div iterate-properties="" all-properties="vals.sample.properties" edit="true"></div>
-                    <div ad-properties="" doc="vals.sample" edit="true" bk="bk"></div>
-                </div>
+                    <div ng-if="name=='transformed-sample'">
+                        <div class="row">
+                            <display label="Name:"> {{vals.sample.name}}</display>
+                            <display label="Description:">
+                                {{vals.sample.description}}
+                            </display>
+                            <div df-report default-properties="vals.sample.properties"></div>
+                        </div>
+                    </div>
+                    <div ng-if="name!=='sample'">
+                        <div class="row">
+                            <div df-report default-properties="vals.default_properties"></div>
+                            <div ng-repeat="ad in vals.added_properties">
+                                <display label="{{ad.name}}"> {{ad.value}}</display>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form ng-if="output_files.length != 0" class="form-horizontal">
+                    <label><u>Output Files</u></label>
+                    <display ng-repeat="file in output_files" label="File:">
+                        {{file.name}}
+                    </display>
+                </form>
             </div>
-            <div ng-if="name!=='sample'">
-                <div class="row">
-                    <div df-properties="" default-properties="vals.default_properties" edit="true"></div>
-                    <div ad-properties="" doc="vals" edit="true" bk="bk"></div>
-                </div>
-            </div>
-        </form>
-    <form ng-if="output_files.length != 0" class="form-horizontal">
-            <label><b>Output Files</b></label>
-            <cgroup ng-repeat="file in output_files" label="File:">
-                <input class="input-xlarge form-control" ng-model="file.name" ng-disabled="true" type="text">
-            </cgroup>
-    </form>
-</div>
+        </div>
+    </div>
     <div class="row">
         <button ng-click="saveDraft()" class="btn btn-default btn-primary">Save Draft</button>
         <button data-toggle="modal" data-target="#confirm" class="btn btn-success">Submit</button>
