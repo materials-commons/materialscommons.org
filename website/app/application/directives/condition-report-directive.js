@@ -3,7 +3,7 @@ Application.Directives.directive('conditionReport',
         return {
             restrict: "A",
             scope: {
-                condition: '='
+                item: '='
             },
             templateUrl: 'application/directives/condition-report.html'
         };

@@ -1,60 +1,63 @@
 <div class="tab-pane" id="provenance" ng-controller="toolbarDataEditProvenance">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel panel-heading">
-                    Process
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-5" style="box-shadow:  8px 0 6px -10px grey;">
-                            <h4>Inputs</h4>
-                            <ul class="row" ng-repeat="process in df_denorm">
-                                <ul ng-repeat="i in process.right.inputs">
-                                    <div ng-if="i.type=='id'">
-                                        <li><a>{{i.properties.name.value}}</a></li>
-                                    </div>
-                                    <div ng-if="i.type=='condition'">
-                                        <li><a>{{i.template}}</a></li>
-                                    </div>
-                                    <div ng-if="i.type=='file'">
-                                        <li><a>{{i.properties.name.value}}</a></li>
-                                    </div>
-                                </ul>
-                            </ul>
-                        </div>
-                        <div class="col-lg-5" style="float: right">
-                            <h4>Outputs</h4>
-                            <ul class="row" ng-repeat="process in df_denorm">
-                                <ul ng-repeat="i in process.right.outputs">
-                                    <div ng-if="i.type=='id'">
-                                        <li><a>{{i.properties.name.value}}</a></li>
-                                    </div>
-                                    <div ng-if="i.type=='condition'">
-                                        <li><a>{{i.template}}</a></li>
-                                    </div>
-                                    <div ng-if="i.type=='file'">
-                                        <li><a>{{i.properties.name.value}}</a></li>
-                                    </div>
-                                </ul>
-                            </ul>
-                        </div>
+    <div class="row" ng-repeat="process in df_denorm">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                Process: {{process.right.name}}
+            </div>
+            <div class="panel-body">
+                    <div class="col-lg-6" >
+                        <label>Inputs</label>
+                        <ul ng-repeat="i in process.right.inputs">
+                            <div ng-if="i.type=='id'">
+                                <li><a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>
+                            </div>
+                            <div ng-if="i.type=='condition'">
+                                <li><a ng-click="showProvDetails(i)">{{i.template}}</a></li>
+                            </div>
+                            <div ng-if="i.type=='file'">
+                                <div ng-if="doc.id === i.properties.id.value">
+                                    <li><a  ng-click="showProvDetails(i)" style="background-color: lightgreen;">{{i.properties.name.value}}</a></li>
+                                </div>
+                                <div ng-if="doc.id !== i.properties.id.value">
+                                    <li><a ng-click="showProvDetails(i)" >{{i.properties.name.value}}</a></li>
+                                </div>
+                            </div>
+                        </ul>
                     </div>
-                </div>
+                    <div class="col-lg-6" >
+                        <label>Outputs</label>
+                        <ul ng-repeat="i in process.right.outputs">
+                            <div ng-if="i.type=='id'">
+                                <li><a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>
+                            </div>
+                            <div ng-if="i.type=='condition'">
+                                <li><a ng-click="showProvDetails(i)">{{i.template}}</a></li>
+                            </div>
+                            <div ng-if="i.type=='file'">
+                                <div ng-if="doc.id === i.properties.id.value">
+                                    <li><a  ng-click="showProvDetails(i)" style="background-color: lightgreen;">{{i.properties.name.value}}</a></li>
+                                </div>
+                                <div ng-if="doc.id !== i.properties.id.value">
+                                    <li><a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                            <div ng-if="sample">
-                                <div sample-report sample="sample"></div>
-                            </div>
-                            <div ng-if="settings">
-                                <div condition-report condition="settings" ></div>
-                            </div>
+                        <div ng-if="sample">
+                            <div sample-report sample="sample"></div>
+                        </div>
+                        <div ng-if="item">
+                            <div condition-report item="item"></div>
+                        </div>
                     </div>
                 </div>
             </div>
