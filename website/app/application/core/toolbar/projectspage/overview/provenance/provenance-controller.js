@@ -25,10 +25,10 @@ Application.Controllers.controller('toolbarProjectsPageOverviewProvenance',
             $scope.col_defs = [
                 { field: "Processes"}
             ];
-            mcapi('/processes/project/%', $scope.project_id)
+            mcapi('/samples/project/%', $scope.project_id)
                 .success(function (data) {
-                    $scope.processes = data;
-                    console.log($scope.processes)
+                    $scope.denorm_samples = data;
+                    console.log($scope.denorm_samples);
                 }).jsonp();
 
 

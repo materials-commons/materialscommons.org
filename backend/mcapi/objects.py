@@ -106,3 +106,10 @@ def remove_project_from_object(object_id, project_id):
     access.reset()
     return args.json_as_format_arg(ugroup)
 
+@app.route('/samples/project/<project_id>', methods=['GET'])
+@jsonp
+def samples_by_project(project_id):
+    rv = r.table('samples_denorm').filter({'project_id': project_id})
+    selection = list(rv.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+
