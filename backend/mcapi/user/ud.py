@@ -225,6 +225,8 @@ class ProvenanceSaver(object):
         transformed_sample['created_by'] = user
         transformed_sample['owner'] = user
         transformed_sample['treatments'] = []
+        transformed_sample['projects'] = dmutil.get_optional('projects', s)
+        transformed_sample['parent_id'] = dmutil.get_optional('parent_id', s)
         for item in inputs:
             if item['attribute'] == 'heat_treatment':
                 transformed_sample['treatments'].append(item)
