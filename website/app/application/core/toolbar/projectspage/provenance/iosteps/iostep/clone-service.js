@@ -6,7 +6,6 @@ Application.Services.factory('Clone',
                 doc.sample = {};
                 doc.sample = input_sample_copy.sample;
                 doc.sample.parent_id = input_sample_copy.sample.id;
-                console.log(doc.sample);
                 return doc;
             }
         };
