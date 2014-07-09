@@ -3,26 +3,21 @@
     Sample
 </h4>
 <section id="slidesample">
-        <cgroup label="Sample Name:">
-            <input class="form-control" ng-model="sample.name"
-                   ng-disabled="true">
-        </cgroup>
-        <cgroup label="Description:">
-            <textarea class="form-control" ng-model="sample.description"
-                      ng-disabled="true"> </textarea>
-        </cgroup>
-        <div ng-repeat="p in sample.properties">
-            <div ng-if="p.name!=='Composition'">
-                <cgroup label="{{p.name}}:">
-                    <input class="form-control" ng-model="p.value"
-                           ng-disabled="true">
-                </cgroup>
-            </div>
-            <div ng-if="p.name==='Composition'">
-                <li style="list-style: none" ng-repeat="c in allProperties.composition.value">
-                    <span>{{c.element}} - {{c.value}} {{allProperties.composition.unit}}</span>
-                </li>
-            </div>
+    <display label="Name:"> {{sample.name}}</display>
+    <display label="Description:">
+        {{sample.description}}
+    </display>
+    <div ng-repeat="(name, vals) in sample.properties">
+        <div ng-if="name==='composition'">
+            <display label="{{name}}">
+                <ul ng-repeat="c in vals.value">
+                    <li>{{c.element}} - {{c.value}} {{p.unit}}</li>
+                </ul>
+            </display>
         </div>
-        <br>
+        <div ng-if="name!=='composition'">
+            <display label="{{name}}"> {{vals.value}}</display>
+        </div>
+    </div>
+    <br>
 </section>
