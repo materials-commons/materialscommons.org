@@ -57,6 +57,7 @@ def create_object():
     sample['created_by'] = user
     sample['owner'] = user
     sample['treatments'] = []
+    sample['parent_id'] = dmutil.get_optional('parent_id', j)
     sample['projects'] = dmutil.get_optional('projects', j, [])
     sample['template'] = dmutil.get_required('template', j)
     for treatment in dmutil.get_optional('treatments', j, []):

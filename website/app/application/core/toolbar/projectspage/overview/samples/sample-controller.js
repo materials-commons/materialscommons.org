@@ -122,7 +122,8 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     default_properties: [],
                     added_properties: [],
                     treatments: [],
-                    projects: []
+                    projects: [],
+                    parent_id: ''
                 };
                 $scope.bk = {
                     selected_project: ''
