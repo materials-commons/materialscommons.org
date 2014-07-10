@@ -26,6 +26,16 @@ Application.Controllers.controller('toolbarProjectsPage',
                     }
                     pubsub.send("project.tree", true);
                     $scope.project_id = $stateParams.id;
+
+                    //tabset not preserving active project on page refresh
+                    $scope.projects.forEach(function (item) {
+                        if (item.id === $stateParams.id) {
+                            item.active = true
+                        }
+                        else {
+                            item.active = false
+                        }
+                    });
                     if ($stateParams.from === 'datafile') {
                         $scope.project_id = ProjectPath.get_project();
                         mcapi('/projects/%', $scope.project_id)
@@ -33,13 +43,6 @@ Application.Controllers.controller('toolbarProjectsPage',
                                 $scope.project = project;
                             }).jsonp();
                     }
-//                    else if($stateParams.from === 'review'){
-////                        console.log('yes')
-////                        $state.go('toolbar.projectspage.reviews');
-//
-//                    }else if($stateParams.from === 'machine'){
-//                        $state.go('toolbar.projectspage.machines');
-//                    }
 
                     else {
                         mcapi('/projects/%', $scope.project_id)
