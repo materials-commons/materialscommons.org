@@ -248,7 +248,7 @@ class ProvenanceSaver(object):
     def _set_availability(self, sample_id):
         rr = r.table('samples').get(sample_id).update({'available': False}).run(g.conn)
         return rr
-
+    
 @app.route('/provenance', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
@@ -259,6 +259,39 @@ def create_provenance():
     p = ProvenanceSaver(draft_id, user)
     process_id = p.save()
     if (process_id):
+        update_df_denorm(process_id)
         return jsonify({'success': True, 'process': process_id})
     else:
         return error.bad_request('unable to create process')
+    
+def update_df_denorm(process_id):
+        process = r.table('processes').get(process_id).run(g.conn)
+        inputs = process['inputs']
+        outputs = process['outputs']
+        if inputs == []:
+            print 'no inputs'
+        else:
+            for i in inputs:
+                if i['attribute'] == 'file':
+                    df_dnorm = {}
+                    df_dnorm['df_id'] = i['properties']['id']['value']
+                    df_dnorm['df_name'] = i['properties']['name']['value']
+                    df_dnorm['process_id'] = process['id']
+                    df_dnorm['process_name'] = process['name']
+                    df_dnorm['project_id'] = process['project']
+                    df_dnorm['file_type'] = 'input'
+                    r.table('datafiles_denorm').insert(df_dnorm).run(g.con) 
+        if outputs == []:
+            print 'no outputs'
+        else:
+            for o in outputs:
+                if o['attribute'] == 'file':
+                    df_dnorm = {}
+                    df_dnorm['df_id'] = o['properties']['id']['value']
+                    df_dnorm['df_name'] = o['properties']['name']['value']
+                    df_dnorm['process_id'] = process['id']
+                    df_dnorm['process_name'] = process['name']
+                    df_dnorm['project_id'] = process['project']
+                    df_dnorm['file_type'] = 'output'
+                    r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
+
