@@ -280,7 +280,7 @@ def update_df_denorm(process_id):
                     df_dnorm['process_name'] = process['name']
                     df_dnorm['project_id'] = process['project']
                     df_dnorm['file_type'] = 'input'
-                    r.table('datafiles_denorm').insert(df_dnorm).run(g.con) 
+                    r.table('datafiles_denorm').insert(df_dnorm).run(g.conn) 
         if outputs == []:
             print 'no outputs'
         else:
@@ -294,4 +294,5 @@ def update_df_denorm(process_id):
                     df_dnorm['project_id'] = process['project']
                     df_dnorm['file_type'] = 'output'
                     r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
+        return
 

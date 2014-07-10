@@ -37,6 +37,7 @@ def create_tables():
     create_table("tag2item")
     create_table("samples")
     create_table("treatments")
+    create_table("datafiles_denorm")
 
 
 def create_table(table):
