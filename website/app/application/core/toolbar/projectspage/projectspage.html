@@ -2,7 +2,7 @@
     <div class="col-lg-12" ng-controller="toolbarProjectsPage"><br>
         <div class="project-tabs">
             <tabset>
-                <tab ng-repeat="p in projects"  heading="{{p.name}}" disabled="p.disabled" active="p.active"
+                <tab ng-repeat="p in projects"  heading="{{p.name}}" active="p.active"
                      ui-sref="toolbar.projectspage.overview.files({id: p.id, draft_id: ''})">
                 </tab>
             </tabset>
