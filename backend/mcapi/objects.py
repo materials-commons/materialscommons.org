@@ -8,6 +8,16 @@ import access
 import doc
 import json
 
+class SItem:
+    def __init__(self, id, name, path, owner, parent_id):
+        self.id = id
+        self.c_id = ""
+        self.level = 0
+        self.parent_id = parent_id
+        self.name = name
+        self.owner = owner
+        self.path = path
+        self.children = []
 
 @app.route('/objects', methods=['GET'])
 @jsonp
@@ -112,4 +122,16 @@ def samples_by_project(project_id):
     rv = r.table('samples_denorm').filter({'project_id': project_id})
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
+
+@app.route('/samples/<sample_id>/tree', methods=['GET'])
+@jsonp
+def sample_tree(sample_id):
+    sample = r.table('samples').get(sample_id).run(g.conn)
+    sitem = SItem(sample['id'],sample['name'],sample['path'],sample['owner'],sample['parent_id'])
+    children = r.table('samples').filter({'parent_id': sitem.id}).run(g.conn)
+    
+    
+    
+    
+
 
