@@ -8,16 +8,6 @@ import access
 import doc
 import json
 
-class SItem:
-    def __init__(self, id, name, path, owner, parent_id):
-        self.id = id
-        self.c_id = ""
-        self.level = 0
-        self.parent_id = parent_id
-        self.name = name
-        self.owner = owner
-        self.path = path
-        self.children = []
 
 @app.route('/objects', methods=['GET'])
 @jsonp
@@ -123,12 +113,71 @@ def samples_by_project(project_id):
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
+
+class SItem:
+    def __init__(self, id, name, path, owner, parent_id):
+        self.id = id
+        self.c_id = ""
+        self.level = 0
+        self.parent_id = parent_id
+        self.name = name
+        self.owner = owner
+        self.path = path
+        self.children = []
+        
+
 @app.route('/samples/<sample_id>/tree', methods=['GET'])
 @jsonp
 def sample_tree(sample_id):
-    sample = r.table('samples').get(sample_id).run(g.conn)
-    sitem = SItem(sample['id'],sample['name'],sample['path'],sample['owner'],sample['parent_id'])
-    children = r.table('samples').filter({'parent_id': sitem.id}).run(g.conn)
+    samples = list(r.table('samples').get_all().run(g.conn))
+    all_samples = {}
+    top_level_samples = []
+    for samp in samples:
+        sitem = SItem(sample['id'],sample['name'],sample['path'],sample['owner'],sample['parent_id'])    
+        
+    
+    for ddir in datadirs:
+        ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
+                       ddir['birthtime'], 0)
+        ditem.level = ditem.name.count('/')
+        ditem.c_id = next_id
+        next_id = next_id + 1
+        #
+        # The item may have been added as a parent
+        # before it was actually seen. We check for
+        # this case and grab the children to add to
+        # us now that we have the details for the ditem.
+        if ditem.name in all_data_dirs:
+            existing_ditem = all_data_dirs[ditem.name]
+            ditem.children = existing_ditem.children
+        all_data_dirs[ditem.name] = ditem
+        if ditem.level == 0:
+            top_level_dirs.append(ditem)
+        for df in ddir['datafiles']:
+            if df['name'][0] == ".":
+                continue
+            dfitem = DItem2(df['id'], df['name'], 'datafile',
+                            df['owner'], df['birthtime'], df['size'])
+            dfitem.fullname = ddir['name'] + "/" + df['name']
+            dfitem.c_id = next_id
+            next_id = next_id + 1
+            ditem.children.append(dfitem)
+        parent_name = dirname(ditem.name)
+        if parent_name in all_data_dirs:
+            parent = all_data_dirs[parent_name]
+            parent.children.append(ditem)
+        else:
+            # We haven't seen the parent yet, but we need
+            # to add the children. So, create a parent with
+            # name and add children. When we finally see it
+            # we will grab the children and add them to the
+            # real object.
+            parent = DItem2('', parent_name, 'datadir', '', '', 0)
+            parent.children.append(ditem)
+            all_data_dirs[parent_name] = parent
+    return json.dumps(top_level_dirs, cls=DEncoder2)
+
+
     
     
     
