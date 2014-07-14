@@ -7,6 +7,7 @@ import args
 import access
 import doc
 import json
+from os.path import dirname
 
 
 @app.route('/objects', methods=['GET'])
@@ -58,15 +59,18 @@ def create_object():
     sample['owner'] = user
     sample['treatments'] = []
     sample['parent_id'] = dmutil.get_optional('parent_id', j)
-    sample['projects'] = dmutil.get_optional('projects', j, [])
     sample['template'] = dmutil.get_required('template', j)
     for treatment in dmutil.get_optional('treatments', j, []):
         t = doc.add_template_properties(treatment, 'treatment')
         sample['treatments'].append(t)
     sample_id = dmutil.insert_entry_id('samples', sample)
     _create_treatments_denorm(sample['treatments'], sample_id)
+    _join_sample_projects(projects, sample_id)
     return json.dumps({'id': sample_id})
 
+def _join_sample_projects(projects, sample_id):
+    for p in projects:
+        rr = r.table('projects_samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn) 
 
 def _create_treatments_denorm(treatments, sample_id):
     for treatment in treatments:
@@ -115,70 +119,44 @@ def samples_by_project(project_id):
 
 
 class SItem:
-    def __init__(self, id, name, path, owner, parent_id):
+    def __init__(self, id, name, path, owner):
         self.id = id
-        self.c_id = ""
         self.level = 0
-        self.parent_id = parent_id
         self.name = name
         self.owner = owner
         self.path = path
         self.children = []
         
 
-@app.route('/samples/<sample_id>/tree', methods=['GET'])
+class DEncoder2(json.JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+
+@app.route('/samples/<project_id>/tree', methods=['GET'])
 @jsonp
-def sample_tree(sample_id):
-    samples = list(r.table('samples').get_all().run(g.conn))
+def sample_tree(project_id):
+    samples = r.table('projects_samples').get_all(project_id, index='project_id').eq_join('sample_id', r.table('samples')).zip().run(g.conn)
     all_samples = {}
     top_level_samples = []
     for samp in samples:
-        sitem = SItem(sample['id'],sample['name'],sample['path'],sample['owner'],sample['parent_id'])    
-        
-    
-    for ddir in datadirs:
-        ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
-                       ddir['birthtime'], 0)
-        ditem.level = ditem.name.count('/')
-        ditem.c_id = next_id
-        next_id = next_id + 1
-        #
-        # The item may have been added as a parent
-        # before it was actually seen. We check for
-        # this case and grab the children to add to
-        # us now that we have the details for the ditem.
-        if ditem.name in all_data_dirs:
-            existing_ditem = all_data_dirs[ditem.name]
-            ditem.children = existing_ditem.children
-        all_data_dirs[ditem.name] = ditem
-        if ditem.level == 0:
-            top_level_dirs.append(ditem)
-        for df in ddir['datafiles']:
-            if df['name'][0] == ".":
-                continue
-            dfitem = DItem2(df['id'], df['name'], 'datafile',
-                            df['owner'], df['birthtime'], df['size'])
-            dfitem.fullname = ddir['name'] + "/" + df['name']
-            dfitem.c_id = next_id
-            next_id = next_id + 1
-            ditem.children.append(dfitem)
-        parent_name = dirname(ditem.name)
-        if parent_name in all_data_dirs:
-            parent = all_data_dirs[parent_name]
-            parent.children.append(ditem)
+        sitem = SItem(samp['id'],samp['name'],samp['path'],samp['owner'])
+        sitem.level = sitem.path.count('/')
+        if sitem.path in all_samples:
+            existing_sitem = all_samples[sitem.path]
+            sitem.children = existing_sitem.children
+        all_samples[sitem.path] = sitem
+        if sitem.level == 0:
+            top_level_samples.append(sitem)
+        parent_name = dirname(sitem.path)
+        if parent_name in all_samples:
+            parent = all_samples[parent_name]
+            parent.children.append(sitem)
         else:
-            # We haven't seen the parent yet, but we need
-            # to add the children. So, create a parent with
-            # name and add children. When we finally see it
-            # we will grab the children and add them to the
-            # real object.
-            parent = DItem2('', parent_name, 'datadir', '', '', 0)
-            parent.children.append(ditem)
-            all_data_dirs[parent_name] = parent
-    return json.dumps(top_level_dirs, cls=DEncoder2)
-
-
-    
+            parent = SItem('', parent_name, '', '')
+            parent.children.append(sitem)
+            all_samples[parent_name] = parent
+    return json.dumps(top_level_samples, cls=DEncoder2)
     
     
     

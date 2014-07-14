@@ -1,3 +1,7 @@
 <div class="row" ng-controller="toolbarProjectsPageOverviewProvenance">
-    <tree-grid col-defs="col_defs" tree-data="tree_data"></tree-grid>
+    <div ng-if="tree_data">
+        <button ng-click="my_tree.expand_all()" class="btn btn-default btn-sm">Expand All</button>
+        <button ng-click="my_tree.collapse_all()" class="btn btn-default btn-sm">Collapse All</button>
+        <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="my_tree" on-select="test1(branch)" tree-details=open_details()></tree-grid>
+    </div>
 </div>
