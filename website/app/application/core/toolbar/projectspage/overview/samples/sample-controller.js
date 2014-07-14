@@ -9,9 +9,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     }).jsonp();
 
             };
-            $scope.refreshProcesses = function () {
-//
-            };
+
             $scope.showForm = function () {
                 $scope.default_properties = $scope.bk.selected_treatment.default_properties;
                 $scope.bk.tab_item = '';
