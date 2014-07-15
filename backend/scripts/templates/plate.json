@@ -57,7 +57,7 @@
         {
             "name": "Grain Size" ,
             "attribute": "grain_size",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
@@ -67,7 +67,7 @@
         {
             "name": "Grain Orientation" ,
             "attribute": "grain_orientation",
-            "type": "number" ,
+            "type": "int" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
