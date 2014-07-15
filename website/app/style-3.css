@@ -219,6 +219,12 @@ h4, .h4, h5, .h5, h6, .h6 {
     border-radius: 6px 0 6px 6px;
 }
 
+.dropdown-submenu:hover>.dropdown-menu.scrollable-menu {
+    height: auto;
+    max-height: 250px;
+    overflow-x: hidden;
+}
+
 .fa-check,
 .available {
     color: limegreen;
@@ -448,4 +454,5 @@ table-file-directory > thead > tr > td,
     padding: 0;
     position: relative;
 }
+
 
