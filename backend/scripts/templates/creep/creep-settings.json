@@ -1,0 +1,46 @@
+{
+
+    "id": "creep-settings" ,
+    "attribute": "creep_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "temperature",
+            "name": "Temperature" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Load" ,
+            "attribute": "load",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[
+    ],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Settings" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}

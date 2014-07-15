@@ -1,6 +1,5 @@
 {
-
-    "id": "etching" ,
+    "id": "rolling",
     "attribute": "process",
     "default_properties": [],
     "additional_properties":[],
@@ -8,11 +7,11 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Etching" ,
+    "template_name": "Rolling" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": ["etching-settings", "sample"],
-    "required_output_conditions": ["transformed-sample"],
+    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "rolling-settings"}],
+    "required_output_conditions": [{"name": "Transformed Sample", "value": "transformed-sample"}],
     "required_input_files": true,
-    "required_output_files": true
+    "required_output_files": true  
 }

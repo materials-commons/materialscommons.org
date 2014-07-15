@@ -1,0 +1,74 @@
+{
+    "id": "thermal-treatment-settings",
+    "attribute": "thermal_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "temperature",
+            "name": "Temperature" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C", "F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "time",
+            "name": "Time" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["hrs", "mins", "secs"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "holding_medium",
+            "name": "Holding Medium" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Air", "value" : "air"},{"name": "Vacuum", "value" : "vacuum"},{"name": "N2", "value" : "n2"},{"name": "Ar", "value" : "ar"},{"name": "Oil", "value" : "oil"},{"name": "Sand", "value" : "sand"}],
+            "required": true
+        },
+        {
+            "attribute": "cooling_medium",
+            "name": "Cooling Medium" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Air", "value" : "air"},{"name": "Water", "value" : "water"},{"name": "Oil", "value" : "oil"},{"name": "Sand", "value" : "sand"}],
+            "required": true
+        },
+        {
+            "attribute": "cooling_rate",
+            "name": "Colling Rate" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Settings" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}

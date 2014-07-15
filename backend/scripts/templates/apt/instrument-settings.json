@@ -10,7 +10,7 @@
             "unit_choice": [],
             "value": "",
             "value_choice": [{"name": "FIM", "value" : "fim"}, {"name": "Voltage", "value" : "voltage"}, {"name": "Laser", "value" : "laser"}],
-            "required": false
+            "required": true
         },
         {
             "name": "Specimen Temperature(K)",
@@ -20,7 +20,7 @@
             "unit_choice": [],
             "value": "",
             "value_choice": [],
-            "required": false
+            "required": true
         },
         {
             "name": "Voltage Pulse Fraction(%)",
@@ -38,6 +38,17 @@
             "attribute": "laser_pulse_energy",
             "type": "number",
             "unit": "pJ",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false,
+            "range": []
+        },
+        {
+            "name": "Laser Wavelength(nm)",
+            "attribute": "laser_pulse_energy",
+            "type": "number",
+            "unit": "nm",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
@@ -93,6 +104,16 @@
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [{"name": "He", "value" : "He"},{"name": "Ar", "value" : "Ar"},{"name": "Ne", "value" : "Ne"},{"name": "Other", "value" : "other"},{"name": "None", "value" : "none"}],
+            "required": false
+        },
+        {
+            "name": "Pressure" ,
+            "attribute": "pressure",
+            "type": "number" ,
+            "unit": "torr" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
             "required": false
         },
         {

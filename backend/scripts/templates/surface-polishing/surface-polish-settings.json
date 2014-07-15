@@ -1,0 +1,44 @@
+{
+    "id": "surface-polish-settings",
+    "attribute": "surface_polish_settings",
+    "default_properties": [
+        {
+            "name": "Name" ,
+            "attribute": "name",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "medium",
+            "name": "Medium" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "particle_size",
+            "name": "Particle Size" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Grit Paper", "value" : "grit_paper"},{"name": "Cloth", "value" : "cloth"},{"name": "Slurry", "value" : "slurry"}],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
+    "template_description": "" ,
+    "template_mtime": "" ,
+    "template_name": "Settings" ,
+    "template_pick": "treatment" ,
+    "template_type": "condition"
+}

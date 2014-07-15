@@ -1,6 +1,5 @@
 {
-
-    "id": "irradiation" ,
+    "id": "creep",
     "attribute": "process",
     "default_properties": [],
     "additional_properties":[],
@@ -8,10 +7,10 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Irradiation" ,
+    "template_name": "Creep" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "irradiation-instrument-settings"}],
+    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "creep-settings"}],
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true

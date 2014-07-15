@@ -1,6 +1,6 @@
 {
-    "id": "data-reconstruction" ,
-    "attribute": "data_reconstruction",
+    "id": "apt-data-reconstruction-settings" ,
+    "attribute": "apt_data_reconstruction_settings",
     "default_properties": [
         {
             "name": "Reconstruction Mode" ,
@@ -9,8 +9,8 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{"name": "Voltage", "value": "voltage"},{"name": "Shank Angle", "value": "shank_angle"}, {"name": "TEM Image", "value": "tem_image"}, {"name": "SEM", "value": "sem"},{"name": "Other", "value": "other"}],
-            "required": true
+            "value_choice": [{"name": "Voltage", "value": "voltage"},{"name": "Shank Angle", "value": "shank_angle"}, {"name": "Tip Image", "value": "tip_image"}, {"name": "Other", "value": "other"}],
+            "required": false
         },
         {
             "name": "Software",
@@ -73,6 +73,16 @@
             "required": false
         },
         {
+            "name": "Shank Angle",
+            "attribute": "shank_angle",
+            "type": "number",
+            "unit": "nm",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
             "name": "Notes" ,
             "attribute": "notes",
             "type": "text" ,
@@ -88,7 +98,7 @@
     "template_description": "" ,
     "template_birthtime": "",
     "template_mtime": "",
-    "template_name": "Data Reconstruction" ,
+    "template_name": "Settings" ,
     "template_type": "condition",
     "template_pick": "instrument"
 }

@@ -1,5 +1,5 @@
 {
-    "id": "xrd-ip-settings",
+    "id": "xrd-instrument-settings",
     "attribute": "instrument_settings",
     "default_properties": [
         {
@@ -11,33 +11,11 @@
             "value": "" ,
             "value_choice": [],
             "required": true
-        }
-    ],   
-    "additional_properties":[
-        {
-            "name": "Start angle" ,
-            "attribute": "start_angle",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": ["degrees"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false 
         },
         {
-            "name": "End angle" ,
-            "attribute": "end_angle",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": ["degrees"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false 
-        },
-        {
-            "name": "Rate" ,
-            "attribute": "rate",
-            "type": "text" ,
+            "name": "Source Wave Length" ,
+            "attribute": "source_wave_length",
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
@@ -45,22 +23,23 @@
             "required": false
         },
         {
-            "name": "Step size" ,
-            "attribute": "step_size",
-            "type": "int" ,
+            "name": "Angle Step" ,
+            "attribute": "angle_step",
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
-            "required": false
+            "required": true
         }
         
-    ],
+    ],   
+    "additional_properties":[],
     "owner": "admin@materialscommons.org", 
     "template_birthtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
     "template_description": "" ,
     "template_mtime": "Thu Feb 06 2014 17:58:39 GMT+00:00" ,
-    "template_name": "settings" ,
+    "template_name": "Settings" ,
     "template_pick": "instrument" ,
     "template_type": "condition"
 
