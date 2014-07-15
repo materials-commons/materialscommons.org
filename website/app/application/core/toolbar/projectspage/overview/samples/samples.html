@@ -226,7 +226,7 @@
                                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                                         <tbody>
                                         <tr ng-repeat="i in projects_by_sample | page:currentUsersPage:10">
-                                            <td>{{i.name}}</td>
+                                            <td>{{i.project_name}}</td>
                                             <td ng-show="sample.owner===signed_in_user">
                                                 <button class="btn btn-default btn-danger"
                                                         ng-click="deleteProject($index)">

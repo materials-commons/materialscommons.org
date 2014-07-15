@@ -3,10 +3,16 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
         function ($scope, mcapi, $injector, Projects, alertService, User, $stateParams) {
 
             $scope.refreshProjects = function () {
-                mcapi('/objects/%', $scope.sample.id)
+//                mcapi('/objects/%', $scope.sample.id)
+//                    .success(function (data) {
+//                        $scope.projects_by_sample = data.projects;
+//                    }).jsonp();
+                mcapi('/samples/project/%', $scope.sample.id)
                     .success(function (data) {
-                        $scope.projects_by_sample = data.projects;
+                        console.log(data)
+                        $scope.projects_by_sample = data;
                     }).jsonp();
+
 
             };
 
@@ -61,7 +67,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
             };
             $scope.showTreatmentDetails_and_processes = function (sample) {
                 $scope.sample = sample;
-                $scope.refreshProcesses();
+//                $scope.refreshProcesses();
                 $scope.refreshProjects();
 
             };
@@ -121,21 +127,21 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     available: true,
                     default_properties: [],
                     added_properties: [],
-                    treatments: [],
-                    projects: [],
-                    parent_id: ''
+                    treatments: []
+//                    projects: [],
+//                    parent_id: ''
                 };
                 $scope.bk = {
                     selected_project: ''
 
                 };
-                mcapi('/projects/%', $scope.project_id)
-                    .success(function (data) {
-                        $scope.default_project = {'id': data.id, 'name': data.name};
-                        $scope.doc.projects.push($scope.default_project);
-                    })
-                    .error(function (data) {
-                    }).jsonp();
+//                mcapi('/projects/%', $scope.project_id)
+//                    .success(function (data) {
+//                        $scope.default_project = {'id': data.id, 'name': data.name};
+//                        $scope.doc.projects.push($scope.default_project);
+//                    })
+//                    .error(function (data) {
+//                    }).jsonp();
                 $scope.processes_list =  [];
                 $scope.projects_by_sample =  [];
                 $scope.clear();
