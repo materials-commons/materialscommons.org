@@ -33,6 +33,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
             $scope.save = function (form) {
                 var $validationProvider = $injector.get('$validation');
                 var check = $validationProvider.checkValid(form);
+                $scope.doc.path = $scope.doc.name;
                 if (check === true) {
                     mcapi('/objects/new')
                         .arg('order_by=birthtime')
@@ -68,6 +69,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
             $scope.clear = function () {
                 $scope.doc = {
                     name: '',
+                    path: '',
                     notes: [],
                     available: true,
                     default_properties: [],

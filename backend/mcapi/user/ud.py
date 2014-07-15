@@ -225,7 +225,8 @@ class ProvenanceSaver(object):
         transformed_sample['created_by'] = user
         transformed_sample['owner'] = user
         transformed_sample['treatments'] = []
-        transformed_sample['projects'] = dmutil.get_optional('projects', s)
+        #transformed_sample['projects'] = dmutil.get_optional('projects', s)
+        transformed_sample['path'] =  dmutil.get_required('path', s) +  '/' + transformed_sample['name']
         transformed_sample['parent_id'] = dmutil.get_optional('parent_id', s)
         for item in inputs:
             if item['attribute'] == 'heat_treatment':
@@ -234,6 +235,7 @@ class ProvenanceSaver(object):
                 transformed_sample['treatments'].append(item)
         transformed_sample['template'] = dmutil.get_optional('template', s)
         transformed_sample_id = dmutil.insert_entry_id('samples', transformed_sample)
+        join_sample_projects(dmutil.get_optional('projects', s), transformed_sample_id)
         c = dict()
         properties = {}
         value = dmutil.get_required('name', transformed_sample)
@@ -248,6 +250,8 @@ class ProvenanceSaver(object):
     def _set_availability(self, sample_id):
         rr = r.table('samples').get(sample_id).update({'available': False}).run(g.conn)
         return rr
+    
+   
     
 @app.route('/provenance', methods=['POST'])
 @apikey
@@ -295,4 +299,8 @@ def update_df_denorm(process_id):
                     df_dnorm['file_type'] = 'output'
                     r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
         return
+    
+def join_sample_projects(projects, sample_id):
+    for p in projects:
+        rr = r.table('projects_samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn) 
 
