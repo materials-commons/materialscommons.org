@@ -1,7 +1,6 @@
 {
-
-    "id": "sem-settings" ,
-    "attribute": "settings",
+    "id": "sem-instrument-settings" ,
+    "attribute": "instrument-settings",
     "default_properties": [
         {
             "name": "Name" ,
@@ -20,16 +19,17 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": [{"name": "SEI - Everhart-Thornley", "value": "sei_everhart_thornley"},
-                             {"name": "BSE - Scintillator", "value": "bse_scintillator"},
-                             {"name": "BSE - Solid State", "value": "bse_solid_state"},
-                             {"name": "Other - Please Indicate", "value": "other_please_indicate"}],
-            "required": true
+            "value_choice": [{"name": "SEI", "value" : "sei"},
+                             {"name": "BSE-Scintillator", "value" : "bse_scintillator"},
+                             {"name": "BSE-Solidstate", "value" : "bse_solidstate"},
+                             {"name": "EBSD", "value" : "ebsd"},
+                             {"name": "EDS", "value" : "eds"}],
+            "required": false
         },
         {
             "name": "Voltage(kV)",
             "attribute": "voltage",
-            "type": "int",
+            "type": "number",
             "unit": "kV",
             "unit_choice": [],
             "value": "",
@@ -39,7 +39,7 @@
         {
             "name": "Current(A)",
             "attribute": "current",
-            "type": "int",
+            "type": "number",
             "unit": "A",
             "unit_choice": [],
             "value": "",
@@ -47,9 +47,9 @@
             "required": false
         },
         {
-            "name": "Stage Tilt(Degrees)",
+            "name": "Stage Tilt(o)",
             "attribute": "stage_tilt",
-            "type": "int",
+            "type": "number",
             "unit": "o",
             "unit_choice": [],
             "value": "",
@@ -59,7 +59,7 @@
         {
             "name": "Magnification",
             "attribute": "magnification",
-            "type": "int",
+            "type": "number",
             "unit": "",
             "unit_choice": [],
             "value": "",
@@ -69,7 +69,7 @@
         {
             "name": "Specimen/Stage Bias(V)",
             "attribute": "specimen_stage_bias",
-            "type": "int",
+            "type": "number",
             "unit": "V",
             "unit_choice": [],
             "value": "",
@@ -79,11 +79,22 @@
         {
             "name": "Column Bias(V)",
             "attribute": "column_bias",
-            "type": "int",
+            "type": "number",
             "unit": "V",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Stage",
+            "attribute": "stage",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [{"name": "Standard", "value" : "standard"},
+                             {"name": "Cryo", "value" : "cryo"}],
             "required": false
         },
         {
@@ -103,7 +114,7 @@
     "template_description": "" ,
     "template_birthtime": "",
     "template_mtime": "",
-    "template_name": "settings" ,
+    "template_name": "Settings" ,
     "template_type": "condition",
     "template_pick": "instrument"
 }

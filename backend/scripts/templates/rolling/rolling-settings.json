@@ -1,7 +1,6 @@
 {
-
-    "id": "etching-settings" ,
-    "attribute": "instrument_settings",
+    "id": "rolling-settings",
+    "attribute": "rolling_settings",
     "default_properties": [
         {
             "name": "Name" ,
@@ -16,7 +15,7 @@
         {
             "attribute": "temperature",
             "name": "Temperature" ,
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["C", "F"] ,
             "value": "" ,
@@ -24,23 +23,32 @@
             "required": false
         },
         {
-            "attribute": "time",
-            "name": "Time" ,
-            "type": "int" ,
+            "attribute": "speed",
+            "name": "Speed" ,
+            "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["hours", "minutes", "seconds"] ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "attribute": "reduction",
+            "name": "Reduction" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [],
             "value": "" ,
             "value_choice": [],
             "required": false
         }
     ],
-    "additional_properties":[
-    ],
+    "additional_properties":[],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "settings" ,
+    "template_name": "Settings" ,
     "template_pick": "treatment" ,
     "template_type": "condition"
 }
