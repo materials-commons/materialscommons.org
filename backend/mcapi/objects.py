@@ -60,12 +60,13 @@ def create_object():
     sample['treatments'] = []
     sample['parent_id'] = dmutil.get_optional('parent_id', j)
     sample['template'] = dmutil.get_required('template', j)
+    sample['path'] = dmutil.get_required('path', j)
     for treatment in dmutil.get_optional('treatments', j, []):
         t = doc.add_template_properties(treatment, 'treatment')
         sample['treatments'].append(t)
     sample_id = dmutil.insert_entry_id('samples', sample)
     _create_treatments_denorm(sample['treatments'], sample_id)
-    _join_sample_projects(projects, sample_id)
+    _join_sample_projects(dmutil.get_optional('projects', j, []), sample_id)
     return json.dumps({'id': sample_id})
 
 def _join_sample_projects(projects, sample_id):

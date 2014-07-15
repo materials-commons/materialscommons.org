@@ -40,11 +40,14 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                 $scope.message = "Once you submit the provenance you cannot change it. Do you wish to submit?";
                 $scope.title = "Confirmation Step";
                 $scope.doc = ProvDrafts.current;
+                //set the sample paths
+
                 $scope.process = $scope.doc.process;
                 $scope.inputs = $scope.doc.process.input_conditions;
                 $scope.outputs = $scope.doc.process.output_conditions;
                 $scope.input_files = $scope.doc.process.input_files;
                 $scope.output_files = $scope.doc.process.output_files;
+                if ($scope.inputs)
                 mcapi('/machines')
                     .success(function (data) {
                         $scope.machines_list = data;
