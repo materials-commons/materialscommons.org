@@ -76,7 +76,7 @@ def create_indices():
     create_index('processes', 'project')
     create_index('projects2samples', 'project_id')
     create_index('samples_denorm', 'sample_id')
-
+    create_index('samples_denorm', 'project_id')
 
 def create_index(table, name):
     #print "create_index(%s, %s)" % (table, name)
