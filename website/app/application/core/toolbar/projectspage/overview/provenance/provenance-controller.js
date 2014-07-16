@@ -1,7 +1,10 @@
 Application.Controllers.controller('toolbarProjectsPageOverviewProvenance',
     ["$scope", "$stateParams", "mcapi", function ($scope, $stateParams,mcapi) {
         $scope.test1 = function(branch){
-            console.log(branch)
+            mcapi('/objects/%', branch.id)
+                .success(function (data) {
+                    $scope.details = data;
+                }).jsonp();
 
         }
 
