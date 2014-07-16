@@ -41,7 +41,6 @@ Application.Provenance.Controllers.controller('provenanceFinish',
                 $scope.title = "Confirmation Step";
                 $scope.doc = ProvDrafts.current;
                 //set the sample paths
-
                 $scope.process = $scope.doc.process;
                 $scope.inputs = $scope.doc.process.input_conditions;
                 $scope.outputs = $scope.doc.process.output_conditions;

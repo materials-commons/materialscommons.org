@@ -217,7 +217,6 @@
                             </ul>
                         </div>
                         <div>
-
                             <h5><b><u>Projects</u></b></h5>
 
                             <div ng-show="projects_by_sample.length !==0 ">
@@ -227,18 +226,12 @@
                                         <tbody>
                                         <tr ng-repeat="i in projects_by_sample | page:currentUsersPage:10">
                                             <td>{{i.project_name}}</td>
-                                            <td ng-show="sample.owner===signed_in_user">
-                                                <button class="btn btn-default btn-danger"
-                                                        ng-click="deleteProject($index)">
-                                                    Delete
-                                                </button>
-                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </paged>
                             </div>
-                            <div ng-show="sample.owner===signed_in_user" class="row form-group">
+                            <div  class="row form-group">
                                 <div class="col-lg-8">
                                     <div class="col-lg-5">
                                         <select class="form-control" ng-model="model.selected_project"

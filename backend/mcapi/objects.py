@@ -85,36 +85,31 @@ def _add_treatment_entries(treatment, sample_id):
         prop['attribute'] = key
         prop['property'] = treatment['attribute']
         dmutil.insert_entry('treatments', prop)
-        
-@app.route('/object/<object_id>/project/<project_id>',
-           methods=['PUT'])
-@apikey
-@crossdomain(origin='*')
-def add_project_to_object(object_id, project_id):
-    project = r.table('projects').get(project_id).run(g.conn)
-    updated_projects_list = r.table('samples').get(object_id)['projects'].append({'id': project["id"], 'name': project["name"]}).run(g.conn)
-    r.table('samples').get(object_id).update({'projects': updated_projects_list }).run(g.conn)
-    return args.json_as_format_arg({'id': project['name']})
 
 
-@app.route('/object/<object_id>/project/<project_id>/remove',
-           methods=['PUT'])
-@apikey
+@app.route('/sample/project/join', methods=['POST'])
 @crossdomain(origin='*')
-def remove_project_from_object(object_id, project_id):
-    project = r.table('projects').get(project_id).run(g.conn)
-    res = r.table('samples').get(object_id)['projects']\
-                               .difference([{'id': project["id"], 'name': project["name"]}]).run(g.conn)
-    r.table('samples').get(object_id).update({'projects': res}).run(g.conn)
-    ugroup = r.table('samples').get(object_id)\
-                                  .run(g.conn, time_format='raw')
-    access.reset()
-    return args.json_as_format_arg(ugroup)
+def join_project_sample():
+    j = request.get_json()
+    sample_project = dict()
+    sample_project['sample_id'] = dmutil.get_required('sample_id', j)
+    sample_project['project_id'] = dmutil.get_required('project_id', j)
+    sample_project['project_name'] = dmutil.get_required('project_name', j)
+    sample_project_id = dmutil.insert_entry_id('projects_samples', sample_project)
+    return sample_project_id         
+
 
 @app.route('/samples/project/<sample_id>', methods=['GET'])
 @jsonp
-def samples_by_project(sample_id):
+def join_table_entries(sample_id):
     rv = r.table('projects_samples').filter({'sample_id': sample_id})
+    selection = list(rv.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+
+@app.route('/samples/by_project/<project_id>', methods=['GET'])
+@jsonp
+def get_samples_by_project(project_id):
+    rv = r.table('projects_samples').get_all(project_id, index='project_id').eq_join('sample_id', r.table('samples')).zip()
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 

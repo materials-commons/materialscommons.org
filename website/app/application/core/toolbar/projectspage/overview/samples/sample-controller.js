@@ -2,19 +2,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
     ["$scope", "mcapi", "$injector", "model.Projects", "alertService", "User", "$stateParams",
         function ($scope, mcapi, $injector, Projects, alertService, User, $stateParams) {
 
-            $scope.refreshProjects = function () {
-//                mcapi('/objects/%', $scope.sample.id)
-//                    .success(function (data) {
-//                        $scope.projects_by_sample = data.projects;
-//                    }).jsonp();
-                mcapi('/samples/project/%', $scope.sample.id)
-                    .success(function (data) {
-                        console.log(data)
-                        $scope.projects_by_sample = data;
-                    }).jsonp();
 
-
-            };
 
             $scope.showForm = function () {
                 $scope.default_properties = $scope.bk.selected_treatment.default_properties;
@@ -65,6 +53,13 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                 $scope.doc.template = $scope.bk.classification.id;
 
             };
+
+            $scope.refreshProjects = function () {
+                mcapi('/samples/project/%', $scope.sample.id)
+                    .success(function (data) {
+                        $scope.projects_by_sample = data;
+                    }).jsonp();
+            };
             $scope.showTreatmentDetails_and_processes = function (sample) {
                 $scope.sample = sample;
 //                $scope.refreshProcesses();
@@ -80,8 +75,8 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     available: true,
                     default_properties: [],
                     added_properties: [],
-                    treatments: [],
-                    projects: []
+                    treatments: []
+//                    projects: []
                 };
                 $scope.bk = {
                     selected_treatment: '',
@@ -96,17 +91,17 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
             $scope.populateProjects = function () {
                 $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
             };
-            $scope.removeProjects = function (index) {
-                $scope.doc.projects.splice(index, 1);
-            };
 
-            $scope.addProject = function (prj) {
-                mcapi('/object/%/project/%', $scope.sample.id, $scope.model.selected_project.id)
+            $scope.addProject = function () {
+                $scope.sample_project = {
+                    'sample_id' : $scope.sample.id,
+                    'project_id': $scope.model.selected_project.id,
+                    'project_name': $scope.model.selected_project.name
+                }
+                mcapi('/sample/project/join', $scope.sample.id, $scope.model.selected_project.id, $scope.model.selected_project.name)
                     .success(function (data) {
                         $scope.refreshProjects();
-                    }).error(function (data) {
-                        alertService.sendMessage(data.error);
-                    }).put();
+                    }).post($scope.sample_project)
             };
 
             $scope.deleteProject = function (index) {
@@ -161,7 +156,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     .error(function (e) {
 
                     }).jsonp();
-                mcapi('/objects')
+                mcapi('/samples/by_project/%', $scope.project_id)
                     .success(function (data) {
                         $scope.samples_list = data;
                     })
