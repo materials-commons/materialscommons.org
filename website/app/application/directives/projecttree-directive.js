@@ -19,7 +19,6 @@ Application.Controllers.controller('ProjectTreeController',
             }
             $scope.dir = item.children;
             $scope.loaded = true;
-            console.log($scope.dir)
         };
 
         $scope.backToFolder = function (item) {

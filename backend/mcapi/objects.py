@@ -71,7 +71,7 @@ def create_object():
 
 def _join_sample_projects(projects, sample_id):
     for p in projects:
-        rr = r.table('projects_samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn) 
+        rr = r.table('projects2samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn) 
 
 def _create_treatments_denorm(treatments, sample_id):
     for treatment in treatments:
@@ -95,21 +95,21 @@ def join_project_sample():
     sample_project['sample_id'] = dmutil.get_required('sample_id', j)
     sample_project['project_id'] = dmutil.get_required('project_id', j)
     sample_project['project_name'] = dmutil.get_required('project_name', j)
-    sample_project_id = dmutil.insert_entry_id('projects_samples', sample_project)
+    sample_project_id = dmutil.insert_entry_id('projects2samples', sample_project)
     return sample_project_id         
 
 
 @app.route('/samples/project/<sample_id>', methods=['GET'])
 @jsonp
 def join_table_entries(sample_id):
-    rv = r.table('projects_samples').filter({'sample_id': sample_id})
+    rv = r.table('projects2samples').filter({'sample_id': sample_id})
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
 @app.route('/samples/by_project/<project_id>', methods=['GET'])
 @jsonp
 def get_samples_by_project(project_id):
-    rv = r.table('projects_samples').get_all(project_id, index='project_id').eq_join('sample_id', r.table('samples')).zip()
+    rv = r.table('projects2samples').get_all(project_id, index='project_id').eq_join('sample_id', r.table('samples')).zip()
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -132,7 +132,7 @@ class DEncoder2(json.JSONEncoder):
 @app.route('/samples/<project_id>/tree', methods=['GET'])
 @jsonp
 def sample_tree(project_id):
-    samples = r.table('projects_samples').get_all(project_id, index='project_id').eq_join('sample_id', r.table('samples')).zip().run(g.conn)
+    samples = r.table('projects2samples').get_all(project_id, index='project_id').eq_join('sample_id', r.table('samples')).zip().run(g.conn)
     all_samples = {}
     top_level_samples = []
     for samp in samples:
@@ -153,8 +153,6 @@ def sample_tree(project_id):
             parent.children.append(sitem)
             all_samples[parent_name] = parent
     return json.dumps(top_level_samples, cls=DEncoder2)
-    
-    
     
 
 

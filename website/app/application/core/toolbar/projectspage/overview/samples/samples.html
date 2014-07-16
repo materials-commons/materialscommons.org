@@ -208,12 +208,12 @@
                         </div>
                         <h5><b><u>Processes</u></b></h5>
 
-                        <div ng-if="processes_list.length === 0">
+                        <div ng-if="processes_by_sample.length === 0">
                             <p class="text-muted">Sample {{sample.name}} has not been used in any process</p>
                         </div>
-                        <div ng-if="processes_list.length !== 0">
-                            <ul ng-repeat="process in processes_list">
-                                <li><a ui-sref="toolbar.process({id: process.right.id})">{{process.right.name}}</a></li>
+                        <div ng-if="processes_by_sample.length !== 0">
+                            <ul ng-repeat="each in processes_by_sample">
+                                <li><a ui-sref="toolbar.process({id: each.process_id})">{{each.process_name}}</a></li>
                             </ul>
                         </div>
                         <div>

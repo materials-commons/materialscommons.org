@@ -15,5 +15,5 @@ if __name__ == "__main__":
     for sample in samples:
         projects = sample['projects']
         for p in projects:
-            rr = r.table('projects_samples').insert({'sample_id': sample['id'], 'project_id': p['id'], 'project_name': p['name']}).run(conn)
+            rr = r.table('projects2samples').insert({'sample_id': sample['id'], 'project_id': p['id'], 'project_name': p['name']}).run(conn)
             
