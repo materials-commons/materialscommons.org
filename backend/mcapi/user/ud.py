@@ -235,7 +235,7 @@ class ProvenanceSaver(object):
                 transformed_sample['treatments'].append(item)
         transformed_sample['template'] = dmutil.get_optional('template', s)
         transformed_sample_id = dmutil.insert_entry_id('samples', transformed_sample)
-        join_sample_projects(dmutil.get_optional('projects', s), transformed_sample_id)
+        join_sample_projects(dmutil.get_optional('projects_samples_join', s), transformed_sample_id)
         c = dict()
         properties = {}
         value = dmutil.get_required('name', transformed_sample)
@@ -300,7 +300,7 @@ def update_df_denorm(process_id):
                     r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
         return
     
-def join_sample_projects(projects, sample_id):
-    for p in projects:
-        rr = r.table('projects_samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn) 
+def join_sample_projects(old_joins, t_sample_id):
+    for each in old_joins:
+        rr = r.table('projects_samples').insert({'sample_id': t_sample_id, 'project_id': each['project_id'], 'project_name': each['project_name']}).run(g.conn) 
 

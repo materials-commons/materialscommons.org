@@ -28,7 +28,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
             };
 
             $scope.load_all_samples = function () {
-                mcapi('/objects/user/%', User.u())
+                mcapi('/samples/by_project/%', $scope.project_id)
                     .success(function (data) {
                         $scope.samples_list = $filter('available')(data);
 
@@ -62,6 +62,7 @@ Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
                     customPropertyValue: ''
 
                 };
+                $scope.project_id = $stateParams.id
                 $scope.stepName = {"name": $stateParams.stepname, "value": $stateParams.stepvalue}
                 if ($stateParams.iosteps === 'inputs') {
                     $scope.doc = ProvDrafts.current.process.input_conditions[$scope.stepName.value];
