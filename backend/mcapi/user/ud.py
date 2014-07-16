@@ -284,7 +284,16 @@ def update_df_denorm(process_id):
                     df_dnorm['process_name'] = process['name']
                     df_dnorm['project_id'] = process['project']
                     df_dnorm['file_type'] = 'input'
-                    r.table('datafiles_denorm').insert(df_dnorm).run(g.conn) 
+                    r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
+                elif i['attribute'] == 'sample':
+                    sample_dnorm = {}
+                    sample_dnorm['sample_id'] = i['properties']['id']['value']
+                    sample_dnorm['sample_name'] = i['properties']['name']['value']
+                    sample_dnorm['process_id'] = process['id']
+                    sample_dnorm['process_name'] = process['name']
+                    sample_dnorm['project_id'] = process['project']
+                    sample_dnorm['file_type'] = 'input'
+                    r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
         if outputs == []:
             print 'no outputs'
         else:
@@ -298,9 +307,18 @@ def update_df_denorm(process_id):
                     df_dnorm['project_id'] = process['project']
                     df_dnorm['file_type'] = 'output'
                     r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
+                elif o['attribute'] == 'sample':
+                    sample_dnorm = {}
+                    sample_dnorm['sample_id'] = o['properties']['id']['value']
+                    sample_dnorm['sample_name'] = o['properties']['name']['value']
+                    sample_dnorm['process_id'] = process['id']
+                    sample_dnorm['process_name'] = process['name']
+                    sample_dnorm['project_id'] = process['project']
+                    sample_dnorm['file_type'] = 'output'
+                    r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
         return
     
 def join_sample_projects(old_joins, t_sample_id):
     for each in old_joins:
-        rr = r.table('projects_samples').insert({'sample_id': t_sample_id, 'project_id': each['project_id'], 'project_name': each['project_name']}).run(g.conn) 
+        rr = r.table('projects2samples').insert({'sample_id': t_sample_id, 'project_id': each['project_id'], 'project_name': each['project_name']}).run(g.conn) 
 

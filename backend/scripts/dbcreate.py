@@ -38,7 +38,8 @@ def create_tables():
     create_table("samples")
     create_table("treatments")
     create_table("datafiles_denorm")
-    create_table("projects_samples")
+    create_table("samples_denorm")
+    create_table("projects2samples")
 
 
 def create_table(table):
@@ -73,7 +74,8 @@ def create_indices():
     create_index('treatments', 'sample_id')
     create_index('templates', 'template_pick')
     create_index('processes', 'project')
-    create_index('projects_samples', 'project_id')
+    create_index('projects2samples', 'project_id')
+    create_index('samples_denorm', 'sample_id')
 
 
 def create_index(table, name):

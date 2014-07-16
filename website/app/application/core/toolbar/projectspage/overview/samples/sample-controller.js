@@ -60,9 +60,15 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                         $scope.projects_by_sample = data;
                     }).jsonp();
             };
+            $scope.refreshProcesses = function () {
+                mcapi('/processes/sample/%', $scope.sample.id)
+                    .success(function (data) {
+                        $scope.processes_by_sample = data;
+                    }).jsonp();
+            };
             $scope.showTreatmentDetails_and_processes = function (sample) {
                 $scope.sample = sample;
-//                $scope.refreshProcesses();
+                $scope.refreshProcesses();
                 $scope.refreshProjects();
 
             };

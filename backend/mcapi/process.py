@@ -28,6 +28,7 @@ def get_all_processes_for_template(template_id):
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
+
 @app.route('/processes/project/<project_id>', methods=['GET'])
 @apikey
 @jsonp
@@ -36,6 +37,22 @@ def get_processes_by_project(project_id):
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
+
+@app.route('/processes/sample/<sample_id>', methods=['GET'])
+@apikey
+@jsonp
+def get_processes_by_sample(sample_id):
+    rr = r.table('samples_denorm').get_all(sample_id, index='sample_id')
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+
+
+@app.route('/processes/file/<file_id>', methods=['GET'])
+@jsonp
+def get_processes_by_file(file_id):
+    rv = r.table('datafiles_denorm').filter({'df_id': file_id}).eq_join('process_id', r.table('processes'))
+    selection = list(rv.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 
 @app.route('/processes/new', methods=['POST'])
@@ -67,16 +84,6 @@ def create_process():
     return dmutil.insert_entry('processes', p)
 
 
-@app.route('/processes/project/<project_id>', methods=['GET'])
-@apikey
-@jsonp
-def get_all_processes_for_project(project_id):
-    rr = r.table('processes').filter({'project': project_id}) \
-                             .pluck('id', 'name', 'template', 'description')
-    selection = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
-
-
 @app.route('/process/update/<path:processid>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
@@ -86,13 +93,3 @@ def update_process(processid):
         return ''
     else:
         error.update_conflict("Unable to update process: " + processid)
-        
-
-@app.route('/processes/file/<file_id>', methods=['GET'])
-@jsonp
-def get_processes_by_file(file_id):
-    #rv = r.table('processes').concat_map(lambda doc: doc['inputs']).filter(lambda entry : entry['properties']['id']['value'].match('423211fd-1071-49ff-91a9-eaed641fa021'))
-    rv = r.table('datafiles_denorm').filter({'df_id': file_id}).eq_join('process_id', r.table('processes'))
-    selection = list(rv.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
-
