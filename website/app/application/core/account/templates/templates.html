@@ -5,14 +5,14 @@
         <label>Experimental Templates:</label>
         <table class="table table-bordered mc-table">
             <thead>
-            <th></th>
-            <th>Template name</th>
+                <th></th>
+                <th>Template name</th>
             </thead>
             <tbody>
-            <tr ng-repeat="t in experimental_templates">
-                <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
-                <td><a>{{t.template_name}}</a></td>
-            </tr>
+                <tr ng-repeat="t in experimental_templates | orderBy:'template_name'">
+                    <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
+                    <td>{{t.template_name}}</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -20,29 +20,33 @@
         <label>Computational Templates:</label>
         <table class="table table-bordered">
             <thead>
-            <th></th>
-            <th>Template name</th>
+                <th></th>
+                <th>Template name</th>
             </thead>
             <tbody>
-            <tr ng-repeat="t in computational_templates">
-                <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
-                <td><a>{{t.template_name}}</a></td>
-            </tr>
+                <tr ng-repeat="t in computational_templates | orderBy:'template_name'">
+                    <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
+                    <td>{{t.template_name}}</td>
+                </tr>
             </tbody>
         </table>
     </div>
-    <div class="col-sm-offset-3">
-        <form class="form-horizontal">
-            <legend> Preferred templates are:</legend>
-            <ul ng-repeat="t in preferred_templates">
-                <li>{{t.template_name}} </li>
-
-            </ul>
-            <div ng-if="preferred_templates.length !== 0">
-                <button class="btn btn-default btn-primary" ng-click="updatePreferences()">Save</button>
-
-            </div>
-        </form>
+    <div class="col-sm-3">
+        <div class="row">
+            <label>Preferred Templates:</label>
+            <table class="table table-bordered">
+                <thead>
+                    <th>Template name</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="t in preferred_templates | orderBy:'template_name'">
+                        <td>{{t.template_name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <button class="btn btn-default btn-primary" ng-click="updatePreferences()">Save</button>
+        </div>
     </div>
-
 </div>

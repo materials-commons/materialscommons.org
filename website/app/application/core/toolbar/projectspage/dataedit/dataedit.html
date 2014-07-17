@@ -24,7 +24,7 @@
                         <div class="col-lg-8 col-lg-offset-2">
                             <div ng-switch="" on="fileType">
                                 <div ng-switch-when="image">
-                                    <a href="#" class="thumbnail">
+                                    <a ng-href="{{ fileSrc }}" class="thumbnail">
                                         <img class="img-responsive" alt="Not Available" ng-src="{{ fileSrc }}">
                                     </a>
                                 </div>
