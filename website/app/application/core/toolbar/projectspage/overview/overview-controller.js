@@ -1,6 +1,11 @@
 Application.Controllers.controller('toolbarProjectsPageOverview',
-    ["$scope", "$stateParams", "pubsub", "$state", function ($scope, $stateParams, pubsub, $state) {
-
+    ["$scope", "$stateParams", "pubsub", "$state","mcapi", function ($scope, $stateParams, pubsub, $state, mcapi) {
+        $scope.countDrafts = function(){
+            mcapi('/drafts/project/%', $scope.project_id)
+                .success(function (drafts) {
+                    $scope.drafts_count = drafts.length;
+                }).jsonp();
+        }
         $scope.showTab = function (tab) {
             switch (tab) {
                 case "files":
@@ -30,6 +35,7 @@ Application.Controllers.controller('toolbarProjectsPageOverview',
             $scope.from = $stateParams.from;
             $scope.processes = [];
             $state.go('toolbar.projectspage.overview.files', {id: $scope.project_id});
+            $scope.countDrafts();
         }
 
         init();
