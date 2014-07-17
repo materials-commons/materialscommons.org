@@ -44,7 +44,6 @@ def create_tables():
 
 def create_table(table):
     run(r.db('materialscommons').table_create(table))
-    #run(r.db('history').table_create(table))
 
 
 def create_indices():
@@ -79,9 +78,7 @@ def create_indices():
     create_index('samples_denorm', 'project_id')
 
 def create_index(table, name):
-    #print "create_index(%s, %s)" % (table, name)
     run(r.db('materialscommons').table(table).index_create(name))
-    #run(r.db('history').table(table).index_create(name))
 
 
 def run(rql):
