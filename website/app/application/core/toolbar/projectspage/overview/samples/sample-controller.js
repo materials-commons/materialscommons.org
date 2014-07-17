@@ -3,7 +3,6 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
         function ($scope, mcapi, $injector, Projects, alertService, User, $stateParams) {
 
 
-
             $scope.showForm = function () {
                 $scope.default_properties = $scope.bk.selected_treatment.default_properties;
                 $scope.bk.tab_item = '';
@@ -100,7 +99,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
 
             $scope.addProject = function () {
                 $scope.sample_project = {
-                    'sample_id' : $scope.sample.id,
+                    'sample_id': $scope.sample.id,
                     'project_id': $scope.model.selected_project.id,
                     'project_name': $scope.model.selected_project.name
                 }
@@ -120,8 +119,6 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
             };
 
             function init() {
-                $scope.project_id = $stateParams.id;
-                $scope.signed_in_user = User.u();
                 $scope.doc = {
                     name: '',
                     notes: [],
@@ -129,22 +126,20 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     default_properties: [],
                     added_properties: [],
                     treatments: []
-//                    projects: [],
-//                    parent_id: ''
                 };
                 $scope.bk = {
                     selected_project: ''
-
                 };
-//                mcapi('/projects/%', $scope.project_id)
-//                    .success(function (data) {
-//                        $scope.default_project = {'id': data.id, 'name': data.name};
-//                        $scope.doc.projects.push($scope.default_project);
-//                    })
-//                    .error(function (data) {
-//                    }).jsonp();
-                $scope.processes_list =  [];
-                $scope.projects_by_sample =  [];
+                //initialize the sample with default project
+                $scope.project_id = $stateParams.id;
+                mcapi('/projects/%', $scope.project_id)
+                    .success(function (data) {
+                        $scope.project = data;
+                        $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
+                    }).jsonp();
+                $scope.signed_in_user = User.u();
+                $scope.processes_list = [];
+                $scope.projects_by_sample = [];
                 $scope.clear();
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_pick":"treatment"')
