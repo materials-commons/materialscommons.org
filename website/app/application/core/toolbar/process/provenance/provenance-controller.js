@@ -38,7 +38,6 @@ Application.Controllers.controller('toolbarProcessProvenance',
                         $scope.output_files = $filter('processFilter')($scope.process.outputs, 'file');
                         $scope.input_conditions = $filter('processFilter')($scope.process.inputs, 'condition', 'id');
                         $scope.output_conditions = $filter('processFilter')($scope.process.outputs, 'condition', 'id');
-                        console.log($scope.input_conditions)
                     }).jsonp();
 
 
