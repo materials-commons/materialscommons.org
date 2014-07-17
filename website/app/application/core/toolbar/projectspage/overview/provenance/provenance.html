@@ -2,13 +2,19 @@
     <div class="row" ng-if="tree_data">
         <button ng-click="my_tree.expand_all()" class="btn btn-default btn-sm">Expand All</button>
         <button ng-click="my_tree.collapse_all()" class="btn btn-default btn-sm">Collapse All</button>
-        <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="my_tree" on-select="test1(branch)"></tree-grid>
+        <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="my_tree" on-select="sampleDetails(branch)"></tree-grid>
     </div>
     <div  ng-if="details" class="row">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
                         <div sample-report sample="details"></div>
+                </div>
+                <div class="row">
+                    <h4>Processes</h4>
+                    <ul ng-repeat="p in processes">
+                        <li>{{p.process_name}} ( {{p.file_type}}) </li>
+                    </ul>
                 </div>
             </div>
         </div>
