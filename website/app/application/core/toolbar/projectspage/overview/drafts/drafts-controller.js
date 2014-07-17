@@ -24,7 +24,6 @@ Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
                 modalInstance.result.then(function (selectedItem) {
                     $scope.selected = selectedItem;
                 }, function () {
-                    console.log('next')
                     //$log.info('Modal dismissed at: ' + new Date());
                 });
             };
