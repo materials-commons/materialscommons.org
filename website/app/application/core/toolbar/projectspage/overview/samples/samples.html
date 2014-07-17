@@ -110,12 +110,13 @@
                 </div>
             </div>
         </div>
+
+        <div class="row" ng-show="bk.classification"><br>
+            <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
+            <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
+            <div saved-notification="" message="message"></div>
+        </div>
     </form>
-    <div class="row" ng-show="bk.classification"><br>
-        <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
-        <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
-        <div saved-notification="" message="message"></div>
-    </div>
     <br><br>
     <h4 plus-minus-toggle="availablesamples">
         <i class="fa fa-minus-square"></i>
@@ -231,7 +232,7 @@
                                     </table>
                                 </paged>
                             </div>
-                            <div  class="row form-group">
+                            <div class="row form-group">
                                 <div class="col-lg-8">
                                     <div class="col-lg-5">
                                         <select class="form-control" ng-model="model.selected_project"

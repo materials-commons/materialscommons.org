@@ -42,7 +42,7 @@
             "unit_choice": ["cm", "m"] ,
             "value": "" ,
             "value_choice": [],
-            "required": false
+            "required": true
         },
         {
             "name": "Width" ,
