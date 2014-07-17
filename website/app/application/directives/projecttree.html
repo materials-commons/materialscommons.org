@@ -4,25 +4,25 @@
             <i style="padding-left:1px;" class="fa fa-folder"></i><span style="margin-right: 7px; padding-left:5px; font-size: 13px">{{trailitem.displayname}}/ </span>
         </a><br>
     </div>
-        <div class="panel panel-default">
-            <div ng-hide="checkBox" class="panel-heading file-heading">
-                <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
-                <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
-                <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a>
-                <a ui-sref="toolbar.projectspage.provenance" style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-code-fork"></i>Add Prov </a>
-            </div>
-            <div class="panel-body" style="padding: 5px;background-color: #389DC1">
-                <p style="color:white">Last Synced............</p>
-            </div>
+    <div class="panel panel-default">
+        <div ng-hide="checkBox" class="panel-heading file-heading">
+            <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
+            <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
+            <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a>
+            <a ui-sref="toolbar.projectspage.provenance" style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-code-fork"></i>Add Prov </a>
         </div>
-        <div ng-show="loaded===false">
-            <div class="row col-lg-offset-5">
-                <p><i class="fa fa-spinner fa-spin fa-4x"></i> Loading...</p>
-            </div>
+        <div class="panel-body" style="padding: 5px;background-color: #389DC1">
+            <p style="color:white">Last Synced............</p>
         </div>
-        <div ng-show="loaded===true">
-            <table class="table  table-file-directory ">
-                <tbody>
+    </div>
+    <div ng-show="loaded===false">
+        <div class="row col-lg-offset-5">
+            <p><i class="fa fa-spinner fa-spin fa-4x"></i> Loading...</p>
+        </div>
+    </div>
+    <div ng-show="loaded===true">
+        <table class="table  table-file-directory ">
+            <tbody>
                 <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
                     data-tt-parent-id="{{t.parent_id}}"
                     data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
@@ -30,15 +30,6 @@
                         <input ng-model="entry.selected" ng-click="fileSelected(entry)"
                                ng-change="entry.selected = !entry.selected" type="checkbox">
                     </td>
-                    <!--<td ng-if="entry.type=='datadir'">-->
-                        <!--&lt;!&ndash;<input type="checkbox" disabled/>&ndash;&gt;-->
-                    <!--</td>-->
-                    <!--<td> <div class="btn btn-info btn-draggable"-->
-                              <!--ng-repeat="item in list2" ng-show="item.title"-->
-                              <!--data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}"-->
-                              <!--ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">-->
-                        <!--{{item.title}}</div>-->
-                    <!--</td>-->
                     <td ng-if="entry.type=='datadir'">
                         <a style="cursor: pointer" ng-click="openFolder(entry)"><i style="margin-right:5px;" class="fa fa-folder"></i>{{entry.displayname}}
                         </a>
@@ -50,9 +41,8 @@
                     <td ng-if="entry.type=='datadir'">-</td>
                     <td>{{entry.owner}}</td>
                 </tr>
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
+    </div>
     <div ui-view=''></div>
 </div>
-
