@@ -45,10 +45,11 @@ Application.Controllers.controller('toolbarDataEdit',
                                 .success(function (data) {
                                     $scope.file_path.push(data.name);
                                 }).jsonp();
-                        })
+                        });
                     }).jsonp();
 
-            }
+            };
+
             function init() {
                 $scope.model = {
                     is_disabled: true,
