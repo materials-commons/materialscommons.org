@@ -5,7 +5,7 @@ import rethinkdb as r
 import error
 import dmutil
 import json
-
+import args
 
 @app.route('/templates/<template_id>', methods=['GET'])
 @apikey
@@ -30,7 +30,9 @@ def get_template_by_name(template_name):
 @apikey(shared=True)
 @jsonp
 def get_all_templates():
-    return dmutil.get_all_from_table('templates')
+    rr = r.table('templates').order_by('template_name')
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
 
 
 @app.route('/templates/by_pick/<pick>', methods=['GET'])
