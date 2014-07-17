@@ -75,7 +75,6 @@
                         scope.colDefinitions = _col_defs;
                     }
                     else{
-                        console.log(scope.colDefs);
                         scope.colDefinitions = scope.colDefs;
                     }
                     for_each_branch = function(f) {

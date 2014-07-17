@@ -56,7 +56,7 @@ def _get_value(attrs):
 def new_prop_attrs(name, unit, value, prop_type):
     prop_attrs = {}
     if prop_type == 'select':
-        x = json.loads(value)
+        x = value
         prop_attrs['value_name'] = x[u'name']
         prop_attrs['value'] = x[u'value']
     else:
