@@ -55,6 +55,7 @@ Application.Provenance.Controllers.controller('provenanceProcess',
                 $scope.doc = ProvDrafts.current.process;
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"process"')
+                    .argWithValue('order_by', 'template_name')
                     .success(function (processes) {
                         $scope.process_templates = processes;
                         $scope.experimental_templates = $filter('templateFilter')($scope.process_templates, 'experiment');

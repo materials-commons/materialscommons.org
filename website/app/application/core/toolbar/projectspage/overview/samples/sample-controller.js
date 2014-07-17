@@ -1,6 +1,7 @@
 Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
     ["$scope", "mcapi", "$injector", "model.Projects", "alertService", "User", "$stateParams",
         function ($scope, mcapi, $injector, Projects, alertService, User, $stateParams) {
+            var $validationProvider = $injector.get('$validation');
 
 
             $scope.showForm = function () {
@@ -24,7 +25,6 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
             };
 
             $scope.save = function (form) {
-                var $validationProvider = $injector.get('$validation');
                 var check = $validationProvider.checkValid(form);
                 $scope.doc.path = $scope.doc.name;
                 if (check === true) {
