@@ -1,8 +1,0 @@
-#!/bin/sh
-METHOD=$1
-KEY=$2
-curl -H "Origin: http://example.com" \
-  -H "Access-Control-Request-Method: $METHOD" \
-  -H "Access-Control-Request-Headers: X-Requested-With" \
-  -X OPTIONS --verbose \
-  http://localhost:2000/v1.0/abc?apikey=$KEY
