@@ -72,11 +72,30 @@ def convert_compositions(conn):
                                        'projects': []}).run(conn)
 
 
+def drop_unused_tables(conn):
+    print "  Dropping unused tables..."
+    r.table_drop('materials').run(conn)
+    r.table_drop('citations').run(conn)
+    r.table_drop('dataparams').run(conn)
+    r.table_drop('datasets').run(conn)
+    r.table_drop('notes').run(conn)
+    r.table_drop('project2conditions').run(conn)
+    r.table_drop('review2datafile').run(conn)
+    r.table_drop('udqueue').run(conn)
+
+
+def drop_unused_database(conn):
+    print "  Dropping unused history database..."
+    r.db_drop('history').run(conn)
+
+
 def main(conn):
     print "Beginning conversion steps:"
     add_projects_to_groups(conn)
     build_samples_projects_denorm(conn)
     convert_compositions(conn)
+    drop_unused_tables(conn)
+    drop_unused_database(conn)
     print "Finished."
 
 if __name__ == "__main__":
