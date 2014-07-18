@@ -18,8 +18,13 @@ def main(conn):
         owner = sample['owner']
         projects = list(r.table('projects').filter({'owner': owner})
                         .pluck('id', 'name').run(conn))
-        sample['projects'] = projects
-        r.table('samples').get(sample['id']).update(sample).run(conn)
+        for p in projects:
+            prj_sample = {}
+            prj_sample['sample_id'] = sample['id']
+            prj_sample['project_id'] = p['id']
+            prj_sample['project_name'] = p['name']
+            rr = r.table('projects2samples').insert(prj_sample).run(conn)
+
 
 if __name__ == "__main__":
     parser = OptionParser()
