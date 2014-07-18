@@ -8,6 +8,7 @@ Application.Controllers.controller("PeriodicTableController",
             $scope.doc.value.splice(i, 1);
         };
         function init() {
+            $scope.doc.unit = "at%"; //setting default unit for composition
             $scope.panel_one_elements = ["H", "Li", "Na", "K", "Rb", "Cs", "Fr"];
             $scope.panel_two_elements = ["Be", "Mg", "Ca", "Sr", "Ba", "Ra"];
             $scope.panel_three_elements = ["Sc", "Y", "La-Lu", "Ac-Lr"];
