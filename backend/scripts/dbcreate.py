@@ -8,7 +8,6 @@ r.connect("localhost", int(MCDB_PORT)).repl()
 
 def create_database():
     run(r.db_create("materialscommons"))
-    #run(r.db_create("history"))
 
 
 def create_tables():
@@ -18,21 +17,16 @@ def create_tables():
     create_table("datadirs")
     create_table("tags")
     create_table("news")
-    create_table("udqueue")
     create_table("reviews")
     create_table("processes")
     create_table("machines")
     create_table("projects")
-    create_table("datasets")
-    create_table("citations")
-    create_table("notes")
     create_table("templates")
     create_table("state")
     create_table("drafts")
     create_table("saver")
     create_table("project2datadir")
     create_table("project2datafile")
-    create_table("review2datafile")
     create_table("datadirs_denorm")
     create_table("tag2item")
     create_table("samples")
@@ -76,6 +70,7 @@ def create_indices():
     create_index('projects2samples', 'project_id')
     create_index('samples_denorm', 'sample_id')
     create_index('samples_denorm', 'project_id')
+
 
 def create_index(table, name):
     run(r.db('materialscommons').table(table).index_create(name))
