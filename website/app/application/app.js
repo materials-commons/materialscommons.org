@@ -162,15 +162,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          */
         .state('toolbar.projectspage', {
             url: '/projectspage/:id/:draft_id/:from',
-            templateUrl: 'application/core/toolbar/projectspage/projectspage.html',
-            resolve: {
-                ProvDrafts: "ProvDrafts"
-            },
-            onExit: function (ProvDrafts) {
-                if (ProvDrafts.current && ProvDrafts.current.process.name !== "") {
-                    ProvDrafts.saveDraft();
-                }
-            }
+            templateUrl: 'application/core/toolbar/projectspage/projectspage.html'
         })
         .state('toolbar.projectspage.overview', {
             url: '/overview',
@@ -225,12 +217,19 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          */
         .state('toolbar.projectspage.provenance', {
             url: '/provenance',
-            templateUrl: 'application/core/toolbar/projectspage/provenance/provenance.html'
+            templateUrl: 'application/core/toolbar/projectspage/provenance/provenance.html',
+            resolve: {
+                ProvDrafts: "ProvDrafts"
+            },
+            onExit: function (ProvDrafts) {
+                if (ProvDrafts.current && ProvDrafts.current.process.name !== "") {
+                    ProvDrafts.saveDraft();
+                }
+            }
         })
         .state('toolbar.projectspage.provenance.process', {
             url: '/process',
             templateUrl: 'application/core/toolbar/projectspage/provenance/process/process.html'
-
         })
         .state('toolbar.projectspage.provenance.iosteps', {
             url: '/iosteps:iosteps',
