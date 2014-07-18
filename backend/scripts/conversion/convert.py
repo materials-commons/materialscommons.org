@@ -10,6 +10,7 @@ from optparse import OptionParser
 
 
 def add_projects_to_groups(conn):
+    print "  Adding projects to groups..."
     groups = list(r.table('usergroups').run(conn))
     for group in groups:
         owner = group['owner']
@@ -20,6 +21,7 @@ def add_projects_to_groups(conn):
 
 
 def build_samples_projects_denorm(conn):
+    print "  Building the projects2samples denorm table..."
     samples = list(r.table('samples').run(conn))
     for sample in samples:
         owner = sample['owner']
@@ -34,6 +36,7 @@ def build_samples_projects_denorm(conn):
 
 
 def convert_compositions(conn):
+    print "  Converting compositions..."
     all_samples = list(r.table('samples').run(conn, time_format='raw'))
     d = dict()
     d = {
@@ -70,9 +73,11 @@ def convert_compositions(conn):
 
 
 def main(conn):
+    print "Beginning conversion steps:"
     add_projects_to_groups(conn)
     build_samples_projects_denorm(conn)
     convert_compositions(conn)
+    print "Finished."
 
 if __name__ == "__main__":
     parser = OptionParser()
