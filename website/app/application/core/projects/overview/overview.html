@@ -1,0 +1,68 @@
+<br>
+<div class="row" ng-controller="toolbarProjectsPageOverview">
+    <div class="col-lg-2">
+        <div ng-controller="toolbarProjectsPage">
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    Tags
+                </div>
+                <div class="panel panel-body">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <div class="tag-circle" style="background-color: red"></div>
+                        </div>
+                        <div class="col-sm-1">
+                            Red
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <div class="tag-circle" style="background-color: green"></div>
+                        </div>
+                        <div class="col-sm-1">
+                            green
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <div class="tag-circle" style="background-color: blue"></div>
+                        </div>
+                        <div class="col-sm-1">
+                            blue
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <div class="tag-circle" style="background-color: orange"></div>
+                        </div>
+                        <div class="col-sm-1">
+                            orange
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div ui-view></div>
+    </div>
+    <div class="col-lg-2">
+        <div style="padding-left:40px" class="individual-items">
+            <ul class="nav nav-tabs tabs-right">
+                <li class="active"><a ng-click="showTab('files')" data-toggle="tab">
+                    Filesss<i class="fa fa-file-text marginLeft pull-right"></i> </a></li>
+                <li><a ng-click="showTab('provenance')" data-toggle="tab">Provenance <i
+                        class="fa fa-code-fork marginLeft pull-right"></i> </a></li>
+                <li><a ng-click="showTab('drafts')" data-toggle="tab">Drafts  ({{drafts_count}}) <i class="fa fa-copy marginLeft pull-right"></i>
+                </a></li>
+                <!--<li><a ng-click="showTab('issues')" data-toggle="tab">Issues <i-->
+                        <!--class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>-->
+                <!--<li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i-->
+                        <!--class="fa fa-cog marginLeft pull-right"></i></a></li>-->
+                <li><a ng-click="showTab('samples')" data-toggle="tab">Samples <i
+                        class="fa fa-cubes marginLeft pull-right"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
