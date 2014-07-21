@@ -80,8 +80,8 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     available: true,
                     default_properties: [],
                     added_properties: [],
-                    treatments: []
-//                    projects: []
+                    treatments: [],
+                    projects: []
                 };
                 $scope.bk = {
                     selected_treatment: '',
@@ -125,6 +125,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     available: true,
                     default_properties: [],
                     added_properties: [],
+                    projects: [],
                     treatments: []
                 };
                 $scope.bk = {
@@ -160,9 +161,8 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                 mcapi('/samples/by_project/%', $scope.project_id)
                     .success(function (data) {
                         $scope.samples_list = data;
-                    })
-                    .error(function (data) {
                     }).jsonp();
+
                 Projects.getList().then(function (data) {
                     $scope.projects = data;
                 });
