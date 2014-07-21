@@ -6,7 +6,10 @@
 #
 
 import rethinkdb as r
+import os
 from optparse import OptionParser
+
+port = 30815
 
 
 def add_projects_to_groups(conn):
@@ -91,7 +94,7 @@ def drop_unused_database(conn):
 
 def populate_new_denorms(conn):
     print "  Populating datafiles_denorm and sample_denorm..."
-    all_processes = r.table('processes').has_fields('inputs').run(conn)
+    all_processes = list(r.table('processes').has_fields('inputs').run(conn))
     for process in all_processes:
         inputs = process['inputs']
         outputs = process['outputs']
@@ -139,7 +142,21 @@ def populate_new_denorms(conn):
                     sample_dnorm['project_id'] = process['project']
                     sample_dnorm['file_type'] = 'output'
                     r.table('samples_denorm').insert(sample_dnorm).run(conn)
-    pass
+
+
+def convert_templates(conn):
+    print "  Converting to new templates..."
+    r.table('templates').delete().run(conn)
+    cmd = "cd .. && ./loadtemplates.sh -p %d" % (port)
+    os.system(cmd)
+
+
+def add_preferences_to_users(conn):
+    print "  Adding preferences field to users..."
+    users = list(r.table('users').run(conn))
+    for user in users:
+        r.table('users').get(user['id'])\
+                        .update({'preferences': {'templates': []}}).run(conn)
 
 
 def main(conn):
@@ -150,6 +167,8 @@ def main(conn):
     drop_unused_tables(conn)
     drop_unused_database(conn)
     populate_new_denorms(conn)
+    convert_templates(conn)
+    add_preferences_to_users(conn)
     print "Finished."
 
 if __name__ == "__main__":
@@ -157,6 +176,8 @@ if __name__ == "__main__":
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
+
+    port = options.port
 
     conn = r.connect('localhost', options.port, db='materialscommons')
     main(conn)
