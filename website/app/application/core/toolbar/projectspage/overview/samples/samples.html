@@ -87,12 +87,12 @@
                                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                                     <thead>
                                     <tr>
-                                        <th>Project</th>
+                                        <th>Projects</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="i in doc.projects | page:currentUsersPage:10">
+                                    <tr ng-repeat="i in doc.projects">
                                         <td>{{i.name}}</td>
                                         <td>
                                             <button class="btn btn-default btn-danger"
@@ -218,10 +218,10 @@
                         <div>
                             <h5><b><u>Projects</u></b></h5>
 
-                            <div ng-show="projects_by_sample.length !==0 ">
+                            <div ng-show="projects_by_sample.length !== 0">
                                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                                         <tbody>
-                                        <tr ng-repeat="i in projects_by_sample | page:currentUsersPage:10">
+                                        <tr ng-repeat="i in projects_by_sample">
                                             <td>{{i.project_name}}</td>
                                         </tr>
                                         </tbody>
