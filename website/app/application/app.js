@@ -87,7 +87,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: 'logout'
         })
 
-        // Account
+        /*
+         ########################################################################
+         ####################### Account ##################################
+         ########################################################################
+         */
         .state('account', {
             url: '/account',
             templateUrl: 'application/core/account/account.html'
@@ -113,8 +117,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/account/templates/templates.html'
         })
 
-
-//        New projects
+        /*
+         ########################################################################
+         ####################### Projects Overview ##################################
+         ########################################################################
+         */
         .state('projects', {
             url: '/projects/:id/:draft_id/:from',
             templateUrl: 'application/core/projects/projectspage.html'
@@ -140,6 +147,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/overview/samples/samples.html'
         })
 
+        /*
+         ########################################################################
+         ####################### Projects Data Edit ##################################
+         ########################################################################
+         */
         .state('projects.dataedit', {
             url: '/dataedit/:data_id/:file_path',
             templateUrl: 'application/core/projects/dataedit/dataedit.html'
@@ -160,7 +172,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/provenance',
             templateUrl: 'application/core/projects/dataedit/provenance/provenance.html'
         })
-//        projects provenance
+        /*
+         ########################################################################
+         ####################### Projects Provenance ##################################
+         ########################################################################
+         */
         .state('projects.provenance', {
             url: '/provenance',
             templateUrl: 'application/core/projects/provenance/provenance.html',
@@ -217,7 +233,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/machines',
             templateUrl: 'application/core/machines/machines.html'
         })
-
 }]);
 
 app.run(["$rootScope", "User", function ($rootScope, User) {
