@@ -84,7 +84,6 @@
                     </div>
                     <div class="row">
                         <div ng-show="doc.projects.length !==0 " class="col-lg-8">
-                            <paged data="doc.projects" current-page="currentUsersPage" page-size="10">
                                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                                     <thead>
                                     <tr>
@@ -104,7 +103,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </paged>
                         </div>
                     </div>
                 </div>
@@ -221,8 +219,6 @@
                             <h5><b><u>Projects</u></b></h5>
 
                             <div ng-show="projects_by_sample.length !==0 ">
-                                <paged data="projects_by_sample"
-                                       current-page="currentUsersPage" page-size="10">
                                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                                         <tbody>
                                         <tr ng-repeat="i in projects_by_sample | page:currentUsersPage:10">
@@ -230,7 +226,6 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                </paged>
                             </div>
                             <div class="row form-group">
                                 <div class="col-lg-8">

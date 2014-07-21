@@ -140,6 +140,10 @@
                             ng-options="each.name for each in df.value_choice"
                             ng-disabled="edit">
                     </select>
+                        <!--<select class="form-control" ng-model="df.value" ng-disabled="edit">-->
+                            <!--<option value="" disabled="" selected="">vv...</option>-->
+                            <!--<option ng-repeat="each in df.value_choice" value="each">{{each.name}}</option>-->
+                        <!--</select>-->
                     <div class="col-sm-2" ng-if="df.unit_choice.length!=0">
                         <select class="form-control" ng-model="df.unit" ng-disabled="edit">
                             <option value="" disabled="" selected="">Unit...</option>
