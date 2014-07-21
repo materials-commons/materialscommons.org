@@ -104,11 +104,11 @@ Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
                     'sample_id': $scope.sample.id,
                     'project_id': $scope.model.selected_project.id,
                     'project_name': $scope.model.selected_project.name
-                }
+                };
                 mcapi('/sample/project/join', $scope.sample.id, $scope.model.selected_project.id, $scope.model.selected_project.name)
                     .success(function (data) {
                         $scope.refreshProjects();
-                    }).post($scope.sample_project)
+                    }).post($scope.sample_project);
             };
 
             $scope.deleteProject = function (index) {
