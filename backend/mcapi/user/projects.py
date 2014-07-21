@@ -46,7 +46,8 @@ def get_all_group_projects():
         rr = args.add_all_arg_options(rr)
         projects = list(rr.run(g.conn, time_format='raw'))
     else:
-        rr = r.table('projects').filter(r.row['owner'].match(users)).order_by('name')
+        rr = r.table('projects').filter(r.row['owner'].match(users))\
+                                .order_by('name')
         rr = args.add_all_arg_options(rr)
         selection = list(rr.run(g.conn, time_format='raw'))
         for proj in selection:
