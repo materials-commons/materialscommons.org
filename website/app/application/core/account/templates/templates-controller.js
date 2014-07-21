@@ -11,7 +11,11 @@ Application.Controllers.controller('toolbarTemplates',
                         break;
                     }
             } else {
-                $scope.preferred_templates.push(t);
+                var template = {
+                    id: t.id,
+                    template_name: t.template_name
+                };
+                $scope.preferred_templates.push(template);
 
             }
         };
@@ -25,10 +29,12 @@ Application.Controllers.controller('toolbarTemplates',
 
 
         $scope.is_checked = function (t) {
-            for (var i = 0; i < $scope.preferred_templates.length; i++)
+            for (var i = 0; i < $scope.preferred_templates.length; i++) {
                 if ($scope.preferred_templates[i].template_name === t.template_name) {
                     return true;
                 }
+            }
+            return false;
         };
 
         function init() {
