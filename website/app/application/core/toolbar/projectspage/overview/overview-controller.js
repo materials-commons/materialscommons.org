@@ -1,11 +1,15 @@
 Application.Controllers.controller('toolbarProjectsPageOverview',
     ["$scope", "$stateParams", "pubsub", "$state","mcapi", function ($scope, $stateParams, pubsub, $state, mcapi) {
-        $scope.countDrafts = function(){
+        $scope.countDrafts = function() {
+            if ($scope.project_id === "") {
+                return;
+            }
             mcapi('/drafts/project/%', $scope.project_id)
                 .success(function (drafts) {
                     $scope.drafts_count = drafts.length;
                 }).jsonp();
-        }
+        };
+
         $scope.showTab = function (tab) {
             switch (tab) {
                 case "files":
