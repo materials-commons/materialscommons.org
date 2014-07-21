@@ -86,6 +86,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/logout',
             controller: 'logout'
         })
+        .state('reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/reviews/reviews.html'
+        })
+        .state('machines', {
+            url: '/machines',
+            templateUrl: 'application/core/machines/machines.html'
+        })
 
         /*
          ########################################################################
@@ -215,24 +223,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/finish',
             templateUrl: 'application/core/projects/provenance/finish/finish.html'
         })
-        /*
-         ########################################################################
-         ####################### Reviews ##################################
-         ########################################################################
-         */
-        .state('reviews', {
-            url: '/reviews',
-            templateUrl: 'application/core/reviews/reviews.html'
-        })
-        /*
-         ########################################################################
-         ####################### Machines ##################################
-         ########################################################################
-         */
-        .state('machines', {
-            url: '/machines',
-            templateUrl: 'application/core/machines/machines.html'
-        })
+
 }]);
 
 app.run(["$rootScope", "User", function ($rootScope, User) {
