@@ -39,9 +39,9 @@ Application.Controllers.controller('projectsDataEditDetails',
                     is_disabled: true,
                     desc: ''
                 };
-                $scope.id = $stateParams.id;
+                $scope.id = $stateParams.data_id;
                 $scope.modal = Projects.model;
-                mcapi('/datafile/%', $scope.id)
+                mcapi('/datafile/%', $stateParams.data_id)
                     .success(function (data) {
                         $scope.doc = data;
                         $scope.model.desc = $scope.doc.description;
