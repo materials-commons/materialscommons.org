@@ -1,5 +1,6 @@
 {
     "id": "compression",
+    "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [
          {

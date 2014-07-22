@@ -1,5 +1,6 @@
 {
     "id": "heat-treatment-instrument-settings",
+    "authors": ["tammasr@umich.edu", "gtarcea@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
         {

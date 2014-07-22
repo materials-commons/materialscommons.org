@@ -1,5 +1,6 @@
 {
     "id": "thermal-treatment",
+    "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [],
     "additional_properties":[],
@@ -13,5 +14,5 @@
     "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "thermal-treatment-settings"}],
     "required_output_conditions": [{"name": "Transformed Sample", "value": "transformed-sample"}],
     "required_input_files": true,
-    "required_output_files": true  
+    "required_output_files": true
 }

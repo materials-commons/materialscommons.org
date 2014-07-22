@@ -1,5 +1,6 @@
 {
     "id": "tem",
+    "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [
         {
@@ -45,5 +46,5 @@
     "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "tem-instrument-settings"}],
     "required_output_conditions": [],
     "required_input_files": true,
-    "required_output_files": true  
+    "required_output_files": true
 }

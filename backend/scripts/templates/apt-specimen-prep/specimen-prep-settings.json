@@ -1,5 +1,6 @@
 {
     "id": "apt-specimen-prep-settings",
+    "authors": ["emarq@umich.edu"],
     "attribute": "specimen_prep_settings",
     "default_properties": [
         {
