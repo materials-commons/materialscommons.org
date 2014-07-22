@@ -95,7 +95,6 @@ def preferred_templates(user):
 def update_preferred_templates(user):
     j = request.get_json()
     list = dmutil.get_required('templates', j)
-    print list
     rv = r.table('users').get(user).update(
         {'preferences': {'templates': list}}).run(g.conn)
     return jsonify(rv)
