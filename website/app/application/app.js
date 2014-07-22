@@ -5,13 +5,13 @@ Application.Services = angular.module('application.core.services', []);
 Application.Controllers = angular.module('application.core.controllers', []);
 Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
-
-Application.Provenance = {};
-Application.Provenance.Constants = angular.module('application.provenance.constants', []);
-Application.Provenance.Services = angular.module('application.provenance.services', []);
-Application.Provenance.Controllers = angular.module('application.provenance.controllers', []);
-Application.Provenance.Filters = angular.module('application.provenance.filters', []);
-Application.Provenance.Directives = angular.module('application.provenance.directives', []);
+//
+//Application.Provenance = {};
+//Application.Provenance.Constants = angular.module('application.provenance.constants', []);
+//Application.Provenance.Services = angular.module('application.provenance.services', []);
+//Application.Provenance.Controllers = angular.module('application.provenance.controllers', []);
+//Application.Provenance.Filters = angular.module('application.provenance.filters', []);
+//Application.Provenance.Directives = angular.module('application.provenance.directives', []);
 
 var app = angular.module('materialscommons',
     [
@@ -28,9 +28,7 @@ var app = angular.module('materialscommons',
         'ngDragDrop',
         '$strap.directives', 'ui.bootstrap',
         'application.core.constants', 'application.core.services', 'application.core.controllers',
-        'application.core.filters', 'application.core.directives',
-        'application.provenance.constants', 'application.provenance.services', 'application.provenance.controllers',
-        'application.provenance.filters', 'application.provenance.directives']);
+        'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {

@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('provenanceIOStepsIOStep',
+Application.Controllers.controller('provenanceIOStepsIOStep',
     ["$scope", "ProvDrafts", "$stateParams", "mcapi", "Clone", "watcher", "$filter", "User",
         function ($scope, ProvDrafts, $stateParams, mcapi, Clone, watcher, $filter, User) {
             $scope.pick_sample = function () {

@@ -1,4 +1,4 @@
-Application.Provenance.Services.factory('process.Model', [function () {
+Application.Services.factory('process.Model', [function () {
     var service = {
         newProcess: function () {
             return {
