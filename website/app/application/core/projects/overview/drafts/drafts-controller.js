@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
+Application.Controllers.controller('projectsOverviewDrafts',
     ["$scope", "pubsub", "ProvDrafts", "$state", "alertService", "Nav", "$stateParams", "mcapi", "$modal",
         function ($scope, pubsub, ProvDrafts, $state, alertService, Nav, $stateParams, mcapi, $modal) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
@@ -14,7 +14,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
                 $scope.draft = draft;
                 var modalInstance = $modal.open({
                     templateUrl: 'application/core/projects/overview/drafts/review.html',
-                    controller: '_toolbarDraftsReviewModal',
+                    controller: '_projectsDraftsReviewModal',
                     resolve: {
                         draft: function () {
                             return $scope.draft;
@@ -33,7 +33,7 @@ Application.Controllers.controller('toolbarProjectsPageOverviewDrafts',
             };
 
             $scope.closeReviews = function () {
-                $state.go('toolbar.drafts');
+                $state.go('projects.drafts');
             };
 
             $scope.cloneProvenance = function (draft) {

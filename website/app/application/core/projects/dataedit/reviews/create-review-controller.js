@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarDataEditCreateReview',
+Application.Controllers.controller('projectsDataEditCreateReview',
     ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
         function ($scope, mcapi, User, $stateParams, alertService, pubsub) {
             $scope.model = {

@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarProjectsPage',
+Application.Controllers.controller('Projects',
     ["$scope", "$stateParams", "mcapi", "$state", "watcher", "ProjectPath",  "pubsub", "model.Projects",
         function ($scope, $stateParams, mcapi, $state, watcher, ProjectPath,  pubsub, Projects) {
 

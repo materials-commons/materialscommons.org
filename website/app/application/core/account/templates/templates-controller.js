@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarTemplates',
+Application.Controllers.controller('accountTemplates',
     ["$scope", "mcapi", "User", "alertService", "$filter", "Nav", function ($scope, mcapi, User, alertService, $filter, Nav) {
         $scope.check = function (t) {
             var status = $scope.preferred_templates.filter(function (el) {

@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarProjectsPageOverviewSamples',
+Application.Controllers.controller('projectsOverviewSamples',
     ["$scope", "mcapi", "$injector", "model.Projects", "alertService", "User", "$stateParams",
         function ($scope, mcapi, $injector, Projects, alertService, User, $stateParams) {
             var $validationProvider = $injector.get('$validation');

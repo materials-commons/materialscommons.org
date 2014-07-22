@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('provenance',
+Application.Provenance.Controllers.controller('projectsProvenance',
     ["$scope", "$state", "$stateParams", "ProvSteps", "ProvDrafts", "process.Model", "Projects", "ProjectPath",
         function ($scope, $state, $stateParams, ProvSteps, ProvDrafts, Model, Projects, ProjectPath) {
             $scope.isCurrentStep = function (step) {
@@ -88,6 +88,5 @@ Application.Provenance.Controllers.controller('provenance',
                 ProvSteps.onStepFinished($scope.stepFinished);
                 $state.go('projects.provenance.process');
             }
-
             init();
         }]);

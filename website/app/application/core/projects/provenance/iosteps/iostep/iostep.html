@@ -12,7 +12,7 @@
             <cgrouprequired label="Pick a sample:">
                 <select class="form-control" ng-model="doc.sample" type="text" ng-options="samp.name for samp in samples_list" ng-change="pick_sample()" required="">
                     <option value="">-- Select Samples --</option>
-                </select><a ui-sref="toolbar.objects">{{ doc.sample.name}}</a>
+                </select><a>{{ doc.sample.name}}</a>
             </cgrouprequired>
         </div>
         <div ng-switch-when="instrument">

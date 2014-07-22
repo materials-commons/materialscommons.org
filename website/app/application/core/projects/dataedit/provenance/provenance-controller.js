@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarDataEditProvenance',
+Application.Controllers.controller('projectsDataEditProvenance',
     ["$scope", "mcapi", "User", "$state", "$stateParams", "$filter",
         function ($scope, mcapi, User, $state, $stateParams, $filter) {
 
@@ -35,5 +35,4 @@ Application.Controllers.controller('toolbarDataEditProvenance',
             };
             $scope.init();
         }
-    ])
-;
+    ]);

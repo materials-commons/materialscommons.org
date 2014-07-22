@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('provenanceFinish',
+Application.Provenance.Controllers.controller('projectsProvenanceFinish',
     ["$scope", "ProvDrafts", "$state", "mcapi", "alertService", "$stateParams",
         function ($scope, ProvDrafts, $state, mcapi, alertService, $stateParams) {
 

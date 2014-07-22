@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('provenanceProcess',
+Application.Provenance.Controllers.controller('projectProvenanceProcess',
     ["$scope", "mcapi", "alertService", "ProvSteps", "ProvDrafts", "dateGenerate", "User", "$injector", "$filter",
         function ($scope, mcapi, alertService, ProvSteps, ProvDrafts, dateGenerate, User, $injector, $filter) {
             var $validationProvider = $injector.get('$validation'), check;

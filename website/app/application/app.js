@@ -54,10 +54,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/home',
             templateUrl: 'application/core/home/home.html'
         })
-        .state('toolbar', {
-            url: '/toolbar',
-            templateUrl: 'application/core/toolbar/toolbar.html'
-        })
         .state('about', {
             url: '/about',
             templateUrl: 'application/core/about/about.html'
