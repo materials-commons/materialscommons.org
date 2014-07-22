@@ -159,6 +159,13 @@ def add_preferences_to_users(conn):
                         .update({'preferences': {'templates': []}}).run(conn)
 
 
+def convert_samples(conn):
+    print "  Adding paths to existing samples..."
+    r.table('samples').update({'parent_id': ""}).run(conn)
+    cmd = "cd .. && ./create_parent_id_for_samples.py --port %d && ./samplepath.py --port %d" % (port, port)
+    os.system(cmd)
+
+
 def main(conn):
     print "Beginning conversion steps:"
     add_projects_to_groups(conn)
@@ -169,6 +176,7 @@ def main(conn):
     populate_new_denorms(conn)
     convert_templates(conn)
     add_preferences_to_users(conn)
+    convert_samples(conn)
     print "Finished."
 
 if __name__ == "__main__":
