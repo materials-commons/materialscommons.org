@@ -1,0 +1,42 @@
+<div class="row" ng-controller="toolbarProjectsPageOverviewDrafts">
+        <legend>Provenance Drafts</legend>
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Project</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="draft in drafts | filter:query | orderBy:'process.name'">
+                <td><a style="cursor: pointer"
+                       ui-sref="projects({id: draft.project_id, draft_id: draft.id, from: ''})">
+                    {{draft.process.name}}</a>
+                </td>
+                <td>{{ draft.project_name }}</td>
+                <td>{{draft.birthtime | toDateString}}</td>
+                <td>{{draft.process.description}}</td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+                            Action
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-click="gotoDraft(draft)">Goto</a></li>
+                            <li><a ng-click="deleteDraft(draft)">Delete</a></li>
+                            <li><a data-toggle="modal" data-target="#toolbarDraftsReviewModal"
+                                   ng-click="markForReview(draft)">Mark For Review</a>
+                            </li>
+                            <li><a ng-click="cloneProvenance(draft)">Clone</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</div>
