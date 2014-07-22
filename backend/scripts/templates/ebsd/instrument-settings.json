@@ -1,5 +1,6 @@
 {
     "id": "ebsd-instrument-settings",
+    "authors": ["amcollet@umich.edu", "johnea@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
         {

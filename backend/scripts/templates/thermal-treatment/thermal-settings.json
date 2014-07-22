@@ -1,17 +1,8 @@
 {
     "id": "thermal-treatment-settings",
+    "authors": ["emarq@umich.edu"],
     "attribute": "thermal_settings",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
         {
             "attribute": "temperature",
             "name": "Temperature" ,
@@ -39,7 +30,7 @@
             "unit": "" ,
             "unit_choice": [],
             "value": "" ,
-            "value_choice": [{"name": "Air", "value" : "air"},{"name": "Vacuum", "value" : "vacuum"},{"name": "N2", "value" : "n2"},{"name": "Ar", "value" : "ar"},{"name": "Oil", "value" : "oil"},{"name": "Sand", "value" : "sand"}],
+            "value_choice": [{"name": "Air", "value" : "air"},{"name": "Vacuum", "value" : "vacuum"},{"name": "N2", "value" : "N2"},{"name": "Ar", "value" : "Ar"},{"name": "Oil", "value" : "oil"},{"name": "Sand", "value" : "sand"}],
             "required": true
         },
         {
@@ -54,7 +45,7 @@
         },
         {
             "attribute": "cooling_rate",
-            "name": "Colling Rate" ,
+            "name": "Cooling Rate" ,
             "type": "number" ,
             "unit": "" ,
             "unit_choice": [],

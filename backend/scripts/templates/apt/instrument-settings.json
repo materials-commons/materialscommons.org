@@ -1,5 +1,6 @@
 {
     "id": "apt-instrument-settings" ,
+    "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
         {
@@ -93,7 +94,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": ["High", "Low"],
+            "value_choice": [{"name":"High", "value": "high"}, {"name": "Low", "value": "low"}],
             "required": false
         },
         {

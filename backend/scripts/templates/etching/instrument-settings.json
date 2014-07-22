@@ -1,18 +1,8 @@
 {
-
     "id": "etching-instrument-settings" ,
+    "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
         {
             "attribute": "temperature",
             "name": "Temperature" ,
@@ -28,7 +18,7 @@
             "name": "Time" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["hours", "minutes", "seconds"] ,
+            "unit_choice": ["hrs", "mins", "secs"] ,
             "value": "" ,
             "value_choice": [],
             "required": false

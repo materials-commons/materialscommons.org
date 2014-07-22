@@ -1,5 +1,6 @@
 {
     "id": "ebsd",
+    "authors": ["amcollet@umich.edu", "johnea@umich.edu"],
     "attribute": "process",
     "default_properties": [
          {
