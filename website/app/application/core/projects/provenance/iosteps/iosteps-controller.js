@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('provenanceIOSteps',
+Application.Provenance.Controllers.controller('projectsProvenanceIOSteps',
     ["$scope", "mcapi", "ProvSteps", "ProvDrafts", "$state", "$stateParams", "$injector",
         function ($scope, mcapi, ProvSteps, ProvDrafts, $state, $stateParams, $injector) {
             var $validationProvider = $injector.get('$validation'), check;

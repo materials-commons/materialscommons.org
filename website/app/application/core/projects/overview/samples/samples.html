@@ -1,4 +1,4 @@
-<div ng-controller="toolbarProjectsPageOverviewSamples">
+<div ng-controller="projectsOverviewSamples">
     <form name="Sample" class="form-horizontal">
         <h4 plus-minus-toggle="slidesample">
             <i class="fa fa-minus-square"></i>
@@ -212,12 +212,11 @@
                         </div>
                         <div ng-if="processes_by_sample.length !== 0">
                             <ul ng-repeat="each in processes_by_sample">
-                                <li><a ui-sref="toolbar.process({id: each.process_id})">{{each.process_name}}</a></li>
+                                <li><a>{{each.process_name}}</a></li>
                             </ul>
                         </div>
                         <div>
                             <h5><b><u>Projects</u></b></h5>
-
                             <div ng-show="projects_by_sample.length !== 0">
                                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                                         <tbody>

@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarMachines',
+Application.Controllers.controller('machines',
     ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
         var $validationProvider = $injector.get('$validation');
 

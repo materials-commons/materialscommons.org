@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('provenanceIOStepsFiles',
+Application.Provenance.Controllers.controller('projectsProvenanceIOStepsFiles',
     ["$scope", "ProvDrafts", "$stateParams", "pubsub", "Projects",
         function ($scope, ProvDrafts, $stateParams, pubsub, Projects) {
             $scope.removeFile = function (index) {

@@ -1,4 +1,4 @@
-Application.Controllers.controller('_toolbarDraftsReviewModal',
+Application.Controllers.controller('_projectsDraftsReviewModal',
     ["$scope", "User", "pubsub", "mcapi",  '$modalInstance', 'draft', function ($scope, User, pubsub, mcapi, $modalInstance, draft ) {
 
         function newReview (userToReview, note) {

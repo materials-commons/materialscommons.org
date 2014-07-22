@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarDataEdit',
+Application.Controllers.controller('projectsDataEdit',
     ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath", "Projects",
         function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath, Projects) {
 

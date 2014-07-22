@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarProjectsPageOverview',
+Application.Controllers.controller('projectsOverview',
     ["$scope", "$stateParams", "pubsub", "$state","mcapi", function ($scope, $stateParams, pubsub, $state, mcapi) {
         $scope.countDrafts = function() {
             if ($scope.project_id === "") {

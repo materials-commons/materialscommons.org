@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarReviews',
+Application.Controllers.controller('reviews',
     ["$scope", "mcapi", "$state", "pubsub", "Nav",
 
         function ($scope, mcapi, $state, pubsub, Nav) {

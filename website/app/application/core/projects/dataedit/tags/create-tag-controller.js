@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarDataEditCreateTag',
+Application.Controllers.controller('projectsDataEditCreateTag',
     ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
         function ($scope, mcapi, User, $stateParams, alertService, pubsub) {
             $scope.removeTag = function (id) {

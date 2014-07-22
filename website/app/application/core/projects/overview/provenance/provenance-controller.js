@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarProjectsPageOverviewProvenance',
+Application.Controllers.controller('projectsOverviewProvenance',
     ["$scope", "$stateParams", "mcapi", function ($scope, $stateParams,mcapi) {
         $scope.sampleDetails = function(branch){
             mcapi('/objects/%', branch.id)

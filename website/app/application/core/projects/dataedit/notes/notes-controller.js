@@ -1,4 +1,4 @@
-Application.Controllers.controller('toolbarDataEditNotes',
+Application.Controllers.controller('projectsDataEditNotes',
     ["$scope", "mcapi", "$state", "$stateParams", "User", "dateGenerate", "alertService", "watcher",
         function ($scope, mcapi, $state, $stateParams, User, dateGenerate, alertService, watcher) {
 
