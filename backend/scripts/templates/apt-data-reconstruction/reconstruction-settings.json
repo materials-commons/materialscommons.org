@@ -1,5 +1,6 @@
 {
     "id": "apt-data-reconstruction-settings" ,
+    "authors": ["emarq@umich.edu"],
     "attribute": "apt_data_reconstruction_settings",
     "default_properties": [
         {

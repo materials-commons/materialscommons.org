@@ -1,6 +1,6 @@
 {
-
     "id": "irradiation" ,
+    "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [],
     "additional_properties":[],

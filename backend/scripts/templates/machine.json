@@ -1,5 +1,6 @@
 {
     "id": "machine" ,
+    "authors": ["tammasr@umich.edu"],
     "default_properties": [
         {
             "name": "Manufacturer" ,
@@ -21,7 +22,6 @@
             "value_choice": [],
             "required": true
         }
-        
     ],
     "additional_properties": [],
     "owner": "admin@materialscommons.org",

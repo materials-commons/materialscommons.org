@@ -1,5 +1,6 @@
 {
     "id": "powder" ,
+    "authors": ["tammasr@umich.edu"],
     "default_properties": [
         {
             "name": "Composition" ,
@@ -100,8 +101,8 @@
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "Describe your initial object" ,
-    "template_mtime": "" ,
-    "template_name": "Powder" ,
-    "template_pick": "" ,
+    "template_mtime": "",
+    "template_name": "Powder",
+    "template_pick": "",
     "template_type": "material"
 }

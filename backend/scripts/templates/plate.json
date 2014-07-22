@@ -1,5 +1,6 @@
 {
     "id": "plate" ,
+    "authors": ["tammasr@umich.edu"],
     "default_properties": [
         {
             "name": "Composition" ,

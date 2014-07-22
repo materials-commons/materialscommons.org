@@ -1,8 +1,9 @@
 {
     "id": "computation",
+    "authors": ["bpuchala@umich.edu"],
     "attribute": "process",
     "default_properties": [
-	 {
+        {
             "name": "Machine" ,
             "attribute": "machine",
             "type": "machines" ,
@@ -12,7 +13,7 @@
             "value_choice": [],
             "required": false
         },
-	{
+        {
             "name": "Program" ,
             "attribute": "program",
             "type": "text" ,
@@ -22,7 +23,7 @@
             "value_choice": [],
             "required": false
         },
-	{
+        {
             "name": "Program URL" ,
             "attribute": "program_url",
             "type": "text" ,
@@ -32,7 +33,7 @@
             "value_choice": [],
             "required": false
         },
-	{
+        {
             "name": "Program Version" ,
             "attribute": "program_version",
             "type": "text" ,
@@ -42,7 +43,7 @@
             "value_choice": [],
             "required": false
         },
-	{
+        {
             "name": "Start time" ,
             "attribute": "run_start_time",
             "type": "int",
@@ -52,7 +53,7 @@
             "value_choice": [],
             "required": false
         },
-	{
+        {
             "name": "End time" ,
             "attribute": "run_end_time",
             "type": "int" ,
@@ -64,7 +65,6 @@
         }
      ],
     "additional_properties":[
-       
         {
             "name": "Citations" ,
             "attribute": "citations",

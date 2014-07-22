@@ -1,17 +1,8 @@
 {
     "id": "focused-ion-beam-milling-settings",
+    "authors": ["emarq@umich.edu"],
     "attribute": "milling_settings",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
         {
             "attribute": "ion_type",
             "name": "Ion Type" ,
@@ -19,7 +10,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{"name": "Ga", "value" : "ga"},{"name": "Ne", "value" : "ne"},{"name": "Ar", "value" : "ar"}],
+            "value_choice": [{"name": "Ga", "value" : "Ga"},{"name": "Ne", "value" : "Ne"},{"name": "Ar", "value" : "Ar"}],
             "required": false
         },
         {
@@ -69,7 +60,7 @@
             "unit": "" ,
             "unit_choice": [],
             "value": "" ,
-            "value_choice": [{"name": "Pt", "value" : "pt"},{"name": "W", "value" : "w"},{"name": "C", "value" : "c"}],
+            "value_choice": [{"name": "Pt", "value" : "Pt"},{"name": "W", "value" : "W"},{"name": "C", "value" : "C"}],
             "required": false
         }
     ],
