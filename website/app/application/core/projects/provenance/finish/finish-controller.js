@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('projectsProvenanceFinish',
+Application.Controllers.controller('projectsProvenanceFinish',
     ["$scope", "ProvDrafts", "$state", "mcapi", "alertService", "$stateParams",
         function ($scope, ProvDrafts, $state, mcapi, alertService, $stateParams) {
 
@@ -21,7 +21,7 @@ Application.Provenance.Controllers.controller('projectsProvenanceFinish',
                             ProvDrafts.deleteDraft($scope.doc.id);
                             alertService.sendMessage("Your Provenance was Created Successfully.");
                             ProvDrafts.current = null;
-                            $state.go("projects.overview", {'id': $scope.doc.project_id});
+                            $state.go("projects.overview.files", {'id': $scope.doc.project_id, 'draft_id': ''});
                         })
                         .error(function () {
                             $scope.title = "Validation Error:";

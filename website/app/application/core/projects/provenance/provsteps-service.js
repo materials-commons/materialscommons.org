@@ -1,4 +1,4 @@
-Application.Provenance.Services.factory('ProvSteps', [function () {
+Application.Services.factory('ProvSteps', [function () {
     var service = {
         finishedSteps: [],
         currentStep: '',

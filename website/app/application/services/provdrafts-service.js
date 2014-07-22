@@ -1,4 +1,4 @@
-Application.Provenance.Services.factory('ProvDrafts', ["mcapi", "pubsub",
+Application.Services.factory('ProvDrafts', ["mcapi", "pubsub",
     function (mcapi, pubsub) {
         var service = {
             current: null,
