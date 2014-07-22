@@ -1,17 +1,8 @@
 {
     "id": "broad-ion-beam-instrument-settings",
+    "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
         {
             "attribute": "ion_type",
             "name": "Ion Type" ,
@@ -19,15 +10,15 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{"name": "Ga", "value" : "ga"},{"name": "Ne", "value" : "ne"},{"name": "Ar", "value" : "ar"}],
+            "value_choice": [{"name": "Ga", "value" : "Ga"},{"name": "Ne", "value" : "Ne"},{"name": "Ar", "value" : "Ar"}],
             "required": false
         },
         {
             "attribute": "energy",
             "name": "Energy" ,
             "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["V"] ,
+            "unit": "V" ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false

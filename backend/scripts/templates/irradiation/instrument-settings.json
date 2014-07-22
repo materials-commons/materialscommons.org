@@ -1,5 +1,6 @@
 {
     "id": "irradiation-instrument-settings",
+    "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
         {
@@ -36,7 +37,7 @@
             "attribute": "dose",
             "name": "Dose(per cm^2)" ,
             "type": "number" ,
-            "unit": "cm**2" ,
+            "unit": "cm^2" ,
             "unit_choice": [],
             "value": "" ,
             "value_choice": [],

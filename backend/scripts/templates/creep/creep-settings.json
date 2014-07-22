@@ -1,6 +1,6 @@
 {
-
     "id": "creep-settings" ,
+    "authors": ["emarq@umich.edu"],
     "attribute": "creep_settings",
     "default_properties": [
         {

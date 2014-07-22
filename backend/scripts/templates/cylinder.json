@@ -1,5 +1,6 @@
 {
     "id": "cylinder" ,
+    "authors": ["tammasr@umich.edu"],
     "default_properties": [
         {
             "name": "Composition" ,

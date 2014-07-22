@@ -1,17 +1,8 @@
 {
     "id": "sem-instrument-settings" ,
+    "authors": ["emarq@umich.edu"],
     "attribute": "instrument-settings",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
         {
             "name": "Detector",
             "attribute": "dectector",

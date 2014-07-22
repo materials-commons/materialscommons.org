@@ -1,5 +1,6 @@
 {
     "id": "compression-instrument-settings",
+    "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
         {

@@ -1,6 +1,6 @@
 {
-
     "id": "tensile-settings" ,
+    "authors": ["emarq@umich.edu"],
     "attribute": "tensile_settings",
     "default_properties": [
         {
@@ -12,7 +12,7 @@
             "value": "" ,
             "value_choice": [],
             "required": true
-        },                
+        },
         {
             "name": "Mode" ,
             "attribute": "mode",
