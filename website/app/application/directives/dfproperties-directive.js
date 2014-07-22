@@ -8,6 +8,7 @@ Application.Controllers.controller("DFPropertiesController",
 
         init();
 
+
         watcher.watch($scope, "machinesList", function () {
             if (!$scope.machinesList) {
                 return;
@@ -50,6 +51,7 @@ Application.Controllers.controller("DFPropertiesController",
             }
         });
 
+//
 
     }]);
 Application.Directives.directive('dfProperties',

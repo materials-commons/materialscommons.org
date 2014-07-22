@@ -31,16 +31,12 @@
     <link href="assets/css/periodic-table.css" rel="stylesheet">
     <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
 
-    <!--&lt;!&ndash; date select &ndash;&gt;-->
-    <!--<link href="assets/css/ng-quick-date-default-theme.css" rel="stylesheet" media="all">-->
-    <!--<link href="assets/css/ng-quick-date.css" rel="stylesheet" media="all">-->
-
     <!-- Application style sheet -->
     <link href="style-3.css" rel="stylesheet">
 </head>
 
 <body>
-<nav class="navbar navbar-custom" ng-controller="_indexNavigation" >
+<nav class="navbar navbar-custom" ng-controller="_indexNavigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -68,15 +64,20 @@
         </ul>
 
         <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
-            <li><a ui-sref="toolbar.projectspage.overview.files" class="navbar-link"><i class="fa fa-briefcase"></i> Projects</a></li>
-            <li><a ui-sref="reviews" class="navbar-link"><i style="padding-right: 5px" class="fa fa-comment"></i> Reviews</a></li>
+            <li><a ui-sref="projects" class="navbar-link"><i class="fa fa-briefcase"></i>
+                Projects</a></li>
+            <li><a ui-sref="reviews" class="navbar-link"><i style="padding-right: 5px" class="fa fa-comment"></i>
+                Reviews</a></li>
             <li><a ui-sref="machines" class="navbar-link"><i style="padding-right: 5px" class=""></i> Machines</a></li>
             <li class="dropdown" style="border-left: 1px solid lightgray">
-                <a class="dropdown-toggle" ><i class="fa fa-user"></i>{{email_address}} <span class="caret"></span></a>
+                <a class="dropdown-toggle"><i class="fa fa-user"></i>{{email_address}} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ui-sref="account.password"><i class="fa fa-unlock-alt" style="padding-right: 5px"></i> Change Password</a></li>
-                    <li><a ui-sref="account.usergroup"><i style="padding-right: 5px" class="fa fa-user"></i>UserGroups</a></li>
-                    <li><a ui-sref="account.templates"><i style="padding-right: 5px" class="fa fa-list-alt"></i>Templates</a></li>
+                    <li><a ui-sref="account.password"><i class="fa fa-unlock-alt" style="padding-right: 5px"></i> Change
+                        Password</a></li>
+                    <li><a ui-sref="account.usergroup"><i style="padding-right: 5px"
+                                                          class="fa fa-user"></i>UserGroups</a></li>
+                    <li><a ui-sref="account.templates"><i style="padding-right: 5px" class="fa fa-list-alt"></i>Templates</a>
+                    </li>
                     <li><a ui-sref="account.apikey"><i style="padding-right: 5px" class="fa fa-key"></i>Apikey</a></li>
                     <li class=divider></li>
                     <li><a ui-sref="logout"> <i style="padding-right: 5px" class="fa fa-sign-out"></i> Logout</a></li>
@@ -92,7 +93,9 @@
     </div>
 </div>
 <div class="row">
-    <div ui-view="">
+    <div class="container-fixed">
+        <div ui-view="">
+        </div>
     </div>
 </div>
 
@@ -133,10 +136,8 @@
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/jqcloud-1.0.4.js"></script>
 <script src="assets/js/underscore-min.js"></script>
-<!--<script src="assets/js/ng-quick-date.js"></script>-->
 <script src="assets/js/angular/socket.js"></script>
 <script src="assets/js/socket.io.js"></script>
-
 
 
 <!------------------------------ Application --------------------------->
@@ -159,36 +160,20 @@
 <script src="application/core/account/usergroups/usergroup-controller.js"></script>
 
 <!-- Toolbar -->
-<script src="application/core/toolbar/toolbar-controller.js"></script>
-<script src="application/core/toolbar/_drafts-controller.js"></script>
-<script src="application/core/toolbar/_projects-controller.js"></script>
-<script src="application/core/toolbar/_reviews-controller.js"></script>
-<script src="application/core/toolbar/_tags-controller.js"></script>
+<!--<script src="../junk/toolbar/toolbar-controller.js"></script>-->
 
 <!-- Toolbar data -->
-<script src="application/core/toolbar/thumbnails/toolbar-thumbnails-controller.js"></script>
-<script src="application/core/toolbar/thumbnails/thumbnail-service.js"></script>
-<script src="application/core/toolbar/thumbnails/thumbnails-service.js"></script>
-<script src="application/core/toolbar/projectspage/dataedit/dataedit-controller.js"></script>
-<script src="application/core/toolbar/projectspage/dataedit/tags/tag-directive.js"></script>
-<script src="application/core/toolbar/projectspage/dataedit/reviews/create-review-controller.js"></script>
-<script src="application/core/toolbar/projectspage/dataedit/tags/create-tag-controller.js"></script>
-<script src="application/core/toolbar/projectspage/dataedit/notes/notes-controller.js"></script>
-<script src="application/core/toolbar/projectspage/dataedit/provenance/provenance-controller.js"></script>
-<script src="application/core/toolbar/projectspage/dataedit/details/details-controller.js"></script>
-<script src="application/core/toolbar/process/process-controller.js"></script>
-<script src="application/core/toolbar/process/notes/notes-controller.js"></script>
-<script src="application/core/toolbar/process/provenance/provenance-controller.js"></script>
-<script src="application/core/toolbar/process/provenance/input-output-step-directive.js"></script>
-<script src="application/core/toolbar/process/tags/tag-controller.js"></script>
-<script src="application/core/toolbar/databytag/databytag-controller.js"></script>
+<script src="application/core/projects/dataedit/dataedit-controller.js"></script>
+<script src="application/core/projects/dataedit/tags/tag-directive.js"></script>
+<script src="application/core/projects/dataedit/reviews/create-review-controller.js"></script>
+<script src="application/core/projects/dataedit/tags/create-tag-controller.js"></script>
+<script src="application/core/projects/dataedit/notes/notes-controller.js"></script>
+<script src="application/core/projects/dataedit/notes/notes-controller.js"></script>
+<script src="application/core/projects/dataedit/provenance/provenance-controller.js"></script>
+<script src="application/core/projects/dataedit/details/details-controller.js"></script>
 
 <!-- Toolbar tags -->
-<script src="application/core/toolbar/tagspage/tagspage-controller.js"></script>
-<script src="application/core/toolbar/tags/tags-controller.js"></script>
 <script src="application/core/account/templates/templates-controller.js"></script>
-<script src="application/core/toolbar/globaltagcloud/globaltagcloud-controller.js"></script>
-<script src="application/core/toolbar/globaltagcloud/wordcloud-directive.js"></script>
 
 <!-- Toolbar reviews -->
 <script src="application/core/reviews/reviews-controller.js"></script>
@@ -196,48 +181,41 @@
 <!-- Toolbar machines -->
 <script src="application/core/machines/machines-controller.js"></script>
 
+
+<script src="application/core/projects/projectspage-controller.js"></script>
+
 <!-- Toolbar projectspage -->
-<script src="application/core/toolbar/projectspage/projectspage-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/overview-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/files/files-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/samples/sample-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/provenance/provenance-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/drafts/drafts-controller.js"></script>
-<script src="application/core/toolbar/projectspage/overview/drafts/_review-modal-controller.js"></script>
+<script src="application/core/projects/projectspage-controller.js"></script>
+<script src="application/core/projects/overview/overview-controller.js"></script>
+<script src="application/core/projects/overview/files/files-controller.js"></script>
+<script src="application/core/projects/overview/samples/sample-controller.js"></script>
+<script src="application/core/projects/overview/provenance/provenance-controller.js"></script>
+<script src="application/core/projects/overview/drafts/drafts-controller.js"></script>
+<script src="application/core/projects/overview/drafts/_review-modal-controller.js"></script>
 
-
-<!-- Toolbar overview -->
-<script src="application/core/toolbar/overview/overview-controller.js"></script>
-<script src="application/core/toolbar/overview/_todo-modal-controller.js"></script>
-<script src="application/core/toolbar/overview/_project-modal-controller.js"></script>
-
-<!-- Toolbar File Services -->
-<script src="application/core/toolbar/fileservices/projects/projects-controller.js"></script>
-<script src="application/core/toolbar/fileservices/events/events-controller.js"></script>
-<script src="application/core/toolbar/fileservices/config/config-controller.js"></script>
 
 <!------------------------------ Provenance app ------------------------------>
 
 <!-- Views -->
 <!-- Provenance -->
-<script src="application/core/toolbar/projectspage/provenance/provenance-controller.js"></script>
-<script src="application/core/toolbar/projectspage/provenance/provsteps-service.js"></script>
-<script src="application/core/toolbar/projectspage/provenance/model-service.js"></script>
+<script src="application/core/projects/provenance/provenance-controller.js"></script>
+<script src="application/core/projects/provenance/provsteps-service.js"></script>
+<script src="application/core/projects/provenance/model-service.js"></script>
 
 
 <!-- Provenance Process -->
-<script src="application/core/toolbar/projectspage/provenance/process/process-controller.js"></script>
+<script src="application/core/projects/provenance/process/process-controller.js"></script>
 
 <!-- Provenance Inputs/Outputs Steps -->
-<script src="application/core/toolbar/projectspage/provenance/iosteps/iosteps-controller.js"></script>
-<script src="application/core/toolbar/projectspage/provenance/iosteps/iostep/iostep-controller.js"></script>
-<script src="application/core/toolbar/projectspage/provenance/iosteps/files/files-controller.js"></script>
-<script src="application/core/toolbar/projectspage/provenance/iosteps/iostep/sample-filter.js"></script>
-<script src="application/core/toolbar/projectspage/provenance/iosteps/iostep/clone-service.js"></script>
+<script src="application/core/projects/provenance/iosteps/iosteps-controller.js"></script>
+<script src="application/core/projects/provenance/iosteps/iostep/iostep-controller.js"></script>
+<script src="application/core/projects/provenance/iosteps/files/files-controller.js"></script>
+<script src="application/core/projects/provenance/iosteps/iostep/sample-filter.js"></script>
+<script src="application/core/projects/provenance/iosteps/iostep/clone-service.js"></script>
 
 
 <!--finish controller-->
-<script src="application/core/toolbar/projectspage/provenance/finish/finish-controller.js"></script>
+<script src="application/core/projects/provenance/finish/finish-controller.js"></script>
 
 <!-------------------------------- Global directives ------------------------------->
 <script src="application/directives/paged-directive.js"></script>
@@ -281,9 +259,7 @@
 <script src="application/filters/page-filter.js"></script>
 <script src="application/filters/todatestring-filter.js"></script>
 <script src="application/filters/reverse-filter.js"></script>
-<script src="application/filters/process-filter.js"></script>
 <script src="application/filters/template-filter.js"></script>
-<script src="application/filters/slice-filter.js"></script>
 
 <!-- Index -->
 <script src="index/_navigation-controller.js"></script>

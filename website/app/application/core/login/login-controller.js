@@ -7,7 +7,7 @@ Application.Controllers.controller('login',
                         User.setAuthenticated(true, apikey.apikey, $scope.email);
                         pubsub.send("tags.change");
                         Nav.setActiveNav('home');
-                        $state.transitionTo('toolbar.projectspage');
+                        $state.transitionTo('projects');
                     })
                     .error(function (data) {
                         alertService.sendMessage(data.error);
