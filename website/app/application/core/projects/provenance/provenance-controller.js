@@ -1,4 +1,4 @@
-Application.Provenance.Controllers.controller('projectsProvenance',
+Application.Controllers.controller('projectsProvenance',
     ["$scope", "$state", "$stateParams", "ProvSteps", "ProvDrafts", "process.Model", "Projects", "ProjectPath",
         function ($scope, $state, $stateParams, ProvSteps, ProvDrafts, Model, Projects, ProjectPath) {
             $scope.isCurrentStep = function (step) {
