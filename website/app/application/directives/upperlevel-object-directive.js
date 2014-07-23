@@ -1,7 +1,7 @@
 Application.Controllers.controller("upperlevelObjectController",
     ["$scope", "watcher", "$injector",function ($scope, watcher, $injector) {
 
-        $scope.validate_slash = function () {
+        $scope.validateSlash = function () {
             if ($scope.doc.name.match(/\//)){
                 $scope.flag = "No forward slash in sample names"
             }

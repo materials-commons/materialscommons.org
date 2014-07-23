@@ -36,7 +36,7 @@
                 text: /.*/,
                 number: /^$|^[-]?\d+(\.\d+)?$/,
                 float: /[+-]?([0-9]+\.([0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?/,
-                int: /^[^/]*$/,
+                int: /^$|^\d+$/,
                 range: function (value, attrs) {
                     if (attrs.min && attrs.max) {
                         if (value >= attrs.min && value <= attrs.max) {
