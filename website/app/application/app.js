@@ -216,7 +216,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.provenance.finish', {
             url: '/finish',
             templateUrl: 'application/core/projects/provenance/finish/finish.html'
-        })
+        });
 
 }]);
 
