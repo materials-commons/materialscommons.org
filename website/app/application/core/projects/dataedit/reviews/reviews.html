@@ -32,23 +32,29 @@
         </table>
 
         <cgroup label="Mark For Followup">
-            <textarea class="form-control" ng-model="model.review_note_self"
-                      ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}" placeholder="Review Note..."
+            <textarea class="form-control" ng-model="model.review_note_self" placeholder="Review Note..."
                       type="text"></textarea>
+            <button style="margin-top: 5px" ng-click="addReviewNoteKeypressCallback($event)" class="btn btn-default btn-info">Mark for Followup
+            </button>
         </cgroup>
         <cgroup label="Request to Review">
             <textarea class="form-control" ng-model="model.review_note_other"
                       ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}" placeholder="Review Note..."
                       type="text"></textarea>
+        </cgroup>
+        <cgroup label="">
             <select class="form-control" ng-model="model.user_for_review"
                     ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}" ng-multiple="false">
                 <option></option>
                 <option ng-repeat="user in users">{{ user }}</option>
             </select>
-            <button style="position:absolute" ng-click="addReviewForOther()" class="btn btn-default btn-info">Request
+
+            <button style="position:absolute;margin-left: 5px" ng-click="addReviewForOther()" class="btn btn-default btn-info">Request
                 Review
             </button>
         </cgroup>
+
+
 
     </div>
 </div>
