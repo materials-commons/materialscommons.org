@@ -36,6 +36,10 @@ Application.Controllers.controller('accountTemplates',
             }
             return false;
         };
+        $scope.showTemplate = function(t){
+            console.log(t)
+            $scope.temp = t;
+        }
 
         function init() {
             Nav.setActiveNav('Templates');

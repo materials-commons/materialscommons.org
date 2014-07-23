@@ -1,7 +1,6 @@
 <div class="row" ng-controller="accountTemplates">
     <br>
-
-    <div class="col-sm-2">
+    <div class="col-lg-2">
         <label>Experimental Templates:</label>
         <table class="table table-bordered mc-table">
             <thead>
@@ -10,13 +9,13 @@
             </thead>
             <tbody>
                 <tr ng-repeat="t in experimental_templates | orderBy:'template_name'">
-                    <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
-                    <td>{{t.template_name}}</td>
+                    <td ng-click="updatePreferences()"><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
+                    <td><a ng-click="showTemplate(t)">{{t.template_name}}</a></td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div class="col-sm-2">
+    <div class="col-lg-2">
         <label>Computational Templates:</label>
         <table class="table table-bordered">
             <thead>
@@ -25,28 +24,140 @@
             </thead>
             <tbody>
                 <tr ng-repeat="t in computational_templates | orderBy:'template_name'">
-                    <td><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
-                    <td>{{t.template_name}}</td>
+                    <td ng-click="updatePreferences()"><input type="checkbox" ng-checked="is_checked(t)" ng-click="check(t)"></td>
+                    <td><a ng-click="showTemplate(t)">{{t.template_name}}</a></td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div class="col-sm-3">
-        <div class="row">
-            <label>Preferred Templates:</label>
-            <table class="table table-bordered">
-                <thead>
-                    <th>Template name</th>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="t in preferred_templates | orderBy:'template_name'">
-                        <td>{{t.template_name}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="row">
-            <button class="btn btn-default btn-primary" ng-click="updatePreferences()">Save</button>
+    <div ng-show="temp" class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4 plus-minus-toggle="process">
+                    <i class="fa fa-minus-square"></i>
+                    Process
+                </h4><br>
+
+                <div id="process" class="row" >
+                    <div class="panel panel-default">
+                        <div class="panel panel-body">
+                            <display label="Name:"> {{provenanceView.name}}</display>
+                            <display label="Description:">
+                                {{provenanceView.description}}
+                            </display>
+                            <display label="Notes:">
+                                <ul ng-repeat=" note in provenanceView.notes">
+                                    <li style="word-break:break-all;">{{note.message}}</li>
+                                </ul>
+                            </display>
+                            <display label="Runs:">
+                                <div ng-if="provenanceView.template.template_pick=='experiment'">
+                                    {{provenanceView.experiment_run_date}}
+                                </div>
+                                <div ng-if="provenanceView.template.template_pick=='computation'">
+                                    <ul ng-repeat=" run in provenanceView.runs">
+                                        <li style="word-break:break-all;">{{run.start_run}} - {{run.stop_run}}</li>
+                                    </ul>
+                                </div>
+                            </display>
+                            <div df-report default-properties="provenanceView.default_properties"></div>
+
+                            <div ng-repeat="ad in provenanceView.added_properties">
+                                <display label="{{ad.name}}"> {{ad.value}}</display>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 plus-minus-toggle="inputs">
+                    <i class="fa fa-minus-square"></i>
+                    Inputs
+                </h4><br>
+
+                <div id="inputs" class="row" >
+                    <div class="panel panel-default">
+                        <div class="panel panel-body">
+                            <form class="form-horizontal" ng-repeat="(name, vals) in inputs">
+                                <label><u>{{ name }}</u></label>
+
+                                <div ng-if="name=='sample'">
+                                    <div class="row">
+                                        <display label="Name:"> {{vals.sample.name}}</display>
+                                        <display label="Description:">
+                                            {{vals.sample.description}}
+                                        </display>
+                                        <div  ng-repeat="(name, vals) in vals.sample.properties">
+                                            <div ng-if="name==='composition'">
+                                                <display label="{{name}}">
+                                                    <ul ng-repeat="c in vals.value">
+                                                        <li>{{c.element}} - {{c.value}} {{p.unit}}</li>
+                                                    </ul>
+                                                </display>
+                                            </div>
+                                            <div ng-if="name!=='composition'">
+                                                <display label="{{name}}"> {{vals.value}}</display>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="name!=='sample'">
+                                    <div class="row">
+                                        <div df-report default-properties="vals.default_properties"></div>
+                                        <div ng-repeat="ad in vals.added_properties">
+                                            <display label="{{ad.name}}"> {{ad.value}}</display>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form ng-if="input_files.length != 0" class="form-horizontal">
+                                <label><u>Input Files</u></label>
+                                <display ng-repeat="file in input_files" label="File:">
+                                    {{file.name}}
+                                </display>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <h4 plus-minus-toggle="outputs">
+                    <i class="fa fa-minus-square"></i>
+                    Outputs
+                </h4>
+
+                <div id="outputs" class="row">
+                    <div class="panel panel-default">
+                        <div class="panel panel-body">
+                            <form class="form-horizontal" ng-repeat="(name, vals) in outputs">
+                                <label><u>{{ name }}</u></label>
+
+                                <div ng-if="name=='transformed-sample'">
+                                    <div class="row">
+                                        <display label="Name:"> {{vals.sample.name}}</display>
+                                        <display label="Description:">
+                                            {{vals.sample.description}}
+                                        </display>
+                                        <div df-report default-properties="vals.sample.properties"></div>
+                                    </div>
+                                </div>
+                                <div ng-if="name!=='transformed-sample'">
+                                    <div class="row">
+                                        <div df-report default-properties="vals.default_properties"></div>
+                                        <div ng-repeat="ad in vals.added_properties">
+                                            <display label="{{ad.name}}"> {{ad.value}}</display>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form ng-if="output_files.length != 0" class="form-horizontal">
+                                <label><u>Output Files</u></label>
+                                <display ng-repeat="file in output_files" label="File:">
+                                    {{file.name}}
+                                </display>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>
