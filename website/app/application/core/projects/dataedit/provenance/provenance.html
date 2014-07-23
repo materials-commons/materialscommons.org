@@ -1,4 +1,7 @@
 <div class="tab-pane" id="provenance" ng-controller="projectsDataEditProvenance">
+    <div ng-hide="df_denorm">
+        <br><p class="text-muted"><b>No provenance associated with this datafile</b></p>
+    </div>
     <div class="row" ng-repeat="process in df_denorm">
         <div class="panel panel-default">
             <div class="panel panel-heading">
@@ -48,19 +51,21 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
+            <div ng-if="sample"  class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        <div ng-if="sample">
                             <div sample-report sample="sample"></div>
-                        </div>
-                        <div ng-if="item">
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+            <div ng-if="item" class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
                             <div condition-report item="item"></div>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>
