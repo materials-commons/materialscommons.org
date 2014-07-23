@@ -2,8 +2,6 @@ Application.Controllers.controller('projectsOverviewSamples',
     ["$scope", "mcapi", "$injector", "model.Projects", "alertService", "User", "$stateParams",
         function ($scope, mcapi, $injector, Projects, alertService, User, $stateParams) {
             var $validationProvider = $injector.get('$validation');
-
-
             $scope.showForm = function () {
                 $scope.default_properties = $scope.bk.selected_treatment.default_properties;
                 $scope.bk.tab_item = '';
