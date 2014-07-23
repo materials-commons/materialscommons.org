@@ -49,7 +49,7 @@ def create_object():
     sample = dict()
     user = access.get_user()
     sample['name'] = dmutil.get_required('name', j)
-    if len(sample['name'].split("/")) > 1:
+    if '/' in sample['name']:
         error.update_conflict("Unable to create sample becuase of forward slash in sample name ")
     else:
         sample['description'] = dmutil.get_optional('description', j)
