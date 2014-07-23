@@ -5,20 +5,12 @@ Application.Services = angular.module('application.core.services', []);
 Application.Controllers = angular.module('application.core.controllers', []);
 Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
-//
-//Application.Provenance = {};
-//Application.Provenance.Constants = angular.module('application.provenance.constants', []);
-//Application.Provenance.Services = angular.module('application.provenance.services', []);
-//Application.Provenance.Controllers = angular.module('application.provenance.controllers', []);
-//Application.Provenance.Filters = angular.module('application.provenance.filters', []);
-//Application.Provenance.Directives = angular.module('application.provenance.directives', []);
 
 var app = angular.module('materialscommons',
     [
         'ui',
         'ngCookies',
         'ui.router',
-//        'ngQuickDate',
         'btford.socket-io',
         'restangular',
         'jmdobry.angular-cache',
@@ -216,7 +208,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.provenance.finish', {
             url: '/finish',
             templateUrl: 'application/core/projects/provenance/finish/finish.html'
-        })
+        });
 
 }]);
 
