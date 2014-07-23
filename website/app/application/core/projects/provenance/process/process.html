@@ -8,14 +8,14 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li ng-repeat="p in preferred_templates">
-                        <a ng-click="change_process(p)">{{p.template_name}}</a>
+                        <a ng-click="change_process(p.id)">{{p.template_name}}</a>
                         </li>
                         <li class="divider"></li>
                         <li class="dropdown-submenu" >
                             <a  href="#">Experiment</a>
                             <ul class="dropdown-menu scrollable-menu" >
                                 <li ng-repeat="exp_temp in experimental_templates">
-                                <a ng-click="change_process(exp_temp)">{{exp_temp.template_name}}</a>
+                                <a ng-click="change_process(exp_temp.id)">{{exp_temp.template_name}}</a>
                                 </li>
                             </ul>
                         </li>
@@ -23,7 +23,7 @@
                             <a  href="#">Computation</a>
                             <ul class="dropdown-menu scrollable-menu" >
                                 <li ng-repeat="comp_temp in computational_templates">
-                                    <a ng-click="change_process(comp_temp)">{{comp_temp.template_name}}</a>
+                                    <a ng-click="change_process(comp_temp.id)">{{comp_temp.template_name}}</a>
                                 </li>
 
                             </ul>

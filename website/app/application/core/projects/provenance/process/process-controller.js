@@ -3,23 +3,28 @@ Application.Controllers.controller('projectProvenanceProcess',
         function ($scope, mcapi, alertService, ProvSteps, ProvDrafts, dateGenerate, User, $injector, $filter) {
             var $validationProvider = $injector.get('$validation'), check;
 
-            $scope.change_process = function (template) {
-                if ($scope.doc.template.id === template.id) {
+            $scope.change_process = function (template_id) {
+                if ($scope.doc.template.id === template_id) {
                     // All attributes already loaded from a draft
                     return;
                 }
-                $scope.doc.default_properties = template.default_properties;
-                $scope.doc.required_input_conditions = template.required_input_conditions;
-                $scope.doc.required_output_conditions = template.required_output_conditions;
-                $scope.doc.required_input_files = template.required_input_files;
-                $scope.doc.required_output_files = template.required_output_files;
-                var now = new Date();
-                var dd = ("0" + now.getDate()).slice(-2);
-                var mm = ("0" + (now.getMonth() + 1)).slice(-2);
-                var today = now.getFullYear() + "-" + mm + "-" + dd;
-                $scope.doc.name = template.template_name + ':' + today;
-                $scope.doc.template = template;
-                $scope.doc.owner = User.u();
+                mcapi('/templates/%', template_id)
+                    .success(function (data) {
+                        $scope.template =  data;
+                        $scope.doc.default_properties = $scope.template.default_properties;
+                        $scope.doc.required_input_conditions = $scope.template.required_input_conditions;
+                        $scope.doc.required_output_conditions = $scope.template.required_output_conditions;
+                        $scope.doc.required_input_files = $scope.template.required_input_files;
+                        $scope.doc.required_output_files = $scope.template.required_output_files;
+                        var now = new Date();
+                        var dd = ("0" + now.getDate()).slice(-2);
+                        var mm = ("0" + (now.getMonth() + 1)).slice(-2);
+                        var today = now.getFullYear() + "-" + mm + "-" + dd;
+                        $scope.doc.name = $scope.template.template_name + ':' + today;
+                        $scope.doc.template = $scope.template;
+                        $scope.doc.owner = User.u();
+                    }).jsonp()
+
             };
             $scope.saveDraft = function (form) {
                 check = $validationProvider.checkValid(form);
@@ -30,7 +35,6 @@ Application.Controllers.controller('projectProvenanceProcess',
                 } else {
                     $validationProvider.validate(form);
                 }
-
             };
 
             $scope.next = function (form) {
@@ -39,7 +43,6 @@ Application.Controllers.controller('projectProvenanceProcess',
                     ProvSteps.setStepFinished('process');
                 }
             };
-
 
             function init() {
                 $scope.bk = {
