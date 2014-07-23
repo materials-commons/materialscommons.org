@@ -99,5 +99,3 @@ Application.Directives.directive('projectTree',
             templateUrl: "application/directives/projecttree.html"
         };
     });
-
-

@@ -32,7 +32,6 @@ Application.Controllers.controller('projectsOverview',
             $scope.project_id = $stateParams.id;
             $scope.from = $stateParams.from;
             $scope.processes = [];
-            $state.go('projects.overview.files', {id: $scope.project_id});
             $scope.countDrafts();
         }
 

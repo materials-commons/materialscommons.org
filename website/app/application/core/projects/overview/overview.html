@@ -50,18 +50,30 @@
     <div class="col-lg-2">
         <div style="padding-left:40px" class="individual-items">
             <ul class="nav nav-tabs tabs-right">
-                <li class="active"><a ng-click="showTab('files')" data-toggle="tab">
-                    Files<i class="fa fa-file-text marginLeft pull-right"></i> </a></li>
-                <li><a ng-click="showTab('provenance')" data-toggle="tab">Provenance <i
-                        class="fa fa-code-fork marginLeft pull-right"></i> </a></li>
-                <li><a ng-click="showTab('drafts')" data-toggle="tab">Drafts  ({{drafts_count}}) <i class="fa fa-copy marginLeft pull-right"></i>
-                </a></li>
+                <li class="active">
+                    <a ng-click="showTab('files')" data-toggle="tab">
+                        Files<i class="fa fa-file-text marginLeft pull-right"/>
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="showTab('provenance')" data-toggle="tab">
+                        Provenance <i class="fa fa-code-fork marginLeft pull-right"/>
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="showTab('drafts')" data-toggle="tab">
+                        Drafts  ({{drafts_count}}) <i class="fa fa-copy marginLeft pull-right"/>
+                    </a>
+                </li>
                 <!--<li><a ng-click="showTab('issues')" data-toggle="tab">Issues <i-->
-                        <!--class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>-->
+                <!--class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>-->
                 <!--<li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i-->
-                        <!--class="fa fa-cog marginLeft pull-right"></i></a></li>-->
-                <li><a ng-click="showTab('samples')" data-toggle="tab">Samples <i
-                        class="fa fa-cubes marginLeft pull-right"></i></a></li>
+                <!--class="fa fa-cog marginLeft pull-right"></i></a></li>-->
+                <li>
+                    <a ng-click="showTab('samples')" data-toggle="tab">
+                        Samples <i class="fa fa-cubes marginLeft pull-right"/>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
