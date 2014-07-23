@@ -1,8 +1,9 @@
 <div ng-if="doc.added_properties.length!=0">
     <label>Additional/Custom Properties:</label>
+
     <div ng-repeat="pv in doc.added_properties">
         <div class="form-group">
-            <label class="col-sm-2 control-label">{{pv.name}}:
+            <label class="col-sm-{{labelSize}} control-label">{{pv.name}}:
                 <span ng-if="pv.required==true">
                     <i class="fa fa-asterisk"></i>
                 </span>
@@ -86,7 +87,8 @@
 </div>
 <div ng-if="edit===false">
     <div class="form-group" ng-show="additionalProperties.length > 0">
-        <label class="col-sm-2 control-label">Additional Properties:</label>
+        <label class="col-sm-{{labelSize}} control-label">Additional Properties:</label>
+
         <div class="col-sm-4">
             <select class="form-control" ng-model="bk.additional_property">
                 <option ng-repeat="property in additionalProperties" value="{{property}}">
@@ -98,12 +100,12 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Custom Property:</label>
+        <label class="col-sm-{{labelSize}} control-label">Custom Property:</label>
 
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <input class="form-control" ng-model="bk.customPropertyName" placeholder="Name..." type="text">
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <input class="form-control" ng-model="bk.customPropertyValue" placeholder="Value..." type="text">
         </div>
         <button ng-click="addCustomProperty()" class="btn btn-default btn-info">Add</button>
