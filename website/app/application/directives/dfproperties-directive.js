@@ -62,7 +62,8 @@ Application.Directives.directive('dfProperties',
             scope: {
                 defaultProperties: '=',
                 machinesList: '=',
-                edit: "="
+                edit: "=",
+                labelSize: "="
             },
             templateUrl: 'application/directives/default-properties.html'
         };
