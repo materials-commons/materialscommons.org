@@ -28,7 +28,6 @@ Application.Controllers.controller('projectsProvenanceFinish',
                             $scope.message = "One of your steps is not complete. Please verify and submit again";
                             $scope.notdone = true;
                         }).post({draft_id: $scope.doc.id});
-
                 });
             };
 

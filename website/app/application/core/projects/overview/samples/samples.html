@@ -84,25 +84,25 @@
                     </div>
                     <div class="row">
                         <div ng-show="doc.projects.length !==0 " class="col-lg-8">
-                                <table class="table table-striped mc-table-hover table-condensed mc-table">
-                                    <thead>
-                                    <tr>
-                                        <th>Projects</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="i in doc.projects">
-                                        <td>{{i.name}}</td>
-                                        <td>
-                                            <button class="btn btn-default btn-danger"
-                                                    ng-click="removeProjects($index)">
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <table class="table table-striped mc-table-hover table-condensed mc-table">
+                                <thead>
+                                <tr>
+                                    <th>Projects</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="i in doc.projects">
+                                    <td>{{i.name}}</td>
+                                    <td>
+                                        <button class="btn btn-default btn-danger"
+                                                ng-click="removeProjects($index)">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -151,9 +151,28 @@
                         </td>
                         <td ng-if="sample.available===true">
                             <i class="fa fa-check available"></i>
+                            <a  ng-click="editAvailability(sample)"
+                                 style="padding-left: 10px;">edit</a>
+                            <div ng-show="bk.is_disabled">
+                                <input  type="radio" ng-model="bk.available" value="1">
+                                available <br/>
+                                <input  type="radio" ng-model="bk.available" value="2"> not
+                                available
+                                <br><button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save</button>
+                            </div>
                         </td>
                         <td ng-if="sample.available===false">
                             <i class="fa fa-times notavailable"></i>
+                            <a  ng-click="editAvailability(sample)"
+                                style="padding-left: 10px;">edit</a>
+
+                            <div ng-show="bk.is_disabled">
+                                <input  type="radio" ng-model="bk.available" value="1">
+                                available <br/>
+                                <input  type="radio" ng-model="bk.available" value="2"> not
+                                available
+                                <br><button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save</button>
+                            </div>
                         </td>
                         <td>{{sample.birthtime | toDateString}}</td>
                         <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
@@ -217,14 +236,15 @@
                         </div>
                         <div>
                             <h5><b><u>Projects</u></b></h5>
+
                             <div ng-show="projects_by_sample.length !== 0">
-                                    <table class="table table-striped mc-table-hover table-condensed mc-table">
-                                        <tbody>
-                                        <tr ng-repeat="i in projects_by_sample">
-                                            <td>{{i.project_name}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                                    <tbody>
+                                    <tr ng-repeat="i in projects_by_sample">
+                                        <td>{{i.project_name}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="row form-group">
                                 <div class="col-lg-8">
@@ -243,5 +263,26 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="confirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Update availability of {{chosen_sample.name}}</h4>
+                </div>
+                <div class="modal-body">
+                   <div ng-show="bk.is_disabled">
+                        <input  type="radio" ng-model="bk.available" value="1">
+                        available <br/>
+                        <input  type="radio" ng-model="bk.available" value="2"> not
+                        available
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
