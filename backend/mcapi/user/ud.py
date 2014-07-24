@@ -9,7 +9,6 @@ from .. import doc
 from loader.model import sample
 from mcapi import mcexceptions
 import traceback
-from .. import args
 
 
 class StateCreateSaver(object):
@@ -107,6 +106,10 @@ class ProvenanceSaver(object):
         p['runs'] = dmutil.get_optional('runs', j, [])
         p['owner'] = dmutil.get_required('owner', j)
         p['experiment_run_date'] = dmutil.get_optional('experiment_run_date', j)
+        if p['experiment_run_date'] != "":
+            d = p['experiment_run_date']
+            if isinstance(d, basestring):
+                p['experiment_run_date'] = r.iso8601(d)
         self._process_properties(p, j)
         input_conditions = dmutil.get_optional('input_conditions', j, [])
         output_conditions = dmutil.get_optional('output_conditions', j, [])
@@ -169,7 +172,7 @@ class ProvenanceSaver(object):
         for key in output_conditions:
             values = output_conditions[key]
             if key == "transformed-sample":
-                c  = self._create_transformed_sample(values, p['inputs'])
+                c = self._create_transformed_sample(values, p['inputs'])
             else:
                 c = self._new_condition(values)
             if c is not None:
@@ -212,7 +215,7 @@ class ProvenanceSaver(object):
     def _create_transformed_sample(self, j, inputs):
         s = dmutil.get_required('sample', j)
         value = dmutil.get_optional('is_active', j)
-        if value == False:
+        if not value:
             self._set_availability(s['id'])
         transformed_sample = dict()
         user = access.get_user()
@@ -225,8 +228,7 @@ class ProvenanceSaver(object):
         transformed_sample['created_by'] = user
         transformed_sample['owner'] = user
         transformed_sample['treatments'] = []
-        #transformed_sample['projects'] = dmutil.get_optional('projects', s)
-        transformed_sample['path'] =  dmutil.get_required('path', s) +  '/' + transformed_sample['name']
+        transformed_sample['path'] = dmutil.get_required('path', s) + '/' + transformed_sample['name']
         transformed_sample['parent_id'] = dmutil.get_optional('parent_id', s)
         for item in inputs:
             if item['attribute'] == 'heat_treatment':
@@ -250,9 +252,8 @@ class ProvenanceSaver(object):
     def _set_availability(self, sample_id):
         rr = r.table('samples').get(sample_id).update({'available': False}).run(g.conn)
         return rr
-    
-   
-    
+
+
 @app.route('/provenance', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
@@ -267,7 +268,8 @@ def create_provenance():
         return jsonify({'success': True, 'process': process_id})
     else:
         return error.bad_request('unable to create process')
-    
+
+
 def update_df_denorm(process_id):
         process = r.table('processes').get(process_id).run(g.conn)
         inputs = process['inputs']
@@ -317,8 +319,8 @@ def update_df_denorm(process_id):
                     sample_dnorm['file_type'] = 'output'
                     r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
         return
-    
+
+
 def join_sample_projects(old_joins, t_sample_id):
     for each in old_joins:
-        rr = r.table('projects2samples').insert({'sample_id': t_sample_id, 'project_id': each['project_id'], 'project_name': each['project_name']}).run(g.conn) 
-
+        r.table('projects2samples').insert({'sample_id': t_sample_id, 'project_id': each['project_id'], 'project_name': each['project_name']}).run(g.conn)
