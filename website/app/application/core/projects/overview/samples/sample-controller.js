@@ -118,6 +118,41 @@ Application.Controllers.controller('projectsOverviewSamples',
                     }).put();
             };
 
+            $scope.editAvailability = function(sample){
+                $scope.chosen_sample = sample
+                $scope.bk.is_disabled = true;
+            }
+            $scope.updateAvailability = function(){
+                if ($scope.bk.available == 1){
+                    mcapi('/objects/%', $scope.chosen_sample.id)
+                        .success(function () {
+                            $scope.bk.is_disabled = false
+                            $scope.refreshSamples()
+                        })
+                        .error(function () {
+                            console.log('eeee')
+                        }).put({'available': 1 })
+                }else{
+                    mcapi('/objects/%', $scope.chosen_sample.id)
+                        .success(function () {
+                            $scope.bk.is_disabled = false
+                            $scope.refreshSamples()
+                        })
+                        .error(function () {
+                            console.log('eeee')
+
+                        }).put({'available': 2})
+                }
+            }
+            $scope.cancel = function () {
+                return;
+            };
+            $scope.refreshSamples = function(){
+                mcapi('/samples/by_project/%', $scope.project_id)
+                    .success(function (data) {
+                        $scope.samples_list = data;
+                    }).jsonp();
+            }
             function init() {
                 $scope.doc = {
                     name: '',
@@ -129,7 +164,9 @@ Application.Controllers.controller('projectsOverviewSamples',
                     treatments: []
                 };
                 $scope.bk = {
-                    selected_project: ''
+                    selected_project: '',
+                    is_disabled: false,
+                    available: ''
                 };
                 //initialize the sample with default project
                 $scope.project_id = $stateParams.id;
@@ -158,10 +195,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                     .error(function (e) {
 
                     }).jsonp();
-                mcapi('/samples/by_project/%', $scope.project_id)
-                    .success(function (data) {
-                        $scope.samples_list = data;
-                    }).jsonp();
+                $scope.refreshSamples();
 
                 Projects.getList().then(function (data) {
                     $scope.projects = data;
