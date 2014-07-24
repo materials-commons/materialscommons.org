@@ -11,6 +11,17 @@ Application.Controllers.controller('projectsOverviewProvenance',
                 }).jsonp();
 
         }
+        $scope.processDetails = function(p_id){
+            mcapi('/processes/%', p_id)
+                .success(function (data) {
+                    $scope.process = []
+                    $scope.process.push(data);
+                    console.log(data)
+                })
+                .error(function(e){
+                    console.log(e)
+                }).jsonp();
+        }
 
         function init() {
             $scope.project_id = $stateParams.id;
