@@ -11,7 +11,6 @@ Application.Controllers.controller('projectsProvenanceFinish',
                 ProvDrafts.deleteRemoteDraft($scope.doc.id);
                 $state.go("projects.overview", {id: $stateParams.id});
             };
-
             $scope.submitProvenance = function () {
                 ProvDrafts.saveDraft(function () {
                     mcapi('/provenance')
@@ -28,6 +27,7 @@ Application.Controllers.controller('projectsProvenanceFinish',
                             $scope.message = "One of your steps is not complete. Please verify and submit again";
                             $scope.notdone = true;
                         }).post({draft_id: $scope.doc.id});
+
                 });
             };
 
@@ -46,10 +46,10 @@ Application.Controllers.controller('projectsProvenanceFinish',
                 $scope.input_files = $scope.doc.process.input_files;
                 $scope.output_files = $scope.doc.process.output_files;
                 if ($scope.inputs)
-                mcapi('/machines')
-                    .success(function (data) {
-                        $scope.machines_list = data;
-                    }).jsonp();
+                    mcapi('/machines')
+                        .success(function (data) {
+                            $scope.machines_list = data;
+                        }).jsonp();
             };
 
             $scope.init();
