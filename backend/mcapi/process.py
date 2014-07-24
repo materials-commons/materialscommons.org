@@ -50,8 +50,10 @@ def get_processes_by_sample(sample_id):
 @app.route('/processes/file/<file_id>', methods=['GET'])
 @jsonp
 def get_processes_by_file(file_id):
-    rv = r.table('datafiles_denorm').filter({'df_id': file_id}).eq_join('process_id', r.table('processes'))
-    selection = list(rv.run(g.conn, time_format='raw'))
+    selection = list(r.table('datafiles_denorm')
+                     .get_all(file_id, index='df_id')
+                     .eq_join('process_id', r.table('processes'))
+                     .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
 

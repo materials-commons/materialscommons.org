@@ -8,6 +8,7 @@
                 Process: {{process.right.name}}
             </div>
             <div class="panel-body">
+                <div class="row">
                     <div class="col-lg-6" >
                         <label>Inputs</label>
                         <ul ng-repeat="i in process.right.inputs">
@@ -46,26 +47,27 @@
                             </div>
                         </ul>
                     </div>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="row">
-            <div ng-if="sample"  class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row">
-                            <div sample-report sample="sample"></div>
-                    </div>
+        <div ng-if="sample"  class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div sample-report sample="sample"></div>
                 </div>
+            </div>
         </div>
     </div>
     <div class="row">
-            <div ng-if="item" class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row">
-                            <div condition-report item="item"></div>
-                    </div>
+        <div ng-if="item" class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div condition-report item="item"></div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
