@@ -39,7 +39,7 @@
 
     <div class="row">
         <div ng-if="doc.template.template_pick=='experiment'">
-            <button ng-click="custom=!custom">+</button>
+            <button ng-click="custom=!custom">+</button> {{doc.experiment_run_date | date:'mediumDate'}}
             <div ng-show="custom">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-4">
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div ng-if="doc.template.template_pick=='computation'">
-            <button ng-click="custom=!custom">+</button>
+            <button ng-click="custom=!custom">+</button> {{doc.start_run | date:'medium'}}/{{doc.stop_run | date:'medium'}}
             <div ng-show="custom">
                 <label class="col-sm-2 control-label">Start Run:</label>
                 <div class="col-sm-4">
