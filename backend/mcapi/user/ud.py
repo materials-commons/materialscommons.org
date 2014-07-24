@@ -274,51 +274,44 @@ def update_df_denorm(process_id):
         process = r.table('processes').get(process_id).run(g.conn)
         inputs = process['inputs']
         outputs = process['outputs']
-        if inputs == []:
-            print 'no inputs'
-        else:
-            for i in inputs:
-                if i['attribute'] == 'file':
-                    df_dnorm = {}
-                    df_dnorm['df_id'] = i['properties']['id']['value']
-                    df_dnorm['df_name'] = i['properties']['name']['value']
-                    df_dnorm['process_id'] = process['id']
-                    df_dnorm['process_name'] = process['name']
-                    df_dnorm['project_id'] = process['project']
-                    df_dnorm['file_type'] = 'input'
-                    r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
-                elif i['attribute'] == 'sample':
-                    sample_dnorm = {}
-                    sample_dnorm['sample_id'] = i['properties']['id']['value']
-                    sample_dnorm['sample_name'] = i['properties']['name']['value']
-                    sample_dnorm['process_id'] = process['id']
-                    sample_dnorm['process_name'] = process['name']
-                    sample_dnorm['project_id'] = process['project']
-                    sample_dnorm['file_type'] = 'input'
-                    r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
-        if outputs == []:
-            print 'no outputs'
-        else:
-            for o in outputs:
-                if o['attribute'] == 'file':
-                    df_dnorm = {}
-                    df_dnorm['df_id'] = o['properties']['id']['value']
-                    df_dnorm['df_name'] = o['properties']['name']['value']
-                    df_dnorm['process_id'] = process['id']
-                    df_dnorm['process_name'] = process['name']
-                    df_dnorm['project_id'] = process['project']
-                    df_dnorm['file_type'] = 'output'
-                    r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
-                elif o['attribute'] == 'sample':
-                    sample_dnorm = {}
-                    sample_dnorm['sample_id'] = o['properties']['id']['value']
-                    sample_dnorm['sample_name'] = o['properties']['name']['value']
-                    sample_dnorm['process_id'] = process['id']
-                    sample_dnorm['process_name'] = process['name']
-                    sample_dnorm['project_id'] = process['project']
-                    sample_dnorm['file_type'] = 'output'
-                    r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
-        return
+        for i in inputs:
+            if i['attribute'] == 'file':
+                df_dnorm = {}
+                df_dnorm['df_id'] = i['properties']['id']['value']
+                df_dnorm['df_name'] = i['properties']['name']['value']
+                df_dnorm['process_id'] = process['id']
+                df_dnorm['process_name'] = process['name']
+                df_dnorm['project_id'] = process['project']
+                df_dnorm['file_type'] = 'input'
+                r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
+            elif i['attribute'] == 'sample':
+                sample_dnorm = {}
+                sample_dnorm['sample_id'] = i['properties']['id']['value']
+                sample_dnorm['sample_name'] = i['properties']['name']['value']
+                sample_dnorm['process_id'] = process['id']
+                sample_dnorm['process_name'] = process['name']
+                sample_dnorm['project_id'] = process['project']
+                sample_dnorm['file_type'] = 'input'
+                r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
+        for o in outputs:
+            if o['attribute'] == 'file':
+                df_dnorm = {}
+                df_dnorm['df_id'] = o['properties']['id']['value']
+                df_dnorm['df_name'] = o['properties']['name']['value']
+                df_dnorm['process_id'] = process['id']
+                df_dnorm['process_name'] = process['name']
+                df_dnorm['project_id'] = process['project']
+                df_dnorm['file_type'] = 'output'
+                r.table('datafiles_denorm').insert(df_dnorm).run(g.conn)
+            elif o['attribute'] == 'sample':
+                sample_dnorm = {}
+                sample_dnorm['sample_id'] = o['properties']['id']['value']
+                sample_dnorm['sample_name'] = o['properties']['name']['value']
+                sample_dnorm['process_id'] = process['id']
+                sample_dnorm['process_name'] = process['name']
+                sample_dnorm['project_id'] = process['project']
+                sample_dnorm['file_type'] = 'output'
+                r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
 
 
 def join_sample_projects(old_joins, t_sample_id):

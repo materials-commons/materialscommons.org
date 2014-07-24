@@ -18,6 +18,7 @@ def get_all_objects():
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
+
 @app.route('/objects/project/<project_id>', methods=['GET'])
 @jsonp
 def get_all_objects_by_project(project_id):
@@ -40,6 +41,18 @@ def get_objects_user(user):
 def get_object(object_id):
     return dmutil.get_single_from_table('samples', object_id)
 
+
+@app.route('/objects/<object_id>', methods=['PUT'])
+@crossdomain(origin='*')
+@apikey
+def update_availability(object_id):
+    j = request.get_json()
+    available = dmutil.get_required('available', j)
+    if available == 1:
+        rv = r.table('samples').get(object_id).update({'available': True}).run(g.conn)
+    else:
+        rv = r.table('samples').get(object_id).update({'available': False}).run(g.conn)
+    return args.json_as_format_arg({'id': object_id})
 
 @app.route('/objects/new', methods=['POST'])
 @apikey

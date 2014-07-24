@@ -2,7 +2,6 @@
 
 import rethinkdb as r
 import optparse
-import sys
 
 
 if __name__ == "__main__":
