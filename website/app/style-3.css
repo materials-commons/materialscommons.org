@@ -454,5 +454,13 @@ table-file-directory > thead > tr > td,
     padding: 0;
     position: relative;
 }
+.panel-info > .panel-heading {
+    background-color: #ADD8E6;
+    border-color: lightgrey;
+    color: #4b4b4b;
+}
+.panel-info{
+    border-color: lightgrey;
+}
 
 

@@ -5,14 +5,15 @@
 </div>
 <div ng-repeat="process in processes">
 
-    <div class="panel panel-default">
+    <div class="panel panel-info">
+        <div class="panel panel-heading">
+            <h4 plus-minus-toggle="slideProcess{{process.id}}">
+                <i class="fa fa-minus-square"></i>
+                Process - {{process.name}}
+            </h4>
+        </div>
         <div class="panel-body">
             <div class="row">
-                <h4 plus-minus-toggle="slideProcess{{process.id}}">
-                    <i class="fa fa-minus-square"></i>
-                    Process - {{process.name}}
-                </h4>
-
                 <div class="col-lg-offset-3">
                     <display label="Name:"> {{process.name}}</display>
                     <display label="Description:">
@@ -41,131 +42,62 @@
                 </div>
             </div>
             <br>
+
             <div id="slideProcess{{process.id}}">
                 <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4 plus-minus-toggle="slideInputs">
-                                    <i class="fa fa-minus-square"></i>
-                                    Inputs
-                                </h4>
-                                <div id="slideInputs">
-                                    <div class="col-lg-offset-2">
-                                        <ul ng-repeat="i in process.inputs">
-                                            <div ng-if="i.type=='id'">
-                                                <div ng-if="sampleDoc.id === i.properties.id.value">
-                                                    <li><a style="background-color: lightgreen;" ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>
-                                                        <display label="Name:"> {{sample.name}}</display>
-                                                        <display label="Description:">
-                                                            {{sample.description}}
-                                                        </display>
-                                                        <div ng-repeat="(name, vals) in sample.properties">
-                                                            <div ng-if="name==='composition'">
-                                                                <display label="{{name}}">
-                                                                    <ul ng-repeat="c in vals.value">
-                                                                        <li>{{c.element}} - {{c.value}} {{p.unit}}</li>
-                                                                    </ul>
-                                                                </display>
-                                                            </div>
-                                                            <div ng-if="name!=='composition'">
-                                                                <display label="{{name}}"> {{vals.value}}</display>
-                                                            </div>
-                                                        </div>
-                                                    <!--<li><a style="background-color: lightgreen;" ng-click="showProvDetails(i)">{{i.properties.name.value}}</a>-->
-                                                    <!--</li>-->
-                                                </div>
-                                                <div ng-if="sampleDoc.id !== i.properties.id.value">
-                                                        <a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a>
-                                                        <display label="Name:"> {{sample.name}}</display>
-                                                        <display label="Description:">
-                                                            {{sample.description}}
-                                                        </display>
-                                                        <div ng-repeat="(name, vals) in sample.properties">
-                                                            <div ng-if="name==='composition'">
-                                                                <display label="{{name}}">
-                                                                    <ul ng-repeat="c in vals.value">
-                                                                        <li>{{c.element}} - {{c.value}} {{p.unit}}</li>
-                                                                    </ul>
-                                                                </display>
-                                                            </div>
-                                                            <div ng-if="name!=='composition'">
-                                                                <display label="{{name}}"> {{vals.value}}</display>
-                                                            </div>
-                                                        </div>
-                                                    <!--<li><a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>-->
-                                                </div>
-                                            </div>
-                                            <div ng-if="i.type=='condition'">
-                                                <li><a ng-click="showProvDetails(i)">{{i.template}}</a></li>
-                                            </div>
-                                            <div ng-if="i.type=='file'">
-                                                <div ng-if="doc.id === i.properties.id.value">
-                                                    <li><a ng-click="showProvDetails(i)" style="background-color: lightgreen;">{{i.properties.name.value}}</a>
-                                                    </li>
-                                                </div>
-                                                <div ng-if="doc.id !== i.properties.id.value">
-                                                    <li><a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>
-                                                </div>
-                                            </div>
-                                        </ul>
-                                    </div>
-                                </div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4 plus-minus-toggle="slideInputs{{process.id}}">
+                                <i class="fa fa-minus-square"></i>
+                                Inputs
+                            </h4>
 
+                            <div id="slideInputs{{process.id}}">
+                                <div class="col-lg-offset-2">
+                                    <ul ng-repeat="i in process.inputs">
+                                        <div ng-if="i.type=='id'">
+                                            <div sample-report sample="i.properties.obj"></div>
+                                        </div>
+                                        <div ng-if="i.type=='condition'">
+                                            <div condition-report item="i"></div>
+                                        </div>
+                                        <div ng-if="i.type=='file'">
+                                            <div file-report file="i.properties.obj"></div>
+                                        </div>
+                                    </ul>
+                                </div>
                             </div>
+
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <h4 plus-minus-toggle="slideOutputs">
+                            <h4 plus-minus-toggle="slideOutputs{{process.id}}">
                                 <i class="fa fa-minus-square"></i>
                                 Outputs
                             </h4>
-                            <ul ng-repeat="i in process.outputs">
-                                <div ng-if="i.type=='id'">
-                                    <div ng-if="sampleDoc.id === i.properties.id.value">
-                                        <li><a style="background-color: lightgreen;" ng-click="showProvDetails(i)">{{i.properties.name.value}}</a>
-                                        </li>
-                                    </div>
-                                    <div ng-if="sampleDoc.id !== i.properties.id.value">
-                                        <li><a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>
-                                    </div>
+
+                            <div id="slideOutputs{{process.id}}">
+                                <div class="col-lg-offset-2">
+                                    <ul ng-repeat="o in process.outputs">
+                                        <div ng-if="o.type=='id'">
+                                            <div sample-report sample="o.properties.obj"></div>
+                                        </div>
+                                        <div ng-if="o.type=='condition'">
+                                            <div condition-report item="o"></div>
+                                        </div>
+                                        <div ng-if="o.type=='file'">
+                                            <div file-report file="o.properties.obj"></div>
+                                        </div>
+                                    </ul>
                                 </div>
-                                <div ng-if="i.type=='condition'">
-                                    <li><a ng-click="showProvDetails(i)">{{i.template}}</a></li>
-                                </div>
-                                <div ng-if="i.type=='file'">
-                                    <div ng-if="doc.id === i.properties.id.value">
-                                        <li><a ng-click="showProvDetails(i)" style="background-color: lightgreen;">{{i.properties.name.value}}</a>
-                                        </li>
-                                    </div>
-                                    <div ng-if="doc.id !== i.properties.id.value">
-                                        <li><a ng-click="showProvDetails(i)">{{i.properties.name.value}}</a></li>
-                                    </div>
-                                </div>
-                            </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-<div class="row">
-    <div ng-if="sample" class="panel panel-default">
-        <div class="panel-body">
-            <div class="row">
-                <div sample-report sample="sample"></div>
-            </div>
-        </div>
-    </div>
-    <div ng-if="item" class="panel panel-default">
-        <div class="panel-body">
-            <div class="row">
-                <div condition-report item="item"></div>
-            </div>
-        </div>
-    </div>
-</div>
-

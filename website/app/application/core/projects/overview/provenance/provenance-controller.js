@@ -16,10 +16,8 @@ Application.Controllers.controller('projectsOverviewProvenance',
                 .success(function (data) {
                     $scope.process = []
                     $scope.process.push(data);
-                    console.log(data)
                 })
                 .error(function(e){
-                    console.log(e)
                 }).jsonp();
         }
 
