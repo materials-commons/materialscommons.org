@@ -209,7 +209,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/finish',
             templateUrl: 'application/core/projects/provenance/finish/finish.html'
         });
-
 }]);
 
 app.run(["$rootScope", "User", function ($rootScope, User) {

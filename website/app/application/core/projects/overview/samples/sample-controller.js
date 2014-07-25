@@ -71,6 +71,15 @@ Application.Controllers.controller('projectsOverviewSamples',
                 $scope.refreshProjects();
 
             };
+            $scope.processDetails = function(p_id){
+                mcapi('/processes/%', p_id)
+                    .success(function (data) {
+                        $scope.process = []
+                        $scope.process.push(data);
+                    })
+                    .error(function(e){
+                    }).jsonp();
+            }
 
             $scope.clear = function () {
                 $scope.doc = {
@@ -130,7 +139,6 @@ Application.Controllers.controller('projectsOverviewSamples',
                             $scope.refreshSamples()
                         })
                         .error(function () {
-                            console.log('eeee')
                         }).put({'available': 1 })
                 }else{
                     mcapi('/objects/%', $scope.chosen_sample.id)
@@ -139,7 +147,6 @@ Application.Controllers.controller('projectsOverviewSamples',
                             $scope.refreshSamples()
                         })
                         .error(function () {
-                            console.log('eeee')
 
                         }).put({'available': 2})
                 }
