@@ -6,8 +6,12 @@ import error
 import dmutil
 import access
 import args
+import json
 
-
+class DEncoder2(json.JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+    
 @app.route('/processes/<process_id>', methods=['GET'])
 @apikey(shared=True)
 @jsonp
@@ -17,7 +21,8 @@ def get_process(process_id):
     if process is None:
         return error.bad_request("Unknown process")
     access.check(user, process['owner'])
-    return args.json_as_format_arg(process)
+    result = build_sample_file_objects(process, '')
+    return args.json_as_format_arg(result)
 
 
 @app.route('/processes/template/<template_id>', methods=['GET'])
@@ -50,11 +55,98 @@ def get_processes_by_sample(sample_id):
 @app.route('/processes/file/<file_id>', methods=['GET'])
 @jsonp
 def get_processes_by_file(file_id):
-    selection = list(r.table('datafiles_denorm')
-                     .get_all(file_id, index='df_id')
-                     .eq_join('process_id', r.table('processes'))
-                     .run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
+    rv = r.table('datafiles_denorm').filter({'df_id': file_id}).eq_join('process_id', r.table('processes')).zip()
+    selection = list(rv.run(g.conn, time_format='raw'))
+    result = build_sample_file_objects(selection, 'array')
+    return args.json_as_format_arg(result)
+
+def build_sample_file_objects(selection, type):
+    sample_list = []
+    file_list = []
+    samples_objs = []
+    file_objs = []
+    if type == "array":
+        for s in selection:
+        #get_all_sample_ids
+            inputs = s['inputs']
+            outputs = s['outputs']
+            for i in inputs:
+                if i['attribute'] == 'sample':
+                    sample_list.append(i['properties']['id']['value'])
+                elif i['attribute'] == 'file':
+                    file_list.append(i['properties']['id']['value'])
+            for o in outputs:
+                if o['attribute'] == 'sample':
+                    sample_list.append(o['properties']['id']['value'])
+                elif o['attribute'] == 'file':
+                    file_list.append(o['properties']['id']['value'])
+        if len(sample_list) != 0:
+            rr = r.table('samples').get_all(*sample_list)
+            sample_objs = list(rr.run(g.conn, time_format='raw'))
+        if len(file_list) != 0:
+            rr = r.table('datafiles').get_all(*file_list)
+            file_objs = list(rr.run(g.conn, time_format='raw'))
+        #stick the objects 
+        for s in selection:
+            #get_all_sample_ids
+            for i in inputs:
+                if i['attribute'] == 'sample':
+                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
+                elif i['attribute'] == 'file':
+                    file_list.append(i['properties']['id']['value'])
+                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], file_objs)
+            for o in outputs:
+                if o['attribute'] == 'sample':
+                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], sample_objs)
+                elif o['attribute'] == 'file':
+                    file_list.append(o['properties']['id']['value'])
+                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
+        return selection    
+    else:
+        s = selection
+        inputs = s['inputs']
+        outputs = s['outputs']
+        for i in inputs:
+            if i['attribute'] == 'sample':
+                sample_list.append(i['properties']['id']['value'])
+            elif i['attribute'] == 'file':
+                    file_list.append(i['properties']['id']['value'])
+            for o in outputs:
+                if o['attribute'] == 'sample':
+                    sample_list.append(o['properties']['id']['value'])
+                elif o['attribute'] == 'file':
+                    file_list.append(o['properties']['id']['value'])
+        if len(sample_list) != 0:
+            rr = r.table('samples').get_all(*sample_list)
+            sample_objs = list(rr.run(g.conn, time_format='raw'))
+        if len(file_list) != 0:
+            rr = r.table('datafiles').get_all(*file_list)
+            file_objs = list(rr.run(g.conn, time_format='raw'))
+        #stick the objects 
+        for s in selection:
+            #get_all_sample_ids
+            for i in inputs:
+                if i['attribute'] == 'sample':
+                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
+                elif i['attribute'] == 'file':
+                    file_list.append(i['properties']['id']['value'])
+                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], file_objs)
+            for o in outputs:
+                if o['attribute'] == 'sample':
+                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], sample_objs)
+                elif o['attribute'] == 'file':
+                    file_list.append(o['properties']['id']['value'])
+                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
+        return selection
+        
+        
+        
+    
+
+def get_an_item(id, obj_list):
+    for obj in obj_list:
+        if obj['id'] == id:
+            return obj
 
 
 @app.route('/processes/new', methods=['POST'])

@@ -1,0 +1,103 @@
+<div ng-hide="processes">
+    <br>
+
+    <p class="text-muted"><b>No provenance associated with this datafile</b></p>
+</div>
+<div ng-repeat="process in processes">
+
+    <div class="panel panel-info">
+        <div class="panel panel-heading">
+            <h4 plus-minus-toggle="slideProcess{{process.id}}">
+                <i class="fa fa-minus-square"></i>
+                Process - {{process.name}}
+            </h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-offset-3">
+                    <display label="Name:"> {{process.name}}</display>
+                    <display label="Description:">
+                        {{process.description}}
+                    </display>
+                    <display label="Notes:">
+                        <ul ng-repeat=" note in process.notes">
+                            <li style="word-break:break-all;">{{note.message}}</li>
+                        </ul>
+                    </display>
+                    <display label="Runs:">
+                        <div ng-if="process.template.template_pick=='experiment'">
+                            {{process.experiment_run_date}}
+                        </div>
+                        <div ng-if="process.template.template_pick=='computation'">
+                            <ul ng-repeat=" run in process.runs">
+                                <li style="word-break:break-all;">{{run.start_run}} - {{run.stop_run}}</li>
+                            </ul>
+                        </div>
+                    </display>
+                    <div df-report default-properties="process.default_properties"></div>
+
+                    <div ng-repeat="ad in process.added_properties">
+                        <display label="{{ad.name}}"> {{ad.value}}</display>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <div id="slideProcess{{process.id}}">
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4 plus-minus-toggle="slideInputs{{process.id}}">
+                                <i class="fa fa-minus-square"></i>
+                                Inputs
+                            </h4>
+
+                            <div id="slideInputs{{process.id}}">
+                                <div class="col-lg-offset-2">
+                                    <ul ng-repeat="i in process.inputs">
+                                        <div ng-if="i.type=='id'">
+                                            <div sample-report sample="i.properties.obj"></div>
+                                        </div>
+                                        <div ng-if="i.type=='condition'">
+                                            <div condition-report item="i"></div>
+                                        </div>
+                                        <div ng-if="i.type=='file'">
+                                            <div file-report file="i.properties.obj"></div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4 plus-minus-toggle="slideOutputs{{process.id}}">
+                                <i class="fa fa-minus-square"></i>
+                                Outputs
+                            </h4>
+
+                            <div id="slideOutputs{{process.id}}">
+                                <div class="col-lg-offset-2">
+                                    <ul ng-repeat="o in process.outputs">
+                                        <div ng-if="o.type=='id'">
+                                            <div sample-report sample="o.properties.obj"></div>
+                                        </div>
+                                        <div ng-if="o.type=='condition'">
+                                            <div condition-report item="o"></div>
+                                        </div>
+                                        <div ng-if="o.type=='file'">
+                                            <div file-report file="o.properties.obj"></div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
