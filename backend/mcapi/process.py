@@ -8,10 +8,7 @@ import access
 import args
 import json
 
-class DEncoder2(json.JSONEncoder):
-    def default(self, o):
-        return o.__dict__
-    
+
 @app.route('/processes/<process_id>', methods=['GET'])
 @apikey(shared=True)
 @jsonp
@@ -138,10 +135,7 @@ def build_sample_file_objects(selection, type):
                     file_list.append(o['properties']['id']['value'])
                     o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
         return selection
-        
-        
-        
-    
+
 
 def get_an_item(id, obj_list):
     for obj in obj_list:

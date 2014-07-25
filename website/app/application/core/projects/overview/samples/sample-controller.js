@@ -129,22 +129,22 @@ Application.Controllers.controller('projectsOverviewSamples',
 
             $scope.editAvailability = function(sample){
                 $scope.chosen_sample = sample
-                $scope.bk.is_disabled = true;
             }
+
             $scope.updateAvailability = function(){
                 if ($scope.bk.available == 1){
                     mcapi('/objects/%', $scope.chosen_sample.id)
                         .success(function () {
-                            $scope.bk.is_disabled = false
                             $scope.refreshSamples()
+                            $scope.chosen_sample = ''
                         })
                         .error(function () {
                         }).put({'available': 1 })
                 }else{
                     mcapi('/objects/%', $scope.chosen_sample.id)
                         .success(function () {
-                            $scope.bk.is_disabled = false
                             $scope.refreshSamples()
+                            $scope.chosen_sample = ''
                         })
                         .error(function () {
 
@@ -172,8 +172,8 @@ Application.Controllers.controller('projectsOverviewSamples',
                 };
                 $scope.bk = {
                     selected_project: '',
-                    is_disabled: false,
-                    available: ''
+                    available: '',
+                    open: ''
                 };
                 //initialize the sample with default project
                 $scope.project_id = $stateParams.id;

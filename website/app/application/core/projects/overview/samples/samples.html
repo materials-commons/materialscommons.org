@@ -153,7 +153,7 @@
                             <i class="fa fa-check available"></i>
                             <a  ng-click="editAvailability(sample)"
                                  style="padding-left: 10px;">edit</a>
-                            <div ng-show="bk.is_disabled">
+                            <div ng-show="sample.id == chosen_sample.id">
                                 <input  type="radio" ng-model="bk.available" value="1">
                                 available <br/>
                                 <input  type="radio" ng-model="bk.available" value="2"> not
@@ -166,7 +166,7 @@
                             <a  ng-click="editAvailability(sample)"
                                 style="padding-left: 10px;">edit</a>
 
-                            <div ng-show="bk.is_disabled">
+                            <div ng-show="sample.id == chosen_sample.id">
                                 <input  type="radio" ng-model="bk.available" value="1">
                                 available <br/>
                                 <input  type="radio" ng-model="bk.available" value="2"> not
