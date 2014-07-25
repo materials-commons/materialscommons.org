@@ -17,7 +17,6 @@ Application.Controllers.controller('viewProcessesController',
                     break;
             }
         }
-
     }]);
 
 Application.Directives.directive('viewProcesses',

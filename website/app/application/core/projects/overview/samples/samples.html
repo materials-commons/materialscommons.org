@@ -231,7 +231,7 @@
                         </div>
                         <div ng-if="processes_by_sample.length !== 0">
                             <ul ng-repeat="each in processes_by_sample">
-                                <li><a>{{each.process_name}}</a></li>
+                                <li><a ng-click="processDetails(each.process_id)">{{each.process_name}}</a></li>
                             </ul>
                         </div>
                         <div>
@@ -284,5 +284,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div ng-show="process">
+        <div view-processes processes="process" sample-doc="details"></div>
     </div>
 </div>
