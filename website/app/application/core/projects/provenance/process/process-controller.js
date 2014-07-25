@@ -41,6 +41,8 @@ Application.Controllers.controller('projectProvenanceProcess',
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvSteps.setStepFinished('process');
+                }else {
+                    $validationProvider.validate(form);
                 }
             };
 

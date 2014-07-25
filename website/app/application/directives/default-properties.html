@@ -4,6 +4,10 @@
             <span ng-if="df.required==true">
                 <i class="fa fa-asterisk"></i>
             </span>
+            <span ng-if="df.type=='machines'">
+                <i class="fa fa-asterisk"></i>
+            </span>
+
         </label>
 
         <div ng-switch="" on="df.type">
@@ -153,7 +157,8 @@
                 <div class="col-sm-4">
                 <select class="form-control" ng-model="m.machine"
                         ng-options="mach.name for mach in machinesList"
-                        ng-disabled="edit">
+                         required="">
+                    <option value="">-- Select Machines --</option>
                 </select>
                 </div>
             </div>
