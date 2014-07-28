@@ -1,5 +1,5 @@
 Application.Controllers.controller('projectsOverviewProvenance',
-    ["$scope", "$stateParams", "mcapi", function ($scope, $stateParams,mcapi) {
+    ["$scope", "$stateParams", "mcapi", "$filter", function ($scope, $stateParams,mcapi, $filter) {
         $scope.sampleDetails = function(branch){
             mcapi('/objects/%', branch.id)
                 .success(function (data) {
@@ -27,7 +27,8 @@ Application.Controllers.controller('projectsOverviewProvenance',
             $scope.my_tree =  {};
             mcapi('/samples/%/tree', $scope.project_id)
                 .success(function (data) {
-                    $scope.tree_data = data;
+                    // Partial fix to sorting the samples. This only sorts the top level.
+                    $scope.tree_data = $filter('orderBy')(data, 'name');
                     $scope.col_defs = [
                         { field: "path"},
                         { field: "owner"},
