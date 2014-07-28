@@ -1,14 +1,13 @@
 <div ng-controller="projectsOverviewSamples">
-    <form name="Sample" class="form-horizontal">
-        <h4 plus-minus-toggle="slidesample">
-            <i class="fa fa-minus-square"></i>
-            Create Sample
-        </h4>
+    <button class="btn btn-default btn-success" ng-click="toggleCustom = !toggleCustom"> <i style="padding-right:5px;"  class="fa fa-plus-square"></i>New Sample</button>
+    <div saved-notification="" message="message"></div>
 
-        <div id="slidesample">
+    <form name="Sample" class="form-horizontal">
+
+        <div ng-init="toggleCustom = false" ng-show="toggleCustom">
             <div class="row">
                 <div class="col-lg-8">
-                    <label>Classification:</label>
+                    <label>Choose sample type:</label>
                     <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
                             ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
                     </select>
@@ -107,12 +106,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row" ng-show="bk.classification"><br>
-            <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
-            <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
-            <div saved-notification="" message="message"></div>
+            <div class="row" ng-show="bk.classification"><br>
+                <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
+                <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
+            </div>
         </div>
     </form>
     <br><br>

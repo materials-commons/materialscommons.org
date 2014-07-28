@@ -12,7 +12,7 @@
             <tr ng-repeat="t in experimental_templates | orderBy:'template_name'">
                 <td ng-click="updatePreferences()"><input type="checkbox" ng-checked="is_checked(t)"
                                                           ng-click="check(t)"></td>
-                <td><a ng-click="showTemplate(t)">{{t.template_name}}</a></td>
+                <td ng-class='{selected: $index==selected_row}'><a ng-click="showTemplate(t, $index)">{{t.template_name}}</a></td>
             </tr>
             </tbody>
         </table>
@@ -28,7 +28,7 @@
             <tr ng-repeat="t in computational_templates | orderBy:'template_name'">
                 <td ng-click="updatePreferences()"><input type="checkbox" ng-checked="is_checked(t)"
                                                           ng-click="check(t)"></td>
-                <td><a ng-click="showTemplate(t)">{{t.template_name}}</a></td>
+                <td ng-class='{selected: $index==selected_row}'><a ng-click="showTemplate(t, $index)">{{t.template_name}}</a></td>
             </tr>
             </tbody>
         </table>
