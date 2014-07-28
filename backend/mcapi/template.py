@@ -41,7 +41,6 @@ def get_input_output_templates(template_id):
     if len(outputs) != 0:
         for o in outputs:
             output_template_ids.append(o[u'value'])
-    print json.dumps(input_template_ids)
     if len(input_template_ids) != 0:
         templates['input_templates'] = list(r.table('templates').get_all(*input_template_ids).run(g.conn))
     if len(output_template_ids) != 0:
