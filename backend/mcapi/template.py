@@ -25,6 +25,30 @@ def get_template_by_name(template_name):
         return error.not_found("Template %s not found" % template_name)
     return json.dumps(items[0])
 
+@app.route('/templates/input_output/<template_id>', methods=['GET'])
+@apikey
+@jsonp
+def get_input_output_templates(template_id):
+    template = r.table('templates').get(template_id).run(g.conn)
+    inputs = template[u'required_input_conditions']
+    outputs = template[u'required_output_conditions']
+    templates = dict()
+    input_template_ids = []
+    output_template_ids = []
+    if len(inputs) != 0:
+        for i in inputs:
+            input_template_ids.append(i[u'value'])
+    if len(outputs) != 0:
+        for o in outputs:
+            output_template_ids.append(o[u'value'])
+    print json.dumps(input_template_ids)
+    if len(input_template_ids) != 0:
+        templates['input_templates'] = list(r.table('templates').get_all(*input_template_ids).run(g.conn))
+    if len(output_template_ids) != 0:
+        templates['output_templates'] = list(r.table('templates').get_all(*output_template_ids).run(g.conn))
+    return json.dumps(templates)
+
+
 
 @app.route('/templates', methods=['GET'])
 @apikey(shared=True)

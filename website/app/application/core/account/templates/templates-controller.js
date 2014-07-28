@@ -36,9 +36,13 @@ Application.Controllers.controller('accountTemplates',
             }
             return false;
         };
-        $scope.showTemplate = function(t){
-            console.log(t)
-            $scope.temp = t;
+        $scope.showTemplate = function (t) {
+            $scope.template = t;
+            mcapi('/templates/input_output/%', $scope.template.id)
+                .success(function (data) {
+                    $scope.inputs_templates = data.input_templates;
+                    $scope.outputs_templates = data.output_templates
+                }).jsonp()
         }
 
         function init() {
