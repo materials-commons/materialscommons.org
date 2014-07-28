@@ -3,7 +3,7 @@
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [
-         {
+        {
             "name": "Machine" ,
             "attribute": "machine",
             "type": "machines" ,
