@@ -1,4 +1,3 @@
-
 import json
 import error
 import rethinkdb as r

@@ -49,7 +49,7 @@ def _get_value(attrs):
     attrs_type = dmutil.get_required('type', attrs)
     # For object types we just get the id
     if attrs_type == "machines":
-        return dmutil.get_required('id', value)
+        return dmutil.get_optional('id', value)
     return value
 
 

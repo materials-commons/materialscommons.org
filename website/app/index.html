@@ -64,11 +64,11 @@
         </ul>
 
         <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
-            <li><a ui-sref="projects.overview.files" class="navbar-link"><i class="fa fa-briefcase"></i>
+            <li><a ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase"></i>
                 Projects</a></li>
             <li><a ui-sref="reviews" class="navbar-link"><i style="padding-right: 5px" class="fa fa-comment"></i>
                 Reviews</a></li>
-            <li><a ui-sref="machines" class="navbar-link"><i style="padding-right: 5px" class=""></i> Machines</a></li>
+            <li><a ui-sref="machines" class="navbar-link"><i style="padding-right: 5px" class="fa fa-gears"></i> Machines</a></li>
             <li class="dropdown" style="border-left: 1px solid lightgray">
                 <a class="dropdown-toggle"><i style="padding-right: 5px" class="fa fa-user"></i>{{email_address}} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -232,6 +232,8 @@
 <script src="application/directives/plus-minus-toggle-directive.js"></script>
 <script src="application/directives/tree-grid-directive.js"></script>
 <script src="application/directives/df-report.js"></script>
+<script src="application/directives/view-processes-directive.js"></script>
+<script src="application/directives/file-report-directive.js"></script>
 
 <!-------------------------------- Global services --------------------------------->
 <script src="application/services/user-service.js"></script>
