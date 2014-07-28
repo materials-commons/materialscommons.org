@@ -2,7 +2,7 @@
 
 import rethinkdb as r
 import optparse
-import sys
+
 
 def add_paths(working_list):
     for wl in working_list:
@@ -12,7 +12,8 @@ def add_paths(working_list):
             rr = r.table('samples').get(wl['id']).update({'path': construct_path}).run(conn)
         else:
             rr = r.table('samples').get(wl['id']).update({'path': wl['name']}).run(conn)
-            
+
+
 def reset_list(next_list):
     working_list = []
     working_list = next_list
@@ -27,7 +28,7 @@ def reset_list(next_list):
         return
     else:
         reset_list(next_list)
-    
+
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-P", "--port", dest="port",
@@ -43,7 +44,3 @@ if __name__ == "__main__":
         next_list = list(r.table('samples').filter({'parent_id': sample['id']}).run(conn))
         if next_list:
             reset_list(next_list)
-
-    
-    
-    
