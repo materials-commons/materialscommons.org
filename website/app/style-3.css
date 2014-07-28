@@ -421,9 +421,11 @@ table-file-directory > thead > tr > td,
     width: 1200px;
     /*min-width: 1000px;*/
 }
+
 .nav-tabs {
     border-bottom: 1px solid #d6d6d6;
 }
+
 .nav-tabs > li > a {
     margin-right: 2px;
     line-height: 1.42857143;
@@ -432,6 +434,7 @@ table-file-directory > thead > tr > td,
     border-bottom-color: transparent;
     border-left-color: transparent;
 }
+
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
@@ -441,6 +444,7 @@ table-file-directory > thead > tr > td,
     border-bottom-color: transparent;
     cursor: default;
 }
+
 #machines{
     display: none;
 }
@@ -448,19 +452,20 @@ table-file-directory > thead > tr > td,
 .ta-scroll-window .ta-bind {
     padding: 6px 30px;
 }
+
 .ta-scroll-window.form-control {
     height: 200px;
     overflow: auto;
     padding: 0;
     position: relative;
 }
+
 .panel-info > .panel-heading {
     background-color: #ADD8E6;
     border-color: lightgrey;
     color: #4b4b4b;
 }
+
 .panel-info{
     border-color: lightgrey;
 }
-
-
