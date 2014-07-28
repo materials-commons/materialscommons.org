@@ -46,7 +46,6 @@
                     <display label="Description:"></display>
                     <display label="Notes:"></display>
                     <display label="Runs:"></display>
-
                     <div ng-repeat="each in template.default_properties">
                         <div class="form-group">
                             <label>{{each.name}}:</label>
@@ -112,7 +111,6 @@
 
         <div id="outputs" class="row">
             <div ng-repeat="it in outputs_templates">
-
                 <h4><u>{{it.template_name}}</u></h4>
 
                 <div ng-repeat="each in it.default_properties">
