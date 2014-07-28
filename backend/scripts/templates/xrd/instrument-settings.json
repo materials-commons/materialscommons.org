@@ -4,16 +4,6 @@
     "attribute": "instrument_settings",
     "default_properties": [
         {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
             "name": "Source Wave Length" ,
             "attribute": "source_wave_length",
             "type": "number" ,
