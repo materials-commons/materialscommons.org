@@ -90,6 +90,6 @@
     "template_description": "" ,
     "template_mtime": "" ,
     "template_name": "Settings" ,
-    "template_pick": "treatment" ,
+    "template_pick": "instrument" ,
     "template_type": "condition"
 }

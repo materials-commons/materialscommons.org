@@ -31,8 +31,9 @@ Application.Controllers.controller('projectsOverviewSamples',
                         .success(function (data) {
                             mcapi('/objects/%', data.id)
                                 .success(function (sample_obj) {
-                                    $scope.message = "Object has been saved.";
+                                    $scope.message = "New Sample has been saved.";
                                     $scope.samples_list.unshift(sample_obj);
+                                    $scope.toggleCustom = false;
                                 })
                                 .error(function (e) {
                                 }).jsonp();
