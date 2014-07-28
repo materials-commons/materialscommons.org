@@ -3,13 +3,13 @@
     "authors": ["emarq@umich.edu"],
     "attribute": "creep_settings",
     "default_properties": [
-        {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
+           {
+            "name": "Machine" ,
+            "attribute": "machine",
+            "type": "machines" ,
             "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
+            "unit_choice": "" ,
+            "value": "",
             "value_choice": [],
             "required": false
         },
