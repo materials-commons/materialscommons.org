@@ -10,7 +10,7 @@
             <a ng-repeat="trailitem in trail" ng-click="backToFolder(trailitem)">
                 <span><b>{{trailitem.displayname}}/ </b></span>
             </a>
-            <a ><b><u>{{doc.name}}</u></b></a>
+            <a ng-href="{{ originalFileSrc }}" download="{{ fileName }}"><b><u>{{doc.name}}</u></b></a>
         </form>
     </div>
     <div class="row">
