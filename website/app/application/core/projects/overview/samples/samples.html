@@ -48,10 +48,10 @@
                                 <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
                             </div>
                         </div>
-                        <div ng-show="doc.treatments.length !==0 " class="col-lg-4">
+                        <div ng-show="bk.treatments.length !==0 " class="col-lg-4">
                             <label>Treatments Order:</label>
                             <tabset vertical="true" type="pills">
-                                <tab ng-repeat="treatment in doc.treatments"
+                                <tab ng-repeat="treatment in bk.treatments"
                                      ng-click="showTab(treatment, $index)"
                                      heading="{{treatment.id}}">
                                 </tab>
