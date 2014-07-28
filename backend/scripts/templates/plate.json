@@ -28,7 +28,7 @@
             "type": "select" ,
             "unit": "" ,
             "unit_choice": [] ,
-            "value": "" ,
+            "value": [] ,
             "value_choice": [{"name": "Casting", "value": "casting"},
                              {"name": "Ball Milling", "value": "ball_milling"},
                              {"name": "Powder Consolidation", "value": "powder_consolidation"},

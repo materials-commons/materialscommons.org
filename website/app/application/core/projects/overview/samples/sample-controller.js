@@ -9,8 +9,8 @@ Application.Controllers.controller('projectsOverviewSamples',
 
             $scope.showTab = function (item, index) {
                 $scope.bk.tab_item = item.id;
-                $scope.bk.tab_details = $scope.doc.treatments[index];
-                $scope.default_properties = $scope.doc.treatments[index].default_properties;
+                $scope.bk.tab_details = $scope.bk.treatments[index];
+                $scope.default_properties = $scope.bk.treatments[index].default_properties;
                 $scope.bk.selected_treatment = {};
             };
 
@@ -19,7 +19,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                 var o = angular.copy($scope.bk.selected_treatment);
                 $scope.bk.selected_treatment = '';
                 $scope.default_properties = "";
-                $scope.doc.treatments.push(o);
+                $scope.bk.treatments.push(o);
             };
 
 
@@ -124,7 +124,9 @@ Application.Controllers.controller('projectsOverviewSamples',
                 console.log('yes')
                 var check = $validationProvider.checkValid(form);
                 console.log(check)
+                console.dir($scope.doc)
                 $scope.doc.path = $scope.doc.name;
+                $scope.doc.treatments = $scope.bk.treatments
                 if (check === true) {
                     mcapi('/objects/new')
                         .arg('order_by=birthtime')
@@ -151,14 +153,14 @@ Application.Controllers.controller('projectsOverviewSamples',
                     default_properties: [],
                     added_properties: [],
                     projects: [],
-                    treatments: [],
                     template: ''
                 };
                 $scope.bk = {
                     selected_project: '',
                     available: '',
                     open: '',
-                    classification: ''
+                    classification: '' ,
+                    treatments: []
                 };
                 $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
             };
