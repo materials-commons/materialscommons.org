@@ -22,30 +22,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                 $scope.doc.treatments.push(o);
             };
 
-            $scope.save = function (form) {
-                var check = $validationProvider.checkValid(form);
-                $scope.doc.path = $scope.doc.name;
-                if (check === true) {
-                    mcapi('/objects/new')
-                        .arg('order_by=birthtime')
-                        .success(function (data) {
-                            mcapi('/objects/%', data.id)
-                                .success(function (sample_obj) {
-                                    $scope.message = "New Sample has been saved.";
-                                    $scope.samples_list.unshift(sample_obj);
-                                    $scope.toggleCustom = false;
-                                })
-                                .error(function (e) {
-                                }).jsonp();
-                            $scope.clear();
-                        })
-                        .error(function (e) {
 
-                        }).post($scope.doc);
-                } else {
-                    $validationProvider.validate(form);
-                }
-            };
             $scope.setProperties = function () {
                 $scope.doc.default_properties = $scope.bk.classification.default_properties;
                 $scope.doc.template = $scope.bk.classification.id;
@@ -82,26 +59,6 @@ Application.Controllers.controller('projectsOverviewSamples',
                     }).jsonp();
             }
 
-            $scope.clear = function () {
-                $scope.doc = {
-                    name: '',
-                    path: '',
-                    notes: [],
-                    available: true,
-                    default_properties: [],
-                    added_properties: [],
-                    treatments: [],
-                    projects: []
-                };
-                $scope.bk = {
-                    selected_treatment: '',
-                    selected_project: '',
-                    tab_details: [],
-                    tab_item: '',
-                    classification: '',
-                    new_note: ''
-                };
-            };
 
             $scope.populateProjects = function () {
                 $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
@@ -152,16 +109,41 @@ Application.Controllers.controller('projectsOverviewSamples',
                         }).put({'available': 2})
                 }
             }
-            $scope.cancel = function () {
-                return;
-            };
+
             $scope.refreshSamples = function(){
                 mcapi('/samples/by_project/%', $scope.project_id)
                     .success(function (data) {
                         $scope.samples_list = data;
                     }).jsonp();
             }
-            function init() {
+
+            $scope.clear = function () {
+                $scope.setDefaultProject()
+            };
+            $scope.save = function (form) {
+                console.log('yes')
+                var check = $validationProvider.checkValid(form);
+                console.log(check)
+                $scope.doc.path = $scope.doc.name;
+                if (check === true) {
+                    mcapi('/objects/new')
+                        .arg('order_by=birthtime')
+                        .success(function (data) {
+                            mcapi('/objects/%', data.id)
+                                .success(function (sample_obj) {
+                                    console.log('inside ')
+                                    $scope.message = "New Sample has been saved.";
+                                    $scope.samples_list.unshift(sample_obj);
+                                    $scope.toggleCustom = false;
+                                }).jsonp();
+                            init()
+                        }).post($scope.doc);
+                } else {
+                    $validationProvider.validate(form);
+                }
+            };
+
+            $scope.setDefaultProject = function () {
                 $scope.doc = {
                     name: '',
                     notes: [],
@@ -169,39 +151,38 @@ Application.Controllers.controller('projectsOverviewSamples',
                     default_properties: [],
                     added_properties: [],
                     projects: [],
-                    treatments: []
+                    treatments: [],
+                    template: ''
                 };
                 $scope.bk = {
                     selected_project: '',
                     available: '',
-                    open: ''
+                    open: '',
+                    classification: ''
                 };
+                $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
+            };
+            function init() {
                 //initialize the sample with default project
                 $scope.project_id = $stateParams.id;
                 mcapi('/projects/%', $scope.project_id)
                     .success(function (data) {
                         $scope.project = data;
-                        $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
+                        $scope.setDefaultProject()
                     }).jsonp();
+
                 $scope.signed_in_user = User.u();
                 $scope.processes_list = [];
                 $scope.projects_by_sample = [];
-                $scope.clear();
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_pick":"treatment"')
                     .success(function (data) {
                         $scope.treatment_templates = data;
-                    })
-                    .error(function (e) {
-
                     }).jsonp();
                 mcapi('/templates')
                     .argWithValue('filter_by', '"template_type":"material"')
                     .success(function (data) {
                         $scope.sample_templates = data;
-                    })
-                    .error(function (e) {
-
                     }).jsonp();
                 $scope.refreshSamples();
 
