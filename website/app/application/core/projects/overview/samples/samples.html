@@ -29,7 +29,6 @@
                 </h4>
 
                 <div id="slidetreatments">
-
                     <div class="row">
                         <div class="col-lg-6">
                             <label>Treatments:</label>
@@ -106,12 +105,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row" ng-show="bk.classification"><br>
-                <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
-                <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
-            </div>
+
+        </div>
+        <div class="row" ng-show="bk.classification"><br>
+            <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
+            <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
         </div>
     </form>
+
     <br><br>
     <h4 plus-minus-toggle="availablesamples">
         <i class="fa fa-minus-square"></i>
@@ -202,7 +203,6 @@
                         <div ng-if="sample.treatments.length!==0">
                             <div ng-repeat="treatment in sample.treatments">
                                 <i>{{treatment.template}}:</i>
-
                                 <div class="form-group" ng-repeat="property in treatment.properties">
                                     <cgroup label="{{property.name}}">
                                         <div class="col-sm-6" ng-if="p.type === 'select'">
