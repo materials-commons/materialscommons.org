@@ -29,12 +29,12 @@
             <div ui-view=""></div>
         </div>
     </div>
-    <div ng-hide="isFinishedStep('submit')" class="col-lg-4">
+    <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-body">
                 <h4 plus-minus-toggle="process">
                     <i class="fa fa-minus-square"></i>
-                    Process
+                    Process ({{provenanceView.template.template_name}})
                 </h4><br>
 
                 <div id="process" class="row" ng-show="isFinishedStep('process')">
@@ -160,4 +160,3 @@
         </div>
     </div>
 </div>
-
