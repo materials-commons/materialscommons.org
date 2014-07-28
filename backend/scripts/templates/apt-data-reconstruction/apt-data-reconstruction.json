@@ -3,7 +3,17 @@
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [
-    ],
+        {
+            "name": "Machine" ,
+            "attribute": "machine",
+            "type": "machines" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "",
+            "value_choice": [],
+            "required": false
+        }
+     ],
     "additional_properties":[
     ],
     "owner": "admin@materialscommons.org",
