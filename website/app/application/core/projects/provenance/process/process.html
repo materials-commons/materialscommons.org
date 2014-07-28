@@ -25,7 +25,6 @@
                                 <li ng-repeat="comp_temp in computational_templates">
                                     <a ng-click="change_process(comp_temp.id)">{{comp_temp.template_name}}</a>
                                 </li>
-
                             </ul>
                         </li>
                     </ul>
@@ -34,8 +33,8 @@
 
             <div ng-show="doc.template">
                 <div upperlevel-process="" doc="doc" bk="bk" edit="false"></div>
-                <div df-properties="" default-properties="doc.default_properties" machines-list="machines_list"></div>
-                <div ad-properties="" doc="doc" additional-properties="doc.template.additional_properties" edit="false"
+                <div df-properties="" default-properties="doc.default_properties" label-size="2" machines-list="machines_list"></div>
+                <div ad-properties="" label-size="2" doc="doc" additional-properties="doc.template.additional_properties" edit="false"
                      bk="bk"></div>
             </div>
             <div class="row">

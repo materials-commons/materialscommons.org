@@ -28,7 +28,8 @@ Application.Directives.directive('adProperties',
                 edit: "=",
                 doc: '=',
                 bk: "=",
-                additionalProperties: "="
+                additionalProperties: "=",
+                labelSize: "="
             },
             templateUrl: 'application/directives/added-properties.html'
         };

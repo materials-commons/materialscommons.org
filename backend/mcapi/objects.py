@@ -8,6 +8,7 @@ import access
 import doc
 import json
 from os.path import dirname
+import error
 
 
 @app.route('/objects', methods=['GET'])
@@ -16,6 +17,7 @@ def get_all_objects():
     rr = r.table('samples').order_by(r.desc('birthtime'))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
+
 
 @app.route('/objects/project/<project_id>', methods=['GET'])
 @jsonp
@@ -40,6 +42,18 @@ def get_object(object_id):
     return dmutil.get_single_from_table('samples', object_id)
 
 
+@app.route('/objects/<object_id>', methods=['PUT'])
+@crossdomain(origin='*')
+@apikey
+def update_availability(object_id):
+    j = request.get_json()
+    available = dmutil.get_required('available', j)
+    if available == 1:
+        rv = r.table('samples').get(object_id).update({'available': True}).run(g.conn)
+    else:
+        rv = r.table('samples').get(object_id).update({'available': False}).run(g.conn)
+    return args.json_as_format_arg({'id': object_id})
+
 @app.route('/objects/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
@@ -48,26 +62,29 @@ def create_object():
     sample = dict()
     user = access.get_user()
     sample['name'] = dmutil.get_required('name', j)
-    sample['description'] = dmutil.get_optional('description', j)
-    sample['notes'] = dmutil.get_optional('notes', j)
-    sample['available'] = dmutil.get_optional('available', j)
-    sample['properties'] = {}
-    doc.add_properties(dmutil.get_optional('default_properties', j), sample)
-    doc.add_properties(dmutil.get_optional('added_properties', j), sample)
-    sample['birthtime'] = r.now()
-    sample['created_by'] = user
-    sample['owner'] = user
-    sample['treatments'] = []
-    sample['parent_id'] = dmutil.get_optional('parent_id', j)
-    sample['template'] = dmutil.get_required('template', j)
-    sample['path'] = dmutil.get_required('path', j)
-    for treatment in dmutil.get_optional('treatments', j, []):
-        t = doc.add_template_properties(treatment, 'treatment')
-        sample['treatments'].append(t)
-    sample_id = dmutil.insert_entry_id('samples', sample)
-    _create_treatments_denorm(sample['treatments'], sample_id)
-    _join_sample_projects(dmutil.get_optional('projects', j, []), sample_id)
-    return json.dumps({'id': sample_id})
+    if '/' in sample['name']:
+        error.update_conflict("Unable to create sample becuase of forward slash in sample name ")
+    else:
+        sample['description'] = dmutil.get_optional('description', j)
+        sample['notes'] = dmutil.get_optional('notes', j)
+        sample['available'] = dmutil.get_optional('available', j)
+        sample['properties'] = {}
+        doc.add_properties(dmutil.get_optional('default_properties', j), sample)
+        doc.add_properties(dmutil.get_optional('added_properties', j), sample)
+        sample['birthtime'] = r.now()
+        sample['created_by'] = user
+        sample['owner'] = user
+        sample['treatments'] = []
+        sample['parent_id'] = dmutil.get_optional('parent_id', j)
+        sample['template'] = dmutil.get_required('template', j)
+        sample['path'] = dmutil.get_required('path', j)
+        for treatment in dmutil.get_optional('treatments', j, []):
+            t = doc.add_template_properties(treatment, 'treatment')
+            sample['treatments'].append(t)
+        sample_id = dmutil.insert_entry_id('samples', sample)
+        _create_treatments_denorm(sample['treatments'], sample_id)
+        _join_sample_projects(dmutil.get_optional('projects', j, []), sample_id)
+        return json.dumps({'id': sample_id})
 
 def _join_sample_projects(projects, sample_id):
     for p in projects:

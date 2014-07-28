@@ -70,6 +70,9 @@ def create_indices():
     create_index('projects2samples', 'project_id')
     create_index('samples_denorm', 'sample_id')
     create_index('samples_denorm', 'project_id')
+    create_index('datafiles_denorm', 'df_id')
+    create_index('datafiles_denorm', 'process_id')
+    create_index('datafiles_denorm', 'project_id')
 
 
 def create_index(table, name):

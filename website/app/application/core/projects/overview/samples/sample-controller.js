@@ -2,8 +2,6 @@ Application.Controllers.controller('projectsOverviewSamples',
     ["$scope", "mcapi", "$injector", "model.Projects", "alertService", "User", "$stateParams",
         function ($scope, mcapi, $injector, Projects, alertService, User, $stateParams) {
             var $validationProvider = $injector.get('$validation');
-
-
             $scope.showForm = function () {
                 $scope.default_properties = $scope.bk.selected_treatment.default_properties;
                 $scope.bk.tab_item = '';
@@ -73,6 +71,15 @@ Application.Controllers.controller('projectsOverviewSamples',
                 $scope.refreshProjects();
 
             };
+            $scope.processDetails = function(p_id){
+                mcapi('/processes/%', p_id)
+                    .success(function (data) {
+                        $scope.process = []
+                        $scope.process.push(data);
+                    })
+                    .error(function(e){
+                    }).jsonp();
+            }
 
             $scope.clear = function () {
                 $scope.doc = {
@@ -120,6 +127,39 @@ Application.Controllers.controller('projectsOverviewSamples',
                     }).put();
             };
 
+            $scope.editAvailability = function(sample){
+                $scope.chosen_sample = sample
+            }
+
+            $scope.updateAvailability = function(){
+                if ($scope.bk.available == 1){
+                    mcapi('/objects/%', $scope.chosen_sample.id)
+                        .success(function () {
+                            $scope.refreshSamples()
+                            $scope.chosen_sample = ''
+                        })
+                        .error(function () {
+                        }).put({'available': 1 })
+                }else{
+                    mcapi('/objects/%', $scope.chosen_sample.id)
+                        .success(function () {
+                            $scope.refreshSamples()
+                            $scope.chosen_sample = ''
+                        })
+                        .error(function () {
+
+                        }).put({'available': 2})
+                }
+            }
+            $scope.cancel = function () {
+                return;
+            };
+            $scope.refreshSamples = function(){
+                mcapi('/samples/by_project/%', $scope.project_id)
+                    .success(function (data) {
+                        $scope.samples_list = data;
+                    }).jsonp();
+            }
             function init() {
                 $scope.doc = {
                     name: '',
@@ -131,7 +171,9 @@ Application.Controllers.controller('projectsOverviewSamples',
                     treatments: []
                 };
                 $scope.bk = {
-                    selected_project: ''
+                    selected_project: '',
+                    available: '',
+                    open: ''
                 };
                 //initialize the sample with default project
                 $scope.project_id = $stateParams.id;
@@ -160,10 +202,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                     .error(function (e) {
 
                     }).jsonp();
-                mcapi('/samples/by_project/%', $scope.project_id)
-                    .success(function (data) {
-                        $scope.samples_list = data;
-                    }).jsonp();
+                $scope.refreshSamples();
 
                 Projects.getList().then(function (data) {
                     $scope.projects = data;
