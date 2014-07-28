@@ -68,6 +68,7 @@ def create_indices():
     create_index('templates', 'template_pick')
     create_index('processes', 'project')
     create_index('projects2samples', 'project_id')
+    create_index('projects2samples', 'sample_id')
     create_index('samples_denorm', 'sample_id')
     create_index('samples_denorm', 'project_id')
     create_index('datafiles_denorm', 'df_id')
