@@ -117,7 +117,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          ########################################################################
          */
         .state('projects', {
-            url: '/projects/:id/:draft_id/:from',
+            url: '/projects/:id/:draft_id',
             templateUrl: 'application/core/projects/projectspage.html'
         })
         .state('projects.overview', {
@@ -126,7 +126,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('projects.overview.files', {
             url: '/files',
-            templateUrl: 'application/core/projects/overview/files/files.html'
+            templateUrl: 'application/core/projects/overview/files/files.html',
+            onExit: function(ProjectPath){
+                ProjectPath.set_from(false)
+            }
         })
         .state('projects.overview.provenance', {
             url: '/provenance',

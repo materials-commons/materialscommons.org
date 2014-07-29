@@ -1,6 +1,6 @@
 Application.Services.factory('ProjectPath',
     [ function () {
-        var pathtrail = [], pathdir = [], chosen_project = "", current_item = "";
+        var pathtrail = [], pathdir = [], chosen_project = "", current_item = "", from = false;
         return {
             populate: function (trail, dir) {
                 pathtrail = trail;
@@ -27,6 +27,13 @@ Application.Services.factory('ProjectPath',
 
             get_current_item: function () {
                 return current_item;
+            },
+
+            set_from: function(value){
+                from = value;
+            },
+            get_from: function(){
+                return from;
             }
 
         };
