@@ -2,7 +2,18 @@
     "id": "heat-treatment",
     "authors": ["tammasr@umich.edu", "gtarcea@umich.edu"],
     "attribute": "process",
-    "default_properties": [],
+    "default_properties": [
+        {
+            "name": "Machine" ,
+            "attribute": "machine",
+            "type": "machines" ,
+            "unit": "" ,
+            "unit_choice": "" ,
+            "value": "",
+            "value_choice": [],
+            "required": false
+        }
+    ],
     "additional_properties":[],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,

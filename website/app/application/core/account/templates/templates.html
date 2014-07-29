@@ -12,7 +12,8 @@
             <tr ng-repeat="t in experimental_templates | orderBy:'template_name'">
                 <td ng-click="updatePreferences()"><input type="checkbox" ng-checked="is_checked(t)"
                                                           ng-click="check(t)"></td>
-                <td><a ng-click="showTemplate(t)">{{t.template_name}}</a></td>
+                <td ng-class='{selected: $index==selected_exp_row}'><a ng-click="showTemplate(t, $index, 'exp')">{{t.template_name}}</a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -28,7 +29,8 @@
             <tr ng-repeat="t in computational_templates | orderBy:'template_name'">
                 <td ng-click="updatePreferences()"><input type="checkbox" ng-checked="is_checked(t)"
                                                           ng-click="check(t)"></td>
-                <td><a ng-click="showTemplate(t)">{{t.template_name}}</a></td>
+                <td ng-class='{selected: $index==selected_comp_row}'><a ng-click="showTemplate(t, $index, 'comp')">{{t.template_name}}</a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -110,26 +112,30 @@
         </h4>
 
         <div id="outputs" class="row">
-            <div ng-repeat="it in outputs_templates">
-                <h4><u>{{it.template_name}}</u></h4>
+            <div class="panel panel-default">
+                <div class="panel panel-body">
+                    <div ng-repeat="it in outputs_templates">
+                        <h4><u>{{it.template_name}}</u></h4>
 
-                <div ng-repeat="each in it.default_properties">
-                    <div class="form-group">
-                        <label>{{each.name}}:</label>
-                        <li style="display: inline;padding-left: 20px;"
-                            ng-repeat="v in each.value_choice">
-                            {{v.name + ','}}
-                        </li>
-                        <br><label ng-if="each.unit_choice.length !== 0">Units:</label>
-                        {{each.unit_choice.join(',')}}
+                        <div ng-repeat="each in it.default_properties">
+                            <div class="form-group">
+                                <label>{{each.name}}:</label>
+                                <li style="display: inline;padding-left: 20px;"
+                                    ng-repeat="v in each.value_choice">
+                                    {{v.name + ','}}
+                                </li>
+                                <br><label ng-if="each.unit_choice.length !== 0">Units:</label>
+                                {{each.unit_choice.join(',')}}
+                            </div>
+                        </div>
+                        <div ng-repeat="each in it.additional_properties">
+                            <label>{{each.name}}:</label>
+                            <li style="display: inline;padding-left: 20px;"
+                                ng-repeat="v in each.value_choice">
+                                {{v.name + ','}}
+                            </li>
+                        </div>
                     </div>
-                </div>
-                <div ng-repeat="each in it.additional_properties">
-                    <label>{{each.name}}:</label>
-                    <li style="display: inline;padding-left: 20px;"
-                        ng-repeat="v in each.value_choice">
-                        {{v.name + ','}}
-                    </li>
                 </div>
             </div>
         </div>

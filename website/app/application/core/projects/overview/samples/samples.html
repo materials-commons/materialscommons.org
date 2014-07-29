@@ -1,19 +1,22 @@
 <div ng-controller="projectsOverviewSamples">
-    <form name="Sample" class="form-horizontal">
-        <h4 plus-minus-toggle="slidesample">
-            <i class="fa fa-minus-square"></i>
-            Create Sample
-        </h4>
+    <button class="btn btn-default btn-success" ng-click="toggleCustom = !toggleCustom"><i style="padding-right:5px;"
+                                                                                           class="fa fa-plus-square"></i>New
+        Sample
+    </button>
+    <div saved-notification="" message="message"></div>
 
-        <div id="slidesample">
-            <div class="row">
-                <div class="col-lg-8">
-                    <label>Classification:</label>
-                    <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
-                            ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
-                    </select>
-                </div>
+
+    <div class="form-horizontal" ng-init="toggleCustom = false" ng-show="toggleCustom">
+        <div class="row">
+            <div class="col-lg-8">
+                <label>Choose sample type:</label>
+                <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
+                        ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
+                </select>
             </div>
+        </div>
+        <form name="Sample">
+
             <div class="row"><br>
                 <div class="col-lg-10" ng-show="bk.classification">
                     <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
@@ -21,14 +24,16 @@
                 </div>
             </div>
             <br>
-            <div ng-show="bk.classification">
+        </form>
+
+
+        <div ng-show="bk.classification">
                 <h4 plus-minus-toggle="slidetreatments">
                     <i class="fa fa-minus-square"></i>
                     Treatments
                 </h4>
 
                 <div id="slidetreatments">
-
                     <div class="row">
                         <div class="col-lg-6">
                             <label>Treatments:</label>
@@ -43,7 +48,7 @@
                             <label class='control-label'><strong>{{bk.selected_treatment.id ||
                                 bk.tab_item}} </strong></label>
 
-                            <div ng-show="bk.selected_treatment!==''">
+                            <div ng-show="bk.selected_treatment">
                                 <div df-properties default-properties="default_properties"></div>
                                 <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
                             </div>
@@ -105,14 +110,13 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row" ng-show="bk.classification"><br>
-            <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
-            <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
-            <div saved-notification="" message="message"></div>
-        </div>
-    </form>
+    </div>
+    <div class="row" ng-show="bk.classification"><br>
+        <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
+        <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
+    </div>
+
     <br><br>
     <h4 plus-minus-toggle="availablesamples">
         <i class="fa fa-minus-square"></i>
@@ -149,27 +153,32 @@
                         </td>
                         <td ng-if="sample.available===true">
                             <i class="fa fa-check available"></i>
-                            <a  ng-click="editAvailability(sample)"
-                                 style="padding-left: 10px;">edit</a>
+                            <a ng-click="editAvailability(sample)"
+                               style="padding-left: 10px;">edit</a>
+
                             <div ng-show="sample.id == chosen_sample.id">
-                                <input  type="radio" ng-model="bk.available" value="1">
+                                <input type="radio" ng-model="bk.available" value="1">
                                 available <br/>
-                                <input  type="radio" ng-model="bk.available" value="2"> not
+                                <input type="radio" ng-model="bk.available" value="2"> not
                                 available
-                                <br><button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save</button>
+                                <br>
+                                <button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save
+                                </button>
                             </div>
                         </td>
                         <td ng-if="sample.available===false">
                             <i class="fa fa-times notavailable"></i>
-                            <a  ng-click="editAvailability(sample)"
-                                style="padding-left: 10px;">edit</a>
+                            <a ng-click="editAvailability(sample)"
+                               style="padding-left: 10px;">edit</a>
 
                             <div ng-show="sample.id == chosen_sample.id">
-                                <input  type="radio" ng-model="bk.available" value="1">
+                                <input type="radio" ng-model="bk.available" value="1">
                                 available <br/>
-                                <input  type="radio" ng-model="bk.available" value="2"> not
+                                <input type="radio" ng-model="bk.available" value="2"> not
                                 available
-                                <br><button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save</button>
+                                <br>
+                                <button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save
+                                </button>
                             </div>
                         </td>
                         <td>{{sample.birthtime | toDateString}}</td>
@@ -269,10 +278,10 @@
                     <h4 class="modal-title" id="myModalLabel">Update availability of {{chosen_sample.name}}</h4>
                 </div>
                 <div class="modal-body">
-                   <div ng-show="bk.is_disabled">
-                        <input  type="radio" ng-model="bk.available" value="1">
+                    <div ng-show="bk.is_disabled">
+                        <input type="radio" ng-model="bk.available" value="1">
                         available <br/>
-                        <input  type="radio" ng-model="bk.available" value="2"> not
+                        <input type="radio" ng-model="bk.available" value="2"> not
                         available
                     </div>
                 </div>

@@ -36,12 +36,20 @@ Application.Controllers.controller('accountTemplates',
             }
             return false;
         };
-        $scope.showTemplate = function (t) {
+        $scope.showTemplate = function (t, index, type) {
+            if(type == 'exp'){
+                $scope.selected_exp_row = index;
+                $scope.selected_comp_row = -1;
+            }else{
+                $scope.selected_comp_row = index;
+                $scope.selected_exp_row = -1;
+
+            }
             $scope.template = t;
             mcapi('/templates/input_output/%', $scope.template.id)
                 .success(function (data) {
                     $scope.inputs_templates = data.input_templates;
-                    $scope.outputs_templates = data.output_templates
+                    $scope.outputs_templates = data.output_templates;
                 }).jsonp()
         }
 
@@ -65,9 +73,7 @@ Application.Controllers.controller('accountTemplates',
                     $scope.preferred_templates = data.preferences.templates;
                 }).jsonp();
         }
-
         init();
-
     }
     ])
 ;
