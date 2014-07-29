@@ -61,14 +61,22 @@ Application.Controllers.controller('ProjectTreeController',
             if (channel !== null) {
                 pubsub.send(channel, entry);
             }
+        };
 
+        $scope.truncateTrail = function (currentTrail, currentItem) {
+            var i = _.indexOf(currentTrail, function(item) {
+                return item.displayname == currentItem.displayname;
+            });
+
+            return currentTrail.slice(0, i+1);
         };
 
         function init() {
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
-                $scope.trail = ProjectPath.get_trail();
+                var currentTrail = ProjectPath.get_trail();
                 var item = ProjectPath.get_current_item();
+                $scope.trail = $scope.truncateTrail(currentTrail, item);
                 $scope.openFolder(item);
             } else {
                 $scope.model = Projects.model;
