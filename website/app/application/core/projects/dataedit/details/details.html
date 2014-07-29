@@ -1,10 +1,14 @@
 <div ng-controller="projectsDataEditDetails">
     <div class="tab-pane" id="details">
         <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-10 col-lg-offset-1">
                 <div ng-switch="" on="fileType">
                     <div ng-switch-when="image">
                         <img class="img-responsive" ng-src="{{ fileSrc }}">
+                        <div class="col-lg-offset-5">
+                            <legend>{{fileName}}</legend>
+
+                        </div>
                     </div>
                     <div ng-switch-when="other">
                     </div>
@@ -13,7 +17,7 @@
         </div>
         <div class="row">
             <div class="col-lg-10">
-                    <legend>{{fileName}}</legend>
+
                     <cgroup label="Description:">
                         <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc"
                                   ng-disabled="model.is_disabled"> </textarea>
