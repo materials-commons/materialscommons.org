@@ -6,18 +6,15 @@ import error
 import dmutil
 import access
 import args
-import json
 
 
 @app.route('/processes/<process_id>', methods=['GET'])
 @apikey(shared=True)
 @jsonp
 def get_process(process_id):
-    user = access.get_user()
     process = dmutil.get_single_from_table('processes', process_id, raw=True)
     if process is None:
         return error.bad_request("Unknown process")
-    access.check(user, process['owner'])
     result = build_sample_file_objects(process, '')
     return args.json_as_format_arg(result)
 
@@ -52,19 +49,20 @@ def get_processes_by_sample(sample_id):
 @app.route('/processes/file/<file_id>', methods=['GET'])
 @jsonp
 def get_processes_by_file(file_id):
-    rv = r.table('datafiles_denorm').filter({'df_id': file_id}).eq_join('process_id', r.table('processes')).zip()
+    rv = r.table('datafiles_denorm')\
+          .filter({'df_id': file_id})\
+          .eq_join('process_id', r.table('processes')).zip()
     selection = list(rv.run(g.conn, time_format='raw'))
     result = build_sample_file_objects(selection, 'array')
     return args.json_as_format_arg(result)
 
+
 def build_sample_file_objects(selection, type):
     sample_list = []
     file_list = []
-    samples_objs = []
     file_objs = []
     if type == "array":
         for s in selection:
-        #get_all_sample_ids
             inputs = s['inputs']
             outputs = s['outputs']
             for i in inputs:
@@ -83,9 +81,9 @@ def build_sample_file_objects(selection, type):
         if len(file_list) != 0:
             rr = r.table('datafiles').get_all(*file_list)
             file_objs = list(rr.run(g.conn, time_format='raw'))
-        #stick the objects 
+        # stick the objects
         for s in selection:
-            #get_all_sample_ids
+            # get_all_sample_ids
             for i in inputs:
                 if i['attribute'] == 'sample':
                     i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
@@ -98,7 +96,7 @@ def build_sample_file_objects(selection, type):
                 elif o['attribute'] == 'file':
                     file_list.append(o['properties']['id']['value'])
                     o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
-        return selection    
+        return selection
     else:
         s = selection
         inputs = s['inputs']
@@ -119,9 +117,9 @@ def build_sample_file_objects(selection, type):
         if len(file_list) != 0:
             rr = r.table('datafiles').get_all(*file_list)
             file_objs = list(rr.run(g.conn, time_format='raw'))
-        #stick the objects 
+        # stick the objects
         for s in selection:
-            #get_all_sample_ids
+            # get_all_sample_ids
             for i in inputs:
                 if i['attribute'] == 'sample':
                     i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
