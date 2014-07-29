@@ -28,7 +28,7 @@
         {
             "name": "Height" ,
             "attribute": "height",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["mm"] ,
             "value": "" ,
@@ -38,7 +38,7 @@
         {
             "name": "Diameter" ,
             "attribute": "diameter",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["mm"] ,
             "value": "" ,

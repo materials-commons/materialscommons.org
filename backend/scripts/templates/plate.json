@@ -38,7 +38,7 @@
         {
             "name": "Length" ,
             "attribute": "length",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["cm", "m"] ,
             "value": "" ,
@@ -48,7 +48,7 @@
         {
             "name": "Width" ,
             "attribute": "width",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": ["cm","m"] ,
             "value": "" ,
@@ -58,7 +58,7 @@
         {
             "name": "Grain Size" ,
             "attribute": "grain_size",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
@@ -68,7 +68,7 @@
         {
             "name": "Grain Orientation" ,
             "attribute": "grain_orientation",
-            "type": "int" ,
+            "type": "number" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
