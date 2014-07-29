@@ -10,15 +10,15 @@
         <button ng-click="add_notes()" class="btn btn-default btn-primary">Enter</button>
     </div>
     <div class="row">
-        <div class="col-lg-offset-6">
+        <div>
             <h4>Previous notes:</h4>
 
             <div ng-repeat="n in doc.notes | orderBy: date">
-                <text-angular ta-toolbar="[]" ng-model="n.message"></text-angular>
-
-                <div style="padding-left: 200px; font-size: 12px;">
+                <div ta-bind ng-model="n.message"></div>
+                <div style="font-size: 12px;">
                     {{n.date}} ---{{n.who}}
                 </div>
+                <hr/>
             </div>
         </div>
     </div>
