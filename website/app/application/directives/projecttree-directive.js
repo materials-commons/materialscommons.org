@@ -65,7 +65,7 @@ Application.Controllers.controller('ProjectTreeController',
         };
 
         function init() {
-            if ($scope.from === 'datafile') {
+            if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
                 $scope.trail = ProjectPath.get_trail();
                 var item = ProjectPath.get_current_item();

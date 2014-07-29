@@ -1,9 +1,9 @@
 Application.Controllers.controller('projectsOverviewFiles',
-                                   ["$scope", "$stateParams", function($scope, $stateParams) {
-                                       function init() {
-                                           $scope.project_id = $stateParams.id;
-                                           $scope.from = $stateParams.from;
-                                       }
+    ["$scope", "$stateParams", "ProjectPath", function ($scope, $stateParams, ProjectPath) {
+        function init() {
+            $scope.project_id = $stateParams.id;
+            $scope.from = ProjectPath.get_from();
+        }
 
-                                       init();
-                                   }]);
+        init();
+    }]);

@@ -33,7 +33,8 @@ Application.Controllers.controller('projectsDataEdit',
             $scope.backToFolder = function (item) {
                 $scope.dir = ProjectPath.update_dir(item);
                 var proj_id = ProjectPath.get_project();
-                $state.go("projects.overview", {id: proj_id, draft_id: '', from: 'datafile'});
+                ProjectPath.set_from(true);
+                $state.go("projects.overview.files", {id: proj_id, draft_id: ''});
             };
 
             $scope.pullDirectoryPath = function(){
