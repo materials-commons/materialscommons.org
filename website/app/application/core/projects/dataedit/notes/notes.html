@@ -16,7 +16,7 @@
             <div ng-repeat="n in doc.notes | orderBy: date">
                 <div ta-bind ng-model="n.message"></div>
                 <div style="font-size: 12px;">
-                    {{n.date}} ---{{n.who}}
+                    {{n.date}} --- {{n.who}}
                 </div>
                 <hr/>
             </div>
