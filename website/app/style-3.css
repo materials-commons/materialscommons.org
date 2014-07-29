@@ -469,4 +469,6 @@ table-file-directory > thead > tr > td,
 .panel-info{
     border-color: lightgrey;
 }
-.selected { background-color: lightgreen; }
+.selected {
+    background-color: lightgreen;
+}
