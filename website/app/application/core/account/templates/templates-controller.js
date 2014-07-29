@@ -36,8 +36,15 @@ Application.Controllers.controller('accountTemplates',
             }
             return false;
         };
-        $scope.showTemplate = function (t, index) {
-            $scope.selected_row = index;
+        $scope.showTemplate = function (t, index, type) {
+            if(type == 'exp'){
+                $scope.selected_exp_row = index;
+                $scope.selected_comp_row = -1;
+            }else{
+                $scope.selected_comp_row = index;
+                $scope.selected_exp_row = -1;
+
+            }
             $scope.template = t;
             mcapi('/templates/input_output/%', $scope.template.id)
                 .success(function (data) {
@@ -66,9 +73,7 @@ Application.Controllers.controller('accountTemplates',
                     $scope.preferred_templates = data.preferences.templates;
                 }).jsonp();
         }
-
         init();
-
     }
     ])
 ;
