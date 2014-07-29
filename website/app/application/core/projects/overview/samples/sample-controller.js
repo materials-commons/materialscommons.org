@@ -9,19 +9,26 @@ Application.Controllers.controller('projectsOverviewSamples',
 
             $scope.showTab = function (item, index) {
                 $scope.bk.tab_item = item.id;
-                $scope.bk.tab_details = $scope.bk.treatments[index];
-                $scope.default_properties = $scope.bk.treatments[index].default_properties;
-                $scope.bk.selected_treatment = {};
+                $scope.bk.tab_details = $scope.doc.treatments[index];
+                $scope.default_properties = $scope.doc.treatments[index].default_properties;
+                $scope.bk.selected_treatment = item;
             };
 
 
             $scope.addTreatment = function () {
-                var o = angular.copy($scope.bk.selected_treatment);
+                var i = _.indexOf($scope.doc.treatments, function (item) {
+                    return (item.id === $scope.bk.selected_treatment.id);
+                });
+                if (i === -1){
+                    var o = angular.copy($scope.bk.selected_treatment);
+                    $scope.doc.treatments.push(o);
+                }
+                if (i !== -1){
+                    $scope.doc.treatments[i] = $scope.bk.selected_treatment
+                }
                 $scope.bk.selected_treatment = '';
                 $scope.default_properties = "";
-                $scope.bk.treatments.push(o);
             };
-
 
             $scope.setProperties = function () {
                 $scope.doc.default_properties = $scope.bk.classification.default_properties;
@@ -49,13 +56,13 @@ Application.Controllers.controller('projectsOverviewSamples',
                 $scope.refreshProjects();
 
             };
-            $scope.processDetails = function(p_id){
+            $scope.processDetails = function (p_id) {
                 mcapi('/processes/%', p_id)
                     .success(function (data) {
                         $scope.process = []
                         $scope.process.push(data);
                     })
-                    .error(function(e){
+                    .error(function (e) {
                     }).jsonp();
             }
 
@@ -85,12 +92,12 @@ Application.Controllers.controller('projectsOverviewSamples',
                     }).put();
             };
 
-            $scope.editAvailability = function(sample){
+            $scope.editAvailability = function (sample) {
                 $scope.chosen_sample = sample
             }
 
-            $scope.updateAvailability = function(){
-                if ($scope.bk.available == 1){
+            $scope.updateAvailability = function () {
+                if ($scope.bk.available == 1) {
                     mcapi('/objects/%', $scope.chosen_sample.id)
                         .success(function () {
                             $scope.refreshSamples()
@@ -98,7 +105,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                         })
                         .error(function () {
                         }).put({'available': 1 })
-                }else{
+                } else {
                     mcapi('/objects/%', $scope.chosen_sample.id)
                         .success(function () {
                             $scope.refreshSamples()
@@ -110,7 +117,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                 }
             }
 
-            $scope.refreshSamples = function(){
+            $scope.refreshSamples = function () {
                 mcapi('/samples/by_project/%', $scope.project_id)
                     .success(function (data) {
                         $scope.samples_list = data;
@@ -121,12 +128,8 @@ Application.Controllers.controller('projectsOverviewSamples',
                 $scope.setDefaultProject()
             };
             $scope.save = function (form) {
-                console.log('yes')
                 var check = $validationProvider.checkValid(form);
-                console.log(check)
-                console.dir($scope.doc)
                 $scope.doc.path = $scope.doc.name;
-                $scope.doc.treatments = $scope.bk.treatments
                 if (check === true) {
                     mcapi('/objects/new')
                         .arg('order_by=birthtime')
@@ -152,14 +155,15 @@ Application.Controllers.controller('projectsOverviewSamples',
                     default_properties: [],
                     added_properties: [],
                     projects: [],
-                    template: ''
+                    template: '',
+                    treatments: []
+
                 };
                 $scope.bk = {
                     selected_project: '',
                     available: '',
                     open: '',
-                    classification: '' ,
-                    treatments: []
+                    classification: ''
                 };
                 $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
             };
