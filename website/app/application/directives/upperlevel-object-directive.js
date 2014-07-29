@@ -1,5 +1,10 @@
 Application.Controllers.controller("upperlevelObjectController",
-    ["$scope", "watcher", "$injector",function ($scope, watcher, $injector) {
+    ["$scope", "watcher", "$injector", "User", "dateGenerate", function ($scope, watcher, $injector, User,dateGenerate) {
+
+        $scope.add_notes = function () {
+            $scope.doc.notes.push({'message': $scope.bk.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
+            $scope.bk.new_note = "";
+        };
 
         $scope.validateSlash = function () {
             if ($scope.doc.name.match(/\//)){
@@ -9,7 +14,6 @@ Application.Controllers.controller("upperlevelObjectController",
                 $scope.flag = ''
             }
         }
-
     }]);
 Application.Directives.directive('upperlevelObject',
     function () {

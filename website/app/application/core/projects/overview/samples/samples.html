@@ -5,7 +5,6 @@
     </button>
     <div saved-notification="" message="message"></div>
 
-
     <div class="form-horizontal" ng-init="toggleCustom = false" ng-show="toggleCustom">
         <div class="row">
             <div class="col-lg-8">
@@ -18,6 +17,7 @@
         <form name="Sample">
 
             <div class="row"><br>
+
                 <div class="col-lg-10" ng-show="bk.classification">
                     <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
                     <div df-properties="" default-properties="doc.default_properties"></div>
@@ -25,91 +25,88 @@
             </div>
             <br>
         </form>
-
-
         <div ng-show="bk.classification">
-                <h4 plus-minus-toggle="slidetreatments">
-                    <i class="fa fa-minus-square"></i>
-                    Treatments
-                </h4>
+            <h4 plus-minus-toggle="slidetreatments">
+                <i class="fa fa-minus-square"></i>
+                Treatments
+            </h4>
 
-                <div id="slidetreatments">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label>Treatments:</label>
-                            <select class="form-control" ng-model="bk.selected_treatment"
-                                    ng-options="treat.id for treat in treatment_templates"
-                                    ng-change="showForm()">
-                            </select>
+            <div id="slidetreatments">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Treatments:</label>
+                        <select class="form-control" ng-model="bk.selected_treatment"
+                                ng-options="treat.id for treat in treatment_templates"
+                                ng-change="showForm()">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <label class='control-label'><strong>{{bk.selected_treatment.id ||
+                            bk.tab_item}} </strong></label>
+
+                        <div ng-show="bk.selected_treatment">
+                            <div df-properties default-properties="default_properties"></div>
+                            <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <label class='control-label'><strong>{{bk.selected_treatment.id ||
-                                bk.tab_item}} </strong></label>
+                    <div ng-show="doc.treatments.length !==0 " class="col-lg-4">
+                        <label>Treatments Order:</label>
+                        <tabset vertical="true" type="pills">
+                            <tab ng-repeat="treatment in doc.treatments"
+                                 ng-click="showTab(treatment, $index)"
+                                 heading="{{treatment.id}}">
+                            </tab>
+                        </tabset>
+                    </div>
 
-                            <div ng-show="bk.selected_treatment">
-                                <div df-properties default-properties="default_properties"></div>
-                                <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
-                            </div>
+                </div>
+            </div>
+            <br>
+            <h4 plus-minus-toggle="slideprojects">
+                <i class="fa fa-minus-square"></i>
+                Projects
+            </h4>
+
+            <div id="slideprojects">
+                <div class="row form-group">
+                    <div class="col-lg-8">
+                        <div class="col-lg-5">
+                            <select class="form-control" ng-model="bk.selected_project"
+                                    ng-options="pr.name for pr in projects">
+                            </select>
                         </div>
-                        <div ng-show="doc.treatments.length !==0 " class="col-lg-4">
-                            <label>Treatments Order:</label>
-                            <tabset vertical="true" type="pills">
-                                <tab ng-repeat="treatment in doc.treatments"
-                                     ng-click="showTab(treatment, $index)"
-                                     heading="{{treatment.id}}">
-                                </tab>
-                            </tabset>
-                        </div>
+                        <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project
+                        </button>
 
                     </div>
                 </div>
-                <br>
-                <h4 plus-minus-toggle="slideprojects">
-                    <i class="fa fa-minus-square"></i>
-                    Projects
-                </h4>
-
-                <div id="slideprojects">
-
-                    <div class="row form-group">
-                        <div class="col-lg-8">
-                            <div class="col-lg-5">
-                                <select class="form-control" ng-model="bk.selected_project"
-                                        ng-options="pr.name for pr in projects">
-                                </select>
-                            </div>
-                            <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project
-                            </button>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div ng-show="doc.projects.length !==0 " class="col-lg-8">
-                            <table class="table table-striped mc-table-hover table-condensed mc-table">
-                                <thead>
-                                <tr>
-                                    <th>Projects</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="i in doc.projects">
-                                    <td>{{i.name}}</td>
-                                    <td>
-                                        <button class="btn btn-default btn-danger"
-                                                ng-click="removeProjects($index)">
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="row">
+                    <div ng-show="doc.projects.length !==0 " class="col-lg-8">
+                        <table class="table table-striped mc-table-hover table-condensed mc-table">
+                            <thead>
+                            <tr>
+                                <th>Projects</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="i in doc.projects">
+                                <td>{{i.name}}</td>
+                                <td>
+                                    <button class="btn btn-default btn-danger"
+                                            ng-click="removeProjects($index)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+        </div>
 
     </div>
     <div class="row" ng-show="bk.classification"><br>
