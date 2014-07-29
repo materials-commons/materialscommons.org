@@ -11,7 +11,7 @@
             "unit_choice": "" ,
             "value": "",
             "value_choice": [],
-            "required": false
+            "required": true
         }
      ],
     "additional_properties":[
