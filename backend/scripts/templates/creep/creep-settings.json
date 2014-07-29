@@ -3,16 +3,6 @@
     "authors": ["emarq@umich.edu"],
     "attribute": "creep_settings",
     "default_properties": [
-           {
-            "name": "Machine" ,
-            "attribute": "machine",
-            "type": "machines" ,
-            "unit": "" ,
-            "unit_choice": "" ,
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
         {
             "attribute": "temperature",
             "name": "Temperature" ,
