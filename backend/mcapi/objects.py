@@ -22,8 +22,8 @@ def get_all_objects():
 @app.route('/objects/project/<project_id>', methods=['GET'])
 @jsonp
 def get_all_objects_by_project(project_id):
-    rr = r.table('samples').filter(lambda sample: sample['projects'].map(lambda element: element['id'].eq(project_id))\
-    .reduce(lambda left, right:left+right)).order_by(r.desc('birthtime'))
+    rr = r.table('samples').filter(lambda sample: sample['projects'].map(lambda element: element['id'].eq(project_id))
+                                   .reduce(lambda left, right: left+right)).order_by(r.desc('birthtime'))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -49,10 +49,11 @@ def update_availability(object_id):
     j = request.get_json()
     available = dmutil.get_required('available', j)
     if available == 1:
-        rv = r.table('samples').get(object_id).update({'available': True}).run(g.conn)
+        r.table('samples').get(object_id).update({'available': True}).run(g.conn)
     else:
-        rv = r.table('samples').get(object_id).update({'available': False}).run(g.conn)
+        r.table('samples').get(object_id).update({'available': False}).run(g.conn)
     return args.json_as_format_arg({'id': object_id})
+
 
 @app.route('/objects/new', methods=['POST'])
 @apikey
@@ -86,9 +87,11 @@ def create_object():
         _join_sample_projects(dmutil.get_optional('projects', j, []), sample_id)
         return json.dumps({'id': sample_id})
 
+
 def _join_sample_projects(projects, sample_id):
     for p in projects:
-        rr = r.table('projects2samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn) 
+        r.table('projects2samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn)
+
 
 def _create_treatments_denorm(treatments, sample_id):
     for treatment in treatments:
@@ -113,7 +116,7 @@ def join_project_sample():
     sample_project['project_id'] = dmutil.get_required('project_id', j)
     sample_project['project_name'] = dmutil.get_required('project_name', j)
     sample_project_id = dmutil.insert_entry_id('projects2samples', sample_project)
-    return sample_project_id         
+    return sample_project_id
 
 
 @app.route('/samples/project/<sample_id>', methods=['GET'])
@@ -122,6 +125,7 @@ def join_table_entries(sample_id):
     rv = r.table('projects2samples').filter({'sample_id': sample_id})
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
+
 
 @app.route('/samples/by_project/<project_id>', methods=['GET'])
 @jsonp
@@ -139,7 +143,7 @@ class SItem:
         self.owner = owner
         self.path = path
         self.children = []
-        
+
 
 class DEncoder2(json.JSONEncoder):
     def default(self, o):
@@ -153,7 +157,7 @@ def sample_tree(project_id):
     all_samples = {}
     top_level_samples = []
     for samp in samples:
-        sitem = SItem(samp['id'],samp['name'],samp['path'],samp['owner'])
+        sitem = SItem(samp['id'], samp['name'], samp['path'], samp['owner'])
         sitem.level = sitem.path.count('/')
         if sitem.path in all_samples:
             existing_sitem = all_samples[sitem.path]
@@ -170,6 +174,3 @@ def sample_tree(project_id):
             parent.children.append(sitem)
             all_samples[parent_name] = parent
     return json.dumps(top_level_samples, cls=DEncoder2)
-    
-
-

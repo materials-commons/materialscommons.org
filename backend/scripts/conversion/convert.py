@@ -23,21 +23,6 @@ def add_projects_to_groups(conn):
         r.table('usergroups').get(group['id']).update(group).run(conn)
 
 
-def build_samples_projects_denorm(conn):
-    print "  Building the projects2samples denorm table..."
-    samples = list(r.table('samples').run(conn))
-    for sample in samples:
-        owner = sample['owner']
-        projects = list(r.table('projects').filter({'owner': owner})
-                        .pluck('id', 'name').run(conn))
-        for project in projects:
-            p2s = {}
-            p2s['project_id'] = project['id']
-            p2s['project_name'] = project['name']
-            p2s['sample_id'] = sample['id']
-            r.table('projects2samples').insert(p2s).run(conn)
-
-
 def convert_compositions(conn):
     print "  Converting compositions..."
     all_samples = list(r.table('samples').run(conn, time_format='raw'))
@@ -117,6 +102,16 @@ def populate_new_denorms(conn):
                 sample_dnorm['project_id'] = process['project']
                 sample_dnorm['file_type'] = 'input'
                 r.table('samples_denorm').insert(sample_dnorm).run(conn)
+                p2s = {}
+                p2s['project_id'] = process['project']
+                proj = r.table('projects').get(p2s['project_id']).run(conn)
+                p2s['project_name'] = proj['name']
+                p2s['sample_id'] = sample_dnorm['sample_id']
+                items = list(r.table('projects2samples')
+                             .get_all(p2s['sample_id'], index='sample_id')
+                             .filter({'project_id': p2s['project_id']}).run(conn))
+                if not items:
+                    r.table('projects2samples').insert(p2s).run(conn)
         for o in outputs:
             if o['attribute'] == 'file':
                 df_dnorm = {}
@@ -136,6 +131,16 @@ def populate_new_denorms(conn):
                 sample_dnorm['project_id'] = process['project']
                 sample_dnorm['file_type'] = 'output'
                 r.table('samples_denorm').insert(sample_dnorm).run(conn)
+                p2s = {}
+                p2s['project_id'] = process['project']
+                proj = r.table('projects').get(p2s['project_id']).run(conn)
+                p2s['project_name'] = proj['name']
+                p2s['sample_id'] = sample_dnorm['sample_id']
+                items = list(r.table('projects2samples')
+                             .get_all(p2s['sample_id'], index='sample_id')
+                             .filter({'project_id': p2s['project_id']}).run(conn))
+                if not items:
+                    r.table('projects2samples').insert(p2s).run(conn)
 
 
 def convert_templates(conn):
@@ -163,7 +168,6 @@ def convert_samples(conn):
 def main(conn):
     print "Beginning conversion steps:"
     add_projects_to_groups(conn)
-    build_samples_projects_denorm(conn)
     convert_compositions(conn)
     drop_unused_tables(conn)
     drop_unused_database(conn)
