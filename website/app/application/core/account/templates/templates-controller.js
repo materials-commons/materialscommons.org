@@ -37,13 +37,21 @@ Application.Controllers.controller('accountTemplates',
             return false;
         };
         $scope.showTemplate = function (t, index, type) {
-            if(type == 'exp'){
+            $scope.inputs_templates = ''
+            $scope.outputs_templates = ''
+            if (type == 'exp') {
                 $scope.selected_exp_row = index;
                 $scope.selected_comp_row = -1;
-            }else{
+                $scope.selected_sample_row = -1;
+            } else if(type == 'comp') {
                 $scope.selected_comp_row = index;
                 $scope.selected_exp_row = -1;
+                $scope.selected_sample_row = -1;
 
+            } else if(type == 'sample'){
+                $scope.selected_sample_row = index;
+                $scope.selected_exp_row = -1;
+                $scope.selected_comp_row = -1;
             }
             $scope.template = t;
             mcapi('/templates/input_output/%', $scope.template.id)
@@ -62,10 +70,12 @@ Application.Controllers.controller('accountTemplates',
                     $scope.process_templates = processes;
                     $scope.experimental_templates = $filter('templateFilter')($scope.process_templates, 'experiment');
                     $scope.computational_templates = $filter('templateFilter')($scope.process_templates, 'computation');
+                }).jsonp();
 
-                })
-                .error(function () {
-                    alertService.sendMessage("Unable to retrieve processes from database.");
+            mcapi('/templates')
+                .argWithValue('filter_by', '"template_type":"material"')
+                .success(function (samples) {
+                    $scope.sample_templates = samples
                 }).jsonp();
 
             mcapi('/user/%/preferred_templates', User.u())
@@ -73,6 +83,7 @@ Application.Controllers.controller('accountTemplates',
                     $scope.preferred_templates = data.preferences.templates;
                 }).jsonp();
         }
+
         init();
     }
     ])
