@@ -1,5 +1,5 @@
 <div class="tab-pane" id="tags" ng-controller="projectsDataEditCreateTag">
-    <h3>Tags</h3>
+    <h3><i class="fa fa-tags"/> Tags</h3>
     <cgroup label="Create new:">
         <input class="form-control" ui-keypress="{13: 'addNewTag()'}" ng-model="tag_model.new_tag" placeholder="Tag...">
         <button style="position:absolute" ng-click="addNewTag(doc.id, 'datafile')" ng-disabled="!tag_model.new_tag"

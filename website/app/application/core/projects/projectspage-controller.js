@@ -37,15 +37,11 @@ Application.Controllers.controller('Projects',
                             item.active = false;
                         }
                     });
-                    mcapi('/projects/%', $scope.project_id)
-                        .success(function (project) {
-                            $scope.project = project;
-                            if ($stateParams.draft_id !== "") {
-                                $state.go('projects.provenance.process');
-                            } else {
-                                $state.go('projects.overview.files', {id: $scope.project_id, draft_id: ''});
-                            }
-                        }).jsonp();
+                    if ($stateParams.draft_id !== "") {
+                        $state.go('projects.provenance.process');
+                    } else {
+                        $state.go('projects.overview.files', {id: $scope.project_id, draft_id: ''});
+                    }
                 });
             }
 
