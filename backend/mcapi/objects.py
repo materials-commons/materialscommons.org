@@ -41,6 +41,16 @@ def get_objects_user(user):
 def get_object(object_id):
     return dmutil.get_single_from_table('samples', object_id)
 
+@app.route('/objects/update/<object_id>', methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def updateobject(object_id):
+    rv = r.table('samples').get(object_id).update(request.json).run(g.conn)
+    if (rv['replaced'] == 1 or rv['unchanged'] == 1):
+        return ''
+    else:
+        error.update_conflict("Unable to update object: " + object_id)
+
 
 @app.route('/objects/<object_id>', methods=['PUT'])
 @crossdomain(origin='*')

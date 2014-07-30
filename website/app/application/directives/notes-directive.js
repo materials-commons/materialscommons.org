@@ -16,9 +16,21 @@ Application.Controllers.controller('NotesController',
                     }).put($scope.doc);
             }
             if($scope.type === 'sample'){
+                if($scope.update == 'true'){
+                    mcapi('/objects/update/%', $scope.doc.id)
+                        .success(function (data) {
+                            alertService.sendMessage("Notes has been updated");
+                        }).put($scope.doc);
+                }
                 // Sample notes is stored/saved in the samples controller
             }
             if($scope.type === 'process'){
+                if($scope.update == 'true'){
+                    mcapi('/process/update/%', $scope.doc.id)
+                        .success(function (data) {
+                            alertService.sendMessage("Notes has been updated");
+                        }).put($scope.doc);
+                }
                 // Process notes is stored/saved in the Process controller
             }
 
@@ -49,7 +61,8 @@ Application.Directives.directive('notes',
             scope: {
                 edit: "=",
                 doc: '=',
-                type: '@'
+                type: '@',
+                update: '@'
             },
             templateUrl: 'application/directives/notes.html'
         };
