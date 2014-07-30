@@ -92,7 +92,34 @@ def get_project(id):
     user = access.get_user()
     if not access.allowed(user, proj['owner']):
         return error.not_authorized("No access to project %s" % (id))
+    samples = []
+    proj['users'] = get_project_users(proj['owner'])
+    proj['shares'] = get_project_shares(samples, proj['id'])
+    proj['uses'] = get_project_uses(samples, proj['id'])
     return args.json_as_format_arg(proj)
+
+
+def get_project_users(who):
+    groups = list(r.table('usergroups').filter({'owner': who}).run(g.conn))
+    unique_users = {}
+    for group in groups:
+        for username in group['users']:
+            # Remove project owner from list of contributors
+            if username != who:
+                unique_users[username] = username
+    users = []
+    for user in unique_users:
+        users.append(user)
+    return users
+
+
+def get_project_shares(samples, project_id):
+    """Finds all the samples that this project shares out"""
+    return []
+
+
+def get_project_uses(samples, project_id):
+    return []
 
 
 @app.route('/projects/<project_id>/datadirs')
