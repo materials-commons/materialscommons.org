@@ -2,7 +2,7 @@
     <br>
 
     <div class="col-lg-2">
-        <label>Experimental Templates:</label>
+        <label>Experimental Processes:</label>
         <table class="table table-bordered mc-table">
             <thead>
             <th></th>
@@ -18,8 +18,8 @@
             </tbody>
         </table>
     </div>
-    <div class="col-lg-2">
-        <label>Computational Templates:</label>
+    <div style="padding-left:15px" class="col-lg-2">
+        <label>Computational Processes:</label>
         <table class="table table-bordered">
             <thead>
             <th></th>
@@ -34,9 +34,23 @@
             </tr>
             </tbody>
         </table>
+        <label>Sample Templates:</label>
+        <table class="table table-bordered">
+            <thead>
+            <th></th>
+            <th>Classification</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="t in sample_templates | orderBy:'template_name'">
+                <td></td>
+                <td ng-class='{selected: $index==selected_sample_row}'><a ng-click="showTemplate(t, $index, 'sample')">{{t.template_name}}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div ng-show="template" class="col-lg-6">
-        <h4 plus-minus-toggle="process">
+        <h4 ng-hide="template.template_type == 'material'"  plus-minus-toggle="process">
             <i class="fa fa-minus-square"></i>
             Process
         </h4><br>
@@ -50,11 +64,12 @@
                     <display label="Runs:"></display>
                     <div ng-repeat="each in template.default_properties">
                         <div class="form-group">
-                            <label>{{each.name}}:</label>
-                            <li style="display: inline;padding-left: 20px;"
+                            <label>{{each.name}}:</label><span ng-if="each.value_choice.length !==0 " class="text-muted">Choose one</span>
+                            <span ng-if="each.name == 'Machine'" class="text-muted">Choose the machine from dropdown menu</span>
+                            <ul style="margin-left: 60px;"
                                 ng-repeat="v in each.value_choice">
-                                {{v.name + ','}}
-                            </li>
+                                <li>{{v.name }} </li>
+                            </ul>
                             <br><label ng-if="each.unit_choice.length !== 0">Units:</label>
                             {{each.unit_choice.join(',')}}
 
@@ -71,24 +86,25 @@
                 </div>
             </div>
         </div>
-        <h4 plus-minus-toggle="inputs">
+        <h4 ng-hide="template.template_type == 'material'"  plus-minus-toggle="inputs">
             <i class="fa fa-minus-square"></i>
             Inputs
         </h4><br>
 
-        <div id="inputs" class="row">
+        <div ng-hide="template.template_type == 'material'"  id="inputs" class="row">
             <div class="panel panel-default">
                 <div class="panel panel-body">
                     <div ng-repeat="it in inputs_templates">
                         <h4><u>{{it.template_name}}:</u></h4>
-
+                        <span ng-if="it.template_name == 'Sample'" class="text-muted">Choose the sample from dropdown menu</span>
                         <div ng-repeat="each in it.default_properties">
                             <div class="form-group">
                                 <label>{{each.name}}:</label>
-                                <li style="display: inline;padding-left: 20px;"
+                                <span ng-if="each.value_choice.length !==0 " class="text-muted">Choose one</span>
+                                <ul style="margin-left: 60px;"
                                     ng-repeat="v in each.value_choice">
-                                    {{v.name + ','}}
-                                </li>
+                                    <li>{{v.name }} </li>
+                                </ul>
                                 <br><label ng-if="each.unit_choice.length !== 0">Units:</label>
                                 {{each.unit_choice.join(',')}}
                             </div>
@@ -106,12 +122,12 @@
                 </div>
             </div>
         </div>
-        <h4 plus-minus-toggle="outputs">
+        <h4 ng-hide="template.template_type == 'material'"  plus-minus-toggle="outputs">
             <i class="fa fa-minus-square"></i>
             Outputs
         </h4>
 
-        <div id="outputs" class="row">
+        <div ng-hide="template.template_type == 'material'"  id="outputs" class="row">
             <div class="panel panel-default">
                 <div class="panel panel-body">
                     <div ng-repeat="it in outputs_templates">
@@ -140,7 +156,4 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-
 </div>
