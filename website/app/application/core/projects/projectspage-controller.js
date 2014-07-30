@@ -12,6 +12,7 @@ Application.Controllers.controller('Projects',
             });
 
             function init() {
+
                 $scope.from = ProjectPath.get_from();
                 Projects.getList().then(function (data) {
                     $scope.model = {
