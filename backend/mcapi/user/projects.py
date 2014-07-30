@@ -266,17 +266,14 @@ def update_project(id):
         item['description'] = description
         do_update = True
 
-    todos = dmutil.get_optional('todos', j, None)
-    if todos:
-        item['todos'] = todos
+    notes = dmutil.get_optional('notes', j, [])
+    if notes:
+        item['notes'] = notes
         do_update = True
-
     proj = r.table('projects').get(id).run(g.conn)
     if proj is None:
         return error.not_found('Project not found %s' % (id))
-    if user != proj['owner']:
-        return error.not_authorized("No access to project %s" % (id))
-
+    access.check(user, proj['owner'], proj['id'])
     if do_update:
         r.table('projects').get(id)\
                            .update(item).run(g.conn)

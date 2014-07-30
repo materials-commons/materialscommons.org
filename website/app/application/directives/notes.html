@@ -1,0 +1,36 @@
+<div ng-if="update!=='true'" class="row">
+    <h4>Note</h4>
+
+    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                  ng-model="model.new_note"></text-angular>
+    <br>
+    <button ng-click="add_notes()" class="btn btn-default btn-primary">Enter</button>
+</div>
+<div class="row">
+    <div>
+        <h4>Previous notes:</h4>
+
+        <div class="row" ng-repeat="n in doc.notes | orderBy: date">
+            <div ng-if="edit_index==$index">
+                <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                              ng-model="n.message"></text-angular>
+                <br>
+                <button ng-click="saveNotes($index)" class="btn btn-default btn-primary">Save</button>
+            </div>
+            <div ng-if="edit_index!==$index">
+                <div ta-bind ng-model="n.message"></div>
+            </div>
+            <div style="font-size: 12px;">
+                {{n.date}} --- {{n.who}}
+            </div>
+            <div ng-if="edit_index!==$index">
+                <a ng-click="editNotes($index)">edit</a>
+            </div>
+            <hr/>
+        </div>
+    </div>
+</div>

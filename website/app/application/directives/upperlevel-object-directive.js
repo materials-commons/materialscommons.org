@@ -1,5 +1,5 @@
 Application.Controllers.controller("upperlevelObjectController",
-    ["$scope", "watcher", "$injector", "User", "dateGenerate", function ($scope, watcher, $injector, User,dateGenerate) {
+    ["$scope", "watcher", "$injector", "User", "dateGenerate", "mcapi", function ($scope, watcher, $injector, User,dateGenerate, mcapi) {
 
         $scope.add_notes = function () {
             $scope.doc.notes.push({'message': $scope.bk.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
@@ -14,6 +14,7 @@ Application.Controllers.controller("upperlevelObjectController",
                 $scope.flag = ''
             }
         }
+
     }]);
 Application.Directives.directive('upperlevelObject',
     function () {

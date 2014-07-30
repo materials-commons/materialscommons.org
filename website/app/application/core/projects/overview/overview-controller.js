@@ -5,7 +5,7 @@ Application.Controllers.controller('projectsOverview',
                                             $scope.drafts = ProvDrafts.drafts;
                                         });
 
-                                        $scope.countDrafts = function() {
+                                        $scope.countDrafts = function () {
                                             if ($scope.project_id === "") {
                                                 return;
                                             }
@@ -28,6 +28,9 @@ Application.Controllers.controller('projectsOverview',
                                                 break;
                                             case "samples":
                                                 $state.go('projects.overview.samples');
+                                                break;
+                                            case "notes":
+                                                $state.go('projects.overview.notes');
                                                 break;
 
                                             }
