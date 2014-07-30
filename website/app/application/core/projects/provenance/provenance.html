@@ -45,9 +45,13 @@
                                 {{provenanceView.description}}
                             </display>
                             <display label="Notes:">
-                                <ul ng-repeat=" note in provenanceView.notes">
-                                    <li style="word-break:break-all;">{{note.message}}</li>
-                                </ul>
+                                <div ng-repeat="n in provenanceView.notes | orderBy: date">
+                                    <div ta-bind ng-model="n.message"></div>
+                                    <div style="font-size: 12px;">
+                                        {{n.date}} --- {{n.who}}
+                                    </div>
+                                    <hr/>
+                                </div>
                             </display>
                             <display label="Runs:">
                                 <div ng-if="provenanceView.template.template_pick=='experiment'">

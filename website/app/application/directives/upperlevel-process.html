@@ -5,33 +5,31 @@
     <textarea class="form-control" placeholder="Description..." ng-model="doc.description"
               ng-disabled="edit"></textarea>
 </cgroup>
-<div ng-if="edit===false">
-    <cgroup label="Notes:">
-        <textarea class="form-control" placeholder="Notes..." ng-model="bk.new_note"></textarea>
-    </cgroup>
-    <cgroup>
-        <button ng-click="add_notes()" class="btn btn-default btn-info">Add</button>
-    </cgroup>
-</div>
+<div ng-if="edit===true">
+    <div ng-show="doc.notes.length > 0">
+        <h4>Previous notes:</h4>
 
-<div ng-show="doc.notes.length > 0">
-    <h6>Previous Notes:</h6>
-    <table class="table table_small">
-        <thead>
-        <tr>
-            <th>Message</th>
-            <th>Who</th>
-            <th>Date Created</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="note in doc.notes">
-            <td>{{note.message}}</td>
-            <td>{{note.who}}</td>
-            <td>{{note.date}}</td>
-        </tr>
-        </tbody>
-    </table>
+        <div class="row" ng-repeat="n in doc.notes | orderBy: date">
+            <div ng-if="edit_index==$index">
+                <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                              ng-model="n.message"></text-angular>
+                <br>
+                <button ng-click="saveNotes($index)" class="btn btn-default btn-primary">Save</button>
+            </div>
+            <div ng-if="edit_index!==$index">
+                <div ta-bind ng-model="n.message"></div>
+            </div>
+            <div style="font-size: 12px;">
+                {{n.date}} --- {{n.who}}
+            </div>
+            <div ng-if="edit_index!==$index">
+                <a ng-click="editNotes($index)">edit</a>
+            </div>
+            <hr/>
+        </div>
+    </div>
 </div>
 
 <div class="form-group">
