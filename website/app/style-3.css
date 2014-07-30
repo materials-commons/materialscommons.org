@@ -22,7 +22,7 @@ body {
 /*************************************************All about top navigation bar *************************/
 .navbar-custom {
     background-color: #0C5C86;
-    color:#ffffff;
+    color: #ffffff;
     border-radius: 0;
 }
 
@@ -86,7 +86,7 @@ body {
 
 .form-horizontal .form-group {
     margin-bottom: 2px;
-    margin-left:10px;
+    margin-left: 10px;
 }
 
 .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
@@ -136,17 +136,17 @@ p {
 }
 
 /*.col-sm-2 {*/
-    /*width: 12%;*/
+/*width: 12%;*/
 /*}*/
 
 .individual-items.nav-tabs > li > a,
 .individual-items.nav-tabs > li.active > a,
 .individual-items.nav-tabs > li.active > a:hover,
-.individual-items.nav-tabs > li.active > a:focus {
+.individual-items.nav-tabs > li.active > a:focus, {
     border: 1px solid #ecf0f1;
-    border-right: solid red;
     cursor: default;
     outline: none;
+
 }
 
 footer {
@@ -227,7 +227,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 /*.modal-backdrop {*/
-    /*background-color: none;*/
+/*background-color: none;*/
 /*}*/
 
 .btn-circle {
@@ -326,7 +326,6 @@ table-file-directory > thead > tr > td,
     color: grey;
 }
 
-
 .file-heading {
     padding: 22px 15px;
 
@@ -402,7 +401,7 @@ table-file-directory > thead > tr > td,
 
 }
 
-.limit-text{
+.limit-text {
     width: 100px;
     height: 10px;
 }
@@ -418,7 +417,7 @@ table-file-directory > thead > tr > td,
 }
 
 .custom-right {
-border-left: 1px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
 
 }
 
@@ -438,13 +437,21 @@ border-left: 1px solid #d2d2d2;
     border-bottom-color: transparent;
     cursor: default;
 }
+
 .tabs-bottom > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus, .tabs-bottom >  li > a:focus, .tabs-bottom >  li > a:hover {
     /* background-color: #e7e7e7; */
-  color: white;
-  background-color:#4c9cc6;
+    color: white;
+    background-color: #4c9cc6;
 }
 
-#machines{
+.tabs-right > li.active > a:hover, .tabs-right > li.active > a:focus, .tabs-right >  li > a:focus, .tabs-right >  li > a:hover {
+    /* background-color: #e7e7e7; */
+    color: white;
+    background-color: #4c9cc6;
+}
+
+
+#machines {
     display: none;
 }
 
@@ -466,13 +473,14 @@ border-left: 1px solid #d2d2d2;
     color: #4b4b4b;
 }
 
-.panel-info{
+.panel-info {
     border-color: lightgrey;
 }
+
 .selected {
     background-color: lightgreen;
 }
 
 /*.nav .nav-tabs  .tabs-right{*/
-    /*height: 500px;*/
+/*height: 500px;*/
 /*}*/
