@@ -1,17 +1,14 @@
-<cgrouprequired label="Name:">
-    <input class="form-control" ng-model="doc.name" placeholder="Name..." ng-disabled="edit" required="" type="text"
-          ng-change="validateSlash()">
-    <div ng-show="flag">
-        <p style="color: red">{{flag}} </p>
-    </div>
-</cgrouprequired>
-
-<cgroup label="Description:">
-    <textarea class="form-control" placeholder="Description..." ng-model="doc.description"
-              ng-disabled="edit"></textarea>
-</cgroup>
-<div ng-if="edit===true">
-    <div ng-show="doc.notes.length > 0">
+<div class="row">
+    <h4>Note</h4>
+    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                  ng-model="model.new_note"></text-angular>
+    <br>
+    <button ng-click="add_notes()" class="btn btn-default btn-primary">Enter</button>
+</div>
+<div class="row">
+    <div>
         <h4>Previous notes:</h4>
 
         <div class="row" ng-repeat="n in doc.notes | orderBy: date">
