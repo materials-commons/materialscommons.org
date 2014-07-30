@@ -6,7 +6,6 @@ Application.Controllers.controller('projectsOverviewNotes',
                 mcapi('/projects/%', $scope.project_id)
                     .success(function (project) {
                         $scope.project = project;
-                        console.log($scope.project)
                     }).jsonp();
             };
 
