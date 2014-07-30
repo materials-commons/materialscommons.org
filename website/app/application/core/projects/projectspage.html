@@ -2,7 +2,7 @@
     <div class="col-lg-12" ng-controller="Projects"><br>
         <div class="project-tabs">
             <ul class="nav nav-tabs custom-bottom tabs-bottom">
-                <li ng-repeat="p in projects"  ng-class="{active: project_id == p.id}">
+                <li ng-repeat="p in projects" ng-class="{active: project_id == p.id}">
                     <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" data-toggle="tab">{{p.name}}</a>
                 </li>
             </ul>
