@@ -143,6 +143,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/samples',
             templateUrl: 'application/core/projects/overview/samples/samples.html'
         })
+        .state('projects.overview.notes', {
+            url: '/notes',
+            templateUrl: 'application/core/projects/overview/notes/notes.html'
+        })
 
         /*
          ########################################################################

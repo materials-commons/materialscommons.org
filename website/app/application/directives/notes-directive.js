@@ -15,6 +15,14 @@ Application.Controllers.controller('NotesController',
                         alertService.sendMessage(data.error);
                     }).put($scope.doc);
             }
+            if ($scope.type === 'project') {
+                mcapi('/projects/%/update', $scope.doc.id)
+                    .success(function (data) {
+                        alertService.sendMessage("Notes has been added");
+                    }).error(function (data) {
+                        alertService.sendMessage(data.error);
+                    }).put($scope.doc);
+            }
             if($scope.type === 'sample'){
                 if($scope.update == 'true'){
                     mcapi('/objects/update/%', $scope.doc.id)
