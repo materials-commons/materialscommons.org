@@ -11,8 +11,8 @@
             </div>
         </div>
         <div>
-            <span class="col-lg-2"><i class="fa fa-lock"/> Private Project</span>
-                <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
+            <span class="col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
+            <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
         <div class="col-lg-8">
             <div class="panel panel-default">
@@ -42,6 +42,11 @@
                         </a>
                     </li>
                     <li>
+                        <a ng-click="showTab('samples')" data-toggle="tab">
+                            Samples <i class="fa fa-cubes marginLeft pull-right"/>
+                        </a>
+                    </li>
+                    <li>
                         <a ng-click="showTab('provenance')" data-toggle="tab">
                             Provenance <i class="fa fa-code-fork marginLeft pull-right"/>
                         </a>
@@ -55,11 +60,7 @@
                     <!--class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>-->
                     <!--<li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i-->
                     <!--class="fa fa-cog marginLeft pull-right"></i></a></li>-->
-                    <li>
-                        <a ng-click="showTab('samples')" data-toggle="tab">
-                            Samples <i class="fa fa-cubes marginLeft pull-right"/>
-                        </a>
-                    </li>
+
                     <li>
                         <a ng-click="showTab('notes')" data-toggle="tab">
                             Notes <i class="fa fa-edit marginLeft pull-right"/>
