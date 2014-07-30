@@ -422,8 +422,12 @@ table-file-directory > thead > tr > td,
     /*min-width: 1000px;*/
 }
 
-.nav-tabs {
-    border-bottom: 1px solid #d6d6d6;
+.custom-bottom {
+    border-bottom: 1px solid #d2d2d2;
+}
+
+.custom-right {
+border-left: 1px solid #d2d2d2;
 }
 
 .nav-tabs > li > a {
@@ -439,10 +443,12 @@ table-file-directory > thead > tr > td,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
     color: #2c3e50;
-    background-color: #e4e4e4;
-    border: 1px solid #ecf0f1;
     border-bottom-color: transparent;
     cursor: default;
+}
+
+.tabs-bottom > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus {
+    background-color: #e7e7e7;
 }
 
 #machines{
@@ -472,3 +478,8 @@ table-file-directory > thead > tr > td,
 .selected {
     background-color: lightgreen;
 }
+
+/*.nav .nav-tabs  .tabs-right{*/
+    /*height: 500px;*/
+/*}*/
+
