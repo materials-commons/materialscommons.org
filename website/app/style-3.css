@@ -41,12 +41,12 @@ body {
     line-height: 40px;
     height: 40px;
     padding-top: 0;
-    color: #d4d4d4;
+    color: #ffffff;
 }
 
 .navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
     text-decoration: none;
-    background-color: #adadad;
+    background-color: cornflowerblue;
 }
 
 .navbar-custom .navbar-brand {
@@ -446,8 +446,7 @@ border-left: 1px solid #d2d2d2;
     border-bottom-color: transparent;
     cursor: default;
 }
-
-.tabs-bottom > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus {
+.tabs-bottom > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus, .tabs-bottom >  li > a:focus, .tabs-bottom >  li > a:hover {
     background-color: #e7e7e7;
 }
 
