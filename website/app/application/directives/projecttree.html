@@ -6,15 +6,25 @@
     </div>
     <div class="panel panel-default">
         <div ng-hide="checkBox" class="panel-heading file-heading">
+            <span>Last update:....</span>
             <!-- Comment out because this will be added back in short term -->
             <!-- <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a> -->
-            <a ui-sref="projects.provenance" style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-code-fork"/>Add Prov </a>
+            <a ui-sref="projects.provenance" style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-code-fork"/>Add Provenance</a>
         </div>
-        <div class="panel-body" style="padding: 5px;background-color: #389DC1">
-            <p style="color:white">Last Synced............</p>
+        <!-- <div class="panel-body" style="padding: 5px;background-color: #389DC1">
+        <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        View by <span class="caret"/>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+        <li><i class="fa fa-folder-open"> Directories</i></li>
+        <li><i class="fa fa-suitecase"> Dataset abc</i></li>
+        <li><i class="fa fa-suitecase"> Dataset def</i></li>
+        </ul>
         </div>
+        </div> -->
     </div>
     <div ng-show="loaded===false">
         <div class="row col-lg-offset-5">

@@ -1,6 +1,6 @@
 Application.Controllers.controller('projectsOverview',
-                                   ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts",
-                                    function ($scope, $stateParams, pubsub, $state, ProvDrafts) {
+                                   ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts", "mcapi",
+                                    function ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi) {
                                         pubsub.waitOn($scope, ProvDrafts.channel, function() {
                                             $scope.drafts = ProvDrafts.drafts;
                                         });
@@ -38,7 +38,10 @@ Application.Controllers.controller('projectsOverview',
                                             $scope.from = $stateParams.from;
                                             $scope.processes = [];
                                             $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
+                                            mcapi('/projects/%', $scope.project_id)
+                                                .success(function (project) {
+                                                    $scope.project = project;
+                                                }).jsonp();
                                         }
-
                                         init();
                                     }]);
