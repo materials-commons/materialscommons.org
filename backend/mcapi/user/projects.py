@@ -104,7 +104,9 @@ def get_project_users(who):
     unique_users = {}
     for group in groups:
         for username in group['users']:
-            unique_users[username] = username
+            # Remove project owner from list of contributors
+            if username != who:
+                unique_users[username] = username
     users = []
     for user in unique_users:
         users.append(user)
