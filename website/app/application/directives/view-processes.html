@@ -19,11 +19,7 @@
                     <display label="Description:">
                         {{process.description}}
                     </display>
-                    <display label="Notes:">
-                        <ul ng-repeat=" note in process.notes">
-                            <li style="word-break:break-all;">{{note.message}}</li>
-                        </ul>
-                    </display>
+                    <div notes doc="process" type="process" update="true"></div>
                     <display label="Runs:">
                         <div ng-if="process.template.template_pick=='experiment'">
                             {{process.experiment_run_date}}
