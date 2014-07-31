@@ -408,7 +408,7 @@ table-file-directory > thead > tr > td,
 
 .container-fixed {
     margin: 0 auto;
-    width: 1000px;
+    width: 1200px;
     /*min-width: 1000px;*/
 }
 
@@ -467,11 +467,14 @@ table-file-directory > thead > tr > td,
 }
 
 .ta-scroll-window.form-control {
-    height: 200px;
+    height: 150px;
     overflow: auto;
     padding: 0;
     position: relative;
-    width: 700px;
+    width: 600px;
+}
+.custom-ta-toolbar{
+    width: 600px;
 }
 
 .panel-info > .panel-heading {
@@ -491,3 +494,5 @@ table-file-directory > thead > tr > td,
 /*.nav .nav-tabs  .tabs-right{*/
 /*height: 500px;*/
 /*}*/
+
+
