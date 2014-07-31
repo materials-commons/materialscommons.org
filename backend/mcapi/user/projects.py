@@ -103,9 +103,9 @@ def get_project(id):
         potentially_shared = list(r.table('projects2samples')
                                   .get_all(*mysamples_ids_list, index='sample_id')
                                   .eq_join('sample_id', r.table('samples'))
-                                  .map(r.row.merge({
+                                  .map(lambda row: row.merge({
                                       "right": {
-                                          "other_project_id": r.row["right"]["project_id"]
+                                          "other_project_id": row["right"]["project_id"]
                                       }
                                   }))
                                   .without({"right": {"project_id": True}})
@@ -118,9 +118,9 @@ def get_project(id):
     potentially_uses = list(r.table('projects2samples')
                             .get_all(proj['id'], index='project_id')
                             .eq_join('sample_id', r.table('samples'))
-                            .map(r.row.merge({
+                            .map(lambda row: row.merge({
                                 "right": {
-                                    "other_project_id": r.row["right"]["project_id"]
+                                    "other_project_id": row["right"]["project_id"]
                                 }
                             }))
                             .without({"right": {"project_id": True}})
