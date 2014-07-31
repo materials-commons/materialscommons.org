@@ -24,7 +24,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                     $scope.doc.treatments.push(o);
                 }
                 if (i !== -1){
-                    $scope.doc.treatments[i] = $scope.bk.selected_treatment
+                    $scope.doc.treatments[i] = $scope.bk.selected_treatment;
                 }
                 $scope.bk.selected_treatment = '';
                 $scope.default_properties = "";
@@ -59,12 +59,12 @@ Application.Controllers.controller('projectsOverviewSamples',
             $scope.processDetails = function (p_id) {
                 mcapi('/processes/%', p_id)
                     .success(function (data) {
-                        $scope.process = []
+                        $scope.process = [];
                         $scope.process.push(data);
                     })
                     .error(function (e) {
                     }).jsonp();
-            }
+            };
 
 
             $scope.populateProjects = function () {
@@ -93,43 +93,44 @@ Application.Controllers.controller('projectsOverviewSamples',
             };
 
             $scope.editAvailability = function (sample) {
-                $scope.chosen_sample = sample
-            }
+                $scope.chosen_sample = sample;
+            };
 
             $scope.updateAvailability = function () {
                 if ($scope.bk.available == 1) {
                     mcapi('/objects/%', $scope.chosen_sample.id)
                         .success(function () {
-                            $scope.refreshSamples()
-                            $scope.chosen_sample = ''
+                            $scope.refreshSamples();
+                            $scope.chosen_sample = '';
                         })
                         .error(function () {
-                        }).put({'available': 1 })
+                        }).put({'available': 1 });
                 } else {
                     mcapi('/objects/%', $scope.chosen_sample.id)
                         .success(function () {
-                            $scope.refreshSamples()
-                            $scope.chosen_sample = ''
+                            $scope.refreshSamples();
+                            $scope.chosen_sample = '';
                         })
                         .error(function () {
 
-                        }).put({'available': 2})
+                        }).put({'available': 2});
                 }
-            }
+            };
 
             $scope.refreshSamples = function () {
                 mcapi('/samples/by_project/%', $scope.project_id)
                     .success(function (data) {
                         $scope.samples_list = data;
                     }).jsonp();
-            }
+            };
 
             $scope.clear = function () {
-                $scope.setDefaultProject()
+                $scope.setDefaultProject();
             };
             $scope.save = function (form) {
                 var check = $validationProvider.checkValid(form);
                 $scope.doc.path = $scope.doc.name;
+                $scope.doc.project_id = $scope.project_id;
                 if (check === true) {
                     mcapi('/objects/new')
                         .arg('order_by=birthtime')
@@ -140,7 +141,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                                     $scope.samples_list.unshift(sample_obj);
                                     $scope.toggleCustom = false;
                                 }).jsonp();
-                            init()
+                            init();
                         }).post($scope.doc);
                 } else {
                     $validationProvider.validate(form);
@@ -173,7 +174,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                 mcapi('/projects/%', $scope.project_id)
                     .success(function (data) {
                         $scope.project = data;
-                        $scope.setDefaultProject()
+                        $scope.setDefaultProject();
                     }).jsonp();
 
                 $scope.signed_in_user = User.u();
