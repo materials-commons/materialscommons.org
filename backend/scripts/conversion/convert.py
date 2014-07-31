@@ -23,6 +23,21 @@ def add_projects_to_groups(conn):
         r.table('usergroups').get(group['id']).update(group).run(conn)
 
 
+def set_sample_project(conn):
+    print "  Setting project for samples"
+    samples = list(r.table('samples').run(conn))
+    for sample in samples:
+        projects = list(r.table('projects2samples')
+                        .get_all(sample['id'], index='sample_id')
+                        .run(conn))
+        if projects:
+            sample['project_id'] = projects[0]['project_id']
+        else:
+            sample['project_id'] = ""
+        r.table('samples').get(sample['id'])\
+                          .update(sample).run(conn)
+
+
 def convert_compositions(conn):
     print "  Converting compositions..."
     all_samples = list(r.table('samples').run(conn, time_format='raw'))
@@ -56,8 +71,7 @@ def convert_compositions(conn):
             r.table('samples').get(sample[u'id'])\
                               .update({'properties':
                                        {'composition':
-                                        {'value': v,  'unit': 'wt%'}},
-                                       'projects': []}).run(conn)
+                                        {'value': v,  'unit': 'wt%'}}}).run(conn)
 
 
 def drop_unused_tables(conn):
@@ -112,6 +126,39 @@ def populate_new_denorms(conn):
                              .filter({'project_id': p2s['project_id']}).run(conn))
                 if not items:
                     r.table('projects2samples').insert(p2s).run(conn)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         for o in outputs:
             if o['attribute'] == 'file':
                 df_dnorm = {}
@@ -175,6 +222,7 @@ def main(conn):
     convert_templates(conn)
     add_preferences_to_users(conn)
     convert_samples(conn)
+    set_sample_project(conn)
     print "Finished."
 
 if __name__ == "__main__":
