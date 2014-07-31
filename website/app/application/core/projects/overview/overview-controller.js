@@ -43,6 +43,7 @@ Application.Controllers.controller('projectsOverview',
                                             $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
                                             mcapi('/projects/%', $scope.project_id)
                                                 .success(function (project) {
+                                                    console.dir(project);
                                                     $scope.project = project;
                                                 }).jsonp();
                                         }
