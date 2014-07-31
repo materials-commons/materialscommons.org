@@ -11,6 +11,7 @@ from .. import validate
 from .. import error
 from loader.model import project
 from loader.model import datadir
+import sys
 
 
 @app.route('/projects', methods=['GET'])
@@ -92,10 +93,40 @@ def get_project(id):
     user = access.get_user()
     if not access.allowed(user, proj['owner']):
         return error.not_authorized("No access to project %s" % (id))
-    samples = []
+    mysamples = list(r.table('samples')
+                     .get_all(proj['id'], index='project_id')
+                     .run(g.conn, time_format='raw'))
+    mysamples_ids_list = []
+    for s in mysamples:
+        mysamples_ids_list.append(s['id'])
+    if mysamples_ids_list:
+        potentially_shared = list(r.table('projects2samples')
+                                  .get_all(*mysamples_ids_list, index='sample_id')
+                                  .eq_join('sample_id', r.table('samples'))
+                                  .map(r.row.merge({
+                                      "right": {
+                                          "other_project_id": r.row["right"]["project_id"]
+                                      }
+                                  }))
+                                  .without({"right": {"project_id": True}})
+                                  .zip()
+                                  .run(g.conn, time_format='raw'))
+    else:
+        potentially_shared = []
     proj['users'] = get_project_users(proj['owner'])
-    proj['shares'] = get_project_shares(samples, proj['id'])
-    proj['uses'] = get_project_uses(samples, proj['id'])
+    proj['shares'] = get_project_shares(potentially_shared, proj['id'])
+    potentially_uses = list(r.table('projects2samples')
+                            .get_all(proj['id'], index='project_id')
+                            .eq_join('sample_id', r.table('samples'))
+                            .map(r.row.merge({
+                                "right": {
+                                    "other_project_id": r.row["right"]["project_id"]
+                                }
+                            }))
+                            .without({"right": {"project_id": True}})
+                            .zip()
+                            .run(g.conn, time_format='raw'))
+    proj['uses'] = get_project_uses(potentially_uses, proj['id'])
     return args.json_as_format_arg(proj)
 
 
@@ -113,13 +144,30 @@ def get_project_users(who):
     return users
 
 
-def get_project_shares(samples, project_id):
+def get_project_shares(all_samples_used, project_id):
     """Finds all the samples that this project shares out"""
-    return []
+    shares = []
+    for sample in all_samples_used:
+        if sample['other_project_id'] == project_id \
+           and sample['project_id'] != project_id:
+            sample['other_project'] = r.table('projects')\
+                                       .get(sample['project_id'])\
+                                       .run(g.conn, time_format='raw')
+            shares.append(sample)
+    return shares
 
 
-def get_project_uses(samples, project_id):
-    return []
+def get_project_uses(all_samples_used, project_id):
+    """Finds all the samples that this project uses from other projects"""
+    uses = []
+    for sample in all_samples_used:
+        if sample['project_id'] == project_id \
+           and sample['other_project_id'] != project_id:
+            sample['other_project'] = r.table('projects')\
+                                       .get(sample['other_project_id'])\
+                                       .run(g.conn, time_format='raw')
+            uses.append(sample)
+    return uses
 
 
 @app.route('/projects/<project_id>/datadirs')
