@@ -438,16 +438,23 @@ table-file-directory > thead > tr > td,
     cursor: default;
 }
 
-.tabs-bottom > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus, .tabs-bottom >  li > a:focus, .tabs-bottom >  li > a:hover {
-    /* background-color: #e7e7e7; */
+.tabs-bottom > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus {
     color: white;
     background-color: #4c9cc6;
 }
 
-.tabs-right > li.active > a:hover, .tabs-right > li.active > a:focus, .tabs-right >  li > a:focus, .tabs-right >  li > a:hover {
-    /* background-color: #e7e7e7; */
+.tabs-bottom > li > a:hover, .tabs-bottom > li > a:focus{
+    color: white;
+    background-color: #72C2EC;
+}
+
+.tabs-right > li.active > a:hover, .tabs-right > li.active > a:focus {
     color: white;
     background-color: #4c9cc6;
+}
+.tabs-right > li > a:hover, .tabs-bottom > li > a:focus {
+    color: white;
+    background-color: #72C2EC;
 }
 
 
