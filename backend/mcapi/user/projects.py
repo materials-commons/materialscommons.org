@@ -92,10 +92,25 @@ def get_project(id):
     user = access.get_user()
     if not access.allowed(user, proj['owner']):
         return error.not_authorized("No access to project %s" % (id))
-    samples = []
+    mysamples = list(r.table('samples')
+                     .get_all(proj['id'], index='project_id').run(g.conn))
+    mysamples_ids = {}
+    for s in mysamples:
+        mysamples_ids[s['id']] = ""
+    all_samples_used = list(r.table('projects2samples')
+                            .get_all(proj['id'], index='project_id')
+                            .eq_join('sample_id', r.table('samples'))
+                            .map(r.row.merge({
+                                "right": {
+                                    "other_project_id": r.row["right"]["project_id"]
+                                }
+                            }))
+                            .without({"right": {"project_id": True}})
+                            .zip()
+                            .run(g.conn))
     proj['users'] = get_project_users(proj['owner'])
-    proj['shares'] = get_project_shares(samples, proj['id'])
-    proj['uses'] = get_project_uses(samples, proj['id'])
+    proj['shares'] = get_project_shares(all_samples_used, proj['id'])
+    proj['uses'] = get_project_uses(all_samples_used, mysamples_ids, proj['id'])
     return args.json_as_format_arg(proj)
 
 
@@ -113,13 +128,23 @@ def get_project_users(who):
     return users
 
 
-def get_project_shares(samples, project_id):
+def get_project_shares(all_samples_used, project_id):
     """Finds all the samples that this project shares out"""
-    return []
+    shares = []
+    for sample in all_samples_used:
+        if sample['other_project_id'] != project_id:
+            shares.append(sample)
+    return shares
 
 
-def get_project_uses(samples, project_id):
-    return []
+def get_project_uses(all_samples_used, mysamples_ids, project_id):
+    """Finds all the samples that this project uses from other projects"""
+    uses = []
+    for sample in all_samples_used:
+        if sample['other_project_id'] != project_id \
+           and sample['id'] not in mysamples_ids:
+            uses.append(sample)
+    return uses
 
 
 @app.route('/projects/<project_id>/datadirs')
