@@ -5,6 +5,7 @@ from optparse import OptionParser
 from pbkdf2 import crypt
 import uuid
 import sys
+import os
 
 
 class User(object):
@@ -70,3 +71,8 @@ if __name__ == "__main__":
         u = User(options.email, options.email, pwhash)
         r.table('users').insert(u.__dict__).run(conn)
         print "Add user: " + options.email
+        apiport = 5002
+        if options.port == 28015:
+            apiport = 5000
+        cmd = "mcapihup.sh %d" % (apiport)
+        os.system(cmd)
