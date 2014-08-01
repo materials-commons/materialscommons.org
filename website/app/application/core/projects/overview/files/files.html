@@ -1,14 +1,26 @@
-<div class="row" ng-controller="projectsOverviewFiles">
-    <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true"></project-tree>
-</div>
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <i class="fa fa-file-text-o fa-2x" style="padding-right: 3px;"></i> <span
-                style="font-size: 16px;font-weight:bold">Read Me </span>
-        </div>
-        <div class="panel-body">
+<div ng-controller="projectsOverviewFiles">
+    <div class="row">
+        <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true"></project-tree>
+    </div>
+    <div class="row">
+        <h4>Project Description: </h4>
+
+        <div ng-hide="bk.edit_desc">
+            <div ta-bind ng-model="project.description"></div>
+            <br>
+            <button ng-click="editDescription()" class="btn btn-default btn-primary"> Edit</button>
 
         </div>
+        <div ng-show="bk.edit_desc">
+            <div class="col-lg-6 custom-ta-toolbar">
+                <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                              ng-model="project.description"></text-angular>
+                <br>
+                <button ng-click="save()" class="btn btn-default btn-primary">Save</button>
+            </div>
+        </div>
     </div>
+
 </div>

@@ -13,33 +13,21 @@ Application.Controllers.controller('projectsDataEditDetails',
                 $scope.fileName = $scope.doc.name;
             };
 
-            $scope.saveData = function () {
-                $scope.doc.description = $scope.model.desc;
+            $scope.save = function () {
                 mcapi('/datafile/update/%', $scope.doc.id)
                     .success(function (data) {
-                        $scope.model.is_disabled = true;
-                        alertService.sendMessage("Data has been saved");
-                    }).error(function (data) {
-                        alertService.sendMessage(data.error);
+                        $scope.bk.edit_desc = false;
                     }).put($scope.doc);
-//$window.history.back();
             };
 
-            $scope.cancel = function () {
-                $scope.model.is_disabled = true;
-                $scope.model.desc = $scope.doc.description;
-
-            };
-
-            $scope.edit_details = function () {
-                $scope.model.is_disabled = false;
+            $scope.editDescription = function () {
+                $scope.bk.edit_desc = true
             };
 
             function init() {
-                $scope.model = {
-                    is_disabled: true,
-                    desc: ''
-                };
+                $scope.bk = {
+                    edit_desc: false
+                }
                 $scope.id = $stateParams.data_id;
                 $scope.modal = Projects.model;
                 mcapi('/datafile/%', $stateParams.data_id)
