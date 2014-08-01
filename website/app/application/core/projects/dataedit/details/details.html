@@ -5,6 +5,7 @@
                 <div ng-switch="" on="fileType">
                     <div ng-switch-when="image">
                         <img class="img-responsive" ng-src="{{ fileSrc }}">
+
                         <div class="col-lg-offset-4">
                             <legend>{{fileName}}</legend>
 
@@ -17,32 +18,29 @@
         </div>
         <div class="row">
             <div class="col-lg-10">
+                <cgroup label="Size(bytes):">
+                    <input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">
+                </cgroup>
+                <cgroup label="Owner:">
+                    <input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">
+                </cgroup>
+                <label>Description</label>
+                <div ng-hide="bk.edit_desc">
+                    <div ta-bind ng-model="doc.description"></div>
+                    <br>
+                    <button ng-click="editDescription()" class="btn btn-default btn-primary"> Edit</button>
 
-                    <cgroup label="Description:">
-                        <textarea ng-if="doc.description != ''" class="form-control" ng-model="model.desc"
-                                  ng-disabled="model.is_disabled"> </textarea>
-                    </cgroup>
-                    <cgroup label="">
-                        <div ng-show="model.is_disabled">
-                            <button tooltip="Edit Description" ng-click="edit_details()"
-                                    class="btn btn-default btn-primary">Edit
-                            </button>
-                        </div>
-                        <div ng-hide="model.is_disabled">
-                            <button type="button" class="btn btn-default btn-primary" ng-click="saveData()">
-                                Save
-                            </button>
-                            <button type="button" class="btn btn-default btn-danger" ng-click="cancel()">
-                                Cancel
-                            </button>
-                        </div>
-                    </cgroup>
-                    <cgroup label="Size(bytes):">
-                        <input class="input-small form-control" ng-model="doc.size" ng-disabled="true" type="text">
-                    </cgroup>
-                    <cgroup label="Owner:">
-                        <input class="input-large form-control" ng-model="doc.owner" ng-disabled="true" type="text">
-                    </cgroup>
+                </div>
+                <div ng-show="bk.edit_desc">
+                    <div class="col-lg-6 custom-ta-toolbar">
+                        <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                                      ng-model="doc.description"></text-angular>
+                        <br>
+                        <button ng-click="save()" class="btn btn-default btn-primary">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
