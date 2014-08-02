@@ -43,4 +43,5 @@ def _lookup_key(what):
 
 
 def reset():
-    _apikeys.clear()
+    global _apikeys
+    _apikeys = {}
