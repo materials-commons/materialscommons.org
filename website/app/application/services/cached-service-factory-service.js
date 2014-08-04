@@ -75,6 +75,10 @@ Application.Services.factory('CachedServiceFactory',
                     return this.rest.remove(id);
                 },
 
+                clear: function() {
+                    this.cache.removeAll();
+                },
+
                 getList: function () {
                     var keys = this.cache.keys(),
                         deferred = $q.defer(),
