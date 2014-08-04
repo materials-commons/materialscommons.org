@@ -53,7 +53,7 @@
                         ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}"
                         ng-multiple="false">
                     <option></option>
-                    <option ng-repeat="user in all_users">{{ user.email }}</option>
+                    <option ng-repeat="user in all_users | orderBy:'email'">{{ user.email }}</option>
                 </select>
             </div>
                 <button class="btn btn-default btn-default" ng-click="addUser()">Add User</button>
