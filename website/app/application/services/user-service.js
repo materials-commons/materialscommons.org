@@ -22,7 +22,8 @@ Application.Services.factory('User',
             },
 
             apikey: function () {
-                return self.mcuser ? self.mcuser.apikey : undefined;
+                var key = self.mcuser ? self.mcuser.apikey : undefined;
+                return key;
             },
 
             u: function () {
