@@ -34,6 +34,7 @@ def create_tables():
     create_table("datafiles_denorm")
     create_table("samples_denorm")
     create_table("projects2samples")
+    create_table('access')
 
 
 def create_table(table):
@@ -41,6 +42,9 @@ def create_table(table):
 
 
 def create_indices():
+    create_index('access', 'user_id')
+    create_index('access', 'project_id')
+    create_index('access', 'dataset')
     create_index('datadirs', 'name')
     create_index('project2datadir', 'datadir_id')
     create_index('project2datadir', 'project_id')
