@@ -14,7 +14,9 @@
             <span class="col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
             <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
+
         <div class="col-lg-8">
+            <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
@@ -34,6 +36,7 @@
                             </span>
                     </div>
                 </div>
+            </div>
             </div>
             <div ui-view></div>
         </div>
@@ -71,7 +74,6 @@
                         </a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </div>
