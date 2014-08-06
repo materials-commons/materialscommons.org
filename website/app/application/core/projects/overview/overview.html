@@ -2,13 +2,21 @@
 <div ng-controller="projectsOverview">
     <div class="row">
         <div class="col-lg-2">
-            <div>
                 <div class="panel panel-default">
                     <div class="panel panel-heading">
                         <i class="fa fa-tags"/> Tags
                     </div>
+                    <div class="panel-body">
+
+                        <input class="form-control input-sm" ng-model="bk.new_tag">
+                        <select class="form-control" ng-model="bk.color"
+                                ng-options="color.name for color in colors"
+                                required="{{df.required}}">
+                            <option value="">-- Select Color --</option>
+                        </select>
+                        <button ng-click="createTag()">New</button>
+                    </div>
                 </div>
-            </div>
         </div>
         <div>
             <span class="col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>

@@ -15,6 +15,10 @@ Application.Controllers.controller('projectsOverview',
                     }).jsonp();
             };
 
+            $scope.createTag = function(){
+
+            }
+
             $scope.showTab = function (tab) {
                 switch (tab) {
                     case "files":
@@ -40,6 +44,11 @@ Application.Controllers.controller('projectsOverview',
             };
 
             function init() {
+                $scope.bk = {
+                    new_tag: ''
+                }
+                $scope.colors = [{'name': 'red', 'hex': '#FF3300'}, {'name': 'blue', 'hex': '#0099CC'},{'name': 'green', 'hex': '#009900'},
+                    {'name': 'yellow', 'hex': '#E6E600'}, {'name': 'orange', 'hex': '#FF9933'}]
                 $scope.project_id = $stateParams.id;
                 $scope.from = $stateParams.from;
                 $scope.processes = [];
