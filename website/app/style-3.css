@@ -489,9 +489,8 @@ table-file-directory > thead > tr > td,
 .selected {
     background-color: lightgreen;
 }
-
-/*.nav .nav-tabs  .tabs-right{*/
-/*height: 500px;*/
-/*}*/
+.list-group-item{
+    border: 1px solid #dadedf;
+}
 
 

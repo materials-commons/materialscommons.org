@@ -150,4 +150,15 @@ def remove_project(usergroup_id, project_id):
     return args.json_as_format_arg(ugroup)
 
 
+@app.route('/usergroups/project/<project_id>', methods=['GET'])
+@apikey(shared=True)
+@jsonp
+def usergroups_by_project(project_id):
+    project = r.table('projects').get(project_id).run(g.conn)
+    ugs = list(r.table('usergroups').filter(lambda ug: ug['projects']\
+                   .contains({'id': project['id'], 'name': project['name']}))\
+                   .order_by('name').run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(ugs)
+
+
 

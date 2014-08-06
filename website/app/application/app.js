@@ -147,6 +147,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/notes',
             templateUrl: 'application/core/projects/overview/notes/notes.html'
         })
+        .state('projects.overview.settings', {
+            url: '/settings',
+            templateUrl: 'application/core/projects/overview/settings/group_access.html'
+        })
 
         /*
          ########################################################################
