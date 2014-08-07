@@ -72,7 +72,7 @@
                             Notes <i class="fa fa-edit marginLeft pull-right"/>
                         </a>
                     </li>
-                    <li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i
+                    <li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i class="fa fa-gear marginLeft pull-right"/></a>
 
                 </ul>
             </div>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="modal-body">
                     <ul>
-                        <li ng-repeat="user in project.users | orderBy: 'toString()'">{{user}}</li>
+                        <li ng-repeat="user in project.users | orderBy: 'toString()'">{{user.user_id}}</li>
                     </ul>
                 </div>
             </div>

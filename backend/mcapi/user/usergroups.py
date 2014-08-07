@@ -10,6 +10,36 @@ from .. import args
 from .. import access
 
 
+@app.route('/access/new', methods=['POST'])
+@apikey
+@crossdomain(origin='*')
+def create_access_r():
+    j = request.get_json()
+    access = {}
+    access['user_id'] = dmutil.get_required('user_id', j)
+    access['project_id'] = dmutil.get_required('project_id', j)
+    access['project_name'] = dmutil.get_required('project_name', j)
+    access['permissions'] = dmutil.get_optional('permissions', j)
+    access['birthtime'] = r.now()
+    access['mtime'] = r.now()
+    access['dataset'] = ""
+    return dmutil.insert_entry('access', access)
+
+
+@app.route('/access/<id>/remove', methods=['DELETE'])
+@apikey
+@crossdomain(origin='*')
+def remove_access(id):
+    item = dmutil.get_single_from_table('access', id, raw=True)
+    if item is None:
+        return error.not_found("No such access: %s" % id)
+    else:
+        rv = r.table('access').get(id).delete().run(g.conn)
+        if rv['deleted'] == 0:
+            return error.database_error("Unable to remove access %s" % (id))
+    return args.json_as_format_arg(item)
+
+    
 @app.route('/usergroups/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
