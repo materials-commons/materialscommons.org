@@ -113,7 +113,8 @@ def get_project(id):
                                   .run(g.conn, time_format='raw'))
     else:
         potentially_shared = []
-    proj['users'] = get_project_users(proj['owner'])
+    #proj['users'] = get_project_users(proj['owner'])
+    proj['users'] = get_project_users(proj)
     proj['shares'] = get_project_shares(potentially_shared, proj['id'])
     potentially_uses = list(r.table('projects2samples')
                             .get_all(proj['id'], index='project_id')
@@ -130,17 +131,21 @@ def get_project(id):
     return args.json_as_format_arg(proj)
 
 
-def get_project_users(who):
-    groups = list(r.table('usergroups').filter({'owner': who}).run(g.conn))
-    unique_users = {}
-    for group in groups:
-        for username in group['users']:
+def get_project_users(proj):
+    #Code below has been commented because we are in a phase of trasforming usergroups to access.
+    #groups = list(r.table('usergroups').filter({'owner': who}).run(g.conn))
+    #for group in groups:
+        #for username in group['users']:
             # Remove project owner from list of contributors
-            if username != who:
-                unique_users[username] = username
+            #if username != who:
+                #unique_users[username] = username
+    #users = []
+    #for user in unique_users:
+        #users.append(user)
     users = []
-    for user in unique_users:
-        users.append(user)
+    access = list(r.table('access').filter({'project_id': proj['id']}).run(g.conn))
+    for ac in access:
+        users.append({'user_id': ac['user_id'], 'permissions': ac['permissions'], 'id':ac['id']})
     return users
 
 

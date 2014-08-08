@@ -1,116 +1,42 @@
 Application.Controllers.controller('projectsOverviewGroupAccess',
-    ["$scope", "$stateParams", "mcapi","User","model.Projects", "pubsub", function ($scope, $stateParams, mcapi, User, Projects, pubsub) {
-
-        pubsub.waitOn($scope, 'groups.change', function () {
-            $scope.getGroups();
-        });
+    ["$scope", "$stateParams", "mcapi", "User","pubsub", function ($scope, $stateParams, mcapi, User, pubsub) {
 
         $scope.addUser = function () {
-            mcapi('/usergroup/%/selected_name/%', $scope.selected_ug.id, $scope.bk.user_name)
+            mcapi('/access/new')
                 .success(function (data) {
-                    $scope.refreshUsers();
-                }).put();
+                    $scope.project.users.push({'id': data.id, 'user_id': $scope.bk.user_name, 'project_id': $scope.project_id, 'project_name': $scope.project.name})
+                    pubsub.send('access.change');
+                    $scope.bk.user_name = '';
+                }).post({'user_id': $scope.bk.user_name, 'project_id': $scope.project_id, 'project_name': $scope.project.name});
         };
 
-        $scope.addProject = function () {
-            mcapi('/usergroup/%/project/%', $scope.selected_ug.id, $scope.bk.selected_project.id)
-                .success(function (data) {
-                    $scope.refreshProjects()
-                }).put();
-        };
-
-        $scope.deleteUser = function (index) {
-            mcapi('/usergroup/%/selected_name/%/remove', $scope.selected_ug.id, $scope.selected_ug.users[index])
-                .success(function (data) {
-                    $scope.refreshUsers();
-                }).put();
-        };
-        $scope.deleteProject = function (index) {
-            mcapi('/usergroup/%/project/%/remove', $scope.selected_ug.id, $scope.selected_ug.projects[index].id)
-                .success(function (data) {
-                    $scope.refreshProjects();
-                }).put();
-        };
-        $scope.refreshUsers = function () {
-            mcapi('/usergroup/%', $scope.selected_ug.id)
-                .success(function (data) {
-                    $scope.selected_ug = data;
-                    $scope.ug_users = data.users;
-                    $scope.getGroups();
-
-                }).jsonp();
-        };
-        $scope.refreshProjects = function () {
-            mcapi('/usergroup/%', $scope.selected_ug.id)
-                .success(function (data) {
-                    $scope.selected_ug = data;
-                }).jsonp();
-        };
-        $scope.groupDetails = function (ug_id) {
-            mcapi('/usergroup/%', ug_id)
-                .success(function (data) {
-                    $scope.selected_ug = data;
-                }).jsonp();
-        }
-        $scope.createUserGroup = function () {
-            mcapi('/usergroups/new', User.u())
+        $scope.deleteUser = function (id) {
+            mcapi('/access/%/remove', id)
                 .success(function () {
-                    pubsub.send('groups.change');
-                    $scope.clear();
-
-                }).post($scope.newgroup);
-        };
-
-        $scope.getGroups = function(){
-            mcapi('/usergroups/project/%', $scope.project_id)
-                .success(function (data) {
-                    $scope.groups = data;
-                }).jsonp();
-        }
-        $scope.clear = function () {
-            $scope.newgroup = {
-                name: null,
-                access: null,
-                description: null,
-                projects: [],
-                users: [User.u()],
-                owner: User.u()
-            };
-            $scope.model = {
-                selected_project: ''
-            }
-        };
-        $scope.populateProjects = function () {
-            $scope.newgroup.projects.push({'id': $scope.model.selected_project.id, 'name': $scope.model.selected_project.name});
-        };
-        $scope.removeProjects = function (index) {
-            $scope.newgroup.projects.splice(index, 1);
+                    var i = _.indexOf($scope.project.users, function (item) {
+                        return (item.id === id);
+                    });
+                    if(i !== -1){
+                        $scope.project.users.splice(i, 1)
+                    }
+                    pubsub.send('access.change');
+                }).delete();
         };
 
         function init() {
             $scope.bk = {
-                user_name: '',
-                selected_project: ''
+                user_name: ''
             }
-            $scope.newgroup = {
-                name: null,
-                access: null,
-                description: null,
-                projects: [],
-                users: [User.u()],
-                owner: User.u()
-            };
-            $scope.signed_in_user = User.u();
-            $scope.selected_ug = ''
             $scope.project_id = $stateParams.id;
-            $scope.getGroups()
+            mcapi('/projects/%', $scope.project_id)
+                .success(function (project) {
+                    $scope.project = project;
+                }).jsonp();
             mcapi('/users')
                 .success(function (data) {
                     $scope.all_users = data;
                 }).jsonp();
-            Projects.getList().then(function (data) {
-                $scope.projects = data;
-            });
+            $scope.signed_in_user = User.u();
         }
 
         init();
