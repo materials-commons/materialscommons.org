@@ -14,8 +14,8 @@
             "required": false
         },
         {
-            "attribute": "Strain rate",
-            "name": "strain_rate" ,
+            "name": "Strain Rate",
+            "attribute": "strain_rate" ,
             "type": "number" ,
             "unit": "" ,
             "unit_choice": ["1/secs", "mm/min"] ,

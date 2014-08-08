@@ -28,7 +28,7 @@
             "name": "Voltage" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": [] ,
+            "unit_choice": ["V","mV"] ,
             "value": "" ,
             "value_choice": [],
             "required": true

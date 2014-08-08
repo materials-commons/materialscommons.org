@@ -14,7 +14,7 @@
             "required": true
         },
         {
-            "name": "Specimen Temperature(K)",
+            "name": "Specimen Temperature (K)",
             "attribute": "specimen_temperature",
             "type": "number",
             "unit": "K",
@@ -24,7 +24,7 @@
             "required": true
         },
         {
-            "name": "Voltage Pulse Fraction(%)",
+            "name": "Voltage Pulse Fraction (%)",
             "attribute": "voltage_pulse_fraction",
             "type": "number",
             "unit": "%",
@@ -35,18 +35,18 @@
             "range": []
         },
         {
-            "name": "Laser Pulse Energy(pJ)",
+            "name": "Laser Pulse Energy (pJ)",
             "attribute": "laser_pulse_energy",
             "type": "number",
             "unit": "pJ",
-            "unit_choice": [],
+            "unit_choice": ["pJ","nJ"],
             "value": "",
             "value_choice": [],
             "required": false,
             "range": []
         },
         {
-            "name": "Laser Wavelength(nm)",
+            "name": "Laser Wavelength (nm)",
             "attribute": "laser_pulse_energy",
             "type": "number",
             "unit": "nm",
@@ -57,7 +57,7 @@
             "range": []
         },
         {
-            "name": "Pulse Frequence(kHz)",
+            "name": "Pulse Frequency (kHz)",
             "attribute": "pulse_frequency",
             "type": "number",
             "unit": "kHz",
@@ -74,7 +74,7 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": [{"name": "Constant Detector Rate", "value" : "constant_detector_rate"}, {"name": "Constant Evaporation Rate", "value" : "constant_evaporation_rate"}, {"name": "Constant Charge Rate Ratio", "value" : "constant_charge_rate_ratio"}],
+            "value_choice": [{"name": "Constant Detector Rate", "value" : "constant_detector_rate"}, {"name": "Constant Evaporation Rate", "value" : "constant_evaporation_rate"}, {"name": "Constant Charge Rate Ratio", "value" : "constant_charge_rate_ratio"}, {"name": "Other", "value" : "other"}],
             "required": false
         },
         {
@@ -82,7 +82,7 @@
             "attribute": "evaporation_rate",
             "type": "number",
             "unit": "",
-            "unit_choice": ["Atom", "Pulse"],
+            "unit_choice": ["Atom/Pulse"],
             "value": "",
             "value_choice": [],
             "required": false
@@ -111,8 +111,8 @@
             "name": "Pressure" ,
             "attribute": "pressure",
             "type": "number" ,
-            "unit": "torr" ,
-            "unit_choice": [] ,
+            "unit": "" ,
+            "unit_choice": ["atm", "Pa", "torr"] ,
             "value": "" ,
             "value_choice": [],
             "required": false

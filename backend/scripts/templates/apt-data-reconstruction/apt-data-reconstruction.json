@@ -4,11 +4,31 @@
     "attribute": "process",
     "default_properties": [
         {
-            "name": "Machine" ,
-            "attribute": "machine",
-            "type": "machines" ,
-            "unit": "" ,
-            "unit_choice": "" ,
+            "name": "Software",
+            "attribute": "software",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Software URL",
+            "attribute": "software_url",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Software Version",
+            "attribute": "software_version",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
             "value": "",
             "value_choice": [],
             "required": false
