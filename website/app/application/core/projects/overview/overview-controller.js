@@ -5,6 +5,10 @@ Application.Controllers.controller('projectsOverview',
                 $scope.drafts = ProvDrafts.drafts;
             });
 
+            pubsub.waitOn($scope, 'access.change', function () {
+                $scope.getProject();
+            });
+
             $scope.countDrafts = function () {
                 if ($scope.project_id === "") {
                     return;
@@ -42,7 +46,12 @@ Application.Controllers.controller('projectsOverview',
 
                 }
             };
-
+            $scope.getProject = function(){
+                mcapi('/projects/%', $scope.project_id)
+                    .success(function (project) {
+                        $scope.project = project;
+                    }).jsonp();
+            }
             function init() {
                 $scope.bk = {
                     new_tag: ''
@@ -53,10 +62,7 @@ Application.Controllers.controller('projectsOverview',
                 $scope.from = $stateParams.from;
                 $scope.processes = [];
                 $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
-                mcapi('/projects/%', $scope.project_id)
-                    .success(function (project) {
-                        $scope.project = project;
-                    }).jsonp();
+                $scope.getProject();
             }
 
             init();

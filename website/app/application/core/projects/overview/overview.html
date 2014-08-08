@@ -19,32 +19,32 @@
                 </div>
         </div>
         <div>
-            <span class="col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
+            <span class="col-lg-offset-1 col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
             <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
 
         <div class="col-lg-8">
             <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <span class="col-lg-3">
-                            <i class="fa fa-users"/>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <span class="col-lg-3">
+                                <i class="fa fa-users"/>
                                 <a data-toggle="modal" data-target="#contributors"> {{project.users.length}} contributors</a>
-                        </span>
-                        <span class="col-lg-3">
-                            <i class="fa fa-exclamation-circle"/>
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-exclamation-circle"/>
                                 0 events
-                        </span>
-                        <span class="col-lg-3">
-                            <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares">{{project.shares.length}} Project(s)</a>
-                        </span>
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares">{{project.shares.length}} Project(s)</a>
+                            </span>
                             <span class="col-lg-3">
                                 <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses">{{project.uses.length}} Project(s)</a>
                             </span>
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
             <div ui-view></div>
         </div>
@@ -80,7 +80,11 @@
                             Notes <i class="fa fa-edit marginLeft pull-right"/>
                         </a>
                     </li>
-                    <li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i
+                    <li>
+                        <a ng-click="showTab('settings')" data-toggle="tab">
+                            Settings <i class="fa fa-cogs marginLeft pull-right"/>
+                        </a>
+                    </li>
 
                 </ul>
             </div>
@@ -97,14 +101,14 @@
                 </div>
                 <div class="modal-body">
                     <ul>
-                        <li ng-repeat="user in project.users | orderBy: 'toString()'">{{user}}</li>
+                        <li ng-repeat="user in project.users | orderBy: 'toString()'">{{user.user_id}}</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-        <!-- Modal for uses -->
+    <!-- Modal for uses -->
     <div class="modal fade" id="uses" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -121,7 +125,7 @@
         </div>
     </div>
 
-        <!-- Modal for shares -->
+    <!-- Modal for shares -->
     <div class="modal fade" id="shares" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
