@@ -23,7 +23,7 @@
     "template_type": "process",
     "template_pick": "experiment",
     "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "broad-ion-beam-instrument-settings"}],
-    "required_output_conditions": [],
+    "required_output_conditions": [{"name": "Trasformed Sample", "value": "transformed-sample"}],
     "required_input_files": true,
     "required_output_files": true
 }

@@ -16,9 +16,9 @@
         {
             "name": "Strain" ,
             "attribute": "strain",
-            "type": "text" ,
+            "type": "number" ,
             "unit": "" ,
-            "unit_choice": [] ,
+            "unit_choice": ["mm/mm", "%"] ,
             "value": "" ,
             "value_choice": [],
             "required": false

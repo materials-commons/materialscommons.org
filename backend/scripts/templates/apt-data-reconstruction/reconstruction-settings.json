@@ -14,16 +14,6 @@
             "required": false
         },
         {
-            "name": "Software",
-            "attribute": "software",
-            "type": "text",
-            "unit": "",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
             "name": "Field Factor",
             "attribute": "field_factor",
             "type": "number",
@@ -54,10 +44,10 @@
             "required": false
         },
         {
-            "name": "Detection Efficiency",
+            "name": "Detection Efficiency (%)",
             "attribute": "detection_efficiency",
             "type": "number",
-            "unit": "",
+            "unit": "%",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
@@ -77,7 +67,17 @@
             "name": "Shank Angle",
             "attribute": "shank_angle",
             "type": "number",
-            "unit": "nm",
+            "unit": "",
+            "unit_choice": ["deg", "rad"],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Cone to Sphere Ratio",
+            "attribute": "cone_to_sphere_ratio",
+            "type": "number",
+            "unit": "",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
