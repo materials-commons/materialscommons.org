@@ -52,6 +52,13 @@
                     <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
                     <td ng-if="entry.type=='datadir'">-</td>
                     <td>{{entry.owner}}</td>
+                    <td><i ng-click="toggleCustom = !toggleCustom" class="fa fa-gear"></i>
+                        <span ng-show="toggleCustom">
+                            <select ng-model="bk.tag" ng-options="t in user_tags">
+
+                            </select>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </table>
