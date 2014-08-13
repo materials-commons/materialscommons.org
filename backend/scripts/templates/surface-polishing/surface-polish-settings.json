@@ -6,21 +6,21 @@
         {
             "attribute": "medium",
             "name": "Medium" ,
-            "type": "number" ,
+            "type": "select" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [],
+            "value_choice":[{"name": "Grit Paper", "value" : "grit_paper"},{"name": "Cloth", "value" : "cloth"},{"name": "Slurry", "value" : "slurry"}], 
             "required": false
         },
         {
             "attribute": "particle_size",
-            "name": "Particle Size" ,
-            "type": "select" ,
-            "unit": "" ,
+            "name": "Particle Size (micron)" ,
+            "type": "number" ,
+            "unit": "micron" ,
             "unit_choice": [],
             "value": "" ,
-            "value_choice": [{"name": "Grit Paper", "value" : "grit_paper"},{"name": "Cloth", "value" : "cloth"},{"name": "Slurry", "value" : "slurry"}],
+            "value_choice": [],
             "required": false
         }
     ],
