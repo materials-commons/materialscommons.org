@@ -72,6 +72,7 @@ Application.Controllers.controller('ProjectTreeController',
         };
 
         function init() {
+            $scope.user_tags = [{"name": "we43", "color": "#FF0000"}, {"name": "MG AL", "color": "#0000FF"}, {"name": "TiNi", "color": "#FFFF00"}]
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
                 var currentTrail = ProjectPath.get_trail();
