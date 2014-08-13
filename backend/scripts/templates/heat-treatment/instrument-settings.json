@@ -32,6 +32,36 @@
             "value": "" ,
             "value_choice": [],
             "required": false
+        },
+        {
+            "attribute": "holding_medium",
+            "name": "Holding Medium" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Air", "value" : "air"},{"name": "Vacuum", "value" : "vacuum"},{"name": "N2", "value" : "N2"},{"name": "Ar", "value" : "Ar"},{"name": "Oil", "value" : "oil"},{"name": "Sand", "value" : "sand"}],
+            "required": true
+        },
+        {
+            "attribute": "cooling_medium",
+            "name": "Cooling Medium" ,
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Air", "value" : "air"},{"name": "Water", "value" : "water"},{"name": "Oil", "value" : "oil"},{"name": "Sand", "value" : "sand"}],
+            "required": true
+        },
+        {
+            "attribute": "cooling_rate",
+            "name": "Cooling Rate" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
         }
     ],
     "additional_properties":[],
