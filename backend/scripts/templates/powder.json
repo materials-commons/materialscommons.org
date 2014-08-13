@@ -36,16 +36,6 @@
             "required": false
         },
         {
-            "name": "Texture" ,
-            "attribute": "texture",
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [{"name": "Fine", "value": "fine"},{"name": "Coarse", "value": "coarse"},{"name": "Moderately Fine", "value": "moderately_fine"},{"name": "Moderately Coarse", "value": "moderately_coarse"}],
-            "required": false
-        },
-        {
             "name": "Grain Size" ,
             "attribute": "grain_size",
             "type": "number" ,
