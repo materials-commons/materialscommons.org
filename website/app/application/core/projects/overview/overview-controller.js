@@ -20,7 +20,8 @@ Application.Controllers.controller('projectsOverview',
             };
 
             $scope.createTag = function(){
-
+                $scope.user_tags.push($scope.bk)
+                $scope.bk = {}
             }
 
             $scope.showTab = function (tab) {
@@ -56,8 +57,7 @@ Application.Controllers.controller('projectsOverview',
                 $scope.bk = {
                     new_tag: ''
                 }
-                $scope.colors = [{'name': 'red', 'hex': '#FF3300'}, {'name': 'blue', 'hex': '#0099CC'},{'name': 'green', 'hex': '#009900'},
-                    {'name': 'yellow', 'hex': '#E6E600'}, {'name': 'orange', 'hex': '#FF9933'}]
+                $scope.user_tags = []
                 $scope.project_id = $stateParams.id;
                 $scope.from = $stateParams.from;
                 $scope.processes = [];
