@@ -16,6 +16,7 @@ Application.Controllers.controller('projectsOverviewFiles',
             $scope.bk = {
                 edit_desc: false
             }
+
             $scope.project_id = $stateParams.id;
             $scope.from = ProjectPath.get_from();
             mcapi('/projects/%', $scope.project_id)

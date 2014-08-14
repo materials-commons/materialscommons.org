@@ -1,21 +1,21 @@
 Application.Services.factory('Tags',
-    ["mcapi", function (mcapi) {
-
+    ["mcapi", "User", function (mcapi, User) {
+        var allTags = [];
         return {
-            get_tags: function () {
-                var tags = [];
-                mcapi('/tags/user')
-                    .success(function (tags) {
-                        var tags = tags;
+            getUserTags: function () {
+                mcapi('/user/%/tags', User.u())
+                    .success(function (user) {
+                        allTags =  user.preferences.tags
                     }).jsonp();
-                return tags;
+                return allTags;
             },
 
-            update_tags: function (new_tag) {
-                mcapi('/tags/user')
+            updateUserTags: function (new_tag) {
+                mcapi('/user/%/tags', User.u())
                     .success(function (tags) {
-
                     }).put(new_tag);
+
             }
-        };
+
+        }
     }]);

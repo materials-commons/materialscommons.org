@@ -123,6 +123,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.overview', {
             url: '/overview',
             templateUrl: 'application/core/projects/overview/overview.html'
+
         })
         .state('projects.overview.files', {
             url: '/files',

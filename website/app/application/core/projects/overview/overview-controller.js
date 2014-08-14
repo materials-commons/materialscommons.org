@@ -1,6 +1,6 @@
 Application.Controllers.controller('projectsOverview',
-    ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts", "mcapi",
-        function ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi) {
+    ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts", "mcapi", "Tags",
+        function ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
             });
@@ -20,7 +20,8 @@ Application.Controllers.controller('projectsOverview',
             };
 
             $scope.createTag = function(){
-                $scope.user_tags.push($scope.bk)
+                Tags.updateUserTags($scope.bk)
+                $scope.u_tags = Tags.getUserTags()
                 $scope.bk = {}
             }
 
@@ -54,10 +55,11 @@ Application.Controllers.controller('projectsOverview',
                     }).jsonp();
             }
             function init() {
+
                 $scope.bk = {
-                    new_tag: ''
+                    name: ''
                 }
-                $scope.user_tags = []
+                $scope.u_tags = Tags.getUserTags()
                 $scope.project_id = $stateParams.id;
                 $scope.from = $stateParams.from;
                 $scope.processes = [];

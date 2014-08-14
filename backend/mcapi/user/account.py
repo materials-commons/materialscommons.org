@@ -7,10 +7,11 @@ from flask import jsonify, g, request
 import rethinkdb as r
 import uuid
 from ..utils import make_password_hash, make_salted_password_hash
-from ..args import json_as_format_arg
 from .. import error
 from .. import apikeydb
 from .. import dmutil
+from .. import args
+
 
 
 @app.route('/user/<user>', methods=['GET'])
@@ -98,3 +99,26 @@ def update_preferred_templates(user):
     rv = r.table('users').get(user).update(
         {'preferences': {'templates': list}}).run(g.conn)
     return jsonify(rv)
+
+@app.route('/user/<user>/tags', methods=['GET'])
+@apikey
+@jsonp
+def get_user_tags(user):
+    user_obj = r.table('users').get(user).pluck('preferences').run(g.conn)
+    return args.json_as_format_arg(user_obj)
+
+
+@app.route('/user/<user>/tags', methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def update_tags(user):
+    user_obj = r.table('users').get(user).run(g.conn)
+    existing_tags = user_obj['preferences']['tags']
+    j = request.get_json()
+    tag = {}
+    tag['name'] = dmutil.get_required('name', j)
+    tag['color'] = dmutil.get_required('color', j)
+    existing_tags.append(tag)
+    rr = r.table('users').get(user).update(
+        {'preferences': {'tags': existing_tags}}).run(g.conn)
+    return  rr
