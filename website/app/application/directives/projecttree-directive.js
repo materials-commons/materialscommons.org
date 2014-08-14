@@ -1,5 +1,5 @@
 Application.Controllers.controller('ProjectTreeController',
-    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", "Tags", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags) {
+    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", "Tags", "User", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User) {
 
         pubsub.waitOn($scope, "project.tree", function (treeVisible) {
             $scope.treeActive = treeVisible;
@@ -72,6 +72,16 @@ Application.Controllers.controller('ProjectTreeController',
         };
         $scope.addTag = function(entry){
             console.log(entry)
+            var item2tag = {}
+            item2tag.item_id = entry.id
+            item2tag.item_name = entry.name
+            item2tag.item_type = entry.type
+            item2tag.user = User.u()
+            item2tag.tag =  $scope.bk.selected_tag
+            mcapi('/item/tag/new')
+                .success(function (data) {
+                    console.log(data)
+                }).post(item2tag);
         }
 
         function init() {

@@ -234,6 +234,8 @@ def build_tree(datadirs):
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
                        ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
+        user = access.get_user()
+        ditem.tags = build_tags(ddir['id'], ddir['name'], 'datadir', user)
         ditem.c_id = next_id
         next_id = next_id + 1
         #
@@ -255,6 +257,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
+            dfitem.tags = build_tags(df['id'], df['name'], 'datafile', user)
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
@@ -270,6 +273,16 @@ def build_tree(datadirs):
             parent.children.append(ditem)
             all_data_dirs[parent_name] = parent
     return json.dumps(top_level_dirs, cls=DEncoder2)
+
+
+def build_tags(id, name, type, user):
+    item = dict()
+    item['item_id'] = id
+    item['item_name'] = name
+    item['item_type'] = type
+    item['user'] = user
+    tags2item = list(r.table('items2tags').filter({'item_id': id, 'item_type': type, 'user': user}).run(g.conn))
+    return tags2item
 
 
 @app.route('/project/provenance/<project_id>', methods=['GET'])

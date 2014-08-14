@@ -176,3 +176,18 @@ def create_user():
     else:
         return error.already_exists(
             "Unable to create account %s, user already exists" % (email))
+
+
+@app.route('/item/tag/new', methods=['POST'])
+@crossdomain(origin='*')
+@apikey
+def create_item2tag():
+    j = request.get_json()
+    item2tag = dict()
+    item2tag['item_id'] = dmutil.get_required('item_id', j)
+    item2tag['item_name'] = dmutil.get_required('item_name', j)
+    item2tag['item_type'] = dmutil.get_required('item_type', j)
+    item2tag['user'] = dmutil.get_required('user', j)
+    item2tag['tag'] = dmutil.get_required('tag', j)
+    result = dmutil.insert_entry_id('items2tags', item2tag)
+    return result
