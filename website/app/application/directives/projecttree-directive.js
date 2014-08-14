@@ -1,5 +1,5 @@
 Application.Controllers.controller('ProjectTreeController',
-    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state) {
+    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", "Tags", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags) {
 
         pubsub.waitOn($scope, "project.tree", function (treeVisible) {
             $scope.treeActive = treeVisible;
@@ -70,9 +70,13 @@ Application.Controllers.controller('ProjectTreeController',
 
             return currentTrail.slice(0, i+1);
         };
+        $scope.addTag = function(){
+            console.log($scope.bk.selected_tag)
+        }
 
         function init() {
             $scope.user_tags = [{"name": "we43", "color": "#FF0000"}, {"name": "MG AL", "color": "#0000FF"}, {"name": "TiNi", "color": "#FFFF00"}]
+            $scope.bk = {'selected_tag': ''};
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
                 var currentTrail = ProjectPath.get_trail();

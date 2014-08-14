@@ -1,7 +1,8 @@
 <div ng-show="treeOverview || treeActive">
     <div class="row">
         <a style="cursor: pointer" ng-click="backToFolder(trailitem)" ng-repeat="trailitem in trail">
-            <i style="padding-left:1px;" class="fa fa-folder"/><span style="margin-right: 7px; padding-left:5px; font-size: 13px">{{trailitem.displayname}}/ </span>
+            <i style="padding-left:1px;" class="fa fa-folder"/><span
+                style="margin-right: 7px; padding-left:5px; font-size: 13px">{{trailitem.displayname}}/ </span>
         </a><br>
     </div>
     <div class="panel panel-default">
@@ -11,7 +12,8 @@
             <!-- <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a> -->
-            <a ui-sref="projects.provenance" style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-code-fork"/>Add Provenance</a>
+            <a ui-sref="projects.provenance" style="padding-right: 15px;color: black" class="pull-right"><i
+                    style="padding-right: 2px;" class="fa fa-code-fork"/>Add Provenance</a>
         </div>
         <!-- <div class="panel-body" style="padding: 5px;background-color: #389DC1">
         <div class="dropdown">
@@ -34,32 +36,41 @@
     <div ng-show="loaded===true">
         <table class="table  table-file-directory ">
             <tbody>
-                <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
-                    data-tt-parent-id="{{t.parent_id}}"
-                    data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
-                    <td ng-show="checkBox" ng-if="entry.type==='datafile'">
-                        <input ng-model="entry.selected" ng-click="fileSelected(entry)"
-                               ng-change="entry.selected = !entry.selected" type="checkbox">
-                        <a ng-click="populatePath(entry)"><i style="margin-right:5px;" class="fa fa-file"/>{{entry.displayname}}</a>
-                    </td>
-                    <td ng-if="entry.type=='datadir'">
-                        <a style="cursor: pointer" ng-click="openFolder(entry)"><i style="margin-right:5px;" class="fa fa-folder"/>{{entry.displayname}}
-                        </a>
-                    </td>
-                    <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
-                        <a ng-click="populatePath(entry)"><i style="margin-right:5px;" class="fa fa-file"/>{{entry.displayname}}</a>
-                    </td>
-                    <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
-                    <td ng-if="entry.type=='datadir'">-</td>
-                    <td>{{entry.owner}}</td>
-                    <td><i ng-click="toggleCustom = !toggleCustom" class="fa fa-gear"></i>
+            <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
+                data-tt-parent-id="{{t.parent_id}}"
+                data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
+                <td ng-show="checkBox" ng-if="entry.type==='datafile'">
+                    <input ng-model="entry.selected" ng-click="fileSelected(entry)"
+                           ng-change="entry.selected = !entry.selected" type="checkbox">
+                    <a ng-click="populatePath(entry)"><i style="margin-right:5px;" class="fa fa-file"/>{{entry.displayname}}</a>
+                </td>
+                <td ng-if="entry.type=='datadir'">
+                    <a style="cursor: pointer" ng-click="openFolder(entry)"><i style="margin-right:5px;"  class="fa fa-folder"/>{{entry.displayname}}
+                    </a>
+                </td>
+                <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
+                    <a ng-click="populatePath(entry)"><i style="margin-right:5px;" class="fa fa-file"/>{{entry.displayname}}</a>
+                </td>
+                <td ng-repeat="t in user_tags" style="width: 50px;">
+                    <div tooltip="{{t.name}}" class="tag-circle" style="background-color: {{t.color}}"></div>
+                </td>
+                <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
+                <td ng-if="entry.type=='datadir'">-</td>
+                <td>{{entry.owner}}</td>
+                <td><i ng-click="toggleCustom = !toggleCustom" class="fa fa-gear"></i>
                         <span ng-show="toggleCustom">
-                            <select ng-model="bk.tag" ng-options="t in user_tags">
-
-                            </select>
+                              <div class="form-group">
+                                   <div class="col-lg-5">
+                                          <select class="form-control" ng-model="bk.selected_tag"
+                                                ng-options="t.name for t in user_tags">
+                                                <option value="">--Tags --</option>
+                                          </select>
+                                    </div>
+                              <button ng-click="addTag()" class="btn btn-info">Add</button>
+                               </div>
                         </span>
-                    </td>
-                </tr>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
