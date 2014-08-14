@@ -70,12 +70,13 @@ Application.Controllers.controller('ProjectTreeController',
 
             return currentTrail.slice(0, i+1);
         };
-        $scope.addTag = function(){
-            console.log($scope.bk.selected_tag)
+        $scope.addTag = function(entry){
+            console.log(entry)
         }
 
         function init() {
-            $scope.user_tags = [{"name": "we43", "color": "#FF0000"}, {"name": "MG AL", "color": "#0000FF"}, {"name": "TiNi", "color": "#FFFF00"}]
+//            $scope.user_tags = [{"name": "we43", "color": "#FF0000"}, {"name": "MG AL", "color": "#0000FF"}, {"name": "TiNi", "color": "#FFFF00"}]
+            $scope.user_tags = Tags.getUserTags()
             $scope.bk = {'selected_tag': ''};
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();

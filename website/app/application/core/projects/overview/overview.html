@@ -7,24 +7,22 @@
                     <i class="fa fa-tags"/> Tags
                 </div>
                 <div class="panel-body">
-
-
-                    <div ng-repeat="t in user_tags">
+                    <div ng-repeat="t in u_tags">
                         <div class="row">
                             <div class="col-sm-1">
                                 <div class="tag-circle" style="background-color: {{t.color}}"></div>
                             </div>
                             <div class="col-sm-offset-2">
-                               {{t.new_tag}}
+                               {{t.name}}
                             </div>
                         </div>
                     </div>
-                    <input class="form-control input-sm" ng-model="bk.new_tag">
+                    <input class="form-control input-sm" ng-model="bk.name">
                     <select class="form-control" ng-model="bk.color">
                         <option value="">Highlight</option>
                         <option value="#FF0000" style="background-color: red;">Red</option>
                         <option value="#0000FF" style="background-color: Blue;">Blue</option>
-                        <option value="#008000" style="background-color: green;color: #FFFFFF;">Green</option>
+                        <option value="#008000" style="background-color: green;">Green</option>
                         <option value="#FFFF00" style="background-color: #ffff00;">Yellow</option>
                         <option value="#9370DB" style="background-color: mediumpurple;">Purple</option>
                         <option value="#EE82EE" style="background-color: Violet;">Violet</option>
