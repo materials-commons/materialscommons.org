@@ -115,10 +115,10 @@ def update_tags(user):
     user_obj = r.table('users').get(user).run(g.conn)
     existing_tags = user_obj['preferences']['tags']
     j = request.get_json()
-    tag = {}
+    tag = dict()
     tag['name'] = dmutil.get_required('name', j)
     tag['color'] = dmutil.get_required('color', j)
     existing_tags.append(tag)
     rr = r.table('users').get(user).update(
         {'preferences': {'tags': existing_tags}}).run(g.conn)
-    return  rr
+    return  jsonify(rr)

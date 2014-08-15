@@ -51,25 +51,41 @@
                 <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
                     <a ng-click="populatePath(entry)"><i style="margin-right:5px;" class="fa fa-file"/>{{entry.displayname}}</a>
                 </td>
-                <td ng-repeat="t in user_tags" style="width: 50px;">
-                    <div tooltip="{{t.name}}" class="tag-circle" style="background-color: {{t.color}}"></div>
-                </td>
                 <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
                 <td ng-if="entry.type=='datadir'">-</td>
                 <td>{{entry.owner}}</td>
-                <td><i ng-click="toggleCustom = !toggleCustom" class="fa fa-gear"></i>
-                        <span ng-show="toggleCustom">
-                              <div class="form-group">
-                                   <div class="col-lg-5">
-                                          <select class="form-control" ng-model="bk.selected_tag"
-                                                ng-options="t.name for t in user_tags">
-                                                <option value="">--Tags --</option>
-                                          </select>
-                                    </div>
-                              <button ng-click="addTag(entry)" class="btn btn-info">Add</button>
-                               </div>
-                        </span>
+                <td>
+                    <div class="dropdown">
+                        <a role="button" data-toggle="dropdown"><i class="fa fa-tags"  title="Help" ></i></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li ng-repeat="t in user_tags">
+                                <a ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
+
+                <!--<td><i ng-click="toggleCustom = !toggleCustom" class="fa fa-gear"></i>-->
+                        <!--<span ng-show="toggleCustom">-->
+                              <!--<div class="form-group">-->
+                                   <!--<div class="col-lg-5">-->
+                                          <!--<select class="form-control" ng-model="bk.selected_tag"-->
+                                                <!--ng-options="t.name for t in user_tags">-->
+                                                <!--<option value="">--Tags --</option>-->
+                                          <!--</select>-->
+                                    <!--</div>-->
+                              <!--<button ng-click="addTag(entry)" class="btn btn-info">Add</button>-->
+                               <!--</div>-->
+                        <!--</span>-->
+                <!--</td>-->
+                <div ng-if="entry.tags.length == 0">
+                    -
+                </div>
+                <div ng-if="entry.tags.length !==0">
+                    <td style="width: 5px;"  ng-repeat="t in entry.tags">
+                        <div tooltip="{{t.tag.name}}" class="tag-circle" style="background-color: {{t.tag.color}}"></div>
+                    </td>
+                </div>
             </tr>
             </tbody>
         </table>

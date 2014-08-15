@@ -5,6 +5,10 @@ Application.Controllers.controller('ProjectTreeController',
             $scope.treeActive = treeVisible;
         });
 
+        pubsub.waitOn($scope, "tags.change", function () {
+            $scope.user_tags = Tags.getUserTags();
+        });
+
         $scope.openFolder = function (item) {
             var e = _.find($scope.trail, function (trailItem) {
                 return trailItem.id === item.id;
@@ -70,24 +74,21 @@ Application.Controllers.controller('ProjectTreeController',
 
             return currentTrail.slice(0, i+1);
         };
-        $scope.addTag = function(entry){
-            console.log(entry)
+        $scope.addTag = function(entry, selected_tag){
             var item2tag = {}
             item2tag.item_id = entry.id
             item2tag.item_name = entry.name
             item2tag.item_type = entry.type
             item2tag.user = User.u()
-            item2tag.tag =  $scope.bk.selected_tag
+            item2tag.tag =  selected_tag
             mcapi('/item/tag/new')
                 .success(function (data) {
-                    console.log(data)
+                    //you have to update the tags in the project tree
                 }).post(item2tag);
         }
 
         function init() {
-//            $scope.user_tags = [{"name": "we43", "color": "#FF0000"}, {"name": "MG AL", "color": "#0000FF"}, {"name": "TiNi", "color": "#FFFF00"}]
-            $scope.user_tags = Tags.getUserTags()
-            $scope.bk = {'selected_tag': ''};
+            $scope.user_tags = Tags.getUserTags();
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
                 var currentTrail = ProjectPath.get_trail();
