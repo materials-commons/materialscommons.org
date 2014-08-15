@@ -1,6 +1,6 @@
 Application.Controllers.controller('Projects',
-    ["$scope", "$stateParams", "mcapi", "$state", "watcher", "ProjectPath", "pubsub", "model.Projects",
-        function ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects) {
+    ["$scope", "$stateParams", "mcapi", "$state", "watcher", "ProjectPath", "pubsub", "model.Projects", "User",
+        function ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, User) {
             $scope.project_id = $stateParams.id;
             $scope.model = {
                 action: ''
@@ -10,9 +10,17 @@ Application.Controllers.controller('Projects',
                     $state.go('projects.provenance');
                 }
             });
+            $scope.createProject = function(){
+                mcapi('/projects')
+                    .success(function (data) {
+                        console.log(data)
+                    }).post({'name': $scope.bk.name});
+            }
 
             function init() {
-
+                $scope.bk= {
+                    name: ''
+                }
                 $scope.from = ProjectPath.get_from();
                 Projects.getList().then(function (data) {
                     $scope.model = {
