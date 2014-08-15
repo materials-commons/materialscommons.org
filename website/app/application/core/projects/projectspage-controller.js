@@ -13,7 +13,6 @@ Application.Controllers.controller('Projects',
             $scope.createProject = function(){
                 mcapi('/projects')
                     .success(function (data) {
-                        console.log(data)
                     }).post({'name': $scope.bk.name});
             }
 
