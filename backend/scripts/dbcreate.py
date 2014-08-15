@@ -35,6 +35,7 @@ def create_tables():
     create_table("samples_denorm")
     create_table("projects2samples")
     create_table('access')
+    create_table("items2tags")
 
 
 def create_table(table):
