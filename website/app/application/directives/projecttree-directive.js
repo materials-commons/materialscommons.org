@@ -40,14 +40,11 @@ Application.Controllers.controller('ProjectTreeController',
             $scope.tree_data = [];
             $scope.loaded = false;
             if (!(projectId in $scope.model.projects)) {
-                console.log(projectId)
-                console.dir($scope.model.projects)
                 mcapi('/projects/%/tree2', projectId)
                     .success(function (data) {
                         if (data[0]) {
                             $scope.tree_data = data;
                             $scope.dir = $scope.tree_data[0].children;
-                            console.log(data)
                             var obj = {};
                             obj.dir = $scope.tree_data[0];
                             $scope.model.projects[projectId] = obj;
