@@ -276,11 +276,6 @@ def build_tree(datadirs):
 
 
 def build_tags(id, name, type, user):
-    item = dict()
-    item['item_id'] = id
-    item['item_name'] = name
-    item['item_type'] = type
-    item['user'] = user
     tags2item = list(r.table('items2tags').filter({'item_id': id, 'item_type': type, 'user': user}).run(g.conn))
     return tags2item
 

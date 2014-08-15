@@ -123,12 +123,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.overview', {
             url: '/overview',
             templateUrl: 'application/core/projects/overview/overview.html'
-
         })
         .state('projects.overview.files', {
             url: '/files',
             templateUrl: 'application/core/projects/overview/files/files.html',
-            onExit: function(ProjectPath){
+            onExit: function (ProjectPath) {
                 ProjectPath.set_from(false)
             }
         })

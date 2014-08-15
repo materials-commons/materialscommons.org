@@ -1,6 +1,6 @@
 Application.Controllers.controller('projectsOverview',
-    ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts", "mcapi", "Tags",
-        function ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags) {
+    ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts", "mcapi", "Tags","User",
+        function ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags, User) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
             });
@@ -20,8 +20,10 @@ Application.Controllers.controller('projectsOverview',
             };
 
             $scope.createTag = function(){
-                Tags.updateUserTags($scope.bk)
-                $scope.u_tags = Tags.getUserTags()
+                mcapi('/user/%/tags', User.u())
+                    .success(function () {
+                        $scope.loadUserTags();
+                    }).put($scope.bk);
                 $scope.bk = {}
             }
 
@@ -54,17 +56,24 @@ Application.Controllers.controller('projectsOverview',
                         $scope.project = project;
                     }).jsonp();
             }
-            function init() {
 
+            $scope.loadUserTags= function () {
+                mcapi('/user/%/tags', User.u())
+                    .success(function (user) {
+                        $scope.u_tags = user.preferences.tags;
+                        Tags.updateUserTags($scope.u_tags)
+                    }).jsonp();
+            }
+            function init() {
                 $scope.bk = {
                     name: ''
                 }
-                $scope.u_tags = Tags.getUserTags()
                 $scope.project_id = $stateParams.id;
                 $scope.from = $stateParams.from;
                 $scope.processes = [];
                 $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
                 $scope.getProject();
+                $scope.loadUserTags();
             }
 
             init();
