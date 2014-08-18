@@ -11,6 +11,7 @@ from .. import validate
 from .. import error
 from loader.model import project
 from loader.model import datadir
+import sys
 
 
 @app.route('/projects', methods=['GET'])
@@ -92,34 +93,86 @@ def get_project(id):
     user = access.get_user()
     if not access.allowed(user, proj['owner']):
         return error.not_authorized("No access to project %s" % (id))
-    samples = []
-    proj['users'] = get_project_users(proj['owner'])
-    proj['shares'] = get_project_shares(samples, proj['id'])
-    proj['uses'] = get_project_uses(samples, proj['id'])
+    mysamples = list(r.table('samples')
+                     .get_all(proj['id'], index='project_id')
+                     .run(g.conn, time_format='raw'))
+    mysamples_ids_list = []
+    for s in mysamples:
+        mysamples_ids_list.append(s['id'])
+    if mysamples_ids_list:
+        potentially_shared = list(r.table('projects2samples')
+                                  .get_all(*mysamples_ids_list, index='sample_id')
+                                  .eq_join('sample_id', r.table('samples'))
+                                  .map(lambda row: row.merge({
+                                      "right": {
+                                          "other_project_id": row["right"]["project_id"]
+                                      }
+                                  }))
+                                  .without({"right": {"project_id": True}})
+                                  .zip()
+                                  .run(g.conn, time_format='raw'))
+    else:
+        potentially_shared = []
+    #proj['users'] = get_project_users(proj['owner'])
+    proj['users'] = get_project_users(proj)
+    proj['shares'] = get_project_shares(potentially_shared, proj['id'])
+    potentially_uses = list(r.table('projects2samples')
+                            .get_all(proj['id'], index='project_id')
+                            .eq_join('sample_id', r.table('samples'))
+                            .map(lambda row: row.merge({
+                                "right": {
+                                    "other_project_id": row["right"]["project_id"]
+                                }
+                            }))
+                            .without({"right": {"project_id": True}})
+                            .zip()
+                            .run(g.conn, time_format='raw'))
+    proj['uses'] = get_project_uses(potentially_uses, proj['id'])
     return args.json_as_format_arg(proj)
 
 
-def get_project_users(who):
-    groups = list(r.table('usergroups').filter({'owner': who}).run(g.conn))
-    unique_users = {}
-    for group in groups:
-        for username in group['users']:
+def get_project_users(proj):
+    #Code below has been commented because we are in a phase of trasforming usergroups to access.
+    #groups = list(r.table('usergroups').filter({'owner': who}).run(g.conn))
+    #for group in groups:
+        #for username in group['users']:
             # Remove project owner from list of contributors
-            if username != who:
-                unique_users[username] = username
+            #if username != who:
+                #unique_users[username] = username
+    #users = []
+    #for user in unique_users:
+        #users.append(user)
     users = []
-    for user in unique_users:
-        users.append(user)
+    access = list(r.table('access').filter({'project_id': proj['id']}).run(g.conn))
+    for ac in access:
+        users.append({'user_id': ac['user_id'], 'permissions': ac['permissions'], 'id':ac['id']})
     return users
 
 
-def get_project_shares(samples, project_id):
+def get_project_shares(all_samples_used, project_id):
     """Finds all the samples that this project shares out"""
-    return []
+    shares = []
+    for sample in all_samples_used:
+        if sample['other_project_id'] == project_id \
+           and sample['project_id'] != project_id:
+            sample['other_project'] = r.table('projects')\
+                                       .get(sample['project_id'])\
+                                       .run(g.conn, time_format='raw')
+            shares.append(sample)
+    return shares
 
 
-def get_project_uses(samples, project_id):
-    return []
+def get_project_uses(all_samples_used, project_id):
+    """Finds all the samples that this project uses from other projects"""
+    uses = []
+    for sample in all_samples_used:
+        if sample['project_id'] == project_id \
+           and sample['other_project_id'] != project_id:
+            sample['other_project'] = r.table('projects')\
+                                       .get(sample['other_project_id'])\
+                                       .run(g.conn, time_format='raw')
+            uses.append(sample)
+    return uses
 
 
 @app.route('/projects/<project_id>/datadirs')
@@ -149,6 +202,7 @@ def get_project_tree2(project_id):
                      .get_all(project_id, index='project_id')
                      .eq_join("datadir_id", r.table('datadirs_denorm'))
                      .zip().run(g.conn, time_format='raw'))
+    print selection
     return build_tree(selection)
 
 
@@ -181,6 +235,8 @@ def build_tree(datadirs):
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
                        ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
+        user = access.get_user()
+        ditem.tags = build_tags(ddir['id'], ddir['name'], 'datadir', user)
         ditem.c_id = next_id
         next_id = next_id + 1
         #
@@ -202,6 +258,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
+            dfitem.tags = build_tags(df['id'], df['name'], 'datafile', user)
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
@@ -217,6 +274,11 @@ def build_tree(datadirs):
             parent.children.append(ditem)
             all_data_dirs[parent_name] = parent
     return json.dumps(top_level_dirs, cls=DEncoder2)
+
+
+def build_tags(id, name, type, user):
+    tags2item = list(r.table('items2tags').filter({'item_id': id, 'item_type': type, 'user': user}).run(g.conn))
+    return tags2item
 
 
 @app.route('/project/provenance/<project_id>', methods=['GET'])
@@ -294,7 +356,7 @@ def create_project():
     datadir_id = make_toplevel_datadir(j, user)
     proj = project.Project(name, datadir_id, user)
     project_id = dmutil.insert_entry_id('projects', proj.__dict__)
-    proj2datadir = {'project_id': project_id, 'datadir_id': proj.datadir}
+    proj2datadir = {'project_id': project_id, 'datadir_id': datadir_id}
     dmutil.insert_entry('project2datadir', proj2datadir)
     return args.json_as_format_arg(proj2datadir)
 
@@ -311,4 +373,17 @@ def make_toplevel_datadir(j, user):
     name = dmutil.get_required('name', j)
     access = dmutil.get_optional('access', j, "private")
     ddir = datadir.DataDir(name, access, user, "")
-    return dmutil.insert_entry_id('datadirs', ddir.__dict__)
+    dir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
+    build_datadir_denorm(name, user, dir_id)
+    return dir_id
+
+def build_datadir_denorm(name, owner, dir_id):
+    datadir_denorm = dict()
+    datadir_denorm['name'] = name
+    datadir_denorm['owner'] = owner
+    datadir_denorm['datafiles'] = []
+    datadir_denorm['id'] = dir_id
+    datadir_denorm['birthtime'] = r.now()
+    rr = dmutil.insert_entry_id('datadirs_denorm', datadir_denorm)
+    return rr
+

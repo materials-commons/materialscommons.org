@@ -17,4 +17,4 @@ class DataDir(object):
         self.birthtime = r.now()
         self.mtime = self.birthtime
         self.atime = self.birthtime
-        self.id = userid + "$" + name.replace('/', '_')
+        #self.id = userid + "$" + name.replace('/', '_')

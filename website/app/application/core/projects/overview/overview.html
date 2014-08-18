@@ -2,32 +2,63 @@
 <div ng-controller="projectsOverview">
     <div class="row">
         <div class="col-lg-2">
-            <div>
-                <div class="panel panel-default">
-                    <div class="panel panel-heading">
-                        <i class="fa fa-tags"/> Tags
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    <i class="fa fa-tags"/> Tags
+                </div>
+                <div class="panel-body">
+                    <div ng-repeat="t in u_tags">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <div class="tag-circle" style="background-color: {{t.color}}"></div>
+                            </div>
+                            <div class="col-sm-offset-2">
+                               {{t.name}}
+                            </div>
+                        </div>
                     </div>
+                    <input class="form-control input-sm" ng-model="bk.name">
+                    <select class="form-control" ng-model="bk.color">
+                        <option value="">Highlight</option>
+                        <option value="#FF0000" style="background-color: red;">Red</option>
+                        <option value="#0000FF" style="background-color: Blue;">Blue</option>
+                        <option value="#008000" style="background-color: green;">Green</option>
+                        <option value="#FFFF00" style="background-color: #ffff00;">Yellow</option>
+                        <option value="#9370DB" style="background-color: mediumpurple;">Purple</option>
+                        <option value="#EE82EE" style="background-color: Violet;">Violet</option>
+                    </select>
+                    <button ng-click="createTag()">New</button>
                 </div>
             </div>
         </div>
         <div>
-            <span class="col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
+            <span class="col-lg-offset-1 col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
             <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
+
         <div class="col-lg-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <span class="col-lg-3">
-                            <i class="fa fa-users"/>
-                                <a data-toggle="modal" data-target="#contributors"> {{project.users.length}} contributors</a>
-                        </span>
-                        <span class="col-lg-3">
-                            <i class="fa fa-exclamation-circle"/>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <span class="col-lg-3">
+                                <i class="fa fa-users"/>
+                                <a data-toggle="modal" data-target="#contributors"> {{project.users.length}}
+                                    contributors</a>
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-exclamation-circle"/>
                                 0 events
-                        </span>
-                        <span class="col-lg-3"><i class="fa fa-share"/> Shared with {{project.shares.length}} Project(s)</span>
-                            <span class="col-lg-3"><i class="fa fa-mail-reply"/> Uses {{project.uses.length}} Project(s)</span>
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares">{{project.shares.length}}
+                                Project(s)</a>
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses">{{project.uses.length}}
+                                Project(s)</a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,12 +84,11 @@
                     </li>
                     <li>
                         <a ng-click="showTab('drafts')" data-toggle="tab">
-                            Drafts  ({{drafts.length}}) <i class="fa fa-copy marginLeft pull-right"/>
+                            Drafts ({{drafts.length}}) <i class="fa fa-copy marginLeft pull-right"/>
                         </a>
                     </li>
                     <!--<li><a ng-click="showTab('issues')" data-toggle="tab">Issues <i-->
                     <!--class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>-->
-                    <!--<li><a ng-click="showTab('settings')" data-toggle="tab">Settings <i-->
                     <!--class="fa fa-cog marginLeft pull-right"></i></a></li>-->
 
                     <li>
@@ -66,14 +96,20 @@
                             Notes <i class="fa fa-edit marginLeft pull-right"/>
                         </a>
                     </li>
-                </ul>
+                    <li>
+                        <a ng-click="showTab('settings')" data-toggle="tab">
+                            Settings <i class="fa fa-cogs marginLeft pull-right"/>
+                        </a>
+                    </li>
 
+                </ul>
             </div>
         </div>
     </div>
 
     <!-- Modal for contributors -->
-    <div class="modal fade" id="contributors" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel" aria-hidden="true">
+    <div class="modal fade" id="contributors" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,7 +118,47 @@
                 </div>
                 <div class="modal-body">
                     <ul>
-                        <li ng-repeat="user in project.users | orderBy: 'toString()'">{{user}}</li>
+                        <li ng-repeat="user in project.users | orderBy: 'toString()'">{{user.user_id}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for uses -->
+    <div class="modal fade" id="uses" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Shared from other projects</h4>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li ng-repeat="usedItem in project.uses">Sample '{{usedItem.name}}' is from project:
+                            {{usedItem.other_project.name}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for shares -->
+    <div class="modal fade" id="shares" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Shared with other projects</h4>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li ng-repeat="sharedItem in project.shares">Project '{{sharedItem.other_project.name}}' uses
+                            sample: {{sharedItem.name}}
+                        </li>
                     </ul>
                 </div>
             </div>

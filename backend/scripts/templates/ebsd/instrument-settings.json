@@ -14,8 +14,8 @@
             "required": false
         },
         {
-            "attribute": "Working distance",
-            "name": "working_distance" ,
+            "name": "Working Distance",
+            "attribute": "working_distance" ,
             "type": "number" ,
             "unit": "" ,
             "unit_choice": [] ,
@@ -44,7 +44,7 @@
             "required": false
         },
         {
-            "attribute": "Dimensions-X(coordinate)",
+            "attribute": "Dimensions-X (coordinate)",
             "name": "dimension_x" ,
             "type": "number" ,
             "unit": "" ,
@@ -54,7 +54,7 @@
             "required": false
         },
         {
-            "attribute": "Dimensions-Y(coordinate)",
+            "attribute": "Dimensions-Y (coordinate)",
             "name": "dimension_y" ,
             "type": "number" ,
             "unit": "" ,

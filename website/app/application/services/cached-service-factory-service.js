@@ -10,7 +10,6 @@ Application.Services.factory('CachedServiceFactory',
                 var r = Restangular.withConfig(function (config) {
                     config.setBaseUrl(mcglobals.apihost);
                     config.setJsonp(true);
-                    config.setDefaultRequestParams({apikey: User.apikey()});
                     config.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
                     config.addResponseInterceptor(function (data, operation) {
                         function handleGetPost() {
@@ -64,15 +63,19 @@ Application.Services.factory('CachedServiceFactory',
                         return deferred.promise;
                     }
 
-                    return this.rest.get(id);
+                    return this.rest.get(id, {apikey: User.apikey()});
                 },
 
                 create: function (what) {
-                    return this.rest.post(what);
+                    return this.rest.post(what, {apikey: User.apikey()});
                 },
 
                 remove: function (id) {
-                    return this.rest.remove(id);
+                    return this.rest.remove(id, {apikey: User.apikey()});
+                },
+
+                clear: function() {
+                    this.cache.removeAll();
                 },
 
                 getList: function () {
@@ -83,7 +86,7 @@ Application.Services.factory('CachedServiceFactory',
                         l;
 
                     if (keys.length === 0) {
-                        return this.rest.getList();
+                        return this.rest.getList({apikey: User.apikey()});
                     }
 
                     for (i = 0, l = keys.length; i < l; i++) {
