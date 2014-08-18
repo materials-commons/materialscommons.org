@@ -133,7 +133,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.overview.files', {
             url: '/files',
             templateUrl: 'application/core/projects/overview/files/files.html',
-            onExit: function(ProjectPath){
+            onExit: function (ProjectPath) {
                 ProjectPath.set_from(false)
             }
         })
@@ -152,6 +152,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.overview.notes', {
             url: '/notes',
             templateUrl: 'application/core/projects/overview/notes/notes.html'
+        })
+        .state('projects.overview.settings', {
+            url: '/settings',
+            templateUrl: 'application/core/projects/overview/settings/group_access.html'
         })
 
         /*

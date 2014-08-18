@@ -1,8 +1,12 @@
 Application.Controllers.controller('ProjectTreeController',
-    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state) {
+    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath", "$state", "Tags", "User", function ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User) {
 
         pubsub.waitOn($scope, "project.tree", function (treeVisible) {
             $scope.treeActive = treeVisible;
+        });
+
+        pubsub.waitOn($scope, "tags.change", function () {
+            $scope.user_tags = Tags.getUserTags();
         });
 
         $scope.openFolder = function (item) {
@@ -70,8 +74,21 @@ Application.Controllers.controller('ProjectTreeController',
 
             return currentTrail.slice(0, i+1);
         };
+        $scope.addTag = function(entry, selected_tag){
+            var item2tag = {}
+            item2tag.item_id = entry.id
+            item2tag.item_name = entry.name
+            item2tag.item_type = entry.type
+            item2tag.user = User.u()
+            item2tag.tag =  selected_tag
+            mcapi('/item/tag/new')
+                .success(function (data) {
+                    //you have to update the tags in the project tree
+                }).post(item2tag);
+        }
 
         function init() {
+            $scope.user_tags = Tags.getUserTags();
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
                 var currentTrail = ProjectPath.get_trail();
