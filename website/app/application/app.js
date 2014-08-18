@@ -46,10 +46,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('about', {
             url: '/about',
-            templateUrl: 'application/core/about/about.html',
-            onEnter: function (Nav) {
-                Nav.setActiveNav('about');
-            }
+            templateUrl: 'application/core/about/about.html'
         })
         .state('modal', {
             url: '/modal',
@@ -61,10 +58,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('contact', {
             url: '/contact',
-            templateUrl: 'application/core/contact/contact.html',
-            onEnter: function (Nav) {
-                Nav.setActiveNav('contact');
-            }
+            templateUrl: 'application/core/contact/contact.html'
         })
         .state('help', {
             url: '/help',

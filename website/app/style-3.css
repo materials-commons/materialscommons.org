@@ -40,6 +40,11 @@ body {
     background-color: #002953;
 }
 
+.active {
+    text-decoration: none;
+    background-color: #002953;
+}
+
 .navbar-custom .navbar-brand {
     color: #eeeeee;
     line-height: 40px;
