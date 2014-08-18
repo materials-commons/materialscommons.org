@@ -10,7 +10,7 @@ Application.Controllers.controller('NotesController',
             if ($scope.type === 'datafile') {
                 mcapi('/datafile/update/%', $scope.doc.id)
                     .success(function (data) {
-                        alertService.sendMessage("Notes has been added");
+                        //alertService.sendMessage("Notes has been added");
                     }).error(function (data) {
                         alertService.sendMessage(data.error);
                     }).put($scope.doc);
@@ -18,7 +18,7 @@ Application.Controllers.controller('NotesController',
             if ($scope.type === 'project') {
                 mcapi('/projects/%/update', $scope.doc.id)
                     .success(function (data) {
-                        alertService.sendMessage("Notes has been added");
+                        //alertService.sendMessage("Notes has been added");
                     }).error(function (data) {
                         alertService.sendMessage(data.error);
                     }).put($scope.doc);
@@ -27,7 +27,7 @@ Application.Controllers.controller('NotesController',
                 if($scope.update == 'true'){
                     mcapi('/objects/update/%', $scope.doc.id)
                         .success(function (data) {
-                            alertService.sendMessage("Notes has been updated");
+                            //alertService.sendMessage("Notes has been updated");
                         }).put($scope.doc);
                 }
                 // Sample notes is stored/saved in the samples controller
@@ -36,7 +36,7 @@ Application.Controllers.controller('NotesController',
                 if($scope.update == 'true'){
                     mcapi('/process/update/%', $scope.doc.id)
                         .success(function (data) {
-                            alertService.sendMessage("Notes has been updated");
+                            //alertService.sendMessage("Notes has been updated");
                         }).put($scope.doc);
                 }
                 // Process notes is stored/saved in the Process controller
