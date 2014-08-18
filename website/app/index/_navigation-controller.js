@@ -13,8 +13,6 @@ Application.Controllers.controller('_indexNavigation',
                 var step =  Nav.isActiveNav(nav);
 
                 if (step === nav){
-                    console.log(nav + step)
-
                     return true
                 }else{
                     return false
