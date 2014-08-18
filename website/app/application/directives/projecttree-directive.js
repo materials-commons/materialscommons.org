@@ -122,8 +122,6 @@ Application.Directives.directive('projectTree',
             link: function (scope, element, attrs) {
                 scope.$watch('project', function(newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        // You actions here
-                        console.log("I got the new value! ", newValue);
                         scope.init();
 
                     }
