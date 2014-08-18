@@ -79,8 +79,13 @@ Application.Controllers.controller('projectsDataEditCreateReview',
                     }).jsonp();
             }
 
+            $scope.newReview = function(){
+                $scope.newReview= true;
+
+            }
 
             function init() {
+                $scope.newReview= false;
                 $scope.all_reviews = [];
                 $scope.signed_in_user = User.u();
                 $scope.signed_user = User.u();
