@@ -1,6 +1,6 @@
 Application.Controllers.controller('Projects',
-    ["$scope", "$stateParams", "mcapi", "$state", "watcher", "ProjectPath", "pubsub", "model.Projects", "User",
-        function ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, User) {
+    ["$scope", "$stateParams", "mcapi", "$state", "watcher", "ProjectPath", "pubsub", "model.Projects",
+        function ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects) {
             $scope.project_id = $stateParams.id;
             $scope.model = {
                 action: ''

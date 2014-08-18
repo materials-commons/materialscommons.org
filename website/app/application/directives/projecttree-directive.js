@@ -87,7 +87,7 @@ Application.Controllers.controller('ProjectTreeController',
                 }).post(item2tag);
         }
 
-        function init() {
+        $scope.init = function() {
             $scope.user_tags = Tags.getUserTags();
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
@@ -102,7 +102,7 @@ Application.Controllers.controller('ProjectTreeController',
             }
         }
 
-        init();
+        $scope.init();
     }]);
 
 Application.Directives.directive('projectTree',
@@ -111,8 +111,6 @@ Application.Directives.directive('projectTree',
             restrict: "E",
             controller: "ProjectTreeController",
             transclude: false,
-            link: function ($scope, $element, $attrs) {
-            },
             replace: true,
             scope: {
                 ngModel: "@",
@@ -120,6 +118,17 @@ Application.Directives.directive('projectTree',
                 from: "@from",
                 treeOverview: "=",
                 checkBox: "="
+            },
+            link: function (scope, element, attrs) {
+                scope.$watch('project', function(newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        // You actions here
+                        console.log("I got the new value! ", newValue);
+                        scope.init();
+
+                    }
+                }, true);
+
             },
             templateUrl: "application/directives/projecttree.html"
         };

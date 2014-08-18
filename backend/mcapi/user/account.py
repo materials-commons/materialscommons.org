@@ -86,8 +86,8 @@ def list_usergroups_for_user(user):
 @apikey
 @jsonp
 def preferred_templates(user):
-    u = r.table('users').get(user).pluck('preferences').run(g.conn)
-    return json_as_format_arg(u)
+    u_obj = r.table('users').get(user).pluck('preferences').run(g.conn)
+    return args.json_as_format_arg(u_obj)
 
 
 @app.route('/user/<user>/templates', methods=['PUT'])
