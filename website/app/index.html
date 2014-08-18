@@ -55,7 +55,7 @@
             <li id="contact-nav" ng-class="{ active: isActiveStep('contact') }">
                 <a ng-click="showStep('contact')" ui-sref="contact"><i class="fa fa-phone-square"></i> Contact</a>
             </li>
-            <li id="help-nav" ng-class="{ active: isActiveStep('help') }">
+            <li  ng-class="{ active: isActiveStep('help') }">
                 <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-circle"></i> Help</a>
             </li>
         </ul>
@@ -64,23 +64,25 @@
         </ul>
 
         <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
-            <li><a ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase"></i>
+            <li ng-class="{ active: isActiveStep('projects') }"><a ng-click="showStep('projects')"ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase"></i>
                 Projects</a></li>
-            <li><a ui-sref="reviews" class="navbar-link"><i style="padding-right: 5px" class="fa fa-comment"></i>
+            <li ng-class="{ active: isActiveStep('reviews') }"><a ui-sref="reviews" ng-click="showStep('reviews')" class="navbar-link"><i style="padding-right: 5px" class="fa fa-comment"></i>
                 Reviews</a></li>
-            <li><a ui-sref="machines" class="navbar-link"><i style="padding-right: 5px" class="fa fa-gears"></i> Machines</a></li>
-            <li class="dropdown" style="border-left: 1px solid lightgray">
-                <a class="dropdown-toggle"><i style="padding-right: 5px" class="fa fa-user"></i>{{email_address}} <span class="caret"></span></a>
+            <li ng-class="{ active: isActiveStep('machines') }">
+                <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i style="padding-right: 5px" class="fa fa-gears"></i> Machines</a></li>
+
+            <li ng-class="{ active: isActiveStep('email') }" class="dropdown" style="border-left: 1px solid lightgray">
+                <a ng-click="showStep('email')" class="dropdown-toggle"><i style="padding-right: 5px" class="fa fa-user"></i>{{email_address}} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ui-sref="account.password"><i class="fa fa-unlock-alt" style="padding-right: 5px"></i> Change
+                    <li><a ng-click="showStep('email')" ui-sref="account.password"><i class="fa fa-unlock-alt" style="padding-right: 5px"></i> Change
                         Password</a></li>
-                    <li><a ui-sref="account.usergroup"><i style="padding-right: 5px"
+                    <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i style="padding-right: 5px"
                                                           class="fa fa-user"></i>UserGroups</a></li>
-                    <li><a ui-sref="account.templates"><i style="padding-right: 5px" class="fa fa-list-alt"></i>Templates</a>
+                    <li><a ng-click="showStep('email')" ui-sref="account.templates"><i style="padding-right: 5px" class="fa fa-list-alt"></i>Templates</a>
                     </li>
-                    <li><a ui-sref="account.apikey"><i style="padding-right: 5px" class="fa fa-key"></i>Apikey</a></li>
+                    <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i style="padding-right: 5px" class="fa fa-key"></i>Apikey</a></li>
                     <li class=divider></li>
-                    <li><a ui-sref="logout"> <i style="padding-right: 5px" class="fa fa-sign-out"></i> Logout</a></li>
+                    <li><a ng-click="showStep('email')" ui-sref="logout"> <i style="padding-right: 5px" class="fa fa-sign-out"></i> Logout</a></li>
                 </ul>
             </li>
         </ul>
