@@ -32,6 +32,13 @@ def get_reviews_to_be_conducted():
     return args.json_as_format_arg(selection)
 
 
+@app.route('/reviews/<id>', methods=['GET'])
+@apikey(shared=True)
+@jsonp
+def get_review(id):
+    selection = r.table('reviews').get(id).run(g.conn, time_format='raw')
+    return args.json_as_format_arg(selection)
+
 @app.route('/reviews/<id>', methods=['DELETE'])
 @apikey
 @crossdomain(origin='*')
@@ -51,15 +58,16 @@ def delete_review(id):
 @apikey(shared=True)
 @crossdomain(origin='*')
 def add_review():
+    print 'here'
     j = request.get_json()
-    requested_to = dmutil.get_required('requested_to', j)
-    requested_by = dmutil.get_required('requested_by', j)
-    r = review.Review(requested_by, requested_to)
-    r.note = dmutil.get_required('note', j)
+    assigned_to = dmutil.get_required('assigned_to', j)
+    author = dmutil.get_required('author', j)
+    r = review.Review(author, assigned_to)
+    r.messages = dmutil.get_required('messages', j)
     r.item_type = dmutil.get_required('item_type', j)
     r.item_name = dmutil.get_required('item_name', j)
     r.item_id = dmutil.get_required('item_id', j)
-    r.project_id = dmutil.get_optional('project_id', j)
-    r.status = "In process"
+    r.title = dmutil.get_required('title', j)
+    r.status = "open"
     review_id = dmutil.insert_entry('reviews', r.__dict__)
     return jsonify({'id': review_id})

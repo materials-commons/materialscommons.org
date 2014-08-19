@@ -41,7 +41,6 @@ Application.Controllers.controller('NotesController',
                 }
                 // Process notes is stored/saved in the Process controller
             }
-
         };
         $scope.editNotes = function(index){
             $scope.edit_index = index;

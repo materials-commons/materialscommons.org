@@ -1,0 +1,44 @@
+<div ng-controller="projectsDataEditEditReview">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>{{review.title}}</h4>
+
+            <p class="text-muted">author: {{review.author}}</p>
+        </div>
+    </div>
+
+    </hr>
+    <div class="row" ng-repeat="n in review.messages | orderBy: date">
+        <div class="col-lg-2" style="font-size: 12px;">
+            {{n.date}} --- {{n.who}}   {{n.selected}}
+        </div>
+        <div class="col-lg-8">
+            <div ng-if="edit_index!==$index">
+                <div class="tip left" ta-bind ng-model="n.message"></div>
+                <a ng-click="editReview($index)">edit{{n.selected}}</a>
+            </div>
+                <div ng-if="edit_index==$index">
+                    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+                        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+                                ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                                  ng-model="n.message"></text-angular>
+                    <br>
+                    <button ng-click="saveReview($index)" class="btn btn-default btn-primary">Save{{n.selected}}</button>
+                </div>
+
+        </div>
+        <hr/>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 custom-ta-toolbar">
+            <h4>Comment:</h4>
+            <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                          ng-model="model.new_review"></text-angular>
+            <br>
+        </div>
+    </div>
+</div>
+

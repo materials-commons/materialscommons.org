@@ -1,105 +1,48 @@
 Application.Controllers.controller('projectsDataEditCreateReview',
-    ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
-        function ($scope, mcapi, User, $stateParams, alertService, pubsub) {
-            $scope.model = {
-                review_note_self: '',
-                review_note_other: '',
-                review_note: '',
-                schedule_for_self: false,
-                user_for_review: ''
-            };
-
+    ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub", "$state","dateGenerate",
+        function ($scope, mcapi, User, $stateParams, alertService, pubsub, $state, dateGenerate) {
             $scope.addReview = function () {
-                var review = {};
-                review.note = $scope.model.review_note;
-                review.item_type = "datafile";
-                review.requested_by = User.u();
-                if ($scope.model.schedule_for_self) {
-                    review.requested_to = User.u();
-                } else {
-                    review.requested_to = $scope.model.user_for_review;
-                }
-                review.item_name = $scope.doc.name;
-                review.item_id = $scope.doc.id;
+                $scope.review = {messages: []}
+                $scope.review.item_id = $scope.doc.id;
+                $scope.review.item_type = 'datafile';
+                $scope.review.item_name = $scope.doc.name;
+                $scope.review.author = User.u();
+                $scope.review.assigned_to = $scope.model.assigned_to;
+                $scope.review.status = 'open';
+                $scope.review.title = $scope.model.title;
+                $scope.review.messages.push({'message': $scope.model.new_review, 'who': User.u(), 'date': dateGenerate.new_date()});
+                $scope.saveData();
+                $scope.model.new_review = "";
+            };
+            $scope.saveData = function () {
                 mcapi('/reviews')
                     .success(function (data) {
-                        var msg = "Review/Followup has been added";
-                        $scope.data_file_id = data;
-                        alertService.sendMessage(msg);
-                        pubsub.send('reviews.change', 'review.change');
-                        mcapi('/datafiles/%/reviews', $stateParams.id)
-                            .success(function (reviews) {
-                                $scope.all_reviews = reviews;
-                            })
-                            .error(function (e) {
-                            }).jsonp();
-                    }).post(review);
-                $scope.model.schedule_for_self = false;
+                    }).post($scope.review);
             };
-
-            $scope.addReviewForOther = function () {
-                $scope.model.review_note = $scope.model.review_note_other;
-                $scope.addReview();
-                $scope.model.review_note_other = "";
-            };
-
-            $scope.addReviewNoteKeypressCallback = function () {
-                $scope.model.schedule_for_self = true;
-                $scope.model.review_note = $scope.model.review_note_self;
-                $scope.addReview();
-                $scope.model.review_note_self = "";
-
-            };
-
-            $scope.reviewStatusChanged = function (index) {
-                mcapi('/reviews/%', $scope.all_reviews[index].id)
-                    .success(function () {
-                        $scope.all_reviews.splice(index, 1);
-                        pubsub.send('reviews.change', 'review.change');
-                    }).delete();
-            };
-            $scope.reviewsCount = function () {
-                mcapi('/reviews/to_conduct')
-                    .success(function (data) {
-                        $scope.reviewsToConduct = _.filter(data, function (item) {
-                            if (item.status !== "Finished" && item.item_id === $stateParams.id) {
-                                return item;
-                            }
-                        });
-                    }).jsonp();
-            };
-
-            pubsub.waitOn($scope, 'reviews.change', function () {
-                $scope.updateReviews();
-            });
-            $scope.updateReviews = function () {
-                mcapi('/datafiles/%/reviews', $stateParams.data_id)
-                    .success(function (reviews) {
-                        $scope.all_reviews = reviews;
-                    }).jsonp();
-            }
-
-            $scope.newReview = function(){
-                $scope.newReview= true;
-
+            $scope.viewReview = function(review){
+                $state.go('projects.dataedit.editreviews', {'review_id': review.id})
             }
 
             function init() {
-                $scope.newReview= false;
-                $scope.all_reviews = [];
-                $scope.signed_in_user = User.u();
-                $scope.signed_user = User.u();
+                $scope.list_reviews = [];
+
+                mcapi('/datafile/%', $stateParams.data_id)
+                    .success(function (data) {
+                        $scope.datafile = data;
+                    }).jsonp();
                 mcapi('/datafiles/%/reviews', $stateParams.data_id)
                     .success(function (reviews) {
-                        $scope.all_reviews = reviews;
+                        $scope.list_reviews = reviews;
                     }).jsonp();
+                $scope.model = {
+                    new_review: "",
+                    assigned_to: "",
+                    title: ""
+                };
                 mcapi('/selected_users')
                     .success(function (data) {
                         $scope.users = data;
                     }).jsonp();
-
-                $scope.reviewsCount();
-
             }
 
             init();
