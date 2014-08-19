@@ -169,6 +169,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/reviews',
             templateUrl: 'application/core/projects/dataedit/reviews/reviews.html'
         })
+        .state('projects.dataedit.editreviews', {
+            url: '/review/:review_id',
+            templateUrl: 'application/core/projects/dataedit/reviews/edit-review.html'
+        })
         .state('projects.dataedit.notes', {
             url: '/notes',
             templateUrl: 'application/core/projects/dataedit/notes/notes.html'

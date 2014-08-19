@@ -1,35 +1,60 @@
 <div class="tab-content">
     <div class="tab-pane active" id="review" ng-controller="projectsDataEditCreateReview">
-        <div>
-              <button ng-click="newReview()" class="btn btn-default btn-primary" >New Review</button>
-        </div> <br>
-        <div ng-show="newReview">
-
+        <div class="row">
+            <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New</button>
         </div>
-        <div ng-hide="newReview">
-            <div class="panel panel-default">
-                <div class="panel-heading file-heading">
-                    <input type="checkbox">
-                    <span><i style="padding:5px" class="fa fa-exclamation-circle"></i><a>3 open</a></span> <span><i
-                        style="padding:5px" class="fa fa-check-circle"></i><a>10 closed</a></span>
+        <div ng-show="toggleCustom">
+            <div class="form-horizontal">
+                <h4>Review Title:</h4>
 
+                <div class="col-lg-8">
+                    <input class="form-control" ng-model="model.title">
+                </div>
+                <div class="col-lg-6 custom-ta-toolbar">
+                    <h4>Comment:</h4>
+                    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                                  ng-model="model.new_review"></text-angular>
+                    <br>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <select class="form-control" ng-model="model.assigned_to">
+                            <option disabled>-- Assign to --</option>
+                            <option ng-repeat="user in users">{{ user }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <button ng-click="addReview()" class="btn btn-default btn-primary">Submit New Review</button>
+                    </div>
                 </div>
             </div>
+        </div>
+        <br>
 
-            <div>
-                <table class="table  table-file-directory ">
-                    <tbody>
-                    <tr ng-repeat="review in all_reviews" style="cursor:pointer">
-                        <td><input type="checkbox"><i style="padding-left:10px;color:green" class="fa fa-exclamation-circle"></i></td>
-                        <td> {{review.note}}<p class="text-muted" style="font-size: 12px;">tammasr@umich.edu 08/04/2013</p>
-                        </td>
-                        <td>{{review.assigned_to}}</td>
-                        <td><i style="padding:2px" class="fa fa-comment"></i> 2</td>
-                    </tbody>
-                </table>
+        <div class="panel panel-default">
+            <div class="panel-heading file-heading">
+                <input type="checkbox">
+                <span><i style="padding:5px" class="fa fa-exclamation-circle"></i><a>3 open</a></span> <span><i
+                    style="padding:5px" class="fa fa-check-circle"></i><a>10 closed</a></span>
+
             </div>
         </div>
-
+        <div>
+            <table class="table  table-file-directory ">
+                <tbody>
+                <tr ng-click="viewReview(review)" ng-repeat="review in list_reviews" style="cursor:pointer">
+                    <td><input type="checkbox"><i style="padding-left:10px;color:green"
+                                                  class="fa fa-exclamation-circle"></i></td>
+                    <td> {{review.title}}<p class="text-muted" style="font-size: 12px;">{{review.author}}
+                        {{review.birthtime | toDateString}}</p>
+                    </td>
+                    <td>{{review.assigned_to}}</td>
+                    <td><i style="padding:2px" class="fa fa-comment"></i> {{review.messages.length -1}}</td>
+                </tbody>
+            </table>
+        </div>
 
 
         <!--<h3>Reviews:</h3>-->
