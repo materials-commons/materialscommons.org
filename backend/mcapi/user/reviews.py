@@ -68,8 +68,7 @@ def add_review():
     r.item_id = dmutil.get_required('item_id', j)
     r.title = dmutil.get_required('title', j)
     r.status = "open"
-    review_id = dmutil.insert_entry('reviews', r.__dict__)
-    return jsonify({'id': review_id})
+    return  dmutil.insert_entry('reviews', r.__dict__)
 
 @app.route('/reviews/<id>', methods=['PUT'])
 @apikey(shared=True)

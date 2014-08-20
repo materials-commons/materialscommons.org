@@ -16,6 +16,7 @@
         <div>
             <table class="table  table-file-directory ">
                 <tbody>
+
                 <tr ng-click="viewReview(review)" ng-repeat="review in list_reviews" style="cursor:pointer">
                     <td ng-if="review.status==='open'"><input type="checkbox"><i style="padding-left:10px;color:green"
                                                   class="fa fa-check-circle"></i></td>
@@ -29,6 +30,9 @@
                 </tbody>
             </table>
         </div>
+
+    <div class="row" ng-if="list_reviews.length === 0">
+        No Reviews
     </div>
     <div class="row">
         <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New Review</button>
@@ -60,5 +64,7 @@
             </div>
         </div>
     </div>
+    </div>
+
 </div>
 
