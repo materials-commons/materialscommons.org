@@ -12,11 +12,13 @@ Application.Controllers.controller('projectsDataEditCreateReview',
                 $scope.review.title = $scope.model.title;
                 $scope.review.messages.push({'message': $scope.model.new_review, 'who': User.u(), 'date': dateGenerate.new_date()});
                 $scope.saveData();
-                $scope.model.new_review = "";
             };
             $scope.saveData = function () {
                 mcapi('/reviews')
                     .success(function (data) {
+                        console.log(data)
+                        $state.go('projects.dataedit.editreviews', {'review_id': data.id})
+                        $scope.model.new_review = "";
                     }).post($scope.review);
             };
             $scope.viewReview = function(review){
