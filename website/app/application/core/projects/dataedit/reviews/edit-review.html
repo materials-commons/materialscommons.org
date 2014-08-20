@@ -1,32 +1,40 @@
 <div ng-controller="projectsDataEditEditReview">
-
+    <div class="row">
+        <a ui-sref="projects.dataedit.reviews">back to reviews list</a>
+    </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4>{{review.title}}</h4>
-
-            <p class="text-muted">author: {{review.author}}</p>
+            <div>
+               <span  ng-if="review.status==='open'">
+                    <button class="btn btn-success"><i style="padding-right: 5px" class="fa fa-check-circle"></i>open</button>
+                </span>
+                <span  ng-if="review.status==='close'">
+                    <button class="btn btn-danger"><i style="padding-right: 5px" class="fa fa-exclamation-circle"></i>closed</button>
+                </span>
+                <span class="text-muted">author: {{review.author}}</span>
+            </div>
         </div>
     </div>
 
     </hr>
-    <div class="row" ng-repeat="n in review.messages | orderBy: date">
+    <div class="row" ng-repeat="row in review.messages | orderBy: date">
         <div class="col-lg-2" style="font-size: 12px;">
-            {{n.date}} --- {{n.who}}   {{n.selected}}
+            {{row.date}} --- {{row.who}}
         </div>
         <div class="col-lg-8">
             <div ng-if="edit_index!==$index">
-                <div class="tip left" ta-bind ng-model="n.message"></div>
-                <a ng-click="editReview($index)">edit{{n.selected}}</a>
+                <div class="tip left" ta-bind ng-model="row.message"></div>
+                <a ng-click="editReview($index)">edit</a>
             </div>
-                <div ng-if="edit_index==$index">
-                    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+            <div ng-if="edit_index==$index">
+                <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
                         ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
                                 ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                                  ng-model="n.message"></text-angular>
-                    <br>
-                    <button ng-click="saveReview($index)" class="btn btn-default btn-primary">Save{{n.selected}}</button>
-                </div>
-
+                              ng-model="row.message"></text-angular>
+                <br>
+                <button ng-click="saveReview($index)" class="btn btn-default btn-primary">Save</button>
+            </div>
         </div>
         <hr/>
     </div>
@@ -36,8 +44,15 @@
             <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
         ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
         ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                          ng-model="model.new_review"></text-angular>
-            <br>
+                          ng-model="model.comment"></text-angular>
+            <div ng-if="review.status=='open'">
+                <button ng-click="addComment()" class="btn btn-default btn-primary">Comment</button>
+                <button ng-click="closeReview()" class="btn btn-default btn-danger">Close Review</button>
+            </div>
+            <div ng-if="review.status=='close'">
+                <button ng-click="addComment()" class="btn btn-default btn-primary">Comment</button>
+                <button ng-click="reOpenReview()" class="btn btn-default btn-danger">Reopen Review</button>
+            </div>
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 Application.Controllers.controller('projectsDataEditCreateReview',
-    ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub", "$state","dateGenerate",
-        function ($scope, mcapi, User, $stateParams, alertService, pubsub, $state, dateGenerate) {
+    ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub", "$state","dateGenerate", "$filter",
+        function ($scope, mcapi, User, $stateParams, alertService, pubsub, $state, dateGenerate, $filter) {
             $scope.addReview = function () {
                 $scope.review = {messages: []}
                 $scope.review.item_id = $scope.doc.id;
@@ -22,7 +22,14 @@ Application.Controllers.controller('projectsDataEditCreateReview',
             $scope.viewReview = function(review){
                 $state.go('projects.dataedit.editreviews', {'review_id': review.id})
             }
-
+            $scope.showReviews = function(status){
+                if(status == 'open'){
+                    $scope.list_reviews = $scope.open_reviews;
+                }
+                else if(status == 'close'){
+                    $scope.list_reviews = $scope.closed_reviews;
+                }
+            }
             function init() {
                 $scope.list_reviews = [];
 
@@ -30,10 +37,14 @@ Application.Controllers.controller('projectsDataEditCreateReview',
                     .success(function (data) {
                         $scope.datafile = data;
                     }).jsonp();
+
                 mcapi('/datafiles/%/reviews', $stateParams.data_id)
                     .success(function (reviews) {
                         $scope.list_reviews = reviews;
+                        $scope.open_reviews = $filter('reviewFilter')($scope.list_reviews, 'open');
+                        $scope.closed_reviews = $filter('reviewFilter')($scope.list_reviews, 'close');
                     }).jsonp();
+
                 $scope.model = {
                     new_review: "",
                     assigned_to: "",

@@ -58,7 +58,6 @@ def delete_review(id):
 @apikey(shared=True)
 @crossdomain(origin='*')
 def add_review():
-    print 'here'
     j = request.get_json()
     assigned_to = dmutil.get_required('assigned_to', j)
     author = dmutil.get_required('author', j)
@@ -71,3 +70,16 @@ def add_review():
     r.status = "open"
     review_id = dmutil.insert_entry('reviews', r.__dict__)
     return jsonify({'id': review_id})
+
+@app.route('/reviews/<id>', methods=['PUT'])
+@apikey(shared=True)
+@jsonp
+def update_review(id):
+    j = request.get_json()
+    messages = dmutil.get_optional('messages', j)
+    status = dmutil.get_optional('status', j)
+    if messages:
+        rv = r.table('reviews').get(id).update({'messages': messages}).run(g.conn)
+    if status:
+        rv = r.table('reviews').get(id).update({'status': status}).run(g.conn) 
+    return jsonify(rv)
