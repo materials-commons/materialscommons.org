@@ -24,10 +24,10 @@
             "required": false
         },
         {
-            "name": "Stage Tilt(o)",
+            "name": "Stage Tilt(°)",
             "attribute": "stage_tilt",
             "type": "number",
-            "unit": "o",
+            "unit": "°",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
