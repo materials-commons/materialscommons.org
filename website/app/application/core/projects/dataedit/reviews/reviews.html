@@ -1,51 +1,25 @@
 <div class="tab-content">
     <div class="tab-pane active" id="review" ng-controller="projectsDataEditCreateReview">
-        <div class="row">
-            <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New</button>
-        </div>
-        <div ng-show="toggleCustom">
-            <div class="form-horizontal">
-                <h4>Review Title:</h4>
-
-                <div class="col-lg-8">
-                    <input class="form-control" ng-model="model.title">
-                </div>
-                <div class="col-lg-6 custom-ta-toolbar">
-                    <h4>Comment:</h4>
-                    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                                  ng-model="model.new_review"></text-angular>
-                    <br>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <select class="form-control" ng-model="model.assigned_to">
-                            <option disabled>-- Assign to --</option>
-                            <option ng-repeat="user in users">{{ user }}</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-4">
-                        <button ng-click="addReview()" class="btn btn-default btn-primary">Submit New Review</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-
         <div class="panel panel-default">
-            <div class="panel-heading file-heading">
-                <input type="checkbox">
-                <span><i style="padding:5px" class="fa fa-exclamation-circle"></i><a>3 open</a></span> <span><i
-                    style="padding:5px" class="fa fa-check-circle"></i><a>10 closed</a></span>
-
+            <div class="panel-heading">
+                <div class="row">
+                            <span class="col-lg-8">
+                                 <i style="padding: 5px;color:green" class="fa fa-check-circle"></i><a ng-click="showReviews('open')">{{open_reviews.length}} open</a><i
+                                    style="padding: 5px;color:red" class="fa fa-exclamation-circle"></i><a ng-click="showReviews('close')">{{closed_reviews.length}} closed</a>
+                            </span>
+                            <span class="col-lg-3">
+                                  Assigned to
+                            </span>
+                </div>
             </div>
         </div>
         <div>
             <table class="table  table-file-directory ">
                 <tbody>
                 <tr ng-click="viewReview(review)" ng-repeat="review in list_reviews" style="cursor:pointer">
-                    <td><input type="checkbox"><i style="padding-left:10px;color:green"
+                    <td ng-if="review.status==='open'"><input type="checkbox"><i style="padding-left:10px;color:green"
+                                                  class="fa fa-check-circle"></i></td>
+                    <td ng-if="review.status==='close'"><input type="checkbox"><i style="padding-left:10px;color:red"
                                                   class="fa fa-exclamation-circle"></i></td>
                     <td> {{review.title}}<p class="text-muted" style="font-size: 12px;">{{review.author}}
                         {{review.birthtime | toDateString}}</p>
@@ -55,63 +29,36 @@
                 </tbody>
             </table>
         </div>
-
-
-        <!--<h3>Reviews:</h3>-->
-        <!--<table class="table table-striped mc-table-hover table-condensed mc-table">-->
-        <!--<thead>-->
-        <!--<tr>-->
-        <!--<th>From</th>-->
-        <!--<th>Who?</th>-->
-        <!--<th>Message</th>-->
-        <!--<th>Date Created</th>-->
-        <!--<th>Status</th>-->
-        <!--<th>Mark as Done</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-        <!--<tr ng-repeat="review in all_reviews" style="cursor:pointer">-->
-        <!--<td>{{ review.requested_by }}</td>-->
-        <!--<td>{{ review.requested_to }}</td>-->
-        <!--<td>{{ review.note }}</td>-->
-        <!--<td>{{ review.birthtime | toDateString }}</td>-->
-        <!--<td>{{review.status}}</td>-->
-        <!--<td ng-show="review.requested_to==signed_user">-->
-        <!--<input ng-model="review.status" ng-click="reviewStatusChanged($index)" ng-true-value="Finished"-->
-        <!--ng-false-value="InProcess" type="checkbox">-->
-        <!--</td>-->
-
-        <!--<td ng-hide="review.requested_to==signed_user">-->
-        <!--Not Authorized-->
-        <!--</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-        <!--</table>-->
-
-        <!--<cgroup label="Mark For Followup">-->
-        <!--<textarea class="form-control" ng-model="model.review_note_self" placeholder="Review Note..."-->
-        <!--type="text"></textarea>-->
-        <!--<button style="margin-top: 5px" ng-click="addReviewNoteKeypressCallback($event)" class="btn btn-default btn-info">Mark for Followup-->
-        <!--</button>-->
-        <!--</cgroup>-->
-        <!--<cgroup label="Request to Review">-->
-        <!--<textarea class="form-control" ng-model="model.review_note_other"-->
-        <!--ui-keypress="{13: 'addReviewNoteKeypressCallback($event)'}" placeholder="Review Note..."-->
-        <!--type="text"></textarea>-->
-        <!--</cgroup>-->
-        <!--<cgroup label="">-->
-        <!--<select class="form-control" ng-model="model.user_for_review"-->
-        <!--ui-select2="{placeholder: 'Select user', allowClear: true, width:'element'}" ng-multiple="false">-->
-        <!--<option></option>-->
-        <!--<option ng-repeat="user in users">{{ user }}</option>-->
-        <!--</select>-->
-
-        <!--<button style="position:absolute;margin-left: 5px" ng-click="addReviewForOther()" class="btn btn-default btn-info">Request-->
-        <!--Review-->
-        <!--</button>-->
-        <!--</cgroup>-->
-
-
+    </div>
+    <div class="row">
+        <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New Review</button>
+    </div>
+    <div ng-show="toggleCustom">
+        <div class="form-horizontal">
+            <h4>Review Title:</h4>
+            <div class="col-lg-8">
+                <input class="form-control" ng-model="model.title">
+            </div>
+            <div class="col-lg-6 custom-ta-toolbar">
+                <h4>Comment:</h4>
+                <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                              ng-model="model.new_review"></text-angular>
+                <br>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <select class="form-control" ng-model="model.assigned_to">
+                        <option disabled>-- Assign to --</option>
+                        <option ng-repeat="user in users">{{ user }}</option>
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                    <button ng-click="addReview()" class="btn btn-default btn-primary">Submit New Review</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
