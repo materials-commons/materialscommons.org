@@ -257,7 +257,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
-            dfitem.tags = build_tags(df['id'], df['name'], 'datafile', user)
+            dfitem.tags = []  # build_tags(df['id'], df['name'], 'datafile', user)
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
@@ -385,4 +385,3 @@ def build_datadir_denorm(name, owner, dir_id):
     datadir_denorm['birthtime'] = r.now()
     rr = dmutil.insert_entry_id('datadirs_denorm', datadir_denorm)
     return rr
-
