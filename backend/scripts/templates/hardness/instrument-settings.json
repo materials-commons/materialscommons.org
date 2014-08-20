@@ -36,21 +36,11 @@
         {
             "name": "Indenter" ,
             "attribute": "indenter",
-            "type": "text" ,
+            "type": "select" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Loading Rate" ,
-            "attribute": "loading_rate",
-            "type": "number" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
+            "value_choice": [{"name": "Nano", "value" : "nano"},{"name": "Vickers", "Loading Rate" : "loading_rate"}],
             "required": false
         }
     ],
