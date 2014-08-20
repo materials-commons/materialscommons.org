@@ -40,7 +40,7 @@
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "EBSD" ,
+    "template_name": "EBSD Analysis" ,
     "template_type": "process",
     "template_pick": "experiment",
     "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "ebsd-instrument-settings"}],
