@@ -24,11 +24,31 @@
             "required": false
         },
         {
+            "name": "Target Total Strain" ,
+            "attribute": "target_total_strian",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["mm/mm", "%"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
             "attribute": "temperature",
             "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
             "unit_choice": ["C", "F"],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Load Rate" ,
+            "attribute": "load_rate",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false
