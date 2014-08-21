@@ -1,3 +1,74 @@
+
+/***********Begin projectspage.html ***********/
+.project-tabs{
+    border-bottom: 1px solid #d2d2d2;
+    margin-bottom: 10px !important;
+}
+.project-tabs > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus {
+    color: white;
+    background-color: #4c9cc6;
+}
+
+.project-tabs> li > a:hover, .tabs-bottom > li > a:focus{
+    color: white;
+    background-color: #72C2EC;
+}
+
+/************End  projectspage.html ***********/
+
+/*********** Begin overview.html **************/
+.panel-default{
+    border-color: lightgrey;
+}
+.panel-info > .panel-heading {
+    background-color: #ADD8E6;
+    border-color: lightgrey;
+    color: #4b4b4b;
+}
+
+.panel-info {
+    border-color: lightgrey;
+}
+
+.panel-body.mypanel:hover {
+    opacity: 0.05;
+    filter: alpha(opacity=5);
+}
+
+.panel-body.custom-background {
+    background-color: papayawhip;
+    color: white;
+}
+.individual-items{
+    padding-left:40px;
+}
+.individual-items > ul{
+    height: 500px;
+}
+
+.individual-items.nav-tabs > li > a,
+.individual-items.nav-tabs > li.active > a,
+.individual-items.nav-tabs > li.active > a:hover,
+.individual-items.nav-tabs > li.active > a:focus, {
+    border: 1px solid #ecf0f1;
+    cursor: default;
+    outline: none;
+}
+.overview-tabs {
+    border-left: 1px solid #d2d2d2;
+}
+.overview-tabs > li.active > a:hover, .overview-tabs > li.active > a:focus {
+    color: white;
+    background-color: #4c9cc6;
+}
+.overview-tabs > li > a:hover, overview-tabs > li > a:focus {
+    color: white;
+    background-color: #72C2EC;
+}
+
+/************End overview.html ***************/
+
+
 body {
     padding-top: 0px;
     font-size: 13px;
@@ -144,15 +215,6 @@ p {
 /*width: 12%;*/
 /*}*/
 
-.individual-items.nav-tabs > li > a,
-.individual-items.nav-tabs > li.active > a,
-.individual-items.nav-tabs > li.active > a:hover,
-.individual-items.nav-tabs > li.active > a:focus, {
-    border: 1px solid #ecf0f1;
-    cursor: default;
-    outline: none;
-
-}
 
 footer {
     position: fixed;
@@ -263,15 +325,6 @@ h4, .h4, h5, .h5, h6, .h6 {
     border-radius: 35px;
 }
 
-.panel-body.mypanel:hover {
-    opacity: 0.05;
-    filter: alpha(opacity=5);
-}
-
-.panel-body.custom-background {
-    background-color: papayawhip;
-    color: white;
-}
 
 .doit {
     opacity: 0.5;
@@ -286,10 +339,6 @@ h4, .h4, h5, .h5, h6, .h6 {
 */
 .btn:focus {
     outline: none;
-}
-
-.project-tabs {
-    margin-bottom: 10px !important;
 }
 
 .marginLeft {
@@ -326,10 +375,6 @@ table-file-directory > thead > tr > td,
     border-bottom: 1px solid lightgrey;
 }
 
-.panel-default {
-    border-color: lightgrey;
-    color: grey;
-}
 
 .file-heading {
     padding: 22px 15px;
@@ -417,14 +462,7 @@ table-file-directory > thead > tr > td,
     /*min-width: 1000px;*/
 }
 
-.custom-bottom {
-    border-bottom: 1px solid #d2d2d2;
-}
 
-.custom-right {
-    border-left: 1px solid #d2d2d2;
-
-}
 
 .nav-tabs > li > a {
     margin-right: 2px;
@@ -443,24 +481,9 @@ table-file-directory > thead > tr > td,
     cursor: default;
 }
 
-.tabs-bottom > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus {
-    color: white;
-    background-color: #4c9cc6;
-}
 
-.tabs-bottom > li > a:hover, .tabs-bottom > li > a:focus{
-    color: white;
-    background-color: #72C2EC;
-}
 
-.tabs-right > li.active > a:hover, .tabs-right > li.active > a:focus {
-    color: white;
-    background-color: #4c9cc6;
-}
-.tabs-right > li > a:hover, .tabs-bottom > li > a:focus {
-    color: white;
-    background-color: #72C2EC;
-}
+
 
 #machines {
     display: none;
@@ -481,15 +504,6 @@ table-file-directory > thead > tr > td,
     width: 600px;
 }
 
-.panel-info > .panel-heading {
-    background-color: #ADD8E6;
-    border-color: lightgrey;
-    color: #4b4b4b;
-}
-
-.panel-info {
-    border-color: lightgrey;
-}
 
 .selected {
     background-color: lightgreen;
