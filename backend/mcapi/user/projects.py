@@ -386,3 +386,17 @@ def build_datadir_denorm(name, owner, dir_id):
     rr = dmutil.insert_entry_id('datadirs_denorm', datadir_denorm)
     return rr
 
+@app.route('/project/<id>/reviews')
+@apikey(shared=True)
+@jsonp
+def get_reviews_for_project(id):
+    user = access.get_user()
+    project = r.table('projects').get(id).run(g.conn)
+    if project is None:
+        return error.not_found('No such project: %s' % (id))
+    access.check(user, project['owner'])
+    reviews = list(r.table('reviews')
+                   .get_all(id, index='item_id').order_by('birthtime')
+                   .run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(reviews)
+
