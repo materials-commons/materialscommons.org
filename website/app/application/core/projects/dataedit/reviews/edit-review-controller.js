@@ -45,5 +45,4 @@ Application.Controllers.controller('projectsDataEditEditReview',
             }
 
             init();
-
         }]);
