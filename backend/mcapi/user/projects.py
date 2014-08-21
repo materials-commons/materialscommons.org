@@ -257,7 +257,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
-            dfitem.tags = build_tags(df['id'], df['name'], 'datafile', user)
+            dfitem.tags = []  # build_tags(df['id'], df['name'], 'datafile', user)
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
@@ -386,6 +386,7 @@ def build_datadir_denorm(name, owner, dir_id):
     rr = dmutil.insert_entry_id('datadirs_denorm', datadir_denorm)
     return rr
 
+
 @app.route('/project/<id>/reviews')
 @apikey(shared=True)
 @jsonp
@@ -399,4 +400,3 @@ def get_reviews_for_project(id):
                    .get_all(id, index='item_id').order_by('birthtime')
                    .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(reviews)
-
