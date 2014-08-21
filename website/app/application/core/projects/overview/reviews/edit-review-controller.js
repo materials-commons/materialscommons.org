@@ -1,6 +1,6 @@
-Application.Controllers.controller('projectsDataEditEditReview',
-    ["$scope", "mcapi", "User", "$stateParams", "dateGenerate", "$state",
-        function ($scope, mcapi, User, $stateParams, dateGenerate, $state) {
+Application.Controllers.controller('projectsOverviewEditReview',
+    ["$scope", "mcapi", "User", "$stateParams", "dateGenerate", "$state", "pubsub",
+        function ($scope, mcapi, User, $stateParams, dateGenerate, $state, pubsub) {
 
             $scope.editReview = function(index){
                 $scope.edit_index = index;
@@ -23,20 +23,22 @@ Application.Controllers.controller('projectsDataEditEditReview',
             $scope.closeReview = function(){
                 mcapi('/reviews/%', $scope.review.id)
                     .success(function (data) {
-                        $state.go('projects.dataedit.reviews')
+                        $state.go('projects.overview.reviews')
+
                     }).put({'status': 'close'});
             }
+
             $scope.reOpenReview = function(){
                 mcapi('/reviews/%', $scope.review.id)
                     .success(function (data) {
-                        $state.go('projects.dataedit.reviews')
+                        $state.go('projects.overview.reviews')
                     }).put({'status': 'open'});
             }
+
             function init() {
                 $scope.model = {
                     selected: false,
                     comment: ""
-
                 }
                 mcapi('/reviews/%', $stateParams.review_id)
                     .success(function (data) {

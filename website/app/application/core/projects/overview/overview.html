@@ -87,10 +87,6 @@
                             Drafts ({{drafts.length}}) <i class="fa fa-copy marginLeft pull-right"/>
                         </a>
                     </li>
-                    <!--<li><a ng-click="showTab('issues')" data-toggle="tab">Issues <i-->
-                    <!--class="fa fa-exclamation-circle marginLeft pull-right"></i></a></li>-->
-                    <!--class="fa fa-cog marginLeft pull-right"></i></a></li>-->
-
                     <li>
                         <a ng-click="showTab('notes')" data-toggle="tab">
                             Notes <i class="fa fa-edit marginLeft pull-right"/>
@@ -101,7 +97,10 @@
                             Settings <i class="fa fa-cogs marginLeft pull-right"/>
                         </a>
                     </li>
-
+                    <li><a ng-click="showTab('reviews')" data-toggle="tab">
+                        Reviews ({{open_reviews.length}})
+                        <i class="fa fa-comment marginLeft pull-right"></i>
+                    </a></li>
                 </ul>
             </div>
         </div>

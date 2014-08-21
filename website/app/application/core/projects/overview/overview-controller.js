@@ -1,9 +1,20 @@
 Application.Controllers.controller('projectsOverview',
-    ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts", "mcapi", "Tags","User",
-        function ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags, User) {
+    ["$scope", "$stateParams", "pubsub", "$state", "ProvDrafts", "mcapi", "Tags","User", "$filter",
+        function ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags, User, $filter) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
                 $scope.drafts = ProvDrafts.drafts;
             });
+
+            pubsub.waitOn($scope, 'open_reviews.change', function () {
+                $scope.countReviews();
+            });
+
+            $scope.countReviews = function(){
+                mcapi('/project/%/reviews', $scope.project_id)
+                    .success(function (reviews) {
+                        $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
+                    }).jsonp();
+            }
 
             pubsub.waitOn($scope, 'access.change', function () {
                 $scope.getProject();
@@ -47,6 +58,9 @@ Application.Controllers.controller('projectsOverview',
                     case "settings":
                         $state.go('projects.overview.settings');
                         break;
+                    case "reviews":
+                        $state.go('projects.overview.reviews');
+                        break;
 
                 }
             };
@@ -74,6 +88,7 @@ Application.Controllers.controller('projectsOverview',
                 $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
                 $scope.getProject();
                 $scope.loadUserTags();
+                $scope.countReviews()
             }
             init();
         }]);

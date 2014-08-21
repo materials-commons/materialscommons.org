@@ -151,6 +151,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/settings',
             templateUrl: 'application/core/projects/overview/settings/group_access.html'
         })
+        .state('projects.overview.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/projects/overview/reviews/reviews.html'
+        })
+        .state('projects.overview.editreviews', {
+            url: '/review/:review_id',
+            templateUrl: 'application/core/projects/overview/reviews/edit-review.html'
+        })
 
         /*
          ########################################################################
