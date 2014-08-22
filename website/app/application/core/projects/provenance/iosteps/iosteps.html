@@ -2,7 +2,7 @@
     <div class="col-sm-8 col-md-8 row">
         <ul class="nav nav-tabs">
             <li ng-class="{'active' : isActiveStep(step)}" ng-repeat="step in steps">
-                <a style="cursor: pointer" ng-click="showStep(step)">{{ step.name }}</a>
+                <a ng-click="showStep(step)">{{ step.name }}</a>
             </li>
         </ul>
         <form name="Form" class="form-horizontal">

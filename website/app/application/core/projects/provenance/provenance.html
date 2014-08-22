@@ -1,26 +1,26 @@
 <div class="row" ng-controller="projectsProvenance">
-    <div style="padding-left:40px" class="col-lg-8">
+    <div class="col-lg-8">
         <div class="row">
             <h4>Create Provenance</h4>
             <ul class="nav nav-tabs">
                 <li ng-class="{'active':isCurrentStep('process')}">
-                    <a style="cursor:text " ng-hide="isFinishedStep('process')">Process</a>
-                    <a style="cursor:pointer" ng-show="isFinishedStep('process')" ng-click="editStep('process')">Process
+                    <a class="no-pointer" ng-hide="isFinishedStep('process')">Process</a>
+                    <a class="cursor-pointer" ng-show="isFinishedStep('process')" ng-click="editStep('process')">Process
                         (edit)</a>
                 </li>
                 <li ng-class="{'active' : isCurrentStep('inputs')}">
-                    <a style="cursor:text " ng-hide="isFinishedStep('inputs')">Inputs</a>
-                    <a style="cursor:pointer" ng-show="isFinishedStep('inputs')" ng-click="editStep('inputs')">Inputs
+                    <a class="no-pointer" ng-hide="isFinishedStep('inputs')">Inputs</a>
+                    <a class="cursor-pointer" ng-show="isFinishedStep('inputs')" ng-click="editStep('inputs')">Inputs
                         (edit)</a>
                 </li>
                 <li ng-class="{'active' : isCurrentStep('outputs')}">
-                    <a style="cursor:text " ng-hide="isFinishedStep('outputs')">Outputs</a>
-                    <a style="cursor:pointer" ng-show="isFinishedStep('outputs')" ng-click="editStep('outputs')">Outputs
+                    <a class="no-pointer" ng-hide="isFinishedStep('outputs')">Outputs</a>
+                    <a class="cursor-pointer" ng-show="isFinishedStep('outputs')" ng-click="editStep('outputs')">Outputs
                         (edit)</a>
                 </li>
                 <li ng-class="{'active' : isCurrentStep('submit')}">
-                    <a style="cursor:text " ng-hide="isFinishedStep('submit')">Submit</a>
-                    <a style="cursor:pointer" ng-show="isFinishedStep('submit')" ng-click="editStep('submit')">Submit
+                    <a class="no-pointer" ng-hide="isFinishedStep('submit')">Submit</a>
+                    <a class="cursor-pointer" ng-show="isFinishedStep('submit')" ng-click="editStep('submit')">Submit
                         (edit)</a>
                 </li>
             </ul>
@@ -47,7 +47,7 @@
                             <display label="Notes:">
                                 <div ng-repeat="n in provenanceView.notes | orderBy: date">
                                     <div ta-bind ng-model="n.message"></div>
-                                    <div style="font-size: 12px;">
+                                    <div class="text-muted sub-text">
                                         {{n.date}} --- {{n.who}}
                                     </div>
                                     <hr/>
@@ -89,7 +89,7 @@
                                         <display label="Description:">
                                             {{vals.sample.description}}
                                         </display>
-                                        <div  ng-repeat="(name, vals) in vals.sample.properties">
+                                        <div ng-repeat="(name, vals) in vals.sample.properties">
                                             <div ng-if="name==='composition'">
                                                 <display label="{{name}}">
                                                     <ul ng-repeat="c in vals.value">

@@ -1,7 +1,8 @@
 <div ng-if="update!=='true'" class="row">
 
     <h4>Note</h4>
-    <div class="col-lg-6 custom-ta-toolbar" >
+
+    <div class="col-lg-6 custom-ta-toolbar">
         <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
         ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
         ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
@@ -27,7 +28,7 @@
             <div ng-if="edit_index!==$index">
                 <div ta-bind ng-model="n.message"></div>
             </div>
-            <div style="font-size: 12px;">
+            <div class="text-muted sub-text">
                 {{n.date}} --- {{n.who}}
             </div>
             <div ng-if="edit_index!==$index">

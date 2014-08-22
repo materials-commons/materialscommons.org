@@ -13,7 +13,7 @@
                 <display label="Notes:">
                     <div ng-repeat="n in process.notes | orderBy: date">
                         <div ta-bind ng-model="n.message"></div>
-                        <div style="font-size: 12px;">
+                        <div class="text-muted sub-text">
                             {{n.date}} --- {{n.who}}
                         </div>
                         <hr/>

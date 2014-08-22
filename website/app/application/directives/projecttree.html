@@ -1,8 +1,7 @@
 <div ng-show="treeOverview || treeActive">
     <div class="row">
-        <a style="cursor: pointer" ng-click="backToFolder(trailitem)" ng-repeat="trailitem in trail">
-            <i style="padding-left:1px;" class="fa fa-folder"/><span
-                style="margin-right: 7px; padding-left:5px; font-size: 13px">{{trailitem.displayname}}/ </span>
+        <a ng-click="backToFolder(trailitem)" ng-repeat="trailitem in trail">
+            <i class="fa fa-folder trailspace"/><span>{{trailitem.displayname}} / </span>
         </a><br>
     </div>
     <div class="panel panel-default">
@@ -12,8 +11,7 @@
             <!-- <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a> -->
-            <a ui-sref="projects.provenance" style="padding-right: 15px;color: black" class="pull-right"><i
-                    style="padding-right: 2px;" class="fa fa-code-fork"/>Add Provenance</a>
+            <a ui-sref="projects.provenance" class="pull-right prov-link"><i class="fa fa-code-fork space-right"/>Add Provenance</a>
         </div>
         <!-- <div class="panel-body" style="padding: 5px;background-color: #389DC1">
         <div class="dropdown">
@@ -42,14 +40,14 @@
                 <td ng-show="checkBox" ng-if="entry.type==='datafile'">
                     <input ng-model="entry.selected" ng-click="fileSelected(entry)"
                            ng-change="entry.selected = !entry.selected" type="checkbox">
-                    <a ng-click="populatePath(entry)"><i style="margin-right:5px;" class="fa fa-file"/>{{entry.displayname}}</a>
+                    <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
                 </td>
                 <td ng-if="entry.type=='datadir'">
-                    <a style="cursor: pointer" ng-click="openFolder(entry)"><i style="margin-right:5px;"  class="fa fa-folder"/>{{entry.displayname}}
+                    <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}
                     </a>
                 </td>
                 <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
-                    <a ng-click="populatePath(entry)"><i style="margin-right:5px;" class="fa fa-file"/>{{entry.displayname}}</a>
+                    <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
                 </td>
                 <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
                 <td ng-if="entry.type=='datadir'">-</td>
@@ -82,7 +80,7 @@
                     -
                 </div>
                 <div ng-if="entry.tags.length !==0">
-                    <td style="width: 5px;"  ng-repeat="t in entry.tags">
+                    <td class="tag-width"  ng-repeat="t in entry.tags">
                         <div tooltip="{{t.tag.name}}" class="tag-circle" style="background-color: {{t.tag.color}}"></div>
                     </td>
                 </div>
