@@ -4,9 +4,9 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-lg-8">
-                        <i class="fa fa-check-circle review-open "></i><a
+                        <i class="fa fa-check-circle review-open"></i><a
                             ng-click="showReviews('open')">{{open_reviews.length}} open</a><i
-                            class="fa fa-exclamation-circle review-close "></i><a
+                            class="fa fa-exclamation-circle review-close"></i><a
                             ng-click="showReviews('close')">{{closed_reviews.length}} closed</a>
                     </div>
                     <div class="col-lg-3">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="row">
-            <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New Review</button>
+            <button ng-click="toggleCustom = !toggleCustom" class="btn btn-primary">New Review</button>
         </div>
         <div ng-show="toggleCustom">
             <div class="form-horizontal">
