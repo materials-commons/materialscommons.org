@@ -14,8 +14,8 @@
         </div>
     </div>
     <div class="col-sm-4"  ng-if="p.name==='Composition'">
-        <li style="list-style: none" ng-repeat="c in allProperties.composition.value">
+        <ul class="no-style" ng-repeat="c in allProperties.composition.value">
             <span>{{c.element}} - {{c.value}} {{allProperties.composition.unit}}</span>
-        </li>
+        </ul>
     </div>
 </div>

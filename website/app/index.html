@@ -44,7 +44,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" style="color: #FDDF5B;"
+        <a class="navbar-brand" style=""
            ng-click="goHome()">MaterialsCommons</a>
     </div>
     <div class="collapse navbar-collapse">
@@ -63,26 +63,25 @@
             <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
         </ul>
 
-        <ul ng-show="email_address" class="nav navbar-nav navbar-right" style="padding-right: 15px;">
-            <li ng-class="{ navactive: isActiveStep('projects') }"><a ng-click="showStep('projects')"ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase"></i>
+        <ul ng-show="email_address" class="nav navbar-nav navbar-right">
+            <li ng-class="{ navactive: isActiveStep('projects') }"><a ng-click="showStep('projects')"ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase space-right"></i>
                 Projects</a></li>
-            <li ng-class="{ navactive: isActiveStep('reviews') }"><a ui-sref="reviews" ng-click="showStep('reviews')" class="navbar-link"><i style="padding-right: 5px" class="fa fa-comment"></i>
+            <li ng-class="{ navactive: isActiveStep('reviews') }"><a ui-sref="reviews" ng-click="showStep('reviews')" class="navbar-link"><i class="fa fa-comment space-right"></i>
                 Reviews</a></li>
             <li ng-class="{ navactive: isActiveStep('machines') }">
-                <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i style="padding-right: 5px" class="fa fa-gears"></i> Machines</a></li>
+                <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i class="fa fa-gears space-right"></i> Machines</a></li>
 
-            <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown" style="border-left: 1px solid lightgray">
-                <a ng-click="showStep('email')" class="dropdown-toggle"><i style="padding-right: 5px" class="fa fa-user"></i>{{email_address}} <span class="caret"></span></a>
+            <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
+                <a ng-click="showStep('email')" class="dropdown-toggle"><i class="fa fa-user space-right"></i>{{email_address}} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="showStep('email')" ui-sref="account.password"><i class="fa fa-unlock-alt" style="padding-right: 5px"></i> Change
+                    <li><a ng-click="showStep('email')" ui-sref="account.password"><i class="fa fa-unlock-alt space-right"></i> Change
                         Password</a></li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i style="padding-right: 5px"
-                                                          class="fa fa-user"></i>UserGroups</a></li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.templates"><i style="padding-right: 5px" class="fa fa-list-alt"></i>Templates</a>
+                    <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i class="fa fa-user space-right"></i>UserGroups</a></li>
+                    <li><a ng-click="showStep('email')" ui-sref="account.templates"><i class="fa fa-list-alt space-right"></i>Templates</a>
                     </li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i style="padding-right: 5px" class="fa fa-key"></i>Apikey</a></li>
+                    <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i class="fa fa-key space-right"></i>Apikey</a></li>
                     <li class=divider></li>
-                    <li><a ng-click="showStep('email')" ui-sref="logout"> <i style="padding-right: 5px" class="fa fa-sign-out"></i> Logout</a></li>
+                    <li><a ng-click="showStep('email')" ui-sref="logout"> <i class="fa fa-sign-out space-right"></i> Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -242,7 +241,6 @@
 <script src="application/directives/view-processes-directive.js"></script>
 <script src="application/directives/file-report-directive.js"></script>
 <script src="application/directives/notes-directive.js"></script>
-<script src="application/directives/review-directive.js"></script>
 
 <!-------------------------------- Global services --------------------------------->
 <script src="application/services/user-service.js"></script>

@@ -79,6 +79,7 @@
 .cursor-pointer{
     cursor: pointer;
 }
+
 .text-muted.sub-text{
     font-size: 12px;
 }
@@ -173,29 +174,40 @@
     padding-left:25px;
 }
 /************End dataedit.html **************************/
-
-body {
-    padding-top: 0px;
-    font-size: 13px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background-color: #fafafa;
+/************Begin provenance.html **************************/
+.no-pointer{
+    cursor: text;
 }
-
-.validation-invalid {
-    color: #FF4136;
+/************End provenance.html **************************/
+/************Begin iterate properties.html **************************/
+.no-style{
+    list-style: none;
 }
+/************End iterate properties.html **************************/
 
-/*************************************************All about table th, td, hover *************************/
-
-.pagination {
-    text-align: center;
-    cursor: pointer;
+/************Begin projecttree.html **************************/
+.fa.fa-folder.trailspace{
+    padding-left: 2px;
+    padding-right: 3px;
 }
-
-/*******************************************************************************************************/
-
-/*************************************************All about top navigation bar *************************/
+.fa.fa-code-fork.space-right{
+    padding-right: 3px;
+}
+a.prov-link{
+    padding-right: 15px;
+    color: black;
+}
+.fa.fa-file.space-right{
+    padding-right: 5px;
+}
+.fa.fa-folder.space-right{
+    padding-right: 5px;
+}
+td.tag-width{
+    width: 5px;
+}
+/************End projecttree.html **************************/
+/************Begin index.html *****************************/
 .navbar-custom {
     background-color: #0C5C86;
     color: #ffffff;
@@ -227,6 +239,9 @@ body {
     height: 40px;
     padding-top: 0;
 }
+.navbar.navbar-custom > .navbar-header > .navbar-brand{
+    color: #FDDF5B;
+}
 
 .navbar-custom .navbar-toggle {
     background-color: #eeeeee;
@@ -240,6 +255,59 @@ body {
     margin-bottom: 2px;
     min-height: 15px !important;
 }
+.fa.fa-briefcase.space-right{
+    padding-right:5px;
+}
+.fa.fa-comment.space-right{
+    padding-right:5px;
+}
+.fa.fa-gears.space-right{
+    padding-right:5px;
+}
+.fa.fa-user.space-right{
+    padding-right:5px;
+}
+.dropdown.divider{
+    border-left: 1px solid lightgray;
+}
+.fa.fa-unlock-alt.space-right{
+    padding-right:5px;
+}
+.fa.fa-list-alt.space-right{
+    padding-right:5px;
+}
+.fa.fa-key.space-right{
+    padding-right:5px;
+}
+.fa.fa-sign-out.space-right{
+    padding-right:5px;
+}
+
+/************End index.html **************************/
+
+
+body {
+    padding-top: 0px;
+    font-size: 13px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #fafafa;
+}
+
+/*.validation-invalid {*/
+    /*color: #FF4136;*/
+/*}*/
+
+/*************************************************All about table th, td, hover *************************/
+
+/*.pagination {*/
+    /*text-align: center;*/
+    /*cursor: pointer;*/
+/*}*/
+
+/*******************************************************************************************************/
+
+/*************************************************All about top navigation bar *************************/
 
 /*************************************This controls the height,  padding, and border radius and space between(margin bottom) of all input elements******/
 .form-horizontal
