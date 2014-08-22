@@ -2,15 +2,15 @@
     <div class="row">
         <a ui-sref="projects.overview.reviews">back to reviews list</a>
     </div>
-    <div class="panel panel-default">
+    <div class="row panel panel-default">
         <div class="panel-heading">
             <h4>{{review.title}}</h4>
             <div>
                <span  ng-if="review.status==='open'">
-                    <button class="btn btn-success"><i style="padding-right: 5px" class="fa fa-check-circle"></i>open</button>
+                    <button class="btn btn-success"><i class="fa fa-check-circle"></i>open</button>
                 </span>
                 <span  ng-if="review.status==='close'">
-                    <button class="btn btn-danger"><i style="padding-right: 5px" class="fa fa-exclamation-circle"></i>closed</button>
+                    <button class="btn btn-danger"><i class="fa fa-exclamation-circle"></i>closed</button>
                 </span>
                 <span class="text-muted">author: {{review.author}}</span>
             </div>
@@ -19,7 +19,7 @@
 
     </hr>
     <div class="row" ng-repeat="row in review.messages | orderBy: date">
-        <div class="col-lg-2" style="font-size: 12px;">
+        <div class="col-lg-2 text-muted sub-text">
             {{row.date}} --- {{row.who}}
         </div>
         <div class="col-lg-8">
@@ -36,7 +36,6 @@
                 <button ng-click="saveReview($index)" class="btn btn-default btn-primary">Save</button>
             </div>
         </div>
-        <hr/>
     </div>
     <div class="row">
         <div class="col-lg-6 custom-ta-toolbar">
