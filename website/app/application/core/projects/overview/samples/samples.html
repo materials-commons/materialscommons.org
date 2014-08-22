@@ -1,6 +1,5 @@
 <div ng-controller="projectsOverviewSamples">
-    <button class="btn btn-default btn-success" ng-click="toggleCustom = !toggleCustom"><i style="padding-right:5px;"
-                                                                                           class="fa fa-plus-square"></i>New
+    <button class="btn btn-success" ng-click="toggleCustom = !toggleCustom"><i class="fa fa-plus-square"></i>New
         Sample
     </button>
     <div saved-notification="" message="message"></div>
@@ -151,8 +150,7 @@
                         </td>
                         <td ng-if="sample.available===true">
                             <i class="fa fa-check available"></i>
-                            <a ng-click="editAvailability(sample)"
-                               style="padding-left: 10px;">edit</a>
+                            <a ng-click="editAvailability(sample)">edit</a>
 
                             <div ng-show="sample.id == chosen_sample.id">
                                 <input type="radio" ng-model="bk.available" value="1">
@@ -166,8 +164,7 @@
                         </td>
                         <td ng-if="sample.available===false">
                             <i class="fa fa-times notavailable"></i>
-                            <a ng-click="editAvailability(sample)"
-                               style="padding-left: 10px;">edit</a>
+                            <a ng-click="editAvailability(sample)">edit</a>
 
                             <div ng-show="sample.id == chosen_sample.id">
                                 <input type="radio" ng-model="bk.available" value="1">

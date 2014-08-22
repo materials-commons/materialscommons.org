@@ -101,7 +101,7 @@
 
 .tip {
     border: 1px solid #ccc;
-    padding: 5px;
+    padding: 10px;
     position: relative;
     width: 200px;
 }
@@ -146,8 +146,33 @@
     top: 22px;
 }
 
-
 /************End overview/reviews.html *****************/
+/************Begin samples.html ************************/
+.btn.btn-success > .fa.fa-plus-square{
+    padding-right: 5px;
+}
+.fa.fa-check.available {
+    color: green;
+    padding-right: 10px;
+}
+
+.fa.fa-times.notavailable {
+    color: red;
+    padding-right: 10px;
+}
+
+/************End samples.html **************************/
+/************Begin dataedit.html **************************/
+.fa.fa-expand.space-right{
+    padding-right: 5px;
+}
+.fa.fa-download.space-right{
+    padding-right:5px;
+}
+.image-space-left{
+    padding-left:25px;
+}
+/************End dataedit.html **************************/
 
 body {
     padding-top: 0px;
@@ -363,15 +388,7 @@ h4, .h4, h5, .h5, h6, .h6 {
     overflow-x: hidden;
 }
 
-.fa-check,
-.available {
-    color: limegreen;
-}
 
-.fa-times,
-.notavailable {
-    color: red;
-}
 
 /*.modal-backdrop {*/
 /*background-color: none;*/
