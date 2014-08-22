@@ -2,7 +2,7 @@ Application.Controllers.controller('projectsDataEditCreateReview',
     ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub", "$state","dateGenerate", "$filter",
         function ($scope, mcapi, User, $stateParams, alertService, pubsub, $state, dateGenerate, $filter) {
             $scope.addReview = function () {
-                $scope.review = {messages: []}
+                $scope.review = {messages: []};
                 $scope.review.item_id = $scope.doc.id;
                 $scope.review.item_type = 'datafile';
                 $scope.review.item_name = $scope.doc.name;
@@ -17,13 +17,13 @@ Application.Controllers.controller('projectsDataEditCreateReview',
             $scope.saveData = function () {
                 mcapi('/reviews')
                     .success(function (data) {
-                        $state.go('projects.dataedit.editreviews', {'review_id': data.id})
+                        $state.go('projects.dataedit.editreviews', {'review_id': data.id});
                         $scope.model.new_review = "";
                     }).post($scope.review);
             };
             $scope.viewReview = function(review){
-                $state.go('projects.dataedit.editreviews', {'review_id': review.id})
-            }
+                $state.go('projects.dataedit.editreviews', {'review_id': review.id});
+            };
             $scope.showReviews = function(status){
                 $scope.status = status;
                 if(status === 'open'){
@@ -32,17 +32,17 @@ Application.Controllers.controller('projectsDataEditCreateReview',
                 else if(status === 'close'){
                     $scope.list_reviews = $scope.closed_reviews;
                 }
-            }
+            };
             $scope.loadReviews = function(id){
                 mcapi('/datafiles/%/reviews', $stateParams.data_id)
                     .success(function (reviews) {
                         $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
                         $scope.closed_reviews = $filter('reviewFilter')(reviews, 'close');
                         $scope.list_reviews =  $scope.open_reviews;
-                        $scope.status = 'open'
-                        pubsub.send('open_reviews.change')
+                        $scope.status = 'open';
+                        pubsub.send('open_reviews.change');
                     }).jsonp();
-            }
+            };
             function init() {
                 $scope.list_reviews = [];
                 $scope.loadReviews();
