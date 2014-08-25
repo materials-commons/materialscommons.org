@@ -10,9 +10,16 @@ Application.Controllers.controller('Projects',
                     $state.go('projects.provenance');
                 }
             });
+            $scope.createProject = function(){
+                mcapi('/projects')
+                    .success(function (data) {
+                    }).post({'name': $scope.bk.name});
+            }
 
             function init() {
-
+                $scope.bk= {
+                    name: ''
+                }
                 $scope.from = ProjectPath.get_from();
                 Projects.getList().then(function (data) {
                     $scope.model = {

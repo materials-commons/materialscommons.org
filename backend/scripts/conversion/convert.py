@@ -48,10 +48,13 @@ def convert_groups(conn):
             }
             r.table('access').insert(access).run(conn)
 
+def add_preferences(conn):
+    rr = r.table('users').update({'preferences': {'tags': [], 'templates': []}}).run(conn)
 
 def main(conn):
     print "Beginning conversion steps:"
     convert_groups(conn)
+    add_preferences(conn)
     print "Finished."
 
 if __name__ == "__main__":

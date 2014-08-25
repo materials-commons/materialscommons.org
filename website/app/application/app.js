@@ -127,7 +127,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.overview.files', {
             url: '/files',
             templateUrl: 'application/core/projects/overview/files/files.html',
-            onExit: function(ProjectPath){
+            onExit: function (ProjectPath) {
                 ProjectPath.set_from(false)
             }
         })
@@ -151,6 +151,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/settings',
             templateUrl: 'application/core/projects/overview/settings/group_access.html'
         })
+        .state('projects.overview.reviews', {
+            url: '/reviews',
+            templateUrl: 'application/core/projects/overview/reviews/reviews.html'
+        })
+        .state('projects.overview.editreviews', {
+            url: '/review/:review_id',
+            templateUrl: 'application/core/projects/overview/reviews/edit-review.html'
+        })
 
         /*
          ########################################################################
@@ -168,6 +176,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.dataedit.reviews', {
             url: '/reviews',
             templateUrl: 'application/core/projects/dataedit/reviews/reviews.html'
+        })
+        .state('projects.dataedit.editreviews', {
+            url: '/review/:review_id',
+            templateUrl: 'application/core/projects/dataedit/reviews/edit-review.html'
         })
         .state('projects.dataedit.notes', {
             url: '/notes',

@@ -234,6 +234,8 @@ def build_tree(datadirs):
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
                        ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
+        user = access.get_user()
+        ditem.tags = build_tags(ddir['id'], ddir['name'], 'datadir', user)
         ditem.c_id = next_id
         next_id = next_id + 1
         #
@@ -255,6 +257,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
+            dfitem.tags = []  # build_tags(df['id'], df['name'], 'datafile', user)
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
@@ -270,6 +273,11 @@ def build_tree(datadirs):
             parent.children.append(ditem)
             all_data_dirs[parent_name] = parent
     return json.dumps(top_level_dirs, cls=DEncoder2)
+
+
+def build_tags(id, name, type, user):
+    tags2item = list(r.table('items2tags').filter({'item_id': id, 'item_type': type, 'user': user}).run(g.conn))
+    return tags2item
 
 
 @app.route('/project/provenance/<project_id>', methods=['GET'])
@@ -347,7 +355,7 @@ def create_project():
     datadir_id = make_toplevel_datadir(j, user)
     proj = project.Project(name, datadir_id, user)
     project_id = dmutil.insert_entry_id('projects', proj.__dict__)
-    proj2datadir = {'project_id': project_id, 'datadir_id': proj.datadir}
+    proj2datadir = {'project_id': project_id, 'datadir_id': datadir_id}
     dmutil.insert_entry('project2datadir', proj2datadir)
     return args.json_as_format_arg(proj2datadir)
 
@@ -364,4 +372,31 @@ def make_toplevel_datadir(j, user):
     name = dmutil.get_required('name', j)
     access = dmutil.get_optional('access', j, "private")
     ddir = datadir.DataDir(name, access, user, "")
-    return dmutil.insert_entry_id('datadirs', ddir.__dict__)
+    dir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
+    build_datadir_denorm(name, user, dir_id)
+    return dir_id
+
+def build_datadir_denorm(name, owner, dir_id):
+    datadir_denorm = dict()
+    datadir_denorm['name'] = name
+    datadir_denorm['owner'] = owner
+    datadir_denorm['datafiles'] = []
+    datadir_denorm['id'] = dir_id
+    datadir_denorm['birthtime'] = r.now()
+    rr = dmutil.insert_entry_id('datadirs_denorm', datadir_denorm)
+    return rr
+
+
+@app.route('/project/<id>/reviews')
+@apikey(shared=True)
+@jsonp
+def get_reviews_for_project(id):
+    user = access.get_user()
+    project = r.table('projects').get(id).run(g.conn)
+    if project is None:
+        return error.not_found('No such project: %s' % (id))
+    access.check(user, project['owner'])
+    reviews = list(r.table('reviews')
+                   .get_all(id, index='item_id').order_by('birthtime')
+                   .run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(reviews)

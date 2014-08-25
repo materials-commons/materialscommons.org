@@ -23,7 +23,7 @@ Application.Controllers.controller('accountTemplates',
         $scope.updatePreferences = function () {
             mcapi('/user/%/templates', User.u())
                 .success(function (data) {
-                    alertService.sendMessage("Preferred templates have been updated");
+                    //alertService.sendMessage("Preferred templates have been updated");
                 }).put({'templates': $scope.preferred_templates});
         };
 

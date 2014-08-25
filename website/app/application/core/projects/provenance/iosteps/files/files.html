@@ -1,6 +1,7 @@
-<div ng-controller="projectsProvenanceIOStepsFiles"> <br>
+<div ng-controller="projectsProvenanceIOStepsFiles"><br>
+
     <div class="row">
-        <div >
+        <div>
             <label>Please select files below.</label>
             <h6>Selected files:</h6>
             <ul>
@@ -15,5 +16,16 @@
     </div>
     <div class="row">
         <project-tree project="{{ project_id }}" from="" tree-overview="true" check-box="true"></project-tree>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Choose files from different project:</label>
+            <div class="col-lg-6">
+               <select class="form-control" ng-model="bk.selected_project"
+                       ng-options="pr.name for pr in projects">
+               </select>
+           </div>
+                <button ng-click="selectProject()" class="btn btn-info">Select</button>
+        </div><br>
     </div>
 </div>

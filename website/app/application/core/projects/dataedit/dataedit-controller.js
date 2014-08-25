@@ -1,7 +1,15 @@
 Application.Controllers.controller('projectsDataEdit',
-    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath", "Projects",
-        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath, Projects) {
-
+    ["$scope", "$window", "mcapi", "alertService", "$state", "$stateParams", "pubsub", "User", "ProjectPath", "Projects","$filter",
+        function ($scope, $window, mcapi, alertService, $state, $stateParams, pubsub, User, ProjectPath, Projects, $filter) {
+            pubsub.waitOn($scope, 'open_reviews.change', function () {
+                $scope.countReviews();
+            });
+            $scope.countReviews = function(){
+                mcapi('/datafiles/%/reviews', $scope.id)
+                    .success(function (reviews) {
+                        $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
+                    }).jsonp();
+            }
             $scope.setupAccessToUserFile = function () {
                 if (isImage($scope.doc.name)) {
                     $scope.fileType = "image";
@@ -74,6 +82,7 @@ Application.Controllers.controller('projectsDataEdit',
                     $scope.pullDirectoryPath();
 
                 }
+                $scope.countReviews();
             }
 
             init();

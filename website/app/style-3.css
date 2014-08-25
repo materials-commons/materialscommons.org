@@ -40,6 +40,11 @@ body {
     background-color: #002953;
 }
 
+.navactive {
+    text-decoration: none;
+    background-color: #002953;
+}
+
 .navbar-custom .navbar-brand {
     color: #eeeeee;
     line-height: 40px;
@@ -491,6 +496,68 @@ table-file-directory > thead > tr > td,
 }
 .list-group-item{
     border: 1px solid #dadedf;
+}
+
+.left {
+    width: 600px !important;
+    padding-bottom: 40px;
+    min-height: auto !important;
+    padding-right: 0;
+    float: left;
+}
+
+.left > p:first-of-type {
+    padding: 5px 10px;
+    margin-bottom: 40px;
+}
+
+.tip {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1.2em;
+    position: relative;
+    width: 200px;
+}
+
+.tip:before {
+    position: absolute;
+    top: -14px;
+    left: 98px;
+    display: inline-block;
+    border-right: 14px solid transparent;
+    border-bottom: 14px solid #fff;
+    border-left: 14px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    content: '';
+}
+
+.tip:after {
+    position: absolute;
+    top: -12px;
+    left: 99px;
+    display: inline-block;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid #fff;
+    border-left: 12px solid transparent;
+    content: '';
+}
+
+.tip.left:before {
+    border-top: 14px solid transparent;
+    border-right: 14px solid #fff;
+    border-bottom: 14px solid transparent;
+    border-right-color: rgba(0, 0, 0, 0.2);
+    left: -28px;
+    top: 20px;
+}
+
+.tip.left:after {
+    border-top: 12px solid transparent;
+    border-right: 12px solid #fff;
+    border-bottom: 12px solid transparent;
+    left: -24px;
+    top: 22px;
 }
 
 
