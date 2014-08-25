@@ -22,6 +22,10 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         $scope.getProject();
     });
 
+    pubsub.waitOn($scope, 'notes.add', function getNotes() {
+        $scope.getProject();
+    });
+
     $scope.countDrafts = function () {
         if ($scope.project_id === "") {
             return;
@@ -63,7 +67,6 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         case "reviews":
             $state.go('projects.overview.reviews');
             break;
-
         }
     };
 
@@ -88,7 +91,6 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         };
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;
-        $scope.processes = [];
         $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
         $scope.getProject();
         $scope.loadUserTags();

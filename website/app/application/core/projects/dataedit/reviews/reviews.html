@@ -6,7 +6,7 @@
                             <span class="col-lg-8">
                                  <i class="fa fa-check-circle review-open"></i><a
                                     ng-click="showReviews('open')">{{open_reviews.length}} open</a><i
-                                    class="fa fa-exclamation-circle review-close"></i><a
+                                    class="fa fa-minus-circle review-close"></i><a
                                     ng-click="showReviews('close')">{{closed_reviews.length}} closed</a>
                             </span>
                             <span class="col-lg-3">
@@ -20,7 +20,7 @@
                 <tbody>
                 <tr ng-click="viewReview(review)" ng-repeat="review in list_reviews" class="cursor:pointer">
                     <td ng-if="review.status==='open'"><input type="checkbox"><i class="fa fa-check-circle review-open"></i></td>
-                    <td ng-if="review.status==='close'"><input type="checkbox"><i class="fa fa-exclamation-circle review-close"></i>
+                    <td ng-if="review.status==='close'"><input type="checkbox"><i class="fa fa-minus-circle review-close"></i>
                     </td>
                     <td> {{review.title}}<p class="text-muted sub-text">{{review.author}}
                         {{review.birthtime | toDateString}}</p>
@@ -70,4 +70,3 @@
         </div>
     </div>
 </div>
-

@@ -1,308 +1,307 @@
-
 /***********Begin projectspage.html ***********/
 .project-tabs{
-    border-bottom: 1px solid #d2d2d2;
-    margin-bottom: 10px !important;
+  border-bottom: 1px solid #d2d2d2;
+  margin-bottom: 10px !important;
 }
 .project-tabs > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus {
-    color: white;
-    background-color: #4c9cc6;
+  color: white;
+  background-color: #4c9cc6;
 }
 
 .project-tabs> li > a:hover, .tabs-bottom > li > a:focus{
-    color: white;
-    background-color: #72C2EC;
+  color: white;
+  background-color: #72C2EC;
 }
 
 /************End  projectspage.html ***********/
 
 /*********** Begin overview.html **************/
 .panel-default{
-    border-color: lightgrey;
+  border-color: lightgrey;
 }
 .panel-info > .panel-heading {
-    background-color: #ADD8E6;
-    border-color: lightgrey;
-    color: #4b4b4b;
+  background-color: #ADD8E6;
+  border-color: lightgrey;
+  color: #4b4b4b;
 }
 
 .panel-info {
-    border-color: lightgrey;
+  border-color: lightgrey;
 }
 
 .panel-body.mypanel:hover {
-    opacity: 0.05;
-    filter: alpha(opacity=5);
+  opacity: 0.05;
+  filter: alpha(opacity=5);
 }
 
 .panel-body.custom-background {
-    background-color: papayawhip;
-    color: white;
+  background-color: papayawhip;
+  color: white;
 }
 .individual-items{
-    padding-left:40px;
+  padding-left:40px;
 }
 .individual-items > ul{
-    height: 500px;
+  height: 500px;
 }
 
 .individual-items.nav-tabs > li > a,
 .individual-items.nav-tabs > li.active > a,
 .individual-items.nav-tabs > li.active > a:hover,
 .individual-items.nav-tabs > li.active > a:focus, {
-    border: 1px solid #ecf0f1;
-    cursor: default;
-    outline: none;
+  border: 1px solid #ecf0f1;
+  cursor: default;
+  outline: none;
 }
 .overview-tabs {
-    border-left: 1px solid #d2d2d2;
+  border-left: 1px solid #d2d2d2;
 }
 .overview-tabs > li.active > a:hover, .overview-tabs > li.active > a:focus {
-    color: white;
-    background-color: #4c9cc6;
+  color: white;
+  background-color: #4c9cc6;
 }
 .overview-tabs > li > a:hover, overview-tabs > li > a:focus {
-    color: white;
-    background-color: #72C2EC;
+  color: white;
+  background-color: #72C2EC;
 }
 
 /************End overview.html **************************/
 /************Begin overview/reviews.html ***************/
 .fa.fa-check-circle.review-open{
-    padding: 8px;
-    color:green
+  padding: 8px;
+  color:green
 }
-.fa.fa-exclamation-circle.review-close{
-    padding: 8px;
-    color:red
+.fa.fa-minus-circle.review-close{
+  padding: 8px;
+  color:red
 }
 .cursor-pointer{
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .text-muted.sub-text{
-    font-size: 12px;
+  font-size: 12px;
 }
-.btn.btn-success > .fa.fa-check-circle, .btn.btn-danger > .fa.fa-exclamation-circle{
-    padding-right: 6px;
+.btn.btn-success > .fa.fa-check-circle, .btn.btn-danger > .fa.fa-minus-circle {
+  padding-right: 6px;
 }
 
 .left {
-    width: 600px !important;
-    padding-bottom: 40px;
-    min-height: auto !important;
-    padding-right: 0;
-    float: left;
+  width: 600px !important;
+  padding-bottom: 40px;
+  min-height: auto !important;
+  padding-right: 0;
+  float: left;
 }
 
 .left > p:first-of-type {
-    padding: 5px 10px;
-    margin-bottom: 40px;
+  padding: 5px 10px;
+  margin-bottom: 40px;
 }
 
 .tip {
-    border: 1px solid #ccc;
-    padding: 10px;
-    position: relative;
-    width: 200px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  position: relative;
+  width: 200px;
 }
 
 .tip:before {
-    position: absolute;
-    top: -14px;
-    left: 98px;
-    display: inline-block;
-    border-right: 14px solid transparent;
-    border-bottom: 14px solid #fff;
-    border-left: 14px solid transparent;
-    border-bottom-color: rgba(0, 0, 0, 0.2);
-    content: '';
+  position: absolute;
+  top: -14px;
+  left: 98px;
+  display: inline-block;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid #fff;
+  border-left: 14px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  content: '';
 }
 
 .tip:after {
-    position: absolute;
-    top: -12px;
-    left: 99px;
-    display: inline-block;
-    border-right: 12px solid transparent;
-    border-bottom: 12px solid #fff;
-    border-left: 12px solid transparent;
-    content: '';
+  position: absolute;
+  top: -12px;
+  left: 99px;
+  display: inline-block;
+  border-right: 12px solid transparent;
+  border-bottom: 12px solid #fff;
+  border-left: 12px solid transparent;
+  content: '';
 }
 
 .tip.left:before {
-    border-top: 14px solid transparent;
-    border-right: 14px solid #fff;
-    border-bottom: 14px solid transparent;
-    border-right-color: rgba(0, 0, 0, 0.2);
-    left: -28px;
-    top: 20px;
+  border-top: 14px solid transparent;
+  border-right: 14px solid #fff;
+  border-bottom: 14px solid transparent;
+  border-right-color: rgba(0, 0, 0, 0.2);
+  left: -28px;
+  top: 20px;
 }
 
 .tip.left:after {
-    border-top: 12px solid transparent;
-    border-right: 12px solid #fff;
-    border-bottom: 12px solid transparent;
-    left: -24px;
-    top: 22px;
+  border-top: 12px solid transparent;
+  border-right: 12px solid #fff;
+  border-bottom: 12px solid transparent;
+  left: -24px;
+  top: 22px;
 }
 
 /************End overview/reviews.html *****************/
 /************Begin samples.html ************************/
 .btn.btn-success > .fa.fa-plus-square{
-    padding-right: 5px;
+  padding-right: 5px;
 }
 .fa.fa-check.available {
-    color: green;
-    padding-right: 10px;
+  color: green;
+  padding-right: 10px;
 }
 
 .fa.fa-times.notavailable {
-    color: red;
-    padding-right: 10px;
+  color: red;
+  padding-right: 10px;
 }
 
 /************End samples.html **************************/
 /************Begin dataedit.html **************************/
 .fa.fa-expand.space-right{
-    padding-right: 5px;
+  padding-right: 5px;
 }
 .fa.fa-download.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .image-space-left{
-    padding-left:25px;
+  padding-left:25px;
 }
 /************End dataedit.html **************************/
 /************Begin provenance.html **************************/
 .no-pointer{
-    cursor: text;
+  cursor: text;
 }
 /************End provenance.html **************************/
 /************Begin iterate properties.html **************************/
 .no-style{
-    list-style: none;
+  list-style: none;
 }
 /************End iterate properties.html **************************/
 
 /************Begin projecttree.html **************************/
 .fa.fa-folder.trailspace{
-    padding-left: 2px;
-    padding-right: 3px;
+  padding-left: 2px;
+  padding-right: 3px;
 }
 .fa.fa-code-fork.space-right{
-    padding-right: 3px;
+  padding-right: 3px;
 }
 a.prov-link{
-    padding-right: 15px;
-    color: black;
+  padding-right: 15px;
+  color: black;
 }
 .fa.fa-file.space-right{
-    padding-right: 5px;
+  padding-right: 5px;
 }
 .fa.fa-folder.space-right{
-    padding-right: 5px;
+  padding-right: 5px;
 }
 td.tag-width{
-    width: 5px;
+  width: 5px;
 }
 /************End projecttree.html **************************/
 /************Begin index.html *****************************/
 .navbar-custom {
-    background-color: #0C5C86;
-    color: #ffffff;
-    border-radius: 0;
+  background-color: #0C5C86;
+  color: #ffffff;
+  border-radius: 0;
 }
 
 .navbar-custom .navbar-nav > li > a {
-    padding-left: 20px;
-    padding-right: 20px;
-    line-height: 40px;
-    height: 40px;
-    padding-top: 0;
-    color: #ffffff;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 40px;
+  height: 40px;
+  padding-top: 0;
+  color: #ffffff;
 }
 
 .navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
-    text-decoration: none;
-    background-color: #002953;
+  text-decoration: none;
+  background-color: #002953;
 }
 
 .navactive {
-    text-decoration: none;
-    background-color: #002953;
+  text-decoration: none;
+  background-color: #002953;
 }
 
 .navbar-custom .navbar-brand {
-    color: #eeeeee;
-    line-height: 40px;
-    height: 40px;
-    padding-top: 0;
+  color: #eeeeee;
+  line-height: 40px;
+  height: 40px;
+  padding-top: 0;
 }
 .navbar.navbar-custom > .navbar-header > .navbar-brand{
-    color: #FDDF5B;
+  color: #FDDF5B;
 }
 
 .navbar-custom .navbar-toggle {
-    background-color: #eeeeee;
+  background-color: #eeeeee;
 }
 
 .navbar-custom .icon-bar {
-    background-color: #0C5C86;
+  background-color: #0C5C86;
 }
 
 .navbar {
-    margin-bottom: 2px;
-    min-height: 15px !important;
+  margin-bottom: 2px;
+  min-height: 15px !important;
 }
 .fa.fa-briefcase.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .fa.fa-comment.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .fa.fa-gears.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .fa.fa-user.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .dropdown.divider{
-    border-left: 1px solid lightgray;
+  border-left: 1px solid lightgray;
 }
 .fa.fa-unlock-alt.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .fa.fa-list-alt.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .fa.fa-key.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 .fa.fa-sign-out.space-right{
-    padding-right:5px;
+  padding-right:5px;
 }
 
 /************End index.html **************************/
 
 
 body {
-    padding-top: 0px;
-    font-size: 13px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background-color: #fafafa;
+  padding-top: 0px;
+  font-size: 13px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #fafafa;
 }
 
 /*.validation-invalid {*/
-    /*color: #FF4136;*/
+/*color: #FF4136;*/
 /*}*/
 
 /*************************************************All about table th, td, hover *************************/
 
 /*.pagination {*/
-    /*text-align: center;*/
-    /*cursor: pointer;*/
+/*text-align: center;*/
+/*cursor: pointer;*/
 /*}*/
 
 /*******************************************************************************************************/
@@ -312,76 +311,76 @@ body {
 /*************************************This controls the height,  padding, and border radius and space between(margin bottom) of all input elements******/
 .form-horizontal
 .control-label {
-    padding-top: 5px;
+  padding-top: 5px;
 }
 
 .form-control {
-    height: 30px;
-    line-height: 20px;
-    padding: 3px;
-    font-size: 13px;
+  height: 30px;
+  line-height: 20px;
+  padding: 3px;
+  font-size: 13px;
 }
 
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
-    background-color: #ECF0F1;
-    cursor: not-allowed;
-    opacity: 1;
+  background-color: #ECF0F1;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
-    padding-left: 0;
-    padding-right: 6px;
+  padding-left: 0;
+  padding-right: 6px;
 }
 
 .form-horizontal .form-group {
-    margin-bottom: 2px;
-    margin-left: 10px;
+  margin-bottom: 2px;
+  margin-left: 10px;
 }
 
 .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-    border-radius: 6px;
+  border-radius: 6px;
 }
 
 .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-    border-radius: 6px;
+  border-radius: 6px;
 
 }
 
 textarea.form-control {
-    height: 80px;
-    width: 400px;
+  height: 80px;
+  width: 400px;
 }
 
 /************************************Other*************************************/
 
 .row {
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
 .btn, btn-default {
-    padding: 4px 15px;
-    font-size: 13px;
+  padding: 4px 15px;
+  font-size: 13px;
 }
 
 .fa-asterisk {
-    color: red;
+  color: red;
 }
 
 .form-control:focus {
-    border-color: #1ABC9C;
+  border-color: #1ABC9C;
 }
 
 .form-control:focus:invalid:focus {
-    border-color: #E9322D;
+  border-color: #E9322D;
 }
 
 .label-primary {
-    margin-right: 5px;
-    background-color: steelblue;
+  margin-right: 5px;
+  background-color: steelblue;
 }
 
 p {
-    margin: 0px;
+  margin: 0px;
 }
 
 /*.col-sm-2 {*/
@@ -390,70 +389,70 @@ p {
 
 
 footer {
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    height: 25px;
-    background-color: lightgrey;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 25px;
+  background-color: lightgrey;
 }
 
 h4, .h4, h5, .h5, h6, .h6 {
-    margin-bottom: 10.5px;
-    margin-top: 3px;
+  margin-bottom: 10.5px;
+  margin-top: 3px;
 }
 
 .dropdown-submenu {
-    position: relative;
+  position: relative;
 }
 
 .dropdown-submenu>.dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -6px;
-    margin-left: -1px;
-    -webkit-border-radius: 0 6px 6px 6px;
-    -moz-border-radius: 0 6px 6px 6px;
-    border-radius: 0 6px 6px 6px;
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px 6px;
+  border-radius: 0 6px 6px 6px;
 }
 
 .dropdown-submenu:hover>.dropdown-menu {
-    display: block;
+  display: block;
 }
 
 .dropdown-submenu>a:after {
-    display: block;
-    content: " ";
-    float: right;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 5px 0 5px 5px;
-    border-left-color: #cccccc;
-    margin-top: 5px;
-    margin-right: -10px;
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
 }
 
 .dropdown-submenu:hover>a:after {
-    border-left-color: #ffffff;
+  border-left-color: #ffffff;
 }
 
 .dropdown-submenu.pull-left {
-    float: none;
+  float: none;
 }
 
 .dropdown-submenu.pull-left>.dropdown-menu {
-    left: -100%;
-    margin-left: 10px;
-    -webkit-border-radius: 6px 0 6px 6px;
-    -moz-border-radius: 6px 0 6px 6px;
-    border-radius: 6px 0 6px 6px;
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
 }
 
 .dropdown-submenu:hover>.dropdown-menu.scrollable-menu {
-    height: auto;
-    max-height: 250px;
-    overflow-x: hidden;
+  height: auto;
+  max-height: 250px;
+  overflow-x: hidden;
 }
 
 
@@ -463,68 +462,68 @@ h4, .h4, h5, .h5, h6, .h6 {
 /*}*/
 
 .btn-circle {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 12px;
-    line-height: 1.428571429;
-    border-radius: 15px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
 }
 
 .btn-circle.btn-lg {
-    width: 50px;
-    height: 50px;
-    padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.33;
-    border-radius: 25px;
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
 }
 
 .btn-circle.btn-xl {
-    width: 70px;
-    height: 70px;
-    padding: 10px 16px;
-    font-size: 24px;
-    line-height: 1.33;
-    border-radius: 35px;
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
 }
 
 
 .doit {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .doit2 {
-    opacity: 1;
+  opacity: 1;
 }
 
 /*
-** Remove outline on selected items (eg in a tab pill)
-*/
+ ** Remove outline on selected items (eg in a tab pill)
+ */
 .btn:focus {
-    outline: none;
+  outline: none;
 }
 
 .marginLeft {
-    margin-left: 10px !important;
+  margin-left: 10px !important;
 }
 
 /********* Custom table *********/
 .table-file-directory {
-    margin-top: -22px;
-    border-collapse: separate;
-    border: 1px solid lightgrey;
-    /*border-spacing: 0 1px;*/
+  margin-top: -22px;
+  border-collapse: separate;
+  border: 1px solid lightgrey;
+/*border-spacing: 0 1px;*/
 }
 
 .table-file-directory  > thead > th {
-    background-color: lightgrey;
-    color: black;
+  background-color: lightgrey;
+  color: black;
 }
 
 table-file-directory > tbody >td {
-    background-color: white;
+  background-color: white;
 }
 
 .table-file-directory > thead > tr > th,
@@ -537,113 +536,113 @@ table-file-directory > thead > tr > td,
 .table-file-directory > tbody > tr > td,
 .table-file-directory > tbody > tr > td, table-file-directory  > tfoot > tr > td,
 .table-file-directory > tfoot > tr > td {
-    border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
 }
 
 
 .file-heading {
-    padding: 22px 15px;
+  padding: 22px 15px;
 
 }
 
 .oval {
-    width: 100px;
-    height: 50px;
-    background: #eecfbf;
-    -moz-border-radius: 50px / 25px;
-    -webkit-border-radius: 50px / 25px;
-    border-radius: 50px / 25px;
+  width: 100px;
+  height: 50px;
+  background: #eecfbf;
+  -moz-border-radius: 50px / 25px;
+  -webkit-border-radius: 50px / 25px;
+  border-radius: 50px / 25px;
 }
 
 .row.project-tags {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .tag-info {
-    width: 80px;
-    height: 30px;
-    border-radius: 10px;
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
 }
 
 .command-btn {
-    margin: 10px;
+  margin: 10px;
 }
 
 .command-symbol {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 .command-name {
-    font-size: 25px;
-    color: #ffffff;
-    text-align: center
+  font-size: 25px;
+  color: #ffffff;
+  text-align: center
 }
 
 .command-symbol > i {
-    color: white;
-    margin: 13px 3px;
+  color: white;
+  margin: 13px 3px;
 }
 
 .tag-circle {
-    width: 15px;
-    height: 15px;
-    border-radius: 10px;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
 }
 
 .side-bar {
-    width: 200px;
-    position: fixed;
-    height: 100%;
-    /*background-color: #222222;*/
-    background-color: #2c2c2c;
-    margin-left: -12px;
-    margin-top: -4px;
-    box-shadow: 20px 0 5px -2px #f3f3f3;
-    border-right: 2px solid #dddddd;
+  width: 200px;
+  position: fixed;
+  height: 100%;
+  /*background-color: #222222;*/
+  background-color: #2c2c2c;
+  margin-left: -12px;
+  margin-top: -4px;
+  box-shadow: 20px 0 5px -2px #f3f3f3;
+  border-right: 2px solid #dddddd;
 }
 
 .main-content {
-    margin-left: 200px;
-    position: relative;
+  margin-left: 200px;
+  position: relative;
 }
 
 .nav-stacked > li > a,
 .nav-stacked > li.active > a:hover,
 .nav-stacked > li.active > a:focus {
-    border-right: 2px solid yellow;
+  border-right: 2px solid yellow;
 
 }
 
 .limit-text {
-    width: 100px;
-    height: 10px;
+  width: 100px;
+  height: 10px;
 }
 
 .container-fixed {
-    margin: 0 auto;
-    width: 1200px;
-    /*min-width: 1000px;*/
+  margin: 0 auto;
+  width: 1200px;
+/*min-width: 1000px;*/
 }
 
 
 
 .nav-tabs > li > a {
-    margin-right: 2px;
-    line-height: 1.42857143;
-    border: 1px solid #e7e7e7;
-    border-radius: 4px 4px 0 0;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
+  margin-right: 2px;
+  line-height: 1.42857143;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px 4px 0 0;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
 }
 
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-    color: #2c3e50;
-    border-bottom-color: transparent;
-    cursor: default;
+  color: #2c3e50;
+  border-bottom-color: transparent;
+  cursor: default;
 }
 
 
@@ -651,29 +650,28 @@ table-file-directory > thead > tr > td,
 
 
 #machines {
-    display: none;
+  display: none;
 }
 
 .ta-scroll-window .ta-bind {
-    padding: 6px 30px;
+  padding: 6px 30px;
 }
 
 .ta-scroll-window.form-control {
-    height: 150px;
-    overflow: auto;
-    padding: 0;
-    position: relative;
-    width: 600px;
+  height: 150px;
+  overflow: auto;
+  padding: 0;
+  position: relative;
+  width: 600px;
 }
 .custom-ta-toolbar{
-    width: 600px;
+  width: 600px;
 }
 
 
 .selected {
-    background-color: lightgreen;
+  background-color: lightgreen;
 }
 .list-group-item{
-    border: 1px solid #dadedf;
+  border: 1px solid #dadedf;
 }
-
