@@ -1,21 +1,52 @@
 {
-    "id": "apt-data-reconstruction-settings" ,
+    "id": "sem-eds-data-collection-settings" ,
     "authors": ["emarq@umich.edu"],
-    "attribute": "apt_data_reconstruction_settings",
+    "attribute": "instrument-settings",
     "default_properties": [
         {
-            "name": "Reconstruction Mode" ,
-            "attribute": "reconstruction_mode",
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [{"name": "Voltage", "value": "voltage"},{"name": "Shank Angle", "value": "shank_angle"}, {"name": "Tip Image", "value": "tip_image"}, {"name": "Other", "value": "other"}],
+            "name": "Mode",
+            "attribute": "mode",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [{"name": "Point", "value" : "point"},
+                             {"name": "Line", "value" : "line"}, {"name": "Map", "value": "map"}],
             "required": false
         },
         {
-            "name": "Field Factor",
-            "attribute": "field_factor",
+            "name": "Voltage(kV)",
+            "attribute": "voltage",
+            "type": "number",
+            "unit": "kV",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Current(A)",
+            "attribute": "current",
+            "type": "number",
+            "unit": "A",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Stage Tilt(o)",
+            "attribute": "stage_tilt",
+            "type": "number",
+            "unit": "o",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Magnification",
+            "attribute": "magnification",
             "type": "number",
             "unit": "",
             "unit_choice": [],
@@ -24,63 +55,34 @@
             "required": false
         },
         {
-            "name": "Image Compression Factor",
-            "attribute": "image_compression_factor",
+            "name": "Specimen/Stage Bias(V)",
+            "attribute": "specimen_stage_bias",
             "type": "number",
+            "unit": "V",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Column Bias(V)",
+            "attribute": "column_bias",
+            "type": "number",
+            "unit": "V",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Stage",
+            "attribute": "stage",
+            "type": "select",
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Evaporation Field (V/nm)",
-            "attribute": "evaporation_field",
-            "type": "number",
-            "unit": "V/nm",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Detection Efficiency (%)",
-            "attribute": "detection_efficiency",
-            "type": "number",
-            "unit": "%",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Initial Radius (nm)",
-            "attribute": "initial_radius",
-            "type": "number",
-            "unit": "nm",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Shank Angle",
-            "attribute": "shank_angle",
-            "type": "number",
-            "unit": "",
-            "unit_choice": ["deg", "rad"],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Cone to Sphere Ratio",
-            "attribute": "cone_to_sphere_ratio",
-            "type": "number",
-            "unit": "",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
+            "value_choice": [{"name": "Standard", "value" : "standard"},
+                             {"name": "Cryo", "value" : "cryo"}],
             "required": false
         },
         {
@@ -94,7 +96,8 @@
             "required": false
         }
     ],
-    "additional_properties":[],
+    "additional_properties":[
+    ],
     "owner": "admin@materialscommons.org", 
     "template_description": "" ,
     "template_birthtime": "",

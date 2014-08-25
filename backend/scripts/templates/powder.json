@@ -10,7 +10,7 @@
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
-            "required": true
+            "required": false
         },
         {
             "name": "Supplier" ,
@@ -33,16 +33,6 @@
                              {"name": "Ball Milling", "value": "ball_milling"},
                              {"name": "Powder Consolidation", "value": "powder_consolidation"},
                              {"name": "Sputter Deposition", "value": "sputter_deposition"}],
-            "required": false
-        },
-        {
-            "name": "Texture" ,
-            "attribute": "texture",
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [{"name": "Fine", "value": "fine"},{"name": "Coarse", "value": "coarse"},{"name": "Moderately Fine", "value": "moderately_fine"},{"name": "Moderately Coarse", "value": "moderately_coarse"}],
             "required": false
         },
         {

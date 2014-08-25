@@ -17,7 +17,7 @@
             "attribute": "energy",
             "name": "Energy" ,
             "type": "number" ,
-            "unit": "V" ,
+            "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],

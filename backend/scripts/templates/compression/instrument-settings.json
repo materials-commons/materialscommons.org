@@ -14,11 +14,21 @@
             "required": false
         },
         {
-            "attribute": "Strain rate",
-            "name": "strain_rate" ,
+            "name": "Strain Rate",
+            "attribute": "strain_rate" ,
             "type": "number" ,
             "unit": "" ,
             "unit_choice": ["1/secs", "mm/min"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Target Total Strain" ,
+            "attribute": "target_total_strian",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["mm/mm", "%"] ,
             "value": "" ,
             "value_choice": [],
             "required": false
@@ -29,6 +39,16 @@
             "type": "number" ,
             "unit": "" ,
             "unit_choice": ["C", "F"],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Load Rate" ,
+            "attribute": "load_rate",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false

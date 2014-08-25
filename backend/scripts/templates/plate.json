@@ -10,7 +10,7 @@
             "unit_choice": [] ,
             "value": [] ,
             "value_choice": [],
-            "required": true
+            "required": false
         },
         {
             "name": "Supplier" ,

@@ -14,10 +14,20 @@
             "required": false
         },
         {
-            "name": "Load" ,
-            "attribute": "load",
-            "type": "number" ,
+            "name": "Environment" ,
+            "attribute": "environment",
+            "type": "text" ,
             "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Stress(MPa)" ,
+            "attribute": "stress",
+            "type": "number" ,
+            "unit": "MPa" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
