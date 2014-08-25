@@ -20,7 +20,7 @@
             "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ['C', 'F', 'K'] ,
+            "unit_choice": ["C", "F", "K"] ,
             "value": "" ,
             "value_choice": [],
             "required": false
@@ -78,7 +78,7 @@
             "value": "",
             "value_choice": [],
             "required": false
-        },
+        }
     ],
     "additional_properties":[],
     "owner": "admin@materialscommons.org",

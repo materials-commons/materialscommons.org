@@ -21,7 +21,7 @@
             "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ['C', 'F', 'K'] ,
+            "unit_choice": ["C", "F","K"] ,
             "value": "" ,
             "value_choice": [],
             "required": false
@@ -66,8 +66,7 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": [{"name": "Constant", "value" : "constant"},
-                             {"name": "Variable", "value" : "variable"}],
+            "value_choice": [{"name": "Constant", "value" : "constant"},  {"name": "Variable", "value" : "variable"}],
             "required": false
         },
         {
@@ -79,7 +78,7 @@
             "value": "",
             "value_choice": [],
             "required": false
-        },
+        }
     ],
     "additional_properties":[],
     "owner": "admin@materialscommons.org",
