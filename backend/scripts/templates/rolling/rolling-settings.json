@@ -18,7 +18,7 @@
             "name": "Speed" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ['m/s', 'cm/s'] ,
+            "unit_choice": ["m/s", "cm/s"] ,
             "value": "" ,
             "value_choice": [],
             "required": false
