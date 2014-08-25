@@ -1,6 +1,6 @@
 Application.Controllers.controller('projectsProvenanceIOStepsFiles',
-    ["$scope", "ProvDrafts", "$stateParams", "pubsub", "Projects",
-        function ($scope, ProvDrafts, $stateParams, pubsub, Projects) {
+    ["$scope", "ProvDrafts", "$stateParams", "pubsub", "Projects",  "model.Projects", "watcher",
+        function ($scope, ProvDrafts, $stateParams, pubsub, Projects, ListProjects, watcher) {
             $scope.removeFile = function (index) {
                 $scope.files[index].selected = false;
                 $scope.files.splice(index, 1);
@@ -14,8 +14,14 @@ Application.Controllers.controller('projectsProvenanceIOStepsFiles',
                 }
                 return -1;
             };
+            $scope.selectProject = function(){
+                $scope.project_id = $scope.bk.selected_project.id
+            }
 
             function init() {
+                $scope.bk ={
+                    selected_project: ""
+                }
                 if ($stateParams.iostep === "inputs") {
                     $scope.channel = 'provenance.inputs.files';
                     $scope.files = ProvDrafts.current.process.input_files;
@@ -26,6 +32,9 @@ Application.Controllers.controller('projectsProvenanceIOStepsFiles',
                 Projects.resetSelectedFiles($scope.files, ProvDrafts.current.project_id);
                 Projects.setChannel($scope.channel);
                 $scope.project_id = ProvDrafts.current.project_id;
+                ListProjects.getList().then(function (data) {
+                    $scope.projects = data;
+                });
             }
 
             init();

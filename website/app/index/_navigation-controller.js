@@ -10,7 +10,13 @@ Application.Controllers.controller('_indexNavigation',
             };
 
             $scope.isActiveStep = function (nav) {
-                return Nav.isActiveNav(nav);
+                var step =  Nav.isActiveNav(nav);
+
+                if (step === nav){
+                    return true
+                }else{
+                    return false
+                }
             };
 
             $scope.showStep = function (step) {

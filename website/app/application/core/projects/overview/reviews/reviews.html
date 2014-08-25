@@ -1,5 +1,5 @@
 <div class="tab-content">
-    <div class="tab-pane active" id="review" ng-controller="projectsDataEditCreateReview">
+    <div class="tab-pane active" id="review" ng-controller="projectsOverviewCreateReview">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
@@ -39,13 +39,13 @@
             <p ng-show="status === 'open'" class="text-muted">No Open Reviews</p>
             <p ng-show="status === 'close'" class="text-muted">No Closed Reviews</p><br>
         </div>
+
         <div class="row">
             <button ng-click="toggleCustom = !toggleCustom" class="btn btn-default btn-primary">New Review</button>
         </div>
         <div ng-show="toggleCustom">
             <div class="form-horizontal">
                 <h4>Review Title:</h4>
-
                 <div class="col-lg-8">
                     <input class="form-control" ng-model="model.title">
                 </div>

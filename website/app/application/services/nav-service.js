@@ -3,8 +3,8 @@ Application.Services.factory('Nav',
         return {
             currentNavbar: '',
 
-            isActiveNav: function (entry) {
-                return this.currentNavbar === entry;
+            isActiveNav: function () {
+                return this.currentNavbar;
             },
 
             setActiveNav: function (entry) {
