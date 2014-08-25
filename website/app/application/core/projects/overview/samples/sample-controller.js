@@ -128,6 +128,7 @@ Application.Controllers.controller('projectsOverviewSamples',
                 $scope.setDefaultProject();
             };
             $scope.save = function (form) {
+                $validationProvider.validate(form);
                 var check = $validationProvider.checkValid(form);
                 $scope.doc.path = $scope.doc.name;
                 $scope.doc.project_id = $scope.project_id;
@@ -143,8 +144,6 @@ Application.Controllers.controller('projectsOverviewSamples',
                                 }).jsonp();
                             init();
                         }).post($scope.doc);
-                } else {
-                    $validationProvider.validate(form);
                 }
             };
 

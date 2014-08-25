@@ -22,6 +22,7 @@ Application.Controllers.controller('machines',
         };
 
         $scope.save = function (form) {
+            $validationProvider.validate(form);
             var check = $validationProvider.checkValid(form);
             if (check === true) {
                 mcapi('/machines/new')
@@ -41,8 +42,6 @@ Application.Controllers.controller('machines',
                     .error(function (e) {
 
                     }).post($scope.doc);
-            } else {
-                $validationProvider.validate(form);
             }
         };
 

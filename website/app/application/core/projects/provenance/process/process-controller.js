@@ -23,26 +23,24 @@ Application.Controllers.controller('projectProvenanceProcess',
                         $scope.doc.name = $scope.template.template_name + ':' + today;
                         $scope.doc.template = $scope.template;
                         $scope.doc.owner = User.u();
-                    }).jsonp()
+                    }).jsonp();
 
             };
             $scope.saveDraft = function (form) {
+                $validationProvider.validate(form);
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvDrafts.current.name = $scope.doc.name;
                     ProvDrafts.saveDraft();
                     $scope.message = "Your draft has been saved!";
-                } else {
-                    $validationProvider.validate(form);
                 }
             };
 
             $scope.next = function (form) {
+                $validationProvider.validate(form);
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvSteps.setStepFinished('process');
-                }else {
-                    $validationProvider.validate(form);
                 }
             };
 
