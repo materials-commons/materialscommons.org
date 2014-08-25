@@ -4,12 +4,11 @@ Application.Controllers.controller('projectsProvenanceIOSteps',
             var $validationProvider = $injector.get('$validation'), check;
 
             $scope.saveDraft = function (form) {
+                $validationProvider.validate(form);
                 check = $validationProvider.checkValid(form);
                 if (check === true) {
                     ProvDrafts.saveDraft();
                     $scope.message = "your draft has been saved!";
-                } else {
-                    $validationProvider.validate(form);
                 }
             };
 
@@ -50,6 +49,7 @@ Application.Controllers.controller('projectsProvenanceIOSteps',
             };
 
             $scope.nextStep = function (form) {
+                $validationProvider.validate(form);
                 check = $validationProvider.checkValid(form);
                 var i, next;
                 if (check === true) {
@@ -60,8 +60,6 @@ Application.Controllers.controller('projectsProvenanceIOSteps',
                     } else {
                         ProvSteps.setStepFinished($stateParams.iosteps);
                     }
-                } else {
-                    $validationProvider.validate(form);
                 }
             };
 
