@@ -13,7 +13,7 @@
                                 <div class="tag-circle" style="background-color: {{t.color}}"></div>
                             </div>
                             <div class="col-sm-offset-2">
-                               {{t.name}}
+                                {{t.name}}
                             </div>
                         </div>
                     </div>
@@ -52,11 +52,11 @@
                             </span>
                             <span class="col-lg-3">
                                 <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares">{{project.shares.length}}
-                                Project(s)</a>
+                                    Project(s)</a>
                             </span>
                             <span class="col-lg-3">
                                 <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses">{{project.uses.length}}
-                                Project(s)</a>
+                                    Project(s)</a>
                             </span>
                         </div>
                     </div>
@@ -83,6 +83,12 @@
                         </a>
                     </li>
                     <li>
+                        <a ng-click="showTab('reviews')" data-toggle="tab">
+                            Reviews ({{open_reviews.length}})
+                            <i class="fa fa-comment marginLeft pull-right"></i>
+                        </a>
+                    </li>
+                    <li>
                         <a ng-click="showTab('drafts')" data-toggle="tab">
                             Drafts ({{drafts.length}}) <i class="fa fa-copy marginLeft pull-right"/>
                         </a>
@@ -97,10 +103,6 @@
                             Settings <i class="fa fa-cogs marginLeft pull-right"/>
                         </a>
                     </li>
-                    <li><a ng-click="showTab('reviews')" data-toggle="tab">
-                        Reviews ({{open_reviews.length}})
-                        <i class="fa fa-comment marginLeft pull-right"></i>
-                    </a></li>
                 </ul>
             </div>
         </div>
