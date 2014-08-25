@@ -1,56 +1,55 @@
 {
-    "id": "etching-instrument-settings" ,
+    "id": "electropolish-instrument-settings",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [
         {
-            "attribute": "temperature",
-            "name": "Temperature" ,
-            "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["C", "F"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
-            "attribute": "time",
-            "name": "Time" ,
-            "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["hrs", "mins", "secs"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "attribute": "voltage",
-            "name": "Voltage" ,
-            "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["V","mV"] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
-            "attribute": "solution",
             "name": "Solution" ,
+            "attribute": "solution",
             "type": "text" ,
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": true
+        },
+        {
+            "name": "Voltage (V)",
+            "attribute": "voltage" ,
+            "type": "number" ,
+            "unit": "V" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Current (mA)" ,
+            "attribute": "current",
+            "type": "number" ,
+            "unit": "mA" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Temperature",
+            "attribute": "temperature" ,
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": ["C","K","F"] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
         }
     ],
-    "additional_properties":[
-    ],
+    "additional_properties":[],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "Settings" ,
-    "template_pick": "treatment" ,
+    "template_name": "Settings",
+    "template_pick": "instrument",
     "template_type": "condition"
 }

@@ -23,7 +23,7 @@
     "template_type": "process",
     "template_pick": "experiment",
     "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "creep-settings"}],
-    "required_output_conditions": [],
+    "required_output_conditions": [{"name": "Transformed Sample", "value": "transformed-sample"}],
     "required_input_files": true,
     "required_output_files": true
 }
