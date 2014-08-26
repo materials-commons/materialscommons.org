@@ -18,6 +18,7 @@ function projectsOverviewCreateReview ($scope, mcapi, User, $stateParams, alertS
         if ($scope.model.assigned_to === "") {
             return;
         }
+
         $scope.review = {messages: []};
         $scope.review.item_id = $scope.project.id;
         $scope.review.item_type = 'datafile';
