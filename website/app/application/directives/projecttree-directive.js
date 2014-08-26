@@ -6,7 +6,7 @@ Application.Controllers.controller('ProjectTreeController',
         });
 
         pubsub.waitOn($scope, "tags.change", function () {
-            $scope.user_tags = Tags.getUserTags();
+            $scope.user_tags  = Tags.getUserTags();
         });
 
         $scope.openFolder = function (item) {
@@ -75,19 +75,36 @@ Application.Controllers.controller('ProjectTreeController',
             return currentTrail.slice(0, i+1);
         };
         $scope.addTag = function(entry, selected_tag){
+            //Filling tag join table
             var item2tag = {}
             item2tag.item_id = entry.id
             item2tag.item_name = entry.name
             item2tag.item_type = entry.type
             item2tag.user = User.u()
-            item2tag.tag =  selected_tag
+            item2tag.tag =  selected_tag;
+            if (entry.type === 'datafile'){
+                item2tag.fullname = entry.fullname
+            }
             mcapi('/item/tag/new')
                 .success(function (data) {
-                    //you have to update the tags in the project tree
+                    var i;
+                    i = _.indexOf($scope.dir, function (item) {
+                        return item.id === entry.id;
+                    });
+                    if(i != -1){
+                        if ((Object.keys($scope.dir[i]['tags'])).indexOf($scope.user) == 0){
+                            $scope.dir[i]['tags'][$scope.user].push(selected_tag)
+                        }
+                        else{
+                            $scope.dir[i]['tags'][$scope.user] = [selected_tag];
+                        }
+                    }
                 }).post(item2tag);
+            //Sticking tag in the tree
         }
 
         $scope.init = function() {
+            $scope.user = User.u()
             $scope.user_tags = Tags.getUserTags();
             if ($scope.from == 'true') {
                 $scope.project = ProjectPath.get_project();
