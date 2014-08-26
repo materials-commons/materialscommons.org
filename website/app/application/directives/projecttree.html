@@ -11,7 +11,8 @@
             <!-- <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a> -->
-            <a ui-sref="projects.provenance" class="pull-right prov-link"><i class="fa fa-code-fork space-right"/>Add Provenance</a>
+            <a ui-sref="projects.provenance" class="pull-right prov-link"><i class="fa fa-code-fork space-right"/>Add
+                Provenance</a>
         </div>
         <!-- <div class="panel-body" style="padding: 5px;background-color: #389DC1">
         <div class="dropdown">
@@ -54,36 +55,18 @@
                 <td>{{entry.owner}}</td>
                 <td>
                     <div class="dropdown">
-                        <a role="button" data-toggle="dropdown"><i class="fa fa-tags" ></i></a>
+                        <a role="button" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li ng-repeat="t in user_tags">
-                                <a ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a>
+                                <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
+                                        ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
                             </li>
                         </ul>
                     </div>
                 </td>
-
-                <!--<td><i ng-click="toggleCustom = !toggleCustom" class="fa fa-gear"></i>-->
-                        <!--<span ng-show="toggleCustom">-->
-                              <!--<div class="form-group">-->
-                                   <!--<div class="col-lg-5">-->
-                                          <!--<select class="form-control" ng-model="bk.selected_tag"-->
-                                                <!--ng-options="t.name for t in user_tags">-->
-                                                <!--<option value="">--Tags --</option>-->
-                                          <!--</select>-->
-                                    <!--</div>-->
-                              <!--<button ng-click="addTag(entry)" class="btn btn-info">Add</button>-->
-                               <!--</div>-->
-                        <!--</span>-->
-                <!--</td>-->
-                <div ng-if="entry.tags.length == 0">
-                    -
-                </div>
-                <div ng-if="entry.tags.length !==0">
-                    <td class="tag-width"  ng-repeat="t in entry.tags">
-                        <div tooltip="{{t.tag.name}}" class="tag-circle" style="background-color: {{t.tag.color}}"></div>
-                    </td>
-                </div>
+                <td class="tag-width" ng-repeat="t in entry.tags[user]">
+                          <i tooltip="{{t.name}}" class="fa fa-tag" style="color: {{t.color}}"></i>
+                </td>
             </tr>
             </tbody>
         </table>

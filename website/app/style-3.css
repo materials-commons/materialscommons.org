@@ -65,6 +65,9 @@
     color: white;
     background-color: #72C2EC;
 }
+.fa.fa-tag.space-right{
+    padding : 7px;
+}
 
 /************End overview.html **************************/
 /************Begin overview/reviews.html ***************/

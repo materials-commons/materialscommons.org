@@ -10,6 +10,8 @@ import error
 from args import json_as_format_arg
 from mcexceptions import NoSuchItem
 import args
+import access
+from os.path import dirname, basename
 
 
 @app.route('/tags')
@@ -183,11 +185,36 @@ def create_user():
 @apikey
 def create_item2tag():
     j = request.get_json()
+    user = access.get_user()
     item2tag = dict()
     item2tag['item_id'] = dmutil.get_required('item_id', j)
     item2tag['item_name'] = dmutil.get_required('item_name', j)
     item2tag['item_type'] = dmutil.get_required('item_type', j)
     item2tag['user'] = dmutil.get_required('user', j)
     item2tag['tag'] = dmutil.get_required('tag', j)
+    fullname = dmutil.get_optional('fullname', j)
     result = dmutil.insert_entry_id('items2tags', item2tag)
+    if result:
+        #update datadir_denorm
+        if item2tag['item_type'] == 'datafile': 
+            dir_name = dirname(fullname)
+            dir_denorm = r.table('datadirs_denorm').get_all(dir_name, index='name').run(g.conn)
+            for each_dir_denorm in dir_denorm:
+                files = []
+                files = each_dir_denorm['datafiles']
+                for file in files:
+                    if file['id'] == item2tag['item_id']:
+                        if user in file['tags']:
+                            file['tags'][user].append({'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']})
+                        else:
+                            file['tags'] = {user : [{'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']}]}
+                r.table('datadirs_denorm').get(each_dir_denorm['id']).update({'datafiles': files}).run(g.conn)
+        if item2tag['item_type'] == 'datadir':
+            dir_denorm = {}
+            dir_denorm = r.table('datadirs_denorm').get(item2tag['item_id']).run(g.conn)
+            if user in dir_denorm['tags']:
+                dir_denorm['tags'][user].append({'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']})
+            else:
+                dir_denorm['tags'] = {user : [{'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']}]}
+            r.table('datadirs_denorm').get(item2tag['item_id']).update({'tags': dir_denorm['tags']}).run(g.conn)
     return result
