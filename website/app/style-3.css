@@ -675,3 +675,9 @@ table-file-directory > thead > tr > td,
 .list-group-item{
   border: 1px solid #dadedf;
 }
+
+a:hover.action-link,
+a:focus.action-link {
+  text-decoration: underline;
+  font-weight: bold;
+}
