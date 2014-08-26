@@ -145,6 +145,7 @@
                     <h4 class="modal-title" id="myModalLabel">Shared from other projects</h4>
                 </div>
                 <div class="modal-body">
+                    <p ng-if="project.uses.length === 0">This project doesn't use items from other projects.</p>
                     <ul>
                         <li ng-repeat="usedItem in project.uses">Sample '{{usedItem.name}}' is from project:
                             {{usedItem.other_project.name}}
@@ -165,6 +166,7 @@
                     <h4 class="modal-title" id="myModalLabel">Shared with other projects</h4>
                 </div>
                 <div class="modal-body">
+                    <p ng-if="project.shares.length === 0">This project doesn't share items with other projects.</p>
                     <ul>
                         <li ng-repeat="sharedItem in project.shares">Project '{{sharedItem.other_project.name}}' uses
                             sample: {{sharedItem.name}}
