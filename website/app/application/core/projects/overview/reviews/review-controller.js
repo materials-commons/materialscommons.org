@@ -1,10 +1,23 @@
 Application.Controllers.controller('projectsOverviewCreateReview',
                                    ["$scope", "mcapi", "User", "$stateParams", "alertService", "pubsub",
-                                    "$state","dateGenerate", "$filter", projectsOverviewCreateReview]);
+                                    "$state","dateGenerate", "$filter", "$injector", projectsOverviewCreateReview]);
 
-function projectsOverviewCreateReview ($scope, mcapi, User, $stateParams, alertService, pubsub, $state, dateGenerate, $filter) {
+function projectsOverviewCreateReview ($scope, mcapi, User, $stateParams, alertService, pubsub, $state, dateGenerate, $filter, $injector) {
+
+    var validator = $injector.get('$validation');
 
     $scope.addReview = function () {
+        if ($scope.model.new_review === "") {
+            return;
+        }
+
+        if ($scope.model.title === "") {
+            return;
+        }
+
+        if ($scope.model.assigned_to === "") {
+            return;
+        }
         $scope.review = {messages: []};
         $scope.review.item_id = $scope.project.id;
         $scope.review.item_type = 'datafile';

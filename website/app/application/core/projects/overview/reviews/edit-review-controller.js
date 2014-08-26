@@ -7,7 +7,10 @@ function projectsOverviewEditReview ($scope, mcapi, User, $stateParams, dateGene
         $scope.edit_index = index;
     };
 
-    $scope.saveReview = function() {
+    $scope.saveReview = function(index) {
+        if ($scope.review.messages[$scope.index].message === "") {
+            return;
+        }
         $scope.edit_index = -1;
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
@@ -15,6 +18,9 @@ function projectsOverviewEditReview ($scope, mcapi, User, $stateParams, dateGene
     };
 
     $scope.addComment = function() {
+        if ($scope.model.comment.length === 0) {
+            return;
+        }
         $scope.review.messages.push({'message': $scope.model.comment, 'who': User.u(), 'date': dateGenerate.new_date()});
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
