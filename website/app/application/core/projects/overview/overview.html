@@ -13,7 +13,7 @@
                                 <i  class="fa fa-tag" style="color: {{t.color}}"></i>
                             </div>
                             <div class="col-sm-offset-2">
-                               {{t.name}}
+                                {{t.name}}
                             </div>
                         </div>
                     </div>
@@ -52,11 +52,11 @@
                             </span>
                             <span class="col-lg-3">
                                 <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares">{{project.shares.length}}
-                                Project(s)</a>
+                                    Project(s)</a>
                             </span>
                             <span class="col-lg-3">
                                 <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses">{{project.uses.length}}
-                                Project(s)</a>
+                                    Project(s)</a>
                             </span>
                         </div>
                     </div>
@@ -69,38 +69,49 @@
                 <ul class="nav nav-tabs tabs-right overview-tabs ">
                     <li class="active">
                         <a ng-click="showTab('files')" data-toggle="tab">
-                            Files<i class="fa fa-file-text marginLeft pull-right"/>
+                            <i class="fa fa-file-text"/>
+                            Files
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('samples')" data-toggle="tab">
-                            Samples <i class="fa fa-cubes marginLeft pull-right"/>
+                            <i class="fa fa-cubes"/>
+                            Samples
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('provenance')" data-toggle="tab">
-                            Provenance <i class="fa fa-code-fork marginLeft pull-right"/>
+                            <i class="fa fa-code-fork"/>
+                            Provenance
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="showTab('reviews')" data-toggle="tab">
+                            <i class="fa fa-comment"></i>
+                            Reviews
+                            <span class="pull-right badge">{{open_reviews.length}}</span>
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('drafts')" data-toggle="tab">
-                            Drafts ({{drafts.length}}) <i class="fa fa-copy marginLeft pull-right"/>
+                            <i class="fa fa-copy"/>
+                            Drafts
+                            <span class="pull-right badge">{{drafts.length}}</span>
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('notes')" data-toggle="tab">
-                            Notes <i class="fa fa-edit marginLeft pull-right"/>
+                            <i class="fa fa-edit"/>
+                            Notes
+                            <span class="pull-right badge">{{project.notes.length}}</span>
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('settings')" data-toggle="tab">
-                            Settings <i class="fa fa-cogs marginLeft pull-right"/>
+                            <i class="fa fa-cogs"/>
+                            Settings
                         </a>
                     </li>
-                    <li><a ng-click="showTab('reviews')" data-toggle="tab">
-                        Reviews ({{open_reviews.length}})
-                        <i class="fa fa-comment marginLeft pull-right"></i>
-                    </a></li>
                 </ul>
             </div>
         </div>
@@ -134,6 +145,7 @@
                     <h4 class="modal-title" id="myModalLabel">Shared from other projects</h4>
                 </div>
                 <div class="modal-body">
+                    <p ng-if="project.uses.length === 0">This project doesn't use items from other projects.</p>
                     <ul>
                         <li ng-repeat="usedItem in project.uses">Sample '{{usedItem.name}}' is from project:
                             {{usedItem.other_project.name}}
@@ -154,6 +166,7 @@
                     <h4 class="modal-title" id="myModalLabel">Shared with other projects</h4>
                 </div>
                 <div class="modal-body">
+                    <p ng-if="project.shares.length === 0">This project doesn't share items with other projects.</p>
                     <ul>
                         <li ng-repeat="sharedItem in project.shares">Project '{{sharedItem.other_project.name}}' uses
                             sample: {{sharedItem.name}}
