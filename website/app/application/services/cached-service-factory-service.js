@@ -78,12 +78,19 @@ Application.Services.factory('CachedServiceFactory',
                     this.cache.removeAll();
                 },
 
-                getList: function () {
-                    var keys = this.cache.keys(),
-                        deferred = $q.defer(),
+                getList: function (reload) {
+                    var keys,
+                        deferred,
                         items = [],
                         i,
                         l;
+
+                    if (reload) {
+                        this.cache.removeAll();
+                    }
+
+                    keys = this.cache.keys();
+                    deferred = $q.defer();
 
                     if (keys.length === 0) {
                         return this.rest.getList({apikey: User.apikey()});
