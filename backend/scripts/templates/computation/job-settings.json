@@ -34,11 +34,11 @@
             "required": false
         },
         {
-            "name": "Walltime" ,
+            "name": "Walltime (s)" ,
             "attribute": "walltime",
             "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["secs"] ,
+            "unit": "s" ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false

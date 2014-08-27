@@ -14,31 +14,31 @@
             "required": false
         },
         {
-            "attribute": "voltage",
+            "attribute": "voltage (kV)",
             "name": "Voltage" ,
             "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["kV"] ,
+            "unit": "kV" ,
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false
         },
         {
-            "attribute": "current",
+            "attribute": "current (nA)",
             "name": "Current" ,
             "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["nA"],
+            "unit": "nA" ,
+            "unit_choice": [],
             "value": "" ,
             "value_choice": [],
             "required": false
         },
         {
-            "attribute": "working_distance",
+            "attribute": "working_distance (mm)",
             "name": "Working Distance" ,
             "type": "number" ,
-            "unit": "" ,
-            "unit_choice": ["mm"] ,
+            "unit": "mm",
+            "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
             "required": false
