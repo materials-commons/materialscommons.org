@@ -99,6 +99,10 @@ Application.Controllers.controller('ProjectTreeController',
                             $scope.dir[i]['tags'][$scope.user] = [selected_tag];
                         }
                     }
+                })
+                .error(function(e){
+                    $scope.msg = e;
+                    //Alerts need to be reworked.
                 }).post(item2tag);
             //Sticking tag in the tree
         }
