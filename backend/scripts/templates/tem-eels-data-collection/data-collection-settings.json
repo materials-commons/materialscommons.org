@@ -1,5 +1,5 @@
 {
-    "id": "sem-instrument-settings" ,
+    "id": "tem-eels-data-collection-settings" ,
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument-settings",
     "default_properties": [
@@ -14,18 +14,31 @@
             "required": false
         },
         {
-            "name": "Current(A)",
-            "attribute": "current",
-            "type": "number",
-            "unit": "A",
+            "name": "Mode",
+            "attribute": "mode",
+            "type": "select",
+            "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": [],
+            "value_choice": [{"name": "Point", "value" : "point"},
+                             {"name": "Line", "value" : "line"},
+                             {"name": "Map", "value" : "map"}],
             "required": false
         },
         {
-            "name": "Stage Tilt(°)",
-            "attribute": "stage_tilt",
+            "name": "Conventional Scanning",
+            "attribute": "conventional_scanning",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [{"name": "Yes", "value" : "yes"},
+                             {"name": "No", "value" : "no"}],
+            "required": false
+        },
+        {
+            "name": "Convergence Angle(°)",
+            "attribute": "convergence_angle",
             "type": "number",
             "unit": "°",
             "unit_choice": [],
@@ -34,49 +47,48 @@
             "required": false
         },
         {
-            "name": "Magnification",
-            "attribute": "magnification",
+            "name": "Collection Angle(°)",
+            "attribute": "collection_angle",
             "type": "number",
-            "unit": "",
+            "unit": "°",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
             "required": false
         },
         {
-            "name": "Specimen/Stage Bias(V)",
-            "attribute": "specimen_stage_bias",
-            "type": "number",
-            "unit": "V",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Column Bias(V)",
-            "attribute": "column_bias",
-            "type": "number",
-            "unit": "V",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Stage",
-            "attribute": "stage",
+            "name": "Aquisition Time",
+            "attribute": "aquisistion_time",
             "type": "select",
             "unit": "",
-            "unit_choice": [],
+            "unit_choice": ["s", "ms"],
             "value": "",
-            "value_choice": [{"name": "Standard", "value" : "standard"},
-                             {"name": "Cryo", "value" : "cryo"}],
+            "value_choice": [],
             "required": false
         },
         {
-            "name": "Working Distance(nm)",
-            "attribute": "working_distance",
+            "name": "Energy Step (eV)",
+            "attribute": "energy_step",
+            "type": "number",
+            "unit": "eV",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Spot Size",
+            "attribute": "spot_size",
+            "type": "number",
+            "unit": "",
+            "unit_choice": ["nm"],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Step Size (nm)",
+            "attribute": "step_size",
             "type": "number",
             "unit": "nm",
             "unit_choice": [],
@@ -85,19 +97,19 @@
             "required": false
         },
         {
-            "name": "Notes" ,
-            "attribute": "notes",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
+            "name": "Apparatus",
+            "attribute": "apparatus",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
             "value_choice": [],
             "required": false
         }
     ],
     "additional_properties":[
     ],
-    "owner": "admin@materialscommons.org", 
+    "owner": "admin@materialscommons.org",
     "template_description": "" ,
     "template_birthtime": "",
     "template_mtime": "",

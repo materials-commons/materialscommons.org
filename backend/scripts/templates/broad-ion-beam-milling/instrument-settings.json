@@ -14,10 +14,10 @@
             "required": false
         },
         {
-            "attribute": "energy",
+            "attribute": "energy (V)",
             "name": "Energy" ,
             "type": "number" ,
-            "unit": "" ,
+            "unit": "V" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
@@ -28,7 +28,7 @@
             "name": "Time" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["secs"],
+            "unit_choice": ["s"],
             "value": "" ,
             "value_choice": [],
             "required": false

@@ -14,28 +14,14 @@
             "required": false
         },
         {
-            "name": "Diffraction",
-            "attribute": "diffraction",
+            "name": "Conventional Scanning",
+            "attribute": "conventional_scanning",
             "type": "select",
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": [{"name": "Selected Area", "value" : "selected_area"},
-                             {"name": "Convergent Beam", "value" : "convergent_beam"},
-                             {"name": "Nano Beam", "value" : "nano_beam"}],
-            "required": false
-        },
-        {
-            "name": "Conventional",
-            "attribute": "conventional",
-            "type": "select",
-            "unit": "",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [{"name": "Bright Field", "value" : "bright_field"},
-                             {"name": "Dark Field", "value" : "dark_field"},
-                             {"name": "Dark Field in 2 Beam", "value" : "dark_field_in_2_beam"},
-                             {"name": "Weak Beam Dark Field", "value" : "weak_beam_dark_field"}],
+            "value_choice": [{"name": "Yes", "value" : "yes"},
+                             {"name": "No", "value" : "no"}],
             "required": false
         },
         {
@@ -63,15 +49,23 @@
             "required": false
         },
         {
-            "name": "Stage",
-            "attribute": "stage",
-            "type": "select",
+            "name": "Aquisition Time",
+            "attribute": "aquisition_time",
+            "type": "number",
             "unit": "",
+            "unit_choice": ["s", "ms"],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Spot Size(nm)",
+            "attribute": "spot_size",
+            "type": "number",
+            "unit": "nm",
             "unit_choice": [],
             "value": "",
-            "value_choice": [{"name": "Standard", "value" : "standard"},
-                             {"name": "Cryo", "value" : "cryo"},
-                             {"name": "Heating", "value" : "heating"}, {"name": "Other", "value" : "other"}],
+            "value_choice": [],
             "required": false
         }
     ],

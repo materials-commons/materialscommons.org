@@ -15,9 +15,9 @@
         },
         {
             "attribute": "particle_size",
-            "name": "Particle Size (micron)" ,
+            "name": "Particle Size (microns)" ,
             "type": "number" ,
-            "unit": "micron" ,
+            "unit": "microns" ,
             "unit_choice": [],
             "value": "" ,
             "value_choice": [],

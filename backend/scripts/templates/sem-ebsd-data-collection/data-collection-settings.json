@@ -1,7 +1,7 @@
 {
-    "id": "sem-instrument-settings" ,
+    "id": "sem-ebsd-data-collection-settings",
     "authors": ["emarq@umich.edu"],
-    "attribute": "instrument-settings",
+    "attribute": "instrument_settings",
     "default_properties": [
         {
             "name": "Voltage(kV)",
@@ -24,8 +24,8 @@
             "required": false
         },
         {
-            "name": "Stage Tilt(°)",
-            "attribute": "stage_tilt",
+            "name": "Sample Tilt(°)",
+            "attribute": "sample_tilt",
             "type": "number",
             "unit": "°",
             "unit_choice": [],
@@ -44,38 +44,37 @@
             "required": false
         },
         {
-            "name": "Specimen/Stage Bias(V)",
-            "attribute": "specimen_stage_bias",
+            "name": "Aquisition Time",
+            "attribute": "aquisition_time",
             "type": "number",
-            "unit": "V",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Column Bias(V)",
-            "attribute": "column_bias",
-            "type": "number",
-            "unit": "V",
-            "unit_choice": [],
-            "value": "",
-            "value_choice": [],
-            "required": false
-        },
-        {
-            "name": "Stage",
-            "attribute": "stage",
-            "type": "select",
             "unit": "",
-            "unit_choice": [],
+            "unit_choice": ["s", "ms"],
             "value": "",
-            "value_choice": [{"name": "Standard", "value" : "standard"},
-                             {"name": "Cryo", "value" : "cryo"}],
+            "value_choice": [],
             "required": false
         },
         {
-            "name": "Working Distance(nm)",
+            "name": "Scan Size (microns)",
+            "attribute": "scan_size",
+            "type": "number",
+            "unit": "microns",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Step Size (microns)",
+            "attribute": "step_size",
+            "type": "number",
+            "unit": "microns",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Working Distance (nm)",
             "attribute": "working_distance",
             "type": "number",
             "unit": "nm",
@@ -83,25 +82,14 @@
             "value": "",
             "value_choice": [],
             "required": false
-        },
-        {
-            "name": "Notes" ,
-            "attribute": "notes",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": false
         }
     ],
-    "additional_properties":[
-    ],
-    "owner": "admin@materialscommons.org", 
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_birthtime": "" ,
     "template_description": "" ,
-    "template_birthtime": "",
-    "template_mtime": "",
+    "template_mtime": "" ,
     "template_name": "Settings" ,
-    "template_type": "condition",
-    "template_pick": "instrument"
+    "template_pick": "instrument" ,
+    "template_type": "condition"
 }

@@ -27,7 +27,7 @@
             "name": "Time(s)" ,
             "attribute": "time",
             "type": "number" ,
-            "unit": "secs" ,
+            "unit": "s" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],

@@ -1,9 +1,9 @@
 {
-    "id": "tem",
-    "authors": ["emarq@umich.edu"],
+    "id": "sem--ebsd-data-collection",
+    "authors": ["amcollet@umich.edu", "johnea@umich.edu"],
     "attribute": "process",
     "default_properties": [
-        {
+         {
             "name": "Machine" ,
             "attribute": "machine",
             "type": "machines" ,
@@ -13,16 +13,16 @@
             "value_choice": [],
             "required": false
         }
-    ],
-    "additional_properties": [],
+     ],
+    "additional_properties":[],
     "owner": "admin@materialscommons.org",
     "template_birthtime": "" ,
     "template_description": "" ,
     "template_mtime": "" ,
-    "template_name": "TEM Imaging/Diffraction" ,
+    "template_name": "SEM EBSD Data Collection" ,
     "template_type": "process",
     "template_pick": "experiment",
-    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "tem-instrument-settings"}],
+    "required_input_conditions": [{"name": "Sample", "value": "sample"},{"name": "Settings", "value": "sem-ebsd-data-collection-settings"}],
     "required_output_conditions": [],
     "required_input_files": true,
     "required_output_files": true

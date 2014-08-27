@@ -4,16 +4,6 @@
     "attribute": "tensile_settings",
     "default_properties": [
         {
-            "name": "Name" ,
-            "attribute": "name",
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        },
-        {
             "name": "Mode" ,
             "attribute": "mode",
             "type": "select" ,
@@ -38,7 +28,7 @@
             "attribute": "temperature",
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["C", "F"] ,
+            "unit_choice": ["C", "F", "K"] ,
             "value": "" ,
             "value_choice": [],
             "required": false
@@ -48,7 +38,7 @@
             "attribute": "deformation_rate",
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": [] ,
+            "unit_choice": ["mm/s","mm/min","1/s","MPa/s"] ,
             "value": "" ,
             "value_choice": [],
             "required": false

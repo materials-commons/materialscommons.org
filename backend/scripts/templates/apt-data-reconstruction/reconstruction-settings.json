@@ -68,7 +68,7 @@
             "attribute": "shank_angle",
             "type": "number",
             "unit": "",
-            "unit_choice": ["deg", "rad"],
+            "unit_choice": ["°", "rad"],
             "value": "",
             "value_choice": [],
             "required": false
