@@ -18,7 +18,7 @@
             "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["C", "F"] ,
+            "unit_choice": ["C", "F", "K"] ,
             "value": "" ,
             "value_choice": [],
             "required": true
@@ -45,9 +45,9 @@
         },
         {
             "attribute": "dose_rate",
-            "name": "Dose rate(dpa/secs)" ,
+            "name": "Dose rate(dpa/s)" ,
             "type": "number" ,
-            "unit": "dpa/secs" ,
+            "unit": "dpa/s" ,
             "unit_choice": [],
             "value": "" ,
             "value_choice": [],
@@ -65,9 +65,9 @@
         },
         {
             "attribute": "fluence_rate",
-            "name": "Fluence Rate(1/cm^2/secs)" ,
+            "name": "Fluence Rate(1/cm^2/s)" ,
             "type": "number" ,
-            "unit": "1/cm^2/secs" ,
+            "unit": "1/cm^2/s" ,
             "unit_choice": [],
             "value": "" ,
             "value_choice": [],

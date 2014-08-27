@@ -4,10 +4,10 @@
     "attribute": "instrument_settings",
     "default_properties": [
         {
-            "name": "Source Wave Length" ,
+            "name": "Source Wave Length (nm)" ,
             "attribute": "source_wave_length",
             "type": "number" ,
-            "unit": "" ,
+            "unit": "nm" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
