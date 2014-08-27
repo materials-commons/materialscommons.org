@@ -125,30 +125,31 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     $scope.init();
 }
 
-Application.Directives.directive('projectTree',
-                                 function () {
-                                     return {
-                                         restrict: "E",
-                                         controller: "ProjectTreeController",
-                                         transclude: false,
-                                         replace: true,
-                                         scope: {
-                                             ngModel: "@",
-                                             project: "@project",
-                                             from: "@from",
-                                             color: "@color",
-                                             treeOverview: "=",
-                                             checkBox: "="
-                                         },
-                                         link: function (scope, element, attrs) {
-                                             scope.$watch('project', function(newValue, oldValue) {
-                                                 if (newValue !== oldValue) {
-                                                     scope.init();
+Application.Directives.directive('projectTree', projectTreeDirective);
 
-                                                 }
-                                             }, true);
+function projectTreeDirective () {
+    return {
+        restrict: "E",
+        controller: "ProjectTreeController",
+        transclude: false,
+        replace: true,
+        scope: {
+            ngModel: "@",
+            project: "@project",
+            from: "@from",
+            color: "@color",
+            treeOverview: "=",
+            checkBox: "="
+        },
+        link: function (scope, element, attrs) {
+            scope.$watch('project', function(newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    scope.init();
 
-                                         },
-                                         templateUrl: "application/directives/projecttree.html"
-                                     };
-                                 });
+                }
+            }, true);
+
+        },
+        templateUrl: "application/directives/projecttree.html"
+    };
+}

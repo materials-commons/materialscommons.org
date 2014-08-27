@@ -11,7 +11,8 @@
             <!-- <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a> -->
-            <a ui-sref="projects.provenance" class="pull-right prov-link action-link"><i class="fa fa-code-fork space-right"/>Add Provenance</a>
+            <a ui-sref="projects.provenance" class="pull-right prov-link action-link"><i
+                    class="fa fa-code-fork space-right"/>Add Provenance</a>
         </div>
         <!-- <div class="panel-body" style="padding: 5px;background-color: #389DC1">
         <div class="dropdown">
@@ -53,21 +54,29 @@
                 <td ng-if="entry.type=='datadir'">-</td>
                 <td>{{entry.owner}}</td>
                 <td>
-                    <div class="dropdown">
-                        <a role="button" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
+                    <div class="btn-group">
+                        <a data-toggle="dropdown"><i class="fa fa-plus"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li ng-repeat="t in user_tags">
-                                <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
-                                        ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
+                            <li class="dropdown-submenu">
+                                <a href="#">Add Tag</a>
+                                <ul class="dropdown-menu scrollable-menu">
+                                    <li ng-repeat="t in user_tags">
+                                    <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
+                                            ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="#">Add Dataset</a>
+                                <ul class="dropdown-menu scrollable-menu">
+
+                                </ul>
                             </li>
                         </ul>
                     </div>
                 </td>
-                <td ng-if="entry.tags[user].length !==0 " class="tag-width" ng-repeat="t in entry.tags[user]">
+                <td ng-show="entry.tags!= {}"  class="tag-width" ng-repeat="t in entry.tags[user]">
                     <i tooltip="{{t.name}}" class="fa fa-tag" style="color: {{t.color}}"></i>
-                </td>
-                <td ng-if="entry.tags[user].length ===0 "  class="tag-width" ng-repeat="t in entry.tags[user]">
-                     -
                 </td>
             </tr>
             </tbody>

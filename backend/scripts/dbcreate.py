@@ -80,6 +80,8 @@ def create_indices():
     create_index('datafiles_denorm', 'process_id')
     create_index('datafiles_denorm', 'project_id')
     create_index('samples', 'project_id')
+    create_index('items2tags', 'item_id')
+    create_index('datadirs_denorm', 'name')
 
 
 def create_index(table, name):
