@@ -193,28 +193,35 @@ def create_item2tag():
     item2tag['user'] = dmutil.get_required('user', j)
     item2tag['tag'] = dmutil.get_required('tag', j)
     fullname = dmutil.get_optional('fullname', j)
-    result = dmutil.insert_entry_id('items2tags', item2tag)
-    if result:
-        #update datadir_denorm
-        if item2tag['item_type'] == 'datafile': 
-            dir_name = dirname(fullname)
-            dir_denorm = r.table('datadirs_denorm').get_all(dir_name, index='name').run(g.conn)
-            for each_dir_denorm in dir_denorm:
-                files = []
-                files = each_dir_denorm['datafiles']
-                for file in files:
-                    if file['id'] == item2tag['item_id']:
-                        if user in file['tags']:
-                            file['tags'][user].append({'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']})
-                        else:
-                            file['tags'] = {user : [{'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']}]}
-                r.table('datadirs_denorm').get(each_dir_denorm['id']).update({'datafiles': files}).run(g.conn)
-        if item2tag['item_type'] == 'datadir':
-            dir_denorm = {}
-            dir_denorm = r.table('datadirs_denorm').get(item2tag['item_id']).run(g.conn)
-            if user in dir_denorm['tags']:
-                dir_denorm['tags'][user].append({'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']})
-            else:
-                dir_denorm['tags'] = {user : [{'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']}]}
-            r.table('datadirs_denorm').get(item2tag['item_id']).update({'tags': dir_denorm['tags']}).run(g.conn)
-    return result
+    tag_exists = list(r.table('items2tags').get_all(item2tag['item_id'], index='item_id').filter({'user': user, 'tag': item2tag['tag']}).run(g.conn))
+    print tag_exists
+    if tag_exists:
+        return error.already_exists(
+            "Unable to create %s, Tag already exists" % (item2tag))
+    else:
+        result = dmutil.insert_entry_id('items2tags', item2tag)
+        if result:
+            #update datadir_denorm
+            if item2tag['item_type'] == 'datafile': 
+                dir_name = dirname(fullname)
+                dir_denorm = r.table('datadirs_denorm').get_all(dir_name, index='name').run(g.conn)
+                print dir_denorm
+                for each_dir_denorm in dir_denorm:
+                    files = []
+                    files = each_dir_denorm['datafiles']
+                    for file in files:
+                        if file['id'] == item2tag['item_id']:
+                            if user in file['tags']:
+                                file['tags'][user].append({'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']})
+                            else:
+                                file['tags'] = {user : [{'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']}]}
+                    r.table('datadirs_denorm').get(each_dir_denorm['id']).update({'datafiles': files}).run(g.conn)
+            if item2tag['item_type'] == 'datadir':
+                dir_denorm = {}
+                dir_denorm = r.table('datadirs_denorm').get(item2tag['item_id']).run(g.conn)
+                if user in dir_denorm['tags']:
+                    dir_denorm['tags'][user].append({'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']})
+                else:
+                    dir_denorm['tags'] = {user : [{'color': item2tag['tag']['color'] ,'name': item2tag['tag']['name']}]}
+                r.table('datadirs_denorm').get(item2tag['item_id']).update({'tags': dir_denorm['tags']}).run(g.conn)
+        return result
