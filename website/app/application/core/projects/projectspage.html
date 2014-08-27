@@ -1,11 +1,16 @@
 <div class="row">
     <div class="col-lg-12" ng-controller="Projects"><br>
         <div>
-            <ul class="tabrow" style="border-bottom: 10px solid {{activeColor}}">
-                <li ng-repeat="p in projects" ng-class="{active: project_id == p.id}" style="background: {{colors[p.name]}}; border-bottom: 10px solid {{colors[p.name]}};">
-                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setColor(colors[p.name])">{{p.name}}</a>
+            <ul class="tabrow" ng-style="{'border-bottom-color': currentProjectColor}">
+                <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}" style="background: {{projectColors[$index]}}; border-bottom: 10px solid {{projectColors[$index]}};">
+                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)">{{createName(p.name)}}</a>
                 </li>
-                <li style="background: #96281b"><a data-toggle="modal" data-target="#newProject" ng-click="createProject()"><i class="fa fa-plus"/></a></li>
+                <li style="background: #95a5a6">
+                    <a data-toggle="modal" data-target="#newProject"
+                       ng-click="createProject()">
+                        <i class="fa fa-plus"/>
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
