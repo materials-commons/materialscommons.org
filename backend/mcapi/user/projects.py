@@ -235,7 +235,6 @@ def build_tree(datadirs):
                        ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
         user = access.get_user()
-        print ddir
         ditem.tags = ddir['tags']  #build_tags(ddir['id'], ddir['name'], 'datadir', user)
         ditem.c_id = next_id
         next_id = next_id + 1
@@ -273,7 +272,6 @@ def build_tree(datadirs):
             parent = DItem2('', parent_name, 'datadir', '', '', 0)
             parent.children.append(ditem)
             all_data_dirs[parent_name] = parent
-    print top_level_dirs
     return json.dumps(top_level_dirs, cls=DEncoder2)
 
 
