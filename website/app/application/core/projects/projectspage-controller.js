@@ -1,7 +1,7 @@
 Application.Controllers.controller('Projects',
                                    ["$scope", "$stateParams", "mcapi", "$state", "watcher",
-                                    "ProjectPath", "pubsub", "model.Projects", ProjectsController]);
-function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects) {
+                                    "ProjectPath", "pubsub", "model.Projects", "$timeout", ProjectsController]);
+function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout) {
     $scope.project_id = $stateParams.id;
     $scope.model = {
         action: ''
@@ -25,16 +25,26 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             }).post({'name': $scope.bk.name});
     };
 
+    $scope.setColor = function(color) {
+        console.log("setColor called: " + color);
+        $scope.activeColor = color;
+    };
+
     function init() {
         $scope.bk= {
             name: ''
         };
+        $scope.colors = {};
+        $scope.colors["AZ91 Precipitation Evolution"] = "#CDA7D8";
+        $scope.colors["Data"] = "#68c3a3";
+        $scope.colors["DislocationDFT"] = "#eb974e";
+        $scope.colors["EBSD"] = "#f5d76e";
         $scope.from = ProjectPath.get_from();
         Projects.getList().then(function (data) {
             $scope.model = {
                 action: ''
             };
-            $scope.projects = data;
+            $scope.projects = data.slice(0,4);
             if ($scope.projects.length === 0) {
                 return;
             }
