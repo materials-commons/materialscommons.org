@@ -240,4 +240,6 @@ app.run(["$rootScope", "User", function ($rootScope, User) {
             $rootScope.email_address = User.u();
         }
     });
+    $rootScope.projectColors = ["#4a7a93", "#d39c08", "#bc6f59", "#3e94c3",  "#e8ba3f", "#bc6349", "#61a0c3", "#9f802c"];
+    $rootScope.currentProjectColor = $rootScope.projectColors[0];
 }]);

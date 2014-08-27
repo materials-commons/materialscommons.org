@@ -15,33 +15,35 @@
 
 /****** Rounded tabs *******/
 .tabrow {
-  text-align: center;
+   text-align: left;
+  /* text-indent: 5px; */
   list-style: none;
   /* margin: 200px 0 20px; */
   padding: 0;
   line-height: 38px;
   height: 40px;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 14px;
   /* font-family: verdana; */
+  border-bottom: 10px solid #204d65;
   position: relative;
 }
 .tabrow li {
-  border: 1px solid #AAA;
+  /* border: 1px solid #AAA; */
   background: #52b3d9;
   /* background: -o-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%); */
   /* background: -ms-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%); */
   /* background: -moz-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%); */
   /* background: -webkit-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%); */
-  /* background: linear-gradient(top, #ECECEC 50%, #D1D1D1 100%); */
+  /* background: linear-gradient(top, red 50%, #D1D1D1 100%); */
   display: inline-block;
   position: relative;
   z-index: 0;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
-  text-shadow: 0 1px #FFF;
-  margin: 0 -5px;
+  /* box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF; */
+  /* text-shadow: 0 1px #FFF; */
+  margin: 0 -2px;
   padding: 0 20px;
 }
 .tabrow a {
@@ -100,9 +102,15 @@
   border-color: lightgrey;
 }
 .panel-info > .panel-heading {
-  background-color: #ADD8E6;
+  /* background-color: #ADD8E6; */
+  background-color: #5e9ec1;
   border-color: lightgrey;
   color: #4b4b4b;
+}
+
+.panel-default > .panel-heading {
+  /* background-color: #5e9ec1; */
+  background-color: #4a7a93;
 }
 
 .panel-info {
@@ -291,7 +299,8 @@ td.tag-width{
 /************End projecttree.html **************************/
 /************Begin index.html *****************************/
 .navbar-custom {
-  background-color: #0C5C86;
+  /* background-color: #0C5C86; */
+  background-color: #204d65;
   color: #ffffff;
   border-radius: 0;
 }
@@ -758,4 +767,8 @@ a:hover.action-link,
 a:focus.action-link {
   text-decoration: underline;
   font-weight: bold;
+}
+
+td > a {
+  color: #204d65;
 }

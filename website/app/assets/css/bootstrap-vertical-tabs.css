@@ -30,8 +30,9 @@
 .tabs-right>li.active>a:focus {
     border-bottom: 1px solid #ddd;
     border-left-color: transparent;
-    border-right: solid red;
+    border-right: solid #d39c08;
 }
+
 .tabs-left>li>a {
     border-radius: 4px 0 0 4px;
     margin-right: 0;
