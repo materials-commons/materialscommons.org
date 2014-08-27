@@ -8,7 +8,7 @@
             "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["C", "F"] ,
+            "unit_choice": ["C", "F", "K"] ,
             "value": "" ,
             "value_choice": [],
             "required": false

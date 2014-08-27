@@ -18,7 +18,7 @@
             "attribute": "strain_rate" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["1/secs", "mm/min"] ,
+            "unit_choice": ["1/s", "mm/min"] ,
             "value": "" ,
             "value_choice": [],
             "required": false
@@ -38,7 +38,7 @@
             "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["C", "F"],
+            "unit_choice": ["C", "F", "K"],
             "value": "" ,
             "value_choice": [],
             "required": false

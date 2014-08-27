@@ -75,6 +75,16 @@
             "required": false
         },
         {
+            "name": "Working Distance(nm)",
+            "attribute": "working_distance",
+            "type": "number",
+            "unit": "nm",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
             "name": "Notes" ,
             "attribute": "notes",
             "type": "text" ,

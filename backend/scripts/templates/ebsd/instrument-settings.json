@@ -14,10 +14,10 @@
             "required": false
         },
         {
-            "name": "Working Distance",
+            "name": "Working Distance (nm)",
             "attribute": "working_distance" ,
             "type": "number" ,
-            "unit": "" ,
+            "unit": "nm" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
