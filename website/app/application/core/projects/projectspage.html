@@ -1,11 +1,18 @@
 <div class="row">
     <div class="col-lg-12" ng-controller="Projects"><br>
-            <ul class="nav nav-tabs project-tabs">
-                <li data-toggle="tab" ng-repeat="p in projects" ng-class="{active: project_id == p.id}">
-                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})">{{p.name}}</a>
+        <div>
+            <ul class="tabrow" ng-style="{'border-bottom-color': currentProjectColor}">
+                <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}" style="background: {{projectColors[$index]}}; border-bottom: 10px solid {{projectColors[$index]}};">
+                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)">{{createName(p.name)}}</a>
                 </li>
-                <li><a data-toggle="modal" data-target="#newProject" ng-click="createProject()"><i class="fa fa-plus fa-2x"/></a></li>
+                <li style="background: #95a5a6">
+                    <a data-toggle="modal" data-target="#newProject"
+                       ng-click="createProject()">
+                        <i class="fa fa-plus"/>
+                    </a>
+                </li>
             </ul>
+        </div>
         <div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
              aria-hidden="true">
             <div class="modal-dialog">

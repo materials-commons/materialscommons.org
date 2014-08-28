@@ -1,8 +1,9 @@
 Application.Controllers.controller('projectsOverview',
                                    ["$scope", "$stateParams", "pubsub", "$state",
-                                    "ProvDrafts", "mcapi", "Tags","User", "$filter", projectsOverview]);
+                                    "ProvDrafts", "mcapi", "Tags","User", "$filter", "$rootScope",
+                                    projectsOverview]);
 
-function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags, User, $filter) {
+function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags, User, $filter, $rootScope) {
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;
     });
@@ -45,6 +46,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
     };
 
     $scope.showTab = function (tab) {
+        $scope.activeTab = tab;
         switch (tab) {
         case "files":
             $state.go('projects.overview.files');
@@ -70,6 +72,10 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         }
     };
 
+    $scope.isActive = function (tab) {
+        return tab === $scope.activeTab;
+    };
+
     $scope.getProject = function(){
         mcapi('/projects/%', $scope.project_id)
             .success(function (project) {
@@ -89,6 +95,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         $scope.bk = {
             name: ''
         };
+        $scope.activeTab = "files";
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;
         $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);

@@ -1,7 +1,8 @@
 Application.Controllers.controller('Projects',
                                    ["$scope", "$stateParams", "mcapi", "$state", "watcher",
-                                    "ProjectPath", "pubsub", "model.Projects", ProjectsController]);
-function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects) {
+                                    "ProjectPath", "pubsub", "model.Projects", "$timeout",
+                                    "$rootScope", ProjectsController]);
+function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout, $rootScope) {
     $scope.project_id = $stateParams.id;
     $scope.model = {
         action: ''
@@ -25,6 +26,18 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             }).post({'name': $scope.bk.name});
     };
 
+    $scope.setActiveIndex = function(index) {
+        $rootScope.currentProjectColor = $rootScope.projectColors[index];
+        $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[index];
+    };
+
+    $scope.createName = function(name) {
+        if (name.length > 15) {
+            return name.substring(0,12)+"...";
+        }
+        return name;
+    };
+
     function init() {
         $scope.bk= {
             name: ''
@@ -34,7 +47,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             $scope.model = {
                 action: ''
             };
-            $scope.projects = data;
+            $scope.projects = data.slice(0,8);
             if ($scope.projects.length === 0) {
                 return;
             }
