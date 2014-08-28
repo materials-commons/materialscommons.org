@@ -2,8 +2,12 @@
     <div class="col-lg-12" ng-controller="Projects"><br>
         <div>
             <ul class="tabrow" ng-style="{'border-bottom-color': currentProjectColor}">
-                <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}" style="background: {{projectColors[$index]}}; border-bottom: 10px solid {{projectColors[$index]}};">
-                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)">{{createName(p.name)}}</a>
+                <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}"
+                    ng-style="isActiveProject($index) && getActiveStyle($index) || !isActiveProject($index) && getInactiveStyle($index)">
+                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)"
+                       ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: '#9FADBC', 'font-weight': 'bold'}">
+                        {{createName(p.name)}}
+                    </a>
                 </li>
                 <li style="background: #95a5a6">
                     <a data-toggle="modal" data-target="#newProject"

@@ -245,4 +245,5 @@ app.run(["$rootScope", "User", function ($rootScope, User) {
     $rootScope.projectColorsLight = ["#97C7E0", "#D3CBB8", "#E8BC96", "#71C7F6", "#B1CCA2", "#F1B986", "#94D3F6", "#D4C18F"];
     $rootScope.currentProjectColor = $rootScope.projectColors[0];
     $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[0];
+    $rootScope.currentProjectIndex = 0;
 }]);

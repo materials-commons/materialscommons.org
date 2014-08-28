@@ -72,28 +72,28 @@
                 <ul class="nav nav-tabs tabs-right overview-tabs" style="border-left-width: 3px; border-left-style: solid; border-radius: 0 0 0 0;" ng-style="{'border-left-color': currentProjectColor}">
                     <li class="active">
                         <a ng-click="showTab('files')" data-toggle="tab"
-                           ng-style="isActive('files') && {'background-color': currentProjectColor, color: 'white'} || !isActive('files') && {'background-color': currentProjectColorLight, color: 'white'}">
+                           ng-style="isActive('files') && {'background-color': currentProjectColor, color: 'white', 'font-weight': 'bold'} || !isActive('files') && {'background-color': currentProjectColorLight, color: '#9fadbc', 'font-weight': 'bold'}">
                             <i class="fa fa-file-text"/>
                             Files
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('samples')" data-toggle="tab"
-                           ng-style="isActive('samples') && {'background-color': currentProjectColor, color: 'white'} || !isActive('samples') && {'background-color': currentProjectColorLight, color: 'white'}">
+                           ng-style="isActive('samples') && {'background-color': currentProjectColor, color: 'white', 'font-weight': 'bold'} || !isActive('samples') && {'background-color': currentProjectColorLight, color: '#9fadbc', 'font-weight': 'bold'}">
                             <i class="fa fa-cubes"/>
                             Samples
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('provenance')" data-toggle="tab"
-                           ng-style="isActive('provenance') && {'background-color': currentProjectColor, color: 'white'} || !isActive('provenance') && {'background-color': currentProjectColorLight, color: 'white'}">
+                           ng-style="isActive('provenance') && {'background-color': currentProjectColor, color: 'white', 'font-weight': 'bold'} || !isActive('provenance') && {'background-color': currentProjectColorLight, color: '#9fadbc', 'font-weight': 'bold'}">
                             <i class="fa fa-code-fork"/>
                             Provenance
                         </a>
                     </li>
                     <li>
                         <a ng-click="showTab('reviews')" data-toggle="tab"
-                           ng-style="isActive('reviews') && {'background-color': currentProjectColor, color: 'white'} || !isActive('reviews') && {'background-color': currentProjectColorLight, color: 'white'}">
+                           ng-style="isActive('reviews') && {'background-color': currentProjectColor, color: 'white', 'font-weight': 'bold'} || !isActive('reviews') && {'background-color': currentProjectColorLight, color: '#9fadbc', 'font-weight': 'bold'}">
                             <i class="fa fa-comment"></i>
                             Reviews
                             <span class="pull-right badge">{{open_reviews.length}}</span>
@@ -101,7 +101,7 @@
                     </li>
                     <li>
                         <a ng-click="showTab('drafts')" data-toggle="tab"
-                           ng-style="isActive('drafts') && {'background-color': currentProjectColor, color: 'white'} || !isActive('drafts') && {'background-color': currentProjectColorLight, color: 'white'}">
+                           ng-style="isActive('drafts') && {'background-color': currentProjectColor, color: 'white', 'font-weight': 'bold'} || !isActive('drafts') && {'background-color': currentProjectColorLight, color: '#9fadbc', 'font-weight': 'bold'}">
                             <i class="fa fa-copy"/>
                             Drafts
                             <span class="pull-right badge">{{drafts.length}}</span>
@@ -109,7 +109,7 @@
                     </li>
                     <li>
                         <a ng-click="showTab('notes')" data-toggle="tab"
-                           ng-style="isActive('notes') && {'background-color': currentProjectColor, color: 'white'} || !isActive('notes') && {'background-color': currentProjectColorLight, color: 'white'}">
+                           ng-style="isActive('notes') && {'background-color': currentProjectColor, color: 'white', 'font-weight': 'bold'} || !isActive('notes') && {'background-color': currentProjectColorLight, color: '#9fadbc', 'font-weight': 'bold'}">
                             <i class="fa fa-edit"/>
                             Notes
                             <span class="pull-right badge">{{project.notes.length}}</span>
@@ -117,7 +117,7 @@
                     </li>
                     <li>
                         <a ng-click="showTab('settings')" data-toggle="tab"
-                           ng-style="isActive('settings') && {'background-color': currentProjectColor, color: 'white'} || !isActive('settings') && {'background-color': currentProjectColorLight, color: 'white'}">
+                           ng-style="isActive('settings') && {'background-color': currentProjectColor, color: 'white', 'font-weight': 'bold'} || !isActive('settings') && {'background-color': currentProjectColorLight, color: '#9fadbc', 'font-weight': 'bold'}">
                             <i class="fa fa-cogs"/>
                             Settings
                         </a>
