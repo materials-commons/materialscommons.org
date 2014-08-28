@@ -92,6 +92,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
     };
 
     function init() {
+        console.log('in overview controller')
         $scope.bk = {
             name: ''
         };

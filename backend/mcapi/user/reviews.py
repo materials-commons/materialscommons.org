@@ -15,8 +15,7 @@ from loader.model import review
 def get_reviews_requested():
     user = access.get_user()
     selection = list(r.table('reviews')
-                     .get_all(user, index='requested_by')
-                     .filter(r.row['requested_to'] != user)
+                     .get_all(user, index='author')
                      .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -27,7 +26,7 @@ def get_reviews_requested():
 def get_reviews_to_be_conducted():
     user = access.get_user()
     selection = list(r.table('reviews')
-                     .get_all(user, index='requested_to')
+                     .get_all(user, index='assigned_to')
                      .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 

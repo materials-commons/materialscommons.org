@@ -1,7 +1,7 @@
 Application.Controllers.controller('reviews',
-    ["$scope", "mcapi", "$state", "pubsub", "Nav",
+    ["$scope", "mcapi", "$state", "pubsub", "$filter",
 
-        function ($scope, mcapi, $state, pubsub, Nav) {
+        function ($scope, mcapi, $state, pubsub, $filter) {
             pubsub.waitOn($scope, 'reviews.change', function () {
                 $scope.retrieveReviewsToConduct();
             });
@@ -10,16 +10,22 @@ Application.Controllers.controller('reviews',
                 mcapi('/reviews/to_conduct')
                     .success(function (reviews) {
                         $scope.reviewsToConduct = reviews;
+                        $scope.conduct_open_reviews = $filter('reviewFilter')(reviews, 'open');
+                        $scope.conduct_closed_reviews = $filter('reviewFilter')(reviews, 'close');
+                        $scope.reviewsToConduct = $scope.conduct_open_reviews;
+                        $scope.status = 'open';
+                    }).jsonp();
+            };
+            $scope.retrieveReviewsRequested = function () {
+                mcapi('/reviews/requested')
+                    .success(function (reviews) {
+                        $scope.requested_open_reviews = $filter('reviewFilter')(reviews, 'open');
+                        $scope.requested_closed_reviews = $filter('reviewFilter')(reviews, 'close');
+                        $scope.reviewsRequested = $scope.requested_open_reviews;
+                        $scope.status = 'open';
                     }).jsonp();
             };
 
-            $scope.removeReviewToConduct = function (index) {
-                mcapi('/reviews/%', $scope.reviewsToConduct[index].id)
-                    .success(function () {
-                        $scope.reviewsToConduct.splice(index, 1);
-                        pubsub.send('reviews.change', 'review.change');
-                    }).delete();
-            };
 
             $scope.removeReview = function (index) {
                 mcapi('/reviews/%', $scope.reviewsRequested[index].id)
@@ -29,29 +35,27 @@ Application.Controllers.controller('reviews',
                     }).delete();
             };
 
-
-            $scope.retrieveReviewsRequested = function () {
-                mcapi('/reviews/requested')
-                    .success(function (reviews) {
-                        $scope.reviewsRequested = reviews;
-                    }).jsonp();
+            $scope.viewReview = function (review) {
+                if(review.item_type == 'datadir'){
+                    $state.go('projects.overview.reviews', {'id': review.item_id});
+                }
+                else if(review.item_type == 'datafile'){
+                    $state.go('projects.dataedit.editreviews', {'draft_id': '', 'data_id': review.item_id, 'file_path': 'global',
+                        'review_id': review.id, 'id': '5fcfc6c4-0745-4fa0-9ed7-2b0ac92796c6'});
+                }
             };
 
-            $scope.gotoReview = function (review) {
-                switch (review.item_type) {
-                    case "datafile":
-                    $state.go('projects.dataedit.reviews', {data_id: review.item_id, from: 'datafile', file_path: 'global'});
-                    break;
-                case "draft":
-                    $state.go('projects.overview.drafts', {id: review.project_id, draft_id: review.item_id});
-                    break;
-                default:
-                    console.log("Unknown type: " + review.item_type);
+            $scope.showReviews = function (status) {
+                $scope.status = status;
+                if (status == 'open') {
+                    $scope.list_reviews = $scope.open_reviews;
+                }
+                else if (status == 'close') {
+                    $scope.list_reviews = $scope.closed_reviews;
                 }
             };
 
             $scope.init = function () {
-                Nav.setActiveNav('Reviews');
                 $scope.retrieveReviewsRequested();
                 $scope.retrieveReviewsToConduct();
             };

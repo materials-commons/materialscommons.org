@@ -8,7 +8,7 @@ function projectsOverviewEditReview ($scope, mcapi, User, $stateParams, dateGene
     };
 
     $scope.saveReview = function(index) {
-        if ($scope.review.messages[$scope.index].message === "") {
+        if ($scope.review.messages[index].message === "") {
             return;
         }
         $scope.edit_index = -1;
