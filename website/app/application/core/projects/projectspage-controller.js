@@ -29,6 +29,26 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     $scope.setActiveIndex = function(index) {
         $rootScope.currentProjectColor = $rootScope.projectColors[index];
         $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[index];
+        $rootScope.currentProjectIndex = index;
+    };
+
+    $scope.isActiveProject = function(index) {
+        return index === $rootScope.currentProjectIndex;
+    };
+
+    $scope.getActiveStyle = function(index) {
+        return {
+            background: $rootScope.projectColors[index],
+            'border-bottom-width': '10px',
+            'border-bottom-style': 'solid',
+            'border-bottom-color': $rootScope.projectColors[index]
+        };
+    };
+
+    $scope.getInactiveStyle = function(index) {
+        return {
+            background: $rootScope.projectColorsLight[index]
+        };
     };
 
     $scope.createName = function(name) {
