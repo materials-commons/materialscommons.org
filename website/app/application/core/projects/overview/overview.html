@@ -96,7 +96,7 @@
                            ng-style="isActive('reviews') && getActiveTabStyle() || !isActive('reviews') && getInactiveTabStyle()">
                             <i class="fa fa-comment"></i>
                             Reviews
-                            <span class="pull-right badge">{{open_reviews.length}}</span>
+                            <span class="pull-right badge" ng-style="!isActive('reviews') && {'background-color': inactiveColor}">{{open_reviews.length}}</span>
                         </a>
                     </li>
                     <li>
@@ -104,7 +104,7 @@
                            ng-style="isActive('drafts') && getActiveTabStyle() || !isActive('drafts') && getInactiveTabStyle()">
                             <i class="fa fa-copy"/>
                             Drafts
-                            <span class="pull-right badge">{{drafts.length}}</span>
+                            <span class="pull-right badge" ng-style="!isActive('drafts') && {'background-color': inactiveColor}">{{drafts.length}}</span>
                         </a>
                     </li>
                     <li>
@@ -112,7 +112,7 @@
                            ng-style="isActive('notes') && getActiveTabStyle() || !isActive('notes') && getInactiveTabStyle()">
                             <i class="fa fa-edit"/>
                             Notes
-                            <span class="pull-right badge">{{project.notes.length}}</span>
+                            <span class="pull-right badge" ng-style="!isActive('notes') && {'background-color': inactiveColor}">{{project.notes.length}}</span>
                         </a>
                     </li>
                     <li>
