@@ -39,6 +39,7 @@ function projectsDataEditEditReview ($scope, mcapi, User, $stateParams, pubsub, 
     };
 
     function init() {
+        console.log('in edit review controller')
         $scope.model = {
             selected: false,
             comment: ""
