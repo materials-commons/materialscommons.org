@@ -66,16 +66,10 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a href="#">Add Dataset</a>
-                                <ul class="dropdown-menu scrollable-menu">
-
-                                </ul>
-                            </li>
                         </ul>
                     </div>
                 </td>
-                <td ng-show="entry.tags!= {}"  class="tag-width" ng-repeat="t in entry.tags[user]">
+                <td ng-show="entry.tags!= {}" class="tag-width" ng-repeat="t in entry.tags[user]">
                     <i tooltip="{{t.name}}" class="fa fa-tag" style="color: {{t.color}}"></i>
                 </td>
             </tr>
