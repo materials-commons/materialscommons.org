@@ -246,4 +246,5 @@ app.run(["$rootScope", "User", function ($rootScope, User) {
     $rootScope.currentProjectColor = $rootScope.projectColors[0];
     $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[0];
     $rootScope.currentProjectIndex = 0;
+    $rootScope.inactiveColor = "#8694A3";
 }]);
