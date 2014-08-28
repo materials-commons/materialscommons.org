@@ -283,7 +283,12 @@
 .fa.fa-code-fork.space-right{
   padding-right: 3px;
 }
-a.prov-link{
+
+span {
+  color: black;
+}
+
+a.prov-link {
   padding-right: 15px;
   color: black;
 }

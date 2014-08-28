@@ -28,6 +28,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
 
     $scope.setActiveIndex = function(index) {
         $rootScope.currentProjectColor = $rootScope.projectColors[index];
+        $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[index];
     };
 
     $scope.createName = function(name) {
