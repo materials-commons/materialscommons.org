@@ -5,7 +5,7 @@
                 <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}"
                     ng-style="isActiveProject($index) && getActiveStyle($index) || !isActiveProject($index) && getInactiveStyle($index)">
                     <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)"
-                       ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: inactiveColor, 'font-weight': 'bold'}">
+                       ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: inactiveColor}">
                         {{createName(p.name)}}
                     </a>
                 </li>

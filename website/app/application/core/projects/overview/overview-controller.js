@@ -37,6 +37,21 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
             }).jsonp();
     };
 
+    $scope.getActiveTabStyle = function() {
+        return {
+            'background-color': $rootScope.currentProjectColor,
+            color: 'white',
+            'font-weight': 'bold'
+        };
+    };
+
+    $scope.getInactiveTabStyle = function() {
+        return {
+            'background-color': $rootScope.currentProjectColorLight,
+            color: $rootScope.inactiveColor
+        };
+    };
+
     $scope.createTag = function(){
         mcapi('/user/%/tags', User.u())
             .success(function () {
