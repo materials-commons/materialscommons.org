@@ -39,7 +39,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     $scope.getActiveStyle = function(index) {
         return {
             background: $rootScope.projectColors[index],
-            'border-bottom-width': '10px',
+            //'border-bottom-width': '10px',
             'border-bottom-style': 'solid',
             'border-bottom-color': $rootScope.projectColors[index]
         };
