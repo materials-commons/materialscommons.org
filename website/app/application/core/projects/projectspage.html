@@ -1,39 +1,72 @@
 <div class="row">
-    <div class="col-lg-12" ng-controller="Projects"><br>
-        <div>
-            <ul class="tabrow" ng-style="{'border-bottom-color': currentProjectColor}">
-                <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}"
-                    ng-style="isActiveProject($index) && getActiveStyle($index) || !isActiveProject($index) && getInactiveStyle($index)">
-                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)"
-                       ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: inactiveColor}">
-                        {{createName(p.name)}}
-                    </a>
-                </li>
-                <li style="background: #95a5a6">
-                    <a data-toggle="modal" data-target="#newProject"
-                       ng-click="createProject()">
-                        <i class="fa fa-plus"/>
-                    </a>
-                </li>
-            </ul>
+    <div class="col-lg-12">
+        <div class="col-lg-3 col-lg-offset-9">
+            <div class="col-lg-6">
+                <span class="badge">10</span> Reviews <i class="fa fa-comment"/>
+            </div>
+            <div class="col-lg-6">
+                <span class="badge">5</span> Uploads <i class="fa fa-cloud-upload"/>
+            </div>
         </div>
-        <div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Create New Project</h4>
+    </div>
+</div>
+<div class="row col-lg-12" ng-controller="Projects"><br>
+    <div>
+        <ul class="tabrow projects-header" ng-style="{'border-bottom-color': currentProjectColor}">
+            <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}"
+                ng-style="isActiveProject($index) && getActiveStyle($index) || !isActiveProject($index) && getInactiveStyle($index)">
+                <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)"
+                   ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: inactiveColor}">
+                    {{createName(p.name)}}
+                </a>
+            </li>
+            <li style="background: #95a5a6">
+                <a data-toggle="modal" data-target="#newProject"
+                   ng-click="createProject()">
+                    <i class="fa fa-plus"/>
+                </a>
+            </li>
+        </ul>
+        <div style="position: relative; height: 30px; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; " ng-style="{background: currentProjectColor}">
+            <div class="col-lg-7">
+                <div class="col-lg-10">
+                    <div class="col-lg-3 col-lg-offset-1">
+                        <a class="action-link" style="color: white; font-style: bold">
+                            <i class="fa fa-comment"/> Add Review
+                        </a>
                     </div>
-                    <div class="modal-body">
-                        <label>Name:</label>
-                        <input ng-model="bk.name" class="form-control">
-                        <br><button ng-click="createProject()" class="btn btn-info" data-dismiss="modal">Create</button>
+                    <div class="col-lg-3">
+                        <a class="action-link" style="color: white; font-style: bold;">
+                            <i class="fa fa-code-fork"/> Add Provenance
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a class="action-link" style="color: white; font-style: bold;">
+                            <i class="fa fa-cubes"/> Add Sample
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
+    <div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Create New Project</h4>
+                </div>
+                <div class="modal-body">
+                    <label>Name:</label>
+                    <input ng-model="bk.name" class="form-control">
+                    <br><button ng-click="createProject()" class="btn btn-info" data-dismiss="modal">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 <div class="row">
     <div class="col-lg-12">

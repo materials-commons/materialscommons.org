@@ -5,7 +5,7 @@
             Make this align
             <div class="panel panel-default">
                 <div class="panel-heading" ng-style="{'background-color': currentProjectColor}">
-                     <span> <i class="fa fa-tags"/> Tags</span>
+                    <span> <i class="fa fa-tags"/> Tags</span>
                 </div>
                 <div class="panel-body">
                     <div ng-repeat="t in u_tags">
@@ -39,7 +39,6 @@
 
 
         <div class="col-lg-8">
-
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading" ng-style="{'background-color': currentProjectColor}">
@@ -69,7 +68,7 @@
         </div>
         <div class="col-lg-2">
             <div class="individual-items">
-                <ul class="nav nav-tabs tabs-right overview-tabs" style="border-left-width: 3px; border-left-style: solid; border-radius: 0 0 0 0;" ng-style="{'border-left-color': currentProjectColor}">
+                <ul class="nav nav-tabs tabs-right overview-tabs" style="border-left-width: 2px; border-left-style: solid; border-radius: 0 0 0 0;" ng-style="{'border-left-color': currentProjectColor}">
                     <li class="active">
                         <a ng-click="showTab('files')" data-toggle="tab"
                            ng-style="isActive('files') && getActiveTabStyle() || !isActive('files') && getInactiveTabStyle()">
@@ -122,7 +121,11 @@
                             Settings
                         </a>
                     </li>
+                    <li>&nbsp;</li>
                 </ul>
+            </div>
+            <div class="row">
+                Hello world
             </div>
         </div>
     </div>
