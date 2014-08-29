@@ -79,7 +79,7 @@
                         </div>
                     </td>
                     <td ng-show="entry.tags!= {}" class="tag-width" ng-repeat="t in entry.tags[user]">
-                        <i tooltip="{{t.name}}" class="fa fa-tag" style="color: {{t.color}}"></i>
+                        <i tooltip="{{t.name}}" class="fa fa-tag" ng-style="{color: t.color}"></i>
                     </td>
                 </tr>
             </tbody>
