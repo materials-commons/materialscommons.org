@@ -771,6 +771,12 @@ table-file-directory > thead > tr > td,
   border: 1px solid #dadedf;
 }
 
+a.action-link {
+  color: white;
+  font-style: bold;
+  text-decoration: underline;
+}
+
 a:hover.action-link,
 a:focus.action-link {
   text-decoration: underline;
@@ -789,19 +795,14 @@ ul.projects-header {
   margin-bottom: 0px;
 }
 
-div.project-hr {
-  /* background: black; */
-  margin-left: 15em;
-  margin-right: 15em;
-  /* width: 50em; */
+hr {
+  background: #333;
+  margin-top: 5px;
+  margin-bottom: 10px;
   border: 0;
-  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
-  background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
-  background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
-  background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
   height: 1px;
-}
-
-div.project-hr hr {
-  display: none;
+  background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc);
+  background-image: -moz-linear-gradient(left,  #ccc, #333, #ccc);
+  background-image: -ms-linear-gradient(left,  #ccc, #333, #ccc);
+  background-image: -o-linear-gradient(left,  #ccc, #333, #ccc);
 }
