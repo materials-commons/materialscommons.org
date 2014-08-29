@@ -56,8 +56,12 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         mcapi('/user/%/tags', User.u())
             .success(function () {
                 $scope.loadUserTags();
-            }).put($scope.bk);
-        $scope.bk = {};
+            }).put($scope.tag);
+        $scope.tag = {
+            name: "",
+            color: "blue",
+            icon: "tag"
+        };
     };
 
     $scope.showTab = function (tab) {
@@ -106,10 +110,20 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
             }).jsonp();
     };
 
+    $scope.iconSelected = function(icon) {
+        $scope.tag.icon = icon;
+    };
+
+
     function init() {
-        $scope.bk = {
-            name: ''
+        $scope.tag = {
+            name: "",
+            color: "blue",
+            icon: "tag"
         };
+
+        $scope.icons = ["tag", "exclamation", "asterisk", "bookmark", "bullseye", "check", "eye",
+                        "fighter-jet", "flag", "fire", "frown", "heart", "rocket", "thumbs-up", "thumbs-down"];
         $scope.activeTab = "files";
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;
