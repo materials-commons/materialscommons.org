@@ -6,13 +6,23 @@
     </div>
     <div class="panel panel-default">
         <div ng-hide="checkBox" class="panel-heading file-heading" ng-style="{'background-color': color}">
-            <span>Last update:...</span>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-6">
+                        <span>Last update:...</span>
+                    </div>
+                    <div class="col-lg-2 col-lg-offset-4">
+                        <a class="action-link" style="color:white; font-style: bold">14,355 Files/10Gb</a>
+                    </div>
+                </div>
+            </div>
+
             <!-- Comment out because this will be added back in short term -->
             <!-- <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
             <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a> -->
-            <a ui-sref="projects.provenance" class="pull-right prov-link action-link"><i
-                    class="fa fa-code-fork space-right"/>Add Provenance</a>
+            <!-- <a ui-sref="projects.provenance" class="pull-right prov-link action-link"><i
+            class="fa fa-code-fork space-right"/>Add Provenance</a> -->
         </div>
         <!-- <div class="panel-body" style="padding: 5px;background-color: #389DC1">
         <div class="dropdown">
@@ -35,44 +45,44 @@
     <div ng-show="loaded===true">
         <table class="table  table-file-directory ">
             <tbody>
-            <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
-                data-tt-parent-id="{{t.parent_id}}"
-                data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
-                <td ng-show="checkBox" ng-if="entry.type==='datafile'">
-                    <input ng-model="entry.selected" ng-click="fileSelected(entry)"
-                           ng-change="entry.selected = !entry.selected" type="checkbox">
-                    <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
-                </td>
-                <td ng-if="entry.type=='datadir'">
-                    <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}
-                    </a>
-                </td>
-                <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
-                    <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
-                </td>
-                <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
-                <td ng-if="entry.type=='datadir'">-</td>
-                <td>{{entry.owner}}</td>
-                <td>
-                    <div class="btn-group">
-                        <a data-toggle="dropdown"><i class="fa fa-plus"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li class="dropdown-submenu">
-                                <a href="#">Add Tag</a>
-                                <ul class="dropdown-menu scrollable-menu">
-                                    <li ng-repeat="t in user_tags">
-                                    <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
-                                            ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-                <td ng-show="entry.tags!= {}" class="tag-width" ng-repeat="t in entry.tags[user]">
-                    <i tooltip="{{t.name}}" class="fa fa-tag" style="color: {{t.color}}"></i>
-                </td>
-            </tr>
+                <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
+                    data-tt-parent-id="{{t.parent_id}}"
+                    data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
+                    <td ng-show="checkBox" ng-if="entry.type==='datafile'">
+                        <input ng-model="entry.selected" ng-click="fileSelected(entry)"
+                               ng-change="entry.selected = !entry.selected" type="checkbox">
+                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
+                    </td>
+                    <td ng-if="entry.type=='datadir'">
+                        <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}
+                        </a>
+                    </td>
+                    <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
+                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
+                    </td>
+                    <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
+                    <td ng-if="entry.type=='datadir'">-</td>
+                    <td>{{entry.owner}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a data-toggle="dropdown"><i class="fa fa-plus"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#">Add Tag</a>
+                                    <ul class="dropdown-menu scrollable-menu">
+                                        <li ng-repeat="t in user_tags">
+                                            <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
+                                                ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td ng-show="entry.tags!= {}" class="tag-width" ng-repeat="t in entry.tags[user]">
+                        <i tooltip="{{t.name}}" class="fa fa-tag" style="color: {{t.color}}"></i>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

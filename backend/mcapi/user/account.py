@@ -1,4 +1,3 @@
-
 from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
 from .. import access
@@ -118,7 +117,8 @@ def update_tags(user):
     tag = dict()
     tag['name'] = dmutil.get_required('name', j)
     tag['color'] = dmutil.get_required('color', j)
+    tag['icon'] = dmutil.get_required('icon', j)
     existing_tags.append(tag)
     rr = r.table('users').get(user).update(
         {'preferences': {'tags': existing_tags}}).run(g.conn)
-    return  jsonify(rr)
+    return jsonify(rr)
