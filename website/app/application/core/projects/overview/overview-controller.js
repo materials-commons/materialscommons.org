@@ -64,6 +64,14 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         };
     };
 
+    $scope.tagname = function(name) {
+        if (name.length > 12) {
+            return name.slice(0,9) + "...";
+        }
+
+        return name;
+    };
+
     $scope.showTab = function (tab) {
         $scope.activeTab = tab;
         switch (tab) {
