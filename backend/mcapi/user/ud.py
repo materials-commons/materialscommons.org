@@ -22,7 +22,11 @@ class StateCreateSaver(object):
         return id
 
     def insert_newval(self, table, entry):
-        rv = r.table('saver').insert(entry, return_vals=True).run(g.conn)
+        if g.rethinkdb_version > 113:
+            rr = r.table(table).insert(entry, return_changes=True)
+        else:
+            rr = r.table(table).insert(entry, return_vals=True)
+        rv = rr.run(g.conn)
         id = rv['generated_keys'][0]
         self.objects[id] = table
         return rv
