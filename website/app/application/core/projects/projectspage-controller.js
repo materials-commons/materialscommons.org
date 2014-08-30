@@ -14,6 +14,19 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         }
     });
 
+    pubsub.waitOn($scope, 'active-action-close', function() {
+        $scope.activeAction = "closed";
+    });
+
+    $scope.actionActivation = function (action) {
+        if (action == $scope.activeAction) {
+            $scope.activeAction = "closed";
+        } else {
+            $scope.activeAction = action;
+        }
+        pubsub.send("active-action", $scope.activeAction);
+    };
+
     $scope.createProject = function(){
         if ($scope.bk.name === "") {
             return;
@@ -62,6 +75,8 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         $scope.bk= {
             name: ''
         };
+
+        $scope.activeAction = "closed";
         $scope.from = ProjectPath.get_from();
         Projects.getList().then(function (data) {
             $scope.model = {
