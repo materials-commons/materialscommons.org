@@ -65,8 +65,8 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
     };
 
     $scope.tagname = function(name) {
-        if (name.length > 12) {
-            return name.slice(0,9) + "...";
+        if (name.length > 25) {
+            return name.slice(0,22) + "...";
         }
 
         return name;
@@ -131,7 +131,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         };
 
         $scope.icons = ["tag", "exclamation", "asterisk", "bookmark", "bullseye", "check", "eye",
-                        "fighter-jet", "flag", "fire", "frown", "heart", "rocket", "thumbs-up", "thumbs-down"];
+                        "fighter-jet", "flag", "fire", "frown-o", "heart", "rocket", "thumbs-up", "thumbs-down"];
         $scope.activeTab = "files";
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;

@@ -28,35 +28,36 @@
             </li>
         </ul>
         <div style="position: relative; height: 30px; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;" ng-style="{background: currentProjectColor}">
-            <div class="col-lg-8 col-lg-offset-2">
-                <div class="col-lg-12">
-                    <div class="col-lg-3">
-                        <a class="action-link" style="color: white; font-style: bold;"
-                           ng-click="actionActivation('provenance')">
-                            <i class="fa fa-code-fork"/> Create Provenance
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a class="action-link" style="color: white; font-style: bold;"
-                           ng-click="actionActivation('sample')">
-                            <i class="fa fa-cubes"/> Add Sample
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a class="action-link" style="color: white; font-style: bold"
-                           ng-click="actionActivation('review')">
-                            <i class="fa fa-comment"/> Add Review
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a class="action-link" style="color:white; font-style: bold"
-                           ng-click="actionActivation('note')">
-                            <i class="fa fa-edit"/> Add Note
-                        </a>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="col-lg-12">
+                        <div class="col-lg-3">
+                            <a action-stack class="action-link" style="color: white; font-style: bold; font-size: 11pt;"
+                               ng-click="toggleStackAction('provenance')">
+                                <i class="fa fa-code-fork"/> Create Provenance
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="action-link" style="color: white; font-style: bold; font-size: 11pt;"
+                               ng-click="actionActivation('sample')">
+                                <i class="fa fa-cubes"/> Add Sample
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="action-link" style="color: white; font-style: bold; font-size: 11pt;"
+                               ng-click="actionActivation('review')">
+                                <i class="fa fa-comment"/> Add Review
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="action-link" style="color:white; font-style: bold; font-size: 11pt;"
+                               ng-click="actionActivation('note')">
+                                <i class="fa fa-edit"/> Add Note
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
              aria-hidden="true">
@@ -76,12 +77,13 @@
         </div>
     </div>
 </div>
+<div id="action-stack" class="row">
+</div>
 <div ng-controller="_projectsAction">
     <div class="row">
         <div class="col-lg-12">
             <div ng-switch on="activeActionArea">
                 <div ng-animate="'animate'" ng-switch-when="provenance">
-                    <h1>Provenance</h1>
                     <div class="row bs-wizard" style="border-bottom:0;">
 
                         <div class="col-xs-3 bs-wizard-step complete">
@@ -130,7 +132,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-lg-12">
             <div class="tab-content" ui-view=''></div>
