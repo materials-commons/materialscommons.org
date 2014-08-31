@@ -1,184 +1,62 @@
 <div ng-controller="projectsOverviewSamples">
-    <button class="btn btn-success" ng-click="toggleCustom = !toggleCustom"><i class="fa fa-plus-square"></i>New
-        Sample
-    </button>
-    <div saved-notification="" message="message"></div>
-
-    <div class="form-horizontal" ng-init="toggleCustom = false" ng-show="toggleCustom">
-        <div class="row">
-            <div class="col-lg-8">
-                <label>Choose sample type:</label>
-                <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
-                        ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
-                </select>
-            </div>
-        </div>
-        <form name="Sample">
-
-            <div class="row"><br>
-
-                <div class="col-lg-10" ng-show="bk.classification">
-                    <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
-                    <div notes doc="doc" type='sample'></div>
-                    <div df-properties="" default-properties="doc.default_properties"></div>
-                </div>
-            </div>
-            <br>
-        </form>
-        <div ng-show="bk.classification">
-            <h4 plus-minus-toggle="slidetreatments">
-                <i class="fa fa-minus-square"></i>
-                Treatments
-            </h4>
-
-            <div id="slidetreatments">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <label>Treatments:</label>
-                        <select class="form-control" ng-model="bk.selected_treatment"
-                                ng-options="treat.id for treat in treatment_templates"
-                                ng-change="showForm()">
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8">
-                        <label class='control-label'><strong>{{bk.selected_treatment.id ||
-                            bk.tab_item}} </strong></label>
-
-                        <div ng-show="bk.selected_treatment">
-                            <div df-properties default-properties="default_properties"></div>
-                            <button ng-click="addTreatment()" class="btn btn-primary">Add</button>
-                        </div>
-                    </div>
-                    <div ng-show="doc.treatments.length !==0 " class="col-lg-4">
-                        <label>Treatments Order:</label>
-                        <tabset vertical="true" type="pills">
-                            <tab ng-repeat="treatment in doc.treatments"
-                                 ng-click="showTab(treatment, $index)"
-                                 heading="{{treatment.id}}">
-                            </tab>
-                        </tabset>
-                    </div>
-
-                </div>
-            </div>
-            <br>
-            <h4 plus-minus-toggle="slideprojects">
-                <i class="fa fa-minus-square"></i>
-                Projects
-            </h4>
-
-            <div id="slideprojects">
-                <div class="row form-group">
-                    <div class="col-lg-8">
-                        <div class="col-lg-5">
-                            <select class="form-control" ng-model="bk.selected_project"
-                                    ng-options="pr.name for pr in projects">
-                            </select>
-                        </div>
-                        <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project
-                        </button>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div ng-show="doc.projects.length !==0 " class="col-lg-8">
-                        <table class="table table-striped mc-table-hover table-condensed mc-table">
-                            <thead>
-                            <tr>
-                                <th>Projects</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="i in doc.projects">
-                                <td>{{i.name}}</td>
-                                <td>
-                                    <button class="btn btn-default btn-danger"
-                                            ng-click="removeProjects($index)">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="row" ng-show="bk.classification"><br>
-        <button ng-click="save(Sample)" class="btn btn-default btn-primary">Save</button>
-        <button ng-click="clear()" class="btn btn-default btn-danger">Clear</button>
-    </div>
-
-    <br><br>
-    <h4 plus-minus-toggle="availablesamples">
-        <i class="fa fa-minus-square"></i>
-        Available Samples
-    </h4>
+    <h4>Available Samples</h4>
 
     <div id="availablesamples">
         <div class="row">
             <paged data="samples_list" current-page="currentDataPage" page-size="10">
-                <p ng-if="samples_list.length==0">
-                    <b>No available objects in the database</b>
-                </p>
+                <span ng-if="samples_list.length === 0">
+                    <b>No samples in project</b>
+                </span>
 
-                <p ng-if="samples_list.length!=0">
-                </p>
-
-                <table class="table table-striped">
+                <table ng-if="samples_list.length !== 0" class="table table-striped">
                     <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Composition</th>
-                        <th>Availability</th>
-                        <th>Date Created</th>
-                        <th>Details and Processes</th>
-                    </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Composition</th>
+                            <th>Availability</th>
+                            <th>Date Created</th>
+                            <th>Details and Processes</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:10">
-                        <td>{{sample.name}}</td>
-                        <td>
-                            <ul ng-repeat="c in sample.properties.composition.value track by $index">
-                                <li>{{c.element}} - {{c.value}} {{sample.properties.composition.unit}}</li>
-                            </ul>
-                        </td>
-                        <td ng-if="sample.available===true">
-                            <i class="fa fa-check available"></i>
-                            <a ng-click="editAvailability(sample)">edit</a>
+                        <tr ng-repeat="sample in samples_list | orderBy:predicate:reverse | page:currentDataPage:10">
+                            <td>{{sample.name}}</td>
+                            <td>
+                                <ul ng-repeat="c in sample.properties.composition.value track by $index">
+                                    <li>{{c.element}} - {{c.value}} {{sample.properties.composition.unit}}</li>
+                                </ul>
+                            </td>
+                            <td ng-if="sample.available===true">
+                                <i class="fa fa-check available"></i>
+                                <a ng-click="editAvailability(sample)">edit</a>
 
-                            <div ng-show="sample.id == chosen_sample.id">
-                                <input type="radio" ng-model="bk.available" value="1">
-                                available <br/>
-                                <input type="radio" ng-model="bk.available" value="2"> not
-                                available
-                                <br>
-                                <button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save
-                                </button>
-                            </div>
-                        </td>
-                        <td ng-if="sample.available===false">
-                            <i class="fa fa-times notavailable"></i>
-                            <a ng-click="editAvailability(sample)">edit</a>
+                                <div ng-show="sample.id == chosen_sample.id">
+                                    <input type="radio" ng-model="bk.available" value="1">
+                                    available <br/>
+                                    <input type="radio" ng-model="bk.available" value="2"> not
+                                    available
+                                    <br>
+                                    <button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save
+                                    </button>
+                                </div>
+                            </td>
+                            <td ng-if="sample.available===false">
+                                <i class="fa fa-times notavailable"></i>
+                                <a ng-click="editAvailability(sample)">edit</a>
 
-                            <div ng-show="sample.id == chosen_sample.id">
-                                <input type="radio" ng-model="bk.available" value="1">
-                                available <br/>
-                                <input type="radio" ng-model="bk.available" value="2"> not
-                                available
-                                <br>
-                                <button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save
-                                </button>
-                            </div>
-                        </td>
-                        <td>{{sample.birthtime | toDateString}}</td>
-                        <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
-                    </tr>
+                                <div ng-show="sample.id == chosen_sample.id">
+                                    <input type="radio" ng-model="bk.available" value="1">
+                                    available <br/>
+                                    <input type="radio" ng-model="bk.available" value="2"> not
+                                    available
+                                    <br>
+                                    <button type="button" class="btn btn-primary" ng-click="updateAvailability()">Save
+                                    </button>
+                                </div>
+                            </td>
+                            <td>{{sample.birthtime | toDateString}}</td>
+                            <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
+                        </tr>
                     </tbody>
                 </table>
             </paged>
@@ -242,9 +120,9 @@
                             <div ng-show="projects_by_sample.length !== 0">
                                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                                     <tbody>
-                                    <tr ng-repeat="i in projects_by_sample">
-                                        <td>{{i.project_name}}</td>
-                                    </tr>
+                                        <tr ng-repeat="i in projects_by_sample">
+                                            <td>{{i.project_name}}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
