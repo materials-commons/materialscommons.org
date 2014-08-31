@@ -4,7 +4,7 @@
         <div class="col-lg-2">
             <div class="sideboard-group">
                 <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
-                <a action-stack ng-click="toggleStackAction('tag')" class="important"><i class="fa fa-plus"/> Add Tag</a>
+                <a action-stack ng-click="toggleStackAction('tag', 'project-action-stack')" class="important"><i class="fa fa-plus"/> Add Tag</a>
                 <hr>
 
                 <div ng-repeat="t in u_tags">
@@ -18,7 +18,7 @@
             </div>
             <div class="sideboard-group">
                 <span class="col-lg-6"><i class="fa fa-check-square"/> To Do</span>
-                <a action-stack ng-click="toggleStackAction('todo')" class="important"><i class="fa fa-plus"/> Add To Do</a>
+                <a action-stack ng-click="toggleStackAction('todo', 'project-action-stack')" class="important"><i class="fa fa-plus"/> Add To Do</a>
                 <hr>
             </div>
         </div>
