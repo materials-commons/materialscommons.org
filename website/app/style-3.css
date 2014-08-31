@@ -586,15 +586,6 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-radius: 35px;
 }
 
-
-.doit {
-  opacity: 0.5;
-}
-
-.doit2 {
-  opacity: 1;
-}
-
 /*
  ** Remove outline on selected items (eg in a tab pill)
  */
@@ -774,13 +765,20 @@ table-file-directory > thead > tr > td,
 a.action-link {
   color: white;
   font-style: bold;
-  text-decoration: underline;
 }
 
-a:hover.action-link,
-a:focus.action-link {
+a.important {
+  font-size: 11pt;
+}
+
+a:hover,
+a:focus {
   text-decoration: underline;
   font-weight: bold;
+}
+
+table a, .table a {
+  text-decoration: none;
 }
 
 td > a {
@@ -805,6 +803,31 @@ hr {
   background-image: -moz-linear-gradient(left,  #ccc, #333, #ccc);
   background-image: -ms-linear-gradient(left,  #ccc, #333, #ccc);
   background-image: -o-linear-gradient(left,  #ccc, #333, #ccc);
+}
+
+hr.carved {
+  /* clear: both; */
+  /* float: none; */
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 2px;
+  /* margin: 1.4em 0; */
+  border: none;
+  background: #ddd;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.5, rgb(221,221,221)),
+    color-stop(0.5, rgb(255,255,255))
+  );
+  background-image: -moz-linear-gradient(
+    center top,
+    rgb(221,221,221) 50%,
+    rgb(255,255,255) 50%
+  );
+
 }
 
 /* ******** Movement Animation ******* */
@@ -860,3 +883,8 @@ hr {
 .bs-wizard > .bs-wizard-step:first-child  > .progress {left: 50%; width: 50%;}
 .bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
+
+/* Side board styling */
+.sideboard-group {
+  padding-bottom: 25px;
+}

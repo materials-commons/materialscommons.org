@@ -1,21 +1,25 @@
 <br>
 <div ng-controller="projectsOverview">
     <div class="row">
-        <div class="col-lg-1">
-            <span> <i class="fa fa-tags"/> Tags</span>
-            <hr>
-            <a data-toggle="modal" data-target="#addTag"><i class="fa fa-plus"/> Tag</a>
-            <div class="row">
+        <div class="col-lg-2">
+            <div class="sideboard-group">
+                <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
+                <a action-stack ng-click="toggleStackAction('tag')" class="important"><i class="fa fa-plus"/> Add Tag</a>
+                <hr>
+
                 <div ng-repeat="t in u_tags">
                     <div tooltip="{{t.name}}" tooltip-popup-delay="700" class="row">
-                        <div class="col-sm-1">
+                        <span>
                             <i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
-                        </div>
-                        <div class="col-sm-offset-2">
                             {{tagname(t.name)}}
-                        </div>
+                        </span>
                     </div>
                 </div>
+            </div>
+            <div class="sideboard-group">
+                <span class="col-lg-6"><i class="fa fa-check-square"/> To Do</span>
+                <a action-stack ng-click="toggleStackAction('todo')" class="important"><i class="fa fa-plus"/> Add To Do</a>
+                <hr>
             </div>
         </div>
         <div>
@@ -23,8 +27,7 @@
             <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
 
-
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading" ng-style="{'background-color': currentProjectColor}">
@@ -217,7 +220,7 @@
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
                                             <li ng-repeat="icon in icons" ng-click="iconSelected(icon)">
-                                                <a><i class="fa fa-{{icon}}"/>{{icon}}</a>
+                                                <a><i class="fa fa-{{icon}}"/> {{icon}}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -232,7 +235,6 @@
                                     <button id="button2id" name="button2id" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
-
                         </fieldset>
                     </form>
                 </div>

@@ -19,6 +19,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     });
 
     $scope.actionActivation = function (action) {
+
         if (action == $scope.activeAction) {
             $scope.activeAction = "closed";
         } else {
