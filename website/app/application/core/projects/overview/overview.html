@@ -27,7 +27,7 @@
             <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-lg-10">
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading" ng-style="{'background-color': currentProjectColor}">
@@ -50,12 +50,56 @@
                                     Project(s)</a>
                             </span>
                         </div>
+                        <hr class="carved">
+                        <div class="row">
+                            <span class="col-lg-2">
+                                <a class="action-link">
+                                    <i class="fa fa-file-text"/>
+                                    Files
+                                </a>
+                            </span>
+                            <span class="col-lg-2">
+                                <a class="action-link">
+                                    <i class="fa fa-cubes"/>
+                                    Samples
+                                </a>
+                            </span>
+                            <span class="col-lg-2">
+                                <a class="action-link">
+                                    <i class="fa fa-code-fork"/>
+                                    Provenance
+                                </a>
+                            </span>
+                            <span class="col-lg-2">
+                                <a class="action-link">
+                                    <i class="fa fa-comment"></i>
+                                    Reviews
+                                    <span class="badge" ng-style="!isActive('reviews') && {'background-color': inactiveColor}">{{open_reviews.length}}</span>
+                                </a>
+                            </span>
+                            <span class="col-lg-2">
+                                <a class="action-link">
+                                    <i class="fa fa-copy"/>
+                                    Drafts
+                                    <span class="badge" ng-style="!isActive('drafts') && {'background-color': inactiveColor}">{{drafts.length}}</span>
+                                </a>
+                            </span>
+                            <span class="col-lg-2">
+                                <a class="action-link">
+                                    <i class="fa fa-edit"/>
+                                    Notes
+                                    <span class="badge" ng-style="!isActive('notes') && {'background-color': inactiveColor}">{{project.notes.length}}</span>
+                                </a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div id="file-action-stack" class="row">
+            </div>
             <div ui-view></div>
         </div>
-        <div class="col-lg-2">
+        <div ng-show="false" class="col-lg-2">
             <div class="individual-items">
                 <ul class="nav nav-tabs tabs-right overview-tabs" style="border-left-width: 2px; border-left-style: solid; border-radius: 0 0 0 0;" ng-style="{'border-left-color': currentProjectColor}">
                     <li class="active">

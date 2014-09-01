@@ -128,7 +128,7 @@
   color: white;
 }
 .individual-items{
-  padding-left: 30px;
+  padding-left: 40px;
 }
 .individual-items > ul{
 /* height: 500px; */
@@ -712,10 +712,8 @@ table-file-directory > thead > tr > td,
   height: 10px;
 }
 
-.container-fixed {
-  margin: 0 auto;
-  width: 1220px;
-/*min-width: 1000px;*/
+.row.app-container {
+  margin-right: 15px;
 }
 
 .nav-tabs > li > a {
@@ -888,4 +886,12 @@ hr.carved {
 /* Side board styling */
 .sideboard-group {
   padding-bottom: 25px;
+}
+
+.row {
+  margin-right: 0px;
+}
+
+.panel-default.input-panel {
+  margin-bottom: 5px;
 }

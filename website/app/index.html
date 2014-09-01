@@ -94,179 +94,184 @@
             </div>
         </div>
         <div class="row">
-            <div class="container-fixed">
-                <div ui-view="">
+            <div class="col-lg-12">
+                <div class="row app-container">
+                    <div ui-view="">
+                    </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- ---------------------------- External dependencies ----------------->
+            <!-- ---------------------------- External dependencies ----------------->
 
-        <script src="assets/js/jquery-1.11.1.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-        <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/TreeModel-min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
-        <script src="assets/js/angular/angular-strap.min.js"></script>
-        <script src="assets/js/angular/angular-ui.js"></script>
-        <script src="assets/js/angular/angular-ui-router.js"></script>
-        <script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
-        <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
-        <script src="assets/js/angular/angular-validation.js"></script>
-        <script src="assets/js/angular/angular-dragdrop.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jqcloud-1.0.4.js"></script>
-        <script src="assets/js/underscore-min.js"></script>
-        <script src="assets/js/angular/socket.js"></script>
-        <script src="assets/js/socket.io.js"></script>
-
-
-        <!------------------------------ Application --------------------------->
-        <script src="application/app.js"></script>
-
-        <!------------------------------ Core app ------------------------------>
-        <!-- Navbar -->
-        <script src="application/core/help/help-controller.js"></script>
-        <script src="application/core/about/about-controller.js"></script>
-        <script src="application/core/contact/contact-controller.js"></script>
-        <script src="application/core/home/home-controller.js"></script>
-        <script src="application/core/login/login-controller.js"></script>
-        <script src="application/core/logout/logout-controller.js"></script>
-
-        <!-- Views -->
-        <!-- View: Account Groups -->
-        <script src="application/core/account/account-controller.js"></script>
-        <script src="application/core/account/password/password-controller.js"></script>
-        <script src="application/core/account/apikey/apikey-controller.js"></script>
-        <script src="application/core/account/usergroups/usergroup-controller.js"></script>
-
-        <!-- Toolbar -->
-        <!--<script src="../junk/toolbar/toolbar-controller.js"></script>-->
-
-        <!-- Toolbar data -->
-        <script src="application/core/projects/dataedit/dataedit-controller.js"></script>
-        <script src="application/core/projects/dataedit/tags/tag-directive.js"></script>
-        <script src="application/core/projects/dataedit/reviews/review-controller.js"></script>
-        <script src="application/core/projects/dataedit/tags/create-tag-controller.js"></script>
-        <script src="application/core/projects/dataedit/notes/notes-controller.js"></script>
-        <script src="application/core/projects/dataedit/notes/notes-controller.js"></script>
-        <script src="application/core/projects/dataedit/provenance/provenance-controller.js"></script>
-        <script src="application/core/projects/dataedit/details/details-controller.js"></script>
-        <script src="application/core/projects/dataedit/reviews/edit-review-controller.js"></script>
-
-        <!-- Toolbar tags -->
-        <script src="application/core/account/templates/templates-controller.js"></script>
-
-        <!-- Toolbar reviews -->
-        <script src="application/core/reviews/reviews-controller.js"></script>
-
-        <!-- Toolbar machines -->
-        <script src="application/core/machines/machines-controller.js"></script>
-
-        <!-- Toolbar projectspage -->
-        <script src="application/core/projects/projectspage-controller.js"></script>
-        <script src="application/core/projects/directives/action-stack-directive.js"></script>
-        <script src="application/core/projects/directives/action-stack-provenance.js"></script>
-        <script src="application/core/projects/directives/action-stack-tag.js"></script>
-        <script src="application/core/projects/directives/action-stack-sample.js"></script>
-        <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
-        <script src="application/core/projects/_action-controller.js"></script>
-        <script src="application/core/projects/overview/overview-controller.js"></script>
-        <script src="application/core/projects/overview/files/files-controller.js"></script>
-        <script src="application/core/projects/overview/samples/sample-controller.js"></script>
-        <script src="application/core/projects/overview/provenance/provenance-controller.js"></script>
-        <script src="application/core/projects/overview/drafts/drafts-controller.js"></script>
-        <script src="application/core/projects/overview/drafts/_review-modal-controller.js"></script>
-        <script src="application/core/projects/overview/notes/notes-controller.js"></script>
-        <script src="application/core/projects/overview/settings/group-access-controller.js"></script>
-        <script src="application/core/projects/overview/reviews/review-controller.js"></script>
-        <script src="application/core/projects/overview/reviews/edit-review-controller.js"></script>
+            <script src="assets/js/jquery-1.11.1.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+            <script src="assets/js/select2.min.js"></script>
+            <script src="assets/js/TreeModel-min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
+            <script src="assets/js/angular/angular-strap.min.js"></script>
+            <script src="assets/js/angular/angular-ui.js"></script>
+            <script src="assets/js/angular/angular-ui-router.js"></script>
+            <script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
+            <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
+            <script src="assets/js/angular/angular-validation.js"></script>
+            <script src="assets/js/angular/draganddrop.js"></script>
+            <script src="assets/js/bootstrap.min.js"></script>
+            <script src="assets/js/jqcloud-1.0.4.js"></script>
+            <script src="assets/js/underscore-min.js"></script>
+            <script src="assets/js/angular/socket.js"></script>
+            <script src="assets/js/socket.io.js"></script>
 
 
-        <!------------------------------ Provenance app ------------------------------>
+            <!------------------------------ Application --------------------------->
+            <script src="application/app.js"></script>
 
-        <!-- Views -->
-        <!-- Provenance -->
-        <script src="application/core/projects/provenance/provenance-controller.js"></script>
-        <script src="application/core/projects/provenance/provsteps-service.js"></script>
-        <script src="application/core/projects/provenance/model-service.js"></script>
+            <!------------------------------ Core app ------------------------------>
+
+            <!-- action stack -->
+            <script src="application/default-stack-drop.js"></src>
+
+            <!-- Navbar -->
+            <script src="application/core/help/help-controller.js"></script>
+            <script src="application/core/about/about-controller.js"></script>
+            <script src="application/core/contact/contact-controller.js"></script>
+            <script src="application/core/home/home-controller.js"></script>
+            <script src="application/core/login/login-controller.js"></script>
+            <script src="application/core/logout/logout-controller.js"></script>
+
+            <!-- Views -->
+            <!-- View: Account Groups -->
+            <script src="application/core/account/account-controller.js"></script>
+            <script src="application/core/account/password/password-controller.js"></script>
+            <script src="application/core/account/apikey/apikey-controller.js"></script>
+            <script src="application/core/account/usergroups/usergroup-controller.js"></script>
+
+            <!-- Toolbar -->
+            <!--<script src="../junk/toolbar/toolbar-controller.js"></script>-->
+
+            <!-- Toolbar data -->
+            <script src="application/core/projects/dataedit/dataedit-controller.js"></script>
+            <script src="application/core/projects/dataedit/tags/tag-directive.js"></script>
+            <script src="application/core/projects/dataedit/reviews/review-controller.js"></script>
+            <script src="application/core/projects/dataedit/tags/create-tag-controller.js"></script>
+            <script src="application/core/projects/dataedit/notes/notes-controller.js"></script>
+            <script src="application/core/projects/dataedit/notes/notes-controller.js"></script>
+            <script src="application/core/projects/dataedit/provenance/provenance-controller.js"></script>
+            <script src="application/core/projects/dataedit/details/details-controller.js"></script>
+            <script src="application/core/projects/dataedit/reviews/edit-review-controller.js"></script>
+
+            <!-- Toolbar tags -->
+            <script src="application/core/account/templates/templates-controller.js"></script>
+
+            <!-- Toolbar reviews -->
+            <script src="application/core/reviews/reviews-controller.js"></script>
+
+            <!-- Toolbar machines -->
+            <script src="application/core/machines/machines-controller.js"></script>
+
+            <!-- Toolbar projectspage -->
+            <script src="application/core/projects/projectspage-controller.js"></script>
+            <script src="application/core/projects/directives/action-stack-directive.js"></script>
+            <script src="application/core/projects/directives/action-stack-provenance.js"></script>
+            <script src="application/core/projects/directives/action-stack-tag.js"></script>
+            <script src="application/core/projects/directives/action-stack-sample.js"></script>
+            <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
+            <script src="application/core/projects/_action-controller.js"></script>
+            <script src="application/core/projects/overview/overview-controller.js"></script>
+            <script src="application/core/projects/overview/files/files-controller.js"></script>
+            <script src="application/core/projects/overview/samples/sample-controller.js"></script>
+            <script src="application/core/projects/overview/provenance/provenance-controller.js"></script>
+            <script src="application/core/projects/overview/drafts/drafts-controller.js"></script>
+            <script src="application/core/projects/overview/drafts/_review-modal-controller.js"></script>
+            <script src="application/core/projects/overview/notes/notes-controller.js"></script>
+            <script src="application/core/projects/overview/settings/group-access-controller.js"></script>
+            <script src="application/core/projects/overview/reviews/review-controller.js"></script>
+            <script src="application/core/projects/overview/reviews/edit-review-controller.js"></script>
 
 
-        <!-- Provenance Process -->
-        <script src="application/core/projects/provenance/process/process-controller.js"></script>
+            <!------------------------------ Provenance app ------------------------------>
 
-        <!-- Provenance Inputs/Outputs Steps -->
-        <script src="application/core/projects/provenance/iosteps/iosteps-controller.js"></script>
-        <script src="application/core/projects/provenance/iosteps/iostep/iostep-controller.js"></script>
-        <script src="application/core/projects/provenance/iosteps/files/files-controller.js"></script>
-        <script src="application/core/projects/provenance/iosteps/iostep/sample-filter.js"></script>
-        <script src="application/core/projects/provenance/iosteps/iostep/clone-service.js"></script>
+            <!-- Views -->
+            <!-- Provenance -->
+            <script src="application/core/projects/provenance/provenance-controller.js"></script>
+            <script src="application/core/projects/provenance/provsteps-service.js"></script>
+            <script src="application/core/projects/provenance/model-service.js"></script>
 
 
-        <!--finish controller-->
-        <script src="application/core/projects/provenance/finish/finish-controller.js"></script>
+            <!-- Provenance Process -->
+            <script src="application/core/projects/provenance/process/process-controller.js"></script>
 
-        <!-------------------------------- Global directives ------------------------------->
-        <script src="application/directives/paged-directive.js"></script>
-        <script src="application/directives/notification-directive.js"></script>
-        <script src="application/directives/cgroup-directive.js"></script>
-        <script src="application/directives/dfproperties-directive.js"></script>
-        <script src="application/directives/adproperties-directive.js"></script>
-        <script src="application/directives/projecttree-directive.js"></script>
-        <script src="application/directives/modal-dismiss-directive.js"></script>
-        <script src="application/directives/upperlevel-process-directive.js"></script>
-        <script src="application/directives/upperlevel-object-directive.js"></script>
-        <script src="application/directives/saved-notification.js"></script>
-        <script src="application/directives/periodic-table-directive.js"></script>
-        <script src="application/directives/iterate-properties-directive.js"></script>
-        <script src="application/directives/sample-report-directive.js"></script>
-        <script src="application/directives/condition-report-directive.js"></script>
-        <script src="application/directives/plus-minus-toggle-directive.js"></script>
-        <script src="application/directives/tree-grid-directive.js"></script>
-        <script src="application/directives/df-report.js"></script>
-        <script src="application/directives/view-processes-directive.js"></script>
-        <script src="application/directives/file-report-directive.js"></script>
-        <script src="application/directives/notes-directive.js"></script>
+            <!-- Provenance Inputs/Outputs Steps -->
+            <script src="application/core/projects/provenance/iosteps/iosteps-controller.js"></script>
+            <script src="application/core/projects/provenance/iosteps/iostep/iostep-controller.js"></script>
+            <script src="application/core/projects/provenance/iosteps/files/files-controller.js"></script>
+            <script src="application/core/projects/provenance/iosteps/iostep/sample-filter.js"></script>
+            <script src="application/core/projects/provenance/iosteps/iostep/clone-service.js"></script>
 
-        <!-------------------------------- Global services --------------------------------->
-        <script src="application/services/user-service.js"></script>
-        <script src="application/services/alert-service.js"></script>
-        <script src="application/services/watcher-service.js"></script>
-        <script src="application/services/pubsub-service.js"></script>
-        <script src="application/services/mcapi-service.js"></script>
-        <script src="application/services/projects-service.js"></script>
-        <script src="application/services/provdrafts-service.js"></script>
-        <script src="application/services/date-generate-service.js"></script>
-        <script src="application/services/nav-service.js"></script>
-        <script src="application/services/materials-service.js"></script>
-        <script src="application/services/cached-service-factory-service.js"></script>
-        <script src="application/services/action-service.js"></script>
-        <script src="application/services/project-path-service.js"></script>
-        <script src="application/services/tags.js"></script>
 
-        <!-------------------------------- Global model services -------------------------->
-        <script src="application/services/model/projects-service.js"></script>
-        <script src="application/services/model/templates-service.js"></script>
+            <!--finish controller-->
+            <script src="application/core/projects/provenance/finish/finish-controller.js"></script>
 
-        <!-------------------------------- Global filters --------------------------------->
-        <script src="application/filters/page-filter.js"></script>
-        <script src="application/filters/todatestring-filter.js"></script>
-        <script src="application/filters/reverse-filter.js"></script>
-        <script src="application/filters/template-filter.js"></script>
-        <script src="application/filters/review-filter.js"></script>
+            <!-------------------------------- Global directives ------------------------------->
+            <script src="application/directives/paged-directive.js"></script>
+            <script src="application/directives/notification-directive.js"></script>
+            <script src="application/directives/cgroup-directive.js"></script>
+            <script src="application/directives/dfproperties-directive.js"></script>
+            <script src="application/directives/adproperties-directive.js"></script>
+            <script src="application/directives/projecttree-directive.js"></script>
+            <script src="application/directives/modal-dismiss-directive.js"></script>
+            <script src="application/directives/upperlevel-process-directive.js"></script>
+            <script src="application/directives/upperlevel-object-directive.js"></script>
+            <script src="application/directives/saved-notification.js"></script>
+            <script src="application/directives/periodic-table-directive.js"></script>
+            <script src="application/directives/iterate-properties-directive.js"></script>
+            <script src="application/directives/sample-report-directive.js"></script>
+            <script src="application/directives/condition-report-directive.js"></script>
+            <script src="application/directives/plus-minus-toggle-directive.js"></script>
+            <script src="application/directives/tree-grid-directive.js"></script>
+            <script src="application/directives/df-report.js"></script>
+            <script src="application/directives/view-processes-directive.js"></script>
+            <script src="application/directives/file-report-directive.js"></script>
+            <script src="application/directives/notes-directive.js"></script>
 
-        <!-- Index -->
-        <script src="index/_navigation-controller.js"></script>
-        <script src="index/_alerts-controller.js"></script>
+            <!-------------------------------- Global services --------------------------------->
+            <script src="application/services/user-service.js"></script>
+            <script src="application/services/alert-service.js"></script>
+            <script src="application/services/watcher-service.js"></script>
+            <script src="application/services/pubsub-service.js"></script>
+            <script src="application/services/mcapi-service.js"></script>
+            <script src="application/services/projects-service.js"></script>
+            <script src="application/services/provdrafts-service.js"></script>
+            <script src="application/services/date-generate-service.js"></script>
+            <script src="application/services/nav-service.js"></script>
+            <script src="application/services/materials-service.js"></script>
+            <script src="application/services/cached-service-factory-service.js"></script>
+            <script src="application/services/action-service.js"></script>
+            <script src="application/services/project-path-service.js"></script>
+            <script src="application/services/tags.js"></script>
 
-        <!-- Util -->
-        <script src="index/util.js"></script>
-        <script src="index/config.js"></script>
+            <!-------------------------------- Global model services -------------------------->
+            <script src="application/services/model/projects-service.js"></script>
+            <script src="application/services/model/templates-service.js"></script>
+
+            <!-------------------------------- Global filters --------------------------------->
+            <script src="application/filters/page-filter.js"></script>
+            <script src="application/filters/todatestring-filter.js"></script>
+            <script src="application/filters/reverse-filter.js"></script>
+            <script src="application/filters/template-filter.js"></script>
+            <script src="application/filters/review-filter.js"></script>
+
+            <!-- Index -->
+            <script src="index/_navigation-controller.js"></script>
+            <script src="index/_alerts-controller.js"></script>
+
+            <!-- Util -->
+            <script src="index/util.js"></script>
+            <script src="index/config.js"></script>
 
 
     </body>
