@@ -45,8 +45,20 @@
                 <div class="control-group">
                     <label class="control-label" for="button1id"></label>
                     <div class="controls">
-                        <button id="button1id" name="button1id" class="btn btn-success" data-dismiss="modal" ng-click="createTag()">Create</button>
-                        <button id="button2id" name="button2id" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button id="button1id"
+                                name="button1id"
+                                class="btn btn-success"
+                                ng-click="createTag()">
+                            Create
+                        </button>
+
+                        <button id="button2id"
+                                name="button2id"
+                                class="btn btn-danger"
+                                ng-click="cancel()"
+                                >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </fieldset>

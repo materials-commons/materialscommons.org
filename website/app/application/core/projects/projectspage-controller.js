@@ -1,8 +1,8 @@
 Application.Controllers.controller('Projects',
                                    ["$scope", "$stateParams", "mcapi", "$state", "watcher",
                                     "ProjectPath", "pubsub", "model.Projects", "$timeout",
-                                    "$rootScope", ProjectsController]);
-function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout, $rootScope) {
+                                    "$rootScope", "Tags", "User", "pubsub", ProjectsController]);
+function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout, $rootScope, Tags, User, pubsub) {
     $scope.project_id = $stateParams.id;
     $scope.model = {
         action: ''
@@ -72,6 +72,26 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         return name;
     };
 
+    function loadUserTags() {
+        mcapi('/user/%/tags', User.u())
+            .success(function (user) {
+                $scope.u_tags = user.preferences.tags;
+                Tags.updateUserTags($scope.u_tags);
+            }).jsonp();
+    }
+
+    pubsub.waitOn($scope, 'tag.new', function() {
+        loadUserTags();
+    });
+
+    $scope.tagname = function(name) {
+        if (name.length > 25) {
+            return name.slice(0,22) + "...";
+        }
+
+        return name;
+    };
+
     function init() {
         $scope.bk= {
             name: ''
@@ -102,6 +122,9 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
                     item.active = false;
                 }
             });
+
+            loadUserTags();
+
             if ($stateParams.draft_id !== "") {
                 $state.go('projects.provenance.process');
             } else {
