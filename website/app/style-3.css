@@ -747,11 +747,11 @@ table-file-directory > thead > tr > td,
   overflow: auto;
   padding: 0;
   position: relative;
-  width: 600px;
+  /* width: 600px; */
 }
 
 .custom-ta-toolbar {
-  width: 600px;
+  /* width: 600px; */
 }
 
 .selected {
