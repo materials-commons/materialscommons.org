@@ -34,7 +34,8 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
 
     $scope.populatePath = function (entry) {
         ProjectPath.populate($scope.trail, $scope.dir);
-        $state.go("projects.dataedit.details", {data_id: entry.id});
+        // $state.go("projects.dataedit.details", {data_id: entry.id});
+        $scope.toggleStackAction('file', 'overview-action-stack', entry.id, entry.id);
     };
 
     $scope.selectProject = function (projectId) {

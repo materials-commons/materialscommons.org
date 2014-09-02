@@ -71,7 +71,10 @@
                                 </li>
                             </ul>
                         </div>
-                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
+                        <a ng-click="populatePath(entry)">
+                            <i class="fa fa-file space-right"/>{{entry.displayname}}
+                            <i ng-class="{'fa fa-close action-link-close': actionActive('file', entry.id)}"/>
+                        </a>
                     </td>
                     <td ng-if="entry.type=='datadir'">
                         <div class="btn-group project-tree-menu">
@@ -107,7 +110,10 @@
                                 </li>
                             </ul>
                         </div>
-                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
+                        <a ng-click="populatePath(entry)">
+                            <i class="fa fa-file space-right"/>{{entry.displayname}}
+                            <i ng-class="{'fa fa-close action-link-close': actionActive('file', entry.id)}"/>
+                        </a>
                     </td>
                     <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
                     <td ng-if="entry.type=='datadir'">-</td>
