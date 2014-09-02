@@ -40,7 +40,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{"name": "Nano", "value" : "nano"},{"name": "Vickers", "Loading Rate" : "loading_rate"}],
+            "value_choice": [{"name": "Nano", "value" : "nano"},{"name": "Vickers", "value" : "vickers"},{"name": "Loading Rate", "Loading Rate" : "loading_rate"}],
             "required": false
         }
     ],
