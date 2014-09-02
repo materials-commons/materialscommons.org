@@ -1,9 +1,9 @@
 Application.Controllers.controller('projectsOverview',
                                    ["$scope", "$stateParams", "pubsub", "$state",
-                                    "ProvDrafts", "mcapi", "Tags","User", "$filter", "$rootScope",
+                                    "ProvDrafts", "mcapi","User", "$filter", "$rootScope",
                                     projectsOverview]);
 
-function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags, User, $filter, $rootScope) {
+function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, User, $filter, $rootScope) {
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;
     });
@@ -52,25 +52,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         };
     };
 
-    $scope.createTag = function(){
-        mcapi('/user/%/tags', User.u())
-            .success(function () {
-                $scope.loadUserTags();
-            }).put($scope.tag);
-        $scope.tag = {
-            name: "",
-            color: "blue",
-            icon: "tag"
-        };
-    };
 
-    $scope.tagname = function(name) {
-        if (name.length > 25) {
-            return name.slice(0,22) + "...";
-        }
-
-        return name;
-    };
 
     $scope.showTab = function (tab) {
         $scope.activeTab = tab;
@@ -110,34 +92,12 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
             }).jsonp();
     };
 
-    $scope.loadUserTags= function () {
-        mcapi('/user/%/tags', User.u())
-            .success(function (user) {
-                $scope.u_tags = user.preferences.tags;
-                Tags.updateUserTags($scope.u_tags);
-            }).jsonp();
-    };
-
-    $scope.iconSelected = function(icon) {
-        $scope.tag.icon = icon;
-    };
-
-
     function init() {
-        $scope.tag = {
-            name: "",
-            color: "blue",
-            icon: "tag"
-        };
-
-        $scope.icons = ["tag", "exclamation", "asterisk", "bookmark", "bullseye", "check", "eye",
-                        "fighter-jet", "flag", "fire", "frown-o", "heart", "rocket", "thumbs-up", "thumbs-down"];
         $scope.activeTab = "files";
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;
         $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
         $scope.getProject();
-        $scope.loadUserTags();
         $scope.countReviews();
     }
     init();
