@@ -10,12 +10,12 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{"name": "Ga", "value" : "Ga"},{"name": "Ne", "value" : "Ne"},{"name": "Ar", "value" : "Ar"}],
+            "value_choice": [{"name": "Ga", "value" : "Ga"},{"name": "Ne", "value" : "Ne"},{"name": "Ar", "value" : "Ar"},{"name": "Other", "value" : "other"}],
             "required": false
         },
         {
-            "attribute": "voltage (kV)",
-            "name": "Voltage" ,
+            "attribute": "voltage",
+            "name": "Voltage (kV)" ,
             "type": "number" ,
             "unit": "kV" ,
             "unit_choice": [] ,
@@ -24,8 +24,8 @@
             "required": false
         },
         {
-            "attribute": "current (nA)",
-            "name": "Current" ,
+            "attribute": "current",
+            "name": "Current (nA)" ,
             "type": "number" ,
             "unit": "nA" ,
             "unit_choice": [],
@@ -34,12 +34,22 @@
             "required": false
         },
         {
-            "attribute": "working_distance (mm)",
-            "name": "Working Distance" ,
+            "attribute": "working_distance",
+            "name": "Working Distance (mm)" ,
             "type": "number" ,
             "unit": "mm",
             "unit_choice": [] ,
             "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Sample Tilt(°)",
+            "attribute": "sample_tilt",
+            "type": "number",
+            "unit": "°",
+            "unit_choice": [],
+            "value": "",
             "value_choice": [],
             "required": false
         },

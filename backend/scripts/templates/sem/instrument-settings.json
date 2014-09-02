@@ -64,6 +64,17 @@
             "required": false
         },
         {
+            "name": "Detector",
+            "attribute": "detector",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [{"name": "Secondary", "value" : "secondary"},
+                             {"name": "Backscattered", "value" : "backscattered"},{"name": "Other", "value" : "other"}],
+            "required": false
+        },
+        {
             "name": "Stage",
             "attribute": "stage",
             "type": "select",
@@ -75,10 +86,10 @@
             "required": false
         },
         {
-            "name": "Working Distance(nm)",
+            "name": "Working Distance(mm)",
             "attribute": "working_distance",
             "type": "number",
-            "unit": "nm",
+            "unit": "mm",
             "unit_choice": [],
             "value": "",
             "value_choice": [],

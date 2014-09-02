@@ -14,10 +14,10 @@
             "required": false
         },
         {
-            "name": "Angle Step" ,
+            "name": "Angle Step (°)" ,
             "attribute": "angle_step",
             "type": "number" ,
-            "unit": "" ,
+            "unit": "°" ,
             "unit_choice": [] ,
             "value": "" ,
             "value_choice": [],
