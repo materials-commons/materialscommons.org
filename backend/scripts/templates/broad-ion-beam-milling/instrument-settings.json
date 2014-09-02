@@ -10,12 +10,12 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{"name": "Ga", "value" : "Ga"},{"name": "Ne", "value" : "Ne"},{"name": "Ar", "value" : "Ar"}],
+            "value_choice": [{"name": "Ga", "value" : "Ga"},{"name": "Ne", "value" : "Ne"},{"name": "Ar", "value" : "Ar"}, {"name": "Other", "value" : "other"}],
             "required": false
         },
         {
-            "attribute": "energy (V)",
-            "name": "Energy" ,
+            "attribute": "energy",
+            "name": "Energy (V)" ,
             "type": "number" ,
             "unit": "V" ,
             "unit_choice": [] ,
