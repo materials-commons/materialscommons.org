@@ -3,8 +3,7 @@
     <div class="row">
 
         <div>
-            <span class="col-lg-2"><a ui-sref="projects.overview.reviews">Add Review</a></span>
-            <span class="col-lg-offset-1 col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
+            <span class="col-lg-offset-3 col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
             <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
 
@@ -52,13 +51,13 @@
                                 </span>
                                 <span class="col-lg-2">
 
-                                     <a action-stack
-                                        ng-click="toggleStackAction('reviews', 'overview-action-stack')"
-                                        class="action-link project-sub-action">
-                                         <i class="fa fa-comment"/>
-                                         Reviews <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{open_reviews.length}}</span>
-                                         <i ng-class="{'fa fa-close action-link-close': actionActive('reviews')}"/>
-                                     </a>
+                                    <a action-stack
+                                       ng-click="toggleStackAction('reviews', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
+                                        <i class="fa fa-comment"/>
+                                        Reviews <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{open_reviews.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('reviews')}"/>
+                                    </a>
                                 </span>
                                 <span class="col-lg-2">
                                     <a action-stack
@@ -77,7 +76,7 @@
                                         <i class="fa fa-edit"/>
                                         Notes
                                         <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.notes.length}}</span>
-                                         <i ng-class="{'fa fa-close action-link-close': actionActive('overview-notes')}"/>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('overview-notes')}"/>
                                     </a>
                                 </span>
                             </div>
