@@ -55,24 +55,19 @@ function projectsDataEditCreateReview ($scope, mcapi, User, $stateParams,
     };
 
     $scope.loadReviews = function(id){
-        mcapi('/datafiles/%/reviews', $stateParams.data_id)
+        mcapi('/project/%/reviews', id)
             .success(function (reviews) {
                 $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
                 $scope.closed_reviews = $filter('reviewFilter')(reviews, 'close');
-                $scope.list_reviews =  $scope.open_reviews;
+                $scope.list_reviews = $scope.open_reviews;
                 $scope.status = 'open';
-                pubsub.send('open_reviews.change');
             }).jsonp();
+
     };
 
     function init() {
         $scope.list_reviews = [];
-        $scope.loadReviews();
-        mcapi('/datafile/%', $stateParams.data_id)
-            .success(function (data) {
-                $scope.datafile = data;
-            }).jsonp();
-
+        $scope.loadReviews($stateParams.id);
         $scope.model = {
             new_review: "",
             assigned_to: "",

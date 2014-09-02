@@ -9,9 +9,7 @@ class Review(object):
         self.author = author
         self.assigned_to = assigned_to
         self.messages = []
-        self.item_id = ""
-        self.item_type = ""
-        self.item_name = ""
+        self.items = []
         self.status = ""
         self.birthtime = r.now()
-        #self.project_id = ""
+        self.project_id = ""

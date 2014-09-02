@@ -85,6 +85,7 @@ def get_datafile_by_name(datadir_id, name):
 @jsonp
 def get_reviews_for_datafile(datafile_id):
     user = access.get_user()
+    result = []
     df = r.table('datafiles').get(datafile_id).run(g.conn)
     if df is None:
         return error.not_found('No such datafile: %s' % (datafile_id))
@@ -92,7 +93,12 @@ def get_reviews_for_datafile(datafile_id):
     reviews = list(r.table('reviews')
                    .get_all(datafile_id, index='item_id').order_by('birthtime')
                    .run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(reviews)
+    reviews =  r.table('reviews').run(g.conn, time_format='raw')
+    for rev in reviews:
+        for item in rev['items']:
+            if item['item_id'] == datafile_id:
+                result.append(rev)
+    return args.json_as_format_arg(result)
 
 
 @app.route('/processes/output/datafile/<df_id>', methods=['GET'])
