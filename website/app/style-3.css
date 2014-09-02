@@ -714,6 +714,7 @@ table-file-directory > thead > tr > td,
 
 .row.app-container {
   margin-right: 15px;
+  margin-left: 10px;
 }
 
 .nav-tabs > li > a {
@@ -894,4 +895,12 @@ hr.carved {
 
 .panel-default.input-panel {
   margin-bottom: 5px;
+}
+
+.badge.action-count {
+  margin-left: 5px;
+}
+
+.btn-group.project-tree-menu {
+  margin-right: 10px;
 }

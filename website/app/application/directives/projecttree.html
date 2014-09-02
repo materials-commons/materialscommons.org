@@ -14,7 +14,7 @@
                         </div>
                         <div class="col-lg-2 col-lg-offset-4">
                             <a action-stack
-                               ng-click="toggleStackAction('provenance', 'file-action-stack')"
+                               ng-click="toggleStackAction('provenance', 'overview-action-stack')"
                                class="action-link"
                                style="color:white; font-style: bold">
                                 14,355 Files/10Gb
@@ -57,20 +57,7 @@
                     <td ng-show="checkBox" ng-if="entry.type==='datafile'">
                         <input ng-model="entry.selected" ng-click="fileSelected(entry)"
                                ng-change="entry.selected = !entry.selected" type="checkbox">
-                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
-                    </td>
-                    <td ng-if="entry.type=='datadir'">
-                        <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}
-                        </a>
-                    </td>
-                    <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
-                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
-                    </td>
-                    <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
-                    <td ng-if="entry.type=='datadir'">-</td>
-                    <td>{{entry.owner}}</td>
-                    <td>
-                        <div class="btn-group">
+                        <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="dropdown-submenu">
@@ -84,10 +71,51 @@
                                 </li>
                             </ul>
                         </div>
+                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
                     </td>
+                    <td ng-if="entry.type=='datadir'">
+                        <div class="btn-group project-tree-menu">
+                            <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#">Add Tag</a>
+                                    <ul class="dropdown-menu scrollable-menu">
+                                        <li ng-repeat="t in user_tags">
+                                            <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i>
+                                                <a ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}
+                        </a>
+                    </td>
+                    <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
+                        <div class="btn-group project-tree-menu">
+                            <a data-toggle="dropdown"><i class="fa fa-plus"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#">Add Tag</a>
+                                    <ul class="dropdown-menu scrollable-menu">
+                                        <li ng-repeat="t in user_tags">
+                                            <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
+                                                ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <a ng-click="populatePath(entry)"><i class="fa fa-file space-right"/>{{entry.displayname}}</a>
+                    </td>
+                    <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
+                    <td ng-if="entry.type=='datadir'">-</td>
+                    <td>{{entry.owner}}</td>
                     <td ng-show="entry.tags != {}" class="tag-width" ng-repeat="t in entry.tags[user]">
                         <i tooltip="{{t.name}}" class="fa fa-tag" ng-style="{color: t.color}"></i>
                     </td>
+                    <td ng-show="entry.tags == {}"></td>
                 </tr>
             </tbody>
         </table>
