@@ -1,8 +1,12 @@
 Application.Controllers.controller('ProjectTreeController',
                                    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", ProjectTreeController]);
+                                    "$state", "Tags", "User", "dateGenerate",ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User) {
+function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate) {
+
+    $scope.addReviewforFile = function(entry){
+        $scope.dfitem = entry
+    }
 
     pubsub.waitOn($scope, "project.tree", function (treeVisible) {
         $scope.treeActive = treeVisible;
@@ -106,9 +110,37 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             }).post(item2tag);
         //Sticking tag in the tree
     };
+    $scope.addReview = function () {
+        if ($scope.model.new_review === "" || $scope.model.title === "" || $scope.model.assigned_to === "") {
+            return;
+        }
+        $scope.review = {messages: []};
+        $scope.review.items = [{'item_id': $scope.dfitem.id, 'item_type': $scope.dfitem.type, 'item_name': $scope.dfitem.name}]
+        $scope.review.project = $scope.project
+        $scope.review.author = User.u();
+        $scope.review.assigned_to = $scope.model.assigned_to;
+        $scope.review.status = 'open';
+        $scope.review.title = $scope.model.title;
+        $scope.review.messages.push({'message': $scope.model.new_review, 'who': User.u(), 'date': dateGenerate.new_date()});
+        $scope.saveData();
+    };
+
+    $scope.saveData = function () {
+        mcapi('/reviews')
+            .success(function (data) {
+//                $state.go('projects.overview.editreviews', {'review_id': data.id});
+                $scope.model.new_review = "";
+//                pubsub.send('open_reviews.change');
+            }).post($scope.review);
+    };
 
     $scope.init = function() {
         $scope.user = User.u();
+        $scope.model = {
+            new_review: "",
+            assigned_to: "",
+            title: ""
+        };
         $scope.user_tags = Tags.getUserTags();
         if ($scope.from == 'true') {
             $scope.project = ProjectPath.get_project();
@@ -121,6 +153,10 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             ProjectPath.set_project($scope.project);
             $scope.selectProject($scope.project);
         }
+        mcapi('/selected_users')
+            .success(function (data) {
+                $scope.users = data;
+            }).jsonp();
     };
 
     $scope.init();

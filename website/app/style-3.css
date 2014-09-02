@@ -167,6 +167,12 @@
   padding: 8px;
   color:red
 }
+.fa.fa-check-circle.heading{
+    padding: 5px;
+}
+.fa.fa-minus-circle.heading{
+    padding: 5px;
+}
 .cursor-pointer{
   cursor: pointer;
 }
@@ -747,7 +753,6 @@ table-file-directory > thead > tr > td,
   overflow: auto;
   padding: 0;
   position: relative;
-  /* width: 600px; */
 }
 
 .custom-ta-toolbar {
