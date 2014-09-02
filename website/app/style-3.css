@@ -767,6 +767,16 @@ a.action-link {
   font-style: bold;
 }
 
+.action-link.project-sub-action {
+  font-size: 11pt;
+}
+
+.action-link-close {
+  position: relative;
+  top: -5px;
+  color: #800000;
+}
+
 a.important {
   font-size: 11pt;
 }
