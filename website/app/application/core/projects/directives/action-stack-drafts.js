@@ -65,7 +65,6 @@ function actionDraftsController($scope,$state, ProvDrafts, pubsub,$stateParams) 
     function init() {
         $scope.project_id = $stateParams.id;
         $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
-        console.log($scope.project_id)
     }
 
     init();
