@@ -5,6 +5,7 @@ from rethinkdb.errors import RqlDriverError
 import mcexceptions
 import traceback
 import error
+import pkg_resources
 
 app = Flask(__name__.split('.')[0])
 
@@ -12,12 +13,16 @@ _MCDB = "materialscommons"
 _MCDB_HOST = environ.get('MCDB_HOST') or 'localhost'
 _MCDB_PORT = environ.get('MCDB_PORT') or 28015
 
+
 def mcdb_connect():
     return r.connect(host=_MCDB_HOST, port=_MCDB_PORT, db=_MCDB)
 
 
 @app.before_request
 def before_request():
+    if 'rethinkdb_version' not in g:
+        version = pkg_resources.get_distribution("rethinkdb").version[0:4]
+        g.rethinkdb_version = int(version.replace('.', ''))
     try:
         g.conn = mcdb_connect()
     except RqlDriverError:

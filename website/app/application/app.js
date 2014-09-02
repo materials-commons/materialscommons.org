@@ -241,10 +241,30 @@ app.run(["$rootScope", "User", function ($rootScope, User) {
         }
     });
     // #4a7a93,,"#bc6f59"
-    $rootScope.projectColors = ["#4a7a93", "#A09885", "#B58963" , "#3e94c3",  "#7E996F", "#A46C39", "#61a0c3", "#ae9b69"];
-    $rootScope.projectColorsLight = ["#97C7E0", "#D3CBB8", "#E8BC96", "#71C7F6", "#B1CCA2", "#F1B986", "#94D3F6", "#D4C18F"];
+    $rootScope.projectColors = [
+        "#4a7a93",
+        "#816c5b",
+        "#926042",
+        "#9a9980" ,
+        "#577294",
+        "#5c6957",
+        "#61a0c3",
+        "#ae9b69"
+    ];
+
+    $rootScope.projectColorsLight = [
+        "#97C7E0",
+        "#a9a18c",
+        "#C59375",
+        "#cccbb2",
+        "#8AA5C7",
+        "#8F9C8A",
+        "#94D3F6",
+        "#D4C18F"
+    ];
+
     $rootScope.currentProjectColor = $rootScope.projectColors[0];
     $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[0];
     $rootScope.currentProjectIndex = 0;
-    $rootScope.inactiveColor = "#8694A3";
+    $rootScope.inactiveColor = "#6C7A89";
 }]);

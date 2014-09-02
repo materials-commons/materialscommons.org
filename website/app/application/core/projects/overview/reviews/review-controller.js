@@ -67,6 +67,7 @@ function projectsOverviewCreateReview ($scope, mcapi, User, $stateParams, alertS
 
     function init() {
         $scope.list_reviews = [];
+        $scope.project_id = $stateParams.id
         mcapi('/projects/%', $stateParams.id)
             .success(function (data) {
                 $scope.project = data;
