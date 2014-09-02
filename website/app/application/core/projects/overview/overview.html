@@ -1,34 +1,14 @@
 <br>
 <div ng-controller="projectsOverview">
     <div class="row">
-        <div class="col-lg-2 sideboard">
-            <div class="sideboard-group">
-                <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
-                <a action-stack ng-click="toggleStackAction('tag', 'project-action-stack')" class="important"><i class="fa fa-plus"/> Add Tag</a>
-                <hr>
 
-                <div ng-repeat="t in u_tags">
-                    <div tooltip="{{t.name}}" tooltip-popup-delay="700" class="row">
-                        <span>
-                            <i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
-                            {{tagname(t.name)}}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="sideboard-group">
-                <span class="col-lg-6"><i class="fa fa-check-square"/> To Do</span>
-                <a action-stack ng-click="toggleStackAction('todo', 'project-action-stack')" class="important"><i class="fa fa-plus"/> Add To Do</a>
-                <hr>
-            </div>
-        </div>
         <div>
             <span class="col-lg-2"><a ui-sref="projects.overview.reviews">Add Review</a></span>
             <span class="col-lg-offset-1 col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
             <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
 
-        <div class="col-lg-10">
+        <div class="col-lg-12">
             <div class="row">
                 <div class="panel panel-default">
                     <div style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;" class="panel-heading" ng-style="{'background-color': currentProjectColor}">
@@ -67,10 +47,11 @@
                                        ng-click="toggleStackAction('project-provenance', 'overview-action-stack')"
                                        class="action-link project-sub-action">
                                         <i class="fa fa-code-fork"/>
-                                        Provenance <i/>
+                                        Provenance  <i ng-class="{'fa fa-close action-link-close': actionActive('project-provenance')}"/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
+
                                      <a action-stack
                                         ng-click="toggleStackAction('reviews', 'overview-action-stack')"
                                         class="action-link project-sub-action">
@@ -80,17 +61,23 @@
                                      </a>
                                 </span>
                                 <span class="col-lg-2">
-                                    <a class="action-link project-sub-action">
+                                    <a action-stack
+                                       ng-click="toggleStackAction('overview-drafts', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
                                         <i class="fa fa-copy"/>
                                         Drafts
                                         <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{drafts.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('overview-drafts')}"/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
-                                    <a class="action-link project-sub-action">
+                                    <a action-stack
+                                       ng-click="toggleStackAction('overview-notes', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
                                         <i class="fa fa-edit"/>
                                         Notes
                                         <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.notes.length}}</span>
+                                         <i ng-class="{'fa fa-close action-link-close': actionActive('overview-notes')}"/>
                                     </a>
                                 </span>
                             </div>
@@ -101,65 +88,6 @@
             <div id="overview-action-stack" class="row">
             </div>
             <div ui-view></div>
-        </div>
-        <div ng-show="false" class="col-lg-2">
-            <div class="individual-items">
-                <ul class="nav nav-tabs tabs-right overview-tabs" style="border-left-width: 2px; border-left-style: solid; border-radius: 0 0 0 0;" ng-style="{'border-left-color': currentProjectColor}">
-                    <li class="active">
-                        <a ng-click="showTab('files')" data-toggle="tab"
-                           ng-style="isActive('files') && getActiveTabStyle() || !isActive('files') && getInactiveTabStyle()">
-                            <i class="fa fa-file-text"/>
-                            Files
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="showTab('samples')" data-toggle="tab"
-                           ng-style="isActive('samples') && getActiveTabStyle() || !isActive('samples') && getInactiveTabStyle()">
-                            <i class="fa fa-cubes"/>
-                            Samples
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="showTab('provenance')" data-toggle="tab"
-                           ng-style="isActive('provenance') && getActiveTabStyle() || !isActive('provenance') && getInactiveTabStyle()">
-                            <i class="fa fa-code-fork"/>
-                            Provenance
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="showTab('reviews')" data-toggle="tab"
-                           ng-style="isActive('reviews') && getActiveTabStyle() || !isActive('reviews') && getInactiveTabStyle()">
-                            <i class="fa fa-comment"></i>
-                            Reviews
-                            <span class="pull-right badge" ng-style="!isActive('reviews') && {'background-color': inactiveColor}">{{open_reviews.length}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="showTab('drafts')" data-toggle="tab"
-                           ng-style="isActive('drafts') && getActiveTabStyle() || !isActive('drafts') && getInactiveTabStyle()">
-                            <i class="fa fa-copy"/>
-                            Drafts
-                            <span class="pull-right badge" ng-style="!isActive('drafts') && {'background-color': inactiveColor}">{{drafts.length}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="showTab('notes')" data-toggle="tab"
-                           ng-style="isActive('notes') && getActiveTabStyle() || !isActive('notes') && getInactiveTabStyle()">
-                            <i class="fa fa-edit"/>
-                            Notes
-                            <span class="pull-right badge" ng-style="!isActive('notes') && {'background-color': inactiveColor}">{{project.notes.length}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="showTab('settings')" data-toggle="tab"
-                           ng-style="isActive('settings') && getActiveTabStyle() || !isActive('settings') && getInactiveTabStyle()">
-                            <i class="fa fa-cogs"/>
-                            Settings
-                        </a>
-                    </li>
-                    <li>&nbsp;</li>
-                </ul>
-            </div>
         </div>
     </div>
 
