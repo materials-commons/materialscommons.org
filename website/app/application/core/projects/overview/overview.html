@@ -50,22 +50,23 @@
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
+
                                     <a action-stack
-                                       ng-click="toggleStackAction('overview-reviews', 'overview-action-stack')"
+                                       ng-click="toggleStackAction('reviews', 'overview-action-stack')"
                                        class="action-link project-sub-action">
-                                        <i class="fa fa-comment"></i>
-                                        Reviews<span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{open_reviews.length}}</span>
-                                        <i ng-class="{'fa fa-close action-link-close': actionActive('overview-reviews')}"/>
+                                        <i class="fa fa-comment"/>
+                                        Reviews <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{open_reviews.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('reviews')}"/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
                                     <a action-stack
-                                       ng-click="toggleStackAction('overview-drafts', 'overview-action-stack')"
+                                       ng-click="toggleStackAction('drafts', 'overview-action-stack')"
                                        class="action-link project-sub-action">
                                         <i class="fa fa-copy"/>
                                         Drafts
                                         <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{drafts.length}}</span>
-                                        <i ng-class="{'fa fa-close action-link-close': actionActive('overview-drafts')}"/>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('drafts')}"/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
@@ -75,7 +76,7 @@
                                         <i class="fa fa-edit"/>
                                         Notes
                                         <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.notes.length}}</span>
-                                         <i ng-class="{'fa fa-close action-link-close': actionActive('overview-notes')}"/>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('overview-notes')}"/>
                                     </a>
                                 </span>
                             </div>
