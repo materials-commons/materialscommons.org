@@ -25,7 +25,6 @@ function reviewsController ($scope, mcapi, User, alertService, dateGenerate, pub
                 $scope.closed_reviews = $filter('reviewFilter')(reviews, 'close');
                 $scope.list_reviews = $scope.open_reviews;
                 $scope.status = 'open';
-                console.log($scope.open_reviews)
             }).jsonp();
 
     };

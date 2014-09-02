@@ -12,4 +12,4 @@ class Review(object):
         self.items = []
         self.status = ""
         self.birthtime = r.now()
-        self.project_id = ""
+        self.project = ""
