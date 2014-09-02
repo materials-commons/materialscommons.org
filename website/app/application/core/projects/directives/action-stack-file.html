@@ -1,0 +1,46 @@
+<div>
+    <form class="form-inline">
+        <a ng-repeat="trailitem in trail" ng-click="backToFolder(trailitem)">
+            <span><b>{{trailitem.displayname}}/ </b></span>
+        </a>
+        <a ng-href="{{ originalFileSrc }}" download="{{ file.name }}"><b><u>{{file.name}}</u></b></a>
+    </form>
+    <button action-stack class="btn btn-danger" ng-click="toggleStackAction('file', 'overview-action-stack', file.id)">
+        Close
+    </button>
+    <div class="col-lg-9" ng-switch="" on="fileType">
+        <div ng-switch-when="image">
+            <img class="img-responsive" ng-src="{{ fileSrc }}">
+
+            <div class="col-lg-offset-4">
+                <legend>{{fileName}}</legend>
+
+            </div>
+        </div>
+        <div ng-switch-when="other">
+            Not an image
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="row">
+            <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
+            <a action-stack ng-click="toggleStackAction('tag', 'project-action-stack')" class="important"><i class="fa fa-plus"/> Add Tag</a>
+            <hr>
+            <div class="row">
+                <div ng-repeat="t in file.tags">
+                    <div tooltip="{{t.name}}" tooltip-popup-delay="700" class="row">
+                        <span>
+                            <i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
+                            {{t.name}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <span class="col-lg-6>" <i class="fa fa-edit"/> Notes</span>
+            <hr>
+            <div class="">
+                <div notes doc="file" type='datafile'></div>
+            </div>
+        </div>
+    </div>
+</div>

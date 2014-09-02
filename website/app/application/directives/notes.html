@@ -2,10 +2,12 @@
 
     <h4>Note</h4>
 
-    <div class="col-lg-6 custom-ta-toolbar">
-        <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+    <div>
+        <text-angular ta-toolbar="[['h1','h2','h3', 'h4','p'],
+                      ['bold','italics','underline'],['ul','ol'],
+                      ['justifyLeft','justifyCenter','justifyRight'],
+                      ['insertLink', 'insertImage'],
+                      ['undo', 'redo','clear']]"
                       ng-model="model.new_note"></text-angular>
         <br>
         <button ng-click="add_notes()" class="btn btn-default btn-primary">Enter</button>
@@ -19,8 +21,8 @@
         <div class="row" ng-repeat="n in doc.notes | orderBy: date">
             <div ng-if="edit_index==$index">
                 <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-        ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-        ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                              ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+                              ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
                               ng-model="n.message"></text-angular>
                 <br>
                 <button ng-click="saveNotes($index)" class="btn btn-default btn-primary">Save</button>
