@@ -14,6 +14,10 @@ function actionStackDirective(actionStackTracker, $compile) {
                         $("#" + id).remove();
                     }
                 };
+
+                scope.actionActive = function(action) {
+                    return actionStackTracker.actionActive(action);
+                };
             };
         }
     };

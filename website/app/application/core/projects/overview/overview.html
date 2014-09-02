@@ -56,35 +56,35 @@
                                 <span class="col-lg-2">
                                     <a action-stack
                                        ng-click="toggleStackAction('samples', 'overview-action-stack')"
-                                       class="action-link">
+                                       class="action-link project-sub-action">
                                         <i class="fa fa-cubes"/>
-                                        Samples <i style="position: relative; top: -5px; color: #800000" class="fa fa-close"/>
+                                        Samples <i ng-class="{'fa fa-close action-link-close': actionActive('samples')}"/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
                                     <a action-stack
                                        ng-click="toggleStackAction('project-provenance', 'overview-action-stack')"
-                                       class="action-link">
+                                       class="action-link project-sub-action">
                                         <i class="fa fa-code-fork"/>
-                                        Provenance
+                                        Provenance <i/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
-                                    <a class="action-link">
+                                    <a class="action-link project-sub-action">
                                         <i class="fa fa-comment"></i>
                                         Reviews<span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{open_reviews.length}}</span>
 
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
-                                    <a class="action-link">
+                                    <a class="action-link project-sub-action">
                                         <i class="fa fa-copy"/>
                                         Drafts
                                         <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{drafts.length}}</span>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
-                                    <a class="action-link">
+                                    <a class="action-link project-sub-action">
                                         <i class="fa fa-edit"/>
                                         Notes
                                         <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.notes.length}}</span>
