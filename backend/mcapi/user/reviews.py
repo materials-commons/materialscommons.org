@@ -62,11 +62,10 @@ def add_review():
     author = dmutil.get_required('author', j)
     r = review.Review(author, assigned_to)
     r.messages = dmutil.get_required('messages', j)
-    r.item_type = dmutil.get_required('item_type', j)
-    r.item_name = dmutil.get_required('item_name', j)
-    r.item_id = dmutil.get_required('item_id', j)
+    r.items = dmutil.get_required('items', j)
     r.title = dmutil.get_required('title', j)
     r.status = "open"
+    r.project = dmutil.get_required('project', j)
     return  dmutil.insert_entry('reviews', r.__dict__)
 
 @app.route('/reviews/<id>', methods=['PUT'])

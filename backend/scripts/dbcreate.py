@@ -63,7 +63,7 @@ def create_indices():
     create_index('drafts', 'project_id')
     create_index('reviews', 'assigned_to')
     create_index('reviews', 'author')
-    create_index('reviews', 'item_id')
+    create_index('reviews', 'project')
     create_index('project2datafile', 'project_id')
     create_index('project2datafile', 'datafile_id')
     create_index('tag2item', 'tag_id')

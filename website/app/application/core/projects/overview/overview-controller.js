@@ -4,6 +4,7 @@ Application.Controllers.controller('projectsOverview',
                                     projectsOverview]);
 
 function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, Tags, User, $filter, $rootScope) {
+
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;
     });
@@ -107,7 +108,6 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
     };
 
     function init() {
-        console.log('in overview controller')
         $scope.bk = {
             name: ''
         };

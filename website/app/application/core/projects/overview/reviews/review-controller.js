@@ -45,34 +45,34 @@ function projectsOverviewCreateReview($scope, mcapi, User, $stateParams, alertSe
         }
     };
 
-    $scope.loadReviews = function (id) {
-        mcapi('/project/%/reviews', id)
-            .success(function (reviews) {
-                $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
-                $scope.closed_reviews = $filter('reviewFilter')(reviews, 'close');
-                $scope.list_reviews = $scope.open_reviews;
-                $scope.status = 'open';
-            }).jsonp();
+//    $scope.loadReviews = function (id) {
+//        mcapi('/project/%/reviews', id)
+//            .success(function (reviews) {
+//                $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
+//                $scope.closed_reviews = $filter('reviewFilter')(reviews, 'close');
+//                $scope.all_reviews = $scope.open_reviews;
+//                $scope.status = 'open';
+//            }).jsonp();
 
-    };
+//    };
 
     function init() {
-        console.log('in dir ')
-        $scope.list_reviews = [];
-        mcapi('/projects/%', $stateParams.id)
-            .success(function (data) {
-                $scope.project = data;
-            }).jsonp();
-        $scope.loadReviews($stateParams.id);
-        $scope.model = {
-            new_review: "",
-            assigned_to: "",
-            title: ""
-        };
-        mcapi('/selected_users')
-            .success(function (data) {
-                $scope.users = data;
-            }).jsonp();
+        $scope.all_reviews = [];
+        $scope.project_id = $stateParams.id
+//        mcapi('/projects/%', $stateParams.id)
+//            .success(function (data) {
+//                $scope.project = data;
+//            }).jsonp();
+//        $scope.loadReviews($stateParams.id);
+//        $scope.model = {
+//            new_review: "",
+//            assigned_to: "",
+//            title: ""
+//        };
+//        mcapi('/selected_users')
+//            .success(function (data) {
+//                $scope.users = data;
+//            }).jsonp();
     }
 
     init();

@@ -5,7 +5,7 @@ Application.Controllers.controller('projectsDataEdit',
                 $scope.countReviews();
             });
             $scope.countReviews = function(){
-                mcapi('/datafiles/%/reviews', $scope.id)
+                mcapi('/project/%/reviews', $stateParams.id)
                     .success(function (reviews) {
                         $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
                     }).jsonp();
