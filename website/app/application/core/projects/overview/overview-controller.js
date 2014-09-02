@@ -1,9 +1,9 @@
 Application.Controllers.controller('projectsOverview',
                                    ["$scope", "$stateParams", "pubsub", "$state",
-                                    "ProvDrafts", "mcapi","User", "$filter", "$rootScope",
+                                    "ProvDrafts", "mcapi","$filter", "$rootScope",
                                     projectsOverview]);
 
-function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi, $filter, $rootScope) {
+function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi,$filter, $rootScope) {
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;
     });
@@ -13,6 +13,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
     });
 
     $scope.countReviews = function(){
+        //$scope.open_reviews = []
         mcapi('/project/%/reviews', $scope.project_id)
             .success(function (reviews) {
                 $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
@@ -93,7 +94,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
     };
 
     function init() {
-
+        $scope.open_reviews = [];
         $scope.tag = {
             name: "",
             color: "blue",
@@ -102,7 +103,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
 
         $scope.icons = ["tag", "exclamation", "asterisk", "bookmark", "bullseye", "check", "eye",
                         "fighter-jet", "flag", "fire", "frown-o", "heart", "rocket", "thumbs-up", "thumbs-down"];
-        $scope.activeTab = "files";
+//        $scope.activeTab = "files";
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;
         $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
