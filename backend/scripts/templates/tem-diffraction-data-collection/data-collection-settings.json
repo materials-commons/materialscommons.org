@@ -26,20 +26,20 @@
             "required": false
         },
         {
-            "name": "Tilt",
+            "name": "Tilt (°)",
             "attribute": "tilt",
             "type": "number",
-            "unit": "",
+            "unit": "°",
             "unit_choice": [],
             "value": "",
             "value_choice": [],
             "required": false
         },
         {
-            "name": "Camera Length",
+            "name": "Camera Length (mm)",
             "attribute": "camera_length",
             "type": "number",
-            "unit": "",
+            "unit": "mm",
             "unit_choice": [],
             "value": "",
             "value_choice": [],

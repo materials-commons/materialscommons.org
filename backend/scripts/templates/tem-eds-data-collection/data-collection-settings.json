@@ -67,6 +67,16 @@
             "value": "",
             "value_choice": [],
             "required": false
+        },
+        {
+            "name": "Step Size(nm)",
+            "attribute": "step_size",
+            "type": "number",
+            "unit": "nm",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
         }
     ],
     "additional_properties":[

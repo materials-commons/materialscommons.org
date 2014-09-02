@@ -4,11 +4,21 @@
     "attribute": "instrument_settings",
     "default_properties": [
         {
-            "attribute": "temperature",
-            "name": "Temperature" ,
+            "attribute": "solution",
+            "name": "Solution" ,
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": [],
+            "required": true
+        },
+        {
+            "attribute": "voltage",
+            "name": "Voltage" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["C", "F", "K"] ,
+            "unit_choice": ["V","mV"] ,
             "value": "" ,
             "value_choice": [],
             "required": true
@@ -24,25 +34,16 @@
             "required": false
         },
         {
-            "attribute": "voltage",
-            "name": "Voltage" ,
+            "attribute": "temperature",
+            "name": "Temperature" ,
             "type": "number" ,
             "unit": "" ,
-            "unit_choice": ["V","mV"] ,
+            "unit_choice": ["C", "F", "K"] ,
             "value": "" ,
             "value_choice": [],
             "required": true
-        },
-        {
-            "attribute": "solution",
-            "name": "Solution" ,
-            "type": "text" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [],
-            "required": true
-        }
+        }        
+        
     ],
     "additional_properties":[
     ],

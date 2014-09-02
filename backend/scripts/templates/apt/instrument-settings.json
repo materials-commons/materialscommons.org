@@ -88,16 +88,6 @@
             "required": false
         },
         {
-            "name": "Vacuum Level" ,
-            "attribute": "vacuum_level",
-            "type": "select" ,
-            "unit": "" ,
-            "unit_choice": [] ,
-            "value": "" ,
-            "value_choice": [{"name":"High", "value": "high"}, {"name": "Low", "value": "low"}],
-            "required": false
-        },
-        {
             "name": "Imaging Gas" ,
             "attribute": "imaging_gas",
             "type": "select" ,

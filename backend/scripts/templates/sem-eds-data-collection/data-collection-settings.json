@@ -75,6 +75,16 @@
             "required": false
         },
         {
+            "name": "Aquisition Time(ms)",
+            "attribute": "aquisition_time",
+            "type": "number",
+            "unit": "ms",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
             "name": "Stage",
             "attribute": "stage",
             "type": "select",
