@@ -22,12 +22,9 @@ function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injec
             name: '',
             notes: [],
             available: true,
-            default_properties: [],
-            added_properties: [],
             projects: [],
-            template: '',
-            treatments: []
-
+            composition: {'value': [], 'unit': ''},
+            properties: {}
         };
         $scope.bk = {
             selected_project: '',
@@ -55,7 +52,6 @@ function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injec
         $scope.bk.selected_treatment = item;
     };
 
-
     $scope.addTreatment = function () {
         var i = _.indexOf($scope.doc.treatments, function (item) {
             return (item.id === $scope.bk.selected_treatment.id);
@@ -77,6 +73,7 @@ function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injec
 
     };
     $scope.save = function (form) {
+        console.dir($scope.doc)
         $validationProvider.validate(form);
         var check = $validationProvider.checkValid(form);
         $scope.doc.path = $scope.doc.name;

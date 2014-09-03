@@ -5,17 +5,17 @@
         <th>
             <div>
                 <input type="radio"
-                       value="at%" ng-model="doc.unit"/>
+                       value="at%" ng-model="doc.composition.unit"/>
                 atomic % <br>
                 <input type="radio"
-                       value="wt%" ng-model="doc.unit"/>
+                       value="wt%" ng-model="doc.composition.unit"/>
                 weight %
             </div>
         </th>
 
         </thead>
         <tbody>
-        <tr ng-repeat="each in doc.value">
+        <tr ng-repeat="each in doc.composition.value">
             <td>{{each.element}}</td>
             <td><input name="numberBlur" validator="number" valid-method="blur"  ng-model="each.value" class="form-control" type="text" style="width:40%"></td>
             <td><a class="close" ng-click="removeElement($index)">x</a></td>
