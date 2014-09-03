@@ -18,49 +18,17 @@ function actionProjectProvenanceController($scope, watcher, mcapi, $filter, User
         $scope.stepsToShow = $scope.steps.slice(0, value);
     });
 
-    $scope.change_process = function (template_id) {
-        if ($scope.doc.template.id === template_id) {
-            // All attributes already loaded from a draft
-            return;
-        }
-        mcapi('/templates/%', template_id)
-            .success(function (data) {
-                $scope.template =  data;
-                $scope.doc.default_properties = $scope.template.default_properties;
-                $scope.doc.required_input_conditions = $scope.template.required_input_conditions;
-                $scope.doc.required_output_conditions = $scope.template.required_output_conditions;
-                $scope.doc.required_input_files = $scope.template.required_input_files;
-                $scope.doc.required_output_files = $scope.template.required_output_files;
-                var now = new Date();
-                var dd = ("0" + now.getDate()).slice(-2);
-                var mm = ("0" + (now.getMonth() + 1)).slice(-2);
-                var today = now.getFullYear() + "-" + mm + "-" + dd;
-                $scope.doc.name = $scope.template.template_name + ':' + today;
-                $scope.doc.template = $scope.template;
-                $scope.doc.owner = User.u();
-                console.dir($scope.doc);
-                $scope.stepsToShow = [];
+    function findTemplate(templateID) {
+        var i = _.indexOf($scope.process_templates, function(t) {
+            return t.id == templateID;
+        });
 
-                var i;
-                for (i = 0; i < $scope.doc.template.required_input_conditions.length; i++) {
-                    $scope.stepsToShow.push("(I) " +
-                                            makeName($scope.doc.template.required_input_conditions[i].name));
-                }
+        return $scope.process_templates[i];
+    }
 
-                if ($scope.doc.template.required_input_files) {
-                    $scope.stepsToShow.push("(I) Files");
-                }
-
-                for (i = 0; i < $scope.doc.template.required_output_conditions.length; i++) {
-                    $scope.stepsToShow.push("(O) " +
-                                            makeName($scope.doc.template.required_output_conditions[i].name));
-                }
-
-                if ($scope.doc.template.required_output_files) {
-                    $scope.stepsToShow.push("(O) Files");
-                }
-            }).jsonp();
-
+    $scope.change_process = function (templateID) {
+        $scope.doc.template = findTemplate(templateID);
+        console.dir($scope.doc.template);
     };
 
     function makeName(name) {
