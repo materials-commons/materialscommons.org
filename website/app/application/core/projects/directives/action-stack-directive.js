@@ -11,7 +11,7 @@ function actionStackDirective(actionStackTracker, $compile) {
                     if (args) {
                         actionDirective = "<div action-" + action + " args='" + args + "'></div>";
                     }
-                    var t = '<div ui-draggable="false" id="' + id + '" class="col-lg-12"><hr class="carved"/><div class="col-lg-offset-1">' + actionDirective + '</div></div>';
+                    var t = '<div ui-draggable="false" id="' + id + '" class="col-lg-12"><hr class="carved"/><div>' + actionDirective + '</div></div>';
                     if (!actionStackTracker.actionActive(id)) {
                         actionStackTracker.pushAction(id);
                         $('#' + actionStackID).append($compile(t)(scope));
