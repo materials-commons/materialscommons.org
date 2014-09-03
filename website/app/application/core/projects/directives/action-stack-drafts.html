@@ -1,7 +1,7 @@
 <div class="row">
     <h4>Provenance Drafts</h4><br>
     <div class="col-lg-8">
-        <table class="table table-file-directory">
+        <table ng-if="drafts.length !== 0" class="table table-file-directory">
             <thead ng-style="{'background-color': currentProjectColor}">
             <tr>
                 <th>Name</th>
@@ -39,9 +39,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="row" ng-if="drafts.length === 0">
-            <p class="text-muted">No Drafts for this project</p>
-        </div>
+            <p ng-if="drafts.length === 0" class="text-muted">No Drafts for this project</p>
     </div>
 
 
