@@ -1,6 +1,6 @@
 <div class="form-horizontal">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-4">
             <label>Choose sample type:</label>
             <select class="form-control" ng-model="bk.classification" ng-change="setProperties()"
                     ng-options="temp.template_name for temp in sample_templates | orderBy:'template_name'">
@@ -8,10 +8,8 @@
         </div>
     </div>
     <form name="Sample">
-
         <div class="row"><br>
-
-            <div class="col-lg-10" ng-show="bk.classification">
+            <div class="col-lg-6" ng-show="bk.classification">
                 <div upperlevel-object="" bk="bk" doc="doc" edit="false"></div>
                 <div notes doc="doc" type='sample'></div>
                 <div df-properties="" default-properties="doc.default_properties"></div>
@@ -27,7 +25,7 @@
 
         <div id="slidetreatments">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <label>Treatments:</label>
                     <select class="form-control" ng-model="bk.selected_treatment"
                             ng-options="treat.id for treat in treatment_templates"
@@ -36,7 +34,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-5">
                     <label class='control-label'><strong>{{bk.selected_treatment.id ||
                         bk.tab_item}} </strong></label>
 
@@ -65,7 +63,7 @@
 
         <div id="slideprojects">
             <div class="row form-group">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="col-lg-5">
                         <select class="form-control" ng-model="bk.selected_project"
                                 ng-options="pr.name for pr in projects">
@@ -77,7 +75,7 @@
                 </div>
             </div>
             <div class="row">
-                <div ng-show="doc.projects.length !==0 " class="col-lg-8">
+                <div ng-show="doc.projects.length !==0 " class="col-lg-5">
                     <table class="table table-striped mc-table-hover table-condensed mc-table">
                         <thead>
                             <tr>
