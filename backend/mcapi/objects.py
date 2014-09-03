@@ -79,22 +79,23 @@ def create_object():
         sample['description'] = dmutil.get_optional('description', j)
         sample['notes'] = dmutil.get_optional('notes', j)
         sample['available'] = dmutil.get_optional('available', j)
-        sample['properties'] = {}
-        doc.add_properties(dmutil.get_optional('default_properties', j), sample)
-        doc.add_properties(dmutil.get_optional('added_properties', j), sample)
+        sample['properties'] = dmutil.get_optional('properties', j)
+        #sample['properties'] = {}
+        #doc.add_properties(dmutil.get_optional('default_properties', j), sample)
+        #doc.add_properties(dmutil.get_optional('added_properties', j), sample)
         sample['birthtime'] = r.now()
         sample['created_by'] = user
         sample['owner'] = user
-        sample['treatments'] = []
+        #sample['treatments'] = []
         sample['parent_id'] = dmutil.get_optional('parent_id', j)
-        sample['template'] = dmutil.get_required('template', j)
+        #sample['template'] = dmutil.get_required('template', j)
         sample['path'] = dmutil.get_required('path', j)
         sample['project_id'] = dmutil.get_required('project_id', j)
-        for treatment in dmutil.get_optional('treatments', j, []):
-            t = doc.add_template_properties(treatment, 'treatment')
-            sample['treatments'].append(t)
+        #for treatment in dmutil.get_optional('treatments', j, []):
+            #t = doc.add_template_properties(treatment, 'treatment')
+            #sample['treatments'].append(t)
         sample_id = dmutil.insert_entry_id('samples', sample)
-        _create_treatments_denorm(sample['treatments'], sample_id)
+        #_create_treatments_denorm(sample['treatments'], sample_id)
         _join_sample_projects(dmutil.get_optional('projects', j, []), sample_id)
         return json.dumps({'id': sample_id})
 

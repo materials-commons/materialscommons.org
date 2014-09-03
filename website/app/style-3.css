@@ -415,7 +415,7 @@ body {
 /*************************************This controls the height,  padding, and border radius and space between(margin bottom) of all input elements******/
 .form-horizontal
 .control-label {
-  padding-top: 5px;
+  padding: 5px;
 }
 
 .form-control {
@@ -922,4 +922,10 @@ hr.carved {
 
 .btn-group.project-tree-menu {
   margin-right: 10px;
+}
+
+
+/*************Forms for new layout******************/
+label{
+    margin:8px;
 }
