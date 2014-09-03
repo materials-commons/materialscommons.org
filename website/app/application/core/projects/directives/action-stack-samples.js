@@ -15,94 +15,6 @@ Application.Controllers.controller('actionSamplesController',
 function actionSamplesController($scope, mcapi, $injector, Projects, alertService,
                                  User, $stateParams) {
     var $validationProvider = $injector.get('$validation');
-    $scope.showForm = function () {
-        $scope.default_properties = $scope.bk.selected_treatment.default_properties;
-        $scope.bk.tab_item = '';
-    };
-
-    $scope.showTab = function (item, index) {
-        $scope.bk.tab_item = item.id;
-        $scope.bk.tab_details = $scope.doc.treatments[index];
-        $scope.default_properties = $scope.doc.treatments[index].default_properties;
-        $scope.bk.selected_treatment = item;
-    };
-
-    $scope.addTreatment = function () {
-        var i = _.indexOf($scope.doc.treatments, function (item) {
-            return (item.id === $scope.bk.selected_treatment.id);
-        });
-        if (i === -1){
-            var o = angular.copy($scope.bk.selected_treatment);
-            $scope.doc.treatments.push(o);
-        }
-        if (i !== -1){
-            $scope.doc.treatments[i] = $scope.bk.selected_treatment;
-        }
-        $scope.bk.selected_treatment = '';
-        $scope.default_properties = "";
-    };
-
-    $scope.setProperties = function () {
-        $scope.doc.default_properties = $scope.bk.classification.default_properties;
-        $scope.doc.template = $scope.bk.classification.id;
-
-    };
-
-    $scope.refreshProjects = function () {
-        mcapi('/samples/project/%', $scope.sample.id)
-            .success(function (data) {
-                $scope.projects_by_sample = data;
-            }).jsonp();
-    };
-
-    $scope.refreshProcesses = function () {
-        mcapi('/processes/sample/%', $scope.sample.id)
-            .success(function (data) {
-                $scope.processes_by_sample = data;
-            }).jsonp();
-    };
-
-    $scope.showTreatmentDetails_and_processes = function (sample) {
-        $scope.sample = sample;
-        $scope.refreshProcesses();
-        $scope.refreshProjects();
-
-    };
-
-    $scope.processDetails = function (p_id) {
-        mcapi('/processes/%', p_id)
-            .success(function (data) {
-                $scope.process = [];
-                $scope.process.push(data);
-            })
-            .error(function (e) {
-            }).jsonp();
-    };
-
-    $scope.populateProjects = function () {
-        $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
-    };
-
-    $scope.addProject = function () {
-        $scope.sample_project = {
-            'sample_id': $scope.sample.id,
-            'project_id': $scope.model.selected_project.id,
-            'project_name': $scope.model.selected_project.name
-        };
-        mcapi('/sample/project/join', $scope.sample.id, $scope.model.selected_project.id, $scope.model.selected_project.name)
-            .success(function (data) {
-                $scope.refreshProjects();
-            }).post($scope.sample_project);
-    };
-
-    $scope.deleteProject = function (index) {
-        mcapi('/object/%/project/%/remove', $scope.sample.id, $scope.sample.projects[index].id)
-            .success(function (data) {
-                alertService.sendMessage("Project has been deleted");
-                $scope.refreshProjects();
-            }).error(function () {
-            }).put();
-    };
 
     $scope.editAvailability = function (sample) {
         $scope.chosen_sample = sample;
@@ -182,7 +94,11 @@ function actionSamplesController($scope, mcapi, $injector, Projects, alertServic
 
         $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
     };
+    $scope.showTreatmentDetails_and_processes = function (sample) {
+        $scope.show = true;
+        $scope.sample = sample;
 
+    };
     function init() {
         //initialize the sample with default project
         $scope.project_id = $stateParams.id;
