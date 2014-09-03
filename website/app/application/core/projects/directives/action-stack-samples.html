@@ -63,84 +63,15 @@
         </div>
         <br>
 
-        <div ng-show="sample" class="row">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form class="form-horizontal">
-                        <h5><b><u>Details</u></b></h5>
-                        <div upperlevel-object="" doc="sample" edit="true"></div>
-                        <div notes doc="sample" type="sample" update="true"></div>
-                        <div iterate-properties="" all-properties="sample.properties" edit="true"></div>
-                        <div>
-                            <cgroup label="Owner">
-                                <input class="form-control" class="input-large" ng-model="sample.owner" type="text"
-                                       ng-disabled="true">
-                            </cgroup>
-                        </div>
-                        <h5><b><u>Treatments</u></b></h5>
-
-                        <div ng-if="sample.treatments.length==0">
-                            <p class="text-muted">No treatments applied to the sample {{sample.name}}</p>
-                        </div>
-                        <div ng-if="sample.treatments.length!==0">
-                            <div ng-repeat="treatment in sample.treatments">
-                                <i>{{treatment.template}}:</i>
-
-                                <div class="form-group" ng-repeat="property in treatment.properties">
-                                    <cgroup label="{{property.name}}">
-                                        <div class="col-sm-6" ng-if="p.type === 'select'">
-                                            <input class="form-control" ng-model="property.value_name"
-                                                   ng-disabled="true"
-                                                   type="text">
-                                        </div>
-                                        <div class="col-sm-6" ng-if="p.type !== 'select'">
-                                            <input class="form-control" ng-model="property.value" ng-disabled="true"
-                                                   type="text">
-                                        </div>
-                                        <div class="col-sm-2">
-                                            {{ property.unit }}
-                                        </div>
-                                    </cgroup>
-                                </div>
-                            </div>
-                        </div>
-                        <h5><b><u>Processes</u></b></h5>
-
-                        <div ng-if="processes_by_sample.length === 0">
-                            <p class="text-muted">Sample {{sample.name}} has not been used in any process</p>
-                        </div>
-                        <div ng-if="processes_by_sample.length !== 0">
-                            <ul ng-repeat="each in processes_by_sample">
-                                <li><a ng-click="processDetails(each.process_id)">{{each.process_name}}</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h5><b><u>Projects</u></b></h5>
-
-                            <div ng-show="projects_by_sample.length !== 0">
-                                <table class="table table-striped mc-table-hover table-condensed mc-table">
-                                    <tbody>
-                                        <tr ng-repeat="i in projects_by_sample">
-                                            <td>{{i.project_name}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-lg-8">
-                                    <div class="col-lg-5">
-                                        <select class="form-control" ng-model="model.selected_project"
-                                                ng-options="pr.name for pr in projects">
-                                        </select>
-                                    </div>
-                                    <button class="btn btn-default btn-default" ng-click="addProject()">Add Project
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+        <div ng-if=show==true class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div sample-report sample="sample"></div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
     <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="confirmLabel" aria-hidden="true">
@@ -164,8 +95,5 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div ng-show="process">
-        <div view-processes processes="process" sample-doc="details"></div>
     </div>
 </div>

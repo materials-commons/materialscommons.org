@@ -1,6 +1,6 @@
-<h4 > <u>Sample</u>
+<h4><u>Sample</u>
 </h4>
-<section >
+<section>
     <display label="Name:"> {{sample.name}}</display>
     <display label="Description:">
         {{sample.description}}
@@ -17,5 +17,44 @@
             <display label="{{name}}"> {{vals.value}}</display>
         </div>
     </div>
+    <h5><b><u>Treatments</u></b></h5>
+
+    <div ng-if="sample.treatments.length==0">
+        <p class="text-muted">No treatments applied to the sample {{sample.name}}</p>
+    </div>
+    <div ng-if="sample.treatments.length!==0">
+        <div ng-repeat="treatment in sample.treatments">
+            <i>{{treatment.template}}:</i>
+
+            <div class="form-group" ng-repeat="property in treatment.properties">
+                <cgroup label="{{property.name}}">
+                    <div class="col-sm-6" ng-if="p.type === 'select'">
+                        <input class="form-control" ng-model="property.value_name"
+                               ng-disabled="true"
+                               type="text">
+                    </div>
+                    <div class="col-sm-6" ng-if="p.type !== 'select'">
+                        <input class="form-control" ng-model="property.value" ng-disabled="true"
+                               type="text">
+                    </div>
+                    <div class="col-sm-2">
+                        {{ property.unit }}
+                    </div>
+                </cgroup>
+            </div>
+        </div>
+    </div>
+    <h5><b><u>Projects</u></b></h5>
+
+    <div ng-show="projects_by_sample.length !== 0">
+        <table class="table table-striped mc-table-hover table-condensed mc-table">
+            <tbody>
+            <tr ng-repeat="i in projects_by_sample">
+                <td>{{i.project_name}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
     <br>
 </section>
