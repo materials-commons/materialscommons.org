@@ -12,6 +12,15 @@ function isImage(name) {
     return false;
 }
 
+function numberWithCommas(n) {
+    n = n.toString();
+    var pattern = /(-?\d+)(\d{3})/;
+    while (pattern.test(n)) {
+        n = n.replace(pattern, "$1,$2");
+    }
+    return n;
+}
+
 function bytesToSizeStr(bytes) {
     var sizes = ['Bytes', 'KB', 'GB', 'TB'];
     if (bytes === 0) {
