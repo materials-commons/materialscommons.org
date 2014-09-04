@@ -20,16 +20,7 @@
             <input ng-model="doc.supplier" class="form-control" type="text" placeholder="Supplier...">
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-lg-2">Composition:</label>
 
-        <div class="col-lg-4">
-            <button ng-click="custom=!custom">+</button>
-            <div ng-show="custom">
-                <div periodic-table  doc="doc"></div>
-            </div>
-        </div>
-    </div>
     <div class="form-group">
         <label class="control-label col-lg-2">Form:</label>
 
@@ -90,6 +81,49 @@
                 <label>Powder Size: </label>
                 <input ng-model="doc.properties.powder_size.value" type="text" class="form-control"  placeholder="Powder Size...">
             </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-lg-2">Composition:</label>
+
+        <div class="col-lg-4">
+            <button class="btn btn-info" ng-click="custom=!custom">+</button>
+            <div ng-if="custom">
+                <div periodic-table  doc="doc.properties.composition"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-2">Projects:</label>
+        <div class="col-lg-4">
+            <div ng-show="doc.projects.length !==0 " class="col-lg-8">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in doc.projects">
+                        <td>{{i.name}}</td>
+                        <td>
+                            <button class="btn btn-default btn-danger"
+                                    ng-click="removeProjects($index)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <select class="form-control" ng-model="bk.selected_project"
+                    ng-options="pr.name for pr in projects">
+            </select>
+            <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project
+            </button>
         </div>
     </div>
     <button type="button" class="btn btn-primary" ng-click="save(Sample)">Save</button>
