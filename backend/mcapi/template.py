@@ -57,7 +57,9 @@ def get_input_output_templates(template_id):
 @apikey(shared=True)
 @jsonp
 def get_all_templates():
-    templates = list(r.table('templates').run(g.conn, time_format='raw'))
+    templates = list(r.table('templates')
+                     .order_by('id')
+                     .run(g.conn, time_format='raw'))
     # Create elements to store other templates
     for template in templates:
         template['input_templates'] = []

@@ -86,6 +86,16 @@
 
     <div class="row">
         <div class="col-lg-2 sideboard">
+            <div ng-controller="actionStackListController" class="sideboard-group">
+                <span class="col-lg-6"><i class="fa fa-reorder"/> Action Stack</span>
+                <div class="row"></div>
+                <hr>
+                <div class="row">
+                    <div ng-repeat="action in actions">
+                        <a ng-href="#{{action.name}}" target="_self">{{action.name}}</a>
+                    </div>
+                </div>
+            </div>
             <div class="sideboard-group">
                 <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
                 <a action-stack ng-click="toggleStackAction('tag', 'project-action-stack')" class="important">
