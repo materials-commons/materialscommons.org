@@ -1,4 +1,4 @@
-<≈bform name="Sample" class="form-horizontal">
+<form name="Sample" class="form-horizontal">
     <div class="form-group">
         <label class="control-label col-lg-2">Sample Name:</label>
 
@@ -122,10 +122,10 @@
             <select class="form-control" ng-model="bk.selected_project"
                     ng-options="pr.name for pr in projects">
             </select>
-            <button class="btn btn-default btn-default" ng-click="populateProjects()">Add Project
+            <button class="btn btn-default" ng-click="populateProjects()">Add Project
             </button>
         </div>
     </div>
     <button type="button" class="btn btn-primary" ng-click="save(Sample)">Save</button>
-    <button type="button" class="btn btn-danger" ng-click="cancel()()">Cancel</button>
+    <button type="button" class="btn btn-danger" ng-click="clear()">Clear</button>
 </form>
