@@ -12,6 +12,29 @@ function isImage(name) {
     return false;
 }
 
+function numberWithCommas(n) {
+    n = n.toString();
+    var pattern = /(-?\d+)(\d{3})/;
+    while (pattern.test(n)) {
+        n = n.replace(pattern, "$1,$2");
+    }
+    return n;
+}
+
+function bytesToSizeStr(bytes) {
+    var sizes = ['Bytes', 'KB', 'GB', 'TB'];
+    if (bytes === 0) {
+        return '0 Bytes';
+    }
+
+    var i = parseInt(Math.floor(Math.log(bytes)/Math.log(1024)));
+    if (i === 0) {
+        return bytes + ' ' + sizes[i];
+    }
+
+    return (bytes/Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+}
+
 function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }

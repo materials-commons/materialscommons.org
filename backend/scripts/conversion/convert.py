@@ -7,10 +7,48 @@
 import rethinkdb as r
 from optparse import OptionParser
 import os
+import os.path
 import magic
+import sys
+
+
+def msg(s):
+    print s
+    sys.stdout.flush()
+
+
+def cleanup_samples(conn):
+    msg("Identifying bad samples...")
+    samples = list(r.table('samples').run(conn))
+    for sample in samples:
+        sid = sample['id']
+        if 'project_id' not in sample:
+            msg("sample %s/%s doesn't have project_id" % (sample['name'], sid))
+            count = r.table('projects2samples').get_all(sid, index='sample_id')\
+                                               .count().run(conn)
+            msg("  count for %s = %d" % (sample['name'], count))
+            r.table('samples').get(sid).update({'project_id': ''}).run(conn)
+            continue
+        elif sample['project_id'] == "":
+            count = r.table('projects2samples').get_all(sid, index='sample_id')\
+                                               .count().run(conn)
+            msg("  count for %s/%s = %d" % (sample['name'], sid, count))
+            #r.table('samples').get(sid).delete().run(conn)
+    msg("Done...")
+
+
+def add_usesid(conn):
+    msg("Adding missing usesid to files...")
+    files = list(r.table('datafiles').run(conn))
+    for f in files:
+        if 'usesid' not in f:
+            msg("  Adding usesid to %s" % (f['id']))
+            r.table('datafiles').get(f['id']).update({'usesid': ''}).run(conn)
+    msg("Done...")
 
 
 def convert_groups(conn):
+    msg("Converting groups...")
     users = list(r.table('users').pluck('id').run(conn))
     projects = list(r.table('projects').run(conn, time_format='raw'))
     access_by_owner = {}
@@ -23,7 +61,7 @@ def convert_groups(conn):
     for project in projects:
         owner = project['owner']
         if owner not in access_by_owner:
-            print "  Determining access for projects owned by %s..." % (owner)
+            msg("  Determining access for projects owned by %s..." % (owner))
             access_by_owner[owner] = []
             groups = list(r.table('usergroups')
                           .filter({'owner': owner}).run(conn))
@@ -37,7 +75,7 @@ def convert_groups(conn):
     # of projects and set up the access.
     for project in projects:
         owner = project['owner']
-        print "  Setting access for project %s" % (project['name'])
+        msg("  Setting access for project %s" % (project['name']))
         for user in access_by_owner[owner]:
             access = {
                 "user_id": user,
@@ -49,18 +87,21 @@ def convert_groups(conn):
                 "mtime": r.now()
             }
             r.table('access').insert(access).run(conn)
+    msg("Done...")
 
 
 def add_preferences(conn):
+    msg("Adding preferences field to users...")
     r.table('users').update({
         'preferences': {
             'tags': [], 'templates': []
         }
     }).run(conn)
+    msg("Done...")
 
 
 def add_tags(conn):
-    print "  Adding tags to denorm table"
+    msg("Adding tags to denorm table...")
     denorm_items = r.table('datadirs_denorm').run(conn)
     for item in denorm_items:
         files = []
@@ -71,21 +112,24 @@ def add_tags(conn):
             file['tags'] = {}
         r.table('datadirs_denorm').get(item['id'])\
                                   .update({'datafiles': files}).run(conn)
+    msg("Done...")
 
 
 def datafile_path(mcdir, datafile_id):
     pieces = datafile_id.split("-")
-    return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4])
+    return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4], datafile_id)
 
 
 def add_mediatypes(conn, mcdir):
+    msg("Adding mediatypes and sizes for files and projects...")
     # Determine media types for files
     # and update the statistics for the
     # types in the project
     projects = list(r.table('projects').run(conn))
     for project in projects:
-        print "  Determining mediatypes for project %s" % (project['name'])
+        msg("  Determining mediatypes for project %s" % (project['name']))
         mediatypes = {}
+        project_size = 0
         project_id = project['id']
         datadirs = list(r.table('project2datadir')
                         .get_all(project_id, index='project_id')
@@ -95,36 +139,43 @@ def add_mediatypes(conn, mcdir):
         # mediatype. Update the file entry, and track
         # the count of different file mediatypes.
         for d in datadirs:
-            for f in datadirs['datafiles']:
+            for f in d['datafiles']:
                 df = r.table('datafiles').get(f['id'])\
                                          .run(conn, time_format='raw')
                 dfid = df['id']
+                project_size += df['size']
                 if df['usesid'] != "":
                     dfid = df['usesid']
                 path = datafile_path(mcdir, dfid)
-                with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
-                    mediatype = m.id_filename(path)
-                    r.table('datafiles').get(df['id'])\
-                                        .update({'mediatype': mediatype})\
-                                        .run(conn)
-                    f['mediatype'] = mediatype
-                    if mediatype not in mediatypes:
-                        mediatypes[mediatype] = 1
-                    else:
-                        count = mediatypes[mediatype]
-                        mediatypes[mediatype] = count+1
+                if not os.path.isfile(path):
+                    mediatype = "unknown"
+                    msg("file not found: %s" % (path))
+                else:
+                    mediatype = magic.from_file(path, mime=True)
+                msg("file %s has mediatype %s" % (path, mediatype))
+                r.table('datafiles').get(df['id'])\
+                                    .update({'mediatype': mediatype})\
+                                    .run(conn)
+                f['mediatype'] = mediatype
+                if mediatype not in mediatypes:
+                    mediatypes[mediatype] = 1
+                else:
+                    count = mediatypes[mediatype]
+                    mediatypes[mediatype] = count+1
             # update datadirs_denorm to include mediatype
             r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
         r.table('projects').get(project_id)\
-                           .update({'mediatypes': mediatypes})\
+                           .update({'mediatypes': mediatypes, 'size': project_size})\
                            .run(conn)
+    msg("Done...")
 
 
 def add_shares_to_projects(conn):
+    msg("Adding shares to projects...")
     projects = list(r.table('projects').run(conn))
     for proj in projects:
-        print " Adding shares to project %s" % (proj['name'])
+        msg(" Adding shares to project %s" % (proj['name']))
         mysamples = list(r.table('samples')
                          .get_all(proj['id'], index='project_id')
                          .run(conn, time_format='raw'))
@@ -158,6 +209,7 @@ def add_shares_to_projects(conn):
                                 .zip()
                                 .run(conn, time_format='raw'))
         proj['uses'] = get_project_uses(potentially_uses, proj['id'], conn)
+    msg("Done...")
 
 
 def get_project_shares(all_samples_used, project_id, conn):
@@ -187,13 +239,15 @@ def get_project_uses(all_samples_used, project_id, conn):
 
 
 def main(conn, mcdir):
-    print "Beginning conversion steps:"
-    #convert_groups(conn)
-    #add_preferences(conn)
+    msg("Beginning conversion steps:")
+    convert_groups(conn)
+    add_preferences(conn)
+    add_usesid(conn)
     add_mediatypes(conn, mcdir)
+    cleanup_samples(conn)
     add_shares_to_projects(conn)
-    #add_tags(conn)
-    print "Finished."
+    add_tags(conn)
+    msg("Finished.")
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -202,9 +256,9 @@ if __name__ == "__main__":
     parser.add_option("-d", "--directory", dest="mcdir", type="string",
                       help="mcdir location")
     (options, args) = parser.parse_args()
-    if args.mcdir is None:
+    if options.mcdir is None:
         print "You must specify the location of mcdir"
         os.exit(1)
 
     conn = r.connect('localhost', options.port, db='materialscommons')
-    main(conn, args.mcdir)
+    main(conn, options.mcdir)
