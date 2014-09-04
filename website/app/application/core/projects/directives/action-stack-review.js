@@ -9,9 +9,9 @@ function actionReviewDirective() {
 }
 
 Application.Controllers.controller('actionReviewController',
-    ["Projects", "$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams", actionReviewController]);
+    ["Projects", "$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams","model.Projects",  actionReviewController]);
 
-function actionReviewController(Projects, $scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams) {
+function actionReviewController(Projects, $scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams, ListProjects) {
 
     $scope.addReview = function () {
 //        $scope.review = {messages: []}
@@ -34,6 +34,12 @@ function actionReviewController(Projects, $scope, mcapi, $filter, $state, dateGe
     };
 
     function init() {
+        $scope.files = []
+        $scope.channel = 'action-reviews'
+        Projects.setChannel($scope.channel);
+        ListProjects.getList().then(function (data) {
+            $scope.projects = data;
+        });
         $scope.project_id = $stateParams.id;
         $scope.model = {
             comment: "",
@@ -48,4 +54,15 @@ function actionReviewController(Projects, $scope, mcapi, $filter, $state, dateGe
     }
 
     init();
+
+    pubsub.waitOn($scope, $scope.channel, function (fileentry) {
+        if (fileentry.selected) {
+            $scope.files.push(fileentry);
+        } else {
+            var i = $scope.indexOfFile(fileentry.id);
+            if (i != -1) {
+                $scope.files.splice(i, 1);
+            }
+        }
+    });
 }
