@@ -991,3 +991,7 @@ label{
   border-width: 36px;
   margin-left: -36px;
 }
+
+.position-fixed {
+  position: fixed;
+}
