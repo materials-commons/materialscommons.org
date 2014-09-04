@@ -9,21 +9,21 @@ function actionReviewDirective() {
 }
 
 Application.Controllers.controller('actionReviewController',
-    ["Projects", "$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams","model.Projects",  actionReviewController]);
+    ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams","model.Projects",  actionReviewController]);
 
-function actionReviewController(Projects, $scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams, ListProjects) {
+function actionReviewController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams, Projects) {
 
     $scope.addReview = function () {
-//        $scope.review = {messages: []}
+        $scope.review = {'files': [], 'messages': []};
 //        $scope.review.item_id = $scope.project.id;
 //        $scope.review.item_type = 'datafile';
 //        $scope.review.item_name = $scope.project.name;
-//        $scope.review.author = User.u();
-//        $scope.review.assigned_to = $scope.model.assigned_to;
-//        $scope.review.status = 'open';
-//        $scope.review.title = $scope.model.title;
-//        $scope.review.messages.push({'message': $scope.model.new_review, 'who': User.u(), 'date': dateGenerate.new_date()});
-//        $scope.saveData();
+        $scope.review.author = User.u();
+        $scope.review.assigned_to = $scope.model.assigned_to;
+        $scope.review.status = 'open';
+        $scope.review.title = $scope.model.title;
+        $scope.review.messages.push({'message': $scope.model.new_review, 'who': User.u(), 'date': dateGenerate.new_date()});
+        $scope.saveData();
     };
     $scope.saveData = function () {
         mcapi('/reviews')
@@ -34,10 +34,9 @@ function actionReviewController(Projects, $scope, mcapi, $filter, $state, dateGe
     };
 
     function init() {
-        $scope.files = []
         $scope.channel = 'action-reviews'
-        Projects.setChannel($scope.channel);
-        ListProjects.getList().then(function (data) {
+//        Projects.setChannel($scope.channel);
+        Projects.getList().then(function (data) {
             $scope.projects = data;
         });
         $scope.project_id = $stateParams.id;
@@ -57,11 +56,11 @@ function actionReviewController(Projects, $scope, mcapi, $filter, $state, dateGe
 
     pubsub.waitOn($scope, $scope.channel, function (fileentry) {
         if (fileentry.selected) {
-            $scope.files.push(fileentry);
+            $scope.review.files.push(fileentry);
         } else {
             var i = $scope.indexOfFile(fileentry.id);
             if (i != -1) {
-                $scope.files.splice(i, 1);
+                $scope.review.files.splice(i, 1);
             }
         }
     });
