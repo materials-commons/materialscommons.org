@@ -1,0 +1,25 @@
+<div class="form-horizontal">
+    <h4>Review Title:</h4>
+    <div class="col-lg-8">
+        <input class="form-control" ng-model="model.title">
+    </div>
+    <div class="col-lg-6 custom-ta-toolbar">
+        <h4>Comment:</h4>
+        <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                      ng-model="model.new_review"></text-angular>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <select class="form-control" ng-model="model.assigned_to">
+                <option disabled>-- Assign to --</option>
+                <option ng-repeat="user in users">{{ user }}</option>
+            </select>
+        </div>
+        <div class="col-lg-4">
+            <button ng-click="addReview()" class="btn btn-default btn-primary">Submit New Review</button>
+        </div>
+    </div>
+</div>

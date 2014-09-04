@@ -24,8 +24,7 @@ function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injec
             notes: [],
             available: true,
             projects: [],
-            composition: {'value': [], 'unit': ''},
-            properties: {}
+            properties: {'composition': {'value': [], 'unit': ''}}
         };
         $scope.bk = {
             selected_project: '',
@@ -74,7 +73,6 @@ function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injec
 
     };
     $scope.save = function (form) {
-        console.dir($scope.doc)
         $validationProvider.validate(form);
         var check = $validationProvider.checkValid(form);
         $scope.doc.path = $scope.doc.name;
@@ -83,28 +81,32 @@ function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injec
             mcapi('/objects/new')
                 .arg('order_by=birthtime')
                 .success(function (data) {
+                    $scope.sample_obj = data;
                     mcapi('/objects/%', data.id)
                         .success(function (sample_obj) {
+
                             $scope.message = "New Sample has been saved.";
                             $scope.toggleCustom = false;
+
                         }).jsonp();
                     init();
                 }).post($scope.doc);
         }
     };
-    $scope.addProject = function () {
-        $scope.sample_project = {
-            'sample_id': $scope.sample.id,
-            'project_id': $scope.model.selected_project.id,
-            'project_name': $scope.model.selected_project.name
-        };
-        mcapi('/sample/project/join', $scope.sample.id, $scope.model.selected_project.id, $scope.model.selected_project.name)
-            .success(function (data) {
-                $scope.refreshProjects();
-            }).post($scope.sample_project);
-    };
 
+    $scope.populateProjects = function () {
+        $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
+    };
+    $scope.clear = function () {
+        $scope.setDefaultProject();
+    };
+    $scope.removeProjects = function (index) {
+       $scope.doc.projects.splice(index, 1)
+    };
     function init() {
+        $scope.bk = {
+            selected_project: ''
+        }
         //initialize the sample with default project
         $scope.project_id = $stateParams.id;
         mcapi('/projects/%', $scope.project_id)

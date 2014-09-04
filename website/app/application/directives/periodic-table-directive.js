@@ -1,15 +1,15 @@
 Application.Controllers.controller("PeriodicTableController",
-    ["$scope", "watcher", function ($scope) {
+    ["$scope", function ($scope) {
 
         $scope.addElement = function (ele) {
-            $scope.doc.composition.value.push({'element': ele, 'value': ''});
+            $scope.doc.value.push({'element': ele, 'value': ''});
         };
         $scope.removeElement = function (i) {
-            $scope.doc.composition.value.splice(i, 1);
+            $scope.doc.value.splice(i, 1);
         };
 
         function init() {
-            $scope.doc.composition.unit = "at%"; //setting default unit for composition
+            $scope.doc.unit = "at%"; //setting default unit for composition
             $scope.panel_one_elements = ["H", "Li", "Na", "K", "Rb", "Cs", "Fr"];
             $scope.panel_two_elements = ["Be", "Mg", "Ca", "Sr", "Ba", "Ra"];
             $scope.panel_three_elements = ["Sc", "Y", "La-Lu", "Ac-Lr"];
@@ -38,7 +38,7 @@ Application.Directives.directive('periodicTable',
             restrict: "A",
             controller: 'PeriodicTableController',
             scope: {
-                doc: '='
+                doc: '=doc'
             },
             templateUrl: 'application/directives/periodic-table.html'
         };
