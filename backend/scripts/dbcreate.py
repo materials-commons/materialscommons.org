@@ -53,6 +53,7 @@ def create_indices():
     create_index('datafiles', 'owner')
     create_index('datafiles', 'checksum')
     create_index('datafiles', 'usesid')
+    create_index('datafiles', 'mediatype')
     create_index('users', 'apikey')
     create_index('projects', 'name')
     create_index('projects', 'owner')
