@@ -135,3 +135,9 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
 
     init();
 }
+
+Application.Controllers.controller('actionStackListController',
+                                   ["$scope", "actionStackTracker", actionStackListController]);
+function actionStackListController($scope, actionStackTracker) {
+    $scope.actions = actionStackTracker.actions;
+}

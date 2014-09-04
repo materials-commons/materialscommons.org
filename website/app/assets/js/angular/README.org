@@ -1,3 +1,7 @@
 * Source Locations
-** angular-dragdrop
+*** angular-dragdrop
    [[https://github.com/ganarajpr/angular-dragdrop]]
+   file: draganddrop.js
+*** ng-context-menu
+    [[https://github.com/ianwalter/ng-context-menu]]
+    file: ng-context-menu.min.js

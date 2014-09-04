@@ -6,6 +6,8 @@
 
 import rethinkdb as r
 from optparse import OptionParser
+import os
+import magic
 
 
 def convert_groups(conn):
@@ -48,19 +50,161 @@ def convert_groups(conn):
             }
             r.table('access').insert(access).run(conn)
 
-def add_preferences(conn):
-    rr = r.table('users').update({'preferences': {'tags': [], 'templates': []}}).run(conn)
 
-def main(conn):
+def add_preferences(conn):
+    r.table('users').update({
+        'preferences': {
+            'tags': [], 'templates': []
+        }
+    }).run(conn)
+
+
+def add_tags(conn):
+    print "  Adding tags to denorm table"
+    denorm_items = r.table('datadirs_denorm').run(conn)
+    for item in denorm_items:
+        files = []
+        r.table('datadirs_denorm').get(item['id'])\
+                                  .update({'tags': {}}).run(conn)
+        files = item['datafiles']
+        for file in files:
+            file['tags'] = {}
+        r.table('datadirs_denorm').get(item['id'])\
+                                  .update({'datafiles': files}).run(conn)
+
+
+def datafile_path(mcdir, datafile_id):
+    pieces = datafile_id.split("-")
+    return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4])
+
+
+def add_mediatypes(conn, mcdir):
+    # Determine media types for files
+    # and update the statistics for the
+    # types in the project
+    projects = list(r.table('projects').run(conn))
+    for project in projects:
+        print "  Determining mediatypes for project %s" % (project['name'])
+        mediatypes = {}
+        project_id = project['id']
+        datadirs = list(r.table('project2datadir')
+                        .get_all(project_id, index='project_id')
+                        .eq_join("datadir_id", r.table('datadirs_denorm'))
+                        .zip().run(conn))
+        # for each file in each directory determine its
+        # mediatype. Update the file entry, and track
+        # the count of different file mediatypes.
+        for d in datadirs:
+            for f in datadirs['datafiles']:
+                df = r.table('datafiles').get(f['id'])\
+                                         .run(conn, time_format='raw')
+                dfid = df['id']
+                if df['usesid'] != "":
+                    dfid = df['usesid']
+                path = datafile_path(mcdir, dfid)
+                with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+                    mediatype = m.id_filename(path)
+                    r.table('datafiles').get(df['id'])\
+                                        .update({'mediatype': mediatype})\
+                                        .run(conn)
+                    f['mediatype'] = mediatype
+                    if mediatype not in mediatypes:
+                        mediatypes[mediatype] = 1
+                    else:
+                        count = mediatypes[mediatype]
+                        mediatypes[mediatype] = count+1
+            # update datadirs_denorm to include mediatype
+            r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
+        # update project with count
+        r.table('projects').get(project_id)\
+                           .update({'mediatypes': mediatypes})\
+                           .run(conn)
+
+
+def add_shares_to_projects(conn):
+    projects = list(r.table('projects').run(conn))
+    for proj in projects:
+        print " Adding shares to project %s" % (proj['name'])
+        mysamples = list(r.table('samples')
+                         .get_all(proj['id'], index='project_id')
+                         .run(conn, time_format='raw'))
+        mysamples_ids_list = []
+        for s in mysamples:
+            mysamples_ids_list.append(s['id'])
+        if mysamples_ids_list:
+            potentially_shared = list(r.table('projects2samples')
+                                      .get_all(*mysamples_ids_list, index='sample_id')
+                                      .eq_join('sample_id', r.table('samples'))
+                                      .map(lambda row: row.merge({
+                                          "right": {
+                                              "other_project_id": row["right"]["project_id"]
+                                          }
+                                      }))
+                                      .without({"right": {"project_id": True}})
+                                      .zip()
+                                      .run(conn, time_format='raw'))
+        else:
+            potentially_shared = []
+        proj['shares'] = get_project_shares(potentially_shared, proj['id'], conn)
+        potentially_uses = list(r.table('projects2samples')
+                                .get_all(proj['id'], index='project_id')
+                                .eq_join('sample_id', r.table('samples'))
+                                .map(lambda row: row.merge({
+                                    "right": {
+                                        "other_project_id": row["right"]["project_id"]
+                                    }
+                                }))
+                                .without({"right": {"project_id": True}})
+                                .zip()
+                                .run(conn, time_format='raw'))
+        proj['uses'] = get_project_uses(potentially_uses, proj['id'], conn)
+
+
+def get_project_shares(all_samples_used, project_id, conn):
+    """Finds all the samples that this project shares out"""
+    shares = []
+    for sample in all_samples_used:
+        if sample['other_project_id'] == project_id \
+           and sample['project_id'] != project_id:
+            sample['other_project'] = r.table('projects')\
+                                       .get(sample['project_id'])\
+                                       .run(conn, time_format='raw')
+            shares.append(sample)
+    return shares
+
+
+def get_project_uses(all_samples_used, project_id, conn):
+    """Finds all the samples that this project uses from other projects"""
+    uses = []
+    for sample in all_samples_used:
+        if sample['project_id'] == project_id \
+           and sample['other_project_id'] != project_id:
+            sample['other_project'] = r.table('projects')\
+                                       .get(sample['other_project_id'])\
+                                       .run(conn, time_format='raw')
+            uses.append(sample)
+    return uses
+
+
+def main(conn, mcdir):
     print "Beginning conversion steps:"
-    convert_groups(conn)
-    add_preferences(conn)
+    #convert_groups(conn)
+    #add_preferences(conn)
+    add_mediatypes(conn, mcdir)
+    add_shares_to_projects(conn)
+    #add_tags(conn)
     print "Finished."
 
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port", default=30815)
+    parser.add_option("-d", "--directory", dest="mcdir", type="string",
+                      help="mcdir location")
     (options, args) = parser.parse_args()
+    if args.mcdir is None:
+        print "You must specify the location of mcdir"
+        os.exit(1)
+
     conn = r.connect('localhost', options.port, db='materialscommons')
-    main(conn)
+    main(conn, args.mcdir)
