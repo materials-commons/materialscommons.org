@@ -54,7 +54,7 @@
                 <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
                     data-tt-parent-id="{{t.parent_id}}"
                     data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
-                    <td ng-show="checkBox" ng-if="entry.type==='datafile'">
+                    <td ng-show="checkBox" ng-if="entry.type=='datafile'">
                         <input ng-model="entry.selected" ng-click="fileSelected(entry)"
                                ng-change="entry.selected = !entry.selected" type="checkbox">
                         <div class="btn-group project-tree-menu">
@@ -88,6 +88,7 @@
                                                 <a ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a>
                                             </span>
                                         </li>
+
                                     </ul>
                                 </li>
                             </ul>
@@ -96,6 +97,8 @@
                         </a>
                     </td>
                     <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
+                        <input ng-model="entry.selected" ng-click="fileSelected(entry)"
+                               ng-change="entry.selected = !entry.selected" type="checkbox">
                         <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
                             <ul class="dropdown-menu" role="menu">
