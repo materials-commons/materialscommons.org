@@ -23,3 +23,9 @@ Application.Controllers.controller('_indexNavigation',
                 Nav.setActiveNav(step);
             };
         }]);
+
+Application.Controllers.controller('contextMenuController',
+                                  ["$scope", "actionStackTracker", contextMenuController]);
+function contextMenuController($scope, actionStackTracker) {
+    $scope.actions = actionStackTracker.actions;
+}

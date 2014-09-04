@@ -18,6 +18,7 @@ var app = angular.module('materialscommons',
         'textAngular',
         'treeGrid',
         'ngDragDrop',
+        'ng-context-menu',
         '$strap.directives', 'ui.bootstrap',
         'application.core.constants', 'application.core.services', 'application.core.controllers',
         'application.core.filters', 'application.core.directives']);
@@ -267,4 +268,6 @@ app.run(["$rootScope", "User", function ($rootScope, User) {
     $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[0];
     $rootScope.currentProjectIndex = 0;
     $rootScope.inactiveColor = "#6C7A89";
+    // $rootScope.background = "#c7c7c7";
+    // $rootScope.lastColor = $rootScope.background;
 }]);
