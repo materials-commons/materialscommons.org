@@ -6,7 +6,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
 
     $scope.addReviewforFile = function(entry){
         $scope.dfitem = entry
-    }
+    };
 
     pubsub.waitOn($scope, "project.tree", function (treeVisible) {
         $scope.treeActive = treeVisible;
@@ -68,6 +68,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     };
 
     $scope.fileSelected = function (entry) {
+        console.log('yess')
         entry.selected = !entry.selected;
         var channel = Projects.channel;
         if (channel !== null) {
@@ -115,8 +116,8 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             return;
         }
         $scope.review = {messages: []};
-        $scope.review.items = [{'item_id': $scope.dfitem.id, 'item_type': $scope.dfitem.type, 'item_name': $scope.dfitem.name}]
-        $scope.review.project = $scope.project
+        $scope.review.items = [{'item_id': $scope.dfitem.id, 'item_type': $scope.dfitem.type, 'item_name': $scope.dfitem.name}];
+        $scope.review.project = $scope.project;
         $scope.review.author = User.u();
         $scope.review.assigned_to = $scope.model.assigned_to;
         $scope.review.status = 'open';

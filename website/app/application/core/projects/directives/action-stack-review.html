@@ -1,25 +1,40 @@
-<div class="form-horizontal">
-    <h4>Review Title:</h4>
-    <div class="col-lg-8">
-        <input class="form-control" ng-model="model.title">
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-lg-2">Review Title:</label>
+        <div class="col-lg-4">
+            <input ng-model="model.title" class="form-control" type="text" placeholder="Title...">
+        </div>
     </div>
-    <div class="col-lg-6 custom-ta-toolbar">
-        <h4>Comment:</h4>
-        <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                      ng-model="model.new_review"></text-angular>
-        <br>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
+    <div class="form-group">
+        <label class="control-label col-lg-2">Assign To:</label>
+        <div class="col-lg-4">
             <select class="form-control" ng-model="model.assigned_to">
                 <option disabled>-- Assign to --</option>
                 <option ng-repeat="user in users">{{ user }}</option>
             </select>
         </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-2">Comment:</label>
+
         <div class="col-lg-4">
-            <button ng-click="addReview()" class="btn btn-default btn-primary">Submit New Review</button>
+            <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                          ng-model="model.comment"></text-angular>
         </div>
     </div>
-</div>
+    <div class="form-group">
+        <label class="control-label col-lg-2">Select Files(from project tree):</label>
+
+        <div class="col-lg-4">
+            <div ng-show="model.files.length == 0">
+                <p class="text-muted"> None </p>
+            </div>
+            <div ng-repeat="f in model.files">
+                {{f.item_name}}
+            </div>
+        </div>
+    </div>
+    <button ng-click="addReview()" class="btn btn-primary">Submit New Review</button>
+</form>
