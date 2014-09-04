@@ -68,7 +68,6 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     };
 
     $scope.fileSelected = function (entry) {
-        console.log('yess')
         entry.selected = !entry.selected;
         var channel = Projects.channel;
         if (channel !== null) {
