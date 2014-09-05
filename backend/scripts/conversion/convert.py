@@ -209,6 +209,7 @@ def add_shares_to_projects(conn):
                                 .zip()
                                 .run(conn, time_format='raw'))
         proj['uses'] = get_project_uses(potentially_uses, proj['id'], conn)
+        r.table('projects').get(proj['id']).update(proj).run(conn)
     msg("Done...")
 
 
@@ -218,10 +219,16 @@ def get_project_shares(all_samples_used, project_id, conn):
     for sample in all_samples_used:
         if sample['other_project_id'] == project_id \
            and sample['project_id'] != project_id:
-            sample['other_project'] = r.table('projects')\
-                                       .get(sample['project_id'])\
-                                       .run(conn, time_format='raw')
-            shares.append(sample)
+            project = r.table('projects').get(sample['project_id'])\
+                                         .run(conn, time_format='raw')
+            if project is None:
+                continue
+            shared = {}
+            shared['sample_name'] = sample['name']
+            shared['sample_id'] = sample['id']
+            shared['project_name'] = project['name']
+            shared['project_id'] = project['id']
+            shares.append(shared)
     return shares
 
 
@@ -231,10 +238,16 @@ def get_project_uses(all_samples_used, project_id, conn):
     for sample in all_samples_used:
         if sample['project_id'] == project_id \
            and sample['other_project_id'] != project_id:
-            sample['other_project'] = r.table('projects')\
-                                       .get(sample['other_project_id'])\
-                                       .run(conn, time_format='raw')
-            uses.append(sample)
+            project = r.table('projects').get(sample['other_project_id'])\
+                                         .run(conn, time_format='raw')
+            if project is None:
+                continue
+            shared = {}
+            shared['sample_name'] = sample['name']
+            shared['sample_id'] = sample['id']
+            shared['project_name'] = project['name']
+            shared['project_id'] = project['id']
+            uses.append(shared)
     return uses
 
 
