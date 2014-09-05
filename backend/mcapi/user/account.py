@@ -7,22 +7,8 @@ import rethinkdb as r
 import uuid
 from ..utils import make_password_hash, make_salted_password_hash
 from .. import error
-from .. import apikeydb
 from .. import dmutil
 from .. import args
-
-
-
-@app.route('/user/<user>', methods=['GET'])
-@apikey
-@jsonp
-def get_user_details(user):
-    apiuser = access.get_apiuser()
-    u = r.table('users').get(user).pluck('apikey', 'email', 'name').run(g.conn)
-    if u is not None:
-        if u['email'] != apiuser:
-            return error.not_authorized("Bad username or password")
-    return json_as_format_arg(u)
 
 
 @app.route('/user/<user>/apikey', methods=['PUT'])
@@ -30,25 +16,17 @@ def get_user_details(user):
 def get_api_key_for_user(user):
     j = request.get_json()
     password = dmutil.get_required('password', j)
-    u = r.table('users').get(user).run(g.conn)
+    u = r.table('users').get(user).run(g.conn, time_format='raw')
     if u is None:
         return error.not_authorized("Bad username or password")
     dbpw = u['password']
     _i1, _i2,  _i3,  salt, _pwhash = dbpw.split('$')
     hash = make_salted_password_hash(password, salt)
     if hash == dbpw:
-        return json.dumps({'apikey': u['apikey']})
+        del u['password']
+        return json.dumps(u)
     else:
         return error.not_authorized("Bad username or password")
-
-
-@app.route('/users/init', methods=['PUT'])
-@apikey
-@jsonp
-def user_init():
-    apikeydb.reset()
-    access.reset()
-    return json_as_format_arg({"status": "success"})
 
 
 @app.route('/user/<user>/password', methods=['PUT'])
@@ -98,6 +76,7 @@ def update_preferred_templates(user):
     rv = r.table('users').get(user).update(
         {'preferences': {'templates': list}}).run(g.conn)
     return jsonify(rv)
+
 
 @app.route('/user/<user>/tags', methods=['GET'])
 @apikey

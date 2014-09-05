@@ -1,5 +1,6 @@
 {
     "id": "tem-data-collection-settings" ,
+    "category": "TEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument-settings",
     "default_properties": [

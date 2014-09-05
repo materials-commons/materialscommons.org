@@ -1,5 +1,6 @@
 {
     "id": "tensile-settings" ,
+    "category": "OTHER",
     "authors": ["emarq@umich.edu"],
     "attribute": "tensile_settings",
     "default_properties": [

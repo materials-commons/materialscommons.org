@@ -1,5 +1,6 @@
 {
     "id": "broad-ion-beam-instrument-settings",
+    "category": "OTHER",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [

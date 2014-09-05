@@ -1,5 +1,6 @@
 {
     "id": "short-fatigue-crack-growth",
+    "category": "OTHER",
     "authors": ["jonesjwa@umich.edu"],
     "attribute": "process",
     "default_properties": [

@@ -1,5 +1,6 @@
 {
     "id": "machine" ,
+    "category": "OTHER",
     "authors": ["tammasr@umich.edu"],
     "default_properties": [
         {

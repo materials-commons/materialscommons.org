@@ -1,5 +1,6 @@
 {
     "id": "high-cycle-fatigue-settings",
+    "category": "OTHER",
     "authors": ["jonesjwa@umich.edu"],
     "attribute": "instrument-settings",
     "default_properties": [

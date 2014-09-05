@@ -1,5 +1,6 @@
 {
     "id": "sem",
+    "category": "SEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [
