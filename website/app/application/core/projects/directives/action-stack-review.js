@@ -10,34 +10,42 @@ function actionReviewDirective() {
 }
 
 Application.Controllers.controller('actionReviewController',
-    ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams","model.Projects", "Projects", actionReviewController]);
+    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.Projects", "Projects", actionReviewController]);
 
-function actionReviewController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects) {
-    $scope.review = {'items': [], 'messages': []};
+function actionReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects) {
 
     $scope.addReview = function () {
-        //pluck the file items
-        $scope.model.files.forEach(function(f){
-            $scope.review.items.push({'id': f.id, 'path': f.fullname, 'name': f.name, 'type': f.type})
-        })
-        $scope.review.author = User.u();
-        $scope.review.assigned_to = $scope.model.assigned_to;
-        $scope.review.status = 'open';
-        $scope.review.title = $scope.model.title;
-        $scope.review.messages.push({'message': $scope.model.comment, 'who': User.u(), 'date': dateGenerate.new_date()});
-        $scope.review.project = $scope.project_id
-        $scope.saveData();
+        $scope.review = {'items': [], 'messages': []};
+        if($scope.model.title == '' || $scope.model.assigned_to == ''){
+
+        }else{
+            //pluck the file items
+            $scope.model.files.forEach(function(f){
+                $scope.review.items.push({'id': f.id, 'path': f.fullname, 'name': f.name, 'type': f.type})
+            })
+            $scope.review.author = User.u();
+            $scope.review.assigned_to = $scope.model.assigned_to;
+            $scope.review.status = 'open';
+            $scope.review.title = $scope.model.title;
+            $scope.review.messages.push({'message': $scope.model.comment, 'who': User.u(), 'date': dateGenerate.new_date()});
+            $scope.review.project = $scope.project_id
+            $scope.saveData();
+        }
+
     };
     $scope.saveData = function () {
         mcapi('/reviews')
             .success(function (data) {
-                $state.go('projects.overview.editreviews', {'review_id': data.id})
                 $scope.model = {
                     comment: "",
                     assigned_to: "",
                     title: "",
                     files: []
                 };
+                $scope.review = {};
+                pubsub.send('open_reviews.change');
+                pubsub.send('reviews.change');
+
             }).post($scope.review);
     };
 
