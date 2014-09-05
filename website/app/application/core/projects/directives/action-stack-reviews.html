@@ -26,7 +26,9 @@
                     <td> {{review.title}}<p class="text-muted sub-text">{{review.author}}
                         {{review.birthtime | toDateString}}</p>
                     </td>
-                    <td ng-repeat="i in review.items">{{i.item_name}}</td>
+                    <td><ul ng-repeat="i in review.items">
+                        <li>{{i.name}}</li>
+                    </ul></td>
 
                     <td>{{review.assigned_to}}</td>
                     <td ng-if="review.messages.length === 1"></td>
