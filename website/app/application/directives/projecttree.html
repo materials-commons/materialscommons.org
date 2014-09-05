@@ -107,8 +107,7 @@
                                     <a href="#">Add Tag</a>
                                     <ul class="dropdown-menu scrollable-menu">
                                         <li ng-repeat="t in user_tags">
-                                            <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
-                                                ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
+                                           <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa fa-tag space-right" style="color: {{t.color}}"></i>{{t.name}}</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -116,8 +115,7 @@
                                     <a href="#">Add to existing review</a>
                                     <ul class="dropdown-menu scrollable-menu">
                                         <li ng-repeat="r in open_reviews">
-                                            <span><i class="fa fa-comment space-right"></i><a
-                                                    ng-click="addToReview(entry, r)" role="menuItem">{{r.title}}</a></span>
+                                            <a style="padding-left: 8px;" ng-click="addToReview(entry, r)" role="menuItem">{{r.title}}</a>
                                         </li>
                                     </ul>
                                 </li>
