@@ -88,17 +88,18 @@
                                                 <a ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a>
                                             </span>
                                         </li>
-
                                     </ul>
                                 </li>
                             </ul>
                         </div>
-                        <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}
-                        </a>
+                        <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}</a>
                     </td>
                     <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
-                        <input ng-model="entry.selected" ng-click="fileSelected(entry)"
-                               ng-change="entry.selected = !entry.selected" type="checkbox">
+                        <span ng-if="actionActive('review')">
+                            <input ng-model="entry.selected" ng-click="fileSelected(entry)"
+                                   ng-change="entry.selected = !entry.selected" type="checkbox">
+                        </span>
+
                         <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
                             <ul class="dropdown-menu" role="menu">
@@ -108,6 +109,15 @@
                                         <li ng-repeat="t in user_tags">
                                             <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
                                                 ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">Add to existing review</a>
+                                    <ul class="dropdown-menu scrollable-menu">
+                                        <li ng-repeat="r in open_reviews">
+                                            <span><i class="fa fa-comment space-right"></i><a
+                                                    ng-click="addToReview(entry, r)" role="menuItem">{{r.title}}</a></span>
                                         </li>
                                     </ul>
                                 </li>

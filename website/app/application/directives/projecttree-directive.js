@@ -1,11 +1,15 @@
 Application.Controllers.controller('ProjectTreeController',
                                    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate",ProjectTreeController]);
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate) {
+function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter) {
 
-    $scope.addReviewforFile = function(entry){
-        $scope.dfitem = entry
+    $scope.addToReview = function(entry, review){
+        review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type})
+        mcapi('/reviews/%', review.id)
+            .success(function (data) {
+                pubsub.send('open_reviews.change');
+            }).put({'items': review.items});
     };
 
     pubsub.waitOn($scope, "project.tree", function (treeVisible) {
@@ -41,7 +45,13 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
         // $state.go("projects.dataedit.details", {data_id: entry.id});
         $scope.toggleStackAction('file', 'overview-action-stack', entry.id, entry.id);
     };
+    $scope.loadReviews = function (id) {
+        mcapi('/project/%/reviews', id)
+            .success(function (reviews) {
+                $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
+            }).jsonp();
 
+    };
     $scope.selectProject = function (projectId) {
         $scope.trail = [];
         $scope.projectId = projectId;
@@ -157,6 +167,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             .success(function (data) {
                 $scope.users = data;
             }).jsonp();
+        $scope.loadReviews($scope.project);
     };
 
     $scope.init();

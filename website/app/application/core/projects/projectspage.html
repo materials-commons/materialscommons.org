@@ -2,7 +2,10 @@
     <div class="col-lg-12">
         <div class="col-lg-3 col-lg-offset-9">
             <div class="col-lg-6">
-                <span class="badge">10</span> Reviews <i class="fa fa-comment"/>
+                <!--<span class="badge" >10</span>-->
+                <span ng-controller="actionGlobalReviewsController" class="badge action-count">{{reviewsRequested.length}}</span>
+                <a action-stack ng-click="toggleStackAction('global-reviews', 'overview-action-stack')" >Reviews</a>
+                <i ng-class="{'fa fa-close action-link-close': actionActive('global-reviews')}"/>
             </div>
             <div class="col-lg-6">
                 <span class="badge">5</span> Uploads <i class="fa fa-cloud-upload"/>
