@@ -77,6 +77,7 @@ def add_review():
     r.items = dmutil.get_optional('items', j)
     r.title = dmutil.get_required('title', j)
     r.status = "open"
+    print r.title + '***'
     r.project = dmutil.get_required('project', j)
     return  dmutil.insert_entry('reviews', r.__dict__)
 
