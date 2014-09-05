@@ -1,9 +1,10 @@
 Application.Controllers.controller('projectsOverview',
                                    ["$scope", "$stateParams", "pubsub", "$state",
-                                    "ProvDrafts", "mcapi","$filter", "$rootScope",
+                                    "ProvDrafts", "$filter", "$rootScope", "model.projects",
                                     projectsOverview]);
 
-function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mcapi,$filter, $rootScope) {
+function projectsOverview ($scope, $stateParams, pubsub, $state,
+                           ProvDrafts, $filter, $rootScope, projects) {
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;
     });
@@ -14,10 +15,10 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
 
     $scope.countReviews = function(){
         //$scope.open_reviews = []
-        mcapi('/project/%/reviews', $scope.project_id)
-            .success(function (reviews) {
-                $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
-            }).jsonp();
+        // mcapi('/project/%/reviews', $scope.project_id)
+        //     .success(function (reviews) {
+
+        //     }).jsonp();
     };
 
     pubsub.waitOn($scope, 'access.change', function () {
@@ -25,17 +26,17 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
     });
 
     pubsub.waitOn($scope, 'notes.add', function getNotes() {
-        $scope.getProject();
+        // $scope.getProject();
     });
 
     $scope.countDrafts = function () {
-        if ($scope.project_id === "") {
-            return;
-        }
-        mcapi('/drafts/project/%', $scope.project_id)
-            .success(function (drafts) {
-                $scope.drafts_count = drafts.length;
-            }).jsonp();
+        // if ($scope.project_id === "") {
+        //     return;
+        // }
+        // mcapi('/drafts/project/%', $scope.project_id)
+        //     .success(function (drafts) {
+
+        //     }).jsonp();
     };
 
     $scope.getActiveTabStyle = function() {
@@ -86,13 +87,6 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
         return tab === $scope.activeTab;
     };
 
-    $scope.getProject = function(){
-        mcapi('/projects/%', $scope.project_id)
-            .success(function (project) {
-                $scope.project = project;
-            }).jsonp();
-    };
-
     function init() {
         $scope.open_reviews = [];
         $scope.tag = {
@@ -103,12 +97,18 @@ function projectsOverview ($scope, $stateParams, pubsub, $state, ProvDrafts, mca
 
         $scope.icons = ["tag", "exclamation", "asterisk", "bookmark", "bullseye", "check", "eye",
                         "fighter-jet", "flag", "fire", "frown-o", "heart", "rocket", "thumbs-up", "thumbs-down"];
-//        $scope.activeTab = "files";
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;
-        $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
-        $scope.getProject();
-        $scope.countReviews();
+
+        console.log("overview-controller:" + $scope.project_id);
+
+        projects.get($scope.project_id).then(function(project) {
+            console.dir(project);
+            $scope.project = project;
+            $scope.open_reviews = $filter('byKey')(reviews, 'status', 'open');
+        }, function() {
+            console.log("projects.get() failed");
+        });
     }
     init();
 }

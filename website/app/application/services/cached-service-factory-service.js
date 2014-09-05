@@ -29,6 +29,7 @@ Application.Services.factory('CachedServiceFactory',
                                 l = items.length;
 
                             for (i = 0; i < l; i++) {
+                                console.log("adding to cache id:" + items[i].id);
                                 cache.put(items[i].id, items[i]);
                             }
                             return items;
@@ -55,6 +56,7 @@ Application.Services.factory('CachedServiceFactory',
 
             CachedServiceFactory.prototype = {
                 get: function (id) {
+                    console.log("get looking up id: " + id);
                     var deferred = $q.defer(),
                         data = this.cache.get(id);
 
@@ -63,6 +65,7 @@ Application.Services.factory('CachedServiceFactory',
                         return deferred.promise;
                     }
 
+                    console.log("get not in cache");
                     return this.rest.get(id, {apikey: User.apikey()});
                 },
 
