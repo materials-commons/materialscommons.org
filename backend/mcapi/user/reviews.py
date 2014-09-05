@@ -13,22 +13,34 @@ from loader.model import review
 @apikey(shared=True)
 @jsonp
 def get_reviews_requested():
+    requested_reviews = []
     user = access.get_user()
     selection = list(r.table('reviews')
-                     .get_all(user, index='author')
+                     .get_all(user, index='author').order_by('project').eq_join('project', r.table('projects'))
                      .run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
+    for item in selection:
+        review = item['left']
+        project = item['right']
+        review['project_name'] = project['name']
+        requested_reviews.append(review)
+    return args.json_as_format_arg(requested_reviews)
 
 
 @app.route('/reviews/to_conduct', methods=['GET'])
 @apikey(shared=True)
 @jsonp
 def get_reviews_to_be_conducted():
+    conduct_reviews = []
     user = access.get_user()
     selection = list(r.table('reviews')
-                     .get_all(user, index='assigned_to')
+                     .get_all(user, index='assigned_to').order_by('project').eq_join('project', r.table('projects'))
                      .run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
+    for item in selection:
+        review = item['left']
+        project = item['right']
+        review['project_name'] = project['name']
+        conduct_reviews.append(review)
+    return args.json_as_format_arg(conduct_reviews)
 
 
 @app.route('/reviews/<id>', methods=['GET'])
@@ -62,7 +74,7 @@ def add_review():
     author = dmutil.get_required('author', j)
     r = review.Review(author, assigned_to)
     r.messages = dmutil.get_required('messages', j)
-    r.items = dmutil.get_required('items', j)
+    r.items = dmutil.get_optional('items', j)
     r.title = dmutil.get_required('title', j)
     r.status = "open"
     r.project = dmutil.get_required('project', j)
@@ -75,8 +87,11 @@ def update_review(id):
     j = request.get_json()
     messages = dmutil.get_optional('messages', j)
     status = dmutil.get_optional('status', j)
+    items = dmutil.get_optional('items', j)
     if messages:
         rv = r.table('reviews').get(id).update({'messages': messages}).run(g.conn)
     if status:
-        rv = r.table('reviews').get(id).update({'status': status}).run(g.conn) 
+        rv = r.table('reviews').get(id).update({'status': status}).run(g.conn)
+    if items:
+        rv = r.table('reviews').get(id).update({'items': items}).run(g.conn) 
     return jsonify(rv)

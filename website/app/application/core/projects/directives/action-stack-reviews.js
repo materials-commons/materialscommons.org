@@ -12,6 +12,10 @@ Application.Controllers.controller('actionReviewsController',
     ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams", actionReviewsController]);
 
 function actionReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams) {
+
+    pubsub.waitOn($scope, 'open_reviews.change', function () {
+        $scope.loadReviews($stateParams.id)
+    });
     $scope.editReview = function(index){
         $scope.edit_index = index;
     };
@@ -40,6 +44,7 @@ function actionReviewsController($scope, mcapi, $filter, $state, dateGenerate, U
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
                 pubsub.send('open_reviews.change');
+                pubsub.send('reviews.change');
                 $scope.loadReviews($stateParams.id)
                 $scope.review = ''
             }).put({'status': 'close'});
@@ -49,6 +54,7 @@ function actionReviewsController($scope, mcapi, $filter, $state, dateGenerate, U
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
                 pubsub.send('open_reviews.change');
+                pubsub.send('reviews.change');
                 $scope.loadReviews($stateParams.id)
                 $scope.review = ''
             }).put({'status': 'open'});
