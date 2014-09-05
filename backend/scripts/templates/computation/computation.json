@@ -1,5 +1,6 @@
 {
-    "id": "computation",
+    "id": "computation",    
+    "category": "COMPUTATION",
     "authors": ["bpuchala@umich.edu"],
     "attribute": "process",
     "default_properties": [

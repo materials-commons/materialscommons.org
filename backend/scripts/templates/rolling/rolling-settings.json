@@ -1,5 +1,6 @@
 {
     "id": "rolling-settings",
+    "category": "OTHER",
     "authors": ["emarq@umich.edu"],
     "attribute": "rolling_settings",
     "default_properties": [

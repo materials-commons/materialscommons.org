@@ -1,5 +1,6 @@
 {
     "id": "low-cycle-fatigue-test",
+    "category": "OTHER",
     "authors": ["jonesjwa@umich.edu"],
     "attribute": "process",
     "default_properties": [

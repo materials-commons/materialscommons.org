@@ -1,10 +1,11 @@
 from mcapp import app
 from decorators import jsonp, apikey
-from flask import g
+from flask import g, request
 import rethinkdb as r
 import error
 import dmutil
 import json
+import sys
 
 
 @app.route('/templates/<template_id>', methods=['GET'])
@@ -57,14 +58,28 @@ def get_input_output_templates(template_id):
 @apikey(shared=True)
 @jsonp
 def get_all_templates():
-    templates = list(r.table('templates')
-                     .order_by('id')
-                     .run(g.conn, time_format='raw'))
+    filter_by = request.args.get('filter_by')
+    all_templates = list(r.table('templates').order_by('id')
+                         .run(g.conn, time_format='raw'))
+    templates = []
+    if filter_by:
+        key = filter_by.split(':')[0]
+        value = filter_by.split(':')[1]
+        # only uses templates that match filter
+        for template in all_templates:
+            if key not in template:
+                continue
+            if template[key] != value:
+                continue
+            templates.append(template)
+    else:
+        templates = all_templates
+
     # Create elements to store other templates
     for template in templates:
         template['input_templates'] = []
         template['output_templates'] = []
-    thash = {template['id']: template for template in templates}
+    thash = {template['id']: template for template in all_templates}
     for template in templates:
         if 'required_input_conditions' in template:
             for c in template['required_input_conditions']:

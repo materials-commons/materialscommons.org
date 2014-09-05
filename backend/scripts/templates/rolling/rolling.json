@@ -1,5 +1,6 @@
 {
     "id": "rolling",
+    "category": "OTHER",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [

@@ -1,5 +1,6 @@
 {
     "id": "computation-job-settings" ,
+    "category": "COMPUTATION",
     "authors": ["bpuchala@umich.edu"],
     "attribute": "job_settings",
     "default_properties": [

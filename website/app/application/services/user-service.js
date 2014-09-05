@@ -8,14 +8,13 @@ Application.Services.factory('User',
                 return self.mcuser;
             },
 
-            setAuthenticated: function (authenticated, apikey, email) {
+            setAuthenticated: function (authenticated, u) {
                 if (!authenticated) {
                     $cookieStore.remove('mcuser');
                     self.mcuser = undefined;
                 } else {
                     var mcuser = {};
-                    mcuser.apikey = apikey;
-                    mcuser.email = email;
+                    mcuser = u;
                     $cookieStore.put('mcuser', mcuser);
                     self.mcuser = mcuser;
                 }
@@ -28,6 +27,10 @@ Application.Services.factory('User',
 
             u: function () {
                 return self.mcuser ? self.mcuser.email : 'Login';
+            },
+
+            attr: function() {
+                return self.mcuser;
             },
 
             reset_apikey: function (new_key) {

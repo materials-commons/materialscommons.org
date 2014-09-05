@@ -1,5 +1,6 @@
 {
     "id": "apt-instrument-settings" ,
+    "category": "APT",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [

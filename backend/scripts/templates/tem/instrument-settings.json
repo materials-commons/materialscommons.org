@@ -1,5 +1,6 @@
 {
     "id": "tem-instrument-settings" ,
+    "category": "TEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument-settings",
     "default_properties": [
