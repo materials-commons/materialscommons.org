@@ -1,5 +1,6 @@
 {
     "id": "sample",
+    "category": "OTHER",
     "authors": ["tammasr@umich.edu"],
     "attribute": "sample",
     "default_properties": [],

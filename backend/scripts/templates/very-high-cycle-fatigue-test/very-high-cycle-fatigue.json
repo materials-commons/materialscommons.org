@@ -1,5 +1,6 @@
 {
     "id": "very-high-cycle-fatigue-test",
+    "category": "COMPUTATION",
     "authors": ["jonesjwa@umich.edu"],
     "attribute": "process",
     "default_properties": [

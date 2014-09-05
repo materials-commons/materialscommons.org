@@ -1,5 +1,6 @@
 {
     "id": "sem-ebsd-data-collection-settings",
+    "category": "SEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [

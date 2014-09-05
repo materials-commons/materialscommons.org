@@ -1,5 +1,6 @@
 {
     "id": "broad-ion-beam-milling",
+    "category": "OTHER",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [

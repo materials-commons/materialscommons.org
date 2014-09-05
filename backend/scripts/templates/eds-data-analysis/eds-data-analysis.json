@@ -1,5 +1,6 @@
 {
     "id": "eds-data-analysis",
+    "category": "EDS",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [

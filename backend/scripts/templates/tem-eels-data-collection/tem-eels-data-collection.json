@@ -1,5 +1,6 @@
 {
     "id": "tem-eels-data-collection",
+    "category": "TEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [

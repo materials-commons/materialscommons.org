@@ -1,5 +1,6 @@
 {
     "id": "xrd-instrument-settings",
+    "category": "XRD",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [

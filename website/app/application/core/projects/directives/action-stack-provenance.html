@@ -20,52 +20,40 @@
 </div>
 
 <div class="row">
-    <input ng-model="numberOfSteps">
-</div>
+    <form class="form-horizontal">
+        <fieldset>
 
-<div class="row">
-    <div class="row"><br>
-        <form name="Form" class="form-horizontal">
-            <cgroup label="Process Type:">
-                <div class="btn-group">
-                    <button  type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        Choose process <span class="caret"></span>
-                    </button>
-                    {{doc.template.template_name}}
-                    <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="p in preferred_templates">
-                            <a ng-click="change_process(p.id)">{{p.template_name}}</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="dropdown-submenu" >
-                            <a  href="#">Experiment</a>
-                            <ul class="dropdown-menu scrollable-menu" >
-                                <li ng-repeat="exp_temp in experimental_templates">
-                                    <a ng-click="change_process(exp_temp.id)">{{exp_temp.template_name}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a  href="#">Computation</a>
-                            <ul class="dropdown-menu scrollable-menu" >
-                                <li ng-repeat="comp_temp in computational_templates">
-                                    <a ng-click="change_process(comp_temp.id)">{{comp_temp.template_name}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+            <!-- Select Basic -->
+            <div class="form-group">
+                <label class="control-label col-lg-2" for="selectbasic">Process</label>
+                <div class="controls col-lg-4">
+                    <select id="selectbasic"
+                            ui-select2="{placeholder: 'Select process', allowClear: true, width: 'element'}"
+                            ng-multiple="false"
+                            ng-options="template.template_name group by template.category for template in templates | orderBy:'category'"
+                            ng-model="selectedTemplate"
+                            name="selectbasic"
+                            class="form-control">
+                    </select>
                 </div>
-            </cgroup>
-    </div>
-</div>
-<div class="row">
-    Process Step here
+            </div>
+
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <div class="controls col-lg-2 col-lg-offset-2">
+                    <button id="button1id" name="button1id" class="btn btn-success">Start</button>
+                    <button id="button2id" name="button2id" class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
 </div>
 
 <div class="row bs-wizard" style="border-bottom:0;">
 
     <div class="col-xs-2 bs-wizard-step complete"
-         ng-repeat="template in doc.template.input_templates">
+         ng-repeat="template in selectedTemplate.input_templates">
         <div class="text-center bs-wizard-stepnum">(I) {{template.template_name}}</div>
         <div class="progress">
             <div class="progress-bar">
@@ -86,7 +74,7 @@
         </div>
     </div>
 
-    <div ng-if="doc.template.required_input_files" class="col-xs-2 bs-wizard-step complete">
+    <div ng-if="selectedTemplate.required_input_files" class="col-xs-2 bs-wizard-step complete">
         <div class="text-center bs-wizard-stepnum">(I) Files</div>
         <div class="progress"><div class="progress-bar"></div></div>
         <a href="#" class="bs-wizard-dot"></a>
@@ -94,7 +82,7 @@
     </div>
 
     <div class="col-xs-2 bs-wizard-step complete"
-         ng-repeat="template in doc.template.output_templates">
+         ng-repeat="template in selectedTemplate.output_templates">
         <div class="text-center bs-wizard-stepnum">(O) {{template.template_name}}</div>
         <div class="progress">
             <div class="progress-bar">
@@ -115,7 +103,7 @@
         </div>
     </div>
 
-    <div ng-if="doc.template.required_output_files" class="col-xs-2 bs-wizard-step complete">
+    <div ng-if="selectedTemplate.required_output_files" class="col-xs-2 bs-wizard-step complete">
         <div class="text-center bs-wizard-stepnum">(O) Files</div>
         <div class="progress"><div class="progress-bar"></div></div>
         <a href="#" class="bs-wizard-dot"></a>
@@ -174,8 +162,4 @@
     <a href="#" class="bs-wizard-dot"></a>
     <div class="bs-wizard-info text-center"></div>
     </div> -->
-</div>
-
-<div class="row">
-    Done step here?
 </div>

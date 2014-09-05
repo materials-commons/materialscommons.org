@@ -1,5 +1,6 @@
 {
     "id": "apt-data-reconstruction",
+    "category": "APT",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [
