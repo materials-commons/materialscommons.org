@@ -1,5 +1,6 @@
 {
     "id": "tem-eds-data-analysis",
+    "category": "TEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [

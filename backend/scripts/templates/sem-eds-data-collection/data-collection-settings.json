@@ -1,5 +1,6 @@
 {
     "id": "sem-eds-data-collection-settings" ,
+    "category": "SEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "instrument-settings",
     "default_properties": [

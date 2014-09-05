@@ -3,8 +3,8 @@ Application.Controllers.controller('login',
         function ($scope, $state, User, alertService, mcapi, Nav, pubsub, Projects, P2) {
             $scope.login = function () {
                 mcapi('/user/%/apikey', $scope.email, $scope.password)
-                    .success(function (apikey) {
-                        User.setAuthenticated(true, apikey.apikey, $scope.email);
+                    .success(function (u) {
+                        User.setAuthenticated(true, u);
                         pubsub.send("tags.change");
                         Nav.setActiveNav('home');
                         Projects.clear();

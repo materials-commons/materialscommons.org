@@ -1,5 +1,6 @@
 {
     "id": "xrd-data-analysis",
+    "category": "XRD",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [

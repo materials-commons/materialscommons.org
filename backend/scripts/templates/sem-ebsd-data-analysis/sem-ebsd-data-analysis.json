@@ -1,5 +1,6 @@
 {
     "id": "sem-ebsd-data-analysis",
+    "category": "SEM",
     "authors": ["emarq@umich.edu"],
     "attribute": "process",
     "default_properties": [

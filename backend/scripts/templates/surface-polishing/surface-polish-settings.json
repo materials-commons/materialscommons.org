@@ -1,5 +1,6 @@
 {
     "id": "surface-polish-settings",
+    "category": "OTHER",
     "authors": ["emarq@umich.edu"],
     "attribute": "surface_polish_settings",
     "default_properties": [

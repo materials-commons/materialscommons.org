@@ -1,5 +1,6 @@
 {
     "id": "cogged-instrument-settings" ,
+    "category": "OTHER",
     "authors": ["jfadams@umich.edu"],
     "attribute": "instrument_settings",
     "default_properties": [

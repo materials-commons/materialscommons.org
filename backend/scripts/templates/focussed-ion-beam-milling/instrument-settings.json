@@ -1,5 +1,6 @@
 {
     "id": "focused-ion-beam-milling-settings",
+    "category": "OTHER",
     "authors": ["emarq@umich.edu"],
     "attribute": "milling_settings",
     "default_properties": [
