@@ -38,7 +38,8 @@
                                        ng-click="toggleStackAction('samples', 'overview-action-stack')"
                                        class="action-link project-sub-action">
                                         <i class="fa fa-cubes"/>
-                                        Samples <i ng-class="{'fa fa-close action-link-close': actionActive('samples')}"/>
+                                        Samples <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.samples.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('samples')}"/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
@@ -46,7 +47,8 @@
                                        ng-click="toggleStackAction('project-provenance', 'overview-action-stack')"
                                        class="action-link project-sub-action">
                                         <i class="fa fa-code-fork"/>
-                                        Provenance  <i ng-class="{'fa fa-close action-link-close': actionActive('project-provenance')}"/>
+                                        Provenance <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.processes.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('project-provenance')}"/>
                                     </a>
                                 </span>
                                 <span class="col-lg-2">
@@ -65,7 +67,7 @@
                                        class="action-link project-sub-action">
                                         <i class="fa fa-copy"/>
                                         Drafts
-                                        <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{drafts.length}}</span>
+                                        <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.drafts.length}}</span>
                                         <i ng-class="{'fa fa-close action-link-close': actionActive('drafts')}"/>
                                     </a>
                                 </span>
