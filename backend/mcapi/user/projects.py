@@ -52,24 +52,23 @@ def add_computed_attributes(projects):
         p['samples'] = []
         p['drafts'] = []
         p['processes'] = []
-        p['contributors'] = []
+        p['users'] = []
 
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
-    add_contributors(projects_by_id, project_ids)
+    add_users(projects_by_id, project_ids)
     add_reviews(projects_by_id, project_ids)
     add_samples(projects_by_id, project_ids)
     add_drafts(projects_by_id, project_ids)
     add_process_ids(projects_by_id, project_ids)
 
 
-def add_contributors(projects_by_id, project_ids):
-    contributors = list(r.table('access')
-                        .get_all(*project_ids, index='project_id')
-                        .run(g.conn, time_format='raw'))
-    add_computed_items(projects_by_id, contributors, 'project_id',
-                       'contributors')
+def add_users(projects_by_id, project_ids):
+    users = list(r.table('access')
+                 .get_all(*project_ids, index='project_id')
+                 .run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, users, 'project_id', 'users')
 
 
 def add_reviews(projects_by_id, project_ids):
@@ -105,7 +104,7 @@ def add_computed_items(projects_by_id, items, projects_key, item_key):
     for item in items:
         project_id = item[projects_key]
         if project_id in projects_by_id:
-            projects_by_id[project_id][item_key] = item
+            projects_by_id[project_id][item_key].append(item)
 
 
 @app.route('/projects/<project_id>/datadirs')
@@ -252,7 +251,7 @@ def get_otherfiles(files):
     return result
 
 
-@app.route('/projects/<id>/update', methods=['PUT'])
+@app.route('/projects/<id>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def update_project(id):

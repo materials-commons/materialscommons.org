@@ -119,7 +119,12 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          */
         .state('projects', {
             url: '/projects/:id/:draft_id',
-            templateUrl: 'application/core/projects/projectspage.html'
+            templateUrl: 'application/core/projects/projectspage.html',
+            resolve: {
+                projects: ["model.projects", function(Projects) {
+                    return Projects.getList();
+                }]
+            }
         })
         .state('projects.overview', {
             url: '/overview',
@@ -202,9 +207,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
                 ProvDrafts: "ProvDrafts"
             },
             onExit: function (ProvDrafts) {
-                if (ProvDrafts.current && ProvDrafts.current.process.name !== "") {
-                    ProvDrafts.saveDraft();
-                }
+                // if (ProvDrafts.current && ProvDrafts.current.process.name !== "") {
+                //     ProvDrafts.saveDraft();
+                // }
             }
         })
         .state('projects.provenance.process', {
@@ -235,10 +240,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         });
 }]);
 
-app.run(["$rootScope", "User", function ($rootScope, User) {
+app.run(["$rootScope", "User", "Restangular", function ($rootScope, User, Restangular) {
     $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
+            Restangular.setDefaultRequestParams({apikey: User.apikey()});
         }
     });
     // #4a7a93,,"#bc6f59"

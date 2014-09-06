@@ -1,27 +1,26 @@
 Application.Controllers.controller('projectsOverviewFiles',
-    ["$scope", "$stateParams", "ProjectPath", "mcapi", function ($scope, $stateParams, ProjectPath, mcapi) {
+    ["$scope", "$stateParams", "ProjectPath", "model.projects", "User", function ($scope, $stateParams, ProjectPath, Projects, User) {
 
         $scope.editDescription = function () {
-            $scope.bk.edit_desc = true
-        }
+            $scope.bk.edit_desc = true;
+        };
 
         $scope.save = function () {
-            mcapi('/projects/%/update', $scope.project.id)
-                .success(function (data) {
-                    $scope.bk.edit_desc = false;
-                }).put($scope.project);
-        }
+            $scope.project.put({apikey: User.apikey()}).then(function() {
+                $scope.bk.edit_desc = false;
+            });
+        };
 
         function init() {
             $scope.bk = {
                 edit_desc: false
-            }
+            };
+
             $scope.project_id = $stateParams.id;
             $scope.from = ProjectPath.get_from();
-            mcapi('/projects/%', $scope.project_id)
-                .success(function (data) {
-                    $scope.project = data
-                }).jsonp();
+            Projects.get($scope.project_id).then(function(project) {
+                $scope.project = project;
+            });
         }
 
         init();

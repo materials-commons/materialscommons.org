@@ -1,5 +1,5 @@
 Application.Controllers.controller('accountUserGroup',
-    ["$scope", "mcapi", "$state", "$stateParams", "User", "alertService", "pubsub","model.Projects", "Nav",
+    ["$scope", "mcapi", "$state", "$stateParams", "User", "alertService", "pubsub","model.projects", "Nav",
         function ($scope, mcapi, $state, $stateParams, User, alertService, pubsub, Projects, Nav) {
             pubsub.waitOn($scope, 'usergroups.change', function () {
                 $scope.getGroups();
