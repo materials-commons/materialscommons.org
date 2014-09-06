@@ -29,7 +29,6 @@ Application.Services.factory('CachedServiceFactory',
                                 l = items.length;
 
                             for (i = 0; i < l; i++) {
-                                console.log("adding to cache id:" + items[i].id);
                                 cache.put(items[i].id, items[i]);
                             }
                             return items;
@@ -47,6 +46,9 @@ Application.Services.factory('CachedServiceFactory',
                             handleDelete();
                         }
 
+                        if (operation == 'put') {
+                        }
+
                         return data;
                     });
                 });
@@ -56,7 +58,6 @@ Application.Services.factory('CachedServiceFactory',
 
             CachedServiceFactory.prototype = {
                 get: function (id) {
-                    console.log("get looking up id: " + id);
                     var deferred = $q.defer(),
                         data = this.cache.get(id);
 
@@ -65,8 +66,11 @@ Application.Services.factory('CachedServiceFactory',
                         return deferred.promise;
                     }
 
-                    console.log("get not in cache");
                     return this.rest.get(id, {apikey: User.apikey()});
+                },
+
+                update: function(id, what) {
+                    return this.rest.one(id, what).customPUT({apikey: User.apikey()});
                 },
 
                 create: function (what) {
@@ -96,7 +100,8 @@ Application.Services.factory('CachedServiceFactory',
                     deferred = $q.defer();
 
                     if (keys.length === 0) {
-                        return this.rest.getList({apikey: User.apikey()});
+                        // return this.rest.getList({apikey: User.apikey()});
+                        return this.rest.getList();
                     }
 
                     for (i = 0, l = keys.length; i < l; i++) {

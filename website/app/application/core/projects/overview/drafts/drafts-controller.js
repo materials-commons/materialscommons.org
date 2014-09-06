@@ -2,7 +2,7 @@ Application.Controllers.controller('projectsOverviewDrafts',
     ["$scope", "pubsub", "ProvDrafts", "$state", "alertService", "Nav", "$stateParams", "mcapi", "$modal",
         function ($scope, pubsub, ProvDrafts, $state, alertService, Nav, $stateParams, mcapi, $modal) {
             pubsub.waitOn($scope, ProvDrafts.channel, function () {
-                $scope.drafts = ProvDrafts.drafts;
+                //$scope.drafts = ProvDrafts.drafts;
 
             });
 
@@ -53,7 +53,7 @@ Application.Controllers.controller('projectsOverviewDrafts',
 
             function init() {
                 $scope.project_id = $stateParams.id;
-                $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
+                //$scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
             }
 
             init();

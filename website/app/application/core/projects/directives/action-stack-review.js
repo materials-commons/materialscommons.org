@@ -10,7 +10,7 @@ function actionReviewDirective() {
 }
 
 Application.Controllers.controller('actionReviewController',
-    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.Projects", "Projects", actionReviewController]);
+    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "Projects", actionReviewController]);
 
 function actionReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects) {
 

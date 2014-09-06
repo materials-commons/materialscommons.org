@@ -1,5 +1,5 @@
 Application.Controllers.controller('login',
-    ["$scope", "$state", "User", "alertService", "mcapi", "Nav", "pubsub", "model.Projects", "Projects",
+    ["$scope", "$state", "User", "alertService", "mcapi", "Nav", "pubsub", "model.projects", "Projects",
         function ($scope, $state, User, alertService, mcapi, Nav, pubsub, Projects, P2) {
             $scope.login = function () {
                 mcapi('/user/%/apikey', $scope.email, $scope.password)

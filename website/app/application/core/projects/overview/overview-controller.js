@@ -100,14 +100,9 @@ function projectsOverview ($scope, $stateParams, pubsub, $state,
         $scope.project_id = $stateParams.id;
         $scope.from = $stateParams.from;
 
-        console.log("overview-controller:" + $scope.project_id);
-
         projects.get($scope.project_id).then(function(project) {
-            console.dir(project);
             $scope.project = project;
-            $scope.open_reviews = $filter('byKey')(reviews, 'status', 'open');
-        }, function() {
-            console.log("projects.get() failed");
+            $scope.open_reviews = $filter('byKey')(project.reviews, 'status', 'open');
         });
     }
     init();
