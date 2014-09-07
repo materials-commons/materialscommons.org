@@ -241,6 +241,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 }]);
 
 app.run(["$rootScope", "User", "Restangular", function ($rootScope, User, Restangular) {
+    Restangular.setBaseUrl(mcglobals.apihost);
+    Restangular.setJsonp(true);
+    Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+
     $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();

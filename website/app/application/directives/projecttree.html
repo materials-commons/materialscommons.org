@@ -107,7 +107,7 @@
                                     <a href="#">Add Tag</a>
                                     <ul class="dropdown-menu scrollable-menu">
                                         <li ng-repeat="t in user_tags">
-                                           <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa fa-tag space-right" style="color: {{t.color}}"></i>{{t.name}}</a>
+                                            <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa fa-tag space-right" style="color: {{t.color}}"></i>{{t.name}}</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -137,7 +137,6 @@
             </tbody>
         </table>
     </div>
-    <div ui-view=''></div>
     <div class="modal fade" id="addReview" tabindex="-1" role="dialog" aria-labelledby="reviewsLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -160,8 +159,8 @@
                             <label class="control-label">Comment: <i class="fa fa-asterisk" style="color: red"/></label>
                             <div class="controls">
                                 <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-                                          ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-                                          ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                                              ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+                                              ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
                                               ng-model="model.new_review">
                                 </text-angular>
                             </div>
@@ -171,11 +170,11 @@
                                 Assign To: <i class="fa fa-asterisk" style="color: red"/>
                             </label>
                             <div class="controls">
-                                    <select class="form-control" ng-model="model.assigned_to"
-                                            required="">
-                                        <option disabled>-- Assign to --</option>
-                                        <option ng-repeat="user in users">{{ user }}</option>
-                                    </select>
+                                <select class="form-control" ng-model="model.assigned_to"
+                                        required="">
+                                    <option disabled>-- Assign to --</option>
+                                    <option ng-repeat="user in users">{{ user }}</option>
+                                </select>
                             </div>
                         </div>  <br>
                         <div class="control-group">
@@ -183,9 +182,9 @@
                                 <button ng-click="addReview()" class="btn btn-primary" data-dismiss="modal">Submit Review</button>
                             </div>
                         </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>

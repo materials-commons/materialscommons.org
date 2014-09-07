@@ -55,8 +55,6 @@
                 <ul ng-show="email_address" class="nav navbar-nav navbar-right">
                     <li ng-class="{ navactive: isActiveStep('projects') }"><a ng-click="showStep('projects')"ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase space-right"></i>
                         Projects</a></li>
-                    <li ng-class="{ navactive: isActiveStep('reviews') }"><a ui-sref="reviews" ng-click="showStep('reviews')" class="navbar-link"><i class="fa fa-comment space-right"></i>
-                        Reviews</a></li>
                     <li ng-class="{ navactive: isActiveStep('machines') }">
                         <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i class="fa fa-gears space-right"></i> Machines</a></li>
                     <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
@@ -119,7 +117,7 @@
         <script src="assets/js/angular/angular-validation.js"></script>
         <script src="assets/js/angular/draganddrop.js"></script>
         <script src="assets/js/angular/ng-context-menu.min.js"></script>
-         <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jqcloud-1.0.4.js"></script>
         <script src="assets/js/underscore-min.js"></script>
         <script src="assets/js/angular/socket.js"></script>
@@ -190,6 +188,7 @@
          <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
          <script src="application/core/projects/_action-controller.js"></script>
          <script src="application/core/projects/overview/overview-controller.js"></script>
+         <script src="application/core/projects/overview/sideboard-directive.js"></script>
          <script src="application/core/projects/overview/files/files-controller.js"></script>
          <script src="application/core/projects/overview/samples/sample-controller.js"></script>
          <script src="application/core/projects/overview/provenance/provenance-controller.js"></script>
@@ -270,8 +269,8 @@
          <script src="application/filters/page-filter.js"></script>
          <script src="application/filters/todatestring-filter.js"></script>
          <script src="application/filters/reverse-filter.js"></script>
-         <script src="application/filters/bykey-filter.js"></script>
          <script src="application/filters/review-filter.js"></script>
+         <script src="application/filters/bykey-filter.js"></script>
 
          <!-- Index -->
          <script src="index/_navigation-controller.js"></script>

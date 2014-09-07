@@ -1,8 +1,8 @@
 Application.Controllers.controller('Projects',
                                    ["$scope", "$stateParams", "mcapi", "$state", "watcher",
                                     "ProjectPath", "pubsub", "model.projects", "$timeout",
-                                    "$rootScope", "Tags", "User", "pubsub", ProjectsController]);
-function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout, $rootScope, Tags, User, pubsub) {
+                                    "$rootScope", "Tags", "User", ProjectsController]);
+function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout, $rootScope, Tags, User) {
     $scope.project_id = $stateParams.id;
     $scope.model = {
         action: ''

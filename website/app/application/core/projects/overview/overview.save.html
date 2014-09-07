@@ -1,127 +1,95 @@
 <div ng-controller="projectsOverview">
-
-    <div style="position: relative; height: 65px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding-left: 15px; padding-right: 15px;" ng-style="{background: currentProjectColor}">
-        <div class="row">
-            <span class="col-lg-2" style="font-size: 11pt">
-                <i class="fa fa-lock"></i> {{project.name}}
-            </span>
-            <span class="col-lg-offset-2 col-lg-2">
-                <i class="fa fa-users"/>
-                <a data-toggle="modal" data-target="#contributors" style="color: white" class="action-link"> {{project.users.length}}
-                    contributors</a>
-            </span>
-            <span class="col-lg-2">
-                <i class="fa fa-exclamation-circle"/>
-                0 events
-            </span>
-            <span class="col-lg-2">
-                <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares" style="color: white" class="action-link">{{project.shares.length}}
-                    Project(s)</a>
-            </span>
-            <span class="col-lg-2">
-                <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses" style="color:white" class="action-link">{{project.uses.length}}
-                    Project(s)</a>
-            </span>
-        </div>
-        <hr class="carved">
-        <div class="row">
-            <div class="col-lg-offset-2">
-                <span class="col-lg-2">
-                    <a action-stack
-                       ng-click="toggleStackAction('samples', 'overview-action-stack')"
-                       class="action-link project-sub-action">
-                        <i class="fa fa-cubes"/>
-                        Samples <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.samples.length}}</span>
-                        <i ng-class="{'fa fa-close action-link-close': actionActive('samples')}"/>
-                    </a>
-                </span>
-                <span class="col-lg-2">
-                    <a action-stack
-                       ng-click="toggleStackAction('project-provenance', 'overview-action-stack')"
-                       class="action-link project-sub-action">
-                        <i class="fa fa-code-fork"/>
-                        Provenance <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.processes.length}}</span>
-                        <i ng-class="{'fa fa-close action-link-close': actionActive('project-provenance')}"/>
-                    </a>
-                </span>
-                <span class="col-lg-2">
-
-                    <a action-stack
-                       ng-click="toggleStackAction('reviews', 'overview-action-stack')"
-                       class="action-link project-sub-action">
-                        <i class="fa fa-comment"/>
-                        Reviews <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{open_reviews.length}}</span>
-                        <i ng-class="{'fa fa-close action-link-close': actionActive('reviews')}"/>
-                    </a>
-                </span>
-                <span class="col-lg-2">
-                    <a action-stack
-                       ng-click="toggleStackAction('drafts', 'overview-action-stack')"
-                       class="action-link project-sub-action">
-                        <i class="fa fa-copy"/>
-                        Drafts
-                        <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.drafts.length}}</span>
-                        <i ng-class="{'fa fa-close action-link-close': actionActive('drafts')}"/>
-                    </a>
-                </span>
-                <span class="col-lg-2">
-                    <a action-stack
-                       ng-click="toggleStackAction('notes', 'overview-action-stack')"
-                       class="action-link project-sub-action">
-                        <i class="fa fa-edit"/>
-                        Notes
-                        <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.notes.length}}</span>
-                        <i ng-class="{'fa fa-close action-link-close': actionActive('notes')}"/>
-                    </a>
-                </span>
-            </div>
-        </div>
-    </div>
-
     <div class="row">
-        <div class="col-lg-2 sideboard" style="padding-top: 18px">
-            <div sideboard></div>
+
+        <div>
+            <span class="col-lg-offset-3 col-lg-3"><i class="fa fa-lock"></i> {{project.name}}</span>
+            <span class="col-lg-4">Created by {{project.owner}} on {{project.birthtime | toDateString}}</span>
         </div>
-        <div class="col-lg-10" style="padding-left: 10px;">
-            <div class="row" style="padding-bottom: 16px; padding-top: 3px">
-                <span class="col-lg-offset-7 col-lg-5">
-                    Created by {{project.owner}} on {{project.birthtime | toDateString}}
-                </span>
-            </div>
-            <div id="action-stack" class="row">
-            </div>
+
+        <div class="col-lg-12">
             <div class="row">
-                <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true" color="{{currentProjectColor}}"></project-tree>
-                <div class="row">
-                    Project Description:
-                </div>
-                <div class="row">
-                    <div ng-hide="bk.edit_desc">
-                        <div class="panel panel-default input-panel">
-                            <div class="panel-body">
-                                <div ta-bind ng-model="project.description"></div>
-                            </div>
-                        </div>
-                        <button ng-click="editDescription()" class="btn btn-default btn-primary"> Edit</button>
-                    </div>
-                    <div ng-show="bk.edit_desc">
+                <div class="panel panel-default">
+                    <div style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;" class="panel-heading" ng-style="{'background-color': currentProjectColor}">
                         <div class="row">
-                            <div class="col-lg-6 custom-ta-toolbar">
-                                <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-                                              ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-                                              ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                                              ng-model="project.description"></text-angular>
-                            </div>
+                            <span class="col-lg-offset-1 col-lg-2">
+                                <i class="fa fa-users"/>
+                                <a data-toggle="modal" data-target="#contributors" style="color: white" class="action-link"> {{project.users.length}}
+                                    contributors</a>
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-exclamation-circle"/>
+                                0 events
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares" style="color: white" class="action-link">{{project.shares.length}}
+                                    Project(s)</a>
+                            </span>
+                            <span class="col-lg-3">
+                                <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses" style="color:white" class="action-link">{{project.uses.length}}
+                                    Project(s)</a>
+                            </span>
                         </div>
+                        <hr class="carved">
                         <div class="row">
-                            <button ng-click="save()" class="btn btn-default btn-primary">Save</button>
+                            <div class="col-lg-offset-2">
+                                <span class="col-lg-2">
+                                    <a action-stack
+                                       ng-click="toggleStackAction('samples', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
+                                        <i class="fa fa-cubes"/>
+                                        Samples <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.samples.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('samples')}"/>
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a action-stack
+                                       ng-click="toggleStackAction('project-provenance', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
+                                        <i class="fa fa-code-fork"/>
+                                        Provenance <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.processes.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('project-provenance')}"/>
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+
+                                    <a action-stack
+                                       ng-click="toggleStackAction('reviews', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
+                                        <i class="fa fa-comment"/>
+                                        Reviews <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{open_reviews.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('reviews')}"/>
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a action-stack
+                                       ng-click="toggleStackAction('drafts', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
+                                        <i class="fa fa-copy"/>
+                                        Drafts
+                                        <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.drafts.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('drafts')}"/>
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a action-stack
+                                       ng-click="toggleStackAction('notes', 'overview-action-stack')"
+                                       class="action-link project-sub-action">
+                                        <i class="fa fa-edit"/>
+                                        Notes
+                                        <span class="badge action-count" ng-style="{'background-color': currentProjectColorLight}">{{project.notes.length}}</span>
+                                        <i ng-class="{'fa fa-close action-link-close': actionActive('notes')}"/>
+                                    </a>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div id="overview-action-stack" class="row">
+            </div>
+            <div ui-view></div>
         </div>
     </div>
-
 
     <!-- Modal for contributors -->
     <div class="modal fade" id="contributors" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
