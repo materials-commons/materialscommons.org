@@ -1,33 +1,4 @@
 <div ng-controller="projectsOverviewFiles">
-    <div class="row">
-        <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true" color="{{currentProjectColor}}"></project-tree>
-    </div>
-    <div class="row">
-        Project Description:
-    </div>
-    <div class="row">
-        <div ng-hide="bk.edit_desc">
-            <div class="panel panel-default input-panel">
-                <div class="panel-body">
-                    <div ta-bind ng-model="project.description"></div>
-                </div>
-            </div>
-            <button ng-click="editDescription()" class="btn btn-default btn-primary"> Edit</button>
-        </div>
-        <div ng-show="bk.edit_desc">
-            <div class="row">
-                <div class="col-lg-6 custom-ta-toolbar">
-                    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-                ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-                ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                                  ng-model="project.description"></text-angular>
-                </div>
-            </div>
-            <div class="row">
-                <button ng-click="save()" class="btn btn-default btn-primary">Save</button>
-            </div>
-        </div>
 
-    </div>
 
 </div>

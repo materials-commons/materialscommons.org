@@ -1,0 +1,36 @@
+<div ng-controller="actionStackListController" class="sideboard-group">
+    <span class="col-lg-6"><i class="fa fa-reorder"/> Action Stack</span>
+    <div class="row"></div>
+    <hr class="sideboard-separator">
+    <div class="row">
+        <div ng-repeat="action in actions">
+            <a ng-href="#{{action.name}}" target="_self">{{action.name}}</a>
+        </div>
+    </div>
+</div>
+<div class="sideboard-group">
+    <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
+    <a action-stack ng-click="toggleStackAction('tag', 'project-action-stack')">
+        <i class="fa fa-plus"/> Add Tag
+        <i ng-class="{'fa fa-close action-link-close': actionActive('tag')}"/>
+    </a>
+    <hr class="sideboard-separator">
+    <div class="row">
+        <div ng-repeat="t in u_tags">
+            <div tooltip="{{t.name}}" tooltip-popup-delay="700" class="row">
+                <span>
+                    <i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
+                    {{tagname(t.name)}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sideboard-group">
+    <span class="col-lg-6"><i class="fa fa-check-square"/> To Do</span>
+    <a action-stack ng-click="toggleStackAction('todo', 'project-action-stack')">
+        <i class="fa fa-plus"/> Add To Do
+        <i ng-class="{'fa fa-close action-link-close': actionActive('todo')}"/>
+    </a>
+    <hr class="sideboard-separator">
+</div>

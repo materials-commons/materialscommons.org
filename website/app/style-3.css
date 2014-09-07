@@ -344,7 +344,8 @@ td.tag-width {
 /************Begin index.html *****************************/
 .navbar-custom {
     /* background-color: #0C5C86; */
-    background-color: #204d65;
+    /* background-color: #204d65; */
+    background-color: #4a7a93;
     color: #ffffff;
     border-radius: 0;
 }
@@ -499,7 +500,8 @@ textarea.form-control {
 /************************************Other*************************************/
 
 .row {
-    margin-left: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 .btn, btn-default {
@@ -1019,12 +1021,12 @@ hr.carved {
     padding-bottom: 25px;
 }
 
-.sideboard {
-    margin-top: 15px;
+.sideboard-separator {
+  margin-bottom: 5px;
 }
 
-.row {
-    margin-right: 0px;
+.sideboard {
+    margin-top: 15px;
 }
 
 .panel-default.input-panel {
