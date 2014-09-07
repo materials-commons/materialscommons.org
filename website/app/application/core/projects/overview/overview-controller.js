@@ -102,7 +102,6 @@ function projectsOverview ($scope, $stateParams, pubsub, $state,
 
         projects.get($scope.project_id).then(function(project) {
             $scope.project = project;
-            $scope.open_reviews = $filter('byKey')(project.reviews, 'status', 'open');
         });
     }
     init();

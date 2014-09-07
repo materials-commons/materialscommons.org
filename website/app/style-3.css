@@ -801,10 +801,6 @@ table-file-directory > thead > tr > td,
     position: relative;
 }
 
-.custom-ta-toolbar {
-    /* width: 600px; */
-}
-
 .selected {
     background-color: lightgreen;
 }
