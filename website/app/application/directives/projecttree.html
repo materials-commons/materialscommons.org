@@ -130,7 +130,7 @@
                     <td ng-if="entry.type=='datadir'">-</td>
                     <td>{{entry.owner}}</td>
                     <td ng-show="entry.tags != {}" class="tag-width" ng-repeat="t in entry.tags[user]">
-                        <i tooltip="{{t.name}}" class="fa fa-tag" ng-style="{color: t.color}"></i>
+                      <i tooltip="{{t.name}}" class="fa" ng-class="'fa-' + t.icon" ng-style="{color: t.color}"></i>
                     </td>
                     <td ng-show="entry.tags == {}"></td>
                 </tr>
