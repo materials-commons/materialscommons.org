@@ -9,36 +9,26 @@ function actionShowNotesDirective() {
 }
 
 Application.Controllers.controller('actionShowNotesController',
-    ["$scope", "mcapi", "$stateParams", actionShowNotesController]);
+    ["$scope", "User", "model.projects", "$stateParams", actionShowNotesController]);
 
-function actionShowNotesController($scope,mcapi,$stateParams) {
-
-    $scope.saveData = function () {
-                mcapi('/projects/%/update', $scope.project.id)
-                    .success(function (data) {
-                        //alertService.sendMessage("Notes has been added");
-                    }).put($scope.project);
-    };
+function actionShowNotesController($scope, User, Projects, $stateParams) {
 
     $scope.editNotes = function(index){
         $scope.edit_index = index;
     };
 
     $scope.saveNotes = function(index){
-        $scope.saveData();
-        $scope.edit_index = -1;
-    };
-
-    $scope.getProject = function () {
-        mcapi('/projects/%', $scope.project_id)
-            .success(function (project) {
-                $scope.project = project;
-            }).jsonp();
+        $scope.project.put(User.keyparam()).then(function() {
+            $scope.edit_index = -1;
+        });
     };
 
     function init() {
         $scope.project_id = $stateParams.id;
-        $scope.getProject();
+        Projects.get($scope.project_id).then(function(project) {
+            $scope.project = project;
+        });
     }
+
     init();
 }
