@@ -14,7 +14,7 @@
                tabindex="{{$index+1}}"
                ng-click="toggleStackAction(menuItem.action, menuItem.title); status.isopen = false;">
                 {{menuItem.title}}
-                <i ng-class="{'fa fa-close action-link-close': actionActive(menuItem.action)}"/>
+                <i ng-show="menuItemActive(menuItem.action)" class="fa fa-close action-link-close"/></i>
             </a>
         </li>
     </ul>

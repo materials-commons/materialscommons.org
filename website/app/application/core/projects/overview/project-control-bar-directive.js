@@ -28,6 +28,17 @@ function projectControlBarDirectiveController($scope, projectColors, Projects) {
         }
     ];
 
+    $scope.provenanceMenuItems = [
+        {
+            action: 'create-provenance',
+            title: 'Create Provenance'
+        },
+        {
+            action: 'list-provenance',
+            title: 'Show Provenance'
+        }
+    ];
+
     Projects.get($scope.projectId).then(function(project) {
         $scope.project = project;
     });
