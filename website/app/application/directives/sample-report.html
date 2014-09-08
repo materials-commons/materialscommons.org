@@ -1,60 +1,97 @@
-<h4><u>Sample</u>
-</h4>
-<section>
-    <display label="Name:"> {{sample.name}}</display>
-    <display label="Description:">
-        {{sample.description}}
-    </display>
-    <div ng-repeat="(name, vals) in sample.properties">
-        <div ng-if="name==='composition'">
-            <display label="{{name}}">
-                <ul ng-repeat="c in vals.value">
-                    <li>{{c.element}} - {{c.value}} {{p.unit}}</li>
-                </ul>
-            </display>
-        </div>
-        <div ng-if="name!=='composition'">
-            <display label="{{name}}"> {{vals.value}}</display>
-        </div>
-    </div>
-    <h5><b><u>Treatments</u></b></h5>
+<!--<h4><u>Details</u>-->
+<!--</h4>-->
+<!--<section>-->
+<!--<display label="Name:"> {{sample.name}}</display>-->
+<!--<display label="Description:">-->
+<!--{{sample.description}}-->
+<!--</display>-->
+<!--<div ng-repeat="(name, vals) in sample.properties">-->
+<!--<div ng-if="name==='composition'">-->
+<!--<display label="{{name}}">-->
+<!--<ul ng-repeat="c in vals.value">-->
+<!--<li>{{c.element}} - {{c.value}} {{p.unit}}</li>-->
+<!--</ul>-->
+<!--</display>-->
+<!--</div>-->
+<!--<div ng-if="name!=='composition'">-->
+<!--<display label="{{name}}"> {{vals.value}}</display>-->
+<!--</div>-->
+<!--</div>-->
 
-    <div ng-if="sample.treatments.length==0">
-        <p class="text-muted">No treatments applied to the sample {{sample.name}}</p>
-    </div>
-    <div ng-if="sample.treatments.length!==0">
-        <div ng-repeat="treatment in sample.treatments">
-            <i>{{treatment.template}}:</i>
+<!--<h5><b><u>Projects</u></b></h5>-->
 
-            <div class="form-group" ng-repeat="property in treatment.properties">
-                <cgroup label="{{property.name}}">
-                    <div class="col-sm-6" ng-if="p.type === 'select'">
-                        <input class="form-control" ng-model="property.value_name"
-                               ng-disabled="true"
-                               type="text">
+<!--<div ng-show="projects_by_sample.length !== 0">-->
+<!--<table class="table table-striped mc-table-hover table-condensed mc-table">-->
+<!--<tbody>-->
+<!--<tr ng-repeat="i in projects_by_sample">-->
+<!--<td>{{i.project_name}}</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+
+<!--<br>-->
+<!--</section>-->
+
+<div class="col-lg-offset-2">
+    <div class="col-lg-8">
+        <b>Details:</b>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            {{sample.name}}
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            {{sample.description}}
+                        </div>
+                        <u>Properties:</u>
+
+                        <div ng-repeat="(name, vals) in sample.properties">
+                            <div ng-if="name==='composition'">
+                                <div class="form-group">
+                                    <label>Composition:</label>
+                                    <li style="display: inline;" ng-repeat="c in vals.value">
+                                        {{c.element}} - {{c.value}} {{p.unit}}
+                                    </li>
+                                </div>
+
+                            </div>
+                            <div ng-if="name!=='composition'">
+                                <div class="form-group">
+                                    <label>{{name}}:</label>
+                                    {{vals.value}} {{vals.unit}}
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-6" ng-if="p.type !== 'select'">
-                        <input class="form-control" ng-model="property.value" ng-disabled="true"
-                               type="text">
+
+                    <div class="col-lg-6">
+                        <u>Projects:</u>
+
+                        <div ng-show="projects_by_sample.length !== 0">
+                            <div class="form-group">
+                                <ul ng-repeat="i in projects_by_sample">
+                                    <li>{{i.project_name}}</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <u>Processes:</u>
+                        <div>
+
+                        </div>
+
                     </div>
-                    <div class="col-sm-2">
-                        {{ property.unit }}
-                    </div>
-                </cgroup>
+
+                </form>
             </div>
         </div>
     </div>
-    <h5><b><u>Projects</u></b></h5>
 
-    <div ng-show="projects_by_sample.length !== 0">
-        <table class="table table-striped mc-table-hover table-condensed mc-table">
-            <tbody>
-            <tr ng-repeat="i in projects_by_sample">
-                <td>{{i.project_name}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <br>
-</section>
+</div>

@@ -9,36 +9,17 @@ function actionShowSamplesDirective() {
 }
 
 Application.Controllers.controller('actionShowSamplesController',
-                                   ["$scope", "mcapi", "$injector", "model.projects", "alertService",
-                                    "User", "$stateParams", actionShowSamplesController]);
+                                   ["$scope", "mcapi", "$injector", "model.projects", "$stateParams",
+                                       "projectColors", actionShowSamplesController]);
 
-function actionShowSamplesController($scope, mcapi, $injector, Projects, alertService,
-                                 User, $stateParams) {
+function actionShowSamplesController($scope, mcapi, $injector, Projects, $stateParams, projectColors) {
     var $validationProvider = $injector.get('$validation');
 
-    $scope.editAvailability = function (sample) {
-        $scope.chosen_sample = sample;
-    };
-
-    $scope.updateAvailability = function () {
-        if ($scope.bk.available == 1) {
-            mcapi('/objects/%', $scope.chosen_sample.id)
-                .success(function () {
-                    $scope.refreshSamples();
-                    $scope.chosen_sample = '';
-                })
-                .error(function () {
-                }).put({'available': 1 });
-        } else {
-            mcapi('/objects/%', $scope.chosen_sample.id)
-                .success(function () {
-                    $scope.refreshSamples();
-                    $scope.chosen_sample = '';
-                })
-                .error(function () {
-
-                }).put({'available': 2});
-        }
+    $scope.refreshProcesses = function () {
+        mcapi('/processes/sample/%', $scope.sample.id)
+            .success(function (data) {
+                $scope.processes_by_sample = data;
+            }).jsonp();
     };
 
     $scope.refreshSamples = function () {
@@ -46,10 +27,6 @@ function actionShowSamplesController($scope, mcapi, $injector, Projects, alertSe
             .success(function (data) {
                 $scope.samples_list = data;
             }).jsonp();
-    };
-
-    $scope.clear = function () {
-        $scope.setDefaultProject();
     };
 
     $scope.save = function (form) {
@@ -72,57 +49,15 @@ function actionShowSamplesController($scope, mcapi, $injector, Projects, alertSe
         }
     };
 
-    $scope.setDefaultProject = function () {
-        $scope.doc = {
-            name: '',
-            notes: [],
-            available: true,
-            default_properties: [],
-            added_properties: [],
-            projects: [],
-            template: '',
-            treatments: []
-
-        };
-
-        $scope.bk = {
-            selected_project: '',
-            available: '',
-            open: '',
-            classification: ''
-        };
-
-        $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
-    };
     $scope.showTreatmentDetails_and_processes = function (sample) {
         $scope.show = true;
         $scope.sample = sample;
-
+        $scope.refreshProcesses();
     };
     function init() {
-        //initialize the sample with default project
+        $scope.color = projectColors.getCurrentProjectColor();
         $scope.project_id = $stateParams.id;
-        mcapi('/projects/%', $scope.project_id)
-            .success(function (data) {
-                $scope.project = data;
-                $scope.setDefaultProject();
-            }).jsonp();
-
-        $scope.signed_in_user = User.u();
-        $scope.processes_list = [];
-        $scope.projects_by_sample = [];
-        mcapi('/templates')
-            .argWithValue('filter_by', '"template_pick":"treatment"')
-            .success(function (data) {
-                $scope.treatment_templates = data;
-            }).jsonp();
-        mcapi('/templates')
-            .argWithValue('filter_by', '"template_type":"material"')
-            .success(function (data) {
-                $scope.sample_templates = data;
-            }).jsonp();
         $scope.refreshSamples();
-
         Projects.getList().then(function (data) {
             $scope.projects = data;
         });
