@@ -22,17 +22,12 @@ function numberWithCommas(n) {
 }
 
 function bytesToSizeStr(bytes) {
-    var sizes = ['Bytes', 'KB', 'GB', 'TB'];
-    if (bytes === 0) {
-        return '0 Bytes';
-    }
+    if(bytes == 0) return '0 Byte';
+    var k = 1000;
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
 
-    var i = parseInt(Math.floor(Math.log(bytes)/Math.log(1024)));
-    if (i === 0) {
-        return bytes + ' ' + sizes[i];
-    }
-
-    return (bytes/Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
 }
 
 function endsWith(str, suffix) {
