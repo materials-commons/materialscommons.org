@@ -12,9 +12,7 @@
             <a action-stack
                role="menuitem"
                tabindex="{{$index+1}}"
-               ng-click="toggleStackAction(menuItem.action); status.isopen = false;"
-               target="_blank"
-               class="action-linkxx project-sub-actionxx">
+               ng-click="toggleStackAction(menuItem.action, menuItem.title); status.isopen = false;">
                 {{menuItem.title}}
                 <i ng-class="{'fa fa-close action-link-close': actionActive(menuItem.action)}"/>
             </a>
