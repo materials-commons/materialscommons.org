@@ -1,17 +1,17 @@
-Application.Directives.directive('actionDrafts', actionDraftsDirective);
+Application.Directives.directive('actionShowDrafts', actionShowDraftsDirective);
 
-function actionDraftsDirective() {
+function actionShowDraftsDirective() {
     return {
-        controller: "actionDraftsController",
+        controller: "actionShowDraftsController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-drafts.html"
+        templateUrl: "application/core/projects/directives/action-stack-show-drafts.html"
     };
 }
 
-Application.Controllers.controller('actionDraftsController',
-    ["$scope", "$state", "ProvDrafts","pubsub","$stateParams", actionDraftsController]);
+Application.Controllers.controller('actionShowDraftsController',
+    ["$scope", "$state", "ProvDrafts","pubsub","$stateParams", actionShowDraftsController]);
 
-function actionDraftsController($scope,$state, ProvDrafts, pubsub,$stateParams) {
+function actionShowDraftsController($scope,$state, ProvDrafts, pubsub,$stateParams) {
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;
 
@@ -64,7 +64,9 @@ function actionDraftsController($scope,$state, ProvDrafts, pubsub,$stateParams) 
 
     function init() {
         $scope.project_id = $stateParams.id;
+        console.log($scope.project_id);
         $scope.drafts = ProvDrafts.loadRemoteDrafts($scope.project_id);
+        console.dir($scope.drafts);
     }
 
     init();
