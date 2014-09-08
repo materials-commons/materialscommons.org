@@ -15,30 +15,6 @@ Application.Controllers.controller('actionShowSamplesController',
 function actionShowSamplesController($scope, mcapi, $injector, Projects, $stateParams, projectColors) {
     var $validationProvider = $injector.get('$validation');
 
-    $scope.editAvailability = function (sample) {
-        $scope.chosen_sample = sample;
-    };
-
-    $scope.updateAvailability = function () {
-        if ($scope.bk.available == 1) {
-            mcapi('/objects/%', $scope.chosen_sample.id)
-                .success(function () {
-                    $scope.refreshSamples();
-                    $scope.chosen_sample = '';
-                })
-                .error(function () {
-                }).put({'available': 1 });
-        } else {
-            mcapi('/objects/%', $scope.chosen_sample.id)
-                .success(function () {
-                    $scope.refreshSamples();
-                    $scope.chosen_sample = '';
-                })
-                .error(function () {
-
-                }).put({'available': 2});
-        }
-    };
     $scope.refreshProcesses = function () {
         mcapi('/processes/sample/%', $scope.sample.id)
             .success(function (data) {
