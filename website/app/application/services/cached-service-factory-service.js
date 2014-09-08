@@ -1,116 +1,116 @@
 Application.Services.factory('CachedServiceFactory',
-    ["Restangular", "$angularCacheFactory", "User", "$q",
-        function (Restangular, $angularCacheFactory, User, $q) {
-            function CachedServiceFactory(route, options) {
-                this.cacheName = route;
-                var opts = options || { capacity: 100 };
-                $angularCacheFactory(this.cacheName, opts);
-                this.cache = $angularCacheFactory.get(this.cacheName);
-                var cache = this.cache;
-                var r = Restangular.withConfig(function (config) {
-                    config.setBaseUrl(mcglobals.apihost);
-                    config.setJsonp(true);
-                    config.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
-                    config.addResponseInterceptor(function (data, operation) {
-                        function handleGetPost() {
-                            var d = data.data;
-                            cache.put(d.id, d);
-                            return d;
-                        }
+                             ["Restangular", "$angularCacheFactory", "User", "$q", CachedServiceFactoryService]);
+function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $q) {
+    function CachedServiceFactory(route, options) {
+        this.cacheName = route;
+        var opts = options || { capacity: 100 };
+        $angularCacheFactory(this.cacheName, opts);
+        this.cache = $angularCacheFactory.get(this.cacheName);
+        var cache = this.cache;
+        var r = Restangular.withConfig(function (config) {
+            config.setBaseUrl(mcglobals.apihost);
+            config.setJsonp(true);
+            config.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+            config.addResponseInterceptor(function (data, operation) {
+                function handleGetPost() {
+                    var d = data.data;
+                    cache.put(d.id, d);
+                    return d;
+                }
 
-                        function handleDelete() {
-                            var id = data.id;
-                            cache.remove(id);
-                        }
+                function handleDelete() {
+                    var id = data.id;
+                    cache.remove(id);
+                }
 
-                        function handleGetList() {
-                            var items = data.data,
-                                i,
-                                l = items.length;
+                function handleGetList() {
+                    var items = data.data,
+                        i,
+                        l = items.length;
 
-                            for (i = 0; i < l; i++) {
-                                cache.put(items[i].id, items[i]);
-                            }
-                            return items;
-                        }
+                    for (i = 0; i < l; i++) {
+                        cache.put(items[i].id, items[i]);
+                    }
+                    return items;
+                }
 
-                        if (operation === 'GET' || operation === 'POST') {
-                            return handleGetPost();
-                        }
+                if (operation === 'GET' || operation === 'POST') {
+                    return handleGetPost();
+                }
 
-                        if (operation === 'getList') {
-                            return handleGetList();
-                        }
+                if (operation === 'getList') {
+                    return handleGetList();
+                }
 
-                        if (operation === 'DELETE') {
-                            handleDelete();
-                        }
+                if (operation === 'DELETE') {
+                    handleDelete();
+                }
 
-                        if (operation == 'put') {
-                        }
+                if (operation == 'put') {
+                }
 
-                        return data;
-                    });
-                });
+                return data;
+            });
+        });
 
-                this.rest = r.all(route);
+        this.rest = r.all(route);
+    }
+
+    CachedServiceFactory.prototype = {
+        get: function (id) {
+            var deferred = $q.defer(),
+                data = this.cache.get(id);
+
+            if (data) {
+                deferred.resolve(data);
+                return deferred.promise;
             }
 
-            CachedServiceFactory.prototype = {
-                get: function (id) {
-                    var deferred = $q.defer(),
-                        data = this.cache.get(id);
+            return this.rest.get(id, {apikey: User.apikey()});
+        },
 
-                    if (data) {
-                        deferred.resolve(data);
-                        return deferred.promise;
-                    }
+        update: function(id, what) {
+            return this.rest.one(id, what).customPUT({apikey: User.apikey()});
+        },
 
-                    return this.rest.get(id, {apikey: User.apikey()});
-                },
+        create: function (what) {
+            return this.rest.post(what, {apikey: User.apikey()});
+        },
 
-                update: function(id, what) {
-                    return this.rest.one(id, what).customPUT({apikey: User.apikey()});
-                },
+        remove: function (id) {
+            return this.rest.remove(id, {apikey: User.apikey()});
+        },
 
-                create: function (what) {
-                    return this.rest.post(what, {apikey: User.apikey()});
-                },
+        clear: function() {
+            this.cache.removeAll();
+        },
 
-                remove: function (id) {
-                    return this.rest.remove(id, {apikey: User.apikey()});
-                },
+        getList: function (reload) {
+            var keys,
+                deferred,
+                items = [],
+                i,
+                l;
 
-                clear: function() {
-                    this.cache.removeAll();
-                },
+            if (reload) {
+                this.cache.removeAll();
+            }
 
-                getList: function (reload) {
-                    var keys,
-                        deferred,
-                        items = [],
-                        i,
-                        l;
+            keys = this.cache.keys();
+            deferred = $q.defer();
 
-                    if (reload) {
-                        this.cache.removeAll();
-                    }
+            if (keys.length === 0) {
+                return this.rest.getList({apikey: User.apikey()});
+                //return this.rest.getList();
+            }
 
-                    keys = this.cache.keys();
-                    deferred = $q.defer();
+            for (i = 0, l = keys.length; i < l; i++) {
+                items.push(this.cache.get(keys[i]));
+            }
+            deferred.resolve(items);
+            return deferred.promise;
+        }
+    };
 
-                    if (keys.length === 0) {
-                         return this.rest.getList({apikey: User.apikey()});
-                        //return this.rest.getList();
-                    }
-
-                    for (i = 0, l = keys.length; i < l; i++) {
-                        items.push(this.cache.get(keys[i]));
-                    }
-                    deferred.resolve(items);
-                    return deferred.promise;
-                }
-            };
-
-            return CachedServiceFactory;
-        }]);
+    return CachedServiceFactory;
+}

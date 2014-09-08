@@ -81,7 +81,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             if ($stateParams.draft_id !== "") {
                 $state.go('projects.provenance.process');
             } else {
-                $state.go('projects.overview.files', {id: $scope.project_id, draft_id: ''});
+                $state.go('projects.overview', {id: $scope.project_id, draft_id: ''});
             }
         });
     }

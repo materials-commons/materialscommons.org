@@ -12,16 +12,16 @@ function projectDescriptionDirective() {
 }
 
 Application.Controllers.controller('projectDescriptionDirectiveController',
-                                   ["$scope", "model.projects", projectDescriptionDirectiveController]);
+                                   ["$scope", "User", "model.projects", projectDescriptionDirectiveController]);
 
-function projectDescriptionDirectiveController($scope, Projects) {
+function projectDescriptionDirectiveController($scope, User, Projects) {
     $scope.editDescription = false;
     Projects.get($scope.projectId).then(function(project) {
         $scope.project = project;
     });
 
     $scope.save = function() {
-        $scope.project.put().then(function() {
+        $scope.project.put(User.keyparam()).then(function() {
             $scope.editDescription = false;
         });
     };
