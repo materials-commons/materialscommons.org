@@ -15,11 +15,10 @@ function actionMenuDirective() {
 }
 
 Application.Controllers.controller('actionMenuDirectiveController',
-                                   ["$rootScope", "$scope", actionMenuDirectiveController]);
+                                   ["$scope", "projectColors", actionMenuDirectiveController]);
 
-function actionMenuDirectiveController($rootScope, $scope) {
-    $scope.currentProjectColor = $rootScope.currentProjectColor;
-    $scope.currentProjectColorLight = $rootScope.currentProjectColorLight;
+function actionMenuDirectiveController($scope, projectColors) {
+    $scope.colors = projectColors;
     $scope.status = {
         isopen: false
     };
