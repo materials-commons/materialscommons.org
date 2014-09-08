@@ -1,8 +1,8 @@
 Application.Controllers.controller('ProjectTreeController',
                                    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", ProjectTreeController]);
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects", ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter) {
+function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, mProjects) {
 
     $scope.addToReview = function(entry, review){
         review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type});
@@ -163,10 +163,18 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             ProjectPath.set_project($scope.project);
             $scope.selectProject($scope.project);
         }
-        mcapi('/selected_users')
-            .success(function (data) {
-                $scope.users = data;
-            }).jsonp();
+
+        mProjects.get($scope.project).then(function(p) {
+            var totalFiles = 0;
+            var key;
+            $scope.users = p.users;
+            $scope.projectSize = bytesToSizeStr(p.size);
+            for (key in p.mediatypes) {
+                totalFiles += p.mediatypes[key];
+            }
+            $scope.fileCount = numberWithCommas(totalFiles);
+        });
+
         $scope.loadReviews($scope.project);
     };
 
