@@ -26,6 +26,7 @@
         <link href="style-3.css" rel="stylesheet">
     </head>
     <body>
+        <a name="top"></a>
         <nav class="navbar navbar-custom" ng-controller="_indexNavigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -84,12 +85,30 @@
             <div ng-controller="contextMenuController">
                 <div context-menu class="col-lg-12" data-target="global-menu">
                     <div class="row app-container">
-                        <div ui-view="">
+                        <div ui-view>
                         </div>
                     </div>
                 </div>
                 <div class="dropdown position-fixed" id="global-menu">
                     <ul class="dropdown-menu" role="menu" aria-labelledby="globalDropDownMenu">
+                        <li>
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="-1"
+                               href="#top"
+                               target="_self">
+                                Top
+                            </a>
+                        </li>
+                        <li>
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="0"
+                               href="#projecttree"
+                               target="_self">
+                                Project File Tree
+                            </a>
+                        </li>
                         <li ng-repeat="action in actions">
                             <a class="pointer" role="menuitem" tabindex="{{$index+1}}" ng-href="#{{action.id}}" target="_self">{{action.title}}</a>
                         </li>
@@ -178,7 +197,7 @@
          <script src="application/core/projects/directives/action-stack-sample.js"></script>
          <script src="application/core/projects/directives/action-stack-samples.js"></script>
          <script src="application/core/projects/directives/action-stack-file.js"></script>
-         <script src="application/core/projects/directives/action-stack-list-provenance.js"></script>
+         <script src="application/core/projects/directives/action-stack-show-provenance.js"></script>
          <script src="application/core/projects/directives/action-stack-reviews.js"></script>
          <script src="application/core/projects/directives/action-stack-global-reviews.js"></script>
          <script src="application/core/projects/directives/action-stack-drafts.js"></script>

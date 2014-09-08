@@ -34,7 +34,7 @@ function projectControlBarDirectiveController($scope, projectColors, Projects) {
             title: 'Create Provenance'
         },
         {
-            action: 'list-provenance',
+            action: 'show-provenance',
             title: 'Show Provenance'
         }
     ];
