@@ -7,7 +7,7 @@ import rethinkdb as r
 from optparse import OptionParser
 
 def add_tags(conn):
-    denorm_items = r.table('datadirs_denorm').run(conn)
+    denorm_items = list(r.table('datadirs_denorm').run(conn))
     for item in denorm_items:
         files = []
         r.table('datadirs_denorm').get(item['id']).update({'tags': {}}).run(conn)

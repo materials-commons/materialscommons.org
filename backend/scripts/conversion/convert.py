@@ -11,7 +11,6 @@ import os.path
 import magic
 import sys
 
-
 def msg(s):
     print s
     sys.stdout.flush()
@@ -271,7 +270,6 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
     if options.mcdir is None:
         print "You must specify the location of mcdir"
-        os.exit(1)
-
+        #os.exit(1)
     conn = r.connect('localhost', options.port, db='materialscommons')
     main(conn, options.mcdir)
