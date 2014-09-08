@@ -1,12 +1,18 @@
+<div class="col-lg-offset-3">
+    <h3>Add Review</h3>
+
+</div>
 <form class="form-horizontal">
     <div class="form-group">
         <label class="control-label col-lg-2">Review Title:</label>
+
         <div class="col-lg-4">
             <input ng-model="model.title" class="form-control" type="text" placeholder="Title...">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-lg-2">Assign To:</label>
+
         <div class="col-lg-4">
             <select class="form-control" ng-model="model.assigned_to">
                 <option disabled>-- Assign to --</option>
@@ -35,9 +41,12 @@
                 <i class="fa fa-check-square"></i>{{item.fullname}}
                 <button type="button" class="close" ng-click="removeFile($index);">×</button>
 
-           </div>
+            </div>
 
         </div>
+    </div><br>
+    <div class="form-group">
+        <label class="control-label col-lg-2"></label>
+        <button ng-click="addReview()" class="btn btn-primary">Submit New Review</button>
     </div>
-    <button ng-click="addReview()" class="btn btn-primary">Submit New Review</button>
 </form>

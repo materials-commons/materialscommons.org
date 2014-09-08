@@ -65,7 +65,7 @@
                                     <a href="#">Add Tag</a>
                                     <ul class="dropdown-menu scrollable-menu">
                                         <li ng-repeat="t in user_tags">
-                                            <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i><a
+                                            <span><i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i><a
                                                 ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a></span>
                                         </li>
                                     </ul>
@@ -85,7 +85,7 @@
                                     <a href="#">Add Tag</a>
                                     <ul class="dropdown-menu scrollable-menu">
                                         <li ng-repeat="t in user_tags">
-                                            <span><i class="fa fa-tag space-right" style="color: {{t.color}}"></i>
+                                            <span><i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
                                                 <a ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a>
                                             </span>
                                         </li>
@@ -105,10 +105,10 @@
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="dropdown-submenu">
-                                    <a href="#">Add Tag</a>
+                                    <a href="#">Add Tagg</a>
                                     <ul class="dropdown-menu scrollable-menu">
                                         <li ng-repeat="t in user_tags">
-                                            <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa fa-tag space-right" style="color: {{t.color}}"></i>{{t.name}}</a>
+                                           <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>{{t.name}}</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -131,7 +131,7 @@
                     <td ng-if="entry.type=='datadir'">-</td>
                     <td>{{entry.owner}}</td>
                     <td ng-show="entry.tags != {}" class="tag-width" ng-repeat="t in entry.tags[user]">
-                        <i tooltip="{{t.name}}" class="fa fa-tag" ng-style="{color: t.color}"></i>
+                      <i tooltip="{{t.name}}" class="fa" ng-class="'fa-' + t.icon" ng-style="{color: t.color}"></i>
                     </td>
                     <td ng-show="entry.tags == {}"></td>
                 </tr>
