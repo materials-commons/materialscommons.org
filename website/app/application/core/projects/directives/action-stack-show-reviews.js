@@ -9,9 +9,10 @@ function actionShowReviewsDirective() {
 }
 
 Application.Controllers.controller('actionShowReviewsController',
-    ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams", actionShowReviewsController]);
+    ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User",
+     "pubsub","$stateParams", "model.projects", actionShowReviewsController]);
 
-function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams) {
+function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects) {
 
     pubsub.waitOn($scope, 'open_reviews.change', function () {
         $scope.loadReviews($stateParams.id);
@@ -97,15 +98,17 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
         $scope.review = '';
         $scope.loadReviews($stateParams.id);
         $scope.status = 'open';
-        mcapi('/projects/%', $stateParams.id)
-            .success(function (data) {
-                $scope.project = data;
-            }).jsonp();
+
+        Projects.get($stateParams.id).then(function(project) {
+            $scope.project = project;
+        });
+
         $scope.model = {
             new_review: "",
             assigned_to: "",
             title: ""
         };
+
         mcapi('/selected_users')
             .success(function (data) {
                 $scope.users = data;
