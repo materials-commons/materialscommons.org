@@ -7,21 +7,21 @@ Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
-    [
-        'ui',
-        'ngCookies',
-        'ui.router',
-        'btford.socket-io',
-        'restangular',
-        'jmdobry.angular-cache',
-        'validation',
-        'textAngular',
-        'treeGrid',
-        'ngDragDrop',
-        'ng-context-menu',
-        '$strap.directives', 'ui.bootstrap',
-        'application.core.constants', 'application.core.services', 'application.core.controllers',
-        'application.core.filters', 'application.core.directives']);
+                         [
+                             'ui',
+                             'ngCookies',
+                             'ui.router',
+                             'btford.socket-io',
+                             'restangular',
+                             'jmdobry.angular-cache',
+                             'validation',
+                             'textAngular',
+                             'treeGrid',
+                             'ngDragDrop',
+                             'ng-context-menu',
+                             '$strap.directives', 'ui.bootstrap',
+                             'application.core.constants', 'application.core.services', 'application.core.controllers',
+                             'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
@@ -40,7 +40,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     mcglobals = {};
     doConfig();
     $stateProvider
-        // Navbar
+    // Navbar
         .state('home', {
             url: '/home',
             templateUrl: 'application/core/home/home.html'
@@ -82,11 +82,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/machines/machines.html'
         })
 
-        /*
-         ########################################################################
-         ####################### Account ##################################
-         ########################################################################
-         */
+    /*
+     ########################################################################
+     ####################### Account ##################################
+     ########################################################################
+     */
         .state('account', {
             url: '/account',
             templateUrl: 'application/core/account/account.html'
@@ -112,11 +112,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/account/templates/templates.html'
         })
 
-        /*
-         ########################################################################
-         ####################### Projects Overview ##################################
-         ########################################################################
-         */
+    /*
+     ########################################################################
+     ####################### Projects Overview ##################################
+     ########################################################################
+     */
         .state('projects', {
             url: '/projects/:id/:draft_id',
             templateUrl: 'application/core/projects/projectspage.html',
@@ -166,11 +166,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/overview/reviews/edit-review.html'
         })
 
-        /*
-         ########################################################################
-         ####################### Projects Data Edit ##################################
-         ########################################################################
-         */
+    /*
+     ########################################################################
+     ####################### Projects Data Edit ##################################
+     ########################################################################
+     */
         .state('projects.dataedit', {
             url: '/dataedit/:data_id/:file_path',
             templateUrl: 'application/core/projects/dataedit/dataedit.html'
@@ -195,11 +195,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/provenance',
             templateUrl: 'application/core/projects/dataedit/provenance/provenance.html'
         })
-        /*
-         ########################################################################
-         ####################### Projects Provenance ##################################
-         ########################################################################
-         */
+    /*
+     ########################################################################
+     ####################### Projects Provenance ##################################
+     ########################################################################
+     */
         .state('projects.provenance', {
             url: '/provenance',
             templateUrl: 'application/core/projects/provenance/provenance.html',
@@ -240,44 +240,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         });
 }]);
 
-app.run(["$rootScope", "User", "Restangular", function ($rootScope, User, Restangular) {
-    Restangular.setBaseUrl(mcglobals.apihost);
-    Restangular.setJsonp(true);
-    Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+app.run(["$rootScope", "User", "Restangular", "projectColors",
+         function ($rootScope, User, Restangular, projectColors) {
+             Restangular.setBaseUrl(mcglobals.apihost);
+             Restangular.setJsonp(true);
+             Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+             $rootScope.colors = projectColors;
 
-    $rootScope.$on('$stateChangeStart', function () {
-        if (User.isAuthenticated()) {
-            $rootScope.email_address = User.u();
-            Restangular.setDefaultRequestParams({apikey: User.apikey()});
-        }
-    });
-    // #4a7a93,,"#bc6f59"
-    $rootScope.projectColors = [
-        "#4a7a93",
-        "#816c5b",
-        "#926042",
-        "#9a9980" ,
-        "#577294",
-        "#5c6957",
-        "#61a0c3",
-        "#ae9b69"
-    ];
-
-    $rootScope.projectColorsLight = [
-        "#97C7E0",
-        "#a9a18c",
-        "#C59375",
-        "#cccbb2",
-        "#8AA5C7",
-        "#8F9C8A",
-        "#94D3F6",
-        "#D4C18F"
-    ];
-
-    $rootScope.currentProjectColor = $rootScope.projectColors[0];
-    $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[0];
-    $rootScope.currentProjectIndex = 0;
-    $rootScope.inactiveColor = "#6C7A89";
-    // $rootScope.background = "#c7c7c7";
-    // $rootScope.lastColor = $rootScope.background;
-}]);
+             $rootScope.$on('$stateChangeStart', function () {
+                 if (User.isAuthenticated()) {
+                     $rootScope.email_address = User.u();
+                 }
+             });
+         }]);

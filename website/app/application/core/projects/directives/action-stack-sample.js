@@ -10,7 +10,7 @@ function actionSampleDirective() {
 }
 
 Application.Controllers.controller('actionSampleController',
-    ["$scope", "mcapi", "$stateParams", "User", "model.Projects","$injector", actionSampleController]);
+    ["$scope", "mcapi", "$stateParams", "User", "model.projects","$injector", actionSampleController]);
 
 function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injector) {
     var $validationProvider = $injector.get('$validation');

@@ -9,7 +9,7 @@ function actionSamplesDirective() {
 }
 
 Application.Controllers.controller('actionSamplesController',
-                                   ["$scope", "mcapi", "$injector", "model.Projects", "alertService",
+                                   ["$scope", "mcapi", "$injector", "model.projects", "alertService",
                                     "User", "$stateParams", actionSamplesController]);
 
 function actionSamplesController($scope, mcapi, $injector, Projects, alertService,

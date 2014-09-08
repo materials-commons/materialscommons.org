@@ -1,7 +1,8 @@
-Application.Services.factor('projectColors', [projectColorsService]);
+Application.Services.factory('projectColors', [projectColorsService]);
 
 function projectColorsService() {
     var service = {
+
         projectColors: [
             "#4a7a93",
             "#816c5b",
@@ -24,18 +25,50 @@ function projectColorsService() {
             "#D4C18F"
         ],
 
+        inactiveColor: "#6c7a89",
+
         currentProjectIndex: 0,
 
-        setCurrentProject: function(index) {
+        setCurrentProjectIndex: function(index) {
             service.currentProjectIndex = index;
+        },
+
+        getCurrentProjectColorClass: function() {
+            return 'project_color_' + service.currentProjectIndex;
         },
 
         getCurrentProjectColor: function() {
             return service.projectColors[service.currentProjectIndex];
         },
 
+        getCurrentProjectColorLightClass: function() {
+            return 'project_color_' + service.currentProjectIndex + '_light';
+        },
+
         getCurrentProjectColorLight: function() {
             return service.projectColorsLight[service.currentProjectIndex];
+        },
+
+        getProjectInactiveColorClass: function() {
+            return 'project_inactive_color';
+        },
+
+        getInactiveColor: function() {
+            return service.inactiveColor;
+        },
+
+        getActiveStyle: function(index) {
+            return {
+                background: service.projectColors[index],
+                'border-bottom-style': 'solid',
+                'border-bottom-color': service.projectColors[index]
+            };
+        },
+
+        getInactiveStyle: function(index) {
+            return {
+                background: service.projectColorsLight[index]
+            };
         }
     };
 
