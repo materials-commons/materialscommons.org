@@ -5,23 +5,21 @@ function actionStackDirective($rootScope, actionStackTracker, $compile) {
         compile: function (element, attrs) {
 
             return function(scope, e) {
-                scope.toggleStackAction = function(action, actionStackID, useID, args) {
-                    var id = useID ? useID : 'action-' + action;
+                scope.toggleStackAction = function(action, title, useID, args) {
+                    var id = useID ? useID : action;
                     var actionDirective = "<div action-" + action + "></div>";
+                    var actionTitle = title ? title : id;
 
                     if (args) {
                         actionDirective = "<div action-" + action + " args='" + args + "'></div>";
                     }
-                    //var t = '<div "background-color:' + $rootScope.lastColor + '" ui-draggable="false" id="' + id + '" class="col-lg-12"><hr class="carved"/><div>' + actionDirective + '</div></div>';
-                    var t = '<div ui-draggable="false" id="' + id + '" class="col-lg-12"><a href="#' + id + '"></a><hr class="carved"/><div>' + actionDirective + '</div></div>';
-                    // if ($rootScope.lastColor == $rootScope.background) {
-                    //     $rootScope.lastColor = "#e1e1e1";
-                    // } else {
-                    //     $rootScope.lastColor = $rootScope.background;
-                    // }
+
+                    var t = '<div style="margin-bottom: 25px;" ui-draggable="false" id="' + id + '" class="row col-lg-12"><a href="#' + id + '"></a><hr class="carved"/>';
+                    t = t + '<div><div class="col-lg-offset-5"><h4>' + actionTitle + '</h4></div>' + actionDirective + '</div></div>';
+
                     if (!actionStackTracker.actionActive(id)) {
-                        actionStackTracker.pushAction(id);
-                        $('#' + actionStackID).append($compile(t)(scope));
+                        actionStackTracker.pushAction(id, title);
+                        $('#action-stack').append($compile(t)(scope));
                     } else if (actionStackTracker.toggleOff(id)) {
                         $("#" + id).remove();
                     }

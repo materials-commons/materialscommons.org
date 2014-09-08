@@ -93,4 +93,5 @@ Application.Controllers.controller('actionStackListController',
                                    ["$scope", "actionStackTracker", actionStackListController]);
 function actionStackListController($scope, actionStackTracker) {
     $scope.actions = actionStackTracker.actions;
+    $scope.actionActive = actionStackTracker.actionActive;
 }

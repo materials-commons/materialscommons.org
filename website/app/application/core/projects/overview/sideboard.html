@@ -4,13 +4,16 @@
     <hr class="sideboard-separator">
     <div class="row">
         <div ng-repeat="action in actions">
-            <a ng-href="#{{action.name}}" target="_self">{{action.name}}</a>
+            <a ng-href="#{{action.id}}" target="_self">{{action.title}}</a>
+            <a ng-if="actionActive(action.id)" ng-click="toggleStackAction(action.id)">
+                <i class="fa fa-close action-link-close"></i>
+            </a>
         </div>
     </div>
 </div>
 <div class="sideboard-group">
     <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
-    <a action-stack ng-click="toggleStackAction('tag', 'project-action-stack')">
+    <a action-stack ng-click="toggleStackAction('tag', 'Create Tag')">
         <i class="fa fa-plus"/> Add Tag
         <i ng-class="{'fa fa-close action-link-close': actionActive('tag')}"/>
     </a>
@@ -28,7 +31,7 @@
 </div>
 <div class="sideboard-group">
     <span class="col-lg-6"><i class="fa fa-check-square"/> To Do</span>
-    <a action-stack ng-click="toggleStackAction('todo', 'project-action-stack')">
+    <a action-stack ng-click="toggleStackAction('todo', 'Create To Do')">
         <i class="fa fa-plus"/> Add To Do
         <i ng-class="{'fa fa-close action-link-close': actionActive('todo')}"/>
     </a>

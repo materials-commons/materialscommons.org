@@ -4,40 +4,42 @@ function actionStackTracker() {
     var service = {
         actions: [],
 
-        _newAction: function(actionName) {
+        _newAction: function(actionID, actionTitle) {
+            var title = actionTitle ? actionTitle : actionID;
             return {
-                name: actionName,
+                id: actionID,
+                title: title,
                 status: "open",
                 pinned: false
             };
         },
 
-        _findAction: function(actionName) {
+        _findAction: function(actionID) {
             return _.indexOf(service.actions, function(action) {
-                return action.name == actionName;
+                return action.id == actionID;
             });
         },
 
-        actionActive: function(actionName) {
+        actionActive: function(actionID) {
             var i = _.find(service.actions, function(action) {
-                return action.name == actionName;
+                return action.id == actionID;
             });
             return i;
         },
 
-        popAction: function(actionName) {
-            var i = service._findAction(actionName);
+        popAction: function(actionID) {
+            var i = service._findAction(actionID);
             if (i != 1) {
                 service.actions.splice(i, 1);
             }
         },
 
-        pushAction: function(actionName) {
-            service.actions.push(service._newAction(actionName));
+        pushAction: function(actionID, actionTitle) {
+            service.actions.push(service._newAction(actionID, actionTitle));
         },
 
-        toggleAction: function(actionName) {
-            var i = service._findAction(actionName);
+        toggleAction: function(actionID) {
+            var i = service._findAction(actionID);
 
             // If found then the action is open.
             if (i != -1) {
@@ -47,8 +49,8 @@ function actionStackTracker() {
             }
         },
 
-        toggleOff: function(actionName) {
-            var i = service._findAction(actionName);
+        toggleOff: function(actionID) {
+            var i = service._findAction(actionID);
             if (i != -1) {
                 if (!service.actions[i].pinned) {
                     service.actions.splice(i, 1);
@@ -58,19 +60,19 @@ function actionStackTracker() {
             return false;
         },
 
-        _setPin: function(actionName, toval) {
-            var i = service._findAction(actionName);
+        _setPin: function(actionID, toval) {
+            var i = service._findAction(actionID);
             if (i != -1) {
                 service.actions[i].pinned = toval;
             }
         },
 
-        pinAction: function(actionName) {
-            service._setPin(actionName, true);
+        pinAction: function(actionID) {
+            service._setPin(actionID, true);
         },
 
-        unpinAction: function(actionName) {
-            service._setPin(actionName, false);
+        unpinAction: function(actionID) {
+            service._setPin(actionID, false);
         }
     };
 
