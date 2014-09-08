@@ -57,7 +57,16 @@ function projectControlBarDirectiveController($scope, projectColors, Projects) {
         }
     ];
 
-    $scope.notesMenuItems = [];
+    $scope.notesMenuItems = [
+        {
+            action: 'create-note',
+            title: 'Create Note'
+        },
+        {
+            action: 'show-notes',
+            title: 'Show Notes'
+        }
+    ];
 
     Projects.get($scope.projectId).then(function(project) {
         $scope.project = project;
