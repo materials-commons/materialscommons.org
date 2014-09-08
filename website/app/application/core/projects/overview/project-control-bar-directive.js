@@ -39,6 +39,26 @@ function projectControlBarDirectiveController($scope, projectColors, Projects) {
         }
     ];
 
+    $scope.reviewsMenuItems = [
+        {
+            action: 'create-review',
+            title: 'Create Review'
+        },
+        {
+            action: 'show-reviews',
+            title: 'Show Reviews'
+        }
+    ];
+
+    $scope.draftsMenuItems = [
+        {
+            action: 'show-drafts',
+            title: 'Show Drafts'
+        }
+    ];
+
+    $scope.notesMenuItems = [];
+
     Projects.get($scope.projectId).then(function(project) {
         $scope.project = project;
     });

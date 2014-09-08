@@ -42,11 +42,11 @@ def get_all_group_projects():
         for proj in selection:
             if access.allowed(user, proj[u'owner']):
                 projects.append(proj)
-    add_computed_attributes(projects)
+    add_computed_attributes(projects, user)
     return args.json_as_format_arg(projects)
 
 
-def add_computed_attributes(projects):
+def add_computed_attributes(projects, user):
     for p in projects:
         p['reviews'] = []
         p['samples'] = []
@@ -60,7 +60,7 @@ def add_computed_attributes(projects):
     add_users(projects_by_id, project_ids)
     add_reviews(projects_by_id, project_ids)
     add_samples(projects_by_id, project_ids)
-    add_drafts(projects_by_id, project_ids)
+    add_drafts(projects_by_id, project_ids, user)
     add_process_ids(projects_by_id, project_ids)
 
 
@@ -85,9 +85,10 @@ def add_samples(projects_by_id, project_ids):
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
-def add_drafts(projects_by_id, project_ids):
+def add_drafts(projects_by_id, project_ids, user):
     drafts = list(r.table('drafts')
                   .get_all(*project_ids, index='project_id')
+                  .filter({'owner': user})
                   .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, drafts, 'project_id', 'drafts')
 

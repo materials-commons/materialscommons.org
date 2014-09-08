@@ -1,18 +1,18 @@
-Application.Directives.directive('actionReview', actionReviewDirective);
+Application.Directives.directive('actionCreateReview', actionCreateReviewDirective);
 
-function actionReviewDirective() {
+function actionCreateReviewDirective() {
     return {
         scope: {},
-        controller: "actionReviewController",
+        controller: "actionCreateReviewController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-review.html"
+        templateUrl: "application/core/projects/directives/action-stack-create-review.html"
     };
 }
 
-Application.Controllers.controller('actionReviewController',
-    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "Projects", actionReviewController]);
+Application.Controllers.controller('actionCreateReviewController',
+    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "Projects", actionCreateReviewController]);
 
-function actionReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects) {
+function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects) {
 
     $scope.addReview = function () {
         $scope.review = {'items': [], 'messages': []};
