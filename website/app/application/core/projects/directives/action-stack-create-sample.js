@@ -10,13 +10,10 @@ function actionCreateSampleDirective() {
 }
 
 Application.Controllers.controller('actionCreateSampleController',
-    ["$scope", "mcapi", "$stateParams", "User", "model.projects","$injector", actionCreateSampleController]);
+    ["$scope", "mcapi", "$stateParams", "model.projects","$injector", actionCreateSampleController]);
 
-function actionCreateSampleController($scope,mcapi,$stateParams,User, Projects, $injector) {
+function actionCreateSampleController($scope,mcapi,$stateParams, Projects, $injector) {
     var $validationProvider = $injector.get('$validation');
-    $scope.populateProjects = function () {
-        $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
-    };
 
     $scope.setDefaultProject = function () {
         $scope.doc = {
@@ -34,44 +31,7 @@ function actionCreateSampleController($scope,mcapi,$stateParams,User, Projects, 
         };
         $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
     };
-    $scope.showTreatmentDetails_and_processes = function (sample) {
-        $scope.sample = sample;
-        $scope.refreshProcesses();
-        $scope.refreshProjects();
 
-    };
-    $scope.showForm = function () {
-        $scope.default_properties = $scope.bk.selected_treatment.default_properties;
-        $scope.bk.tab_item = '';
-    };
-
-    $scope.showTab = function (item, index) {
-        $scope.bk.tab_item = item.id;
-        $scope.bk.tab_details = $scope.doc.treatments[index];
-        $scope.default_properties = $scope.doc.treatments[index].default_properties;
-        $scope.bk.selected_treatment = item;
-    };
-
-    $scope.addTreatment = function () {
-        var i = _.indexOf($scope.doc.treatments, function (item) {
-            return (item.id === $scope.bk.selected_treatment.id);
-        });
-        if (i === -1){
-            var o = angular.copy($scope.bk.selected_treatment);
-            $scope.doc.treatments.push(o);
-        }
-        if (i !== -1){
-            $scope.doc.treatments[i] = $scope.bk.selected_treatment;
-        }
-        $scope.bk.selected_treatment = '';
-        $scope.default_properties = "";
-    };
-
-    $scope.setProperties = function () {
-        $scope.doc.default_properties = $scope.bk.classification.default_properties;
-        $scope.doc.template = $scope.bk.classification.id;
-
-    };
     $scope.save = function (form) {
         $validationProvider.validate(form);
         var check = $validationProvider.checkValid(form);
@@ -110,31 +70,12 @@ function actionCreateSampleController($scope,mcapi,$stateParams,User, Projects, 
         $scope.bk = {
             selected_project: ''
         };
-
-        //initialize the sample with default project
         $scope.project_id = $stateParams.id;
-        mcapi('/projects/%', $scope.project_id)
-            .success(function (data) {
-                $scope.project = data;
-                $scope.setDefaultProject();
-            }).jsonp();
-
-        $scope.signed_in_user = User.u();
-        $scope.processes_list = [];
-        $scope.projects_by_sample = [];
-        mcapi('/templates')
-            .argWithValue('filter_by', '"template_pick":"treatment"')
-            .success(function (data) {
-                $scope.treatment_templates = data;
-            }).jsonp();
-        mcapi('/templates')
-            .argWithValue('filter_by', '"template_type":"material"')
-            .success(function (data) {
-                $scope.sample_templates = data;
-            }).jsonp();
-        //$scope.refreshSamples();
-
-        Projects.getList().then(function (data) {
+        Projects.get($scope.project_id).then(function(project){
+            $scope.project = project;
+            $scope.setDefaultProject();
+        });
+       Projects.getList().then(function (data) {
             $scope.projects = data;
         });
     }
