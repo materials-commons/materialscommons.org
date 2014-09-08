@@ -1,17 +1,17 @@
-Application.Directives.directive('actionProjectProvenance', actionProjectProvenanceDirective);
+Application.Directives.directive('actionListProvenance', actionListProvenanceDirective);
 
-function actionProjectProvenanceDirective() {
+function actionListProvenanceDirective() {
     return {
-        controller: "actionProjectProvenanceController",
+        controller: "actionListProvenanceDirectiveController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-project-provenance.html"
+        templateUrl: "application/core/projects/directives/action-stack-list-provenance.html"
     };
 }
 
-Application.Controllers.controller('actionProjectProvenanceController',
-                                   ["$scope", "$stateParams", "mcapi", "$filter", actionProjectProvenanceController]);
+Application.Controllers.controller('actionListProvenanceDirectiveController',
+                                   ["$scope", "$stateParams", "mcapi", "$filter", actionListProvenanceDirectiveController]);
 
-function actionProjectProvenanceController ($scope, $stateParams,mcapi, $filter) {
+function actionListProvenanceDirectiveController ($scope, $stateParams,mcapi, $filter) {
     $scope.sampleDetails = function(branch){
         mcapi('/objects/%', branch.id)
             .success(function (data) {
