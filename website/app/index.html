@@ -26,6 +26,7 @@
         <link href="style-3.css" rel="stylesheet">
     </head>
     <body>
+        <a name="top"></a>
         <nav class="navbar navbar-custom" ng-controller="_indexNavigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -55,8 +56,6 @@
                 <ul ng-show="email_address" class="nav navbar-nav navbar-right">
                     <li ng-class="{ navactive: isActiveStep('projects') }"><a ng-click="showStep('projects')"ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase space-right"></i>
                         Projects</a></li>
-                    <li ng-class="{ navactive: isActiveStep('reviews') }"><a ui-sref="reviews" ng-click="showStep('reviews')" class="navbar-link"><i class="fa fa-comment space-right"></i>
-                        Reviews</a></li>
                     <li ng-class="{ navactive: isActiveStep('machines') }">
                         <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i class="fa fa-gears space-right"></i> Machines</a></li>
                     <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
@@ -86,14 +85,32 @@
             <div ng-controller="contextMenuController">
                 <div context-menu class="col-lg-12" data-target="global-menu">
                     <div class="row app-container">
-                        <div ui-view="">
+                        <div ui-view>
                         </div>
                     </div>
                 </div>
                 <div class="dropdown position-fixed" id="global-menu">
                     <ul class="dropdown-menu" role="menu" aria-labelledby="globalDropDownMenu">
+                        <li>
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="-1"
+                               href="#top"
+                               target="_self">
+                                Top
+                            </a>
+                        </li>
+                        <li>
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="0"
+                               href="#projecttree"
+                               target="_self">
+                                Project File Tree
+                            </a>
+                        </li>
                         <li ng-repeat="action in actions">
-                            <a class="pointer" role="menuitem" tabindex="{{$index+1}}" ng-href="#{{action.name}}" target="_self">{{action.name}}</a>
+                            <a class="pointer" role="menuitem" tabindex="{{$index+1}}" ng-href="#{{action.id}}" target="_self">{{action.title}}</a>
                         </li>
                     </ul>
                 </div>
@@ -119,7 +136,7 @@
         <script src="assets/js/angular/angular-validation.js"></script>
         <script src="assets/js/angular/draganddrop.js"></script>
         <script src="assets/js/angular/ng-context-menu.min.js"></script>
-         <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jqcloud-1.0.4.js"></script>
         <script src="assets/js/underscore-min.js"></script>
         <script src="assets/js/angular/socket.js"></script>
@@ -175,21 +192,25 @@
          <!-- Toolbar projectspage -->
          <script src="application/core/projects/projectspage-controller.js"></script>
          <script src="application/core/projects/directives/action-stack-directive.js"></script>
-         <script src="application/core/projects/directives/action-stack-provenance.js"></script>
+         <script src="application/core/projects/directives/action-stack-create-provenance.js"></script>
          <script src="application/core/projects/directives/action-stack-tag.js"></script>
-         <script src="application/core/projects/directives/action-stack-sample.js"></script>
-         <script src="application/core/projects/directives/action-stack-samples.js"></script>
+         <script src="application/core/projects/directives/action-stack-create-sample.js"></script>
+         <script src="application/core/projects/directives/action-stack-show-samples.js"></script>
          <script src="application/core/projects/directives/action-stack-file.js"></script>
-         <script src="application/core/projects/directives/action-stack-project-provenance.js"></script>
-         <script src="application/core/projects/directives/action-stack-reviews.js"></script>
+         <script src="application/core/projects/directives/action-stack-show-provenance.js"></script>
+         <script src="application/core/projects/directives/action-stack-show-reviews.js"></script>
          <script src="application/core/projects/directives/action-stack-global-reviews.js"></script>
-         <script src="application/core/projects/directives/action-stack-drafts.js"></script>
-         <script src="application/core/projects/directives/action-stack-notes.js"></script>
-         <script src="application/core/projects/directives/action-stack-review.js"></script>
-         <script src="application/core/projects/directives/action-stack-note.js"></script>
+         <script src="application/core/projects/directives/action-stack-create-review.js"></script>
+         <script src="application/core/projects/directives/action-stack-show-drafts.js"></script>
+         <script src="application/core/projects/directives/action-stack-show-notes.js"></script>
+         <script src="application/core/projects/directives/action-stack-create-note.js"></script>
          <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
          <script src="application/core/projects/_action-controller.js"></script>
          <script src="application/core/projects/overview/overview-controller.js"></script>
+         <script src="application/core/projects/overview/sideboard-directive.js"></script>
+         <script src="application/core/projects/overview/project-control-bar-directive.js"></script>
+         <script src="application/core/projects/overview/action-menu-directive.js"></script>
+         <script src="application/core/projects/overview/project-description-directive.js"></script>
          <script src="application/core/projects/overview/files/files-controller.js"></script>
          <script src="application/core/projects/overview/samples/sample-controller.js"></script>
          <script src="application/core/projects/overview/provenance/provenance-controller.js"></script>
@@ -225,6 +246,7 @@
          <script src="application/core/projects/provenance/finish/finish-controller.js"></script>
 
          <!-------------------------------- Global directives ------------------------------->
+         <script src="application/directives/text-editor-directive.js"></script>
          <script src="application/directives/paged-directive.js"></script>
          <script src="application/directives/notification-directive.js"></script>
          <script src="application/directives/cgroup-directive.js"></script>
@@ -248,6 +270,7 @@
 
          <!-------------------------------- Global services --------------------------------->
          <script src="application/services/user-service.js"></script>
+         <script src="application/services/project-colors-service.js"></script>
          <script src="application/services/alert-service.js"></script>
          <script src="application/services/watcher-service.js"></script>
          <script src="application/services/pubsub-service.js"></script>
@@ -270,8 +293,8 @@
          <script src="application/filters/page-filter.js"></script>
          <script src="application/filters/todatestring-filter.js"></script>
          <script src="application/filters/reverse-filter.js"></script>
-         <script src="application/filters/bykey-filter.js"></script>
          <script src="application/filters/review-filter.js"></script>
+         <script src="application/filters/bykey-filter.js"></script>
 
          <!-- Index -->
          <script src="index/_navigation-controller.js"></script>

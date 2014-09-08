@@ -1,17 +1,17 @@
-Application.Directives.directive('actionNote', actionNoteDirective);
+Application.Directives.directive('actionCreateNote', actionCreateNoteDirective);
 
-function actionNoteDirective() {
+function actionCreateNoteDirective() {
     return {
-        controller: "actionNoteController",
+        controller: "actionCreateNoteController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-note.html"
+        templateUrl: "application/core/projects/directives/action-stack-create-note.html"
     };
 }
 
-Application.Controllers.controller('actionNoteController',
-    ["$scope", "mcapi", "$stateParams", "User", "dateGenerate", actionNoteController]);
+Application.Controllers.controller('actionCreateNoteController',
+    ["$scope", "mcapi", "$stateParams", "User", "dateGenerate", actionCreateNoteController]);
 
-function actionNoteController($scope, mcapi, $stateParams, User, dateGenerate) {
+function actionCreateNoteController($scope, mcapi, $stateParams, User, dateGenerate) {
 
     $scope.add_notes = function () {
         $scope.project.notes.push({'message': $scope.model.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});

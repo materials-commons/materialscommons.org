@@ -16,6 +16,7 @@ Application.Controllers.controller('reviews',
                         $scope.status = 'open';
                     }).jsonp();
             };
+
             $scope.retrieveReviewsRequested = function () {
                 mcapi('/reviews/requested')
                     .success(function (reviews) {

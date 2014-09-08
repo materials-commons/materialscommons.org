@@ -1,0 +1,26 @@
+<div>
+    Project Description:
+    <div class="row">
+        <div ng-show="!editDescription">
+            <div class="panel panel-default input-panel">
+                <div class="panel-body">
+                    <div ta-bind ng-model="project.description"></div>
+                </div>
+            </div>
+            <button ng-click="editDescription = !editDescription"
+                    class="btn btn-default btn-primary">
+                Edit
+            </button>
+        </div>
+        <div ng-show="editDescription">
+            <div class="row">
+                <div class="col-lg-6">
+                    <text-editor text="project.description"/>
+                </div>
+            </div>
+            <div class="row">
+                <button ng-click="save()" class="btn btn-default btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

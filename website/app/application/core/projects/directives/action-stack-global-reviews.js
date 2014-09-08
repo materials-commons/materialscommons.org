@@ -26,6 +26,7 @@ function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, U
                 $scope.status = 'open';
             }).jsonp();
     };
+
     $scope.retrieveReviewsRequested = function () {
         mcapi('/reviews/requested')
             .success(function (reviews) {
@@ -55,9 +56,11 @@ function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, U
                 $scope.review = data;
             }).jsonp();
     };
+
     $scope.editReview = function(index){
         $scope.edit_index = index;
     };
+
     $scope.saveReview = function(index) {
         if ($scope.review.messages[index].message === "") {
             return;
@@ -67,6 +70,7 @@ function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, U
             .success(function (data) {
             }).put({'messages': $scope.review.messages});
     };
+
     $scope.addComment = function() {
         if ($scope.model.comment.length === 0) {
             return;
@@ -76,13 +80,14 @@ function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, U
             .success(function (data) {
             }).put({'messages': $scope.review.messages});
     };
+
     $scope.closeReview = function() {
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
                 pubsub.send('reviews.change');
                 $scope.retrieveReviewsRequested();
                 $scope.retrieveReviewsToConduct();
-                $scope.review = ''
+                $scope.review = '';
             }).put({'status': 'close'});
     };
 
@@ -92,7 +97,7 @@ function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, U
                 pubsub.send('reviews.change');
                 $scope.retrieveReviewsRequested();
                 $scope.retrieveReviewsToConduct();
-                $scope.review = ''
+                $scope.review = '';
             }).put({'status': 'open'});
     };
 
