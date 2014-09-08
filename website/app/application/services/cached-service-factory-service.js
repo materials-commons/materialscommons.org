@@ -100,8 +100,8 @@ Application.Services.factory('CachedServiceFactory',
                     deferred = $q.defer();
 
                     if (keys.length === 0) {
-                        // return this.rest.getList({apikey: User.apikey()});
-                        return this.rest.getList();
+                         return this.rest.getList({apikey: User.apikey()});
+                        //return this.rest.getList();
                     }
 
                     for (i = 0, l = keys.length; i < l; i++) {

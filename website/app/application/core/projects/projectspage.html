@@ -16,11 +16,11 @@
 <div ng-controller="Projects">
     <div class="row">
         <div class="col-lg-12">
-            <ul class="tabrow projects-header" ng-style="{'border-bottom-color': currentProjectColor}">
+            <ul class="tabrow projects-header" ng-style="{'border-bottom-color': colors.getCurrentProjectColor()}">
                 <li data-toggle="tooltip" data-placement="top" title="{{p.name}}" ng-repeat="p in projects" ng-class="{active: project_id == p.id}"
-                    ng-style="isActiveProject($index) && getActiveStyle($index) || !isActiveProject($index) && getInactiveStyle($index)">
-                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="setActiveIndex($index)"
-                       ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: inactiveColor}">
+                    ng-style="isActiveProject($index) && colors.getActiveStyle($index) || !isActiveProject($index) && colors.getInactiveStyle($index)">
+                    <a ui-sref="projects.overview.files({id: p.id, draft_id: ''})" ng-click="colors.setCurrentProjectIndex($index)"
+                       ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: colors.getInactiveColor()}">
                         {{createName(p.name)}}
                     </a>
                 </li>

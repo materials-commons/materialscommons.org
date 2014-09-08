@@ -1,5 +1,5 @@
 Application.Controllers.controller('logout',
-    ["$rootScope", "$state", "$cookieStore", "User", "Projects", "ProvDrafts", "model.Projects",
+    ["$rootScope", "$state", "$cookieStore", "User", "Projects", "ProvDrafts", "model.projects",
         function ($rootScope, $state, $cookieStore, User,  Projects, ProvDrafts, P2) {
             $rootScope.email_address = '';
             $cookieStore.remove('mcuser');

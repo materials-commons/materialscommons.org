@@ -40,29 +40,8 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             }).post({'name': $scope.bk.name});
     };
 
-    $scope.setActiveIndex = function(index) {
-        $rootScope.currentProjectColor = $rootScope.projectColors[index];
-        $rootScope.currentProjectColorLight = $rootScope.projectColorsLight[index];
-        $rootScope.currentProjectIndex = index;
-    };
-
     $scope.isActiveProject = function(index) {
-        return index === $rootScope.currentProjectIndex;
-    };
-
-    $scope.getActiveStyle = function(index) {
-        return {
-            background: $rootScope.projectColors[index],
-            //'border-bottom-width': '10px',
-            'border-bottom-style': 'solid',
-            'border-bottom-color': $rootScope.projectColors[index]
-        };
-    };
-
-    $scope.getInactiveStyle = function(index) {
-        return {
-            background: $rootScope.projectColorsLight[index]
-        };
+        return index === $scope.colors.currentProjectIndex;
     };
 
     $scope.createName = function(name) {
@@ -71,18 +50,6 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         }
         return name;
     };
-
-    function loadUserTags() {
-        mcapi('/user/%/tags', User.u())
-            .success(function (user) {
-                $scope.u_tags = user.preferences.tags;
-                Tags.updateUserTags($scope.u_tags);
-            }).jsonp();
-    }
-
-    pubsub.waitOn($scope, 'tag.new', function() {
-        loadUserTags();
-    });
 
     $scope.tagname = function(name) {
         if (name.length > 25) {
@@ -104,26 +71,12 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
                 action: ''
             };
             $scope.projects = data.slice(0,8);
-            if ($scope.projects.length === 0) {
-                return;
-            }
+
             if (!($stateParams.id)) {
-                $stateParams.id = $scope.projects[0].id;
+                $scope.project_id = $scope.projects[0].id;
+            } else {
+                $scope.project_id = $stateParams.id;
             }
-            pubsub.send("project.tree", true);
-            $scope.project_id = $stateParams.id;
-
-            //tabset not preserving active project on page refresh
-            $scope.projects.forEach(function (item) {
-                if (item.id === $stateParams.id) {
-                    item.active = true;
-                }
-                else {
-                    item.active = false;
-                }
-            });
-
-            loadUserTags();
 
             if ($stateParams.draft_id !== "") {
                 $state.go('projects.provenance.process');

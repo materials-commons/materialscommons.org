@@ -12,11 +12,10 @@ function projectControlBarDirective() {
 }
 
 Application.Controllers.controller('projectControlBarDirectiveController',
-                                   ["$rootScope", "$scope", "model.projects", projectControlBarDirectiveController]);
+                                   ["$scope", "projectColors", "model.projects", projectControlBarDirectiveController]);
 
-function projectControlBarDirectiveController($rootScope, $scope, Projects) {
-    $scope.currentProjectColor = $rootScope.currentProjectColor;
-    $scope.currentProjectColorLight = $rootScope.currentProjectColorLight;
+function projectControlBarDirectiveController($scope, projectColors, Projects) {
+    $scope.colors = projectColors;
 
     $scope.samplesMenuItems = [
         {
