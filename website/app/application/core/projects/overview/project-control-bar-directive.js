@@ -19,12 +19,12 @@ function projectControlBarDirectiveController($scope, projectColors, Projects) {
 
     $scope.samplesMenuItems = [
         {
-            action: 'action1',
-            title: 'title1'
+            action: 'create-sample',
+            title: 'Create Sample'
         },
         {
-            action: 'action2',
-            title: 'title2'
+            action: 'show-samples',
+            title: 'Show Samples'
         }
     ];
 

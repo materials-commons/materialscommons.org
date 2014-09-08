@@ -1,18 +1,18 @@
-Application.Directives.directive('actionSample', actionSampleDirective);
+Application.Directives.directive('actionCreateSample', actionCreateSampleDirective);
 
-function actionSampleDirective() {
+function actionCreateSampleDirective() {
     return {
         scope: {},
-        controller: "actionSampleController",
+        controller: "actionCreateSampleController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-sample.html"
+        templateUrl: "application/core/projects/directives/action-stack-create-sample.html"
     };
 }
 
-Application.Controllers.controller('actionSampleController',
-    ["$scope", "mcapi", "$stateParams", "User", "model.projects","$injector", actionSampleController]);
+Application.Controllers.controller('actionCreateSampleController',
+    ["$scope", "mcapi", "$stateParams", "User", "model.projects","$injector", actionCreateSampleController]);
 
-function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injector) {
+function actionCreateSampleController($scope,mcapi,$stateParams,User, Projects, $injector) {
     var $validationProvider = $injector.get('$validation');
     $scope.populateProjects = function () {
         $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
@@ -97,16 +97,20 @@ function actionSampleController($scope,mcapi,$stateParams,User, Projects, $injec
     $scope.populateProjects = function () {
         $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
     };
+
     $scope.clear = function () {
         $scope.setDefaultProject();
     };
+
     $scope.removeProjects = function (index) {
-       $scope.doc.projects.splice(index, 1)
+       $scope.doc.projects.splice(index, 1);
     };
+
     function init() {
         $scope.bk = {
             selected_project: ''
-        }
+        };
+
         //initialize the sample with default project
         $scope.project_id = $stateParams.id;
         mcapi('/projects/%', $scope.project_id)
