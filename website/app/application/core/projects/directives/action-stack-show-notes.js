@@ -1,17 +1,17 @@
-Application.Directives.directive('actionNotes', actionNotesDirective);
+Application.Directives.directive('actionShowNotes', actionShowNotesDirective);
 
-function actionNotesDirective() {
+function actionShowNotesDirective() {
     return {
-        controller: "actionNotesController",
+        controller: "actionShowNotesController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-notes.html"
+        templateUrl: "application/core/projects/directives/action-stack-show-notes.html"
     };
 }
 
-Application.Controllers.controller('actionNotesController',
-    ["$scope", "mcapi", "$stateParams", actionNotesController]);
+Application.Controllers.controller('actionShowNotesController',
+    ["$scope", "mcapi", "$stateParams", actionShowNotesController]);
 
-function actionNotesController($scope,mcapi,$stateParams) {
+function actionShowNotesController($scope,mcapi,$stateParams) {
 
     $scope.saveData = function () {
                 mcapi('/projects/%/update', $scope.project.id)
