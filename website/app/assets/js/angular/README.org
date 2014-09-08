@@ -5,3 +5,6 @@
 *** ng-context-menu
     [[https://github.com/ianwalter/ng-context-menu]]
     file: ng-context-menu.min.js
+*** angular-hotkeys
+    [[https://github.com/chieffancypants/angular-hotkeys]]
+    files: hotkeys.min.js, hotkeys.min.css (in ../../assets/css)
