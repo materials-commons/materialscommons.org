@@ -1,6 +1,6 @@
-Application.Services.factory('model.Projects',
+Application.Services.factory('model.projects',
     ["CachedServiceFactory",
         function (CachedServiceFactory) {
-            var projectsService = new CachedServiceFactory("projects/by_group");
+            var projectsService = new CachedServiceFactory("projects");
             return projectsService;
         }]);

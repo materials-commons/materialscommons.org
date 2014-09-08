@@ -11,21 +11,9 @@ from .. import validate
 from .. import error
 from loader.model import project
 from loader.model import datadir
-import sys
 
 
 @app.route('/projects', methods=['GET'])
-@apikey(shared=True)
-@jsonp
-def get_all_projects():
-    user = access.get_user()
-    rr = r.table('projects').filter({'owner': user}).order_by('name')
-    rr = args.add_all_arg_options(rr)
-    items = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(items)
-
-
-@app.route('/projects/by_group', methods=['GET'])
 @apikey(shared=True)
 @jsonp
 def get_all_group_projects():
@@ -54,125 +42,70 @@ def get_all_group_projects():
         for proj in selection:
             if access.allowed(user, proj[u'owner']):
                 projects.append(proj)
-    for proj in projects:
-        add_project_info(proj)
+    add_computed_attributes(projects, user)
     return args.json_as_format_arg(projects)
 
 
-def add_project_info(project):
-    project_id = project['id']
-    if 'todos' not in project:
-        project['todos'] = []
-    reviews_count = r.table('reviews').filter({'project_id': project_id})\
-                                      .count().run(g.conn)
-    datadirs_count = r.table('project2datadir')\
-                      .get_all(project_id, index='project_id')\
-                      .count().run(g.conn)
-    datafiles_count = r.table('project2datafile')\
-                       .get_all(project_id, index='project_id')\
-                       .count().run(g.conn)
-    drafts_count = r.table('drafts')\
-                    .filter({"attributes": {"project_id": project_id}})\
-                    .count().run(g.conn)
-    project['reviews_count'] = reviews_count
-    project['datadirs_count'] = datadirs_count
-    project['datafiles_count'] = datafiles_count
-    project['drafts_count'] = drafts_count
-    project['provenance_count'] = 0
-    project['size'] = "N/A"
+def add_computed_attributes(projects, user):
+    for p in projects:
+        p['reviews'] = []
+        p['samples'] = []
+        p['drafts'] = []
+        p['processes'] = []
+        p['users'] = []
+
+    project_ids = [p['id'] for p in projects]
+    projects_by_id = {p['id']: p for p in projects}
+
+    add_users(projects_by_id, project_ids)
+    add_reviews(projects_by_id, project_ids)
+    add_samples(projects_by_id, project_ids)
+    add_drafts(projects_by_id, project_ids, user)
+    add_process_ids(projects_by_id, project_ids)
 
 
-@app.route('/projects/<id>', methods=['GET'])
-@apikey(shared=True)
-@jsonp
-def get_project(id):
-    proj = r.table('projects').get(id) \
-                              .run(g.conn, time_format='raw')
-    if proj is None:
-        return error.not_found("No such project %s" % (id))
-    user = access.get_user()
-    if not access.allowed(user, proj['owner']):
-        return error.not_authorized("No access to project %s" % (id))
-    mysamples = list(r.table('samples')
-                     .get_all(proj['id'], index='project_id')
+def add_users(projects_by_id, project_ids):
+    users = list(r.table('access')
+                 .get_all(*project_ids, index='project_id')
+                 .run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, users, 'project_id', 'users')
+
+
+def add_reviews(projects_by_id, project_ids):
+    reviews = list(r.table('reviews')
+                   .get_all(*project_ids, index='project')
+                   .run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, reviews, 'project', 'reviews')
+
+
+def add_samples(projects_by_id, project_ids):
+    samples = list(r.table('samples')
+                   .get_all(*project_ids, index='project_id')
+                   .run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, samples, 'project_id', 'samples')
+
+
+def add_drafts(projects_by_id, project_ids, user):
+    drafts = list(r.table('drafts')
+                  .get_all(*project_ids, index='project_id')
+                  .filter({'owner': user})
+                  .run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, drafts, 'project_id', 'drafts')
+
+
+def add_process_ids(projects_by_id, project_ids):
+    processes = list(r.table('processes')
+                     .get_all(*project_ids, index='project')
+                     .pluck('id', 'project')
                      .run(g.conn, time_format='raw'))
-    mysamples_ids_list = []
-    for s in mysamples:
-        mysamples_ids_list.append(s['id'])
-    if mysamples_ids_list:
-        potentially_shared = list(r.table('projects2samples')
-                                  .get_all(*mysamples_ids_list, index='sample_id')
-                                  .eq_join('sample_id', r.table('samples'))
-                                  .map(lambda row: row.merge({
-                                      "right": {
-                                          "other_project_id": row["right"]["project_id"]
-                                      }
-                                  }))
-                                  .without({"right": {"project_id": True}})
-                                  .zip()
-                                  .run(g.conn, time_format='raw'))
-    else:
-        potentially_shared = []
-    #proj['users'] = get_project_users(proj['owner'])
-    proj['users'] = get_project_users(proj)
-    proj['shares'] = get_project_shares(potentially_shared, proj['id'])
-    potentially_uses = list(r.table('projects2samples')
-                            .get_all(proj['id'], index='project_id')
-                            .eq_join('sample_id', r.table('samples'))
-                            .map(lambda row: row.merge({
-                                "right": {
-                                    "other_project_id": row["right"]["project_id"]
-                                }
-                            }))
-                            .without({"right": {"project_id": True}})
-                            .zip()
-                            .run(g.conn, time_format='raw'))
-    proj['uses'] = get_project_uses(potentially_uses, proj['id'])
-    return args.json_as_format_arg(proj)
+    add_computed_items(projects_by_id, processes, 'project', 'processes')
 
 
-def get_project_users(proj):
-    #Code below has been commented because we are in a phase of trasforming usergroups to access.
-    #groups = list(r.table('usergroups').filter({'owner': who}).run(g.conn))
-    #for group in groups:
-        #for username in group['users']:
-            # Remove project owner from list of contributors
-            #if username != who:
-                #unique_users[username] = username
-    #users = []
-    #for user in unique_users:
-        #users.append(user)
-    users = []
-    access = list(r.table('access').filter({'project_id': proj['id']}).run(g.conn))
-    for ac in access:
-        users.append({'user_id': ac['user_id'], 'permissions': ac['permissions'], 'id':ac['id']})
-    return users
-
-
-def get_project_shares(all_samples_used, project_id):
-    """Finds all the samples that this project shares out"""
-    shares = []
-    for sample in all_samples_used:
-        if sample['other_project_id'] == project_id \
-           and sample['project_id'] != project_id:
-            sample['other_project'] = r.table('projects')\
-                                       .get(sample['project_id'])\
-                                       .run(g.conn, time_format='raw')
-            shares.append(sample)
-    return shares
-
-
-def get_project_uses(all_samples_used, project_id):
-    """Finds all the samples that this project uses from other projects"""
-    uses = []
-    for sample in all_samples_used:
-        if sample['project_id'] == project_id \
-           and sample['other_project_id'] != project_id:
-            sample['other_project'] = r.table('projects')\
-                                       .get(sample['other_project_id'])\
-                                       .run(g.conn, time_format='raw')
-            uses.append(sample)
-    return uses
+def add_computed_items(projects_by_id, items, projects_key, item_key):
+    for item in items:
+        project_id = item[projects_key]
+        if project_id in projects_by_id:
+            projects_by_id[project_id][item_key].append(item)
 
 
 @app.route('/projects/<project_id>/datadirs')
@@ -234,8 +167,7 @@ def build_tree(datadirs):
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
                        ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
-        user = access.get_user()
-        ditem.tags = ddir['tags']  #build_tags(ddir['id'], ddir['name'], 'datadir', user)
+        ditem.tags = ddir['tags']
         ditem.c_id = next_id
         next_id = next_id + 1
         #
@@ -257,7 +189,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
-            dfitem.tags = df['tags']  #build_tags(ddir['id'], ddir['name'], 'datadir', user)
+            dfitem.tags = df['tags']
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
@@ -276,7 +208,12 @@ def build_tree(datadirs):
 
 
 def build_tags(id, name, type, user):
-    tags2item = list(r.table('items2tags').filter({'item_id': id, 'item_type': type, 'user': user}).run(g.conn))
+    tags2item = list(r.table('items2tags')
+                     .filter({
+                         'item_id': id,
+                         'item_type': type,
+                         'user': user
+                     }).run(g.conn))
     return tags2item
 
 
@@ -315,7 +252,7 @@ def get_otherfiles(files):
     return result
 
 
-@app.route('/projects/<id>/update', methods=['PUT'])
+@app.route('/projects/<id>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
 def update_project(id):
@@ -375,6 +312,7 @@ def make_toplevel_datadir(j, user):
     dir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
     build_datadir_denorm(name, user, dir_id)
     return dir_id
+
 
 def build_datadir_denorm(name, owner, dir_id):
     datadir_denorm = dict()

@@ -5,7 +5,7 @@ Application.Controllers.controller('ProjectTreeController',
 function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter) {
 
     $scope.addToReview = function(entry, review){
-        review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type})
+        review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type});
         mcapi('/reviews/%', review.id)
             .success(function (data) {
                 pubsub.send('open_reviews.change');
@@ -43,7 +43,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     $scope.populatePath = function (entry) {
         ProjectPath.populate($scope.trail, $scope.dir);
         // $state.go("projects.dataedit.details", {data_id: entry.id});
-        $scope.toggleStackAction('file', 'overview-action-stack', entry.id, entry.id);
+        $scope.toggleStackAction('file', entry.name, entry.id, entry.id);
     };
     $scope.loadReviews = function (id) {
         mcapi('/project/%/reviews', id)

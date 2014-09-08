@@ -25,14 +25,14 @@ function actionStackTagController($scope, mcapi, User, pubsub) {
         mcapi('/user/%/tags', User.u())
             .success(function () {
                 pubsub.send('tag.new');
-                $scope.toggleStackAction('tag', 'project-action-stack');
+                $scope.toggleStackAction('tag', 'Create Tag');
             }).put($scope.tag);
         resetTag();
     };
 
     $scope.cancel = function() {
         resetTag();
-        $scope.toggleStackAction('tag', 'project-action-stack');
+        $scope.toggleStackAction('tag');
     };
 
     $scope.iconSelected = function(icon) {

@@ -25,6 +25,10 @@ Application.Services.factory('User',
                 return key;
             },
 
+            keyparam: function() {
+                return {apikey: self.mcuser.apikey};
+            },
+
             u: function () {
                 return self.mcuser ? self.mcuser.email : 'Login';
             },

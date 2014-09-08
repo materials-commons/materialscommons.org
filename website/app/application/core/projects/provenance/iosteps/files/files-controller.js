@@ -1,5 +1,5 @@
 Application.Controllers.controller('projectsProvenanceIOStepsFiles',
-    ["$scope", "ProvDrafts", "$stateParams", "pubsub", "Projects",  "model.Projects", "watcher",
+    ["$scope", "ProvDrafts", "$stateParams", "pubsub", "Projects",  "model.projects", "watcher",
         function ($scope, ProvDrafts, $stateParams, pubsub, Projects, ListProjects, watcher) {
             $scope.removeFile = function (index) {
                 $scope.files[index].selected = false;

@@ -5,7 +5,7 @@
         </a>
         <a ng-href="{{ originalFileSrc }}" download="{{ file.name }}"><b><u>{{file.name}}</u></b></a>
     </form>
-    <button action-stack class="btn btn-danger" ng-click="toggleStackAction('file', 'overview-action-stack', file.id)">
+    <button action-stack class="btn btn-danger" ng-click="toggleStackAction('file', file.name, file.id)">
         Close
     </button>
     <div class="col-lg-9" ng-switch="" on="fileType">
@@ -24,7 +24,7 @@
     <div class="col-lg-3">
         <div class="row">
             <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
-            <a action-stack ng-click="toggleStackAction('tag', 'project-action-stack')" class="important"><i class="fa fa-plus"/> Add Tag</a>
+            <a action-stack ng-click="toggleStackAction('tag', 'Create Tag')" class="important"><i class="fa fa-plus"/> Add Tag</a>
             <hr>
             <div class="row">
                 <div ng-repeat="t in file.tags">

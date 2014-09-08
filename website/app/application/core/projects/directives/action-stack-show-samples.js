@@ -1,18 +1,18 @@
-Application.Directives.directive('actionSamples', actionSamplesDirective);
+Application.Directives.directive('actionShowSamples', actionShowSamplesDirective);
 
-function actionSamplesDirective() {
+function actionShowSamplesDirective() {
     return {
-        controller: "actionSamplesController",
+        controller: "actionShowSamplesController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-samples.html"
+        templateUrl: "application/core/projects/directives/action-stack-show-samples.html"
     };
 }
 
-Application.Controllers.controller('actionSamplesController',
-                                   ["$scope", "mcapi", "$injector", "model.Projects", "alertService",
-                                    "User", "$stateParams", actionSamplesController]);
+Application.Controllers.controller('actionShowSamplesController',
+                                   ["$scope", "mcapi", "$injector", "model.projects", "alertService",
+                                    "User", "$stateParams", actionShowSamplesController]);
 
-function actionSamplesController($scope, mcapi, $injector, Projects, alertService,
+function actionShowSamplesController($scope, mcapi, $injector, Projects, alertService,
                                  User, $stateParams) {
     var $validationProvider = $injector.get('$validation');
 

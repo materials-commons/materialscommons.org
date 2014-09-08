@@ -1,21 +1,22 @@
-Application.Directives.directive('actionReviews', actionReviewsDirective);
+Application.Directives.directive('actionShowReviews', actionShowReviewsDirective);
 
-function actionReviewsDirective() {
+function actionShowReviewsDirective() {
     return {
-        controller: "actionReviewsController",
+        controller: "actionShowReviewsController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-reviews.html"
+        templateUrl: "application/core/projects/directives/action-stack-show-reviews.html"
     };
 }
 
-Application.Controllers.controller('actionReviewsController',
-    ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams", actionReviewsController]);
+Application.Controllers.controller('actionShowReviewsController',
+    ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User","pubsub","$stateParams", actionShowReviewsController]);
 
-function actionReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams) {
+function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub,$stateParams) {
 
     pubsub.waitOn($scope, 'open_reviews.change', function () {
-        $scope.loadReviews($stateParams.id)
+        $scope.loadReviews($stateParams.id);
     });
+
     $scope.editReview = function(index){
         $scope.edit_index = index;
     };
@@ -45,8 +46,8 @@ function actionReviewsController($scope, mcapi, $filter, $state, dateGenerate, U
             .success(function (data) {
                 pubsub.send('open_reviews.change');
                 pubsub.send('reviews.change');
-                $scope.loadReviews($stateParams.id)
-                $scope.review = ''
+                $scope.loadReviews($stateParams.id);
+                $scope.review = '';
             }).put({'status': 'close'});
     };
 
@@ -55,8 +56,8 @@ function actionReviewsController($scope, mcapi, $filter, $state, dateGenerate, U
             .success(function (data) {
                 pubsub.send('open_reviews.change');
                 pubsub.send('reviews.change');
-                $scope.loadReviews($stateParams.id)
-                $scope.review = ''
+                $scope.loadReviews($stateParams.id);
+                $scope.review = '';
             }).put({'status': 'open'});
     };
 
@@ -91,6 +92,7 @@ function actionReviewsController($scope, mcapi, $filter, $state, dateGenerate, U
             }).jsonp();
 
     };
+
     function init() {
         $scope.review = '';
         $scope.loadReviews($stateParams.id);

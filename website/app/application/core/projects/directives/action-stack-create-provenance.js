@@ -1,18 +1,18 @@
-Application.Directives.directive('actionProvenance', actionProvenanceDirective);
+Application.Directives.directive('actionCreateProvenance', actionCreateProvenanceDirective);
 
-function actionProvenanceDirective() {
+function actionCreateProvenanceDirective() {
     return {
-        controller: "actionProvenanceController",
+        controller: "actionCreateProvenanceController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-provenance.html"
+        templateUrl: "application/core/projects/directives/action-stack-create-provenance.html"
     };
 }
 
-Application.Controllers.controller('actionProvenanceController',
+Application.Controllers.controller('actionCreateProvenanceController',
                                    ["$scope", "model.templates", "User", "$filter",
-                                    actionProjectProvenanceController]);
+                                    actionCreateProvenanceController]);
 
-function actionProjectProvenanceController($scope, templates, User, $filter) {
+function actionCreateProvenanceController($scope, templates, User, $filter) {
     function init() {
         templates.getList().then(function(templates) {
             $scope.templates = $filter('byKey')(templates, 'template_type', 'process');

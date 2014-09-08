@@ -1,0 +1,21 @@
+<div class="dropdown" is-open="status.isopen">
+    <a class="dropdown-toggle action-link project-sub-action">
+        <i class="fa" ng-class="titleIcon"/> {{title}}
+    </a>
+    <span class="caret caret-light"/>
+    <span ng-if="titleCount !== undefined"
+          class="badge" ng-style="{'background-color': colors.getCurrentProjectColorLight()}">
+        {{titleCount}}
+    </span>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="{{title}}ActionMenu">
+        <li ng-repeat="menuItem in menuItems">
+            <a action-stack
+               role="menuitem"
+               tabindex="{{$index+1}}"
+               ng-click="toggleStackAction(menuItem.action, menuItem.title); status.isopen = false;">
+                {{menuItem.title}}
+                <i ng-show="menuItemActive(menuItem.action)" class="fa fa-close action-link-close"/></i>
+            </a>
+        </li>
+    </ul>
+</div>
