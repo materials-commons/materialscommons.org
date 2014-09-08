@@ -20,4 +20,7 @@ Application.Controllers.controller('actionMenuDirectiveController',
 function actionMenuDirectiveController($rootScope, $scope) {
     $scope.currentProjectColor = $rootScope.currentProjectColor;
     $scope.currentProjectColorLight = $rootScope.currentProjectColorLight;
+    $scope.status = {
+        isopen: false
+    };
 }

@@ -1,4 +1,4 @@
-<div class="dropdown">
+<div class="dropdown" is-open="status.isopen">
     <a class="dropdown-toggle action-link project-sub-action">
         <i class="fa" ng-class="titleIcon"/> {{title}}
     </a>
@@ -7,10 +7,13 @@
           class="badge" ng-style="{'background-color': currentProjectColorLight}">
         {{titleCount}}
     </span>
-    <ul class="dropdown-menu" role="menu">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="{{title}}ActionMenu">
         <li ng-repeat="menuItem in menuItems">
             <a action-stack
-               ng-click="toggleStackAction(menuItem.action)"
+               role="menuitem"
+               tabindex="{{$index+1}}"
+               ng-click="toggleStackAction(menuItem.action); status.isopen = false;"
+               target="_blank"
                class="action-linkxx project-sub-actionxx">
                 {{menuItem.title}}
                 <i ng-class="{'fa fa-close action-link-close': actionActive(menuItem.action)}"/>
