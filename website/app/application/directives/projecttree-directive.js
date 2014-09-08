@@ -145,6 +145,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     };
 
     $scope.init = function() {
+        console.log(actionActive('create-review'))
         $scope.user = User.u();
         $scope.model = {
             new_review: "",
