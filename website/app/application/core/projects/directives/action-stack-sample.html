@@ -1,3 +1,6 @@
+<div class="col-lg-offset-3">
+    <h3>Add Sample</h3>
+</div>
 <form name="Sample" class="form-horizontal">
     <div class="form-group">
         <label class="control-label col-lg-2">Sample Name:</label>
@@ -36,16 +39,16 @@
         <div class="form-inline col-lg-offset-1">
             <div class="form-group">
                 <label>Height: </label>
-                <input ng-model="doc.properties.height.value" type="text" class="form-control"  placeholder="Height...">
-                    <select class="form-control" ng-model="doc.properties.height.unit">
-                        <option value="" disabled="" selected="">Unit...</option>
-                        <option value="cm">cm</option>
-                        <option value="m">m</option>
-                    </select>
+                <input ng-model="doc.properties.height.value" type="text" class="form-control" placeholder="Height...">
+                <select class="form-control" ng-model="doc.properties.height.unit">
+                    <option value="" disabled="" selected="">Unit...</option>
+                    <option value="cm">cm</option>
+                    <option value="m">m</option>
+                </select>
             </div>
             <div class="form-group">
                 <label>Width: </label>
-                <input ng-model="doc.properties.width.value" type="text" class="form-control"  placeholder="Width...">
+                <input ng-model="doc.properties.width.value" type="text" class="form-control" placeholder="Width...">
                 <select class="form-control" ng-model="doc.properties.width.unit">
                     <option value="" disabled="" selected="">Unit...</option>
                     <option value="cm">cm</option>
@@ -67,19 +70,22 @@
         <div class="form-inline col-lg-offset-1">
             <div class="form-group">
                 <label>Mass: </label>
-                <input ng-model="doc.properties.mass.value" type="text" class="form-control"  placeholder="Mass...">
+                <input ng-model="doc.properties.mass.value" type="text" class="form-control" placeholder="Mass...">
             </div>
             <div class="form-group">
                 <label>Grain Texture: </label>
-                <input ng-model="doc.properties.grain_texture.value" type="text" class="form-control"  placeholder="Grain Texture...">
+                <input ng-model="doc.properties.grain_texture.value" type="text" class="form-control"
+                       placeholder="Grain Texture...">
             </div>
             <div class="form-group">
                 <label>Grain Size: </label>
-                <input ng-model="doc.properties.grain_size.value" type="text" class="form-control"  placeholder="Grain Size...">
+                <input ng-model="doc.properties.grain_size.value" type="text" class="form-control"
+                       placeholder="Grain Size...">
             </div>
             <div class="form-group">
                 <label>Powder Size: </label>
-                <input ng-model="doc.properties.powder_size.value" type="text" class="form-control"  placeholder="Powder Size...">
+                <input ng-model="doc.properties.powder_size.value" type="text" class="form-control"
+                       placeholder="Powder Size...">
             </div>
         </div>
     </div>
@@ -91,12 +97,13 @@
         <div class="col-lg-4">
             <button class="btn btn-info" ng-click="custom=!custom">+</button>
             <div ng-if="custom">
-                <div periodic-table  doc="doc.properties.composition"></div>
+                <div periodic-table doc="doc.properties.composition"></div>
             </div>
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-lg-2">Projects:</label>
+
         <div class="col-lg-4">
             <div ng-show="doc.projects.length !==0 " class="col-lg-8">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
@@ -125,7 +132,10 @@
             <button class="btn btn-default" ng-click="populateProjects()">Add Project
             </button>
         </div>
+    </div><br>
+    <div class="form-group">
+        <label class="control-label col-lg-2"></label>
+        <button type="button" class="btn btn-primary" ng-click="save(Sample)">Save</button>
+        <button type="button" class="btn btn-danger" ng-click="clear()">Clear</button>
     </div>
-    <button type="button" class="btn btn-primary" ng-click="save(Sample)">Save</button>
-    <button type="button" class="btn btn-danger" ng-click="clear()">Clear</button>
 </form>

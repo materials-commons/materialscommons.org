@@ -1,8 +1,8 @@
-<div class="row col-lg-8">
-    <div class="row">
-            <h4>Notes</h4>
-
-            <div class="row" ng-repeat="n in project.notes | orderBy: date">
+<div class="col-lg-offset-3">
+    <h3>List Notes</h3>
+</div>
+    <div class="col-lg-offset-2">
+            <div class="row col-lg-8" ng-repeat="n in project.notes | orderBy: date">
                 <div ng-if="edit_index==$index">
                     <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
                               ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
@@ -22,9 +22,7 @@
                 </div>
                 <hr/>
             </div>
-        <div class="row" ng-if="project.notes.length == 0">
-            <p class="text-muted">There were None</p>
-
-        </div>
-        </div>
-</div>
+            <div class="row" ng-if="project.notes.length == 0">
+                <p class="text-muted">There were None</p>
+            </div>
+    </div>
