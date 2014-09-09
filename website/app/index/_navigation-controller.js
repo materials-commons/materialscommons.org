@@ -78,6 +78,12 @@ function contextMenuController($scope, actionStackTracker, hotkeys, $location, $
             title: 'Open/Close Show Notes'
         },
 
+        // {
+        //     id: 'show-users',
+        //     key: 's u',
+        //     title: 'Open/Close Show Users'
+        // },
+
         {
             id: 'tag',
             key: 'c t',
