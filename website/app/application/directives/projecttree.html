@@ -1,4 +1,5 @@
 <div ng-show="treeOverview || treeActive">
+    <!-- Inject action-stack methods into scope -->
     <div action-stack></div>
     <a name="projecttree"></a>
     <div class="row">
@@ -92,7 +93,7 @@
                         <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}</a>
                     </td>
                     <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
-                        <span ng-if="actionActive('review')">
+                        <span ng-if="isActionActive('create-review')">
                             <input ng-model="entry.selected" ng-click="fileSelected(entry)"
                                    ng-change="entry.selected = !entry.selected" type="checkbox">
                         </span>
