@@ -39,6 +39,12 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
 
     $scope.backToFolder = function (item) {
         $scope.dir = ProjectPath.update_dir(item);
+        var i = _.indexOf($scope.trail, function (each_trail) {
+            return (item.id === each_trail.id);
+        });
+        if(i!= -1){
+            $scope.trail = $scope.trail.splice(0, i + 1);
+        }
     };
 
     $scope.populatePath = function (entry) {
