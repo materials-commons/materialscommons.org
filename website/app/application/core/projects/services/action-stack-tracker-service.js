@@ -1,6 +1,6 @@
 Application.Services.factory('actionStackTracker', [actionStackTracker]);
 
-function actionStackTracker() {
+function actionStackTracker(hotkeys, $location, $anchorScroll) {
     var service = {
         actions: [],
 
@@ -35,6 +35,7 @@ function actionStackTracker() {
         },
 
         pushAction: function(actionID, actionTitle) {
+            var oldlength = service.actions.length;
             service.actions.push(service._newAction(actionID, actionTitle));
         },
 
@@ -53,6 +54,7 @@ function actionStackTracker() {
             var i = service._findAction(actionID);
             if (i != -1) {
                 if (!service.actions[i].pinned) {
+                    var oldlength = service.actions.length;
                     service.actions.splice(i, 1);
                     return true;
                 }
