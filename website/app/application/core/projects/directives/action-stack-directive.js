@@ -11,12 +11,24 @@ function actionStackDirective($rootScope, actionStackTracker, $compile,
                     function _createHotkey(key, id, title) {
                         hotkeys.add({
                             combo: '' + key,
-                            description: title,
+                            description: 'Goto ' + title,
                             callback: function() {
                                 $location.hash(id);
                                 $anchorScroll();
                             }
                         });
+                        // if (key === parseInt(key)) {
+                        //     hotkeys.add({
+                        //         combo: 'x ' + key,
+                        //         description: 'Close ' + title,
+                        //         callback: function() {
+                        //             $("#" + id).remove();
+                        //             hotkeys.del('x ' + key);
+                        //             hotkeys.del('' + key);
+                        //             actionStackTracker.popAction(id);
+                        //         }
+                        //     });
+                        // }
                     }
 
                     function _setHotkeys(oldlength) {
