@@ -46,4 +46,9 @@ function contextMenuController($scope, actionStackTracker, hotkeys, $location, $
         }
     });
 
+    $scope.gotoLocation = function(id) {
+        $location.hash(id);
+        $anchorScroll();
+    };
+
 }

@@ -97,8 +97,7 @@
                             <a class="pointer"
                                role="menuitem"
                                tabindex="-1"
-                               href="#top"
-                               target="_self">
+                               ng-click="gotoLocation('top')">
                                 Top
                             </a>
                         </li>
@@ -106,13 +105,17 @@
                             <a class="pointer"
                                role="menuitem"
                                tabindex="0"
-                               href="#projecttree"
-                               target="_self">
+                               ng-click="gotoLocation('projecttree')">
                                 Project File Tree
                             </a>
                         </li>
                         <li ng-repeat="action in actions" ng-init="addHotKey($index, action.id, action.title);">
-                            <a class="pointer" role="menuitem" tabindex="{{$index+1}}" ng-href="#{{action.id}}" target="_self">{{action.title}}</a>
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="{{$index+1}}"
+                               ng-click="gotoLocation(action.id)">
+                                {{action.title}}
+                            </a>
                         </li>
                     </ul>
                 </div>
