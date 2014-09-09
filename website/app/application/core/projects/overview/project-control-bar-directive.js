@@ -20,51 +20,51 @@ function projectControlBarDirectiveController($scope, projectColors, Projects) {
     $scope.samplesMenuItems = [
         {
             action: 'create-sample',
-            title: 'Create Sample'
+            title: 'Create Sample (c s)'
         },
         {
             action: 'show-samples',
-            title: 'Show Samples'
+            title: 'Show Samples (s s)'
         }
     ];
 
     $scope.provenanceMenuItems = [
         {
             action: 'create-provenance',
-            title: 'Create Provenance'
+            title: 'Create Provenance (c p)'
         },
         {
             action: 'show-provenance',
-            title: 'Show Provenance'
+            title: 'Show Provenance (s p)'
         }
     ];
 
     $scope.reviewsMenuItems = [
         {
             action: 'create-review',
-            title: 'Create Review'
+            title: 'Create Review (c r)'
         },
         {
             action: 'show-reviews',
-            title: 'Show Reviews'
+            title: 'Show Reviews (s r)'
         }
     ];
 
     $scope.draftsMenuItems = [
         {
             action: 'show-drafts',
-            title: 'Show Drafts'
+            title: 'Show Drafts (s d)'
         }
     ];
 
     $scope.notesMenuItems = [
         {
             action: 'create-note',
-            title: 'Create Note'
+            title: 'Create Note (c n)'
         },
         {
             action: 'show-notes',
-            title: 'Show Notes'
+            title: 'Show Notes (s n)'
         }
     ];
     $scope.settingsMenuItems = [

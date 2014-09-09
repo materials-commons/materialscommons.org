@@ -27,10 +27,68 @@ function _indexNavigation($scope, User, $state, Nav) {
 Application.Controllers.controller('contextMenuController',
                                    ["$scope", "actionStackTracker", "hotkeys", "$location", "$anchorScroll", contextMenuController]);
 function contextMenuController($scope, actionStackTracker, hotkeys, $location, $anchorScroll) {
+    $scope.defaultActions = [
+        {
+            id: 'create-provenance',
+            key: 'c p',
+            title: 'Open/Close Create Provenance'
+        },
+        {
+            id: 'show-provenance',
+            key: 's p',
+            title: 'Open/Close Show Provenance'
+        },
+
+        {
+            id: 'create-sample',
+            key: 'c s',
+            title: 'Open/Close Create Sample'
+        },
+        {
+            id: 'show-samples',
+            key: 's s',
+            title: 'Open/Close Show Samples'
+        },
+
+        {
+            id: 'create-review',
+            key: 'c r',
+            title: 'Open/Close Create Review'
+        },
+        {
+            id: 'show-reviews',
+            key: 's r',
+            title: 'Open/Close Show Reviews'
+        },
+
+        {
+            id: 'show-drafts',
+            key: 's d',
+            title: 'Open/Close Show Drafts'
+        },
+
+        {
+            id: 'create-note',
+            key: 'c n',
+            title: 'Open/Close Create Note'
+        },
+        {
+            id: 'show-notes',
+            key: 's n',
+            title: 'Open/Close Show Notes'
+        },
+
+        {
+            id: 'tag',
+            key: 'c t',
+            title: 'Open/Close Create Tag'
+        }
+    ];
+
     $scope.actions = actionStackTracker.actions;
     hotkeys.add({
         combo: 't',
-        description: "Top",
+        description: "Goto Top",
         callback: function() {
             $location.hash('top');
             $anchorScroll();
@@ -39,11 +97,20 @@ function contextMenuController($scope, actionStackTracker, hotkeys, $location, $
 
     hotkeys.add({
         combo: 'f',
-        description: 'Project File Tree',
+        description: 'Goto Project File Tree',
         callback: function() {
             $location.hash('projecttree');
             $anchorScroll();
         }
+    });
+
+    $scope.defaultActions.forEach(function(action) {
+        hotkeys.add({
+            combo: action.key,
+            callback: function() {
+                $scope.toggleStackAction(action.id, action.title.slice(10));
+            }
+        });
     });
 
     $scope.gotoLocation = function(id) {
