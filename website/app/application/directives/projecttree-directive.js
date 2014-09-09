@@ -46,6 +46,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
         // $state.go("projects.dataedit.details", {data_id: entry.id});
         $scope.toggleStackAction('file', entry.name, entry.id, entry.id);
     };
+
     $scope.loadReviews = function (id) {
         mcapi('/project/%/reviews', id)
             .success(function (reviews) {
@@ -53,6 +54,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             }).jsonp();
 
     };
+
     $scope.selectProject = function (projectId) {
         $scope.trail = [];
         $scope.projectId = projectId;
@@ -93,6 +95,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
 
         return currentTrail.slice(0, i+1);
     };
+
     $scope.addTag = function(entry, selected_tag){
         //Filling tag join table
         var item2tag = {};
@@ -121,6 +124,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             }).post(item2tag);
         //Sticking tag in the tree
     };
+
     $scope.addReview = function () {
         if ($scope.model.new_review === "" || $scope.model.title === "" || $scope.model.assigned_to === "") {
             return;
@@ -151,6 +155,9 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             assigned_to: "",
             title: ""
         };
+
+        $scope.isActionActive = actionStackTracker.actionActive;
+
         $scope.user_tags = Tags.getUserTags();
         if ($scope.from == 'true') {
             $scope.project = ProjectPath.get_project();
