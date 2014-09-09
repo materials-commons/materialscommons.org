@@ -42,29 +42,26 @@
 
         </div>
     </div>
-
-
 </div>
 
 <div ng-show="doc.runs.length > 0">
     <label class="col-sm-2 control-label">previous runs:</label>
     <table class="table table-bordered">
         <thead>
-        <tr>
-            <th>Start</th>
-            <th>End</th>
-            <th>Error Message</th>
-        </tr>
+            <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>Error Message</th>
+            </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="run in doc.runs">
-            <td>{{run.started | date:'fullDate'}}</td>
-            <td>{{run.stopped | date:'fullDate'}}</td>
-            <td>{{run.error_messages}}
-                <button type="button" class="close" ng-click="remove_run($index);">×</button>
-            </td>
-        </tr>
+            <tr ng-repeat="run in doc.runs">
+                <td>{{run.started | date:'fullDate'}}</td>
+                <td>{{run.stopped | date:'fullDate'}}</td>
+                <td>{{run.error_messages}}
+                    <button type="button" class="close" ng-click="remove_run($index);">×</button>
+                </td>
+            </tr>
         </tbody>
     </table>
-</div>
 </div>

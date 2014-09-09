@@ -25,10 +25,12 @@ function actionStackTagController($scope, mcapi, User, pubsub) {
     $scope.createTag = function(){
         mcapi('/user/%/tags', User.u())
             .success(function () {
-                pubsub.send('tag.new');
+                var tag;
                 $scope.toggleStackAction('tag', 'Create Tag');
+                console.dir($scope.tag);
+                User.attr().preferences.tags.push(angular.copy($scope.tag, tag));
+                resetTag();
             }).put($scope.tag);
-        resetTag();
     };
 
     $scope.cancel = function() {

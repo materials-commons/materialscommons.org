@@ -1,0 +1,47 @@
+<form class="form-horizontal">
+    <cgroup label="Name:">
+        <input class="form-control"
+               ng-model="process.name"
+               placeholder="Name..."
+               type="text">
+    </cgroup>
+    <cgroup label="Description:">
+        <textarea class="form-control"
+                  placeholder="Description..."
+                  ng-model="process.description">
+        </textarea>
+    </cgroup>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Run Date(s):</label>
+        <div class="row">
+            <button class="btn btn-success">Add Run</button>
+            <div ng-show="custom">
+                <label class="col-sm-2 control-label">Start Run:</label>
+                <div class="col-sm-4">
+                    <datepicker ng-model="bk.start_run"></datepicker>
+                </div>
+                <label class="col-sm-2 control-label">Stop Run:</label>
+                <div class="col-sm-4">
+                    <datepicker ng-model="bk.stop_run"></datepicker>
+                </div>
+                <label class="col-sm-2 control-label"></label>
+
+                <div class="input-group">
+                    <textarea class="form-control" placeholder="Error messages..." ng-model="bk.new_err_msg"
+                              ng-disabled="edit"></textarea>
+                    <button ng-click="add_run()" ng-disabled="!bk.start_run" class="btn btn-default btn-info">Add
+                    </button>
+                </div>
+                <div class="col-lg-5">
+                    <div ng-repeat="runDate in process.run_dates">
+                        <input ng-model="runDate.start">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- {{doc.start_run | date:'medium'}}/{{doc.stop_run | date:'medium'}} -->
