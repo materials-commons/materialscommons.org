@@ -6,6 +6,7 @@
                 <!-- Text input-->
                 <div class="control-group">
                     <label class="control-label" for="">Name</label>
+
                     <div class="controls">
                         <input class="form-control" placeholder="name..." type="text" ng-model="tag.name">
                     </div>
@@ -13,13 +14,14 @@
 
                 <div class="control-group">
                     <label class="control-label" for="selectbasic">Color</label>
+
                     <div class="controls">
                         <select class="form-control" ng-model="tag.color">
                             <option value="">Highlight</option>
                             <option value="#FF0000" style="background-color: red;">Red</option>
                             <option value="#0000FF" style="background-color: Blue;">Blue</option>
                             <option value="#008000" style="background-color: green;">Green</option>
-                            <option value="#FFFF00" style="background-color: #ffff00;">Yellow</option>
+                            <option value="#FFFF00" style="background-color: #bebe00;">Yellow</option>
                             <option value="#9370DB" style="background-color: mediumpurple;">Purple</option>
                             <option value="#EE82EE" style="background-color: Violet;">Violet</option>
                         </select>
@@ -41,9 +43,17 @@
                         <span><i class="fa fa-{{tag.icon}}" ng-style="{color: tag.color}"/></span>
                     </div>
                 </div>
+                <div class="control-group">
+                    <label class="control-label">Description</label>
+
+                    <div class="controls">
+                        <text-editor text="tag.description"/>
+                    </div>
+                </div>
 
                 <div class="control-group">
                     <label class="control-label" for="button1id"></label>
+
                     <div class="controls">
                         <button id="button1id"
                                 name="button1id"

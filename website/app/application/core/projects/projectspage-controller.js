@@ -85,7 +85,6 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             }
         });
     }
-
     init();
 }
 

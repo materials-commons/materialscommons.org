@@ -97,6 +97,7 @@ def update_tags(user):
     tag['name'] = dmutil.get_required('name', j)
     tag['color'] = dmutil.get_required('color', j)
     tag['icon'] = dmutil.get_required('icon', j)
+    tag['description'] = dmutil.get_optional('description', j)
     existing_tags.append(tag)
     rr = r.table('users').get(user).update(
         {'preferences': {'tags': existing_tags}}).run(g.conn)

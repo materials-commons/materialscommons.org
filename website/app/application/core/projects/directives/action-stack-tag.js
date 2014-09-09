@@ -17,7 +17,8 @@ function actionStackTagController($scope, mcapi, User, pubsub) {
         $scope.tag = {
             name: "",
             color: "blue",
-            icon: "tag"
+            icon: "tag",
+            description: ""
         };
     }
 
