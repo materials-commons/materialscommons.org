@@ -1,26 +1,9 @@
 <div class="row">
-    <div class="col-lg-12" style="border-top-color: black">
-        <div class="col-lg-5 col-lg-offset-3">
-            <div style="border:0; padding-top: 0" class="panel panel-default">
-                <div style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;" class="panel-heading" ng-style="{'background-color': currentProjectColor}">
-                    <div class="row">
-                        <div class="col-lg-4 col-lg-offset-2">
-                            <input type="checkbox" ng-model="showOverview">
-                            <label>Show overview</label>
-                        </div>
-                        <div class="col-lg-6">
-                            <input type="checkbox">
-                            <label>Keep steps open</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <provenance-wizard-control-bar></provenance-wizard-control-bar>
 </div>
 
 <div class="row">
-    <form class="form-horizontal">
+    <form ng-show="showChooseProcess" class="form-horizontal">
         <fieldset>
 
             <!-- Select Basic -->
@@ -31,7 +14,7 @@
                             ui-select2="{placeholder: 'Select process', allowClear: true, width: 'element'}"
                             ng-multiple="false"
                             ng-options="template.template_name group by template.category for template in templates | orderBy:'category'"
-                            ng-model="selectedTemplate"
+                            ng-model="project.selectedTemplate"
                             name="selectbasic"
                             class="form-control">
                     </select>
@@ -41,125 +24,24 @@
             <!-- Button (Double) -->
             <div class="form-group">
                 <div class="controls col-lg-2 col-lg-offset-2">
-                    <button id="button1id" name="button1id" class="btn btn-success">Start</button>
-                    <button id="button2id" name="button2id" class="btn btn-danger">Cancel</button>
+                    <button id="button1id"
+                            name="button1id"
+                            ng-click="start()"
+                            class="btn btn-success">
+                        Start
+                    </button>
+                    <button id="button2id"
+                            name="button2id"
+                            class="btn btn-danger"
+                            ng-click="cancel()">
+                        Cancel
+                    </button>
                 </div>
             </div>
-
         </fieldset>
     </form>
 </div>
 
-<div class="row bs-wizard" style="border-bottom:0;">
-
-    <div class="col-xs-2 bs-wizard-step complete"
-         ng-repeat="template in selectedTemplate.input_templates">
-        <div class="text-center bs-wizard-stepnum">(I) {{template.template_name}}</div>
-        <div class="progress">
-            <div class="progress-bar">
-            </div>
-        </div>
-        <a href="#" class="bs-wizard-dot"
-           ng-style="{background: currentProjectColorLight, 'background-color': currentProjectColor}"></a>
-        <div class="bs-wizard-info text-center"></div>
-        <div ng-show="showOverview">
-            <span>&nbsp;</span>
-            <div class="arrow_box_bottom">
-                <div class="col-lg-offset-19">
-                    <ul style="list-style-type: none;">
-                        <li ng-repeat="property in template.default_properties">{{property.name}}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div ng-if="selectedTemplate.required_input_files" class="col-xs-2 bs-wizard-step complete">
-        <div class="text-center bs-wizard-stepnum">(I) Files</div>
-        <div class="progress"><div class="progress-bar"></div></div>
-        <a href="#" class="bs-wizard-dot"></a>
-        <div class="bs-wizard-info text-center"></div>
-    </div>
-
-    <div class="col-xs-2 bs-wizard-step complete"
-         ng-repeat="template in selectedTemplate.output_templates">
-        <div class="text-center bs-wizard-stepnum">(O) {{template.template_name}}</div>
-        <div class="progress">
-            <div class="progress-bar">
-            </div>
-        </div>
-        <a href="#" class="bs-wizard-dot"
-           ng-style="{background: currentProjectColorLight, 'background-color': currentProjectColor}"></a>
-        <div class="bs-wizard-info text-center"></div>
-        <div ng-show="showOverview">
-            <span>&nbsp;</span>
-            <div class="arrow_box_bottom">
-                <div class="col-lg-offset-19">
-                    <ul style="list-style-type: none;">
-                        <li ng-repeat="property in template.default_properties">{{property.name}}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div ng-if="selectedTemplate.required_output_files" class="col-xs-2 bs-wizard-step complete">
-        <div class="text-center bs-wizard-stepnum">(O) Files</div>
-        <div class="progress"><div class="progress-bar"></div></div>
-        <a href="#" class="bs-wizard-dot"></a>
-        <div class="bs-wizard-info text-center"></div>
-    </div>
-
-    <!-- <div class="col-xs-2 bs-wizard-step complete">
-
-    <div class="text-center bs-wizard-stepnum">Step 2</div>
-    <div class="progress">
-    <div class="progress-bar"></div>
-    </div>
-    <a href="#" class="bs-wizard-dot"></a>
-    <div class="bs-wizard-info text-center"></div>
-    <div ng-show="showOverview">
-    <span>&nbsp;</span>
-    <div class="arrow_box_bottom">
-    <div class="col-lg-offset-4">
-    <ul>
-    <li>label 1</li>
-    <li>label 1</li>
-    <li>label 1</li>
-    <li>label 1</li>
-    <li>label 1</li>
-    <li>label 1</li>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-
-    <div class="col-xs-2 bs-wizard-step complete">
-    <div class="text-center bs-wizard-stepnum">Step 2.1</div>
-    <div class="progress"><div class="progress-bar"></div></div>
-    <a href="#" class="bs-wizard-dot"></a>
-    <div class="bs-wizard-info text-center"></div>
-    </div>
-
-    <div class="col-xs-2 bs-wizard-step complete">
-    <div class="text-center bs-wizard-stepnum">Step 2.2</div>
-    <div class="progress"><div class="progress-bar"></div></div>
-    <a href="#" class="bs-wizard-dot"></a>
-    <div class="bs-wizard-info text-center"></div>
-    </div>
-
-    <div class="col-xs-2 bs-wizard-step active">
-    <div class="text-center bs-wizard-stepnum">Step 3</div>
-    <div class="progress"><div class="progress-bar"></div></div>
-    <a href="#" class="bs-wizard-dot"></a>
-    <div class="bs-wizard-info text-center"></div>
-    </div>
-
-    <div class="col-xs-2 bs-wizard-step disabled">
-    <div class="text-center bs-wizard-stepnum">Step 4</div>
-    <div class="progress"><div class="progress-bar"></div></div>
-    <a href="#" class="bs-wizard-dot"></a>
-    <div class="bs-wizard-info text-center"></div>
-    </div> -->
+<div class="row">
+    <provenance-wizard-steps></provenance-wizard-steps>
 </div>

@@ -11,7 +11,7 @@
         </div>
     </div>
 </div>
-<div class="sideboard-group">
+<div ng-controller="tagsSideboardController" class="sideboard-group">
     <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
     <a action-stack ng-click="toggleStackAction('tag', 'Create Tag')">
         <i class="fa fa-plus"/> Add Tag
@@ -19,11 +19,11 @@
     </a>
     <hr class="sideboard-separator">
     <div class="row">
-        <div ng-repeat="t in u_tags">
+        <div ng-repeat="t in tags">
             <div tooltip="{{t.name}}" tooltip-popup-delay="700" class="row">
                 <span>
                     <i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
-                    {{tagname(t.name)}}
+                    {{t.name}}
                 </span>
             </div>
         </div>
