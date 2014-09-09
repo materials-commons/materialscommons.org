@@ -1,8 +1,8 @@
 Application.Controllers.controller('ProjectTreeController',
                                    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects", ProjectTreeController]);
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStackTracker",  ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, mProjects) {
+function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, mProjects, actionStackTracker) {
 
     $scope.addToReview = function(entry, review){
         review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type});
@@ -19,6 +19,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     pubsub.waitOn($scope, "tags.change", function () {
         $scope.user_tags  = Tags.getUserTags();
     });
+
 
     $scope.openFolder = function (item) {
         var e = _.find($scope.trail, function (trailItem) {
@@ -138,13 +139,12 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     $scope.saveData = function () {
         mcapi('/reviews')
             .success(function (data) {
-//                $state.go('projects.overview.editreviews', {'review_id': data.id});
                 $scope.model.new_review = "";
-//                pubsub.send('open_reviews.change');
             }).post($scope.review);
     };
 
     $scope.init = function() {
+        $scope.isActionActive = actionStackTracker.actionActive;
         $scope.user = User.u();
         $scope.model = {
             new_review: "",

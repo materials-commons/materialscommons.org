@@ -21,7 +21,6 @@ Application.Controllers.controller('actionMenuDirectiveController',
 function actionMenuDirectiveController($scope, projectColors, actionStackTracker) {
     $scope.menuItemActive = actionStackTracker.actionActive;
     $scope.colors = projectColors;
-
     // This is needed to toggle the menu closed when an item is selected.
     // This is a part of how ui-bootstrap interacts with the menus and
     // the menu item does an ng-click.

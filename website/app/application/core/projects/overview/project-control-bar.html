@@ -1,11 +1,13 @@
-<div style="position: relative; height: 65px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding-left: 15px; padding-right: 15px;" ng-style="{background: colors.getCurrentProjectColor()}">
+<div style="position: relative; height: 65px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding-left: 15px; padding-right: 15px;"
+     ng-style="{background: colors.getCurrentProjectColor()}">
     <div class="row">
         <span class="col-lg-2" style="font-size: 11pt">
             <i class="fa fa-lock"></i> {{project.name}}
         </span>
         <span class="col-lg-offset-2 col-lg-2">
             <i class="fa fa-users"/>
-            <a data-toggle="modal" data-target="#contributors" style="color: white" class="action-link"> {{project.users.length}}
+            <a data-toggle="modal" data-target="#contributors" style="color: white" class="action-link">
+                {{project.users.length}}
                 contributors</a>
         </span>
         <span class="col-lg-2">
@@ -13,12 +15,14 @@
             0 events
         </span>
         <span class="col-lg-2">
-            <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares" style="color: white" class="action-link">{{project.shares.length}}
-                Project(s)</a>
+            <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares" style="color: white"
+                                                    class="action-link">{{project.shares.length}}
+            Project(s)</a>
         </span>
         <span class="col-lg-2">
-            <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses" style="color:white" class="action-link">{{project.uses.length}}
-                Project(s)</a>
+            <i class="fa fa-mail-reply"/> Uses <a data-toggle="modal" data-target="#uses" style="color:white"
+                                                  class="action-link">{{project.uses.length}}
+            Project(s)</a>
         </span>
     </div>
     <hr class="carved">
@@ -58,6 +62,13 @@
                              title-icon="fa-edit"
                              title-count="project.notes.length"
                              menu-items="notesMenuItems">
+                </action-menu>
+            </span>
+            <span class="col-lg-2">
+                <action-menu title="Settings"
+                         title-icon="fa-gear"
+                         title-count=""
+                         menu-items="settingsMenuItems">
                 </action-menu>
             </span>
         </div>

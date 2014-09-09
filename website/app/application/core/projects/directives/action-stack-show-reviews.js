@@ -109,11 +109,6 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
             title: ""
         };
 
-        mcapi('/selected_users')
-            .success(function (data) {
-                $scope.users = data;
-            }).jsonp();
     }
-
     init();
 }
