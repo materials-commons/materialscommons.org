@@ -1,14 +1,46 @@
-Application.Directives.directive('actionStack', ["$rootScope", "actionStackTracker", "$compile", actionStackDirective]);
+Application.Directives.directive('actionStack', ["$rootScope", "actionStackTracker", "$compile", "hotkeys", "$location", "$anchorScroll", actionStackDirective]);
 
-function actionStackDirective($rootScope, actionStackTracker, $compile) {
+function actionStackDirective($rootScope, actionStackTracker, $compile,
+                              hotkeys, $location, $anchorScroll) {
     return {
         compile: function (element, attrs) {
 
             return function(scope, e) {
                 scope.toggleStackAction = function(action, title, useID, args) {
+
+                    function _createHotkey(key, id, title) {
+                        hotkeys.add({
+                            combo: '' + key,
+                            description: title,
+                            callback: function() {
+                                $location.hash(id);
+                                $anchorScroll();
+                            }
+                        });
+                    }
+
+                    function _setHotkeys(oldlength) {
+                        var i = 0;
+                        for (i = 0; i < oldlength; i++) {
+                            if (i > 8) {
+                                break;
+                            }
+                            hotkeys.del('' + (i + 1));
+                        }
+                        var actions = actionStackTracker.actions;
+
+                        for(i = 0; i < actions.length; i++) {
+                            if (i > 8) {
+                                break;
+                            }
+                            _createHotkey(i+1, actions[i].id, actions[i].title);
+                        }
+                    }
+
                     var id = useID ? useID : action;
                     var actionDirective = "<div action-" + action + "></div>";
                     var actionTitle = title ? title : id;
+                    var oldActionsLength = actionStackTracker.actions.length;
 
                     if (args) {
                         actionDirective = "<div action-" + action + " args='" + args + "'></div>";
@@ -19,8 +51,12 @@ function actionStackDirective($rootScope, actionStackTracker, $compile) {
 
                     if (!actionStackTracker.actionActive(id)) {
                         actionStackTracker.pushAction(id, title);
+                        _setHotkeys(oldActionsLength);
                         $('#action-stack').append($compile(t)(scope));
+                        $location.hash(id);
+                        $anchorScroll();
                     } else if (actionStackTracker.toggleOff(id)) {
+                        _setHotkeys(oldActionsLength);
                         $("#" + id).remove();
                     }
                 };
