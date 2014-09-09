@@ -1,8 +1,35 @@
-Application.Services.factory('actionStackTracker', [actionStackTracker]);
+Application.Services.factory('actionStackTracker', ["hotkeys", "$location", "$anchorScroll", actionStackTracker]);
 
-function actionStackTracker() {
+function actionStackTracker(hotkeys, $location, $anchorScroll) {
     var service = {
         actions: [],
+
+        _createHotkey: function(key, id, title) {
+            hotkeys.add({
+                combo: '' + key,
+                description: title,
+                callback: function() {
+                    $location.hash(id);
+                    $anchorScroll();
+                }
+            });
+        },
+
+        _setHotkeys: function(oldlength) {
+            var i = 0;
+            for (i = 0; i < oldlength; i++) {
+                if (i > 8) {
+                    break;
+                }
+                hotkeys.del('' + (i + 1));
+            }
+            for(i = 0; i < service.actions.length; i++) {
+                if (i > 8) {
+                    break;
+                }
+                service._createHotkey(i+1, service.actions[i].id, service.actions[i].title);
+            }
+        },
 
         _newAction: function(actionID, actionTitle) {
             var title = actionTitle ? actionTitle : actionID;
@@ -35,7 +62,9 @@ function actionStackTracker() {
         },
 
         pushAction: function(actionID, actionTitle) {
+            var oldlength = service.actions.length;
             service.actions.push(service._newAction(actionID, actionTitle));
+            service._setHotkeys(oldlength);
         },
 
         toggleAction: function(actionID) {
@@ -53,7 +82,9 @@ function actionStackTracker() {
             var i = service._findAction(actionID);
             if (i != -1) {
                 if (!service.actions[i].pinned) {
+                    var oldlength = service.actions.length;
                     service.actions.splice(i, 1);
+                    service._setHotkeys(oldlength);
                     return true;
                 }
             }
