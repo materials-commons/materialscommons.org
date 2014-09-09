@@ -68,16 +68,21 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
             $scope.projects = data;
         });
         $scope.project_id = $stateParams.id;
+        ListProjects.get($stateParams.id).then(function(project) {
+            $scope.project = project;
+        });
         $scope.model = {
             comment: "",
             assigned_to: "",
             title: "",
             files: []
         };
-        mcapi('/selected_users')
-            .success(function (data) {
-                $scope.users = data;
-            }).jsonp();
+//        mcapi('/selected_users')
+//            .success(function (data) {
+//                $scope.users = data;
+//            }).jsonp();
+
+
     }
 
     init();

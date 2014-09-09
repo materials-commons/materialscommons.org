@@ -92,7 +92,7 @@
                         <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}</a>
                     </td>
                     <td  ng-if="entry.type=='datafile'">
-                        <span ng-if="actionActive('create-review')">
+                        <span ng-if="isActionActive('create-review')">
                             <input ng-model="entry.selected" ng-click="fileSelected(entry)"
                                    ng-change="entry.selected = !entry.selected" type="checkbox">
                         </span>
