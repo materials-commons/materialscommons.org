@@ -11,7 +11,6 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="assets/css/select2/select2.css" rel="stylesheet">
         <link href="assets/css/jqcloud.css" rel="stylesheet">
-        <link href="assets/css/periodic-table.css" rel="stylesheet">
         <link href="assets/css/tree-grid.css" rel="stylesheet">
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -19,9 +18,12 @@
         <![endif]-->
         <!-- Fav and touch icons -->
         <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
+
         <link href="assets/css/thumbnail.css" rel="stylesheet">
         <link href="assets/css/periodic-table.css" rel="stylesheet">
         <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
+        <link href="assets/css/hotkeys.min.css" rel="stylesheet">
+
         <!-- Application style sheet -->
         <link href="style-3.css" rel="stylesheet">
     </head>
@@ -95,8 +97,7 @@
                             <a class="pointer"
                                role="menuitem"
                                tabindex="-1"
-                               href="#top"
-                               target="_self">
+                               ng-click="gotoLocation('top')">
                                 Top
                             </a>
                         </li>
@@ -104,13 +105,17 @@
                             <a class="pointer"
                                role="menuitem"
                                tabindex="0"
-                               href="#projecttree"
-                               target="_self">
+                               ng-click="gotoLocation('projecttree')">
                                 Project File Tree
                             </a>
                         </li>
-                        <li ng-repeat="action in actions">
-                            <a class="pointer" role="menuitem" tabindex="{{$index+1}}" ng-href="#{{action.id}}" target="_self">{{action.title}}</a>
+                        <li ng-repeat="action in actions" ng-init="addHotKey($index, action.id, action.title);">
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="{{$index+1}}"
+                               ng-click="gotoLocation(action.id)">
+                                {{action.title}}
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -135,6 +140,7 @@
         <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
         <script src="assets/js/angular/angular-validation.js"></script>
         <script src="assets/js/angular/draganddrop.js"></script>
+        <script src="assets/js/angular/hotkeys.min.js"></script>
         <script src="assets/js/angular/ng-context-menu.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jqcloud-1.0.4.js"></script>
