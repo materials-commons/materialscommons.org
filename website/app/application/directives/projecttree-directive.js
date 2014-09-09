@@ -1,6 +1,6 @@
 Application.Controllers.controller('ProjectTreeController',
                                    ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects", "actionStackTracker", ProjectTreeController]);
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStackTracker",  ProjectTreeController]);
 
 function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, mProjects, actionStackTracker) {
 
@@ -20,6 +20,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
         $scope.user_tags  = Tags.getUserTags();
     });
 
+
     $scope.openFolder = function (item) {
         var e = _.find($scope.trail, function (trailItem) {
             return trailItem.id === item.id;
@@ -38,6 +39,12 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
 
     $scope.backToFolder = function (item) {
         $scope.dir = ProjectPath.update_dir(item);
+        var i = _.indexOf($scope.trail, function (each_trail) {
+            return (item.id === each_trail.id);
+        });
+        if(i!= -1){
+            $scope.trail = $scope.trail.splice(0, i + 1);
+        }
     };
 
     $scope.populatePath = function (entry) {
@@ -142,13 +149,12 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
     $scope.saveData = function () {
         mcapi('/reviews')
             .success(function (data) {
-//                $state.go('projects.overview.editreviews', {'review_id': data.id});
                 $scope.model.new_review = "";
-//                pubsub.send('open_reviews.change');
             }).post($scope.review);
     };
 
     $scope.init = function() {
+        $scope.isActionActive = actionStackTracker.actionActive;
         $scope.user = User.u();
         $scope.model = {
             new_review: "",

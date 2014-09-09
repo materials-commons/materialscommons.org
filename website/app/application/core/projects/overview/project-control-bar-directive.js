@@ -67,6 +67,13 @@ function projectControlBarDirectiveController($scope, projectColors, Projects) {
             title: 'Show Notes (s n)'
         }
     ];
+    $scope.settingsMenuItems = [
+        {
+            action: 'show-settings',
+            title: 'Show Settings'
+        }
+    ];
+
 
     Projects.get($scope.projectId).then(function(project) {
         $scope.project = project;

@@ -16,7 +16,7 @@
         <div class="col-lg-4">
             <select class="form-control" ng-model="model.assigned_to">
                 <option disabled>-- Assign to --</option>
-                <option ng-repeat="user in users">{{ user }}</option>
+                <option ng-repeat="user in project.users">{{ user.user_id }}</option>
             </select>
         </div>
     </div>
