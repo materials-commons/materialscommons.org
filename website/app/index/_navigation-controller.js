@@ -28,10 +28,8 @@ Application.Controllers.controller('contextMenuController',
                                    ["$scope", "actionStackTracker", "hotkeys", "$location", "$anchorScroll", contextMenuController]);
 function contextMenuController($scope, actionStackTracker, hotkeys, $location, $anchorScroll) {
     $scope.actions = actionStackTracker.actions;
-
-    hotkeys.del('s t');
     hotkeys.add({
-        combo: 's t',
+        combo: 't',
         description: "Top",
         callback: function() {
             $location.hash('top');
@@ -39,9 +37,8 @@ function contextMenuController($scope, actionStackTracker, hotkeys, $location, $
         }
     });
 
-    hotkeys.del('s f');
     hotkeys.add({
-        combo: 's f',
+        combo: 'f',
         description: 'Project File Tree',
         callback: function() {
             $location.hash('projecttree');
@@ -49,16 +46,4 @@ function contextMenuController($scope, actionStackTracker, hotkeys, $location, $
         }
     });
 
-    $scope.addHotkey = function(key, id, title) {
-        console.log("adding hot key: " + key);
-        hotkeys.del('s ' + key);
-        hotkeys.add({
-            combo: 's ' + key,
-            description: title,
-            callback: function() {
-                $location.hash(id);
-                $anchorScroll();
-            }
-        });
-    };
 }
