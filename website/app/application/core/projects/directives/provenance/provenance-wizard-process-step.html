@@ -1,24 +1,18 @@
 <div>
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-lg-offset-5">
+            <br>
+            <button ng-click="nextStep()"
+                    class="btn btn-primary">
+                Next Step
+            </button>
+            <button ng-click="cancelStep()" class="btn btn-danger">
+                Cancel
+            </button>
+        </div>
+    </div>
     <div class="row">
         <process-details process="project.currentDraft.process"></process-details>
+        <process-runs run-dates="project.currentDraft.process.run_dates"></process-runs>
     </div>
 </div>
-
-<!-- <div>
-<div upperlevel-process="" doc="doc" bk="bk" edit="false"></div>
-<div notes doc="doc" type="process"></div>
-<div df-properties="" default-properties="doc.default_properties" label-size="2" machines-list="machines_list"></div>
-<div ad-properties="" label-size="2" doc="doc" additional-properties="doc.template.additional_properties" edit="false"
-bk="bk"></div>
-</div>
-<div class="row">
-<button ng-click="next(Form)" class="btn btn-default btn-primary">Next</button>
-<button ng-click="saveDraft(Form)" class="btn btn-default btn-success">Save Draft</button>
-
-<div ng-show="message" class="col-sm-4 col-md-4">
-<div class="alert alert-dismissable alert-info">
-<button type="button" class="close" data-dismiss="alert">×</button>
-{{message}}
-</div>
-</div>
-</div> -->
