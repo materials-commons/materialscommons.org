@@ -3,7 +3,7 @@
  * for manipulating the selected flag in the list of files in a project, as well as channel
  * that controllers, directives and services can set to receive events on.
  */
-Application.Services.factory('Projects',
+Application.Services.factory('projectFiles',
     [function () {
         var service = {
             model: {

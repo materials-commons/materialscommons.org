@@ -1,15 +1,14 @@
 Application.Controllers.controller('login',
-    ["$scope", "$state", "User", "alertService", "mcapi", "Nav", "pubsub", "model.projects", "Projects",
-        function ($scope, $state, User, alertService, mcapi, Nav, pubsub, Projects, P2) {
+    ["$scope", "$state", "User", "alertService", "mcapi", "Nav", "pubsub", "model.projects", "projectFiles",
+        function ($scope, $state, User, alertService, mcapi, Nav, pubsub, projects, projectFiles) {
             $scope.login = function () {
                 mcapi('/user/%/apikey', $scope.email, $scope.password)
                     .success(function (u) {
                         User.setAuthenticated(true, u);
                         pubsub.send("tags.change");
                         Nav.setActiveNav('home');
-                        Projects.clear();
-                        P2.clear();
-                        console.log("transition to projects");
+                        projects.clear();
+                        projectFiles.clear();
                         $state.transitionTo('projects');
                     })
                     .error(function (data) {

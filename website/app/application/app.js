@@ -122,8 +122,8 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/projects/:id',
             templateUrl: 'application/core/projects/projectspage.html',
             resolve: {
-                projects: ["model.projects", function(Projects) {
-                    return Projects.getList();
+                projects: ["model.projects", function(projects) {
+                    return projects.getList();
                 }]
             }
         })
