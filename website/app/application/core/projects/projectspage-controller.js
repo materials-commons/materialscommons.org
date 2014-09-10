@@ -8,13 +8,6 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         action: ''
     };
 
-    $scope.myOnClick = function(index) {
-        console.log("---- myOnClick----");
-        console.log("  index = " + index);
-        $scope.colors.setCurrentProjectIndex(index);
-        console.log("---- end myOnClick----");
-    };
-
     watcher.watch($scope, 'model.action', function (choice) {
         if (choice === 'prov') {
             $state.go('projects.provenance');
@@ -36,7 +29,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     };
 
     $scope.createProject = function(){
-        if ($scope.bk.name === "") {
+        if ($scope.model.name === "") {
             return;
         }
         mcapi('/projects')
@@ -44,11 +37,10 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
                 Projects.getList(true).then(function(projects) {
                     $scope.projects = projects;
                 });
-            }).post({'name': $scope.bk.name});
+            }).post({'name': $scope.model.name});
     };
 
     $scope.isActiveProject = function(index) {
-        //console.log("isActiveProject == " + index + "/" + $scope.colors.currentProjectIndex);
         return index === $scope.colors.currentProjectIndex;
     };
 
@@ -59,41 +51,34 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         return name;
     };
 
-    $scope.tagname = function(name) {
-        if (name.length > 25) {
-            return name.slice(0,22) + "...";
-        }
+    function setProjectIndex(project_id, projects) {
+        var i = _.indexOf(projects, function(project) {
+            return project.id == project_id;
+        });
 
-        return name;
-    };
+        $scope.colors.setCurrentProjectIndex(i);
+    }
 
     function init() {
-        console.log("projects page controller");
-        $scope.bk= {
+        $scope.model = {
             name: ''
         };
 
         $scope.activeAction = "closed";
         $scope.from = ProjectPath.get_from();
-        Projects.getList().then(function (data) {
+        Projects.getList().then(function (projects) {
             $scope.model = {
                 action: ''
             };
-            $scope.projects = data.slice(0,8);
+            $scope.projects = projects.slice(0,8);
 
             if (!($stateParams.id)) {
                 $scope.project_id = $scope.projects[0].id;
             } else {
                 $scope.project_id = $stateParams.id;
             }
-
-            // console.log("--start goto projects.overview --");
-            // console.dir($stateParams);
-            // console.log("-- end goto projects.overview --");
-            var index = $stateParams.index ? $stateParams.index : 0;
-            // console.log("Using index = " + index);
-            $scope.colors.setCurrentProjectIndex(index);
-            $state.go('projects.overview', {id: $scope.project_id, draft_id: '', index: index});
+            setProjectIndex($scope.project_id, projects);
+            $state.go('projects.overview', {id: $scope.project_id});
         });
     }
 
