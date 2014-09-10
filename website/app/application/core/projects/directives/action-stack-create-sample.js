@@ -10,9 +10,9 @@ function actionCreateSampleDirective() {
 }
 
 Application.Controllers.controller('actionCreateSampleController',
-    ["$scope", "mcapi", "$stateParams", "model.projects","$injector", actionCreateSampleController]);
+    ["$scope", "mcapi", "$stateParams", "model.projects","$injector", "toaster", actionCreateSampleController]);
 
-function actionCreateSampleController($scope,mcapi,$stateParams, Projects, $injector) {
+function actionCreateSampleController($scope,mcapi,$stateParams, Projects, $injector, toaster) {
     var $validationProvider = $injector.get('$validation');
 
     $scope.setDefaultProject = function () {
@@ -41,16 +41,18 @@ function actionCreateSampleController($scope,mcapi,$stateParams, Projects, $inje
             mcapi('/objects/new')
                 .arg('order_by=birthtime')
                 .success(function (data) {
+                    toaster.pop('success', "Sample:", "Sample has been successfully created", 3000);
                     $scope.sample_obj = data;
                     mcapi('/objects/%', data.id)
                         .success(function (sample_obj) {
-
                             $scope.message = "New Sample has been saved.";
                             $scope.toggleCustom = false;
 
                         }).jsonp();
                     init();
                 }).post($scope.doc);
+        }else{
+            toaster.pop('warning', "Sample:", "Field: 1)Sample Name is required", 5000);
         }
     };
 
