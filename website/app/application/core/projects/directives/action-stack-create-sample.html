@@ -1,12 +1,10 @@
-<div class="col-lg-offset-3">
-    <h3>Add Sample</h3>
-</div>
+<toaster-container></toaster-container>
 <form name="Sample" class="form-horizontal">
     <div class="form-group">
-        <label class="control-label col-lg-2">Sample Name:</label>
+        <label class="control-label col-lg-2">Sample Name:<i class="fa fa-asterisk"></i></label>
 
         <div class="col-lg-4">
-            <input ng-model="doc.name" class="form-control" type="text" placeholder="Name...">
+            <input ng-model="doc.name" class="form-control" required="" type="text" placeholder="Name...">
         </div>
     </div>
     <div class="form-group">

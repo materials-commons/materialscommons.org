@@ -23,6 +23,7 @@
         <link href="assets/css/periodic-table.css" rel="stylesheet">
         <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
         <link href="assets/css/hotkeys.min.css" rel="stylesheet">
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.4/toaster.css" rel="stylesheet" />
 
         <!-- Application style sheet -->
         <link href="style-3.css" rel="stylesheet">
@@ -159,6 +160,8 @@
         <script src="assets/js/underscore-min.js"></script>
         <script src="assets/js/angular/socket.js"></script>
         <script src="assets/js/socket.io.js"></script>
+        <script src="http://code.angularjs.org/1.2.0/angular-animate.min.js" ></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.4/toaster.js"></script>
 
 
         <!------------------------------ Application --------------------------->
@@ -214,7 +217,9 @@
          <script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
          <script src="application/core/projects/directives/provenance/provenance-wizard-steps-directive.js"></script>
          <script src="application/core/projects/directives/provenance/provenance-wizard-process-step.js"></script>
-         <script src="application/directives/process-details.js"></script>
+         <script src="application/core/projects/directives/provenance/process-details.js"></script>
+         <script src="application/core/projects/directives/provenance/process-runs.js"></script>
+         <script src="application/core/projects/directives/provenance/wizard-magic-bar.js"></script>
          <script src="application/core/projects/directives/action-stack-tag.js"></script>
         <script src="application/core/projects/directives/action-stack-todo.js"></script>
         <script src="application/core/projects/directives/action-stack-create-sample.js"></script>
@@ -270,7 +275,8 @@
          <script src="application/core/projects/provenance/finish/finish-controller.js"></script>
 
          <!-------------------------------- Global directives ------------------------------->
-         <script src="application/directives/text-editor-directive.js"></script>
+         <script src="application/directives/draggable.js"></script>
+          <script src="application/directives/text-editor-directive.js"></script>
          <script src="application/directives/paged-directive.js"></script>
          <script src="application/directives/notification-directive.js"></script>
          <script src="application/directives/cgroup-directive.js"></script>

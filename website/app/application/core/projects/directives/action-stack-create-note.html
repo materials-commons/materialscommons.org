@@ -1,6 +1,4 @@
-<div class="col-lg-offset-3">
-    <h3>Add Note</h3>
-</div>
+<toaster-container></toaster-container>
 <form class="form-horizontal">
     <div class="form-group">
         <label class="control-label col-lg-2">Note:</label>
@@ -12,6 +10,9 @@
                           ng-model="model.new_note"></text-angular>
         </div>
     </div>
-    <button ng-click="add_notes()" class="btn btn-default btn-primary">Add</button>
+    <div class="form-group">
+        <label class="control-label col-lg-2"></label>
+        <button ng-click="add_notes()" class="btn btn-default btn-primary">Add</button>
+    </div>
 </form>
 
