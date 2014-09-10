@@ -4,7 +4,7 @@
 
         <div class="row" ng-repeat="n in project.notes | orderBy: date">
             <div ng-if="edit_index==$index">
-                <text-editor text="n.message">
+                <text-editor text="n.message"></text-editor>
                     <br>
                     <button ng-click="saveNotes($index)" class="btn btn-default btn-primary">Save</button>
             </div>

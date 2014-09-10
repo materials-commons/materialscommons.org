@@ -18,6 +18,7 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
     $scope.addReview = function () {
         $scope.review = {'items': [], 'messages': []};
         if($scope.model.title == '' || $scope.model.assigned_to == ''){
+            toaster.pop('warning', "Review", "Fields: 1) Title: 2)Assign To: are required", 5000);
 
         }else{
             //pluck the file items
@@ -37,7 +38,7 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
     $scope.saveData = function () {
         mcapi('/reviews')
             .success(function (data) {
-                toaster.pop('success', "title", "text");
+                toaster.pop('success', "Review", "Review has been successfully added to the list", 3000);
                 $scope.model = {
                     comment: "",
                     assigned_to: "",
@@ -54,6 +55,7 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
         $scope.model.files[index].selected = false;
         $scope.model.files.splice(index, 1);
     };
+
     $scope.indexOfFile = function (id) {
         for (var i = 0; i < $scope.model.files.length; i++) {
             if ($scope.model.files[i].id == id) {
