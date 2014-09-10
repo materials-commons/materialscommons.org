@@ -4,7 +4,7 @@ function actionToDoDirective() {
     return {
         controller: "actionStackToDoController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-create-todo.html"
+        templateUrl: "application/core/projects/directives/action-stack-todo.html"
     };
 }
 
@@ -13,13 +13,13 @@ Application.Controllers.controller("actionStackToDoController",
 
 function actionStackToDoController($scope, mcapi, User, pubsub) {
 
-
-    function init() {
+    $scope.init =  function() {
+        console.log('inside controller')
         $scope.todo = {
             title: '',
             note: ''
         }
     }
 
-    init();
+    $scope.init();
 }
