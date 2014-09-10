@@ -1,0 +1,35 @@
+<div class="row">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Name:</label>
+            <div class="col-sm-5">
+                <input class="form-control"
+                       ng-model="process.name"
+                       placeholder="Name..."
+                       type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Tags:</label>
+            <div class="controls col-sm-5">
+                <select ui-select2="select2IconOptions"
+                        ng-multiple="false"
+                        ng-model="tag"
+                        class="form-control">
+                    <option ng-repeat="tag in tags" value="{{$index}}">{{tag.name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Description:</label>
+            <div class="col-sm-5">
+                <textarea class="form-control"
+                          placeholder="Description..."
+                          ng-model="process.description">
+                </textarea>
+            </div>
+        </div>
+    </form>
+</div>

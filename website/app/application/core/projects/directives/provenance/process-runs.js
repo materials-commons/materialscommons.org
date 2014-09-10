@@ -1,19 +1,20 @@
-Application.Directives.directive('processDetails', processDetailsDirective);
+Application.Directives.directive('processRuns', processRunsDirective);
 
-function processDetailsDirective() {
+function processRunsDirective() {
     return {
         scope: {
-            process: "="
+            runDates: "="
         },
-        controller: "processDetailsController",
+        controller: "processRunsController",
         restrict: "AE",
-        templateUrl: "application/directives/process-details.html"
+        templateUrl: "application/core/projects/directives/provenance/process-runs.html"
     };
 }
 
-Application.Controllers.controller('processDetailsController',
-                                   ["$scope", "User", processDetailsController]);
-function processDetailsController($scope, User) {
+Application.Controllers.controller('processRunsController',
+                                   ["$scope", "User", processRunsController]);
+
+function processRunsController($scope, User) {
     $scope.run = {
         start: new Date(),
         stop: new Date(),
@@ -35,7 +36,7 @@ function processDetailsController($scope, User) {
 
     $scope.addRun = function() {
         var run = {};
-        $scope.process.run_dates.push(angular.copy($scope.run, run));
+        $scope.runDates.push(angular.copy($scope.run, run));
         $scope.showAddRun = false;
         resetRun();
     };
