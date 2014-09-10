@@ -14,7 +14,6 @@ Application.Controllers.controller("actionStackToDoController",
 function actionStackToDoController($scope, mcapi, User, pubsub) {
 
     $scope.init =  function() {
-        console.log('inside controller')
         $scope.todo = {
             title: '',
             note: ''
