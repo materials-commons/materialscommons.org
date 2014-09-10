@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-sm-offset-2">
+        <button ng-click="showAddRun = !showAddRun"
+                class="btn btn-success">
+            Add Run
+        </button>
+    </div>
+</div>
+
+<div ng-show="showAddRun" class="row">
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-4">
+            <label>Start: {{run.start | date:'yyyy/MM/dd'}}</label>
+            <datepicker ng-model="run.start"></datepicker>
+        </div>
+        <div class="col-lg-4">
+            <label>End: {{run.stop | date:'yyyy/MM/dd'}}</label>
+            <datepicker ng-model="run.stop"></datepicker>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+        <div class="col-sm-offset-2">
+            <button ng-click="showAddNote = !showAddNote" class="btn btn-success">
+                Add Note
+            </button>
+        </div>
+    </div>
+</div>
+
+<div ng-show="showAddNote" class="row">
+    <br>
+    <div class="col-lg-offset-2">
+        <div class="row">
+            <div class="col-lg-6">
+                <text-editor text="run.note"></text-editor>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="">
+                <button ng-click="addNote()" class="btn btn-success">
+                    Done
+                </button>
+                <button ng-click="discardNote()" class="btn btn-danger">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-show="showAddRun" class="row">
+    <div class="col-lg-offset-2">
+        <br>
+        <button ng-click="addRun()"
+                class="btn btn-primary">
+            Finish Run
+        </button>
+        <button ng-click="" class="btn btn-danger">
+            Cancel
+        </button>
+    </div>
+</div>
+
+<div class="col-lg-offset-2 col-lg-6">
+    <h4>Runs:</h4>
+    <div class="row" ng-repeat="runDate in runDates">
+        <h4>Start: {{runDate.start | date:'yyyy/MM/dd'}}/ Stop: {{runDate.stop | date:'yyyy/MM/dd'}}</h4>
+        <div class="row" ng-repeat="note in runDate.notes">
+            <div ta-bind ng-model="runDate.note"></div>
+            <div class="text-muted sub-text">
+                {{note.date | date:'yyyy/MM/dd:hh:mma'}} --- {{note.who}}
+            </div>
+        </div>
+        <hr/>
+    </div>
+</div>

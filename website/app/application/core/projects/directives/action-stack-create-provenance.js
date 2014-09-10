@@ -10,7 +10,7 @@ function actionCreateProvenanceDirective() {
 
 Application.Controllers.controller('actionCreateProvenanceController',
                                    ["$scope", "$stateParams", "model.templates",
-                                    "model.projects", "User", "$filter",
+                                    "model.projects", "User", "$filter", "pubsub",
                                     actionCreateProvenanceController]);
 
 function actionCreateProvenanceController($scope, $stateParams, templates, projects,
@@ -78,6 +78,7 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
         var templateName = $scope.project.selectedTemplate.template_name;
         var title = "Wizard Process Step (" + templateName + ")";
         $scope.showChooseProcess = false;
+        $scope.toggleStackAction('create-provenance');
         $scope.toggleStackAction('wizard-process-step', title);
         setupCurrentDraft();
     };
@@ -115,7 +116,6 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
             $scope.project.currentDraft = {
             };
         });
-
 
         $scope.showChooseProcess = true;
 

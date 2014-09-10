@@ -2,6 +2,10 @@ Application.Directives.directive('provenanceWizardSteps', provenanceWizardStepsD
 
 function provenanceWizardStepsDirective() {
     return {
+        scope: {
+            template: "=",
+            showOverview: "="
+        },
         controller: "actionShowProvenanceDirectiveController",
         restrict: "EA",
         templateUrl: "application/core/projects/directives/provenance/provenance-wizard-steps.html"

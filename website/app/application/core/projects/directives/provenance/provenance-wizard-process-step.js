@@ -2,6 +2,7 @@ Application.Directives.directive('actionWizardProcessStep', actionWizardProcessS
 
 function actionWizardProcessStepDirective() {
     return {
+        scope: {},
         controller: "actionWizardProcessStepController",
         restrict: "A",
         templateUrl: "application/core/projects/directives/provenance/provenance-wizard-process-step.html"
@@ -15,7 +16,13 @@ Application.Controllers.controller('actionWizardProcessStepController',
 function actionWizardProcessStepController($scope, $stateParams, templates, projects) {
     projects.get($stateParams.id).then(function(project) {
         $scope.project = project;
-        //console.dir($scope.project.selectedTemplate);
-        //console.dir($scope.project.currentDraft);
     });
+
+    $scope.nextStep = function() {
+        console.dir($scope.project.currentDraft.process);
+    };
+
+    $scope.cancelStep = function() {
+        $scope.toggleStackAction('wizard-process-step');
+    };
 }
