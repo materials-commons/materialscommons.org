@@ -8,14 +8,12 @@ function magicboxDirective($document, projectColors) {
         transclude: true,
         link: function(scope, element, attrs) {
             var startX = 0, startY = 0, x = 0, y = 0;
-            var options = scope.$eval(attrs.magicbox);
-            if (options) {
-                console.dir(options);
-            }
+
             element.css({
                 borderColor: projectColors.getCurrentProjectColorLight()
             });
             element.addClass("magicbox");
+
             element.on('mousedown', function(event) {
                 // Prevent default dragging of selected content
                 event.preventDefault();

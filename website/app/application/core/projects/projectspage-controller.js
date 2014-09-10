@@ -28,7 +28,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         pubsub.send("active-action", $scope.activeAction);
     };
 
-    $scope.createProject = function(){
+    $scope.createProjects = function(){
         if ($scope.model.name === "") {
             return;
         }
