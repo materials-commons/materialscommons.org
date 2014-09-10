@@ -12,3 +12,4 @@ class Project(object):
         self.tags = []
         self.reviews = []
         self.mytags = []
+        self.todos = []
