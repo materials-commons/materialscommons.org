@@ -18,13 +18,14 @@ function actionStackToDoController($scope, $stateParams, Projects, User, dateGen
             $scope.project.todos.push({'note': $scope.todo.note, 'who': User.u(), 'date': dateGenerate.new_date()});
             $scope.saveData();
             $scope.reset();
-            toaster.pop('success', "Note:", "Notes has been saved", 3000);
         }else{
-            toaster.pop('warning', "Note:", "Empty note", 3000);
+            toaster.pop('warning', "Note:", "Field: title is required", 3000);
         }
     }
     $scope.saveData = function () {
         $scope.project.put(User.keyparam()).then(function() {
+            toaster.pop('success', "ToDo:", "Todo has been added", 3000);
+
         });
     };
 

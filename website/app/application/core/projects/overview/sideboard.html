@@ -37,4 +37,14 @@
         <i ng-class="{'fa fa-close action-link-close': actionActive('to-do')}"/>
     </a>
     <hr class="sideboard-separator">
+    <div class="row">
+        <div ng-repeat="td in todos">
+            <div tooltip="{{td.name}}: {{td.note}}" tooltip-popup-delay="100" class="row">
+                <span>
+                    <input type="checkbox">
+                    {{t.title}}
+                </span>
+            </div>
+        </div>
+    </div>
 </div>
