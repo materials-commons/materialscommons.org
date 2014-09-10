@@ -20,7 +20,7 @@ var app = angular.module('materialscommons',
                              'ngDragDrop',
                              'ng-context-menu',
                              "cfp.hotkeys",
-                             '$strap.directives', 'ui.bootstrap',
+                             '$strap.directives', 'ui.bootstrap','toaster',
                              'application.core.constants', 'application.core.services', 'application.core.controllers',
                              'application.core.filters', 'application.core.directives']);
 
