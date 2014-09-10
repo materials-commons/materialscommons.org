@@ -1,6 +1,6 @@
 Application.Directives.directive('draggable', ["$document", draggableDirective]);
 
-function($document) {
+function draggableDirective($document) {
     return function(scope, element, attr) {
         var startX = 0, startY = 0, x = 0, y = 0;
         element.css({
