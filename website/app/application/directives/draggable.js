@@ -4,10 +4,12 @@ function draggableDirective($document) {
     return function(scope, element, attr) {
         var startX = 0, startY = 0, x = 0, y = 0;
         element.css({
-            position: 'relative',
+            position: 'fixed',
             border: '1px solid red',
             backgroundColor: 'lightgrey',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            top: 0,
+            zIndex: 1000
         });
 
         element.on('mousedown', function(event) {

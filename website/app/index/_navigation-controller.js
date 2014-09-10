@@ -25,8 +25,10 @@ function _indexNavigation($scope, User, $state, Nav) {
 }
 
 Application.Controllers.controller('contextMenuController',
-                                   ["$scope", "actionStackTracker", "hotkeys", "$location", "$anchorScroll", contextMenuController]);
-function contextMenuController($scope, actionStackTracker, hotkeys, $location, $anchorScroll) {
+                                   ["$scope", "actionStackTracker", "hotkeys",
+                                    "$location", "$anchorScroll", "pubsub", contextMenuController]);
+function contextMenuController($scope, actionStackTracker, hotkeys,
+                               $location, $anchorScroll, pubsub) {
     $scope.defaultActions = [
         {
             id: 'create-provenance',
@@ -107,6 +109,14 @@ function contextMenuController($scope, actionStackTracker, hotkeys, $location, $
         callback: function() {
             $location.hash('projecttree');
             $anchorScroll();
+        }
+    });
+
+    hotkeys.add({
+        combo: 'm',
+        description: 'Toggle Provenance Magic Bar',
+        callback: function() {
+            pubsub.send("prov.magicbar");
         }
     });
 
