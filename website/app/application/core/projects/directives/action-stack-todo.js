@@ -15,7 +15,7 @@ function actionStackToDoController($scope, $stateParams, Projects, User, dateGen
 
     $scope.addToDo = function(){
         if ($scope.todo.title!==''){
-            $scope.project.todos.push({'note': $scope.todo.note, 'who': User.u(), 'date': dateGenerate.new_date()});
+            $scope.project.todos.push({'note': $scope.todo.note, 'title': $scope.todo.title, 'who': User.u(),'checked': false});
             $scope.saveData();
             $scope.reset();
         }else{
@@ -28,6 +28,7 @@ function actionStackToDoController($scope, $stateParams, Projects, User, dateGen
 
         });
     };
+
 
     $scope.reset = function(){
         $scope.todo = {

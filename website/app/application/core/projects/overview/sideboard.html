@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div class="sideboard-group">
+<div ng-controller="todosSideboardController" class="sideboard-group">
     <span class="col-lg-6"> <i class="fa fa-check-square"/> To Do</span>
     <a action-stack ng-click="toggleStackAction('to-do', 'Create ToDo')">
         <i class="fa fa-plus"/> Add ToDo
@@ -39,10 +39,10 @@
     <hr class="sideboard-separator">
     <div class="row">
         <div ng-repeat="td in todos">
-            <div tooltip="{{td.name}}: {{td.note}}" tooltip-popup-delay="100" class="row">
+            <div tooltip="{{td.title}}: {{td.note}}" tooltip-popup-delay="400" class="row">
                 <span>
-                    <input type="checkbox">
-                    {{t.title}}
+                    <input type="checkbox" ng-model="td.checked" ng-click="checkBox($index)">
+                    {{td.title}}
                 </span>
             </div>
         </div>
