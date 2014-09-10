@@ -23,6 +23,8 @@ function actionWizardProcessStepController($scope, $stateParams, templates, proj
     };
 
     $scope.cancelStep = function() {
+        console.log("cancelStep");
+        $scope.project.selectedTemplate = null;
         $scope.toggleStackAction('wizard-process-step');
     };
 }
