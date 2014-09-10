@@ -10,9 +10,10 @@ function actionCreateReviewDirective() {
 }
 
 Application.Controllers.controller('actionCreateReviewController',
-    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "Projects", actionCreateReviewController]);
+    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "Projects","toaster",  actionCreateReviewController]);
 
-function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects) {
+function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects, toaster) {
+
 
     $scope.addReview = function () {
         $scope.review = {'items': [], 'messages': []};
@@ -36,6 +37,7 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
     $scope.saveData = function () {
         mcapi('/reviews')
             .success(function (data) {
+                toaster.pop('success', "title", "text");
                 $scope.model = {
                     comment: "",
                     assigned_to: "",
@@ -45,7 +47,6 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
                 $scope.review = {};
                 pubsub.send('open_reviews.change');
                 pubsub.send('reviews.change');
-
             }).post($scope.review);
     };
 
