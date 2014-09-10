@@ -1,0 +1,16 @@
+<div ng-show="magicBarActive">
+    <div draggable class="col-lg-6">
+        Wizard Magic Bar Is Here!
+        <div class="row">
+            <provenance-wizard-steps show-overview="false"
+                                     template="project.selectedTemplate">
+            </provenance-wizard-steps>
+        </div>
+        <div class="row">
+            <button class="btn btn-danger"
+                    ng-click="dismiss()">
+                Dismiss
+            </button>
+        </div>
+    </div>
+</div>
