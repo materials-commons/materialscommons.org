@@ -18,6 +18,7 @@ function actionStackToDoController($scope, mcapi, User, pubsub) {
             title: '',
             note: ''
         }
+
     }
 
     $scope.init();
