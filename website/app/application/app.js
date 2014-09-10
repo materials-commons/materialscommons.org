@@ -122,20 +122,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/projects/:id',
             templateUrl: 'application/core/projects/projectspage.html',
             resolve: {
-                Projects: "model.projects",
-                projects: function(Projects) {
+                projects: ["model.projects", function(Projects) {
                     return Projects.getList();
-                }
+                }]
             }
         })
         .state('projects.overview', {
             url: '/overview',
             templateUrl: 'application/core/projects/overview/overview.html'
-            // onEnter: function($stateParams, projectColors) {
-            //     console.log("---onEnter---");
-            //     projectColors.setCurrentProjectIndex(+$stateParams.index);
-            //     console.log("---leave onEnter--");
-            // }
         });
 
 }]);
