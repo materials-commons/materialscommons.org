@@ -113,7 +113,7 @@ function contextMenuController($scope, actionStackTracker, hotkeys,
     });
 
     hotkeys.add({
-        combo: 'm',
+        combo: 'w',
         description: 'Toggle Provenance Magic Bar',
         callback: function() {
             pubsub.send("prov.magicbar");

@@ -1,6 +1,5 @@
 <div ng-show="magicBarActive">
-    <div draggable class="col-lg-6">
-        Wizard Magic Bar Is Here!
+    <div magicbox border-color="{{getBorderColor()}}" class="col-lg-6">
         <div class="row">
             <provenance-wizard-steps show-overview="false"
                                      template="project.selectedTemplate">

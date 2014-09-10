@@ -119,7 +119,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
      ########################################################################
      */
         .state('projects', {
-            url: '/projects/:id/:draft_id',
+            url: '/projects/:id/:draft_id/:index',
             templateUrl: 'application/core/projects/projectspage.html',
             resolve: {
                 projects: ["model.projects", function(Projects) {
@@ -130,6 +130,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.overview', {
             url: '/overview',
             templateUrl: 'application/core/projects/overview/overview.html'
+            // onEnter: function($stateParams, projectColors) {
+            //     console.log("---onEnter---");
+            //     projectColors.setCurrentProjectIndex(+$stateParams.index);
+            //     console.log("---leave onEnter--");
+            // }
         })
         .state('projects.overview.files', {
             url: '/files',
