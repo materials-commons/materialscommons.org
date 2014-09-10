@@ -88,6 +88,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state,
     };
 
     function init() {
+        console.log("overview-controller");
         $scope.open_reviews = [];
         $scope.tag = {
             name: "",

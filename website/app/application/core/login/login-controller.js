@@ -9,6 +9,7 @@ Application.Controllers.controller('login',
                         Nav.setActiveNav('home');
                         Projects.clear();
                         P2.clear();
+                        console.log("transition to projects");
                         $state.transitionTo('projects');
                     })
                     .error(function (data) {

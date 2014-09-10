@@ -68,6 +68,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     };
 
     function init() {
+        console.log("projects page controller");
         $scope.bk= {
             name: ''
         };
@@ -86,17 +87,13 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
                 $scope.project_id = $stateParams.id;
             }
 
-            if ($stateParams.draft_id !== "") {
-                $state.go('projects.provenance.process');
-            } else {
-                console.log("--start goto projects.overview --");
-                console.dir($stateParams);
-                console.log("-- end goto projects.overview --");
-                var index = $stateParams.index ? $stateParams.index : 0;
-                console.log("Using index = " + index);
-                $scope.colors.setCurrentProjectIndex(index);
-                $state.go('projects.overview', {id: $scope.project_id, draft_id: '', index: index});
-            }
+            // console.log("--start goto projects.overview --");
+            // console.dir($stateParams);
+            // console.log("-- end goto projects.overview --");
+            var index = $stateParams.index ? $stateParams.index : 0;
+            // console.log("Using index = " + index);
+            $scope.colors.setCurrentProjectIndex(index);
+            $state.go('projects.overview', {id: $scope.project_id, draft_id: '', index: index});
         });
     }
 

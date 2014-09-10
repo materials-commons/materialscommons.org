@@ -56,8 +56,13 @@
                     <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
                 </ul>
                 <ul ng-show="email_address" class="nav navbar-nav navbar-right">
-                    <li ng-class="{ navactive: isActiveStep('projects') }"><a ng-click="showStep('projects')"ui-sref="projects({id:'', draft_id:'', from:''})" class="navbar-link"><i class="fa fa-briefcase space-right"></i>
-                        Projects</a></li>
+                    <li ng-class="{ navactive: isActiveStep('projects') }">
+                        <a ng-click="showStep('projects')"
+                           ui-sref="projects({id:''})"
+                           class="navbar-link">
+                            <i class="fa fa-briefcase space-right"></i> Projects
+                        </a>
+                    </li>
                     <li ng-class="{ navactive: isActiveStep('machines') }">
                         <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i class="fa fa-gears space-right"></i> Machines</a></li>
                     <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
