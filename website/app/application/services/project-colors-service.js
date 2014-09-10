@@ -30,6 +30,7 @@ function projectColorsService() {
         currentProjectIndex: 0,
 
         setCurrentProjectIndex: function(index) {
+            console.log("setting index to " + index);
             service.currentProjectIndex = index;
         },
 

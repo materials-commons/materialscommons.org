@@ -11,9 +11,10 @@ function provenanceWizardMagicBarDirective() {
 
 Application.Controllers.controller('provenanceWizardMagicBarController',
                                    ["$scope", "$stateParams", "model.projects",
-                                    "User", "pubsub", provenanceWizardMagicBarController]);
+                                    "User", "pubsub", "projectColors", provenanceWizardMagicBarController]);
 
-function provenanceWizardMagicBarController($scope, $stateParams, projects, User, pubsub) {
+function provenanceWizardMagicBarController($scope, $stateParams, projects,
+                                            User, pubsub, projectColors) {
     $scope.magicBarActive = false;
 
     pubsub.waitOn($scope, 'prov.magicbar', function() {
@@ -22,6 +23,8 @@ function provenanceWizardMagicBarController($scope, $stateParams, projects, User
             $scope.project = project;
         });
     });
+
+    $scope.getBorderColor = projectColors.getCurrentProjectColorLight;
 
     $scope.dismiss = function() {
         $scope.magicBarActive = false;

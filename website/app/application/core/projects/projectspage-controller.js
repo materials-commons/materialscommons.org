@@ -8,6 +8,13 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         action: ''
     };
 
+    $scope.myOnClick = function(index) {
+        console.log("---- myOnClick----");
+        console.log("  index = " + index);
+        $scope.colors.setCurrentProjectIndex(index);
+        console.log("---- end myOnClick----");
+    };
+
     watcher.watch($scope, 'model.action', function (choice) {
         if (choice === 'prov') {
             $state.go('projects.provenance');
@@ -41,6 +48,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     };
 
     $scope.isActiveProject = function(index) {
+        //console.log("isActiveProject == " + index + "/" + $scope.colors.currentProjectIndex);
         return index === $scope.colors.currentProjectIndex;
     };
 
@@ -81,7 +89,13 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             if ($stateParams.draft_id !== "") {
                 $state.go('projects.provenance.process');
             } else {
-                $state.go('projects.overview', {id: $scope.project_id, draft_id: ''});
+                console.log("--start goto projects.overview --");
+                console.dir($stateParams);
+                console.log("-- end goto projects.overview --");
+                var index = $stateParams.index ? $stateParams.index : 0;
+                console.log("Using index = " + index);
+                $scope.colors.setCurrentProjectIndex(index);
+                $state.go('projects.overview', {id: $scope.project_id, draft_id: '', index: index});
             }
         });
     }
