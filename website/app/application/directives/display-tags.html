@@ -1,0 +1,8 @@
+<div ng-repeat="t in tags">
+    <div class="row">
+        <span tooltip="{{tooltip(t)}}" tooltip-popup-delay="100">
+            <i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
+            {{t.name}}
+        </span>
+    </div>
+</div>
