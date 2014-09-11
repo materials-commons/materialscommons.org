@@ -16,17 +16,17 @@ function tagsSideboardController($scope, User) {
 }
 
 Application.Controllers.controller('todosSideboardController',
-    ["$scope",  "$stateParams", "model.projects", "User", "toaster", todosSideboardController]);
+    ["$scope",  "$stateParams", "model.projects", "User", "toastr", todosSideboardController]);
 
-function todosSideboardController($scope, $stateParams, Projects, User, toaster) {
+function todosSideboardController($scope, $stateParams, Projects, User, toastr) {
 
     $scope.isChecked = function(td){
         td.selected = !td.selected;
         $scope.project.put(User.keyparam()).then(function() {
             if(td.selected == true){
-                toaster.pop('success', "ToDo:", "Marked as Done", 3000);
+//                toaster.pop('success', "ToDo:", "Marked as Done", 3000);
             }else{
-                toaster.pop('warning', "ToDo:", "Marked as Not Done", 3000)
+//                toaster.pop('warning', "ToDo:", "Marked as Not Done", 3000)
             }
 
         });

@@ -10,49 +10,38 @@ function actionCreateReviewDirective() {
 }
 
 Application.Controllers.controller('actionCreateReviewController',
-    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "projectFiles","toaster",  actionCreateReviewController]);
+    ["$scope", "mcapi", "dateGenerate", "User", "pubsub", "$stateParams", "model.projects", "projectFiles", "toastr", actionCreateReviewController]);
 
-function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, Projects, projectFiles, toaster) {
+function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub, $stateParams, Projects, projectFiles, toastr) {
 
 
     $scope.addReview = function () {
-        $scope.review = {'items': [], 'messages': []};
-        if($scope.model.title == '' || $scope.model.assigned_to == ''){
-            toaster.pop('warning', "Review", "Fields: 1) Title: 2)Assign To: are required", 5000);
 
-        }else{
-            //pluck the file items
-            $scope.model.files.forEach(function(f){
-                $scope.review.items.push({
-                    'id': f.id,
-                    'path': f.fullname,
-                    'name': f.name,
-                    'type': f.type});
-            });
-            $scope.review.author = User.u();
-            $scope.review.assigned_to = $scope.model.assigned_to;
-            $scope.review.status = 'open';
-            $scope.review.title = $scope.model.title;
-            $scope.review.messages.push({'message': $scope.model.comment, 'who': User.u(), 'date': dateGenerate.new_date()});
-            $scope.review.project = $scope.project_id;
-            $scope.saveData();
-        }
-
+        $scope.model.files.forEach(function (f) {
+            $scope.review.items.push({
+                'id': f.id,
+                'path': f.fullname,
+                'name': f.name,
+                'type': f.type});
+        });
+        $scope.review.author = User.u();
+        $scope.review.assigned_to = $scope.model.assigned_to;
+        $scope.review.status = 'open';
+        $scope.review.title = $scope.model.title;
+        $scope.review.messages.push({'message': $scope.model.comment, 'who': User.u(), 'date': dateGenerate.new_date()});
+        $scope.review.project = $scope.project_id;
+        $scope.saveData();
     };
     $scope.saveData = function () {
         mcapi('/reviews')
             .success(function (data) {
-                toaster.pop('success', "Review", "Review has been successfully added to the list", 3000);
-                $scope.model = {
-                    comment: "",
-                    assigned_to: "",
-                    title: "",
-                    files: []
-                };
-                $scope.review = {};
+                $scope.reset();
                 pubsub.send('open_reviews.change');
                 pubsub.send('reviews.change');
-            }).post($scope.review);
+            }).error(function (reason) {
+
+            })
+            .post($scope.review);
     };
 
     $scope.removeFile = function (index) {
@@ -68,6 +57,17 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
         }
         return -1;
     };
+    $scope.reset = function () {
+        $scope.model = {
+            comment: "",
+            assigned_to: "",
+            title: "",
+            files: []
+        };
+        $scope.review = {'items': [], 'messages': []};
+
+    };
+
     function init() {
         $scope.channel = 'action-reviews';
         projectFiles.setChannel($scope.channel);
@@ -75,21 +75,10 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
             $scope.projects = data;
         });
         $scope.project_id = $stateParams.id;
-        Projects.get($stateParams.id).then(function(project) {
+        Projects.get($stateParams.id).then(function (project) {
             $scope.project = project;
         });
-        $scope.model = {
-            comment: "",
-            assigned_to: "",
-            title: "",
-            files: []
-        };
-//        mcapi('/selected_users')
-//            .success(function (data) {
-//                $scope.users = data;
-//            }).jsonp();
-
-
+        $scope.reset();
     }
 
     init();
