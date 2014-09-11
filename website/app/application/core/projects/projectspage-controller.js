@@ -81,7 +81,6 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             $state.go('projects.overview', {id: $scope.project_id});
         });
     }
-
     init();
 }
 

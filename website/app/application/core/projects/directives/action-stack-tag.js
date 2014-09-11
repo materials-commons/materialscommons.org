@@ -17,7 +17,8 @@ function actionStackTagController($scope, mcapi, User, pubsub) {
         $scope.tag = {
             name: "",
             color: "blue",
-            icon: "tag"
+            icon: "tag",
+            description: ""
         };
     }
 
@@ -26,7 +27,6 @@ function actionStackTagController($scope, mcapi, User, pubsub) {
             .success(function () {
                 var tag;
                 $scope.toggleStackAction('tag', 'Create Tag');
-                console.dir($scope.tag);
                 User.attr().preferences.tags.push(angular.copy($scope.tag, tag));
                 resetTag();
             }).put($scope.tag);

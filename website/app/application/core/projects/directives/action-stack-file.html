@@ -1,8 +1,8 @@
 <div>
     <form class="form-inline">
-        <a ng-repeat="trailitem in trail" ng-click="backToFolder(trailitem)">
+        <span ng-repeat="trailitem in trail" ng-click="backToFolder(trailitem)">
             <span><b>{{trailitem.displayname}}/ </b></span>
-        </a>
+        </span>
         <a ng-href="{{ originalFileSrc }}" download="{{ file.name }}"><b><u>{{file.name}}</u></b></a>
     </form>
     <button action-stack class="btn btn-danger" ng-click="toggleStackAction('file', file.name, file.id)">
