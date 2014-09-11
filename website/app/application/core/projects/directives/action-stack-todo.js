@@ -9,23 +9,22 @@ function actionToDoDirective() {
 }
 
 Application.Controllers.controller("actionStackToDoController",
-    ["$scope",  "$stateParams",  "model.projects", "User", "toaster", actionStackToDoController]);
+    ["$scope",  "$stateParams",  "model.projects", "User", "toastr", actionStackToDoController]);
 
-function actionStackToDoController($scope, $stateParams, Projects, User, toaster) {
+function actionStackToDoController($scope, $stateParams, Projects, User, toastr) {
 
     $scope.addToDo = function(){
-        if ($scope.todo.title!==''){
             $scope.project.todos.push({'note': $scope.todo.note, 'title': $scope.todo.title, 'who': User.u(),'selected': false});
             $scope.saveData();
-            toaster.pop('success', "ToDo:", "Todo has been added", 3000);
             $scope.reset();
-        }else{
-            toaster.pop('warning', "Note:", "Field: Title is required", 3000);
-        }
+            $scope.toggleStackAction('to-do', 'Create ToDo')
     }
     $scope.saveData = function () {
         $scope.project.put(User.keyparam()).then(function() {
-
+        }, function(reason){
+           toastr.error(reason.data.error, 'Error', {
+               closeButton: true
+           });
         });
     };
 
