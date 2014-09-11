@@ -163,8 +163,8 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
         };
 
         $scope.isActionActive = actionStackTracker.actionActive;
-
-        $scope.user_tags = Tags.getUserTags();
+        $scope.user_tags = User.attr().preferences.tags;
+//        $scope.user_tags = Tags.getUserTags();
         if ($scope.from == 'true') {
             $scope.project = ProjectPath.get_project();
             var currentTrail = ProjectPath.get_trail();

@@ -1,11 +1,12 @@
 <div class="row">
-    <div class="col-lg-6">
-        <form class="form-horizontal">
+    <div class="col-lg-offset-3">
+        <form class="form-horizontal col-lg-6">
             <fieldset>
 
                 <!-- Text input-->
                 <div class="control-group">
-                    <label class="control-label" for="">Name</label>
+                    <label class="control-label">Name</label>
+
                     <div class="controls">
                         <input class="form-control" placeholder="name..." type="text" ng-model="tag.name">
                     </div>
@@ -13,15 +14,16 @@
 
                 <div class="control-group">
                     <label class="control-label" for="selectbasic">Color</label>
+
                     <div class="controls">
                         <select class="form-control" ng-model="tag.color">
                             <option value="">Highlight</option>
-                            <option value="#FF0000" style="background-color: red;">Red</option>
-                            <option value="#0000FF" style="background-color: Blue;">Blue</option>
-                            <option value="#008000" style="background-color: green;">Green</option>
-                            <option value="#FFFF00" style="background-color: #ffff00;">Yellow</option>
-                            <option value="#9370DB" style="background-color: mediumpurple;">Purple</option>
-                            <option value="#EE82EE" style="background-color: Violet;">Violet</option>
+                            <option value="#CF000F" style="background-color: red;">Red</option>
+                            <option value="#5C97BF" style="background-color: Blue;">Blue</option>
+                            <option value="#1BBC9B" style="background-color: green;">Green</option>
+                            <option value="#F4D03F" style="background-color: #bebe00;">Yellow</option>
+                            <option value="#913D88" style="background-color: mediumpurple;">Purple</option>
+                            <option value="#D2527F" style="background-color: Violet;">Pink</option>
                         </select>
                     </div>
                 </div>
@@ -39,11 +41,19 @@
                             </ul>
                         </div>
                         <span><i class="fa fa-{{tag.icon}}" ng-style="{color: tag.color}"/></span>
+
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Description</label>
+                    <div class="controls">
+                        <textarea class="form-control" ng-model="tag.description"></textarea>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <label class="control-label" for="button1id"></label>
+
                     <div class="controls">
                         <button id="button1id"
                                 name="button1id"

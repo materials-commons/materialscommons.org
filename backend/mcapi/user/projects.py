@@ -264,8 +264,11 @@ def update_project(id):
     description = dmutil.get_optional('description', j, None)
     if description:
         item['description'] = description
+        do_update = True    
+    todos = dmutil.get_optional('todos', j, None)
+    if todos:
+        item['todos'] = todos
         do_update = True
-
     notes = dmutil.get_optional('notes', j, [])
     if notes:
         item['notes'] = notes
