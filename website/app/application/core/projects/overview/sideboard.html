@@ -20,14 +20,7 @@
     </a>
     <hr class="sideboard-separator">
     <div class="row">
-        <div ng-repeat="t in tags">
-            <div tooltip="{{t.name}}: {{t.description}}" tooltip-popup-delay="100" class="row">
-                <span>
-                    <i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
-                    {{t.name}}
-                </span>
-            </div>
-        </div>
+        <display-tags tags="tags"></display-tags>
     </div>
 </div>
 
