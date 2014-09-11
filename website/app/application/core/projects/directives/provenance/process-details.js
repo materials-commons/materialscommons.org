@@ -14,28 +14,34 @@ function processDetailsDirective() {
 Application.Controllers.controller('processDetailsController',
                                    ["$scope", "User", processDetailsController]);
 function processDetailsController($scope, User) {
-    console.log("processDetailsController");
     $scope.tags = User.attr().preferences.tags;
+    var tagsByName = {};
+
+    $scope.tags.forEach(function(tag) {
+        tagsByName[tag.name] = tag;
+    });
+
+    function createTagHTML(tagName) {
+        var tag = tagsByName[tagName];
+        return "<span> " +
+            "<i class='fa fa-" + tag.icon + "' style='color:" + tag.color + "'></i> " +
+            tag.name + "</span>";
+    }
 
     function format(choice) {
-         console.log("----- format -----");
-         console.dir(choice);
-         console.log("----- end format ----");
-        return "<span>bob</span>";
-        //return "<span><i class='fa fa-" + choice.icon + "'></i> " + choice.name + "</span>";
+        if (! choice) {
+            return "";
+        } else if (choice.text === "") {
+            return "";
+        }
+        return createTagHTML(choice.text);
     }
 
-    function format2(choice) {
-        // console.log("----- format2 -----");
-        // console.dir(choice);
-        // console.log("----- end format2 -----");
-        return "<span>bob</span>";
-    }
     $scope.select2IconOptions = {
         placeholder: 'Select icon',
         allowClear: true,
         width: 'element',
-        //formatSelection: format2,
+        formatSelection: format,
         formatResult: format,
         escapeMarkup: function(m) { return m; }
     };
