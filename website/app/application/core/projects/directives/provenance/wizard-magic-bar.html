@@ -1,10 +1,14 @@
 <div ng-show="magicBarActive">
-    <div draggable class="col-lg-6">
-        Wizard Magic Bar Is Here!
-        <div class="row">
+    <div magicbox class="col-lg-6 wizard-magic-bar">
+        <div ng-show="project.selectedTemplate" class="row">
             <provenance-wizard-steps show-overview="false"
                                      template="project.selectedTemplate">
             </provenance-wizard-steps>
+        </div>
+        <div ng-show="!project.selectedTemplate">
+            <div class="col-lg-offset-4">
+                <h4>No provenance is currently active.</h4>
+            </div>
         </div>
         <div class="row">
             <button class="btn btn-danger"

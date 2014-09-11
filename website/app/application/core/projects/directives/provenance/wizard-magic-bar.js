@@ -11,9 +11,9 @@ function provenanceWizardMagicBarDirective() {
 
 Application.Controllers.controller('provenanceWizardMagicBarController',
                                    ["$scope", "$stateParams", "model.projects",
-                                    "User", "pubsub", provenanceWizardMagicBarController]);
+                                    "pubsub", provenanceWizardMagicBarController]);
 
-function provenanceWizardMagicBarController($scope, $stateParams, projects, User, pubsub) {
+function provenanceWizardMagicBarController($scope, $stateParams, projects, pubsub) {
     $scope.magicBarActive = false;
 
     pubsub.waitOn($scope, 'prov.magicbar', function() {

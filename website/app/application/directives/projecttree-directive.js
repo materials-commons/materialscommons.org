@@ -1,8 +1,8 @@
 Application.Controllers.controller('ProjectTreeController',
-                                   ["$scope", "mcapi", "Projects", "pubsub", "ProjectPath",
+                                   ["$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
                                     "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStackTracker",  ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, mProjects, actionStackTracker) {
+function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStackTracker) {
 
     $scope.addToReview = function(entry, review){
         review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type});
@@ -88,7 +88,7 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
 
     $scope.fileSelected = function (entry) {
         entry.selected = !entry.selected;
-        var channel = Projects.channel;
+        var channel = projectFiles.channel;
         if (channel !== null) {
             pubsub.send(channel, entry);
         }
@@ -172,12 +172,12 @@ function ProjectTreeController ($scope, mcapi, Projects, pubsub, ProjectPath, $s
             $scope.trail = $scope.truncateTrail(currentTrail, item);
             $scope.openFolder(item);
         } else {
-            $scope.model = Projects.model;
+            $scope.model = projectFiles.model;
             ProjectPath.set_project($scope.project);
             $scope.selectProject($scope.project);
         }
 
-        mProjects.get($scope.project).then(function(p) {
+        projects.get($scope.project).then(function(p) {
             var totalFiles = 0;
             var key;
             $scope.users = p.users;

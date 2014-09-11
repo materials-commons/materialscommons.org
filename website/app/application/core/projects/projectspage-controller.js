@@ -28,8 +28,8 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         pubsub.send("active-action", $scope.activeAction);
     };
 
-    $scope.createProject = function(){
-        if ($scope.bk.name === "") {
+    $scope.createProjects = function(){
+        if ($scope.model.name === "") {
             return;
         }
         mcapi('/projects')
@@ -37,7 +37,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
                 Projects.getList(true).then(function(projects) {
                     $scope.projects = projects;
                 });
-            }).post({'name': $scope.bk.name});
+            }).post({'name': $scope.model.name});
     };
 
     $scope.isActiveProject = function(index) {
@@ -51,38 +51,34 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         return name;
     };
 
-    $scope.tagname = function(name) {
-        if (name.length > 25) {
-            return name.slice(0,22) + "...";
-        }
+    function setProjectIndex(project_id, projects) {
+        var i = _.indexOf(projects, function(project) {
+            return project.id == project_id;
+        });
 
-        return name;
-    };
+        $scope.colors.setCurrentProjectIndex(i);
+    }
 
     function init() {
-        $scope.bk= {
+        $scope.model = {
             name: ''
         };
 
         $scope.activeAction = "closed";
         $scope.from = ProjectPath.get_from();
-        Projects.getList().then(function (data) {
+        Projects.getList().then(function (projects) {
             $scope.model = {
                 action: ''
             };
-            $scope.projects = data.slice(0,8);
+            $scope.projects = projects.slice(0,8);
 
             if (!($stateParams.id)) {
                 $scope.project_id = $scope.projects[0].id;
             } else {
                 $scope.project_id = $stateParams.id;
             }
-
-            if ($stateParams.draft_id !== "") {
-                $state.go('projects.provenance.process');
-            } else {
-                $state.go('projects.overview', {id: $scope.project_id, draft_id: ''});
-            }
+            setProjectIndex($scope.project_id, projects);
+            $state.go('projects.overview', {id: $scope.project_id});
         });
     }
     init();
