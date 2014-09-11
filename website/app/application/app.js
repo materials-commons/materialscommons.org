@@ -21,7 +21,7 @@ var app = angular.module('materialscommons',
                              'ngAnimate',
                              'ng-context-menu',
                              "cfp.hotkeys",
-                             '$strap.directives', 'ui.bootstrap','toaster',
+                             '$strap.directives', 'ui.bootstrap','toastr',
                              'application.core.constants', 'application.core.services', 'application.core.controllers',
                              'application.core.filters', 'application.core.directives']);
 
