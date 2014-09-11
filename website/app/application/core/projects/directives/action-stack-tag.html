@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-offset-3">
-        <form class="form-horizontal col-lg-6">
+        <form name="Form" class="form-horizontal col-lg-6">
             <fieldset>
 
                 <!-- Text input-->
@@ -8,7 +8,7 @@
                     <label class="control-label">Name</label>
 
                     <div class="controls">
-                        <input class="form-control" placeholder="name..." type="text" ng-model="tag.name">
+                        <input name="required" validator="required" class="form-control" placeholder="name..." type="text" ng-model="tag.name">
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                         <button id="button1id"
                                 name="button1id"
                                 class="btn btn-success"
-                                ng-click="createTag()">
+                                validation-submit="Form" ng-click="createTag()">
                             Create
                         </button>
 

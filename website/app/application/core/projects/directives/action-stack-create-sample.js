@@ -10,10 +10,9 @@ function actionCreateSampleDirective() {
 }
 
 Application.Controllers.controller('actionCreateSampleController',
-    ["$scope", "mcapi", "$stateParams", "model.projects","$injector", "toastr", actionCreateSampleController]);
+    ["$scope", "mcapi", "$stateParams", "model.projects", "toastr", actionCreateSampleController]);
 
-function actionCreateSampleController($scope,mcapi,$stateParams, Projects, $injector, toastr) {
-    var $validationProvider = $injector.get('$validation');
+function actionCreateSampleController($scope,mcapi,$stateParams, Projects, toastr) {
 
     $scope.setDefaultProject = function () {
         $scope.doc = {
@@ -32,21 +31,15 @@ function actionCreateSampleController($scope,mcapi,$stateParams, Projects, $inje
         $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
     };
 
-    $scope.save = function (form) {
-        $validationProvider.validate(form);
-        var check = $validationProvider.checkValid(form);
+    $scope.save = function () {
         $scope.doc.path = $scope.doc.name;
         $scope.doc.project_id = $scope.project_id;
-        if (check === true) {
             mcapi('/objects/new')
                 .arg('order_by=birthtime')
                 .success(function (data) {
                     $scope.sample_obj = data;
                     init();
                 }).post($scope.doc);
-
-        }else{
-        }
     };
 
     $scope.populateProjects = function () {
