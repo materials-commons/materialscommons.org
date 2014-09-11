@@ -1,0 +1,22 @@
+<div class="row">
+    <label class="col-sm-2 control-label">Search: </label>
+    <input ng-model="searchStr"
+           placeholder="Search..."
+           type="text"
+           class="form-control"
+           focus="true">
+</div>
+<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <th>Name</th>
+            <th>Description</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="tag in context.attributes | filter:searchStr | orderBy:'name'">
+                <td><i class="fa" ng-class="'fa-' + tag.icon"/> {{tag.name}}</td>
+                <td>description here</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

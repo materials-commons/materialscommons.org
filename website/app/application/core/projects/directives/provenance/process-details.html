@@ -16,8 +16,9 @@
                 <select ui-select2="select2IconOptions"
                         ng-multiple="false"
                         ng-model="tag"
+                        ng-options="tag.name for tag in tags"
                         class="form-control">
-                    <option ng-repeat="tag in tags" value="{{$index}}">{{tag.name}}</option>
+                    <option></option>
                 </select>
             </div>
         </div>
