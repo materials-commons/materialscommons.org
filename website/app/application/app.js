@@ -115,130 +115,23 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 
     /*
      ########################################################################
-     ####################### Projects Overview ##################################
+     ########################### Projects ###################################
      ########################################################################
      */
         .state('projects', {
-            url: '/projects/:id/:draft_id',
+            url: '/projects/:id',
             templateUrl: 'application/core/projects/projectspage.html',
             resolve: {
-                projects: ["model.projects", function(Projects) {
-                    return Projects.getList();
+                projects: ["model.projects", function(projects) {
+                    return projects.getList();
                 }]
             }
         })
         .state('projects.overview', {
             url: '/overview',
             templateUrl: 'application/core/projects/overview/overview.html'
-        })
-        .state('projects.overview.files', {
-            url: '/files',
-            templateUrl: 'application/core/projects/overview/files/files.html',
-            onExit: function (ProjectPath) {
-                ProjectPath.set_from(false);
-            }
-        })
-        .state('projects.overview.provenance', {
-            url: '/provenance',
-            templateUrl: 'application/core/projects/overview/provenance/provenance.html'
-        })
-        .state('projects.overview.drafts', {
-            url: '/drafts',
-            templateUrl: 'application/core/projects/overview/drafts/drafts.html'
-        })
-        .state('projects.overview.samples', {
-            url: '/samples',
-            templateUrl: 'application/core/projects/overview/samples/samples.html'
-        })
-        .state('projects.overview.notes', {
-            url: '/notes',
-            templateUrl: 'application/core/projects/overview/notes/notes.html'
-        })
-        .state('projects.overview.settings', {
-            url: '/settings',
-            templateUrl: 'application/core/projects/overview/settings/group_access.html'
-        })
-        .state('projects.overview.reviews', {
-            url: '/reviews',
-            templateUrl: 'application/core/projects/overview/reviews/reviews.html'
-        })
-        .state('projects.overview.editreviews', {
-            url: '/review/:review_id',
-            templateUrl: 'application/core/projects/overview/reviews/edit-review.html'
-        })
-
-    /*
-     ########################################################################
-     ####################### Projects Data Edit ##################################
-     ########################################################################
-     */
-        .state('projects.dataedit', {
-            url: '/dataedit/:data_id/:file_path',
-            templateUrl: 'application/core/projects/dataedit/dataedit.html'
-        })
-        .state('projects.dataedit.details', {
-            url: '/details',
-            templateUrl: 'application/core/projects/dataedit/details/details.html'
-        })
-        .state('projects.dataedit.reviews', {
-            url: '/reviews',
-            templateUrl: 'application/core/projects/dataedit/reviews/reviews.html'
-        })
-        .state('projects.dataedit.editreviews', {
-            url: '/review/:review_id',
-            templateUrl: 'application/core/projects/dataedit/reviews/edit-review.html'
-        })
-        .state('projects.dataedit.notes', {
-            url: '/notes',
-            templateUrl: 'application/core/projects/dataedit/notes/notes.html'
-        })
-        .state('projects.dataedit.provenance', {
-            url: '/provenance',
-            templateUrl: 'application/core/projects/dataedit/provenance/provenance.html'
-        })
-    /*
-     ########################################################################
-     ####################### Projects Provenance ##################################
-     ########################################################################
-     */
-        .state('projects.provenance', {
-            url: '/provenance',
-            templateUrl: 'application/core/projects/provenance/provenance.html',
-            resolve: {
-                ProvDrafts: "ProvDrafts"
-            },
-            onExit: function (ProvDrafts) {
-                // if (ProvDrafts.current && ProvDrafts.current.process.name !== "") {
-                //     ProvDrafts.saveDraft();
-                // }
-            }
-        })
-        .state('projects.provenance.process', {
-            url: '/process',
-            templateUrl: 'application/core/projects/provenance/process/process.html'
-        })
-        .state('projects.provenance.iosteps', {
-            url: '/iosteps:iosteps',
-            templateUrl: 'application/core/projects/provenance/iosteps/iosteps.html'
-        })
-        .state('projects.provenance.iosteps.iostep', {
-            url: '/name:stepname/value:stepvalue',
-            templateUrl: 'application/core/projects/provenance/iosteps/iostep/iostep.html'
-        })
-        .state('projects.provenance.iosteps.files', {
-            url: '/files:iostep',
-            templateUrl: 'application/core/projects/provenance/iosteps/files/files.html',
-            onEnter: function (pubsub) {
-                pubsub.send("project.tree", true);
-            },
-            onExit: function (pubsub) {
-                pubsub.send("project.tree", false);
-            }
-        })
-        .state('projects.provenance.finish', {
-            url: '/finish',
-            templateUrl: 'application/core/projects/provenance/finish/finish.html'
         });
+
 }]);
 
 app.run(["$rootScope", "User", "Restangular", "projectColors",

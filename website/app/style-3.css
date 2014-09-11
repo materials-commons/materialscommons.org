@@ -1183,3 +1183,21 @@ label {
   font-weight: bold;
 }
 
+/* **** Magic Boxes **** */
+
+.magicbox {
+  position: fixed;
+  cursor: pointer;
+  /* top: 0; */
+  z-index: 1000;
+  border-radius: 20px;
+  margin: 10px;
+  background: #afbfc0;
+  border-width: 8px;
+  border-color: #627273;
+  border-style: solid;
+}
+
+.wizard-magic-bar {
+  top: 0;
+}

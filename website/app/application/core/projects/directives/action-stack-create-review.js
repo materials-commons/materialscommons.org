@@ -10,9 +10,9 @@ function actionCreateReviewDirective() {
 }
 
 Application.Controllers.controller('actionCreateReviewController',
-    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "Projects","toaster",  actionCreateReviewController]);
+    ["$scope", "mcapi", "dateGenerate", "User","pubsub","$stateParams","model.projects", "projectFiles","toaster",  actionCreateReviewController]);
 
-function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, ListProjects, Projects, toaster) {
+function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,$stateParams, Projects, projectFiles, toaster) {
 
 
     $scope.addReview = function () {
@@ -23,14 +23,18 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
         }else{
             //pluck the file items
             $scope.model.files.forEach(function(f){
-                $scope.review.items.push({'id': f.id, 'path': f.fullname, 'name': f.name, 'type': f.type})
-            })
+                $scope.review.items.push({
+                    'id': f.id,
+                    'path': f.fullname,
+                    'name': f.name,
+                    'type': f.type});
+            });
             $scope.review.author = User.u();
             $scope.review.assigned_to = $scope.model.assigned_to;
             $scope.review.status = 'open';
             $scope.review.title = $scope.model.title;
             $scope.review.messages.push({'message': $scope.model.comment, 'who': User.u(), 'date': dateGenerate.new_date()});
-            $scope.review.project = $scope.project_id
+            $scope.review.project = $scope.project_id;
             $scope.saveData();
         }
 
@@ -65,13 +69,13 @@ function actionCreateReviewController($scope, mcapi, dateGenerate, User, pubsub,
         return -1;
     };
     function init() {
-        $scope.channel = 'action-reviews'
-        Projects.setChannel($scope.channel);
-        ListProjects.getList().then(function (data) {
+        $scope.channel = 'action-reviews';
+        projectFiles.setChannel($scope.channel);
+        Projects.getList().then(function (data) {
             $scope.projects = data;
         });
         $scope.project_id = $stateParams.id;
-        ListProjects.get($stateParams.id).then(function(project) {
+        Projects.get($stateParams.id).then(function(project) {
             $scope.project = project;
         });
         $scope.model = {

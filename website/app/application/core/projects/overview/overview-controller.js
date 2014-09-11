@@ -54,35 +54,6 @@ function projectsOverview ($scope, $stateParams, pubsub, $state,
         };
     };
 
-
-
-    $scope.showTab = function (tab) {
-        $scope.activeTab = tab;
-        switch (tab) {
-        case "files":
-            $state.go('projects.overview.files');
-            break;
-        case "provenance":
-            $state.go('projects.overview.provenance');
-            break;
-        case "drafts":
-            $state.go('projects.overview.drafts');
-            break;
-        case "samples":
-            $state.go('projects.overview.samples');
-            break;
-        case "notes":
-            $state.go('projects.overview.notes');
-            break;
-        case "settings":
-            $state.go('projects.overview.settings');
-            break;
-        case "reviews":
-            $state.go('projects.overview.reviews');
-            break;
-        }
-    };
-
     $scope.isActive = function (tab) {
         return tab === $scope.activeTab;
     };
