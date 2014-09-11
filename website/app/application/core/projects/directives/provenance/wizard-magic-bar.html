@@ -1,9 +1,10 @@
 <div ng-show="magicBarActive">
-    <div magicbox class="col-lg-6 wizard-magic-bar">
+    <div id="wizard-magic-bar" magicbox class="col-lg-6 wizard-magic-bar">
         <div ng-show="project.selectedTemplate" class="row">
             <provenance-wizard-steps show-overview="false"
                                      template="project.selectedTemplate">
             </provenance-wizard-steps>
+            <provenance-wizard-context></provenance-wizard-context>
         </div>
         <div ng-show="!project.selectedTemplate">
             <div class="col-lg-offset-4">
