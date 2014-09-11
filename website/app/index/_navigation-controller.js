@@ -104,8 +104,8 @@ function contextMenuController($scope, actionStackTracker, hotkeys,
     });
 
     hotkeys.add({
-        combo: 'f',
-        description: 'Goto Project File Tree',
+        combo: 'b',
+        description: 'Goto Bottom',
         callback: function() {
             $location.hash('projecttree');
             $anchorScroll();
