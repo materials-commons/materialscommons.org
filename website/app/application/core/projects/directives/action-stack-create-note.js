@@ -14,15 +14,9 @@ Application.Controllers.controller('actionCreateNoteController',
 function actionCreateNoteController($scope, Projects, $stateParams, User, dateGenerate, toastr) {
 
     $scope.add_notes = function () {
-        if ($scope.model.new_note!==''){
             $scope.project.notes.push({'message': $scope.model.new_note, 'who': User.u(), 'date': dateGenerate.new_date()});
             $scope.saveData();
             $scope.model.new_note = "";
-//            toaster.pop('success', "Note:", "Notes has been saved", 3000);
-        }else{
-//            toaster.pop('warning', "Note:", "Empty note", 3000);
-        }
-
     };
 
     $scope.saveData = function () {

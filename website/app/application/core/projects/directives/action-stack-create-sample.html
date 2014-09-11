@@ -3,7 +3,7 @@
         <label class="control-label col-lg-2">Sample Name:<i class="fa fa-asterisk"></i></label>
 
         <div class="col-lg-4">
-            <input ng-model="doc.name" class="form-control" required="" type="text" placeholder="Name...">
+            <input name="name" validator="required" ng-model="doc.name" class="form-control"  type="text" placeholder="Name...">
         </div>
     </div>
     <div class="form-group">
@@ -132,7 +132,7 @@
     </div><br>
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
-        <button type="button" class="btn btn-primary" ng-click="save(Sample)">Save</button>
+        <button validation-submit="Sample" type="button" class="btn btn-primary" ng-click="save()">Save</button>
         <button type="button" class="btn btn-danger" ng-click="clear()">Clear</button>
     </div>
 </form>

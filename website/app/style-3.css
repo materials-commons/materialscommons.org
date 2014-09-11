@@ -1201,3 +1201,7 @@ label {
 .wizard-magic-bar {
   top: 0;
 }
+
+p, .validation-invalid{
+    color: indianred;
+}
