@@ -248,6 +248,47 @@ def get_project_uses(all_samples_used, project_id, conn):
             shared['project_id'] = project['id']
             uses.append(shared)
     return uses
+def add_default_tags(conn):
+    msg("Adding default tags to users table...")
+    rr = r.table('users').update({'preferences': {'tags': \
+        [\
+            {   \
+            "color": "#F4D03F" ,\
+            "description": "" ,\
+            "icon": "asterisk" ,\
+            "name": "priority"\
+            },\
+            {\
+            "color": "#5C97BF" ,\
+            "description": "" ,\
+            "icon": "eye" ,\
+            "name": "explore"\
+            },\
+            {\
+            "color": "#CF000F" ,\
+            "description": "" ,\
+            "icon": "exclamation" ,\
+            "name": "important"\
+            },\
+            {\
+            "color": "#1BBC9B" ,\
+            "description": "" ,\
+            "icon": "thumbs-up" ,\
+            "name": "success"\
+            },\
+            {\
+            "color": "#D2527F" ,\
+            "description": "" ,\
+            "icon": "thumbs-down" ,\
+            "name": "failed"\
+            }\
+        ]}}).run(conn)
+    return rr
+
+def add_todos(conn):
+    msg("Adding todos to the projects table...")
+    rr = r.table('projects').update({'todos': []}).run(conn)
+    return rr
 
 
 def main(conn, mcdir):
@@ -259,6 +300,8 @@ def main(conn, mcdir):
     cleanup_samples(conn)
     add_shares_to_projects(conn)
     add_tags(conn)
+    add_default_tags(conn)
+    add_todos(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
