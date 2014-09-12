@@ -86,6 +86,7 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
         },
 
         getList: function (reload) {
+
             var keys,
                 deferred,
                 items = [],

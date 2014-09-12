@@ -34,7 +34,6 @@ function actionCreateNoteController($scope, Projects, $stateParams, User, dateGe
         Projects.get($scope.project_id).then(function(project) {
             $scope.project = project;
         });
-
         $scope.model = {
             new_note: ""
         };
