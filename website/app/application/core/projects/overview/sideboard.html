@@ -5,7 +5,7 @@
     <div class="row">
         <div ng-repeat="action in actions">
             <a ng-href="#{{action.id}}" target="_self">{{action.title}}</a>
-            <a ng-if="actionActive(action.id)" ng-click="toggleStackAction(action.id)">
+            <a action-stack ng-click="toggleStackAction(action.id)">
                 <i class="fa fa-close action-link-close"></i>
             </a>
         </div>
