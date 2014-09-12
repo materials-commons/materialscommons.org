@@ -1,16 +1,16 @@
-<form class="form-horizontal">
+<form name="Form" class="form-horizontal">
     <div class="form-group">
         <label class="control-label col-lg-2">Review Title:<i class="fa fa-asterisk"></i></label>
 
         <div class="col-lg-4">
-            <input ng-model="model.title" class="form-control" type="text" placeholder="Title...">
+            <input name="title" validator="required"  ng-model="model.title" class="form-control" type="text" placeholder="Title...">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-lg-2">Assign To:<i class="fa fa-asterisk"></i></label>
 
         <div class="col-lg-4">
-            <select class="form-control" ng-model="model.assigned_to">
+            <select class="form-control" ng-model="model.assigned_to" name="assign_to" validator="required">
                 <option disabled>-- Assign to --</option>
                 <option ng-repeat="user in project.users">{{ user.user_id }}</option>
             </select>
@@ -43,6 +43,6 @@
     </div><br>
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
-        <button ng-click="addReview()" class="btn btn-primary">Submit New Review</button>
+        <button validation-submit="Form" ng-click="addReview()" class="btn btn-primary">Submit New Review</button>
     </div>
 </form>

@@ -1220,3 +1220,7 @@ label {
 .wizard-magic-bar {
   top: 0;
 }
+
+.validation-invalid{
+    color: indianred;
+}
