@@ -43,10 +43,9 @@ function actionCreateSampleController($scope,mcapi,$stateParams, Projects, toast
                             $scope.project = project;
                             pubsub.send('update_samples.change');
                             $scope.setDefaultProject();
+                            $scope.toggleStackAction('create-sample')
                         });
-
                     });
-
                 }).post($scope.doc);
     };
 
