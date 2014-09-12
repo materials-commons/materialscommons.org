@@ -41,6 +41,7 @@ function actionCreateReviewController($scope, $state, mcapi, dateGenerate, User,
                     Projects.get($stateParams.id).then(function (project) {
                         $scope.project = project;
                         pubsub.send('update_reviews.change');
+                        $scope.toggleStackAction('create-review')
                     });
 
                 });
