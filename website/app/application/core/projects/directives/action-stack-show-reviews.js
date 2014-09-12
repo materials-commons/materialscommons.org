@@ -90,6 +90,7 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
                 $scope.closed_reviews = $filter('byKey')(reviews, 'status', 'close');
                 $scope.list_reviews = $scope.open_reviews;
                 $scope.status = 'open';
+//                pubsub.send('update_reviews.change');
             }).jsonp();
 
     };
