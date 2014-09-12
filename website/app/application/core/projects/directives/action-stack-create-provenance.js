@@ -22,9 +22,13 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
             description: "",
             run_dates: [],
             notes: [],
+            tags: [],
             custom_properties:{},
+            stepType: "process",
+            currentStep: "process",
             additional_properties: {}
         };
+
         $scope.project.currentDraft.inputs = {};
         $scope.project.currentDraft.outputs = {};
         $scope.project.selectedTemplate.input_templates.forEach(function(t) {

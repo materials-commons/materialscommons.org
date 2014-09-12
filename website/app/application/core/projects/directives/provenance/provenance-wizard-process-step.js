@@ -11,19 +11,26 @@ function actionWizardProcessStepDirective() {
 
 Application.Controllers.controller('actionWizardProcessStepController',
                                    ["$scope", "$stateParams", "model.projects",
-                                    "provMagicBarContext", "User",
+                                    "provMagicBarContext", "User", "provStep",
                                     actionWizardProcessStepController]);
 
-function actionWizardProcessStepController($scope, $stateParams, projects, provMagicBarContext, User) {
+function actionWizardProcessStepController($scope, $stateParams, projects, provMagicBarContext, User, provStep) {
     projects.get($stateParams.id).then(function(project) {
         $scope.project = project;
     });
 
     provMagicBarContext.set("tags", User.attr().preferences.tags);
 
+    function nextProcessStep() {
+        var nextStep = provTemplate.nextStep("process", "process", $scope.project.selectedTemplate);
+        console.dir(nextStep);
+    }
+
     $scope.nextStep = function() {
         provMagicBarContext.clear();
-        console.dir($scope.project.currentDraft.process);
+        nextProcessStep();
+        console.dir($scope.project.selectedTemplate);
+        $scope.toggleStackAction('wizard-process-step');
     };
 
     $scope.cancelStep = function() {

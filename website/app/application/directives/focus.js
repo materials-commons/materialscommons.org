@@ -8,7 +8,6 @@ function focusDirective($timeout) {
         },
         link: function($scope, $element, attrs) {
             $scope.$watch("focus", function(currentValue, previousValue) {
-                console.log("$scope.$watch = " + currentValue + "/" + previousValue);
                 $element[0].focus();
                 // if (currentValue === true && !previousValue) {
                 //     console.log("setting focus");
