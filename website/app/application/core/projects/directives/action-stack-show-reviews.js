@@ -86,8 +86,8 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
     $scope.loadReviews = function (id) {
         mcapi('/project/%/reviews', id)
             .success(function (reviews) {
-                $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
-                $scope.closed_reviews = $filter('reviewFilter')(reviews, 'close');
+                $scope.open_reviews = $filter('byKey')(reviews, 'status', 'open');
+                $scope.closed_reviews = $filter('byKey')(reviews, 'status', 'close');
                 $scope.list_reviews = $scope.open_reviews;
                 $scope.status = 'open';
             }).jsonp();
