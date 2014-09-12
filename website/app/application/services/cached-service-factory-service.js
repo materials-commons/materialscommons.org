@@ -57,7 +57,11 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
     }
 
     CachedServiceFactory.prototype = {
-        get: function (id) {
+        get: function (id, reload) {
+            if (reload) {
+                this.cache.remove(id);
+            }
+
             var deferred = $q.defer(),
                 data = this.cache.get(id);
 
@@ -102,7 +106,6 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
 
             if (keys.length === 0) {
                 return this.rest.getList({apikey: User.apikey()});
-                //return this.rest.getList();
             }
 
             for (i = 0, l = keys.length; i < l; i++) {

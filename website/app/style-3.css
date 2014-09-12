@@ -937,6 +937,25 @@ hr.carved {
   font-size: 14px;
 }
 
+.wizard-single-outer-circle {
+  background: #fbe8aa;
+  border-radius: 50%;
+  height:30px;
+  width:30px;
+  position: relative;
+}
+
+.wizard-single-inner-circle {
+  position: absolute;
+  background: #fbbd19;
+  border-radius: 50%;
+  height:14px;
+  width:14px;
+  top:50%;
+  left:50%;
+  margin: -7px 0px 0px -7px;
+}
+
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot {
   position: absolute;
   width: 30px;
