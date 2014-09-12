@@ -1202,6 +1202,6 @@ label {
   top: 0;
 }
 
-p, .validation-invalid{
+.validation-invalid{
     color: indianred;
 }
