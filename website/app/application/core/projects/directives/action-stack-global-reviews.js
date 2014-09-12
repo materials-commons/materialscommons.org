@@ -9,9 +9,9 @@ function actionReviewsDirective() {
 }
 
 Application.Controllers.controller('actionGlobalReviewsController',
-    ["$scope", "mcapi", "$filter", "$state", "pubsub", "User", "dateGenerate", actionGlobalReviewsController]);
+    ["$scope", "mcapi", "$filter",  "pubsub", "User", "dateGenerate", actionGlobalReviewsController]);
 
-function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, User, dateGenerate) {
+function actionGlobalReviewsController($scope, mcapi, $filter,  pubsub, User, dateGenerate) {
     pubsub.waitOn($scope, 'update_reviews.change', function () {
         $scope.retrieveReviewsRequested();
         $scope.retrieveReviewsToConduct();
@@ -20,8 +20,8 @@ function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, U
     $scope.retrieveReviewsToConduct = function () {
         mcapi('/reviews/to_conduct')
             .success(function (reviews) {
-                $scope.conduct_open_reviews = $filter('reviewFilter')(reviews, 'open');
-                $scope.conduct_closed_reviews = $filter('reviewFilter')(reviews, 'close');
+                $scope.conduct_open_reviews = $filter('byKey')(reviews, 'status', 'open');
+                $scope.conduct_closed_reviews = $filter('byKey')(reviews, 'status', 'close');
                 $scope.reviewsToConduct = $scope.conduct_open_reviews;
                 $scope.status = 'open';
             }).jsonp();
@@ -30,8 +30,8 @@ function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, U
     $scope.retrieveReviewsRequested = function () {
         mcapi('/reviews/requested')
             .success(function (reviews) {
-                $scope.requested_open_reviews = $filter('reviewFilter')(reviews, 'open');
-                $scope.requested_closed_reviews = $filter('reviewFilter')(reviews, 'close');
+                $scope.requested_open_reviews = $filter('byKey')(reviews, 'status', 'open');
+                $scope.requested_closed_reviews = $filter('byKey')(reviews, 'status', 'close');
                 $scope.reviewsRequested = $scope.requested_open_reviews;
                 $scope.status = 'open';
             }).jsonp();
