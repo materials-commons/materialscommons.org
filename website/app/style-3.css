@@ -914,7 +914,7 @@ hr.carved {
 }
 
 .bs-wizard {
-  border-bottom: solid 1px #e0e0e0;
+  /* border-bottom: solid 1px #e0e0e0; */
   padding: 0 0 10px 0;
 }
 
