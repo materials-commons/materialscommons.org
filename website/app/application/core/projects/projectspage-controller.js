@@ -7,7 +7,11 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     $scope.model = {
         action: ''
     };
-
+    pubsub.waitOn($scope, 'update_reviews.change', function() {
+        Projects.get($stateParams.id).then(function(project) {
+            $scope.project = project;
+        });
+    });
     watcher.watch($scope, 'model.action', function (choice) {
         if (choice === 'prov') {
             $state.go('projects.provenance');

@@ -12,7 +12,7 @@ Application.Controllers.controller('actionGlobalReviewsController',
     ["$scope", "mcapi", "$filter", "$state", "pubsub", "User", "dateGenerate", actionGlobalReviewsController]);
 
 function actionGlobalReviewsController($scope, mcapi, $filter, $state, pubsub, User, dateGenerate) {
-    pubsub.waitOn($scope, 'reviews.change', function () {
+    pubsub.waitOn($scope, 'update_reviews.change', function () {
         $scope.retrieveReviewsRequested();
         $scope.retrieveReviewsToConduct();
     });

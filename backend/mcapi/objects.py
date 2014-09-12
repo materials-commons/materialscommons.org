@@ -101,6 +101,7 @@ def create_object():
 
 
 def _join_sample_projects(projects, sample_id):
+    print projects
     for p in projects:
         r.table('projects2samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn)
 

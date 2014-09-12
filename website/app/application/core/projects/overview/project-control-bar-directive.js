@@ -12,10 +12,21 @@ function projectControlBarDirective() {
 }
 
 Application.Controllers.controller('projectControlBarDirectiveController',
-                                   ["$scope", "projectColors", "model.projects", projectControlBarDirectiveController]);
+                                   ["$scope", "projectColors", "model.projects", "pubsub",projectControlBarDirectiveController]);
 
-function projectControlBarDirectiveController($scope, projectColors, Projects) {
+function projectControlBarDirectiveController($scope, projectColors, Projects, pubsub) {
     $scope.colors = projectColors;
+
+    pubsub.waitOn($scope, 'update_reviews.change', function() {
+        Projects.get($scope.projectId).then(function(project) {
+            $scope.project = project;
+        });
+    });
+    pubsub.waitOn($scope, 'update_samples.change', function() {
+        Projects.get($scope.projectId).then(function(project) {
+            $scope.project = project;
+        });
+    });
 
     $scope.samplesMenuItems = [
         {

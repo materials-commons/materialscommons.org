@@ -10,9 +10,9 @@ function actionCreateSampleDirective() {
 }
 
 Application.Controllers.controller('actionCreateSampleController',
-    ["$scope", "mcapi", "$stateParams", "model.projects", "toastr", actionCreateSampleController]);
+    ["$scope", "mcapi", "$stateParams", "model.projects", "toastr","pubsub", actionCreateSampleController]);
 
-function actionCreateSampleController($scope,mcapi,$stateParams, Projects, toastr) {
+function actionCreateSampleController($scope,mcapi,$stateParams, Projects, toastr, pubsub) {
 
     $scope.setDefaultProject = function () {
         $scope.doc = {
@@ -36,9 +36,17 @@ function actionCreateSampleController($scope,mcapi,$stateParams, Projects, toast
         $scope.doc.project_id = $scope.project_id;
             mcapi('/objects/new')
                 .arg('order_by=birthtime')
-                .success(function (data) {
-                    $scope.sample_obj = data;
-                    init();
+                .success(function () {
+                    Projects.getList(true).then(function (data) {
+                        $scope.projects = data;
+                        Projects.get($stateParams.id).then(function (project) {
+                            $scope.project = project;
+                            pubsub.send('update_samples.change');
+                            $scope.setDefaultProject();
+                        });
+
+                    });
+
                 }).post($scope.doc);
     };
 
@@ -55,15 +63,12 @@ function actionCreateSampleController($scope,mcapi,$stateParams, Projects, toast
     };
 
     function init() {
-        $scope.bk = {
-            selected_project: ''
-        };
         $scope.project_id = $stateParams.id;
         Projects.get($scope.project_id).then(function(project){
             $scope.project = project;
             $scope.setDefaultProject();
         });
-       Projects.getList().then(function (data) {
+        Projects.getList().then(function (data) {
             $scope.projects = data;
         });
     }

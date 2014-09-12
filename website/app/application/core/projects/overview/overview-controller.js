@@ -9,9 +9,9 @@ function projectsOverview ($scope, $stateParams, pubsub, $state,
         $scope.drafts = ProvDrafts.drafts;
     });
 
-    pubsub.waitOn($scope, 'open_reviews.change', function () {
-        $scope.countReviews();
-    });
+//    pubsub.waitOn($scope, 'open_reviews.change', function () {
+//        $scope.countReviews();
+//    });
 
     $scope.countReviews = function(){
         //$scope.open_reviews = []
@@ -59,6 +59,7 @@ function projectsOverview ($scope, $stateParams, pubsub, $state,
     };
 
     function init() {
+        console.log('inside overview');
         $scope.open_reviews = [];
         $scope.tag = {
             name: "",

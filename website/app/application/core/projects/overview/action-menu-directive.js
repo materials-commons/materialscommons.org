@@ -19,6 +19,8 @@ Application.Controllers.controller('actionMenuDirectiveController',
                                     actionMenuDirectiveController]);
 
 function actionMenuDirectiveController($scope, projectColors, actionStackTracker) {
+
+
     $scope.menuItemActive = actionStackTracker.actionActive;
     $scope.colors = projectColors;
     // This is needed to toggle the menu closed when an item is selected.
