@@ -1,7 +1,6 @@
-<form class="form-horizontal">
+<form name="Form" class="form-horizontal">
     <div class="form-group">
         <label class="control-label col-lg-2">Note:</label>
-
         <div class="col-lg-4">
             <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
 ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
@@ -11,7 +10,7 @@
     </div>
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
-        <button ng-click="add_notes()" class="btn btn-default btn-primary">Add</button>
+        <button validation-submit="Form" ng-click="add_notes()" class="btn btn-default btn-primary">Add</button>
     </div>
 </form>
 
