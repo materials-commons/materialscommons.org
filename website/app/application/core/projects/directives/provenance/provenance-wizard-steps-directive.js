@@ -20,12 +20,10 @@ function provenanceWizardStepsDirectiveController($scope) {
             return 0;
         }
 
-        console.dir($scope.template);
         var count = $scope.template.input_templates.length;
         count += ($scope.template.required_input_files ? 1 : 0);
         count += $scope.template.output_templates.length;
         count += ($scope.template.required_output_files ? 1 : 0);
-        console.log("count = " + count);
         return count;
     }
 
