@@ -1,0 +1,18 @@
+<div>
+    <span>&nbsp;&nbsp;</span>
+    <div class="arrow_box_bottom" style="">
+        <div ng-switch="template.id">
+            <div ng-switch-when="sample">
+                <span>Sample to use</span>
+            </div>
+            <div ng-switch-when="transformed-sample">
+                <span>Changes to sample</span>
+            </div>
+            <div ng-switch-default>
+                <ul style="list-style-type: none;">
+                    <li ng-repeat="property in template.default_properties">{{property.name}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
