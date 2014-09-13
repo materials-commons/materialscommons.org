@@ -68,13 +68,13 @@ function provStep() {
             if (next !== "") {
                 return {
                     stepType: "output",
-                    currentStep: next
+                    step: next
                 };
             }
 
             return {
                 stepType: "done",
-                currentStep: "done"
+                step: "done"
             };
         },
 
@@ -84,7 +84,7 @@ function provStep() {
             if (next !== "") {
                 return {
                     stepType: "input",
-                    currentStep: next
+                    step: next
                 };
             }
 
@@ -100,7 +100,7 @@ function provStep() {
             } else {
                 return {
                     stepType: "done",
-                    currentStep: "done"
+                    step: "done"
                 };
             }
         },
@@ -158,6 +158,29 @@ function provStep() {
                 return service._isFinishedIOStep("inputSteps", step);
             case "output":
                 return service._isFinishedIOStep("outputSteps", step);
+            default:
+                return false;
+            }
+        },
+
+        _findTemplate: function(templates, templateID) {
+            var i = _.indexOf(templates, function(template) {
+                return template.id == templateID;
+            });
+
+            return templates[i];
+        },
+
+        templateForStep: function(template, step) {
+            switch (step.stepType) {
+            case "input":
+                return service._findTemplate(template.input_templates, step.step);
+            case "output":
+                return service._findTemplate(template.output_templates, step.step);
+            case "process":
+                return false;
+            case "done":
+                return false;
             default:
                 return false;
             }

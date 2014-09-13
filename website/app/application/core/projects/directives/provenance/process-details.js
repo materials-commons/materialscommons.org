@@ -40,7 +40,7 @@ function processDetailsController($scope, User) {
     }
 
     $scope.select2IconOptions = {
-        placeholder: 'Select icon',
+        placeholder: 'Select tag',
         width: 'element',
         formatSelection: format,
         formatResult: format,
