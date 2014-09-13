@@ -23,14 +23,7 @@
                ng-style="{background: currentProjectColorLight, 'background-color': currentProjectColor}"></a>
             <div class="bs-wizard-info text-center"></div>
             <div ng-show="showOverview">
-                <span>&nbsp;</span>
-                <div class="arrow_box_bottom">
-                    <div class="col-lg-offset-19">
-                        <ul style="list-style-type: none;">
-                            <li ng-repeat="property in t.default_properties">{{property.name}}</li>
-                        </ul>
-                    </div>
-                </div>
+                <wizard-step-overview template="t"></wizard-step-overview>
             </div>
         </div>
 
@@ -52,14 +45,7 @@
                ng-style="{background: currentProjectColorLight, 'background-color': currentProjectColor}"></a>
             <div class="bs-wizard-info text-center"></div>
             <div ng-show="showOverview">
-                <span>&nbsp;</span>
-                <div class="arrow_box_bottom">
-                    <div class="col-lg-offset-19">
-                        <ul style="list-style-type: none;">
-                            <li ng-repeat="property in t.default_properties">{{property.name}}</li>
-                        </ul>
-                    </div>
-                </div>
+                <wizard-step-overview template="t"></wizard-step-overview>
             </div>
         </div>
 
@@ -71,14 +57,3 @@
         </div>
     </div>
 </div>
-
-<!-- <div class="row">
-<div ng-show="template" class="col-lg-offset-4">
-<h4>Done</h4>
-<div class="col-lg-offset-1">
-<div class="wizard-single-outer-circle">
-<div class="wizard-single-inner-circle"></div>
-</div>
-</div>
-</div>
-</div> -->
