@@ -13,7 +13,7 @@ Application.Services.factory('watcher',
                     fn(newval);
                 }
             });
-        }
+        };
 
         return watcherService;
     });
