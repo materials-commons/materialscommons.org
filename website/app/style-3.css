@@ -1224,3 +1224,11 @@ label {
 .validation-invalid{
   color: indianred;
 }
+
+.form-group.select2-above {
+  padding-top: 4px;
+}
+
+.select2-container.select2-choice {
+  padding-bottom: 2px;
+}

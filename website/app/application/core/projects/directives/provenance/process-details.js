@@ -12,12 +12,20 @@ function processDetailsDirective() {
 }
 
 Application.Controllers.controller('processDetailsController',
-                                   ["$scope", "User", processDetailsController]);
+                                   ["$scope", "User", "watcher", processDetailsController]);
 function processDetailsController($scope, User) {
     $scope.tags = [];
     $scope.tags = angular.copy(User.attr().preferences.tags, $scope.tags);
     var tagsByName = {};
     var tagsAdded = {};
+
+    $scope.selectFocused = function() {
+        console.log("selectFocused called");
+    };
+
+    $scope.selectBlured = function() {
+        console.log("selectBlured called");
+    };
 
     $scope.tags.forEach(function(tag) {
         tagsByName[tag.name] = tag;

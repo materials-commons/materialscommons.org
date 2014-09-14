@@ -12,7 +12,8 @@ function actionProvenanceWizardStepDirective() {
 }
 
 Application.Controllers.controller('actionProvenanceWizardStepDirectiveController',
-                                   ["$scope", "$stateParams", "model.projects", "provStep", actionProvenanceWizardStepDirectiveController]);
+                                   ["$scope", "$stateParams", "model.projects", "provStep",
+                                    actionProvenanceWizardStepDirectiveController]);
 function actionProvenanceWizardStepDirectiveController($scope, $stateParams, projects, provStep) {
     projects.get($stateParams.id).then(function(project) {
         $scope.project = project;
