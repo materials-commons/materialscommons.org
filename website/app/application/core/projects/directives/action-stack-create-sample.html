@@ -37,7 +37,7 @@
         <div class="form-inline col-lg-offset-1">
             <div class="form-group">
                 <label>Height: </label>
-                <input ng-model="doc.properties.height.value" type="text" class="form-control" placeholder="Height...">
+                <input name="height" validator="number" ng-model="doc.properties.height.value" type="text" class="form-control" placeholder="Height...">
                 <select class="form-control" ng-model="doc.properties.height.unit">
                     <option value="" disabled="" selected="">Unit...</option>
                     <option value="cm">cm</option>
@@ -46,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label>Width: </label>
-                <input ng-model="doc.properties.width.value" type="text" class="form-control" placeholder="Width...">
+                <input name="width" validator="number" ng-model="doc.properties.width.value" type="text" class="form-control" placeholder="Width...">
                 <select class="form-control" ng-model="doc.properties.width.unit">
                     <option value="" disabled="" selected="">Unit...</option>
                     <option value="cm">cm</option>
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
                 <label>Length: </label>
-                <input ng-model="doc.properties.length.value" type="text" class="form-control" placeholder="Length...">
+                <input name="length" validator="number" ng-model="doc.properties.length.value" type="text" class="form-control" placeholder="Length...">
                 <select class="form-control" ng-model="doc.properties.length.unit">
                     <option value="" disabled="" selected="">Unit...</option>
                     <option value="cm">cm</option>
@@ -68,16 +68,16 @@
         <div class="form-inline col-lg-offset-1">
             <div class="form-group">
                 <label>Mass: </label>
-                <input ng-model="doc.properties.mass.value" type="text" class="form-control" placeholder="Mass...">
+                <input name="mass" validator="number" ng-model="doc.properties.mass.value" type="text" class="form-control" placeholder="Mass...">
             </div>
             <div class="form-group">
                 <label>Grain Texture: </label>
-                <input ng-model="doc.properties.grain_texture.value" type="text" class="form-control"
+                <input  ng-model="doc.properties.grain_texture.value" type="text" class="form-control"
                        placeholder="Grain Texture...">
             </div>
             <div class="form-group">
                 <label>Grain Size: </label>
-                <input ng-model="doc.properties.grain_size.value" type="text" class="form-control"
+                <input name="size" validator="number" ng-model="doc.properties.grain_size.value" type="text" class="form-control"
                        placeholder="Grain Size...">
             </div>
             <div class="form-group">
