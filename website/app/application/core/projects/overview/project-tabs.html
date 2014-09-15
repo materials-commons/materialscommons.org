@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs" role="tablist">
+    <li ng-repeat="tab in tabs">
+        <a href="#"
+           ng-style="isActiveTab(tab.id) && getActiveStyle() || !isActiveTab(tab.id) && getInactiveStyle()">
+            {{tab.name}}
+        </a>
+    </li>
+</ul>

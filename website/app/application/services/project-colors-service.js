@@ -25,7 +25,7 @@ function projectColorsService() {
             "#D4C18F"
         ],
 
-        inactiveColor: "#6c7a89",
+        inactiveColor: "#536170",
 
         currentProjectIndex: 0,
 
