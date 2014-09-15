@@ -1,0 +1,6 @@
+<div class="col-sm-4" ng-if="property.value_choice.length !== 0">
+    <select class="form-control" ng-model="model.value"
+            ng-options="p.name for p in property.value_choice track by p.name">
+    </select>
+    <display-property-units property="property" model="model"></display-property-units>
+</div>

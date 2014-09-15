@@ -44,6 +44,7 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
             });
             if (t.template_pick == "pick_sample") {
                 $scope.project.currentDraft.inputs[t.id].properties.sample = {
+                    id: "",
                     value: "",
                     unit: "n/a"
                 };

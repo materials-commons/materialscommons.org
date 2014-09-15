@@ -1,0 +1,10 @@
+<div class="col-sm-4">
+    <input class="form-control"
+           ng-model="model.value"
+           validator="{{property.type}}"
+           placeholder="{{property.name}}..."
+           valid-method="blur"
+           ng-required="property.required"
+           type="text">
+</div>
+<display-property-units model="model" property="property"></display-property-units>

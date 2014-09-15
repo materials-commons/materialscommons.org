@@ -1,0 +1,32 @@
+<div ng-if="properties.length !== 0">
+    <form class="form-horizontal" role="form">
+        <div class="form-group" ng-repeat="property in properties">
+            <label class="col-sm-3 control-label">{{property.name}}:
+                <span ng-if="property.required">
+                    <i class="fa fa-asterisk"></i>
+                </span>
+            </label>
+            <div ng-switch="property.type">
+
+                <div ng-switch-when="text">
+                    <display-text-property property="property" model="">
+                    </display-text-property>
+                </div>
+
+                <div ng-switch-when="number">
+                    <display-number-property property="property" model="">
+                    </display-number-property>
+                </div>
+
+                <div ng-switch-when="select">
+                    <display-select-property property="property" model="">
+                    </display-select-property>
+                </div>
+
+                <div ng-switch-default>
+                    Unknown property type: {{property.type}}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

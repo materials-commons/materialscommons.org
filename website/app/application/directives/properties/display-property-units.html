@@ -1,0 +1,9 @@
+<div class="col-xs-2" ng-if="property.unit_choice.length !== 0">
+    <select ui-select2="{placeholder: 'Select unit', allowClear: true, width:'element'}"
+            ng-multiple="false"
+            ng-options="unit for unit in property.unit_choice"
+            ng-model="model.unit"
+            class="form-control">
+        <option></option>
+    </select>
+</div>
