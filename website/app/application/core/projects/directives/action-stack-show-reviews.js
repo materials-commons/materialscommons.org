@@ -45,6 +45,7 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
     $scope.closeReview = function() {
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
+                pubsub.send('update_reviews.change');
                 pubsub.send('open_reviews.change');
                 pubsub.send('reviews.change');
                 $scope.loadReviews($stateParams.id);
@@ -55,6 +56,7 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
     $scope.reOpenReview = function() {
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
+                pubsub.send('update_reviews.change');
                 pubsub.send('open_reviews.change');
                 pubsub.send('reviews.change');
                 $scope.loadReviews($stateParams.id);
