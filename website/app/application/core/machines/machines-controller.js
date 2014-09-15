@@ -3,8 +3,7 @@ Application.Controllers.controller('machines',
         var $validationProvider = $injector.get('$validation');
 
         $scope.clear_machine = function () {
-            mcapi('/templates')
-                .argWithValue('filter_by', '"template_type":"machine"')
+            mcapi('/templates/%', 'machine')
                 .success(function (data) {
                     $scope.machine_template = data[0];
                     $scope.doc = {
@@ -65,10 +64,9 @@ Application.Controllers.controller('machines',
             $scope.bk = {
                 new_note: ''
             };
-            mcapi('/templates')
-                .argWithValue('filter_by', '"template_type":"machine"')
+            mcapi('/templates/%', 'machine')
                 .success(function (data) {
-                    $scope.machine_template = data[0];
+                    $scope.machine_template = data;
                     $scope.doc.default_properties = $scope.machine_template.default_properties;
                     $scope.doc.template = $scope.machine_template;     // using list of  additional properties in directive through doc
                 }).jsonp();

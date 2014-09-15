@@ -74,7 +74,6 @@ def get_all_templates():
             templates.append(template)
     else:
         templates = all_templates
-
     # Create elements to store other templates
     for template in templates:
         template['input_templates'] = []
