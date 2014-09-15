@@ -23,7 +23,7 @@
                         <div class="col-lg-6">
                             <select class="form-control" ng-model="bk.user_name">
                                 <option></option>
-                                <option ng-repeat="user in project.users | orderBy:'user_id'">{{ user.user_id }}</option>
+                                <option ng-repeat="user in all_users | orderBy:'email'">{{ user.email }}</option>
                             </select>
                         </div>
                         <button class="btn btn-info" ng-click="addUser()" ng-disabled="!bk.user_name">Add</button>
