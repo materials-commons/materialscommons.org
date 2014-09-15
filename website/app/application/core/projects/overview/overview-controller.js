@@ -21,10 +21,6 @@ function projectsOverview ($scope, $stateParams, pubsub, $state,
         //     }).jsonp();
     };
 
-    pubsub.waitOn($scope, 'access.change', function () {
-        $scope.getProject();
-    });
-
     pubsub.waitOn($scope, 'notes.add', function getNotes() {
         // $scope.getProject();
     });
