@@ -16,10 +16,10 @@ function actionShowSettingsController($scope, User, mcapi, $stateParams, pubsub,
     $scope.addUser = function () {
         mcapi('/access/new')
             .success(function (data) {
-                $scope.project.users.push({'id': data.id, 'user_id': $scope.bk.user_name, 'project_id': $scope.project_id, 'project_name': $scope.project.name})
-                pubsub.send('access.change');
+                $scope.project.users.push({'id': data.id, 'user_id': $scope.bk.user_name, 'project_id': $scope.project.id, 'project_name': $scope.project.name})
+//                pubsub.send('access.change');
                 $scope.bk.user_name = '';
-            }).post({'user_id': $scope.bk.user_name, 'project_id': $scope.project_id, 'project_name': $scope.project.name});
+            }).post({'user_id': $scope.bk.user_name, 'project_id': $scope.project.id, 'project_name': $scope.project.name});
     };
 
     $scope.deleteUser = function (id) {
@@ -42,7 +42,10 @@ function actionShowSettingsController($scope, User, mcapi, $stateParams, pubsub,
         Projects.get($stateParams.id).then(function(project) {
             $scope.project = project;
         });
-
+        mcapi('/users')
+            .success(function(data){
+                $scope.all_users = data;
+            }).jsonp()
         $scope.signed_in_user = User.u();
     }
 
