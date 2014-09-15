@@ -1,76 +1,78 @@
-<div style="position: relative; height: 65px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding-left: 15px; padding-right: 15px;"
+<div style="position: relative; height: 5px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding-left: 15px; padding-right: 15px;"
      ng-style="{background: colors.getCurrentProjectColor()}">
-    <div class="row">
-        <span class="col-lg-offset-1 col-lg-2">
-            <i class="fa fa-users"/>
-            <a data-toggle="modal" data-target="#contributors" style="color: white" class="action-link">
-                {{project.users.length}}
-                contributors</a>
-        </span>
-        <span class="col-lg-2">
-            <i class="fa fa-exclamation-circle"/>
-            0 events
-        </span>
-        <span class="col-lg-2">
-            <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares" style="color: white"
-                                                    class="action-link">{{project.shares.length}}
-                Project(s)</a>
-        </span>
-        <span class="col-lg-2">
-            <i class="fa fa-mail-reply"/>
-            Uses
-            <a data-toggle="modal" data-target="#uses" style="color:white"
-               class="action-link">
-                {{project.uses.length}} Project(s)
-            </a>
-        </span>
-    </div>
-    <hr class="carved">
-    <div class="row">
-        <div class="col-xs-offset-1">
-            <span class="col-xs-2">
-                <action-menu title="Provenance"
-                             title-icon="fa-code-fork"
-                             title-count="project.processes.length"
-                             menu-items="provenanceMenuItems">
-                </action-menu>
+    <div ng-show="false">
+        <div class="row">
+            <span class="col-lg-offset-1 col-lg-2">
+                <i class="fa fa-users"/>
+                <a data-toggle="modal" data-target="#contributors" style="color: white" class="action-link">
+                    {{project.users.length}}
+                    contributors</a>
             </span>
-            <span class="col-xs-2">
-                <action-menu title="Samples"
-                             title-icon="fa-cubes"
-                             title-count="project.samples.length"
-                             menu-items="samplesMenuItems">
-                </action-menu>
+            <span class="col-lg-2">
+                <i class="fa fa-exclamation-circle"/>
+                0 events
             </span>
+            <span class="col-lg-2">
+                <i class="fa fa-share"/> Shared with <a data-toggle="modal" data-target="#shares" style="color: white"
+                                                        class="action-link">{{project.shares.length}}
+                    Project(s)</a>
+            </span>
+            <span class="col-lg-2">
+                <i class="fa fa-mail-reply"/>
+                Uses
+                <a data-toggle="modal" data-target="#uses" style="color:white"
+                   class="action-link">
+                    {{project.uses.length}} Project(s)
+                </a>
+            </span>
+        </div>
+        <hr class="carved">
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <span class="col-xs-2">
+                    <action-menu title="Provenance"
+                                 title-icon="fa-code-fork"
+                                 title-count="project.processes.length"
+                                 menu-items="provenanceMenuItems">
+                    </action-menu>
+                </span>
+                <span class="col-xs-2">
+                    <action-menu title="Samples"
+                                 title-icon="fa-cubes"
+                                 title-count="project.samples.length"
+                                 menu-items="samplesMenuItems">
+                    </action-menu>
+                </span>
 
-            <span class="col-xs-2">
-                <action-menu title="Reviews"
-                             title-icon="fa-comment"
-                             title-count="(project.reviews | byKey:'status':'open').length"
-                             menu-items="reviewsMenuItems">
-                </action-menu>
-            </span>
-            <span class="col-xs-2">
-                <action-menu title="Drafts"
-                             title-icon="fa-copy"
-                             title-count="project.drafts.length"
-                             menu-items="draftsMenuItems">
-                </action-menu>
-            </span>
-            <span class="col-xs-2">
-                <action-menu title="Notes"
-                             title-icon="fa-edit"
-                             title-count="project.notes.length"
-                             menu-items="notesMenuItems">
-                </action-menu>
-            </span>
-            <span class="col-xs-2">
-                <action-menu title="Settings"
-                             title-icon="fa-gear"
-                             title-count=""
-                             menu-items="settingsMenuItems">
-                </action-menu>
-            </span>
+                <span class="col-xs-2">
+                    <action-menu title="Reviews"
+                                 title-icon="fa-comment"
+                                 title-count="(project.reviews | byKey:'status':'open').length"
+                                 menu-items="reviewsMenuItems">
+                    </action-menu>
+                </span>
+                <span class="col-xs-2">
+                    <action-menu title="Drafts"
+                                 title-icon="fa-copy"
+                                 title-count="project.drafts.length"
+                                 menu-items="draftsMenuItems">
+                    </action-menu>
+                </span>
+                <span class="col-xs-2">
+                    <action-menu title="Notes"
+                                 title-icon="fa-edit"
+                                 title-count="project.notes.length"
+                                 menu-items="notesMenuItems">
+                    </action-menu>
+                </span>
+                <span class="col-xs-2">
+                    <action-menu title="Settings"
+                                 title-icon="fa-gear"
+                                 title-count=""
+                                 menu-items="settingsMenuItems">
+                    </action-menu>
+                </span>
+            </div>
         </div>
     </div>
 
