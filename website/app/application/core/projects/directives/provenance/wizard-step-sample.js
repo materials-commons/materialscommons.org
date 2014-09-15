@@ -3,7 +3,9 @@ Application.Directives.directive('wizardStepSample', wizardStepSampleDirective);
 function wizardStepSampleDirective() {
     return {
         scope: {
-            args: "="
+            project: "=",
+            template: "=",
+            step: "="
         },
         controller: "wizardStepSampleDirectiveController",
         restrict: "EA",
@@ -12,7 +14,15 @@ function wizardStepSampleDirective() {
 }
 
 Application.Controllers.controller('wizardStepSampleDirectiveController',
-                                   ["$scope", "$stateParams", "model.projects", "provStep",
+                                   ["$scope", "$stateParams", "provStep", "actionStack",
                                     wizardStepSampleDirectiveController]);
-function wizardStepSampleDirectiveController($scope, $stateParams, projects, provStep) {
+function wizardStepSampleDirectiveController($scope, $stateParams, provStep, actionStack) {
+    $scope.next = function() {
+        var nextStep = provStep.nextStep($scope.step.stepType, $scope.step.step,
+                                        $scope.project.selectedTemplate);
+        actionStack.toggleStackAction('provenance-wizard-step', "Another step title",
+                                      null, nextStep);
+        actionStack.toggleStackAction('provenance-wizard-step', "Another step title",
+                                      null, nextStep);
+    };
 }

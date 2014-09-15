@@ -1,1 +1,26 @@
-<h4>sample</h4>
+<div class="row">
+    <div class="col-xs-offset-4">
+        <h4>Choose a sample</h4>
+    </div>
+</div>
+<div class="row">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-xs-2 control-label">Sample:</label>
+            <div class="controls col-xs-3">
+                <select ui-select2="{placeholder: 'Select sample', allowClear: true, width:'element'}"
+                        ng-multiple="false"
+                        ng-model="sample"
+                        ng-options="sample.name for sample in project.samples"
+                        class="form-control">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group select2-above">
+            <div class="col-xs-offset-2">
+                <button ng-click="next()" class="btn btn-success">Next</button>
+            </div>
+        </div>
+    </form>
+</div>

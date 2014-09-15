@@ -2,18 +2,22 @@
 <div ng-switch="template.id">
     <wizard-step-sample ng-switch-when="sample"
                         project="project"
-                        template="template">
+                        template="template"
+                        step="step">
     </wizard-step-sample>
     <wizard-step-transform-sample ng-switch-when="tranform-sample"
                                   project="project"
-                                  template="template">
+                                  template="template"
+                                  step="step">
     </wizard-step-transform-sample>
     <wizard-step-files ng-switch-when="file"
-                      project="project"
-                      template="template">
+                       project="project"
+                       template="template"
+                       step="step">
     </wizard-step-files>
     <wizard-step-properties ng-switch-default
                             project="project"
-                            template="template">
+                            template="template"
+                            step="step">
     </wizard-step-properties>
 </div>

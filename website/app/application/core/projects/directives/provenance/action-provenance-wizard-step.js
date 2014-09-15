@@ -17,8 +17,7 @@ Application.Controllers.controller('actionProvenanceWizardStepDirectiveControlle
 function actionProvenanceWizardStepDirectiveController($scope, $stateParams, projects, provStep) {
     projects.get($stateParams.id).then(function(project) {
         $scope.project = project;
-        var step = $scope.args;
-        $scope.template = provStep.templateForStep($scope.project.selectedTemplate, step);
-        console.dir($scope.template);
+        $scope.step = $scope.args;
+        $scope.template = provStep.templateForStep($scope.project.selectedTemplate, $scope.step);
     });
 }
