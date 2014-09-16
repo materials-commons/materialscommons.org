@@ -2,13 +2,12 @@
     <div class="row">
         <h5>Reviews you have requested</h5> <br>
 
-        <div class="col-lg-8 offset3">
+        <div class="col-lg-10">
             <table class="table table-file-directory ">
                 <thead ng-style="{'background-color': currentProjectColor}">
-                <th><a class="action-link"
-                       ng-click="showReviews('open', 'requested')"><i class="fa fa-check-circle heading"></i>{{requested_open_reviews.length}}
-                    open</a><a class="action-link"
-                               ng-click="showReviews('close', 'requested')"><i class="fa fa-minus-circle heading"></i>{{requested_closed_reviews.length}}
+                <th><i class="fa fa-check-circle review-open"></i><a ng-click="showReviews('open', 'requested')">{{requested_open_reviews.length}}
+                    open</a>
+                    <i class="fa fa-minus-circle review-close"></i><a ng-click="showReviews('close', 'requested')">{{requested_closed_reviews.length}}
                     closed</a>
                 </th>
                 <th>Title</th>
@@ -47,7 +46,7 @@
     <div class="row">
         <h5>Reviews you have to conduct</h5>    <br>
 
-        <div class="col-lg-8 offset3">
+        <div class="col-lg-10">
             <table class="table table-file-directory ">
                 <thead ng-style="{'background-color': currentProjectColor}">
                 <th><a class="action-link"
