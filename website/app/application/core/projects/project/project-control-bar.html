@@ -25,7 +25,6 @@
             </a>
         </span>
     </div>
-    <hr ng-if="false" class="carved">
     <div ng-if="false" class="row">
         <span class="col-xs-offset-2 col-xs-4">
             Created by {{project.owner}} on {{project.birthtime | toDateString}}
@@ -33,53 +32,6 @@
         <span class="col-xs-6">
             <i class="fa fa-lock"></i> {{project.name}}
         </span>
-    </div>
-    <div ng-if="false" class="row">
-        <div class="col-xs-offset-1">
-            <span class="col-xs-2">
-                <action-menu title="Provenance"
-                             title-icon="fa-code-fork"
-                             title-count="project.processes.length"
-                             menu-items="provenanceMenuItems">
-                </action-menu>
-            </span>
-            <span class="col-xs-2">
-                <action-menu title="Samples"
-                             title-icon="fa-cubes"
-                             title-count="project.samples.length"
-                             menu-items="samplesMenuItems">
-                </action-menu>
-            </span>
-
-            <span class="col-xs-2">
-                <action-menu title="Reviews"
-                             title-icon="fa-comment"
-                             title-count="(project.reviews | byKey:'status':'open').length"
-                             menu-items="reviewsMenuItems">
-                </action-menu>
-            </span>
-            <span class="col-xs-2">
-                <action-menu title="Drafts"
-                             title-icon="fa-copy"
-                             title-count="project.drafts.length"
-                             menu-items="draftsMenuItems">
-                </action-menu>
-            </span>
-            <span class="col-xs-2">
-                <action-menu title="Notes"
-                             title-icon="fa-edit"
-                             title-count="project.notes.length"
-                             menu-items="notesMenuItems">
-                </action-menu>
-            </span>
-            <span class="col-xs-2">
-                <action-menu title="Settings"
-                             title-icon="fa-gear"
-                             title-count=""
-                             menu-items="settingsMenuItems">
-                </action-menu>
-            </span>
-        </div>
     </div>
 
     <!-- Modal for contributors -->
