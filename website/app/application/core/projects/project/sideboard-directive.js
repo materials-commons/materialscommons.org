@@ -4,7 +4,7 @@ function sideboardDirective() {
     return {
         scope: {},
         restrict: "E",
-        templateUrl: "application/core/projects/overview/sideboard.html"
+        templateUrl: "application/core/projects/project/sideboard.html"
     };
 }
 

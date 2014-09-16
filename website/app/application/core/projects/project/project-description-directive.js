@@ -7,7 +7,7 @@ function projectDescriptionDirective() {
         },
         controller: "projectDescriptionDirectiveController",
         restrict: "E",
-        templateUrl: "application/core/projects/overview/project-description.html"
+        templateUrl: "application/core/projects/project/project-description.html"
     };
 }
 

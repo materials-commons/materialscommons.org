@@ -3,7 +3,7 @@ Application.Controllers.controller('_indexNavigation',
 function _indexNavigation($scope, User, $state, Nav) {
     $scope.goHome = function () {
         if (User.isAuthenticated()) {
-            $state.go("projects.overview.files");
+            $state.go("projects.project.overview");
         } else {
             $state.go("home");
         }

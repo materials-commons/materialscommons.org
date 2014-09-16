@@ -34,14 +34,14 @@ function projectsOverviewCreateReview ($scope, mcapi, User, $stateParams, alertS
     $scope.saveData = function () {
         mcapi('/reviews')
             .success(function (data) {
-                $state.go('projects.overview.editreviews', {'review_id': data.id});
+                $state.go('projects.project.editreviews', {'review_id': data.id});
                 $scope.model.new_review = "";
                 pubsub.send('open_reviews.change');
             }).post($scope.review);
     };
 
     $scope.viewReview = function(review){
-        $state.go('projects.overview.editreviews', {'review_id': review.id});
+        $state.go('projects.project.editreviews', {'review_id': review.id});
     };
 
     $scope.showReviews = function(status){

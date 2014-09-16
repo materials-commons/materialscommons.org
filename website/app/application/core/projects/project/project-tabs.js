@@ -7,7 +7,7 @@ function projectTabsDirective() {
         },
         controller: 'projectTabsDirectiveController',
         restrict: "AE",
-        templateUrl: "application/core/projects/overview/project-tabs.html"
+        templateUrl: "application/core/projects/project/project-tabs.html"
     };
 }
 

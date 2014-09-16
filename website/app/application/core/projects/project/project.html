@@ -1,12 +1,12 @@
-<div ng-controller="projectsOverview">
+<div ng-controller="projectsProject">
     <project-control-bar project-id="{{project_id}}"></project-control-bar>
     <div class="row">
         <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
-        <div class="col-lg-2 sideboard" style="padding-top: 18px">
+        <div class="col-lg-2 sideboard" style="padding-top: 5px">
             <sideboard></sideboard>
         </div>
         <div class="col-lg-10" style="padding-left: 10px;">
-            <div class="row" style="padding-bottom: 16px; padding-top: 3px">
+            <div ng-if="false" class="row" style="padding-bottom: 16px; padding-top: 3px">
                 <span class="col-lg-6">
                     Created by {{project.owner}} on {{project.birthtime | toDateString}}
                 </span>
@@ -14,11 +14,12 @@
                     <i class="fa fa-lock"></i> {{project.name}}
                 </span>
             </div>
-            <div class="row">
-                <project-tabs project="project"></project-tabs>
-
-            </div>
-            <div id="action-stack" class="row">
+            <div style="padding-top: 3px">
+                <div id="action-stack" class="row">
+                </div>
+                <div class="row">
+                    <project-tabs project="project"></project-tabs>
+                </div>
             </div>
             <div class="row">
                 <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>
