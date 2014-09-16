@@ -1,4 +1,4 @@
-<div style="position: relative; height: 65px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding-left: 15px; padding-right: 15px;"
+<div style="position: relative; height: 25px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; padding-left: 15px; padding-right: 15px;"
      ng-style="{background: colors.getCurrentProjectColor()}">
     <div class="row">
         <span class="col-xs-offset-3 col-xs-2">
@@ -25,8 +25,8 @@
             </a>
         </span>
     </div>
-    <hr class="carved">
-    <div class="row">
+    <hr ng-if="false" class="carved">
+    <div ng-if="false" class="row">
         <span class="col-xs-offset-2 col-xs-4">
             Created by {{project.owner}} on {{project.birthtime | toDateString}}
         </span>
