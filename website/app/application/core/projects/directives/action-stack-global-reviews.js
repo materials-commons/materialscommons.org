@@ -9,9 +9,9 @@ function actionReviewsDirective() {
 }
 
 Application.Controllers.controller('actionGlobalReviewsController',
-    ["$scope", "mcapi", "$filter",  "pubsub", "User", "dateGenerate", actionGlobalReviewsController]);
+    ["$scope", "mcapi", "$filter",  "pubsub", "User", "dateGenerate", "model.projects", actionGlobalReviewsController]);
 
-function actionGlobalReviewsController($scope, mcapi, $filter,  pubsub, User, dateGenerate) {
+function actionGlobalReviewsController($scope, mcapi, $filter,  pubsub, User, dateGenerate, Projects) {
     pubsub.waitOn($scope, 'update_reviews.change', function () {
         $scope.retrieveReviewsRequested();
         $scope.retrieveReviewsToConduct();
@@ -88,6 +88,7 @@ function actionGlobalReviewsController($scope, mcapi, $filter,  pubsub, User, da
                 $scope.retrieveReviewsRequested();
                 $scope.retrieveReviewsToConduct();
                 $scope.review = '';
+                pubsub.send('update_reviews.change');
             }).put({'status': 'close'});
     };
 
@@ -98,6 +99,7 @@ function actionGlobalReviewsController($scope, mcapi, $filter,  pubsub, User, da
                 $scope.retrieveReviewsRequested();
                 $scope.retrieveReviewsToConduct();
                 $scope.review = '';
+                pubsub.send('update_reviews.change');
             }).put({'status': 'open'});
     };
 
