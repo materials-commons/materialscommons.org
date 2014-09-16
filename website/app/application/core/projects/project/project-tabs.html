@@ -4,6 +4,11 @@
            ng-click="setActiveTab(tab.id)"
            ng-style="isActiveTab(tab.id) && getActiveStyle() || !isActiveTab(tab.id) && getInactiveStyle()">
             {{tab.name}}
+            <span ng-if="tab.hasCount"
+                  class="badge"
+                  ng-style="!isActiveTab(tab.id) && {'color': inactiveColor}">
+                {{tab.count}}
+            </span>
         </a>
     </li>
 </ul>

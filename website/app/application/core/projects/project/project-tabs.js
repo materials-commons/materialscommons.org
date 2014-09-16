@@ -16,6 +16,7 @@ Application.Controllers.controller('projectTabsDirectiveController',
 
 function projectTabsDirectiveController($scope, projectColors) {
     var activeTab = "overview";
+    $scope.inactiveColor = projectColors.getInactiveColor();
 
     $scope.setActiveTab = function(tabID) {
         activeTab = tabID;
@@ -48,27 +49,35 @@ function projectTabsDirectiveController($scope, projectColors) {
     $scope.tabs = [
         {
             id: "overview",
-            name: "Overview"
+            name: "Overview",
+            hasCount: false
         },
 
         {
             id: "files",
-            name: "Files"
+            name: "Files",
+            hasCount: false
         },
 
         {
             id: "samples",
-            name: "Samples"
+            name: "Samples",
+            hasCount: true,
+            count: $scope.project.samples.length
         },
 
         {
             id: "provenance",
-            name: "Provenance"
+            name: "Provenance",
+            hasCount: true,
+            count: $scope.project.samples.length
         },
 
         {
             id: "notes",
-            name: "Notes"
+            name: "Notes",
+            hasCount: true,
+            count: $scope.project.notes.length
         }
     ];
 }
