@@ -46,9 +46,9 @@
         <p ng-show="status === 'close'" class="text-muted">No Closed Reviews</p><br>
     </div>
     <div ng-show="review !== ''">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
             <div class="row panel panel-default">
-                <div class="panel-heading" ng-style="{'background-color': currentProjectColor}">
+                <div class="panel-heading" ng-style="{'background-color': color}">
                     <h4>{{review.title}}</h4>
 
                     <div>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 custom-ta-toolbar">
+                    <div class="custom-ta-toolbar">
                         <h4>Comment:</h4>
                         <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
                                       ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],

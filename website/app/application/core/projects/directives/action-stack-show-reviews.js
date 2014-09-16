@@ -10,9 +10,9 @@ function actionShowReviewsDirective() {
 
 Application.Controllers.controller('actionShowReviewsController',
     ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User",
-     "pubsub","$stateParams", "model.projects", actionShowReviewsController]);
+     "pubsub","$stateParams", "model.projects", "projectColors", actionShowReviewsController]);
 
-function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects) {
+function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
 
     pubsub.waitOn($scope, 'open_reviews.change', function () {
         $scope.loadReviews($stateParams.id);
@@ -101,7 +101,7 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
         $scope.review = '';
         $scope.loadReviews($stateParams.id);
         $scope.status = 'open';
-
+        $scope.color = projectColors.getCurrentProjectColor();
         Projects.get($stateParams.id).then(function(project) {
             $scope.project = project;
         });
