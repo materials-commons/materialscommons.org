@@ -89,7 +89,7 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
 
     function init() {
         $scope.review = '';
-//        $scope.loadReviews($stateParams.id);
+        $scope.loadReviews($stateParams.id);
         $scope.status = 'open';
         $scope.color = projectColors.getCurrentProjectColor();
         Projects.get($stateParams.id).then(function(project) {
