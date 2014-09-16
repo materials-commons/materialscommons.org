@@ -22,7 +22,7 @@ function projectControlBarDirectiveController($scope, projectColors, Projects, p
             $scope.projects = data;
             Projects.get($scope.projectId).then(function (project) {
                 $scope.project = project;
-                pubsub.send('update_reviews.change');
+//                pubsub.send('update_reviews.change');
             });
 
         });
