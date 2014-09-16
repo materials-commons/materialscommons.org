@@ -1,9 +1,9 @@
-Application.Controllers.controller('projectsOverview',
+Application.Controllers.controller('projectsProject',
                                    ["$scope", "$stateParams", "pubsub", "$state",
                                     "ProvDrafts", "$filter", "$rootScope", "model.projects",
-                                    projectsOverview]);
+                                    projectsProject]);
 
-function projectsOverview ($scope, $stateParams, pubsub, $state,
+function projectsProject ($scope, $stateParams, pubsub, $state,
                            ProvDrafts, $filter, $rootScope, projects) {
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;

@@ -7,7 +7,7 @@ function projectControlBarDirective() {
         },
         controller: 'projectControlBarDirectiveController',
         restrict: "AE",
-        templateUrl: "application/core/projects/overview/project-control-bar.html"
+        templateUrl: "application/core/projects/project/project-control-bar.html"
     };
 }
 

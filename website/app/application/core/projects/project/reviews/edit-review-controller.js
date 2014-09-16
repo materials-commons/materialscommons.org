@@ -31,7 +31,7 @@ function projectsOverviewEditReview ($scope, mcapi, User, $stateParams, dateGene
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
                 pubsub.send('open_reviews.change');
-                $state.go('projects.overview.reviews');
+                $state.go('projects.project.reviews');
             }).put({'status': 'close'});
     };
 
@@ -39,7 +39,7 @@ function projectsOverviewEditReview ($scope, mcapi, User, $stateParams, dateGene
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
                 pubsub.send('open_reviews.change');
-                $state.go('projects.overview.reviews');
+                $state.go('projects.project.reviews');
             }).put({'status': 'open'});
     };
 

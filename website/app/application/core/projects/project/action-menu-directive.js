@@ -10,7 +10,7 @@ function actionMenuDirective() {
         },
         controller: 'actionMenuDirectiveController',
         restrict: "AE",
-        templateUrl: "application/core/projects/overview/action-menu.html"
+        templateUrl: "application/core/projects/project/action-menu.html"
     };
 }
 

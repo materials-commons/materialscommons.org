@@ -13,7 +13,7 @@ Application.Controllers.controller('projectsOverviewDrafts',
             $scope.markForReview = function (draft) {
                 $scope.draft = draft;
                 var modalInstance = $modal.open({
-                    templateUrl: 'application/core/projects/overview/drafts/review.html',
+                    templateUrl: 'application/core/projects/project/drafts/review.html',
                     controller: '_projectsDraftsReviewModal',
                     resolve: {
                         draft: function () {

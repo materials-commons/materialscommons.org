@@ -121,16 +121,36 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
      */
         .state('projects', {
             url: '/projects/:id',
-            templateUrl: 'application/core/projects/projectspage.html',
+            templateUrl: 'application/core/projects/projects.html',
             resolve: {
                 projects: ["model.projects", function(projects) {
                     return projects.getList();
                 }]
             }
         })
-        .state('projects.overview', {
+        .state('projects.project', {
+            url: '/project',
+            templateUrl: 'application/core/projects/project/project.html'
+        })
+        .state('projects.project.overview', {
             url: '/overview',
-            templateUrl: 'application/core/projects/overview/overview.html'
+            templateUrl: 'application/core/projects/project/overview/overview.html'
+        })
+        .state('projects.project.files', {
+            url: '/files',
+            templateUrl: 'application/core/projects/project/files/files.html'
+        })
+        .state('projects.project.samples', {
+            url: '/samples',
+            templateUrl: 'application/core/projects/project/samples/samples.html'
+        })
+        .state('projects.project.provenance', {
+            url: '/provenance',
+            templateUrl: 'application/core/projects/project/provenance/provenance.html'
+        })
+        .state('projects.project.notes', {
+            url: '/notes',
+            templateUrl: 'application/core/projects/project/notes/notes.html'
         });
 
 }]);
