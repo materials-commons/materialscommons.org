@@ -1,2 +1,108 @@
 <tab-control-bar></tab-control-bar>
 <h4>projects.project.reviews</h4>
+
+<div ng-controller="tabShowReviewsController" class="col-lg-offset-2">
+    <div class="row">
+        <div class="col-lg-10">
+            <table class="table table-file-directory">
+                <thead ng-style="{'background-color': currentProjectColor}">
+                <th><i class="fa fa-check-circle review-open"></i><a ng-click="showReviews('open')">{{open_reviews.length}}
+                    open</a>
+                    <i class="fa fa-minus-circle review-close"></i><a ng-click="showReviews('close')">{{closed_reviews.length}}
+                        closed</a>
+                </th>
+                <th>Title</th>
+                <th>Items</th>
+                <th>Assigned to</th>
+                <th></th>
+                </thead>
+                <tbody>
+                <tr class="cursor-pointer" ng-click="viewReview(review)" ng-repeat="review in list_reviews">
+                    <td ng-if="review.status==='open'"><i
+                            class="fa fa-check-circle review-open"></i></td>
+                    <td ng-if="review.status==='close'"><i
+                            class="fa fa-minus-circle review-close"></i>
+                    </td>
+                    <td> {{review.title}}<p class="text-muted sub-text">{{review.author}}
+                        {{review.birthtime | toDateString}}</p>
+                    </td>
+                    <td>
+                        <ul ng-repeat="i in review.items">
+                            <li>{{i.name}}</li>
+                        </ul>
+                    </td>
+                    <td>{{review.assigned_to}}</td>
+                    <td ng-if="review.messages.length === 1"></td>
+                    <td ng-if="review.messages.length != 1"><i class="fa fa-comment"></i> {{review.messages.length-1}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="row" ng-if="list_reviews.length === 0">
+        <p ng-show="status === 'open'" class="text-muted">No Open Reviews</p>
+
+        <p ng-show="status === 'close'" class="text-muted">No Closed Reviews</p><br>
+    </div>
+    <div ng-show="review !== ''">
+        <div class="col-lg-10">
+            <div class="row panel panel-default">
+                <div class="panel-heading" ng-style="{'background-color': color}">
+                    <h4>{{review.title}}</h4>
+
+                    <div>
+                        <span ng-if="review.status==='open'">
+                            <button class="btn btn-success"><i class="fa fa-check-circle"></i>open</button>
+                        </span>
+                        <span ng-if="review.status==='close'">
+                            <button class="btn btn-danger"><i class="fa fa-minus-circle"></i>closed</button>
+                        </span>
+                        <span class="text-muted">author: {{review.author}}</span>
+                    </div>
+                </div>
+            </div>
+
+            </hr>
+            <div class="row" ng-repeat="row in review.messages | orderBy: date">
+                <div class="col-lg-2 text-muted sub-text">
+                    {{row.date}} --- {{row.who}}
+                </div>
+                <div class="col-lg-8">
+                    <div ng-if="edit_index!==$index">
+                        <div class="tip left" ta-bind ng-model="row.message"></div>
+                        <a ng-click="editReview($index)">edit</a>
+                    </div>
+                    <div ng-if="edit_index==$index">
+                        <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+                                          ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+                                          ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                                      ng-model="row.message"></text-angular>
+                        <br>
+                        <button ng-click="saveReview($index)" class="btn btn-default btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="custom-ta-toolbar">
+                    <h4>Comment:</h4>
+                    <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+                                      ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+                                      ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                                  ng-model="model.comment"></text-angular>
+                    <div ng-if="review.status=='open'">
+                        <button ng-click="addComment()" class="btn btn-default btn-primary">Comment</button>
+                        <button ng-click="closeReview()" class="btn btn-default btn-danger">Close Review</button>
+                    </div>
+                    <div ng-if="review.status=='close'">
+                        <button ng-click="addComment()" class="btn btn-default btn-primary">Comment</button>
+                        <button ng-click="reOpenReview()" class="btn btn-default btn-danger">Reopen Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
