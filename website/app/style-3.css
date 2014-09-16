@@ -436,7 +436,8 @@ body {
   font-size: 13px;
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #fafafa;
+  /* background-color: #fafafa; */
+  background-color: #FBF9E2;
 }
 
 /*.validation-invalid {*/
