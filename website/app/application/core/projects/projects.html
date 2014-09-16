@@ -24,7 +24,7 @@
                     ng-repeat="p in projects"
                     ng-class="{active: project_id == p.id}"
                     ng-style="isActiveProject($index) && colors.getActiveStyle($index) || !isActiveProject($index) && colors.getInactiveStyle($index)">
-                    <a ui-sref="projects.project({id: p.id})"
+                    <a ui-sref="projects.project.overview({id: p.id})"
                        ng-click="colors.setCurrentProjectIndex($index)"
                        ng-style="isActiveProject($index) && {color: 'white', 'font-weight': 'bold' } || !isActiveProject($index) && {color: colors.getInactiveColor()}">
                         {{createName(p.name)}}
