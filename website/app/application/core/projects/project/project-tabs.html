@@ -1,6 +1,7 @@
 <ul class="nav nav-tabs" role="tablist">
     <li ng-repeat="tab in tabs">
-        <a href="#"
+        <a ui-sref="projects.project.{{tab.id}}"
+           ng-click="setActiveTab(tab.id)"
            ng-style="isActiveTab(tab.id) && getActiveStyle() || !isActiveTab(tab.id) && getInactiveStyle()">
             {{tab.name}}
         </a>

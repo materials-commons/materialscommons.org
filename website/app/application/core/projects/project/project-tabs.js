@@ -15,10 +15,14 @@ Application.Controllers.controller('projectTabsDirectiveController',
                                   ["$scope", "projectColors", projectTabsDirectiveController]);
 
 function projectTabsDirectiveController($scope, projectColors) {
-    $scope.colors = projectColors;
+    var activeTab = "overview";
+
+    $scope.setActiveTab = function(tabID) {
+        activeTab = tabID;
+    };
 
     $scope.isActiveTab = function (tabID) {
-        return tabID == "overview";
+        return tabID == activeTab;
     };
 
     $scope.getActiveStyle = function() {
