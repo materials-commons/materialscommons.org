@@ -16,6 +16,7 @@ Application.Controllers.controller('projectTabsDirectiveController',
 
 function projectTabsDirectiveController($scope, projectColors) {
     var activeTab = "overview";
+    $scope.colors = projectColors;
     $scope.inactiveColor = projectColors.getInactiveColor();
 
     $scope.setActiveTab = function(tabID) {
@@ -33,7 +34,8 @@ function projectTabsDirectiveController($scope, projectColors) {
             'border-bottom-style': 'solid',
             'border-bottom-color': color,
             color: 'white',
-            'font-weight': 'bold'
+            'font-weight': 'bold',
+            outline: 0
         };
     };
 
