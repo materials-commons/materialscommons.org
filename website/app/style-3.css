@@ -1232,3 +1232,12 @@ label {
 .select2-container.select2-choice {
   padding-bottom: 2px;
 }
+
+.badge-light {
+  background-color: #9fadbc;
+}
+
+.tab-active {
+  color: white;
+  font-style: bold;
+}

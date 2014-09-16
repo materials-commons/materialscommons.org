@@ -3,10 +3,10 @@
         <a ui-sref="projects.project.{{tab.id}}"
            ng-click="setActiveTab(tab.id)"
            ng-style="isActiveTab(tab.id) && getActiveStyle() || !isActiveTab(tab.id) && getInactiveStyle()">
-            {{tab.name}}
-            <span ng-if="tab.hasCount"
+            <i class="fa" ng-class="tab.icon"></i> {{tab.name}}
+            <span ng-show="tab.hasCount"
                   class="badge"
-                  ng-style="!isActiveTab(tab.id) && {'color': inactiveColor}">
+                  ng-class="{'badge-light': !isActiveTab(tab.id)}">
                 {{tab.count}}
             </span>
         </a>

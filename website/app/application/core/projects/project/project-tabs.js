@@ -49,18 +49,21 @@ function projectTabsDirectiveController($scope, projectColors) {
     $scope.tabs = [
         {
             id: "overview",
+            icon: "fa-list",
             name: "Overview",
             hasCount: false
         },
 
         {
             id: "files",
+            icon: "fa-files-o",
             name: "Files",
             hasCount: false
         },
 
         {
             id: "samples",
+            icon: "fa-cubes",
             name: "Samples",
             hasCount: true,
             count: $scope.project.samples.length
@@ -68,13 +71,23 @@ function projectTabsDirectiveController($scope, projectColors) {
 
         {
             id: "provenance",
+            icon: "fa-code-fork",
             name: "Provenance",
             hasCount: true,
             count: $scope.project.samples.length
         },
 
         {
+            id: "reviews",
+            icon: "fa-comment",
+            name: "Reviews",
+            hasCount: true,
+            count: $scope.project.reviews.length
+        },
+
+        {
             id: "notes",
+            icon: "fa-edit",
             name: "Notes",
             hasCount: true,
             count: $scope.project.notes.length
