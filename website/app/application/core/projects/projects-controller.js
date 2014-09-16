@@ -67,7 +67,7 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         $scope.model = {
             name: ''
         };
-
+        $scope.reviewType = 'global';
         $scope.activeAction = "closed";
         $scope.from = ProjectPath.get_from();
         Projects.getList().then(function (projects) {

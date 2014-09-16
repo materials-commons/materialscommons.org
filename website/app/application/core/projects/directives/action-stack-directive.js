@@ -60,7 +60,6 @@ function actionStackDirective($rootScope, actionStackTracker, $compile,
 
                     var t = '<div style="margin-bottom: 25px;" ui-draggable="false" id="' + id + '" class="row col-lg-12"><a name="' + id + '"></a><hr class="carved"/>';
                     t = t + '<div><div class="col-lg-offset-5"><h4>' + actionTitle + '</h4></div>' + actionDirective + '</div></div>';
-
                     if (!actionStackTracker.actionActive(id)) {
                         actionStackTracker.pushAction(id, title);
                         _setHotkeys(oldActionsLength);

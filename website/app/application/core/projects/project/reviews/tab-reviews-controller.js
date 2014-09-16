@@ -1,18 +1,9 @@
-Application.Directives.directive('actionShowReviews', actionShowReviewsDirective);
 
-function actionShowReviewsDirective() {
-    return {
-        controller: "actionShowReviewsController",
-        restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-show-reviews.html"
-    };
-}
-
-Application.Controllers.controller('actionShowReviewsController',
+Application.Controllers.controller('tabShowReviewsController',
     ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User",
-     "pubsub","$stateParams", "model.projects", "projectColors", actionShowReviewsController]);
+        "pubsub","$stateParams", "model.projects", "projectColors", tabShowReviewsController]);
 
-function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
+function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
 
     pubsub.waitOn($scope, 'open_reviews.change', function () {
         $scope.loadReviews($stateParams.id);
@@ -98,7 +89,7 @@ function actionShowReviewsController($scope, mcapi, $filter, $state, dateGenerat
 
     function init() {
         $scope.review = '';
-        $scope.loadReviews($stateParams.id);
+//        $scope.loadReviews($stateParams.id);
         $scope.status = 'open';
         $scope.color = projectColors.getCurrentProjectColor();
         Projects.get($stateParams.id).then(function(project) {
