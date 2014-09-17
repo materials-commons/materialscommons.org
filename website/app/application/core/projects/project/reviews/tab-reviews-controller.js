@@ -1,3 +1,13 @@
+Application.Directives.directive('topShowReviews', actionShowReviewsDirective);
+
+function actionShowReviewsDirective() {
+    return {
+        controller: "tabShowReviewsController",
+        restrict: "A",
+        templateUrl: "application/core/projects/project/reviews/reviews.html"
+    };
+}
+
 
 Application.Controllers.controller('tabShowReviewsController',
     ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User",
