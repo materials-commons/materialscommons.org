@@ -1,13 +1,17 @@
 <div>
-    <span class="col-xs-4" style="margin-top: 5px">
-        Created by {{project.owner}} on {{project.birthtime | toDateString}}
+    <span class="col-xs-4" style="margin-top: 5px;">
+        <span ng-if="false" style="border-width: 2px; border-color: lightgrey; border; border-radius: 4px; border-style: solid; padding: 2px"
+              ng-style="{'background-color': currentProjectColorLight()}">
+            Created by {{project.owner}} on {{project.birthtime | toDateString}}
+        </span>
+        <span ng-if="true">
+            Created by {{project.owner}} on {{project.birthtime | toDateString}}
+        </span>
     </span>
     <div class="col-xs-3">
-        <div class="form-inlinexx">
-            <input class="form-control pull-right"
-                   type="text"
-                   placeholder="Search Project...">
-        </div>
+        <input class="form-control pull-right"
+               type="text"
+               placeholder="Search Project...">
     </div>
     <div class="col-xs-1">
         <button style="margin-left: 5px" class="btn btn-default">Search</button>
