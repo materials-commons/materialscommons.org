@@ -810,6 +810,10 @@ table-file-directory > thead > tr > td,
   border: 1px solid #dadedf;
 }
 
+bold {
+  font-weight: bold;
+}
+
 a.action-link {
   color: white;
   font-style: bold;
