@@ -12,10 +12,14 @@
     <div class="col-xs-1">
         <button style="margin-left: 5px" class="btn btn-default">Search</button>
     </div>
-    <div class="col-xs-4">
+    <div class="col-xs-4" style="margin-top: 5px">
         <div>
-            <a ng-click="showSearchControls = !showSearchControls" class="action-link">Search: {{searchType}}</a>
-            <div ng-show="showSearchControls" class="arrow_box_bottom" style="z-index:1000; position: absolute; top: 55px; left: -138px;">
+            <a ng-click="showSearchControls = !showSearchControls" class="action-link">
+                Search: {{searchType}}
+            </a>
+            <div ng-show="showSearchControls"
+                 class="arrow_box_bottom"
+                 style="z-index:1000; position: absolute; top: 55px; left: -138px;">
                 <form>
                     <div class="checkbox checkbox-circle checkbox-inline checkbox-primary"
                          style="margin-top: 0px">
