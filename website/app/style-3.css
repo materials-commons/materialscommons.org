@@ -429,6 +429,12 @@ td.tag-width {
   padding-right: 5px;
 }
 
+.reviews-dropdown{
+    min-width: 350px;
+    font-size:13px;
+    color: darkgray;
+}
+
 /************End index.html **************************/
 
 body {
