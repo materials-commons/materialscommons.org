@@ -1,6 +1,36 @@
-<div class="row" >
-    <li class="nav-header">Requested{{reviews}}</li>
+<div class="row">
+    <li><h4 style="text-align: center"><b>Requested</b></h4></li>
+    <br>
+    <table class="table table-file-directory">
+        <thead style="color: #2e2e2e">
+        <th>Title</th>
+        <th>Assigned to</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <tr ui-sref="projects.project.reviews({id: r.project})" class="cursor-pointer"
+            ng-repeat="r in reviews =(all_reviews | byKey: 'author': user| byKey: 'status': 'open')">
+            <td>{{r.title}}<p class="text-muted">By: {{r.author}}</p></td>
+            <td>{{r.assigned_to}}</td>
+        </tr>
+        </tbody>
 
-    <li class="nav-header">To Conduct</li>
+    </table>
 
+    <li><h4 style="text-align: center"><b>To Conduct</b></h4></li><br>
+    <table class="table table-file-directory">
+        <thead style="color: black">
+        <th>Title</th>
+        <th>Assigned to</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <tr ng-click="goToReview(r)" class="cursor-pointer"
+            ng-repeat="r in reviews =(all_reviews | byKey: 'author': user| byKey: 'status': 'open')">
+            <td>{{r.title}}</td>
+            <td>{{r.author}}</td>
+        </tr>
+        </tbody>
+
+    </table>
 </div>

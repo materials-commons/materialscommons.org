@@ -430,9 +430,10 @@ td.tag-width {
 }
 
 .reviews-dropdown{
-    min-width: 350px;
+    min-width: 150px;
     font-size:13px;
     color: darkgray;
+    /*max-width: 500px;*/
 }
 
 /************End index.html **************************/

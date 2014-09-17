@@ -9,21 +9,30 @@ function actionReviewsDirective() {
 }
 
 Application.Controllers.controller('actionGlobalReviewsController',
-    ["$scope", "review", "mcapi", "$filter", "pubsub", "User", "dateGenerate", "model.projects", actionGlobalReviewsController]);
+    ["$scope","$filter", "User", "model.projects", actionGlobalReviewsController]);
 
-function actionGlobalReviewsController($scope, review, mcapi, $filter, pubsub, User, dateGenerate, Projects) {
+function actionGlobalReviewsController($scope, $filter,  User, Projects) {
+
 
     function init() {
-        $scope.review = '';
-        review.loadReviews();
-        $scope.reviews = review.getReviews();
-        $scope.to_conduct = $filter('byKey')($scope.reviews, 'assigned_to', User.u());
-        $scope.to_conduct_open = $filter('byKey')($scope.reviews, 'status', 'open');
-        $scope.to_conduct_closed = $filter('byKey')($scope.reviews, 'status', 'close');
-        $scope.requested = $filter('byKey')($scope.reviews, 'author', User.u());
-        $scope.requested_open = $filter('byKey')($scope.reviews, 'status', 'open');
-        $scope.requested_closed = $filter('byKey')($scope.reviews, 'status', 'close');
-
+        $scope.user = User.u();
+        var unflatten = [];
+        $scope.all_reviews = [];
+        Projects.getList(true).then(function (projects) {
+            projects.forEach(function(prj){
+                if(prj.reviews.length!==0){
+                    unflatten.push(prj.reviews);
+                }
+            })
+            $scope.all_reviews = $scope.all_reviews.concat.apply($scope.all_reviews, unflatten);
+            $scope.to_conduct = $filter('byKey')($scope.all_reviews, 'assigned_to', User.u());
+            $scope.to_conduct_open = $filter('byKey')($scope.to_conduct, 'status', 'open');
+            $scope.to_conduct_closed = $filter('byKey')($scope.to_conduct, 'status', 'close');
+            $scope.requested = $filter('byKey')($scope.all_reviews, 'author', User.u());
+            $scope.requested_open = $filter('byKey')($scope.requested, 'status', 'open');
+            $scope.requested_closed = $filter('byKey')($scope.requested, 'status', 'close');
+            console.log($scope.all_reviews)
+        });
 
     }
 

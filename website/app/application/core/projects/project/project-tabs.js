@@ -68,7 +68,7 @@ function projectTabsDirectiveController($scope, projectColors) {
             icon: "fa-cubes",
             name: "Samples",
             hasCount: true,
-            count: $scope.project.samples.length
+            count: 1
         },
 
         {
@@ -76,7 +76,7 @@ function projectTabsDirectiveController($scope, projectColors) {
             icon: "fa-code-fork",
             name: "Provenance",
             hasCount: true,
-            count: $scope.project.samples.length
+            count: 1
         },
 
         {
@@ -84,7 +84,7 @@ function projectTabsDirectiveController($scope, projectColors) {
             icon: "fa-comment",
             name: "Reviews",
             hasCount: true,
-            count: $scope.project.reviews.length
+            count: 1
         },
 
         {
@@ -92,7 +92,7 @@ function projectTabsDirectiveController($scope, projectColors) {
             icon: "fa-edit",
             name: "Notes",
             hasCount: true,
-            count: $scope.project.notes.length
+            count: 1
         }
     ];
 }
