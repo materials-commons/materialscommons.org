@@ -19,16 +19,16 @@ Application.Controllers.controller('todosSideboardController',
     ["$scope",  "$stateParams", "model.projects", "User", "toastr", todosSideboardController]);
 
 function todosSideboardController($scope, $stateParams, Projects, User, toastr) {
+    $scope.createName = function(name) {
+        if (name.length > 21) {
+            return name.substring(0,20)+"...";
+        }
+        return name;
+    };
 
     $scope.isChecked = function(td){
         td.selected = !td.selected;
         $scope.project.put(User.keyparam()).then(function() {
-            if(td.selected == true){
-//                toaster.pop('success', "ToDo:", "Marked as Done", 3000);
-            }else{
-//                toaster.pop('warning', "ToDo:", "Marked as Not Done", 3000)
-            }
-
         });
     }
 
