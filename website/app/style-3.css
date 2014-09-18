@@ -897,6 +897,10 @@ a.action-link {
   color: #800000;
 }
 
+.btn-project {
+  color: white;
+}
+
 a.important {
   font-size: 11pt;
 }
