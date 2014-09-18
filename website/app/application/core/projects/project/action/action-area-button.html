@@ -1,0 +1,10 @@
+<button class="btn btn-project"
+        ng-click="toggleAction()"
+        ng-style="buttonStyle()">
+    <i class="fa" ng-class="titleIcon"></i>
+    <span style="color: white" ng-show="!isContinue()">{{title}}</span>
+    <span style="color: white" ng-show="isContinue()">{{continueTitle}}</span>
+    <i ng-show="isCurrentAction()"
+       class="fa fa-close action-link-close">
+    </i>
+</button>
