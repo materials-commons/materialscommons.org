@@ -1,29 +1,37 @@
 <div>
-    <span class="col-xs-offset-2 col-xs-2">
-        <i class="fa fa-users"/>
-        <a data-toggle="modal" data-target="#contributors">
-            <strong>{{project.users.length}} contributors</strong>
-        </a>
-    </span>
-    <span class="col-xs-2">
-        <i class="fa fa-exclamation-circle"/>
-        0 events
-    </span>
-    <span class="col-xs-2">
-        <i class="fa fa-share"/> Shared with
-        <a data-toggle="modal"
-           data-target="#shares">
-            <strong>{{project.shares.length}} Project(s)</strong>
-        </a>
-    </span>
-    <span class="col-xs-2">
-        <i class="fa fa-mail-reply"/>
-        Uses
-        <a data-toggle="modal"
-           data-target="#uses">
-            <strong>{{project.uses.length}} Project(s)</strong>
-        </a>
-    </span>
+    <div class="row">
+        <div class="col-xs-offset-2">
+            <ul class="list-inline menu-bar">
+                <li>
+                    <button class="btn"
+                            style="background-color: #4a7a93; color: white">
+                        <i class="fa fa-code-fork"></i> Create Provenance
+                    </button>
+                </li>
+
+                <li>
+                    <button class="btn"
+                            style="background-color: #4a7a93; color: white">
+                        <i class="fa fa-cubes"></i> Create Sample
+                    </button>
+                </li>
+
+                <li>
+                    <button class="btn"
+                            style="background-color: #4a7a93; color: white">
+                        <i class="fa fa-comment"></i> Create Review
+                    </button>
+                </li>
+
+                <li>
+                    <button class="btn"
+                            style="background-color: #4a7a93; color: white">
+                        <i class="fa fa-edit"></i> Create Note
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <!-- Modal for contributors -->
     <div class="modal fade" id="contributors" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"

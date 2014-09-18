@@ -1,34 +1,70 @@
-<tab-control-bar>
-    <div class="col-xs-offset-1">
-        <div class="col-xs-8">
-            <ul class="list-inline menu-bar">
-                <li>
-                    <a class="action-link project-sub-action">
-                        <i class="fa fa-bars"></i> Details
-                    </a>
+<div ng-controller="projectOverview">
+    <tab-control-bar>
+        <div class="col-xs-offset-1">
+            <div class="col-xs-8">
+                <ul class="list-inline menu-bar">
+                    <li>
+                        <a class="action-link project-sub-action">
+                            <i class="fa fa-bars"></i> Details
+                        </a>
+                    </li>
+                    <li>
+                        <a class="action-link project-sub-action">
+                            <i class="fa fa-group"></i> Permissions
+                        </a>
+                    </li>
+                    <li>
+                        <a class="action-link project-sub-action">
+                            <i class="fa fa-bar-chart"></i> Statistics
+                        </a>
+                    </li>
+                    <li>
+                        <a class="action-link project-sub-action">
+                            <i class="fa fa-clock-o"></i> Events
+                        </a>
+                    </li>
+                    <li>
+                        <a class="action-link project-sub-action">
+                            <i class="fa fa-gears"></i> Preferences
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </tab-control-bar>
+    <div class="row">
+        <div class="col-xs-offset-3">
+            <ul class="list-inline">
+                <li ng-if="true">
+                    <span>
+                        <i class="fa fa-users"/>
+                        <a data-toggle="modal" data-target="#contributors">
+                            <strong>{{project.users.length}} contributors</strong>
+                        </a>
+                    </span>
                 </li>
-                <li>
-                    <a class="action-link project-sub-action">
-                        <i class="fa fa-group"></i> Permissions
-                    </a>
+
+                <li ng-if="true">
+                    <span>
+                        <i class="fa fa-share"/> Shared with
+                        <a data-toggle="modal"
+                           data-target="#shares">
+                            <strong>{{project.shares.length}} Project(s)</strong>
+                        </a>
+                    </span>
                 </li>
-                <li>
-                    <a class="action-link project-sub-action">
-                        <i class="fa fa-bar-chart"></i> Statistics
-                    </a>
-                </li>
-                <li>
-                    <a class="action-link project-sub-action">
-                        <i class="fa fa-clock-o"></i> Events
-                    </a>
-                </li>
-                <li>
-                    <a class="action-link project-sub-action">
-                        <i class="fa fa-gears"></i> Preferences
-                    </a>
+
+                <li ng-if="true">
+                    <span>
+                        <i class="fa fa-mail-reply"/>
+                        Uses
+                        <a data-toggle="modal"
+                           data-target="#uses">
+                            <strong>{{project.uses.length}} Project(s)</strong>
+                        </a>
+                    </span>
                 </li>
             </ul>
         </div>
     </div>
-</tab-control-bar>
-<h4>projects.project.overview</h4>
+</div>

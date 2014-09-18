@@ -1,0 +1,65 @@
+<table class="table table-file-directory">
+    <tbody>
+        <tr ng-repeat="entry in dir|orderBy:'displayname'"
+            ng-model="list2">
+            <td ng-if="entry.type=='datadir'">
+                <div class="btn-group project-tree-menu">
+                    <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-submenu">
+                            <a href="#">Add Tag</a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                <li ng-repeat="t in user_tags">
+                                    <span><i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>
+                                        <a ng-click="addTag(entry, t)" role="menuItem">{{t.name}}</a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}</a>
+            </td>
+
+            <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
+                <span ng-if="isActionActive('create-review')">
+                    <input ng-model="entry.selected" ng-click="fileSelected(entry)"
+                           ng-change="entry.selected = !entry.selected" type="checkbox">
+                </span>
+
+                <div class="btn-group project-tree-menu">
+                    <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-submenu">
+                            <a href="#">Add Tag</a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                <li ng-repeat="t in user_tags">
+                                    <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>{{t.name}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Add to existing review</a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                <li ng-repeat="r in open_reviews">
+                                    <a style="padding-left: 8px;" ng-click="addToReview(entry, r)" role="menuItem">{{r.title}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a ng-click="populatePath(entry)">
+                    <i class="fa fa-file space-right"/>{{entry.displayname}}
+                    <i ng-class="{'fa fa-close action-link-close': actionActive('file', entry.id)}"/>
+                </a>
+            </td>
+            <td ng-if="entry.type=='datafile'">{{entry.size}}</td>
+            <td ng-if="entry.type=='datadir'">-</td>
+            <td>{{entry.owner}}</td>
+            <td ng-show="entry.tags != {}" class="tag-width" ng-repeat="t in entry.tags[user]">
+                <i tooltip="{{t.name}}" class="fa" ng-class="'fa-' + t.icon" ng-style="{color: t.color}"></i>
+            </td>
+            <td ng-show="entry.tags == {}"></td>
+        </tr>
+    </tbody>
+</table>
