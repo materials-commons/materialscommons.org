@@ -1,5 +1,6 @@
 <div ng-controller="actionStackListController" class="sideboard-group">
     <span class="col-lg-6"><i class="fa fa-reorder"/> Action Stack</span>
+
     <div class="row"></div>
     <hr class="sideboard-separator">
     <div class="row">
@@ -32,12 +33,13 @@
     <hr class="sideboard-separator">
     <div class="row">
         <div ng-repeat="td in todos">
-            <div tooltip="{{td.title}}: {{td.note}}" tooltip-popup-delay="400" class="row">
-                <span>
-                    <input type="checkbox"  ng-model="td.selected" ng-change="td.selected = !td.selected" ng-click="isChecked(td)">
-
-                    {{td.title}}
-                </span>
+            <div class="checkbox checkbox-info">
+                <input id={{td.title}} type="checkbox" ng-model="td.selected" ng-change="td.selected = !td.selected"
+                       ng-click="isChecked(td)" checked>
+                <label for={{td.title}}>
+                    <span data-toggle="tooltip" data-placement="bottom" title="{{td.title}}: {{td.note}}"
+                          for={{td.title}}>{{createName(td.title)}}</span>
+                </label>
             </div>
         </div>
     </div>

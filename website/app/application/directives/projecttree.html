@@ -74,6 +74,7 @@
                             <!--<i ng-class="{'fa fa-close action-link-close': actionActive('file', entry.id)}"/>-->
                         <!--</a>-->
                     <!--</td>-->
+
                     <td ng-if="entry.type=='datadir'">
                         <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
@@ -92,13 +93,15 @@
                         </div>
                         <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}</a>
                     </td>
+                    <td ng-show="!checkBox" ng-if="entry.type=='datafile'" class="checkbox-project-tree">
+                        <span ng-if="isActionActive('create-review')" class="checkbox checkbox-info checkbox-margin">
+                            <input id={{entry.id}} type="checkbox" ng-model="entry.selected" ng-click="fileSelected(entry)">
+                            <label for={{entry.id}} >
 
-                    <td ng-show="!checkBox" ng-if="entry.type=='datafile'">
-                        <span ng-if="isActionActive('create-review')">
-                            <input ng-model="entry.selected" ng-click="fileSelected(entry)"
-                                   ng-change="entry.selected = !entry.selected" type="checkbox">
+                            </label>
                         </span>
-
+                    </td>
+                    <td ng-if="entry.type=='datafile'">
                         <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
                             <ul class="dropdown-menu" role="menu">
