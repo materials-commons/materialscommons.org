@@ -440,6 +440,10 @@ body {
   background-color: #FBF9E2;
 }
 
+.body-color {
+  color: #FBF9E2;
+}
+
 /*.validation-invalid {*/
 /*color: #FF4136;*/
 /*}*/
@@ -665,19 +669,11 @@ h4, .h4, h5, .h5, h6, .h6 {
   color: black;
 }
 
-table-file-directory > tbody >td {
-  background-color: white;
-}
-
 .table-file-directory > thead > tr > th,
-.table-file-directory > thead > tr > th,
-.table-file-directory > tbody > tr > th,
 .table-file-directory > tbody > tr > th,
 .table-file-directory > tfoot > tr > th,
-table-file-directory > thead > tr > td,
 .table-file-directory > thead > tr > td,
 .table-file-directory > tbody > tr > td,
-.table-file-directory > tbody > tr > td, table-file-directory  > tfoot > tr > td,
 .table-file-directory > tfoot > tr > td {
   border-bottom: 1px solid lightgrey;
 }
