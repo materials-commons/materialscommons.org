@@ -1,3 +1,10 @@
+/***********Begin projects.html ***********/
+.projects-margin-top{
+    margin-top: 10px;
+}
+/***********End projects.html ***********/
+
+
 /***********Begin projectspage.html ***********/
 .project-tabs {
   border-bottom: 1px solid #d2d2d2;
@@ -342,6 +349,11 @@ td.tag-width {
 
 /************End projecttree.html **************************/
 /************Begin index.html *****************************/
+
+.nav-dropdown-scrollbar{
+    height:500px;
+    overflow-y:auto;
+}
 .navbar-custom {
   /* background-color: #0C5C86; */
   /* background-color: #204d65; */
@@ -466,6 +478,10 @@ body {
   overflow-x: hidden;
   /* background-color: #fafafa; */
   background-color: #FBF9E2;
+}
+
+.body-color {
+  color: #FBF9E2;
 }
 
 /*.validation-invalid {*/
@@ -693,19 +709,11 @@ h4, .h4, h5, .h5, h6, .h6 {
   color: black;
 }
 
-table-file-directory > tbody >td {
-  background-color: white;
-}
-
 .table-file-directory > thead > tr > th,
-.table-file-directory > thead > tr > th,
-.table-file-directory > tbody > tr > th,
 .table-file-directory > tbody > tr > th,
 .table-file-directory > tfoot > tr > th,
-table-file-directory > thead > tr > td,
 .table-file-directory > thead > tr > td,
 .table-file-directory > tbody > tr > td,
-.table-file-directory > tbody > tr > td, table-file-directory  > tfoot > tr > td,
 .table-file-directory > tfoot > tr > td {
   border-bottom: 1px solid lightgrey;
 }
@@ -1273,4 +1281,8 @@ label {
 .tab-active {
   color: white;
   font-style: bold;
+}
+
+ul.menu-bar li {
+  padding-right: 15px;
 }

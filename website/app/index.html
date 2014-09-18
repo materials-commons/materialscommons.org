@@ -60,12 +60,14 @@
         </ul>
         <ul ng-show="email_address" class="nav navbar-nav navbar-right">
             <li ng-class="{ navactive: isActiveStep('reviews') }">
-                <a  class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-comment space-right"></i> Reviews<span class="badge ng-binding badge-light"> 7 </span>
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-comment space-right"></i> Reviews<span
+                        class="badge ng-binding badge-light"> 7 </span>
                 </a>
-                <div class="dropdown-menu reviews-dropdown" >
+
+                <div class="dropdown-menu reviews-dropdown">
                     <!--directive-->
-                    <div style="height:500px;overflow-y:auto;" action-global-reviews></div>
+                    <div  class="nav-dropdown-scrollbar" action-global-reviews></div>
                 </div>
 
             </li>
@@ -199,9 +201,9 @@
 <!-- action stack -->
 <script src="application/default-stack-drop.js"></script>
 
-    <!-- Navbar -->
+<!-- Navbar -->
 <script src="application/core/help/help-controller.js"></script>
-<script src="application/core/about/about-controller.js"> </script>
+<script src="application/core/about/about-controller.js"></script>
 <script src="application/core/contact/contact-controller.js"></script>
 <script src="application/core/home/home-controller.js"></script>
 <script src="application/core/login/login-controller.js"></script>
@@ -261,6 +263,10 @@
 <script src="application/core/projects/project/sideboard-directive.js"></script>
 <script src="application/core/projects/project/project-control-bar-directive.js"></script>
 <script src="application/core/projects/project/project-tabs.js"></script>
+<script src="application/core/projects/project/overview/overview.js"></script>
+<script src="application/core/projects/project/files/files.js"></script>
+<script src="application/core/projects/project/samples/samples.js"></script>
+<script src="application/core/projects/project/provenance/provenance.js"></script>
 <script src="application/core/projects/project/tab-control-bar.js"></script>
 <script src="application/core/projects/project/action-menu-directive.js"></script>
 <script src="application/core/projects/project/project-description-directive.js"></script>
@@ -294,6 +300,7 @@
 <script src="application/directives/display-tags.js"></script>
 <script src="application/directives/select2-events.js"></script>
 <script src="application/directives/properties/display-properties.js"></script>
+<script src="application/directives/action-link.js"></script>
 
 <!-------------------------------- Global services --------------------------------->
 <script src="application/services/user-service.js"></script>

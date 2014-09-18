@@ -1,25 +1,21 @@
 <div>
-    <span class="col-xs-4" style="margin-top: 5px">
+    <span class="col-xs-4 body-color" style="margin-top: 5px;">
         Created by {{project.owner}} on {{project.birthtime | toDateString}}
     </span>
-    <div class="col-xs-3">
-        <div class="form-inlinexx">
+    <div>
+        <div class="col-xs-5">
             <input class="form-control pull-right"
                    type="text"
                    placeholder="Search Project...">
         </div>
-    </div>
-    <div class="col-xs-1">
-        <button style="margin-left: 5px" class="btn btn-default">Search</button>
-    </div>
-    <div class="col-xs-4" style="margin-top: 5px">
-        <div>
+        <div class="col-xs-3">
+            <button style="margin-left: 5px; margin-right: 8px;" class="btn btn-default">Search</button>
             <a ng-click="showSearchControls = !showSearchControls" class="action-link">
                 Search: {{searchType}}
             </a>
             <div ng-show="showSearchControls"
                  class="arrow_box_bottom"
-                 style="z-index:1000; position: absolute; top: 55px; left: -138px;">
+                 style="z-index:1000; position: absolute; top: 55px; left: -50px;">
                 <form>
                     <div class="checkbox checkbox-circle checkbox-inline checkbox-primary"
                          style="margin-top: 0px">
