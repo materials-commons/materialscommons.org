@@ -13,6 +13,18 @@ Application.Controllers.controller('actionGlobalReviewsController',
 
 function actionGlobalReviewsController($scope, $filter,  User, Projects) {
 
+    $scope.createName = function(name) {
+        if (name.length > 15) {
+            return name.substring(0,12)+"...";
+        }
+        return name;
+    };
+    $scope.getProjectName = function(id) {
+        Projects.get(id).then(function (project) {
+            $scope.project = project;
+        });
+        return $scope.project.name;
+    };
 
     function init() {
         $scope.user = User.u();
@@ -21,17 +33,13 @@ function actionGlobalReviewsController($scope, $filter,  User, Projects) {
         Projects.getList(true).then(function (projects) {
             projects.forEach(function(prj){
                 if(prj.reviews.length!==0){
+                    prj.reviews.forEach(function(r){
+                        r.project_name = prj.name;
+                    })
                     unflatten.push(prj.reviews);
                 }
             })
             $scope.all_reviews = $scope.all_reviews.concat.apply($scope.all_reviews, unflatten);
-            $scope.to_conduct = $filter('byKey')($scope.all_reviews, 'assigned_to', User.u());
-            $scope.to_conduct_open = $filter('byKey')($scope.to_conduct, 'status', 'open');
-            $scope.to_conduct_closed = $filter('byKey')($scope.to_conduct, 'status', 'close');
-            $scope.requested = $filter('byKey')($scope.all_reviews, 'author', User.u());
-            $scope.requested_open = $filter('byKey')($scope.requested, 'status', 'open');
-            $scope.requested_closed = $filter('byKey')($scope.requested, 'status', 'close');
-            console.log($scope.all_reviews)
         });
 
     }
