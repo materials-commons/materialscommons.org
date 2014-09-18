@@ -59,6 +59,16 @@
             <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
         </ul>
         <ul ng-show="email_address" class="nav navbar-nav navbar-right">
+            <li ng-class="{ navactive: isActiveStep('reviews') }">
+                <a  class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-comment space-right"></i> Reviews<span class="badge ng-binding badge-light"> 7 </span>
+                </a>
+                <div class="dropdown-menu reviews-dropdown" >
+                    <!--directive-->
+                    <div style="height:500px;overflow-y:auto;" action-global-reviews></div>
+                </div>
+
+            </li>
             <li ng-class="{ navactive: isActiveStep('projects') }">
                 <a ng-click="showStep('projects')"
                    ui-sref="projects({id:''})"
@@ -70,16 +80,7 @@
                 <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i
                         class="fa fa-gears space-right"></i> Machines</a></li>
 
-            <li ng-class="{ navactive: isActiveStep('reviews') }">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-comment space-right"></i> Reviews<span class="badge ng-binding badge-light"> 7 </span>
-                </a>
-                <div class="dropdown-menu reviews-dropdown">
-                   <!--directive-->
-                    <div action-global-reviews></div>
-                </div>
 
-            </li>
             <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
                 <a ng-click="showStep('email')" class="dropdown-toggle"><i class="fa fa-user space-right"></i>{{email_address}}
                     <span class="caret caret-light"></span></a>
