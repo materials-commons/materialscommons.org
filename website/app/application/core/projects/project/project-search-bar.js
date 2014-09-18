@@ -12,9 +12,10 @@ function projectSearchBarDirective() {
 }
 
 Application.Controllers.controller("projectSearchBarDirectiveController",
-                                   ["$scope", projectSearchBarDirectiveController]);
+                                   ["$scope", "projectColors", projectSearchBarDirectiveController]);
 
-function projectSearchBarDirectiveController($scope) {
+function projectSearchBarDirectiveController($scope, projectColors) {
     $scope.showSearchControls = false;
     $scope.searchType = "All";
+    $scope.currentProjectColorLight = projectColors.getCurrentProjectColorLight;
 }
