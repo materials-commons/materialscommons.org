@@ -1,7 +1,7 @@
 Application.Controllers.controller('Projects',
                                    ["$scope", "$stateParams", "mcapi", "$state", "watcher",
                                     "ProjectPath", "pubsub", "model.projects", "$timeout",
-                                    "$rootScope", "Tags", "User", ProjectsController]);
+                                    "$rootScope", "Tags", "User",  ProjectsController]);
 function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout, $rootScope, Tags, User) {
     $scope.project_id = $stateParams.id;
     $scope.model = {
@@ -64,10 +64,10 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     }
 
     function init() {
+
         $scope.model = {
             name: ''
         };
-        $scope.reviewType = 'global';
         $scope.activeAction = "closed";
         $scope.from = ProjectPath.get_from();
         Projects.getList().then(function (projects) {
