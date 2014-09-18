@@ -1,10 +1,10 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "$stateParams", "pubsub", "$state",
-                                    "ProvDrafts", "$filter", "$rootScope", "model.projects",
+                                    "ProvDrafts", "$filter", "$rootScope", "model.projects", "actionStatus",
                                     projectsProject]);
 
 function projectsProject ($scope, $stateParams, pubsub, $state,
-                           ProvDrafts, $filter, $rootScope, projects) {
+                           ProvDrafts, $filter, $rootScope, projects, actionStatus) {
     pubsub.waitOn($scope, ProvDrafts.channel, function () {
         $scope.drafts = ProvDrafts.drafts;
     });
@@ -68,7 +68,14 @@ function projectsProject ($scope, $stateParams, pubsub, $state,
         $scope.from = $stateParams.from;
 
         projects.get($scope.project_id).then(function(project) {
+            var actions = [
+                "create-provenance",
+                "create-sample",
+                "create-note",
+                "create-note"
+            ];
             $scope.project = project;
+            actionStatus.addProject(project.id, actions);
         });
     }
     init();
