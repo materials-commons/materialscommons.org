@@ -43,6 +43,7 @@ function actionGlobalReviewsController($scope, $filter,  User, Projects, pubsub)
                 }
             })
             $scope.all_reviews = $scope.all_reviews.concat.apply($scope.all_reviews, unflatten);
+            $scope.count = $filter('byKey')( $scope.all_reviews, 'status', 'open').length;
         });
     }
     function init() {

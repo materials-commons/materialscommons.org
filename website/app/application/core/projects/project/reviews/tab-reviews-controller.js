@@ -15,12 +15,12 @@ Application.Controllers.controller('tabShowReviewsController',
 
 function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
 
-//    pubsub.waitOn($scope, 'update-review-items.change', function () {
-//        $scope.loadProjectReviews($stateParams.id);
-//        if ($scope.review.id){
-//            $scope.viewReview($scope.review);
-//        }
-//    });
+    pubsub.waitOn($scope, 'update-review-items.change', function () {
+        $scope.loadProjectReviews($stateParams.id, true);
+        if ($scope.review.id){
+            $scope.viewReview($scope.review);
+        }
+    });
 
     $scope.viewReview = function (review) {
         $scope.model = {
@@ -94,7 +94,6 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
     $scope.reviewCount = function(project){
         $scope.open_reviews = $filter('byKey')(project.reviews, 'status', 'open');
         $scope.closed_reviews = $filter('byKey')(project.reviews, 'status', 'close');
-        console.log($scope.open_reviews.length);
     }
 
     function init() {
