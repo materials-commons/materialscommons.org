@@ -1,78 +1,51 @@
-<div>
-    <div class="row">
-        <div class="col-xs-offset-2">
-            <ul class="list-inline menu-bar">
-                <li>
-                    <action-area-button action-name="create-provenance"
-                                        title="Create Provenance"
-                                        continue-title="Continue Provenance"
-                                        title-icon="fa-code-fork"
-                                        project-id="project.id">
-                    </action-area-button>
-                    <!-- <button class="btn btn-project"
-                    ng-click="toggleAction('create-provenance')"
-                    ng-style="buttonStyle()">
-                    <i class="fa fa-code-fork"></i> Create Provenance
-                    <i ng-show="isCurrentAction('create-provenance')"
-                    class="fa fa-close action-link-close">
-                    </i>
-                    </button> -->
-                </li>
+<span class="col-xs-4 body-color" style="margin-top: 5px;">
+    Created by {{project.owner}} on {{project.birthtime | toDateString}}
+</span>
+<div class="col-xs-offset-1">
+    <ul class="list-inline menu-bar">
+        <li>
+            <a class="action-link project-sub-action">
+                <i class="fa fa-code-fork"></i> Create Provenance
+            </a>
+        </li>
 
-                <li>
-                    <button class="btn btn-project"
-                            ng-click="toggleAction('create-sample')"
-                            ng-style="buttonStyle()">
-                        <i class="fa fa-cubes"></i> Create Sample
-                        <i ng-show="isCurrentAction('create-sample')"
-                           class="fa fa-close action-link-close">
-                        </i>
-                    </button>
-                </li>
+        <li>
+            <a class="action-link project-sub-action">
+                <i class="fa fa-cubes"></i> Create Sample
+            </a>
+        </li>
 
-                <li>
-                    <button class="btn btn-project"
-                            ng-click="toggleAction('create-review')"
-                            ng-style="buttonStyle()">
-                        <i class="fa fa-comment"></i> Create Review
-                        <i ng-show="isCurrentAction('create-review')"
-                           class="fa fa-close action-link-close">
-                        </i>
-                    </button>
-                </li>
+        <li>
+            <a class="action-link project-sub-action">
+                <i class="fa fa-comment"></i> Create Review
+            </a>
+        </li>
 
-                <li>
-                    <button class="btn btn-project"
-                            ng-click="toggleAction('create-note')"
-                            ng-style="buttonStyle()">
-                        <i class="fa fa-edit"></i> Create Note
-                        <i ng-show="isCurrentAction('create-note')"
-                           class="fa fa-close action-link-close">
-                        </i>
-                    </button>
-                </li>
-            </ul>
-        </div>
+        <li>
+            <a class="action-link project-sub-action">
+                <i class="fa fa-edit"></i> Create Note
+            </a>
+        </li>
+    </ul>
+</div>
+<div ng-if="false" class="row">
+    <div ng-show="action === 'create-provenance'">
+        <action-create-provenance project="project">
+        </action-create-provenance>
     </div>
-    <div class="row">
-        <div ng-show="action === 'create-provenance'">
-            <action-create-provenance project="project">
-            </action-create-provenance>
-        </div>
 
-        <div ng-show="action === 'create-sample'">
-            <action-create-sample project="project">
-            </action-create-sample>
-        </div>
+    <div ng-show="action === 'create-sample'">
+        <action-create-sample project="project">
+        </action-create-sample>
+    </div>
 
-        <div ng-show="action === 'create-review'">
-            <action-create-review project="project">
-            </action-create-review>
-        </div>
+    <div ng-show="action === 'create-review'">
+        <action-create-review project="project">
+        </action-create-review>
+    </div>
 
-        <div ng-show="action === 'create-note'">
-            <action-create-note project="project">
-            </action-create-note>
-        </div>
+    <div ng-show="action === 'create-note'">
+        <action-create-note project="project">
+        </action-create-note>
     </div>
 </div>
