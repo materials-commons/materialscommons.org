@@ -4,6 +4,12 @@ function actionStatusService() {
     var service = {
         actions: {},
         currentAction: {},
+        currentActionsList: [
+            "create-provenance",
+            "create-review",
+            "create-sample",
+            "create-note"
+        ],
 
         _newAction: function(name) {
             return {
@@ -12,13 +18,13 @@ function actionStatusService() {
             };
         },
 
-        addProject: function(project, actions) {
+        addProject: function(project) {
             if (project in service.actions) {
                 return;
             }
             service.currentAction[project] = "";
             service.actions[project] = {};
-            actions.forEach(function(action) {
+            service.currentActionsList.forEach(function(action) {
                 service.actions[project][action] = service._newAction(action);
             });
         },
