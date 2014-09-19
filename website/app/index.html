@@ -1,350 +1,349 @@
 <!doctype html>
 <html ng-app="materialscommons" lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Materials Commons</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Materials Repository">
-    <meta name="author" content="">
-    <!-- Le styles -->
-    <link href="assets/css/bootstrap.flatly-3.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
-    <link href="assets/css/select2/select2.css" rel="stylesheet">
-    <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
-    <link href="assets/css/jqcloud.css" rel="stylesheet">
-    <link href="assets/css/tree-grid.css" rel="stylesheet">
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!-- Fav and touch icons -->
-    <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
+    <head>
+        <meta charset="utf-8">
+        <title>Materials Commons</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Materials Repository">
+        <meta name="author" content="">
+        <!-- Le styles -->
+        <link href="assets/css/bootstrap.flatly-3.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
+        <link href="assets/css/select2/select2.css" rel="stylesheet">
+        <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
+        <link href="assets/css/jqcloud.css" rel="stylesheet">
+        <link href="assets/css/tree-grid.css" rel="stylesheet">
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <!-- Fav and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
 
-    <link href="assets/css/thumbnail.css" rel="stylesheet">
-    <link href="assets/css/periodic-table.css" rel="stylesheet">
-    <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
-    <link href="assets/css/hotkeys.min.css" rel="stylesheet">
-    <link href="assets/css/angular-toastr.css" rel="stylesheet">
+        <link href="assets/css/thumbnail.css" rel="stylesheet">
+        <link href="assets/css/periodic-table.css" rel="stylesheet">
+        <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
+        <link href="assets/css/hotkeys.min.css" rel="stylesheet">
+        <link href="assets/css/angular-toastr.css" rel="stylesheet">
 
-    <!-- Application style sheet -->
-    <link href="style-3.css" rel="stylesheet">
-</head>
-<body>
-<a name="top"></a>
-<nav class="navbar navbar-custom" ng-controller="_indexNavigation">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" style=""
-           ng-click="goHome()">MaterialsCommons</a>
-    </div>
-    <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-            <li id="about-nav" ng-class="{ navactive: isActiveStep('about') }">
-                <a ng-click="showStep('about')" ui-sref="about"><i class="fa fa-info-circle"></i> About</a>
-            </li>
-            <li id="contact-nav" ng-class="{navactive: isActiveStep('contact') }">
-                <a ng-click="showStep('contact')" ui-sref="contact"><i class="fa fa-phone-square"></i> Contact</a>
-            </li>
-            <li ng-class="{ navactive: isActiveStep('help') }">
-                <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-circle"></i> Help</a>
-            </li>
-        </ul>
-        <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
-            <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
-        </ul>
-        <ul ng-show="email_address" class="nav navbar-nav navbar-right">
-            <li ng-class="{ navactive: isActiveStep('reviews') }">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-comment space-right"></i> Reviews<span
-                        class="badge ng-binding badge-light"> 7 </span>
-                </a>
-                <div class="dropdown-menu reviews-dropdown">
-                    <!--directive-->
-                    <div  class="nav-dropdown-scrollbar" action-global-reviews></div>
-                </div>
-            </li>
-            <li ng-class="{ navactive: isActiveStep('projects') }">
-                <a ng-click="showStep('projects')"
-                   ui-sref="projects({id:''})"
-                   class="navbar-link">
-                    <i class="fa fa-briefcase space-right"></i> Projects
-                </a>
-            </li>
-            <li ng-class="{ navactive: isActiveStep('machines') }">
-                <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i
-                        class="fa fa-gears space-right"></i> Machines</a></li>
-
-
-            <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
-                <a ng-click="showStep('email')" class="dropdown-toggle"><i class="fa fa-user space-right"></i>{{email_address}}
-                    <span class="caret caret-light"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="showStep('email')" ui-sref="account.password"><i
-                            class="fa fa-unlock-alt space-right"></i> Change
-                        Password</a></li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i
-                            class="fa fa-user space-right"></i>UserGroups</a></li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.templates"><i
-                            class="fa fa-list-alt space-right"></i>Templates</a>
+        <!-- Application style sheet -->
+        <link href="style-3.css" rel="stylesheet">
+    </head>
+    <body>
+        <a name="top"></a>
+        <nav class="navbar navbar-custom" ng-controller="_indexNavigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" style=""
+                   ng-click="goHome()">MaterialsCommons</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li id="about-nav" ng-class="{ navactive: isActiveStep('about') }">
+                        <a ng-click="showStep('about')" ui-sref="about"><i class="fa fa-info-circle"></i> About</a>
                     </li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i class="fa fa-key space-right"></i>Apikey</a>
+                    <li id="contact-nav" ng-class="{navactive: isActiveStep('contact') }">
+                        <a ng-click="showStep('contact')" ui-sref="contact"><i class="fa fa-phone-square"></i> Contact</a>
                     </li>
-                    <li class=divider></li>
-                    <li><a ng-click="showStep('email')" ui-sref="logout"> <i class="fa fa-sign-out space-right"></i>
-                        Logout</a></li>
+                    <li ng-class="{ navactive: isActiveStep('help') }">
+                        <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-circle"></i> Help</a>
+                    </li>
                 </ul>
-            </li>
-        </ul>
-    </div>
-</nav>
+                <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
+                    <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
+                </ul>
+                <ul ng-show="email_address" class="nav navbar-nav navbar-right">
+                    <li ng-class="{ navactive: isActiveStep('reviews') }">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-comment space-right"></i> Reviews<span
+                                class="badge ng-binding badge-light"> 7 </span>
+                        </a>
+                        <div class="dropdown-menu reviews-dropdown">
+                            <!--directive-->
+                            <div  class="nav-dropdown-scrollbar" action-global-reviews></div>
+                        </div>
+                    </li>
+                    <li ng-class="{ navactive: isActiveStep('projects') }">
+                        <a ng-click="showStep('projects')"
+                           ui-sref="projects({id:''})"
+                           class="navbar-link">
+                            <i class="fa fa-briefcase space-right"></i> Projects
+                        </a>
+                    </li>
+                    <li ng-class="{ navactive: isActiveStep('machines') }">
+                        <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i
+                            class="fa fa-gears space-right"></i> Machines</a></li>
 
-<div class="row" ng-controller="_indexAlerts">
-    <div ng-show="message">
-        <notification ng-model="message"></notification>
-    </div>
-</div>
 
-<div class="row">
-    <div ng-controller="contextMenuController">
-        <!-- Inject action-stack so controller can use it -->
-        <div action-stack></div>
-        <div context-menu class="col-lg-12" data-target="global-menu">
-            <div class="row app-container">
-                <div ui-view>
+                    <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
+                        <a ng-click="showStep('email')" class="dropdown-toggle"><i class="fa fa-user space-right"></i>{{email_address}}
+                            <span class="caret caret-light"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ng-click="showStep('email')" ui-sref="account.password"><i
+                                class="fa fa-unlock-alt space-right"></i> Change
+                                Password</a></li>
+                            <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i
+                                class="fa fa-user space-right"></i>UserGroups</a></li>
+                            <li><a ng-click="showStep('email')" ui-sref="account.templates"><i
+                                class="fa fa-list-alt space-right"></i>Templates</a>
+                            </li>
+                            <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i class="fa fa-key space-right"></i>Apikey</a>
+                            </li>
+                            <li class=divider></li>
+                            <li><a ng-click="showStep('email')" ui-sref="logout"> <i class="fa fa-sign-out space-right"></i>
+                                Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="row" ng-controller="_indexAlerts">
+            <div ng-show="message">
+                <notification ng-model="message"></notification>
+            </div>
+        </div>
+
+        <div class="row">
+            <div ng-controller="contextMenuController">
+                <!-- Inject action-stack so controller can use it -->
+                <div action-stack></div>
+                <div context-menu class="col-lg-12" data-target="global-menu">
+                    <div class="row app-container">
+                        <div ui-view>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown position-fixed" id="global-menu">
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="globalDropDownMenu">
+                        <li>
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="-1"
+                               ng-click="gotoLocation('top')">
+                                Goto Top (t)
+                            </a>
+                        </li>
+                        <li>
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="0"
+                               ng-click="gotoLocation('projecttree')">
+                                Goto Project File Tree (f)
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li ng-repeat="action in defaultActions">
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="-1"
+                               ng-click="toggleStackAction(action.id)">
+                                {{action.title}} ({{action.key}})
+                            </a>
+                        </li>
+                        <li class=divider></li>
+                        <li ng-repeat="action in actions">
+                            <a class="pointer"
+                               role="menuitem"
+                               tabindex="{{$index+1}}"
+                               ng-click="gotoLocation(action.id)">
+                                Goto {{action.title}} ({{$index+1}})
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="dropdown position-fixed" id="global-menu">
-            <ul class="dropdown-menu" role="menu" aria-labelledby="globalDropDownMenu">
-                <li>
-                    <a class="pointer"
-                       role="menuitem"
-                       tabindex="-1"
-                       ng-click="gotoLocation('top')">
-                        Goto Top (t)
-                    </a>
-                </li>
-                <li>
-                    <a class="pointer"
-                       role="menuitem"
-                       tabindex="0"
-                       ng-click="gotoLocation('projecttree')">
-                        Goto Project File Tree (f)
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li ng-repeat="action in defaultActions">
-                    <a class="pointer"
-                       role="menuitem"
-                       tabindex="-1"
-                       ng-click="toggleStackAction(action.id)">
-                        {{action.title}} ({{action.key}})
-                    </a>
-                </li>
-                <li class=divider></li>
-                <li ng-repeat="action in actions">
-                    <a class="pointer"
-                       role="menuitem"
-                       tabindex="{{$index+1}}"
-                       ng-click="gotoLocation(action.id)">
-                        Goto {{action.title}} ({{$index+1}})
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
 
-<!-- ---------------------------- External dependencies ----------------->
+        <!-- ---------------------------- External dependencies ----------------->
 
-<script src="assets/js/jquery-1.11.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-<script src="assets/js/select2.min.js"></script>
-<script src="assets/js/TreeModel-min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
-<script src="assets/js/angular/angular-strap.min.js"></script>
-<script src="assets/js/angular/angular-ui.js"></script>
-<script src="assets/js/angular/angular-ui-router.js"></script>
-<script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
-<script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
-<script src="assets/js/angular/angular-validation.js"></script>
-<script src="assets/js/angular/angular-validation-rule.js"></script>
-<script src="assets/js/angular/draganddrop.js"></script>
-<script src="assets/js/angular/hotkeys.min.js"></script>
-<script src="assets/js/angular/ng-context-menu.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/jqcloud-1.0.4.js"></script>
-<script src="assets/js/underscore-min.js"></script>
-<script src="assets/js/underscore.string.min.js"></script>
-<script src="assets/js/angular/socket.js"></script>
-<script src="assets/js/socket.io.js"></script>
-<script src="assets/js/angular/angular-toastr.js"></script>
+        <script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/TreeModel-min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
+        <script src="assets/js/angular/angular-strap.min.js"></script>
+        <script src="assets/js/angular/angular-ui.js"></script>
+        <script src="assets/js/angular/angular-ui-router.js"></script>
+        <script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
+        <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
+        <script src="assets/js/angular/angular-validation.js"></script>
+        <script src="assets/js/angular/angular-validation-rule.js"></script>
+        <script src="assets/js/angular/draganddrop.js"></script>
+        <script src="assets/js/angular/hotkeys.min.js"></script>
+        <script src="assets/js/angular/ng-context-menu.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jqcloud-1.0.4.js"></script>
+        <script src="assets/js/underscore-min.js"></script>
+        <script src="assets/js/underscore.string.min.js"></script>
+        <script src="assets/js/angular/socket.js"></script>
+        <script src="assets/js/socket.io.js"></script>
+        <script src="assets/js/angular/angular-toastr.js"></script>
 
-<!------------------------------ Application --------------------------->
-<script src="application/app.js"></script>
+        <!------------------------------ Application --------------------------->
+        <script src="application/app.js"></script>
 
-<!------------------------------ Core app ------------------------------>
+        <!------------------------------ Core app ------------------------------>
 
-<!-- action stack -->
-<script src="application/default-stack-drop.js"></script>
+        <!-- action stack -->
+        <script src="application/default-stack-drop.js"></script>
 
-<!-- Navbar -->
-<script src="application/core/help/help-controller.js"></script>
-<script src="application/core/about/about-controller.js"></script>
-<script src="application/core/contact/contact-controller.js"></script>
-<script src="application/core/home/home-controller.js"></script>
-<script src="application/core/login/login-controller.js"></script>
-<script src="application/core/logout/logout-controller.js"></script>
+        <!-- Navbar -->
+        <script src="application/core/help/help-controller.js"></script>
+        <script src="application/core/about/about-controller.js"></script>
+        <script src="application/core/contact/contact-controller.js"></script>
+        <script src="application/core/home/home-controller.js"></script>
+        <script src="application/core/login/login-controller.js"></script>
+        <script src="application/core/logout/logout-controller.js"></script>
 
-<!-- Views -->
-<!-- View: Account Groups -->
-<script src="application/core/account/account-controller.js"></script>
-<script src="application/core/account/password/password-controller.js"></script>
-<script src="application/core/account/apikey/apikey-controller.js"></script>
-<script src="application/core/account/usergroups/usergroup-controller.js"></script>
+        <!-- Views -->
+        <!-- View: Account Groups -->
+        <script src="application/core/account/account-controller.js"></script>
+        <script src="application/core/account/password/password-controller.js"></script>
+        <script src="application/core/account/apikey/apikey-controller.js"></script>
+        <script src="application/core/account/usergroups/usergroup-controller.js"></script>
 
-<script src="application/core/account/templates/templates-controller.js"></script>
+        <script src="application/core/account/templates/templates-controller.js"></script>
 
-<!-- Toolbar reviews -->
-<script src="application/core/reviews/reviews-controller.js"></script>
+        <!-- Toolbar reviews -->
+        <script src="application/core/reviews/reviews-controller.js"></script>
 
-<!-- Toolbar machines -->
-<script src="application/core/machines/machines-controller.js"></script>
+        <!-- Toolbar machines -->
+        <script src="application/core/machines/machines-controller.js"></script>
 
-<<<<<<< HEAD
-         <!-- Toolbar projects -->
-         <script src="application/core/projects/projects-controller.js"></script>
-         <script src="application/core/projects/directives/action-stack-directive.js"></script>
-         <script src="application/core/projects/directives/action-stack-create-provenance.js"></script>
-         <script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
-         <script src="application/core/projects/directives/provenance/provenance-wizard-steps-directive.js"></script>
-         <script src="application/core/projects/directives/provenance/provenance-wizard-process-step.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-step-overview.js"></script>
-         <script src="application/core/projects/directives/provenance/process-details.js"></script>
-         <script src="application/core/projects/directives/provenance/process-runs.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-magic-bar.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-context.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-context-tags.js"></script>
-         <script src="application/core/projects/directives/provenance/action-provenance-wizard-step.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-step-sample.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-step-transform-sample.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-step-files.js"></script>
-         <script src="application/core/projects/directives/provenance/wizard-step-properties.js"></script>
-         <script src="application/core/projects/directives/action-stack-tag.js"></script>
-         <script src="application/core/projects/directives/action-stack-todo.js"></script>
-         <script src="application/core/projects/directives/action-stack-create-sample.js"></script>
-         <script src="application/core/projects/directives/action-stack-show-samples.js"></script>
-         <script src="application/core/projects/directives/action-stack-file.js"></script>
-         <script src="application/core/projects/directives/action-stack-show-provenance.js"></script>
-         <script src="application/core/projects/directives/action-stack-show-reviews.js"></script>
-         <script src="application/core/projects/directives/action-stack-global-reviews.js"></script>
-         <script src="application/core/projects/directives/action-stack-create-review.js"></script>
-         <script src="application/core/projects/directives/action-stack-show-drafts.js"></script>
-         <script src="application/core/projects/directives/action-stack-show-notes.js"></script>
-         <script src="application/core/projects/directives/action-stack-create-note.js"></script>
-         <script src="application/core/projects/directives/action-stack-show-settings.js"></script>
-         <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
-         <script src="application/core/projects/_action-controller.js"></script>
-         <script src="application/core/projects/project/project-controller.js"></script>
-         <script src="application/core/projects/project/project-action-bar.js"></script>
-         <script src="application/core/projects/project/project-search-bar.js"></script>
-         <script src="application/core/projects/project/sideboard-directive.js"></script>
-         <script src="application/core/projects/project/project-control-bar-directive.js"></script>
-         <script src="application/core/projects/project/project-tabs.js"></script>
-         <script src="application/core/projects/project/overview/overview.js"></script>
-         <script src="application/core/projects/project/files/files.js"></script>
-         <script src="application/core/projects/project/samples/samples.js"></script>
-         <script src="application/core/projects/project/provenance/provenance.js"></script>
-         <script src="application/core/projects/project/tab-control-bar.js"></script>
-         <script src="application/core/projects/project/action-menu-directive.js"></script>
-         <script src="application/core/projects/project/project-description-directive.js"></script>
-         <script src="application/core/projects/project/action/action-create-provenance.js"></script>
-         <script src="application/core/projects/project/action/action-create-sample.js"></script>
-         <script src="application/core/projects/project/action/action-create-note.js"></script>
-         <script src="application/core/projects/project/action/action-create-review.js"></script>
-         <script src="application/core/projects/project/action/action-area-button.js"></script>
-         <script src="application/core/projects/project/action/action-status-service.js"></script>
-         <script src="application/core/projects/project/reviews/tab-reviews-controller.js"></script>
+        <!-- Toolbar projects -->
+        <script src="application/core/projects/projects-controller.js"></script>
+        <script src="application/core/projects/directives/action-stack-directive.js"></script>
+        <script src="application/core/projects/directives/action-stack-create-provenance.js"></script>
+        <script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
+        <script src="application/core/projects/directives/provenance/provenance-wizard-steps-directive.js"></script>
+        <script src="application/core/projects/directives/provenance/provenance-wizard-process-step.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-step-overview.js"></script>
+        <script src="application/core/projects/directives/provenance/process-details.js"></script>
+        <script src="application/core/projects/directives/provenance/process-runs.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-magic-bar.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-context.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-context-tags.js"></script>
+        <script src="application/core/projects/directives/provenance/action-provenance-wizard-step.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-step-sample.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-step-transform-sample.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-step-files.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-step-properties.js"></script>
+        <script src="application/core/projects/directives/action-stack-tag.js"></script>
+        <script src="application/core/projects/directives/action-stack-todo.js"></script>
+        <script src="application/core/projects/directives/action-stack-create-sample.js"></script>
+        <script src="application/core/projects/directives/action-stack-show-samples.js"></script>
+        <script src="application/core/projects/directives/action-stack-file.js"></script>
+        <script src="application/core/projects/directives/action-stack-show-provenance.js"></script>
+        <script src="application/core/projects/directives/action-stack-show-reviews.js"></script>
+        <script src="application/core/projects/directives/action-stack-global-reviews.js"></script>
+        <script src="application/core/projects/directives/action-stack-create-review.js"></script>
+        <script src="application/core/projects/directives/action-stack-show-drafts.js"></script>
+        <script src="application/core/projects/directives/action-stack-show-notes.js"></script>
+        <script src="application/core/projects/directives/action-stack-create-note.js"></script>
+        <script src="application/core/projects/directives/action-stack-show-settings.js"></script>
+        <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
+        <script src="application/core/projects/_action-controller.js"></script>
+        <script src="application/core/projects/project/project-controller.js"></script>
+        <script src="application/core/projects/project/project-action-bar.js"></script>
+        <script src="application/core/projects/project/project-search-bar.js"></script>
+        <script src="application/core/projects/project/sideboard-directive.js"></script>
+        <script src="application/core/projects/project/project-control-bar-directive.js"></script>
+        <script src="application/core/projects/project/project-tabs.js"></script>
+        <script src="application/core/projects/project/overview/overview.js"></script>
+        <script src="application/core/projects/project/files/files.js"></script>
+        <script src="application/core/projects/project/samples/samples.js"></script>
+        <script src="application/core/projects/project/provenance/provenance.js"></script>
+        <script src="application/core/projects/project/tab-control-bar.js"></script>
+        <script src="application/core/projects/project/action-menu-directive.js"></script>
+        <script src="application/core/projects/project/project-description-directive.js"></script>
+        <script src="application/core/projects/project/action/action-create-provenance.js"></script>
+        <script src="application/core/projects/project/action/action-create-sample.js"></script>
+        <script src="application/core/projects/project/action/action-create-note.js"></script>
+        <script src="application/core/projects/project/action/action-create-review.js"></script>
+        <script src="application/core/projects/project/action/action-area-button.js"></script>
+        <script src="application/core/projects/project/action/action-status-service.js"></script>
+        <script src="application/core/projects/project/reviews/tab-reviews-controller.js"></script>
 
 
-<!-------------------------------- Global directives ------------------------------->
-<script src="application/directives/magicbox.js"></script>
-<script src="application/directives/text-editor-directive.js"></script>
-<script src="application/directives/paged-directive.js"></script>
-<script src="application/directives/notification-directive.js"></script>
-<script src="application/directives/cgroup-directive.js"></script>
-<script src="application/directives/dfproperties-directive.js"></script>
-<script src="application/directives/adproperties-directive.js"></script>
-<script src="application/directives/projecttree-directive.js"></script>
-<script src="application/directives/modal-dismiss-directive.js"></script>
-<script src="application/directives/upperlevel-process-directive.js"></script>
-<script src="application/directives/upperlevel-object-directive.js"></script>
-<script src="application/directives/saved-notification.js"></script>
-<script src="application/directives/periodic-table-directive.js"></script>
-<script src="application/directives/iterate-properties-directive.js"></script>
-<script src="application/directives/sample-report-directive.js"></script>
-<script src="application/directives/condition-report-directive.js"></script>
-<script src="application/directives/plus-minus-toggle-directive.js"></script>
-<script src="application/directives/tree-grid-directive.js"></script>
-<script src="application/directives/df-report.js"></script>
-<script src="application/directives/view-processes-directive.js"></script>
-<script src="application/directives/file-report-directive.js"></script>
-<script src="application/directives/notes-directive.js"></script>
-<script src="application/directives/focus.js"></script>
-<script src="application/directives/display-tags.js"></script>
-<script src="application/directives/select2-events.js"></script>
-<script src="application/directives/properties/display-properties.js"></script>
-<script src="application/directives/action-link.js"></script>
+        <!-------------------------------- Global directives ------------------------------->
+        <script src="application/directives/magicbox.js"></script>
+        <script src="application/directives/text-editor-directive.js"></script>
+        <script src="application/directives/paged-directive.js"></script>
+        <script src="application/directives/notification-directive.js"></script>
+        <script src="application/directives/cgroup-directive.js"></script>
+        <script src="application/directives/dfproperties-directive.js"></script>
+        <script src="application/directives/adproperties-directive.js"></script>
+        <script src="application/directives/projecttree-directive.js"></script>
+        <script src="application/directives/modal-dismiss-directive.js"></script>
+        <script src="application/directives/upperlevel-process-directive.js"></script>
+        <script src="application/directives/upperlevel-object-directive.js"></script>
+        <script src="application/directives/saved-notification.js"></script>
+        <script src="application/directives/periodic-table-directive.js"></script>
+        <script src="application/directives/iterate-properties-directive.js"></script>
+        <script src="application/directives/sample-report-directive.js"></script>
+        <script src="application/directives/condition-report-directive.js"></script>
+        <script src="application/directives/plus-minus-toggle-directive.js"></script>
+        <script src="application/directives/tree-grid-directive.js"></script>
+        <script src="application/directives/df-report.js"></script>
+        <script src="application/directives/view-processes-directive.js"></script>
+        <script src="application/directives/file-report-directive.js"></script>
+        <script src="application/directives/notes-directive.js"></script>
+        <script src="application/directives/focus.js"></script>
+        <script src="application/directives/display-tags.js"></script>
+        <script src="application/directives/select2-events.js"></script>
+        <script src="application/directives/properties/display-properties.js"></script>
+        <script src="application/directives/action-link.js"></script>
 
-<!-------------------------------- Global services --------------------------------->
-<script src="application/services/user-service.js"></script>
-<script src="application/services/project-colors-service.js"></script>
-<script src="application/services/alert-service.js"></script>
-<script src="application/services/watcher-service.js"></script>
-<script src="application/services/pubsub-service.js"></script>
-<script src="application/services/mcapi-service.js"></script>
-<script src="application/services/project-files-service.js"></script>
-<script src="application/services/provdrafts-service.js"></script>
-<script src="application/services/date-generate-service.js"></script>
-<script src="application/services/nav-service.js"></script>
-<script src="application/services/materials-service.js"></script>
-<script src="application/services/cached-service-factory-service.js"></script>
-<script src="application/services/action-service.js"></script>
-<script src="application/services/project-path-service.js"></script>
-<script src="application/services/tags.js"></script>
-<script src="application/services/prov-magicbar-context.js"></script>
-<script src="application/services/prov-step.js"></script>
-<script src="application/services/action-stack-service.js"></script>
-<script src="application/services/review-service.js"></script>
+        <!-------------------------------- Global services --------------------------------->
+        <script src="application/services/user-service.js"></script>
+        <script src="application/services/project-colors-service.js"></script>
+        <script src="application/services/alert-service.js"></script>
+        <script src="application/services/watcher-service.js"></script>
+        <script src="application/services/pubsub-service.js"></script>
+        <script src="application/services/mcapi-service.js"></script>
+        <script src="application/services/project-files-service.js"></script>
+        <script src="application/services/provdrafts-service.js"></script>
+        <script src="application/services/date-generate-service.js"></script>
+        <script src="application/services/nav-service.js"></script>
+        <script src="application/services/materials-service.js"></script>
+        <script src="application/services/cached-service-factory-service.js"></script>
+        <script src="application/services/action-service.js"></script>
+        <script src="application/services/project-path-service.js"></script>
+        <script src="application/services/tags.js"></script>
+        <script src="application/services/prov-magicbar-context.js"></script>
+        <script src="application/services/prov-step.js"></script>
+        <script src="application/services/action-stack-service.js"></script>
+        <script src="application/services/review-service.js"></script>
 
-<!-------------------------------- Global model services -------------------------->
-<script src="application/services/model/projects-service.js"></script>
-<script src="application/services/model/templates-service.js"></script>
+        <!-------------------------------- Global model services -------------------------->
+        <script src="application/services/model/projects-service.js"></script>
+        <script src="application/services/model/templates-service.js"></script>
 
-<!-------------------------------- Global filters --------------------------------->
-<script src="application/filters/page-filter.js"></script>
-<script src="application/filters/todatestring-filter.js"></script>
-<script src="application/filters/reverse-filter.js"></script>
-<script src="application/filters/review-filter.js"></script>
-<script src="application/filters/bykey-filter.js"></script>
+        <!-------------------------------- Global filters --------------------------------->
+        <script src="application/filters/page-filter.js"></script>
+        <script src="application/filters/todatestring-filter.js"></script>
+        <script src="application/filters/reverse-filter.js"></script>
+        <script src="application/filters/review-filter.js"></script>
+        <script src="application/filters/bykey-filter.js"></script>
 
-<!-- Index -->
-<script src="index/_navigation-controller.js"></script>
-<script src="index/_alerts-controller.js"></script>
+        <!-- Index -->
+        <script src="index/_navigation-controller.js"></script>
+        <script src="index/_alerts-controller.js"></script>
 
-<!-- Util -->
-<script src="index/util.js"></script>
-<script src="index/config.js"></script>
-</body>
+        <!-- Util -->
+        <script src="index/util.js"></script>
+        <script src="index/config.js"></script>
+    </body>
 </html>
