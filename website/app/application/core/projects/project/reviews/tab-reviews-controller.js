@@ -15,9 +15,24 @@ Application.Controllers.controller('tabShowReviewsController',
 
 function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
 
-    pubsub.waitOn($scope, 'open_reviews.change', function () {
-        $scope.loadReviews($stateParams.id);
-    });
+//    pubsub.waitOn($scope, 'update-review-items.change', function () {
+//        $scope.loadProjectReviews($stateParams.id);
+//        if ($scope.review.id){
+//            $scope.viewReview($scope.review);
+//        }
+//    });
+
+    $scope.viewReview = function (review) {
+        $scope.model = {
+            selected: false,
+            comment: ""
+        };
+        mcapi('/reviews/%', review.id)
+            .success(function (data) {
+                $scope.review = data;
+            }).jsonp();
+    };
+
 
     $scope.editReview = function(index){
         $scope.edit_index = index;
@@ -45,65 +60,50 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
 
     $scope.closeReview = function() {
         mcapi('/reviews/%', $scope.review.id)
-            .success(function (data) {
-                pubsub.send('update_reviews.change');
-                pubsub.send('open_reviews.change');
-                pubsub.send('reviews.change');
-                $scope.loadReviews($stateParams.id);
+            .success(function () {
+                $scope.loadProjectReviews($stateParams.id, true);
                 $scope.review = '';
+                pubsub.send('update-open-reviews.change');
             }).put({'status': 'close'});
     };
 
     $scope.reOpenReview = function() {
         mcapi('/reviews/%', $scope.review.id)
-            .success(function (data) {
-                pubsub.send('update_reviews.change');
-                pubsub.send('open_reviews.change');
-                pubsub.send('reviews.change');
-                $scope.loadReviews($stateParams.id);
+            .success(function () {
+                $scope.loadProjectReviews($stateParams.id, true);
                 $scope.review = '';
+                pubsub.send('update-open-reviews.change');
             }).put({'status': 'open'});
     };
 
-    $scope.viewReview = function (review) {
-        $scope.model = {
-            selected: false,
-            comment: ""
-        };
-        mcapi('/reviews/%', review.id)
-            .success(function (data) {
-                $scope.review = data;
-            }).jsonp();
+    $scope.loadProjectReviews = function (id, reload) {
+        Projects.getList(reload).then(function (projects) {
+            Projects.get($stateParams.id).then(function (project) {
+                $scope.project = project;
+                $scope.reviewCount($scope.project);
+
+            });
+        });
     };
 
-    $scope.showReviews = function (status) {
+    $scope.showReviewsperStatus = function (status) {
         $scope.status = status;
-        if (status === 'open') {
-            $scope.list_reviews = $scope.open_reviews;
-        }
-        else if (status === 'close') {
-            $scope.list_reviews = $scope.closed_reviews;
-        }
     };
 
-    $scope.loadReviews = function (id) {
-        mcapi('/project/%/reviews', id)
-            .success(function (reviews) {
-                $scope.open_reviews = $filter('byKey')(reviews, 'status', 'open');
-                $scope.closed_reviews = $filter('byKey')(reviews, 'status', 'close');
-                $scope.list_reviews = $scope.open_reviews;
-                $scope.status = 'open';
-            }).jsonp();
 
-    };
+    $scope.reviewCount = function(project){
+        $scope.open_reviews = $filter('byKey')(project.reviews, 'status', 'open');
+        $scope.closed_reviews = $filter('byKey')(project.reviews, 'status', 'close');
+        console.log($scope.open_reviews.length);
+    }
 
     function init() {
         $scope.review = '';
-        $scope.loadReviews($stateParams.id);
         $scope.status = 'open';
         $scope.color = projectColors.getCurrentProjectColor();
         Projects.get($stateParams.id).then(function(project) {
             $scope.project = project;
+            $scope.reviewCount(project);
         });
 
         $scope.model = {

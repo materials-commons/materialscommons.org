@@ -12,9 +12,19 @@ function projectTabsDirective() {
 }
 
 Application.Controllers.controller('projectTabsDirectiveController',
-                                  ["$scope", "projectColors", projectTabsDirectiveController]);
+                                  ["$scope", "projectColors", "pubsub", "model.projects", "$stateParams", "$filter", projectTabsDirectiveController]);
 
-function projectTabsDirectiveController($scope, projectColors) {
+function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,$stateParams, $filter) {
+
+    pubsub.waitOn($scope, "update-open-reviews.change", function () {
+        Projects.getList().then(function (projects) {
+            Projects.get($stateParams.id).then(function (project) {
+                $scope.project.reviews = project.reviews;
+                $scope.updateTabCounts();
+            });
+        });
+    });
+
     var activeTab = "overview";
     $scope.colors = projectColors;
     $scope.inactiveColor = projectColors.getInactiveColor();
@@ -48,51 +58,59 @@ function projectTabsDirectiveController($scope, projectColors) {
         };
     };
 
-    $scope.tabs = [
-        {
-            id: "overview",
-            icon: "fa-list",
-            name: "Overview",
-            hasCount: false
-        },
+    $scope.updateTabCounts = function(){
+        $scope.tabs = [
+            {
+                id: "overview",
+                icon: "fa-list",
+                name: "Overview",
+                hasCount: false
+            },
 
-        {
-            id: "files",
-            icon: "fa-files-o",
-            name: "Files",
-            hasCount: false
-        },
+            {
+                id: "files",
+                icon: "fa-files-o",
+                name: "Files",
+                hasCount: false
+            },
 
-        {
-            id: "samples",
-            icon: "fa-cubes",
-            name: "Samples",
-            hasCount: true,
-            count: 1
-        },
+            {
+                id: "samples",
+                icon: "fa-cubes",
+                name: "Samples",
+                hasCount: true,
+                count: 1
+            },
 
-        {
-            id: "provenance",
-            icon: "fa-code-fork",
-            name: "Provenance",
-            hasCount: true,
-            count: 1
-        },
+            {
+                id: "provenance",
+                icon: "fa-code-fork",
+                name: "Provenance",
+                hasCount: true,
+                count: 1
+            },
 
-        {
-            id: "reviews",
-            icon: "fa-comment",
-            name: "Reviews",
-            hasCount: true,
-            count: 1
-        },
+            {
+                id: "reviews",
+                icon: "fa-comment",
+                name: "Reviews",
+                hasCount: true,
+                count: ($filter('byKey')($scope.project.reviews, 'status', 'open')).length
+            },
 
-        {
-            id: "notes",
-            icon: "fa-edit",
-            name: "Notes",
-            hasCount: true,
-            count: 1
-        }
-    ];
+            {
+                id: "notes",
+                icon: "fa-edit",
+                name: "Notes",
+                hasCount: true,
+                count: 1
+            }
+        ];
+    }
+    function init(){
+        $scope.updateTabCounts();
+    }
+    init();
+
+
 }
