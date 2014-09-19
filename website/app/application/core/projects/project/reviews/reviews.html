@@ -22,9 +22,9 @@
         <div class="col-lg-10">
             <table class="table table-file-directory">
                 <thead ng-style="{'background-color': currentProjectColor}">
-                <th><i class="fa fa-check-circle review-open"></i><a ng-click="showReviews('open')">{{open_reviews.length}}
+                <th><i class="fa fa-check-circle review-open"></i><a ng-click="showReviewsperStatus('open')">{{open_reviews.length}}
                     open</a>
-                    <i class="fa fa-minus-circle review-close"></i><a ng-click="showReviews('close')">{{closed_reviews.length}}
+                    <i class="fa fa-minus-circle review-close"></i><a ng-click="showReviewsperStatus('close')">{{closed_reviews.length}}
                         closed</a>
                 </th>
                 <th>Title</th>
@@ -33,7 +33,7 @@
                 <th></th>
                 </thead>
                 <tbody>
-                <tr class="cursor-pointer" ng-click="viewReview(review)" ng-repeat="review in list_reviews">
+                <tr class="cursor-pointer" ng-click="viewReview(review)" ng-repeat="review in reviews =(project.reviews | byKey: 'status': status)">
                     <td ng-if="review.status==='open'"><i
                             class="fa fa-check-circle review-open"></i></td>
                     <td ng-if="review.status==='close'"><i

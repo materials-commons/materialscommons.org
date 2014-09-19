@@ -9,9 +9,12 @@ function actionReviewsDirective() {
 }
 
 Application.Controllers.controller('actionGlobalReviewsController',
-    ["$scope","$filter", "User", "model.projects", actionGlobalReviewsController]);
+    ["$scope","$filter", "User", "model.projects", "pubsub", actionGlobalReviewsController]);
 
-function actionGlobalReviewsController($scope, $filter,  User, Projects) {
+function actionGlobalReviewsController($scope, $filter,  User, Projects, pubsub) {
+    pubsub.waitOn($scope, "update-open-reviews.change", function () {
+        $scope.getAllReviews();
+    });
 
     $scope.createName = function(name) {
         if (name.length > 15) {
@@ -26,11 +29,11 @@ function actionGlobalReviewsController($scope, $filter,  User, Projects) {
         return $scope.project.name;
     };
 
-    function init() {
-        $scope.user = User.u();
+    $scope.getAllReviews = function(){
         var unflatten = [];
         $scope.all_reviews = [];
-        Projects.getList(true).then(function (projects) {
+
+        Projects.getList().then(function (projects) {
             projects.forEach(function(prj){
                 if(prj.reviews.length!==0){
                     prj.reviews.forEach(function(r){
@@ -41,6 +44,10 @@ function actionGlobalReviewsController($scope, $filter,  User, Projects) {
             })
             $scope.all_reviews = $scope.all_reviews.concat.apply($scope.all_reviews, unflatten);
         });
+    }
+    function init() {
+        $scope.user = User.u();
+        $scope.getAllReviews();
 
     }
 
