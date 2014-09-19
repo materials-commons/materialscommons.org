@@ -15,5 +15,4 @@ Application.Controllers.controller('actionCreateProvenanceController',
                                    ["$scope", actionCreateProvenanceController]);
 
 function actionCreateProvenanceController($scope) {
-    console.log("actionCreateProvenanceController");
 }
