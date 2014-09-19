@@ -230,11 +230,11 @@
 }
 
 .left {
-  width: 600px !important;
+  /*width: 600px !important;*/
   padding-bottom: 40px;
   min-height: auto !important;
   padding-right: 0;
-  float: left;
+  /*float: left;*/
 }
 
 .left > p:first-of-type {
@@ -246,7 +246,7 @@
   border: 1px solid #ccc;
   padding: 10px;
   position: relative;
-  width: 200px;
+  /*width: 200px;*/
 }
 
 .tip:before {
