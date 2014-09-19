@@ -59,7 +59,6 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
     CachedServiceFactory.prototype = {
         get: function (id, reload) {
             if (reload) {
-                console.log('calling reload');
                 this.cache.remove(id);
             }
 
@@ -67,11 +66,9 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
                 data = this.cache.get(id);
 
             if (data) {
-//                console.log(data);
                 deferred.resolve(data);
                 return deferred.promise;
             }
-            console.log('its calling rest ' + id);
             return this.rest.get(id, {apikey: User.apikey()});
         },
 
@@ -99,7 +96,6 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
                 l;
 
             if (reload) {
-                console.log('called cache on reload ');
                 this.cache.removeAll();
             }
 
