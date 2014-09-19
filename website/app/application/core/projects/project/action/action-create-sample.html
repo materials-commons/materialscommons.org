@@ -1,1 +1,137 @@
-action-create-sample
+<form name="Sample" class="form-horizontal">
+    <div action-stack></div>
+    <div class="form-group">
+        <label class="control-label col-lg-2">Sample Name:<i class="fa fa-asterisk"></i></label>
+
+        <div class="col-lg-4">
+            <input name="name" validator="required" ng-model="doc.name" class="form-control"  type="text" placeholder="Name...">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-2">Alloy:</label>
+
+        <div class="col-lg-4">
+            <input ng-model="doc.alloy" class="form-control" type="text" placeholder="Alloy Name...">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-2">Supplier:</label>
+        <div class="col-lg-4">
+            <input ng-model="doc.supplier" class="form-control" type="text" placeholder="Supplier...">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-lg-2">Form:</label>
+        <div class="col-lg-4">
+            <select ng-model="doc.form" class="form-control">
+                <option value="">-- Select Form Type --</option>
+                <option value="bulk">Bulk</option>
+                <option value="powder">Powder</option>
+            </select>
+        </div>
+    </div>
+    <div ng-if="doc.form == 'bulk'">
+        <div class="form-inline col-lg-offset-1">
+            <div class="form-group">
+                <label>Height: </label>
+                <input name="height" validator="number" ng-model="doc.properties.height.value" type="text" class="form-control" placeholder="Height...">
+                <select class="form-control" ng-model="doc.properties.height.unit">
+                    <option value="" disabled="" selected="">Unit...</option>
+                    <option value="cm">cm</option>
+                    <option value="m">m</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Width: </label>
+                <input name="width" validator="number" ng-model="doc.properties.width.value" type="text" class="form-control" placeholder="Width...">
+                <select class="form-control" ng-model="doc.properties.width.unit">
+                    <option value="" disabled="" selected="">Unit...</option>
+                    <option value="cm">cm</option>
+                    <option value="m">m</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Length: </label>
+                <input name="length" validator="number" ng-model="doc.properties.length.value" type="text" class="form-control" placeholder="Length...">
+                <select class="form-control" ng-model="doc.properties.length.unit">
+                    <option value="" disabled="" selected="">Unit...</option>
+                    <option value="cm">cm</option>
+                    <option value="m">m</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div ng-if="doc.form == 'powder'">
+        <div class="form-inline col-lg-offset-1">
+            <div class="form-group">
+                <label>Mass: </label>
+                <input name="mass" validator="number" ng-model="doc.properties.mass.value" type="text" class="form-control" placeholder="Mass...">
+            </div>
+            <div class="form-group">
+                <label>Grain Texture: </label>
+                <input  ng-model="doc.properties.grain_texture.value" type="text" class="form-control"
+                       placeholder="Grain Texture...">
+            </div>
+            <div class="form-group">
+                <label>Grain Size: </label>
+                <input name="size" validator="number" ng-model="doc.properties.grain_size.value" type="text" class="form-control"
+                       placeholder="Grain Size...">
+            </div>
+            <div class="form-group">
+                <label>Powder Size: </label>
+                <input ng-model="doc.properties.powder_size.value" type="text" class="form-control"
+                       placeholder="Powder Size...">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-lg-2">Composition:</label>
+
+        <div class="col-lg-4">
+            <button class="btn btn-info" ng-click="custom=!custom">+</button>
+            <div ng-if="custom">
+                <div periodic-table doc="doc.properties.composition"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-2">Projects:</label>
+
+        <div class="col-lg-4">
+            <div ng-show="doc.projects.length !==0 " class="col-lg-8">
+                <table class="table table-striped mc-table-hover table-condensed mc-table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in doc.projects">
+                        <td>{{i.name}}</td>
+                        <td>
+                            <button class="btn btn-default btn-danger"
+                                    ng-click="removeProjects($index)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <select class="form-control" ng-model="bk.selected_project"
+                    ng-options="pr.name for pr in projects">
+            </select>
+            <button class="btn btn-default" ng-click="populateProjects()">Add Project
+            </button>
+        </div>
+    </div><br>
+    <div class="form-group">
+        <label class="control-label col-lg-2"></label>
+        <button validation-submit="Sample" type="button" class="btn btn-primary" ng-click="save()">Save</button>
+        <button type="button" class="btn btn-danger" ng-click="clear()">Clear</button>
+    </div>
+</form>
