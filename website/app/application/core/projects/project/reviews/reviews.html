@@ -1,24 +1,40 @@
-<tab-control-bar></tab-control-bar>
-<h4>Reviews List</h4>
+<div ng-controller="tabShowReviewsController">
+    <tab-control-bar>
+        <div class="col-xs-offset-1">
+            <ul class="list-inline menu-bar">
+                <li>
+                    <action-link title="View Reviews"
+                                 title-icon="fa-cubes">
+                    </action-link>
+                </li>
+                <li>
+                    <action-menu title="Reports"
+                                 title-icon="fa-bar-chart"
+                                 menu-items="reportsMenu">
+                    </action-menu>
+                </li>
+            </ul>
+        </div>
+    </tab-control-bar>
+    <br><h4>Reviews List</h4> <br>
 
-<div ng-controller="tabShowReviewsController" class="col-lg-offset-2">
     <div class="row">
         <div class="col-lg-10">
             <table class="table table-file-directory">
                 <thead ng-style="{'background-color': currentProjectColor}">
-                    <th><i class="fa fa-check-circle review-open"></i><a ng-click="showReviews('open')">{{open_reviews.length}}
-                        open</a>
-                        <i class="fa fa-minus-circle review-close"></i><a ng-click="showReviews('close')">{{closed_reviews.length}}
-                            closed</a>
-                    </th>
-                    <th>Title</th>
-                    <th>Items</th>
-                    <th>Assigned to</th>
-                    <th></th>
+                <th><i class="fa fa-check-circle review-open"></i><a ng-click="showReviewsperStatus('open')">{{open_reviews.length}}
+                    open</a>
+                    <i class="fa fa-minus-circle review-close"></i><a ng-click="showReviewsperStatus('close')">{{closed_reviews.length}}
+                        closed</a>
+                </th>
+                <th>Title</th>
+                <th>Items</th>
+                <th>Assigned to</th>
+                <th></th>
                 </thead>
                 <tbody>
-                    <tr class="cursor-pointer" ng-click="viewReview(review)" ng-repeat="review in list_reviews">
-                        <td ng-if="review.status==='open'"><i
+                <tr class="cursor-pointer" ng-click="viewReview(review)" ng-repeat="review in reviews =(project.reviews | byKey: 'status': status)">
+                    <td ng-if="review.status==='open'"><i
                             class="fa fa-check-circle review-open"></i></td>
                         <td ng-if="review.status==='close'"><i
                             class="fa fa-minus-circle review-close"></i>
@@ -39,34 +55,28 @@
                 </tbody>
             </table>
         </div>
-
     </div>
-
-    <div class="row" ng-if="list_reviews.length === 0">
+    <div ng-if="list_reviews.length === 0">
         <p ng-show="status === 'open'" class="text-muted">No Open Reviews</p>
 
         <p ng-show="status === 'close'" class="text-muted">No Closed Reviews</p><br>
     </div>
+
+
     <div ng-show="review !== ''">
-        <div class="col-lg-10">
-            <div class="row panel panel-default">
-                <div class="panel-heading" ng-style="{'background-color': color}">
-                    <h4>{{review.title}}</h4>
+        <div class="row">
+            <div class="col-lg-10">
+                <strong style="font-size:20px;">{{review.title}}</strong>
 
-                    <div>
-                        <span ng-if="review.status==='open'">
-                            <button class="btn btn-success"><i class="fa fa-check-circle"></i>open</button>
-                        </span>
-                        <span ng-if="review.status==='close'">
-                            <button class="btn btn-danger"><i class="fa fa-minus-circle"></i>closed</button>
-                        </span>
-                        <span class="text-muted">author: {{review.author}}</span>
-                    </div>
-                </div>
+                <p class="text-muted"> author: {{review.author}}
+                    <span ng-if="review.status==='open'"><button class="btn btn-success"><i class="fa fa-check-circle"></i>open</button></span>
+                    <span ng-if="review.status==='close'"><button class="btn btn-danger"><i class="fa fa-minus-circle"></i>closed</button></span>
+                </p>
+                <hr style="border: 2px dashed grey">
             </div>
-
-            </hr>
-            <div class="row" ng-repeat="row in review.messages | orderBy: date">
+        </div>
+        <div  ng-repeat="row in review.messages | orderBy: date">
+            <div class="row">
                 <div class="col-lg-2 text-muted sub-text">
                     {{row.date}} --- {{row.who}}
                 </div>
@@ -85,7 +95,17 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <h4><u>Review these items:</u></h4>
+
+                <ul ng-repeat="i in review.items">
+                    <li>{{i.name}}</li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
                 <div class="custom-ta-toolbar">
                     <h4>Comment:</h4>
                     <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
@@ -102,6 +122,9 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
+        <!--</div>-->
     </div>
 </div>

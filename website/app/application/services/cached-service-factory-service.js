@@ -69,7 +69,6 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
                 deferred.resolve(data);
                 return deferred.promise;
             }
-
             return this.rest.get(id, {apikey: User.apikey()});
         },
 
@@ -90,7 +89,6 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
         },
 
         getList: function (reload) {
-
             var keys,
                 deferred,
                 items = [],
