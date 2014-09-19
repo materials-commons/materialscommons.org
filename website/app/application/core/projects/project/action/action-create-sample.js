@@ -53,7 +53,7 @@ function actionCreateSampleController($scope,mcapi, Projects, toastr, pubsub) {
     };
 
     $scope.clear = function () {
-        $scope.setDefaultProject();
+        setDefaultProject();
     };
 
     $scope.removeProjects = function (index) {
