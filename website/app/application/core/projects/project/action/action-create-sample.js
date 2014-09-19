@@ -12,9 +12,9 @@ function actionCreateSample() {
 }
 
 Application.Controllers.controller('actionCreateSampleController',
-                                   ["$scope", "mcapi", "model.projects", "toastr","pubsub", actionCreateSampleController]);
+                                   ["$scope", "mcapi", "model.projects", "actionStatus", "toastr","pubsub", actionCreateSampleController]);
 
-function actionCreateSampleController($scope,mcapi, Projects, toastr, pubsub) {
+function actionCreateSampleController($scope,mcapi, Projects, actionStatus, toastr, pubsub) {
 
     function setDefaultProject() {
         $scope.doc = {
@@ -43,7 +43,7 @@ function actionCreateSampleController($scope,mcapi, Projects, toastr, pubsub) {
                 Projects.getList(true).then(function (data) {
                     pubsub.send('update_samples.change');
                     setDefaultProject();
-                    // $scope.toggleStackAction('create-sample');
+                    actionStatus.toggleAction($scope.project.id, 'create-sample');
                 });
             }).post($scope.doc);
     };
@@ -52,8 +52,9 @@ function actionCreateSampleController($scope,mcapi, Projects, toastr, pubsub) {
         $scope.doc.projects.push({'id': $scope.bk.selected_project.id, 'name': $scope.bk.selected_project.name});
     };
 
-    $scope.clear = function () {
+    $scope.cancel = function () {
         setDefaultProject();
+        actionStatus.toggleAction($scope.project.id, 'create-sample');
     };
 
     $scope.removeProjects = function (index) {
