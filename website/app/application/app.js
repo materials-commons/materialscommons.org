@@ -157,6 +157,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/notes/notes.html'
         });
 
+    $validationProvider.setErrorHTML(function(msg) {
+        return '<span class="validation-invalid">' + msg + '</span>';
+    });
+
+    $validationProvider.setSuccessHTML(function(msg) {
+        return '<span class="validation-valid">' + msg + '</span>';
+    });
+
 }]);
 
 app.run(["$rootScope", "User", "Restangular", "projectColors",

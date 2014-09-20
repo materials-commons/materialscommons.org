@@ -9,6 +9,7 @@
         <!-- Le styles -->
         <link href="assets/css/bootstrap.flatly-3.css" rel="stylesheet">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="assets/css/animate.css" rel="stylesheet">
         <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
         <link href="assets/css/select2/select2.css" rel="stylesheet">
         <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
@@ -61,8 +62,8 @@
                 <ul ng-show="email_address" class="nav navbar-nav navbar-right">
                     <li ng-class="{ navactive: isActiveStep('reviews') }">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-comment space-right"></i> Reviews<span
-                                class="badge ng-binding badge-light"> 7 </span>
+                            <i class="fa fa-comment space-right"></i> Reviews <span
+                                ng-controller="actionGlobalReviewsController" class="badge ng-binding badge-light">  {{count}}</span>
                         </a>
                         <div class="dropdown-menu reviews-dropdown">
                             <!--directive-->
@@ -258,6 +259,7 @@
         <script src="application/core/projects/project/project-controller.js"></script>
         <script src="application/core/projects/project/project-action-bar.js"></script>
         <script src="application/core/projects/project/project-search-bar.js"></script>
+        <script src="application/core/projects/project/project-action-area.js"></script>
         <script src="application/core/projects/project/sideboard-directive.js"></script>
         <script src="application/core/projects/project/project-control-bar-directive.js"></script>
         <script src="application/core/projects/project/project-tabs.js"></script>

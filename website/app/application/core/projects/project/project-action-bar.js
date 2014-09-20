@@ -12,27 +12,11 @@ function projectActionBarDirective() {
 }
 
 Application.Controllers.controller('projectActionBarDirectiveController',
-                                   ["$scope", "projectColors",
+                                   ["$scope", "actionStatus",
                                     projectActionBarDirectiveController]);
 
-function projectActionBarDirectiveController($scope, projectColors) {
-    $scope.buttonStyle = function() {
-        return {
-            'background-color': projectColors.getCurrentProjectColor()
-        };
-    };
-
-    $scope.action = "";
-
+function projectActionBarDirectiveController($scope, actionStatus) {
     $scope.toggleAction = function(action) {
-        if ($scope.action === action) {
-            $scope.action = "";
-        } else {
-            $scope.action = action;
-        }
-    };
-
-    $scope.isCurrentAction = function(action) {
-        return $scope.action === action;
+        actionStatus.toggleAction($scope.project.id, action);
     };
 }
