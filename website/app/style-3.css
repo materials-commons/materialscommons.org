@@ -1,23 +1,23 @@
 /***********Begin sideboard.html ***********/
 
 .tag-scroll-bar{
-    height: 200px;
-    overflow-y:auto;
-    padding-left:10px;
+  height: 200px;
+  overflow-y:auto;
+  padding-left:10px;
 }
 .todo-scroll-bar{
-    height: 200px;
-    overflow-y:auto;
+  height: 200px;
+  overflow-y:auto;
 }
 
 .checkbox label:before {
-    border: 2px solid #cccccc;
+  border: 2px solid #cccccc;
 }
 /***********Begin sideboard.html ***********/
 
 /***********Begin projects.html ***********/
 .projects-margin-top{
-    margin-top: 10px;
+  margin-top: 10px;
 }
 /***********End projects.html ***********/
 
@@ -230,11 +230,11 @@
 }
 
 .left {
-  width: 600px !important;
+  /*width: 600px !important;*/
   padding-bottom: 40px;
   min-height: auto !important;
   padding-right: 0;
-  float: left;
+  /*float: left;*/
 }
 
 .left > p:first-of-type {
@@ -246,7 +246,7 @@
   border: 1px solid #ccc;
   padding: 10px;
   position: relative;
-  width: 200px;
+  /*width: 200px;*/
 }
 
 .tip:before {
@@ -365,19 +365,19 @@ td.tag-width {
 }
 
 .checkbox-project-tree{
-    width: 10px;
+  width: 10px;
 }
 .checkbox-margin {
-    margin-top: -5px;
-    margin-left:8px;
+  margin-top: -5px;
+  margin-left:8px;
 }
 
 /************End projecttree.html **************************/
 /************Begin index.html *****************************/
 
 .nav-dropdown-scrollbar{
-    height:500px;
-    overflow-y:auto;
+  height:500px;
+  overflow-y:auto;
 }
 .navbar-custom {
   /* background-color: #0C5C86; */
@@ -467,31 +467,31 @@ td.tag-width {
 }
 
 .reviews-dropdown{
-    min-width: 450px;
-    font-size:13px;
-    color: darkgray;
+  min-width: 450px;
+  font-size:13px;
+  color: darkgray;
 
 }
 /*For the tip in the dropdown menu*/
 .navbar .nav > li > .dropdown-menu:before {
-    border-bottom: 7px solid rgba(0, 0, 0, 0.2);
-    border-left: 7px solid rgba(0, 0, 0, 0);
-    border-right: 7px solid rgba(0, 0, 0, 0);
-    /*content: "";*/
-    display: inline-block;
-    left: 9px;
-    position: absolute;
-    top: -7px;
+  border-bottom: 7px solid rgba(0, 0, 0, 0.2);
+  border-left: 7px solid rgba(0, 0, 0, 0);
+  border-right: 7px solid rgba(0, 0, 0, 0);
+  /*content: "";*/
+  display: inline-block;
+  left: 9px;
+  position: absolute;
+  top: -7px;
 }
 .navbar .nav > li > .dropdown-menu:after {
-    border-bottom: 6px solid #FFFFFF;
-    border-left: 6px solid rgba(0, 0, 0, 0);
-    border-right: 6px solid rgba(0, 0, 0, 0);
-    content: "";
-    display: inline-block;
-    right: 10px;
-    position: absolute;
-    top: -6px;
+  border-bottom: 6px solid #FFFFFF;
+  border-left: 6px solid rgba(0, 0, 0, 0);
+  border-right: 6px solid rgba(0, 0, 0, 0);
+  content: "";
+  display: inline-block;
+  right: 10px;
+  position: absolute;
+  top: -6px;
 }
 
 /************End index.html **************************/
@@ -933,13 +933,10 @@ hr {
 }
 
 hr.carved {
-  /* clear: both; */
-  /* float: none; */
   margin-top: 5px;
   margin-bottom: 5px;
   width: 100%;
   height: 2px;
-  /* margin: 1.4em 0; */
   border: none;
   background: #ddd;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, rgb(221, 221, 221)), color-stop(0.5, rgb(255, 255, 255)));
@@ -1314,4 +1311,50 @@ label {
 
 ul.menu-bar li {
   padding-right: 20px;
+}
+
+/* ***** Action Area ******/
+.action-area {
+  border: 2px solid lightgrey;
+  border-radius: 4px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #f3f1da;
+}
+
+.action-area-title {
+  margin-bottom: 10px;
+}
+
+.action-area-title legend {
+  margin-bottom: 5px;
+}
+
+/* ***** Animations ***** */
+
+.ng-hide-removex {
+  -webkit-animation: fadeInDown 0.5s;
+  animation: fadeInDown 0.5s;
+}
+
+.ng-hide-addx {
+  -webkit-animation: fadeOutUp 0.5s;
+  animation: fadeOutUp 0.5s;
+  display: block !important;
+}
+
+/* ***** Tab Pane **** */
+.tab-pane {
+  border-left: 2px solid ;
+  border-right: 2px solid;
+  border-bottom: 2px solid ;
+  border-radius: 0px 0px 5px 5px;
+  /* border-color: green; */
+  padding: 10px;
+}
+
+.nav-tabs {
+  margin-bottom: 0;
 }

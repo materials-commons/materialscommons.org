@@ -1,6 +1,7 @@
 Application.Controllers.controller('_indexNavigation',
-                                   ["$scope", "User", "$state", "Nav", _indexNavigation]);
+                                   ["$scope", "User", "$state", "Nav",  _indexNavigation]);
 function _indexNavigation($scope, User, $state, Nav) {
+
     $scope.goHome = function () {
         if (User.isAuthenticated()) {
             $state.go("projects.project.overview");

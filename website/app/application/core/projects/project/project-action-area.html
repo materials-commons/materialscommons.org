@@ -1,0 +1,45 @@
+<div class="row">
+    <div ng-show="isCurrentAction('create-provenance')">
+        <div class="action-area">
+            <div class="col-xs-offset-1 col-xs-9 action-area-title">
+                <legend>Create Provenance</legend>
+                <hr class="carved">
+            </div>
+            <action-create-provenance project="project">
+            </action-create-provenance>
+        </div>
+    </div>
+
+    <div ng-show="isCurrentAction('create-sample')">
+        <div class="action-area">
+            <div class="col-xs-offset-1 col-xs-9 action-area-title">
+                <legend>Create Sample</legend>
+                <hr class="carved">
+            </div>
+            <action-create-sample project="project">
+            </action-create-sample>
+        </div>
+    </div>
+
+    <div ng-show="isCurrentAction('create-review')">
+        <div class="action-area">
+            <div class="col-xs-offset-1 col-xs-9 action-area-title">
+                <legend>Create Review</legend>
+                <hr class="carved">
+            </div>
+            <action-create-review project="project">
+            </action-create-review>
+        </div>
+    </div>
+
+    <div ng-show="isCurrentAction('create-note')">
+        <div class="action-area">
+            <div class="col-xs-offset-1 col-xs-9 action-area-title">
+                <legend>Create Note</legend>
+                <hr class="carved">
+            </div>
+            <action-create-note project="project">
+            </action-create-note>
+        </div>
+    </div>
+</div>
