@@ -1,8 +1,8 @@
 Application.Controllers.controller('ProjectTreeController',
                                    ["$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStackTracker",  ProjectTreeController]);
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStatus",  ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStackTracker) {
+function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus) {
 
     $scope.addToReview = function(entry, review){
         review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type});
@@ -153,8 +153,12 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
             }).post($scope.review);
     };
 
+    $scope.isReviewActionCurrent = function() {
+        return actionStatus.isCurrentAction($scope.projectID, 'create-review');
+    };
+
     $scope.init = function() {
-        $scope.isActionActive = actionStackTracker.actionActive;
+        $scope.isActionActive = actionStatus.isCurrentAction;
         $scope.user = User.u();
         $scope.model = {
             new_review: "",
@@ -162,7 +166,6 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
             title: ""
         };
 
-        $scope.isActionActive = actionStackTracker.actionActive;
         $scope.user_tags = User.attr().preferences.tags;
 //        $scope.user_tags = Tags.getUserTags();
         if ($scope.from == 'true') {
@@ -180,6 +183,7 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
         projects.get($scope.project).then(function(p) {
             var totalFiles = 0;
             var key;
+            $scope.projectID = p.id;
             $scope.users = p.users;
             $scope.projectSize = bytesToSizeStr(p.size);
             for (key in p.mediatypes) {
