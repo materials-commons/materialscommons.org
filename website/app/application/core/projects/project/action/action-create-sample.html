@@ -70,7 +70,7 @@
             <div class="form-group">
                 <label>Grain Texture: </label>
                 <input  ng-model="doc.properties.grain_texture.value" type="text" class="form-control"
-                       placeholder="Grain Texture...">
+                        placeholder="Grain Texture...">
             </div>
             <div class="form-group">
                 <label>Grain Size: </label>
@@ -103,21 +103,21 @@
             <div ng-show="doc.projects.length !==0 " class="col-lg-8">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="i in doc.projects">
-                        <td>{{i.name}}</td>
-                        <td>
-                            <button class="btn btn-default btn-danger"
-                                    ng-click="removeProjects($index)">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+                        <tr ng-repeat="i in doc.projects">
+                            <td>{{i.name}}</td>
+                            <td>
+                                <button class="btn btn-default btn-danger"
+                                        ng-click="removeProjects($index)">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -127,7 +127,8 @@
             <button class="btn btn-default" ng-click="populateProjects()">Add Project
             </button>
         </div>
-    </div><br>
+    </div>
+
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
         <button validation-submit="Sample" type="button" class="btn btn-primary" ng-click="save()">Save</button>
