@@ -234,7 +234,7 @@
   padding-bottom: 40px;
   min-height: auto !important;
   padding-right: 0;
-  /*float: left;*/
+/*float: left;*/
 }
 
 .left > p:first-of-type {
@@ -246,7 +246,7 @@
   border: 1px solid #ccc;
   padding: 10px;
   position: relative;
-  /*width: 200px;*/
+/*width: 200px;*/
 }
 
 .tip:before {
@@ -1315,13 +1315,12 @@ ul.menu-bar li {
 
 /* ***** Action Area ******/
 .action-area {
-  border: 2px solid lightgrey;
+  border: 5px solid #ebe9d2;
   border-radius: 4px;
   margin-top: 5px;
   margin-bottom: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: #f3f1da;
 }
 
 .action-area-title {
@@ -1343,18 +1342,4 @@ ul.menu-bar li {
   -webkit-animation: fadeOutUp 0.5s;
   animation: fadeOutUp 0.5s;
   display: block !important;
-}
-
-/* ***** Tab Pane **** */
-.tab-pane {
-  border-left: 2px solid ;
-  border-right: 2px solid;
-  border-bottom: 2px solid ;
-  border-radius: 0px 0px 5px 5px;
-  /* border-color: green; */
-  padding: 10px;
-}
-
-.nav-tabs {
-  margin-bottom: 0;
 }
