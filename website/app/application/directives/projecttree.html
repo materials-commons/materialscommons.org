@@ -9,7 +9,7 @@
     </div>
     <div>
         <div class="panel panel-default">
-            <div ng-hide="checkBox" class="panel-heading file-heading" ng-style="{'background-color': color}">
+            <div class="panel-heading file-heading" ng-style="{'background-color': color}">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="col-lg-6">
@@ -20,25 +20,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Comment out because this will be added back in short term -->
-                <!-- <a style="padding-right: 15px;color: black" class="pull-right"><i style="padding-right: 2px;" class="fa fa-bar-chart-o"></i>Compare </a>
-                <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-download"></i>Download </a>
-                <a style="padding-right: 15px;color: black" class="pull-right"><i  style="padding-right: 2px;" class="fa fa-upload"></i>Upload </a> -->
-
             </div>
-            <!-- <div class="panel-body" style="padding: 5px;background-color: #389DC1">
-            <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-            View by <span class="caret"/>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-            <li><i class="fa fa-folder-open"> Directories</i></li>
-            <li><i class="fa fa-suitecase"> Dataset abc</i></li>
-            <li><i class="fa fa-suitecase"> Dataset def</i></li>
-            </ul>
-            </div>
-            </div> -->
         </div>
     </div>
     <div ng-show="loaded===false">
@@ -49,11 +31,12 @@
     <div ng-show="loaded===true">
         <table class="table  table-file-directory ">
             <tbody>
-                <tr ng-repeat="entry in dir|orderBy:'displayname'" data-tt-id="{{t.c_id}}"
-                    data-tt-parent-id="{{t.parent_id}}"
-                    data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable>
+                <tr ng-repeat="entry in dir|orderBy:'displayname'"
+                    class="project-tree"
+                    ng-model="list2">
 
                     <td ng-if="entry.type=='datadir'">
+                        <span class="no-checkbox-space"></span>
                         <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
                             <ul class="dropdown-menu" role="menu">
@@ -71,15 +54,12 @@
                         </div>
                         <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}</a>
                     </td>
-                    <td ng-show="!checkBox" ng-if="entry.type=='datafile'" class="checkbox-project-tree">
-                        <span ng-if="isActionActive('create-review')" class="checkbox checkbox-info checkbox-margin">
-                            <input id={{entry.id}} type="checkbox" ng-model="entry.selected" ng-click="fileSelected(entry)">
-                            <label for={{entry.id}} >
-
-                            </label>
-                        </span>
-                    </td>
                     <td ng-if="entry.type=='datafile'">
+                        <span ng-show="isReviewActionCurrent()" class="checkbox checkbox-info checkbox-inline checkbox-margin">
+                            <input id={{entry.id}} type="checkbox" ng-model="entry.selected" ng-click="fileSelected(entry)">
+                            <label for={{entry.id}}></label>
+                        </span>
+                        <span ng-show="!isReviewActionCurrent()" class="no-checkbox-space"></span>
                         <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
                             <ul class="dropdown-menu" role="menu">
@@ -87,7 +67,7 @@
                                     <a href="#">Add Tag</a>
                                     <ul class="dropdown-menu scrollable-menu">
                                         <li ng-repeat="t in user_tags">
-                                           <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>{{t.name}}</a>
+                                            <a ng-click="addTag(entry, t)" role="menuItem"><i class="fa" ng-class="'fa-' + t.icon" style="color: {{t.color}}"></i>{{t.name}}</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -110,7 +90,7 @@
                     <td ng-if="entry.type=='datadir'">-</td>
                     <td>{{entry.owner}}</td>
                     <td ng-show="entry.tags != {}" class="tag-width" ng-repeat="t in entry.tags[user]">
-                      <i tooltip="{{t.name}}" class="fa" ng-class="'fa-' + t.icon" ng-style="{color: t.color}"></i>
+                        <i tooltip="{{t.name}}" class="fa" ng-class="'fa-' + t.icon" ng-style="{color: t.color}"></i>
                     </td>
                     <td ng-show="entry.tags == {}"></td>
                 </tr>

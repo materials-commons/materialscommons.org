@@ -1,11 +1,12 @@
 /***********Begin sideboard.html ***********/
 
-.tag-scroll-bar{
+.tag-scroll-bar {
   height: 200px;
   overflow-y:auto;
   padding-left:10px;
 }
-.todo-scroll-bar{
+
+.todo-scroll-bar {
   height: 200px;
   overflow-y:auto;
 }
@@ -364,12 +365,22 @@ td.tag-width {
   width: 5px;
 }
 
-.checkbox-project-tree{
-  width: 10px;
-}
 .checkbox-margin {
   margin-top: -5px;
   margin-left:8px;
+}
+
+.project-tree td span.checkbox-inline {
+  padding-left: 0;
+}
+
+.no-checkbox-space {
+  content: ' ';
+  padding-left: 24px;
+}
+
+.project-tree td span.checkbox-inline label {
+  margin-right: 0;
 }
 
 /************End projecttree.html **************************/
