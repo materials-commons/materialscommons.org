@@ -18,7 +18,7 @@
         <i ng-class="{'fa fa-close action-link-close': actionActive('tag')}"/>
     </a>
     <hr class="sideboard-separator">
-    <div class="row tag-scroll-bar">
+    <div class="row">
         <display-tags tags="tags"></display-tags>
     </div>
 </div>
@@ -30,7 +30,7 @@
         <i ng-class="{'fa fa-close action-link-close': actionActive('to-do')}"/>
     </a>
     <hr class="sideboard-separator">
-    <div class="row todo-scroll-bar">
+    <div class="row">
         <div ng-repeat="td in todos">
             <div class="checkbox checkbox-info">
                 <input id={{td.title}} type="checkbox" ng-model="td.selected" ng-change="td.selected = !td.selected"
