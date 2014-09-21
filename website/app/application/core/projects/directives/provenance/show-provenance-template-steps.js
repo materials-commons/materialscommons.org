@@ -1,20 +1,20 @@
-Application.Directives.directive('provenanceWizardSteps', provenanceWizardStepsDirective);
+Application.Directives.directive('showProvenanceTemplateSteps', showProvenanceTemplateStepsDirective);
 
-function provenanceWizardStepsDirective() {
+function showProvenanceTemplateStepsDirective() {
     return {
         scope: {
             template: "=",
             showOverview: "="
         },
-        controller: "provenanceWizardStepsDirectiveController",
+        controller: "showProvenanceTemplateStepsDirectiveController",
         restrict: "EA",
-        templateUrl: "application/core/projects/directives/provenance/provenance-wizard-steps.html"
+        templateUrl: "application/core/projects/directives/provenance/show-provenance-template-steps.html"
     };
 }
 
-Application.Controllers.controller('provenanceWizardStepsDirectiveController',
-                                   ["$scope", provenanceWizardStepsDirectiveController]);
-function provenanceWizardStepsDirectiveController($scope) {
+Application.Controllers.controller('showProvenanceTemplateStepsDirectiveController',
+                                   ["$scope", showProvenanceTemplateStepsDirectiveController]);
+function showProvenanceTemplateStepsDirectiveController($scope) {
     function templateStepsCount() {
         if (!$scope.template) {
             return 0;
