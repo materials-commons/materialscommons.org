@@ -97,7 +97,6 @@ function actionCreateProvenanceController2($scope, $stateParams, templates, proj
     };
 
     function init() {
-        console.log("init for action-create-provenance");
         templates.getList().then(function(templates) {
             $scope.templates = $filter('byKey')(templates, 'template_type', 'process');
 
