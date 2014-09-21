@@ -2,7 +2,7 @@ Application.Services.factory("provStep", [provStep]);
 
 function provStep() {
     var service = {
-
+        steps: {},
         finishedSteps: {
             inputSteps: [],
             outputSteps: [],
@@ -105,59 +105,50 @@ function provStep() {
             }
         },
 
-        _addFinishedIOStep: function (stepType, step)  {
-            var i = _.indexOf(service.finishedSteps[stepType], step);
+        _addFinishedIOStep: function(project, stepType, step)  {
+            var i = _.indexOf(service.steps[project][stepType], step);
             if (i != -1) {
-                service.finishedSteps[stepType].push(step);
+                service.steps[project][stepType].push(step);
             }
         },
 
-        addFinishedInputStep: function(step) {
-            service._addFinishedIOStep("inputSteps", step);
+        addFinishedInputStep: function(project, step) {
+            service._addFinishedIOStep(project, "inputSteps", step);
         },
 
-        addFinishedOutputStep: function(step) {
-            service._addFinishedIOStep("outputSteps", step);
+        addFinishedOutputStep: function(project, step) {
+            service._addFinishedIOStep(project, "outputSteps", step);
         },
 
-        clearFinishedSteps: function(step) {
-            service.finishedSteps = {
-                inputSteps: [],
-                outputSteps: [],
-                process: false,
-                done: false,
-                currentStep: {
-                    stepType: "",
-                    step: ""
-                }
-            };
+        clearFinishedSteps: function(project) {
+            service.steps[project] = service._makeStepTracker();
         },
 
-        isCurrentStep: function(stepType, step) {
-            if (service.finishedSteps.currentStep.stepType === stepType &&
-                service.finishedSteps.currentStep.step === step) {
+        isCurrentStep: function(project, stepType, step) {
+            if (service.steps[project].currentStep.stepType === stepType &&
+                service.steps[project].currentStep.step === step) {
                 return true;
             }
 
             return false;
         },
 
-        _isFinishedIOStep: function(stepType, step) {
-            var i = _.indexOf(service.finishedSteps[stepType], step);
+        _isFinishedIOStep: function(project, stepType, step) {
+            var i = _.indexOf(service.steps[project][stepType], step);
             // if i == -1 then we didn't find the step.
             return i != -1;
         },
 
-        isFinishedStep: function(stepType, step) {
+        isFinishedStep: function(project, stepType, step) {
             switch (stepType) {
             case "done":
-                return service.finishedSteps.done;
+                return service.steps[project].done;
             case "process":
-                return service.finishedSteps.process;
+                return service.steps[project].process;
             case "input":
-                return service._isFinishedIOStep("inputSteps", step);
+                return service._isFinishedIOStep(project, "inputSteps", step);
             case "output":
-                return service._isFinishedIOStep("outputSteps", step);
+                return service._isFinishedIOStep(project, "outputSteps", step);
             default:
                 return false;
             }
@@ -184,6 +175,27 @@ function provStep() {
             default:
                 return false;
             }
+        },
+
+        _makeStepTracker: function() {
+            return {
+                inputSteps: [],
+                outputSteps: [],
+                process: false,
+                done: false,
+                currentStep: {
+                    stepType: "",
+                    step: ""
+                }
+            };
+        },
+
+        addProject: function(project) {
+            if (project in service.steps) {
+                return;
+            }
+
+            service.steps[project] = service._makeStepTracker();
         }
 
     };
