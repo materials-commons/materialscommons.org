@@ -22,6 +22,7 @@ function actionGlobalReviewsController($scope, $filter,  User, Projects, pubsub)
         }
         return name;
     };
+
     $scope.getProjectName = function(id) {
         Projects.get(id).then(function (project) {
             $scope.project = project;
@@ -38,18 +39,18 @@ function actionGlobalReviewsController($scope, $filter,  User, Projects, pubsub)
                 if(prj.reviews.length!==0){
                     prj.reviews.forEach(function(r){
                         r.project_name = prj.name;
-                    })
+                    });
                     unflatten.push(prj.reviews);
                 }
-            })
+            });
             $scope.all_reviews = $scope.all_reviews.concat.apply($scope.all_reviews, unflatten);
             $scope.count = $filter('byKey')( $scope.all_reviews, 'status', 'open').length;
         });
-    }
+    };
+
     function init() {
         $scope.user = User.u();
         $scope.getAllReviews();
-
     }
 
     init();
