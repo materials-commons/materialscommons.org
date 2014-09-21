@@ -1,22 +1,22 @@
-Application.Directives.directive('actionCreateProvenance2', actionCreateProvenance2);
+Application.Directives.directive('actionCreateProvenance', actionCreateProvenance);
 
-function actionCreateProvenance2() {
+function actionCreateProvenance() {
     return {
         scope: {
             project: "="
         },
-        controller: "actionCreateProvenanceController2",
+        controller: "actionCreateProvenanceController",
         restrict: "AE",
         templateUrl: "application/core/projects/project/action/action-create-provenance.html"
     };
 }
 
-Application.Controllers.controller('actionCreateProvenanceController2',
+Application.Controllers.controller('actionCreateProvenanceController',
                                    ["$scope", "$stateParams", "model.templates",
                                     "model.projects", "User", "$filter", "pubsub",
-                                    actionCreateProvenanceController2]);
+                                    actionCreateProvenanceController]);
 
-function actionCreateProvenanceController2($scope, $stateParams, templates, projects,
+function actionCreateProvenanceController($scope, $stateParams, templates, projects,
                                           User, $filter) {
 
     function setupCurrentDraft() {
