@@ -2,7 +2,7 @@ Application.Directives.directive('provenanceWizardControlBar', provenanceWizardC
 
 function provenanceWizardControlBarDirective() {
     return {
-        controller: "actionShowProvenanceDirectiveController",
+        controller: "provenanceWizardControlBarDirectiveController",
         restrict: "EA",
         templateUrl: "application/core/projects/directives/provenance/provenance-wizard-control-bar.html"
     };
