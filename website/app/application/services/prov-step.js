@@ -1,18 +1,8 @@
-Application.Services.factory("provStep", [provStep]);
+Application.Services.factory("provStep", ["pubsub", provStep]);
 
-function provStep() {
+function provStep(pubsub) {
     var service = {
         steps: {},
-        finishedSteps: {
-            inputSteps: [],
-            outputSteps: [],
-            process: false,
-            done: false,
-            currentStep: {
-                stepType: "",
-                step: ""
-            }
-        },
 
         _handleProcessStep: function(templates, filesRequired) {
             if (templates.length !== 0) {
@@ -103,6 +93,20 @@ function provStep() {
                     step: "done"
                 };
             }
+        },
+
+        setStep: function(project, stepType, step) {
+            console.log("setStep called with " + stepType + "/" + step);
+            var currentStep = {
+                stepType: stepType,
+                step: step
+            };
+            service.steps[project].currentStep = currentStep;
+            pubsub.send("provenance.wizard.step");
+        },
+
+        getCurrentStep: function(project) {
+            return service.steps[project].currentStep;
         },
 
         _addFinishedIOStep: function(project, stepType, step)  {

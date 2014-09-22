@@ -1,23 +1,35 @@
-Application.Directives.directive('actionProvenanceWizardStep', actionProvenanceWizardStepDirective);
+Application.Directives.directive('wizardNextStep', wizardNextStepDirective);
 
-function actionProvenanceWizardStepDirective() {
+function wizardNextStepDirective() {
     return {
         scope: {
-            args: "="
+            project: "=",
+            showSteps: "="
         },
-        controller: "actionProvenanceWizardStepDirectiveController",
+        controller: "wizardNextStepDirectiveController",
         restrict: "EA",
-        templateUrl: "application/core/projects/directives/provenance/action-provenance-wizard-step.html"
+        templateUrl: "application/core/projects/directives/provenance/wizard-next-step.html"
     };
 }
 
-Application.Controllers.controller('actionProvenanceWizardStepDirectiveController',
-                                   ["$scope", "$stateParams", "model.projects", "provStep",
-                                    actionProvenanceWizardStepDirectiveController]);
-function actionProvenanceWizardStepDirectiveController($scope, $stateParams, projects, provStep) {
-    projects.get($stateParams.id).then(function(project) {
-        $scope.project = project;
-        $scope.step = $scope.args;
-        $scope.template = provStep.templateForStep($scope.project.selectedTemplate, $scope.step);
+Application.Controllers.controller('wizardNextStepDirectiveController',
+                                   ["$scope", "provStep", "pubsub", wizardNextStepDirectiveController]);
+function wizardNextStepDirectiveController($scope, provStep, pubsub) {
+    pubsub.waitOn($scope, "provenance.wizard.step", function() {
+        $scope.step = provStep.getCurrentStep($scope.project.id);
     });
+
+    $scope.showPropertiesStep = function() {
+        if (! $scope.step) {
+            return false;
+        }
+        switch ($scope.step.step) {
+        case "process": return false;
+        case "sample": return false;
+        case "transform-sample": return false;
+        case "file": return false;
+        case "": return false;
+        default: return true;
+        }
+    };
 }
