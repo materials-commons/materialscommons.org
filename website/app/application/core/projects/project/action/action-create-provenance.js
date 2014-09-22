@@ -87,7 +87,7 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
         var title = "Wizard Process Step (" + templateName + ")";
         setupCurrentDraft();
         $scope.showChooseProcess = false;
-        provStep.setStep($scope.project.id, "process", "process");
+        provStep.setStep($scope.project.id, provStep.makeStep("process", "process"));
     };
 
     $scope.cancel = function() {
