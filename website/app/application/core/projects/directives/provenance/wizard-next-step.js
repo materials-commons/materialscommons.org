@@ -27,7 +27,7 @@ function wizardNextStepDirectiveController($scope, provStep, pubsub) {
         case "process": return false;
         case "sample": return false;
         case "transform-sample": return false;
-        case "file": return false;
+        case "files": return false;
         case "": return false;
         default: return true;
         }

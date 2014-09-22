@@ -17,11 +17,11 @@ Application.Controllers.controller('wizardStepProcessController',
 function wizardStepProcessController($scope, provStep) {
     $scope.nextStep = function() {
         var s = provStep.nextStep("process", "process", $scope.project.selectedTemplate);
-        provStep.setStep($scope.project.id, s.stepType, s.step);
+        provStep.setStep($scope.project.id, s);
     };
 
     $scope.cancelStep = function() {
         $scope.project.selectedTemplate = null;
-        $scope.step = provStep.setStep("", "");
+        $scope.step = provStep.setStep(provStep.makeStep("", ""));
     };
 }

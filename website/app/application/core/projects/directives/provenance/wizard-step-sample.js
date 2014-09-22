@@ -17,8 +17,9 @@ Application.Controllers.controller('wizardStepSampleDirectiveController',
                                     wizardStepSampleDirectiveController]);
 function wizardStepSampleDirectiveController($scope, provStep) {
     $scope.next = function() {
-        var nextStep = provStep.nextStep($scope.step.stepType, $scope.step.step,
+        var step = provStep.getCurrentStep($scope.project.id);
+        var nextStep = provStep.nextStep(step.stepType, step.step,
                                         $scope.project.selectedTemplate);
-        provStep.setStep($scope.project.id, nextStep.stepType, nextStep.step);
+        provStep.setStep($scope.project.id, nextStep);
     };
 }

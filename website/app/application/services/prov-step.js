@@ -40,7 +40,7 @@ function provStep(pubsub) {
                 return "";
             }
 
-            if (i+1 > templates.length) {
+            if (i+1 === templates.length) {
                 // No more templates, check if we should ask for files.
                 if (filesRequired) {
                     return "files";
@@ -95,14 +95,22 @@ function provStep(pubsub) {
             }
         },
 
-        setStep: function(project, stepType, step) {
-            console.log("setStep called with " + stepType + "/" + step);
-            var currentStep = {
+        makeStep: function(stepType, step) {
+            return {
                 stepType: stepType,
                 step: step
             };
-            service.steps[project].currentStep = currentStep;
+        },
+
+        setStep: function(project, step) {
+            service.steps[project].currentStep = step;
             pubsub.send("provenance.wizard.step");
+        },
+
+        setProjectNextStep: function(project, template) {
+            var currentStep = service.getCurrentStep(project);
+            var nextStep = service.nextStep(currentStep.stepType, currentStep.step, template);
+            service.setStep(project, nextStep);
         },
 
         getCurrentStep: function(project) {

@@ -3,9 +3,7 @@ Application.Directives.directive('wizardStepProperties', wizardStepPropertiesDir
 function wizardStepPropertiesDirective() {
     return {
         scope: {
-            template: "=",
-            project: "=",
-            step: "="
+            project: "="
         },
         controller: "wizardStepPropertiesDirectiveController",
         restrict: "EA",
@@ -14,9 +12,13 @@ function wizardStepPropertiesDirective() {
 }
 
 Application.Controllers.controller('wizardStepPropertiesDirectiveController',
-                                   ["$scope", "$stateParams", "provStep", "actionStack",
+                                   ["$scope", "provStep",
                                     wizardStepPropertiesDirectiveController]);
-function wizardStepPropertiesDirectiveController($scope, $stateParams, provStep,
-                                                 actionStack) {
-    console.dir($scope.template);
+function wizardStepPropertiesDirectiveController($scope, provStep) {
+    var step = provStep.getCurrentStep($scope.project.id);
+    $scope.template = provStep.templateForStep($scope.project.selectedTemplate, step);
+
+    $scope.next = function() {
+        provStep.setProjectNextStep($scope.project.id, $scope.project.selectedTemplate);
+    };
 }
