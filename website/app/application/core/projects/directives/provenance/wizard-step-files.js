@@ -15,8 +15,9 @@ Application.Controllers.controller('wizardStepFilesDirectiveController',
                                    ["$scope", "provStep", "pubsub", "projectFiles",
                                     wizardStepFilesDirectiveController]);
 function wizardStepFilesDirectiveController($scope, provStep, pubsub, projectFiles) {
-    $scope.model.files = [];
-    projectFiles.setChannel("provenance.files");
+    $scope.model = {
+        files: []
+    };
 
     $scope.next = function() {
         provStep.setProjectNextStep($scope.project.id, $scope.project.selectedTemplate);
@@ -37,7 +38,7 @@ function wizardStepFilesDirectiveController($scope, provStep, pubsub, projectFil
                 return file.id === fileentry.id;
             });
             if (i !== -1) {
-                scope.model.files.splice(i, 1);
+                $scope.model.files.splice(i, 1);
             }
         }
     });
