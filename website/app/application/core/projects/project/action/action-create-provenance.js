@@ -14,10 +14,17 @@ function actionCreateProvenance() {
 Application.Controllers.controller('actionCreateProvenanceController',
                                    ["$scope", "$stateParams", "model.templates",
                                     "model.projects", "User", "$filter", "provStep",
+                                    "projectFiles", "actionStatus",
                                     actionCreateProvenanceController]);
 
 function actionCreateProvenanceController($scope, $stateParams, templates, projects,
-                                          User, $filter, provStep) {
+                                          User, $filter, provStep, projectFiles,
+                                          actionStatus) {
+
+    actionStatus.onAction($scope, 'create-provenance', function() {
+        console.log("setting channel to provenance.files");
+        projectFiles.setChannel("provenance.files");
+    });
 
     function setupCurrentDraft() {
         $scope.project.currentDraft.process = {
