@@ -9,7 +9,6 @@ Application.Controllers.controller('projectsOverviewProvenance',
                 .success(function (data) {
                     $scope.processes = data;
                 }).jsonp();
-
         };
 
         $scope.processDetails = function(p_id){
