@@ -16,10 +16,12 @@ Application.Controllers.controller('projectTabsDirectiveController',
 
 function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,$stateParams, $filter) {
 
-    pubsub.waitOn($scope, "update-open-reviews.change", function () {
+    pubsub.waitOn($scope, "update-tab-count.change", function () {
         Projects.getList().then(function (projects) {
             Projects.get($stateParams.id).then(function (project) {
                 $scope.project.reviews = project.reviews;
+                $scope.project.samples = project.samples;
+                $scope.project.notes = project.notes;
                 $scope.updateTabCounts();
             });
         });
@@ -79,7 +81,7 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-cubes",
                 name: "Samples",
                 hasCount: true,
-                count: 1
+                count: $scope.project.samples.length
             },
 
             {
@@ -103,7 +105,7 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-edit",
                 name: "Notes",
                 hasCount: true,
-                count: 1
+                count: $scope.project.notes.length
             }
         ];
     }

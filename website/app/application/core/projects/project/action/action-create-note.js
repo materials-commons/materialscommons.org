@@ -12,9 +12,9 @@ function actionCreateNote() {
 }
 
 Application.Controllers.controller('actionCreateNoteController',
-                                   ["$scope", "User", "toastr", actionCreateNoteController]);
+                                   ["$scope", "User", "toastr","pubsub","actionStatus", actionCreateNoteController]);
 
-function actionCreateNoteController($scope, User, toastr) {
+function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus) {
 
     $scope.model = {
         note: ""
@@ -23,6 +23,8 @@ function actionCreateNoteController($scope, User, toastr) {
     function saveNote() {
         $scope.project.put(User.keyparam()).then(function() {
             $scope.model.note = "";
+            pubsub.send('update-tab-count.change');
+            actionStatus.toggleAction($scope.project.id, 'create-note');
             //$scope.toggleStackAction('create-note', 'Create Note (c n)');
         }, function(reason){
             toastr.error(reason.data.error, 'Error', {

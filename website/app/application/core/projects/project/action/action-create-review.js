@@ -48,7 +48,7 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
                     Projects.get($scope.project.id).then(function (project) {
                         $scope.project = project;
                         reset();
-                        pubsub.send('update_reviews.change');
+                        pubsub.send('update-tab-count.change');
                         actionStatus.toggleAction($scope.project.id, 'create-review');
                     });
 

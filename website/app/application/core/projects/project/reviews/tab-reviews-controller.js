@@ -15,7 +15,7 @@ Application.Controllers.controller('tabShowReviewsController',
 
 function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
 
-    pubsub.waitOn($scope, 'update-review-items.change', function () {
+    pubsub.waitOn($scope, 'update-tab-count.change', function () {
         $scope.loadProjectReviews($stateParams.id, true);
         if ($scope.review.id){
             $scope.viewReview($scope.review);
@@ -64,7 +64,7 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
             .success(function () {
                 $scope.loadProjectReviews($stateParams.id, true);
                 $scope.review = '';
-                pubsub.send('update-open-reviews.change');
+                pubsub.send('update-tab-count.change');
             }).put({'status': 'close'});
     };
 
@@ -73,7 +73,7 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
             .success(function () {
                 $scope.loadProjectReviews($stateParams.id, true);
                 $scope.review = '';
-                pubsub.send('update-open-reviews.change');
+                pubsub.send('update-tab-count.change');
             }).put({'status': 'open'});
     };
 
