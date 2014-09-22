@@ -29,6 +29,7 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
         };
         mcapi('/reviews/%', review.id)
             .success(function (data) {
+                $scope.highlight_review = review;
                 $scope.review = data;
             }).jsonp();
     };
