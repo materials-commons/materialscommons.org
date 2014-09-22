@@ -33,7 +33,7 @@
                 <th></th>
                 </thead>
                 <tbody>
-                <tr class="cursor-pointer" ng-click="viewReview(review)" ng-repeat="review in reviews =(project.reviews | byKey: 'status': status)">
+                <tr ng-class="{highlight: highlight_review.id == review.id}" class="cursor-pointer" ng-click="viewReview(review)" ng-repeat="review in reviews =(project.reviews | byKey: 'status': status)">
                     <td ng-if="review.status==='open'"><i
                             class="fa fa-check-circle review-open"></i></td>
                         <td ng-if="review.status==='close'"><i

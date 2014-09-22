@@ -1354,3 +1354,7 @@ ul.menu-bar li {
   animation: fadeOutUp 0.5s;
   display: block !important;
 }
+
+.highlight{
+    background-color: #e6e4cd;
+}
