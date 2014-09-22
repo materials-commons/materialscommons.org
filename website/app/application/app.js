@@ -7,23 +7,23 @@ Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
-                         [
-                             'ui',
-                             'ngCookies',
-                             'ui.router',
-                             'btford.socket-io',
-                             'restangular',
-                             'jmdobry.angular-cache',
-                             'validation','validation.rule',
-                             'textAngular',
-                             'treeGrid',
-                             'ngDragDrop',
-                             'ngAnimate',
-                             'ng-context-menu',
-                             "cfp.hotkeys",
-                             '$strap.directives', 'ui.bootstrap','toastr',
-                             'application.core.constants', 'application.core.services', 'application.core.controllers',
-                             'application.core.filters', 'application.core.directives']);
+    [
+        'ui',
+        'ngCookies',
+        'ui.router',
+        'btford.socket-io',
+        'restangular',
+        'jmdobry.angular-cache',
+        'validation', 'validation.rule',
+        'textAngular',
+        'treeGrid',
+        'ngDragDrop',
+        'ngAnimate',
+        'ng-context-menu',
+        "cfp.hotkeys",
+        '$strap.directives', 'ui.bootstrap', 'toastr',
+        'application.core.constants', 'application.core.services', 'application.core.controllers',
+        'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
@@ -42,7 +42,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     mcglobals = {};
     doConfig();
     $stateProvider
-    // Navbar
+        // Navbar
         .state('home', {
             url: '/home',
             templateUrl: 'application/core/home/home.html'
@@ -84,11 +84,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/machines/machines.html'
         })
 
-    /*
-     ########################################################################
-     ####################### Account ##################################
-     ########################################################################
-     */
+        /*
+         ########################################################################
+         ####################### Account ##################################
+         ########################################################################
+         */
         .state('account', {
             url: '/account',
             templateUrl: 'application/core/account/account.html'
@@ -114,16 +114,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/account/templates/templates.html'
         })
 
-    /*
-     ########################################################################
-     ########################### Projects ###################################
-     ########################################################################
-     */
+        /*
+         ########################################################################
+         ########################### Projects ###################################
+         ########################################################################
+         */
         .state('projects', {
             url: '/projects/:id',
             templateUrl: 'application/core/projects/projects.html',
             resolve: {
-                projects: ["model.projects", function(projects) {
+                projects: ["model.projects", function (projects) {
                     return projects.getList();
                 }]
             }
@@ -144,6 +144,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/samples',
             templateUrl: 'application/core/projects/project/samples/samples.html'
         })
+        .state('projects.project.samples.view', {
+            url: '/view',
+            templateUrl: 'application/core/projects/project/samples/view.html'
+        })
         .state('projects.project.provenance', {
             url: '/provenance',
             templateUrl: 'application/core/projects/project/provenance/provenance.html'
@@ -155,28 +159,32 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state('projects.project.notes', {
             url: '/notes',
             templateUrl: 'application/core/projects/project/notes/notes.html'
+        })
+        .state('projects.project.notes.view', {
+            url: '/view',
+            templateUrl: 'application/core/projects/project/notes/view.html'
         });
 
-    $validationProvider.setErrorHTML(function(msg) {
+    $validationProvider.setErrorHTML(function (msg) {
         return '<span class="validation-invalid">' + msg + '</span>';
     });
 
-    $validationProvider.setSuccessHTML(function(msg) {
+    $validationProvider.setSuccessHTML(function (msg) {
         return '<span class="validation-valid">' + msg + '</span>';
     });
 
 }]);
 
 app.run(["$rootScope", "User", "Restangular", "projectColors",
-         function ($rootScope, User, Restangular, projectColors) {
-             Restangular.setBaseUrl(mcglobals.apihost);
-             Restangular.setJsonp(true);
-             Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
-             $rootScope.colors = projectColors;
+    function ($rootScope, User, Restangular, projectColors) {
+        Restangular.setBaseUrl(mcglobals.apihost);
+        Restangular.setJsonp(true);
+        Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+        $rootScope.colors = projectColors;
 
-             $rootScope.$on('$stateChangeStart', function () {
-                 if (User.isAuthenticated()) {
-                     $rootScope.email_address = User.u();
-                 }
-             });
-         }]);
+        $rootScope.$on('$stateChangeStart', function () {
+            if (User.isAuthenticated()) {
+                $rootScope.email_address = User.u();
+            }
+        });
+    }]);
