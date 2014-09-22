@@ -1,35 +1,27 @@
-Application.Directives.directive('actionWizardProcessStep', actionWizardProcessStepDirective);
+Application.Directives.directive('wizardStepProcess', wizardStepProcessDirective);
 
-function actionWizardProcessStepDirective() {
+function wizardStepProcessDirective() {
     return {
-        scope: {},
-        controller: "actionWizardProcessStepController",
+        scope: {
+            project: "="
+        },
+        controller: "wizardStepProcessController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/provenance/provenance-wizard-process-step.html"
+        templateUrl: "application/core/projects/directives/provenance/wizard-step-process.html"
     };
 }
 
-Application.Controllers.controller('actionWizardProcessStepController',
-                                   ["$scope", "$stateParams", "model.projects",
-                                    "provStep", "actionStack", actionWizardProcessStepController]);
+Application.Controllers.controller('wizardStepProcessController',
+                                   ["$scope", "provStep", wizardStepProcessController]);
 
-function actionWizardProcessStepController($scope, $stateParams, projects, provStep, actionStack) {
-    projects.get($stateParams.id).then(function(project) {
-        $scope.project = project;
-    });
-
-    function nextProcessStep() {
-        var nextStep = provStep.nextStep("process", "process", $scope.project.selectedTemplate);
-        actionStack.toggleStackAction('provenance-wizard-step', "The step title", null, nextStep);
-    }
-
+function wizardStepProcessController($scope, provStep) {
     $scope.nextStep = function() {
-        nextProcessStep();
-        actionStack.toggleStackAction('wizard-process-step');
+        var s = provStep.nextStep("process", "process", $scope.project.selectedTemplate);
+        provStep.setStep($scope.project.id, s.stepType, s.step);
     };
 
     $scope.cancelStep = function() {
         $scope.project.selectedTemplate = null;
-        actionStack.toggleStackAction('wizard-process-step');
+        $scope.step = provStep.setStep("", "");
     };
 }

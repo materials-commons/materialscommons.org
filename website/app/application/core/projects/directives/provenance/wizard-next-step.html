@@ -1,28 +1,24 @@
-<h4>action provenance wizard step</h4>
-<div ng-switch="template.id">
-    <wizard-step-process ng-switch-when="process"
-                         project="project"
-                         template="template"
-                         step="step">
-    </wizard-step-process>
-    <wizard-step-sample ng-switch-when="sample"
-                        project="project"
-                        template="template"
-                        step="step">
-    </wizard-step-sample>
-    <wizard-step-transform-sample ng-switch-when="tranform-sample"
-                                  project="project"
-                                  template="template"
-                                  step="step">
-    </wizard-step-transform-sample>
-    <wizard-step-files ng-switch-when="file"
-                       project="project"
-                       template="template"
-                       step="step">
-    </wizard-step-files>
-    <wizard-step-properties ng-switch-default
-                            project="project"
-                            template="template"
-                            step="step">
-    </wizard-step-properties>
+<div wizard-step-process
+     ng-if="step.step == 'process' || showSteps"
+     project="project">
+</div>
+
+<div wizard-step-sample
+     ng-if="step.step == 'sample' || showSteps"
+     project="project">
+</div>
+
+<div wizard-step-transform-sample
+     ng-if="step.step == 'transform-sample' || showSteps"
+     project="project">
+</div>
+
+<div wizard-step-files
+     ng-if="step.step === 'file' || showSteps"
+     project="project">
+</div>
+
+<div wizard-step-properties
+     ng-if="showPropertiesStep() || showSteps"
+     project="project">
 </div>

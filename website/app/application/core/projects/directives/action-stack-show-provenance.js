@@ -11,7 +11,7 @@ function actionShowProvenanceDirective() {
 Application.Controllers.controller('actionShowProvenanceDirectiveController',
                                    ["$scope", "$stateParams", "mcapi", "$filter", actionShowProvenanceDirectiveController]);
 
-function actionShowProvenanceDirectiveController ($scope, $stateParams,mcapi, $filter) {
+function actionShowProvenanceDirectiveController ($scope, $stateParams, mcapi, $filter) {
     $scope.sampleDetails = function(branch){
         mcapi('/objects/%', branch.id)
             .success(function (data) {
