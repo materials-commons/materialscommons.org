@@ -44,7 +44,7 @@
                         </td>
                         <td>
                             <ul ng-repeat="i in review.items">
-                                <li>{{i.name}}</li>
+                                <li data-toggle="tooltip" data-placement="bottom" title="Path: {{i.path}}">{{i.name}}</li>
                             </ul>
                         </td>
                         <td>{{review.assigned_to}}</td>
@@ -101,8 +101,8 @@
             <div class="col-lg-4">
                 <h4><u>Review these items:</u></h4>
 
-                <ul ng-repeat="i in review.items">
-                    <li>{{i.name}}</li>
+                <ul  class="cursor-pointer"  ng-repeat="i in review.items">
+                    <li data-toggle="tooltip" data-placement="bottom" title="Path: {{i.path}}">{{i.name}}</li>
                 </ul>
             </div>
             <div class="col-lg-6">
