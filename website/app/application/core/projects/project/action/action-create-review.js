@@ -98,4 +98,5 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
         $scope.model.files[index].selected = false;
         $scope.model.files.splice(index, 1);
     };
+
 }

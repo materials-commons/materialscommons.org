@@ -5,11 +5,18 @@ Application.Controllers.controller('ProjectTreeController',
 function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus) {
 
     $scope.addToReview = function(entry, review){
-        review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type});
-        mcapi('/reviews/%', review.id)
-            .success(function (data) {
-                pubsub.send('update-review-items.change');
-            }).put({'items': review.items});
+        var item = {'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type};
+        var index = _.indexOf(review.items, function (each_review) {
+            return each_review.id === item.id;
+        });
+
+        if (index == -1){
+            review.items.push(item);
+            mcapi('/reviews/%', review.id)
+                .success(function (data) {
+                    pubsub.send('update-review-items.change');
+                }).put({'items': review.items});
+        }
     };
 
     pubsub.waitOn($scope, "project.tree", function (treeVisible) {
@@ -87,11 +94,12 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
     };
 
     $scope.fileSelected = function (entry) {
-        entry.selected = !entry.selected;
-        var channel = projectFiles.channel;
-        if (channel !== null) {
-            pubsub.send(channel, entry);
-        }
+            entry.selected = !entry.selected;
+            var channel = projectFiles.channel;
+            if (channel !== null) {
+                pubsub.send(channel, entry);
+            }
+
     };
 
     $scope.truncateTrail = function (currentTrail, currentItem) {
