@@ -3,8 +3,7 @@ Application.Directives.directive('wizardStepSample', wizardStepSampleDirective);
 function wizardStepSampleDirective() {
     return {
         scope: {
-            project: "=",
-            template: "="
+            project: "="
         },
         controller: "wizardStepSampleDirectiveController",
         restrict: "EA",
