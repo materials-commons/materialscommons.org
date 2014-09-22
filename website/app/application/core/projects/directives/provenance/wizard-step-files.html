@@ -1,1 +1,19 @@
-<h4>Files</h4>
+<form name="Form" class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-xs-2">Select File (from project tree):</label>
+        <div class="col-xs-4">
+            <div ng-show="model.files.length === 0">
+                <span class="text-muted"> None</span>
+            </div>
+            <div ng-show="model.files.length > 0">
+                <div ng-repeate="file in model.files">
+                    {{file.fullname}}
+                    <button type="button"
+                            class="close"
+                            ng-click="removeFile($index)">
+                        &times;
+                    </button>
+            </div>
+        </div>
+    </div>
+</form>
