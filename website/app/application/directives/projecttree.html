@@ -55,11 +55,11 @@
                         <a ng-click="openFolder(entry)"><i class="fa fa-folder space-right"/>{{entry.displayname}}</a>
                     </td>
                     <td ng-if="entry.type=='datafile'">
-                        <span ng-show="showCheckbox" class="checkbox checkbox-info checkbox-inline checkbox-margin">
+                        <span ng-if="isActionActive('create-review')" class="checkbox checkbox-info checkbox-inline checkbox-margin">
                             <input id={{entry.id}} type="checkbox" ng-model="entry.selected" ng-click="fileSelected(entry)">
                             <label for={{entry.id}}></label>
                         </span>
-                        <span ng-show="!showCheckbox" class="no-checkbox-space"></span>
+                        <span ng-if="!isActionActive('create-review')" class="no-checkbox-space"></span>
                         <div class="btn-group project-tree-menu">
                             <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
                             <ul class="dropdown-menu" role="menu">
