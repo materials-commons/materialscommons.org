@@ -41,9 +41,9 @@ function actionCreateSampleController($scope,mcapi, Projects, actionStatus, toas
             .arg('order_by=birthtime')
             .success(function () {
                 Projects.getList(true).then(function (data) {
-                    pubsub.send('update_samples.change');
                     setDefaultProject();
                     actionStatus.toggleAction($scope.project.id, 'create-sample');
+                    pubsub.send('update-tab-count.change');
                 });
             }).post($scope.doc);
     };

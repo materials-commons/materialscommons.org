@@ -12,7 +12,7 @@ Application.Controllers.controller('actionGlobalReviewsController',
     ["$scope","$filter", "User", "model.projects", "pubsub", actionGlobalReviewsController]);
 
 function actionGlobalReviewsController($scope, $filter,  User, Projects, pubsub) {
-    pubsub.waitOn($scope, "update-open-reviews.change", function () {
+    pubsub.waitOn($scope, "update-tab-count.change", function () {
         $scope.getAllReviews();
     });
 
