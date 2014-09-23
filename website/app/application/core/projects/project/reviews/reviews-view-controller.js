@@ -23,8 +23,9 @@ function projectReviewView($scope, mcapi, $filter, $state, dateGenerate, User, p
                 $scope.review = data;
             }).jsonp();
     };
-
-
+    pubsub.waitOn($scope, 'update-items.change', function () {
+            $scope.viewReview($scope.review);
+    });
     $scope.editReview = function(index){
         $scope.edit_index = index;
     };

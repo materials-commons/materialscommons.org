@@ -14,7 +14,7 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
             review.items.push(item);
             mcapi('/reviews/%', review.id)
                 .success(function (data) {
-                    pubsub.send('update-review-items.change');
+                    pubsub.send('update-itemst.change');
                 }).put({'items': review.items});
         }
     };
