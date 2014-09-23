@@ -1,6 +1,6 @@
-Application.Services.factory('actionStatus', actionStatusService);
+Application.Services.factory('actionStatus', ["pubsub", actionStatusService]);
 
-function actionStatusService() {
+function actionStatusService(pubsub) {
     var service = {
         actions: {},
         currentAction: {},
@@ -26,6 +26,16 @@ function actionStatusService() {
             service.actions[project] = {};
             service.currentActionsList.forEach(function(action) {
                 service.actions[project][action] = service._newAction(action);
+            });
+        },
+
+        fireAction: function(action) {
+            pubsub.send(action);
+        },
+
+        onAction: function(scope, action, f) {
+            pubsub.waitOn(scope, action, function() {
+                f();
             });
         },
 

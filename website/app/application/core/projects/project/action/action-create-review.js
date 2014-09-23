@@ -19,7 +19,10 @@ Application.Controllers.controller('actionCreateReviewController',
 function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams, Projects,
                                       projectFiles, actionStatus) {
     $scope.channel = 'action-reviews';
-    projectFiles.setChannel($scope.channel);
+    actionStatus.onAction($scope, 'create-review', function() {
+        console.log("setting channel to action-reviews");
+        projectFiles.setChannel($scope.channel);
+    });
 
     Projects.getList().then(function(projects) {
         $scope.projects = projects;
