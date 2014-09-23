@@ -60,15 +60,14 @@
                             class="fa fa-minus-circle"></i>closed
                     </button></span>
                 </p>
-                <hr style="border: 2px dashed grey">
+                <hr style="border: 1px dashed grey">
             </div>
         </div>
-        <div ng-repeat="row in review.messages | orderBy: date">
-            <div class="row">
+        <div class="row" ng-repeat="row in review.messages | orderBy: date">
                 <div class="col-lg-2 text-muted sub-text">
                     {{row.date}} --- {{row.who}}
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div ng-if="edit_index!==$index">
                         <div class="tip left" ta-bind ng-model="row.message"></div>
                         <a ng-click="editReview($index)">edit</a>
@@ -82,18 +81,16 @@
                         <button ng-click="saveReview($index)" class="btn btn-default btn-primary">Save</button>
                     </div>
                 </div>
-            </div>
-
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <h4><u>Review these items:</u></h4>
-
+                <p class="text-muted" ng-show="review.items.length == 0">None</p>
                 <ul class="cursor-pointer" ng-repeat="i in review.items">
                     <li data-toggle="tooltip" data-placement="bottom" title="Path: {{i.path}}">{{i.name}}</li>
                 </ul>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <div class="custom-ta-toolbar">
                     <h4>Comment:</h4>
                     <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
