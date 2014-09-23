@@ -1,0 +1,35 @@
+<div ng-controller="projectsOverviewPermissions">
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <h4>Group Permissions</h4> <br>
+
+            <table class="table table-file-directory">
+                <thead>
+                <th>User</th>
+                <th>Permissions</th>
+                <th>Delete</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="ac in project.users | orderBy: 'user_id'">
+                    <td>{{ac.user_id}}</td>
+                    <td>{{ac.permissions}}</td>
+                    <td ng-if="project.owner == signed_in_user"><button ng-click="deleteUser(ac.id)" class="btn btn-danger">Remove</button></td>
+                    <td ng-if="project.owner !== signed_in_user">Not Authorized</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row" ng-show="project.owner == signed_in_user">
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <select class="form-control" ng-model="bk.user_name">
+                            <option></option>
+                            <option ng-repeat="user in all_users | orderBy:'email'">{{ user.email }}</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-info" ng-click="addUser()" ng-disabled="!bk.user_name">Add</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

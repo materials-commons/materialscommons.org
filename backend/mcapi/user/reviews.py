@@ -89,9 +89,9 @@ def update_review(id):
     status = dmutil.get_optional('status', j)
     items = dmutil.get_optional('items', j)
     if messages:
-        rv = r.table('reviews').get(id).update({'messages': messages}).run(g.conn)
+        rv = r.table('reviews').get(id).update({'messages': messages, 'modifiedtime': r.now()}).run(g.conn)
     if status:
-        rv = r.table('reviews').get(id).update({'status': status}).run(g.conn)
+        rv = r.table('reviews').get(id).update({'status': status, 'modifiedtime': r.now()}).run(g.conn)
     if items:
-        rv = r.table('reviews').get(id).update({'items': items}).run(g.conn) 
+        rv = r.table('reviews').get(id).update({'items': items, 'modifiedtime': r.now()}).run(g.conn) 
     return jsonify(rv)
