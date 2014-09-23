@@ -142,9 +142,21 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/overview',
             templateUrl: 'application/core/projects/project/overview/overview.html'
         })
+        .state('projects.project.overview.view', {
+            url: '/view',
+            templateUrl: 'application/core/projects/project/overview/view.html'
+        })
+        .state('projects.project.overview.permissions', {
+            url: '/permissions',
+            templateUrl: 'application/core/projects/project/overview/permissions.html'
+        })
         .state('projects.project.files', {
             url: '/files',
             templateUrl: 'application/core/projects/project/files/files.html'
+        })
+        .state('projects.project.files.view', {
+            url: '/view',
+            templateUrl: 'application/core/projects/project/files/view.html'
         })
         .state('projects.project.samples', {
             url: '/samples',
@@ -158,9 +170,17 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/provenance',
             templateUrl: 'application/core/projects/project/provenance/provenance.html'
         })
+        .state('projects.project.provenance.view', {
+            url: '/view',
+            templateUrl: 'application/core/projects/project/provenance/view.html'
+        })
         .state('projects.project.reviews', {
             url: '/reviews',
             templateUrl: 'application/core/projects/project/reviews/reviews.html'
+        })
+        .state('projects.project.reviews.view', {
+            url: '/view',
+            templateUrl: 'application/core/projects/project/reviews/view.html'
         })
         .state('projects.project.notes', {
             url: '/notes',

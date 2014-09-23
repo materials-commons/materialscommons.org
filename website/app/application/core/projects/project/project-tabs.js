@@ -66,14 +66,16 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 id: "overview",
                 icon: "fa-list",
                 name: "Overview",
-                hasCount: false
+                hasCount: false,
+                defaulttab: "view"
             },
 
             {
                 id: "files",
                 icon: "fa-files-o",
                 name: "Files",
-                hasCount: false
+                hasCount: false,
+                defaulttab: "view"
             },
 
             {
@@ -81,7 +83,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-cubes",
                 name: "Samples",
                 hasCount: true,
-                count: $scope.project.samples.length
+                count: $scope.project.samples.length,
+                defaulttab: "view"
             },
 
             {
@@ -89,7 +92,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-code-fork",
                 name: "Provenance",
                 hasCount: true,
-                count: 1
+                count: 1,
+                defaulttab: "view"
             },
 
             {
@@ -97,7 +101,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-comment",
                 name: "Reviews",
                 hasCount: true,
-                count: ($filter('byKey')($scope.project.reviews, 'status', 'open')).length
+                count: ($filter('byKey')($scope.project.reviews, 'status', 'open')).length ,
+                defaulttab: "view"
             },
 
             {
@@ -105,7 +110,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-edit",
                 name: "Notes",
                 hasCount: true,
-                count: $scope.project.notes.length
+                count: $scope.project.notes.length,
+                defaulttab: "view"
             }
         ];
     }
