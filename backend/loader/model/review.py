@@ -10,3 +10,4 @@ class Review(object):
         self.status = ""
         self.birthtime = r.now()
         self.project = ""
+        self.modifiedtime = r.now()
