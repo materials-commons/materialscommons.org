@@ -17,6 +17,10 @@ Application.Controllers.controller('projectActionAreaDirectiveController',
 
 function projectActionAreaDirectiveController($scope, actionStatus) {
     $scope.isCurrentAction = function(action) {
-        return actionStatus.isCurrentAction($scope.project.id, action);
+        if (actionStatus.isCurrentAction($scope.project.id, action)) {
+            actionStatus.fireAction(action);
+            return true;
+        }
+        return false;
     };
 }
