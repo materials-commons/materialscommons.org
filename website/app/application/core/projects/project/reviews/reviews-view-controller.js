@@ -1,19 +1,9 @@
-Application.Directives.directive('topShowReviews', actionShowReviewsDirective);
 
-function actionShowReviewsDirective() {
-    return {
-        controller: "tabShowReviewsController",
-        restrict: "A",
-        templateUrl: "application/core/projects/project/reviews/reviews.html"
-    };
-}
-
-
-Application.Controllers.controller('tabShowReviewsController',
+Application.Controllers.controller('projectReviewView',
     ["$scope", "mcapi", "$filter", "$state", "dateGenerate", "User",
-        "pubsub","$stateParams", "model.projects", "projectColors", tabShowReviewsController]);
+        "pubsub","$stateParams", "model.projects", "projectColors", projectReviewView]);
 
-function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
+function projectReviewView($scope, mcapi, $filter, $state, dateGenerate, User, pubsub, $stateParams, Projects, projectColors) {
 
     pubsub.waitOn($scope, 'update-tab-count.change', function () {
         $scope.loadProjectReviews($stateParams.id, true);
@@ -91,7 +81,6 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
         $scope.status = status;
     };
 
-
     $scope.reviewCount = function(project){
         $scope.open_reviews = $filter('byKey')(project.reviews, 'status', 'open');
         $scope.closed_reviews = $filter('byKey')(project.reviews, 'status', 'close');
@@ -111,7 +100,6 @@ function tabShowReviewsController($scope, mcapi, $filter, $state, dateGenerate, 
             assigned_to: "",
             title: ""
         };
-
     }
     init();
 }
