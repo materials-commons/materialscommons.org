@@ -13,9 +13,39 @@ function showProvenanceTemplateStepsDirective() {
 }
 
 Application.Controllers.controller('showProvenanceTemplateStepsDirectiveController',
-                                   ["$scope", "$stateParams", "provStep",
-                                    showProvenanceTemplateStepsDirectiveController]);
-function showProvenanceTemplateStepsDirectiveController($scope, $stateParams, provStep) {
+                                   ["$scope", "$stateParams", "provStep", "projectColors",
+                                    "actionStatus", showProvenanceTemplateStepsDirectiveController]);
+function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
+                                                        provStep, projectColors, actionStatus) {
+    var currentProjectColor = projectColors.getCurrentProjectColor();
+
+    function isCurrentProcessStep(stepType, stepName) {
+        var currentStep = provStep.getCurrentStep($stateParams.id);
+        return (currentStep.stepType === stepType && currentStep.step === stepName);
+    }
+
+    function isProcessStepDone(stepType, stepName) {
+        var state = actionStatus.getCurrentActionState($stateParams.id);
+        if (!state || !state.currentDraft) {
+            return false;
+        }
+        return state.currentDraft[stepType][stepName].done;
+    }
+
+    $scope.getStyle = function(stepType, stepName) {
+        if (isCurrentProcessStep(stepType, stepName)) {
+            return {
+                'background-color': currentProjectColor
+            };
+        } else if (isProcessStepDone(stepType, stepName)) {
+            return {
+                'background-color': "#18b194"
+            };
+        }
+
+        return {};
+    };
+
     function templateStepsCount() {
         if (!$scope.template) {
             return 0;
@@ -33,6 +63,10 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams, pr
     };
 
     $scope.gotoStep = function(templateType, templateID) {
+        var state = actionStatus.getCurrentActionState($stateParams.id);
+        if (!state || !state.currentDraft) {
+            return;
+        }
         var step = provStep.makeStep(templateType, templateID);
         provStep.setStep($stateParams.id, step);
     };
