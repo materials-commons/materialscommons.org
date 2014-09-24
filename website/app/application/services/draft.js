@@ -13,7 +13,8 @@ function draftService() {
                 custom_properties:{},
                 stepType: "process",
                 currentStep: "process",
-                additional_properties: {}
+                additional_properties: {},
+                done: false
             };
 
             draft.inputs = {};
@@ -30,6 +31,7 @@ function draftService() {
                         unit: ""
                     };
                 });
+
                 if (t.template_pick == "pick_sample") {
                     draft.inputs[t.id].properties.sample = null;
                 }
@@ -38,7 +40,7 @@ function draftService() {
             if (template.required_input_files) {
                 draft.inputs.files = {};
                 draft.inputs.files.files = [];
-                draft.inputs.files.done = false;
+                draft.inputs.files.done = true;
             }
 
             template.output_templates.forEach(function(t) {
@@ -53,6 +55,7 @@ function draftService() {
                         unit: ""
                     };
                 });
+
                 if (t.template_pick == "pick_sample") {
                     draft.outputs[t.id].properties.sample = null;
                 }
@@ -61,7 +64,7 @@ function draftService() {
             if (template.required_output_files) {
                 draft.outputs.files = {};
                 draft.outputs.files.files = [];
-                draft.outputs.files.done = false;
+                draft.outputs.files.done = true;
             }
             return draft;
         }

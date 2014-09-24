@@ -21,4 +21,22 @@ function wizardStepPropertiesDirectiveController($scope, provStep, $stateParams,
     $scope.next = function() {
         provStep.setProjectNextStep($stateParams.id, $scope.wizardState.selectedTemplate);
     };
+
+    provStep.onLeave($stateParams.id, function() {
+        setDoneState();
+    });
+
+    function setDoneState() {
+        var properties = $scope.template.default_properties;
+        var allRequiredSet = _.every(properties, propertySet);
+        $scope.wizardState.currentDraft[step.stepType][step.step].done = allRequiredSet;
+    }
+
+    function propertySet(property) {
+        if (!property.required) {
+            // if it is not required, then it is properly set regardless.
+            return true;
+        }
+        return $scope.model.properties[property.attribute].value;
+    }
 }

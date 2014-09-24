@@ -21,7 +21,7 @@ function wizardStepFilesDirectiveController($scope, provStep, pubsub, projectFil
     projectFiles.resetSelectedFiles($scope.wizardState.currentDraft[$scope.step.stepType].files.files,
                                     $scope.wizardState.project.id);
     $scope.next = function() {
-        provStep.setProjectNextStep($scope.project.id, $scope.wizardState.selectedTemplate);
+        provStep.setProjectNextStep($stateParams.id, $scope.wizardState.selectedTemplate);
     };
 
     $scope.removeFile = function (index) {

@@ -1,12 +1,14 @@
 <div class="row">
     <form class="form-horizontal" role="form">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Name:</label>
+            <label class="col-sm-2 control-label">
+                Name: <i class="fa fa-asterisk"></i>
+            </label>
             <div class="col-sm-3">
                 <input class="form-control"
                        ng-model="process.name"
                        placeholder="Name..."
-                       ng-focus="selectFocused()"
+                       ng-required="true"
                        type="text">
             </div>
         </div>

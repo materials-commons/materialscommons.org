@@ -16,6 +16,10 @@ function wizardStepSampleDirectiveController($scope, provStep, actionStatus, $st
     $scope.wizardState = actionStatus.getCurrentActionState($stateParams.id);
     $scope.step = provStep.getCurrentStep($scope.wizardState.project.id);
 
+    provStep.onLeave($stateParams.id, function() {
+        setDoneState();
+    });
+
     function setDoneState() {
         var stepType = $scope.step.stepType;
         var stepName = $scope.step.step;
@@ -29,7 +33,6 @@ function wizardStepSampleDirectiveController($scope, provStep, actionStatus, $st
     $scope.next = function() {
         var nextStep = provStep.nextStep($scope.step.stepType, $scope.step.step,
                                          $scope.wizardState.selectedTemplate);
-        setDoneState();
         provStep.setStep($scope.wizardState.project.id, nextStep);
     };
 }
