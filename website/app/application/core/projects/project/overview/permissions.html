@@ -6,15 +6,14 @@
             <table class="table table-file-directory">
                 <thead>
                 <th>User</th>
-                <th>Permissions</th>
                 <th>Delete</th>
                 </thead>
                 <tbody>
                 <tr ng-repeat="ac in project.users | orderBy: 'user_id'">
                     <td>{{ac.user_id}}</td>
-                    <td>{{ac.permissions}}</td>
-                    <td ng-if="project.owner == signed_in_user"><button ng-click="deleteUser(ac.id)" class="btn btn-danger">Remove</button></td>
-                    <td ng-if="project.owner !== signed_in_user">Not Authorized</td>
+                    <!--<td>{{ac.permissions}}</td>-->
+                    <td ng-if="ac.user_id == signed_in_user"><button ng-click="deleteUser(ac.id)" class="btn btn-danger">Remove</button></td>
+                    <td ng-if="ac.user_id !== signed_in_user">Not Authorized</td>
                 </tr>
                 </tbody>
             </table>
