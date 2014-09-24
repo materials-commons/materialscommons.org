@@ -25,7 +25,22 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
         $scope.projects = projects;
     });
 
-    initializeState();
+    var state = actionStatus.getCurrentActionState($scope.project.id);
+    if (state) {
+        $scope.model = state;
+    } else {
+        $scope.model = {
+            comment: "",
+            assigned_to: "",
+            title: "",
+            files: []
+        };
+        actionStatus.setCurrentActionState($scope.project.id, $scope.model);
+    }
+
+    projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);
+
+    $scope.review = {'items': [], 'messages': []};
 
     pubsub.waitOn($scope, $scope.channel, function (fileentry) {
         if (fileentry.selected) {
@@ -54,23 +69,6 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
                 });
             }).error(function (reason) {
             }).post($scope.review);
-    }
-
-    function initializeState() {
-        var state = actionStatus.getCurrentActionState($scope.project.id);
-        if (state) {
-            $scope.model = state;
-        } else {
-            $scope.model = {
-                comment: "",
-                assigned_to: "",
-                title: "",
-                files: []
-            };
-            actionStatus.setCurrentActionState($scope.project.id, $scope.model);
-        }
-
-        $scope.review = {'items': [], 'messages': []};
     }
 
     $scope.cancel = function() {
