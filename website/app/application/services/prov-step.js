@@ -78,7 +78,23 @@ function provStep(pubsub) {
                 };
             }
 
-            return service._checkFromOutputs(currentStep, template);
+            // No inputs, so return first step from outputs, if any.
+            if (template.output_templates.length > 0) {
+                return {
+                    stepType: "outputs",
+                    step: template.output_templates[0].id
+                };
+            } else if (template.required_output_files) {
+                return {
+                    stepType:"outputs",
+                    step: "files"
+                };
+            } else {
+                return {
+                    stepType: "done",
+                    step: "done"
+                };
+            }
 
         },
 
@@ -103,8 +119,17 @@ function provStep(pubsub) {
         },
 
         setStep: function(project, step) {
+            var onLeave = service.steps[project].onLeave;
+            if (onLeave) {
+                onLeave();
+            }
             service.steps[project].currentStep = step;
+            service.steps[project].onLeave = null;
             pubsub.send("provenance.wizard.step");
+        },
+
+        onLeave: function(project, f) {
+            service.steps[project].onLeave = f;
         },
 
         setProjectNextStep: function(project, template) {
@@ -195,6 +220,7 @@ function provStep(pubsub) {
                 outputSteps: [],
                 process: false,
                 done: false,
+                onLeave: null,
                 currentStep: {
                     stepType: "",
                     step: ""
