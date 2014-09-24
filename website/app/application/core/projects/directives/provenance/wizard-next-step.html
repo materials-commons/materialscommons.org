@@ -17,3 +17,7 @@
 <div wizard-step-properties
      ng-if="showPropertiesStep() || wizardState.showSteps">
 </div>
+
+<div wizard-step-done
+     ng-if="step.step === 'done' || wizardState.showSteps">
+</div>

@@ -22,11 +22,13 @@ function wizardNextStepDirectiveController($scope, provStep, pubsub, actionStatu
         if (! $scope.step) {
             return false;
         }
+
         switch ($scope.step.step) {
         case "process": return false;
         case "sample": return false;
         case "transform-sample": return false;
         case "files": return false;
+        case "done": return false;
         case "": return false;
         default: return true;
         }
