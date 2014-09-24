@@ -13,8 +13,9 @@ function showProvenanceTemplateStepsDirective() {
 }
 
 Application.Controllers.controller('showProvenanceTemplateStepsDirectiveController',
-                                   ["$scope", showProvenanceTemplateStepsDirectiveController]);
-function showProvenanceTemplateStepsDirectiveController($scope) {
+                                   ["$scope", "$stateParams", "provStep",
+                                    showProvenanceTemplateStepsDirectiveController]);
+function showProvenanceTemplateStepsDirectiveController($scope, $stateParams, provStep) {
     function templateStepsCount() {
         if (!$scope.template) {
             return 0;
@@ -29,5 +30,10 @@ function showProvenanceTemplateStepsDirectiveController($scope) {
 
     $scope.offsetSteps = function() {
         return templateStepsCount() == 4;
+    };
+
+    $scope.gotoStep = function(templateType, templateID) {
+        var step = provStep.makeStep(templateType, templateID);
+        provStep.setStep($stateParams.id, step);
     };
 }
