@@ -1,42 +1,17 @@
-
 <div ng-controller="projectSampleView">
-    <h4>View Samples</h4><br>
+    <h4>View Sample Hierarchy</h4><br>
 
-    <div class="row">
-            <div class="col-lg-offset-2 col-lg-8">
-                <paged data="project.samples" current-page="currentDataPage" page-size="10">
-                <span ng-if="project.samples.length === 0">
-                    <b>No samples created for this  project</b>
-                </span>
-                    <table ng-if="project.samples.length !== 0" class="table table-file-directory">
-                        <thead ng-style="{'background-color': color}">
-                        <tr>
-                            <th>Name</th>
-                            <th>Composition</th>
-                            <!--<th>Availability</th>-->
-                            <th>Date Created</th>
-                            <th>Details and Processes</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="sample in project.samples | orderBy:predicate:reverse | page:currentDataPage:10">
-                            <td>{{sample.name}}</td>
-                            <td>
-                                <ul ng-repeat="c in sample.properties.composition.value track by $index">
-                                    <li>{{c.element}} - {{c.value}} {{sample.properties.composition.unit}}</li>
-                                </ul>
-                            </td>
-
-                            <td>{{sample.birthtime | toDateString}}</td>
-                            <td><a ng-click="showTreatmentDetails_and_processes(sample)">view</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </paged>
+    <div class="row" ng-if="tree_data">
+        <div class="col-lg-offset-2">
+            <div class="col-lg-10">
+                <button ng-click="my_tree.expand_all()" class="btn btn-default btn-sm">Expand All</button>
+                <button ng-click="my_tree.collapse_all()" class="btn btn-default btn-sm">Collapse All</button>
+                <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="my_tree"
+                           on-select="sampleDetails(branch)"></tree-grid>
             </div>
+        </div>
     </div>
-
-    <div ng-if="sample" class="row">
-        <div sample-report sample="sample"></div>
+    <div ng-if="details" class="row">
+            <div sample-report sample="details"></div>
     </div>
 </div>
