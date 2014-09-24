@@ -9,17 +9,20 @@
             <div ng-switch="property.type">
 
                 <div ng-switch-when="text">
-                    <display-text-property property="property" model="">
+                    <display-text-property property="property"
+                                           model="model.properties[property.attribute]">
                     </display-text-property>
                 </div>
 
                 <div ng-switch-when="number">
-                    <display-number-property property="property" model="">
+                    <display-number-property property="property"
+                                             model="model.properties[property.attribute]">
                     </display-number-property>
                 </div>
 
                 <div ng-switch-when="select">
-                    <display-select-property property="property" model="">
+                    <display-select-property property="property"
+                                             model="model.properties[property.attribute]">
                     </display-select-property>
                 </div>
 

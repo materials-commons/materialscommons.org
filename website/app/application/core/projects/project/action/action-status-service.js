@@ -1,4 +1,4 @@
-Application.Services.factory('actionStatus', ["pubsub", actionStatusService]);
+Application.Services.factory('actionStatus', [actionStatusService]);
 
 function actionStatusService(pubsub) {
     var service = {
@@ -14,7 +14,8 @@ function actionStatusService(pubsub) {
         _newAction: function(name) {
             return {
                 name: name,
-                active: false
+                active: false,
+                state: null
             };
         },
 
@@ -29,18 +30,31 @@ function actionStatusService(pubsub) {
             });
         },
 
-        fireAction: function(action) {
-            pubsub.send(action);
-        },
-
-        onAction: function(scope, action, f) {
-            pubsub.waitOn(scope, action, function() {
-                f();
-            });
-        },
-
         isCurrentAction: function(project, action) {
             return service.currentAction[project] === action;
+        },
+
+        getCurrentActionState: function(project) {
+            var action = service.currentAction[project];
+            return service.actions[project][action].state;
+        },
+
+        setActionState: function(project, action, state) {
+            service.actions[project][action].state = state;
+        },
+
+        setCurrentActionState: function(project, state) {
+            var action = service.currentAction[project];
+            service.setActionState(project, action, state);
+        },
+
+        clearActionState: function(project, action) {
+            service.actions[project][action].state = null;
+        },
+
+        clearCurrentActionState: function(project) {
+            var action = service.currentAction[project];
+            service.clearActionState(project, action);
         },
 
         _setCurrentAction: function(project, action) {
@@ -57,6 +71,11 @@ function actionStatusService(pubsub) {
             if (setActionTo !== "" && (!service.actions[project][action].active)) {
                 service.actions[project][action].active = true;
             }
+        },
+
+        toggleCurrentAction: function(project) {
+            var action = service.currentAction[project];
+            service.toggleAction(project, action);
         },
 
         setActionInactive: function(project, action) {
