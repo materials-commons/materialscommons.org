@@ -10,8 +10,8 @@
             <div class="controls col-xs-3">
                 <select ui-select2="{placeholder: 'Select sample', allowClear: true, width:'element'}"
                         ng-multiple="false"
-                        ng-model="sample"
-                        ng-options="sample.name for sample in project.samples"
+                        ng-model="wizardState.currentDraft[step.stepType].sample"
+                        ng-options="sample.name for sample in wizardState.project.samples"
                         class="form-control">
                     <option></option>
                 </select>

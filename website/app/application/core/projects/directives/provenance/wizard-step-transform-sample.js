@@ -3,7 +3,7 @@ Application.Directives.directive('wizardStepTransformSample', wizardStepTransfor
 function wizardStepTransformSampleDirective() {
     return {
         scope: {
-            args: "="
+            wizardState: "="
         },
         controller: "wizardStepTransformSampleDirectiveController",
         restrict: "EA",
@@ -15,4 +15,10 @@ Application.Controllers.controller('wizardStepTransformSampleDirectiveController
                                    ["$scope", "$stateParams", "model.projects", "provStep",
                                     wizardStepTransformSampleDirectiveController]);
 function wizardStepTransformSampleDirectiveController($scope, $stateParams, projects, provStep) {
+    $scope.step = provStep.getCurrentStep($scope.wizardState.project.id);
+    $scope.next = function() {
+        var nextStep = provStep.nextStep($scope.step.stepType, $scope.step.step,
+                                         $scope.wizardState.selectedTemplate);
+        provStep.setStep($scope.wizardState.project.id, nextStep);
+    };
 }

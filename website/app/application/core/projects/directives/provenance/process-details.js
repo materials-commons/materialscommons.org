@@ -20,11 +20,11 @@ function processDetailsController($scope, User) {
     var tagsAdded = {};
 
     $scope.selectFocused = function() {
-        console.log("selectFocused called");
+        //console.log("selectFocused called");
     };
 
     $scope.selectBlured = function() {
-        console.log("selectBlured called");
+        //console.log("selectBlured called");
     };
 
     $scope.tags.forEach(function(tag) {

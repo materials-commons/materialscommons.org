@@ -3,7 +3,7 @@
 </div>
 
 <div class="row">
-    <form ng-show="showChooseProcess" class="form-horizontal">
+    <form ng-show="wizardState.showChooseProcess" class="form-horizontal">
         <fieldset>
             <div class="form-group">
                 <label class="control-label col-xs-2" for="select-process">Process:</label>
@@ -12,7 +12,7 @@
                             ui-select2="{placeholder: 'Select process', allowClear: true}"
                             ng-multiple="false"
                             ng-options="template.template_name group by template.category for template in templates | orderBy:'category'"
-                            ng-model="project.selectedTemplate"
+                            ng-model="wizardState.selectedTemplate"
                             class="form-control">
                     </select>
                 </div>
@@ -40,12 +40,10 @@
 
 <div class="row">
     <show-provenance-template-steps
-        show-overview="wizard.showOverview"
-        template="project.selectedTemplate">
+        show-overview="wizardState.showOverview"
+        template="wizardState.selectedTemplate">
     </show-provenance-template-steps>
 </div>
 
-<wizard-next-step step="step"
-                  project="project"
-                  showSteps="wizard.keepStepsOpen">
+<wizard-next-step wizard-state="wizardState">
 </wizard-next-step>

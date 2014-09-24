@@ -57,7 +57,7 @@ function provStep(pubsub) {
                                              template.required_output_files);
             if (next !== "") {
                 return {
-                    stepType: "output",
+                    stepType: "outputs",
                     step: next
                 };
             }
@@ -73,7 +73,7 @@ function provStep(pubsub) {
                                              template.required_input_files);
             if (next !== "") {
                 return {
-                    stepType: "input",
+                    stepType: "inputs",
                     step: next
                 };
             }
@@ -83,9 +83,9 @@ function provStep(pubsub) {
         },
 
         nextStep: function(currentType, currentStep, template) {
-            if (currentType == "process" || currentType == "input") {
+            if (currentType == "process" || currentType == "inputs") {
                 return service._checkFromInputs(currentStep, template);
-            } else if (currentType == "output") {
+            } else if (currentType == "outputs") {
                 return service._checkFromOutputs(currentStep, template);
             } else {
                 return {
@@ -157,9 +157,9 @@ function provStep(pubsub) {
                 return service.steps[project].done;
             case "process":
                 return service.steps[project].process;
-            case "input":
+            case "inputs":
                 return service._isFinishedIOStep(project, "inputSteps", step);
-            case "output":
+            case "outputs":
                 return service._isFinishedIOStep(project, "outputSteps", step);
             default:
                 return false;
@@ -176,9 +176,9 @@ function provStep(pubsub) {
 
         templateForStep: function(template, step) {
             switch (step.stepType) {
-            case "input":
+            case "inputs":
                 return service._findTemplate(template.input_templates, step.step);
-            case "output":
+            case "outputs":
                 return service._findTemplate(template.output_templates, step.step);
             case "process":
                 return false;
@@ -200,6 +200,10 @@ function provStep(pubsub) {
                     step: ""
                 }
             };
+        },
+
+        resetProject: function(project) {
+            service.steps[project] = service._makeStepTracker();
         },
 
         addProject: function(project) {
