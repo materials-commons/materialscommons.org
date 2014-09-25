@@ -19,16 +19,28 @@ Application.Controllers.controller('actionCreateReviewController',
 function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams, Projects,
                                       projectFiles, actionStatus) {
     $scope.channel = 'action-reviews';
-    actionStatus.onAction($scope, 'create-review', function() {
-        console.log("setting channel to action-reviews");
-        projectFiles.setChannel($scope.channel);
-    });
+    projectFiles.setChannel($scope.channel);
 
     Projects.getList().then(function(projects) {
         $scope.projects = projects;
     });
 
-    reset();
+    var state = actionStatus.getCurrentActionState($scope.project.id);
+    if (state) {
+        $scope.model = state;
+    } else {
+        $scope.model = {
+            comment: "",
+            assigned_to: "",
+            title: "",
+            files: []
+        };
+        actionStatus.setCurrentActionState($scope.project.id, $scope.model);
+    }
+
+    projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);
+
+    $scope.review = {'items': [], 'messages': []};
 
     pubsub.waitOn($scope, $scope.channel, function (fileentry) {
         if (fileentry.selected) {
@@ -46,12 +58,11 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
     function saveData() {
         mcapi('/reviews')
             .success(function (data) {
-                reset();
                 Projects.getList(true).then(function (projects) {
                     Projects.get($scope.project.id).then(function (project) {
                         $scope.project = project;
-                        reset();
                         pubsub.send('update-tab-count.change');
+                        actionStatus.clearCurrentActionState($scope.project.id);
                         actionStatus.toggleAction($scope.project.id, 'create-review');
                     });
 
@@ -60,17 +71,12 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
             }).post($scope.review);
     }
 
-    function reset() {
-        $scope.model = {
-            comment: "",
-            assigned_to: "",
-            title: "",
-            files: []
-        };
-        $scope.review = {'items': [], 'messages': []};
-    }
+    $scope.cancel = function() {
+        actionStatus.clearCurrentActionState($scope.project.id);
+        actionStatus.toggleAction($scope.project.id, 'create-review');
+    };
 
-    $scope.addReview = function () {
+    $scope.create = function () {
         $scope.model.files.forEach(function (f) {
             $scope.review.items.push({
                 'id': f.id,
@@ -93,7 +99,7 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
     };
 
     $scope.cancel = function() {
-        reset();
+        actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-review');
     };
 

@@ -3,7 +3,7 @@ Application.Directives.directive("displayProperties", [displayPropertiesDirectiv
 function displayPropertiesDirective() {
     return {
         scope: {
-            values: "=",
+            model: "=",
             properties: "="
         },
         controller: "displayPropertiesDirectiveController",

@@ -64,10 +64,10 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
     }
 
     function init() {
-
         $scope.model = {
             name: ''
         };
+
         $scope.activeAction = "closed";
         $scope.from = ProjectPath.get_from();
         Projects.getList().then(function (projects) {

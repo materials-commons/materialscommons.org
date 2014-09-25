@@ -2,19 +2,25 @@
     <div class="form-group">
         <label class="control-label col-xs-2">Select File (from project tree):</label>
         <div class="col-xs-8">
-            <div ng-show="model.files.length === 0">
+            <div ng-show="wizardState.currentDraft[step.stepType].files.files.length === 0">
                 <span class="text-muted"> None</span>
             </div>
-            <div class="row" ng-show="model.files.length > 0">
+            <div class="row" ng-show="wizardState.currentDraft[step.stepType].files.files.length > 0">
                 <br>
-                <div ng-repeat="file in model.files">
-                    {{file.fullname}}
+                <div ng-repeat="file in wizardState.currentDraft[step.stepType].files.files">
                     <button type="button"
                             class="close"
                             ng-click="removeFile($index)">
                         &times;
                     </button>
+                    {{file.fullname}}
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-offset-2">
+            <button ng-click="next()" class="btn btn-success">Next</button>
         </div>
     </div>
 </form>
