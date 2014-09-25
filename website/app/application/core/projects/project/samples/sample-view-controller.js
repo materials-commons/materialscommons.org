@@ -1,26 +1,13 @@
 Application.Controllers.controller("projectSampleView",
-    ["$scope", "model.projects", "$stateParams", "mcapi","$filter", projectSampleView]);
+    ["$scope", "model.projects", "$stateParams", "mcapi","$filter","pubsub", projectSampleView]);
 
-function projectSampleView($scope, Projects,$stateParams, mcapi, $filter) {
+function projectSampleView($scope, Projects,$stateParams, mcapi, $filter, pubsub) {
 
     $scope.sampleDetails = function(branch){
-        console.log(branch)
         mcapi('/objects/%', branch.id)
             .success(function (data) {
                 $scope.details = data;
-                console.log($scope.details);
             }).jsonp();
-
-//        mcapi('/processes/sample/%',$scope.sample.id)
-//            .success(function (data) {
-//                $scope.sample.processes = data;
-//                console.log($scope.sample.processes);
-//            }).jsonp();
-//
-//        mcapi('/samples/project/%', $scope.sample.id)
-//            .success(function (data) {
-//                $scope.sample.projects = data;
-//            }).jsonp();
     };
 
     $scope.processDetails = function(p_id){
@@ -34,6 +21,7 @@ function projectSampleView($scope, Projects,$stateParams, mcapi, $filter) {
     };
 
     function init(){
+        $scope.details = '';
         Projects.get($stateParams.id).then(function(project) {
             $scope.project = project;
             $scope.my_tree =  {};
