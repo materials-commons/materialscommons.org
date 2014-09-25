@@ -12,18 +12,28 @@ function actionCreateSample() {
 }
 
 Application.Controllers.controller('actionCreateSampleController',
-                                   ["$scope", "mcapi", "model.projects", "actionStatus", "toastr","pubsub", actionCreateSampleController]);
+                                   ["$scope", "mcapi", "model.projects", "actionStatus",
+                                    "pubsub", actionCreateSampleController]);
 
-function actionCreateSampleController($scope,mcapi, Projects, actionStatus, toastr, pubsub) {
+function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pubsub) {
 
-    function setDefaultProject() {
-        $scope.doc = {
-            name: '',
-            notes: [],
-            available: true,
-            projects: [],
-            properties: {'composition': {'value': [], 'unit': ''}}
-        };
+    function initializeState() {
+        var state = actionStatus.getCurrentActionState($scope.project.id);
+        if (state) {
+            $scope.doc = state;
+        } else {
+            $scope.doc = {
+                name: '',
+                notes: [],
+                available: true,
+                projects: [],
+                properties: {'composition': {'value': [], 'unit': ''}},
+                showComposition: false
+            };
+
+            $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
+            actionStatus.setCurrentActionState($scope.project.id, $scope.doc);
+        }
 
         $scope.bk = {
             selected_project: '',
@@ -31,17 +41,16 @@ function actionCreateSampleController($scope,mcapi, Projects, actionStatus, toas
             open: '',
             classification: ''
         };
-        $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
     }
 
-    $scope.save = function () {
+    $scope.create = function () {
         $scope.doc.path = $scope.doc.name;
         $scope.doc.project_id = $scope.project.id;
         mcapi('/objects/new')
             .arg('order_by=birthtime')
             .success(function () {
                 Projects.getList(true).then(function (data) {
-                    setDefaultProject();
+                    actionStatus.clearCurrentActionState($scope.project.id);
                     actionStatus.toggleAction($scope.project.id, 'create-sample');
                     pubsub.send('update-tab-count.change');
                 });
@@ -53,7 +62,7 @@ function actionCreateSampleController($scope,mcapi, Projects, actionStatus, toas
     };
 
     $scope.cancel = function () {
-        setDefaultProject();
+        actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-sample');
     };
 
@@ -62,7 +71,7 @@ function actionCreateSampleController($scope,mcapi, Projects, actionStatus, toas
     };
 
     function init() {
-        setDefaultProject();
+        initializeState();
         Projects.getList().then(function (projects) {
             $scope.projects = projects;
         });
