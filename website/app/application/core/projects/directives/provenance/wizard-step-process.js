@@ -28,6 +28,9 @@ function wizardStepProcessController($scope, provStep, $stateParams, actionStatu
 
     provStep.onLeave($stateParams.id, function() {
         setDoneState();
+        if (!$scope.wizardState.currentDraft.process.done) {
+            $scope.wizardState.currentDraft.completed = false;
+        }
     });
 
     $scope.nextStep = function() {

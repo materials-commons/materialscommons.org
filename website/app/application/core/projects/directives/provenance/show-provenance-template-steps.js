@@ -29,7 +29,15 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
         if (!state || !state.currentDraft) {
             return false;
         }
-        return state.currentDraft[stepType][stepName].done;
+
+        switch (stepType) {
+        case "process":
+            return state.currentDraft.process.done;
+        case "done":
+            return state.currentDraft.completed;
+        default:
+            return state.currentDraft[stepType][stepName].done;
+        }
     }
 
     $scope.getStyle = function(stepType, stepName) {
@@ -60,6 +68,15 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
 
     $scope.offsetSteps = function() {
         return templateStepsCount() == 4;
+    };
+
+    $scope.showDone = function() {
+        var state = actionStatus.getCurrentActionState($stateParams.id);
+        if (!state || !state.currentDraft) {
+            return false;
+        }
+
+        return true;
     };
 
     $scope.gotoStep = function(templateType, templateID) {

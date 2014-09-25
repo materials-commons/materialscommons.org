@@ -18,6 +18,11 @@ function wizardStepSampleDirectiveController($scope, provStep, actionStatus, $st
 
     provStep.onLeave($stateParams.id, function() {
         setDoneState();
+        var stepType = $scope.step.stepType;
+        var stepName = $scope.step.step;
+        if (!$scope.wizardState.currentDraft[stepType][stepName].done) {
+            $scope.wizardState.currentDraft.completed = false;
+        }
     });
 
     function setDoneState() {

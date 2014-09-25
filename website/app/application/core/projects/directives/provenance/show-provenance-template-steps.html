@@ -1,5 +1,30 @@
-<div ng-show="template" class="col-lg-offset-4">
-    <h4><a ng-click="gotoStep('process', 'process')">{{template.template_name}}</a></h4>
+<div ng-show="template" class="col-xs-offset-3" style="margin-bottom: 40px;">
+    <ul class="list-inline">
+        <li>
+            <div class="text-center">
+                {{template.template_name}}
+            </div>
+            <a ng-click="gotoStep('process', 'process')">
+                <div class="wizard-single-outer-circle"
+                     ng-style="getStyle('process', 'process')">
+                    <div class="wizard-single-inner-circle">
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li ng-show="showDone()">
+            <div class="text-center">
+                Done
+            </div>
+            <a ng-click="gotoStep('done', 'done')">
+                <div class="wizard-single-outer-circle"
+                     ng-style="getStyle('done', 'done')">
+                    <div class="wizard-single-inner-circle">
+                    </div>
+                </div>
+            </a>
+        </li>
+    </ul>
 </div>
 
 <div ng-class="{'col-lg-offset-1': offsetSteps()}">

@@ -1,3 +1,5 @@
+/* **************** Bootstrap overrides ******************* */
+
 /***********Begin sideboard.html ***********/
 
 .tag-scroll-bar {
@@ -988,7 +990,7 @@ hr.carved {
 
 /* ******* Wizard Steps ****** */
 .bs-wizard {
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .bs-wizard {
@@ -1020,10 +1022,11 @@ hr.carved {
   border-radius: 50%;
   height:30px;
   width:30px;
-  position: relative;
+  position: absolute;
 }
 
 .wizard-single-inner-circle {
+  /* content: ' '; */
   position: absolute;
   background: #fbbd19;
   border-radius: 50%;
@@ -1335,7 +1338,7 @@ ul.menu-bar li {
 }
 
 .action-area-title {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .action-area-title legend {

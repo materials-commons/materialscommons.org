@@ -1,18 +1,24 @@
-<div class="col-lg-12" style="border-top-color: black">
-    <div class="col-lg-5 col-lg-offset-3">
-        <div style="border:0; padding-top: 0" class="panel panel-default">
-            <div style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;" class="panel-heading" ng-style="{'background-color': currentProjectColor}">
-                <div class="row">
-                    <div class="col-lg-4 col-lg-offset-2">
-                        <input type="checkbox" ng-model="wizardState.showOverview">
-                        <label>Show overview</label>
-                    </div>
-                    <div class="col-lg-6">
-                        <input type="checkbox" ng-model="wizardState.keepStepsOpen">
-                        <label>Keep steps open</label>
-                    </div>
-                </div>
+<div class="col-lg-5 col-lg-offset-3" style="margin-bottom: 10px;">
+    <div class="row">
+        <form>
+            <div class="checkbox checkbox-circle checkbox-inline checkbox-primary"
+                 style="margin-top: 0px">
+                <input type="checkbox"
+                       ng-model="wizardState.showOverview"
+                       id="cb1-create-provenance">
+                <label for="cb1-create-provenance">
+                    Show overview
+                </label>
             </div>
-        </div>
+            <div class="checkbox checkbox-circle checkbox-inline checkbox-primary"
+                 style="margin-top: 0px">
+                <input type="checkbox"
+                       ng-model="wizardState.keepStepsOpen"
+                       id="cb2-create-provenance">
+                <label for="cb2-create-provenance">
+                    Keep steps open
+                </label>
+            </div>
+        </form>
     </div>
 </div>
