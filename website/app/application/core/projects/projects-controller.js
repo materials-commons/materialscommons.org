@@ -82,7 +82,6 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
                 $scope.project_id = $stateParams.id;
             }
             setProjectIndex($scope.project_id, projects);
-            //$state.go('projects.project.overview', {id: $scope.project_id});
         });
     }
     init();
