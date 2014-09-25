@@ -11,19 +11,21 @@ from os.path import dirname
 import error
 
 
-def getProcessesandProjects(sample):
-    sample['processes'] = list(r.table('samples_processes_denorm').get_all(sample['id'], index='sample_id'))
-    #rv = r.table('projects2samples').filter({'sample_id': sample['id']})
-    #selection = list(rv.run(g.conn, time_format='raw'))
-    #sample['projects'] = args.json_as_format_arg(selection)
-    return sample
+def getProcessesandProjects(object_id):
+    processes = list(r.table('samples_processes_denorm').get_all(object_id, index='sample_id').run(g.conn))
+    projects =  list(r.table('projects2samples').filter({'sample_id': object_id}).run(g.conn))
+    return processes, projects
 
 
 @app.route('/objects/<object_id>', methods=['GET'])
 @jsonp
 def get_object(object_id):
-    sample = r.table('samples').get(object_id).run(g.conn)
-    getProcessesandProjects(sample)
+    final_obj = dict()
+    rr = r.table('samples').get(object_id)
+    selection = rr.run(g.conn, time_format='raw')
+    final_obj["sample"] = selection
+    final_obj["processes"], final_obj['projects'] = getProcessesandProjects(object_id)
+    return args.json_as_format_arg(final_obj)
     
 
 @app.route('/objects', methods=['GET'])
