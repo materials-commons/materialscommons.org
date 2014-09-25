@@ -9,15 +9,15 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label>Name:</label>
-                            {{sample.name}}
+                            {{sample.sample.name}}
                         </div>
                         <div class="form-group">
                             <label>Description:</label>
-                            {{sample.description}}
+                            {{sample.sample.description}}
                         </div>
                         <u>Properties:</u>
 
-                        <div ng-repeat="(name, vals) in sample.properties">
+                        <div ng-repeat="(name, vals) in sample.sample.properties">
                             <div ng-if="name==='composition'">
                                 <div class="form-group">
                                     <label>Composition:</label>

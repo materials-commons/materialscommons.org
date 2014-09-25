@@ -12,11 +12,11 @@ function projectActionAreaDirective() {
 }
 
 Application.Controllers.controller('projectActionAreaDirectiveController',
-                                   ["$scope", "actionStatus",
+                                   ["$scope", "actionStatus", "$stateParams",
                                     projectActionAreaDirectiveController]);
 
-function projectActionAreaDirectiveController($scope, actionStatus) {
+function projectActionAreaDirectiveController($scope, actionStatus, $stateParams) {
     $scope.isCurrentAction = function(action) {
-        return actionStatus.isCurrentAction($scope.project.id, action);
+        return actionStatus.isCurrentAction($stateParams.id, action);
     };
 }
