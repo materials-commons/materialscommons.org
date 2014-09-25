@@ -123,9 +123,15 @@ function provStep(pubsub) {
             if (onLeave) {
                 onLeave();
             }
+            var currentStep = service.steps[project].currentStep;
+            service.steps[project].lastStep = currentStep;
             service.steps[project].currentStep = step;
             service.steps[project].onLeave = null;
             pubsub.send("provenance.wizard.step");
+        },
+
+        getLastStep: function(project) {
+            return service.steps[project].lastStep;
         },
 
         onLeave: function(project, f) {
@@ -221,6 +227,10 @@ function provStep(pubsub) {
                 process: false,
                 done: false,
                 onLeave: null,
+                lastStep: {
+                    stepType: "",
+                    step: ""
+                },
                 currentStep: {
                     stepType: "",
                     step: ""

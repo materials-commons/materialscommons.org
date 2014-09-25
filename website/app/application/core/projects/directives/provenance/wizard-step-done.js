@@ -62,7 +62,16 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
                 });
             }
         }
+
+        if ($scope.unfinishedSteps.length === 0) {
+            state.currentDraft.completed = true;
+        }
     }
 
     determineDoneState();
+
+    $scope.gotoStep = function(stepType, stepName) {
+        var step = provStep.makeStep(stepType, stepName);
+        provStep.setStep($stateParams.id, step);
+    };
 }

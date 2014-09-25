@@ -1,0 +1,15 @@
+<div class="checkbox checkbox-inline checkbox-primary"
+     style="margin-top: 0px">
+    <input type="checkbox"
+           ng-model="reviewContent"
+           id="cb-review-content">
+    <label for="cb-review-content">
+        Review Content
+    </label>
+</div>
+
+<div ng-if="reviewContent">
+    <div class="row">
+        Content here
+    </div>
+</div>

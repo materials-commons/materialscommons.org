@@ -17,6 +17,8 @@ function draftService() {
                 done: false
             };
 
+            draft.completed = false;
+
             draft.inputs = {};
             draft.outputs = {};
             template.input_templates.forEach(function(t) {
@@ -40,7 +42,7 @@ function draftService() {
             if (template.required_input_files) {
                 draft.inputs.files = {};
                 draft.inputs.files.files = [];
-                draft.inputs.files.done = true;
+                draft.inputs.files.done = false;
             }
 
             template.output_templates.forEach(function(t) {
@@ -64,7 +66,7 @@ function draftService() {
             if (template.required_output_files) {
                 draft.outputs.files = {};
                 draft.outputs.files.files = [];
-                draft.outputs.files.done = true;
+                draft.outputs.files.done = false;
             }
             return draft;
         }

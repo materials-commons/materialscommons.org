@@ -24,6 +24,9 @@ function wizardStepPropertiesDirectiveController($scope, provStep, $stateParams,
 
     provStep.onLeave($stateParams.id, function() {
         setDoneState();
+        if (!$scope.wizardState.currentDraft[step.stepType][step.step].done) {
+            $scope.wizardState.currentDraft.completed = false;
+        }
     });
 
     function setDoneState() {
