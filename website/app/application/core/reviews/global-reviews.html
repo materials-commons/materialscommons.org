@@ -9,7 +9,7 @@
         <th></th>
         </thead>
         <tbody>
-        <tr ui-sref="projects.project.reviews({id: r.project})" class="cursor-pointer"
+        <tr ui-sref="projects.project.reviews.view({id: r.project})" class="cursor-pointer"
             ng-repeat="r in reviews =(all_reviews | byKey: 'author': user| byKey: 'status': 'open')">
             <td data-toggle="tooltip" title="{{r.title}}">{{createName(r.title)}}<p class="text-muted"
                                                                                     style="font-size: 10px;">By:

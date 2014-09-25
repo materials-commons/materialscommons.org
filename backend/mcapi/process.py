@@ -41,7 +41,7 @@ def get_processes_by_project(project_id):
 @apikey
 @jsonp
 def get_processes_by_sample(sample_id):
-    rr = r.table('samples_denorm').get_all(sample_id, index='sample_id')
+    rr = r.table('samples_processes_denorm').get_all(sample_id, index='sample_id')
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
