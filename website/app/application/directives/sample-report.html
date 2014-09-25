@@ -40,15 +40,23 @@
                     <div class="col-lg-6">
                         <u>Projects:</u>
 
-                        <div ng-show="projects_by_sample.length !== 0">
+                        <div ng-show="sample.projects.length !== 0">
                             <div class="form-group">
-                                <ul ng-repeat="i in projects_by_sample">
+                                <ul ng-repeat="i in sample.projects">
                                     <li>{{i.project_name}}</li>
                                 </ul>
                             </div>
 
                         </div>
                         <u>Processes:</u>
+                        <div ng-show="sample.processes.length !== 0">
+                            <div class="form-group">
+                                <ul ng-repeat="p in sample.processes">
+                                    <li>{{p.process_name}}</li>
+                                </ul>
+                            </div>
+
+                        </div>
                         <div>
 
                         </div>

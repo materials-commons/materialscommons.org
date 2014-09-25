@@ -12,9 +12,9 @@ function projectTabsDirective() {
 }
 
 Application.Controllers.controller('projectTabsDirectiveController',
-                                  ["$scope", "projectColors", "pubsub", "model.projects", "$stateParams", "$filter", projectTabsDirectiveController]);
+                                  ["$scope", "$state","projectColors", "pubsub", "model.projects", "$stateParams", "$filter", projectTabsDirectiveController]);
 
-function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,$stateParams, $filter) {
+function projectTabsDirectiveController($scope, $state, projectColors, pubsub, Projects,$stateParams, $filter) {
 
     pubsub.waitOn($scope, "update-tab-count.change", function () {
         Projects.getList().then(function (projects) {
@@ -26,8 +26,11 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
             });
         });
     });
-
     var activeTab = "overview";
+
+    if ($state.current.name == 'projects.project.reviews.view'){
+        activeTab = "reviews";
+    }
     $scope.colors = projectColors;
     $scope.inactiveColor = projectColors.getInactiveColor();
 

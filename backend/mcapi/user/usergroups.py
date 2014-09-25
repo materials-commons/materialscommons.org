@@ -23,7 +23,12 @@ def create_access_r():
     access['birthtime'] = r.now()
     access['mtime'] = r.now()
     access['dataset'] = ""
-    return dmutil.insert_entry('access', access)
+    rr = list(r.table('access').filter({'user_id': access['user_id'], 'project_id': access['project_id']}).run(g.conn))
+    if rr:
+        return error.already_exists("User already exists %s" % (access['user_id']))
+    else:
+        return dmutil.insert_entry('access', access)
+
 
 
 @app.route('/access/<id>/remove', methods=['DELETE'])
