@@ -1,13 +1,18 @@
 Application.Controllers.controller('projectsOverviewPermissions',
-    ["$scope", "$stateParams", "mcapi", "User", "pubsub", "model.projects", function ($scope, $stateParams, mcapi, User, pubsub, Projects) {
+    ["$scope", "$stateParams", "mcapi", "User", "pubsub", "model.projects", "toastr", function ($scope, $stateParams, mcapi, User, pubsub, Projects, toastr) {
 
         $scope.addUser = function () {
             mcapi('/access/new')
                 .success(function (data) {
-                    $scope.project.users.push({'id': data.id, 'user_id': $scope.bk.user_name, 'project_id': $scope.project.id, 'project_name': $scope.project.name})
+                    $scope.project.users.push({'id': data.id, 'user_id': $scope.bk.user.email, 'project_id': $scope.project.id, 'project_name': $scope.project.name})
                     pubsub.send('access.change');
-                    $scope.bk.user_name = '';
-                }).post({'user_id': $scope.bk.user_name, 'project_id': $scope.project.id, 'project_name': $scope.project.name});
+                    $scope.bk.user = '';
+                })
+                .error(function(e){
+                    toastr.error(e.error, 'Error', {
+                        closeButton: true
+                    });
+                }).post({'user_id': $scope.bk.user.email, 'project_id': $scope.project.id, 'project_name': $scope.project.name});
         };
 
         $scope.deleteUser = function (id) {
@@ -25,7 +30,7 @@ Application.Controllers.controller('projectsOverviewPermissions',
 
         function init() {
             $scope.bk = {
-                user_name: ''
+                user: ''
             }
             Projects.get($stateParams.id).then(function(project) {
                 $scope.project = project;
