@@ -11,7 +11,6 @@
                 <tbody>
                 <tr ng-repeat="ac in project.users | orderBy: 'user_id'">
                     <td>{{ac.user_id}}</td>
-                    <!--<td>{{ac.permissions}}</td>-->
                     <td ng-if="ac.user_id == signed_in_user"><button ng-click="deleteUser(ac.id)" class="btn btn-danger">Remove</button></td>
                     <td ng-if="ac.user_id !== signed_in_user">Not Authorized</td>
                 </tr>
@@ -20,12 +19,13 @@
             <div class="row" ng-show="project.owner == signed_in_user">
                 <div class="form-group">
                     <div class="col-lg-6">
-                        <select class="form-control" ng-model="bk.user_name">
-                            <option></option>
-                            <option ng-repeat="user in all_users | orderBy:'email'">{{ user.email }}</option>
+                        <select ui-select2="select2IconOptions"
+                                ng-multiple="false"
+                                ng-options="user.email for user in all_users | orderBy:'email'"
+                                class="form-control"  ng-model="bk.user">
                         </select>
                     </div>
-                    <button class="btn btn-info" ng-click="addUser()" ng-disabled="!bk.user_name">Add</button>
+                    <button class="btn btn-info" ng-click="addUser()" ng-disabled="!bk.user">Add</button>
                 </div>
             </div>
         </div>
