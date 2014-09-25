@@ -14,16 +14,20 @@ Application.Controllers.controller('actionSampleReportController',
     ["$scope", "mcapi",  actionSamplesController]);
 
 function actionSamplesController($scope, mcapi) {
-
-    $scope.refreshProjects = function () {
-        mcapi('/samples/project/%', $scope.sample.id)
-            .success(function (data) {
-                $scope.projects_by_sample = data;
-            }).jsonp();
-    };
-
-    function init(){
-        $scope.refreshProjects();
-    }
-    init();
+//
+//    $scope.getProcesses = function(){
+//
+//    }
+//
+//
+//    $scope.getProjects = function () {
+//
+//    };
+//
+//    function init(){
+//        console.log('yes')
+//        $scope.getProjects();
+//        $scope.getProcesses();
+//    }
+//    init();
 }

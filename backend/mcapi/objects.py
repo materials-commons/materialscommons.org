@@ -35,11 +35,19 @@ def get_objects_user(user):
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
+def getProcessesandProjects(sample):
+    rr = r.table('samples_processes_denorm').get_all(sample['id'], index='sample_id')
+    selection = list(rr.run(g.conn, time_format='raw'))
+    processes = args.json_as_format_arg(selection)
+    rv = r.table('projects2samples').filter({'sample_id': sample_id})
+    selection = list(rv.run(g.conn, time_format='raw'))
+    projects = args.json_as_format_arg(selection)
 
 @app.route('/objects/<object_id>', methods=['GET'])
 @jsonp
 def get_object(object_id):
-    return dmutil.get_single_from_table('samples', object_id)
+    sample = dmutil.get_single_from_table('samples', object_id)
+    getProcessesandProjects(sample)
 
 @app.route('/objects/update/<object_id>', methods=['PUT'])
 @apikey

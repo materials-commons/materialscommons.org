@@ -4,16 +4,21 @@ Application.Controllers.controller("projectSampleView",
 function projectSampleView($scope, Projects,$stateParams, mcapi, $filter) {
 
     $scope.sampleDetails = function(branch){
-        mcapi('/objects/%', branch.id)
-            .success(function (data) {
-                $scope.details = data;
-            }).jsonp();
+//        mcapi('/objects/%', branch.id)
+//            .success(function (data) {
+//                $scope.details = data;
+//            }).jsonp();
 
-        mcapi('/processes/sample/%', branch.id)
-            .success(function (data) {
-                $scope.processes = data;
-            }).jsonp();
-
+//        mcapi('/processes/sample/%',$scope.sample.id)
+//            .success(function (data) {
+//                $scope.sample.processes = data;
+//                console.log($scope.sample.processes);
+//            }).jsonp();
+//
+//        mcapi('/samples/project/%', $scope.sample.id)
+//            .success(function (data) {
+//                $scope.sample.projects = data;
+//            }).jsonp();
     };
 
     $scope.processDetails = function(p_id){
