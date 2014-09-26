@@ -73,7 +73,7 @@
                     </li>
                     <li ng-class="{ navactive: isActiveStep('projects') }">
                         <a ng-click="showStep('projects')"
-                           ui-sref="projects({id:''})"
+                           ui-sref="projects.project.overview({id: firstProjectID})"
                            class="navbar-link">
                             <i class="fa fa-briefcase space-right"></i> Projects
                         </a>
