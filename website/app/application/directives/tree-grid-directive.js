@@ -8,7 +8,7 @@
             return {
                 restrict: 'E',
                 //templateUrl:'tree-grid-template.html',
-                template:"<div><table class=\"table table-bordered  tree-grid\"><thead class=\"text-primary\"><tr><th>{{expandingProperty}}</th><th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}</th></tr></thead><tbody><tr ng-click=\"user_clicks_branch(row.branch)\" ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\"><td class=\"text-primary\"><a><i style=\"padding-right: 5px;\" ng-click=\"row.branch.expanded = !row.branch.expanded\" ng-class=\"row.sub_tree_icon\" ></i><i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"></i></a><span class=\"indented tree-label\">{{row.branch[expandingProperty]}}</span></td><td ng-repeat=\"col in colDefinitions\">{{row.branch[col.field]}}</td></tr></tbody><table></div>",
+                template:"<div><table class=\"table table-bordered  tree-grid\"><thead class=\"text-primary\"><tr><th>{{expandingProperty}}</th><th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}</th></tr></thead><tbody><tr ng-click=\"user_clicks_branch(row.branch)\" ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\"><td style=\"width: 300px;\" class=\"text-primary\"><a><i style=\"padding-right: 5px;\" ng-click=\"row.branch.expanded = !row.branch.expanded\" ng-class=\"row.sub_tree_icon\" ></i><i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"></i></a><span  data-toggle=\"tooltip\" title=\"{{row.branch[expandingProperty]}}\" style=\"padding: 5px;\" class=\"indented tree-label\">{{createName(row.branch[expandingProperty])}}</span></td><td  ng-repeat=\"col in colDefinitions\">{{row.branch[col.field]}}</td></tr></tbody><table></div>",
                 replace: true,
                 scope: {
                     treeData: '=',
@@ -24,6 +24,12 @@
                         console.log('ERROR:' + s);
                         debugger;
                         return void 0;
+                    };
+                    scope.createName = function(name) {
+                        if (name.length > 20) {
+                            return name.substring(0,20)+"...";
+                        }
+                        return name;
                     };
                     if (attrs.iconExpand == null) {
                         attrs.iconExpand = 'icon-plus  glyphicon glyphicon-plus  fa fa-cubes';

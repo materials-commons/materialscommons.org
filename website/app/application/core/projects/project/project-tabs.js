@@ -17,14 +17,12 @@ Application.Controllers.controller('projectTabsDirectiveController',
 function projectTabsDirectiveController($scope, $state, projectColors, pubsub, Projects,$stateParams, $filter) {
 
     pubsub.waitOn($scope, "update-tab-count.change", function () {
-        Projects.getList().then(function (projects) {
             Projects.get($stateParams.id).then(function (project) {
                 $scope.project.reviews = project.reviews;
                 $scope.project.samples = project.samples;
                 $scope.project.notes = project.notes;
                 $scope.updateTabCounts();
             });
-        });
     });
     var activeTab = "overview";
 
@@ -119,6 +117,7 @@ function projectTabsDirectiveController($scope, $state, projectColors, pubsub, P
         ];
     }
     function init(){
+        console.dir($scope.project.samples);
         $scope.updateTabCounts();
     }
     init();

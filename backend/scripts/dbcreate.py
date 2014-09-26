@@ -32,10 +32,11 @@ def create_tables():
     create_table("samples")
     create_table("treatments")
     create_table("datafiles_denorm")
-    create_table("samples_processes_denorm")
+    create_table("samples_denorm")
     create_table("projects2samples")
     create_table('access')
     create_table("items2tags")
+    create_table("processes2samples")
 
 
 def create_table(table):
@@ -75,8 +76,8 @@ def create_indices():
     create_index('processes', 'project')
     create_index('projects2samples', 'project_id')
     create_index('projects2samples', 'sample_id')
-    create_index('samples_processes_denorm', 'sample_id')
-    create_index('samples_processes_denorm', 'project_id')
+    create_index('processes2samples', 'sample_id')
+    create_index('processes2samples', 'project_id')
     create_index('datafiles_denorm', 'df_id')
     create_index('datafiles_denorm', 'process_id')
     create_index('datafiles_denorm', 'project_id')
