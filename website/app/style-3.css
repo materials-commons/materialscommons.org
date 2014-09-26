@@ -990,12 +990,12 @@ hr.carved {
 
 /* ******* Wizard Steps ****** */
 .bs-wizard {
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .bs-wizard {
   /* border-bottom: solid 1px #e0e0e0; */
-  padding: 0 0 10px 0;
+  padding: 0 0 0 0;
 }
 
 .bs-wizard > .bs-wizard-step {
@@ -1007,9 +1007,9 @@ hr.carved {
 }
 
 .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
-  color: #595959;
+  color: black;
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 .bs-wizard > .bs-wizard-step .bs-wizard-info {

@@ -10,7 +10,8 @@
                class="bs-wizard-dot"
                ng-style="getStyle('process', 'process')">
             </a>
-            <div class="bs-wizard-info text-center"
+            <div class="text-center"
+                 ng-class="getStepNameClass('process', 'process')"
                  style="word-wrap:break-word; margin-right: 2px;">
                 {{template.template_name}}
             </div>
@@ -32,7 +33,11 @@
                class="bs-wizard-dot"
                ng-style="getStyle('inputs', t.id)">
             </a>
-            <div class="bs-wizard-info text-center" style="word-wrap:break-word; margin-right: 2px;">(I) {{t.template_name}}</div>
+            <div class="text-center"
+                 ng-class="getStepNameClass('inputs', t.id)"
+                 style="word-wrap:break-word; margin-right: 2px;">
+                (I) {{t.template_name}}
+            </div>
             <div ng-if="showOverview && $index%2 === 1">
                 <wizard-step-overview template="t"
                                       direction="bottom">
@@ -49,7 +54,8 @@
                class="bs-wizard-dot"
                ng-style="getStyle('inputs', 'files')">
             </a>
-            <div class="bs-wizard-info text-center"
+            <div class="text-center"
+                 ng-class="getStepNameClass('inputs', 'files')"
                  style="word-wrap:break-word; margin-right: 2px;">
                 (I) Files
             </div>
@@ -71,7 +77,8 @@
                class="bs-wizard-dot"
                ng-style="getStyle('outputs', t.id)">
             </a>
-            <div class="bs-wizard-info text-center"
+            <div class="text-center"
+                 ng-class="getStepNameClass('outputs', t.id)"
                  style="word-wrap:break-word; margin-right: 2px;">
                 (O) {{t.template_name}}
             </div>
@@ -91,7 +98,8 @@
                class="bs-wizard-dot"
                ng-style="getStyle('outputs', 'files')">
             </a>
-            <div class="bs-wizard-stepnum text-center"
+            <div class="text-center"
+                 ng-class="getStepNameClass('outputs', 'files')"
                  style="word-wrap:break-word; margin-right: 2px;">
                 (O) Files
             </div>
@@ -107,7 +115,8 @@
                class="bs-wizard-dot"
                ng-style="getStyle('done', 'done')">
             </a>
-            <div class="bs-wizard-info text-center"
+            <div class="text-center"
+                 ng-class="getStepNameClass('done', 'done')"
                  style="word-wrap:break-word; margin-right: 2px;">
                 Done
             </div>
