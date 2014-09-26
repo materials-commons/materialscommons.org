@@ -13,12 +13,10 @@ function showProvenanceTemplateStepsDirective() {
 }
 
 Application.Controllers.controller('showProvenanceTemplateStepsDirectiveController',
-                                   ["$scope", "$stateParams", "provStep", "projectColors",
-                                    "actionStatus", showProvenanceTemplateStepsDirectiveController]);
+                                   ["$scope", "$stateParams", "provStep", "actionStatus",
+                                    showProvenanceTemplateStepsDirectiveController]);
 function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
-                                                        provStep, projectColors, actionStatus) {
-    var currentProjectColor = projectColors.getCurrentProjectColor();
-
+                                                        provStep, actionStatus) {
     function isCurrentProcessStep(stepType, stepName) {
         var currentStep = provStep.getCurrentStep($stateParams.id);
         return (currentStep.stepType === stepType && currentStep.step === stepName);
@@ -43,7 +41,7 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
     $scope.getStyle = function(stepType, stepName) {
         if (isCurrentProcessStep(stepType, stepName)) {
             return {
-                'background-color': currentProjectColor
+                'background-color': 'black'
             };
         } else if (isProcessStepDone(stepType, stepName)) {
             return {
@@ -52,6 +50,14 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
         }
 
         return {};
+    };
+
+    $scope.getStepNameClass = function(stepType, stepName) {
+        if (isCurrentProcessStep(stepType, stepName)) {
+            return "bs-wizard-stepnum";
+        }
+
+        return "bs-wizard-info";
     };
 
     function templateStepsCount() {
