@@ -28,9 +28,9 @@ function projectTabsDirectiveController($scope, $state, projectColors, pubsub, P
     });
     var activeTab = "overview";
 
-    if ($state.current.name == 'projects.project.reviews.view'){
-        activeTab = "reviews";
-    }
+//    if ($state.current.name == 'projects.project.reviews.view'){
+//        activeTab = "reviews";
+//    }
     $scope.colors = projectColors;
     $scope.inactiveColor = projectColors.getInactiveColor();
 
