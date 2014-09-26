@@ -12,9 +12,9 @@ function actionCreateNote() {
 }
 
 Application.Controllers.controller('actionCreateNoteController',
-                                   ["$scope", "User", "toastr","pubsub","actionStatus", actionCreateNoteController]);
+                                   ["$scope", "User", "toastr","pubsub","actionStatus", "model.projects", actionCreateNoteController]);
 
-function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus) {
+function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, Projects) {
     var state = actionStatus.getCurrentActionState($scope.project.id);
     if (state) {
         $scope.model = state;
@@ -28,9 +28,14 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus) 
     function saveNote() {
         $scope.project.put(User.keyparam()).then(function() {
             $scope.model.note = "";
-            pubsub.send('update-tab-count.change');
-            actionStatus.clearCurrentActionState($scope.project.id);
-            actionStatus.toggleCurrentAction($scope.project.id);
+            Projects.getList(true).then(function (projects) {
+                Projects.get($scope.project.id).then(function (project) {
+                    $scope.project = project;
+                    pubsub.send('update-tab-count.change');
+                    actionStatus.clearCurrentActionState($scope.project.id);
+                    actionStatus.toggleCurrentAction($scope.project.id);
+                });
+            });
         }, function(reason){
             toastr.error(reason.data.error, 'Error', {
                 closeButton: true
