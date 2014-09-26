@@ -117,7 +117,6 @@ function projectTabsDirectiveController($scope, $state, projectColors, pubsub, P
         ];
     }
     function init(){
-        console.dir($scope.project.samples);
         $scope.updateTabCounts();
     }
     init();
