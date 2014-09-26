@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectsProject',
-                                   ["$scope", "$stateParams", "actionStatus", "provStep", "model.projects", projectsProject]);
+                                   ["$scope", "$stateParams", "actionStatus", "provStep",
+                                    "model.projects", "projectColors", projectsProject]);
 
-function projectsProject ($scope, $stateParams, actionStatus, provStep, projects) {
-
+function projectsProject ($scope, $stateParams, actionStatus, provStep, projects, projectColors) {
     $scope.isActive = function (tab) {
         return tab === $scope.activeTab;
     };
@@ -12,5 +12,6 @@ function projectsProject ($scope, $stateParams, actionStatus, provStep, projects
 
     projects.get($stateParams.id).then(function(project) {
         $scope.project = project;
+        projectColors.setCurrentProjectByID($stateParams.id);
     });
 }
