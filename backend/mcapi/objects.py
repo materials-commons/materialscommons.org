@@ -12,7 +12,7 @@ import error
 
 
 def getProcessesandProjects(object_id):
-    processes = list(r.table('samples_processes_denorm').get_all(object_id, index='sample_id').run(g.conn))
+    processes = list(r.table('processes2samples').get_all(object_id, index='sample_id').run(g.conn))
     projects =  list(r.table('projects2samples').filter({'sample_id': object_id}).run(g.conn))
     return processes, projects
 
@@ -102,7 +102,7 @@ def create_object():
         sample['parent_id'] = dmutil.get_optional('parent_id', j)
         #sample['template'] = dmutil.get_required('template', j)
         sample['path'] = dmutil.get_required('path', j)
-        sample['project_id'] = dmutil.get_required('project_id', j)
+        #sample['project_id'] = dmutil.get_required('project_id', j)
         #for treatment in dmutil.get_optional('treatments', j, []):
             #t = doc.add_template_properties(treatment, 'treatment')
             #sample['treatments'].append(t)
@@ -113,7 +113,6 @@ def create_object():
 
 
 def _join_sample_projects(projects, sample_id):
-    print projects
     for p in projects:
         r.table('projects2samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn)
 
