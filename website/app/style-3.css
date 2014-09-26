@@ -1175,7 +1175,8 @@ label {
 }
 
 .arrow_box_top {
-  position: relative;
+  /* position: relative; */
+  position: absolute;
   background: #88b7d5;
   border: 4px solid #c2e1f5;
 }
@@ -1360,4 +1361,8 @@ ul.menu-bar li {
 
 .highlight{
     background-color: #e6e4cd;
+}
+
+.review-step {
+  margin-bottom: 20px;
 }

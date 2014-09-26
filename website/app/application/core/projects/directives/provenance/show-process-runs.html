@@ -1,0 +1,11 @@
+<h4>Runs:</h4>
+<div class="row" ng-repeat="runDate in runDates">
+    <h4>Start: {{runDate.start | date:'yyyy/MM/dd'}}/ Stop: {{runDate.stop | date:'yyyy/MM/dd'}}</h4>
+    <div class="row" ng-repeat="note in runDate.notes">
+        <div ta-bind ng-model="runDate.note"></div>
+        <div class="text-muted sub-text">
+            {{note.date | date:'yyyy/MM/dd:hh:mma'}} --- {{note.who}}
+        </div>
+    </div>
+    <hr/>
+</div>

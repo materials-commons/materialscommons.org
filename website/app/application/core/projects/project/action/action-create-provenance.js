@@ -61,12 +61,18 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
             $scope.wizardState = state;
             $scope.wizardState.project = project;
             // Take us back to the last step.
-            provStep.setStep(project.id, step);
+            if (state.step !== null) {
+                provStep.setStep(project.id, state.step);
+            } else {
+                provStep.setStep(project.id, step);
+            }
         } else {
             $scope.wizardState = {
                 project: project,
                 showOverview: false,
                 keepStepsOpen: false,
+                reviewContent: false,
+                step: null,
                 currentDraft: null,
                 selectedTemplate: null,
                 showChooseProcess: true
