@@ -8,7 +8,7 @@
             return {
                 restrict: 'E',
                 //templateUrl:'tree-grid-template.html',
-                template:"<div><table class=\"table table-bordered  tree-grid\"><thead class=\"text-primary\"><tr><th>{{expandingProperty}}</th><th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}</th></tr></thead><tbody><tr ng-click=\"user_clicks_branch(row.branch)\" ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\"><td class=\"text-primary\"><a><i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"></i></a><span class=\"indented tree-label\">{{row.branch[expandingProperty]}}</span></td><td ng-repeat=\"col in colDefinitions\">{{row.branch[col.field]}}</td></tr></tbody><table></div>",
+                template:"<div><table class=\"table table-bordered  tree-grid\"><thead class=\"text-primary\"><tr><th>{{expandingProperty}}</th><th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}</th></tr></thead><tbody><tr ng-click=\"user_clicks_branch(row.branch)\" ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\"><td class=\"text-primary\"><a><i style=\"padding-right: 5px;\" ng-click=\"row.branch.expanded = !row.branch.expanded\" ng-class=\"row.sub_tree_icon\" ></i><i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"></i></a><span class=\"indented tree-label\">{{row.branch[expandingProperty]}}</span></td><td ng-repeat=\"col in colDefinitions\">{{row.branch[col.field]}}</td></tr></tbody><table></div>",
                 replace: true,
                 scope: {
                     treeData: '=',
@@ -29,7 +29,7 @@
                         attrs.iconExpand = 'icon-plus  glyphicon glyphicon-plus  fa fa-cubes';
                     }
                     if (attrs.iconCollapse == null) {
-                        attrs.iconCollapse = 'icon-minus glyphicon glyphicon-minus fa fa-minus';
+                        attrs.iconCollapse = 'fa fa-cubes';
                     }
                     if (attrs.iconLeaf == null) {
                         attrs.iconLeaf = 'icon-file  glyphicon glyphicon-file  fa fa-cube';
@@ -212,7 +212,7 @@
                             }
                         });
                         add_branch_to_list = function(level, branch, visible) {
-                            var child, child_visible, tree_icon, _i, _len, _ref, _results;
+                            var child, child_visible, tree_icon, _i, _len, _ref, _results, sub_tree_icon;
                             if (branch.expanded == null) {
                                 branch.expanded = false;
                             }
@@ -221,6 +221,7 @@
                             } else {
                                 if (branch.expanded) {
                                     tree_icon = attrs.iconCollapse;
+                                    sub_tree_icon = "fa fa-minus";
                                 } else {
                                     tree_icon = attrs.iconExpand;
                                 }
@@ -231,6 +232,7 @@
                                 branch: branch,
                                 label: branch[expandingProperty],
                                 tree_icon: tree_icon,
+                                sub_tree_icon: sub_tree_icon,
                                 visible: visible
                             });
                             if (branch.children != null) {
