@@ -41,7 +41,7 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
     $scope.getStyle = function(stepType, stepName) {
         if (isCurrentProcessStep(stepType, stepName)) {
             return {
-                'background-color': 'black'
+                'background-color': '#708090'
             };
         } else if (isProcessStepDone(stepType, stepName)) {
             return {
@@ -53,6 +53,10 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
     };
 
     $scope.getStepNameClass = function(stepType, stepName) {
+        if (isProcessStepDone(stepType, stepName)) {
+            return "bs-wizard-stepdone";
+        }
+
         if (isCurrentProcessStep(stepType, stepName)) {
             return "bs-wizard-stepnum";
         }
