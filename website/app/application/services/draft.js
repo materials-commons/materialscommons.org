@@ -25,6 +25,7 @@ function draftService() {
                 draft.inputs[t.id] = {};
                 draft.inputs[t.id].name = "(I) " + t.template_name;
                 draft.inputs[t.id].done = false;
+                draft.inputs[t.id].note = null;
                 draft.inputs[t.id].properties = {};
                 draft.inputs[t.id].custom_properties = {};
                 draft.inputs[t.id].additional_properties = {};
@@ -32,12 +33,18 @@ function draftService() {
                     draft.inputs[t.id].properties[p.attribute] = {
                         name: p.name,
                         value: "",
-                        unit: ""
+                        unit: "",
+                        note: null,
+                        showNote: false
                     };
                 });
 
                 if (t.template_pick == "pick_sample") {
-                    draft.inputs[t.id].properties.sample = null;
+                    draft.inputs[t.id].properties.sample = {
+                        sample: null,
+                        note: null,
+                        showNote: false
+                    };
                 }
             });
 
