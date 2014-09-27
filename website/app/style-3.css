@@ -1007,7 +1007,13 @@ hr.carved {
 }
 
 .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
-  color: black;
+  color: #4a5a6a;
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+
+.bs-wizard > .bs-wizard-step .bs-wizard-stepdone {
+  color: #18b194;
   font-size: 14px;
   margin-bottom: 0px;
 }
