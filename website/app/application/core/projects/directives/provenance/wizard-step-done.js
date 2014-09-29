@@ -74,4 +74,16 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
         var step = provStep.makeStep(stepType, stepName);
         provStep.setStep($stateParams.id, step);
     };
+
+    $scope.submit = function() {
+        console.log("Submitting %O", state.currentDraft);
+    };
+
+    $scope.saveDraft = function() {
+        console.log("Save draft %O", state.currentDraft);
+    };
+
+    $scope.cancel = function() {
+        console.log("Cancelling and deleting state");
+    };
 }
