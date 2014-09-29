@@ -1,0 +1,16 @@
+<div ng-switch="templateId">
+    <div ng-switch-when="sample">
+        <div show-step-sample
+             step="step">
+        </div>
+    </div>
+    <div ng-switch-when="files">
+        <div show-step-files step="step"></div>
+    </div>
+    <div ng-switch-default>
+        <div show-step-properties
+             step="step"
+             template="template">
+        </div>
+    </div>
+</div>
