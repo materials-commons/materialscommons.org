@@ -8,7 +8,20 @@
             return {
                 restrict: 'E',
                 //templateUrl:'tree-grid-template.html',
-                template:"<div><table class=\"table table-bordered  tree-grid\"><thead class=\"text-primary\"><tr><th>{{expandingProperty}}</th><th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}</th></tr></thead><tbody><tr ng-click=\"user_clicks_branch(row.branch)\" ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\"><td style=\"width: 300px;\" class=\"text-primary\"><a><i style=\"padding-right: 5px;\" ng-click=\"row.branch.expanded = !row.branch.expanded\" ng-class=\"row.sub_tree_icon\" ></i><i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"></i></a><span  data-toggle=\"tooltip\" title=\"{{row.branch[expandingProperty]}}\" style=\"padding: 5px;\" class=\"indented tree-label\">{{createName(row.branch[expandingProperty])}}</span></td><td  ng-repeat=\"col in colDefinitions\">{{row.branch[col.field]}}</td></tr></tbody><table></div>",
+                template:"<div><table class=\"table table-bordered  tree-grid\"><thead class=\"text-primary\">" +
+                    "<tr>" +
+                        "<th>{{expandingProperty}}</th>" +
+                        "<th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}</th>" +
+                    "</tr></thead>" +
+                    "<tbody>" +
+                    "<tr ng-click=\"user_clicks_branch(row.branch)\" ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\">" +
+                    "<td style=\"width: 300px;\" class=\"text-primary\">" +
+                    "<a> <i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"></i>" +
+                    "<i style=\"padding-right: 5px;\" ng-click=\"row.branch.expanded = !row.branch.expanded\" ng-class=\"row.sub_tree_icon\" class=\"indented tree-icon\"></i>"+
+                    "</a>" +
+                    "<span  data-toggle=\"tooltip\" title=\"{{row.branch[expandingProperty]}}\" class=\"indented tree-label\">{{createName(row.branch[expandingProperty])}}</span></td>" +
+                    "<td  ng-repeat=\"col in colDefinitions\">{{row.branch[col.field]}}</td></tr>" +
+                    "</tbody><table></div>",
                 replace: true,
                 scope: {
                     treeData: '=',
@@ -229,6 +242,7 @@
                                     tree_icon = attrs.iconCollapse;
                                     sub_tree_icon = "fa fa-minus";
                                 } else {
+                                    sub_tree_icon = "fa fa-plus";
                                     tree_icon = attrs.iconExpand;
                                 }
                             }
