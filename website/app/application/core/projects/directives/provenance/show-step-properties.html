@@ -1,0 +1,10 @@
+<h5>{{step.name}}</h5>
+<hr/>
+<div ng-repeat="p in template.default_properties">
+    <div class="row" ng-if="step.properties[p.attribute].value !== ''">
+        <label>{{step.properties[p.attribute].name}}</label>
+        <span>
+            {{showValue(step.properties[p.attribute].value)}}{{step.properties[p.attribute].unit}}
+        </span>
+    </div>
+</div>
