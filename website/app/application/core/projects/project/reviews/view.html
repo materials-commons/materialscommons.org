@@ -1,8 +1,12 @@
 <div ng-controller="projectReviewView">
     <div class="row">
         <h4>Reviews List</h4> <br>
+        <div ng-if="project.reviews.length === 0">
+            <p class="text-muted"> No reviews created under project {{project.name}}</p>
+             <br>
+        </div>
         <div class="col-lg-offset-2">
-            <div class=" col-lg-10">
+            <div ng-if="project.reviews.length!== 0" class=" col-lg-10">
                 <table class="table table-file-directory">
                     <thead ng-style="{'background-color': currentProjectColor}">
                     <th><i class="fa fa-check-circle review-open"></i><a ng-click="showReviewsperStatus('open')">{{open_reviews.length}}
@@ -42,9 +46,10 @@
             </div>
         </div>
     </div>
-    <div ng-if="list_reviews.length === 0">
+    <div ng-if="open_reviews.length === 0" class="col-lg-offset-2">
         <p ng-show="status === 'open'" class="text-muted">No Open Reviews</p>
-
+    </div>
+    <div ng-if="closed_reviews.length === 0" class="col-lg-offset-2">
         <p ng-show="status === 'close'" class="text-muted">No Closed Reviews</p><br>
     </div>
 
