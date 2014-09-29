@@ -1,6 +1,6 @@
 <div ng-if="properties.length !== 0">
     <form class="form-horizontal" role="form">
-        <div class="form-group" ng-repeat="property in properties">
+        <div class="form-group" ng-repeat="property in properties | byKey:'required':true">
             <label class="col-sm-3 control-label">{{property.name}}:
                 <span ng-if="property.required">
                     <i class="fa fa-asterisk"></i>
@@ -29,6 +29,7 @@
                 <div ng-switch-default>
                     Unknown property type: {{property.type}}
                 </div>
+
             </div>
         </div>
     </form>
