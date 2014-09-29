@@ -30,17 +30,41 @@
 
 <div class="row">
     <div class="col-xs-offset-2">
-        <button ng-if="unfinishedSteps.length === 0" ng-click=""
+        <button ng-if="unfinishedSteps.length === 0"
+                data-toggle="modal"
+                data-target="#confirm-submit-provenance"
                 class="btn btn-success">
             Submit
         </button>
-        <button ng-click=""
+        <button ng-click="saveDraft()"
                 class="btn btn-info">
             Save As Draft
         </button>
-        <button ng-click=""
+        <button ng-click="cancel()"
                 class="btn btn-danger">
             Cancel
         </button>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-submit-provenance" tabindex="-1" role="dialog"
+     aria-labelledby="confirmLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Submit provenance</h4>
+            </div>
+            <div class="modal-body">
+                Once you submit the provenance you cannot change it. Do you wish to submit?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" ng-click="submit()"
+                        data-dismiss="modal">
+                    Yes
+                </button>
+            </div>
+        </div>
     </div>
 </div>

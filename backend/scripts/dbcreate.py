@@ -22,7 +22,7 @@ def create_tables():
     create_table("machines")
     create_table("projects")
     create_table("templates")
-    create_table("state")
+    create_table("ui")
     create_table("drafts")
     create_table("saver")
     create_table("project2datadir")
