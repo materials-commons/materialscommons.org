@@ -293,6 +293,14 @@ def add_todos(conn):
     r.table('projects').update({'todos': []}).run(conn)
 
 
+def move_samples_denorm(conn):
+    denorm = list(r.table('samples_denorm').run(conn))
+    for row in denorm:
+        msg(" Adding row  %s" % (row['id']))
+        r.table('processes2samples').insert(row).run(conn)
+    msg("Done inserting rows into new table")
+
+
 def drop_unused_tables(conn):
     msg("Dropping unused tables: state")
     r.table_table('state').run(conn)
@@ -310,6 +318,7 @@ def main(conn, mcdir):
     add_default_tags(conn)
     add_todos(conn)
     drop_unused_tables(conn)
+    move_samples_denorm(conn)
     msg("Finished.")
 
 if __name__ == "__main__":

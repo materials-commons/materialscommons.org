@@ -31,7 +31,10 @@
     </a>
     <hr class="sideboard-separator">
     <div class="row">
-        <div ng-repeat="td in todos">
+        <div ng-if="project.todos.length === 0">
+            <p class="text-muted">ToDo list is empty</p>
+        </div>
+        <div ng-repeat="td in project.todos">
             <div class="checkbox checkbox-info">
                 <input id={{td.title}} type="checkbox" ng-model="td.selected" ng-change="td.selected = !td.selected"
                        ng-click="isChecked(td)" checked>

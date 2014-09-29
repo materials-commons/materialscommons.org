@@ -1,6 +1,8 @@
 <div ng-controller="projectSampleView">
-    <h4>View Sample Hierarchy</h4><br>
-
+    <h4>Sample Hierarchy</h4><br>
+    <div ng-if="tree_data.length == 0">
+        <p class="text-muted">No samples created under  project {{project.name}}</p> <br>
+    </div>
     <div class="row" ng-if="tree_data">
         <div class="col-lg-offset-2">
             <div class="col-lg-10">

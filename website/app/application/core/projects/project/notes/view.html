@@ -1,6 +1,6 @@
-<div class="col-lg-offset-2" ng-controller="projectNotesView">
-    <h4>View Notes</h4>
-    <div class="col-lg-8">
+<div ng-controller="projectNotesView">
+    <h4>Notes</h4>
+    <div class="col-lg-8 col-lg-offset-2">
         <div  ng-repeat="n in project.notes | orderBy: date">
             <div ng-if="edit_index==$index">
                 <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
