@@ -37,7 +37,7 @@ function projectSampleView($scope, Projects,$stateParams, mcapi, $filter, pubsub
                 $scope.col_defs = [
                     { field: "path"},
                     { field: "owner"},
-                    { field: "level"}
+                    { field: "numofchildren"}
                 ];
             }).jsonp();
     }

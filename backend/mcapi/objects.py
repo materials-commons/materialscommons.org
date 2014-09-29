@@ -183,9 +183,11 @@ def sample_tree(project_id):
     for samp in samples:
         sitem = SItem(samp['id'], samp['name'], samp['path'], samp['owner'])
         sitem.level = sitem.path.count('/')
+        sitem.numofchildren = 0
         if sitem.path in all_samples:
             existing_sitem = all_samples[sitem.path]
             sitem.children = existing_sitem.children
+            sitem.numofchildren = len(sitem.children)
         all_samples[sitem.path] = sitem
         if sitem.level == 0:
             top_level_samples.append(sitem)
@@ -193,8 +195,10 @@ def sample_tree(project_id):
         if parent_name in all_samples:
             parent = all_samples[parent_name]
             parent.children.append(sitem)
+            parent.numofchildren = len(parent.children)
         else:
             parent = SItem('', parent_name, '', '')
             parent.children.append(sitem)
+            parent.numofchildren = len(parent.children)
             all_samples[parent_name] = parent
     return json.dumps(top_level_samples, cls=DEncoder2)
