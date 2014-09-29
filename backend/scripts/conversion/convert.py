@@ -292,18 +292,26 @@ def add_todos(conn):
     msg("Adding todos to the projects table...")
     r.table('projects').update({'todos': []}).run(conn)
 
+def move_samples_denorm(conn):
+    denorm = list(r.table('samples_denorm').run(conn))
+    for row in denorm:
+        msg(" Adding row  %s" % (row['id']))
+        r.table('processes2samples').insert(row).run(conn)
+    msg("Done inserting rows into new table")
+
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    convert_groups(conn)
-    add_preferences(conn)
-    add_usesid(conn)
+    #convert_groups(conn)
+    #add_preferences(conn)
+    #add_usesid(conn)
     #add_mediatypes(conn, mcdir)
     cleanup_samples(conn)
-    add_shares_to_projects(conn)
-    add_tags(conn)
+    #add_shares_to_projects(conn)
+    #add_tags(conn)
     add_default_tags(conn)
     add_todos(conn)
+    move_samples_denorm(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
