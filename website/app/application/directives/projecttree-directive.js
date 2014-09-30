@@ -1,8 +1,8 @@
 Application.Controllers.controller('ProjectTreeController',
-                                   ["$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
+                                   ["toastr","$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
                                     "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStatus", "provStep", ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus, provStep) {
+function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus, provStep) {
 
     $scope.addToReview = function(entry, review){
         var item = {'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type};
@@ -135,8 +135,11 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
                         $scope.dir[i]['tags'][$scope.user] = [selected_tag];
                     }
                 }
-            }).post(item2tag);
-        //Sticking tag in the tree
+            }).error(function(e){
+                toastr.error(e.error, 'Error', {
+                    closeButton: true
+                });
+            }) .post(item2tag);
     };
 
     $scope.addReview = function () {
@@ -194,7 +197,6 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
         };
 
         $scope.user_tags = User.attr().preferences.tags;
-//        $scope.user_tags = Tags.getUserTags();
         if ($scope.from == 'true') {
             $scope.project = ProjectPath.get_project();
             var currentTrail = ProjectPath.get_trail();
