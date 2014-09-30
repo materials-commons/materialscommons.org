@@ -14,7 +14,8 @@ function draftService() {
                 stepType: "process",
                 currentStep: "process",
                 additional_properties: {},
-                done: false
+                done: false,
+                template_id: template.id
             };
 
             draft.completed = false;
