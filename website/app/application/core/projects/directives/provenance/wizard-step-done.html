@@ -40,7 +40,8 @@
                 class="btn btn-info">
             Save As Draft
         </button>
-        <button ng-click="cancel()"
+        <button data-toggle="modal"
+                data-target="#confirm-cancel-provenance"
                 class="btn btn-danger">
             Cancel
         </button>
@@ -63,6 +64,32 @@
                 <button type="button" class="btn btn-primary" ng-click="submit()"
                         data-dismiss="modal">
                     Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-cancel-provenance" tabindex="-1" role="dialog"
+     aria-labelledby="confirmCancelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelCancel">Cancel provenance</h4>
+            </div>
+            <div class="modal-body">
+                Once you cancel provenance you will lose all your changes. If you wish
+                to save your changes and come back later dismiss this dialog and save
+                your provenance as a draft.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Dismiss - keeping changes
+                </button>
+                <button type="button" class="btn btn-danger" ng-click="cancel()"
+                        data-dismiss="modal">
+                    Yes - Loosing all changes
                 </button>
             </div>
         </div>
