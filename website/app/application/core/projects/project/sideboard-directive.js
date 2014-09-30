@@ -16,9 +16,9 @@ function tagsSideboardController($scope, User) {
 }
 
 Application.Controllers.controller('todosSideboardController',
-    ["$scope",  "$stateParams", "model.projects", "User", "toastr", todosSideboardController]);
+    ["$scope",  "$stateParams", "model.projects", "User", todosSideboardController]);
 
-function todosSideboardController($scope, $stateParams, Projects, User, toastr) {
+function todosSideboardController($scope, $stateParams, Projects, User) {
 
     $scope.createName = function(name) {
         if (name.length > 21) {
