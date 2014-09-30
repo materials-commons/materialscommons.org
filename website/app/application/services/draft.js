@@ -2,12 +2,12 @@ Application.Services.factory('draft', draftService);
 
 function draftService() {
     var service = {
-        createProvenance: function(template) {
+        createProvenance: function(template, projectID) {
             var draft = {};
             draft.process = {
                 name: "",
                 description: "",
-                run_dates: [],
+                runs: [],
                 notes: [],
                 tags: [],
                 custom_properties:{},
@@ -15,7 +15,8 @@ function draftService() {
                 currentStep: "process",
                 additional_properties: {},
                 done: false,
-                template_id: template.id
+                template_id: template.id,
+                project_id: projectID
             };
 
             draft.completed = false;
@@ -55,7 +56,9 @@ function draftService() {
                 draft.inputs.files.showNote = false;
                 draft.inputs.files.note = null;
                 draft.inputs.files.name = "(I) Files" ;
-                draft.inputs.files.files = [];
+                draft.inputs.files.properties = {
+                    files: []
+                };
                 draft.inputs.files.done = false;
             }
 
@@ -92,7 +95,9 @@ function draftService() {
                 draft.outputs.files.name = "(O) Files";
                 draft.outputs.files.note = null;
                 draft.outputs.files.showNote = false;
-                draft.outputs.files.files = [];
+                draft.outputs.files.properties = {
+                    files: []
+                };
                 draft.outputs.files.done = false;
             }
             return draft;

@@ -10,9 +10,9 @@ function wizardStepDoneDirective() {
 }
 
 Application.Controllers.controller('wizardStepDoneDirectiveController',
-                                   ["$scope", "provStep", "actionStatus", "$stateParams",
+                                   ["$scope", "provStep", "actionStatus", "$stateParams", "Restangular", "User",
                                     wizardStepDoneDirectiveController]);
-function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stateParams) {
+function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stateParams, Restangular, User) {
     var state = actionStatus.getCurrentActionState($stateParams.id);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
@@ -77,6 +77,14 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
 
     $scope.submit = function() {
         console.log("Submitting %O", state.currentDraft);
+        Restangular.one("provenance2")
+            .post($stateParams.id,
+                  state.currentDraft,
+                  {apikey: User.apikey()}).then(function() {
+                      console.log("post successful");
+                  }, function() {
+                      console.log("post failed");
+                  });
     };
 
     $scope.saveDraft = function() {

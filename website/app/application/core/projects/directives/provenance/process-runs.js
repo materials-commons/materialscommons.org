@@ -3,7 +3,7 @@ Application.Directives.directive('processRuns', processRunsDirective);
 function processRunsDirective() {
     return {
         scope: {
-            runDates: "="
+            runs: "="
         },
         controller: "processRunsController",
         restrict: "AE",
@@ -36,7 +36,7 @@ function processRunsController($scope, User) {
 
     $scope.addRun = function() {
         var run = {};
-        $scope.runDates.push(angular.copy($scope.run, run));
+        $scope.runs.push(angular.copy($scope.run, run));
         $scope.showAddRun = false;
         resetRun();
     };
