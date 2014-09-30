@@ -3,7 +3,7 @@ Application.Directives.directive('showProcessRuns', showProcessRunsDirective);
 function showProcessRunsDirective() {
     return {
         scope: {
-            runDates: "="
+            runs: "="
         },
         restrict: "AE",
         templateUrl: "application/core/projects/directives/provenance/show-process-runs.html"
