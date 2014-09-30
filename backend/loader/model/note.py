@@ -9,3 +9,4 @@ class Note(object):
         self.title = title
         self.item_id = item_id
         self.item_type = item_type
+        self.whiteboard = ""

@@ -60,12 +60,22 @@ def create_process_notes(notes, process_id, user):
 
 
 def create_process_runs(runs, process_id):
-    pass
+    bulk_runs = []
+    for run in runs:
+        pass
 
 
 def create_inputs(inputs, process_id, user):
-    for prop_set_name, prop_set_values in inputs:
-        ps = property.PropertySet(prop_set_name, "inputs", process_id,
+    create_property_set(inputs, "inputs", process_id, user)
+
+
+def create_outputs(outputs, process_id, user):
+    create_property_set(outputs, "outputs", process_id, user)
+
+
+def create_property_set(ioset, ioset_type, process_id, user):
+    for prop_set_name, prop_set_values in ioset:
+        ps = property.PropertySet(prop_set_name, ioset_type, process_id,
                                   "process")
         ps_id = dmutil.insert_entry_id("property_set", ps.__dict__)
         ps_props_bulk = []
@@ -84,7 +94,3 @@ def create_inputs(inputs, process_id, user):
             p.unit = unit
             ps_props_bulk.append(p.__dict__)
         r.table("properties").insert(ps_props_bulk).run(g.conn)
-
-
-def create_outputs(outputs, id, user):
-    pass
