@@ -27,7 +27,7 @@ function draftService() {
                 draft.inputs[t.id] = {};
                 draft.inputs[t.id].name = "(I) " + t.template_name;
                 draft.inputs[t.id].done = false;
-                draft.inputs[t.id].note = null;
+                draft.inputs[t.id].note = "";
                 draft.inputs[t.id].showNote = false;
                 draft.inputs[t.id].properties = {};
                 draft.inputs[t.id].custom_properties = {};
@@ -37,15 +37,15 @@ function draftService() {
                         name: p.name,
                         value: "",
                         unit: "",
-                        note: null,
+                        note: "",
                         showNote: false
                     };
                 });
 
                 if (t.template_pick == "pick_sample") {
                     draft.inputs[t.id].properties.sample = {
-                        sample: null,
-                        note: null,
+                        sample: {},
+                        note: "",
                         showNote: false
                     };
                 }
@@ -54,7 +54,7 @@ function draftService() {
             if (template.required_input_files) {
                 draft.inputs.files = {};
                 draft.inputs.files.showNote = false;
-                draft.inputs.files.note = null;
+                draft.inputs.files.note = "";
                 draft.inputs.files.name = "(I) Files" ;
                 draft.inputs.files.properties = {
                     files: []
@@ -66,7 +66,7 @@ function draftService() {
                 draft.outputs[t.id] = {};
                 draft.outputs[t.id].name = "(O) " + t.template_name;
                 draft.outputs[t.id].done = false;
-                draft.outputs[t.id].note = null;
+                draft.outputs[t.id].note = "";
                 draft.outputs[t.id].showNote = false;
                 draft.outputs[t.id].properties = {};
                 draft.outputs[t.id].custom_properties = {};
@@ -76,15 +76,15 @@ function draftService() {
                         name: p.name,
                         value: "",
                         unit: "",
-                        note: null,
+                        note: "",
                         showNote: false
                     };
                 });
 
                 if (t.template_pick == "pick_sample") {
                     draft.outputs[t.id].properties.sample = {
-                        sample: null,
-                        note: null,
+                        sample: {},
+                        note: "",
                         showNote: false
                     };
                 }
@@ -93,7 +93,7 @@ function draftService() {
             if (template.required_output_files) {
                 draft.outputs.files = {};
                 draft.outputs.files.name = "(O) Files";
-                draft.outputs.files.note = null;
+                draft.outputs.files.note = "";
                 draft.outputs.files.showNote = false;
                 draft.outputs.files.properties = {
                     files: []

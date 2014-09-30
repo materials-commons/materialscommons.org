@@ -1352,6 +1352,10 @@ ul.menu-bar li {
   margin-bottom: 5px;
 }
 
+.modal-header-danger {
+  background: #da4f49;
+}
+
 /* ***** Animations ***** */
 
 .ng-hide-removex {

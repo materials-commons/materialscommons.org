@@ -10,9 +10,9 @@ function wizardStepDoneDirective() {
 }
 
 Application.Controllers.controller('wizardStepDoneDirectiveController',
-                                   ["$scope", "provStep", "actionStatus", "$stateParams", "Restangular", "User",
+                                   ["$scope", "provStep", "actionStatus", "$stateParams", "Restangular", "User", "$timeout",
                                     wizardStepDoneDirectiveController]);
-function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stateParams, Restangular, User) {
+function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stateParams, Restangular, User, $timeout) {
     var state = actionStatus.getCurrentActionState($stateParams.id);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
@@ -75,23 +75,37 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
         provStep.setStep($stateParams.id, step);
     };
 
+    function closeProvenanceAction() {
+        provStep.resetProject($stateParams.id);
+        actionStatus.clearCurrentActionState($stateParams.id);
+        actionStatus.toggleCurrentAction($stateParams.id);
+    }
+
     $scope.submit = function() {
-        console.log("Submitting %O", state.currentDraft);
+        //console.log("Submitting %O", state.currentDraft);
         Restangular.one("provenance2")
             .post($stateParams.id,
                   state.currentDraft,
-                  {apikey: User.apikey()}).then(function() {
-                      console.log("post successful");
-                  }, function() {
-                      console.log("post failed");
-                  });
+                  {apikey: User.apikey()})
+            .then(closeProvenanceAction);
     };
 
     $scope.saveDraft = function() {
-        console.log("Save draft %O", state.currentDraft);
+        Restangular.one("drafts2")
+            .post($stateParams.id,
+                  state.currentDraft,
+                  {apikey: User.apikey()})
+            .then(function(id) {
+                console.dir(id);
+                closeProvenanceAction();
+            });
     };
 
     $scope.cancel = function() {
-        console.log("Cancelling and deleting state");
+        // The bootstrap modal black backdrop isn't dismissed
+        // if we don't wrap these functions in a timeout. It
+        // appears that the changes to the dom are happening
+        // too quickly.
+        $timeout(closeProvenanceAction, 100);
     };
 }
