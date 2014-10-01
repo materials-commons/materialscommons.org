@@ -104,10 +104,6 @@ def add_process_ids(projects_by_id, project_ids):
 
 def add_computed_items(projects_by_id, items, projects_key, item_key):
     for item in items:
-        #if item_key == 'samples':
-        #    project_id = item['project_id']
-        #    print project_id
-        #else:
         project_id = item[projects_key]
         if project_id in projects_by_id:
             projects_by_id[project_id][item_key].append(item)
