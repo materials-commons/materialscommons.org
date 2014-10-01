@@ -300,6 +300,50 @@ def move_samples_denorm(conn):
     msg("Done inserting rows into new table")
 
 
+def associate_samples_to_projects(conn):
+    project1 = r.table('projects').get('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185').run(conn)
+    if project1:
+        msg("project 1....")
+        sample1 = r.table('samples').get('9f40aec6-407a-41fd-a8e3-4589546526e3').update({'project_id': project1['id']}).run(conn)
+        rr1 = r.table('projects2samples').insert({'project_id': project1['id'], 'project_name': project1['name'], 'sample_id': '9f40aec6-407a-41fd-a8e3-4589546526e3'}).run(conn)
+    
+    project2 = r.table('projects').get('39f5ae68-5155-4646-8adb-c7244ba95a14').run(conn)
+    if project2:
+        msg("project 2....")
+        sample2 = r.table('samples').get('a6671de2-e54a-4763-a600-edd9a8550fc9').update({'project_id': project2['id']}).run(conn)
+        rr2 = r.table('projects2samples').insert({'project_id': project2['id'], 'project_name': project2['name'], 'sample_id': 'a6671de2-e54a-4763-a600-edd9a8550fc9'}).run(conn)
+    
+    project3 = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb').run(conn)
+    if project3:
+        msg("project 3....")
+        sample3 = r.table('samples').get('ca6798bc-cb26-4e45-8c1a-48f37adae576').update({'project_id': project3['id']}).run(conn)
+        rr3 = r.table('projects2samples').insert({'project_id': project3['id'], 'project_name': project3['name'], 'sample_id': 'ca6798bc-cb26-4e45-8c1a-48f37adae576'}).run(conn)
+    
+    project4 = r.table('projects').get('e0f04518-c143-4cc1-a183-42679d822adc').run(conn)
+    if project4:
+        msg("project 4....")
+        sample4 = r.table('samples').get('a0757a27-1c92-49aa-b4ad-b323e3f06b40').update({'project_id': project4['id']}).run(conn)
+        rr4 = r.table('projects2samples').insert({'project_id': project4['id'], 'project_name': project4['name'], 'sample_id': 'a0757a27-1c92-49aa-b4ad-b323e3f06b40'}).run(conn)
+    
+    project5 = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb').run(conn)
+    if project5:
+        msg("project 5....")
+        sample5 = r.table('samples').get('489462d8-f047-4b7d-808f-f8f23c6c218b').update({'project_id': project5['id']}).run(conn)
+        rr5 = r.table('projects2samples').insert({'project_id': project5['id'], 'project_name': project5['name'], 'sample_id': '489462d8-f047-4b7d-808f-f8f23c6c218b'}).run(conn)
+    
+    project6 = r.table('projects').get('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185').run(conn)
+    if project6:
+        msg("project 6....")
+        sample6 = r.table('samples').get('62d13c6e-1064-4936-9e63-dfc000aea250').update({'project_id': project6['id']}).run(conn)
+        rr6 = r.table('projects2samples').insert({'project_id': project6['id'], 'project_name': project6['name'], 'sample_id': '62d13c6e-1064-4936-9e63-dfc000aea250'}).run(conn)
+    
+    project7 = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb').run(conn)
+    if project7:
+        msg("project 7....")
+        sample7 = r.table('samples').get('6f36b073-f6a3-4316-a0a4-d222f48ca004').update({'project_id': project7['id']}).run(conn)
+        rr7 = r.table('projects2samples').insert({'project_id': project7['id'], 'project_name': project7['name'], 'sample_id': '6f36b073-f6a3-4316-a0a4-d222f48ca004'}).run(conn)
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     convert_groups(conn)
@@ -312,6 +356,7 @@ def main(conn, mcdir):
     add_default_tags(conn)
     add_todos(conn)
     move_samples_denorm(conn)
+    associate_samples_to_projects(conn)
     msg("Finished.")
 
 if __name__ == "__main__":

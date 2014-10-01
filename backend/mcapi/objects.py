@@ -102,7 +102,7 @@ def create_object():
         sample['parent_id'] = dmutil.get_optional('parent_id', j)
         #sample['template'] = dmutil.get_required('template', j)
         sample['path'] = dmutil.get_required('path', j)
-        #sample['project_id'] = dmutil.get_required('project_id', j)
+        sample['project_id'] = dmutil.get_required('project_id', j)
         #for treatment in dmutil.get_optional('treatments', j, []):
             #t = doc.add_template_properties(treatment, 'treatment')
             #sample['treatments'].append(t)
