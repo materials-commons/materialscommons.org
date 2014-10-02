@@ -51,5 +51,6 @@ function globalReviewsController($scope, $filter,  User, Projects, pubsub) {
         $scope.user = User.u();
         $scope.getAllReviews();
     }
+
     init();
 }
