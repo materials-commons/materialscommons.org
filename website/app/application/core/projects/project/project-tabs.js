@@ -93,7 +93,7 @@ function projectTabsDirectiveController($scope, $state, projectColors, pubsub, P
                 icon: "fa-code-fork",
                 name: "Provenance",
                 hasCount: true,
-                count: 1,
+                count: $scope.project.processes.length,
                 defaulttab: "view"
             },
 
