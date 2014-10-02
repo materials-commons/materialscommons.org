@@ -9,6 +9,7 @@ from utils import make_password_hash
 import error
 from args import json_as_format_arg
 import access
+import os.path
 
 
 @app.route('/tags')
@@ -135,7 +136,7 @@ def create_item2tag():
             item2tag_join = r.table('items2tags').get(result).run(g.conn)
             #update datadir_denorm
             if item2tag_join['item_type'] == 'datafile':
-                dir_name = dirname(fullname)
+                dir_name = os.path.dirname(fullname)
                 #print dir_name
                 dir_denorm = list(r.table('datadirs_denorm').get_all(dir_name, index='name').run(g.conn))
                 if dir_denorm == []:
