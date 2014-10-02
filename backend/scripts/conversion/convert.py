@@ -148,20 +148,25 @@ def add_mediatypes(conn, mcdir):
                     dfid = df['usesid']
                 path = datafile_path(mcdir, dfid)
                 if not os.path.isfile(path):
-                    mediatype = "unknown"
+                    mime = "unknown"
+                    description = "unknown"
                     msg("file not found: %s" % (path))
                 else:
-                    mediatype = magic.from_file(path, mime=True)
-                msg("file %s has mediatype %s" % (path, mediatype))
+                    mime = magic.from_file(path, mime=True)
+                    description = magic.from_file(path)
+                msg("file %s has mediatype %s" % (path, mime))
+                m = {
+                    'mime': mime,
+                    'description': description
+                }
                 r.table('datafiles').get(df['id'])\
-                                    .update({'mediatype': mediatype})\
+                                    .update({'mediatype': m})\
                                     .run(conn)
-                f['mediatype'] = mediatype
-                if mediatype not in mediatypes:
-                    mediatypes[mediatype] = 1
+                if mime not in mediatypes:
+                    mediatypes[mime] = 1
                 else:
-                    count = mediatypes[mediatype]
-                    mediatypes[mediatype] = count+1
+                    count = mediatypes[mime]
+                    mediatypes[mime] = count+1
             # update datadirs_denorm to include mediatype
             r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
