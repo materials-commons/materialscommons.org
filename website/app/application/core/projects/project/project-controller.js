@@ -12,6 +12,7 @@ function projectsProject ($scope, $stateParams, actionStatus, provStep, projects
 
     projects.get($stateParams.id).then(function(project) {
         $scope.project = project;
+        //console.dir(project);
         projectColors.setCurrentProjectByID($stateParams.id);
     });
 }
