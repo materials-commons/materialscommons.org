@@ -36,6 +36,7 @@ def create_tables():
     create_table("samples")
     create_table('access')
     create_table("sample2item")
+    create_table("elements")
 
     # old
     create_table("datafiles")

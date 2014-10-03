@@ -355,6 +355,15 @@ def associate_samples_to_projects(conn):
         rr7 = r.table('projects2samples').insert({'project_id': project7['id'], 'project_name': project7['name'], 'sample_id': '6f36b073-f6a3-4316-a0a4-d222f48ca004'}).run(conn)
 
 
+def populate_elements(conn):
+    #read elements.txt file and iterate throught each element to build table rows
+    lines = [line.rstrip('\n') for line in open('elements.txt')]
+    r.table('elements').delete().run(conn)
+    for line in lines:
+        x = line.split('\t', 1)
+        print r.table('elements').insert({'name': x[0], 'full_name': x[1]}).run(conn)
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     convert_groups(conn)
@@ -369,6 +378,7 @@ def main(conn, mcdir):
     drop_unused_tables(conn)
     move_samples_denorm(conn)
     associate_samples_to_projects(conn)
+    populate_elements(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
