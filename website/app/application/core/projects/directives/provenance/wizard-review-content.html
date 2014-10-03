@@ -1,0 +1,61 @@
+<div class="checkbox checkbox-inline checkbox-primary"
+     style="margin-top: 0px">
+    <input type="checkbox"
+           ng-model="wizardState.reviewContent"
+           id="cb-review-content">
+    <label for="cb-review-content">
+        Review Content
+    </label>
+</div>
+
+<div ng-if="wizardState.reviewContent">
+    <div class="row review-step">
+        <div show-process
+             process="wizardState.currentDraft.process"
+             template-name="wizardState.selectedTemplate.template_name">
+        </div>
+    </div>
+
+    <div class="row review-step" ng-repeat="t in wizardState.selectedTemplate.input_templates">
+        <div class="col-xs-8">
+            <div show-step
+                 step="wizardState.currentDraft.inputs[t.id]"
+                 template-id="t.id"
+                 template="t">
+            </div>
+        </div>
+    </div>
+
+    <div class="row review-step">
+        <div ng-if="wizardState.selectedTemplate.required_input_files">
+            <div class="col-xs-8">
+                <div show-step
+                     step="wizardState.currentDraft.inputs.files"
+                     template-id="'files'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row review-step"
+         ng-repeat="t in wizardState.selectedTemplate.output_templates">
+        <div class="col-xs-8">
+            <div show-step
+                 step="wizardState.currentDraft.outputs[t.id]"
+                 template-id="t.id"
+                 template="t">
+            </div>
+        </div>
+    </div>
+
+    <div class="row review-step">
+        <div ng-if="wizardState.selectedTemplate.required_output_files">
+            <div class="col-xs-8">
+                <div show-step
+                     step="wizardState.currentDraft.outputs.files"
+                     template-id="'files'">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

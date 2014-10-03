@@ -10,6 +10,6 @@ function actionLinkDirective() {
             titleIcon: "@"
         },
         template: '<a class="action-link project-sub-action" ng-click="onClick()">' +
-            '<i class="fa {{titleIcon}}"></i> {{title}}</a>'
+            '<i class="fa {{titleIcon}}"></i>{{title}}</a>'
     };
 }

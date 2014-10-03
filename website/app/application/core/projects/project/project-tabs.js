@@ -12,20 +12,23 @@ function projectTabsDirective() {
 }
 
 Application.Controllers.controller('projectTabsDirectiveController',
-                                  ["$scope", "projectColors", "pubsub", "model.projects", "$stateParams", "$filter", projectTabsDirectiveController]);
+                                  ["$scope", "$state","projectColors", "pubsub", "model.projects", "$stateParams", "$filter", projectTabsDirectiveController]);
 
-function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,$stateParams, $filter) {
+function projectTabsDirectiveController($scope, $state, projectColors, pubsub, Projects,$stateParams, $filter) {
 
-    pubsub.waitOn($scope, "update-open-reviews.change", function () {
-        Projects.getList().then(function (projects) {
+    pubsub.waitOn($scope, "update-tab-count.change", function () {
             Projects.get($stateParams.id).then(function (project) {
                 $scope.project.reviews = project.reviews;
+                $scope.project.samples = project.samples;
+                $scope.project.notes = project.notes;
                 $scope.updateTabCounts();
             });
-        });
     });
-
     var activeTab = "overview";
+
+    if ($state.current.name == 'projects.project.reviews.view'){
+        activeTab = "reviews";
+    }
     $scope.colors = projectColors;
     $scope.inactiveColor = projectColors.getInactiveColor();
 
@@ -64,14 +67,16 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 id: "overview",
                 icon: "fa-list",
                 name: "Overview",
-                hasCount: false
+                hasCount: false,
+                defaulttab: "view"
             },
 
             {
                 id: "files",
                 icon: "fa-files-o",
                 name: "Files",
-                hasCount: false
+                hasCount: false,
+                defaulttab: "view"
             },
 
             {
@@ -79,7 +84,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-cubes",
                 name: "Samples",
                 hasCount: true,
-                count: 1
+                count: $scope.project.samples.length,
+                defaulttab: "view"
             },
 
             {
@@ -87,7 +93,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-code-fork",
                 name: "Provenance",
                 hasCount: true,
-                count: 1
+                count: $scope.project.processes.length,
+                defaulttab: "view"
             },
 
             {
@@ -95,7 +102,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-comment",
                 name: "Reviews",
                 hasCount: true,
-                count: ($filter('byKey')($scope.project.reviews, 'status', 'open')).length
+                count: ($filter('byKey')($scope.project.reviews, 'status', 'open')).length ,
+                defaulttab: "view"
             },
 
             {
@@ -103,7 +111,8 @@ function projectTabsDirectiveController($scope, projectColors, pubsub, Projects,
                 icon: "fa-edit",
                 name: "Notes",
                 hasCount: true,
-                count: 1
+                count: $scope.project.notes.length,
+                defaulttab: "view"
             }
         ];
     }

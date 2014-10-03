@@ -1,0 +1,19 @@
+<div ng-controller="projectSampleView">
+    <h4>Sample Hierarchy</h4><br>
+    <div ng-if="tree_data.length == 0">
+        <p class="text-muted">No samples created under  project {{project.name}}</p> <br>
+    </div>
+    <div class="row" ng-if="tree_data">
+        <div class="col-lg-offset-2">
+            <div class="col-lg-10">
+                <button ng-click="my_tree.expand_all()" class="btn btn-default btn-sm">Expand All</button>
+                <button ng-click="my_tree.collapse_all()" class="btn btn-default btn-sm">Collapse All</button>
+                <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="my_tree"
+                           on-select="sampleDetails(branch)"></tree-grid>
+            </div>
+        </div>
+    </div>
+    <div ng-if="details" class="row">
+            <div sample-report sample="details"></div>
+    </div>
+</div>

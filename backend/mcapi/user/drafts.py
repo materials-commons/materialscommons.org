@@ -1,7 +1,7 @@
 from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
 import rethinkdb as r
-from flask import request, g
+from flask import request, g, jsonify
 import json
 from .. import access
 from .. import dmutil
@@ -44,6 +44,17 @@ def create_draft():
     d = Draft(user, name, project_id, project_name, description, clone_number)
     d.process = process
     return dmutil.insert_entry('drafts', d.__dict__, return_created=True)
+
+
+@app.route("/drafts2/<project_id>", methods=['POST'])
+@apikey
+def save_draft(project_id):
+    j = request.get_json()
+    if 'id' in j:
+        r.table('drafts').get(j['id']).update(j).run(g.conn)
+    else:
+        id = dmutil.insert_entry_id('drafts', j)
+    return jsonify({'id': id})
 
 
 @app.route('/drafts/<draft_id>', methods=['PUT'])
@@ -101,7 +112,8 @@ def get_draft(draft_id):
 def get_drafts_for_user(project_id):
     user = access.get_user()
     selection = list(r.table('drafts')
-                     .get_all(user, index='owner').filter({'project_id': project_id})
+                     .get_all(user, index='owner')
+                     .filter({'project_id': project_id})
                      .run(g.conn, time_format='raw'))
     # Now get all the drafts that we have been asked to review
     # TODO: This is a hack that we need to fix

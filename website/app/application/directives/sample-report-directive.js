@@ -15,15 +15,4 @@ Application.Controllers.controller('actionSampleReportController',
 
 function actionSamplesController($scope, mcapi) {
 
-    $scope.refreshProjects = function () {
-        mcapi('/samples/project/%', $scope.sample.id)
-            .success(function (data) {
-                $scope.projects_by_sample = data;
-            }).jsonp();
-    };
-
-    function init(){
-        $scope.refreshProjects();
-    }
-    init();
 }

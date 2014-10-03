@@ -1,3 +1,5 @@
+/* **************** Bootstrap overrides ******************* */
+
 /***********Begin sideboard.html ***********/
 
 .tag-scroll-bar {
@@ -244,7 +246,7 @@
 }
 
 .tip {
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   padding: 10px;
   position: relative;
 /*width: 200px;*/
@@ -988,12 +990,12 @@ hr.carved {
 
 /* ******* Wizard Steps ****** */
 .bs-wizard {
-  margin-top: 40px;
+  /* margin-top: 10px; */
 }
 
 .bs-wizard {
   /* border-bottom: solid 1px #e0e0e0; */
-  padding: 0 0 10px 0;
+  padding: 0 0 0 0;
 }
 
 .bs-wizard > .bs-wizard-step {
@@ -1005,9 +1007,15 @@ hr.carved {
 }
 
 .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
-  color: #595959;
+  color: #4a5a6a;
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
+}
+
+.bs-wizard > .bs-wizard-step .bs-wizard-stepdone {
+  color: #18b194;
+  font-size: 14px;
+  margin-bottom: 0px;
 }
 
 .bs-wizard > .bs-wizard-step .bs-wizard-info {
@@ -1020,10 +1028,11 @@ hr.carved {
   border-radius: 50%;
   height:30px;
   width:30px;
-  position: relative;
+  position: absolute;
 }
 
 .wizard-single-inner-circle {
+  /* content: ' '; */
   position: absolute;
   background: #fbbd19;
   border-radius: 50%;
@@ -1172,7 +1181,8 @@ label {
 }
 
 .arrow_box_top {
-  position: relative;
+  /* position: relative; */
+  position: absolute;
   background: #88b7d5;
   border: 4px solid #c2e1f5;
 }
@@ -1335,11 +1345,15 @@ ul.menu-bar li {
 }
 
 .action-area-title {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .action-area-title legend {
   margin-bottom: 5px;
+}
+
+.modal-header-danger {
+  background: #da4f49;
 }
 
 /* ***** Animations ***** */
@@ -1357,4 +1371,8 @@ ul.menu-bar li {
 
 .highlight{
     background-color: #e6e4cd;
+}
+
+.review-step {
+  margin-bottom: 20px;
 }

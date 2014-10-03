@@ -90,8 +90,8 @@
         <label class="control-label col-lg-2">Composition:</label>
 
         <div class="col-lg-4">
-            <button class="btn btn-info" ng-click="custom=!custom">+</button>
-            <div ng-if="custom">
+            <button class="btn btn-info" ng-click="doc.showComposition=!doc.showComposition">+</button>
+            <div ng-if="doc.showComposition">
                 <div periodic-table doc="doc.properties.composition"></div>
             </div>
         </div>
@@ -131,7 +131,9 @@
 
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
-        <button validation-submit="Sample" type="button" class="btn btn-primary" ng-click="save()">Save</button>
+        <button validation-submit="Sample" type="button" class="btn btn-primary" ng-click="create()">
+            Create
+        </button>
         <button type="button" class="btn btn-danger" ng-click="cancel()">Cancel</button>
     </div>
 </form>

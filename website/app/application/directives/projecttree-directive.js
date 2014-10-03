@@ -1,15 +1,22 @@
 Application.Controllers.controller('ProjectTreeController',
-                                   ["$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStatus",  ProjectTreeController]);
+                                   ["toastr","$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStatus", "provStep", ProjectTreeController]);
 
-function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus) {
+function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus, provStep) {
 
     $scope.addToReview = function(entry, review){
-        review.items.push({'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type});
-        mcapi('/reviews/%', review.id)
-            .success(function (data) {
-                pubsub.send('update-review-items.change');
-            }).put({'items': review.items});
+        var item = {'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type};
+        var index = _.indexOf(review.items, function (each_review) {
+            return each_review.id === item.id;
+        });
+
+        if (index == -1){
+            review.items.push(item);
+            mcapi('/reviews/%', review.id)
+                .success(function (data) {
+                    pubsub.send('update-items.change');
+                }).put({'items': review.items});
+        }
     };
 
     pubsub.waitOn($scope, "project.tree", function (treeVisible) {
@@ -87,11 +94,12 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
     };
 
     $scope.fileSelected = function (entry) {
-        entry.selected = !entry.selected;
-        var channel = projectFiles.channel;
-        if (channel !== null) {
-            pubsub.send(channel, entry);
-        }
+            entry.selected = !entry.selected;
+            var channel = projectFiles.channel;
+            if (channel !== null) {
+                pubsub.send(channel, entry);
+            }
+
     };
 
     $scope.truncateTrail = function (currentTrail, currentItem) {
@@ -127,8 +135,11 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
                         $scope.dir[i]['tags'][$scope.user] = [selected_tag];
                     }
                 }
-            }).post(item2tag);
-        //Sticking tag in the tree
+            }).error(function(e){
+                toastr.error(e.error, 'Error', {
+                    closeButton: true
+                });
+            }) .post(item2tag);
     };
 
     $scope.addReview = function () {
@@ -153,12 +164,31 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
             }).post($scope.review);
     };
 
-    $scope.isReviewActionCurrent = function() {
+    function isReviewActionCurrent() {
         return actionStatus.isCurrentAction($scope.projectID, 'create-review');
+    }
+
+    function isProvenanceFileActive() {
+        if (actionStatus.isCurrentAction($scope.projectID, 'create-provenance')) {
+            var step = provStep.getCurrentStep($scope.projectID);
+            if (step.step == "files") {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $scope.showFileCheckbox = function() {
+        if (isReviewActionCurrent()) {
+            return true;
+        } else if (isProvenanceFileActive()) {
+            return true;
+        }
+
+        return false;
     };
 
     $scope.init = function() {
-        $scope.isActionActive = actionStatus.isCurrentAction;
         $scope.user = User.u();
         $scope.model = {
             new_review: "",
@@ -167,7 +197,6 @@ function ProjectTreeController ($scope, mcapi, projectFiles, pubsub, ProjectPath
         };
 
         $scope.user_tags = User.attr().preferences.tags;
-//        $scope.user_tags = Tags.getUserTags();
         if ($scope.from == 'true') {
             $scope.project = ProjectPath.get_project();
             var currentTrail = ProjectPath.get_trail();

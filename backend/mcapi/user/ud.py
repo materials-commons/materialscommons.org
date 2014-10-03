@@ -296,7 +296,7 @@ def update_df_denorm(process_id):
                 sample_dnorm['process_name'] = process['name']
                 sample_dnorm['project_id'] = process['project']
                 sample_dnorm['file_type'] = 'input'
-                r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
+                r.table('samples_processes_denorm').insert(sample_dnorm).run(g.conn)
         for o in outputs:
             if o['attribute'] == 'file':
                 df_dnorm = {}
@@ -315,7 +315,7 @@ def update_df_denorm(process_id):
                 sample_dnorm['process_name'] = process['name']
                 sample_dnorm['project_id'] = process['project']
                 sample_dnorm['file_type'] = 'output'
-                r.table('samples_denorm').insert(sample_dnorm).run(g.conn)
+                r.table('samples_processes_denorm').insert(sample_dnorm).run(g.conn)
 
 
 def join_sample_projects(old_joins, t_sample_id):

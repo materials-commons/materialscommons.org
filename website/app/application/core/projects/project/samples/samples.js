@@ -1,7 +1,7 @@
 Application.Controllers.controller("projectSamples",
-                                   ["$scope", projectSamples]);
+                                   ["$scope", "$stateParams", projectSamples]);
 
-function projectSamples($scope) {
+function projectSamples($scope, $stateParams) {
     $scope.reportsMenu = [
         {
             title:"In Provenance",
@@ -16,4 +16,5 @@ function projectSamples($scope) {
             action: ""
         }
     ];
+
 }

@@ -57,7 +57,7 @@ function provStep(pubsub) {
                                              template.required_output_files);
             if (next !== "") {
                 return {
-                    stepType: "output",
+                    stepType: "outputs",
                     step: next
                 };
             }
@@ -73,19 +73,35 @@ function provStep(pubsub) {
                                              template.required_input_files);
             if (next !== "") {
                 return {
-                    stepType: "input",
+                    stepType: "inputs",
                     step: next
                 };
             }
 
-            return service._checkFromOutputs(currentStep, template);
+            // No inputs, so return first step from outputs, if any.
+            if (template.output_templates.length > 0) {
+                return {
+                    stepType: "outputs",
+                    step: template.output_templates[0].id
+                };
+            } else if (template.required_output_files) {
+                return {
+                    stepType:"outputs",
+                    step: "files"
+                };
+            } else {
+                return {
+                    stepType: "done",
+                    step: "done"
+                };
+            }
 
         },
 
         nextStep: function(currentType, currentStep, template) {
-            if (currentType == "process" || currentType == "input") {
+            if (currentType == "process" || currentType == "inputs") {
                 return service._checkFromInputs(currentStep, template);
-            } else if (currentType == "output") {
+            } else if (currentType == "outputs") {
                 return service._checkFromOutputs(currentStep, template);
             } else {
                 return {
@@ -103,8 +119,23 @@ function provStep(pubsub) {
         },
 
         setStep: function(project, step) {
+            var onLeave = service.steps[project].onLeave;
+            if (onLeave) {
+                onLeave();
+            }
+            var currentStep = service.steps[project].currentStep;
+            service.steps[project].lastStep = currentStep;
             service.steps[project].currentStep = step;
+            service.steps[project].onLeave = null;
             pubsub.send("provenance.wizard.step");
+        },
+
+        getLastStep: function(project) {
+            return service.steps[project].lastStep;
+        },
+
+        onLeave: function(project, f) {
+            service.steps[project].onLeave = f;
         },
 
         setProjectNextStep: function(project, template) {
@@ -157,9 +188,9 @@ function provStep(pubsub) {
                 return service.steps[project].done;
             case "process":
                 return service.steps[project].process;
-            case "input":
+            case "inputs":
                 return service._isFinishedIOStep(project, "inputSteps", step);
-            case "output":
+            case "outputs":
                 return service._isFinishedIOStep(project, "outputSteps", step);
             default:
                 return false;
@@ -176,9 +207,9 @@ function provStep(pubsub) {
 
         templateForStep: function(template, step) {
             switch (step.stepType) {
-            case "input":
+            case "inputs":
                 return service._findTemplate(template.input_templates, step.step);
-            case "output":
+            case "outputs":
                 return service._findTemplate(template.output_templates, step.step);
             case "process":
                 return false;
@@ -195,11 +226,20 @@ function provStep(pubsub) {
                 outputSteps: [],
                 process: false,
                 done: false,
+                onLeave: null,
+                lastStep: {
+                    stepType: "",
+                    step: ""
+                },
                 currentStep: {
                     stepType: "",
                     step: ""
                 }
             };
+        },
+
+        resetProject: function(project) {
+            service.steps[project] = service._makeStepTracker();
         },
 
         addProject: function(project) {

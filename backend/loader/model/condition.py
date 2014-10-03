@@ -1,5 +1,6 @@
 import rethinkdb as r
 
+
 class Condition(object):
     def __init__(self):
         self.model = dict()

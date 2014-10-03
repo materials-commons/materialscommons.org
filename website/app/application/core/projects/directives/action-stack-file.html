@@ -24,7 +24,18 @@
     <div class="col-lg-3">
         <div class="row">
             <span class="col-lg-6"> <i class="fa fa-tags"/> Tags</span>
-            <a action-stack ng-click="toggleStackAction('tag', 'Create Tag')" class="important"><i class="fa fa-plus"/> Add Tag</a>
+
+            <div class="btn-group">
+                <a data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"/></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="t in user_tags">
+                                            <span><i class="fa" ng-class="'fa-' + t.icon"
+                                                     style="color: {{t.color}}"></i>
+                                                <a ng-click="addTag(file, t)" role="menuItem">{{t.name}}</a>
+                                            </span>
+                    </li>
+                </ul>
+            </div>
             <hr>
             <div class="row">
                 <div ng-repeat="t in file.tags">
@@ -36,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <span class="col-lg-6>" <i class="fa fa-edit"/> Notes</span>
+            <span class="col-lg-6"> <i class="fa fa-edit"/> Notes</span>
             <hr>
             <div class="">
                 <div notes doc="file" type='datafile'></div>

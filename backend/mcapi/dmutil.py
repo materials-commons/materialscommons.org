@@ -4,15 +4,21 @@ import rethinkdb as r
 from flask import g
 from args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
 from mcexceptions import RequiredAttributeException, DatabaseError
+import sys
+
+
+def msg(s):
+    print s
+    sys.stdout.flush()
 
 
 def get_required(what, d):
     if what not in d:
-        print "get_required not found: %s" % (what)
+        msg("get_required not found: %s in %s" % (what, d))
         raise RequiredAttributeException(what)
     val = d[what]
     if val is None:
-        print "get_required attribute value %s is None" % (what)
+        msg("get_required attribute value %s is None in %s" % (what, d))
         raise RequiredAttributeException(what)
     return val
 

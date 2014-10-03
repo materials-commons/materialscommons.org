@@ -1,37 +1,6 @@
 Application.Controllers.controller('Projects',
-                                   ["$scope", "$stateParams", "mcapi", "$state", "watcher",
-                                    "ProjectPath", "pubsub", "model.projects", "$timeout",
-                                    "$rootScope", "Tags", "User",  ProjectsController]);
-function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, ProjectPath, pubsub, Projects, $timeout, $rootScope, Tags, User) {
-    $scope.project_id = $stateParams.id;
-    $scope.model = {
-        action: ''
-    };
-    pubsub.waitOn($scope, 'update_reviews.change', function() {
-        Projects.get($stateParams.id).then(function(project) {
-            $scope.project = project;
-        });
-    });
-    watcher.watch($scope, 'model.action', function (choice) {
-        if (choice === 'prov') {
-            $state.go('projects.provenance');
-        }
-    });
-
-    pubsub.waitOn($scope, 'active-action-close', function() {
-        $scope.activeAction = "closed";
-    });
-
-    $scope.actionActivation = function (action) {
-
-        if (action == $scope.activeAction) {
-            $scope.activeAction = "closed";
-        } else {
-            $scope.activeAction = action;
-        }
-        pubsub.send("active-action", $scope.activeAction);
-    };
-
+                                   ["$scope", "mcapi", "model.projects", ProjectsController]);
+function ProjectsController ($scope, mcapi, Projects) {
     $scope.createProjects = function(){
         if ($scope.model.name === "") {
             return;
@@ -44,8 +13,8 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
             }).post({'name': $scope.model.name});
     };
 
-    $scope.isActiveProject = function(index) {
-        return index === $scope.colors.currentProjectIndex;
+    $scope.isActiveProject = function(id) {
+        return id === $scope.colors.currentProjectID;
     };
 
     $scope.createName = function(name) {
@@ -55,34 +24,14 @@ function ProjectsController ($scope, $stateParams, mcapi, $state, watcher, Proje
         return name;
     };
 
-    function setProjectIndex(project_id, projects) {
-        var i = _.indexOf(projects, function(project) {
-            return project.id == project_id;
-        });
-
-        $scope.colors.setCurrentProjectIndex(i);
-    }
-
     function init() {
-
         $scope.model = {
             name: ''
         };
-        $scope.activeAction = "closed";
-        $scope.from = ProjectPath.get_from();
-        Projects.getList().then(function (projects) {
-            $scope.model = {
-                action: ''
-            };
-            $scope.projects = projects.slice(0,8);
 
-            if (!($stateParams.id)) {
-                $scope.project_id = $scope.projects[0].id;
-            } else {
-                $scope.project_id = $stateParams.id;
-            }
-            setProjectIndex($scope.project_id, projects);
-            $state.go('projects.project.overview', {id: $scope.project_id});
+        Projects.getList().then(function (projects) {
+            $scope.colors.setProjectIDs(projects);
+            $scope.projects = projects.slice(0,8);
         });
     }
     init();

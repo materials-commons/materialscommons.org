@@ -1,4 +1,4 @@
-<div class="row">
+<div  class="row">
     <li><h5 style="text-align: center"><b>Requested</b></h5></li>
     <br>
     <table class="table table-file-directory">
@@ -9,7 +9,7 @@
         <th></th>
         </thead>
         <tbody>
-        <tr ui-sref="projects.project.reviews({id: r.project})" class="cursor-pointer"
+        <tr ui-sref="projects.project.reviews.view({id: r.project})" class="cursor-pointer"
             ng-repeat="r in reviews =(all_reviews | byKey: 'author': user| byKey: 'status': 'open')">
             <td data-toggle="tooltip" title="{{r.title}}">{{createName(r.title)}}<p class="text-muted"
                                                                                     style="font-size: 10px;">By:
@@ -20,7 +20,6 @@
             <td ng-if="r.messages.length != 1"><i class="fa fa-comment"></i> {{r.messages.length-1}}
         </tr>
         </tbody>
-
     </table>
 
     <li><h5 style="text-align: center"><b>To Conduct</b></h5></li>

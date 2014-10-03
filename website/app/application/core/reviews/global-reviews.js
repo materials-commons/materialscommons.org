@@ -1,18 +1,17 @@
-Application.Directives.directive('actionGlobalReviews', actionReviewsDirective);
+Application.Directives.directive('globalReviews', actionReviewsDirective);
 
 function actionReviewsDirective() {
     return {
-        controller: "actionGlobalReviewsController",
+        controller: "globalReviewsController",
         restrict: "A",
-        templateUrl: "application/core/projects/directives/action-stack-global-reviews.html"
+        templateUrl: "application/core/reviews/global-reviews.html"
     };
 }
+Application.Controllers.controller('globalReviewsController',
+    ["$scope","$filter", "User", "model.projects", "pubsub", globalReviewsController]);
 
-Application.Controllers.controller('actionGlobalReviewsController',
-    ["$scope","$filter", "User", "model.projects", "pubsub", actionGlobalReviewsController]);
-
-function actionGlobalReviewsController($scope, $filter,  User, Projects, pubsub) {
-    pubsub.waitOn($scope, "update-open-reviews.change", function () {
+function globalReviewsController($scope, $filter,  User, Projects, pubsub) {
+    pubsub.waitOn($scope, "update-tab-count.change", function () {
         $scope.getAllReviews();
     });
 
@@ -52,6 +51,5 @@ function actionGlobalReviewsController($scope, $filter,  User, Projects, pubsub)
         $scope.user = User.u();
         $scope.getAllReviews();
     }
-
     init();
 }

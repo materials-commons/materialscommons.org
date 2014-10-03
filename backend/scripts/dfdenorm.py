@@ -35,7 +35,7 @@ if __name__ == "__main__":
                     sample_dnorm['process_name'] = process['name']
                     sample_dnorm['project_id'] = process['project']
                     sample_dnorm['file_type'] = 'input'
-                    r.table('samples_denorm').insert(sample_dnorm).run(conn)
+                    r.table('samples_processes_denorm').insert(sample_dnorm).run(conn)
         if outputs == []:
             print 'no outputs'
         else:
@@ -57,4 +57,4 @@ if __name__ == "__main__":
                     sample_dnorm['process_name'] = process['name']
                     sample_dnorm['project_id'] = process['project']
                     sample_dnorm['file_type'] = 'output'
-                    r.table('samples_denorm').insert(sample_dnorm).run(conn)
+                    r.table('samples_processes_denorm').insert(sample_dnorm).run(conn)

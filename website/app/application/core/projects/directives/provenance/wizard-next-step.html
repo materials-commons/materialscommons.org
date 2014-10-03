@@ -1,24 +1,27 @@
 <div wizard-step-process
-     ng-if="step.step == 'process' || showSteps"
-     project="project">
+     ng-if="step.step == 'process'">
 </div>
 
 <div wizard-step-sample
-     ng-if="step.step == 'sample' || showSteps"
-     project="project">
+     ng-if="step.step == 'sample'">
 </div>
 
 <div wizard-step-transform-sample
-     ng-if="step.step == 'transform-sample' || showSteps"
-     project="project">
+     ng-if="step.step == 'transform-sample'">
 </div>
 
 <div wizard-step-files
-     ng-if="step.step === 'files' || showSteps"
-     project="project">
+     ng-if="step.step === 'files' && step.stepType === 'inputs'">
+</div>
+
+<div wizard-step-files
+     ng-if="step.step === 'files' && step.stepType === 'outputs'">
 </div>
 
 <div wizard-step-properties
-     ng-if="showPropertiesStep() || showSteps"
-     project="project">
+     ng-if="showPropertiesStep()">
+</div>
+
+<div wizard-step-done
+     ng-if="step.step === 'done'">
 </div>

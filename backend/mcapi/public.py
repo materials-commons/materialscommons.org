@@ -8,11 +8,7 @@ import dmutil
 from utils import make_password_hash
 import error
 from args import json_as_format_arg
-from mcexceptions import NoSuchItem
-import args
-
 import access
-from os.path import dirname, basename
 
 
 @app.route('/tags')
@@ -113,6 +109,8 @@ def create_user():
             "Unable to create account %s, user already exists" % (email))
 
 
+####function: Tag dataitem/datadir
+####First item2tag join tble record is created and then insert the tag into datadirs_denorm  table
 @app.route('/item/tag/new', methods=['POST'])
 @crossdomain(origin='*')
 @apikey
@@ -126,19 +124,22 @@ def create_item2tag():
     item2tag['user'] = dmutil.get_required('user', j)
     item2tag['tag'] = dmutil.get_required('tag', j)
     fullname = dmutil.get_optional('fullname', j)
+    datadir_id = dmutil.get_optional('datadir_id', j)
     tag_exists = list(r.table('items2tags').get_all(item2tag['item_id'], index='item_id').filter({'user': user, 'tag': item2tag['tag']}).run(g.conn))
     if tag_exists:
         return error.already_exists(
-            "Unable to create %s, Tag already exists" % (item2tag))
+            "Duplicate entry. Tag Already exists")
     else:
         result = dmutil.insert_entry_id('items2tags', item2tag)
         if result:
             item2tag_join = r.table('items2tags').get(result).run(g.conn)
             #update datadir_denorm
-            if item2tag_join['item_type'] == 'datafile': 
+            if item2tag_join['item_type'] == 'datafile':
                 dir_name = dirname(fullname)
                 #print dir_name
                 dir_denorm = list(r.table('datadirs_denorm').get_all(dir_name, index='name').run(g.conn))
+                if dir_denorm == []:
+                    dir_denorm = list(r.table('datadirs_denorm').filter({'datadir_id': datadir_id}).run(g.conn))
                 for each_dir_denorm in dir_denorm:
                     files = each_dir_denorm['datafiles']
                     for each_file in files:
@@ -146,6 +147,7 @@ def create_item2tag():
                             if user in each_file['tags']:
                                 each_file['tags'][user].append({'color': item2tag_join['tag']['color'] ,'name': item2tag_join['tag']['name'], 'icon': item2tag_join['tag']['icon']})
                             else:
+                                print 'no user in tags..'
                                 each_file['tags'] = {user : [{'color': item2tag_join['tag']['color'] ,'name': item2tag_join['tag']['name'], 'icon': item2tag_join['tag']['icon']}]}
                     r.table('datadirs_denorm').get(each_dir_denorm['id']).update({'datafiles': files}).run(g.conn)
             if item2tag_join['item_type'] == 'datadir':
