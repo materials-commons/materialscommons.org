@@ -63,17 +63,17 @@
                     <li ng-class="{ navactive: isActiveStep('reviews') }">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-comment space-right"></i> Reviews <span
-                                ng-controller="actionGlobalReviewsController"
+                                ng-controller="globalReviewsController"
                                 class="badge ng-binding">  {{count}}</span>
                         </a>
                         <div class="dropdown-menu reviews-dropdown">
                             <!--directive-->
-                            <div  class="nav-dropdown-scrollbar" action-global-reviews></div>
+                            <div  class="nav-dropdown-scrollbar" global-reviews></div>
                         </div>
                     </li>
                     <li ng-class="{ navactive: isActiveStep('projects') }">
                         <a ng-click="showStep('projects')"
-                           ui-sref="projects({id:''})"
+                           ui-sref="projects.project.overview({id: firstProjectID})"
                            class="navbar-link">
                             <i class="fa fa-briefcase space-right"></i> Projects
                         </a>
@@ -174,7 +174,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
         <script src="assets/js/angular/angular-strap.min.js"></script>
         <script src="assets/js/angular/angular-ui.js"></script>
-        <script src="assets/js/angular/angular-ui-router.js"></script>
+        <script src="assets/js/angular/angular-ui-router.min.0.2.11.js"></script>
         <script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
@@ -219,7 +219,7 @@
         <script src="application/core/account/templates/templates-controller.js"></script>
 
         <!-- Toolbar reviews -->
-        <script src="application/core/reviews/reviews-controller.js"></script>
+        <script src="application/core/reviews/global-reviews.js"></script>
 
         <!-- Toolbar machines -->
         <script src="application/core/machines/machines-controller.js"></script>
@@ -238,19 +238,21 @@
         <script src="application/core/projects/directives/provenance/wizard-step-sample.js"></script>
         <script src="application/core/projects/directives/provenance/wizard-step-transform-sample.js"></script>
         <script src="application/core/projects/directives/provenance/wizard-step-files.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-step-done.js"></script>
         <script src="application/core/projects/directives/provenance/wizard-step-properties.js"></script>
         <script src="application/core/projects/directives/provenance/wizard-step-process.js"></script>
         <script src="application/core/projects/directives/provenance/wizard-next-step.js"></script>
+        <script src="application/core/projects/directives/provenance/wizard-review-content.js"></script>
+        <script src="application/core/projects/directives/provenance/show-process.js"></script>
+        <script src="application/core/projects/directives/provenance/show-step.js"></script>
+        <script src="application/core/projects/directives/provenance/show-process-runs.js"></script>
+        <script src="application/core/projects/directives/provenance/show-step-sample.js"></script>
+        <script src="application/core/projects/directives/provenance/show-step-files.js"></script>
+        <script src="application/core/projects/directives/provenance/show-step-properties.js"></script>
         <script src="application/core/projects/directives/action-stack-tag.js"></script>
         <script src="application/core/projects/directives/action-stack-todo.js"></script>
-        <script src="application/core/projects/directives/action-stack-show-samples.js"></script>
         <script src="application/core/projects/directives/action-stack-file.js"></script>
-        <script src="application/core/projects/directives/action-stack-show-provenance.js"></script>
-        <script src="application/core/projects/directives/action-stack-show-reviews.js"></script>
-        <script src="application/core/projects/directives/action-stack-global-reviews.js"></script>
         <script src="application/core/projects/directives/action-stack-show-drafts.js"></script>
-        <script src="application/core/projects/directives/action-stack-show-notes.js"></script>
-        <script src="application/core/projects/directives/action-stack-show-settings.js"></script>
         <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
         <script src="application/core/projects/_action-controller.js"></script>
         <script src="application/core/projects/project/project-controller.js"></script>
@@ -261,9 +263,15 @@
         <script src="application/core/projects/project/project-control-bar-directive.js"></script>
         <script src="application/core/projects/project/project-tabs.js"></script>
         <script src="application/core/projects/project/overview/overview.js"></script>
+        <script src="application/core/projects/project/overview/overview-view-controller.js"></script>
+        <script src="application/core/projects/project/overview/overview-permissions-controller.js"></script>
         <script src="application/core/projects/project/files/files.js"></script>
+        <script src="application/core/projects/project/files/files-view-controller.js"></script>
         <script src="application/core/projects/project/samples/samples.js"></script>
+        <script src="application/core/projects/project/samples/sample-view-controller.js"></script>
+        <script src="application/core/projects/project/notes/notes-view-controller.js"></script>
         <script src="application/core/projects/project/provenance/provenance.js"></script>
+        <script src="application/core/projects/project/provenance/provenance-view-controller.js"></script>
         <script src="application/core/projects/project/tab-control-bar.js"></script>
         <script src="application/core/projects/project/action-menu-directive.js"></script>
         <script src="application/core/projects/project/project-description-directive.js"></script>
@@ -273,7 +281,8 @@
         <script src="application/core/projects/project/action/action-create-review.js"></script>
         <script src="application/core/projects/project/action/action-area-button.js"></script>
         <script src="application/core/projects/project/action/action-status-service.js"></script>
-        <script src="application/core/projects/project/reviews/tab-reviews-controller.js"></script>
+        <script src="application/core/projects/project/reviews/reviews-view-controller.js"></script>
+        <script src="application/core/projects/project/reviews/reviews.js"></script>
 
 
         <!-------------------------------- Global directives ------------------------------->
@@ -314,6 +323,7 @@
         <script src="application/services/mcapi-service.js"></script>
         <script src="application/services/project-files-service.js"></script>
         <script src="application/services/provdrafts-service.js"></script>
+        <script src="application/services/draft.js"></script>
         <script src="application/services/date-generate-service.js"></script>
         <script src="application/services/nav-service.js"></script>
         <script src="application/services/materials-service.js"></script>

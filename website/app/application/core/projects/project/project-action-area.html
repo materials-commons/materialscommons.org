@@ -1,5 +1,5 @@
 <div class="row">
-    <div ng-show="isCurrentAction('create-provenance')">
+    <div ng-if="isCurrentAction('create-provenance')">
         <div class="action-area">
             <div class="col-xs-offset-1 col-xs-9 action-area-title">
                 <legend>Create Provenance</legend>
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div ng-show="isCurrentAction('create-sample')">
+    <div ng-if="isCurrentAction('create-sample')">
         <div class="action-area">
             <div class="col-xs-offset-1 col-xs-9 action-area-title">
                 <legend>Create Sample</legend>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div ng-show="isCurrentAction('create-review')">
+    <div ng-if="isCurrentAction('create-review')">
         <div class="action-area">
             <div class="col-xs-offset-1 col-xs-9 action-area-title">
                 <legend>Create Review</legend>
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div ng-show="isCurrentAction('create-note')">
+    <div ng-if="isCurrentAction('create-note')">
         <div class="action-area">
             <div class="col-xs-offset-1 col-xs-9 action-area-title">
                 <legend>Create Note</legend>

@@ -1,0 +1,18 @@
+<h4>Process: {{templateName}} </h4>
+<dl class="dl-horizontal">
+    <dt>Name</dt>
+    <dd>{{process.name}}</dd>
+    <div ng-if="process.description">
+        <dt>Description</dt>
+        <dd>{{process.description}}</dd>
+    </div>
+</dl>
+<div class="col-xs-offset-1">
+    <label>Tags:</label>
+    <display-tags tags="process.tags"></display-tags>
+</div>
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-6">
+        <show-process-runs runs="process.runs"></show-process-runs>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <div ng-controller="projectsProject">
-    <project-control-bar project-id="{{project_id}}"></project-control-bar>
+    <project-control-bar project-id="{{project.id}}"></project-control-bar>
     <div class="row">
         <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
         <div class="col-xs-2 sideboard" style="padding-top: 5px">
@@ -12,11 +12,6 @@
                     <project-search-bar project="project"></project-search-bar>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-offset-1">
-
-                </div>
-            </div>
             <div style="padding-top: 3px">
                 <project-action-area project="project"></project-action-area>
                 <div id="action-stack" class="row">
@@ -26,9 +21,9 @@
                 </div>
             </div>
             <div class="row">
-                <project-tree project="{{ project_id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>
+                <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>
                 <div class="row">
-                    <project-description project-id="{{project_id}}"></project-description>
+                    <project-description project-id="{{project.id}}"></project-description>
                 </div>
             </div>
         </div>

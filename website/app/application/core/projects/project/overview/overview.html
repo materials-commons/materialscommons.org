@@ -8,7 +8,7 @@
                             <i class="fa fa-bars"></i> Details
                         </a>
                     </li>
-                    <li>
+                    <li ui-sref="projects.project.overview.permissions">
                         <a class="action-link project-sub-action">
                             <i class="fa fa-group"></i> Permissions
                         </a>
@@ -34,7 +34,7 @@
     </tab-control-bar>
     <div class="row">
         <div class="col-xs-offset-3">
-            <ul class="list-inline">
+            <ul class="list-inline menu-bar">
                 <li>
                     <span>
                         <i class="fa fa-users"/>
@@ -67,6 +67,7 @@
             </ul>
         </div>
     </div>
+    <div ui-view></div>
     <!-- Modal for contributors -->
     <div class="modal fade" id="contributors" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
          aria-hidden="true">

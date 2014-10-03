@@ -1,59 +1,125 @@
-<div ng-show="template" class="col-lg-offset-4">
-    <h4>{{template.template_name}}</h4>
-    <!-- <div class="row">
-    <div class="col-lg-offset-1">
-    <div class="wizard-single-outer-circle">
-    <div class="wizard-single-inner-circle"></div>
-    </div>
-    </div>
-    </div> -->
-</div>
-
-<div ng-class="{'col-lg-offset-1': offsetSteps()}">
+<div class="col-xs-offset-2">
     <div class="row bs-wizard" style="border-bottom:0;">
-
-        <div class="col-xs-2 bs-wizard-step complete"
-             ng-repeat="t in template.input_templates">
-            <div class="text-center bs-wizard-stepnum">(I) {{t.template_name}}</div>
+        <div ng-show="template" class="col-xs-1 bs-wizard-step complete">
+            <div class="bs-wizard-stepnum text-center">&nbsp;</div>
             <div class="progress">
                 <div class="progress-bar">
                 </div>
             </div>
-            <a href="#" class="bs-wizard-dot"
-               ng-style="{background: currentProjectColorLight, 'background-color': currentProjectColor}"></a>
-            <div class="bs-wizard-info text-center"></div>
-            <div ng-show="showOverview">
-                <wizard-step-overview template="t"></wizard-step-overview>
+            <a ng-click="gotoStep('process', 'process')"
+               class="bs-wizard-dot"
+               ng-style="getStyle('process', 'process')">
+            </a>
+            <div class="text-center"
+                 ng-class="getStepNameClass('process', 'process')"
+                 style="word-wrap:break-word; margin-right: 2px;">
+                {{template.template_name}}
             </div>
         </div>
 
-        <div ng-if="template.required_input_files" class="col-xs-2 bs-wizard-step complete">
-            <div class="text-center bs-wizard-stepnum">(I) Files</div>
-            <div class="progress"><div class="progress-bar"></div></div>
-            <a href="#" class="bs-wizard-dot"></a>
-            <div class="bs-wizard-info text-center"></div>
+        <div class="col-xs-1 bs-wizard-step complete"
+             ng-repeat="t in template.input_templates" ng-init="inputCount = template.input_templates.length">
+            <div ng-if="showOverview && $index%2 === 0">
+                <wizard-step-overview template="t"
+                                      direction="top">
+                </wizard-step-overview>
+            </div>
+            <div class="bs-wizard-stepnum text-center">&nbsp;</div>
+            <div class="progress">
+                <div class="progress-bar">
+                </div>
+            </div>
+            <a ng-click="gotoStep('inputs', t.id)"
+               class="bs-wizard-dot"
+               ng-style="getStyle('inputs', t.id)">
+            </a>
+            <div class="text-center"
+                 ng-class="getStepNameClass('inputs', t.id)"
+                 style="word-wrap:break-word; margin-right: 2px;">
+                (I) {{t.template_name}}
+            </div>
+            <div ng-if="showOverview && $index%2 === 1">
+                <wizard-step-overview template="t"
+                                      direction="bottom">
+                </wizard-step-overview>
+            </div>
         </div>
 
-        <div class="col-xs-2 bs-wizard-step complete"
+        <div ng-if="template.required_input_files" class="col-xs-1 bs-wizard-step complete">
+            <div class="bs-wizard-stepnum text-center">&nbsp;</div>
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+            <a ng-click="gotoStep('inputs', 'files')"
+               class="bs-wizard-dot"
+               ng-style="getStyle('inputs', 'files')">
+            </a>
+            <div class="text-center"
+                 ng-class="getStepNameClass('inputs', 'files')"
+                 style="word-wrap:break-word; margin-right: 2px;">
+                (I) Files
+            </div>
+        </div>
+
+        <div class="col-xs-1 bs-wizard-step complete"
              ng-repeat="t in template.output_templates">
-            <div class="text-center bs-wizard-stepnum">(O) {{t.template_name}}</div>
+            <div ng-show="showOverview && ($index + inputCount)%2 === 0">
+                <wizard-step-overview template="t"
+                                      direction="top">
+                </wizard-step-overview>
+            </div>
+            <div class="bs-wizard-stepnum text-center">&nbsp;</div>
             <div class="progress">
                 <div class="progress-bar">
                 </div>
             </div>
-            <a href="#" class="bs-wizard-dot"
-               ng-style="{background: currentProjectColorLight, 'background-color': currentProjectColor}"></a>
-            <div class="bs-wizard-info text-center"></div>
-            <div ng-show="showOverview">
-                <wizard-step-overview template="t"></wizard-step-overview>
+            <a ng-click="gotoStep('outputs', t.id)"
+               class="bs-wizard-dot"
+               ng-style="getStyle('outputs', t.id)">
+            </a>
+            <div class="text-center"
+                 ng-class="getStepNameClass('outputs', t.id)"
+                 style="word-wrap:break-word; margin-right: 2px;">
+                (O) {{t.template_name}}
+            </div>
+            <div ng-show="showOverview && ($index + inputCount)%2 === 1">
+                <wizard-step-overview template="t"
+                                      direction="bottom">
+                </wizard-step-overview>
             </div>
         </div>
 
-        <div ng-if="template.required_output_files" class="col-xs-2 bs-wizard-step complete">
-            <div class="text-center bs-wizard-stepnum">(O) Files</div>
-            <div class="progress"><div class="progress-bar"></div></div>
-            <a href="#" class="bs-wizard-dot"></a>
-            <div class="bs-wizard-info text-center"></div>
+        <div ng-if="template.required_output_files" class="col-xs-1 bs-wizard-step complete">
+            <div class="bs-wizard-stepnum text-center">&nbsp;</div>
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+            <a ng-click="gotoStep('outputs', 'files')"
+               class="bs-wizard-dot"
+               ng-style="getStyle('outputs', 'files')">
+            </a>
+            <div class="text-center"
+                 ng-class="getStepNameClass('outputs', 'files')"
+                 style="word-wrap:break-word; margin-right: 2px;">
+                (O) Files
+            </div>
+        </div>
+
+        <div ng-show="template" class="col-xs-1 bs-wizard-step complete">
+            <div class="bs-wizard-stepnum text-center">&nbsp;</div>
+            <div class="progress">
+                <div class="progress-bar">
+                </div>
+            </div>
+            <a ng-click="gotoStep('done', 'done')"
+               class="bs-wizard-dot"
+               ng-style="getStyle('done', 'done')">
+            </a>
+            <div class="text-center"
+                 ng-class="getStepNameClass('done', 'done')"
+                 style="word-wrap:break-word; margin-right: 2px;">
+                Done
+            </div>
         </div>
     </div>
 </div>

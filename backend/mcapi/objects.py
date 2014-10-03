@@ -11,6 +11,23 @@ from os.path import dirname
 import error
 
 
+def getProcessesandProjects(object_id):
+    processes = list(r.table('processes2samples').get_all(object_id, index='sample_id').run(g.conn))
+    projects =  list(r.table('projects2samples').filter({'sample_id': object_id}).run(g.conn))
+    return processes, projects
+
+
+@app.route('/objects/<object_id>', methods=['GET'])
+@jsonp
+def get_object(object_id):
+    final_obj = dict()
+    rr = r.table('samples').get(object_id)
+    selection = rr.run(g.conn, time_format='raw')
+    final_obj["sample"] = selection
+    final_obj["processes"], final_obj['projects'] = getProcessesandProjects(object_id)
+    return args.json_as_format_arg(final_obj)
+    
+
 @app.route('/objects', methods=['GET'])
 @jsonp
 def get_all_objects():
@@ -35,11 +52,6 @@ def get_objects_user(user):
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
-
-@app.route('/objects/<object_id>', methods=['GET'])
-@jsonp
-def get_object(object_id):
-    return dmutil.get_single_from_table('samples', object_id)
 
 @app.route('/objects/update/<object_id>', methods=['PUT'])
 @apikey
@@ -101,7 +113,6 @@ def create_object():
 
 
 def _join_sample_projects(projects, sample_id):
-    print projects
     for p in projects:
         r.table('projects2samples').insert({'sample_id': sample_id, 'project_id': p['id'], 'project_name': p['name']}).run(g.conn)
 
@@ -172,9 +183,11 @@ def sample_tree(project_id):
     for samp in samples:
         sitem = SItem(samp['id'], samp['name'], samp['path'], samp['owner'])
         sitem.level = sitem.path.count('/')
+        sitem.numofchildren = 0
         if sitem.path in all_samples:
             existing_sitem = all_samples[sitem.path]
             sitem.children = existing_sitem.children
+            sitem.numofchildren = len(sitem.children)
         all_samples[sitem.path] = sitem
         if sitem.level == 0:
             top_level_samples.append(sitem)
@@ -182,8 +195,10 @@ def sample_tree(project_id):
         if parent_name in all_samples:
             parent = all_samples[parent_name]
             parent.children.append(sitem)
+            parent.numofchildren = len(parent.children)
         else:
             parent = SItem('', parent_name, '', '')
             parent.children.append(sitem)
+            parent.numofchildren = len(parent.children)
             all_samples[parent_name] = parent
     return json.dumps(top_level_samples, cls=DEncoder2)

@@ -1,6 +1,6 @@
-Application.Services.factory('actionStatus', actionStatusService);
+Application.Services.factory('actionStatus', [actionStatusService]);
 
-function actionStatusService() {
+function actionStatusService(pubsub) {
     var service = {
         actions: {},
         currentAction: {},
@@ -14,7 +14,8 @@ function actionStatusService() {
         _newAction: function(name) {
             return {
                 name: name,
-                active: false
+                active: false,
+                state: null
             };
         },
 
@@ -33,6 +34,29 @@ function actionStatusService() {
             return service.currentAction[project] === action;
         },
 
+        getCurrentActionState: function(project) {
+            var action = service.currentAction[project];
+            return service.actions[project][action].state;
+        },
+
+        setActionState: function(project, action, state) {
+            service.actions[project][action].state = state;
+        },
+
+        setCurrentActionState: function(project, state) {
+            var action = service.currentAction[project];
+            service.setActionState(project, action, state);
+        },
+
+        clearActionState: function(project, action) {
+            service.actions[project][action].state = null;
+        },
+
+        clearCurrentActionState: function(project) {
+            var action = service.currentAction[project];
+            service.clearActionState(project, action);
+        },
+
         _setCurrentAction: function(project, action) {
             service.currentAction[project] = action;
         },
@@ -47,6 +71,11 @@ function actionStatusService() {
             if (setActionTo !== "" && (!service.actions[project][action].active)) {
                 service.actions[project][action].active = true;
             }
+        },
+
+        toggleCurrentAction: function(project) {
+            var action = service.currentAction[project];
+            service.toggleAction(project, action);
         },
 
         setActionInactive: function(project, action) {

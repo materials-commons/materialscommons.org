@@ -3,6 +3,8 @@ Application.Services.factory('projectColors', [projectColorsService]);
 function projectColorsService() {
     var service = {
 
+        projectIDs: [],
+
         projectColors: [
             "#4a7a93",
             "#816c5b",
@@ -28,10 +30,16 @@ function projectColorsService() {
         inactiveColor: "#536170",
 
         currentProjectIndex: 0,
+        currentProjectID: 0,
 
         setCurrentProjectIndex: function(index) {
-            //console.log("setting index to " + index);
             service.currentProjectIndex = index;
+            service.currentProjectID = service.projectIDs[index];
+        },
+
+        setCurrentProjectByID: function(id) {
+            var i = _.indexOf(service.projectIDs, id);
+            service.setCurrentProjectIndex(i);
         },
 
         getCurrentProjectColorClass: function() {
@@ -70,6 +78,14 @@ function projectColorsService() {
             return {
                 background: service.projectColorsLight[index]
             };
+        },
+
+        setProjectIDs: function(projects) {
+            service.projectIds = [];
+            for (var i = 0; i < projects.length; i++) {
+                service.projectIDs.push(projects[i].id);
+            }
+            service.currentProjectID = projects[0].id;
         }
     };
 

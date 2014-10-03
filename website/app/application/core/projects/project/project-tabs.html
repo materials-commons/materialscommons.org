@@ -1,18 +1,16 @@
 <ul class="nav nav-tabs" role="tablist" style="border-bottom: 0px;">
     <li ng-repeat="tab in tabs" style="border-bottom: 0px;">
-        <a ui-sref="projects.project.{{tab.id}}"
-           ng-click="setActiveTab(tab.id)"
-           style="border-bottom: 0px;"
-           ng-style="isActiveTab(tab.id) && getActiveStyle() || !isActiveTab(tab.id) && getInactiveStyle()">
-            <i class="fa" ng-class="tab.icon"></i> {{tab.name}}
+            <a ui-sref="projects.project.{{tab.id}}.{{tab.defaulttab}}"
+               ng-click="setActiveTab(tab.id)"
+               style="border-bottom: 0px;"
+               ng-style="isActiveTab(tab.id) && getActiveStyle() || !isActiveTab(tab.id) && getInactiveStyle()">
+                <i class="fa" ng-class="tab.icon"></i> {{tab.name}}
             <span ng-show="tab.hasCount"
                   class="badge"
                   ng-class="{'badge-light': !isActiveTab(tab.id)}">
                 {{tab.count}}
             </span>
-        </a>
+            </a>
     </li>
 </ul>
-<div ui-view>
-
-</div>
+<div ui-view></div>

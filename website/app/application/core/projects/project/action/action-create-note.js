@@ -12,18 +12,30 @@ function actionCreateNote() {
 }
 
 Application.Controllers.controller('actionCreateNoteController',
-                                   ["$scope", "User", "toastr", actionCreateNoteController]);
+                                   ["$scope", "User", "toastr","pubsub","actionStatus", "model.projects", actionCreateNoteController]);
 
-function actionCreateNoteController($scope, User, toastr) {
-
-    $scope.model = {
-        note: ""
-    };
+function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, Projects) {
+    var state = actionStatus.getCurrentActionState($scope.project.id);
+    if (state) {
+        $scope.model = state;
+    } else {
+        $scope.model = {
+            note: ""
+        };
+        actionStatus.setCurrentActionState($scope.project.id, $scope.model);
+    }
 
     function saveNote() {
         $scope.project.put(User.keyparam()).then(function() {
             $scope.model.note = "";
-            //$scope.toggleStackAction('create-note', 'Create Note (c n)');
+            Projects.getList(true).then(function (projects) {
+                Projects.get($scope.project.id).then(function (project) {
+                    $scope.project = project;
+                    pubsub.send('update-tab-count.change');
+                    actionStatus.clearCurrentActionState($scope.project.id);
+                    actionStatus.toggleCurrentAction($scope.project.id);
+                });
+            });
         }, function(reason){
             toastr.error(reason.data.error, 'Error', {
                 closeButton: true
@@ -31,7 +43,12 @@ function actionCreateNoteController($scope, User, toastr) {
         });
     }
 
-    $scope.addNote = function () {
+    $scope.cancel = function() {
+        actionStatus.clearCurrentActionState($scope.project.id);
+        actionStatus.toggleCurrentAction($scope.project.id);
+    };
+
+    $scope.create = function () {
         $scope.project.notes.push({
             'message': $scope.model.note,
             'who': User.u(),

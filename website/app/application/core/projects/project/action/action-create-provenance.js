@@ -14,123 +14,70 @@ function actionCreateProvenance() {
 Application.Controllers.controller('actionCreateProvenanceController',
                                    ["$scope", "$stateParams", "model.templates",
                                     "model.projects", "User", "$filter", "provStep",
-                                    actionCreateProvenanceController]);
+                                    "actionStatus", "draft", actionCreateProvenanceController]);
 
 function actionCreateProvenanceController($scope, $stateParams, templates, projects,
-                                          User, $filter, provStep) {
-
-    function setupCurrentDraft() {
-        $scope.project.currentDraft.process = {
-            name: "",
-            description: "",
-            run_dates: [],
-            notes: [],
-            tags: [],
-            custom_properties:{},
-            stepType: "process",
-            currentStep: "process",
-            additional_properties: {}
-        };
-
-        $scope.project.currentDraft.inputs = {};
-        $scope.project.currentDraft.outputs = {};
-        $scope.project.selectedTemplate.input_templates.forEach(function(t) {
-            $scope.project.currentDraft.inputs[t.id] = {};
-            $scope.project.currentDraft.inputs[t.id].properties = {};
-            $scope.project.currentDraft.inputs[t.id].custom_properties = {};
-            $scope.project.currentDraft.inputs[t.id].additional_properties = {};
-            t.default_properties.forEach(function(p) {
-                $scope.project.currentDraft.inputs[t.id].properties[p.attribute] = {
-                    value: "",
-                    unit: ""
-                };
-            });
-            if (t.template_pick == "pick_sample") {
-                $scope.project.currentDraft.inputs[t.id].properties.sample = {
-                    id: "",
-                    value: "",
-                    unit: "n/a"
-                };
-            }
-        });
-
-        if ($scope.project.selectedTemplate.required_input_files) {
-            $scope.project.currentDraft.inputs["files"] = [];
-        }
-
-        $scope.project.selectedTemplate.output_templates.forEach(function(t) {
-            $scope.project.currentDraft.outputs[t.id] = {};
-            $scope.project.currentDraft.outputs[t.id].properties = {};
-            $scope.project.currentDraft.outputs[t.id].custom_properties = {};
-            $scope.project.currentDraft.outputs[t.id].additional_properties = {};
-            t.default_properties.forEach(function(p) {
-                $scope.project.currentDraft.outputs[t.id].properties[p.attribute] = {
-                    value: "",
-                    unit: ""
-                };
-            });
-            if (t.template_pick == "pick_sample") {
-                $scope.project.currentDraft.outputs[t.id].properties.sample = {
-                    value: "",
-                    unit: "n/a"
-                };
-            }
-        });
-
-        if ($scope.project.selectedTemplate.required_input_files) {
-            $scope.project.currentDraft.outputs["files"] = [];
-        }
-    }
-
+                                          User, $filter, provStep, actionStatus, draft) {
     $scope.start = function() {
-        var templateName = $scope.project.selectedTemplate.template_name;
+        var templateName = $scope.wizardState.selectedTemplate.template_name;
         var title = "Wizard Process Step (" + templateName + ")";
-        setupCurrentDraft();
-        $scope.showChooseProcess = false;
-        provStep.setStep($scope.project.id, provStep.makeStep("process", "process"));
+        $scope.wizardState.currentDraft = draft.createProvenance($scope.wizardState.selectedTemplate, $stateParams.id);
+        $scope.wizardState.showChooseProcess = false;
+        provStep.setStep($scope.wizardState.project.id, provStep.makeStep("process", "process"));
     };
 
     $scope.cancel = function() {
-        $scope.wizard.showOverview = false;
-        $scope.toggleStackAction('create-provenance');
+        var projectID = $scope.wizardState.project.id;
+        actionStatus.clearCurrentActionState(projectID);
+        provStep.resetProject(projectID);
+        actionStatus.toggleCurrentAction(projectID);
     };
 
-    function init() {
-        templates.getList().then(function(templates) {
-            $scope.templates = $filter('byKey')(templates, 'template_type', 'process');
+    templates.getList().then(function(templates) {
+        $scope.templates = $filter('byKey')(templates, 'template_type', 'process');
 
-            // Set the category name for sorting purposes
-            $scope.templates.forEach(function(template) {
-                template.category = "Process - " + template.category;
+        // Set the category name for sorting purposes
+        $scope.templates.forEach(function(template) {
+            template.category = "Process - " + template.category;
+        });
+        // Add the preferred templates
+        if (User.attr().preferences.templates.length !== 0) {
+            User.attr().preferences.templates.forEach(function(t) {
+                var template = $filter('byKey')(templates, 'id', t.id);
+                var preferred;
+                if (template) {
+                    preferred = angular.copy(template[0]);
+                    preferred.category = "Preferred";
+                    $scope.templates.push(preferred);
+                }
             });
-            // Add the preferred templates
-            if (User.attr().preferences.templates.length !== 0) {
-                User.attr().preferences.templates.forEach(function(t) {
-                    var template = $filter('byKey')(templates, 'id', t.id);
-                    var preferred;
-                    if (template) {
-                        preferred = angular.copy(template[0]);
-                        preferred.category = "Preferred";
-                        $scope.templates.push(preferred);
-                    }
-                });
+        }
+    });
+
+    projects.get($stateParams.id).then(function(project) {
+        var state = actionStatus.getCurrentActionState(project.id);
+        var step = provStep.getCurrentStep(project.id);
+        if (state) {
+            $scope.wizardState = state;
+            $scope.wizardState.project = project;
+            // Take us back to the last step.
+            if (state.step !== null) {
+                provStep.setStep(project.id, state.step);
+            } else {
+                provStep.setStep(project.id, step);
             }
-        });
-
-        projects.get($stateParams.id).then(function(project) {
-            $scope.project = project;
-            $scope.project.selectedTemplate = "";
-            $scope.project.currentDraft = {
+        } else {
+            $scope.wizardState = {
+                project: project,
+                showOverview: false,
+                keepStepsOpen: false,
+                reviewContent: false,
+                step: null,
+                currentDraft: null,
+                selectedTemplate: null,
+                showChooseProcess: true
             };
-        });
-
-        $scope.showChooseProcess = true;
-
-        $scope.wizard = {
-            showOverview: false,
-            keepStepsOpen: false
-        };
-    }
-
-    init();
+            actionStatus.setCurrentActionState(project.id, $scope.wizardState);
+        }
+    });
 }
