@@ -94,8 +94,10 @@
     </div>
     <div class="form-group">
         <label class="control-label col-lg-2">Composition:</label>
+
         <div class="col-lg-4">
-            <select style="margin-bottom: 5px;" class="form-control" ui-select2="{placeholder: 'Select Element', allowClear: true}"
+            <select style="margin-bottom: 5px;" class="form-control"
+                    ui-select2="{placeholder: 'Select Element', allowClear: true}"
                     ng-multiple="false"
                     ng-model="bk.element_name">
                 <option value=""></option>
@@ -105,6 +107,7 @@
     </div>
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
+
         <div class="col-lg-2">
             <input type="radio"
                    value="at%" ng-model="doc.properties.composition.unit"/>
@@ -117,16 +120,17 @@
             <input placeholder="value..." class="form-control" ng-model="bk.element_value">
         </div>
         <div class="col-lg-1">
-            <button ng-click="addComposition()" class="btn btn-info">add</button>
+            <button ng-click="addComposition()" class="btn btn-default">add</button>
         </div>
-       </div>
+    </div>
 
     <div class="form-group">
         <div class="col-lg-offset-2">
             <div class="col-lg-3" ng-if="doc.properties.composition.value.length!==0">
-                <ul class="list-group" >
-                    <li class="list-group-item list-group-item-success" ng-repeat="e in doc.properties.composition.value">{{e.element}} - {{e.value}}
-                        <a ng-click="removeComposition($index)"style="float: right">X</a></li>
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success"
+                        ng-repeat="e in doc.properties.composition.value">{{e.element}} - {{e.value}}
+                        <a ng-click="removeComposition($index)" style="float: right">X</a></li>
                 </ul>
             </div>
         </div>
@@ -154,9 +158,8 @@
     <!--</div>-->
     <div class="form-group">
         <label class="control-label col-lg-2">Projects:</label>
-
-        <div class="col-lg-4">
-            <div ng-show="doc.projects.length !==0 " class="col-lg-8">
+        <div class="col-lg-2">
+            <div ng-show="doc.projects.length !==0 ">
                 <table class="table table-striped mc-table-hover table-condensed mc-table">
                     <thead>
                     <tr>
@@ -177,15 +180,22 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-2"></label>
+        <div class="col-lg-2">
             <select class="form-control" ng-model="bk.selected_project"
                     ng-options="pr.name for pr in projects">
             </select>
+        </div>
+        <div class="col-lg-1">
             <button class="btn btn-default" ng-click="populateProjects()">Add Project
             </button>
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group"> <br>
         <label class="control-label col-lg-2"></label>
         <button validation-submit="Sample" type="button" class="btn btn-primary" ng-click="create()">
             Create
