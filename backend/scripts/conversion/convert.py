@@ -349,7 +349,7 @@ def main(conn, mcdir):
     convert_groups(conn)
     add_preferences(conn)
     add_usesid(conn)
-    add_mediatypes(conn, mcdir)
+    #add_mediatypes(conn, mcdir)
     cleanup_samples(conn)
     add_shares_to_projects(conn)
     add_tags(conn)
