@@ -92,41 +92,35 @@
             </div>
         </div>
     </div>
-
-
     <div class="form-group">
         <label class="control-label col-lg-2">Composition:</label>
-
         <div class="col-lg-4">
-            <select class="form-control" ui-select2="{placeholder: 'Select Element', allowClear: true}"
+            <select style="margin-bottom: 5px;" class="form-control" ui-select2="{placeholder: 'Select Element', allowClear: true}"
                     ng-multiple="false"
                     ng-model="bk.element_name">
                 <option value=""></option>
                 <option ng-repeat="ele in elements" value="{{ele.name}}">{{ele.name}} - {{ele.full_name}}</option>
             </select>
-
-        </div>
-        <label class="control-label col-xs-1">Value:</label>
-
-        <div class="col-lg-1">
-            <input class="form-control" ng-model="bk.element_value">
-        </div>
-        <div class="col-lg-1">
-            <button ng-click="addComposition()" class="btn btn-info">add</button>
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
-
-        <div class="col-lg-3">
+        <div class="col-lg-2">
             <input type="radio"
                    value="at%" ng-model="doc.properties.composition.unit"/>
-            atomic % <br>
+            atomic %
             <input type="radio"
                    value="wt%" ng-model="doc.properties.composition.unit"/>
             weight %
         </div>
-    </div>
+        <div class="col-lg-1">
+            <input placeholder="value..." class="form-control" ng-model="bk.element_value">
+        </div>
+        <div class="col-lg-1">
+            <button ng-click="addComposition()" class="btn btn-info">add</button>
+        </div>
+       </div>
+
     <div class="form-group">
         <div class="col-lg-offset-2">
             <div class="col-lg-3" ng-if="doc.properties.composition.value.length!==0">
@@ -136,8 +130,6 @@
                 </ul>
             </div>
         </div>
-
-
     </div>
 
     <!--<div class="col-lg-4">-->
