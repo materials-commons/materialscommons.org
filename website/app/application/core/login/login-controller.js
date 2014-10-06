@@ -9,7 +9,9 @@ Application.Controllers.controller('login',
                         Nav.setActiveNav('home');
                         projects.clear();
                         projectFiles.clear();
-                        $state.transitionTo('projects');
+                        projects.getList().then(function(projects) {
+                            $state.go('projects.project.overview', {id: projects[0].id});
+                        });
                     })
                     .error(function (data) {
                         alertService.sendMessage(data.error);

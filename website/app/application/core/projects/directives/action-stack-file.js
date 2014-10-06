@@ -47,6 +47,7 @@ function actionFileController(toastr, $scope, mcapi, ProjectPath, User, projectF
             }).post(item2tag);
         //Sticking tag in the tree
     };
+
     function init() {
         $scope.id = $scope.args;
         $scope.user = User.u();
@@ -63,7 +64,10 @@ function actionFileController(toastr, $scope, mcapi, ProjectPath, User, projectF
                 $scope.fileType = "other";
                 if (isImage($scope.file.name)) {
                     $scope.fileType = "image";
+                } else if (_.str.endsWith($scope.file.name, "pdf")) {
+                    $scope.fileType = "pdf";
                 }
+
                 $scope.fileSrc = "datafiles/static/" + $scope.file.id + "?apikey=" + User.apikey();
                 $scope.originalFileSrc = "datafiles/static/" + $scope.file.id + "?apikey=" + User.apikey() + "&download=true";
             }).jsonp();

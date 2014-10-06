@@ -1,6 +1,6 @@
 <div ng-if="properties.length !== 0">
     <form class="form-horizontal" role="form">
-        <div class="form-group" ng-repeat="property in properties | byKey:'required':true">
+        <div class="form-group" ng-repeat="property in properties">
             <label class="col-sm-3 control-label">{{property.name}}:
                 <span ng-if="property.required">
                     <i class="fa fa-asterisk"></i>
