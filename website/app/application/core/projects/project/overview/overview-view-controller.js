@@ -5,7 +5,6 @@ function projectOverviewView($scope, Projects,$stateParams, mcapi, $filter, pubs
     function init(){
         Projects.get($stateParams.id).then(function(project) {
             $scope.project = project;
-            console.dir($scope.project);
         });
 
     }
