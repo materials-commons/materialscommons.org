@@ -191,6 +191,7 @@ def build_tree(datadirs):
             dfitem.c_id = next_id
             next_id = next_id + 1
             dfitem.tags = df['tags']
+            dfitem.mediatype = df['mediatype']
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:

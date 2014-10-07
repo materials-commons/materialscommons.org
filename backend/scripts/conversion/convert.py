@@ -109,7 +109,9 @@ def add_tags(conn):
                                   .update({'tags': {}}).run(conn)
         files = item['datafiles']
         for file in files:
+            df = r.table('datafiles').get(file['id']).run(conn)
             file['tags'] = {}
+            file['mediatype'] = df['mediatype']['mime']
         r.table('datadirs_denorm').get(item['id'])\
                                   .update({'datafiles': files}).run(conn)
     msg("Done...")
@@ -343,20 +345,24 @@ def associate_samples_to_projects(conn):
         sample7 = r.table('samples').get('6f36b073-f6a3-4316-a0a4-d222f48ca004').update({'project_id': project7['id']}).run(conn)
         rr7 = r.table('projects2samples').insert({'project_id': project7['id'], 'project_name': project7['name'], 'sample_id': '6f36b073-f6a3-4316-a0a4-d222f48ca004'}).run(conn)
 
+def add_mediatype_to_datadirs_denorm(conn):
+    
+    pass
+
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    convert_groups(conn)
-    add_preferences(conn)
-    add_usesid(conn)
+    #convert_groups(conn)
+    #add_preferences(conn)
+    #add_usesid(conn)
     #add_mediatypes(conn, mcdir)
-    cleanup_samples(conn)
-    add_shares_to_projects(conn)
+    #cleanup_samples(conn)
+    #add_shares_to_projects(conn)
     add_tags(conn)
-    add_default_tags(conn)
-    add_todos(conn)
-    move_samples_denorm(conn)
-    associate_samples_to_projects(conn)
+    #add_default_tags(conn)
+    #add_todos(conn)
+    #move_samples_denorm(conn)
+    #associate_samples_to_projects(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
