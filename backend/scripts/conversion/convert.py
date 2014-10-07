@@ -312,51 +312,172 @@ def drop_unused_tables(conn):
 
 
 def associate_samples_to_projects(conn):
-    project1 = r.table('projects').get('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185').run(conn)
-    if project1:
+    proj = r.table('projects').get('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185')\
+                              .run(conn)
+    if proj:
         msg("project 1....")
-        sample1 = r.table('samples').get('9f40aec6-407a-41fd-a8e3-4589546526e3').update({'project_id': project1['id']}).run(conn)
-        r.table('projects2samples').insert({'project_id': project1['id'], 'project_name': project1['name'], 'sample_id': '9f40aec6-407a-41fd-a8e3-4589546526e3'}).run(conn)
+        r.table('samples').get('9f40aec6-407a-41fd-a8e3-4589546526e3')\
+                          .update({'project_id': proj['id']}).run(conn)
+        r.table('projects2samples').insert({
+            'project_id': proj['id'],
+            'project_name': proj['name'],
+            'sample_id': '9f40aec6-407a-41fd-a8e3-4589546526e3'
+        }).run(conn)
 
-    project2 = r.table('projects').get('39f5ae68-5155-4646-8adb-c7244ba95a14').run(conn)
-    if project2:
+    proj = r.table('projects').get('39f5ae68-5155-4646-8adb-c7244ba95a14')\
+                              .run(conn)
+    if proj:
         msg("project 2....")
-        sample2 = r.table('samples').get('a6671de2-e54a-4763-a600-edd9a8550fc9').update({'project_id': project2['id']}).run(conn)
-        rr2 = r.table('projects2samples').insert({'project_id': project2['id'], 'project_name': project2['name'], 'sample_id': 'a6671de2-e54a-4763-a600-edd9a8550fc9'}).run(conn)
+        r.table('samples').get('a6671de2-e54a-4763-a600-edd9a8550fc9').update({
+            'project_id': proj['id']
+        }).run(conn)
+        r.table('projects2samples').insert({
+            'project_id': proj['id'],
+            'project_name': proj['name'],
+            'sample_id': 'a6671de2-e54a-4763-a600-edd9a8550fc9'
+        }).run(conn)
 
-    project3 = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb').run(conn)
-    if project3:
+    proj = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb')\
+                              .run(conn)
+    if proj:
         msg("project 3....")
-        sample3 = r.table('samples').get('ca6798bc-cb26-4e45-8c1a-48f37adae576').update({'project_id': project3['id']}).run(conn)
-        rr3 = r.table('projects2samples').insert({'project_id': project3['id'], 'project_name': project3['name'], 'sample_id': 'ca6798bc-cb26-4e45-8c1a-48f37adae576'}).run(conn)
+        r.table('samples').get('ca6798bc-cb26-4e45-8c1a-48f37adae576').update({
+            'project_id': proj['id']
+        }).run(conn)
+        r.table('projects2samples').insert({
+            'project_id': proj['id'],
+            'project_name': proj['name'],
+            'sample_id': 'ca6798bc-cb26-4e45-8c1a-48f37adae576'
+        }).run(conn)
 
-    project4 = r.table('projects').get('e0f04518-c143-4cc1-a183-42679d822adc').run(conn)
-    if project4:
+    proj = r.table('projects').get('e0f04518-c143-4cc1-a183-42679d822adc')\
+                              .run(conn)
+    if proj:
         msg("project 4....")
-        sample4 = r.table('samples').get('a0757a27-1c92-49aa-b4ad-b323e3f06b40').update({'project_id': project4['id']}).run(conn)
-        rr4 = r.table('projects2samples').insert({'project_id': project4['id'], 'project_name': project4['name'], 'sample_id': 'a0757a27-1c92-49aa-b4ad-b323e3f06b40'}).run(conn)
+        r.table('samples').get('a0757a27-1c92-49aa-b4ad-b323e3f06b40').update({
+            'project_id': proj['id']
+        }).run(conn)
+        r.table('projects2samples').insert({
+            'project_id': proj['id'],
+            'project_name': proj['name'],
+            'sample_id': 'a0757a27-1c92-49aa-b4ad-b323e3f06b40'
+        }).run(conn)
 
-    project5 = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb').run(conn)
-    if project5:
+    proj = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb')\
+                              .run(conn)
+    if proj:
         msg("project 5....")
-        sample5 = r.table('samples').get('489462d8-f047-4b7d-808f-f8f23c6c218b').update({'project_id': project5['id']}).run(conn)
-        rr5 = r.table('projects2samples').insert({'project_id': project5['id'], 'project_name': project5['name'], 'sample_id': '489462d8-f047-4b7d-808f-f8f23c6c218b'}).run(conn)
+        r.table('samples').get('489462d8-f047-4b7d-808f-f8f23c6c218b').update({
+            'project_id': proj['id']
+        }).run(conn)
+        r.table('projects2samples').insert({
+            'project_id': proj['id'],
+            'project_name': proj['name'],
+            'sample_id': '489462d8-f047-4b7d-808f-f8f23c6c218b'
+        }).run(conn)
 
-    project6 = r.table('projects').get('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185').run(conn)
-    if project6:
+    proj = r.table('projects').get('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185')\
+                              .run(conn)
+    if proj:
         msg("project 6....")
-        sample6 = r.table('samples').get('62d13c6e-1064-4936-9e63-dfc000aea250').update({'project_id': project6['id']}).run(conn)
-        rr6 = r.table('projects2samples').insert({'project_id': project6['id'], 'project_name': project6['name'], 'sample_id': '62d13c6e-1064-4936-9e63-dfc000aea250'}).run(conn)
+        r.table('samples').get('62d13c6e-1064-4936-9e63-dfc000aea250').update({
+            'project_id': proj['id']
+        }).run(conn)
+        r.table('projects2samples').insert({
+            'project_id': proj['id'],
+            'project_name': proj['name'],
+            'sample_id': '62d13c6e-1064-4936-9e63-dfc000aea250'
+        }).run(conn)
 
-    project7 = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb').run(conn)
-    if project7:
+    proj = r.table('projects').get('b736da86-4b69-4a94-95d8-48ead1d34edb')\
+                              .run(conn)
+    if proj:
         msg("project 7....")
-        sample7 = r.table('samples').get('6f36b073-f6a3-4316-a0a4-d222f48ca004').update({'project_id': project7['id']}).run(conn)
-        rr7 = r.table('projects2samples').insert({'project_id': project7['id'], 'project_name': project7['name'], 'sample_id': '6f36b073-f6a3-4316-a0a4-d222f48ca004'}).run(conn)
+        r.table('samples').get('6f36b073-f6a3-4316-a0a4-d222f48ca004').update({
+            'project_id': proj['id']
+        }).run(conn)
+        r.table('projects2samples').insert({
+            'project_id': proj['id'],
+            'project_name': proj['name'],
+            'sample_id': '6f36b073-f6a3-4316-a0a4-d222f48ca004'
+        }).run(conn)
+
+
+def delete_bad_project_provenance(conn):
+    # Materials Commons Allison Test Data
+    r.table('processes')\
+     .get_all('254f36e5-6c13-4639-a004-52d181e8aadd', index='project')\
+     .delete().run(conn)
+
+    # FeCr RIS
+    r.table('processes')\
+     .get_all('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185', index='project')\
+     .delete().run(conn)
+
+    # Test_Proj
+    r.table('processes')\
+     .get_all('c33edab7-a65f-478e-9fa6-9013271c73ea', index='project')\
+     .delete().run(conn)
+
+    # Lithium Battery
+    r.table('processes')\
+     .get('665a1109-8334-40da-837e-deec3ad99cf3')\
+     .delete().run(conn)
+
+
+def mark_bad_projects(conn):
+    # Marks projects as ready to be deleted
+
+    # FeCr RIS
+    r.table('projects').get('a46580f0-e4d0-4bda-b0a3-0bd4c27f1185')\
+                       .update({'owner': 'delete@materialscommons.org'})\
+                       .run(conn)
+
+    # EBSD
+    r.table('projects').get('469ccea2-d0d1-47a0-be8f-20bbcbb7b3e8')\
+                       .update({'owner': 'delete@materialscommons.org'})\
+                       .run(conn)
+
+    # WE43 Heat Treatments
+    r.table('projects').get('904886a7-ea57-4de7-8125-6e18c9736fd0')\
+                       .update({'owner': 'delete@materialscommons.org'})\
+                       .run(conn)
+
+    # WE43
+    r.table('projects').get('aa1f48c7-b280-4147-b724-733af16f04f6')\
+                       .update({'owner': 'delete@materialscommons.org'})\
+                       .run(conn)
+
+    # Research
+    r.table('projects').get('0af29f37-1148-4190-8e5e-86a9e74abf1d')\
+                       .update({'owner': 'delete@materialscommons.org'})\
+                       .run(conn)
+
+    # HPDC
+    r.table('projects').get('630891b1-db46-403f-89e1-245a874a1247')\
+                       .update({'owner': 'delete@materialscommons.org'})\
+                       .run(conn)
+
+    # Test_Proj
+    r.table('projects').get('c33edab7-a65f-478e-9fa6-9013271c73ea')\
+                       .update({'owner': 'delete@materialscommons.org'})\
+                       .run(conn)
+
+
+def remove_conditions(conn):
+    r.table('conditions').delete(conn)
+
+
+def remove_processes(conn):
+    r.table('processes').delete(conn)
 
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
+    mark_bad_projects(conn)
+    remove_conditions(conn)
+    remove_processes(conn)
+    return
     convert_groups(conn)
     add_preferences(conn)
     add_usesid(conn)
