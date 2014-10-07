@@ -2,28 +2,35 @@
 
 /***********Begin sideboard.html ***********/
 
-.tag-scroll-bar {
-  height: 200px;
-  overflow-y:auto;
-  padding-left:10px;
+.radio, .checkbox {
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  min-height: 21px;
+  padding-left: 10px;
 }
 
-.todo-scroll-bar {
-  height: 200px;
-  overflow-y:auto;
+.checkbox-inline {
+  cursor: pointer;
+  display: inline-block;
+  font-weight: normal;
+  margin-bottom: 0;
+  padding-left: 20px;
+  vertical-align: middle;
 }
 
 .checkbox label:before {
   border: 2px solid #cccccc;
 }
+
 /***********Begin sideboard.html ***********/
 
 /***********Begin projects.html ***********/
-.projects-margin-top{
+.projects-margin-top {
   margin-top: 10px;
 }
-/***********End projects.html ***********/
 
+/***********End projects.html ***********/
 
 /***********Begin projectspage.html ***********/
 .project-tabs {
@@ -369,7 +376,7 @@ td.tag-width {
 
 .checkbox-margin {
   margin-top: -5px;
-  margin-left:8px;
+  margin-left: 8px;
 }
 
 .project-tree td span.checkbox-inline {
@@ -383,15 +390,17 @@ td.tag-width {
 
 .project-tree td span.checkbox-inline label {
   margin-right: 0;
+  margin-bottom: 8px;
 }
 
 /************End projecttree.html **************************/
 /************Begin index.html *****************************/
 
-.nav-dropdown-scrollbar{
-  height:500px;
-  overflow-y:auto;
+.nav-dropdown-scrollbar {
+  height: 500px;
+  overflow-y: auto;
 }
+
 .navbar-custom {
   /* background-color: #0C5C86; */
   /* background-color: #204d65; */
@@ -479,12 +488,13 @@ td.tag-width {
   padding-right: 5px;
 }
 
-.reviews-dropdown{
+.reviews-dropdown {
   min-width: 450px;
-  font-size:13px;
+  font-size: 13px;
   color: darkgray;
 
 }
+
 /*For the tip in the dropdown menu*/
 .navbar .nav > li > .dropdown-menu:before {
   border-bottom: 7px solid rgba(0, 0, 0, 0.2);
@@ -496,6 +506,7 @@ td.tag-width {
   position: absolute;
   top: -7px;
 }
+
 .navbar .nav > li > .dropdown-menu:after {
   border-bottom: 6px solid #FFFFFF;
   border-left: 6px solid rgba(0, 0, 0, 0);
@@ -990,7 +1001,7 @@ hr.carved {
 
 /* ******* Wizard Steps ****** */
 .bs-wizard {
-/* margin-top: 10px; */
+  /* margin-top: 10px; */
 }
 
 .bs-wizard {
@@ -1026,8 +1037,8 @@ hr.carved {
 .wizard-single-outer-circle {
   background: #fbe8aa;
   border-radius: 50%;
-  height:30px;
-  width:30px;
+  height: 30px;
+  width: 30px;
   position: absolute;
 }
 
@@ -1036,10 +1047,10 @@ hr.carved {
   position: absolute;
   background: #fbbd19;
   border-radius: 50%;
-  height:14px;
-  width:14px;
-  top:50%;
-  left:50%;
+  height: 14px;
+  width: 14px;
+  top: 50%;
+  left: 50%;
   margin: -7px 0px 0px -7px;
 }
 
@@ -1309,7 +1320,7 @@ label {
   top: 0;
 }
 
-.validation-invalid{
+.validation-invalid {
   color: indianred;
 }
 
