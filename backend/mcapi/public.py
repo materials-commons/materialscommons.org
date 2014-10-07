@@ -8,12 +8,8 @@ import dmutil
 from utils import make_password_hash
 import error
 from args import json_as_format_arg
-from mcexceptions import NoSuchItem
-import args
-from loader.model import item2tag
-
 import access
-from os.path import dirname, basename
+import os.path
 
 
 @app.route('/tags')
@@ -112,11 +108,9 @@ def create_user():
     else:
         return error.already_exists(
             "Unable to create account %s, user already exists" % (email))
-    
 
 
-
-####function: Tag dataitem/datadir 
+####function: Tag dataitem/datadir
 ####First item2tag join tble record is created and then insert the tag into datadirs_denorm  table
 @app.route('/item/tag/new', methods=['POST'])
 @crossdomain(origin='*')
@@ -142,7 +136,7 @@ def create_item2tag():
             item2tag_join = r.table('items2tags').get(result).run(g.conn)
             #update datadir_denorm
             if item2tag_join['item_type'] == 'datafile':
-                dir_name = dirname(fullname)
+                dir_name = os.path.dirname(fullname)
                 #print dir_name
                 dir_denorm = list(r.table('datadirs_denorm').get_all(dir_name, index='name').run(g.conn))
                 if dir_denorm == []:

@@ -10,9 +10,9 @@ function wizardStepDoneDirective() {
 }
 
 Application.Controllers.controller('wizardStepDoneDirectiveController',
-                                   ["$scope", "provStep", "actionStatus", "$stateParams",
+                                   ["$scope", "provStep", "actionStatus", "$stateParams", "Restangular", "User", "$timeout",
                                     wizardStepDoneDirectiveController]);
-function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stateParams) {
+function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stateParams, Restangular, User, $timeout) {
     var state = actionStatus.getCurrentActionState($stateParams.id);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
@@ -73,5 +73,38 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
     $scope.gotoStep = function(stepType, stepName) {
         var step = provStep.makeStep(stepType, stepName);
         provStep.setStep($stateParams.id, step);
+    };
+
+    function closeProvenanceAction() {
+        provStep.resetProject($stateParams.id);
+        actionStatus.clearCurrentActionState($stateParams.id);
+        actionStatus.toggleCurrentAction($stateParams.id);
+    }
+
+    $scope.submit = function() {
+        //console.log("Submitting %O", state.currentDraft);
+        Restangular.one("provenance2")
+            .post($stateParams.id,
+                  state.currentDraft,
+                  {apikey: User.apikey()})
+            .then(closeProvenanceAction);
+    };
+
+    $scope.saveDraft = function() {
+        Restangular.one("drafts2")
+            .post($stateParams.id,
+                  state.currentDraft,
+                  {apikey: User.apikey()})
+            .then(function(id) {
+                closeProvenanceAction();
+            });
+    };
+
+    $scope.cancel = function() {
+        // The bootstrap modal black backdrop isn't dismissed
+        // if we don't wrap these functions in a timeout. It
+        // appears that the changes to the dom are happening
+        // too quickly.
+        $timeout(closeProvenanceAction, 100);
     };
 }

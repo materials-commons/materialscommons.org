@@ -14,21 +14,22 @@ Application.Controllers.controller('wizardStepSampleDirectiveController',
                                     wizardStepSampleDirectiveController]);
 function wizardStepSampleDirectiveController($scope, provStep, actionStatus, $stateParams) {
     $scope.wizardState = actionStatus.getCurrentActionState($stateParams.id);
-    $scope.step = provStep.getCurrentStep($scope.wizardState.project.id);
+    var step = provStep.getCurrentStep($scope.wizardState.project.id);
+    $scope.sample = $scope.wizardState.currentDraft[step.stepType][step.step].properties.sample;
 
     provStep.onLeave($stateParams.id, function() {
         setDoneState();
-        var stepType = $scope.step.stepType;
-        var stepName = $scope.step.step;
+        var stepType = step.stepType;
+        var stepName = step.step;
         if (!$scope.wizardState.currentDraft[stepType][stepName].done) {
             $scope.wizardState.currentDraft.completed = false;
         }
     });
 
     function setDoneState() {
-        var stepType = $scope.step.stepType;
-        var stepName = $scope.step.step;
-        if ($scope.wizardState.currentDraft[stepType][stepName].properties.sample) {
+        var stepType = step.stepType;
+        var stepName = step.step;
+        if ($scope.sample.sample) {
             $scope.wizardState.currentDraft[stepType][stepName].done = true;
         } else {
             $scope.wizardState.currentDraft[stepType][stepName].done = false;
@@ -36,7 +37,7 @@ function wizardStepSampleDirectiveController($scope, provStep, actionStatus, $st
     }
 
     $scope.next = function() {
-        var nextStep = provStep.nextStep($scope.step.stepType, $scope.step.step,
+        var nextStep = provStep.nextStep(step.stepType, step.step,
                                          $scope.wizardState.selectedTemplate);
         provStep.setStep($scope.wizardState.project.id, nextStep);
     };
