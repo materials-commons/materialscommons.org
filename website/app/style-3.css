@@ -990,7 +990,7 @@ hr.carved {
 
 /* ******* Wizard Steps ****** */
 .bs-wizard {
-  /* margin-top: 10px; */
+/* margin-top: 10px; */
 }
 
 .bs-wizard {
@@ -1370,9 +1370,36 @@ ul.menu-bar li {
 }
 
 .highlight{
-    background-color: #e6e4cd;
+  background-color: #e6e4cd;
 }
 
 .review-step {
   margin-bottom: 20px;
+}
+
+/* ***** Sample Events ***** */
+
+.sample-event-box {
+  border: 1px solid #4a7a93;
+  border-radius: 4px;
+  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.75);
+  background-color: #fff !important;
+  border-right: 5px solid #4a7a93;
+  margin-bottom: 10px;
+}
+
+.sample-event-box .square {
+  width: 65px;
+  min-height: 50px;
+  margin-right: 10px;
+  text-align: center !important;
+  background-color: #4a7a93;
+  padding: 23px 0;
+}
+
+.sample-event {
+  border: 1px solid #ededed;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fff !important;
+  margin-bottom: 10px;
 }

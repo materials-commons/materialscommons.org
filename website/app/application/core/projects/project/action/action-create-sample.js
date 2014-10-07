@@ -5,6 +5,7 @@ function actionCreateSample() {
         scope: {
             project: "="
         },
+        replace: true,
         controller: "actionCreateSampleController",
         restrict: "AE",
         templateUrl: "application/core/projects/project/action/action-create-sample.html"
@@ -79,6 +80,7 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
     $scope.removeComposition = function (i) {
         $scope.doc.properties.composition.value.splice(i, 1);
     };
+
     function init() {
         initializeState();
         Projects.getList().then(function (projects) {
@@ -87,7 +89,21 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
         mcapi('/objects/elements')
             .success(function(data){
                 $scope.elements = data;
-            }).jsonp()
+            }).jsonp();
+
+        $scope.events = [
+            {
+                name: "Heat Treatment"
+            },
+
+            {
+                name: "Heat Treatment"
+            },
+
+            {
+                name: "Cogged"
+            }
+        ];
     }
 
     init();
