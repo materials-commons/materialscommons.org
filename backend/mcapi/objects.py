@@ -202,3 +202,12 @@ def sample_tree(project_id):
             parent.numofchildren = len(parent.children)
             all_samples[parent_name] = parent
     return json.dumps(top_level_samples, cls=DEncoder2)
+
+@app.route('/objects/elements', methods=['GET'])
+@jsonp
+def get_all_elements():
+    rr = r.table('elements').order_by('name')
+    selection = list(rr.run(g.conn, time_format='raw'))
+    return args.json_as_format_arg(selection)
+
+    
