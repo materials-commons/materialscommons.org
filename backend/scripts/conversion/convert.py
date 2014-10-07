@@ -308,7 +308,7 @@ def move_samples_denorm(conn):
 
 def drop_unused_tables(conn):
     msg("Dropping unused tables: state")
-    r.table_table('state').run(conn)
+    r.table_drop('state').run(conn)
 
 
 def associate_samples_to_projects(conn):
