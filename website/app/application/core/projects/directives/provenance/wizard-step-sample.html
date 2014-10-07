@@ -10,11 +10,21 @@
             <div class="controls col-xs-3">
                 <select ui-select2="{placeholder: 'Select sample', allowClear: true, width:'element'}"
                         ng-multiple="false"
-                        ng-model="wizardState.currentDraft[step.stepType][step.step].properties.sample"
+                        ng-model="sample.sample"
                         ng-options="sample.name for sample in wizardState.project.samples track by sample.id"
                         class="form-control">
                     <option value=""></option>
                 </select>
+                <a ng-click="sample.showNote = !sample.showNote"><i class="fa fa-edit"></i></a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="controls col-xs-offset-2 col-xs-8">
+                <text-angular ng-show="sample.showNote" ng-model="sample.note"></text-angular>
+                <div ng-show="!sample.showNote && sample.note">
+                    <span>Note:</span>
+                    <div class="well" ta-bind  ng-model="sample.note"></div>
+                </div>
             </div>
         </div>
         <div class="form-group select2-above">

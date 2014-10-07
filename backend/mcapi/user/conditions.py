@@ -60,4 +60,3 @@ def get_conditions_by_template(template_id):
 @jsonp
 def get_all_conditions():
     return dmutil.get_all_from_table('conditions')
-

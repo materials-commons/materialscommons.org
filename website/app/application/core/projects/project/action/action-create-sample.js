@@ -39,7 +39,9 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
             selected_project: '',
             available: '',
             open: '',
-            classification: ''
+            classification: '' ,
+            element_name: '',
+            element_value: ''
         };
     }
 
@@ -70,11 +72,22 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
         $scope.doc.projects.splice(index, 1);
     };
 
+    $scope.addComposition = function () {
+        $scope.doc.properties.composition.value.push({'element': $scope.bk.element_name, 'value': $scope.bk.element_value});
+
+    };
+    $scope.removeComposition = function (i) {
+        $scope.doc.properties.composition.value.splice(i, 1);
+    };
     function init() {
         initializeState();
         Projects.getList().then(function (projects) {
             $scope.projects = projects;
         });
+        mcapi('/objects/elements')
+            .success(function(data){
+                $scope.elements = data;
+            }).jsonp()
     }
 
     init();

@@ -21,7 +21,7 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
     $scope.start = function() {
         var templateName = $scope.wizardState.selectedTemplate.template_name;
         var title = "Wizard Process Step (" + templateName + ")";
-        $scope.wizardState.currentDraft = draft.createProvenance($scope.wizardState.selectedTemplate);
+        $scope.wizardState.currentDraft = draft.createProvenance($scope.wizardState.selectedTemplate, $stateParams.id);
         $scope.wizardState.showChooseProcess = false;
         provStep.setStep($scope.wizardState.project.id, provStep.makeStep("process", "process"));
     };

@@ -102,3 +102,27 @@ def update_tags(user):
     rr = r.table('users').get(user).update(
         {'preferences': {'tags': existing_tags}}).run(g.conn)
     return jsonify(rr)
+
+
+@app.route('/user/ui', methods=['GET'])
+@apikey
+@jsonp
+def get_user_ui_setup():
+    user = access.get_user()
+    ui = r.table('ui').get(user).run(g.conn, time_format='raw')
+    if ui is None:
+        return error.not_found("No state for user")
+    return jsonify(ui)
+
+
+@app.route('/user/ui', methods=['POST'])
+@apikey
+def update_user_ui_setup():
+    user = access.get_user()
+    j = request.get_json()
+    exists = r.table('ui').get(user).run(g.conn)
+    if exists is None:
+        r.table('ui').insert(j).run(g.conn)
+    else:
+        r.table('ui').get(user).replace(j).run(g.conn)
+    return jsonify({'id': user})
