@@ -29,7 +29,7 @@ function wizardStepSampleDirectiveController($scope, provStep, actionStatus, $st
     function setDoneState() {
         var stepType = step.stepType;
         var stepName = step.step;
-        if ($scope.wizardState.currentDraft[stepType][stepName].properties.sample.sample) {
+        if ($scope.sample.sample) {
             $scope.wizardState.currentDraft[stepType][stepName].done = true;
         } else {
             $scope.wizardState.currentDraft[stepType][stepName].done = false;

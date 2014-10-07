@@ -44,7 +44,7 @@ function draftService() {
 
                 if (t.template_pick == "pick_sample") {
                     draft.inputs[t.id].properties.sample = {
-                        sample: {},
+                        sample: "",
                         note: "",
                         showNote: false
                     };
@@ -83,7 +83,7 @@ function draftService() {
 
                 if (t.template_pick == "pick_sample") {
                     draft.outputs[t.id].properties.sample = {
-                        sample: {},
+                        sample: "",
                         note: "",
                         showNote: false
                     };
