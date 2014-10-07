@@ -1,11 +1,11 @@
 <h4>Images</h4>
 <div ng-controller="projectFileView">
     <div ng-if="files =(datafiles | byMediaType: ['image/jpeg', 'image/png']).length == 0">
-       <p>No images in this directory</p> <br>
+       <p>No image files in current directory</p> <br>
     </div>
     <div masonry>
         <img class="repeated-img masonry-brick" style="height: 200px; width:200px;border: 1px solid #000000"  data-toggle="modal" data-target="#imageExpand" ng-click="expand(df)"
-             data-tooltip={{df.displayname}} ng-repeat="df in files =(datafiles | byMediaType: ['image/jpeg', 'image/png'])" ng-if="df.type =='datafile'" ng-src="datafiles/static/{{df.id}}?apikey={{apikey}}"
+             data-tooltip={{df.displayname}} ng-repeat="df in files =(datafiles | byMediaType: ['image/jpeg', 'image/png', 'image/tiff', 'image/x-ms-bmp'])" ng-if="df.type =='datafile'" ng-src="datafiles/static/{{df.id}}?apikey={{apikey}}"
              alt="{{df.displayname}}">
     </div>
 
