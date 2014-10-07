@@ -96,7 +96,6 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
                   state.currentDraft,
                   {apikey: User.apikey()})
             .then(function(id) {
-                console.dir(id);
                 closeProvenanceAction();
             });
     };
