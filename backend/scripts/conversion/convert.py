@@ -345,10 +345,6 @@ def associate_samples_to_projects(conn):
         sample7 = r.table('samples').get('6f36b073-f6a3-4316-a0a4-d222f48ca004').update({'project_id': project7['id']}).run(conn)
         rr7 = r.table('projects2samples').insert({'project_id': project7['id'], 'project_name': project7['name'], 'sample_id': '6f36b073-f6a3-4316-a0a4-d222f48ca004'}).run(conn)
 
-def add_mediatype_to_datadirs_denorm(conn):
-    
-    pass
-
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
