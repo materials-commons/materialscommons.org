@@ -18,6 +18,16 @@ Application.Controllers.controller('actionCreateSampleController',
 
 function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pubsub) {
 
+    $scope.onDrop = function(target, source) {
+        if (source === "") {
+            source = 0;
+        }
+        var sourceObject = $scope.events[source];
+        // Remove the old item
+        $scope.events.splice(source, 1);
+        $scope.events.splice(target, 0, sourceObject);
+    };
+
     function initializeState() {
         var state = actionStatus.getCurrentActionState($scope.project.id);
         if (state) {
@@ -93,15 +103,15 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
 
         $scope.events = [
             {
-                name: "Heat Treatment"
+                name: "Heat Treatment A"
             },
 
             {
-                name: "Heat Treatment"
+                name: "Heat Treatment B"
             },
 
             {
-                name: "Cogged"
+                name: "Cogged C"
             }
         ];
     }
