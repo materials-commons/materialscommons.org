@@ -473,12 +473,13 @@ def remove_processes(conn):
 
 
 def populate_elements(conn):
-    #read elements.txt file and iterate throught each element to build table rows
+    # read elements.txt file and iterate throught each element to build
+    # table rows
     lines = [line.rstrip('\n') for line in open('elements.txt')]
     r.table('elements').delete().run(conn)
     for line in lines:
         x = line.split('\t', 1)
-        print r.table('elements').insert({'name': x[0], 'full_name': x[1]}).run(conn)
+        r.table('elements').insert({'name': x[0], 'full_name': x[1]}).run(conn)
 
 
 def main(conn, mcdir):
@@ -486,7 +487,6 @@ def main(conn, mcdir):
     mark_bad_projects(conn)
     remove_conditions(conn)
     remove_processes(conn)
-    return
     convert_groups(conn)
     add_preferences(conn)
     add_usesid(conn)
