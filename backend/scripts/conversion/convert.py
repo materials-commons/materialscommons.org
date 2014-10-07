@@ -472,6 +472,15 @@ def remove_processes(conn):
     r.table('processes').delete(conn)
 
 
+def populate_elements(conn):
+    #read elements.txt file and iterate throught each element to build table rows
+    lines = [line.rstrip('\n') for line in open('elements.txt')]
+    r.table('elements').delete().run(conn)
+    for line in lines:
+        x = line.split('\t', 1)
+        print r.table('elements').insert({'name': x[0], 'full_name': x[1]}).run(conn)
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     mark_bad_projects(conn)
@@ -490,6 +499,7 @@ def main(conn, mcdir):
     drop_unused_tables(conn)
     move_samples_denorm(conn)
     associate_samples_to_projects(conn)
+    populate_elements(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
