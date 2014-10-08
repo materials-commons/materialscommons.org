@@ -24,20 +24,13 @@ function projectTabsDirectiveController($scope, $state, projectColors, pubsub, P
                 $scope.updateTabCounts();
             });
     });
-    var activeTab = "overview";
-
-    if ($state.current.name == 'projects.project.reviews.view'){
-        activeTab = "reviews";
-    }
-    $scope.colors = projectColors;
-    $scope.inactiveColor = projectColors.getInactiveColor();
 
     $scope.setActiveTab = function(tabID) {
-        activeTab = tabID;
+        $scope.activeTab = tabID;
     };
 
     $scope.isActiveTab = function (tabID) {
-        return tabID == activeTab;
+        return tabID == $scope.activeTab;
     };
 
     $scope.getActiveStyle = function() {
@@ -117,7 +110,27 @@ function projectTabsDirectiveController($scope, $state, projectColors, pubsub, P
         ];
     }
     function init(){
+        $scope.activeTab = "overview";
+        if ($state.current.name == 'projects.project.reviews.view'){
+            $scope.setActiveTab("reviews");
+        }
+        if ($state.current.name == 'projects.project.samples.view'){
+            $scope.setActiveTab("samples");
+        }
+        if ($state.current.name == 'projects.project.notes.view'){
+            $scope.setActiveTab("notes");
+        }
+        if ($state.current.name == 'projects.project.provenance.view'){
+            $scope.setActiveTab("provenance");
+        }
+        if ($state.current.name == 'projects.project.files.view'){
+            $scope.setActiveTab("files");
+        }
+        $scope.colors = projectColors;
+        $scope.inactiveColor = projectColors.getInactiveColor();
+
         $scope.updateTabCounts();
+
     }
     init();
 
