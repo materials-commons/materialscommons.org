@@ -116,6 +116,7 @@ def add_tags(conn):
                                   .update({'datafiles': files}).run(conn)
     msg("Done...")
 
+
 def datafile_path(mcdir, datafile_id):
     pieces = datafile_id.split("-")
     return os.path.join(mcdir, pieces[1][0:2], pieces[1][2:4], datafile_id)
@@ -461,12 +462,17 @@ def populate_elements(conn):
         r.table('elements').insert({'name': x[0], 'full_name': x[1]}).run(conn)
 
 
+def delete_old_drafts(conn):
+    r.table('drafts').delete().run(conn)
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     mark_bad_projects(conn)
     remove_conditions(conn)
     remove_processes(conn)
     convert_groups(conn)
+    delete_old_drafts(conn)
     add_preferences(conn)
     add_usesid(conn)
     add_mediatypes(conn, mcdir)
