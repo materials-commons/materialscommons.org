@@ -26,6 +26,7 @@ function draftService() {
             template.input_templates.forEach(function(t) {
                 draft.inputs[t.id] = {};
                 draft.inputs[t.id].name = "(I) " + t.template_name;
+                draft.inputs[t.id].template_name = t.template_name;
                 draft.inputs[t.id].done = false;
                 draft.inputs[t.id].note = "";
                 draft.inputs[t.id].showNote = false;
@@ -65,6 +66,7 @@ function draftService() {
             template.output_templates.forEach(function(t) {
                 draft.outputs[t.id] = {};
                 draft.outputs[t.id].name = "(O) " + t.template_name;
+                draft.outputs[t.id].template_name = t.template_name;
                 draft.outputs[t.id].done = false;
                 draft.outputs[t.id].note = "";
                 draft.outputs[t.id].showNote = false;
