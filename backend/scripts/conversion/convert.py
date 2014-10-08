@@ -348,17 +348,17 @@ def associate_samples_to_projects(conn):
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    convert_groups(conn)
-    add_preferences(conn)
-    add_usesid(conn)
-    add_mediatypes(conn, mcdir)
-    cleanup_samples(conn)
-    add_shares_to_projects(conn)
+    #convert_groups(conn)
+    #add_preferences(conn)
+    #add_usesid(conn)
+    #add_mediatypes(conn, mcdir)
+    #cleanup_samples(conn)
+    #add_shares_to_projects(conn)
     add_tags(conn)
-    add_default_tags(conn)
+    #add_default_tags(conn)
     add_todos(conn)
-    move_samples_denorm(conn)
-    associate_samples_to_projects(conn)
+    #move_samples_denorm(conn)
+    #associate_samples_to_projects(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
