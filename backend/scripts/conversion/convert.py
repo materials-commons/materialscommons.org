@@ -109,11 +109,12 @@ def add_tags(conn):
                                   .update({'tags': {}}).run(conn)
         files = item['datafiles']
         for file in files:
+            df = r.table('datafiles').get(file['id']).run(conn)
             file['tags'] = {}
+            file['mediatype'] = df['mediatype']['mime']
         r.table('datadirs_denorm').get(item['id'])\
                                   .update({'datafiles': files}).run(conn)
     msg("Done...")
-
 
 def datafile_path(mcdir, datafile_id):
     pieces = datafile_id.split("-")
