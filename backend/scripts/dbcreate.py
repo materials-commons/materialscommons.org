@@ -81,7 +81,7 @@ def create_indices():
     create_index('tag2item', 'tag_id')
     create_index('tag2item', 'item_id')
     create_index('templates', 'template_pick')
-    create_index('processes', 'project')
+    create_index('processes', 'project_id')
     create_index('sample2item', 'sample_id')
     create_index('sample2item', 'item_id')
     create_index('samples', 'project_id')
