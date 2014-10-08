@@ -577,15 +577,6 @@ body {
   margin-left: 10px;
 }
 
-.input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-  border-radius: 6px;
-}
-
-.input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-  border-radius: 6px;
-
-}
-
 textarea.form-control {
   height: 80px;
   width: 400px;
@@ -600,7 +591,6 @@ textarea.form-control {
 
 .btn, btn-default {
   padding: 4px 15px;
-  font-size: 13px;
 }
 
 .fa-asterisk {
@@ -1001,7 +991,7 @@ hr.carved {
 
 /* ******* Wizard Steps ****** */
 .bs-wizard {
-  /* margin-top: 10px; */
+/* margin-top: 10px; */
 }
 
 .bs-wizard {
@@ -1413,4 +1403,50 @@ ul.menu-bar li {
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   background-color: #fff !important;
   margin-bottom: 10px;
+}
+
+/* ***** Circular buttons ***** */
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+
+/*
+ ***** Vertical Toolbar *****
+ This tool bar is constructed using a list-unstyled
+ */
+
+.vertical-tool-bar li {
+  margin-top: 4px;
+}
+
+.vertical-tool-bar li .tool-bar-action {
+  width: 65px;
+  min-height: 40px;
+  text-align: center !important;
+  background-color: #4a7a93;
+  padding: 15px 0;
 }

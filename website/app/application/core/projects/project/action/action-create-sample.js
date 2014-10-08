@@ -92,6 +92,7 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
     };
 
     function init() {
+        $scope.activeToolbarItem = "";
         initializeState();
         Projects.getList().then(function (projects) {
             $scope.projects = projects;
