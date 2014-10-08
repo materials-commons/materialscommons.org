@@ -1,5 +1,5 @@
 Application.Services.factory('ProjectPath',
-    [ function () {
+    [ 'pubsub', function (pubsub) {
         var pathtrail = [], pathdir = [], chosen_project = "", current_item = "", from = false;
         return {
             populate: function (trail, dir) {
@@ -15,6 +15,7 @@ Application.Services.factory('ProjectPath',
             update_dir: function (item) {
                 pathdir = item.children;
                 current_item = item;
+                pubsub.send('update_dir');
                 return pathdir;
             },
 

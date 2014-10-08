@@ -41,6 +41,7 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
             $scope.trail.push(item);
         }
         $scope.dir = item.children;
+        ProjectPath.update_dir(item);
         $scope.loaded = true;
     };
 
@@ -79,6 +80,7 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
                     if (data[0]) {
                         $scope.tree_data = data;
                         $scope.dir = $scope.tree_data[0].children;
+                        ProjectPath.update_dir($scope.tree_data[0]);
                         var obj = {};
                         obj.dir = $scope.tree_data[0];
                         $scope.model.projects[projectId] = obj;
@@ -89,6 +91,7 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
         } else {
             $scope.loaded = true;
             $scope.dir = $scope.model.projects[projectId].dir.children;
+            ProjectPath.update_dir($scope.model.projects[projectId]);
             $scope.trail.push($scope.model.projects[projectId].dir);
         }
     };
