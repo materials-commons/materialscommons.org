@@ -13,11 +13,14 @@ import json
 @app.route('/processes/project/<project_id>', methods=['GET'])
 @jsonp
 def get_processes_by_project(project_id):
+    complete_processes = {}
     rr = r.table('processes').get_all(project_id, index='project_id')
     selection = list(rr.run(g.conn, time_format='raw'))
     for process in selection:
-        r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'})
-        
+        property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': process['item_type']}).run(conn)
+        for set in property_set:
+            properties = r.table('properties').filter({'item_id': set['id'], 'item_type': set['item_type']}).run(conn)
+            
     return json.dumps(selection)
 
 
