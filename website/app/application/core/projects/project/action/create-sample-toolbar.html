@@ -1,0 +1,60 @@
+<div class="col-xs-1">
+    <ul class="list-unstyled vertical-tool-bar">
+        <li>
+            <a tooltip="Composition"
+               ng-click="setActive('composition')"
+               class="action-link">
+                <div class="tool-bar-action"
+                     ng-style="projectColor()">
+                    <i class="fa fa-flask fa-2x"></i>
+                </div>
+            </a>
+        </li>
+
+        <li>
+            <a tooltip="Projects"
+               ng-click="setActive('projects')"
+               class="action-link">
+                <div class="tool-bar-action"
+                     ng-style="projectColor()">
+                    <i class="fa fa-briefcase fa-2x"></i>
+                </div>
+            </a>
+        </li>
+
+        <li>
+
+            <a tooltip="Provenance"
+               ng-click="setActive('provenance')"
+               class="action-link">
+                <div class="tool-bar-action"
+                     ng-style="projectColor()">
+                    <i class="fa fa-code-fork fa-2x"></i>
+                </div>
+            </a>
+
+        </li>
+
+        <li>
+            <a tooltip="Notes"
+               ng-click="setActive('notes')"
+               class="action-link">
+                <div class="tool-bar-action"
+                     ng-style="projectColor()">
+                    <i class="fa fa-edit fa-2x"></i>
+                </div>
+            </a>
+        </li>
+
+        <li>
+            <a tooltip="Attachments"
+               ng-click="setActive('attachments')"
+               class="action-link">
+                <div class="tool-bar-action"
+                     ng-style="projectColor()">
+                    <i class="fa fa-paperclip fa-2x"></i>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>

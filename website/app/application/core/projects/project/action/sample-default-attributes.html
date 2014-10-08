@@ -1,0 +1,24 @@
+<form name="Sample" class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-xs-2">Name:<i class="fa fa-asterisk"></i></label>
+
+        <div class="col-xs-4">
+            <input name="name" validator="required" ng-model="doc.name" class="form-control" type="text"
+                   placeholder="Name...">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-2">Alloy:</label>
+
+        <div class="col-xs-4">
+            <input ng-model="doc.alloy" class="form-control" type="text" placeholder="Alloy Name...">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-2">Supplier:</label>
+
+        <div class="col-xs-4">
+            <input ng-model="doc.supplier" class="form-control" type="text" placeholder="Supplier...">
+        </div>
+    </div>
+</form>
