@@ -66,7 +66,7 @@ def create_outputs(outputs, process_id, user):
 
 def create_property_set(ioset, ioset_type, process_id, user):
     for name, values in ioset.iteritems():
-        display_name = dmutil.get_requiree("template_name", values)
+        display_name = dmutil.get_required("template_name", values)
         ps = property.PropertySet(name, display_name, ioset_type,
                                   process_id, "process")
         ps_id = dmutil.insert_entry_id("property_sets", ps.__dict__)

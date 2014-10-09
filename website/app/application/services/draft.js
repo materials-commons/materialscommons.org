@@ -55,6 +55,7 @@ function draftService() {
             if (template.required_input_files) {
                 draft.inputs.files = {};
                 draft.inputs.files.showNote = false;
+                draft.inputs.files.template_name = "Files";
                 draft.inputs.files.note = "";
                 draft.inputs.files.name = "(I) Files" ;
                 draft.inputs.files.properties = {
@@ -95,6 +96,7 @@ function draftService() {
             if (template.required_output_files) {
                 draft.outputs.files = {};
                 draft.outputs.files.name = "(O) Files";
+                draft.outputs.files.template_name = "Files";
                 draft.outputs.files.note = "";
                 draft.outputs.files.showNote = false;
                 draft.outputs.files.properties = {
