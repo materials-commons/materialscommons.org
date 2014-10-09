@@ -12,11 +12,14 @@ function projectActionBarDirective() {
 }
 
 Application.Controllers.controller('projectActionBarDirectiveController',
-                                   ["$scope", "actionStatus",
+                                   ["$scope", "actionStatus", "ui",
                                     projectActionBarDirectiveController]);
 
-function projectActionBarDirectiveController($scope, actionStatus) {
+function projectActionBarDirectiveController($scope, actionStatus, ui) {
     $scope.toggleAction = function(action) {
         actionStatus.toggleAction($scope.project.id, action);
+        var active = actionStatus.isCurrentAction($scope.project.id, action);
+        ui.setShowFiles($scope.project.id, !active);
+        ui.setShowToolbarTabs($scope.project.id, !active);
     };
 }

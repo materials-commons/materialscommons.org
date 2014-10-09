@@ -1446,6 +1446,7 @@ ul.menu-bar li {
 .vertical-tool-bar li .tool-bar-action {
   width: 65px;
   min-height: 40px;
+  border-radius: 3px;
   text-align: center !important;
   background-color: #4a7a93;
   padding: 15px 0;

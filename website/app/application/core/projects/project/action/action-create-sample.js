@@ -14,7 +14,7 @@ function actionCreateSample() {
 
 Application.Controllers.controller('actionCreateSampleController',
                                    ["$scope", "mcapi", "model.projects", "actionStatus",
-                                    "pubsub", actionCreateSampleController]);
+                                    "pubsub", "ui", actionCreateSampleController]);
 
 function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pubsub) {
 
