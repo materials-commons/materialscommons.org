@@ -16,11 +16,11 @@
                 <project-action-area project="project"></project-action-area>
                 <div id="action-stack" class="row">
                 </div>
-                <div class="row">
+                <div ng-show="showTabs()" class="row">
                     <project-tabs project="project"></project-tabs>
                 </div>
             </div>
-            <div class="row">
+            <div ng-show="showFiles()" class="row">
                 <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>
                 <div class="row">
                     <project-description project-id="{{project.id}}"></project-description>

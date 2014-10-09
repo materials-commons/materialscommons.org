@@ -10,9 +10,12 @@ function wizardStepDoneDirective() {
 }
 
 Application.Controllers.controller('wizardStepDoneDirectiveController',
-                                   ["$scope", "provStep", "actionStatus", "$stateParams", "Restangular", "User", "$timeout",
-                                    wizardStepDoneDirectiveController]);
-function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stateParams, Restangular, User, $timeout) {
+                                   ["$scope", "provStep", "actionStatus", "$stateParams",
+                                    "Restangular", "User", "$timeout", "model.projects",
+                                    "ui", wizardStepDoneDirectiveController]);
+function wizardStepDoneDirectiveController($scope, provStep, actionStatus,
+                                           $stateParams, Restangular, User,
+                                           $timeout, projects, ui) {
     var state = actionStatus.getCurrentActionState($stateParams.id);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
@@ -79,6 +82,8 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
         provStep.resetProject($stateParams.id);
         actionStatus.clearCurrentActionState($stateParams.id);
         actionStatus.toggleCurrentAction($stateParams.id);
+        ui.setShowFiles($stateParams.id, true);
+        ui.setShowToolbarTabs($stateParams.id, true);
     }
 
     $scope.submit = function() {
@@ -96,7 +101,9 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus, $stat
                   state.currentDraft,
                   {apikey: User.apikey()})
             .then(function(id) {
-                closeProvenanceAction();
+                projects.getList(true).then(function() {
+                    closeProvenanceAction();
+                });
             });
     };
 
