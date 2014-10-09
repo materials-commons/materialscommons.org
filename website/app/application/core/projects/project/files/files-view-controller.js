@@ -3,9 +3,9 @@ Application.Controllers.controller("projectFileView",
 
 function projectFileView($scope, Projects, $stateParams,User, ProjectPath, pubsub) {
 
-    pubsub.waitOn($scope, "update_dir", function () {
-        $scope.getImages();
-    });
+//    pubsub.waitOn($scope, "update_dir", function () {
+//        $scope.getImages();
+//    });
 
     $scope.expand = function (df) {
         $scope.datafile = df;
@@ -19,11 +19,7 @@ function projectFileView($scope, Projects, $stateParams,User, ProjectPath, pubsu
     function init() {
         Projects.get($stateParams.id).then(function (project) {
             $scope.project = project;
-            $scope.getImages();
-
         });
-
     }
-
     init();
 }
