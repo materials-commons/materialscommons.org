@@ -16,11 +16,11 @@ function draftService() {
                 additional_properties: {},
                 done: false,
                 template_id: template.id,
+                template_name: template.template_name,
                 project_id: projectID
             };
 
             draft.completed = false;
-
             draft.inputs = {};
             draft.outputs = {};
             template.input_templates.forEach(function(t) {
