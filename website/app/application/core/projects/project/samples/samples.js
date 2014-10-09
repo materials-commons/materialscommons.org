@@ -1,7 +1,19 @@
 Application.Controllers.controller("projectSamples",
-                                   ["$scope", "$stateParams", projectSamples]);
+                                   ["$scope", projectSamples]);
 
-function projectSamples($scope, $stateParams) {
+function projectSamples($scope) {
+    $scope.activeLink = 'View Samples';
+    $scope.setActiveLink = function(tabID) {
+        $scope.activeLink = tabID;
+    };
+
+    $scope.isActiveLink = function (tabID) {
+        if (tabID == $scope.activeLink){
+            return true
+        }
+        return false
+    };
+
     $scope.reportsMenu = [
         {
             title:"In Provenance",
