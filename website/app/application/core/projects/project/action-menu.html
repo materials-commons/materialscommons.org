@@ -8,11 +8,10 @@
         {{titleCount}}
     </span>
     <ul class="dropdown-menu" role="menu" aria-labelledby="{{title}}ActionMenu">
-        <li ng-repeat="menuItem in menuItems">
+        <li class="disabled" ng-repeat="menuItem in menuItems">
             <a action-stack
                role="menuitem"
-               tabindex="{{$index+1}}"
-               ng-click="toggleStackAction(menuItem.action, menuItem.title); status.isopen = false;">
+               tabindex="{{$index+1}}">
                 {{menuItem.title}}
                 <i ng-show="menuItemActive(menuItem.action)" class="fa fa-close action-link-close"/></i>
             </a>
