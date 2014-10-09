@@ -2,7 +2,7 @@
 <div ng-controller="projectFileView">
     <button class="btn btn-default" ng-click="getImages()">Load Images</button><br>
     <div ng-if="datafiles">
-        <div ng-if="files =(datafiles | byMediaType: ['image/jpeg', 'image/png']).length == 0">
+        <div ng-if="files =(datafiles | byMediaType: ['image/jpeg', 'image/png', 'image/tiff', 'image/x-ms-bmp']).length == 0">
             <p>No image files in current directory</p> <br>
         </div>
     </div>
