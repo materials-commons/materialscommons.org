@@ -5,7 +5,8 @@ function actionStatusService(pubsub) {
         actions: {},
         currentAction: {},
         currentActionsList: [
-            "create-provenance",
+            "create-provenance-new",
+            "create-provenance-from-draft",
             "create-review",
             "create-sample",
             "create-note"

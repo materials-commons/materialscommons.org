@@ -13,11 +13,11 @@ function actionCreateReview() {
 
 Application.Controllers.controller('actionCreateReviewController',
                                    ["$scope", "mcapi", "User", "pubsub", "$stateParams",
-                                    "model.projects", "projectFiles", "actionStatus",
+                                    "model.projects", "projectFiles", "actionStatus", "ui",
                                     actionCreateReviewController]);
 
 function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams, Projects,
-                                      projectFiles, actionStatus) {
+                                      projectFiles, actionStatus, ui) {
     $scope.channel = 'action-reviews';
     projectFiles.setChannel($scope.channel);
 
@@ -64,6 +64,8 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
                         pubsub.send('update-tab-count.change');
                         actionStatus.clearCurrentActionState($scope.project.id);
                         actionStatus.toggleAction($scope.project.id, 'create-review');
+                        ui.setShowFiles($stateParams.id, true);
+                        ui.setShowToolbarTabs($stateParams.id, true);
                     });
 
                 });
@@ -74,6 +76,9 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
     $scope.cancel = function() {
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-review');
+        console.log("setting show files");
+        ui.setShowFiles($stateParams.id, true);
+        ui.setShowToolbarTabs($stateParams.id, true);
     };
 
     $scope.create = function () {
@@ -96,11 +101,6 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
         });
         $scope.review.project = $scope.project.id;
         saveData();
-    };
-
-    $scope.cancel = function() {
-        actionStatus.clearCurrentActionState($scope.project.id);
-        actionStatus.toggleAction($scope.project.id, 'create-review');
     };
 
     $scope.removeFile = function (index) {
