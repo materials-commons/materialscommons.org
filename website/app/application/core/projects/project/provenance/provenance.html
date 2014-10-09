@@ -4,7 +4,8 @@
             <ul class="list-inline menu-bar">
                 <li>
                     <action-link title="View Provenance"
-                                 title-icon="fa-code-fork">
+                                 title-icon="fa-code-fork"
+                                 link="{{isActiveLink('View Provenance')}}">
                     </action-link>
                 </li>
 
@@ -17,5 +18,5 @@
             </ul>
         </div>
     </tab-control-bar>
-    <h4>projects.project.provenance</h4>
+    <div ui-view></div>
 </div>
