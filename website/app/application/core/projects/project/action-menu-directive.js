@@ -7,6 +7,7 @@ function actionMenuDirective() {
             titleIcon: "@",
             titleCount: "=",
             menuItems: "="
+
         },
         controller: 'actionMenuDirectiveController',
         restrict: "AE",

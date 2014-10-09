@@ -1,5 +1,8 @@
 <div class="dropdown" is-open="status.isopen">
-    <a class="dropdown-toggle action-link project-sub-action">
+    <a  ng-show="isActiveLink(link) == true" class="dropdown-toggle action-link project-sub-action">
+        <i class="fa" ng-class="titleIcon"/> <u>{{title}}</u>
+    </a>
+    <a  ng-hide="isActiveLink(link) == true" class="dropdown-toggle action-link project-sub-action">
         <i class="fa" ng-class="titleIcon"/> {{title}}
     </a>
     <span class="caret caret-light"/>
