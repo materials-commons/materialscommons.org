@@ -48,7 +48,7 @@
         },
         {
             "name": "Laser Wavelength (nm)",
-            "attribute": "laser_pulse_energy",
+            "attribute": "laser_wavelength",
             "type": "number",
             "unit": "nm",
             "unit_choice": [],
