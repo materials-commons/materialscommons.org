@@ -16,7 +16,15 @@ Application.Controllers.controller('projectActionBarDirectiveController',
                                     projectActionBarDirectiveController]);
 
 function projectActionBarDirectiveController($scope, actionStatus, ui) {
+    // This is needed to toggle the menu closed when an item is selected.
+    // This is a part of how ui-bootstrap interacts with the menus and
+    // the menu item does an ng-click.
+    $scope.status = {
+        isopen: false
+    };
+
     $scope.toggleAction = function(action) {
+        $scope.status = false;
         actionStatus.toggleAction($scope.project.id, action);
         var active = actionStatus.isCurrentAction($scope.project.id, action);
         ui.setShowFiles($scope.project.id, !active);

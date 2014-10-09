@@ -1452,5 +1452,40 @@ ul.menu-bar li {
   padding: 15px 0;
 }
 .repeated-img {
-    margin: 0 5px 5px 0;
+  margin: 0 5px 5px 0;
+}
+
+/* ***** Override default bootstrap table styles ***** */
+.table-bordered th,
+.table-bordered td {
+  border: 3px solid #e8e6cf !important;
+}
+
+.table > thead > tr > th {
+  border-bottom: 3px solid #e8e6cf;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 3px solid #e8e6cf;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+  background-color: #f4f4f6;
+}
+
+.close {
+  color: black;
+}
+
+
+.pointer {
+  cursor: pointer;
 }

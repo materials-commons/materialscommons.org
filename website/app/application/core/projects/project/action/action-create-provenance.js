@@ -14,10 +14,11 @@ function actionCreateProvenance() {
 Application.Controllers.controller('actionCreateProvenanceController',
                                    ["$scope", "$stateParams", "model.templates",
                                     "model.projects", "User", "$filter", "provStep",
-                                    "actionStatus", "draft", actionCreateProvenanceController]);
+                                    "actionStatus", "draft", "ui",
+                                    actionCreateProvenanceController]);
 
 function actionCreateProvenanceController($scope, $stateParams, templates, projects,
-                                          User, $filter, provStep, actionStatus, draft) {
+                                          User, $filter, provStep, actionStatus, draft, ui) {
     $scope.start = function() {
         var templateName = $scope.wizardState.selectedTemplate.template_name;
         var title = "Wizard Process Step (" + templateName + ")";
@@ -31,6 +32,8 @@ function actionCreateProvenanceController($scope, $stateParams, templates, proje
         actionStatus.clearCurrentActionState(projectID);
         provStep.resetProject(projectID);
         actionStatus.toggleCurrentAction(projectID);
+        ui.setShowFiles(projectID, true);
+        ui.setShowToolbarTabs(projectID, true);
     };
 
     templates.getList().then(function(templates) {

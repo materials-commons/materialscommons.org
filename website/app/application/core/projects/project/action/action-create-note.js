@@ -12,9 +12,10 @@ function actionCreateNote() {
 }
 
 Application.Controllers.controller('actionCreateNoteController',
-                                   ["$scope", "User", "toastr","pubsub","actionStatus", "model.projects", actionCreateNoteController]);
+                                   ["$scope", "User", "toastr","pubsub","actionStatus",
+                                    "model.projects", "ui", actionCreateNoteController]);
 
-function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, Projects) {
+function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, Projects, ui) {
     var state = actionStatus.getCurrentActionState($scope.project.id);
     if (state) {
         $scope.model = state;
@@ -34,6 +35,8 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
                     pubsub.send('update-tab-count.change');
                     actionStatus.clearCurrentActionState($scope.project.id);
                     actionStatus.toggleCurrentAction($scope.project.id);
+                    ui.setShowFiles($scope.project.id, true);
+                    ui.setShowToolbarTabs($scope.project.id, true);
                 });
             });
         }, function(reason){
@@ -46,6 +49,8 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
     $scope.cancel = function() {
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleCurrentAction($scope.project.id);
+        ui.setShowFiles($scope.project.id, true);
+        ui.setShowToolbarTabs($scope.project.id, true);
     };
 
     $scope.create = function () {
