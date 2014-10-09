@@ -5,7 +5,7 @@ function projectFiles($scope) {
     $scope.imagesMenu = [
         {
             title:"In Current Directory",
-            action: ""
+            action: "projects.project.files.view"
         },
         {
             title:"In Project",
