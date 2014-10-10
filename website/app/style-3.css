@@ -736,25 +736,17 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 /********* Custom table *********/
-.table-file-directory {
+.table-boxed {
   margin-top: -22px;
   border-collapse: separate;
-  border: 1px solid lightgrey;
-/*border-spacing: 0 1px;*/
+  border-left: 3px solid #ede6cf;
+  border-right: 3px solid #ede6cf;
+  border-bottom: 3px solid #ede6cf;
+  border-top: 3px solid #ede6cf;
 }
 
-.table-file-directory  > thead > th {
-  background-color: lightgrey;
-  color: black;
-}
-
-.table-file-directory > thead > tr > th,
-.table-file-directory > tbody > tr > th,
-.table-file-directory > tfoot > tr > th,
-.table-file-directory > thead > tr > td,
-.table-file-directory > tbody > tr > td,
-.table-file-directory > tfoot > tr > td {
-  border-bottom: 1px solid lightgrey;
+.table-boxed > thead > tr > th {
+  border-bottom: 0 !important;
 }
 
 .file-heading {
