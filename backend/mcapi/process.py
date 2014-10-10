@@ -1,6 +1,6 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request, g
+from flask import request, g, jsonify, Response
 import rethinkdb as r
 import error
 import dmutil
@@ -11,17 +11,18 @@ import json
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
-@jsonp
 def get_processes_by_project(project_id):
-    complete_processes = {}
+    complete_processes = []
     rr = r.table('processes').get_all(project_id, index='project_id')
     selection = list(rr.run(g.conn, time_format='raw'))
     for process in selection:
-        property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': process['item_type']}).run(conn)
-        for set in property_set:
-            properties = r.table('properties').filter({'item_id': set['id'], 'item_type': set['item_type']}).run(conn)
-            
-    return json.dumps(selection)
+        property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'}).run(g.conn)
+        for each_set in property_sets:
+            properties = list(r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'}).run(g.conn))
+            process[each_set['name']] = properties
+        complete_processes.append(process)
+    print complete_processes
+    return Response(json.dumps(complete_processes), mimetype="application/json")
 
 
 
