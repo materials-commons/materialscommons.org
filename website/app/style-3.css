@@ -870,13 +870,6 @@ h4, .h4, h5, .h5, h6, .h6 {
   padding: 6px 30px;
 }
 
-.ta-scroll-window.form-control {
-  height: 150px;
-  overflow: auto;
-  padding: 0;
-  position: relative;
-}
-
 .selected {
   background-color: lightgreen;
 }
