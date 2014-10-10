@@ -1,0 +1,35 @@
+{
+    "id": "vic-2d-dic-settings" ,
+    "category": "DIC",
+    "authors": ["agithens@umich.edu"],
+    "attribute": "instrument_settings",
+    "default_properties": [
+        {
+            "name": "Subset Size" ,
+            "attribute": "subset_size",
+            "type": "number" ,
+            "unit": "" ,
+            "unit_choice": [] ,
+            "value": "" ,
+            "value_choice": []
+        },
+        {
+            "name": "Step Size",
+            "attribute": "step_size",
+            "type": "number",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org", 
+    "template_description": "" ,
+    "template_birthtime": "",
+    "template_mtime": "",
+    "template_name": "Settings" ,
+    "template_type": "condition",
+    "template_pick": "instrument"
+}
