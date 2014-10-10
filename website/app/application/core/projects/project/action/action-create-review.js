@@ -23,6 +23,7 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
 
     Projects.getList().then(function(projects) {
         $scope.projects = projects;
+        ui.setShowFiles($stateParams.id, true);
     });
 
     var state = actionStatus.getCurrentActionState($scope.project.id);
