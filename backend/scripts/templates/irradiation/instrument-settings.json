@@ -11,7 +11,7 @@
             "unit": "" ,
             "unit_choice": [] ,
             "value": "" ,
-            "value_choice": [{"name": "Electrons", "value" : "electrons"},{"name": "Ions", "value" : "ions"},{"name": "Protons", "value" : "protons"},{"name": "Protons", "Neutrons" : "neutrons"}],
+            "value_choice": [{"name": "Electrons", "value" : "electrons"},{"name": "Ions", "value" : "ions"},{"name": "Protons", "value" : "protons"},{"name": "Neutrons", "value" : "neutrons"}],
             "required": true
         },
         {
