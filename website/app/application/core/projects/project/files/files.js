@@ -2,10 +2,19 @@ Application.Controllers.controller("projectFiles",
                                    ["$scope", projectFiles]);
 
 function projectFiles($scope) {
+    $scope.activeLink = 'View Images';
+    $scope.isActiveLink = function(tabID) {
+        $scope.activeLink = tabID;
+    };
+
+    $scope.isActiveLink = function (tabID) {
+        return tabID == $scope.activeLink;
+    };
+
     $scope.imagesMenu = [
         {
             title:"In Current Directory",
-            action: ""
+            action: "projects.project.files.view"
         },
         {
             title:"In Project",

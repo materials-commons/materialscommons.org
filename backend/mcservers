@@ -155,6 +155,7 @@ if [ $TESTSERVER = "t" ]; then
     export MC_SERVICE_PORT=5002
     export MCDB_PORT=30815
     export MCDB_DIR=~/testdb
+    export MCDB_CONNECTION="localhost:$MCDB_PORT"
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MCFS_PORT=35882
@@ -210,7 +211,7 @@ else
         export MCDIR=~/mcdir/mcfs/data/materialscommons
     fi
     export MCFS_HTTP_PORT=5010
-  
+
     if [ -f /etc/materialscommons/config.prod ]; then
         . /etc/materialscommons/config.prod
     fi
@@ -242,7 +243,7 @@ case "$CMD" in
         ;;
     "")
         status_servers
-        ;;    
+        ;;
     *)
         echo "Unknown command: $CMD"
         exit 1
