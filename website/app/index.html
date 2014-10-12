@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="materialscommons" lang="en" style="height: 100%">
+<html ng-app="materialscommons" lang="en">
     <head>
         <meta charset="utf-8">
         <title>Materials Commons</title>
@@ -31,17 +31,10 @@
         <!-- Application style sheet -->
         <link href="style-3.css" rel="stylesheet">
     </head>
-    <body style="height: 100%">
+    <body>
         <a name="top"></a>
         <div>
-            <div class="side-bar" style="background-color: #333333; height: 100%; min-height: 100%">
-                <div>
-                    <ul class="list-unstyled">
-                        <li>Hello</li>
-                        <li>World</li>
-                    </ul>
-                </div>
-            </div>
+            <sidebar></sidebar>
             <div class="main-content">
                 <navbar></navbar>
                 <div class="row app-containerx">
@@ -87,6 +80,7 @@
         <!------------------------------ Application --------------------------->
         <script src="application/app.js"></script>
         <script src="navbar.js"></script>
+        <script src="sidebar.js"></script>
 
         <!------------------------------ Core app ------------------------------>
 
