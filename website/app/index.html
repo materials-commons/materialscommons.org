@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="materialscommons" lang="en">
+<html ng-app="materialscommons" lang="en" style="height: 100%">
     <head>
         <meta charset="utf-8">
         <title>Materials Commons</title>
@@ -31,134 +31,22 @@
         <!-- Application style sheet -->
         <link href="style-3.css" rel="stylesheet">
     </head>
-    <body>
+    <body style="height: 100%">
         <a name="top"></a>
-        <nav class="navbar navbar-custom" ng-controller="_indexNavigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" style=""
-                   ng-click="goHome()">MaterialsCommons</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li id="about-nav" ng-class="{ navactive: isActiveStep('about') }">
-                        <a ng-click="showStep('about')" ui-sref="about"><i class="fa fa-info-circle"></i> About</a>
-                    </li>
-                    <li id="contact-nav" ng-class="{navactive: isActiveStep('contact') }">
-                        <a ng-click="showStep('contact')" ui-sref="contact"><i class="fa fa-phone-square"></i> Contact</a>
-                    </li>
-                    <li ng-class="{ navactive: isActiveStep('help') }">
-                        <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-circle"></i> Help</a>
-                    </li>
-                </ul>
-                <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
-                    <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
-                </ul>
-                <ul ng-show="email_address" class="nav navbar-nav navbar-right">
-                    <li ng-class="{ navactive: isActiveStep('reviews') }">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-comment space-right"></i> Reviews <span
-                                ng-controller="globalReviewsController"
-                                class="badge ng-binding">  {{count}}</span>
-                        </a>
-                        <div class="dropdown-menu reviews-dropdown">
-                            <!--directive-->
-                            <div  class="nav-dropdown-scrollbar" global-reviews></div>
-                        </div>
-                    </li>
-                    <li ng-class="{ navactive: isActiveStep('projects') }">
-                        <a ng-click="showStep('projects')"
-                           ui-sref="projects.project.overview({id: firstProjectID})"
-                           class="navbar-link">
-                            <i class="fa fa-briefcase space-right"></i> Projects
-                        </a>
-                    </li>
-                    <li ng-class="{ navactive: isActiveStep('machines') }">
-                        <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i
-                            class="fa fa-gears space-right"></i> Machines</a></li>
-
-
-                    <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
-                        <a ng-click="showStep('email')" class="dropdown-toggle"><i class="fa fa-user space-right"></i>{{email_address}}
-                            <span class="caret caret-light"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a ng-click="showStep('email')" ui-sref="account.password"><i
-                                class="fa fa-unlock-alt space-right"></i> Change
-                                Password</a></li>
-                            <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i
-                                class="fa fa-user space-right"></i>UserGroups</a></li>
-                            <li><a ng-click="showStep('email')" ui-sref="account.templates"><i
-                                class="fa fa-list-alt space-right"></i>Templates</a>
-                            </li>
-                            <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i class="fa fa-key space-right"></i>Apikey</a>
-                            </li>
-                            <li class=divider></li>
-                            <li><a ng-click="showStep('email')" ui-sref="logout"> <i class="fa fa-sign-out space-right"></i>
-                                Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="row" ng-controller="_indexAlerts">
-            <div ng-show="message">
-                <notification ng-model="message"></notification>
-            </div>
-        </div>
-
-        <div class="row">
-            <div ng-controller="contextMenuController">
-                <!-- Inject action-stack so controller can use it -->
-                <div action-stack></div>
-                <div context-menu class="col-lg-12" data-target="global-menu">
-                    <div class="row app-container">
-                        <div ui-view>
-                        </div>
-                    </div>
-                </div>
-                <div class="dropdown position-fixed" id="global-menu">
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="globalDropDownMenu">
-                        <li>
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="-1"
-                               ng-click="gotoLocation('top')">
-                                Goto Top (t)
-                            </a>
-                        </li>
-                        <li>
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="0"
-                               ng-click="gotoLocation('projecttree')">
-                                Goto Project File Tree (f)
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li ng-repeat="action in defaultActions">
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="-1"
-                               ng-click="toggleStackAction(action.id)">
-                                {{action.title}} ({{action.key}})
-                            </a>
-                        </li>
-                        <li class=divider></li>
-                        <li ng-repeat="action in actions">
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="{{$index+1}}"
-                               ng-click="gotoLocation(action.id)">
-                                Goto {{action.title}} ({{$index+1}})
-                            </a>
-                        </li>
+        <div>
+            <div class="side-bar" style="background-color: #333333; height: 100%; min-height: 100%">
+                <div>
+                    <ul class="list-unstyled">
+                        <li>Hello</li>
+                        <li>World</li>
                     </ul>
+                </div>
+            </div>
+            <div class="main-content">
+                <navbar></navbar>
+                <div class="row app-containerx">
+                    <div ui-view>
+                    </div>
                 </div>
             </div>
         </div>
@@ -198,6 +86,7 @@
 
         <!------------------------------ Application --------------------------->
         <script src="application/app.js"></script>
+        <script src="navbar.js"></script>
 
         <!------------------------------ Core app ------------------------------>
 
