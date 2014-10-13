@@ -11,8 +11,11 @@ function sidebarDirective() {
 }
 
 Application.Controllers.controller("sidebarDirectiveController",
-                                   ["$scope", sidebarDirectiveController]);
+                                   ["$scope", "model.projects", sidebarDirectiveController]);
 
-function sidebarDirectiveController($scope) {
-
+function sidebarDirectiveController($scope, projects) {
+    projects.getList().then(function(p) {
+        $scope.projects = p;
+        $scope.project = $scope.projects[0];
+    });
 }
