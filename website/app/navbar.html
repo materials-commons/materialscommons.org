@@ -12,8 +12,10 @@
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav list-inline">
             <li id="about-nav" ng-class="{ navactive: isActiveStep('about') }" class="dropdown">
-                <a ng-click="showStep('about')" class="dropdown-toggle">
-                    <i class="fa fa-plus"></i><span class="caret caret-light"></span>
+                <a ng-click="showStep('about')"
+                   style="font-size: 12pt; font-weight: 400"
+                   class="dropdown-toggle">
+                    <i class="fa fa-plus"></i> New<span class="caret caret-light"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
@@ -34,6 +36,16 @@
                     <li>
                         <a>
                             <i class="fa fa-edit"></i> New Note
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="fa fa-tags"></i> New Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="fa fa-check-square"></i> New Task
                         </a>
                     </li>
                 </ul>
