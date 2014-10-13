@@ -407,6 +407,8 @@ td.tag-width {
   background-color: #4a7a93;
   color: #ffffff;
   border-radius: 0;
+  padding-top: 3px;
+  padding-bottom: 4px;
 }
 
 .navbar-custom .navbar-nav > li > a {
@@ -437,6 +439,8 @@ td.tag-width {
 
 .navbar.navbar-custom > .navbar-header > .navbar-brand {
   color: #FDDF5B;
+  font-size: 14pt;
+  font-weight: 400;
 }
 
 .navbar-custom .navbar-toggle {
@@ -807,7 +811,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   width: 320px;
   position: fixed;
   height: 100%;
-  background-color: #333333;
+  background-color: #3B4247;
   margin-left: 0px;
   margin-top: 0px;
   height: 100%;
@@ -815,15 +819,24 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .sidebar-list .list-group-item {
-  background-color: #333333;
-  border: 0px solid #333333;
+  background-color: #3b4247;
+  border: 0px solid #3b4247;
+  font-size: 14pt;
+  font-weight: 400;
   color: white;
+}
+
+.sidebar-list .list-group-item:not(:first-child) {
+  margin-left: 15px;
+}
+
+.sidebar-list .sidebar-action {
+  background-color: #333333;
 }
 
 .sidebar-list .list-group-item:first-child {
   border-top-right-radius: 0px !important;
   border-top-left-radius: 0px !important;
-
 }
 
 .sidebar-list .list-group-item:last-child {
@@ -831,7 +844,10 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-bottom-left-radius: 0px !important;
 }
 
-
+.sidebar-list a.list-group-item:hover {
+  background-color: #4a5258;
+  color: white;
+}
 
 .main-content {
   margin-left: 320px;
