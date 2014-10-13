@@ -1390,3 +1390,6 @@ ul.menu-bar li {
 .repeated-img {
     margin: 0 5px 5px 0;
 }
+.popover{
+    width:500px;
+}

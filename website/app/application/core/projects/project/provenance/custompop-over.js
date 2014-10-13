@@ -1,7 +1,9 @@
 Application.Directives.directive("customPopOver", ["$compile",
     function ($compile) {
-        var itemsTemplate = "<label>1</label>one <label>2</label>two";
-        console.log(itemsTemplate)
+        var itemsTemplate = "<ul>" +
+            "<li>One</li>"    +
+            "<li>two</li>"+
+            "</ul>";
         var getTemplate = function (contentType) {
             var template = '';
             switch (contentType) {
@@ -22,8 +24,8 @@ Application.Directives.directive("customPopOver", ["$compile",
                     var html = getTemplate("items");
                     popOverContent = $compile(html)(scope);
                 }
-                console.log(scope.title);
-                console.log(scope.items);
+//                console.log(scope.title);
+//                console.log(scope.items);
 
                 var options = {
                     content: popOverContent,
@@ -35,7 +37,7 @@ Application.Directives.directive("customPopOver", ["$compile",
             },
             scope: {
                 items: '=',
-                title: '@'
+                title: '='
             }
         };
     }]);
