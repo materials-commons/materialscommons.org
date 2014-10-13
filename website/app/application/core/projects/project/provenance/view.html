@@ -1,7 +1,4 @@
 <div ng-controller="projectProvenanceView">
-    <!--<div ng-init="items = ['car', 'truck', 'plane', 'bike']">-->
-        <!--<a href="#" custom-pop-over items="items" title="Mode of transport">Show Pop over</a>-->
-    <!--</div>-->
 
     <div class="row" ng-repeat=" process in processes">
         <h4>{{process.name}}</h4>
@@ -10,7 +7,7 @@
                 <div class="panel-body">
                     <b><u>Inputs</u></b>
                     <div ng-repeat="(key, values) in process['inputs']">
-                        <b><a custom-pop-over items="values" title="{{key}}">{{key}}</a></b>
+                           <b><a style="width: 400px;" custom-pop-over items="values" title="key">{{key}}</a></b>
                         <div ng-show="key === 'files'">
                             <ul style="word-wrap: break-word; padding-left: 50px;" ng-repeat="file in values">
                                 <li><a>{{file.other.name}}</a></li>
