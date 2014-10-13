@@ -6,19 +6,15 @@ Application.Services.factory('ProcessList',
             }
             return {
                 getProcesses: function(project_id){
-                    console.log(project_id);
-                    this.loadProcesses(project_id);
-//                    if (project_id in service.processes){
-//                        return service.processes[project_id];
-//                    }else{
-//                        this.loadProcesses(project_id);
-//                    }
+                    if (service.processes.hasOwnProperty(project_id)){
+                        return service.processes[project_id];
+                    }else{
+                        this.loadProcesses(project_id);
+                    }
                 },
 
                 loadProcesses: function (project_id) {
                     Restangular.one('processes').one('project', project_id).getList().then(function(data){
-                        console.log("here i am");
-                        console.log(data);
                         service.processes[project_id] = data;
                         console.log(service.processes);
                         return service.processes[project_id];

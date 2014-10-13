@@ -1,5 +1,57 @@
-
 <div ng-controller="projectProvenanceView">
-    <h4>Provenance View </h4>
-    <p>To Be Done</p><br>
+    <!--<div ng-init="items = ['car', 'truck', 'plane', 'bike']">-->
+        <!--<a href="#" custom-pop-over items="items" title="Mode of transport">Show Pop over</a>-->
+    <!--</div>-->
+
+    <div class="row" ng-repeat=" process in processes">
+        <h4>{{process.name}}</h4>
+        <div class="col-lg-3" >
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <b><u>Inputs</u></b>
+                    <div ng-repeat="(key, values) in process['inputs']">
+                        <b><a custom-pop-over items="values" title="{{key}}">{{key}}</a></b>
+                        <div ng-show="key === 'files'">
+                            <ul style="word-wrap: break-word; padding-left: 50px;" ng-repeat="file in values">
+                                <li><a>{{file.other.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                  <b><u>Process</u></b>
+                    <div>
+                        <label>Name:</label>
+                        {{process.name}}
+                    </div>
+                    <div>
+                        <label>Description:</label>
+                        <p style="word-wrap: break-word;">{{process.description}}</p>
+                    </div>
+                    <div>
+                       <label>Runs:</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <b><u>Outputs</u></b>
+                    <div ng-repeat="(key, values) in process['outputs']">
+                        <b><a>{{key}}</a></b>
+                        <div ng-show="key === 'files'">
+                            <ul style="word-wrap: break-word; padding-left: 50px;" ng-repeat="file in values">
+                                <li><a>{{file.other.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
