@@ -4,11 +4,11 @@ Application.Controllers.controller("projectProvenanceView",
 function projectProvenanceView($scope, mcapi, $stateParams, Projects, ProcessList){
 
     $scope.getProcessDetails = function(){
-        ProcessList.getProcesses($stateParams.id);
+        $scope.processes = ProcessList.getProcesses($stateParams.id);
+       console.log($scope.processes)
     }
 
     function init(){
-        console.log('inside provenance view controller');
         Projects.get($stateParams.id).then(function(project)
         {
             $scope.project = project;

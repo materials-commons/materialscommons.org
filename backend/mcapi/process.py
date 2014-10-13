@@ -16,12 +16,18 @@ def get_processes_by_project(project_id):
     rr = r.table('processes').get_all(project_id, index='project_id')
     selection = list(rr.run(g.conn, time_format='raw'))
     for process in selection:
+        process['inputs'] = {}
+        process['outputs'] = {}
         property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'}).run(g.conn)
         for each_set in property_sets:
-            properties = list(r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'}).run(g.conn))
-            process[each_set['name']] = properties
+            rr = r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'})
+            properties = list(rr.run(g.conn, time_format='raw'))
+            if each_set['stype'] == 'inputs':
+                process['inputs'][each_set['name']] = properties
+            else:
+                process['outputs'][each_set['name']] = properties
+            #process[each_set['name']] = properties
         complete_processes.append(process)
-    print complete_processes
     return Response(json.dumps(complete_processes), mimetype="application/json")
 
 
