@@ -1,9 +1,6 @@
 Application.Directives.directive("customPopOver", ["$compile",
     function ($compile) {
-        var itemsTemplate = "<ul>" +
-            "<li>One</li>"    +
-            "<li>two</li>"+
-            "</ul>";
+        var itemsTemplate = "<ul class='unstyled'><li ng-repeat='item in items'>{{item.display_name}} - {{item.value}}  {{item.unit}}</li></ul>"
         var getTemplate = function (contentType) {
             var template = '';
             switch (contentType) {
@@ -24,8 +21,7 @@ Application.Directives.directive("customPopOver", ["$compile",
                     var html = getTemplate("items");
                     popOverContent = $compile(html)(scope);
                 }
-//                console.log(scope.title);
-//                console.log(scope.items);
+                console.log(scope.title);
 
                 var options = {
                     content: popOverContent,
