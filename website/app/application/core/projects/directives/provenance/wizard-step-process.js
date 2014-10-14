@@ -11,9 +11,10 @@ function wizardStepProcessDirective() {
 
 Application.Controllers.controller('wizardStepProcessController',
                                    ["$scope", "provStep", "$stateParams", "actionStatus",
+                                    "ui",
                                     wizardStepProcessController]);
 
-function wizardStepProcessController($scope, provStep, $stateParams, actionStatus) {
+function wizardStepProcessController($scope, provStep, $stateParams, actionStatus, ui) {
     function setDoneState() {
         if (!$scope.wizardState.currentDraft.process.name) {
             $scope.wizardState.currentDraft.process.done = false;
@@ -39,7 +40,10 @@ function wizardStepProcessController($scope, provStep, $stateParams, actionStatu
     };
 
     $scope.cancelStep = function() {
-        $scope.wizardState.selectedTemplate = null;
-        $scope.step = provStep.setStep(provStep.makeStep("start", "start"));
+        var projectID = $scope.wizardState.project.id;
+        actionStatus.clearCurrentActionState(projectID);
+        actionStatus.toggleCurrentAction(projectID);
+        ui.setShowFiles(projectID, true);
+        ui.setShowToolbarTabs(projectID, true);
     };
 }

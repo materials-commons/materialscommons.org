@@ -2,8 +2,9 @@ import rethinkdb as r
 
 
 class PropertySet(object):
-    def __init__(self, name, set_type, item_id, item_type):
+    def __init__(self, name, display_name, set_type, item_id, item_type):
         self.name = name
+        self.display_name = display_name
         self.stype = set_type
         self.item_id = item_id
         self.item_type = item_type
