@@ -7,7 +7,12 @@ function projectProvenanceView($scope, mcapi, $stateParams, Projects, ProcessLis
         $scope.processes = ProcessList.getProcesses($stateParams.id);
        console.log($scope.processes)
     }
-
+    $scope.createName = function(name) {
+        if (name.length > 12) {
+            return name.substring(0,10)+"...";
+        }
+        return name;
+    };
     function init(){
         Projects.get($stateParams.id).then(function(project)
         {
