@@ -1,0 +1,46 @@
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-xs-2">Composition:</label>
+
+        <div class="col-xs-4">
+            <select style="margin-bottom: 5px;" class="form-control"
+                    ui-select2="{placeholder: 'Select Element', allowClear: true}"
+                    ng-multiple="false"
+                    ng-model="bk.element_name">
+                <option value=""></option>
+                <option ng-repeat="ele in elements" value="{{ele.name}}">{{ele.name}} - {{ele.full_name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-2"></label>
+
+        <div class="col-xs-3">
+            <input type="radio"
+                   value="at%" ng-model="doc.properties.composition.unit"/>
+            atomic %
+            <input type="radio"
+                   value="wt%" ng-model="doc.properties.composition.unit"/>
+            weight %
+        </div>
+        <div class="col-xs-1">
+            <input placeholder="value..." class="form-control" ng-model="bk.element_value">
+        </div>
+        <div class="col-xs-1">
+            <button ng-click="addComposition()" class="btn btn-default">add</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-offset-2">
+            <div class="col-xs-3" ng-if="doc.properties.composition.value.length!==0">
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success"
+                        ng-repeat="e in doc.properties.composition.value">{{e.element}} - {{e.value}}
+                        <a ng-click="removeComposition($index)" style="float: right">X</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>

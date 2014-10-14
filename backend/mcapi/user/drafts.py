@@ -50,9 +50,15 @@ def create_draft():
 @apikey
 def save_draft(project_id):
     j = request.get_json()
+    j['project_id'] = project_id
+    j['owner'] = access.get_user()
     if 'id' in j:
+        j['mtime'] = r.now()
+        id = j['id']
         r.table('drafts').get(j['id']).update(j).run(g.conn)
     else:
+        j['birthtime'] = r.now()
+        j['mtime'] = j['birthtime']
         id = dmutil.insert_entry_id('drafts', j)
     return jsonify({'id': id})
 

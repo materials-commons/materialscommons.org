@@ -5,6 +5,7 @@ function actionCreateSample() {
         scope: {
             project: "="
         },
+        replace: true,
         controller: "actionCreateSampleController",
         restrict: "AE",
         templateUrl: "application/core/projects/project/action/action-create-sample.html"
@@ -13,9 +14,19 @@ function actionCreateSample() {
 
 Application.Controllers.controller('actionCreateSampleController',
                                    ["$scope", "mcapi", "model.projects", "actionStatus",
-                                    "pubsub", actionCreateSampleController]);
+                                    "pubsub", "ui", actionCreateSampleController]);
 
-function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pubsub) {
+function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pubsub, ui) {
+
+    $scope.onDrop = function(target, source) {
+        if (source === "") {
+            source = 0;
+        }
+        var sourceObject = $scope.events[source];
+        // Remove the old item
+        $scope.events.splice(source, 1);
+        $scope.events.splice(target, 0, sourceObject);
+    };
 
     function initializeState() {
         var state = actionStatus.getCurrentActionState($scope.project.id);
@@ -54,6 +65,8 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
                 Projects.getList(true).then(function (data) {
                     actionStatus.clearCurrentActionState($scope.project.id);
                     actionStatus.toggleAction($scope.project.id, 'create-sample');
+                    ui.setShowFiles($scope.project.id, true);
+                    ui.setShowToolbarTabs($scope.project.id, true);
                     pubsub.send('update-tab-count.change');
                 });
             }).post($scope.doc);
@@ -66,6 +79,8 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
     $scope.cancel = function () {
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-sample');
+        ui.setShowFiles($scope.project.id, true);
+        ui.setShowToolbarTabs($scope.project.id, true);
     };
 
     $scope.removeProjects = function (index) {
@@ -79,7 +94,9 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
     $scope.removeComposition = function (i) {
         $scope.doc.properties.composition.value.splice(i, 1);
     };
+
     function init() {
+        $scope.activeToolbarItem = "";
         initializeState();
         Projects.getList().then(function (projects) {
             $scope.projects = projects;
@@ -87,7 +104,21 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
         mcapi('/objects/elements')
             .success(function(data){
                 $scope.elements = data;
-            }).jsonp()
+            }).jsonp();
+
+        $scope.events = [
+            {
+                name: "Heat Treatment A"
+            },
+
+            {
+                name: "Heat Treatment B"
+            },
+
+            {
+                name: "Cogged C"
+            }
+        ];
     }
 
     init();
