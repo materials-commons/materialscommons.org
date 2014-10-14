@@ -18,48 +18,75 @@
     </div>
 
     <div class="list=group sidebar-list">
-        <a href="#" class="list-group-item" style="color: #97c7e0">
-            <i class="fa fa-home"></i> {{project.name}}
+        <a class="list-group-item"
+           ng-click="showProjectActions = !showProjectActions"
+           style="color: #97c7e0">
+            {{project.name}}
+            <i class="fa"
+               ng-class="{'fa-chevron-right': !showProjectAction, 'fa-chevron-down': showProjectActions}">
+            </i>
         </a>
 
-        <a href="#" class="list-group-item">
-            <i class="fa fa-code-fork"></i> Provenance
-            <span class="badge badge-light">{{project.processes.length}}</span>
-        </a>
+        <div ng-show="showProjectActions">
+            <a class="list-group-item">
+                <i class="fa fa-home" style="margin-right: 8px"></i> Home
+            </a>
 
-        <a href="#" class="list-group-item">
-            <i class="fa fa-cubes"></i> Samples
-            <span class="badge badge-light">{{project.samples.length}}</span>
-        </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-code-fork" style="margin-right: 14px;"></i> Provenance
+                <span class="badge badge-light">{{project.processes.length}}</span>
+            </a>
 
-        <a href="#" class="list-group-item">
-            <i class="fa fa-comment"></i> Reviews
-            <span class="badge badge-light">{{project.reviews.length}}</span>
-        </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-cubes" style="margin-right: 2px;"></i> Samples
+                <span class="badge badge-light">{{project.samples.length}}</span>
+            </a>
 
-        <a href="#" class="list-group-item">
-            <i class="fa fa-edit"></i> Notes
-            <span class="badge badge-light">{{project.notes.length}}</span>
-        </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-comment" style="margin-right: 7px;"></i> Reviews
+                <span class="badge badge-light">{{project.reviews.length}}</span>
+            </a>
 
-        <a href="#" class="list-group-item">
-            <i class="fa fa-files-o"></i> Files
-            <span class="pull-right" style="color: white">{{project.fileCount}}/{{project.projectSize}}</span>
-        </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-edit" style="margin-right: 7px;"></i> Notes
+                <span class="badge badge-light">{{project.notes.length}}</span>
+            </a>
 
-        <a href="#" class="list-group-item">
-            <i class="fa fa-check-square"></i> Tasks
-        </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-files-o" style="margin-right: 7px;"></i> Files
+                <span class="pull-right"
+                      style="color: white">{{project.fileCount}}/{{project.projectSize}}</span>
+            </a>
 
-        <a href="#" class="list-group-item">
-            <i class="fa fa-gears"></i> Preferences
-        </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-check-square" style="margin-right: 7px;"></i> Tasks
+            </a>
+
+            <a href="#" class="list-group-item">
+                <i class="fa fa-gears" style="margin-right: 6px;"></i> Preferences
+            </a>
+        </div>
+    </div>
+
+    <div class="list-group sidebar-list" style="margin-top: 20px;">
+        <div class="list-group-item sidebar-action">
+            <a style="color: white" ng-click="showTags = !showTags">
+                <i class="fa fa-tags"></i> Tags
+                <i class="fa"
+                   ng-class="{'fa-chevron-right': !showTags, 'fa-chevron-down': showTags}"></i>
+                <span class="badge bade-light pull-right">{{tags.length}}</span>
+            </a>
+            <div ng-show="showTags">
+                <a href="#" class="list-group-item" ng-repeat="tag in tags">
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="list-group sidebar-list" style="margin-top: 20px;">
         <div class="list-group-item sidebar-action">
             <a style="color: white" ng-click="showAllRecent = !showAllRecent">
-                <i class="fa fa-briefcase"></i> Recent
+                <i class="fa fa-history"></i> Recent
                 <i class="fa"
                    ng-class="{'fa-chevron-right': !showAllRecent, 'fa-chevron-down': showAllRecent}"></i>
                 <span class="badge badge-light pull-right">{{recents.length}}</span>
@@ -72,12 +99,4 @@
             </div>
         </div>
     </div>
-
-    <div class="list-group sidebar-list">
-        <a href="#" class="list-group-item" ng-repeat="recent in recents">
-            <i class="fa" ng-class="recentIcon(recent.itype)"></i>
-            {{recent.name}}
-        </a>
-    </div>
-
 </div>

@@ -26,6 +26,7 @@ function sidebarDirectiveController($scope, projects, recent) {
 
     $scope.showProjects = false;
     $scope.showAllRecent = false;
+    $scope.showProjectActions = true;
 
     projects.getList().then(function(p) {
         $scope.projects = p;
