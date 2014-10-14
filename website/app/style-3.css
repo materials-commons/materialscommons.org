@@ -824,10 +824,14 @@ h4, .h4, h5, .h5, h6, .h6 {
   font-size: 12pt;
   font-weight: 400;
   color: white;
+  margin-top: 1px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .sidebar-list .list-group-item:not(:first-child) {
-  margin-left: 15px;
+  /* margin-left: 15px; */
+  /* margin-right: 15px; */
 }
 
 .sidebar-action-list {
@@ -852,18 +856,17 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-bottom-left-radius: 0px !important;
 }
 
-
-.sidebar-list a.list-group-item:first-child:hover {
+.sidebar-list a.list-group-item:hover {
   background-color: #4a5258;
   color: white;
 }
 
-.sidebar-list a.list-group-item:not(:first-child):hover {
-  background-color: #4a5258;
-  color: white;
-  margin-left: 15px;
-  margin-right: 15px;
-}
+/* .sidebar-list a.list-group-item:not(:first-child):hover { */
+/*   background-color: #4a5258; */
+/*   color: white; */
+/*   margin-left: 15px; */
+/*   margin-right: 15px; */
+/* } */
 
 .main-content {
   margin-left: 300px;
