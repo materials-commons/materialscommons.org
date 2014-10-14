@@ -1,53 +1,84 @@
 <div ng-controller="projectProvenanceView">
+    <div class="row">
+        <div class="col-sm-2">
+            <strong>All Processes</strong>
 
-    <div class="row" ng-repeat=" process in processes">
-        <h4>{{process.name}}</h4>
-        <div class="col-lg-3" >
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <b><u>Inputs</u></b>
-                    <div ng-repeat="(key, values) in process['inputs']">
-                           <b><a style="width: 400px;" custom-pop-over items="values" title="key">{{key}}</a></b>
-                        <div ng-show="key === 'files'">
-                            <ul style="word-wrap: break-word; padding-left: 50px;" ng-repeat="file in values">
-                                <li><a>{{file.other.name}}</a></li>
+            <div class="row" style=" height: 400px; overflow-y: scroll;">
+                <ul style="list-style: none" ng-repeat="p in processes">
+                    <li style="background-color: #E8E6CF;height: 40px; text-align: center;padding-top:10px;"><a>{{p.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <strong>Processes(I)</strong>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f; margin:20px; ">
+                {{1}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{2}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{3}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{4}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{5}}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <strong>Current Process</strong>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color: #E8E6CF">
+                        APT Experiment
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <h4>Process</h4>
+                            <div>
+                                <label>Name:</label>
+                                {{processes[0].name}}
+                            </div>
+                            <div>
+                                <label>Description:</label>
+                                {{processes[0].description}}
+                            </div>
+                            <div>
+                                <label>Runs:</label>
+                            </div>
+                        </div> <hr style="border: 0.2px dotted black"/>
+                        <div class="row">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li ng-repeat="(key, values) in processes[0]['inputs']">
+                                    <a style="width: 100px; border: 1px solid grey">{{key}}</a></li>
                             </ul>
+                            <!--<div ng-repeat="(key, values) in processes[0]['inputs']">-->
+                                <!--<div ng-if="key !== 'files'" class="col-sm-6">-->
+                                    <!--<u>{{key}}</u>-->
+                                    <!--<ul style="word-wrap: break-word; padding-left: 50px;" ng-repeat="v in values">-->
+                                        <!--<li>{{v.display_name}} : {{v.value}} {{v.unit}}</li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
-        <div class="col-lg-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                  <b><u>Process</u></b>
-                    <div>
-                        <label>Name:</label>
-                        {{process.name}}
-                    </div>
-                    <div>
-                        <label>Description:</label>
-                        <p style="word-wrap: break-word;">{{process.description}}</p>
-                    </div>
-                    <div>
-                       <label>Runs:</label>
-                    </div>
-                </div>
+        <div class="col-sm-2">
+            <strong>Processes(O)</strong>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f; margin:20px; ">
+                {{1}}
             </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <b><u>Outputs</u></b>
-                    <div ng-repeat="(key, values) in process['outputs']">
-                        <b><a>{{key}}</a></b>
-                        <div ng-show="key === 'files'">
-                            <ul style="word-wrap: break-word; padding-left: 50px;" ng-repeat="file in values">
-                                <li><a>{{file.other.name}}</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{2}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{3}}
             </div>
         </div>
     </div>
