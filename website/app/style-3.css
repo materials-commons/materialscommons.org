@@ -407,8 +407,8 @@ td.tag-width {
   background-color: #4a7a93;
   color: #ffffff;
   border-radius: 0;
-  padding-top: 1px;
-  padding-bottom: 2px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .navbar-custom .navbar-nav > li > a {
