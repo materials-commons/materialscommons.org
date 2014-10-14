@@ -31,7 +31,7 @@ function todosSideboardController($scope, $stateParams, Projects, User) {
         td.selected = !td.selected;
         $scope.project.put(User.keyparam()).then(function() {
         });
-    }
+    };
 
     $scope.project_id = $stateParams.id;
     Projects.get($scope.project_id).then(function(project) {

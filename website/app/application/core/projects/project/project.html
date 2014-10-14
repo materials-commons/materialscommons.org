@@ -1,10 +1,6 @@
 <div ng-controller="projectsProject">
-    <project-control-bar project-id="{{project.id}}"></project-control-bar>
     <div class="row">
         <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
-        <div class="col-xs-2 sideboard" style="padding-top: 5px">
-            <sideboard></sideboard>
-        </div>
         <div class="col-xs-10" style="padding-left: 10px;">
             <div class="row"
                  style="padding-bottom: 7px; padding-top: 3px">
@@ -14,11 +10,6 @@
             </div>
             <div style="padding-top: 3px">
                 <project-action-area project="project"></project-action-area>
-                <div id="action-stack" class="row">
-                </div>
-                <div ng-show="showTabs()" class="row">
-                    <project-tabs project="project"></project-tabs>
-                </div>
             </div>
             <div ng-show="showFiles()" class="row">
                 <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>

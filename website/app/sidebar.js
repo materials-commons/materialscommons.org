@@ -12,9 +12,9 @@ function sidebarDirective() {
 
 Application.Controllers.controller("sidebarDirectiveController",
                                    ["$scope", "model.projects", "recent", "current",
-                                    sidebarDirectiveController]);
+                                    "User", sidebarDirectiveController]);
 
-function sidebarDirectiveController($scope, projects, recent, current) {
+function sidebarDirectiveController($scope, projects, recent, current, User) {
     function computeProjectSizes(project) {
         var totalFiles = 0;
         $scope.project.projectSize = bytesToSizeStr(project.size);
@@ -27,6 +27,7 @@ function sidebarDirectiveController($scope, projects, recent, current) {
     $scope.showProjects = false;
     $scope.showAllRecent = false;
     $scope.showProjectActions = true;
+    $scope.tags = User.attr().preferences.tags;
 
     projects.getList().then(function(p) {
         $scope.projects = p;

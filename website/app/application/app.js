@@ -120,10 +120,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
          */
         .state('projects', {
             url: '/projects',
-            templateUrl: 'application/core/projects/projects.html',
+            abstract: true,
+            template: '<div ui-view></div>',
             resolve: {
                 Projects: "model.projects",
-                projects: function (Projects) {
+                projects1: function (Projects) {
                     return Projects.getList();
                 },
 
@@ -135,8 +136,12 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('projects.project', {
             url: '/project/:id',
-            templateUrl: 'application/core/projects/project/project.html'
-
+            templateUrl: 'application/core/projects/project/project.html',
+            resolve: {
+                p: ["$stateParams", "model.projects", "projects1", function ($stateParams, Projects, projects1) {
+                    return Projects.get($stateParams.id);
+                }]
+            }
         })
         .state('projects.project.overview', {
             url: '/overview',
