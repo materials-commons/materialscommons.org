@@ -50,9 +50,9 @@
                             </div>
                         </div> <hr style="border: 0.2px dotted black"/>
                         <div class="row">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li ng-repeat="(key, values) in processes[0]['inputs']">
-                                    <a style="width: 100px; border: 1px solid grey">{{key}}</a></li>
+                            <ul style="border: 1px solid #d3d3d3" class="nav nav-tabs" role="tablist">
+                                <li id="{{key}}" ng-repeat="(key, values) in processes[0]['inputs']">
+                                    <a style="width: 120px; ">{{createName(key)}}</a></li>
                             </ul>
                             <!--<div ng-repeat="(key, values) in processes[0]['inputs']">-->
                                 <!--<div ng-if="key !== 'files'" class="col-sm-6">-->
