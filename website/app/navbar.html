@@ -11,7 +11,10 @@
     </div>
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav list-inline">
-            <li id="about-nav" ng-class="{ navactive: isActiveStep('about') }" class="dropdown">
+            <li id="about-nav"
+                ng-class="{ navactive: isActiveStep('about') }"
+                is-open="status.isopen"
+                class="dropdown">
                 <a ng-click="showStep('about')"
                    style="font-size: 12pt; font-weight: 400"
                    class="dropdown-toggle">
@@ -19,33 +22,41 @@
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a>
-                            <i class="fa fa-code-fork"></i> New Provenance
+                        <a role="menuitem"
+                           tabindex="1"
+                           ng-click=toggleAction('create-provenance-new')>
+                            <i class="fa fa-txt-align fa-code-fork"></i> New Provenance
+                        </a>
+                    </li>
+                    <li>
+                        <a role="menuitem"
+                           tabindex="2"
+                           ng-click="toggleAction('create-sample')">
+                            <i class="fa fa-txt-align fa-cubes"></i> New Sample
+                        </a>
+                    </li>
+                    <li>
+                        <a role="menuitem"
+                           tabindex="3"
+                           ng-click="toggleAction('create-review')">
+                            <i class="fa fa-txt-align fa-comment"></i> New Review
+                        </a>
+                    </li>
+                    <li>
+                        <a role="menitem"
+                           tabindex="4"
+                           ng-click="toggleAction('create-note')">
+                            <i class="fa fa-txt-align fa-edit"></i> New Note
                         </a>
                     </li>
                     <li>
                         <a>
-                            <i class="fa fa-cubes"></i> New Sample
+                            <i class="fa fa-txt-align fa-tags"></i> New Tag
                         </a>
                     </li>
                     <li>
                         <a>
-                            <i class="fa fa-comment"></i> New Review
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <i class="fa fa-edit"></i> New Note
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <i class="fa fa-tags"></i> New Tag
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <i class="fa fa-check-square"></i> New Task
+                            <i class="fa fa-txt-align fa-check-square"></i> New Task
                         </a>
                     </li>
                 </ul>
