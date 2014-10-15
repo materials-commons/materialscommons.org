@@ -857,8 +857,14 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .sidebar-list a.list-group-item:hover {
+  background-color: #525A60;
+  color: white;
+}
+
+.sidebar-list a.list-group-item:focus {
   background-color: #4a5258;
   color: white;
+  outline: none;
 }
 
 /* .sidebar-list a.list-group-item:not(:first-child):hover { */
@@ -878,7 +884,6 @@ h4, .h4, h5, .h5, h6, .h6 {
 .nav-stacked > li.active > a:hover,
 .nav-stacked > li.active > a:focus {
   border-right: 2px solid yellow;
-
 }
 
 .limit-text {
