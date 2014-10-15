@@ -124,7 +124,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             template: '<div ui-view></div>',
             resolve: {
                 Projects: "model.projects",
-                projects1: function (Projects) {
+                projects: function (Projects) {
                     return Projects.getList();
                 },
 
@@ -138,23 +138,25 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/project/:id',
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
-                p: ["$stateParams", "model.projects", "projects1", function ($stateParams, Projects, projects1) {
+                project: ["$stateParams", "model.projects", "projects", function ($stateParams, Projects, projects) {
                     return Projects.get($stateParams.id);
                 }]
-            }
+            },
+            controller: "projectsProject"
         })
-        .state('projects.project.overview', {
-            url: '/overview',
-            templateUrl: 'application/core/projects/project/overview/overview.html'
+        .state('projects.project.home', {
+            url: '/home',
+            templateUrl: 'application/core/projects/project/home/home.html',
+            controller: "projectHome"
         })
-        .state('projects.project.overview.view', {
-            url: '/view',
-            templateUrl: 'application/core/projects/project/overview/view.html'
-        })
-        .state('projects.project.overview.permissions', {
-            url: '/permissions',
-            templateUrl: 'application/core/projects/project/overview/permissions.html'
-        })
+        // .state('projects.project.overview.view', {
+        //     url: '/view',
+        //     templateUrl: 'application/core/projects/project/overview/view.html'
+        // })
+        // .state('projects.project.overview.permissions', {
+        //     url: '/permissions',
+        //     templateUrl: 'application/core/projects/project/overview/permissions.html'
+        // })
         .state('projects.project.files', {
             url: '/files',
             templateUrl: 'application/core/projects/project/files/files.html'
@@ -165,11 +167,8 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('projects.project.samples', {
             url: '/samples',
-            templateUrl: 'application/core/projects/project/samples/samples.html'
-        })
-        .state('projects.project.samples.view', {
-            url: '/view',
-            templateUrl: 'application/core/projects/project/samples/view.html'
+            templateUrl: 'application/core/projects/project/samples/samples.html',
+            controller: "projectSamples"
         })
         .state('projects.project.provenance', {
             url: '/provenance',

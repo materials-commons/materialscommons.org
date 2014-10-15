@@ -4,7 +4,7 @@ function sidebarProjectsDirective() {
     return {
         restrict: "AE",
         replace: true,
-        templateUrl: "sidebar-projects.html",
+        templateUrl: "index/sidebar-projects.html",
         controller: "sidebarProjectsDirectiveController"
     };
 }

@@ -4,15 +4,15 @@ function sidebarActionsDirective() {
     return {
         restrict: "AE",
         replace: true,
-        templateUrl: "sidebar-actions.html",
+        templateUrl: "index/sidebar-actions.html",
         controller: "sidebarActionsDirectiveController"
     };
 }
 
 Application.Controllers.controller("sidebarActionsDirectiveController",
-                                   ["$scope", sidebarActionsDirectiveController]);
+                                   ["$scope", "$state", sidebarActionsDirectiveController]);
 
-function sidebarActionsDirectiveController($scope) {
+function sidebarActionsDirectiveController($scope, $state) {
     $scope.showProjectActions = true;
     $scope.activeAction = "home";
 
@@ -22,5 +22,6 @@ function sidebarActionsDirectiveController($scope) {
 
     $scope.setActionActive = function(action) {
         $scope.activeAction = action;
+        $state.go("projects.project." + action, {id: $scope.project.id});
     };
 }

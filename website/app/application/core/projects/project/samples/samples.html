@@ -1,22 +1,24 @@
-<div ng-controller="projectSamples">
-    <tab-control-bar>
-        <div class="col-xs-offset-1">
-            <ul class="list-inline menu-bar">
-                <li ui-sref="projects.project.samples.view">
+<div>
+    <h4>Sample Hierarchy</h4>
+    <div ng-if="tree_data.length == 0">
+        <p>No samples created under  project {{project.name}}</p> <br>
+    </div>
+    <div class="row" ng-if="tree_data">
+        <div class="col-lg-offset-2">
+            <div class="col-lg-10">
+                <div class="row" style="margin-bottom: 4px">
+                    <button ng-click="my_tree.expand_all()" class="btn btn-default btn-sm">Expand All</button>
+                    <button ng-click="my_tree.collapse_all()" class="btn btn-default btn-sm">Collapse All</button>
+                </div>
 
-                    <action-link  title="View Samples"
-                                 title-icon="fa-cubes" link="{{isActiveLink('View Samples')}}">
-                    </action-link>
-                </li>
-
-                <li>
-                    <action-menu title="Reports"
-                                 title-icon="fa-bar-chart"
-                                 menu-items="reportsMenu">
-                    </action-menu>
-                </li>
-            </ul>
+                <div class="row">
+                    <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="my_tree"
+                               on-select="sampleDetails(branch)"></tree-grid>
+                </div>
+            </div>
         </div>
-    </tab-control-bar>
-    <div ui-view></div>
+    </div>
+    <div ng-if="details" class="row">
+        <div sample-report sample="details"></div>
+    </div>
 </div>

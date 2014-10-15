@@ -8,3 +8,8 @@
 *** angular-hotkeys
     [[https://github.com/chieffancypants/angular-hotkeys]]
     files: hotkeys.min.js, hotkeys.min.css (in ../../assets/css)
+*** tc-angular-chartjs
+    [[https://github.com/carlcraig/tc-angular-chartjs]]
+    version 1.0.9
+    files: tc-angular-chartjs.min.js
+    Also depends on ../Chart.min.js

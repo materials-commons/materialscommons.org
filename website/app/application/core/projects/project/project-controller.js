@@ -1,26 +1,21 @@
 Application.Controllers.controller('projectsProject',
-                                   ["$scope", "$stateParams", "actionStatus", "provStep",
-                                    "model.projects", "projectColors", "ui", projectsProject]);
+                                   ["$scope", "actionStatus", "provStep", "ui",
+                                    "project", projectsProject]);
 
-function projectsProject ($scope, $stateParams, actionStatus, provStep, projects,
-                          projectColors, ui) {
+function projectsProject ($scope, actionStatus, provStep, ui, project) {
     $scope.isActive = function (tab) {
         return tab === $scope.activeTab;
     };
 
-    actionStatus.addProject($stateParams.id);
-    provStep.addProject($stateParams.id);
-
-    projects.get($stateParams.id).then(function(project) {
-        $scope.project = project;
-        projectColors.setCurrentProjectByID($stateParams.id);
-    });
+    actionStatus.addProject(project.id);
+    provStep.addProject(project.id);
+    $scope.project = project;
 
     $scope.showTabs = function() {
-        return ui.showToolbarTabs($stateParams.id);
+        return ui.showToolbarTabs(project.id);
     };
 
     $scope.showFiles = function() {
-        return ui.showFiles($stateParams.id);
+        return ui.showFiles(project.id);
     };
 }

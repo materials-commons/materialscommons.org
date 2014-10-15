@@ -4,7 +4,7 @@ function sidebarTagsDirective() {
     return {
         restrict: "AE",
         replace: true,
-        templateUrl: "sidebar-tags.html",
+        templateUrl: "index/sidebar-tags.html",
         controller: "sidebarTagsDirectiveController"
     };
 }

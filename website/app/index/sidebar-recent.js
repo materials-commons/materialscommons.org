@@ -4,7 +4,7 @@ function sidebarRecentDirective() {
     return {
         restrict: "AE",
         replace: true,
-        templateUrl: "sidebar-recent.html",
+        templateUrl: "index/sidebar-recent.html",
         controller: "sidebarRecentDirectiveController"
     };
 }
