@@ -404,7 +404,8 @@ td.tag-width {
 .navbar-custom {
   /* background-color: #0C5C86; */
   /* background-color: #204d65; */
-  background-color: #4a7a93;
+  /* background-color: #4a7a93; */
+  background-color: #4e869f;
   color: #ffffff;
   border-radius: 0;
   padding-top: 0px;
@@ -529,8 +530,9 @@ body {
   font-size: 13px;
   overflow-y: scroll;
   overflow-x: hidden;
-  /* background-color: #fafafa; */
-  background-color: #FBF9E2;
+  background-color: #e9e9ea;
+/* background-color: #FBF9E2; */
+/* background-color: #f5d7aa; */
 }
 
 .body-color {
@@ -1545,4 +1547,12 @@ ul.menu-bar li {
 
 .fa {
   margin-right: 3px;
+}
+
+/* **** Info Boxes **** */
+.info-box {
+  background-color: white;
+  border: 2px solid #d3d3d3;
+  border-top-width: 4px;
+  padding: 4px;
 }

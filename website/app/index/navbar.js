@@ -5,7 +5,7 @@ function navbarDirective() {
         scope: true,
         restrict: "AE",
         replace: true,
-        templateUrl: "navbar.html",
+        templateUrl: "index/navbar.html",
         controller: "navbarDirectiveController"
     };
 }

@@ -5,7 +5,7 @@ function sidebarDirective() {
         scope: true,
         restrict: "AE",
         replace: true,
-        templateUrl: "sidebar.html",
+        templateUrl: "index/sidebar.html",
         controller: "sidebarDirectiveController"
     };
 }

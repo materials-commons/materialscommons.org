@@ -10,6 +10,7 @@
 
     <div ng-show="showProjectActions">
         <a class="list-group-item"
+           ui-sref="projects.project.home{id: project.id}"
            ng-click="setActionActive('home')"
            ng-class="{active: isActionActive('home')}">
             <i class="fa fa-fw fa-home"></i> Home
