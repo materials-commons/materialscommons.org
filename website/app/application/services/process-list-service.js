@@ -1,6 +1,6 @@
 Application.Services.factory('ProcessList',
-    ["Restangular","User",
-        function (Restangular, User) {
+    ["Restangular", "pubsub",
+        function (Restangular, pubsub) {
             var service = {
                 processes: {}
             }
@@ -16,8 +16,6 @@ Application.Services.factory('ProcessList',
                 loadProcesses: function (project_id) {
                     Restangular.one('processes').one('project', project_id).getList().then(function(data){
                         service.processes[project_id] = data;
-                        console.log(service.processes);
-                        return service.processes[project_id];
                     });
                 }
             }
