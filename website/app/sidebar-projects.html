@@ -1,0 +1,17 @@
+<div class="list-group sidebar-list">
+    <div class="list-group-item sidebar-action" style="padding-top: 8px; padding-bottom: 8px">
+        <a style="color: white" ng-click="showProjects = !showProjects">
+            <i class="fa fa-fw fa-briefcase"></i> Projects
+            <i class="fa"
+               ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
+            <span class="badge badge-light pull-right">{{projects.length}}</span>
+        </a>
+        <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
+            <a class="list-group-item"
+               ng-repeat="p in projects"
+               ng-click="setProject(p)">
+                <i class="fa fa-fw fa-briefcase"></i> {{p.name}}
+            </a>
+        </div>
+    </div>
+</div>
