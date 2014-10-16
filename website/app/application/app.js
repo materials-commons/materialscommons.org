@@ -194,8 +194,8 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 app.run(["$rootScope", "User", "Restangular", "projectColors",
     function ($rootScope, User, Restangular, projectColors) {
         Restangular.setBaseUrl(mcglobals.apihost);
-        Restangular.setJsonp(true);
-        Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+        //Restangular.setJsonp(true);
+        //Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
         $rootScope.colors = projectColors;
 
         $rootScope.$on('$stateChangeStart', function () {

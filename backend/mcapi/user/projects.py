@@ -96,10 +96,10 @@ def add_drafts(projects_by_id, project_ids, user):
 
 def add_process_ids(projects_by_id, project_ids):
     processes = list(r.table('processes')
-                     .get_all(*project_ids, index='project')
-                     .pluck('id', 'project')
+                     .get_all(*project_ids, index='project_id')
+                     .pluck('id', 'project_id', 'name')
                      .run(g.conn, time_format='raw'))
-    add_computed_items(projects_by_id, processes, 'project', 'processes')
+    add_computed_items(projects_by_id, processes, 'project_id', 'processes')
 
 
 def add_computed_items(projects_by_id, items, projects_key, item_key):
@@ -191,7 +191,6 @@ def build_tree(datadirs):
             dfitem.c_id = next_id
             next_id = next_id + 1
             dfitem.tags = df['tags']
-            dfitem.mediatype = df['mediatype']
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
