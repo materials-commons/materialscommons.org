@@ -1,44 +1,54 @@
 Application.Controllers.controller("projectProvenance",
-                                   ["$scope", projectProvenance]);
+                                   ["$scope", "mcapi", "project", "ProcessList", "User", "pubsub", projectProvenance]);
 
-function projectProvenance($scope){
-    $scope.activeLink = 'View Provenance';
-    $scope.setActiveLink = function(tabID) {
-        $scope.activeLink = tabID;
+function projectProvenance($scope, mcapi, project, ProcessList, User) {
+
+    $scope.openProcess = function (p) {
+        $scope.flag = false;
+        $scope.sample = {};
+        $scope.settings = [];
+        $scope.process = p;
     };
 
-    $scope.isActiveLink = function (tabID) {
-        if (tabID == $scope.activeLink){
-            return true
+    $scope.createName = function (name) {
+        if (name.length > 12) {
+            return name.substring(0, 20) + "...";
         }
-        return false
+        return name;
     };
-    $scope.createProvenanceMenu = [
-        {
-            title: "New",
-            action: ""
-        },
+    $scope.expand = function (df) {
+        $scope.flag = false;
+        $scope.active = df.id;
+        $scope.datafile = df;
+    };
 
-        {
-            title: "From Draft",
-            action: ""
-        },
-
-        {
-            title: "From Template",
-            action: ""
+    $scope.isActiveList = function (k) {
+        if (k == $scope.active) {
+            return true;
         }
-    ];
+        return false;
+    };
 
-    $scope.reportsMenu = [
-        {
-            title: "By Process",
-            action: ""
-        },
-
-        {
-            title: "By Sample",
-            action: ""
+    $scope.showDetails = function (key, values) {
+        $scope.flag = true;
+        $scope.active = key;
+        if (key == 'sample') {
+            $scope.settings = [];
+            mcapi('/objects/%', values[0].value)
+                .success(function (data) {
+                    $scope.sample = data.sample;
+                }).jsonp();
+        } else {
+            $scope.key = key;
+            $scope.settings = values;
         }
-    ];
+    };
+
+    function init() {
+        $scope.apikey = User.apikey();
+        $scope.project = project;
+        $scope.processes = ProcessList.getProcesses(project.id);
+    }
+
+    init();
 }
