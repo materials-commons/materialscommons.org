@@ -83,7 +83,6 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus,
         actionStatus.clearCurrentActionState($stateParams.id);
         actionStatus.toggleCurrentAction($stateParams.id);
         ui.setShowFiles($stateParams.id, true);
-        ui.setShowToolbarTabs($stateParams.id, true);
     }
 
     $scope.submit = function() {

@@ -28,6 +28,5 @@ function projectActionBarDirectiveController($scope, actionStatus, ui) {
         actionStatus.toggleAction($scope.project.id, action);
         var active = actionStatus.isCurrentAction($scope.project.id, action);
         ui.setShowFiles($scope.project.id, !active);
-        ui.setShowToolbarTabs($scope.project.id, !active);
     };
 }

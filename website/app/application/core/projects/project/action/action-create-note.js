@@ -36,7 +36,6 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
                     actionStatus.clearCurrentActionState($scope.project.id);
                     actionStatus.toggleCurrentAction($scope.project.id);
                     ui.setShowFiles($scope.project.id, true);
-                    ui.setShowToolbarTabs($scope.project.id, true);
                 });
             });
         }, function(reason){
@@ -50,7 +49,6 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleCurrentAction($scope.project.id);
         ui.setShowFiles($scope.project.id, true);
-        ui.setShowToolbarTabs($scope.project.id, true);
     };
 
     $scope.create = function () {
