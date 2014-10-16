@@ -12,15 +12,12 @@ import json
 def build_process_relations(process):
     process['input_processes'] = []
     process['output_processes'] = [] 
-    values = list(r.table('property_sets').get_all(process['id'], index='item_id')\
-                .eq_join('id', r.table('properties'), index='item_id').zip()\
-                .filter({'ptype': 'sample', 'ptype': 'file'}).pluck('value').run(g.conn))
+    values = list(r.table('property_sets').get_all(process['id'], index='item_id').eq_join('id', r.table('properties'), index='item_id').zip().filter({'ptype': 'sample', 'ptype': 'file'}).pluck('value').run(g.conn))
     ids = []
     for each in values:
         ids.append(each['value'])
-    processes = list(r.table('properties').get_all(*ids, index='value')\
-                    .eq_join('item_id', r.table('property_sets')).zip()\
-                    .pluck('item_id','stype').distinct().eq_join('item_id', r.table('processes')).zip().pluck('item_id', 'stype', 'name').run(g.conn))
+    processes = list(r.table('properties').get_all(*ids, index='value').eq_join('item_id', r.table('property_sets')).zip().pluck('item_id','stype').distinct().eq_join('item_id', r.table('processes')).zip().pluck('item_id', 'stype', 'name').run(g.conn))
+    print processes
     for p in processes:
         if p['item_id'] != process['id']:
             if p['stype'] == 'inputs':
