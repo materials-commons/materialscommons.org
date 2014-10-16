@@ -10,23 +10,24 @@ import json
 
 
 def build_process_relations(process):
-    r.table('property_sets').get_all(process['id'], index='item_id')
-    inputs = process['inputs']
-    outputs = process['outputs']
     process['input_processes'] = []
-    process['output_processes'] = []
-    for key in inputs:
-        values = inputs[key]
-        for v in values:
-            if v[u'ptype'] == 'sample' or v[u'ptype'] == 'file':
-                #search for other procperty sets
-                existing_records = list(r.table('properties').filter({'value': v[u'value']}).eq_join('item_id', r.table('property_sets')).zip().eq_join('item_id', r.table('processes')).pluck('right').run(g.conn))
-                if len(existing_records) != 0:
-                    for record in existing_records:
-                        if record[u'right'][u'id'] != process['id']:
-                            process['input_processes'].append(record[u'right'])
-    print process['input_processes']    
-    pass
+    process['output_processes'] = [] 
+    values = list(r.table('property_sets').get_all(process['id'], index='item_id')\
+                .eq_join('id', r.table('properties'), index='item_id').zip()\
+                .filter({'ptype': 'sample', 'ptype': 'file'}).pluck('value').run(g.conn))
+    ids = []
+    for each in values:
+        ids.append(each['value'])
+    processes = list(r.table('properties').get_all(*ids, index='value')\
+                    .eq_join('item_id', r.table('property_sets')).zip()\
+                    .pluck('item_id','stype').distinct().eq_join('item_id', r.table('processes')).zip().pluck('item_id', 'stype', 'name').run(g.conn))
+    for p in processes:
+        if p['item_id'] != process['id']:
+            if p['stype'] == 'inputs':
+                process['input_processes'].append({'id':p['item_id'], 'name':p['name']})
+            else:
+                process['output_processes'].append({'id':p['item_id'], 'name':p['name']})    
+    return process
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
@@ -38,6 +39,7 @@ def get_processes_by_project(project_id):
         process['inputs'] = {}
         process['outputs'] = {}
         property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'}).run(g.conn)
+        build_process_relations(process)
         for each_set in property_sets:
             rr = r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'})
             properties = list(rr.run(g.conn, time_format='raw'))
@@ -45,7 +47,6 @@ def get_processes_by_project(project_id):
                 process['inputs'][each_set['name']] = properties
             else:
                 process['outputs'][each_set['name']] = properties
-            build_process_relations(process)
         complete_processes.append(process)
     return Response(json.dumps(complete_processes), mimetype="application/json")
 
