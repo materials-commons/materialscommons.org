@@ -12,11 +12,11 @@
                     <project-search-bar project="project"></project-search-bar>
                 </div>
             </div>
-            <div style="padding-top: 3px">
-                <project-action-area project="project"></project-action-area>
-            </div>
+            <!-- <div style="padding-top: 3px">
+            <project-action-area project="project"></project-action-area>
+            </div> -->
             <div ui-view></div>
-            <div ng-show="false" class="row">
+            <div ng-show="showFiles()" class="row">
                 <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>
                 <div class="row">
                     <project-description project-id="{{project.id}}"></project-description>

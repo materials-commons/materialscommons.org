@@ -66,7 +66,6 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
                     actionStatus.clearCurrentActionState($scope.project.id);
                     actionStatus.toggleAction($scope.project.id, 'create-sample');
                     ui.setShowFiles($scope.project.id, true);
-                    ui.setShowToolbarTabs($scope.project.id, true);
                     pubsub.send('update-tab-count.change');
                 });
             }).post($scope.doc);
@@ -80,7 +79,6 @@ function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pub
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-sample');
         ui.setShowFiles($scope.project.id, true);
-        ui.setShowToolbarTabs($scope.project.id, true);
     };
 
     $scope.removeProjects = function (index) {

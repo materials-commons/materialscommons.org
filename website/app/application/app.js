@@ -138,7 +138,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/project/:id',
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
-                project: ["$stateParams", "model.projects", "projects", function ($stateParams, Projects, projects) {
+                project: ["$stateParams", "model.projects", "projects", "templates", function ($stateParams, Projects, projects, templates) {
+                    // We use templates as a dependency so that they are all loaded before getting to this step.
+                    // Otherwise the order of items being resolved isn't in the order we need them.
                     return Projects.get($stateParams.id);
                 }]
             },
@@ -167,9 +169,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/provenance/provenance.html',
             controller: "projectProvenance"
         })
-        .state('projects.project.provenance.view', {
-            url: '/view',
-            templateUrl: 'application/core/projects/project/provenance/view.html'
+        .state('projects.project.createprov', {
+            url: '/createprov',
+            templateUrl: 'application/core/projects/project/provenance/create.html',
+            controller: "projectProvenanceCreate",
         })
         .state('projects.project.reviews', {
             url: '/reviews',
