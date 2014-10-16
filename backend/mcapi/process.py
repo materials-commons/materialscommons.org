@@ -9,6 +9,25 @@ import args
 import json
 
 
+def build_process_relations(process):
+    r.table('property_sets').get_all(process['id'], index='item_id')
+    inputs = process['inputs']
+    outputs = process['outputs']
+    process['input_processes'] = []
+    process['output_processes'] = []
+    for key in inputs:
+        values = inputs[key]
+        for v in values:
+            if v[u'ptype'] == 'sample' or v[u'ptype'] == 'file':
+                #search for other procperty sets
+                existing_records = list(r.table('properties').filter({'value': v[u'value']}).eq_join('item_id', r.table('property_sets')).zip().eq_join('item_id', r.table('processes')).pluck('right').run(g.conn))
+                if len(existing_records) != 0:
+                    for record in existing_records:
+                        if record[u'right'][u'id'] != process['id']:
+                            process['input_processes'].append(record[u'right'])
+    print process['input_processes']    
+    pass
+
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
 def get_processes_by_project(project_id):
@@ -26,7 +45,7 @@ def get_processes_by_project(project_id):
                 process['inputs'][each_set['name']] = properties
             else:
                 process['outputs'][each_set['name']] = properties
-            #process[each_set['name']] = properties
+            build_process_relations(process)
         complete_processes.append(process)
     return Response(json.dumps(complete_processes), mimetype="application/json")
 

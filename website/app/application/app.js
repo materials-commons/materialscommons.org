@@ -164,11 +164,8 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         })
         .state('projects.project.provenance', {
             url: '/provenance',
-            templateUrl: 'application/core/projects/project/provenance/provenance.html'
-        })
-        .state('projects.project.provenance.view', {
-            url: '/view',
-            templateUrl: 'application/core/projects/project/provenance/view.html'
+            templateUrl: 'application/core/projects/project/provenance/provenance.html',
+            controller: "projectProvenance"
         })
         .state('projects.project.reviews', {
             url: '/reviews',
