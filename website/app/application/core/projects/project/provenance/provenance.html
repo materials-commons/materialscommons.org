@@ -1,23 +1,146 @@
-<div ng-controller="projectProvenance">
-    <tab-control-bar>
-        <div class="col-xs-offset-1">
-            <ul class="list-inline menu-bar">
-                <li >
-                    <action-link title="View Provenance"
-                                 title-icon="fa-code-fork"
-                                 link="{{isActiveLink('View Provenance')}}">
-                    </action-link>
-                </li>
-
-                <li>
-                    <action-menu title="Reports"
-                                 title-icon="fa-bar-chart"
-                                 menu-items="reportsMenu">
-                    </action-menu>
-                </li>
-            </ul>
+    <div class="row">
+        <div class="col-sm-2">
+            <strong>All Processes</strong>
+            <div class="row" style=" height: 400px; overflow-y: scroll;">
+                <ul style="list-style: none" ng-repeat="p in processes">
+                    <li style="background-color: #E8E6CF;height: 40px; text-align: center;padding-top:10px;"><a ng-click="openProcess(p)">{{p.name}}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </tab-control-bar>
+        <div class="col-sm-2">
+            <strong>Processes(I)</strong>
 
-    <div ui-view></div>
-</div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f; margin:20px; ">
+                {{1}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{2}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{3}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{4}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{5}}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div ng-show="process" class="list-group">
+                        <a class="list-group-item" ng-click="showInputsOutputs =! showInputsOutputs">{{process.name}}<i
+                                ng-class="{'fa-chevron-down': showInputsOutputs, 'fa-chevron-right': !showInputsOutputs}"
+                                class="fa fa-fw"></i></a>
+
+                        <div class="list-group-submenu" ng-show="showInputsOutputs">
+                            <div ng-repeat="(key, values) in process['inputs']">
+                                <div ng-if="key=='files'">
+                                    <a ng-click="showFiles =! showFiles" class="list-group-item">{{createName(key)}} (I)
+                                        <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
+                                           class="fa fa-fw"></i></a>
+
+                                    <div ng-show="showFiles" class="list-group-submenu">
+                                        <div ng-repeat="file in process['inputs']['files']">
+                                            <a data-toggle="modal" data-target="#imageExpand" ng-click="expand(file)"
+                                               ng-class="{'active': isActiveList(file.id)}"  class="list-group-item">{{file.other.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-if="key!='files'">
+                                    <a ng-click="showDetails(key, values)"
+                                       ng-class="{'active': isActiveList(key)}"  class="list-group-item">{{createName(key)}}(I)</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--outputs-->
+                        <div class="list-group-submenu" ng-show="showInputsOutputs">
+                            <div ng-repeat="(key, values) in process['outputs']">
+                                <div ng-if="key=='files'">
+                                    <a ng-click="showFiles =! showFiles" class="list-group-item">{{createName(key)}} (O)
+                                        <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
+                                           class="fa fa-fw"></i></a>
+
+                                    <div ng-show="showFiles" class="list-group-submenu">
+                                        <div ng-repeat="file in process['outputs']['files']">
+                                            <a data-toggle="modal" data-target="#imageExpand" ng-click="expand(file)"
+                                               ng-class="{'active': isActiveList(file.id)}"  class="list-group-item">{{file.other.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-if="key!='files'">
+                                    <a ng-click="showDetails(key, values)"
+                                       ng-class="{'active': isActiveList(key)}"  class="list-group-item">{{createName(key)}}(I)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div ng-show="flag" style="background-color: #d5d5d5;">
+                        <div ng-hide="settings.length!==0">
+                            <label>Name:</label>{{sample.name}} <br>
+                            <label>Description:</label>{{sample.description}}<br>
+                            <label><u>Properties:</u></label>
+                            <div ng-repeat="(name, vals) in sample.properties">
+                                <div ng-if="name==='composition'">
+                                    <div class="form-group">
+                                        <label>Composition:</label>
+                                        <li style="display: inline;" ng-repeat="c in vals.value">
+                                            {{c.element}} - {{c.value}}  {{vals.unit}}
+                                        </li>
+                                    </div>
+
+                                </div>
+                                <div ng-if="name!=='composition'">
+                                    <div class="form-group">
+                                        <label>{{name}}:</label>
+                                        {{vals.value}} {{vals.unit}}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="settings.length!==0">
+                            {{key}}
+                            <ul style="padding-left: 40px;" ng-repeat="v in settings">
+                                <li>{{v.name}} - {{v.value}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <strong>Processes(O)</strong>
+
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f; margin:20px; ">
+                {{1}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{2}}
+            </div>
+            <div class="row" style="height:40px; width:40px; background-color: #3f9c5f;margin: 20px;">
+                {{3}}
+            </div>
+        </div>
+    </div>
+    <div ng-if="datafile" class="modal fade" id="imageExpand" tabindex="-1" role="dialog" aria-labelledby="imageExpandLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{{datafile.other.name}}</h4>
+                </div>
+                <div class="modal-body">
+                    <img style="width:500px; height:500px;"
+                         ng-src="datafiles/static/{{datafile.id}}?apikey={{apikey}}" alt="Cannot Display">
+                </div>
+            </div>
+        </div>
+    </div>
