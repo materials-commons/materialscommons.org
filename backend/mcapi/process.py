@@ -1,11 +1,35 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request, g
+from flask import request, g, jsonify, Response
 import rethinkdb as r
 import error
 import dmutil
 import access
 import args
+import json
+
+
+
+@app.route('/processes/project/<project_id>', methods=['GET'])
+def get_processes_by_project(project_id):
+    complete_processes = []
+    rr = r.table('processes').get_all(project_id, index='project_id')
+    selection = list(rr.run(g.conn, time_format='raw'))
+    for process in selection:
+        process['inputs'] = {}
+        process['outputs'] = {}
+        property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'}).run(g.conn)
+        for each_set in property_sets:
+            rr = r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'})
+            properties = list(rr.run(g.conn, time_format='raw'))
+            if each_set['stype'] == 'inputs':
+                process['inputs'][each_set['name']] = properties
+            else:
+                process['outputs'][each_set['name']] = properties
+            #process[each_set['name']] = properties
+        complete_processes.append(process)
+    return Response(json.dumps(complete_processes), mimetype="application/json")
+
 
 
 @app.route('/processes/<process_id>', methods=['GET'])
@@ -24,15 +48,6 @@ def get_process(process_id):
 @jsonp
 def get_all_processes_for_template(template_id):
     rr = r.table('processes').filter({'template': template_id})
-    selection = list(rr.run(g.conn, time_format='raw'))
-    return args.json_as_format_arg(selection)
-
-
-@app.route('/processes/project/<project_id>', methods=['GET'])
-@apikey
-@jsonp
-def get_processes_by_project(project_id):
-    rr = r.table('processes').get_all(project_id, index='project')
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
