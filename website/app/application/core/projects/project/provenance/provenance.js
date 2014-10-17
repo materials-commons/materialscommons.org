@@ -12,7 +12,7 @@ function projectProvenance($scope, mcapi, $stateParams, Projects, ProcessList, U
 
     $scope.createName = function (name) {
         if (name.length > 12) {
-            return name.substring(0, 20) + "...";
+            return name.substring(0, 25) + "...";
         }
         return name;
     };
