@@ -15,9 +15,10 @@
                 is-open="status.isopen"
                 class="dropdown">
                 <a ng-click="showStep('about')"
-                   style="font-size: 12pt; font-weight: 400"
-                   class="dropdown-toggle">
-                    <i class="fa fa-plus"></i> New<span class="caret caret-light"></span>
+                   class="dropdown-toggle large-text">
+                    <i class="fa fa-fw fa-plus"></i>
+                    New
+                    <span class="caret caret-light"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
@@ -62,11 +63,16 @@
             </li>
         </ul>
         <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
-            <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
+            <li>
+                <a ui-sref="login" class="navbar-link larg-text">
+                    <i class="fa fa-fw fa-user"></i>
+                    login
+                </a>
+            </li>
         </ul>
         <ul ng-show="email_address" class="nav navbar-nav navbar-right">
             <li ng-class="{ navactive: isActiveStep('reviews') }">
-                <a class="dropdown-toggle" data-toggle="dropdown">
+                <a class="dropdown-toggle large-text" data-toggle="dropdown">
                     <i class="fa fa-comment space-right"></i> Reviews <span
                         ng-controller="globalReviewsController"
                         class="badge ng-binding">  {{count}}</span>
@@ -79,32 +85,56 @@
             <li ng-class="{ navactive: isActiveStep('projects') }">
                 <a ng-click="showStep('projects')"
                    ui-sref="projects.project.overview({id: firstProjectID})"
-                   class="navbar-link">
-                    <i class="fa fa-briefcase space-right"></i> Projects
+                   class="navbar-link large-text">
+                    <i class="fa fa-fw fa-briefcase space-right"></i> Projects
                 </a>
             </li>
             <li ng-class="{ navactive: isActiveStep('machines') }">
-                <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i
-                    class="fa fa-gears space-right"></i> Machines</a></li>
+                <a ng-click="showStep('machines')" ui-sref="machines"
+                   class="navbar-link large-text">
+                    <i class="fa fa-fw fa-gears space-right"></i>
+                    Machines
+                </a>
+            </li>
 
 
             <li class="dropdown divider">
-                <a ng-click="showStep('email')" class="dropdown-toggle"><i class="fa fa-user space-right"></i>{{email_address}}
-                    <span class="caret caret-light"></span></a>
+                <a ng-click="showStep('email')" class="dropdown-toggle large-text">
+                    <i class="fa fa-fw fa-user space-right"></i>{{email_address}}
+                    <span class="caret caret-light"></span>
+                </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="showStep('email')" ui-sref="account.password"><i
-                        class="fa fa-unlock-alt space-right"></i> Change
-                        Password</a></li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i
-                        class="fa fa-user space-right"></i>UserGroups</a></li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.templates"><i
-                        class="fa fa-list-alt space-right"></i>Templates</a>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.password">
+                            <i class="fa fa-fw fa-unlock-alt space-right"></i>
+                            Change Password
+                        </a>
                     </li>
-                    <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i class="fa fa-key space-right"></i>Apikey</a>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.usergroup">
+                            <i class="fa fa-fw fa-user space-right"></i>
+                            UserGroups
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.templates">
+                            <i class="fa fa-fw fa-list-alt space-right"></i>
+                            Templates
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.apikey">
+                            <i class="fa fa-fw fa-key space-right"></i>
+                            Apikey
+                        </a>
                     </li>
                     <li class="divider"></li>
-                    <li><a ng-click="showStep('email')" ui-sref="logout"> <i class="fa fa-sign-out space-right"></i>
-                        Logout</a></li>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="logout">
+                            <i class="fa fa-fw fa-sign-out space-right"></i>
+                            Logout
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>
