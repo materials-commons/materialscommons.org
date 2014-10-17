@@ -49,11 +49,17 @@ def get_required_prop(what, d):
 def insert_status(rv, return_created=False):
     if rv[u'inserted'] == 1:
         if return_created:
-            val = rv['new_val']
+            if 'changes' in rv:
+                val = rv['changes'][0]['new_val']
+            else:
+                val = rv['new_val']
         elif 'generated_keys' in rv:
             val = rv['generated_keys'][0]
         else:
-            val = rv['new_val']['id']
+            if 'changes' in rv:
+                val = rv['changes'][0]['new_val']['id']
+            else:
+                val = rv['new_val']['id']
         if return_created:
             return json_as_format_arg(val)
         else:
