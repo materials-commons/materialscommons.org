@@ -21,7 +21,6 @@ function actionStatusService(pubsub) {
         },
 
         addProject: function(project) {
-            console.log("addProject for project: " + project);
             if (project in service.actions) {
                 return;
             }
