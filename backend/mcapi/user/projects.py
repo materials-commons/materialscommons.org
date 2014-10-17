@@ -265,7 +265,7 @@ def update_project(id):
     description = dmutil.get_optional('description', j, None)
     if description:
         item['description'] = description
-        do_update = True    
+        do_update = True
     todos = dmutil.get_optional('todos', j, None)
     if todos:
         item['todos'] = todos
@@ -325,8 +325,7 @@ def build_datadir_denorm(name, owner, dir_id):
     datadir_denorm['datafiles'] = []
     datadir_denorm['id'] = dir_id
     datadir_denorm['birthtime'] = r.now()
-    rr = dmutil.insert_entry_id('datadirs_denorm', datadir_denorm)
-    return rr
+    dmutil.insert_entry('datadirs_denorm', datadir_denorm)
 
 
 @app.route('/project/<id>/reviews')
