@@ -7,6 +7,9 @@ Application.Controllers.controller('projectProvenanceCreate',
 function projectProvenanceCreate($scope, project, templates, projects,
                                  User, $filter, provStep, projectFiles, actionStatus, draft, ui) {
     $scope.start = function() {
+        if (!$scope.wizardState.selectedTemplate) {
+            return;
+        }
         var templateName = $scope.wizardState.selectedTemplate.template_name;
         var title = "Wizard Process Step (" + templateName + ")";
         $scope.wizardState.currentDraft = draft.createProvenance($scope.wizardState.selectedTemplate, project.id);
