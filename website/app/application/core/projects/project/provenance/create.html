@@ -42,15 +42,13 @@
         </form>
     </div>
 
-
     <div class="row">
         <show-provenance-template-steps
             show-overview="wizardState.showOverview"
             template="wizardState.selectedTemplate">
         </show-provenance-template-steps>
     </div>
+
+    <wizard-next-step wizard-state="wizardState">
+    </wizard-next-step>
 </div>
-
-
-<wizard-next-step wizard-state="wizardState">
-</wizard-next-step>
