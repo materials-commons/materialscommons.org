@@ -1,22 +1,8 @@
-Application.Directives.directive('actionCreateSample', actionCreateSample);
-
-function actionCreateSample() {
-    return {
-        scope: {
-            project: "="
-        },
-        replace: true,
-        controller: "actionCreateSampleController",
-        restrict: "AE",
-        templateUrl: "application/core/projects/project/action/action-create-sample.html"
-    };
-}
-
-Application.Controllers.controller('actionCreateSampleController',
+Application.Controllers.controller('projectSamplesCreate',
                                    ["$scope", "mcapi", "model.projects", "actionStatus",
-                                    "pubsub", "ui", actionCreateSampleController]);
+                                    "pubsub", "ui", projectSamplesCreate]);
 
-function actionCreateSampleController($scope, mcapi, Projects, actionStatus, pubsub, ui) {
+function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui) {
 
     $scope.onDrop = function(target, source) {
         if (source === "") {

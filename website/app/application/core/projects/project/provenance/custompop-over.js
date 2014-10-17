@@ -25,7 +25,7 @@ Application.Directives.directive("customPopOver", ["$compile",
 
                 var options = {
                     content: popOverContent,
-                    placement: "bottom",
+                    placement: "left",
                     html: true,
                     title: scope.title
                 };
