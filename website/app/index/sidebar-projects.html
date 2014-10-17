@@ -13,10 +13,11 @@
                    data-target="#newProject">
                     <i class="fa fa-fw fa-plus"></i> New Project
                 </a>
+                <hr class="carved"/>
                 <a class="list-group-item"
                    ng-repeat="p in projects"
                    ng-click="setProject(p)">
-                    <i class="fa fa-fw fa-briefcase"></i> {{p.name}}
+                    {{p.name}}
                 </a>
             </div>
         </div>
