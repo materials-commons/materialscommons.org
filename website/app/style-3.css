@@ -1559,6 +1559,12 @@ ul.menu-bar li {
   margin-bottom: 15px;
 }
 
+.box-divider {
+  margin-top: 10px;
+  padding-top: 5px;
+  border-top: 4px solid #d3d3d3;
+}
+
 .popover {
   width:500px;
 }
