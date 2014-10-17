@@ -172,7 +172,8 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
     }
 
     function isProvenanceFileActive() {
-        if (actionStatus.isCurrentAction($scope.projectID, 'create-provenance')) {
+        if (actionStatus.isCurrentAction($scope.projectID, 'create-provenance-new') ||
+           actionStatus.isCurrentAction($scope.projectID, 'create-provenance-from-draft')) {
             var step = provStep.getCurrentStep($scope.projectID);
             if (step.step == "files") {
                 return true;

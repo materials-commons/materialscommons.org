@@ -1,22 +1,9 @@
-Application.Directives.directive('actionCreateReview', actionCreateReview);
-
-function actionCreateReview() {
-    return {
-        scope: {
-            project: "="
-        },
-        controller: "actionCreateReviewController",
-        restrict: "AE",
-        templateUrl: "application/core/projects/project/action/action-create-review.html"
-    };
-}
-
-Application.Controllers.controller('actionCreateReviewController',
+Application.Controllers.controller('projectReviewsCreate',
                                    ["$scope", "mcapi", "User", "pubsub", "$stateParams",
                                     "model.projects", "projectFiles", "actionStatus", "ui",
-                                    actionCreateReviewController]);
+                                    projectReviewsCreate]);
 
-function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams, Projects,
+function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Projects,
                                       projectFiles, actionStatus, ui) {
     $scope.channel = 'action-reviews';
     projectFiles.setChannel($scope.channel);
@@ -65,7 +52,7 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
                         pubsub.send('update-tab-count.change');
                         actionStatus.clearCurrentActionState($scope.project.id);
                         actionStatus.toggleAction($scope.project.id, 'create-review');
-                        ui.setShowFiles($stateParams.id, true);
+                        ui.setShowFiles($stateParams.id, false);
                     });
 
                 });
@@ -76,8 +63,7 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
     $scope.cancel = function() {
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-review');
-        console.log("setting show files");
-        ui.setShowFiles($stateParams.id, true);
+        ui.setShowFiles($stateParams.id, false);
     };
 
     $scope.create = function () {

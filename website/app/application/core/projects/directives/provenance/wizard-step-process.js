@@ -44,6 +44,5 @@ function wizardStepProcessController($scope, provStep, $stateParams, actionStatu
         actionStatus.clearCurrentActionState(projectID);
         actionStatus.toggleCurrentAction(projectID);
         ui.setShowFiles(projectID, true);
-        ui.setShowToolbarTabs(projectID, true);
     };
 }

@@ -1,21 +1,8 @@
-Application.Directives.directive('actionCreateNote', actionCreateNote);
-
-function actionCreateNote() {
-    return {
-        scope: {
-            project: "="
-        },
-        controller: "actionCreateNoteController",
-        restrict: "AE",
-        templateUrl: "application/core/projects/project/action/action-create-note.html"
-    };
-}
-
-Application.Controllers.controller('actionCreateNoteController',
+Application.Controllers.controller('projectNotesCreate',
                                    ["$scope", "User", "toastr","pubsub","actionStatus",
-                                    "model.projects", "ui", actionCreateNoteController]);
+                                    "model.projects", projectNotesCreate]);
 
-function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, Projects, ui) {
+function projectNotesCreate($scope, User, toastr, pubsub, actionStatus, Projects) {
     var state = actionStatus.getCurrentActionState($scope.project.id);
     if (state) {
         $scope.model = state;
@@ -35,7 +22,6 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
                     pubsub.send('update-tab-count.change');
                     actionStatus.clearCurrentActionState($scope.project.id);
                     actionStatus.toggleCurrentAction($scope.project.id);
-                    ui.setShowFiles($scope.project.id, true);
                 });
             });
         }, function(reason){
@@ -48,7 +34,6 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
     $scope.cancel = function() {
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleCurrentAction($scope.project.id);
-        ui.setShowFiles($scope.project.id, true);
     };
 
     $scope.create = function () {
