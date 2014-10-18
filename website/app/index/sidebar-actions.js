@@ -22,6 +22,10 @@ function sidebarActionsDirectiveController($scope, $state) {
 
     $scope.setActionActive = function(action) {
         $scope.activeAction = action;
+        if (action !== "home") {
+            // append overview to route
+            action += ".overview";
+        }
         $state.go("projects.project." + action, {id: $scope.project.id});
     };
 }

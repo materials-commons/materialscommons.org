@@ -1,8 +1,7 @@
 Application.Services.factory("recent", recentService);
 
 // recent service tracks recently created items by project. It tracks
-// their state information so that their window state can be quickly
-// recovered.
+// their state information so that their window state can be recovered.
 function recentService() {
     var self = this;
     self.recentByProject = {};
@@ -13,12 +12,17 @@ function recentService() {
         };
     };
 
-    self.newItem = function(itemType, itemState, itemName) {
+    self.newItem = function(itemType, itemState, itemName, itemRoute) {
         return {
             itype: itemType,
             state: itemState,
-            name: itemName
+            name: itemName,
+            route: itemRoute
         };
+    };
+
+    self.itemEqual = function(item, name, itype, route) {
+        return item.name == name && item.itype == itype && item.route == route;
     };
 
     return {
@@ -31,11 +35,11 @@ function recentService() {
         },
 
         // updateRecent adds or updates an existing item in a project.
-        update: function(projectID, name, itemType, state) {
+        update: function(projectID, name, itemType, state, route) {
             var item;
             var recents = self.recentByProject[projectID].items;
             var i = _.indexOf(recents, function(item) {
-                return item.name === name && item.itype === itemType;
+                return self.itemEqual(item, name, itemType, route);
             });
 
             if (i !== -1) {
@@ -49,7 +53,7 @@ function recentService() {
                 recents.splice(i, 1);
                 recents.unshift(item);
             } else {
-                item = self.newItem(itemType, state, name);
+                item = self.newItem(itemType, state, name, route);
                 // Add to beginning of list so the most recently added items
                 // are the first items.
                 recents.unshift(item);
