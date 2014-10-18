@@ -86,6 +86,9 @@ def create_indices():
     create_index('sample2item', 'item_id')
     create_index('samples', 'project_id')
     create_index('directories_denorm', 'name')
+    create_index('property_sets', 'item_id')
+    create_index('properties', 'item_id')
+    create_index('properties', 'value')
 
     # old
     create_index('access', 'user_id')
