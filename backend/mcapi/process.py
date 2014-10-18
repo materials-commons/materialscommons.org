@@ -8,6 +8,51 @@ import access
 import args
 import json
 
+def remove_duplicate_processes(process):
+    ip_processes = process['input_processes']
+    op_processes = process['output_processes']
+    uniq_ip_processes = {}
+    uniq_op_processes = {}
+    for ip in ip_processes:
+        other_names = []
+        if ip['id'] in uniq_ip_processes:
+            other_names = uniq_ip_processes[ip['id']]['related_files']
+            other_names.append(ip['other_name'])
+            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names}   
+        else:
+            other_names.append(ip['other_name'])
+            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names }
+    for op in op_processes:
+        other_names = []
+        if op['id'] in uniq_op_processes:
+            other_names = uniq_op_processes[op['id']]['related_files']
+            other_names.append(op['other_name'])
+            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}   
+        else:
+            other_names.append(op['other_name'])
+            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}
+    process['input_processes'] = uniq_ip_processes
+    process['output_processes'] = uniq_op_processes
+    return process
+
+
+def build_process_relations(process):
+    process['input_processes'] = []
+    process['output_processes'] = [] 
+    values = list(r.table('property_sets').get_all(process['id'], index='item_id').eq_join('id', r.table('properties'), index='item_id').zip().filter((r.row["ptype"] == 'file') | (r.row["ptype"] =='sample')).pluck('value').run(g.conn))
+    ids = []
+    for each in values:
+        ids.append(each['value'])
+    processes = list(r.table('properties').get_all(*ids, index='value').eq_join('item_id', r.table('property_sets')).zip().pluck('item_id','stype', 'other').distinct().eq_join('item_id', r.table('processes')).zip().pluck('item_id', 'stype', 'name', 'other').run(g.conn))
+    for p in processes:
+        if p['item_id'] != process['id']:
+            if p['stype'] == 'inputs':
+                process['input_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
+            else:
+                process['output_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
+    #Check for duplicate processes and return
+    process = remove_duplicate_processes(process)
+    return process
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
@@ -19,6 +64,7 @@ def get_processes_by_project(project_id):
         process['inputs'] = {}
         process['outputs'] = {}
         property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'}).run(g.conn)
+        build_process_relations(process)
         for each_set in property_sets:
             rr = r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'})
             properties = list(rr.run(g.conn, time_format='raw'))
@@ -26,7 +72,6 @@ def get_processes_by_project(project_id):
                 process['inputs'][each_set['name']] = properties
             else:
                 process['outputs'][each_set['name']] = properties
-            #process[each_set['name']] = properties
         complete_processes.append(process)
     return Response(json.dumps(complete_processes), mimetype="application/json")
 

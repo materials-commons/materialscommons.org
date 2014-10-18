@@ -1,18 +1,18 @@
 Application.Controllers.controller("projectProvenance",
-                                   ["$scope", "mcapi", "project", "ProcessList", "User", "pubsub", projectProvenance]);
+    ["$scope", "mcapi", "$stateParams", "model.projects", "ProcessList", "User", projectProvenance]);
 
-function projectProvenance($scope, mcapi, project, ProcessList, User) {
+function projectProvenance($scope, mcapi, $stateParams, Projects, ProcessList, User) {
 
     $scope.openProcess = function (p) {
         $scope.flag = false;
         $scope.sample = {};
         $scope.settings = [];
         $scope.process = p;
-    };
+    }
 
     $scope.createName = function (name) {
         if (name.length > 12) {
-            return name.substring(0, 20) + "...";
+            return name.substring(0, 25) + "...";
         }
         return name;
     };
@@ -20,7 +20,8 @@ function projectProvenance($scope, mcapi, project, ProcessList, User) {
         $scope.flag = false;
         $scope.active = df.id;
         $scope.datafile = df;
-    };
+    }
+
 
     $scope.isActiveList = function (k) {
         if (k == $scope.active) {
@@ -46,9 +47,12 @@ function projectProvenance($scope, mcapi, project, ProcessList, User) {
 
     function init() {
         $scope.apikey = User.apikey();
-        $scope.project = project;
-        $scope.processes = ProcessList.getProcesses(project.id);
-    }
+        Projects.get($stateParams.id).then(function (project) {
+            $scope.project = project;
+            $scope.processes = ProcessList.getProcesses($stateParams.id);
+            console.log($scope.processes);
+        });
 
+    }
     init();
 }
