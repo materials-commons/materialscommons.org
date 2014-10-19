@@ -1,9 +1,28 @@
 <div class="row">
-    <ul class="list-inline center-block text-center">
-        <li><a class="large-text" ui-sref="projects.project.samples.overview({id: projectID})">Overview</a></li>
-        <li><a class="large-text" ui-sref="projects.project.samples.create({id: projectID})">Create Sample</a></li>
-    </ul>
-</div>
-<div class="row">
-    <div ui-view></div>
+    <!-- <div class="text-center">
+    <div class="btn-group">
+    <button type="button" class="btn btn-primary active">Overview</button>
+    <button type="button" class="btn btn-default">Create Sample</button>
+    </div>
+    </div> -->
+    <div class="text-center">
+        <h4> Samples </h4>
+    </div>
+    <div>
+        <ul class="list-inline center-block text-center">
+            <li>
+                <a class="large-text" ui-sref="projects.project.samples.overview({id: projectID})">
+                    Overview
+                </a>
+            </li>
+            <li>
+                <a class="large-text" ui-sref="projects.project.samples.create({id: projectID})">
+                    New
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div ui-view></div>
+    </div>
 </div>

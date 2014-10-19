@@ -593,6 +593,7 @@ textarea.form-control {
 .row {
   margin-left: 0px;
   margin-right: 0px;
+  margin-bottom: 5px;
 }
 
 .btn, btn-default {
