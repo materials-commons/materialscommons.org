@@ -179,8 +179,13 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/provenance/provenance.html',
             controller: "projectProvenance"
         })
-        .state('projects.project.createprov', {
-            url: '/createprov',
+        .state('projects.project.provenance.overview', {
+            url: '/overview',
+            templateUrl: 'application/core/projects/project/provenance/overview.html',
+            controller: 'projectProvenanceOverview'
+        })
+        .state('projects.project.provenance.create', {
+            url: '/create',
             templateUrl: 'application/core/projects/project/provenance/create.html',
             controller: "projectProvenanceCreate"
         })
@@ -189,7 +194,12 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/reviews/reviews.html',
             controller: "projectReviews"
         })
-        .state('projects.project.createreview', {
+        .state('projects.project.reviews.overview', {
+            url: "/createreview",
+            templateUrl: "application/core/projects/project/reviews/overview.html",
+            controller: "projectReviewsOverview"
+        })
+        .state('projects.project.reviews.create', {
             url: "/createreview",
             templateUrl: "application/core/projects/project/reviews/create.html",
             controller: "projectReviewsCreate"
