@@ -46,6 +46,20 @@ def create_draft():
     return dmutil.insert_entry('drafts', d.__dict__, return_created=True)
 
 
+@app.route("/drafts2", methods=["POST"])
+@apikey
+def create_draft2():
+    j = request.get_json()
+    user = access.get_user()
+    dtype = dmutil.get_required('dtype', j)
+    draft = {}
+    draft['owner'] = user
+    draft['birthtime'] = r.now()
+    draft['mtime'] = draft['birthtime']
+    draft['dtype'] = dtype
+    return dmutil.insert_entry('drafts', draft, return_created=True)
+
+
 @app.route("/drafts2/<project_id>", methods=['POST'])
 @apikey
 def save_draft(project_id):
