@@ -1,8 +1,9 @@
 Application.Controllers.controller('projectSamplesCreate',
-                                   ["$scope", "mcapi", "model.projects", "actionStatus",
+                                   ["$scope", "mcapi", "model.projects", "projectState", "$stateParams",
                                     "pubsub", "ui", "recent", projectSamplesCreate]);
 
-function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui, recent) {
+function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, pubsub, ui, recent) {
+    var stateID = $stateParams.id;
 
     $scope.onDrop = function(target, source) {
         if (source === "") {
@@ -15,7 +16,7 @@ function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui,
     };
 
     function initializeState() {
-        var state = actionStatus.getCurrentActionState($scope.project.id);
+        var state = projectState.get($scope.project.id, stateID);
         if (state) {
             $scope.doc = state;
         } else {
@@ -29,7 +30,7 @@ function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui,
             };
 
             $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
-            actionStatus.setCurrentActionState($scope.project.id, $scope.doc);
+            projectState.set($scope.project.id, stateID, $scope.doc);
         }
 
         $scope.bk = {
@@ -49,8 +50,6 @@ function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui,
             .arg('order_by=birthtime')
             .success(function () {
                 Projects.getList(true).then(function (data) {
-                    actionStatus.clearCurrentActionState($scope.project.id);
-                    actionStatus.toggleAction($scope.project.id, 'create-sample');
                     ui.setShowFiles($scope.project.id, true);
                     pubsub.send('update-tab-count.change');
                 });
@@ -62,8 +61,6 @@ function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui,
     };
 
     $scope.cancel = function () {
-        actionStatus.clearCurrentActionState($scope.project.id);
-        actionStatus.toggleAction($scope.project.id, 'create-sample');
         ui.setShowFiles($scope.project.id, true);
         console.log("last = %O", recent.getLast($scope.project.id));
     };
