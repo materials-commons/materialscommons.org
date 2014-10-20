@@ -1,8 +1,8 @@
-Application.Services.factory("state", stateService);
+Application.Services.factory("projectState", projectStateService);
 
-// state service tracks state information by project. Each
+// projectState service tracks state information by project. Each
 // state has a unique id that is assigned to it.
-function stateService() {
+function projectStateService() {
     var self = this;
     self.stateByProject = {};
     self.lastID = 0; // The last state id assigned.
@@ -40,13 +40,22 @@ function stateService() {
             return projectStates[stateID];
         },
 
-        // add adds a new state to a project. It returns its stateID. The state
-        // object is modified to add the stateID attribute to it. The state
-        // passed in assumed to be an object.
+        // set will set the state id for a project to a new value. It
+        // acts returns true if it was able to update the id, and false
+        // if it couldn't find it.
+        set: function(projectID, stateID, state) {
+            var projectStates = self.getProjectStates(projectID);
+            if (!(stateID in projectStates)) {
+                return false;
+            }
+            projectStates[stateID] = state;
+            return true;
+        },
+
+        // add adds a new state to a project. It returns its stateID.
         add: function(projectID, state) {
             var projectStates = self.getProjectStates(projectID);
             var stateID = self.nextID();
-            state.stateID = stateID;
             projectStates[stateID] = state;
             return stateID;
         },

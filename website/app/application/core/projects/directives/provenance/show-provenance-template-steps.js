@@ -13,17 +13,17 @@ function showProvenanceTemplateStepsDirective() {
 }
 
 Application.Controllers.controller('showProvenanceTemplateStepsDirectiveController',
-                                   ["$scope", "$stateParams", "provStep", "actionStatus",
+                                   ["$scope", "$stateParams", "provStep", "projectState",
                                     showProvenanceTemplateStepsDirectiveController]);
 function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
-                                                        provStep, actionStatus) {
+                                                        provStep, projectState) {
     function isCurrentProcessStep(stepType, stepName) {
         var currentStep = provStep.getCurrentStep($stateParams.id);
         return (currentStep.stepType === stepType && currentStep.step === stepName);
     }
 
     function isProcessStepDone(stepType, stepName) {
-        var state = actionStatus.getCurrentActionState($stateParams.id);
+        var state = projectState.get($stateParams.id, $stateParams.sid);
         if (!state || !state.currentDraft) {
             return false;
         }
@@ -81,7 +81,7 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
     };
 
     $scope.showDone = function() {
-        var state = actionStatus.getCurrentActionState($stateParams.id);
+        var state = projectState.get($stateParams.id, $stateParams.sid);
         if (!state || !state.currentDraft) {
             return false;
         }
@@ -90,7 +90,7 @@ function showProvenanceTemplateStepsDirectiveController($scope, $stateParams,
     };
 
     $scope.gotoStep = function(templateType, templateID) {
-        var state = actionStatus.getCurrentActionState($stateParams.id);
+        var state = projectState.get($stateParams.id, $stateParams.sid);
         if (!state || !state.currentDraft) {
             return;
         }

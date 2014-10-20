@@ -10,13 +10,12 @@ function wizardStepDoneDirective() {
 }
 
 Application.Controllers.controller('wizardStepDoneDirectiveController',
-                                   ["$scope", "provStep", "actionStatus", "$stateParams",
+                                   ["$scope", "provStep", "$stateParams",
                                     "Restangular", "User", "$timeout", "model.projects",
-                                    "ui", wizardStepDoneDirectiveController]);
-function wizardStepDoneDirectiveController($scope, provStep, actionStatus,
-                                           $stateParams, Restangular, User,
-                                           $timeout, projects, ui) {
-    var state = actionStatus.getCurrentActionState($stateParams.id);
+                                    "ui", "projectState", wizardStepDoneDirectiveController]);
+function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Restangular, User,
+                                           $timeout, projects, ui, projectState) {
+    var state = projectState.get($stateParams.id, $stateParams.sid);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
         if (!state.currentDraft.process.done) {
@@ -80,8 +79,6 @@ function wizardStepDoneDirectiveController($scope, provStep, actionStatus,
 
     function closeProvenanceAction() {
         provStep.resetProject($stateParams.id);
-        actionStatus.clearCurrentActionState($stateParams.id);
-        actionStatus.toggleCurrentAction($stateParams.id);
         ui.setShowFiles($stateParams.id, true);
     }
 
