@@ -1,10 +1,10 @@
 Application.Controllers.controller('projectReviewsCreate',
                                    ["$scope", "mcapi", "User", "pubsub", "$stateParams",
-                                    "model.projects", "projectFiles", "actionStatus", "ui",
+                                    "model.projects", "projectFiles", "projectState", "ui",
                                     projectReviewsCreate]);
 
 function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Projects,
-                                      projectFiles, actionStatus, ui) {
+                                      projectFiles, projectState, ui) {
     $scope.channel = 'action-reviews';
     projectFiles.setChannel($scope.channel);
 
@@ -13,7 +13,7 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
         ui.setShowFiles($stateParams.id, true);
     });
 
-    var state = actionStatus.getCurrentActionState($scope.project.id);
+    var state = projectState.get($stateParams.id, $stateParams.sid);
     if (state) {
         $scope.model = state;
     } else {
@@ -23,7 +23,7 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
             title: "",
             files: []
         };
-        actionStatus.setCurrentActionState($scope.project.id, $scope.model);
+        projectState.set($scope.project.id, $stateParams.sid, $scope.model);
     }
 
     projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);
@@ -50,8 +50,6 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
                     Projects.get($scope.project.id).then(function (project) {
                         $scope.project = project;
                         pubsub.send('update-tab-count.change');
-                        actionStatus.clearCurrentActionState($scope.project.id);
-                        actionStatus.toggleAction($scope.project.id, 'create-review');
                         ui.setShowFiles($stateParams.id, false);
                     });
 
@@ -61,8 +59,6 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
     }
 
     $scope.cancel = function() {
-        actionStatus.clearCurrentActionState($scope.project.id);
-        actionStatus.toggleAction($scope.project.id, 'create-review');
         ui.setShowFiles($stateParams.id, false);
     };
 

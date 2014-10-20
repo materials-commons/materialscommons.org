@@ -1,11 +1,14 @@
 Application.Controllers.controller('projectProvenanceCreate',
                                    ["$scope", "project", "model.templates",
                                     "model.projects", "User", "$filter", "provStep", "projectFiles",
-                                    "actionStatus", "draft", "ui",
+                                    "draft", "ui", "$stateParams", "projectState",
                                     projectProvenanceCreate]);
 
 function projectProvenanceCreate($scope, project, templates, projects,
-                                 User, $filter, provStep, projectFiles, actionStatus, draft, ui) {
+                                 User, $filter, provStep, projectFiles, draft,
+                                 ui, $stateParams, projectState) {
+    var stateID = $stateParams.sid;
+
     $scope.start = function() {
         if (!$scope.wizardState.selectedTemplate) {
             return;
@@ -19,9 +22,7 @@ function projectProvenanceCreate($scope, project, templates, projects,
 
     $scope.cancel = function() {
         var projectID = $scope.wizardState.project.id;
-        actionStatus.clearCurrentActionState(projectID);
         provStep.resetProject(projectID);
-        actionStatus.toggleCurrentAction(projectID);
         ui.setShowFiles(projectID, true);
     };
 
@@ -47,7 +48,7 @@ function projectProvenanceCreate($scope, project, templates, projects,
     });
 
     projectFiles.setChannel("provenance.files");
-    var state = false; //actionStatus.getCurrentActionState(project.id);
+    var state = projectState.get(project.id, stateID);
     var step = provStep.getCurrentStep(project.id);
     if (state) {
         $scope.wizardState = state;
@@ -69,7 +70,6 @@ function projectProvenanceCreate($scope, project, templates, projects,
             selectedTemplate: null,
             showChooseProcess: true
         };
-        actionStatus._setCurrentAction(project.id, "create-provenance-new");
-        actionStatus.setActionState(project.id, 'create-provenance-new', $scope.wizardState);
+        projectState.set(project.id, stateID, $scope.wizardState);
     }
 }
