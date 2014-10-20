@@ -42,6 +42,14 @@ Application.Services.factory('User',
                     self.mcuser.apikey = new_key;
                     $cookieStore.put('mcuser', self.mcuser);
                 }
+            },
+            save: function(user){
+                if(self.mcuser){
+                    self.mcuser.fullname = user.fullname;
+                    $cookieStore.put('mcuser', self.mcuser);
+                }
             }
+
+
         };
     }]);
