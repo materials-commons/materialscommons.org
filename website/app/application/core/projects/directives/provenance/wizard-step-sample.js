@@ -10,10 +10,10 @@ function wizardStepSampleDirective() {
 }
 
 Application.Controllers.controller('wizardStepSampleDirectiveController',
-                                   ["$scope", "provStep", "actionStatus", "$stateParams",
+                                   ["$scope", "provStep", "projectState", "$stateParams",
                                     wizardStepSampleDirectiveController]);
-function wizardStepSampleDirectiveController($scope, provStep, actionStatus, $stateParams) {
-    $scope.wizardState = actionStatus.getCurrentActionState($stateParams.id);
+function wizardStepSampleDirectiveController($scope, provStep, projectState, $stateParams) {
+    $scope.wizardState = projectState.get($stateParams.id, $stateParams.sid);
     var step = provStep.getCurrentStep($scope.wizardState.project.id);
     $scope.sample = $scope.wizardState.currentDraft[step.stepType][step.step].properties.sample;
 

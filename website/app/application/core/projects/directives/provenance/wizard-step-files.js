@@ -11,11 +11,11 @@ function wizardStepFilesDirective() {
 
 Application.Controllers.controller('wizardStepFilesDirectiveController',
                                    ["$scope", "provStep", "pubsub", "projectFiles",
-                                    "$stateParams", "actionStatus", "ui",
+                                    "$stateParams", "projectState", "ui",
                                     wizardStepFilesDirectiveController]);
 function wizardStepFilesDirectiveController($scope, provStep, pubsub, projectFiles,
-                                            $stateParams, actionStatus, ui) {
-    $scope.wizardState = actionStatus.getCurrentActionState($stateParams.id);
+                                            $stateParams, projectState, ui) {
+    $scope.wizardState = projectState.get($stateParams.id, $stateParams.sid);
     $scope.step = provStep.getCurrentStep($scope.wizardState.project.id);
     projectFiles.setChannel("provenance.files");
     var files = $scope.wizardState.currentDraft[$scope.step.stepType].files;
