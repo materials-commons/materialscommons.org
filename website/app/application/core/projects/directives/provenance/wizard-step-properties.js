@@ -10,10 +10,10 @@ function wizardStepPropertiesDirective() {
 }
 
 Application.Controllers.controller('wizardStepPropertiesDirectiveController',
-                                   ["$scope", "provStep", "$stateParams", "actionStatus",
+                                   ["$scope", "provStep", "$stateParams", "projectState",
                                     wizardStepPropertiesDirectiveController]);
-function wizardStepPropertiesDirectiveController($scope, provStep, $stateParams, actionStatus) {
-    $scope.wizardState = actionStatus.getCurrentActionState($stateParams.id);
+function wizardStepPropertiesDirectiveController($scope, provStep, $stateParams, projectState) {
+    $scope.wizardState = projectState.get($stateParams.id, $stateParams.sid);
     var step = provStep.getCurrentStep($stateParams.id);
     $scope.template = provStep.templateForStep($scope.wizardState.selectedTemplate, step);
     $scope.model = $scope.wizardState.currentDraft[step.stepType][$scope.template.id];

@@ -185,7 +185,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: 'projectProvenanceOverview'
         })
         .state('projects.project.provenance.create', {
-            url: '/create',
+            url: '/create/:sid',
             templateUrl: 'application/core/projects/project/provenance/create.html',
             controller: "projectProvenanceCreate"
         })
