@@ -2,52 +2,63 @@
     <div class="row">
         <div class="col-xs-12 info-box">
             <div class="col-xs-5">
-                <h4> Welcome {{user}}</h4>
-                <h6> You last logged in on 2014/10/12</h6>
+                <h4> Welcome {{mcuser.fullname}}</h4>
+                <h6> You last logged in on {{mcuser.last_login | toDateString}}</h6>
+                <a ng-click="editFullName = !editFullName">edit</a>
+            </div>
+
+            <div ng-show="editFullName">
+                <div class="col-xs-4">
+                    <label>FullName</label>
+                    <input ng-model="mcuser.fullname" type="text" class="form-control" placeholder="First Name...">
+                    <button type="submit" class="btn btn-default" ng-click="updateName()">Update</button>
+
+                </div>
             </div>
         </div>
-        <hr/>
-        <div ng-show="false" class="col-xs-4"
-             style="background-color: white; border: 2px solid #d3d3d3; border-top-width: 4px; padding: 4px;">
-            <div class="row">
-                <h4 class="text-center" style="padding-bottom: 15px;">
-                    <i class="fa fa-users fa-fw"></i>
-                    <strong>{{project.users.length}} contributors</strong>
-                </h4>
-            </div>
-            <div class="row">
-                <table class="table">
-                    <thead>
-                        <th>User</th>
-                        <th>Added</th>
-                        <th></th>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="user in project.users | orderBy:'user_id'">
-                            <td>{{user.user_id}}</td>
-                            <td>{{user.birthtime | toDateString}}</td>
-                            <td ng-if="allowDelete()">&times;</td>
-                            <td ng-if="!allowDelete()"></td>
-                    </tbody>
-                </table>
-            </div>
+
+    </div>
+    <div ng-show="false" class="col-xs-4"
+         style="background-color: white; border: 2px solid #d3d3d3; border-top-width: 4px; padding: 4px;">
+        <div class="row">
+            <h4 class="text-center" style="padding-bottom: 15px;">
+                <i class="fa fa-users fa-fw"></i>
+                <strong>{{project.users.length}} contributors</strong>
+            </h4>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                <th>User</th>
+                <th>Added</th>
+                <th></th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in project.users | orderBy:'user_id'">
+                    <td>{{user.user_id}}</td>
+                    <td>{{user.birthtime | toDateString}}</td>
+                    <td ng-if="allowDelete()">&times;</td>
+                    <td ng-if="!allowDelete()"></td>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div>
-        <div ng-show="false" class="row">
-            <project-description project-id="{{project.id}}"></project-description>
-        </div>
-        <ul ng-show="false" class="list-inline menu-bar">
-            <li>
+</div>
+<div>
+    <div ng-show="false" class="row">
+        <project-description project-id="{{project.id}}"></project-description>
+    </div>
+    <ul ng-show="false" class="list-inline menu-bar">
+        <li>
                 <span>
                     <i class="fa fa-users"/>
                     <a data-toggle="modal" data-target="#contributors">
                         <strong>{{project.users.length}} contributors</strong>
                     </a>
                 </span>
-            </li>
+        </li>
 
-            <li>
+        <li>
                 <span>
                     <i class="fa fa-share"/> Shared with
                     <a data-toggle="modal"
@@ -55,9 +66,9 @@
                         <strong>{{project.shares.length}} Project(s)</strong>
                     </a>
                 </span>
-            </li>
+        </li>
 
-            <li>
+        <li>
                 <span>
                     <i class="fa fa-mail-reply"/>
                     Uses
@@ -66,9 +77,9 @@
                         <strong>{{project.uses.length}} Project(s)</strong>
                     </a>
                 </span>
-            </li>
-        </ul>
-    </div>
+        </li>
+    </ul>
+</div>
 </div>
 <div ui-view></div>
 <!-- Modal for contributors -->

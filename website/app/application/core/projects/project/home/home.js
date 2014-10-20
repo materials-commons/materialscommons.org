@@ -1,7 +1,15 @@
 Application.Controllers.controller('projectHome',
-                                   ["$scope", "project", "User", projectHome]);
+                                   ["$scope", "project", "User","mcapi", projectHome]);
 
-function projectHome($scope, project, User) {
-    $scope.user = User.u();
+function projectHome($scope, project, User, mcapi) {
     $scope.project = project;
+    $scope.mcuser = User.attr();
+
+    $scope.updateName = function(){
+        mcapi('/user/%/updatename', $scope.mcuser.email)
+            .success(function (u) {
+                $scope.editFullName = false;
+                User.save($scope.mcuser);
+            }).put({fullname: $scope.mcuser.fullname});
+    }
 }
