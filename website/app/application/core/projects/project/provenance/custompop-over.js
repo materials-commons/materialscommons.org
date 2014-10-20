@@ -21,8 +21,6 @@ Application.Directives.directive("customPopOver", ["$compile",
                     var html = getTemplate("items");
                     popOverContent = $compile(html)(scope);
                 }
-                console.log(scope.items);
-
                 var options = {
                     content: popOverContent,
                     placement: "left",
