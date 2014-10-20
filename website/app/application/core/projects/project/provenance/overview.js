@@ -50,7 +50,7 @@ function projectProvenanceOverview($scope, mcapi, $stateParams, Projects, Proces
         Projects.get($stateParams.id).then(function (project) {
             $scope.project = project;
             $scope.processes = ProcessList.getProcesses($stateParams.id);
-            console.log($scope.processes);
+            $scope.showInputsOutputs = true;
         });
 
     }
