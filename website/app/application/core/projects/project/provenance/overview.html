@@ -3,11 +3,11 @@
         <strong>All Processes</strong>
 
         <div class="row" style=" height: 400px; overflow-y: scroll;">
-            <ul style="list-style: none" ng-repeat="p in processes">
-                <li style="background-color: #E8E6CF;height: 40px; text-align: center;padding-top:10px;"><a
-                        ng-click="openProcess(p)">{{p.name}}</a>
+            <div class="list-group"  >
+                <li class="list-group-item" ng-repeat="p in processes">
+                    <a ng-click="openProcess(p)">{{p.name}}</a>
                 </li>
-            </ul>
+            </div>
         </div>
     </div>
     <div class="col-sm-2">
@@ -111,7 +111,6 @@
     </div>
     <div class="col-sm-2">
         <strong>Processes (I)</strong>
-
         <div class="row" ng-repeat="(key,value) in process['input_processes']">
             <button type="button" class="btn btn-success btn-xs" custom-pop-over items="value.related_files"
                     title="Related">
@@ -120,6 +119,7 @@
         </div>
     </div>
 </div>
+
 <div ng-if="datafile" class="modal fade" id="imageExpand" tabindex="-1" role="dialog" aria-labelledby="imageExpandLabel"
      aria-hidden="true">
     <div class="modal-dialog">
