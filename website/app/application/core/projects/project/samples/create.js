@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectSamplesCreate',
                                    ["$scope", "mcapi", "model.projects", "actionStatus",
-                                    "pubsub", "ui", projectSamplesCreate]);
+                                    "pubsub", "ui", "recent", projectSamplesCreate]);
 
-function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui) {
+function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui, recent) {
 
     $scope.onDrop = function(target, source) {
         if (source === "") {
@@ -65,6 +65,7 @@ function projectSamplesCreate($scope, mcapi, Projects, actionStatus, pubsub, ui)
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-sample');
         ui.setShowFiles($scope.project.id, true);
+        console.log("last = %O", recent.getLast($scope.project.id));
     };
 
     $scope.removeProjects = function (index) {

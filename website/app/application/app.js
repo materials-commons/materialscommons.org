@@ -225,16 +225,24 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 
 }]);
 
-app.run(["$rootScope", "User", "Restangular", "projectColors",
-         function ($rootScope, User, Restangular, projectColors) {
-             Restangular.setBaseUrl(mcglobals.apihost);
-             //Restangular.setJsonp(true);
-             //Restangular.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
-             $rootScope.colors = projectColors;
+app.run(["$rootScope", "User", "Restangular", "recent", appRun]);
 
-             $rootScope.$on('$stateChangeStart', function () {
-                 if (User.isAuthenticated()) {
-                     $rootScope.email_address = User.u();
-                 }
-             });
-         }]);
+function appRun($rootScope, User, Restangular, recent) {
+    Restangular.setBaseUrl(mcglobals.apihost);
+
+    $rootScope.$on('$stateChangeStart', function () {
+        if (User.isAuthenticated()) {
+            $rootScope.email_address = User.u();
+        }
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        var projectID = fromParams.id;
+        var itemType = fromState.name.replace("projects.project.", "");
+        var n = itemType.indexOf(".");
+        if (n != -1) {
+            itemType = _.str.splice(itemType, n, itemType.length - n, "");
+        }
+        recent.setLast(projectID, itemType, itemType, fromParams, fromState.name);
+    });
+}

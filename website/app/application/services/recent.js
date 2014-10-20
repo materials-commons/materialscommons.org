@@ -5,6 +5,7 @@ Application.Services.factory("recent", recentService);
 function recentService() {
     var self = this;
     self.recentByProject = {};
+    self.last = {};
 
     self.initForProject = function(projectID) {
         self.recentByProject[projectID] = {
@@ -36,6 +37,9 @@ function recentService() {
 
         // updateRecent adds or updates an existing item in a project.
         update: function(projectID, name, itemType, state, route) {
+            if (!(projectID in self.recentByProject)) {
+                self.initForProject(projectID);
+            }
             var item;
             var recents = self.recentByProject[projectID].items;
             var i = _.indexOf(recents, function(item) {
@@ -60,7 +64,23 @@ function recentService() {
             }
         },
 
-        icon: function(itemType) {
+        setLast: function(projectID, name, itemType, state, route) {
+            self.last[projectID] = self.newItem(itemType, state, name, route);
+        },
+
+        getLast: function(projectID) {
+            if (!(projectID in self.last)) {
+                return null;
+            }
+            return self.last[projectID];
+        },
+
+        icon: function(route) {
+            var itemType = route.replace("projects.project.", "");
+            var n = itemType.indexOf(".");
+            if (n != -1) {
+                itemType = itemType.slice(n, itemType.length);
+            }
             switch (itemType) {
             case "process": return "fa-code-fork";
             case "sample": return "fa-cubes";

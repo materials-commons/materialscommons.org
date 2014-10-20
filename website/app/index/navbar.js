@@ -24,25 +24,8 @@ function navbarDirectiveController($scope, ui, current, $state) {
 
     $scope.create = function(action) {
         var projectID = current.projectID();
-        var route = "";
+        var route = "projects.project." + action + ".create";
         $scope.status = false;
-
-        switch (action) {
-        case "provenance":
-            route = "createprov";
-            break;
-        case "sample":
-            route = "createsample";
-            break;
-        case "review":
-            route = "createreview";
-            break;
-        case "note":
-            route = "createnote";
-            break;
-        default: return;
-        }
-
-        $state.go("projects.project." + route, {id: projectID});
+        $state.go(route, {id: projectID});
     };
 }

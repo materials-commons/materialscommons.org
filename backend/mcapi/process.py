@@ -1,12 +1,13 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request, g, jsonify, Response
+from flask import request, g,  Response
 import rethinkdb as r
 import error
 import dmutil
 import access
 import args
 import json
+
 
 def remove_duplicate_processes(process):
     ip_processes = process['input_processes']
@@ -18,19 +19,31 @@ def remove_duplicate_processes(process):
         if ip['id'] in uniq_ip_processes:
             other_names = uniq_ip_processes[ip['id']]['related_files']
             other_names.append(ip['other_name'])
-            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names}   
+            uniq_ip_processes[ip['id']] = {
+                'process_name': ip['name'],
+                'related_files': other_names
+            }
         else:
             other_names.append(ip['other_name'])
-            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names }
+            uniq_ip_processes[ip['id']] = {
+                'process_name': ip['name'],
+                'related_files': other_names
+            }
     for op in op_processes:
         other_names = []
         if op['id'] in uniq_op_processes:
             other_names = uniq_op_processes[op['id']]['related_files']
             other_names.append(op['other_name'])
-            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}   
+            uniq_op_processes[op['id']] = {
+                'process_name': op['name'],
+                'related_files': other_names
+            }
         else:
             other_names.append(op['other_name'])
-            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}
+            uniq_op_processes[op['id']] = {
+                'process_name': op['name'],
+                'related_files': other_names
+            }
     process['input_processes'] = uniq_ip_processes
     process['output_processes'] = uniq_op_processes
     return process
@@ -38,18 +51,39 @@ def remove_duplicate_processes(process):
 
 def build_process_relations(process):
     process['input_processes'] = []
-    process['output_processes'] = [] 
-    values = list(r.table('property_sets').get_all(process['id'], index='item_id').eq_join('id', r.table('properties'), index='item_id').zip().filter((r.row["ptype"] == 'file') | (r.row["ptype"] =='sample')).pluck('value').run(g.conn))
+    process['output_processes'] = []
+    values = list(r.table('property_sets')
+                  .get_all(process['id'], index='item_id')
+                  .eq_join('id', r.table('properties'), index='item_id').zip()
+                  .filter((r.row["ptype"] == 'file') |
+                          (r.row["ptype"] == 'sample'))
+                  .pluck('value').run(g.conn))
     ids = []
     for each in values:
         ids.append(each['value'])
-    processes = list(r.table('properties').get_all(*ids, index='value').eq_join('item_id', r.table('property_sets')).zip().pluck('item_id','stype', 'other').distinct().eq_join('item_id', r.table('processes')).zip().pluck('item_id', 'stype', 'name', 'other').run(g.conn))
+    processes = list(r.table('properties')
+                     .get_all(*ids, index='value')
+                     .eq_join('item_id', r.table('property_sets'))
+                     .zip()
+                     .pluck('item_id', 'stype', 'other')
+                     .distinct()
+                     .eq_join('item_id', r.table('processes'))
+                     .zip()
+                     .pluck('item_id', 'stype', 'name', 'other').run(g.conn))
     for p in processes:
         if p['item_id'] != process['id']:
             if p['stype'] == 'inputs':
-                process['input_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
+                process['input_processes'].append({
+                    'id': p['item_id'],
+                    'name': p['name'],
+                    'other_name': p['other']['name']
+                })
             else:
-                process['output_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
+                process['output_processes'].append({
+                    'id': p['item_id'],
+                    'name': p['name'],
+                    'other_name': p['other']['name']
+                })
     #Check for duplicate processes and return
     process = remove_duplicate_processes(process)
     return process
@@ -63,18 +97,22 @@ def get_processes_by_project(project_id):
     for process in selection:
         process['inputs'] = {}
         process['outputs'] = {}
-        property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'}).run(g.conn)
+        property_sets = r.table('property_sets')\
+                         .filter({
+                             'item_id': process['id'],
+                             'item_type': 'process'}).run(g.conn)
         build_process_relations(process)
         for each_set in property_sets:
-            rr = r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'})
+            r.table('properties')\
+             .filter({'item_id': each_set['id'], 'item_type': 'property_set'})
             properties = list(rr.run(g.conn, time_format='raw'))
             if each_set['stype'] == 'inputs':
                 process['inputs'][each_set['name']] = properties
             else:
                 process['outputs'][each_set['name']] = properties
         complete_processes.append(process)
-    return Response(json.dumps(complete_processes), mimetype="application/json")
-
+    return Response(json.dumps(complete_processes),
+                    mimetype="application/json")
 
 
 @app.route('/processes/<process_id>', methods=['GET'])
@@ -101,7 +139,8 @@ def get_all_processes_for_template(template_id):
 @apikey
 @jsonp
 def get_processes_by_sample(sample_id):
-    rr = r.table('samples_processes_denorm').get_all(sample_id, index='sample_id')
+    rr = r.table('samples_processes_denorm')\
+          .get_all(sample_id, index='sample_id')
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -146,16 +185,20 @@ def build_sample_file_objects(selection, type):
             # get_all_sample_ids
             for i in inputs:
                 if i['attribute'] == 'sample':
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
+                    i['properties']['obj'] = get_an_item(
+                        i['properties']['id']['value'], sample_objs)
                 elif i['attribute'] == 'file':
                     file_list.append(i['properties']['id']['value'])
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], file_objs)
+                    i['properties']['obj'] = get_an_item(
+                        i['properties']['id']['value'], file_objs)
             for o in outputs:
                 if o['attribute'] == 'sample':
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], sample_objs)
+                    o['properties']['obj'] = get_an_item(
+                        o['properties']['id']['value'], sample_objs)
                 elif o['attribute'] == 'file':
                     file_list.append(o['properties']['id']['value'])
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
+                    o['properties']['obj'] = get_an_item(
+                        o['properties']['id']['value'], file_objs)
         return selection
     else:
         s = selection
@@ -182,16 +225,20 @@ def build_sample_file_objects(selection, type):
             # get_all_sample_ids
             for i in inputs:
                 if i['attribute'] == 'sample':
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
+                    i['properties']['obj'] = get_an_item(
+                        i['properties']['id']['value'], sample_objs)
                 elif i['attribute'] == 'file':
                     file_list.append(i['properties']['id']['value'])
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], file_objs)
+                    i['properties']['obj'] = get_an_item(
+                        i['properties']['id']['value'], file_objs)
             for o in outputs:
                 if o['attribute'] == 'sample':
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], sample_objs)
+                    o['properties']['obj'] = get_an_item(
+                        o['properties']['id']['value'], sample_objs)
                 elif o['attribute'] == 'file':
                     file_list.append(o['properties']['id']['value'])
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
+                    o['properties']['obj'] = get_an_item(
+                        o['properties']['id']['value'], file_objs)
         return selection
 
 
