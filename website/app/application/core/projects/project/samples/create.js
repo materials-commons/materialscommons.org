@@ -62,7 +62,6 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
 
     $scope.cancel = function () {
         ui.setShowFiles($scope.project.id, true);
-        console.log("last = %O", recent.getLast($scope.project.id));
     };
 
     $scope.removeProjects = function (index) {
