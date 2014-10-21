@@ -24,6 +24,7 @@ def get_api_key_for_user(user):
     hash = make_salted_password_hash(password, salt)
     if hash == dbpw:
         del u['password']
+        r.table('users').get(user).update({'last_login': r.now()}).run(g.conn)
         return json.dumps(u)
     else:
         return error.not_authorized("Bad username or password")
@@ -58,6 +59,13 @@ def list_usergroups_for_user(user):
                .run(g.conn, time_format='raw'))
     return json.dumps(res)
 
+@app.route('/user/<user>/updatename', methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def update_name(user):
+    j = request.get_json()
+    rv = r.table('users').get(user).update({'fullname': j['fullname']}).run(g.conn)
+    return jsonify(rv)
 
 @app.route('/user/<user>/preferred_templates', methods=['GET'])
 @apikey
