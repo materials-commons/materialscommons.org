@@ -114,7 +114,7 @@ def insert_entry_id(table_name, entry):
     else:
         rr = r.table(table_name).insert(entry, return_vals=True)
     rv = rr.run(g.conn)
-    if rv[u'inserted'] == 1:
+    if rv['inserted'] == 1:
         if 'generated_keys' in rv:
             return rv['generated_keys'][0]
         else:
