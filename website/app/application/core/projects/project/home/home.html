@@ -1,145 +1,79 @@
-<div>
-    <div class="row">
-        <div class="col-xs-12 info-box">
-            <div class="col-xs-5">
-                <h4 style="display: inline;padding-right: 5px;"> Welcome {{mcuser.fullname}}</h4>
-                <a ng-click="editFullName = !editFullName">edit</a>
+<div class="row">
+    <div class="col-xs-12 info-box">
+        <div class="col-xs-5">
+            <h4 style="display: inline;padding-right: 5px;"> Welcome {{mcuser.fullname}}</h4>
+            <a ng-click="editFullName = !editFullName">edit</a>
 
-                <div  ng-show="editFullName">
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label>FullName</label>
-                            <input ng-model="mcuser.fullname" type="text" class="form-control" placeholder="First Name...">
-                        </div>
-                        <button type="submit" class="btn btn-default btn-sm" ng-click="updateName()">Update</button>
+            <div ng-show="editFullName">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>FullName</label>
+                        <input ng-model="mcuser.fullname" type="text" class="form-control" placeholder="First Name...">
                     </div>
+                    <button type="submit" class="btn btn-default btn-sm" ng-click="updateName()">Update</button>
                 </div>
-                <h6> You last logged in on {{mcuser.last_login | toDateString}}</h6>
             </div>
+            <h6> You last logged in on {{mcuser.last_login | toDateString}}</h6>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+        <div class=" info-box">
+            <div home-reviews project="project"></div>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class=" info-box">
+            <div home-samples project="project"></div>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class=" info-box">
+            <div home-files project="project"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+        <div class=" info-box">
+            <div class="row">
+                <h4 class="text-center" style="padding-bottom: 15px;">
+                    <i class="fa fa-code-fork fa-fw"></i>
+                    <strong>Provenance</strong>
+                </h4>
+            </div>
+            <div class="row">
 
-    </div>
-    <div ng-show="false" class="col-xs-4"
-         style="background-color: white; border: 2px solid #d3d3d3; border-top-width: 4px; padding: 4px;">
-        <div class="row">
-            <h4 class="text-center" style="padding-bottom: 15px;">
-                <i class="fa fa-users fa-fw"></i>
-                <strong>{{project.users.length}} contributors</strong>
-            </h4>
-        </div>
-        <div class="row">
-            <table class="table">
-                <thead>
-                <th>User</th>
-                <th>Added</th>
-                <th></th>
-                </thead>
-                <tbody>
-                <tr ng-repeat="user in project.users | orderBy:'user_id'">
-                    <td>{{user.user_id}}</td>
-                    <td>{{user.birthtime | toDateString}}</td>
-                    <td ng-if="allowDelete()">&times;</td>
-                    <td ng-if="!allowDelete()"></td>
-                </tbody>
-            </table>
+            </div>
         </div>
     </div>
-</div>
-<div>
-    <div ng-show="false" class="row">
-        <project-description project-id="{{project.id}}"></project-description>
-    </div>
-    <ul ng-show="false" class="list-inline menu-bar">
-        <li>
-                <span>
-                    <i class="fa fa-users"/>
-                    <a data-toggle="modal" data-target="#contributors">
-                        <strong>{{project.users.length}} contributors</strong>
-                    </a>
-                </span>
-        </li>
 
-        <li>
-                <span>
-                    <i class="fa fa-share"/> Shared with
-                    <a data-toggle="modal"
-                       data-target="#shares">
-                        <strong>{{project.shares.length}} Project(s)</strong>
-                    </a>
-                </span>
-        </li>
-
-        <li>
-                <span>
-                    <i class="fa fa-mail-reply"/>
-                    Uses
-                    <a data-toggle="modal"
-                       data-target="#uses">
-                        <strong>{{project.uses.length}} Project(s)</strong>
-                    </a>
-                </span>
-        </li>
-    </ul>
-</div>
-</div>
-<div ui-view></div>
-<!-- Modal for contributors -->
-<div class="modal fade" id="contributors" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Contributors</h4>
+    <div class="col-xs-4">
+        <div class=" info-box">
+            <div class="row">
+                <h4 class="text-center" style="padding-bottom: 15px;">
+                    <i class="fa fa-check-square fa-fw"></i>
+                    <strong>Tasks</strong>
+                </h4>
             </div>
-            <div class="modal-body">
-                <ul>
-                    <li ng-repeat="user in project.users | orderBy: 'toString()'">{{user.user_id}}</li>
-                </ul>
+            <div class="row">
+
             </div>
         </div>
     </div>
-</div>
-
-<!-- Modal for uses -->
-<div class="modal fade" id="uses" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Shared from other projects</h4>
+    <div class="col-xs-4">
+        <div class=" info-box">
+            <div class="row">
+                <h4 class="text-center" style="padding-bottom: 15px;">
+                    <i class="fa fa-edit fa-fw"></i>
+                    <strong>Notes</strong>
+                </h4>
             </div>
-            <div class="modal-body">
-                <p ng-if="project.uses.length === 0">This project doesn't use items from other projects.</p>
-                <ul>
-                    <li ng-repeat="usedItem in project.uses">Sample '{{usedItem.name}}' is from project:
-                        {{usedItem.other_project.name}}
-                    </li>
-                </ul>
+            <div class="row">
+
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal for shares -->
-<div class="modal fade" id="shares" tabindex="-1" role="dialog" aria-labelledby="contributorsLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Shared with other projects</h4>
-            </div>
-            <div class="modal-body">
-                <p ng-if="project.shares.length === 0">This project doesn't share items with other projects.</p>
-                <ul>
-                    <li ng-repeat="sharedItem in project.shares">Project '{{sharedItem.other_project.name}}' uses
-                        sample: {{sharedItem.name}}
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
