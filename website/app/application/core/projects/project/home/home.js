@@ -6,7 +6,7 @@ function projectHome($scope, project, User, mcapi) {
     $scope.mcuser = User.attr();
 
     $scope.updateName = function(){
-        mcapi('/user/%/updatename', $scope.mcuser.email)
+        mcapi('/users/%', $scope.mcuser.email)
             .success(function (u) {
                 $scope.editFullName = false;
                 User.save($scope.mcuser);
