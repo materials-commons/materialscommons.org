@@ -1,8 +1,8 @@
 Application.Controllers.controller('ProjectTreeController',
                                    ["toastr","$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStatus", "provStep", ProjectTreeController]);
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","provStep", ProjectTreeController]);
 
-function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus, provStep) {
+function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, provStep) {
 
     $scope.addToReview = function(entry, review){
         var item = {'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type};
@@ -167,29 +167,8 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
             }).post($scope.review);
     };
 
-    function isReviewActionCurrent() {
-        return actionStatus.isCurrentAction($scope.projectID, 'create-review');
-    }
-
-    function isProvenanceFileActive() {
-        if (actionStatus.isCurrentAction($scope.projectID, 'create-provenance-new') ||
-           actionStatus.isCurrentAction($scope.projectID, 'create-provenance-from-draft')) {
-            var step = provStep.getCurrentStep($scope.projectID);
-            if (step.step == "files") {
-                return true;
-            }
-        }
-        return false;
-    }
-
     $scope.showFileCheckbox = function() {
-        if (isReviewActionCurrent()) {
-            return true;
-        } else if (isProvenanceFileActive()) {
-            return true;
-        }
-
-        return false;
+        return projectFiles.isActive($scope.projectID);
     };
 
     $scope.init = function() {

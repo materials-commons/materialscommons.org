@@ -10,6 +10,19 @@ Application.Services.factory('projectFiles',
                 projects: {}
             },
             channel: null,
+            activeByProject: {},
+
+            setActive: function(projectID, active) {
+                service.activeByProject[projectID] = active;
+            },
+
+            isActive: function(projectID) {
+                if (!(projectID in service.activeByProject)) {
+                    service.activeByProject[projectID] = false;
+                }
+
+                return service.activeByProject[projectID];
+            },
 
             /*
              * Clears the current set of projects.
