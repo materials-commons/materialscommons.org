@@ -18,8 +18,8 @@ function recentService($state) {
     self.icon = function(route) {
         var routeType = route.replace("projects.project.", "");
         var n = routeType.indexOf(".");
-        if (n != -1) {
-            routeType = routeType.slice(n, routeType.length);
+        if (n !== -1) {
+            routeType = routeType.slice(0, n);
         }
         switch (routeType) {
         case "provenance": return "fa-code-fork";

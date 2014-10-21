@@ -11,11 +11,11 @@ function sidebarDirective() {
 }
 
 Application.Controllers.controller("sidebarDirectiveController",
-                                   ["$scope", "model.projects", "recent", "current",
-                                    "sidebarUtil", "pubsub",
+                                   ["$scope", "recent", "current",
+                                    "sidebarUtil", "pubsub", "model.projects",
                                     sidebarDirectiveController]);
 
-function sidebarDirectiveController($scope, projects, recent, current, sidebarUtil, pubsub) {
+function sidebarDirectiveController($scope, recent, current, sidebarUtil, pubsub, projects) {
     $scope.showAllRecent = false;
 
     function setupSidebar(project) {
@@ -27,13 +27,10 @@ function sidebarDirectiveController($scope, projects, recent, current, sidebarUt
     }
 
     pubsub.waitOn($scope, "sidebar.project", function() {
-        projects.get($scope.project.id).then(function(project) {
-            setupSidebar(project);
+        projects.getList().then(function(p) {
+            $scope.projects = p;
         });
-    });
-
-    projects.getList().then(function(p) {
-        $scope.projects = p;
-        setupSidebar($scope.projects[0]);
+        var project = current.project();
+        setupSidebar(project);
     });
 }
