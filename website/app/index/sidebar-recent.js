@@ -15,7 +15,4 @@ Application.Controllers.controller("sidebarRecentDirectiveController",
 
 function sidebarRecentDirectiveController($scope, recent, pubsub) {
     $scope.showAllRecent = false;
-    $scope.recentIcon = function(itemType) {
-        return recent.icon(itemType);
-    };
 }

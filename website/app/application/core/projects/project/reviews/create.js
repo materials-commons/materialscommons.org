@@ -1,12 +1,13 @@
 Application.Controllers.controller('projectReviewsCreate',
                                    ["$scope", "mcapi", "User", "pubsub", "$stateParams",
                                     "model.projects", "projectFiles", "projectState", "ui",
-                                    projectReviewsCreate]);
+                                    "recent", projectReviewsCreate]);
 
 function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Projects,
-                                      projectFiles, projectState, ui) {
-    $scope.channel = 'action-reviews';
-    projectFiles.setChannel($scope.channel);
+                                      projectFiles, projectState, ui, recent) {
+    var channel = 'review.files';
+    projectFiles.setChannel(channel);
+    projectFiles.setActive($stateParams.id, true);
 
     Projects.getList().then(function(projects) {
         $scope.projects = projects;
@@ -26,11 +27,13 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
         projectState.set($scope.project.id, $stateParams.sid, $scope.model);
     }
 
+    recent.addIfNotExists($scope.project.id, $stateParams.sid, "New Review");
+
     projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);
 
     $scope.review = {'items': [], 'messages': []};
 
-    pubsub.waitOn($scope, $scope.channel, function (fileentry) {
+    pubsub.waitOn($scope, channel, function (fileentry) {
         if (fileentry.selected) {
             $scope.model.files.push(fileentry);
         } else {
@@ -46,13 +49,12 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
     function saveData() {
         mcapi('/reviews')
             .success(function (data) {
-                Projects.getList(true).then(function (projects) {
-                    Projects.get($scope.project.id).then(function (project) {
-                        $scope.project = project;
-                        pubsub.send('update-tab-count.change');
-                        ui.setShowFiles($stateParams.id, false);
-                    });
-
+                Projects.getList(true).then(function () {
+                    pubsub.send('sidebar.project');
+                    ui.setShowFiles($stateParams.id, false);
+                    projectFiles.setActive($stateParams.id, false);
+                    recent.gotoLast($stateParams.id);
+                    recent.update($stateParams.id, $stateParams.sid, $scope.review.title);
                 });
             }).error(function (reason) {
             }).post($scope.review);
@@ -60,6 +62,10 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
 
     $scope.cancel = function() {
         ui.setShowFiles($stateParams.id, false);
+        projectFiles.setActive($stateParams.id, false);
+        recent.gotoLast($stateParams.id);
+        recent.delete($stateParams.id, $stateParams.sid);
+        projectState.delete($stateParams.id, $stateParams.sid);
     };
 
     $scope.create = function () {
@@ -88,5 +94,4 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
         $scope.model.files[index].selected = false;
         $scope.model.files.splice(index, 1);
     };
-
 }
