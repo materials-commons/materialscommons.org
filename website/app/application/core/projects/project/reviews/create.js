@@ -1,18 +1,14 @@
 Application.Controllers.controller('projectReviewsCreate',
                                    ["$scope", "mcapi", "User", "pubsub", "$stateParams",
-                                    "model.projects", "projectFiles", "projectState", "ui",
+                                    "project", "projectFiles", "projectState", "ui",
                                     "recent", projectReviewsCreate]);
 
-function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Projects,
-                                      projectFiles, projectState, ui, recent) {
+function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, project,
+                              projectFiles, projectState, ui, recent) {
     var channel = 'review.files';
     projectFiles.setChannel(channel);
     projectFiles.setActive($stateParams.id, true);
-
-    Projects.getList().then(function(projects) {
-        $scope.projects = projects;
-        ui.setShowFiles($stateParams.id, true);
-    });
+    ui.setShowFiles($stateParams.id, true);
 
     var state = projectState.get($stateParams.id, $stateParams.sid);
     if (state) {
@@ -48,14 +44,13 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
 
     function saveData() {
         mcapi('/reviews')
-            .success(function (data) {
-                Projects.getList(true).then(function () {
-                    pubsub.send('sidebar.project');
-                    ui.setShowFiles($stateParams.id, false);
-                    projectFiles.setActive($stateParams.id, false);
-                    recent.gotoLast($stateParams.id);
-                    recent.update($stateParams.id, $stateParams.sid, $scope.review.title);
-                });
+            .success(function (review) {
+                project.reviews.push(review);
+                pubsub.send('sidebar.project');
+                ui.setShowFiles($stateParams.id, false);
+                projectFiles.setActive($stateParams.id, false);
+                recent.gotoLast($stateParams.id);
+                recent.update($stateParams.id, $stateParams.sid, $scope.review.title);
             }).error(function (reason) {
             }).post($scope.review);
     }

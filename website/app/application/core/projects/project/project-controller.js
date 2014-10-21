@@ -1,13 +1,15 @@
 Application.Controllers.controller('projectsProject',
-                                   ["$scope", "actionStatus", "provStep", "ui",
-                                    "project", projectsProject]);
+                                   ["$scope", "provStep", "ui",
+                                    "project", "current", "pubsub", projectsProject]);
 
-function projectsProject ($scope, actionStatus, provStep, ui, project) {
+function projectsProject ($scope, provStep, ui, project, current, pubsub) {
     $scope.isActive = function (tab) {
         return tab === $scope.activeTab;
     };
 
-    actionStatus.addProject(project.id);
+    current.setProject(project);
+    pubsub.send("sidebar.project");
+
     provStep.addProject(project.id);
     $scope.project = project;
 

@@ -11,6 +11,10 @@ function currentService() {
             return self.current.project.id;
         },
 
+        project: function() {
+            return self.current.project;
+        },
+
         setProject: function(project) {
             self.current.project = project;
         }
