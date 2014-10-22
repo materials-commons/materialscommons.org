@@ -170,7 +170,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: "projectSamplesOverview"
         })
         .state('projects.project.samples.create', {
-            url: '/create',
+            url: '/create/:sid',
             templateUrl: 'application/core/projects/project/samples/create.html',
             controller: "projectSamplesCreate"
         })
@@ -195,12 +195,12 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: "projectReviews"
         })
         .state('projects.project.reviews.overview', {
-            url: "/createreview",
+            url: "/overview",
             templateUrl: "application/core/projects/project/reviews/overview.html",
             controller: "projectReviewsOverview"
         })
         .state('projects.project.reviews.create', {
-            url: "/createreview",
+            url: "/create/:sid",
             templateUrl: "application/core/projects/project/reviews/create.html",
             controller: "projectReviewsCreate"
         })
@@ -209,8 +209,13 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/notes/notes.html',
             controller: "projectNotes"
         })
-        .state('projects.project.createnote', {
-            url: '/createnote',
+        .state('projects.project.notes.overview', {
+            url: '/overview',
+            templateUrl: "application/core/projects/project/notes/overview.html",
+            controller: "projectNotesOverview"
+        })
+        .state('projects.project.notes.create', {
+            url: '/create/:sid',
             templateUrl: "application/core/projects/project/notes/create.html",
             controller: "projectNotesCreate"
         });
@@ -225,21 +230,22 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 
 }]);
 
-app.run(["$rootScope", "User", "Restangular", "recent", appRun]);
+app.run(["$rootScope", "User", "Restangular", "recent", "ui", appRun]);
 
-function appRun($rootScope, User, Restangular, recent) {
+function appRun($rootScope, User, Restangular, recent, ui) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
-    $rootScope.$on('$stateChangeStart', function () {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
+            ui.setShowFiles(toParams.id, false);
         }
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         var projectID = fromParams.id;
         if (!fromState.abstract) {
-            recent.setLast(projectID, "ignore", fromState.name, fromParams);
+            recent.pushLast(projectID, "ignore", fromState.name, fromParams);
         }
     });
 }
