@@ -60,7 +60,7 @@ function projectStateService() {
                 projectStates[stateID] = state;
                 return state;
             } else {
-                var currentState = projectState[stateID];
+                var currentState = projectStates[stateID];
                 if (currentState === null) {
                     projectStates[stateID] = state;
                     return state;
