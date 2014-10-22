@@ -1,12 +1,12 @@
 Application.Controllers.controller('projectProvenanceCreate',
                                    ["$scope", "project", "model.templates",
                                     "model.projects", "User", "$filter", "provStep", "projectFiles",
-                                    "draft", "ui", "$stateParams", "projectState",
+                                    "draft", "$stateParams", "projectState", "recent",
                                     projectProvenanceCreate]);
 
 function projectProvenanceCreate($scope, project, templates, projects,
                                  User, $filter, provStep, projectFiles, draft,
-                                 ui, $stateParams, projectState) {
+                                 $stateParams, projectState, recent) {
     var stateID = $stateParams.sid;
 
     $scope.start = function() {
@@ -17,13 +17,16 @@ function projectProvenanceCreate($scope, project, templates, projects,
         var title = "Wizard Process Step (" + templateName + ")";
         $scope.wizardState.currentDraft = draft.createProvenance($scope.wizardState.selectedTemplate, project.id);
         $scope.wizardState.showChooseProcess = false;
+        recent.addIfNotExists(project.id, stateID, templateName);
         provStep.setStep($scope.wizardState.project.id, provStep.makeStep("process", "process"));
     };
 
     $scope.cancel = function() {
         var projectID = $scope.wizardState.project.id;
         provStep.resetProject(projectID);
-        ui.setShowFiles(projectID, true);
+        recent.delete(project.id, stateID);
+        projectState.delete(project.id, stateID);
+        recent.gotoLast(project.id);
     };
 
     templates.getList().then(function(templates) {
@@ -48,28 +51,27 @@ function projectProvenanceCreate($scope, project, templates, projects,
     });
 
     projectFiles.setChannel("provenance.files");
-    var state = projectState.get(project.id, stateID);
+
+    var defaultWizardState = {
+        project: null,
+        showOverview: false,
+        keepStepsOpen: false,
+        reviewContent: false,
+        step: null,
+        currentDraft: null,
+        selectedTemplate: null,
+        showChooseProcess: true
+    };
+
+    $scope.wizardState = projectState.getset(project.id, stateID, defaultWizardState);
     var step = provStep.getCurrentStep(project.id);
-    if (state) {
-        $scope.wizardState = state;
-        $scope.wizardState.project = project;
-        // Take us back to the last step.
-        if (state.step !== null) {
-            provStep.setStep(project.id, state.step);
+    if ($scope.wizardState.project !== null) {
+        // this is a previous state so figure out what step to go to.
+        if ($scope.wizardState.step !== null) {
+            provStep.setStep(project.id, $scope.wizardState.step);
         } else {
             provStep.setStep(project.id, step);
         }
-    } else {
-        $scope.wizardState = {
-            project: project,
-            showOverview: false,
-            keepStepsOpen: false,
-            reviewContent: false,
-            step: null,
-            currentDraft: null,
-            selectedTemplate: null,
-            showChooseProcess: true
-        };
-        projectState.set(project.id, stateID, $scope.wizardState);
     }
+    $scope.wizardState.project = project;
 }

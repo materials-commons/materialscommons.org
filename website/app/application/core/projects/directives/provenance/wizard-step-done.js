@@ -12,9 +12,9 @@ function wizardStepDoneDirective() {
 Application.Controllers.controller('wizardStepDoneDirectiveController',
                                    ["$scope", "provStep", "$stateParams",
                                     "Restangular", "User", "$timeout", "model.projects",
-                                    "ui", "projectState", wizardStepDoneDirectiveController]);
+                                    "projectState", "recent", wizardStepDoneDirectiveController]);
 function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Restangular, User,
-                                           $timeout, projects, ui, projectState) {
+                                           $timeout, projects, projectState, recent) {
     var state = projectState.get($stateParams.id, $stateParams.sid);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
@@ -79,16 +79,19 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
 
     function closeProvenanceAction() {
         provStep.resetProject($stateParams.id);
-        ui.setShowFiles($stateParams.id, true);
+        recent.gotoLast($stateParams.id, $stateParams.sid);
     }
 
     $scope.submit = function() {
-        //console.log("Submitting %O", state.currentDraft);
         Restangular.one("provenance2")
             .post($stateParams.id,
                   state.currentDraft,
                   {apikey: User.apikey()})
-            .then(closeProvenanceAction);
+            .then(function() {
+                recent.delete($stateParams.id, $stateParams.sid);
+                projectState.delete($stateParams.id, $stateParams.sid);
+                closeProvenanceAction();
+            });
     };
 
     $scope.saveDraft = function() {
@@ -108,6 +111,10 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
         // if we don't wrap these functions in a timeout. It
         // appears that the changes to the dom are happening
         // too quickly.
-        $timeout(closeProvenanceAction, 100);
+        $timeout(function() {
+            recent.delete($stateParams.id, $stateParams.sid);
+            projectState.delete($stateParams.id, $stateParams.sid);
+            closeProvenanceAction();
+        }, 100);
     };
 }

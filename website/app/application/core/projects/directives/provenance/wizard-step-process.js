@@ -11,10 +11,13 @@ function wizardStepProcessDirective() {
 
 Application.Controllers.controller('wizardStepProcessController',
                                    ["$scope", "provStep", "$stateParams", "projectState",
-                                    "ui",
+                                    "recent",
                                     wizardStepProcessController]);
 
-function wizardStepProcessController($scope, provStep, $stateParams, projectState, ui) {
+function wizardStepProcessController($scope, provStep, $stateParams, projectState, recent) {
+    var stateID = $stateParams.sid;
+    var projectID = $stateParams.id;
+
     function setDoneState() {
         if (!$scope.wizardState.currentDraft.process.name) {
             $scope.wizardState.currentDraft.process.done = false;
@@ -28,9 +31,17 @@ function wizardStepProcessController($scope, provStep, $stateParams, projectStat
     $scope.step = provStep.getCurrentStep($scope.wizardState.project.id);
 
     provStep.onLeave($stateParams.id, function() {
+        var templateName = $scope.wizardState.selectedTemplate.template_name;
         setDoneState();
         if (!$scope.wizardState.currentDraft.process.done) {
             $scope.wizardState.currentDraft.completed = false;
+        }
+
+        var name = $scope.wizardState.currentDraft.process.name;
+        if (name === "") {
+            recent.update(projectID, stateID, templateName);
+        } else {
+            recent.update(projectID, stateID, templateName + ": " + name);
         }
     });
 
@@ -40,7 +51,6 @@ function wizardStepProcessController($scope, provStep, $stateParams, projectStat
     };
 
     $scope.cancelStep = function() {
-        var projectID = $scope.wizardState.project.id;
-        ui.setShowFiles(projectID, true);
+        recent.gotoLast(projectID, stateID);
     };
 }

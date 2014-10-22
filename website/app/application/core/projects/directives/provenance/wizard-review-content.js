@@ -10,9 +10,9 @@ function wizardReviewContentDirective() {
 }
 
 Application.Controllers.controller("wizardReviewContentDirectiveController",
-                                   ["$scope", "$stateParams", "actionStatus",
+                                   ["$scope", "$stateParams", "projectState",
                                     wizardReviewContentDirectiveController]);
 
-function wizardReviewContentDirectiveController($scope, $stateParams, actionStatus) {
-    $scope.wizardState = actionStatus.getCurrentActionState($stateParams.id);
+function wizardReviewContentDirectiveController($scope, $stateParams, projectState) {
+    $scope.wizardState = projectState.get($stateParams.id, $stateParams.sid);
 }
