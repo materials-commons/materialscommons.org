@@ -43,7 +43,8 @@ def create_draft():
     process = dmutil.get_optional('process', j, [])
     d = Draft(user, name, project_id, project_name, description, clone_number)
     d.process = process
-    return dmutil.insert_entry('drafts', d.__dict__, return_created=True)
+    o = dmutil.insert_entry('drafts', d.__dict__, return_created=True)
+    return dmutil.jsoner(o)
 
 
 @app.route("/drafts2", methods=["POST"])
@@ -57,7 +58,8 @@ def create_draft2():
     draft['birthtime'] = r.now()
     draft['mtime'] = draft['birthtime']
     draft['dtype'] = dtype
-    return dmutil.insert_entry('drafts', draft, return_created=True)
+    o = dmutil.insert_entry('drafts', draft, return_created=True)
+    return dmutil.jsoner(o)
 
 
 @app.route("/drafts2/<project_id>", methods=['POST'])

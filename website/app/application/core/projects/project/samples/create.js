@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectSamplesCreate',
                                    ["$scope", "mcapi", "model.projects", "projectState", "$stateParams",
-                                    "pubsub", "ui", "recent", projectSamplesCreate]);
+                                    "pubsub", "recent", "project", projectSamplesCreate]);
 
-function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, pubsub, ui, recent) {
+function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, pubsub, recent, project) {
     var stateID = $stateParams.id;
 
     $scope.onDrop = function(target, source) {
@@ -16,23 +16,17 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
     };
 
     function initializeState() {
-        var state = projectState.get($scope.project.id, stateID);
-        if (state) {
-            $scope.doc = state;
-        } else {
-            $scope.doc = {
-                name: '',
-                notes: [],
-                available: true,
-                projects: [],
-                properties: {'composition': {'value': [], 'unit': ''}},
-                showComposition: false
-            };
-
-            $scope.doc.projects.push({'id': $scope.project.id, 'name': $scope.project.name});
-            projectState.set($scope.project.id, stateID, $scope.doc);
-        }
-
+        var defaultDoc = {
+            name: '',
+            notes: [],
+            available: true,
+            projects: [
+                {'id': project.id, 'name': project.name}
+            ],
+            properties: {'composition': {'value': [], 'unit': ''}},
+            showComposition: false
+        };
+        $scope.doc = projectState.getset(project.id, stateID, defaultDoc);
         $scope.bk = {
             selected_project: '',
             available: '',
@@ -41,18 +35,18 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
             element_name: '',
             element_value: ''
         };
+        recent.addIfNotExists(project.id, stateID, "New Sample");
     }
 
     $scope.create = function () {
         $scope.doc.path = $scope.doc.name;
-        $scope.doc.project_id = $scope.project.id;
+        $scope.doc.project_id = project.id;
         mcapi('/objects/new')
-            .arg('order_by=birthtime')
-            .success(function () {
-                Projects.getList(true).then(function (data) {
-                    ui.setShowFiles($scope.project.id, true);
-                    pubsub.send('update-tab-count.change');
-                });
+            .success(function (sample) {
+                project.samples.push(sample);
+                recent.gotoLast(stateID);
+                recent.delete(project.id, stateID);
+                projectState.delete(project.id, stateID);
             }).post($scope.doc);
     };
 
@@ -61,8 +55,9 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
     };
 
     $scope.cancel = function () {
-        ui.setShowFiles($scope.project.id, true);
-        console.log("last = %O", recent.getLast($scope.project.id));
+        projectState.delete(project.id, stateID);
+        recent.delete(project.id, stateID);
+        recent.gotoLast(stateID);
     };
 
     $scope.removeProjects = function (index) {
@@ -73,6 +68,7 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
         $scope.doc.properties.composition.value.push({'element': $scope.bk.element_name, 'value': $scope.bk.element_value});
 
     };
+
     $scope.removeComposition = function (i) {
         $scope.doc.properties.composition.value.splice(i, 1);
     };
@@ -88,19 +84,19 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
                 $scope.elements = data;
             }).jsonp();
 
-        $scope.events = [
-            {
-                name: "Heat Treatment A"
-            },
+        // $scope.events = [
+        //     {
+        //         name: "Heat Treatment A"
+        //     },
 
-            {
-                name: "Heat Treatment B"
-            },
+        //     {
+        //         name: "Heat Treatment B"
+        //     },
 
-            {
-                name: "Cogged C"
-            }
-        ];
+        //     {
+        //         name: "Cogged C"
+        //     }
+        // ];
     }
 
     init();

@@ -37,4 +37,5 @@ def create_machine():
     machine['created_by'] = user
     doc.add_properties(dmutil.get_optional('default_properties', j), machine)
     doc.add_properties(dmutil.get_optional('added_properties', j), machine)
-    return dmutil.insert_entry('machines', machine)
+    id = dmutil.insert_entry('machines', machine)
+    return dmutil.jsoner({'id': id})

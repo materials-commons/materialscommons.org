@@ -238,11 +238,8 @@ function appRun($rootScope, User, Restangular, recent) {
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         var projectID = fromParams.id;
-        var itemType = fromState.name.replace("projects.project.", "");
-        var n = itemType.indexOf(".");
-        if (n != -1) {
-            itemType = _.str.splice(itemType, n, itemType.length - n, "");
+        if (!fromState.abstract) {
+            recent.setLast(projectID, "ignore", fromState.name, fromParams);
         }
-        recent.setLast(projectID, itemType, itemType, fromParams, fromState.name);
     });
 }
