@@ -154,7 +154,6 @@ def add_mediatypes(conn, mcdir):
                       'video/mpeg': 'video',
                       'video/x-ms-asf': 'video',
                       'Composite Document File V2 Document, No summary info': 'unknown'}
-    
     msg("Adding mediatypes and sizes for files and projects...")
     # Determine media types for files
     # and update the statistics for the
@@ -193,15 +192,23 @@ def add_mediatypes(conn, mcdir):
                 m = {
                     'mime': mime,
                     'mime_description': mime_description,
-                    'description' : description
+                    'description': description
                 }
                 r.table('datafiles').get(df['id'])\
                                     .update({'mediatype': m})\
                                     .run(conn)
                 if mime not in mediatypes:
-                    mediatypes[mime] = {'count': 1, 'size': df['size'], 'description': all_mediatypes[mime]}
+                    mediatypes[mime] = {
+                        'count': 1,
+                        'size': df['size'],
+                        'description': all_mediatypes[mime]
+                    }
                 else:
-                    mediatypes[mime] = {'count' : mediatypes[mime]['count'] + 1, 'size': mediatypes[mime]['size'] + df['size'], 'description': all_mediatypes[mime]}
+                    mediatypes[mime] = {
+                        'count': mediatypes[mime]['count'] + 1,
+                        'size': mediatypes[mime]['size'] + df['size'],
+                        'description': all_mediatypes[mime]
+                    }
             # update datadirs_denorm to include mediatype
             r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
@@ -501,24 +508,24 @@ def delete_old_drafts(conn):
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    #mark_bad_projects(conn)
-    #remove_conditions(conn)
-    #remove_processes(conn)
-    #convert_groups(conn)
-    #delete_old_drafts(conn)
-    #add_preferences(conn)
-    #add_usesid(conn)
+    mark_bad_projects(conn)
+    remove_conditions(conn)
+    remove_processes(conn)
+    convert_groups(conn)
+    delete_old_drafts(conn)
+    add_preferences(conn)
+    add_usesid(conn)
     add_mediatypes(conn, mcdir)
-    #cleanup_samples(conn)
-    #add_shares_to_projects(conn)
-    #add_tags(conn)
-    #add_default_tags(conn)
-    #add_todos(conn)
-    #drop_unused_tables(conn)
-    #move_samples_denorm(conn)
-    #associate_samples_to_projects(conn)
-    #populate_elements(conn)
-    #update_fullnames(conn)
+    cleanup_samples(conn)
+    add_shares_to_projects(conn)
+    add_tags(conn)
+    add_default_tags(conn)
+    add_todos(conn)
+    drop_unused_tables(conn)
+    move_samples_denorm(conn)
+    associate_samples_to_projects(conn)
+    populate_elements(conn)
+    update_fullnames(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
