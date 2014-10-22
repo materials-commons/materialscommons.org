@@ -129,6 +129,32 @@ def datafile_path(mcdir, datafile_id):
 
 
 def add_mediatypes(conn, mcdir):
+    all_mediatypes = {'application/msword': 'microsoft word',
+                      'application/octet-stream': 'binary',
+                      'application/pdf': 'pdf',
+                      'application/postscript': 'postscript',
+                      'application/vnd.ms-excel': 'excel',
+                      'application/vnd.ms-powerpoint': 'powerpoint',
+                      'application/x-dosexec': 'x-dosexec',
+                      'application/xml': 'xml',
+                      'application/zip': 'zip',
+                      'image/gif': 'gif',
+                      'image/jpeg': 'jpeg',
+                      'image/png': 'png',
+                      'image/tiff': 'tiff',
+                      'image/vnd.adobe.photoshop': 'adobe',
+                      'image/x-ms-bmp': 'bmp',
+                      'inode/x-empty': 'empty',
+                      'text/html': 'html',
+                      'text/plain': 'text',
+                      'text/rtf': 'rtf',
+                      'text/x-asm': 'x-asm',
+                      'text/x-c++': 'c++',
+                      'unknown': 'unknown',
+                      'video/mpeg': 'video',
+                      'video/x-ms-asf': 'video',
+                      'Composite Document File V2 Document, No summary info': 'unknown'}
+    
     msg("Adding mediatypes and sizes for files and projects...")
     # Determine media types for files
     # and update the statistics for the
@@ -157,24 +183,25 @@ def add_mediatypes(conn, mcdir):
                 path = datafile_path(mcdir, dfid)
                 if not os.path.isfile(path):
                     mime = "unknown"
-                    description = "unknown"
+                    mime_description = "unknown"
                     msg("file not found: %s" % (path))
                 else:
                     mime = magic.from_file(path, mime=True)
-                    description = magic.from_file(path)
+                    mime_description = magic.from_file(path)
+                description = all_mediatypes[mime]
                 msg("file %s has mediatype %s" % (path, mime))
                 m = {
                     'mime': mime,
-                    'description': description
+                    'mime_description': mime_description,
+                    'description' : description
                 }
                 r.table('datafiles').get(df['id'])\
                                     .update({'mediatype': m})\
                                     .run(conn)
                 if mime not in mediatypes:
-                    mediatypes[mime] = 1
+                    mediatypes[mime] = {'count': 1, 'size': df['size'], 'description': all_mediatypes[mime]}
                 else:
-                    count = mediatypes[mime]
-                    mediatypes[mime] = count+1
+                    mediatypes[mime] = {'count' : mediatypes[mime]['count'] + 1, 'size': mediatypes[mime]['size'] + df['size'], 'description': all_mediatypes[mime]}
             # update datadirs_denorm to include mediatype
             r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
@@ -474,24 +501,24 @@ def delete_old_drafts(conn):
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    mark_bad_projects(conn)
-    remove_conditions(conn)
-    remove_processes(conn)
-    convert_groups(conn)
-    delete_old_drafts(conn)
-    add_preferences(conn)
-    add_usesid(conn)
+    #mark_bad_projects(conn)
+    #remove_conditions(conn)
+    #remove_processes(conn)
+    #convert_groups(conn)
+    #delete_old_drafts(conn)
+    #add_preferences(conn)
+    #add_usesid(conn)
     add_mediatypes(conn, mcdir)
-    cleanup_samples(conn)
-    add_shares_to_projects(conn)
-    add_tags(conn)
-    add_default_tags(conn)
-    add_todos(conn)
-    drop_unused_tables(conn)
-    move_samples_denorm(conn)
-    associate_samples_to_projects(conn)
-    populate_elements(conn)
-    update_fullnames(conn)
+    #cleanup_samples(conn)
+    #add_shares_to_projects(conn)
+    #add_tags(conn)
+    #add_default_tags(conn)
+    #add_todos(conn)
+    #drop_unused_tables(conn)
+    #move_samples_denorm(conn)
+    #associate_samples_to_projects(conn)
+    #populate_elements(conn)
+    #update_fullnames(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
@@ -503,6 +530,6 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
     if options.mcdir is None:
         print "You must specify the location of mcdir"
-        #os.exit(1)
+        os.exit(1)
     conn = r.connect('localhost', options.port, db='materialscommons')
     main(conn, options.mcdir)
