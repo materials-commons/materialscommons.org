@@ -338,6 +338,6 @@ def get_reviews_for_project(id):
         return error.not_found('No such project: %s' % (id))
     access.check(user, project['owner'])
     reviews = list(r.table('reviews')
-                   .get_all(id, index='project').order_by('birthtime')
+                   .get_all(id, index='project').order_by(r.desc('modifiedtime'))
                    .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(reviews)
