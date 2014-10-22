@@ -1,29 +1,21 @@
 Application.Controllers.controller('projectNotesCreate',
-                                   ["$scope", "User", "toastr","pubsub","actionStatus",
-                                    "model.projects", projectNotesCreate]);
+                                   ["$scope", "User", "toastr", "projectState",
+                                    "$stateParams", "project", "recent",
+                                    projectNotesCreate]);
 
-function projectNotesCreate($scope, User, toastr, pubsub, actionStatus, Projects) {
-    var state = actionStatus.getCurrentActionState($scope.project.id);
-    if (state) {
-        $scope.model = state;
-    } else {
-        $scope.model = {
-            note: ""
-        };
-        actionStatus.setCurrentActionState($scope.project.id, $scope.model);
-    }
+function projectNotesCreate($scope, User, toastr, projectState,
+                            $stateParams, project, recent) {
+    var projectID = project.id;
+    var stateID = $stateParams.sid;
+
+    var defaultModel = {
+        note: ""
+    };
+    $scope.model = projectState.getset(projectID, stateID, defaultModel);
 
     function saveNote() {
-        $scope.project.put(User.keyparam()).then(function() {
-            $scope.model.note = "";
-            Projects.getList(true).then(function (projects) {
-                Projects.get($scope.project.id).then(function (project) {
-                    $scope.project = project;
-                    pubsub.send('update-tab-count.change');
-                    actionStatus.clearCurrentActionState($scope.project.id);
-                    actionStatus.toggleCurrentAction($scope.project.id);
-                });
-            });
+        project.put(User.keyparam()).then(function(note) {
+            recent.gotoLast(projectID);
         }, function(reason){
             toastr.error(reason.data.error, 'Error', {
                 closeButton: true
@@ -32,12 +24,13 @@ function projectNotesCreate($scope, User, toastr, pubsub, actionStatus, Projects
     }
 
     $scope.cancel = function() {
-        actionStatus.clearCurrentActionState($scope.project.id);
-        actionStatus.toggleCurrentAction($scope.project.id);
+        recent.delete(projectID, stateID);
+        projectState.delete(projectID, stateID);
+        recent.gotoLast(projectID);
     };
 
     $scope.create = function () {
-        $scope.project.notes.push({
+        project.notes.push({
             'message': $scope.model.note,
             'who': User.u(),
             'date': new Date()
