@@ -1,10 +1,10 @@
 Application.Controllers.controller('projectReviewsCreate',
                                    ["$scope", "mcapi", "User", "$stateParams",
-                                    "project", "pubsub", "projectFiles", "projectState", "ui",
-                                    "recent", projectReviewsCreate]);
+                                    "project", "pubsub", "projectFiles",
+                                    "projectState", "recent", "ui", projectReviewsCreate]);
 
 function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub,
-                              projectFiles, projectState, ui, recent) {
+                              projectFiles, projectState, recent, ui) {
     var channel = 'review.files';
     projectFiles.setChannel(channel);
     projectFiles.setActive($stateParams.id, true);
@@ -41,7 +41,6 @@ function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub
         mcapi('/reviews')
             .success(function (review) {
                 project.reviews.push(review);
-                ui.setShowFiles($stateParams.id, false);
                 projectFiles.setActive($stateParams.id, false);
                 recent.gotoLast($stateParams.id);
                 recent.update($stateParams.id, $stateParams.sid, $scope.review.title);
@@ -50,7 +49,6 @@ function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub
     }
 
     $scope.cancel = function() {
-        ui.setShowFiles($stateParams.id, false);
         projectFiles.setActive($stateParams.id, false);
         recent.gotoLast($stateParams.id);
         recent.delete($stateParams.id, $stateParams.sid);
