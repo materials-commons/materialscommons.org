@@ -44,7 +44,8 @@ def add_review():
     r.title = dmutil.get_required('title', j)
     r.status = "open"
     r.project = dmutil.get_required('project', j)
-    return dmutil.insert_entry('reviews', r.__dict__, return_created=True)
+    rv = dmutil.insert_entry('reviews', r.__dict__, return_created=True)
+    return dmutil.jsoner(rv)
 
 
 @app.route('/reviews/<id>', methods=['PUT'])

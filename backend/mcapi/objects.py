@@ -98,6 +98,7 @@ def create_object():
         sample['notes'] = dmutil.get_optional('notes', j)
         sample['available'] = dmutil.get_optional('available', j)
         sample['properties'] = dmutil.get_optional('properties', j)
+        sample['alloy'] = dmutil.get_optional('alloy', j)
         sample['birthtime'] = r.now()
         sample['created_by'] = user
         sample['owner'] = user
@@ -105,7 +106,8 @@ def create_object():
         sample['path'] = dmutil.get_required('path', j)
         sample['project_id'] = dmutil.get_required('project_id', j)
         s = dmutil.insert_entry('samples', sample, return_created=True)
-        _join_sample_projects(dmutil.get_optional('projects', j, []), s['id'])
+        sid = s['id']
+        _join_sample_projects(dmutil.get_optional('projects', j, []), sid)
         return jsonify(s)
 
 
