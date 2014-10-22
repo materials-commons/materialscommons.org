@@ -5,7 +5,7 @@ Application.Services.factory("recent", ["$state", recentService]);
 function recentService($state) {
     var self = this;
     self.recentByProject = {};
-    self.last = {};
+    self.lastsByProject = {};
 
     // initForProject create a new project entry in the recents list.
     self.initForProject = function(projectID) {
@@ -61,6 +61,15 @@ function recentService($state) {
             return item.id === recentID;
         });
         return i;
+    };
+
+    // getProjectLasts returns the last list for project. If no project
+    // entry  exists then it creates an empty one.
+    self.getProjectLasts = function(projectID) {
+        if (!(projectID in self.lastsByProject)) {
+            self.lastsByProject[projectID] = [];
+        }
+        return self.lastsByProject[projectID];
     };
 
     self.service = {
@@ -129,25 +138,36 @@ function recentService($state) {
             }
         },
 
-        // setLast sets the last state for the project.
-        setLast: function(projectID, name, route, routeParams) {
-            self.last[projectID] = self.newItem(name, "", route, routeParams);
-        },
-
-        // getLast returns the last state we were in.
-        getLast: function(projectID) {
-            if (!(projectID in self.last)) {
-                return null;
+        // pushLast adds a new last state to the list of lasts. If route
+        // being pushed is an overview route then we pop all other routes
+        // off the stack and add this one. This matches how the sidebar
+        // works and keeps the stack from growing forever.
+        pushLast: function(projectID, name, route, routeParams) {
+            var lasts = self.getProjectLasts(projectID);
+            var entryCount = lasts.length;
+            if (_.str.include(route, "overview")) {
+                lasts.splice(1, entryCount-1);
+                lasts.push(self.newItem(name, "", route, routeParams));
+            } else if ((route === "projects.project.home") && (entryCount > 1)) {
+                // User clicked on home while in some sub state. Clear back to
+                // home and don't save the previous route.
+                lasts.splice(1, entryCount-1);
+            } else {
+                lasts.push(self.newItem(name, "", route, routeParams));
             }
-            return self.last[projectID];
         },
 
-        // gotoLast will go to the last state.
+        // gotoLast will go to the last state and pops it off the stack.
         gotoLast: function(projectID) {
-            if (!(projectID in self.last)) {
+            var lasts = self.getProjectLasts(projectID);
+            var entryCount = lasts.length;
+            if (entryCount === 0) {
+                // Nothing in list so just return.
                 return;
             }
-            var last = self.last[projectID];
+            // Lasts is a stack. We append to the array and remove from the back.
+            var last = lasts[entryCount-1];
+            lasts.splice(entryCount-1, 1); // Pop entry off
             $state.go(last.route, last.routeParams);
         }
     };
