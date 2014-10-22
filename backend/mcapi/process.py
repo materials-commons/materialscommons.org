@@ -1,12 +1,13 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request, g, jsonify, Response
+from flask import request, g, Response
 import rethinkdb as r
 import error
 import dmutil
 import access
 import args
 import json
+
 
 def remove_duplicate_processes(process):
     ip_processes = process['input_processes']
@@ -18,7 +19,7 @@ def remove_duplicate_processes(process):
         if ip['id'] in uniq_ip_processes:
             other_names = uniq_ip_processes[ip['id']]['related_files']
             other_names.append(ip['other_name'])
-            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names}   
+            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names}
         else:
             other_names.append(ip['other_name'])
             uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names }
@@ -27,7 +28,7 @@ def remove_duplicate_processes(process):
         if op['id'] in uniq_op_processes:
             other_names = uniq_op_processes[op['id']]['related_files']
             other_names.append(op['other_name'])
-            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}   
+            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}
         else:
             other_names.append(op['other_name'])
             uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}
@@ -38,7 +39,7 @@ def remove_duplicate_processes(process):
 
 def build_process_relations(process):
     process['input_processes'] = []
-    process['output_processes'] = [] 
+    process['output_processes'] = []
     values = list(r.table('property_sets').get_all(process['id'], index='item_id').eq_join('id', r.table('properties'), index='item_id').zip().filter((r.row["ptype"] == 'file') | (r.row["ptype"] =='sample')).pluck('value').run(g.conn))
     ids = []
     for each in values:
@@ -75,7 +76,6 @@ def get_processes_by_project(project_id):
                 process['outputs'][each_set['name']] = properties
         complete_processes.append(process)
     return Response(json.dumps(complete_processes), mimetype="application/json")
-
 
 
 @app.route('/processes/<process_id>', methods=['GET'])
@@ -228,7 +228,8 @@ def create_process():
     p['runs'] = dmutil.get_optional('runs', j, [])
     p['citations'] = dmutil.get_optional('citations', j, [])
     p['status'] = dmutil.get_optional('status', j)
-    return dmutil.insert_entry('processes', p)
+    id = dmutil.insert_entry('processes', p)
+    return dmutil.jsoner_id(id)
 
 
 @app.route('/process/update/<path:processid>', methods=['PUT'])

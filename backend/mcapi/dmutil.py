@@ -11,6 +11,10 @@ def jsoner(what):
     return Response(json.dumps(what), mimetype="application/json")
 
 
+def jsoner_id(id):
+    return Response(json.dumps({'id': id}), mimetype="application/json")
+
+
 def msg(s):
     print s
     sys.stdout.flush()
@@ -64,10 +68,7 @@ def insert_status(rv, return_created=False):
                 val = rv['changes'][0]['new_val']['id']
             else:
                 val = rv['new_val']['id']
-        if return_created:
-            return json_as_format_arg(val)
-        else:
-            return json.dumps({'id': val})
+        return val
     else:
         raise DatabaseError()
 
