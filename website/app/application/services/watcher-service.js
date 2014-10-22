@@ -7,7 +7,7 @@ Application.Services.factory('watcher',
                 if (!newval && !oldval) {
                     return;
                 }
-                else if (newval == "" && oldval) {
+                else if (newval === "" && oldval) {
                     fn(oldval);
                 } else {
                     fn(newval);

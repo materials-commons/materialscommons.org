@@ -1,36 +1,30 @@
 Application.Controllers.controller('projectReviewsCreate',
-                                   ["$scope", "mcapi", "User", "pubsub", "$stateParams",
-                                    "model.projects", "projectFiles", "projectState", "ui",
-                                    projectReviewsCreate]);
+                                   ["$scope", "mcapi", "User", "$stateParams",
+                                    "project", "pubsub", "projectFiles", "projectState", "ui",
+                                    "recent", projectReviewsCreate]);
 
-function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Projects,
-                                      projectFiles, projectState, ui) {
-    $scope.channel = 'action-reviews';
-    projectFiles.setChannel($scope.channel);
+function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub,
+                              projectFiles, projectState, ui, recent) {
+    var channel = 'review.files';
+    projectFiles.setChannel(channel);
+    projectFiles.setActive($stateParams.id, true);
+    ui.setShowFiles($stateParams.id, true);
 
-    Projects.getList().then(function(projects) {
-        $scope.projects = projects;
-        ui.setShowFiles($stateParams.id, true);
-    });
+    var defaultModel = {
+        comment: "",
+        assigned_to: "",
+        title: "",
+        files: []
+    };
 
-    var state = projectState.get($stateParams.id, $stateParams.sid);
-    if (state) {
-        $scope.model = state;
-    } else {
-        $scope.model = {
-            comment: "",
-            assigned_to: "",
-            title: "",
-            files: []
-        };
-        projectState.set($scope.project.id, $stateParams.sid, $scope.model);
-    }
+    $scope.model = projectState.getset($stateParams.id, $stateParams.sid, defaultModel);
+    recent.addIfNotExists($scope.project.id, $stateParams.sid, "New Review");
 
     projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);
 
     $scope.review = {'items': [], 'messages': []};
 
-    pubsub.waitOn($scope, $scope.channel, function (fileentry) {
+    pubsub.waitOn($scope, channel, function (fileentry) {
         if (fileentry.selected) {
             $scope.model.files.push(fileentry);
         } else {
@@ -45,21 +39,22 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
 
     function saveData() {
         mcapi('/reviews')
-            .success(function (data) {
-                Projects.getList(true).then(function (projects) {
-                    Projects.get($scope.project.id).then(function (project) {
-                        $scope.project = project;
-                        pubsub.send('update-tab-count.change');
-                        ui.setShowFiles($stateParams.id, false);
-                    });
-
-                });
+            .success(function (review) {
+                project.reviews.push(review);
+                ui.setShowFiles($stateParams.id, false);
+                projectFiles.setActive($stateParams.id, false);
+                recent.gotoLast($stateParams.id);
+                recent.update($stateParams.id, $stateParams.sid, $scope.review.title);
             }).error(function (reason) {
             }).post($scope.review);
     }
 
     $scope.cancel = function() {
         ui.setShowFiles($stateParams.id, false);
+        projectFiles.setActive($stateParams.id, false);
+        recent.gotoLast($stateParams.id);
+        recent.delete($stateParams.id, $stateParams.sid);
+        projectState.delete($stateParams.id, $stateParams.sid);
     };
 
     $scope.create = function () {
@@ -88,5 +83,4 @@ function projectReviewsCreate($scope, mcapi, User, pubsub, $stateParams, Project
         $scope.model.files[index].selected = false;
         $scope.model.files.splice(index, 1);
     };
-
 }

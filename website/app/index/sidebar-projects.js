@@ -11,10 +11,10 @@ function sidebarProjectsDirective() {
 
 Application.Controllers.controller("sidebarProjectsDirectiveController",
                                    ["$scope", "current", "sidebarUtil",
-                                    "mcapi", "model.projects",
+                                    "mcapi", "model.projects", "$state",
                                     sidebarProjectsDirectiveController]);
 
-function sidebarProjectsDirectiveController($scope, current, sidebarUtil, mcapi, Projects) {
+function sidebarProjectsDirectiveController($scope, current, sidebarUtil, mcapi, Projects, $state) {
     $scope.showProjects = false;
 
     $scope.setProject = function(project) {
@@ -23,6 +23,7 @@ function sidebarProjectsDirectiveController($scope, current, sidebarUtil, mcapi,
         $scope.showProjects = false;
         $scope.project.fileCount = sidebarUtil.projectFileCount($scope.project);
         $scope.project.projectSize = sidebarUtil.projectSize($scope.project);
+        $state.go("projects.project.home", {id: project.id});
     };
 
     $scope.createProject = function(){
@@ -31,7 +32,6 @@ function sidebarProjectsDirectiveController($scope, current, sidebarUtil, mcapi,
         }
         mcapi('/projects')
             .success(function (data) {
-                console.dir(data);
                 Projects.getList(true).then(function(projects) {
                     $scope.projects = projects;
                 });
