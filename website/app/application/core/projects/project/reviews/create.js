@@ -10,19 +10,14 @@ function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub
     projectFiles.setActive($stateParams.id, true);
     ui.setShowFiles($stateParams.id, true);
 
-    var state = projectState.get($stateParams.id, $stateParams.sid);
-    if (state) {
-        $scope.model = state;
-    } else {
-        $scope.model = {
-            comment: "",
-            assigned_to: "",
-            title: "",
-            files: []
-        };
-        projectState.set($scope.project.id, $stateParams.sid, $scope.model);
-    }
+    var defaultModel = {
+        comment: "",
+        assigned_to: "",
+        title: "",
+        files: []
+    };
 
+    $scope.model = projectState.getset($stateParams.id, $stateParams.sid, defaultModel);
     recent.addIfNotExists($scope.project.id, $stateParams.sid, "New Review");
 
     projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);

@@ -52,6 +52,23 @@ function projectStateService() {
             return true;
         },
 
+        // getset will attempt to retrieve the given state. If the given
+        // state is null, then it will set it to the passed in state.
+        getset: function(projectID, stateID, state) {
+            var projectStates = self.getProjectStates(projectID);
+            if (!(stateID in projectStates)) {
+                projectStates[stateID] = state;
+                return state;
+            } else {
+                var currentState = projectState[stateID];
+                if (currentState === null) {
+                    projectStates[stateID] = state;
+                    return state;
+                }
+                return currentState;
+            }
+        },
+
         // add adds a new state to a project. It returns its stateID.
         add: function(projectID, state) {
             var projectStates = self.getProjectStates(projectID);
