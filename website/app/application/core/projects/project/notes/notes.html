@@ -1,29 +1,29 @@
-<div>
-    <h4>Notes</h4>
-    <div ng-if="project.notes.length == 0">
-        <p>No Notes created under project {{project.name}}</p> <br>
+<div class="row">
+    <!-- <div class="text-center">
+    <div class="btn-group">
+    <button type="button" class="btn btn-primary active">Overview</button>
+    <button type="button" class="btn btn-default">New</button>
     </div>
-    <div class="col-lg-8 col-lg-offset-2">
-        <div  ng-repeat="n in project.notes | orderBy: date">
-            <div ng-if="edit_index==$index">
-                <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-                              ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-                              ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                              ng-model="n.message"></text-angular>
-                <br>
-                <button ng-click="updateNote($index)" class="btn btn-default btn-primary">Save</button>
-            </div>
-            <div ng-if="edit_index!==$index">
-                <div ta-bind ng-model="n.message"></div>
-            </div>
-            <div class="text-muted sub-text">
-                {{n.date}} --- {{n.who}}
-            </div>
-            <div ng-if="edit_index!==$index">
-                <a ng-click="editNotes($index)">edit</a>
-            </div>
-            <hr/>
-        </div>
+    </div> -->
+    <div class="text-center">
+        <h4> Notes </h4>
     </div>
-
+    <div>
+        <ul class="list-inline center-block text-center">
+            <li>
+                <a class="large-text" ui-sref="projects.project.notes.overview({id: projectID})">
+                    Overview
+                </a>
+            </li>
+            <li>
+                <a class="large-text"
+                   ng-click="createNote()">
+                    New
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div ui-view></div>
+    </div>
 </div>
