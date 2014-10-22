@@ -10,9 +10,9 @@ function wizardNextStepDirective() {
 }
 
 Application.Controllers.controller('wizardNextStepDirectiveController',
-                                   ["$scope", "provStep", "pubsub", "projectState", "$stateParams", "projectFiles",
-                                    "ui", wizardNextStepDirectiveController]);
-function wizardNextStepDirectiveController($scope, provStep, pubsub, projectState, $stateParams, ui, projectFiles) {
+                                   ["$scope", "provStep", "pubsub", "projectState", "$stateParams",
+                                    "projectFiles", "ui", wizardNextStepDirectiveController]);
+function wizardNextStepDirectiveController($scope, provStep, pubsub, projectState, $stateParams, projectFiles, ui) {
     pubsub.waitOn($scope, "provenance.wizard.step", function() {
         $scope.wizardState = projectState.get($stateParams.id, $stateParams.sid);
         $scope.step = provStep.getCurrentStep($scope.wizardState.project.id);
