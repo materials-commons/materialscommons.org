@@ -492,6 +492,10 @@ def remove_processes(conn):
     r.table('processes').delete(conn)
 
 
+def remove_reviews(conn):
+    r.table('reviews').delete(conn)
+
+
 def populate_elements(conn):
     # read elements.txt file and iterate throught each element to build
     # table rows
