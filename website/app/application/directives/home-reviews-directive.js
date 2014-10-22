@@ -8,7 +8,7 @@ Application.Controllers.controller("homeReviewsController",
             var y = new Date($scope.user.last_login.epoch_time * 1000).toString();
             $scope.recent_reviews = [];
             $scope.project.reviews.forEach(function(item){
-                var x = new Date(item.modifiedtime.epoch_time * 1000).toString();
+                var x = new Date(item.mtime.epoch_time * 1000).toString();
                 if(x > y) {
                     $scope.recent_reviews.push(item);
                 }
