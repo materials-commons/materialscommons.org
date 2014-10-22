@@ -65,7 +65,6 @@ function projectReviewsOverview($scope, mcapi, $filter, dateGenerate, User, Proj
                 project = p;
                 $scope.project = p;
                 $scope.reviewCount();
-
             });
         });
     };
