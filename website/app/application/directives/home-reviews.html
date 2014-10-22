@@ -18,11 +18,11 @@
 
         <div class="media-body ">
             <strong>Sravya Tamma</strong> has commented on {{rev.title}}. <br>
-            <small class="text-muted">Date {{rev.modifiedtime | toDateString}}</small>
+            <small class="text-muted">Date {{rev.mtime | toDateString}}</small>
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-show="recent_reviews.length!==0">
     <a style="float: right">more comments...</a>
 </div>
 <div class="row">
