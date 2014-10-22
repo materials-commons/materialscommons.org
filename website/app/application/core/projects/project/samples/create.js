@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectSamplesCreate',
                                    ["$scope", "mcapi", "model.projects", "projectState", "$stateParams",
-                                    "pubsub", "ui", "recent", projectSamplesCreate]);
+                                    "pubsub", "ui", "recent", "project", projectSamplesCreate]);
 
-function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, pubsub, ui, recent) {
+function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, pubsub, ui, recent, project) {
     var stateID = $stateParams.id;
 
     $scope.onDrop = function(target, source) {
@@ -47,12 +47,8 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
         $scope.doc.path = $scope.doc.name;
         $scope.doc.project_id = $scope.project.id;
         mcapi('/objects/new')
-            .arg('order_by=birthtime')
-            .success(function () {
-                Projects.getList(true).then(function (data) {
-                    ui.setShowFiles($scope.project.id, true);
-                    pubsub.send('update-tab-count.change');
-                });
+            .success(function (sample) {
+                project.samples.push(sample);
             }).post($scope.doc);
     };
 
@@ -87,19 +83,19 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
                 $scope.elements = data;
             }).jsonp();
 
-        $scope.events = [
-            {
-                name: "Heat Treatment A"
-            },
+        // $scope.events = [
+        //     {
+        //         name: "Heat Treatment A"
+        //     },
 
-            {
-                name: "Heat Treatment B"
-            },
+        //     {
+        //         name: "Heat Treatment B"
+        //     },
 
-            {
-                name: "Cogged C"
-            }
-        ];
+        //     {
+        //         name: "Cogged C"
+        //     }
+        // ];
     }
 
     init();
