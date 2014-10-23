@@ -20,7 +20,7 @@ function projectFileTabsService() {
     };
 
     // findFile finds the matching file entry by comparing ids.
-    self.findFile = function(fielTabs, file) {
+    self.findFile = function(fileTabs, file) {
         var i = _.indexOf(fileTabs, function(f) {
             return f.id === file.id;
         });

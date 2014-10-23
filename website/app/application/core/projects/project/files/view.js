@@ -38,14 +38,13 @@ function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectF
     };
 
     function init() {
-        $scope.id = $scope.args;
         $scope.user = User.u();
         $scope.user_tags = User.attr().preferences.tags;
         //This code is to populate tags in the tree when any tag is added from datafile page
-        $scope.model = projectFiles.model;
-        $scope.dir = $scope.model.projects[$stateParams.id].dir.children;
+        // $scope.model = projectFiles.model;
+        // $scope.dir = $scope.model.projects[$stateParams.id].dir.children;
         //////end//////
-        mcapi('/datafile/%', $scope.id)
+        mcapi('/datafile/%', $stateParams.fileid)
             .success(function (data) {
                 $scope.file = data;
                 $scope.trail = ProjectPath.get_trail();

@@ -1,8 +1,10 @@
 Application.Controllers.controller('ProjectTreeController',
-                                   ["toastr","$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","provStep", ProjectTreeController]);
+                                   ["$scope", "toastr", "mcapi", "projectFiles", "pubsub", "ProjectPath",
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects",
+                                    "projectFileTabs", ProjectTreeController]);
 
-function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, provStep) {
+function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter,
+                                projects, projectFileTabs) {
 
     $scope.addToReview = function(entry, review){
         var item = {'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type};
@@ -55,9 +57,10 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
         }
     };
 
-    $scope.openFile = function (entry) {
+    $scope.openFile = function (f) {
         ProjectPath.populate($scope.trail, $scope.dir);
-        $scope.toggleStackAction('file', entry.name, entry.id, entry.id);
+        projectFileTabs.add($scope.projectId, f);
+        //$scope.toggleStackAction('file', entry.name, entry.id, entry.id);
     };
 
     $scope.loadReviews = function (id) {

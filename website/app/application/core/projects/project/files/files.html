@@ -5,14 +5,19 @@
     <div>
         <ul class="list-inline center-block text-center">
             <li>
-                <a class="large-text" ui-sref="projects.project.files.overview({id: projectID})">
+                <a class="large-text"
+                   ui-sref="projects.project.files.overview({id: projectID})">
                     Overview
                 </a>
             </li>
             <li ng-repeat="file in files">
                 <a class="large-text"
-                   ng-click="gotoFile(file)">
+                   tooltip="{{file.fullname}}"
+                   ui-sref="projects.project.files.view({fileid: file.id})">
                    {{file.name}}
+                </a>
+                <a ng-click="closeFile(file)">
+                    <i class="fa fa-close action-link-close"></i>
                 </a>
             </li>
         </ul>
