@@ -60,7 +60,7 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
     $scope.openFile = function (f) {
         ProjectPath.populate($scope.trail, $scope.dir);
         projectFileTabs.add($scope.projectId, f);
-        //$scope.toggleStackAction('file', entry.name, entry.id, entry.id);
+        $state.go("projects.project.files.view", {fileid: f.id});
     };
 
     $scope.loadReviews = function (id) {
@@ -104,7 +104,6 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
             if (channel !== null) {
                 pubsub.send(channel, entry);
             }
-
     };
 
     $scope.truncateTrail = function (currentTrail, currentItem) {
