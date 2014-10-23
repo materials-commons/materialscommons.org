@@ -103,12 +103,15 @@ function recentService($state) {
             recents.unshift(item);
         },
 
+        // addIfNotExists adds the state to a project only if
+        // it doesn't exist.
         addIfNotExists: function(projectID, stateID, name) {
             if (!self.service.exists(projectID, stateID)) {
                 self.service.add(projectID, stateID, name);
             }
         },
 
+        // delete will remove a state from a project.
         delete: function(projectID, stateID) {
             var recents = self.getProjectRecents(projectID);
             var i = self.findRecent(projectID, stateID);
@@ -117,6 +120,7 @@ function recentService($state) {
             }
         },
 
+        // exists checks if a stateID is in a project.
         exists: function(projectID, stateID) {
             var recents = self.getProjectRecents(projectID);
             var i = self.findRecent(projectID, stateID);
