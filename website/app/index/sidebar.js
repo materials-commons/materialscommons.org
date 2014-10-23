@@ -12,17 +12,15 @@ function sidebarDirective() {
 
 Application.Controllers.controller("sidebarDirectiveController",
                                    ["$scope", "recent", "current",
-                                    "sidebarUtil", "pubsub", "model.projects",
+                                    "pubsub", "model.projects",
                                     sidebarDirectiveController]);
 
-function sidebarDirectiveController($scope, recent, current, sidebarUtil, pubsub, projects) {
+function sidebarDirectiveController($scope, recent, current, pubsub, projects) {
     $scope.showAllRecent = false;
 
     function setupSidebar(project) {
         $scope.project = project;
         current.setProject($scope.project);
-        $scope.project.fileCount = sidebarUtil.projectFileCount($scope.project);
-        $scope.project.projectSize = sidebarUtil.projectSize($scope.project);
         $scope.recents = recent.getAll($scope.project.id);
     }
 
