@@ -200,6 +200,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/overview",
             templateUrl: "application/core/projects/project/files/overview.html",
             controller: "projectFilesOverview"
+        })
+        .state('projects.project.files.view', {
+            url: "/view/:fileid",
+            templateUrl: "application/core/projects/project/files/view.html",
+            controller: "projectFilesViewFile"
         });
 
     $validationProvider.setErrorHTML(function (msg) {

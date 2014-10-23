@@ -55,9 +55,8 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
         }
     };
 
-    $scope.populatePath = function (entry) {
+    $scope.openFile = function (entry) {
         ProjectPath.populate($scope.trail, $scope.dir);
-        // $state.go("projects.dataedit.details", {data_id: entry.id});
         $scope.toggleStackAction('file', entry.name, entry.id, entry.id);
     };
 
