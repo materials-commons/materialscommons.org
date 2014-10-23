@@ -198,7 +198,7 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
             $scope.users = p.users;
             $scope.projectSize = bytesToSizeStr(p.size);
             for (key in p.mediatypes) {
-                totalFiles += p.mediatypes[key];
+                totalFiles += p.mediatypes[key].count;
             }
             $scope.fileCount = numberWithCommas(totalFiles);
         });
