@@ -67,7 +67,10 @@ function recentService($state) {
     // entry  exists then it creates an empty one.
     self.getProjectLasts = function(projectID) {
         if (!(projectID in self.lastsByProject)) {
-            self.lastsByProject[projectID] = [];
+            self.lastsByProject[projectID] = {
+                items: [],
+                ignorePush: false
+            };
         }
         return self.lastsByProject[projectID];
     };
@@ -148,30 +151,35 @@ function recentService($state) {
         // works and keeps the stack from growing forever.
         pushLast: function(projectID, name, route, routeParams) {
             var lasts = self.getProjectLasts(projectID);
-            var entryCount = lasts.length;
+            var entryCount = lasts.items.length;
+            if (lasts.ignorePush) {
+                lasts.ignorePush = false;
+                return;
+            }
             if (_.str.include(route, "overview")) {
-                lasts.splice(1, entryCount-1);
-                lasts.push(self.newItem(name, "", route, routeParams));
+                lasts.items.splice(1, entryCount-1);
+                lasts.items.push(self.newItem(name, "", route, routeParams));
             } else if ((route === "projects.project.home") && (entryCount > 1)) {
                 // User clicked on home while in some sub state. Clear back to
                 // home and don't save the previous route.
-                lasts.splice(1, entryCount-1);
+                lasts.items.splice(1, entryCount-1);
             } else {
-                lasts.push(self.newItem(name, "", route, routeParams));
+                lasts.items.push(self.newItem(name, "", route, routeParams));
             }
         },
 
         // gotoLast will go to the last state and pops it off the stack.
         gotoLast: function(projectID) {
             var lasts = self.getProjectLasts(projectID);
-            var entryCount = lasts.length;
+            var entryCount = lasts.items.length;
             if (entryCount === 0) {
                 // Nothing in list so just return.
                 return;
             }
             // Lasts is a stack. We append to the array and remove from the back.
-            var last = lasts[entryCount-1];
-            lasts.splice(entryCount-1, 1); // Pop entry off
+            var last = lasts.items[entryCount-1];
+            lasts.items.splice(entryCount-1, 1); // Pop entry off
+            lasts.ignorePush = true;
             $state.go(last.route, last.routeParams);
         }
     };
