@@ -1,13 +1,13 @@
 Application.Controllers.controller("projectFiles",
-                                   ["$scope", projectFiles]);
+                                   ["$scope", "project", "projectFileTabs", "recent",
+                                    projectFiles]);
 
-function projectFiles($scope) {
-    $scope.files = [];
-    // for (var i = 0; i < 40; i++) {
-    //     $scope.files.push({name: "filename_" + i});
-    // }
+function projectFiles($scope, project, projectFileTabs, recent) {
+    $scope.projectID = project.id;
+    $scope.files = projectFileTabs.get(project.id);
 
-    $scope.gotoFile = function(file) {
-
+    $scope.closeFile = function(file) {
+        projectFileTabs.delete(project.id, file);
+        recent.gotoLast(project.id);
     };
 }
