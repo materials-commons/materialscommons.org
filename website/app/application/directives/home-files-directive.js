@@ -5,7 +5,7 @@ Application.Controllers.controller("homeFilesController",
             $scope.projectSize = bytesToSizeStr($scope.project.size);
             var totalFiles = 0, key;
             for (key in $scope.project.mediatypes) {
-                totalFiles += $scope.project.mediatypes[key];
+                totalFiles += $scope.project.mediatypes[key].count;
             }
             $scope.fileCount = numberWithCommas(totalFiles);
 

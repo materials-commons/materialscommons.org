@@ -1,19 +1,18 @@
 <div class="row">
-        <h4 class="text-center" style="padding-bottom: 15px;">
-            <i class="fa fa-files-o fa-fw"></i>
-            <strong>Files</strong>
-        </h4>
+    <h4 class="text-center" style="padding-bottom: 15px;">
+        <i class="fa fa-files-o fa-fw"></i>
+        <strong>Files</strong>
+    </h4>
 </div>
 <div style="padding-bottom: 8px;" class="row">
     <p style="float:right" ><strong>You have <a>{{fileCount}} </a> files / <a>{{projectSize}} </a> </strong></p>
 
 </div>
 <div class="row">
-    Type
     <ul class="list-group" >
         <li class="list-group-item" ng-repeat="(key, value) in project.mediatypes">
-            <span class="badge" ng-class-odd="'odd-badge'" ng-class-even="'even-badge'" >{{value}}</span>
-            {{key}}
+            <span class="badge" ng-class-odd="'odd-badge'" ng-class-even="'even-badge'" >{{value.count}}</span>
+            {{value.description}}
         </li>
     </ul>
 
@@ -22,4 +21,3 @@
 <div class="row">
     <a>Add File</a>
 </div>
-
