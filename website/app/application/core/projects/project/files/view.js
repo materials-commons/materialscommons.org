@@ -1,9 +1,9 @@
 Application.Controllers.controller('projectFilesViewFile',
                                    ["toastr", "$scope", "mcapi", "ProjectPath", "User",
-                                    "projectFiles", "$stateParams", projectFilesViewFile]);
+                                    "projectFiles", "$stateParams", "ui", projectFilesViewFile]);
 
 function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectFiles,
-                              $stateParams) {
+                              $stateParams, ui) {
 
     $scope.addTag = function (entry, selected_tag) {
         //Filling tag join table
@@ -38,6 +38,7 @@ function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectF
     };
 
     function init() {
+        ui.setShowFiles($stateParams.id, true);
         $scope.user = User.u();
         $scope.user_tags = User.attr().preferences.tags;
         //This code is to populate tags in the tree when any tag is added from datafile page
