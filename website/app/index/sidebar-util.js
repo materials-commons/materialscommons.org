@@ -13,7 +13,7 @@ function sidebarUtilService() {
             if (!('fileCount' in project)) {
                 var totalFiles = 0;
                 for (var key in project.mediatypes) {
-                    totalFiles += project.mediatypes[key];
+                    totalFiles += project.mediatypes[key].count;
                 }
                 project.fileCount = numberWithCommas(totalFiles);
             }
