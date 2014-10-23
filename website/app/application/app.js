@@ -46,26 +46,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/home',
             templateUrl: 'application/core/home/home.html'
         })
-        .state('about', {
-            url: '/about',
-            templateUrl: 'application/core/about/about.html'
-        })
-        .state('modal', {
-            url: '/modal',
-            templateUrl: 'application/core/modal/test.html'
-        })
-        .state('sub', {
-            url: '/sub',
-            templateUrl: 'application/core/modal/sub.html'
-        })
-        .state('contact', {
-            url: '/contact',
-            templateUrl: 'application/core/contact/contact.html'
-        })
-        .state('help', {
-            url: '/help',
-            templateUrl: 'application/core/help/help.html'
-        })
         .state('login', {
             url: '/login',
             templateUrl: 'application/core/login/login.html'
@@ -151,14 +131,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "projectHome"
         })
-        .state('projects.project.files', {
-            url: '/files',
-            templateUrl: 'application/core/projects/project/files/files.html'
-        })
-        .state('projects.project.files.view', {
-            url: '/view',
-            templateUrl: 'application/core/projects/project/files/view.html'
-        })
         .state('projects.project.samples', {
             url: '/samples',
             templateUrl: 'application/core/projects/project/samples/samples.html',
@@ -218,6 +190,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/create/:sid',
             templateUrl: "application/core/projects/project/notes/create.html",
             controller: "projectNotesCreate"
+        })
+        .state('projects.project.files', {
+            url: "/files",
+            templateUrl: "application/core/projects/project/files/files.html",
+            controller: "projectFiles"
+        })
+        .state('projects.project.files.overview', {
+            url: "/overview",
+            templateUrl: "application/core/projects/project/files/overview.html",
+            controller: "projectFilesOverview"
         });
 
     $validationProvider.setErrorHTML(function (msg) {
