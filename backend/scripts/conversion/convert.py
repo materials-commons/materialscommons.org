@@ -129,30 +129,30 @@ def datafile_path(mcdir, datafile_id):
 
 
 def add_mediatypes(conn, mcdir):
-    all_mediatypes = {'application/msword': 'microsoft word',
-                      'application/octet-stream': 'binary',
-                      'application/pdf': 'pdf',
-                      'application/postscript': 'postscript',
-                      'application/vnd.ms-excel': 'excel',
-                      'application/vnd.ms-powerpoint': 'powerpoint',
-                      'application/x-dosexec': 'x-dosexec',
-                      'application/xml': 'xml',
-                      'application/zip': 'zip',
-                      'image/gif': 'gif',
-                      'image/jpeg': 'jpeg',
-                      'image/png': 'png',
-                      'image/tiff': 'tiff',
-                      'image/vnd.adobe.photoshop': 'adobe',
-                      'image/x-ms-bmp': 'bmp',
-                      'inode/x-empty': 'empty',
-                      'text/html': 'html',
-                      'text/plain': 'text',
-                      'text/rtf': 'rtf',
-                      'text/x-asm': 'x-asm',
-                      'text/x-c++': 'c++',
-                      'unknown': 'unknown',
-                      'video/mpeg': 'video',
-                      'video/x-ms-asf': 'video',
+    all_mediatypes = {'application/msword': 'MS-Word',
+                      'application/octet-stream': 'Binary',
+                      'application/pdf': 'PDF',
+                      'application/postscript': 'Postscript',
+                      'application/vnd.ms-excel': 'MS-Excel',
+                      'application/vnd.ms-powerpoint': 'MS-PowerPoint',
+                      'application/x-dosexec': 'DOS',
+                      'application/xml': 'XML',
+                      'application/zip': 'ZIP',
+                      'image/gif': 'GIF',
+                      'image/jpeg': 'JPEG',
+                      'image/png': 'PNG',
+                      'image/tiff': 'TIFF',
+                      'image/vnd.adobe.photoshop': 'Photoshop',
+                      'image/x-ms-bmp': 'BMP',
+                      'inode/x-empty': 'Empty',
+                      'text/html': 'HTML',
+                      'text/plain': 'Text',
+                      'text/rtf': 'RTF',
+                      'text/x-asm': 'ASM',
+                      'text/x-c++': 'C++',
+                      'unknown': 'Unknown',
+                      'video/mpeg': 'Video',
+                      'video/x-ms-asf': 'Video',
                       'Composite Document File V2 Document, No summary info': 'unknown'}
     msg("Adding mediatypes and sizes for files and projects...")
     # Determine media types for files
@@ -182,7 +182,7 @@ def add_mediatypes(conn, mcdir):
                 path = datafile_path(mcdir, dfid)
                 if not os.path.isfile(path):
                     mime = "unknown"
-                    mime_description = "unknown"
+                    mime_description = "Unknown"
                     msg("file not found: %s" % (path))
                 else:
                     mime = magic.from_file(path, mime=True)
@@ -203,6 +203,7 @@ def add_mediatypes(conn, mcdir):
                         'size': df['size'],
                         'description': all_mediatypes[mime]
                     }
+                    msg("Unknown media type mapping: '%s'" % (mime))
                 else:
                     mediatypes[mime] = {
                         'count': mediatypes[mime]['count'] + 1,
@@ -510,9 +511,18 @@ def delete_old_drafts(conn):
     r.table('drafts').delete().run(conn)
 
 
+def set_user_fullname(conn):
+    users = list(r.table('users').run(conn))
+    for user in users:
+        r.table('users').get(user['id']).update({
+            'fullname': user['id']
+        }).run(conn)
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     mark_bad_projects(conn)
+    set_user_fullname(conn)
     remove_conditions(conn)
     remove_processes(conn)
     convert_groups(conn)
