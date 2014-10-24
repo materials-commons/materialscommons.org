@@ -73,7 +73,8 @@ function projectStateService() {
         add: function(projectID, state) {
             var projectStates = self.getProjectStates(projectID);
             var stateID = self.nextID();
-            projectStates[stateID] = state;
+            var s = state ? state : null;
+            projectStates[stateID] = s;
             return stateID;
         },
 
