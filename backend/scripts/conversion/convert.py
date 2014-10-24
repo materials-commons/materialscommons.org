@@ -17,10 +17,13 @@ def msg(s):
     sys.stdout.flush()
 
 
-def update_fullnames(conn):
+def update_fullnames_and_last_login(conn):
     selection = r.table('users').run(conn)
     for user in selection:
-        r.table('users').get(user['id']).update({'fullname': user['email']}).run(conn)
+        r.table('users').get(user['id']).update({
+            'fullname': user['email'],
+            'last_login': r.time(2014, 01, 01, '+00:00')
+        }).run(conn)
 
 
 def cleanup_samples(conn):
@@ -530,7 +533,7 @@ def main(conn, mcdir):
     move_samples_denorm(conn)
     associate_samples_to_projects(conn)
     populate_elements(conn)
-    update_fullnames(conn)
+    update_fullnames_and_last_login(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
