@@ -6,11 +6,12 @@ function homeFilesDirective() {
         scope: {
             project: '=project'
         },
-        templateUrl: 'application/directives/home-files.html'
+        templateUrl: 'application/core/projects/project/home/directives/home-files.html'
     };
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
                                    ["$scope",  homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope) {
+
 }

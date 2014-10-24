@@ -5,7 +5,9 @@
     </h4>
 </div>
 <div style="padding-bottom: 8px;" class="row">
-    <p style="float:right" ><strong>You have <a>{{project | projectFileCount}} </a> files / <a>{{project | projectSize}} </a> </strong></p>
+    <p style="float:right" >
+        <strong>You have <a ui-sref="projects.project.files.overview">{{project | projectFileCount}}</a> files/{{project | projectSize}}</strong>
+    </p>
 
 </div>
 <div class="row">
@@ -15,9 +17,4 @@
             {{value.description}}
         </li>
     </ul>
-
-</div>
-
-<div class="row">
-    <a>Add File</a>
 </div>
