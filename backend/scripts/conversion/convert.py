@@ -154,9 +154,9 @@ def add_mediatypes(conn, mcdir):
                       'text/x-asm': 'ASM',
                       'text/x-c++': 'C++',
                       'unknown': 'Unknown',
-                      'video/mpeg': 'Video',
-                      'video/x-ms-asf': 'Video',
-                      'Composite Document File V2 Document, No summary info': 'unknown'}
+                      'video/mpeg': 'MPEG Video',
+                      'video/x-ms-asf': 'MS-ASF Video',
+                      'Composite Document File V2 Document, No summary info': 'Composite'}
     msg("Adding mediatypes and sizes for files and projects...")
     # Determine media types for files
     # and update the statistics for the
