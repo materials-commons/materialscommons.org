@@ -10,9 +10,13 @@ function sidebarRecentDirective() {
 }
 
 Application.Controllers.controller("sidebarRecentDirectiveController",
-                                   ["$scope", "recent", "pubsub",
+                                   ["$scope", "recent", "$state",
                                     sidebarRecentDirectiveController]);
 
-function sidebarRecentDirectiveController($scope, recent, pubsub) {
-    $scope.showAllRecent = false;
+function sidebarRecentDirectiveController($scope, recent) {
+    $scope.showAllRecent = true;
+
+    $scope.gotoRecent = function(r) {
+        recent.gotoRecent($scope.project.id, r.id);
+    };
 }

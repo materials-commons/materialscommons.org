@@ -7,7 +7,7 @@
             <span class="badge badge-light pull-right">{{recents.length}}</span>
         </a>
         <div ng-show="showAllRecent">
-            <a href="#" class="list-group-item" ng-repeat="recent in recents">
+            <a ng-click="gotoRecent(recent)" class="list-group-item" ng-repeat="recent in recents">
                 <i class="fa fa-fw" ng-class="recent.icon"></i>
                 {{recent.name}}
             </a>
