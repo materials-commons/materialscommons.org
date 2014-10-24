@@ -1,11 +1,10 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "provStep", "ui",
-                                    "project", "current", "pubsub", projectsProject]);
+                                    "project", "current", "pubsub", "recent",
+                                    projectsProject]);
 
-function projectsProject ($scope, provStep, ui, project, current, pubsub) {
-    $scope.isActive = function (tab) {
-        return tab === $scope.activeTab;
-    };
+function projectsProject ($scope, provStep, ui, project, current, pubsub, recent) {
+    recent.resetLast(project.id);
 
     current.setProject(project);
     pubsub.send("sidebar.project");
@@ -19,5 +18,9 @@ function projectsProject ($scope, provStep, ui, project, current, pubsub) {
 
     $scope.showFiles = function() {
         return ui.showFiles(project.id);
+    };
+
+    $scope.isActive = function (tab) {
+        return tab === $scope.activeTab;
     };
 }
