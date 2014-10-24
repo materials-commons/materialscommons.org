@@ -1,8 +1,8 @@
-Application.Services.factory("recent", ["$state", recentService]);
+Application.Services.factory("recent", ["$state", "$stateParams", recentService]);
 
 // recent service tracks recently created items by project. It tracks
 // their state information so that the window state can be recovered.
-function recentService($state) {
+function recentService($state, $stateParams) {
     var self = this;
     self.recentByProject = {};
     self.lastsByProject = {};
@@ -99,7 +99,7 @@ function recentService($state) {
         add: function(projectID, stateID, name) {
             var recents = self.getProjectRecents(projectID);
             var route = $state.$current.name;
-            var routeParams = $state.$current.params;
+            var routeParams = angular.copy($stateParams);
             item = self.newItem(name, stateID, route, routeParams);
             // Add to beginning of list so the most recently added items
             // are the first items.
@@ -181,6 +181,13 @@ function recentService($state) {
             lasts.items.splice(entryCount-1, 1); // Pop entry off
             lasts.ignorePush = true;
             $state.go(last.route, last.routeParams);
+        },
+
+        // resetLast will discard all state entries in the last stack.
+        resetLast: function(projectID) {
+            var lasts = self.getProjectLasts(projectID);
+            lasts.items = [];
+            lasts.ignorePush = false;
         }
     };
 
