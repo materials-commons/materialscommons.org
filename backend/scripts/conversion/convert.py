@@ -511,18 +511,9 @@ def delete_old_drafts(conn):
     r.table('drafts').delete().run(conn)
 
 
-def set_user_fullname(conn):
-    users = list(r.table('users').run(conn))
-    for user in users:
-        r.table('users').get(user['id']).update({
-            'fullname': user['id']
-        }).run(conn)
-
-
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     mark_bad_projects(conn)
-    set_user_fullname(conn)
     remove_conditions(conn)
     remove_processes(conn)
     convert_groups(conn)
