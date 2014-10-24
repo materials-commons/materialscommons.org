@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-xs-12 info-box">
         <div class="col-xs-5">
-            <h4 style="display: inline;padding-right: 5px;"> Welcome {{mcuser.fullname}}</h4>
+            <h4 style="display: inline; padding-right: 5px;"> Welcome {{mcuser.fullname}}</h4>
             <a ng-click="editFullName = !editFullName">edit</a>
 
             <div ng-show="editFullName">
@@ -19,54 +19,27 @@
 </div>
 <div class="row">
     <div class="col-xs-4">
-        <div class=" info-box">
+        <div class="info-box">
             <div home-reviews project="project"></div>
         </div>
+        <div class="info-box">
+            <div home-provenance project="project"></div>
+        </div>
     </div>
-
     <div class="col-xs-4">
         <div class=" info-box">
             <div home-files project="project"></div>
         </div>
+        <div class="info-box">
+            <div home-tasks project="project"></div>
+        </div>
     </div>
     <div class="col-xs-4">
-        <div class=" info-box">
+        <div class="info-box">
             <div home-samples project="project"></div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-4">
-        <div class=" info-box">
-            <div home-provenance project="project"></div>
+        <div class="info-box">
+            <div home-notes project="project"></div>
         </div>
     </div>
-
-    <div class="col-xs-4">
-        <div class=" info-box">
-            <div class="row">
-                <h4 class="text-center" style="padding-bottom: 15px;">
-                    <i class="fa fa-check-square fa-fw"></i>
-                    <strong>Tasks</strong>
-                </h4>
-            </div>
-            <div class="row">
-
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class=" info-box">
-            <div class="row">
-                <h4 class="text-center" style="padding-bottom: 15px;">
-                    <i class="fa fa-edit fa-fw"></i>
-                    <strong>Notes</strong>
-                </h4>
-            </div>
-            <div class="row">
-
-            </div>
-        </div>
-    </div>
-
 </div>
