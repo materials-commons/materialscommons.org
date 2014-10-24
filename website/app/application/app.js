@@ -21,7 +21,9 @@ var app = angular.module('materialscommons',
                              'ng-context-menu',
                              "cfp.hotkeys",
                              '$strap.directives', 'ui.bootstrap', 'toastr',
-                             'application.core.constants', 'application.core.services', 'application.core.controllers',
+                             'tc.chartjs',
+                             'application.core.constants', 'application.core.services',
+                             'application.core.controllers',
                              'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
