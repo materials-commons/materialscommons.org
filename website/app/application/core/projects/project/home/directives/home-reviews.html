@@ -6,7 +6,7 @@
         </h4>
     </div>
     <div style="padding-bottom: 8px;" class="row">
-        <p style="float:right">
+        <p class="pull-right">
             <strong>
                 You have <a ui-sref="projects.project.reviews.overview">
                 {{(project.reviews | byKey:'status':'open').length}} open
@@ -18,7 +18,7 @@
 
     <h5><strong>Recent comments:</strong></h5>
     <div class="feed-activity-list">
-        <div class="feed-element" ng-repeat="rev in recent_reviews">
+        <div class="feed-element" ng-repeat="rev in recent_reviewsx">
             <span class="pull-left">
                 <i class="fa fa-fw fa-user"></i>
             </span>
@@ -29,8 +29,8 @@
             </div>
         </div>
     </div>
-    <div class="row" ng-show="recent_reviews.length!==0">
-        <a style="float: right">more comments...</a>
+    <div class="row" ng-show="recent_reviewsx.length!==0">
+        <a class="pull-right">more comments...</a>
     </div>
     <div class="row">
         <a ng-click="addReview()">Add Review</a>
