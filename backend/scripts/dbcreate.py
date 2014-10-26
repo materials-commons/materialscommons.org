@@ -95,6 +95,7 @@ def create_indices():
     create_index('access', 'project_id')
     create_index('access', 'dataset')
     create_index('datadirs', 'name')
+    create_index('datadirs', 'project')
     create_index('project2datadir', 'datadir_id')
     create_index('project2datadir', 'project_id')
     create_index('datafiles', 'name')
@@ -131,6 +132,7 @@ def create_indices():
     create_index('samples', 'project_id')
     create_index('items2tags', 'item_id')
     create_index('datadirs_denorm', 'name')
+    create_index('datadirs_denorm', 'project_id')
 
 def create_index(table, name):
     run(r.db('materialscommons').table(table).index_create(name))
