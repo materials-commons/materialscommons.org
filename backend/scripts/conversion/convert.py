@@ -545,6 +545,6 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
     if options.mcdir is None:
         print "You must specify the location of mcdir"
-        os.exit(1)
+        sys.exit(1)
     conn = r.connect('localhost', options.port, db='materialscommons')
     main(conn, options.mcdir)
