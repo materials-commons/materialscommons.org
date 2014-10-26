@@ -3,7 +3,7 @@ Application.Controllers.controller('projectSamplesCreate',
                                     "pubsub", "recent", "project", projectSamplesCreate]);
 
 function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, pubsub, recent, project) {
-    var stateID = $stateParams.id;
+    var stateID = $stateParams.sid;
 
     $scope.onDrop = function(target, source) {
         if (source === "") {
