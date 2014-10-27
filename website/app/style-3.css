@@ -1018,7 +1018,11 @@ hr.carved {
   background: #ddd;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, rgb(221, 221, 221)), color-stop(0.5, rgb(255, 255, 255)));
   background-image: -moz-linear-gradient(center top, rgb(221, 221, 221) 50%, rgb(255, 255, 255) 50%);
+}
 
+a.show-process.active {
+  text-decoration: underline;
+  font-weight: bold;
 }
 
 /* ******** Movement Animation ******* */
