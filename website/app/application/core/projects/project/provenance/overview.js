@@ -8,7 +8,7 @@ function projectProvenanceOverview($scope, mcapi, $stateParams, Projects, Proces
         $scope.sample = {};
         $scope.settings = [];
         $scope.process = p;
-    }
+    };
 
     $scope.createName = function (name) {
         if (name.length > 12) {
@@ -16,11 +16,12 @@ function projectProvenanceOverview($scope, mcapi, $stateParams, Projects, Proces
         }
         return name;
     };
+
     $scope.expand = function (df) {
         $scope.flag = false;
         $scope.active = df.id;
         $scope.datafile = df;
-    }
+    };
 
 
     $scope.isActiveList = function (k) {
