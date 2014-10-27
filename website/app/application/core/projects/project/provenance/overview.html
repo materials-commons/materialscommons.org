@@ -1,121 +1,139 @@
 <div class="row">
-    <div class="col-sm-2">
-        <strong>All Processes</strong>
-
-        <div class="row" style=" height: 400px; overflow-y: scroll;">
-            <div class="list-group"  >
-                <li class="list-group-item" ng-repeat="p in processes">
-                    <a ng-click="openProcess(p)">{{p.name}}</a>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8" style="overflow-x: auto;">
+            <p class="text-center"><strong>All Processes</strong></p>
+            <ul class="list-inline">
+                <li ng-repeat="p in processes">
+                    <a class="show-process"
+                       ng-class="{active: isActive($index)}"
+                       ng-click="openProcess($index)">{{p.name}}</a>
                 </li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-2">
+            <strong>Processes (I)</strong>
+
+            <div class="row" ng-repeat="(key,value) in process.input_processes">
+                <button type="button" class="btn btn-success btn-xs" custom-pop-over items="value.related_files"
+                        title="Related">
+                    {{value.process_name}}
+                </button>
             </div>
         </div>
-    </div>
-    <div class="col-sm-2">
-        <strong>Processes (O)</strong>
+        <div class="col-sm-8 no-padding-left no-padding-right">
+            <p class="text-center"><strong>{{process.name}}</strong></p>
+            <div class="row">
+                <div class="col-sm-5 no-padding-right no-padding-left">
+                    <div ng-show="process" class="list-group">
+                        <a class="list-group-item"
+                           style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
+                           ng-click="showInputsOutputs =! showInputsOutputs">{{process.name}}
+                            <i ng-class="{'fa-chevron-down': showInputsOutputs, 'fa-chevron-right': !showInputsOutputs}"
+                               class="fa fa-fw"></i>
+                        </a>
 
-        <div class="row" ng-repeat="(key,value) in process['output_processes']">
-            <button type="button" class="btn btn-success btn-xs" custom-pop-over items="value.related_files"
-                    title="Related">
-                {{value.process_name}}
-            </button>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="row">
-            <div class="col-sm-5 no-padding-right">
-                <div ng-show="process" class="list-group">
-                    <a class="list-group-item" ng-click="showInputsOutputs =! showInputsOutputs">{{process.name}}<i
-                            ng-class="{'fa-chevron-down': showInputsOutputs, 'fa-chevron-right': !showInputsOutputs}"
-                            class="fa fa-fw"></i></a>
+                        <div class="list-group-submenu" ng-show="showInputsOutputs">
+                            <div ng-repeat="(key, values) in process.inputs">
+                                <div ng-if="key=='files'">
+                                    <a ng-click="showFiles =! showFiles"
+                                       style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
+                                       class="list-group-item">{{createName(key)}} (I)
+                                        <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
+                                           class="fa fa-fw"></i></a>
 
-                    <div class="list-group-submenu" ng-show="showInputsOutputs">
-                        <div ng-repeat="(key, values) in process['inputs']">
-                            <div ng-if="key=='files'">
-                                <a ng-click="showFiles =! showFiles" class="list-group-item">{{createName(key)}} (I)
-                                    <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
-                                       class="fa fa-fw"></i></a>
-
-                                <div ng-show="showFiles" class="list-group-submenu">
-                                    <div ng-repeat="file in process['inputs']['files']">
-                                        <a data-toggle="modal" data-target="#imageExpand" ng-click="expand(file)"
-                                           ng-class="{'active': isActiveList(file.id)}" class="list-group-item">{{file.other.name}}</a>
+                                    <div ng-show="showFiles" class="list-group-submenu">
+                                        <div ng-repeat="file in process.inputs.files">
+                                            <a data-toggle="modal" data-target="#imageExpand" ng-click="expand(file)"
+                                               ng-class="{'active': isActiveList(file.id)}" class="list-group-item">{{file.other.name}}</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div ng-if="key!='files'">
-                                <a ng-click="showDetails(key, values)"
-                                   ng-class="{'active': isActiveList(key)}" class="list-group-item">{{createName(key)}}(I)</a>
+                                <div ng-if="key!='files'">
+                                    <a ng-click="showDetails(key, values)"
+                                       ng-class="{'active': isActiveList(key)}"
+                                       style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
+                                       class="list-group-item">{{createName(key)}}(I)</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!--outputs-->
-                    <div class="list-group-submenu" ng-show="showInputsOutputs">
-                        <div ng-repeat="(key, values) in process['outputs']">
-                            <div ng-if="key=='files'">
-                                <a ng-click="showFiles =! showFiles" class="list-group-item">{{createName(key)}} (O)
-                                    <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
-                                       class="fa fa-fw"></i></a>
+                        <!--outputs-->
+                        <div class="list-group-submenu" ng-show="showInputsOutputs">
+                            <div ng-repeat="(key, values) in process.outputs">
+                                <div ng-if="key=='files'">
+                                    <a ng-click="showFiles =! showFiles"
+                                       style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
+                                       class="list-group-item">{{createName(key)}} (O)
+                                        <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
+                                           class="fa fa-fw"></i></a>
 
-                                <div ng-show="showFiles" class="list-group-submenu">
-                                    <div ng-repeat="file in process['outputs']['files']">
-                                        <a data-toggle="modal" data-target="#imageExpand" ng-click="expand(file)"
-                                           ng-class="{'active': isActiveList(file.id)}" class="list-group-item">{{file.other.name}}</a>
+                                    <div ng-show="showFiles" class="list-group-submenu">
+                                        <div ng-repeat="file in process.outputs.files">
+                                            <a data-toggle="modal"
+                                               style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
+                                               data-target="#imageExpand" ng-click="expand(file)"
+                                               ng-class="{'active': isActiveList(file.id)}" class="list-group-item">{{file.other.name}}</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div ng-if="key!='files'">
-                                <a ng-click="showDetails(key, values)"
-                                   ng-class="{'active': isActiveList(key)}" class="list-group-item">{{createName(key)}}(I)</a>
+                                <div ng-if="key!='files'">
+                                    <a ng-click="showDetails(key, values)"
+                                       ng-class="{'active': isActiveList(key)}"
+                                       style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
+                                       class="list-group-item">{{createName(key)}}(I)</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-7 no-padding-left">
-                <div ng-show="flag" style="background-color: #d5d5d5;">
-                    <div ng-hide="settings.length!==0">
-                        <label>Name:</label>{{sample.name}} <br>
-                        <label>Description:</label>{{sample.description}}<br>
-                        <label><u>Properties:</u></label>
+                <div class="col-sm-7 no-padding-left no-padding-right">
+                    <div ng-show="flag" style="background-color: #d5d5d5; min-height: 500px; padding: 10px;">
+                        <div ng-hide="settings.length!==0">
+                            <label>Name:</label>{{sample.name}} <br>
+                            <label>Description:</label>{{sample.description}}<br>
+                            <label><u>Properties:</u></label>
 
-                        <div ng-repeat="(name, vals) in sample.properties">
-                            <div ng-if="name==='composition'">
-                                <div class="form-group">
-                                    <label>Composition:</label>
-                                    <li style="display: inline;" ng-repeat="c in vals.value">
-                                        {{c.element}} - {{c.value}} {{vals.unit}}
-                                    </li>
+                            <div ng-repeat="(name, vals) in sample.properties">
+                                <div ng-if="name==='composition'">
+                                    <div class="form-group">
+                                        <label>Composition:</label>
+                                        <li style="display: inline;" ng-repeat="c in vals.value">
+                                            {{c.element}} - {{c.value}} {{vals.unit}}
+                                        </li>
+                                    </div>
+
                                 </div>
+                                <div ng-if="name!=='composition'">
+                                    <div class="form-group">
+                                        <label>{{name}}:</label>
+                                        {{vals.value}} {{vals.unit}}
+                                    </div>
 
-                            </div>
-                            <div ng-if="name!=='composition'">
-                                <div class="form-group">
-                                    <label>{{name}}:</label>
-                                    {{vals.value}} {{vals.unit}}
                                 </div>
-
                             </div>
                         </div>
-                    </div>
-                    <div ng-show="settings.length!==0">
-                        {{key}}
-                        <ul style="padding-left: 40px;" ng-repeat="v in settings">
-                            <li>{{v.name}} - {{v.value}}</li>
-                        </ul>
+                        <div ng-show="settings.length!==0">
+                            {{key}}
+                            <ul style="padding-left: 40px;" ng-repeat="v in settings">
+                                <li>{{v.name}} - {{v.value}}</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-sm-2">
-        <strong>Processes (I)</strong>
-        <div class="row" ng-repeat="(key,value) in process['input_processes']">
-            <button type="button" class="btn btn-success btn-xs" custom-pop-over items="value.related_files"
-                    title="Related">
-                {{value.process_name}}
-            </button>
+        <div class="col-sm-2">
+            <strong>Processes (O)</strong>
+            <div class="row" ng-repeat="(key,value) in process.output_processes">
+                <button type="button" class="btn btn-success btn-xs" custom-pop-over items="value.related_files"
+                        title="Related">
+                    {{value.process_name}}
+                </button>
+            </div>
         </div>
     </div>
 </div>
