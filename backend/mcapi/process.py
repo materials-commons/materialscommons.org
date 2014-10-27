@@ -59,7 +59,8 @@ def build_process_relations(process):
 @app.route('/processes/project/<project_id>', methods=['GET'])
 def get_processes_by_project(project_id):
     complete_processes = []
-    rr = r.table('processes').get_all(project_id, index='project_id')
+    rr = r.table('processes').get_all(project_id, index='project_id')\
+                             .order_by('name')
     selection = list(rr.run(g.conn, time_format='raw'))
     for process in selection:
         process['inputs'] = {}
