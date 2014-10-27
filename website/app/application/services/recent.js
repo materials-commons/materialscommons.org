@@ -137,10 +137,11 @@ function recentService($state, $stateParams) {
             var i = self.findRecent(projectID, recentID);
             if (i !== -1) {
                 // This item becomes the most recent item, so it moves
-                // to the top.
+                // to the top. Disable moving to top for now as this
+                // was confusing.
                 var item = recents[i];
-                recents.splice(i, 1);
-                recents.unshift(item);
+                //recents.splice(i, 1);
+                //recents.unshift(item);
                 $state.go(item.route, item.routeParams);
             }
         },
