@@ -1,0 +1,55 @@
+<div class="row">
+    <form name="Form" class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-2">Name:<i class="fa fa-asterisk"></i></label>
+            <div class="col-lg-3">
+                <input name="required" validator="required" class="form-control" placeholder="name..." type="text" ng-model="tag.name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2">Color:</label>
+            <div class="col-lg-3">
+                <select class="form-control" ng-model="tag.color">
+                    <option value="">Highlight</option>
+                    <option value="#CF000F" style="background-color: red;">Red</option>
+                    <option value="#5C97BF" style="background-color: Blue;">Blue</option>
+                    <option value="#1BBC9B" style="background-color: green;">Green</option>
+                    <option value="#F4D03F" style="background-color: #bebe00;">Yellow</option>
+                    <option value="#913D88" style="background-color: mediumpurple;">Purple</option>
+                    <option value="#D2527F" style="background-color: Violet;">Pink</option>
+                </select>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Icon <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="icon in icons" ng-click="iconSelected(icon)">
+                            <a><i class="fa fa-{{icon}}"/> {{icon}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <span><i class="fa fa-{{tag.icon}}" ng-style="{color: tag.color}"/></span>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2">Description:</label>
+            <div class="col-lg-4">
+                <textarea class="form-control" ng-model="tag.description"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2"></label>
+                <div class="controls">
+                    <button class="btn btn-success"
+                            validation-submit="Form" ng-click="createTag()">
+                        Create
+                    </button>
+
+                    <button  class="btn btn-danger"
+                            ng-click="cancel()">Cancel
+                    </button>
+                </div>
+            </div>
+    </form>
+</div>
