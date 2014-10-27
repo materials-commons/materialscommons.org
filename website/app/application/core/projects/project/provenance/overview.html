@@ -22,7 +22,7 @@
     </div>
     <div class="col-sm-6">
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-5 no-padding-right">
                 <div ng-show="process" class="list-group">
                     <a class="list-group-item" ng-click="showInputsOutputs =! showInputsOutputs">{{process.name}}<i
                             ng-class="{'fa-chevron-down': showInputsOutputs, 'fa-chevron-right': !showInputsOutputs}"
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-7 no-padding-left">
                 <div ng-show="flag" style="background-color: #d5d5d5;">
                     <div ng-hide="settings.length!==0">
                         <label>Name:</label>{{sample.name}} <br>

@@ -1635,5 +1635,10 @@ ul.menu-bar li {
     color: #FFFFFF;
 }
 
+.no-padding-left {
+  padding-left: 0px;
+}
 
-
+.no-padding-right {
+  padding-right: 0px;
+}
