@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectSamplesCreate',
                                    ["$scope", "mcapi", "model.projects", "projectState", "$stateParams",
-                                    "pubsub", "recent", "project", projectSamplesCreate]);
+                                    "recent", "project", projectSamplesCreate]);
 
-function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, pubsub, recent, project) {
+function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, recent, project) {
     var stateID = $stateParams.sid;
 
     $scope.onDrop = function(target, source) {
@@ -44,7 +44,7 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
         mcapi('/objects/new')
             .success(function (sample) {
                 project.samples.push(sample);
-                recent.gotoLast(stateID);
+                recent.gotoLast(project.id);
                 recent.delete(project.id, stateID);
                 projectState.delete(project.id, stateID);
             }).post($scope.doc);
@@ -57,7 +57,7 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
     $scope.cancel = function () {
         projectState.delete(project.id, stateID);
         recent.delete(project.id, stateID);
-        recent.gotoLast(stateID);
+        recent.gotoLast(project.id);
     };
 
     $scope.removeProjects = function (index) {
