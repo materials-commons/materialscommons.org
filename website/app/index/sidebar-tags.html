@@ -7,6 +7,11 @@
             <span class="badge badge-light pull-right">{{tags.length}}</span>
         </a>
         <div ng-show="showTags" style="overflow: auto; max-height: 400px;">
+            <a class="list-group-item"
+               ng-click="createTag()">
+                <i class="fa fa-fw fa-plus"></i> New Tag
+            </a>
+            <hr class="carved"/>
             <a class="list-group-item" ng-repeat="tag in tags">
                 <i class="fa fa-fw"
                    ng-class="'fa-' + tag.icon" ng-style="{color: tag.color}"></i>

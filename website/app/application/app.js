@@ -212,6 +212,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/view/:fileid",
             templateUrl: "application/core/projects/project/files/view.html",
             controller: "projectFilesViewFile"
+        })
+        .state('projects.project.tags', {
+            url: '/tags',
+            templateUrl: "application/core/projects/project/tags/tags.html",
+            controller: "projectTags"
+        })
+        .state('projects.project.tags.create', {
+            url: '/create/:sid',
+            templateUrl: "application/core/projects/project/tags/create.html",
+            controller: "projectTagsCreate"
         });
 
     $validationProvider.setErrorHTML(function (msg) {
