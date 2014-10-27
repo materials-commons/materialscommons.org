@@ -1,24 +1,24 @@
 Application.Services.factory('ProcessList',
-                             ["Restangular", "pubsub", processListService]);
-function processListService(Restangular, pubsub) {
+                             ["Restangular", "$q", processListService]);
+function processListService(Restangular, $q) {
     var service = {
         processes: {}
     };
 
     return {
         getProcesses: function(project_id){
+            var deffered = $q.defer();
+            var pid = project_id;
             if (service.processes.hasOwnProperty(project_id)){
-                return service.processes[project_id];
+                deffered.resolve(service.processes[project_id]);
             } else {
-                this.loadProcesses(project_id);
+                Restangular.one('processes').one('project', project_id)
+                    .getList().then(function(processes){
+                        service.processes[pid] = processes;
+                        deffered.resolve(service.processes[pid]);
+                    });
             }
-        },
-
-        loadProcesses: function (project_id) {
-            Restangular.one('processes').one('project', project_id).getList().then(function(data){
-                service.processes[project_id] = data;
-            });
+            return deffered.promise;
         }
     };
-
 }
