@@ -126,6 +126,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
                     return Projects.get($stateParams.id);
                 }]
             },
+            onEnter: ["pubsub", "project", function(pubsub, project) {
+                pubsub.send("reviews.change");
+            }],
             controller: "projectsProject"
         })
         .state('projects.project.home', {
