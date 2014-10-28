@@ -11,6 +11,7 @@ from .. import validate
 from .. import error
 from loader.model import project
 from loader.model import datadir
+from .. import process
 
 
 @app.route('/projects', methods=['GET'])
@@ -48,7 +49,8 @@ def get_all_group_projects():
 
 def add_computed_attributes(projects, user):
     for p in projects:
-        p['reviews'] = []
+        p['open_reviews'] = []
+        p['closed_reviews'] = []
         p['samples'] = []
         p['drafts'] = []
         p['processes'] = []
@@ -61,7 +63,7 @@ def add_computed_attributes(projects, user):
     add_reviews(projects_by_id, project_ids)
     add_samples(projects_by_id, project_ids)
     add_drafts(projects_by_id, project_ids, user)
-    add_process_ids(projects_by_id, project_ids)
+    add_processes(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -75,14 +77,19 @@ def add_reviews(projects_by_id, project_ids):
     reviews = list(r.table('reviews')
                    .get_all(*project_ids, index='project')
                    .run(g.conn, time_format='raw'))
-    add_computed_items(projects_by_id, reviews, 'project', 'reviews')
+    open_reviews = [review for review in reviews if review['status'] == "open"]
+    closed_reviews = [review for review in reviews
+                      if review['status'] == "closed"]
+    add_computed_items(projects_by_id, open_reviews, 'project', 'open_reviews')
+    add_computed_items(projects_by_id, closed_reviews, 'project',
+                       'closed_reviews')
 
 
 def add_samples(projects_by_id, project_ids):
-    #samples = list(r.table('samples')
-    #               .get_all(*project_ids, index='project_id')
-    #               .run(g.conn, time_format='raw'))
-    samples = list(r.table('projects2samples').get_all(*project_ids, index='project_id').eq_join('sample_id', r.table('samples')).zip().run(g.conn, time_format='raw'))
+    samples = list(r.table('projects2samples')
+                   .get_all(*project_ids, index='project_id')
+                   .eq_join('sample_id', r.table('samples'))
+                   .zip().run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
@@ -94,11 +101,10 @@ def add_drafts(projects_by_id, project_ids, user):
     add_computed_items(projects_by_id, drafts, 'project_id', 'drafts')
 
 
-def add_process_ids(projects_by_id, project_ids):
-    processes = list(r.table('processes')
-                     .get_all(*project_ids, index='project_id')
-                     .pluck('id', 'project_id', 'name')
-                     .run(g.conn, time_format='raw'))
+def add_processes(projects_by_id, project_ids):
+    processes = []
+    for project_id in project_ids:
+        processes.extend(process.get_processes(project_id))
     add_computed_items(projects_by_id, processes, 'project_id', 'processes')
 
 
@@ -228,14 +234,14 @@ def get_provenance(project_id):
     rr = rr.pluck('id', 'name', 'input_files',
                   'input_conditions', 'output_files', 'output_conditions')
     items = list(rr.run(g.conn, time_format='raw'))
-    for process in items:
+    for p in items:
         prov = {'process': process['name'],
-                'input_files': get_datafiles(process['input_files']),
-                'output_files': get_datafiles(process['output_files']),
+                'input_files': get_datafiles(p['input_files']),
+                'output_files': get_datafiles(p['output_files']),
                 'input_conditions': get_otherfiles(
-                    process['input_conditions']),
+                    p['input_conditions']),
                 'output_conditions': get_otherfiles(
-                    process['output_conditions'])}
+                    p['output_conditions'])}
     return args.json_as_format_arg(prov)
 
 
@@ -338,6 +344,6 @@ def get_reviews_for_project(id):
         return error.not_found('No such project: %s' % (id))
     access.check(user, project['owner'])
     reviews = list(r.table('reviews')
-                   .get_all(id, index='project').order_by(r.desc('modifiedtime'))
+                   .get_all(id, index='project').order_by(r.desc('mtime'))
                    .run(g.conn, time_format='raw'))
     return args.json_as_format_arg(reviews)

@@ -54,12 +54,10 @@ function projectProvenanceOverview($scope, mcapi, $stateParams, Projects, Proces
     $scope.apikey = User.apikey();
     Projects.get($stateParams.id).then(function (project) {
         $scope.project = project;
-        ProcessList.getProcesses($stateParams.id).then(function(processes) {
-            $scope.processes = processes;
-            if ($scope.processes.length !== 0) {
-                $scope.openProcess(0);
-            }
-        });
+        $scope.processes = project.processes;
+        if ($scope.processes.length !== 0) {
+            $scope.openProcess(0);
+        }
         $scope.showInputsOutputs = true;
     });
 }

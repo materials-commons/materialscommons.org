@@ -6,6 +6,7 @@ Application.Controllers.controller('projectReviewsCreate',
 function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub,
                               projectFiles, projectState, recent, ui) {
     var channel = 'review.files';
+    var stateID = $stateParams.sid;
     projectFiles.setChannel(channel);
     projectFiles.setActive($stateParams.id, true);
     ui.setShowFiles($stateParams.id, true);
@@ -40,10 +41,12 @@ function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub
     function saveData() {
         mcapi('/reviews')
             .success(function (review) {
-                project.reviews.push(review);
-                projectFiles.setActive($stateParams.id, false);
+                project.open_reviews.push(review);
+                projectFiles.setActive(project.id, false);
+                recent.delete(project.id, stateID);
+                projectState.delete(project.id, stateID);
+                pubsub.send("reviews.change");
                 recent.gotoLast($stateParams.id);
-                recent.update($stateParams.id, $stateParams.sid, $scope.review.title);
             }).error(function (reason) {
             }).post($scope.review);
     }

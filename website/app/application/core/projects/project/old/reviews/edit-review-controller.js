@@ -32,7 +32,7 @@ function projectsOverviewEditReview ($scope, mcapi, User, $stateParams, dateGene
             .success(function (data) {
                 pubsub.send('open_reviews.change');
                 $state.go('projects.project.reviews');
-            }).put({'status': 'close'});
+            }).put({'status': 'closed'});
     };
 
     $scope.reOpenReview = function() {

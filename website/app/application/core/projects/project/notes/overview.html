@@ -1,7 +1,6 @@
 <div>
-    <h4>Notes</h4>
     <div ng-if="project.notes.length == 0">
-        <p>No Notes created under project {{project.name}}</p> <br>
+        <p class="text-center">No Notes created under project {{project.name}}</p> <br>
     </div>
     <div class="col-lg-8 col-lg-offset-2">
         <div ng-repeat="n in project.notes | orderBy: date">
