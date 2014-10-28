@@ -583,10 +583,10 @@ body {
   margin-left: 10px;
 }
 
-textarea.form-control {
-  height: 80px;
-  width: 400px;
-}
+/*textarea.form-control {*/
+  /*height: 80px;*/
+  /*width: 400px;*/
+/*}*/
 
 /************************************Other*************************************/
 
@@ -1645,4 +1645,11 @@ ul.menu-bar li {
 
 .no-padding-right {
   padding-right: 0px;
+}
+
+.list-group.clear-list .list-group-item{
+   border-width: 1px 0 0;
+}
+.first-item{
+    border-top: medium none !important;
 }

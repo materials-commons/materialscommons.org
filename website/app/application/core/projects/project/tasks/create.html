@@ -1,0 +1,24 @@
+<div class="info-box">
+    <form name="Form" class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-2">Title:</label>
+            <div class="col-lg-4">
+                <input class="form-control" ng-model="model.title">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2">Message:</label>
+            <div class="col-lg-4">
+               <textarea  style="height: 120px;" class="form-control" ng-model="model.note"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2"></label>
+            <button validation-submit="Form" ng-click="create()"
+                    class="btn btn-default btn-primary">
+                Create
+            </button>
+            <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>
