@@ -72,6 +72,9 @@ function projectProvenanceCreate($scope, project, templates, projects,
         } else {
             provStep.setStep(project.id, step);
         }
+        var templateName = $scope.wizardState.selectedTemplate.template_name;
+        var name = $scope.wizardState.currentDraft.process.name;
+        recent.addIfNotExists(project.id, stateID, templateName + ": " + name);
     }
     $scope.wizardState.project = project;
 }
