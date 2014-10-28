@@ -89,8 +89,18 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
             .post($stateParams.id,
                   state.currentDraft,
                   {apikey: User.apikey()})
-            .then(function() {
-                closeProvenanceAction();
+            .then(function(process) {
+                var project = current.project();
+                // At this point the new process may have relationships
+                // with the existing processes. This is not currently
+                // reflected. The work around at the moment is to
+                // rebuild the list of processes. This is kind of ugly
+                // but works at the moment.
+                Restangular.one('processes').one('project', project.id)
+                    .getList().then(function(processes){
+                        project.processes = processes;
+                        closeProvenanceAction();
+                    });
             });
     };
 

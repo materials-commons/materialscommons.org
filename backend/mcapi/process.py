@@ -51,32 +51,48 @@ def build_process_relations(process):
                 process['input_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
             else:
                 process['output_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
-    #Check for duplicate processes and return
+    # Check for duplicate processes and return
     process = remove_duplicate_processes(process)
     return process
 
 
-@app.route('/processes/project/<project_id>', methods=['GET'])
-def get_processes_by_project(project_id):
+def create_complete_process(process):
+    process['inputs'] = {}
+    process['outputs'] = {}
+    property_sets = r.table('property_sets').filter({
+        'item_id': process['id'],
+        'item_type': 'process'
+    }).run(g.conn)
+    process = build_process_relations(process)
+    for each_set in property_sets:
+        properties = []
+        rr = r.table('properties').filter({
+            'item_id': each_set['id'],
+            'item_type': 'property_set'
+        })
+        properties = list(rr.run(g.conn, time_format='raw'))
+        if each_set['stype'] == 'inputs':
+            process['inputs'][each_set['name']] = properties
+        else:
+            process['outputs'][each_set['name']] = properties
+    return process
+
+
+def get_processes(project_id):
     complete_processes = []
     rr = r.table('processes').get_all(project_id, index='project_id')\
                              .order_by('name')
     selection = list(rr.run(g.conn, time_format='raw'))
     for process in selection:
-        process['inputs'] = {}
-        process['outputs'] = {}
-        property_sets = r.table('property_sets').filter({'item_id': process['id'], 'item_type': 'process'}).run(g.conn)
-        process = build_process_relations(process)
-        for each_set in property_sets:
-            properties = []
-            rr = r.table('properties').filter({'item_id': each_set['id'], 'item_type': 'property_set'})
-            properties = list(rr.run(g.conn, time_format='raw'))
-            if each_set['stype'] == 'inputs':
-                process['inputs'][each_set['name']] = properties
-            else:
-                process['outputs'][each_set['name']] = properties
-        complete_processes.append(process)
-    return Response(json.dumps(complete_processes), mimetype="application/json")
+        p = create_complete_process(process)
+        complete_processes.append(p)
+    return complete_processes
+
+
+@app.route('/processes/project/<project_id>', methods=['GET'])
+def get_processes_for_project(project_id):
+    processes = get_processes(project_id)
+    return dmutil.jsoner(processes)
 
 
 @app.route('/processes/<process_id>', methods=['GET'])
