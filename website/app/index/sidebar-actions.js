@@ -10,10 +10,9 @@ function sidebarActionsDirective() {
 }
 
 Application.Controllers.controller("sidebarActionsDirectiveController",
-                                   ["$scope", "$state", "pubsub", "$filter", "current",
-                                    sidebarActionsDirectiveController]);
+                                   ["$scope", "$state", sidebarActionsDirectiveController]);
 
-function sidebarActionsDirectiveController($scope, $state, pubsub, $filter, current) {
+function sidebarActionsDirectiveController($scope, $state) {
     $scope.showProjectActions = true;
     $scope.activeAction = "home";
 
