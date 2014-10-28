@@ -49,7 +49,8 @@ def get_all_group_projects():
 
 def add_computed_attributes(projects, user):
     for p in projects:
-        p['reviews'] = []
+        p['open_reviews'] = []
+        p['closed_reviews'] = []
         p['samples'] = []
         p['drafts'] = []
         p['processes'] = []
@@ -62,7 +63,7 @@ def add_computed_attributes(projects, user):
     add_reviews(projects_by_id, project_ids)
     add_samples(projects_by_id, project_ids)
     add_drafts(projects_by_id, project_ids, user)
-    add_process_ids(projects_by_id, project_ids)
+    add_processes(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -76,7 +77,12 @@ def add_reviews(projects_by_id, project_ids):
     reviews = list(r.table('reviews')
                    .get_all(*project_ids, index='project')
                    .run(g.conn, time_format='raw'))
-    add_computed_items(projects_by_id, reviews, 'project', 'reviews')
+    open_reviews = [review for review in reviews if review['status'] == "open"]
+    closed_reviews = [review for review in reviews
+                      if review['status'] == "closed"]
+    add_computed_items(projects_by_id, open_reviews, 'project', 'open_reviews')
+    add_computed_items(projects_by_id, closed_reviews, 'project',
+                       'closed_reviews')
 
 
 def add_samples(projects_by_id, project_ids):
@@ -95,7 +101,7 @@ def add_drafts(projects_by_id, project_ids, user):
     add_computed_items(projects_by_id, drafts, 'project_id', 'drafts')
 
 
-def add_process_ids(projects_by_id, project_ids):
+def add_processes(projects_by_id, project_ids):
     processes = []
     for project_id in project_ids:
         processes.extend(process.get_processes(project_id))
