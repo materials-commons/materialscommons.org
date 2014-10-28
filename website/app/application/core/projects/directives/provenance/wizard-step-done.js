@@ -89,7 +89,9 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
             .post($stateParams.id,
                   state.currentDraft,
                   {apikey: User.apikey()})
-            .then(function() {
+            .then(function(process) {
+                var project = current.project();
+                project.processes.push(process);
                 closeProvenanceAction();
             });
     };
