@@ -1,5 +1,8 @@
 <div>
-    <div class="col-xs-10 col-xs-offset-1">
+    <div ng-show="project.todos.length ==0">
+        <p class="text-center">No tasks created under this project {{project.name}}</p>
+    </div>
+    <div ng-hide="project.todos.length == 0" class="col-xs-10 col-xs-offset-1">
         <table style="background-color: #ffffff" class="table">
             <thead>
             <th></th>
@@ -17,9 +20,7 @@
             </tr>
             </tbody>
         </table>
-        <div ng-show="project.todos.length ==0">
-            <p class="text-center">No tasks</p>
-        </div>
+
     </div>
 </div>
 
