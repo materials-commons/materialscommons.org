@@ -56,6 +56,7 @@
            ng-click="setActionActive('tasks')"
            ng-class="{active: isActionActive('tasks')}">
             <i class="fa fa-fw fa-check-square"></i> Tasks
+            <span class="badge badge-light">{{project.todos.length}}</span>
         </a>
 
         <a class="list-group-item"
