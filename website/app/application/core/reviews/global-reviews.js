@@ -7,12 +7,14 @@ function actionReviewsDirective() {
         templateUrl: "application/core/reviews/global-reviews.html"
     };
 }
-Application.Controllers.controller('globalReviewsController',
-    ["$scope","$filter", "User", "model.projects", "pubsub", globalReviewsController]);
 
-function globalReviewsController($scope, $filter,  User, Projects, pubsub) {
-    pubsub.waitOn($scope, "update-tab-count.change", function () {
-        $scope.getAllReviews();
+Application.Controllers.controller('globalReviewsController',
+                                   ["$scope", "User", "model.projects",
+                                    "pubsub", globalReviewsController]);
+
+function globalReviewsController($scope, User, Projects, pubsub) {
+    pubsub.waitOn($scope, "reviews.change", function () {
+        getAllReviews();
     });
 
     $scope.createName = function(name) {
@@ -29,28 +31,19 @@ function globalReviewsController($scope, $filter,  User, Projects, pubsub) {
         return $scope.project.name;
     };
 
-    $scope.getAllReviews = function(){
-        var unflatten = [];
-        $scope.all_reviews = [];
-
+    function getAllReviews() {
+        $scope.open_reviews = [];
         Projects.getList().then(function (projects) {
             projects.forEach(function(prj){
-                if(prj.reviews.length!==0){
-                    prj.reviews.forEach(function(r){
+                if(prj.open_reviews.length!==0){
+                    prj.open_reviews.forEach(function(r){
                         r.project_name = prj.name;
                     });
-                    unflatten.push(prj.reviews);
+                    $scope.open_reviews = $scope.open_reviews.concat(prj.open_reviews);
                 }
             });
-            $scope.all_reviews = $scope.all_reviews.concat.apply($scope.all_reviews, unflatten);
-            $scope.count = $filter('byKey')( $scope.all_reviews, 'status', 'open').length;
         });
-    };
-
-    function init() {
-        $scope.user = User.u();
-        $scope.getAllReviews();
     }
 
-    init();
+    $scope.user = User.u();
 }
