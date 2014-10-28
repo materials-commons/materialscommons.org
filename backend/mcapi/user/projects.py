@@ -275,7 +275,7 @@ def update_project(id):
         item['description'] = description
         do_update = True
     todos = dmutil.get_optional('todos', j, None)
-    if todos:
+    if todos is not None:
         item['todos'] = todos
         do_update = True
     notes = dmutil.get_optional('notes', j, [])
