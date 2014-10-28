@@ -28,6 +28,7 @@ function recentService($state, $stateParams) {
         case "files": return "fa-file";
         case "reviews": return "fa-comment";
         case "home": return "fa-home";
+        case "tasks": return "fa-check-square";
         default: return "";
         }
     };
