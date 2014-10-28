@@ -1,8 +1,27 @@
 Application.Controllers.controller('projectReviewsOverview',
                                    ["$scope", "mcapi", "$filter", "dateGenerate", "User",
-                                    "model.projects", "project", projectReviewsOverview]);
+                                    "project", "pubsub", projectReviewsOverview]);
 
-function projectReviewsOverview($scope, mcapi, $filter, dateGenerate, User, Projects, project) {
+function projectReviewsOverview($scope, mcapi, $filter, dateGenerate,
+                                User, project, pubsub) {
+    function findReview(reviewID, which) {
+        var i = _.indexOf(project[which], function(review) {
+            return review.id == reviewID;
+        });
+        return project[which][i];
+    }
+
+    function swapReview(reviewID, from, to) {
+        var i = _.indexOf(project[from], function(review) {
+            return review.id == reviewID;
+        });
+        if (i !== -1) {
+            var r = project[from][i];
+            project[from].splice(i, 1);
+            project[to].push(r);
+        }
+    }
+
     $scope.viewReview = function (review) {
         $scope.model = {
             selected: false,
@@ -33,56 +52,67 @@ function projectReviewsOverview($scope, mcapi, $filter, dateGenerate, User, Proj
         if ($scope.model.comment.length === 0) {
             return;
         }
+
+        var d = dateGenerate.new_date();
         $scope.review.messages.push({
             'message': $scope.model.comment,
             'who': User.u(),
-            'date': dateGenerate.new_date()
+            'date': d
         });
+        var reviewID = $scope.review.id;
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {
+                var review = findReview(reviewID, "open_reviews");
+                review.messages.push({
+                    message: $scope.model.comment,
+                    who: User.u(),
+                    date: d
+                });
             }).put({'messages': $scope.review.messages});
     };
 
     $scope.closeReview = function() {
+        var reviewID = $scope.review.id;
         mcapi('/reviews/%', $scope.review.id)
             .success(function () {
-                $scope.loadProjectReviews(project.id, true);
                 $scope.review = '';
-            }).put({'status': 'close'});
+                var review = findReview(reviewID, "open_reviews");
+                review.status = "closed";
+                swapReview(reviewID, "open_reviews", "closed_reviews");
+                reviewCount();
+            }).put({'status': 'closed'});
     };
 
     $scope.reOpenReview = function() {
+        var reviewID = $scope.review.id;
         mcapi('/reviews/%', $scope.review.id)
             .success(function () {
-                $scope.loadProjectReviews(project.id, true);
                 $scope.review = '';
+                var review = findReview(reviewID, "closed_reviews");
+                review.status = "open";
+                swapReview(reviewID, "closed_reviews", "open_reviews");
+                reviewCount();
             }).put({'status': 'open'});
     };
 
-    $scope.loadProjectReviews = function (id, reload) {
-        Projects.getList(reload).then(function (projects) {
-            Projects.get(id).then(function (p) {
-                project = p;
-                $scope.project = p;
-                $scope.reviewCount();
-            });
-        });
+    $scope.showReviews = function (status) {
+        if (status == "open") {
+            $scope.reviews = project.open_reviews;
+        } else {
+            $scope.reviews = project.closed_reviews;
+        }
     };
 
-    $scope.showReviewsperStatus = function (status) {
-        $scope.status = status;
-    };
-
-    $scope.reviewCount = function(){
-        $scope.open_reviews = $filter('byKey')(project.reviews, 'status', 'open');
-        $scope.closed_reviews = $filter('byKey')(project.reviews, 'status', 'close');
-    };
+    function reviewCount(){
+        pubsub.send("reviews.change");
+    }
 
     function init() {
         $scope.review = '';
-        $scope.status = 'open';
         $scope.project = project;
-        $scope.reviewCount();
+        reviewCount();
+
+        $scope.reviews = project.open_reviews;
 
         $scope.model = {
             new_review: "",

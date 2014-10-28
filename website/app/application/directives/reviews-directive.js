@@ -13,7 +13,7 @@ function reviewsController ($scope, mcapi, User, alertService, dateGenerate, pub
         if (status == 'open') {
             $scope.list_reviews = $scope.open_reviews;
         }
-        else if (status == 'close') {
+        else if (status == 'closed') {
             $scope.list_reviews = $scope.closed_reviews;
         }
     };
@@ -22,7 +22,7 @@ function reviewsController ($scope, mcapi, User, alertService, dateGenerate, pub
         mcapi('/project/%/reviews', id)
             .success(function (reviews) {
                 $scope.open_reviews = $filter('reviewFilter')(reviews, 'open');
-                $scope.closed_reviews = $filter('reviewFilter')(reviews, 'close');
+                $scope.closed_reviews = $filter('reviewFilter')(reviews, 'closed');
                 $scope.list_reviews = $scope.open_reviews;
                 $scope.status = 'open';
             }).jsonp();
