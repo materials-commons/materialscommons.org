@@ -70,13 +70,15 @@ def save_draft(project_id):
     j['owner'] = access.get_user()
     if 'id' in j:
         j['mtime'] = r.now()
-        id = j['id']
-        r.table('drafts').get(j['id']).update(j).run(g.conn)
+        rv = r.table('drafts').get(j['id'])\
+                              .update(j, return_changes=True)\
+                              .run(g.conn, time_format='raw')
+        entry = dmutil.insert_status(rv, return_created=True)
     else:
         j['birthtime'] = r.now()
         j['mtime'] = j['birthtime']
-        id = dmutil.insert_entry_id('drafts', j)
-    return jsonify({'id': id})
+        entry = dmutil.insert_entry('drafts', j, return_created=True)
+    return dmutil.jsoner(entry)
 
 
 @app.route('/drafts/<draft_id>', methods=['PUT'])
