@@ -12,15 +12,14 @@ function sidebarDirective() {
 
 Application.Controllers.controller("sidebarDirectiveController",
                                    ["$scope", "recent", "current",
-                                    "pubsub", "model.projects",
+                                    "pubsub", "model.projects", "User",
                                     sidebarDirectiveController]);
 
-function sidebarDirectiveController($scope, recent, current, pubsub, projects) {
+function sidebarDirectiveController($scope, recent, current, pubsub, projects, User) {
     $scope.showAllRecent = false;
 
     function setupSidebar(project) {
         $scope.project = project;
-        current.setProject($scope.project);
         $scope.recents = recent.getAll($scope.project.id);
     }
 
@@ -31,4 +30,8 @@ function sidebarDirectiveController($scope, recent, current, pubsub, projects) {
         var project = current.project();
         setupSidebar(project);
     });
+
+    $scope.isAuthenticated = function() {
+        return User.isAuthenticated();
+    };
 }
