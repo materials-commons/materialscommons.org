@@ -11,10 +11,10 @@ function wizardStepDoneDirective() {
 
 Application.Controllers.controller('wizardStepDoneDirectiveController',
                                    ["$scope", "provStep", "$stateParams",
-                                    "Restangular", "User", "$timeout", "model.projects",
+                                    "Restangular", "User", "$timeout", "current",
                                     "projectState", "recent", wizardStepDoneDirectiveController]);
 function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Restangular, User,
-                                           $timeout, projects, projectState, recent) {
+                                           $timeout, current, projectState, recent) {
     var state = projectState.get($stateParams.id, $stateParams.sid);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
@@ -79,7 +79,9 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
 
     function closeProvenanceAction() {
         provStep.resetProject($stateParams.id);
-        recent.gotoLast($stateParams.id, $stateParams.sid);
+        recent.delete($stateParams.id, $stateParams.sid);
+        projectState.delete($stateParams.id, $stateParams.sid);
+        recent.gotoLast($stateParams.id);
     }
 
     $scope.submit = function() {
@@ -88,21 +90,35 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
                   state.currentDraft,
                   {apikey: User.apikey()})
             .then(function() {
-                recent.delete($stateParams.id, $stateParams.sid);
-                projectState.delete($stateParams.id, $stateParams.sid);
                 closeProvenanceAction();
             });
     };
 
+    function updateDraft(draft) {
+        var project = current.project();
+        if (!('id' in state.currentDraft)) {
+            // New draft so add it to the list.
+            project.drafts.push(draft);
+        } else {
+            // we are working with an existing draft so
+            // update that item in the list.
+            var i = _.indexOf(project.drafts, function(d) {
+                return d.id === draft.id;
+            });
+            if (i !== -1) {
+                // if i === -1 then we are in trouble.
+                project.drafts[i] = draft;
+            }
+        }
+    }
+
     $scope.saveDraft = function() {
+        var apikey = {apikey: User.apikey()};
         Restangular.one("drafts2")
-            .post($stateParams.id,
-                  state.currentDraft,
-                  {apikey: User.apikey()})
-            .then(function(id) {
-                projects.getList(true).then(function() {
-                    closeProvenanceAction();
-                });
+            .post($stateParams.id, state.currentDraft, apikey)
+            .then(function(draft) {
+                updateDraft(draft);
+                closeProvenanceAction();
             });
     };
 
