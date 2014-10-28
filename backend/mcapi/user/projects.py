@@ -154,6 +154,7 @@ class DItem2:
         self.parent_id = ""
         self.name = name
         self.owner = owner
+        self.mediatype = ""
         self.birthtime = birthtime
         self.size = size
         self.displayname = basename(name)
@@ -197,6 +198,7 @@ def build_tree(datadirs):
             dfitem.c_id = next_id
             next_id = next_id + 1
             dfitem.tags = df['tags']
+            dfitem.mediatype = df['mediatype']
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:
