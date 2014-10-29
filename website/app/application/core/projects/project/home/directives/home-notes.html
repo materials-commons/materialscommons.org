@@ -16,6 +16,26 @@
         </p>
     </div>
     <div class="row">
+        <div class="timeline-item" ng-repeat="note in project.notes">
+            <div class="row">
+                <div class="col-xs-3 date">
+                    <i class="fa fa-edit"></i>
+                    <small class="tex-navy">{{note.date | date: shortDate}}</small>
+                    <br>
+                    <small class="text-navy">{{note.date | date: "h:mma"}}</small>
+                </div>
+                <div class="col-xs-7 content no-top-border">
+                    <p class="m-b-xs">
+                     <div ta-bind ng-model="note.message"></div>
+
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
         <a ng-click="addNote()">Add Note</a>
     </div>
 </div>
