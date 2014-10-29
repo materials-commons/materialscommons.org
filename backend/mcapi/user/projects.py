@@ -89,7 +89,9 @@ def add_samples(projects_by_id, project_ids):
     samples = list(r.table('projects2samples')
                    .get_all(*project_ids, index='project_id')
                    .eq_join('sample_id', r.table('samples'))
-                   .zip().run(g.conn, time_format='raw'))
+                   .zip()
+                   .order_by('name')
+                   .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
