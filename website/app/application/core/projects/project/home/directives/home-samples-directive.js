@@ -16,6 +16,7 @@ Application.Controllers.controller("homeSamplesController",
                                     homeSamplesController]);
 
 function homeSamplesController($scope, projectState, $state) {
+    console.log($scope.project.samples);
     $scope.addSample = function() {
         var stateID = projectState.add($scope.project.id);
         $state.go("projects.project.samples.create", {sid: stateID});
