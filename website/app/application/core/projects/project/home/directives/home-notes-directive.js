@@ -11,11 +11,10 @@ function homeNotesDirective() {
 }
 
 Application.Controllers.controller("homeNotesDirectiveController",
-                                   ["$scope", "projectState", "$state",
+                                   ["$scope", "$state",
                                     homeNotesDirectiveController]);
-function homeNotesDirectiveController($scope, projectState, $state) {
+function homeNotesDirectiveController($scope, $state) {
     $scope.addNote = function() {
-        var stateID = projectState.add($scope.project.id);
         $state.go("projects.project.notes.create");
     };
 }
