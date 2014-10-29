@@ -11,6 +11,9 @@ function homeTasksDirective() {
 }
 
 Application.Controllers.controller("homeTasksDirectiveController",
-                                   ["$scope",  homeTasksDirectiveController]);
-function homeTasksDirectiveController($scope) {
+                                   ["$scope","$state",  homeTasksDirectiveController]);
+function homeTasksDirectiveController($scope, $state) {
+    $scope.addTask = function() {
+        $state.go("projects.project.tasks.create");
+    };
 }
