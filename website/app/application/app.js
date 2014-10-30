@@ -120,11 +120,13 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/project/:id',
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
-                project: ["$stateParams", "model.projects", "projects", "templates", function ($stateParams, Projects, projects, templates) {
-                    // We use templates as a dependency so that they are all loaded before getting to this step.
-                    // Otherwise the order of items being resolved isn't in the order we need them.
-                    return Projects.get($stateParams.id);
-                }]
+                project: ["$stateParams", "model.projects", "projects", "templates",
+                          function ($stateParams, Projects, projects, templates) {
+                              // We use templates as a dependency so that they are all loaded
+                              // before getting to this step. Otherwise the order of items
+                              // being resolved isn't in the order we need them.
+                              return Projects.get($stateParams.id);
+                          }]
             },
             onEnter: ["pubsub", "project", function(pubsub, project) {
                 pubsub.send("reviews.change");
