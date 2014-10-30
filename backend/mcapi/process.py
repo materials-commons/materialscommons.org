@@ -122,6 +122,31 @@ def get_processes(project_id):
     return complete_processes
 
 
+def get_processes2(project_id):
+    processes = r.table('processes')\
+                 .get_all(project_id, index='project_id')\
+                 .order_by('name')\
+                 .run(g.conn, time_format='raw')
+    all_ids = [process['id'] for process in processes]
+    all_properties = r.table('property_sets')\
+                      .get_all(*all_ids, index='item_id')\
+                      .eq_join('id', r.table('properties'),
+                               index='item_id')\
+                      .map(r.row.merge({
+                          "right": {
+                              "ps_id": r.row["right"]["id"],
+                              "ps_item_id": r.row["right"]["item_id"],
+                              "ps_item_type": r.row["right"]["item_type"]
+                          }
+                      })).without({
+                          "right": {
+                              "id": True,
+                              "item_id": True,
+                              "item_type": True
+                          }
+                      }).zip().run(g.conn, time_format="raw")
+
+
 @app.route('/processes/project/<project_id>', methods=['GET'])
 def get_processes_for_project(project_id):
     processes = get_processes(project_id)
