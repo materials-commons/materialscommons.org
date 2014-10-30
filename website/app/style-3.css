@@ -448,6 +448,10 @@ td.tag-width {
   background-color: #eeeeee;
 }
 
+ul.nav li a:hover, a:focus {
+  font-weight: normal;
+}
+
 .navbar-custom .icon-bar {
   background-color: #0C5C86;
 }
