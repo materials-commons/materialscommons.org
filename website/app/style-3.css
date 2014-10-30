@@ -1573,6 +1573,11 @@ ul.menu-bar li {
   box-shadow: 8px 8px 1px -5px #d9d9da;
   margin-bottom: 15px;
 }
+.info-box.scroll{
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 
 .box-divider {
   margin-top: 10px;
@@ -1678,7 +1683,7 @@ ul.menu-bar li {
   border-left: 1px solid #e7eaec;
   border-top: 1px solid #e7eaec;
   padding-top: 10px;
-  min-height: 100px;
+  min-height: 80px;
 }
 .timeline-item .content:hover {
   background: #f6f6f6;

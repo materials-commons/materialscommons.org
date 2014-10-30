@@ -9,7 +9,8 @@ function projectNotesCreate($scope, User, toastr, projectState,
     var stateID = $stateParams.sid;
 
     var defaultModel = {
-        note: ""
+        note: "",
+        title: ""
     };
     $scope.model = projectState.getset(projectID, stateID, defaultModel);
 
@@ -33,7 +34,8 @@ function projectNotesCreate($scope, User, toastr, projectState,
         project.notes.push({
             'message': $scope.model.note,
             'who': User.u(),
-            'date': new Date()
+            'date': new Date(),
+            'title': $scope.model.title
         });
         saveNote();
     };
