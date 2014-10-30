@@ -125,26 +125,37 @@ def get_processes(project_id):
 def get_processes2(project_id):
     processes = r.table('processes')\
                  .get_all(project_id, index='project_id')\
-                 .order_by('name')\
                  .run(g.conn, time_format='raw')
-    all_ids = [process['id'] for process in processes]
-    all_properties = r.table('property_sets')\
-                      .get_all(*all_ids, index='item_id')\
-                      .eq_join('id', r.table('properties'),
-                               index='item_id')\
-                      .map(r.row.merge({
-                          "right": {
-                              "ps_id": r.row["right"]["id"],
-                              "ps_item_id": r.row["right"]["item_id"],
-                              "ps_item_type": r.row["right"]["item_type"]
-                          }
-                      })).without({
-                          "right": {
-                              "id": True,
-                              "item_id": True,
-                              "item_type": True
-                          }
-                      }).zip().run(g.conn, time_format="raw")
+    by_id = {p['id']: p for p in processes}
+    all = r.table('property_sets')\
+           .get_all(*by_id.keys(), index='item_id')\
+           .eq_join('id', r.table('properties'),
+                    index='item_id')\
+           .map(lambda row: row.merge({
+               "right": {
+                   "ps_id": row["left"]["id"],
+                   "ps_name": row["left"]["name"],
+                   "ps_item_id": row["left"]["item_id"],
+                   "ps_item_type": row["left"]["item_type"]
+               }
+           })).without({
+               "left": {
+                   "id": True,
+                   "name": True,
+                   "item_id": True,
+                   "item_type": True
+               }
+           }).zip().run(g.conn, time_format="raw")
+    feeder_ids = [prop['value'] for prop in all
+                  if prop["ptype"] == "file" or prop["ptype"] == "sample"]
+    query = r.table("properties")\
+             .get_all(*feeder_ids, index="value")\
+             .eq_join("item_id", r.table("property_sets"))\
+             .zip()\
+             .eq_join("item_id", r.table("processes"))\
+             .zip()
+    for feeder_proc in query.run(g.conn):
+        pass
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
