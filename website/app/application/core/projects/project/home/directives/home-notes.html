@@ -19,15 +19,15 @@
         <div class="timeline-item" ng-repeat="note in project.notes">
             <div class="row">
                 <div class="col-xs-3 date">
-                    <i class="fa fa-edit"></i>
+                    <i  ng-click="editNote($index)" class="fa fa-edit cursor-pointer"></i>
                     <small class="tex-navy">{{note.date | date: shortDate}}</small>
                     <br>
                     <small class="text-navy">{{note.date | date: "h:mma"}}</small>
                 </div>
                 <div class="col-xs-7 content no-top-border">
                     <p class="m-b-xs">
-                     <div ta-bind ng-model="note.message"></div>
-
+                     <!--<div ta-bind ng-model="note.message"></div>-->
+                     {{note.title}}
                     </p>
                 </div>
             </div>
