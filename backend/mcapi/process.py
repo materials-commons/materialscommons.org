@@ -1,12 +1,11 @@
 from mcapp import app
 from decorators import crossdomain, apikey, jsonp
-from flask import request, g, Response
+from flask import request, g
 import rethinkdb as r
 import error
 import dmutil
 import access
 import args
-import json
 
 
 def remove_duplicate_processes(process):
@@ -19,19 +18,31 @@ def remove_duplicate_processes(process):
         if ip['id'] in uniq_ip_processes:
             other_names = uniq_ip_processes[ip['id']]['related_files']
             other_names.append(ip['other_name'])
-            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names}
+            uniq_ip_processes[ip['id']] = {
+                'process_name': ip['name'],
+                'related_files': other_names
+            }
         else:
             other_names.append(ip['other_name'])
-            uniq_ip_processes[ip['id']] = {'process_name': ip['name'], 'related_files': other_names }
+            uniq_ip_processes[ip['id']] = {
+                'process_name': ip['name'],
+                'related_files': other_names
+            }
     for op in op_processes:
         other_names = []
         if op['id'] in uniq_op_processes:
             other_names = uniq_op_processes[op['id']]['related_files']
             other_names.append(op['other_name'])
-            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}
+            uniq_op_processes[op['id']] = {
+                'process_name': op['name'],
+                'related_files': other_names
+            }
         else:
             other_names.append(op['other_name'])
-            uniq_op_processes[op['id']] = {'process_name': op['name'], 'related_files': other_names}
+            uniq_op_processes[op['id']] = {
+                'process_name': op['name'],
+                'related_files': other_names
+            }
     process['input_processes'] = uniq_ip_processes
     process['output_processes'] = uniq_op_processes
     return process
@@ -40,17 +51,39 @@ def remove_duplicate_processes(process):
 def build_process_relations(process):
     process['input_processes'] = []
     process['output_processes'] = []
-    values = list(r.table('property_sets').get_all(process['id'], index='item_id').eq_join('id', r.table('properties'), index='item_id').zip().filter((r.row["ptype"] == 'file') | (r.row["ptype"] =='sample')).pluck('value').run(g.conn))
+    values = list(r.table('property_sets')
+                  .get_all(process['id'], index='item_id')
+                  .eq_join('id', r.table('properties'), index='item_id')
+                  .zip()
+                  .filter((r.row["ptype"] == 'file') |
+                          (r.row["ptype"] == 'sample'))
+                  .pluck('value').run(g.conn))
     ids = []
     for each in values:
         ids.append(each['value'])
-    processes = list(r.table('properties').get_all(*ids, index='value').eq_join('item_id', r.table('property_sets')).zip().pluck('item_id','stype', 'other').distinct().eq_join('item_id', r.table('processes')).zip().pluck('item_id', 'stype', 'name', 'other').run(g.conn))
+    processes = list(r.table('properties')
+                     .get_all(*ids, index='value')
+                     .eq_join('item_id', r.table('property_sets'))
+                     .zip()
+                     .pluck('item_id', 'stype', 'other')
+                     .distinct()
+                     .eq_join('item_id', r.table('processes'))
+                     .zip().pluck('item_id', 'stype', 'name', 'other')
+                     .run(g.conn))
     for p in processes:
         if p['item_id'] != process['id']:
             if p['stype'] == 'inputs':
-                process['input_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
+                process['input_processes'].append({
+                    'id': p['item_id'],
+                    'name': p['name'],
+                    'other_name': p['other']['name']
+                })
             else:
-                process['output_processes'].append({'id':p['item_id'], 'name':p['name'], 'other_name': p['other']['name']})
+                process['output_processes'].append({
+                    'id': p['item_id'],
+                    'name': p['name'],
+                    'other_name': p['other']['name']
+                })
     # Check for duplicate processes and return
     process = remove_duplicate_processes(process)
     return process
@@ -87,6 +120,42 @@ def get_processes(project_id):
         p = create_complete_process(process)
         complete_processes.append(p)
     return complete_processes
+
+
+def get_processes2(project_id):
+    processes = r.table('processes')\
+                 .get_all(project_id, index='project_id')\
+                 .run(g.conn, time_format='raw')
+    by_id = {p['id']: p for p in processes}
+    all = r.table('property_sets')\
+           .get_all(*by_id.keys(), index='item_id')\
+           .eq_join('id', r.table('properties'),
+                    index='item_id')\
+           .map(lambda row: row.merge({
+               "right": {
+                   "ps_id": row["left"]["id"],
+                   "ps_name": row["left"]["name"],
+                   "ps_item_id": row["left"]["item_id"],
+                   "ps_item_type": row["left"]["item_type"]
+               }
+           })).without({
+               "left": {
+                   "id": True,
+                   "name": True,
+                   "item_id": True,
+                   "item_type": True
+               }
+           }).zip().run(g.conn, time_format="raw")
+    feeder_ids = [prop['value'] for prop in all
+                  if prop["ptype"] == "file" or prop["ptype"] == "sample"]
+    query = r.table("properties")\
+             .get_all(*feeder_ids, index="value")\
+             .eq_join("item_id", r.table("property_sets"))\
+             .zip()\
+             .eq_join("item_id", r.table("processes"))\
+             .zip()
+    for feeder_proc in query.run(g.conn):
+        pass
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])

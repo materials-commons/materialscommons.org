@@ -3,7 +3,7 @@ Application.Controllers.controller("projectNotesOverview",
 
 function projectNotesOverview($scope, project, User, $stateParams) {
     function saveNote() {
-        project.put(User.keyparam()).then(function(){
+        project.put(User.keyparam()).then(function() {
             // nothing to do yet.
         });
     }
@@ -20,10 +20,10 @@ function projectNotesOverview($scope, project, User, $stateParams) {
     $scope.edit_index = -1;
 
     function init(){
-        if ($stateParams.index == 0 || $stateParams.index ){
+        if ($stateParams.index == 0 || $stateParams.index ) {
             $scope.editNotes($stateParams.index);
         }
     }
-    init();
+
     init();
 }
