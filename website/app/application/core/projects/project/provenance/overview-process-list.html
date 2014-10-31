@@ -1,0 +1,10 @@
+<div>
+    <p class="text-center"><strong>All Processes</strong></p>
+    <ul class="list-inline">
+        <li ng-repeat="p in processes">
+            <a class="show-process"
+               ng-class="{active: isActive($index)}"
+               ng-click="openProcess($index)">{{p.name}}</a>
+        </li>
+    </ul>
+</div>
