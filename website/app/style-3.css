@@ -198,7 +198,7 @@
   background-color: #4c9cc6;
 }
 
-.overview-tabs > li > a:hover, overview-tabs > li > a:focus {
+.overview-tabs > li > a:hover, .overview-tabs > li > a:focus {
   color: white;
   background-color: #72C2EC;
 }
@@ -600,7 +600,7 @@ body {
   margin-bottom: 5px;
 }
 
-.btn, btn-default {
+.btn, .btn-default {
   padding: 4px 15px;
 }
 
@@ -952,13 +952,9 @@ h4, .h4, h5, .h5, h6, .h6 {
   border: 1px solid #dadedf;
 }
 
-bold {
-  font-weight: bold;
-}
-
 a.action-link {
   color: white;
-  font-style: bold;
+  font-style: normal;
 }
 
 .action-link.project-sub-action {
@@ -1399,7 +1395,7 @@ label {
 
 .tab-active {
   color: white;
-  font-style: bold;
+  font-style: normal;
 }
 
 ul.menu-bar li {

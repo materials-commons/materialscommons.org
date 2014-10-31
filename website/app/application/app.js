@@ -209,9 +209,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: "projectNotes"
         })
         .state('projects.project.notes.overview', {
-            url: '/overview/:index',
+            url: '/overview',
             templateUrl: "application/core/projects/project/notes/overview.html",
             controller: "projectNotesOverview"
+        })
+        .state('projects.project.notes.edit', {
+            url: '/edit/:index',
+            templateUrl: "application/core/projects/project/notes/edit.html",
+            controller: "projectNotesEdit"
         })
         .state('projects.project.notes.create', {
             url: '/create/:sid',
