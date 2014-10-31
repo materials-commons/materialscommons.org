@@ -23,6 +23,15 @@ def mkdirp(path):
             raise
 
 
+def convert_image(f):
+    if f["mediatype"]["mime"] == "image/tiff":
+        return True
+    elif f["mediatype"]["mime"] == "image/x-ms-bmp":
+        return True
+    else:
+        return False
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-d", "--directory", dest="dir",
@@ -40,35 +49,33 @@ def main():
         sys.exit(1)
 
     conn = r.connect('localhost', options.port, db='materialscommons')
-    all_files = list(r.table('datafiles').run(conn))
+    all_files = list(r.table('datafiles')
+                     .get_all("image/tiff", "image/x-ms-bmp", index="mime")
+                     .run(conn))
     for datafile in all_files:
-        #print "File: %s" % (datafile['name'])
-        name, ext = os.path.splitext(datafile['name'])
-        ext_lower = ext.lower()
-        if ext_lower == ".tif" or ext_lower == ".tiff":
-            if 'usesid' in datafile and datafile['usesid'] != "":
-                continue
-            if datafile['name'][0] == '.':
-                continue
-            filedir = datafile_dir(options.dir, datafile['id'])
-            image_file = os.path.join(filedir, datafile['id'])
-            print "  Opening: %s" % (image_file)
-            try:
-                im = Image.open(image_file)
-            except:
-                traceback.print_exc()
-                continue
-            conversion_dir = os.path.join(filedir, ".conversion")
-            converted_file_path = os.path.join(conversion_dir,
-                                               datafile['id'] + ".jpg")
-            if os.path.isfile(converted_file_path):
-                continue
-            mkdirp(conversion_dir)
-            if im.mode != 'RGB':
-                im = im.convert('RGB')
-            print "Converting file %s, id %s" % (datafile['name'],
-                                                 datafile['id'])
-            im.save(converted_file_path)
+        # print "File: %s" % (datafile['name'])
+        filedir = datafile_dir(options.dir, datafile['id'])
+        image_file = os.path.join(filedir, datafile['id'])
+        conversion_dir = os.path.join(filedir, ".conversion")
+        converted_file_path = os.path.join(conversion_dir,
+                                           datafile['id'] + ".jpg")
+        if 'usesid' in datafile and datafile['usesid'] != "":
+            continue
+        print "  Opening: %s" % (image_file)
+        try:
+            im = Image.open(image_file)
+        except:
+            traceback.print_exc()
+            continue
+
+        if os.path.isfile(converted_file_path):
+            continue
+        mkdirp(conversion_dir)
+        if im.mode != 'RGB':
+            im = im.convert('RGB')
+        print "Converting file %s, id %s" % (datafile['name'],
+                                             datafile['id'])
+        im.save(converted_file_path)
 
 if __name__ == "__main__":
     main()
