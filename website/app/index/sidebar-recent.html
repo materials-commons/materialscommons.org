@@ -4,7 +4,7 @@
             <i class="fa fa-fw fa-history"></i> Recent
             <i class="fa"
                ng-class="{'fa-chevron-right': !showAllRecent, 'fa-chevron-down': showAllRecent}"></i>
-            <span class="badge badge-light pull-right">{{recents.length}}</span>
+            <span class="pull-right white">{{recents.length}}</span>
         </a>
         <div ng-show="showAllRecent">
             <a ng-click="gotoRecent(recent)" class="list-group-item" ng-repeat="recent in recents">

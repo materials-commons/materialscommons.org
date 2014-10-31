@@ -1692,3 +1692,7 @@ ul.menu-bar li {
 .timeline-item .content:hover {
   background: #f6f6f6;
 }
+
+.white {
+  color: white;
+}
