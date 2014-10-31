@@ -1,9 +1,10 @@
 Application.Controllers.controller('projectFilesViewFile',
                                    ["toastr", "$scope", "mcapi", "ProjectPath", "User",
-                                    "projectFiles", "$stateParams", "ui", projectFilesViewFile]);
+                                    "projectFiles", "$stateParams", "ui", "projectFileTabs",
+                                    "recent", projectFilesViewFile]);
 
 function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectFiles,
-                              $stateParams, ui) {
+                              $stateParams, ui, projectFileTabs, recent) {
 
     $scope.addTag = function (entry, selected_tag) {
         //Filling tag join table
@@ -35,6 +36,11 @@ function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectF
                 });
             }).post(item2tag);
         //Sticking tag in the tree
+    };
+
+    $scope.close = function() {
+        projectFileTabs.delete($stateParams.id, $scope.file);
+        recent.gotoLast($stateParams.id);
     };
 
     function init() {
