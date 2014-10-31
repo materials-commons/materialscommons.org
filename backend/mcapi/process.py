@@ -127,16 +127,30 @@ def attach_feeders(inputs2processes, outputs2processes, processes):
                             processes)
 
 
+# TODO: This shold probably be decomposed further. There is a lot
+# of if and loop nesting.
 def attach_feeders_for_type(io2process, feeder_name, io_name, processes):
     for key, process in processes.iteritems():
         for key, io_item in process[io_name].iteritems():
+            # Only files and samples can go into a process
+            # so skip other properties
             if key != "files" and key != "sample":
                 continue
+            # We now have an input or output set of item. Go through
+            # each. The reason for the loop is we may have multiple
+            # files in a single item (but only one sample, but we can
+            # treat each as if there are multiple)
             for item in io_item:
                 item_id = item["value"]
+                # Check if this item is a potential feeder
                 if item_id in io2process:
+                    # It is a a feeder, now check the processes it goes
+                    # to/from. We ignore our process.
                     for process_id in io2process[item_id]["processes"]:
                         if process_id != process["id"]:
+                            # Not our process so add it. Check to see if
+                            # our process entry exists or not and create
+                            # if it doesn't
                             p_item = io2process[item_id]
                             if process_id not in process[feeder_name]:
                                 process[feeder_name][process_id] = {
