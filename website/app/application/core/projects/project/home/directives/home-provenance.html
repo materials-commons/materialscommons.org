@@ -14,25 +14,9 @@
         </strong>
     </p>
 </div>
-<div class="row">
-     <div ng-repeat="process in project.processes">
-        <b>{{process.name}}</b>
-         <div class="row">
-             <i style="padding-left: 15px;">Inputs: </i>
-         </div>
-         <ul style="padding-left: 40px;" ng-repeat="(key, value) in process.inputs">
-             <li>{{key}}</li>
-         </ul>
-
-         <div class="row">
-             <i style="padding-left: 15px;">Outputs: </i>
-         </div>
-         <ul style="padding-left: 40px;">
-             <li>A</li>
-             <li>B</li>
-         </ul>
-         <hr style="border: 0.1px solid #d3d3d3;box-sizing: border-box">
-     </div>
+<div class="row" style="width: 800px; height : 300px;">
+        <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+        </vis-network>
 </div>
 
 <div class="row">
