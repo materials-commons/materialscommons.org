@@ -20,28 +20,21 @@
            ng-click="setActionActive('provenance')"
            ng-class="{active: isActionActive('provenance')}">
             <i class="fa fa-fw fa-code-fork"></i> Provenance
-            <span class="badge badge-light">{{project.processes.length}}</span>
+            <span class="pull-right white">{{project.processes.length}}</span>
         </a>
 
         <a class="list-group-item"
            ng-click="setActionActive('samples')"
            ng-class="{active: isActionActive('samples')}">
             <i class="fa fa-fw fa-cubes"></i> Samples
-            <span class="badge badge-light">{{project.samples.length}}</span>
-        </a>
-
-        <a class="list-group-item"
-           ng-click="setActionActive('reviews')"
-           ng-class="{active: isActionActive('reviews')}">
-            <i class="fa fa-fw fa-comment"></i> Reviews
-            <span class="badge badge-light">{{project.open_reviews.length}}</span>
+            <span class="pull-right white">{{project.samples.length}}</span>
         </a>
 
         <a class="list-group-item"
            ng-click="setActionActive('notes')"
            ng-class="{active: isActionActive('notes')}">
             <i class="fa fa-fw fa-edit"></i> Notes
-            <span class="badge badge-light">{{project.notes.length}}</span>
+            <span class="pull-right white">{{project.notes.length}}</span>
         </a>
 
         <a class="list-group-item"
@@ -50,6 +43,13 @@
             <i class="fa fa-fw fa-files-o"></i> Files
             <span class="pull-right"
                   style="color: white">{{project | projectFileCount}}/{{project | projectSize}}</span>
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('reviews')"
+           ng-class="{active: isActionActive('reviews')}">
+            <i class="fa fa-fw fa-comment"></i> Reviews
+            <span class="badge badge-light">{{project.open_reviews.length}}</span>
         </a>
 
         <a class="list-group-item"
