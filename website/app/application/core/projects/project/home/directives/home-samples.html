@@ -16,24 +16,21 @@
         <div class="row">
             <div class="col-xs-3 date">
                 <i class="fa fa-edit"></i>
-                <small class="tex-navy">{{sample.name}}</small>
+                <small class="tex-navy">{{sample.birthtime | toDateString}}</small>
                 <br>
-                <!--<small class="text-navy">{{sample.birthtime | toDateString}}</small>-->
             </div>
             <div class="col-xs-7 content no-top-border">
                 <p class="m-b-xs">
-                    {{sample.birthtime | toDateString}}<br>
-                    Owner: {{sample.owner}}<br>
+                    <u>{{sample.name}}</u><br>
                     <span ng-hide="sample.properties.composition.value.length == 0">
                           Composition:   {{sample.properties.composition.unit}}
-                            <li ng-repeat="element in sample.properties.composition.value">{{element.name}} :  {{element.value}}</li>
+                            <li ng-repeat="element in sample.properties.composition.value">{{element.element}} :  {{element.value}}</li>
                     </span>
                 </p>
             </div>
         </div>
 
     </div>
-
 </div>
 <div class="row">
     <a ng-click="addSample()">Add Sample</a>
