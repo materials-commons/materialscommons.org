@@ -9,6 +9,7 @@ import args
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
+@apikey
 def get_processes_for_project(project_id):
     processes = get_processes(project_id)
     return dmutil.jsoner(processes)
@@ -172,7 +173,8 @@ def get_all_processes_for_template(template_id):
 @apikey
 @jsonp
 def get_processes_by_sample(sample_id):
-    rr = r.table('samples_processes_denorm').get_all(sample_id, index='sample_id')
+    rr = r.table('samples_processes_denorm').get_all(sample_id,
+                                                     index='sample_id')
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -216,17 +218,19 @@ def build_sample_file_objects(selection, type):
         for s in selection:
             # get_all_sample_ids
             for i in inputs:
+                item = i["properties"]["id"]["value"]
                 if i['attribute'] == 'sample':
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
+                    i['properties']['obj'] = get_an_item(item, sample_objs)
                 elif i['attribute'] == 'file':
-                    file_list.append(i['properties']['id']['value'])
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], file_objs)
+                    file_list.append(item)
+                    i['properties']['obj'] = get_an_item(item, file_objs)
             for o in outputs:
+                item = o["properties"]["id"]["value"]
                 if o['attribute'] == 'sample':
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], sample_objs)
+                    o['properties']['obj'] = get_an_item(item, sample_objs)
                 elif o['attribute'] == 'file':
-                    file_list.append(o['properties']['id']['value'])
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
+                    file_list.append(item)
+                    o['properties']['obj'] = get_an_item(item, file_objs)
         return selection
     else:
         s = selection
@@ -252,17 +256,19 @@ def build_sample_file_objects(selection, type):
         for s in selection:
             # get_all_sample_ids
             for i in inputs:
+                item = i["properties"]["id"]["value"]
                 if i['attribute'] == 'sample':
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], sample_objs)
+                    i['properties']['obj'] = get_an_item(item, sample_objs)
                 elif i['attribute'] == 'file':
                     file_list.append(i['properties']['id']['value'])
-                    i['properties']['obj'] = get_an_item(i['properties']['id']['value'], file_objs)
+                    i['properties']['obj'] = get_an_item(item, file_objs)
             for o in outputs:
+                item = o["properties"]["id"]["value"]
                 if o['attribute'] == 'sample':
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], sample_objs)
+                    o['properties']['obj'] = get_an_item(item, sample_objs)
                 elif o['attribute'] == 'file':
-                    file_list.append(o['properties']['id']['value'])
-                    o['properties']['obj'] = get_an_item(o['properties']['id']['value'], file_objs)
+                    file_list.append(item)
+                    o['properties']['obj'] = get_an_item(item, file_objs)
         return selection
 
 
