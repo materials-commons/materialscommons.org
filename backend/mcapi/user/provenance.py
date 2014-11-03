@@ -1,7 +1,7 @@
 from ..mcapp import app
 from ..decorators import apikey
 from .. import dmutil
-from flask import jsonify, g, request
+from flask import g, request
 import rethinkdb as r
 from .. import access
 from loader.model import process, note, property
