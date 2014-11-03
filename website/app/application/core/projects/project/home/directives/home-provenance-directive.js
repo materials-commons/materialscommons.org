@@ -26,15 +26,20 @@ function homeProvenanceDirectiveController($scope, projectState, $state) {
         $state.go("projects.project.provenance.create", {sid: stateID});
     };
     $scope.graph = [];
-    console.log($scope.project.processes);
     $scope.project.processes.forEach(function (process) {
-        var construct = {}
+        var construct = {};
         var nodes = [];
         var edges = [];
         nodes.push({
             id: 0,
-            label: String(process.name),
-            title: process.name
+            label: String($scope.createName(process.name)),
+            title: process.name,
+            shape: 'box',
+            color: {
+                border: 'black',
+                background: 'yellow'
+
+            }
         })
         nodes[0]['level'] = 1;
         var count = 1;
@@ -100,7 +105,7 @@ function homeProvenanceDirectiveController($scope, projectState, $state) {
                         id: count,
                         label: String($scope.createName(file.other.name)),
                         title: file.other.name,
-                        shape: 'dot' ,
+                        shape: 'dot',
                         color: {
                             background: '#FF7F6E',
                             border: "#666"
@@ -149,7 +154,7 @@ function homeProvenanceDirectiveController($scope, projectState, $state) {
         construct.network_data = {
             nodes: nodes,
             edges: edges
-        }
+        };
         construct.network_options = {
             hierarchicalLayout: {
                 direction: "LR"
