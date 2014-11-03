@@ -5,7 +5,6 @@ from flask import g, request
 import rethinkdb as r
 from .. import access
 from loader.model import process, note, property
-from mcapi.process import create_complete_process
 
 
 @app.route('/provenance2/<project_id>', methods=['POST'])
@@ -17,7 +16,6 @@ def create_provenance2(project_id):
     id = proc['id']
     create_inputs(j['inputs'], id, user)
     create_outputs(j['outputs'], id, user)
-    proc = create_complete_process(proc)
     return dmutil.jsoner(proc)
 
 
