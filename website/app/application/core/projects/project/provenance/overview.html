@@ -25,6 +25,7 @@
         </div>
         <div class="col-sm-8 no-padding-left no-padding-right">
             <p class="text-center"><strong>{{process.name}}</strong></p>
+
             <div class="row">
                 <div class="col-sm-5 no-padding-right no-padding-left">
                     <div ng-show="process" class="list-group">
@@ -128,6 +129,7 @@
         </div>
         <div class="col-sm-2">
             <strong>Processes (O)</strong>
+
             <div class="row" ng-repeat="(key,value) in process.output_processes">
                 <button type="button" class="btn btn-success btn-xs" custom-pop-over items="value.related_files"
                         title="Related">
@@ -154,8 +156,8 @@
     </div>
 </div>
 
-        <div class="row" style="height:500px; width:800px;padding-left: 200px;">
-            <h4>Graph</h4>
-            <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
-            </vis-network>
-        </div>
+<div class="row" style="height:500px; width:800px;padding-left: 200px;">
+    <h4>Graph</h4>
+    <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+    </vis-network>
+</div>
