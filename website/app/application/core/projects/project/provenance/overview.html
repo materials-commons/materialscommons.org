@@ -1,3 +1,4 @@
+
 <div class="row">
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8" style="overflow-x: auto;">
@@ -10,6 +11,7 @@
                 </li>
             </ul>
         </div>
+
     </div>
     <hr>
     <div class="row">
@@ -126,6 +128,11 @@
                     </div>
                 </div>
             </div>
+            <div class="row" style="width: 800px; height : 800px;">
+                <vis-network ng-model="construct.network_data" options="construct.network_options" on-select="onNodeSelect" >
+                </vis-network>
+            </div>
+
         </div>
         <div class="col-sm-2">
             <strong>Processes (O)</strong>
@@ -155,9 +162,7 @@
         </div>
     </div>
 </div>
-
-<div class="row" style="height:500px; width:800px;padding-left: 200px;">
-    <h4>Graph</h4>
-    <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+<div class="row" style="width: 800px; height : 400px;">
+    <vis-network ng-model="construct.network_data" options="construct.network_options" on-select="onNodeSelect" >
     </vis-network>
 </div>
