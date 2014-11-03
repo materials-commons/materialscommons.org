@@ -198,7 +198,7 @@
   background-color: #4c9cc6;
 }
 
-.overview-tabs > li > a:hover, overview-tabs > li > a:focus {
+.overview-tabs > li > a:hover, .overview-tabs > li > a:focus {
   color: white;
   background-color: #72C2EC;
 }
@@ -448,6 +448,10 @@ td.tag-width {
   background-color: #eeeeee;
 }
 
+ul.nav li a:hover, a:focus {
+  font-weight: normal;
+}
+
 .navbar-custom .icon-bar {
   background-color: #0C5C86;
 }
@@ -596,7 +600,7 @@ body {
   margin-bottom: 5px;
 }
 
-.btn, btn-default {
+.btn, .btn-default {
   padding: 4px 15px;
 }
 
@@ -948,13 +952,9 @@ h4, .h4, h5, .h5, h6, .h6 {
   border: 1px solid #dadedf;
 }
 
-bold {
-  font-weight: bold;
-}
-
 a.action-link {
   color: white;
-  font-style: bold;
+  font-style: normal;
 }
 
 .action-link.project-sub-action {
@@ -1395,7 +1395,7 @@ label {
 
 .tab-active {
   color: white;
-  font-style: bold;
+  font-style: normal;
 }
 
 ul.menu-bar li {
@@ -1687,4 +1687,8 @@ ul.menu-bar li {
 }
 .timeline-item .content:hover {
   background: #f6f6f6;
+}
+
+.white {
+  color: white;
 }
