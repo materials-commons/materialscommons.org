@@ -1,64 +1,10 @@
 Application.Controllers.controller("projectProvenanceOverview",
-                                   ["$scope", "mcapi", "$stateParams", "model.projects", "ProcessList", "User", projectProvenanceOverview]);
+    ["$scope", "mcapi", "project", "User", projectProvenanceOverview]);
 
-function projectProvenanceOverview($scope, mcapi, $stateParams, Projects, ProcessList, User) {
-    var activeIndex = 0;
-    $scope.openProcess = function (index) {
-        $scope.flag = false;
-        $scope.sample = {};
-        $scope.settings = [];
-        $scope.process = $scope.processes[index];
-        activeIndex = index;
+function projectProvenanceOverview($scope, mcapi, project, User) {
 
-        //Draw graph: with all connecting processes ( input and output )
-        $scope.construct = {};
-        var nodes = [], count = 1, edges = [];
-        nodes.push({
-            id: 0,
-            label: String($scope.createName($scope.process.name))
-        });
-        nodes[0]['level'] = 1;
-        angular.forEach($scope.process.input_processes, function (values, key) {
-            nodes.push({
-                id: count,
-                label: String(count) ,
-                shape: 'dot'
-            });
-            edges.push({
-                from: count,
-                to: 0
-            });
-            nodes[count]['level'] = 0;
-            count++;
-        });
-        angular.forEach($scope.process.output_processes, function (values, key) {
-            nodes.push({
-                id: count,
-                label: String(count),
-                shape: 'dot'
-            });
-            edges.push({
-                from: 0,
-                to: count
-            });
-            nodes[count]['level'] = 2;
-            count++;
-        });
-        $scope.construct.network_data = {
-            nodes: nodes,
-            edges: edges
-        };
-        $scope.construct.network_options = {
-            hierarchicalLayout: {
-                direction: "LR"
-            },
-            edges: {style: "arrow"},
-            smoothCurves: false
-        };
 
-    };
-
-    $scope.isActive = function(index) {
+    $scope.isActive = function (index) {
         return activeIndex === index;
     };
 
@@ -97,15 +43,79 @@ function projectProvenanceOverview($scope, mcapi, $stateParams, Projects, Proces
             $scope.settings = values;
         }
     };
+    var activeIndex = 0;
+    $scope.openProcess = function (index) {
+        $scope.constructed_process = {};
+        $scope.flag = false;
+        $scope.sample = {};
+        $scope.settings = [];
+        $scope.process = $scope.processes[index];
+        $scope.process.network_data = {};
+        $scope.process.network_options = {};
+        activeIndex = index;
+        var nodes = [], count = 1, edges = [];
+        $scope.process.network_data = {},
+            $scope.process.network_options = {},
+            nodes.push({
+                id: 0,
+                label: String($scope.createName($scope.process.name)) ,
+                shape: 'dot'
+            });
+        nodes[0]['level'] = 1;
+        angular.forEach($scope.process.output_processes, function (values, key) {
+            nodes.push({
+                id: count,
+                label: String($scope.createName(values.process_name)),
+                shape: 'dot',
+                title: values.related_files
+            });
+            edges.push({
+                from: count,
+                to: 0
+            });
+            nodes[count]['level'] = 0;
+            count++;
+        });
+        angular.forEach($scope.process.input_processes, function (values, key) {
+            nodes.push({
+                id: count,
+                label: String($scope.createName(values.process_name)),
+                shape: 'dot',
+                title: values.related_files
+
+            });
+            edges.push({
+                from: 0,
+                to: count
+            });
+            nodes[count]['level'] = 2;
+            count++;
+        });
+        $scope.process.network_data= {
+            nodes: nodes,
+            edges: edges
+        };
+        $scope.process.network_options = {
+            hierarchicalLayout: {
+                direction: "LR"
+            },
+            edges: {style: "arrow"},
+            smoothCurves: false
+        };
+        $scope.constructed_process = $scope.process;
+    };
 
     $scope.apikey = User.apikey();
-    Projects.get($stateParams.id).then(function (project) {
-        $scope.project = project;
-        $scope.processes = project.processes;
-        if ($scope.processes.length !== 0) {
-            $scope.openProcess(0);
-        }
-        $scope.showInputsOutputs = true;
-    });
+    $scope.project = project;
+    $scope.processes = project.processes;
+    if ($scope.processes.length !== 0) {
+
+        //Draw graph: with all connecting processes ( input and output )
+        $scope.processes.forEach(function(process){
+
+        });
+        $scope.openProcess(0);
+    }
+    $scope.showInputsOutputs = true;
 
 }
