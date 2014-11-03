@@ -15,6 +15,10 @@
     </div>
     <hr>
     <div class="row">
+        <div class="row" style="width: 800px; height : 300px;">
+            <vis-network ng-model="constructed_process.network_data" options="constructed_process.network_options" on-select="onNodeSelect" >
+            </vis-network>
+        </div>
         <div class="col-sm-2">
             <strong>Processes (I)</strong>
 
@@ -30,7 +34,7 @@
 
             <div class="row">
                 <div class="col-sm-5 no-padding-right no-padding-left">
-                    <div ng-show="process" class="list-group">
+                    <div ng-if="constructed_process" class="list-group">
                         <a class="list-group-item"
                            style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
                            ng-click="showInputsOutputs =! showInputsOutputs">{{process.name}}
@@ -91,6 +95,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-sm-7 no-padding-left no-padding-right">
@@ -128,11 +133,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="width: 800px; height : 800px;">
-                <vis-network ng-model="construct.network_data" options="construct.network_options" on-select="onNodeSelect" >
-                </vis-network>
-            </div>
-
         </div>
         <div class="col-sm-2">
             <strong>Processes (O)</strong>
@@ -162,7 +162,4 @@
         </div>
     </div>
 </div>
-<div class="row" style="width: 800px; height : 400px;">
-    <vis-network ng-model="construct.network_data" options="construct.network_options" on-select="onNodeSelect" >
-    </vis-network>
-</div>
+
