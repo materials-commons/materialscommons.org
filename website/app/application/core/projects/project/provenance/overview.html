@@ -4,14 +4,7 @@
 <div ng-if="processes.length !==0" class="row">
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8" style="overflow-x: auto;">
-            <p class="text-center"><strong>All Processes</strong></p>
-            <ul class="list-inline">
-                <li ng-repeat="p in processes">
-                    <a class="show-process"
-                       ng-class="{active: isActive($index)}"
-                       ng-click="openProcess($index)">{{p.name}}</a>
-                </li>
-            </ul>
+            <overview-process-list></overview-process-list>
         </div>
 
     </div>
@@ -27,9 +20,34 @@
             <vis-network ng-model="constructed_process.network_data" options="constructed_process.network_options" on-select="onNodeSelect" >
             </vis-network>
         </div>
-        <div class="row">
-            <div process-info process="process"></div>
+        <div class="col-sm-2">
+            <strong>Downstream Processes</strong>
+            <div class="row" ng-repeat="(pid, process) in process.downstream">
+                <button type="button" class="btn btn-success btn-xs"
+                        custom-pop-over
+                        items="process.items"
+                        title="Sends">
+                    {{process.name}}
+                </button>
+            </div>
         </div>
+
+        <div class="col-sm-8 no-padding-left no-padding-right">
+            <overview-show-process-details></overview-show-process-details>
+        </div>
+
+        <div class="col-sm-2">
+            <strong>Upstream Processes</strong>
+            <div class="row" ng-repeat="(pid, process) in process.upstream">
+                <button type="button" class="btn btn-success btn-xs"
+                        custom-pop-over
+                        items="process.items"
+                        title="Receives">
+                    {{process.name}}
+                </button>
+            </div>
+        </div>
+
     </div>
 </div>
 
