@@ -1,5 +1,7 @@
-
-<div class="row">
+<div  ng-if="processes.length ==0">
+    <p class="text-center">No processes created under project {{project.name}}</p>
+</div>
+<div ng-if="processes.length !==0" class="row">
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8" style="overflow-x: auto;">
             <p class="text-center"><strong>All Processes</strong></p>
@@ -14,29 +16,19 @@
 
     </div>
     <hr>
+    <div class="row" style="float:right">
+        <div class="circle-indication"></div>
+        <p>process</p>
+        <div class="triangle-indication"></div>
+        <p>inputs/outputs</p>
+    </div>
     <div class="row">
-        <div class="row" style="width: 800px; height : 400px;">
+        <div class="row" style="width: 800px; height : 500px;">
             <vis-network ng-model="constructed_process.network_data" options="constructed_process.network_options" on-select="onNodeSelect" >
             </vis-network>
         </div>
         <div class="row">
             <div process-info process="process"></div>
-        </div>
-    </div>
-</div>
-
-<div ng-if="datafile" class="modal fade" id="imageExpand" tabindex="-1" role="dialog" aria-labelledby="imageExpandLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">{{datafile.other.name}}</h4>
-            </div>
-            <div class="modal-body">
-                <img style="width:500px; height:500px;"
-                     ng-src="datafiles/static/{{datafile.id}}?apikey={{apikey}}" alt="Cannot Display">
-            </div>
         </div>
     </div>
 </div>

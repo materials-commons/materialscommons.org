@@ -18,7 +18,8 @@ function graphService() {
             //Set up initial node (your main process)
             graph.nodes.push({
                 id: 0,
-                label: String(process.name),
+                label: String(graph.createName(process.name)),
+                title: process.name,
                 shape: 'dot',
                 color: {
                     background: '#FF7F6E',
@@ -56,14 +57,21 @@ function graphService() {
             };
             graph.network_options = {
                 hierarchicalLayout: {
-                    direction: "LR"
+                    direction: "LR",
+                    nodeSpacing: 100,
+                    levelSeparation: 150
                 },
                 edges: {style: "arrow"},
                 smoothCurves: false
             };
             return graph;
         },
-
+        createName: function (name) {
+            if (name.length > 18) {
+                return name.substring(0, 17) + "...";
+            }
+            return name;
+        },
         constructEdge: function (from, to) {
             graph.edges.push({
                 from: from,
@@ -74,7 +82,7 @@ function graphService() {
             if (type === 'process') {
                 graph.nodes.push({
                     id: graph.count,
-                    label: String(name),
+                    label: String(graph.createName(name)),
                     title: name,
                     shape: 'dot',
                     color: {
@@ -85,7 +93,7 @@ function graphService() {
             } else {
                 graph.nodes.push({
                     id: graph.count,
-                    label: String(name),
+                    label: String(graph.createName(name)),
                     title: name,
                     shape: 'triangle',
                     color: {
@@ -107,7 +115,6 @@ function graphService() {
                     graph.constructEdge(0, graph.count);
                     graph.nodes[graph.count].level = 3;
                 }
-
                 graph.count++;
                 graph.connectProcesses(available_processes, file.other.name, stream);
                 //check for adjacent processes of this file
@@ -126,8 +133,6 @@ function graphService() {
                 }
                 graph.count++;
                 graph.connectProcesses(available_processes, sample.other.name, stream);
-                //check for adjacent processes of this file
-
             });
         },
         buildSettings: function (key) {
@@ -143,26 +148,14 @@ function graphService() {
             angular.forEach(available_processes, function (process, key) {
                 if (process.related_files.indexOf(item_name) > -1) {
                     graph.times_linked_item_to_process++;
-                    graph.nodes.push({
-                        id: graph.count,
-                        label: String(process.process_name),
-                        title: process.process_name,
-                        shape: 'dot',
-                        color: {
-                            background: '#FF7F6E',
-                            border: "#666"
-                        }
-
-                    });
+                    graph.constructNode(process.process_name, 'process');
                     if (graph.times_linked_item_to_process > 0) {
                         if (stream === 'upstream') {
                             graph.constructEdge(graph.count, graph.item_count);
                             graph.nodes[graph.count].level = 0;
-
                         } else {
                             graph.constructEdge(graph.item_count, graph.count);
                             graph.nodes[graph.count].level = 4;
-
                         }
                     } else {
                         if (stream === 'upstream') {
@@ -172,7 +165,6 @@ function graphService() {
                         } else {
                             graph.constructEdge(graph.count - 1, graph.count);
                             graph.nodes[graph.count].level = 4;
-
                         }
                     }
                     graph.count++;

@@ -4,7 +4,7 @@
     <div class="row" ng-repeat="(key,value) in process.input_processes">
         <button type="button" class="btn btn-success btn-xs" custom-pop-over items="value.related_files"
                 title="Related">
-            {{value.process_name}}
+            {{createName(value.process_name)}}
         </button>
     </div>
 </div>
@@ -26,9 +26,9 @@
                         <div ng-if="key=='files'">
                             <a ng-click="showFiles =! showFiles"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}} (I)
+                               class="list-group-item">{{createName(key)}}
                                 <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
-                                   class="fa fa-fw"></i></a>
+                                   class="fa fa-fw"></i> <span style="float: right;">(I)</span></a>
 
                             <div ng-show="showFiles" class="list-group-submenu">
                                 <div ng-repeat="file in process.inputs.files">
@@ -42,7 +42,7 @@
                             <a ng-click="showDetails(key, values)"
                                ng-class="{'active': isActiveList(key)}"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}}(I)</a>
+                               class="list-group-item">{{createName(key)}} <span style="float: right;">(I)</span></a>
                         </div>
                     </div>
                 </div>
@@ -52,9 +52,9 @@
                         <div ng-if="key=='files'">
                             <a ng-click="showFiles =! showFiles"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}} (O)
+                               class="list-group-item">{{createName(key)}}
                                 <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
-                                   class="fa fa-fw"></i></a>
+                                   class="fa fa-fw"></i><span style="float: right;">(O)</span></a>
 
                             <div ng-show="showFiles" class="list-group-submenu">
                                 <div ng-repeat="file in process.outputs.files">
@@ -70,7 +70,7 @@
                             <a ng-click="showDetails(key, values)"
                                ng-class="{'active': isActiveList(key)}"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}}(I)</a>
+                               class="list-group-item">{{createName(key)}} <span style="float: right;">(O)</span></a>
                         </div>
                     </div>
                 </div>
@@ -123,3 +123,20 @@
         </button>
     </div>
 </div>
+
+<div ng-if="datafile" class="modal fade" id="imageExpand" tabindex="-1" role="dialog" aria-labelledby="imageExpandLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">{{datafile.other.name}}</h4>
+            </div>
+            <div class="modal-body">
+                <img style="width:500px; height:500px;"
+                     ng-src="datafiles/static/{{datafile.id}}?apikey={{apikey}}" alt="Cannot Display">
+            </div>
+        </div>
+    </div>
+</div>
+
