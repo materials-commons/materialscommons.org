@@ -25,7 +25,7 @@ function graphService() {
                     border: "#666"
                 }
             });
-            graph.nodes[0]['level'] = 2;
+            graph.nodes[0].level = 2;
             //build left side graph
             angular.forEach(process.inputs, function (values, key) {
                 if (key === 'files') {
@@ -60,7 +60,6 @@ function graphService() {
                 },
                 edges: {style: "arrow"},
                 smoothCurves: false
-
             };
             return graph;
         },
@@ -103,10 +102,10 @@ function graphService() {
                 graph.constructNode(file.other.name, 'file');
                 if (stream === 'upstream') {
                     graph.constructEdge(graph.count, 0);
-                    graph.nodes[graph.count]['level'] = 1;
+                    graph.nodes[graph.count].level = 1;
                 } else {
                     graph.constructEdge(0, graph.count);
-                    graph.nodes[graph.count]['level'] = 3;
+                    graph.nodes[graph.count].level = 3;
                 }
 
                 graph.count++;
@@ -120,13 +119,12 @@ function graphService() {
                 graph.constructNode(sample.other.name, 'sample');
                 if (stream === 'upstream') {
                     graph.constructEdge(graph.count, 0);
-                    graph.nodes[graph.count]['level'] = 1;
+                    graph.nodes[graph.count].level = 1;
                 } else {
                     graph.constructEdge(0, graph.count);
-                    graph.nodes[graph.count]['level'] = 3;
+                    graph.nodes[graph.count].level = 3;
                 }
                 graph.count++;
-                console.log(sample.other.name)
                 graph.connectProcesses(available_processes, sample.other.name, stream);
                 //check for adjacent processes of this file
 
@@ -135,7 +133,7 @@ function graphService() {
         buildSettings: function (key) {
             graph.constructNode(key, 'setting');
             graph.constructEdge(graph.count, 0);
-            graph.nodes[graph.count]['level'] = 1;
+            graph.nodes[graph.count].level = 1;
             graph.count++;
         },
 
@@ -144,7 +142,6 @@ function graphService() {
             graph.times_linked_item_to_process = 0;
             angular.forEach(available_processes, function (process, key) {
                 if (process.related_files.indexOf(item_name) > -1) {
-                    console.log(process.related_files);
                     graph.times_linked_item_to_process++;
                     graph.nodes.push({
                         id: graph.count,
@@ -160,21 +157,21 @@ function graphService() {
                     if (graph.times_linked_item_to_process > 0) {
                         if (stream === 'upstream') {
                             graph.constructEdge(graph.count, graph.item_count);
-                            graph.nodes[graph.count]['level'] = 0;
+                            graph.nodes[graph.count].level = 0;
 
                         } else {
                             graph.constructEdge(graph.item_count, graph.count);
-                            graph.nodes[graph.count]['level'] = 4;
+                            graph.nodes[graph.count].level = 4;
 
                         }
                     } else {
                         if (stream === 'upstream') {
                             graph.constructEdge(graph.count, graph.count - 1);
-                            graph.nodes[graph.count]['level'] = 0;
+                            graph.nodes[graph.count].level = 0;
 
                         } else {
                             graph.constructEdge(graph.count - 1, graph.count);
-                            graph.nodes[graph.count]['level'] = 4;
+                            graph.nodes[graph.count].level = 4;
 
                         }
                     }
@@ -184,4 +181,4 @@ function graphService() {
         }
     };
     return graph;
-};
+}
