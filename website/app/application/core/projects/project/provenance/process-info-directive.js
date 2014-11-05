@@ -17,8 +17,8 @@ Application.Controllers.controller("processInfoController",
 function processInfoController($scope, mcapi) {
 
     $scope.createName = function (name) {
-        if (name.length > 25) {
-            return name.substring(0, 22) + "...";
+        if (name.length > 21) {
+            return name.substring(0, 20) + "...";
         }
         return name;
     };
