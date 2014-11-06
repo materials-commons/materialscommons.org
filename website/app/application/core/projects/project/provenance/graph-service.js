@@ -102,7 +102,6 @@ function graphService() {
                     }
                 });
             }
-
         },
 
         buildFiles: function (files, available_processes, stream) {
@@ -132,7 +131,7 @@ function graphService() {
                     graph.nodes[graph.count].level = 3;
                 }
                 graph.count++;
-                graph.connectProcesses(available_processes, sample.other.name, 'sample',  stream);
+                graph.connectProcesses(available_processes, sample.other.name, 'sample', stream);
             });
         },
         buildSettings: function (key) {
@@ -142,12 +141,12 @@ function graphService() {
             graph.count++;
         },
 
-        connectProcesses: function (available_processes, item_name, item_type,  stream) {
+        connectProcesses: function (available_processes, item_name, item_type, stream) {
             var item = {'item_name': item_name, 'item_type': item_type};
             graph.item_count = graph.count - 1;
             graph.times_linked_item_to_process = 0;
             angular.forEach(available_processes, function (process, key) {
-                var i = _.indexOf(process.items, function(p_item) {
+                var i = _.indexOf(process.items, function (p_item) {
                     return item.item_name === p_item.item_name;
                 });
                 if (i > -1) {

@@ -17,7 +17,7 @@
 <div ng-repeat="process in graph">
     <div class="row" style="width: 800px; height : 400px;">
         <vis-network ng-model="process.network_data" options="process.network_options" on-select="onNodeSelect"
-                     >
+                >
         </vis-network>
     </div>
     <hr/>
@@ -25,5 +25,4 @@
 
 <div class="row">
     <a ng-click="addProvenance()">Add Provenance</a>
-
 </div>

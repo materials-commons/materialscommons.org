@@ -26,5 +26,4 @@ function projectProvenanceOverview($scope, project, User, Graph) {
     if ($scope.processes.length !== 0) {
         $scope.openProcess(0);
     }
-
 }
