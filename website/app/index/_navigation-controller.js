@@ -1,13 +1,10 @@
 Application.Controllers.controller('_indexNavigation',
-                                   ["$scope", "User", "$state", "Nav", "model.projects",  _indexNavigation]);
-function _indexNavigation($scope, User, $state, Nav, projects) {
-    projects.getList().then(function(projects) {
-        $scope.firstProjectID = projects[0].id;
-    });
-
+                                   ["$scope", "User", "$state", "Nav", "current",
+                                    _indexNavigation]);
+function _indexNavigation($scope, User, $state, Nav, current) {
     $scope.goHome = function () {
         if (User.isAuthenticated()) {
-            $state.go("projects.project.overview", {id: $scope.firstProjectID});
+            $state.go("projects.project.home", {id: current.projectID()});
         } else {
             $state.go("home");
         }

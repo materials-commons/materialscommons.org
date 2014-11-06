@@ -1,0 +1,26 @@
+<div>
+    <div ng-show="project.todos.length ==0">
+        <p class="text-center">No tasks created under this project {{project.name}}</p>
+    </div>
+    <div ng-hide="project.todos.length == 0" class="col-xs-10 col-xs-offset-1">
+        <table style="background-color: #ffffff" class="table">
+            <thead>
+            <th></th>
+            <th >Title</th>
+            <th>Note</th>
+            <th>Date</th>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="todo in project.todos">
+                <td style="width: 50px;"><input type="checkbox"  ng-click="markAsDone(todo)"></td>
+                <td style="width: 200px;">{{todo.title}}</td>
+                <td style="width: 400px;">{{todo.note}}</td>
+                <td style="width: 120px;">{{todo.date | date:'short'}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

@@ -1,27 +1,29 @@
-<div wizard-step-process
-     ng-if="step.step == 'process'">
-</div>
+<div class="row">
+    <div wizard-step-process class="box-divider"
+         ng-if="step.step == 'process'">
+    </div>
 
-<div wizard-step-sample
-     ng-if="step.step == 'sample'">
-</div>
+    <div wizard-step-sample class="box-divider"
+         ng-if="step.step == 'sample'">
+    </div>
 
-<div wizard-step-transform-sample
-     ng-if="step.step == 'transform-sample'">
-</div>
+    <div wizard-step-transform-sample class="box-divider"
+         ng-if="step.step == 'transform-sample'">
+    </div>
 
-<div wizard-step-files
-     ng-if="step.step === 'files' && step.stepType === 'inputs'">
-</div>
+    <div wizard-step-files class="box-divider"
+         ng-if="step.step === 'files' && step.stepType === 'inputs'">
+    </div>
 
-<div wizard-step-files
-     ng-if="step.step === 'files' && step.stepType === 'outputs'">
-</div>
+    <div wizard-step-files class="box-divider"
+         ng-if="step.step === 'files' && step.stepType === 'outputs'">
+    </div>
 
-<div wizard-step-properties
-     ng-if="showPropertiesStep()">
-</div>
+    <div wizard-step-properties class="box-divider"
+         ng-if="showPropertiesStep()">
+    </div>
 
-<div wizard-step-done
-     ng-if="step.step === 'done'">
+    <div wizard-step-done class="box-divider"
+         ng-if="step.step === 'done'">
+    </div>
 </div>

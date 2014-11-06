@@ -43,7 +43,23 @@ def create_draft():
     process = dmutil.get_optional('process', j, [])
     d = Draft(user, name, project_id, project_name, description, clone_number)
     d.process = process
-    return dmutil.insert_entry('drafts', d.__dict__, return_created=True)
+    o = dmutil.insert_entry('drafts', d.__dict__, return_created=True)
+    return dmutil.jsoner(o)
+
+
+@app.route("/drafts2", methods=["POST"])
+@apikey
+def create_draft2():
+    j = request.get_json()
+    user = access.get_user()
+    dtype = dmutil.get_required('dtype', j)
+    draft = {}
+    draft['owner'] = user
+    draft['birthtime'] = r.now()
+    draft['mtime'] = draft['birthtime']
+    draft['dtype'] = dtype
+    o = dmutil.insert_entry('drafts', draft, return_created=True)
+    return dmutil.jsoner(o)
 
 
 @app.route("/drafts2/<project_id>", methods=['POST'])
@@ -54,13 +70,15 @@ def save_draft(project_id):
     j['owner'] = access.get_user()
     if 'id' in j:
         j['mtime'] = r.now()
-        id = j['id']
-        r.table('drafts').get(j['id']).update(j).run(g.conn)
+        rv = r.table('drafts').get(j['id'])\
+                              .update(j, return_changes=True)\
+                              .run(g.conn, time_format='raw')
+        entry = dmutil.insert_status(rv, return_created=True)
     else:
         j['birthtime'] = r.now()
         j['mtime'] = j['birthtime']
-        id = dmutil.insert_entry_id('drafts', j)
-    return jsonify({'id': id})
+        entry = dmutil.insert_entry('drafts', j, return_created=True)
+    return dmutil.jsoner(entry)
 
 
 @app.route('/drafts/<draft_id>', methods=['PUT'])

@@ -27,138 +27,20 @@
         <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
         <link href="assets/css/hotkeys.min.css" rel="stylesheet">
         <link href="assets/css/angular-toastr.css" rel="stylesheet">
+        <link href="assets/css/vis.css" rel="stylesheet">
 
         <!-- Application style sheet -->
         <link href="style-3.css" rel="stylesheet">
     </head>
     <body>
         <a name="top"></a>
-        <nav class="navbar navbar-custom" ng-controller="_indexNavigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" style=""
-                   ng-click="goHome()">MaterialsCommons</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li id="about-nav" ng-class="{ navactive: isActiveStep('about') }">
-                        <a ng-click="showStep('about')" ui-sref="about"><i class="fa fa-info-circle"></i> About</a>
-                    </li>
-                    <li id="contact-nav" ng-class="{navactive: isActiveStep('contact') }">
-                        <a ng-click="showStep('contact')" ui-sref="contact"><i class="fa fa-phone-square"></i> Contact</a>
-                    </li>
-                    <li ng-class="{ navactive: isActiveStep('help') }">
-                        <a ng-click="showStep('help')" ui-sref="help"><i class="fa fa-question-circle"></i> Help</a>
-                    </li>
-                </ul>
-                <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
-                    <li><a ui-sref="login" class="navbar-link"><i class="fa fa-user"></i> login</a></li>
-                </ul>
-                <ul ng-show="email_address" class="nav navbar-nav navbar-right">
-                    <li ng-class="{ navactive: isActiveStep('reviews') }">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-comment space-right"></i> Reviews <span
-                                ng-controller="globalReviewsController"
-                                class="badge ng-binding">  {{count}}</span>
-                        </a>
-                        <div class="dropdown-menu reviews-dropdown">
-                            <!--directive-->
-                            <div  class="nav-dropdown-scrollbar" global-reviews></div>
-                        </div>
-                    </li>
-                    <li ng-class="{ navactive: isActiveStep('projects') }">
-                        <a ng-click="showStep('projects')"
-                           ui-sref="projects.project.overview({id: firstProjectID})"
-                           class="navbar-link">
-                            <i class="fa fa-briefcase space-right"></i> Projects
-                        </a>
-                    </li>
-                    <li ng-class="{ navactive: isActiveStep('machines') }">
-                        <a ng-click="showStep('machines')" ui-sref="machines" class="navbar-link"><i
-                            class="fa fa-gears space-right"></i> Machines</a></li>
-
-
-                    <li ng-class="{ navactive: isActiveStep('email') }" class="dropdown divider">
-                        <a ng-click="showStep('email')" class="dropdown-toggle"><i class="fa fa-user space-right"></i>{{email_address}}
-                            <span class="caret caret-light"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a ng-click="showStep('email')" ui-sref="account.password"><i
-                                class="fa fa-unlock-alt space-right"></i> Change
-                                Password</a></li>
-                            <li><a ng-click="showStep('email')" ui-sref="account.usergroup"><i
-                                class="fa fa-user space-right"></i>UserGroups</a></li>
-                            <li><a ng-click="showStep('email')" ui-sref="account.templates"><i
-                                class="fa fa-list-alt space-right"></i>Templates</a>
-                            </li>
-                            <li><a ng-click="showStep('email')" ui-sref="account.apikey"><i class="fa fa-key space-right"></i>Apikey</a>
-                            </li>
-                            <li class=divider></li>
-                            <li><a ng-click="showStep('email')" ui-sref="logout"> <i class="fa fa-sign-out space-right"></i>
-                                Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="row" ng-controller="_indexAlerts">
-            <div ng-show="message">
-                <notification ng-model="message"></notification>
-            </div>
-        </div>
-
-        <div class="row">
-            <div ng-controller="contextMenuController">
-                <!-- Inject action-stack so controller can use it -->
-                <div action-stack></div>
-                <div context-menu class="col-lg-12" data-target="global-menu">
-                    <div class="row app-container">
-                        <div ui-view>
-                        </div>
+        <div>
+            <sidebar></sidebar>
+            <div class="main-content">
+                <navbar></navbar>
+                <div class="row app-container">
+                    <div ui-view>
                     </div>
-                </div>
-                <div class="dropdown position-fixed" id="global-menu">
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="globalDropDownMenu">
-                        <li>
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="-1"
-                               ng-click="gotoLocation('top')">
-                                Goto Top (t)
-                            </a>
-                        </li>
-                        <li>
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="0"
-                               ng-click="gotoLocation('projecttree')">
-                                Goto Project File Tree (f)
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li ng-repeat="action in defaultActions">
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="-1"
-                               ng-click="toggleStackAction(action.id)">
-                                {{action.title}} ({{action.key}})
-                            </a>
-                        </li>
-                        <li class=divider></li>
-                        <li ng-repeat="action in actions">
-                            <a class="pointer"
-                               role="menuitem"
-                               tabindex="{{$index+1}}"
-                               ng-click="gotoLocation(action.id)">
-                                Goto {{action.title}} ({{$index+1}})
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -195,14 +77,20 @@
         <script src="assets/js/socket.io.js"></script>
         <script src="assets/js/angular/angular-toastr.js"></script>
         <script src="assets/js/angular/angular-masonry.js"></script>
+        <script src="assets/js/angular/tc-angular-chartjs.min.js"></script>
+        <script src="assets/js/Chart.min.js"></script>
+        <script src="assets/js/vis.js"></script>
 
         <!------------------------------ Application --------------------------->
         <script src="application/app.js"></script>
+        <script src="index/navbar.js"></script>
+        <script src="index/sidebar.js"></script>
+        <script src="index/sidebar-actions.js"></script>
+        <script src="index/sidebar-projects.js"></script>
+        <script src="index/sidebar-tags.js"></script>
+        <script src="index/sidebar-recent.js"></script>
 
         <!------------------------------ Core app ------------------------------>
-
-        <!-- action stack -->
-        <script src="application/default-stack-drop.js"></script>
 
         <!-- Navbar -->
         <script src="application/core/help/help-controller.js"></script>
@@ -229,7 +117,6 @@
 
         <!-- Toolbar projects -->
         <script src="application/core/projects/projects-controller.js"></script>
-        <script src="application/core/projects/directives/action-stack-directive.js"></script>
         <script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
         <script src="application/core/projects/directives/provenance/show-provenance-template-steps.js"></script>
         <script src="application/core/projects/directives/provenance/wizard-step-overview.js"></script>
@@ -252,11 +139,6 @@
         <script src="application/core/projects/directives/provenance/show-step-sample.js"></script>
         <script src="application/core/projects/directives/provenance/show-step-files.js"></script>
         <script src="application/core/projects/directives/provenance/show-step-properties.js"></script>
-        <script src="application/core/projects/directives/action-stack-tag.js"></script>
-        <script src="application/core/projects/directives/action-stack-todo.js"></script>
-        <script src="application/core/projects/directives/action-stack-file.js"></script>
-        <script src="application/core/projects/directives/action-stack-show-drafts.js"></script>
-        <script src="application/core/projects/services/action-stack-tracker-service.js"></script>
         <script src="application/core/projects/_action-controller.js"></script>
         <script src="application/core/projects/project/project-controller.js"></script>
         <script src="application/core/projects/project/project-action-bar.js"></script>
@@ -265,60 +147,71 @@
         <script src="application/core/projects/project/sideboard-directive.js"></script>
         <script src="application/core/projects/project/project-control-bar-directive.js"></script>
         <script src="application/core/projects/project/project-tabs.js"></script>
-        <script src="application/core/projects/project/overview/overview.js"></script>
-        <script src="application/core/projects/project/overview/overview-view-controller.js"></script>
-        <script src="application/core/projects/project/overview/overview-permissions-controller.js"></script>
+        <script src="application/core/projects/project/home/home.js"></script>
+        <script src="application/core/projects/project/home/directives/home-reviews-directive.js"></script>
+        <script src="application/core/projects/project/home/directives/home-samples-directive.js"></script>
+        <script src="application/core/projects/project/home/directives/home-files-directive.js"></script>
+        <script src="application/core/projects/project/home/directives/home-provenance-directive.js"></script>
+        <script src="application/core/projects/project/home/directives/home-notes-directive.js"></script>
+        <script src="application/core/projects/project/home/directives/home-tasks-directive.js"></script>
         <script src="application/core/projects/project/files/files.js"></script>
-        <script src="application/core/projects/project/files/files-view-controller.js"></script>
+        <script src="application/core/projects/project/files/overview.js"></script>
+        <script src="application/core/projects/project/files/view.js"></script>
+        <script src="application/core/projects/project/files/project-file-tabs.js"></script>
         <script src="application/core/projects/project/files/media-type-filter.js"></script>
+        <script src="application/core/projects/project/project-size-filter.js"></script>
+        <script src="application/core/projects/project/project-file-count-filter.js"></script>
+        <script src="application/core/projects/project/tags/tags.js"></script>
+        <script src="application/core/projects/project/tags/create.js"></script>
         <script src="application/core/projects/project/samples/samples.js"></script>
-        <script src="application/core/projects/project/samples/sample-view-controller.js"></script>
-        <script src="application/core/projects/project/notes/notes-view-controller.js"></script>
+        <script src="application/core/projects/project/samples/overview.js"></script>
+        <script src="application/core/projects/project/samples/create.js"></script>
         <script src="application/core/projects/project/provenance/provenance.js"></script>
-        <script src="application/core/projects/project/provenance/provenance-view-controller.js"></script>
+        <script src="application/core/projects/project/provenance/overview.js"></script>
+        <script src="application/core/projects/project/provenance/overview-show-process-details.js"></script>
+        <script src="application/core/projects/project/provenance/overview-process-list.js"></script>
+        <script src="application/core/projects/project/provenance/create.js"></script>
+        <script src="application/core/projects/project/provenance/drafts.js"></script>
+        <script src="application/core/projects/project/provenance/custompop-over.js"></script>
         <script src="application/core/projects/project/tab-control-bar.js"></script>
         <script src="application/core/projects/project/action-menu-directive.js"></script>
         <script src="application/core/projects/project/project-description-directive.js"></script>
-        <script src="application/core/projects/project/action/action-create-provenance.js"></script>
-        <script src="application/core/projects/project/action/action-create-provenance-from-draft.js"></script>
-        <script src="application/core/projects/project/action/action-create-sample.js"></script>
         <script src="application/core/projects/project/action/create-sample-composition.js"></script>
         <script src="application/core/projects/project/action/add-projects-to-sample.js"></script>
         <script src="application/core/projects/project/action/sample-default-attributes.js"></script>
         <script src="application/core/projects/project/action/create-sample-toolbar.js"></script>
-        <script src="application/core/projects/project/action/action-create-note.js"></script>
-        <script src="application/core/projects/project/action/action-create-review.js"></script>
         <script src="application/core/projects/project/action/action-area-button.js"></script>
         <script src="application/core/projects/project/action/action-status-service.js"></script>
-        <script src="application/core/projects/project/reviews/reviews-view-controller.js"></script>
         <script src="application/core/projects/project/reviews/reviews.js"></script>
+        <script src="application/core/projects/project/reviews/overview.js"></script>
+        <script src="application/core/projects/project/reviews/create.js"></script>
         <script src="application/core/projects/project/notes/notes.js"></script>
-
+        <script src="application/core/projects/project/notes/create.js"></script>
+        <script src="application/core/projects/project/notes/overview.js"></script>
+        <script src="application/core/projects/project/tasks/overview.js"></script>
+        <script src="application/core/projects/project/tasks/tasks.js"></script>
+        <script src="application/core/projects/project/tasks/create.js"></script>
+        <script src="application/core/projects/project/notes/edit.js"></script>
+        <script src="application/core/projects/project/provenance/viz-network-directive.js"></script>
+        <script src="application/core/projects/project/provenance/graph-service.js"></script>
 
         <!-------------------------------- Global directives ------------------------------->
         <script src="application/directives/magicbox.js"></script>
         <script src="application/directives/text-editor-directive.js"></script>
         <script src="application/directives/paged-directive.js"></script>
-        <script src="application/directives/notification-directive.js"></script>
         <script src="application/directives/cgroup-directive.js"></script>
         <script src="application/directives/dfproperties-directive.js"></script>
         <script src="application/directives/adproperties-directive.js"></script>
         <script src="application/directives/projecttree-directive.js"></script>
-        <script src="application/directives/modal-dismiss-directive.js"></script>
         <script src="application/directives/upperlevel-process-directive.js"></script>
         <script src="application/directives/upperlevel-object-directive.js"></script>
-        <script src="application/directives/saved-notification.js"></script>
         <script src="application/directives/periodic-table-directive.js"></script>
         <script src="application/directives/iterate-properties-directive.js"></script>
         <script src="application/directives/sample-report-directive.js"></script>
-        <script src="application/directives/condition-report-directive.js"></script>
         <script src="application/directives/plus-minus-toggle-directive.js"></script>
         <script src="application/directives/tree-grid-directive.js"></script>
         <script src="application/directives/df-report.js"></script>
-        <script src="application/directives/view-processes-directive.js"></script>
-        <script src="application/directives/file-report-directive.js"></script>
         <script src="application/directives/notes-directive.js"></script>
-        <script src="application/directives/focus.js"></script>
         <script src="application/directives/display-tags.js"></script>
         <script src="application/directives/select2-events.js"></script>
         <script src="application/directives/properties/display-properties.js"></script>
@@ -343,9 +236,12 @@
         <script src="application/services/tags.js"></script>
         <script src="application/services/prov-magicbar-context.js"></script>
         <script src="application/services/prov-step.js"></script>
-        <script src="application/services/action-stack-service.js"></script>
         <script src="application/services/review-service.js"></script>
+        <script src="application/services/process-list-service.js"></script>
         <script src="application/services/ui.js"></script>
+        <script src="application/services/recent.js"></script>
+        <script src="application/services/current.js"></script>
+        <script src="application/services/project-state.js"></script>
 
         <!-------------------------------- Global model services -------------------------->
         <script src="application/services/model/projects-service.js"></script>

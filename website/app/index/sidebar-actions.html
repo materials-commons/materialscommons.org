@@ -1,0 +1,68 @@
+<div class="list=group sidebar-list">
+    <a class="list-group-item sidebar-action"
+       ng-click="showProjectActions = !showProjectActions"
+       style="color: #97c7e0">
+        {{project.name}}
+        <i class="fa"
+           ng-class="{'fa-chevron-right': !showProjectAction, 'fa-chevron-down': showProjectActions}">
+        </i>
+    </a>
+
+    <div ng-show="showProjectActions">
+        <a class="list-group-item"
+           ui-sref="projects.project.home{id: project.id}"
+           ng-click="setActionActive('home')"
+           ng-class="{active: isActionActive('home')}">
+            <i class="fa fa-fw fa-home"></i> Home
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('provenance')"
+           ng-class="{active: isActionActive('provenance')}">
+            <i class="fa fa-fw fa-code-fork"></i> Provenance
+            <span class="pull-right white">{{project.processes.length}}</span>
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('samples')"
+           ng-class="{active: isActionActive('samples')}">
+            <i class="fa fa-fw fa-cubes"></i> Samples
+            <span class="pull-right white">{{project.samples.length}}</span>
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('notes')"
+           ng-class="{active: isActionActive('notes')}">
+            <i class="fa fa-fw fa-edit"></i> Notes
+            <span class="pull-right white">{{project.notes.length}}</span>
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('files')"
+           ng-class="{active: isActionActive('files')}">
+            <i class="fa fa-fw fa-files-o"></i> Files
+            <span class="pull-right"
+                  style="color: white">{{project | projectFileCount}}/{{project | projectSize}}</span>
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('reviews')"
+           ng-class="{active: isActionActive('reviews')}">
+            <i class="fa fa-fw fa-comment"></i> Reviews
+            <span class="badge badge-light">{{project.open_reviews.length}}</span>
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('tasks')"
+           ng-class="{active: isActionActive('tasks')}">
+            <i class="fa fa-fw fa-check-square"></i> Tasks
+            <span class="badge badge-light">{{project.todos.length}}</span>
+        </a>
+
+        <a class="list-group-item"
+           ng-click="setActionActive('preferences')"
+           ng-class="{active: isActionActive('preferences')}">
+            <i class="fa fa-fw fa-gears"></i> Preferences
+        </a>
+    </div>
+</div>

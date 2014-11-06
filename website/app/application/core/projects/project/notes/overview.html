@@ -1,0 +1,57 @@
+<div>
+    <div ng-if="project.notes.length == 0">
+        <p class="text-center">No Notes created under project {{project.name}}</p> <br>
+    </div>
+    <div style="background-color: white" class="col-lg-8 col-lg-offset-2">
+        <!--<div ng-repeat="n in project.notes | orderBy: date">-->
+        <!--<div ng-if="edit_index==$index">-->
+        <!--<text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],-->
+        <!--['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],-->
+        <!--['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"-->
+        <!--ng-model="n.message"></text-angular>-->
+        <!--<br>-->
+        <!--<button ng-click="updateNote($index)" class="btn btn-default btn-primary">Save</button>-->
+        <!--</div>-->
+        <!--<div ng-if="edit_index!==$index">-->
+        <!--<div ta-bind ng-model="n.message"></div>-->
+        <!--</div>-->
+        <!--<div class="text-muted sub-text">-->
+        <!--{{n.date}} --- {{n.who}}-->
+        <!--</div>-->
+        <!--<div ng-if="edit_index!==$index">-->
+        <!--<a ng-click="editNotes($index)">edit</a>-->
+        <!--</div>-->
+        <!--<hr/>-->
+        <!--</div>-->
+        <div class="row">
+            <div class="timeline-item" ng-repeat="note in project.notes">
+                <div class="row">
+                    <div class="col-xs-3 date">
+                        <i  ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
+                        <small class="tex-navy">{{note.date | date: shortDate}}</small>
+                        <br>
+                        <small class="text-navy">{{note.date | date: "h:mma"}}</small>
+                    </div>
+                    <div class="col-xs-7 content no-top-border">
+                        <p ng-if="edit_index !== $index" class="m-b-xs">
+                            <b>{{note.title}}</b>
+                            <div ta-bind ng-model="note.message"></div>
+                        </p>
+                        <p ng-if="edit_index === $index" class="m-b-xs">
+                            <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
+                            ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
+                            ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                                          ng-model="note.message"></text-angular>
+                            <br>
+                            <button ng-click="updateNote($index)" class="btn btn-default btn-primary">Save</button>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

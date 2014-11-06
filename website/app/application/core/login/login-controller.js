@@ -10,7 +10,7 @@ Application.Controllers.controller('login',
                         projects.clear();
                         projectFiles.clear();
                         projects.getList().then(function(projects) {
-                            $state.go('projects.project.overview', {id: projects[0].id});
+                            $state.go('projects.project.home', {id: projects[0].id});
                         });
                     })
                     .error(function (data) {

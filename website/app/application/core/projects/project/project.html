@@ -1,25 +1,21 @@
-<div ng-controller="projectsProject">
-    <project-control-bar project-id="{{project.id}}"></project-control-bar>
+<div>
     <div class="row">
         <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
-        <div class="col-xs-2 sideboard" style="padding-top: 5px">
-            <sideboard></sideboard>
-        </div>
-        <div class="col-xs-10" style="padding-left: 10px;">
-            <div class="row"
-                 style="padding-bottom: 7px; padding-top: 3px">
-                <div class="col-xs-7">
+        <div style="padding-left: 10px; padding-right: 10px;">
+            <div class="row">
+                <div class="col-xs-5">
+                    <h1 style="color: #41738c; font-weight: bold; font-size: 28px; margin-top: 5px">
+                        {{project.name}}
+                    </h1>
+                </div>
+                <div class="col-xs-7" style="padding-bottom: 7px; padding-top: 7px">
                     <project-search-bar project="project"></project-search-bar>
                 </div>
             </div>
-            <div style="padding-top: 3px">
-                <project-action-area project="project"></project-action-area>
-                <div id="action-stack" class="row">
-                </div>
-                <div ng-show="showTabs()" class="row">
-                    <project-tabs project="project"></project-tabs>
-                </div>
-            </div>
+            <!-- <div style="padding-top: 3px">
+            <project-action-area project="project"></project-action-area>
+            </div> -->
+            <div ui-view></div>
             <div ng-show="showFiles()" class="row">
                 <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>
                 <div class="row">

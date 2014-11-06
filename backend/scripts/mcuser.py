@@ -22,7 +22,12 @@ class User(object):
         self.description = ""
         self.affiliation = ""
         self.homepage = ""
+        self.last_login = r.now()
         self.notes = []
+        self.preferences = {
+            "tags": [],
+            "templates": []
+        }
 
 
 def make_password_hash(password):
@@ -38,6 +43,9 @@ if __name__ == "__main__":
                       help="user password", type="string")
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port", default=30815)
+    parser.add_option("-a", "--admin", dest="admin",
+                      default=False, action="store_true",
+                      help="Add as admin")
     parser.add_option("-u", "--update", dest="update",
                       default=False, action='store_true',
                       help="Reset users password")
@@ -70,6 +78,10 @@ if __name__ == "__main__":
         pwhash = make_password_hash(options.password)
         u = User(options.email, options.email, pwhash)
         r.table('users').insert(u.__dict__).run(conn)
+        if options.admin:
+            r.table("usergroups").get("admin").update({
+                "users": r.row["users"].append(options.email)
+            }).run(conn)
         print "Add user: " + options.email
         apiport = 5002
         if options.port == 28015:

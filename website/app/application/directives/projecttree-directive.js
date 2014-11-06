@@ -1,8 +1,10 @@
 Application.Controllers.controller('ProjectTreeController',
-                                   ["toastr","$scope", "mcapi", "projectFiles", "pubsub", "ProjectPath",
-                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects","actionStatus", "provStep", ProjectTreeController]);
+                                   ["$scope", "toastr", "mcapi", "projectFiles", "pubsub", "ProjectPath",
+                                    "$state", "Tags", "User", "dateGenerate", "$filter", "model.projects",
+                                    "projectFileTabs", ProjectTreeController]);
 
-function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter, projects, actionStatus, provStep) {
+function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, ProjectPath, $state, Tags, User, dateGenerate, $filter,
+                                projects, projectFileTabs) {
 
     $scope.addToReview = function(entry, review){
         var item = {'id': entry.id, 'path': entry.fullname, 'name': entry.name, 'type': entry.type};
@@ -55,10 +57,10 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
         }
     };
 
-    $scope.populatePath = function (entry) {
+    $scope.openFile = function (f) {
         ProjectPath.populate($scope.trail, $scope.dir);
-        // $state.go("projects.dataedit.details", {data_id: entry.id});
-        $scope.toggleStackAction('file', entry.name, entry.id, entry.id);
+        projectFileTabs.add($scope.projectId, f);
+        $state.go("projects.project.files.view", {fileid: f.id});
     };
 
     $scope.loadReviews = function (id) {
@@ -102,7 +104,6 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
             if (channel !== null) {
                 pubsub.send(channel, entry);
             }
-
     };
 
     $scope.truncateTrail = function (currentTrail, currentItem) {
@@ -167,28 +168,8 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
             }).post($scope.review);
     };
 
-    function isReviewActionCurrent() {
-        return actionStatus.isCurrentAction($scope.projectID, 'create-review');
-    }
-
-    function isProvenanceFileActive() {
-        if (actionStatus.isCurrentAction($scope.projectID, 'create-provenance')) {
-            var step = provStep.getCurrentStep($scope.projectID);
-            if (step.step == "files") {
-                return true;
-            }
-        }
-        return false;
-    }
-
     $scope.showFileCheckbox = function() {
-        if (isReviewActionCurrent()) {
-            return true;
-        } else if (isProvenanceFileActive()) {
-            return true;
-        }
-
-        return false;
+        return projectFiles.isActive($scope.projectID);
     };
 
     $scope.init = function() {
@@ -219,7 +200,7 @@ function ProjectTreeController (toastr, $scope, mcapi, projectFiles, pubsub, Pro
             $scope.users = p.users;
             $scope.projectSize = bytesToSizeStr(p.size);
             for (key in p.mediatypes) {
-                totalFiles += p.mediatypes[key];
+                totalFiles += p.mediatypes[key].count;
             }
             $scope.fileCount = numberWithCommas(totalFiles);
         });

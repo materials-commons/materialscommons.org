@@ -1,0 +1,54 @@
+<div class="info-box">
+    <div class="row">
+        <legend class="text-center"><u>Provenance Wizard</u></legend>
+    </div>
+    <div class="row">
+        <provenance-wizard-control-bar></provenance-wizard-control-bar>
+    </div>
+
+    <div class="row">
+        <form ng-show="wizardState.showChooseProcess" class="form-horizontal">
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" for="select-process">Process:</label>
+                    <div class="controls col-xs-4">
+                        <select id="select-process"
+                                ui-select2="{placeholder: 'Select process', allowClear: true}"
+                                ng-multiple="false"
+                                ng-options="template.template_name group by template.category for template in templates | orderBy:'category'"
+                                ng-model="wizardState.selectedTemplate"
+                                class="form-control">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group select2-above">
+                    <div class="controls col-xs-4 col-xs-offset-2">
+                        <button id="button1id"
+                                name="button1id"
+                                ng-click="start()"
+                                class="btn btn-success">
+                            Start
+                        </button>
+                        <button id="button2id"
+                                name="button2id"
+                                class="btn btn-danger"
+                                ng-click="cancel()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="row">
+        <show-provenance-template-steps
+            show-overview="wizardState.showOverview"
+            template="wizardState.selectedTemplate">
+        </show-provenance-template-steps>
+    </div>
+
+    <wizard-next-step wizard-state="wizardState">
+    </wizard-next-step>
+</div>

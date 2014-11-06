@@ -1,5 +1,6 @@
 import rethinkdb as r
 
+
 class Review(object):
     def __init__(self, author, assigned_to):
         self.title = ""
@@ -10,4 +11,4 @@ class Review(object):
         self.status = ""
         self.birthtime = r.now()
         self.project = ""
-        self.modifiedtime = r.now()
+        self.mtime = self.birthtime

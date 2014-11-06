@@ -1,10 +1,18 @@
 import json
 import error
 import rethinkdb as r
-from flask import g
+from flask import g, Response
 from args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
 from mcexceptions import RequiredAttributeException, DatabaseError
 import sys
+
+
+def jsoner(what):
+    return Response(json.dumps(what), mimetype="application/json")
+
+
+def jsoner_id(id):
+    return Response(json.dumps({'id': id}), mimetype="application/json")
 
 
 def msg(s):
@@ -47,17 +55,20 @@ def get_required_prop(what, d):
 
 
 def insert_status(rv, return_created=False):
-    if rv[u'inserted'] == 1:
+    if rv[u'inserted'] == 1 or rv['replaced'] == 1:
         if return_created:
-            val = rv['new_val']
+            if 'changes' in rv:
+                val = rv['changes'][0]['new_val']
+            else:
+                val = rv['new_val']
         elif 'generated_keys' in rv:
             val = rv['generated_keys'][0]
         else:
-            val = rv['new_val']['id']
-        if return_created:
-            return json_as_format_arg(val)
-        else:
-            return json.dumps({'id': val})
+            if 'changes' in rv:
+                val = rv['changes'][0]['new_val']['id']
+            else:
+                val = rv['new_val']['id']
+        return val
     else:
         raise DatabaseError()
 
@@ -104,7 +115,7 @@ def insert_entry_id(table_name, entry):
     else:
         rr = r.table(table_name).insert(entry, return_vals=True)
     rv = rr.run(g.conn)
-    if rv[u'inserted'] == 1:
+    if rv['inserted'] == 1:
         if 'generated_keys' in rv:
             return rv['generated_keys'][0]
         else:

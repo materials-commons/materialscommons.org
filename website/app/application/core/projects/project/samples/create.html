@@ -1,0 +1,24 @@
+<div class="row info-box">
+    <div class="col-xs-12">
+        <create-sample-toolbar></create-sample-toolbar>
+        <sample-default-attributes></sample-default-attributes>
+        <div ng-switch="activeToolbarItem">
+            <create-sample-composition ng-switch-when="composition">
+            </create-sample-composition>
+            <add-projects-to-sample ng-switch-when="projects">
+            </add-projects-to-sample>
+            <sample-events sample="" ng-switch-when="provenance">
+            </sample-events>
+        </div>
+        <form name="Sample" class="form-horizontal">
+            <div class="form-group"> <br>
+                <label class="control-label col-xs-2"></label>
+                <button validation-submit="Sample" type="button"
+                        class="btn btn-xs btn-primary" ng-click="create()">
+                    Create
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

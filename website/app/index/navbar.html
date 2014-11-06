@@ -1,0 +1,143 @@
+<nav class="navbar navbar-custom" ng-controller="_indexNavigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand"
+           ng-click="goHome()">MaterialsCommons</a>
+    </div>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav list-inline">
+            <li id="new-item"
+                is-open="status.isopen"
+                class="dropdown">
+                <a ng-click="showStep('about')"
+                   class="dropdown-toggle large-text">
+                    <i class="fa fa-fw fa-plus"></i>
+                    New
+                    <span class="caret caret-light"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a role="menuitem"
+                           tabindex="1"
+                           ng-click=create('provenance')>
+                            <i class="fa fa-fw fa-code-fork"></i> New Provenance
+                        </a>
+                    </li>
+                    <li>
+                        <a role="menuitem"
+                           tabindex="2"
+                           ng-click="create('samples')">
+                            <i class="fa fa-fw fa-cubes"></i> New Sample
+                        </a>
+                    </li>
+                    <li>
+                        <a role="menuitem"
+                           tabindex="3"
+                           ng-click="create('reviews')">
+                            <i class="fa fa-fw fa-comment"></i> New Review
+                        </a>
+                    </li>
+                    <li>
+                        <a role="menitem"
+                           tabindex="4"
+                           ng-click="create('notes')">
+                            <i class="fa fa-fw fa-edit"></i> New Note
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="fa fa-fw fa-tags"></i> New Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="fa fa-fw fa-check-square"></i> New Task
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
+            <li>
+                <a ui-sref="login" class="navbar-link larg-text">
+                    <i class="fa fa-fw fa-user"></i>
+                    login
+                </a>
+            </li>
+        </ul>
+        <ul ng-show="email_address" class="nav navbar-nav navbar-right">
+            <li ng-class="{ navactive: isActiveStep('reviews') }">
+                <a class="dropdown-toggle large-text" data-toggle="dropdown">
+                    <i class="fa fa-comment space-right"></i> Reviews
+                    <span ng-controller="globalReviewsController"
+                          class="badge ng-binding">
+                        {{open_reviews.length}}
+                    </span>
+                </a>
+                <div class="dropdown-menu reviews-dropdown">
+                    <!--directive-->
+                    <div  class="nav-dropdown-scrollbar" global-reviews></div>
+                </div>
+            </li>
+            <li ng-class="{ navactive: isActiveStep('projects') }">
+                <a ng-click="showStep('projects')"
+                   ui-sref="projects.project.overview({id: firstProjectID})"
+                   class="navbar-link large-text">
+                    <i class="fa fa-fw fa-briefcase space-right"></i> Projects
+                </a>
+            </li>
+            <li ng-class="{ navactive: isActiveStep('machines') }">
+                <a ng-click="showStep('machines')" ui-sref="machines"
+                   class="navbar-link large-text">
+                    <i class="fa fa-fw fa-gears space-right"></i>
+                    Machines
+                </a>
+            </li>
+
+            <li class="dropdown divider">
+                <a ng-click="showStep('email')" class="dropdown-toggle large-text">
+                    <i class="fa fa-fw fa-user space-right"></i>{{email_address}}
+                    <span class="caret caret-light"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.password">
+                            <i class="fa fa-fw fa-unlock-alt space-right"></i>
+                            Change Password
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.usergroup">
+                            <i class="fa fa-fw fa-user space-right"></i>
+                            UserGroups
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.templates">
+                            <i class="fa fa-fw fa-list-alt space-right"></i>
+                            Templates
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="account.apikey">
+                            <i class="fa fa-fw fa-key space-right"></i>
+                            Apikey
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a ng-click="showStep('email')" ui-sref="logout">
+                            <i class="fa fa-fw fa-sign-out space-right"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -7,10 +7,10 @@ Application.Filters.filter('byMediaType', function () {
             items.forEach(function(item) {
                 if ('mediatype' in item) {
                     values.forEach(function(val){
-                        if (item['mediatype'] == val){
+                        if (item.mediatype === val){
                             matches.push(item);
                         }
-                    })
+                    });
                 }
             });
         }

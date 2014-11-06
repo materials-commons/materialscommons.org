@@ -1,0 +1,55 @@
+<div class="row" ng-controller="_indexAlerts">
+    <div ng-show="message">
+        <notification ng-model="message"></notification>
+    </div>
+</div>
+<div class="row">
+    <div ng-controller="contextMenuController">
+        <!-- Inject action-stack so controller can use it -->
+        <div action-stack></div>
+        <div context-menu class="col-lg-12" data-target="global-menu">
+            <div class="row app-container">
+                <div ui-view>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown position-fixed" id="global-menu">
+            <ul class="dropdown-menu" role="menu" aria-labelledby="globalDropDownMenu">
+                <li>
+                    <a class="pointer"
+                       role="menuitem"
+                       tabindex="-1"
+                       ng-click="gotoLocation('top')">
+                        Goto Top (t)
+                    </a>
+                </li>
+                <li>
+                    <a class="pointer"
+                       role="menuitem"
+                       tabindex="0"
+                       ng-click="gotoLocation('projecttree')">
+                        Goto Project File Tree (f)
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li ng-repeat="action in defaultActions">
+                    <a class="pointer"
+                       role="menuitem"
+                       tabindex="-1"
+                       ng-click="toggleStackAction(action.id)">
+                        {{action.title}} ({{action.key}})
+                    </a>
+                </li>
+                <li class=divider></li>
+                <li ng-repeat="action in actions">
+                    <a class="pointer"
+                       role="menuitem"
+                       tabindex="{{$index+1}}"
+                       ng-click="gotoLocation(action.id)">
+                        Goto {{action.title}} ({{$index+1}})
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
