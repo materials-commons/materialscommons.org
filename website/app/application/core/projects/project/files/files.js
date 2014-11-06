@@ -1,57 +1,13 @@
 Application.Controllers.controller("projectFiles",
-                                   ["$scope", projectFiles]);
+                                   ["$scope", "project", "projectFileTabs", "recent",
+                                    projectFiles]);
 
-function projectFiles($scope) {
-    $scope.activeLink = 'View Images';
-    $scope.isActiveLink = function(tabID) {
-        $scope.activeLink = tabID;
+function projectFiles($scope, project, projectFileTabs, recent) {
+    $scope.projectID = project.id;
+    $scope.files = projectFileTabs.get(project.id);
+
+    $scope.closeFile = function(file) {
+        projectFileTabs.delete(project.id, file);
+        recent.gotoLast(project.id);
     };
-
-    $scope.isActiveLink = function (tabID) {
-        return tabID == $scope.activeLink;
-    };
-
-    $scope.imagesMenu = [
-        {
-            title:"In Current Directory",
-            action: "projects.project.files.view"
-        },
-        {
-            title:"In Project",
-            action: ""
-        },
-        {
-            title: "In Dataset",
-            action: ""
-        }
-    ];
-
-    $scope.downloadMenu = [
-        {
-            title: "Project",
-            action: ""
-        },
-
-        {
-            title: "Current Directory",
-            action: ""
-        }
-    ];
-
-    $scope.reportsMenu = [
-        {
-            title: "By Type",
-            action: ""
-        },
-
-        {
-            title: "With Multiple Versions",
-            action:""
-        },
-
-        {
-            title: "Used In Other Projects",
-            action: ""
-        }
-    ];
 }

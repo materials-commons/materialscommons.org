@@ -23,6 +23,7 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
 
     Projects.getList().then(function(projects) {
         $scope.projects = projects;
+        ui.setShowFiles($stateParams.id, true);
     });
 
     var state = actionStatus.getCurrentActionState($scope.project.id);
@@ -65,7 +66,6 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
                         actionStatus.clearCurrentActionState($scope.project.id);
                         actionStatus.toggleAction($scope.project.id, 'create-review');
                         ui.setShowFiles($stateParams.id, true);
-                        ui.setShowToolbarTabs($stateParams.id, true);
                     });
 
                 });
@@ -78,7 +78,6 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
         actionStatus.toggleAction($scope.project.id, 'create-review');
         console.log("setting show files");
         ui.setShowFiles($stateParams.id, true);
-        ui.setShowToolbarTabs($stateParams.id, true);
     };
 
     $scope.create = function () {

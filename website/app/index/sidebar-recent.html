@@ -1,0 +1,16 @@
+<div class="list-group sidebar-list" style="margin-top: 20px;">
+    <div class="list-group-item sidebar-action">
+        <a style="color: white" ng-click="showAllRecent = !showAllRecent">
+            <i class="fa fa-fw fa-history"></i> Recent
+            <i class="fa"
+               ng-class="{'fa-chevron-right': !showAllRecent, 'fa-chevron-down': showAllRecent}"></i>
+            <span class="pull-right white">{{recents.length}}</span>
+        </a>
+        <div ng-show="showAllRecent">
+            <a ng-click="gotoRecent(recent)" class="list-group-item" ng-repeat="recent in recents">
+                <i class="fa fa-fw" ng-class="recent.icon"></i>
+                {{recent.name}}
+            </a>
+        </div>
+    </div>
+</div>

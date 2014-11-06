@@ -1,44 +1,13 @@
 Application.Controllers.controller("projectProvenance",
-                                   ["$scope", projectProvenance]);
+                                   ["$scope", "project", "projectState", "$state",
+                                    projectProvenance]);
 
-function projectProvenance($scope){
-    $scope.activeLink = 'View Provenance';
-    $scope.setActiveLink = function(tabID) {
-        $scope.activeLink = tabID;
+function projectProvenance($scope, project, projectState, $state) {
+    $scope.projectID = project.id;
+
+    $scope.createProvenance = function() {
+        var state = null;
+        var stateID = projectState.add(project.id, state);
+        $state.go("projects.project.provenance.create", {sid: stateID});
     };
-
-    $scope.isActiveLink = function (tabID) {
-        if (tabID == $scope.activeLink){
-            return true
-        }
-        return false
-    };
-    $scope.createProvenanceMenu = [
-        {
-            title: "New",
-            action: ""
-        },
-
-        {
-            title: "From Draft",
-            action: ""
-        },
-
-        {
-            title: "From Template",
-            action: ""
-        }
-    ];
-
-    $scope.reportsMenu = [
-        {
-            title: "By Process",
-            action: ""
-        },
-
-        {
-            title: "By Sample",
-            action: ""
-        }
-    ];
 }

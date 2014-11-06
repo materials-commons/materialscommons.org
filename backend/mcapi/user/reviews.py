@@ -9,46 +9,13 @@ from .. import error
 from loader.model import review
 
 
-@app.route('/reviews/requested', methods=['GET'])
-@apikey(shared=True)
-@jsonp
-def get_reviews_requested():
-    requested_reviews = []
-    user = access.get_user()
-    selection = list(r.table('reviews')
-                     .get_all(user, index='author').order_by('project').eq_join('project', r.table('projects'))
-                     .run(g.conn, time_format='raw'))
-    for item in selection:
-        review = item['left']
-        project = item['right']
-        review['project_name'] = project['name']
-        requested_reviews.append(review)
-    return args.json_as_format_arg(requested_reviews)
-
-
-@app.route('/reviews/to_conduct', methods=['GET'])
-@apikey(shared=True)
-@jsonp
-def get_reviews_to_be_conducted():
-    conduct_reviews = []
-    user = access.get_user()
-    selection = list(r.table('reviews')
-                     .get_all(user, index='assigned_to').order_by('project').eq_join('project', r.table('projects'))
-                     .run(g.conn, time_format='raw'))
-    for item in selection:
-        review = item['left']
-        project = item['right']
-        review['project_name'] = project['name']
-        conduct_reviews.append(review)
-    return args.json_as_format_arg(conduct_reviews)
-
-
 @app.route('/reviews/<id>', methods=['GET'])
 @apikey(shared=True)
 @jsonp
 def get_review(id):
     selection = r.table('reviews').get(id).run(g.conn, time_format='raw')
     return args.json_as_format_arg(selection)
+
 
 @app.route('/reviews/<id>', methods=['DELETE'])
 @apikey
@@ -67,7 +34,6 @@ def delete_review(id):
 
 @app.route('/reviews', methods=['POST'])
 @apikey(shared=True)
-@crossdomain(origin='*')
 def add_review():
     j = request.get_json()
     assigned_to = dmutil.get_required('assigned_to', j)
@@ -78,7 +44,9 @@ def add_review():
     r.title = dmutil.get_required('title', j)
     r.status = "open"
     r.project = dmutil.get_required('project', j)
-    return  dmutil.insert_entry('reviews', r.__dict__)
+    rv = dmutil.insert_entry('reviews', r.__dict__, return_created=True)
+    return dmutil.jsoner(rv)
+
 
 @app.route('/reviews/<id>', methods=['PUT'])
 @apikey(shared=True)
@@ -89,9 +57,16 @@ def update_review(id):
     status = dmutil.get_optional('status', j)
     items = dmutil.get_optional('items', j)
     if messages:
-        rv = r.table('reviews').get(id).update({'messages': messages, 'modifiedtime': r.now()}).run(g.conn)
+        rv = r.table('reviews').get(id).update({
+            'messages': messages, 'mtime': r.now()
+        }).run(g.conn)
     if status:
-        rv = r.table('reviews').get(id).update({'status': status, 'modifiedtime': r.now()}).run(g.conn)
+        rv = r.table('reviews').get(id).update({
+            'status': status,
+            'mtime': r.now()
+        }).run(g.conn)
     if items:
-        rv = r.table('reviews').get(id).update({'items': items, 'modifiedtime': r.now()}).run(g.conn) 
+        rv = r.table('reviews').get(id).update({
+            'items': items, 'mtime': r.now()
+        }).run(g.conn)
     return jsonify(rv)

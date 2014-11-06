@@ -1,23 +1,12 @@
-Application.Controllers.controller("projectReviews",
-    ["$scope",  projectReviews]);
+Application.Controllers.controller("projectReviews", ["$scope", "project", "projectState", "$state",
+                                                      projectReviews]);
 
-function projectReviews($scope) {
-    $scope.activeLink = 'View Reviews';
-    $scope.setActiveLink = function(tabID) {
-        $scope.activeLink = tabID;
+function projectReviews($scope, project, projectState, $state) {
+    $scope.projectID = project.id;
+
+    $scope.createReview = function() {
+        var state = null;
+        var stateID = projectState.add(project.id, state);
+        $state.go("projects.project.reviews.create", {sid: stateID});
     };
-
-    $scope.isActiveLink = function (tabID) {
-        if (tabID == $scope.activeLink){
-            return true
-        }
-        return false
-    };
-    $scope.reportsMenu = [
-        {
-            title:"By Activity",
-            action: ""
-        }
-    ];
-
 }

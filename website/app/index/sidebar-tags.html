@@ -1,0 +1,22 @@
+<div class="list-group sidebar-list" style="margin-top: 20px;">
+    <div class="list-group-item sidebar-action">
+        <a style="color: white" ng-click="showTags = !showTags">
+            <i class="fa fa-fw fa-tags"></i> Tags
+            <i class="fa"
+               ng-class="{'fa-chevron-right': !showTags, 'fa-chevron-down': showTags}"></i>
+            <span class="pull-right white">{{tags.length}}</span>
+        </a>
+        <div ng-show="showTags" style="overflow: auto; max-height: 400px;">
+            <a class="list-group-item"
+               ng-click="createTag()">
+                <i class="fa fa-fw fa-plus"></i> New Tag
+            </a>
+            <hr class="carved"/>
+            <a class="list-group-item" ng-repeat="tag in tags">
+                <i class="fa fa-fw"
+                   ng-class="'fa-' + tag.icon" ng-style="{color: tag.color}"></i>
+                {{tag.name}}
+            </a>
+        </div>
+    </div>
+</div>

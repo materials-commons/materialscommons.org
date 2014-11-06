@@ -14,7 +14,9 @@ def check(user, owner, id="Unknown"):
 
 
 def reset():
+    global _admins
     _user_access_matrix.clear()
+    _admins = []
 
 
 def _user_in_owner_group(user, owner):

@@ -1,32 +1,12 @@
 Application.Controllers.controller("projectSamples",
-                                   ["$scope", projectSamples]);
+                                   ["$scope", "project", "projectState", "$state", projectSamples]);
 
-function projectSamples($scope) {
-    $scope.activeLink = 'View Samples';
-    $scope.setActiveLink = function(tabID) {
-        $scope.activeLink = tabID;
+function projectSamples($scope, project, projectState, $state) {
+    $scope.projectID = project.id;
+
+    $scope.createSample = function() {
+        var state = null;
+        var stateID = projectState.add(project.id, state);
+        $state.go("projects.project.samples.create", {sid: stateID});
     };
-
-    $scope.isActiveLink = function (tabID) {
-        if (tabID == $scope.activeLink){
-            return true
-        }
-        return false
-    };
-
-    $scope.reportsMenu = [
-        {
-            title:"In Provenance",
-            action: ""
-        },
-        {
-            title:"Unused Samples",
-            action: ""
-        },
-        {
-            title: "With Children",
-            action: ""
-        }
-    ];
-
 }

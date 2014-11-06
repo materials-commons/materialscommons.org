@@ -1,7 +1,7 @@
 from ..mcapp import app
 from ..decorators import apikey
 from .. import dmutil
-from flask import jsonify, g, request
+from flask import g, request
 import rethinkdb as r
 from .. import access
 from loader.model import process, note, property
@@ -12,10 +12,11 @@ from loader.model import process, note, property
 def create_provenance2(project_id):
     user = access.get_user()
     j = request.get_json()
-    id = create_process(j['process'], user)
+    proc = create_process(j['process'], user)
+    id = proc['id']
     create_inputs(j['inputs'], id, user)
     create_outputs(j['outputs'], id, user)
-    return jsonify({'id': id})
+    return dmutil.jsoner(proc)
 
 
 def create_process(j, user):
@@ -29,11 +30,12 @@ def create_process(j, user):
     tags = dmutil.get_optional('tags', j, [])
     notes = dmutil.get_optional('notes', j, [])
     runs = dmutil.get_optional('runs', j, [])
-    id = dmutil.insert_entry_id('processes', p.__dict__)
+    proc = dmutil.insert_entry('processes', p.__dict__, return_created=True)
+    id = proc['id']
     create_process_tags(tags, id)
     create_process_notes(notes, id, user)
     create_process_runs(runs, id)
-    return id
+    return proc
 
 
 def create_process_tags(tags, process_id):

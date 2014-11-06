@@ -17,6 +17,15 @@ def msg(s):
     sys.stdout.flush()
 
 
+def update_fullnames_and_last_login(conn):
+    selection = r.table('users').run(conn)
+    for user in selection:
+        r.table('users').get(user['id']).update({
+            'fullname': user['email'],
+            'last_login': r.time(2014, 01, 01, '+00:00')
+        }).run(conn)
+
+
 def cleanup_samples(conn):
     msg("Identifying bad samples...")
     samples = list(r.table('samples').run(conn))
@@ -123,6 +132,31 @@ def datafile_path(mcdir, datafile_id):
 
 
 def add_mediatypes(conn, mcdir):
+    all_mediatypes = {'application/msword': 'MS-Word',
+                      'application/octet-stream': 'Binary',
+                      'application/pdf': 'PDF',
+                      'application/postscript': 'Postscript',
+                      'application/vnd.ms-excel': 'MS-Excel',
+                      'application/vnd.ms-powerpoint': 'MS-PowerPoint',
+                      'application/x-dosexec': 'DOS',
+                      'application/xml': 'XML',
+                      'application/zip': 'ZIP',
+                      'image/gif': 'GIF',
+                      'image/jpeg': 'JPEG',
+                      'image/png': 'PNG',
+                      'image/tiff': 'TIFF',
+                      'image/vnd.adobe.photoshop': 'Photoshop',
+                      'image/x-ms-bmp': 'BMP',
+                      'inode/x-empty': 'Empty',
+                      'text/html': 'HTML',
+                      'text/plain': 'Text',
+                      'text/rtf': 'RTF',
+                      'text/x-asm': 'ASM',
+                      'text/x-c++': 'C++',
+                      'unknown': 'Unknown',
+                      'video/mpeg': 'MPEG Video',
+                      'video/x-ms-asf': 'MS-ASF Video',
+                      'Composite Document File V2 Document, No summary info': 'Composite'}
     msg("Adding mediatypes and sizes for files and projects...")
     # Determine media types for files
     # and update the statistics for the
@@ -151,24 +185,34 @@ def add_mediatypes(conn, mcdir):
                 path = datafile_path(mcdir, dfid)
                 if not os.path.isfile(path):
                     mime = "unknown"
-                    description = "unknown"
+                    mime_description = "Unknown"
                     msg("file not found: %s" % (path))
                 else:
                     mime = magic.from_file(path, mime=True)
-                    description = magic.from_file(path)
+                    mime_description = magic.from_file(path)
+                description = all_mediatypes[mime]
                 msg("file %s has mediatype %s" % (path, mime))
                 m = {
                     'mime': mime,
+                    'mime_description': mime_description,
                     'description': description
                 }
                 r.table('datafiles').get(df['id'])\
                                     .update({'mediatype': m})\
                                     .run(conn)
                 if mime not in mediatypes:
-                    mediatypes[mime] = 1
+                    mediatypes[mime] = {
+                        'count': 1,
+                        'size': df['size'],
+                        'description': all_mediatypes[mime]
+                    }
+                    msg("Unknown media type mapping: '%s'" % (mime))
                 else:
-                    count = mediatypes[mime]
-                    mediatypes[mime] = count+1
+                    mediatypes[mime] = {
+                        'count': mediatypes[mime]['count'] + 1,
+                        'size': mediatypes[mime]['size'] + df['size'],
+                        'description': all_mediatypes[mime]
+                    }
             # update datadirs_denorm to include mediatype
             r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
@@ -452,6 +496,10 @@ def remove_processes(conn):
     r.table('processes').delete(conn)
 
 
+def remove_reviews(conn):
+    r.table('reviews').delete(conn)
+
+
 def populate_elements(conn):
     # read elements.txt file and iterate throught each element to build
     # table rows
@@ -485,6 +533,7 @@ def main(conn, mcdir):
     move_samples_denorm(conn)
     associate_samples_to_projects(conn)
     populate_elements(conn)
+    update_fullnames_and_last_login(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
@@ -496,6 +545,6 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
     if options.mcdir is None:
         print "You must specify the location of mcdir"
-        #os.exit(1)
+        sys.exit(1)
     conn = r.connect('localhost', options.port, db='materialscommons')
     main(conn, options.mcdir)

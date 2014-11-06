@@ -10,11 +10,14 @@ function wizardStepProcessDirective() {
 }
 
 Application.Controllers.controller('wizardStepProcessController',
-                                   ["$scope", "provStep", "$stateParams", "actionStatus",
-                                    "ui",
+                                   ["$scope", "provStep", "$stateParams", "projectState",
+                                    "recent",
                                     wizardStepProcessController]);
 
-function wizardStepProcessController($scope, provStep, $stateParams, actionStatus, ui) {
+function wizardStepProcessController($scope, provStep, $stateParams, projectState, recent) {
+    var stateID = $stateParams.sid;
+    var projectID = $stateParams.id;
+
     function setDoneState() {
         if (!$scope.wizardState.currentDraft.process.name) {
             $scope.wizardState.currentDraft.process.done = false;
@@ -24,13 +27,21 @@ function wizardStepProcessController($scope, provStep, $stateParams, actionStatu
         $scope.wizardState.currentDraft.process.done = (len > 0);
     }
 
-    $scope.wizardState = actionStatus.getCurrentActionState($stateParams.id);
+    $scope.wizardState = projectState.get($stateParams.id, $stateParams.sid);
     $scope.step = provStep.getCurrentStep($scope.wizardState.project.id);
 
     provStep.onLeave($stateParams.id, function() {
+        var templateName = $scope.wizardState.selectedTemplate.template_name;
         setDoneState();
         if (!$scope.wizardState.currentDraft.process.done) {
             $scope.wizardState.currentDraft.completed = false;
+        }
+
+        var name = $scope.wizardState.currentDraft.process.name;
+        if (name === "") {
+            recent.update(projectID, stateID, templateName);
+        } else {
+            recent.update(projectID, stateID, templateName + ": " + name);
         }
     });
 
@@ -40,10 +51,6 @@ function wizardStepProcessController($scope, provStep, $stateParams, actionStatu
     };
 
     $scope.cancelStep = function() {
-        var projectID = $scope.wizardState.project.id;
-        actionStatus.clearCurrentActionState(projectID);
-        actionStatus.toggleCurrentAction(projectID);
-        ui.setShowFiles(projectID, true);
-        ui.setShowToolbarTabs(projectID, true);
+        recent.gotoLast(projectID, stateID);
     };
 }

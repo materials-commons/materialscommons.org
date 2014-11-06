@@ -1,26 +1,26 @@
 Application.Controllers.controller('projectsProject',
-                                   ["$scope", "$stateParams", "actionStatus", "provStep",
-                                    "model.projects", "projectColors", "ui", projectsProject]);
+                                   ["$scope", "provStep", "ui",
+                                    "project", "current", "pubsub", "recent",
+                                    projectsProject]);
 
-function projectsProject ($scope, $stateParams, actionStatus, provStep, projects,
-                          projectColors, ui) {
-    $scope.isActive = function (tab) {
-        return tab === $scope.activeTab;
-    };
+function projectsProject ($scope, provStep, ui, project, current, pubsub, recent) {
+    recent.resetLast(project.id);
 
-    actionStatus.addProject($stateParams.id);
-    provStep.addProject($stateParams.id);
+    current.setProject(project);
+    pubsub.send("sidebar.project");
 
-    projects.get($stateParams.id).then(function(project) {
-        $scope.project = project;
-        projectColors.setCurrentProjectByID($stateParams.id);
-    });
+    provStep.addProject(project.id);
+    $scope.project = project;
 
     $scope.showTabs = function() {
-        return ui.showToolbarTabs($stateParams.id);
+        return ui.showToolbarTabs(project.id);
     };
 
     $scope.showFiles = function() {
-        return ui.showFiles($stateParams.id);
+        return ui.showFiles(project.id);
+    };
+
+    $scope.isActive = function (tab) {
+        return tab === $scope.activeTab;
     };
 }

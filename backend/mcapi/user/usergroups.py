@@ -23,12 +23,17 @@ def create_access_r():
     access['birthtime'] = r.now()
     access['mtime'] = r.now()
     access['dataset'] = ""
-    rr = list(r.table('access').filter({'user_id': access['user_id'], 'project_id': access['project_id']}).run(g.conn))
+    rr = list(r.table('access')
+              .filter({
+                  'user_id': access['user_id'],
+                  'project_id': access['project_id']
+              }).run(g.conn))
     if rr:
-        return error.already_exists("User already exists %s" % (access['user_id']))
+        return error.already_exists(
+            "User already exists %s" % (access['user_id']))
     else:
-        return dmutil.insert_entry('access', access)
-
+        id = dmutil.insert_entry('access', access)
+        return dmutil.jsoner({'id': id})
 
 
 @app.route('/access/<id>/remove', methods=['DELETE'])
@@ -44,7 +49,7 @@ def remove_access(id):
             return error.database_error("Unable to remove access %s" % (id))
     return args.json_as_format_arg(item)
 
-    
+
 @app.route('/usergroups/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
@@ -64,7 +69,8 @@ def newusergroup():
         new_u_group['owner'] = user
         new_u_group['projects'] = dmutil.get_optional('projects', u_group, [])
         set_dates(new_u_group)
-        return dmutil.insert_entry('usergroups', new_u_group)
+        id = dmutil.insert_entry('usergroups', new_u_group)
+        return dmutil.jsoner_id(id)
     else:
         return error.bad_request("Usergroup already exists: " +
                                  u_group['name'])
@@ -194,6 +200,3 @@ def usergroups_by_project(project_id):
                    .contains({'id': project['id'], 'name': project['name']}))\
                    .order_by('name').run(g.conn, time_format='raw'))
     return args.json_as_format_arg(ugs)
-
-
-

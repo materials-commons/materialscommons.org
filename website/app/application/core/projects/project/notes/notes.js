@@ -1,17 +1,12 @@
 Application.Controllers.controller("projectNotes",
-    ["$scope", projectNotes]);
+                                   ["$scope", "project", "projectState", "$state", projectNotes]);
 
-function projectNotes($scope) {
-    $scope.activeLink = 'View Notes';
-    $scope.setActiveLink = function(tabID) {
-        $scope.activeLink = tabID;
+function projectNotes($scope, project, projectState, $state) {
+    $scope.projectID = project.id;
+
+    $scope.createNote = function() {
+        var state = null;
+        var stateID = projectState.add(project.id, state);
+        $state.go("projects.project.notes.create", {sid: stateID});
     };
-
-    $scope.isActiveLink = function (tabID) {
-        if (tabID == $scope.activeLink){
-            return true
-        }
-        return false
-    };
-
 }
