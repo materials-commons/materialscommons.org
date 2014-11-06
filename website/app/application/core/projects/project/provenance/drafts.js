@@ -14,7 +14,7 @@ function projectProvenanceDrafts($scope, $stateParams, project, projectState,
 
     function getTemplate(templateID) {
         var i = _.indexOf(templates, function(template) {
-            return template.id == templateID;
+            return template.id === templateID;
         });
         return templates[i];
     }
