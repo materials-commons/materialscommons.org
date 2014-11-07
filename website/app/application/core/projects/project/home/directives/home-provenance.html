@@ -14,14 +14,23 @@
         </strong>
     </p>
 </div>
-<div ng-repeat="process in graph">
-    <div class="row" style="width: 800px; height : 400px;">
-        <vis-network ng-model="process.network_data" options="process.network_options" on-select="onNodeSelect"
-                >
-        </vis-network>
-    </div>
-    <hr/>
-</div>
+<table class="table">
+    <thead>
+    <th>process</th>
+    <th>upstream</th>
+    <th>downstream</th>
+    </thead>
+
+    <tr ng-repeat="process in project.processes">
+        <td><a>{{process.name}}</a></td>
+        <td  custom-pop-over
+             processes="process.upstream"
+             title="UpstreamProcesses">2</td>
+        <td custom-pop-over
+            processes="process.upstream"
+            title="UpstreamProcesses" >3</td>
+    </tr>
+</table>
 
 <div class="row">
     <a ng-click="addProvenance()">Add Provenance</a>
