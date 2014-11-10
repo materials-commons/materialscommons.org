@@ -1,5 +1,5 @@
 Application.Directives.directive('homeProvenance', homeProvenanceDirective);
-function homeProvenanceDirective () {
+function homeProvenanceDirective() {
     return {
         restrict: "EA",
         controller: 'homeProvenanceDirectiveController',
@@ -11,11 +11,20 @@ function homeProvenanceDirective () {
 }
 
 Application.Controllers.controller("homeProvenanceDirectiveController",
-                                   ["$scope", "projectState", "$state",
-                                    homeProvenanceDirectiveController]);
+    ["$scope", "projectState", "$state",
+        homeProvenanceDirectiveController]);
 function homeProvenanceDirectiveController($scope, projectState, $state) {
-    $scope.addProvenance = function() {
+    $scope.createName = function (name) {
+        if (name.length > 25) {
+            return name.substring(0, 25) + "...";
+        }
+        return name;
+    };
+
+    $scope.addProvenance = function () {
         var stateID = projectState.add($scope.project.id);
         $state.go("projects.project.provenance.create", {sid: stateID});
     };
+
+
 }

@@ -18,12 +18,13 @@ function homeReviewsDirectiveController ($scope, User, projectState, $state) {
         //Recent reviews
         var lastLogin = new Date($scope.user.last_login.epoch_time * 1000);
         $scope.recent_reviews = [];
-        $scope.project.reviews.forEach(function(item) {
+        $scope.project.open_reviews.forEach(function(item) {
             var reviewTime = new Date(item.mtime.epoch_time * 1000);
             if (reviewTime > lastLogin) {
                 $scope.recent_reviews.push(item);
             }
         });
+        console.log($scope.project);
     }
 
     $scope.addReview = function() {

@@ -30,9 +30,10 @@ def get_processes(project_id):
         process['upstream'] = {}
         process['downstream'] = {}
 
-    all_property_sets = get_property_sets(by_ids)
-    add_process_properties(all_property_sets, by_ids)
-    connect_feeders(all_property_sets, by_ids)
+    if len(by_ids) != 0:
+        all_property_sets = get_property_sets(by_ids)
+        add_process_properties(all_property_sets, by_ids)
+        connect_feeders(all_property_sets, by_ids)
     return processes
 
 

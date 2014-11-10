@@ -1,0 +1,17 @@
+2014-10-16T13:52:43.908991201 0.005031s info: Creating directory /home/tammasr/materialscommons.org/backend/rethinkdb_data
+2014-10-16T13:52:43.909283458 0.005323s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/tammasr/materialscommons.org/backend/rethinkdb_data' did not already exist.)
+2014-10-16T13:52:43.909340907 0.005381s info: Running rethinkdb 1.8.0 (GCC 4.4.7)...
+2014-10-16T13:52:43.911813994 0.007854s info: Running on Linux 3.11.10-100.fc18.x86_64 x86_64
+2014-10-16T13:52:43.911888800 0.007929s info: Loading data from directory /home/tammasr/materialscommons.org/backend/rethinkdb_data
+2014-10-16T13:52:44.514546150 0.610586s info: Listening for intracluster connections on port 29015
+2014-10-16T13:52:44.515938627 0.611979s info: Listening for client driver connections on port 28015
+2014-10-16T13:52:44.515969620 0.612009s info: Listening for administrative HTTP connections on port 8080
+2014-10-16T13:52:44.515970292 0.612010s info: Listening on addresses: 127.0.0.1
+2014-10-16T13:52:44.515970715 0.612010s info: To fully expose RethinkDB on the network, bind to all addresses
+2014-10-16T13:52:44.515971036 0.612011s info: by running rethinkdb with the `--bind all` command line option.
+2014-10-16T13:52:44.515971337 0.612011s info: Server ready
+2014-10-16T13:52:50.955506066 7.051546s info: Server got SIGINT; shutting down...
+2014-10-16T13:52:50.955604609 7.051644s info: Shutting down client connections...
+2014-10-16T13:52:50.955714699 7.051754s info: All client connections closed.
+2014-10-16T13:52:50.955717182 7.051757s info: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2014-10-16T13:52:50.955717489 7.051757s info: Storage engine shut down.
