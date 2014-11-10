@@ -76,7 +76,6 @@ function actionCreateReviewController($scope, mcapi, User, pubsub, $stateParams,
     $scope.cancel = function() {
         actionStatus.clearCurrentActionState($scope.project.id);
         actionStatus.toggleAction($scope.project.id, 'create-review');
-        console.log("setting show files");
         ui.setShowFiles($stateParams.id, true);
     };
 
