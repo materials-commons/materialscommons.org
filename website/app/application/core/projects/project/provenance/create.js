@@ -1,12 +1,12 @@
 Application.Controllers.controller('projectProvenanceCreate',
                                    ["$scope", "project", "model.templates",
                                     "model.projects", "User", "$filter", "provStep", "projectFiles",
-                                    "draft", "$stateParams", "projectState", "recent",
+                                    "draft", "$stateParams", "projectState", "recent", "$timeout",
                                     projectProvenanceCreate]);
 
 function projectProvenanceCreate($scope, project, templates, projects,
                                  User, $filter, provStep, projectFiles, draft,
-                                 $stateParams, projectState, recent) {
+                                 $stateParams, projectState, recent, $timeout) {
     var stateID = $stateParams.sid;
 
     $scope.start = function() {
@@ -74,10 +74,13 @@ function projectProvenanceCreate($scope, project, templates, projects,
     if ($scope.wizardState.project !== null) {
         // this is a previous state so figure out what step to go to.
         if ($scope.wizardState.step !== null) {
-            provStep.setStep(project.id, $scope.wizardState.step);
-        } else {
-            provStep.setStep(project.id, step);
+            step = $scope.wizardState.step;
         }
+        $timeout(function() {
+            // Wrap in timeout to force dirty checking and to allow the other directives in
+            // the page to load.
+            provStep.setStep(project.id, step);
+        });
         var templateName = $scope.wizardState.selectedTemplate.template_name;
         var name = $scope.wizardState.currentDraft.process.name;
         recent.addIfNotExists(project.id, stateID, templateName + ": " + name);
