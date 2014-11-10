@@ -1,12 +1,13 @@
 Application.Controllers.controller("projectProvenanceOverview",
-    ["$scope", "project", "User", "Graph", projectProvenanceOverview]);
+    ["$scope", "project", "User", "Graph", "$stateParams", projectProvenanceOverview]);
 
-function projectProvenanceOverview($scope, project, User, Graph) {
+function projectProvenanceOverview($scope, project, User, Graph, $stateParams) {
     $scope.isActive = function (index) {
         return activeIndex === index;
     };
 
     var activeIndex = 0;
+
     $scope.openProcess = function (index) {
         $scope.constructed_process = {};
         $scope.flag = false;
@@ -24,6 +25,11 @@ function projectProvenanceOverview($scope, project, User, Graph) {
     $scope.project = project;
     $scope.processes = project.processes;
     if ($scope.processes.length !== 0) {
-        $scope.openProcess(0);
+        if ($stateParams.index) {
+            $scope.openProcess($stateParams.index);
+        } else {
+            $scope.openProcess(0);
+        }
     }
+
 }

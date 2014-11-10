@@ -26,4 +26,5 @@ function homeProvenanceDirectiveController($scope, projectState, $state) {
         $state.go("projects.project.provenance.create", {sid: stateID});
     };
 
+
 }
