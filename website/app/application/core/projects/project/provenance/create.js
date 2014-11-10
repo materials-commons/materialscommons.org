@@ -31,6 +31,12 @@ function projectProvenanceCreate($scope, project, templates, projects,
 
     templates.getList().then(function(templates) {
         $scope.templates = $filter('byKey')(templates, 'template_type', 'process');
+        var t = $scope.templates[0];
+        if (_.str.startsWith(t.category, "Process -")) {
+            // If we find "Process -" then the templates have already been processed
+            // and we don't need to go through them again.
+            return;
+        }
 
         // Set the category name for sorting purposes
         $scope.templates.forEach(function(template) {
