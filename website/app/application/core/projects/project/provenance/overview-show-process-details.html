@@ -15,7 +15,7 @@
                         <div ng-if="key=='files'">
                             <a ng-click="showFiles =! showFiles"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}} (I)
+                               class="list-group-item">{{key}} (I)
                                 <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
                                    class="fa fa-fw"></i></a>
 
@@ -27,11 +27,11 @@
                             </div>
                         </div>
 
-                        <div ng-if="key!='files'">
+                        <div ng-if="key!=='files'">
                             <a ng-click="showDetails(key, values)"
                                ng-class="{'active': isActiveList(key)}"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}}(I)</a>
+                               class="list-group-item">{{key}}(I)</a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <div ng-if="key=='files'">
                             <a ng-click="showFiles =! showFiles"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}} (O)
+                               class="list-group-item">{{key}} (O)
                                 <i ng-class="{'fa-chevron-down': showFiles, 'fa-chevron-right': !showFiles}"
                                    class="fa fa-fw"></i></a>
 
@@ -59,7 +59,7 @@
                             <a ng-click="showDetails(key, values)"
                                ng-class="{'active': isActiveList(key)}"
                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px;"
-                               class="list-group-item">{{createName(key)}}(I)</a>
+                               class="list-group-item">{{key}}(I)</a>
                         </div>
                     </div>
                 </div>

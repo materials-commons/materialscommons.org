@@ -1597,7 +1597,7 @@ ul.menu-bar li {
 }
 
 .list-group-submenu {
-  margin-left:20px;
+  margin-left:40px;
 }
 
 .list-group-item.active, .list-group-item.active:hover {
@@ -1691,4 +1691,19 @@ ul.menu-bar li {
 
 .white {
   color: white;
+}
+
+.circle-indication{
+  background: #FF7F6E;
+  border: 1px solid #666;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+.triangle-indication{
+  border-bottom: 15px solid #109618;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  height: 0;
+  width: 0;
 }

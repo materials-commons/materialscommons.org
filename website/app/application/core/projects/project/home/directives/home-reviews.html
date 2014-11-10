@@ -9,16 +9,16 @@
         <p class="pull-right">
             <strong>
                 You have <a ui-sref="projects.project.reviews.overview">
-                {{(project.reviews | byKey:'status':'open').length}} open
+                {{(project.open_reviews | byKey:'status':'open').length}} open
                 </a>
-                and {{(project.reviews | byKey:'status':'closed').length}} closed reviews
+                and {{(project.closed_reviews | byKey:'status':'closed').length}} closed reviews
             </strong>
         </p>
     </div>
 
     <h5><strong>Recent comments:</strong></h5>
     <div class="feed-activity-list">
-        <div class="feed-element" ng-repeat="rev in recent_reviewsx">
+        <div class="feed-element" ng-repeat="rev in recent_reviews">
             <span class="pull-left">
                 <i class="fa fa-fw fa-user"></i>
             </span>
