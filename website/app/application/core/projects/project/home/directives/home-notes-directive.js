@@ -22,5 +22,6 @@ function homeNotesDirectiveController($scope, $state) {
     $scope.editNote = function(index) {
         $state.go("projects.project.notes.edit",{index: index});
     };
+    console.log($scope.project);
 
 }
