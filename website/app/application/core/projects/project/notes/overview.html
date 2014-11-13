@@ -1,17 +1,18 @@
-<div>
+<h4>Project Notes</h4>
+<div class="row">
     <div style="background-color: white" class="col-lg-8 col-lg-offset-2">
         <div class="row">
-            <h4>Project Notes</h4>
             <div class="timeline-item" ng-repeat="note in project_notes">
                 <div class="row">
                     <div class="col-xs-3 date">
-                        <i  ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
+                        <i ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
                         <small class="tex-navy">{{note.birthtime | toDateString}}</small>
                     </div>
                     <div class="col-xs-7 content no-top-border">
                         <p ng-if="edit_index !== $index" class="m-b-xs">
                             <b>{{note.title}}</b>
-                            <div ta-bind ng-model="note.note"></div>
+
+                        <div ta-bind ng-model="note.note"></div>
                         </p>
                         <p ng-if="edit_index === $index" class="m-b-xs">
                             <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
@@ -26,22 +27,25 @@
             </div>
         </div>
     </div>
+</div>
 
+<h4>Sample Notes</h4>
+<div class="row">
     <div style="background-color: white" class="col-lg-8 col-lg-offset-2">
         <div class="row">
-            <h4>Sample Notes</h4>
-            <div ng-hide = sample_notes>
+            <div ng-hide=sample_notes>
                 <p class="text-center">No notes created under samples</p>
             </div>
             <div class="timeline-item" ng-repeat="note in sample_notes">
                 <div class="row">
                     <div class="col-xs-3 date">
-                        <i  ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
+                        <i ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
                         <small class="tex-navy">{{note.birthtime | toDateString}}</small>
                     </div>
                     <div class="col-xs-7 content no-top-border">
                         <p ng-if="edit_index !== $index" class="m-b-xs">
                             <b>{{note.title}}</b>
+
                         <div ta-bind ng-model="note.note"></div>
                         </p>
                         <p ng-if="edit_index === $index" class="m-b-xs">
@@ -55,7 +59,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
