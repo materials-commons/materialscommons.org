@@ -20,7 +20,7 @@ function homeNotesDirectiveController($scope, $state) {
     };
 
     $scope.editNote = function(index) {
-        $state.go("projects.project.notes.overview",{index: index});
+        $state.go("projects.project.notes.edit",{index: index});
     };
 
 }

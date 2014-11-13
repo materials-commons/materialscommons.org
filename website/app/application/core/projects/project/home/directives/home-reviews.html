@@ -15,21 +15,36 @@
             </strong>
         </p>
     </div>
-
-    <h5><strong>Recent comments:</strong></h5>
-    <div class="feed-activity-list">
-        <div class="feed-element" ng-repeat="rev in recent_reviews">
-            <span class="pull-left">
-                <i class="fa fa-fw fa-user"></i>
-            </span>
-
-            <div class="media-body">
-                <strong>Sravya Tamma</strong> has commented on {{rev.title}}. <br>
-                <small class="text-muted">Date {{rev.mtime | toDateString}}</small>
+    <div class="row">
+        <div class="timeline-item" ng-repeat="rev in recent_reviews">
+            <div class="row">
+                <div class="col-xs-3 date">
+                    <i  ng-click="editReview($index)" class="fa fa-edit cursor-pointer"></i>
+                    <small class="tex-navy">{{rev.mtime | toDateString}}</small>
+                    <br>
+                </div>
+                <div class="col-xs-7 content no-top-border">
+                    <p class="m-b-xs">
+                        <strong>{{rev.messages[rev.messages.length - 1].who}}</strong> has commented on {{rev.title}}. <br>
+                    </p>
+                </div>
             </div>
         </div>
+
     </div>
-    <div class="row" ng-show="recent_reviewsx.length!==0">
+    <!--<h5><strong>Recent comments:</strong></h5>-->
+    <!--<div class="feed-activity-list">-->
+        <!--<div class="feed-element" ng-repeat="rev in recent_reviews">-->
+            <!--<span class="pull-left">-->
+                <!--<i class="fa fa-fw fa-user"></i>-->
+            <!--</span>-->
+            <!--<div class="media-body">-->
+                <!--<strong>Sravya Tamma</strong> has commented on {{rev.title}}. <br>-->
+                <!--<small class="text-muted">Date {{rev.mtime | toDateString}}</small>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="row" ng-show="recent_reviews.length!==0">
         <a class="pull-right">more comments...</a>
     </div>
     <div class="row">

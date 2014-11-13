@@ -26,6 +26,10 @@ function homeReviewsDirectiveController ($scope, User, projectState, $state) {
         });
     }
 
+    $scope.editReview = function(index) {
+        $state.go("projects.project.reviews.overview",{index: index});
+    };
+
     $scope.addReview = function() {
         var stateID = projectState.add($scope.project.id);
         $state.go("projects.project.reviews.create", {sid: stateID});
