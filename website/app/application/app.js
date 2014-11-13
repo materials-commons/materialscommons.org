@@ -198,6 +198,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/reviews/overview.html",
             controller: "projectReviewsOverview"
         })
+        .state('projects.project.reviews.edit', {
+            url: '/edit/:index/:status',
+            templateUrl: "application/core/projects/project/reviews/edit.html",
+            controller: "projectReviewsEdit"
+        })
         .state('projects.project.reviews.create', {
             url: "/create/:sid",
             templateUrl: "application/core/projects/project/reviews/create.html",
