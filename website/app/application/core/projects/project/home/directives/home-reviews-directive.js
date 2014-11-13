@@ -24,7 +24,6 @@ function homeReviewsDirectiveController ($scope, User, projectState, $state) {
                 $scope.recent_reviews.push(item);
             }
         });
-        console.log($scope.project);
     }
 
     $scope.addReview = function() {
