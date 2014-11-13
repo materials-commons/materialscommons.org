@@ -25,4 +25,9 @@ function homeProvenanceDirectiveController($scope, projectState, $state) {
         var stateID = projectState.add($scope.project.id);
         $state.go("projects.project.provenance.create", {sid: stateID});
     };
+
+     $scope.displayCount = function(process){
+         return _.keys(process).length;
+     };
+    console.log($scope.project.processes);
 }

@@ -18,17 +18,19 @@
     <thead>
     <th>process</th>
     <th>downstream</th>
-    <th>upstream</th>
+    <th>upstream
+    <th>Samples</th>
     </thead>
 
     <tr ng-repeat="process in project.processes">
         <td><a ui-sref="projects.project.provenance.overview({index: $index})">{{process.name}}</a></td>
-        <td  custom-pop-over
-             processes="process.upstream"
-             title="DownstreamProcesses">-</td>
+        <td custom-pop-over
+            processes="process.upstream"
+            title="DownstreamProcesses">{{displayCount(process.upstream)}}</td>
         <td custom-pop-over
             processes="process.downstream"
-            title="UpProcesses" >-</td>
+            title="UpProcesses" >{{displayCount(process.downstream)}}</td>
+        <td>{{process.inputs.sample[0].other.name}}</td>
     </tr>
 </table>
 
