@@ -6,7 +6,7 @@ Application.Filters.filter('byKey', function () {
         if (items) {
             items.forEach(function(item) {
                 if (key in item) {
-                    if (item[key] == value) {
+                    if (item[key] === value) {
                         matches.push(item);
                     }
                 }

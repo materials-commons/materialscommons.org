@@ -4,7 +4,7 @@ from mcapi.mcapp import app
 from mcapi import tservices, public, utils, private, access
 from mcapi import process, machine, template, objects, doc
 from mcapi.user import account, datadirs, datafiles, reviews
-from mcapi.user import ud, usergroups, projects, conditions, drafts
+from mcapi.user import ud, usergroups, projects, conditions, drafts, notes
 from mcapi.user import provenance
 from mcapi.stater import stater
 from os import environ
