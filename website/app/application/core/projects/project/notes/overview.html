@@ -1,6 +1,6 @@
 <div class="row">
     <div class="form-group">
-        <label class="control-label col-xs-2 col-xs-offset-2" for="select-category">Category:</label>
+        <label class="control-label" for="select-category">Category</label>
         <div class="controls col-xs-4">
             <select id="select-category"
                     ui-select2="{placeholder: 'Select process', allowClear: true}"
@@ -15,10 +15,10 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-8 col-xs-offset-2" style="background-color: white" >
+    <div class="col-xs-5" style="background-color: white" >
         <div class="timeline-item" ng-repeat="note in notes">
             <div class="row">
-                <div class="col-xs-3 date">
+                <div class="col-xs-5 date">
                     <i ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
                     <small class="tex-navy">{{note.birthtime | toDateString}}</small>
                 </div>

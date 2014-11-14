@@ -16,7 +16,7 @@ Application.Controllers.controller("createSampleToolbarDirectiveController",
 function createSampleToolbarDirectiveController($scope, projectColors, ui, $stateParams) {
 
     function handleButtonSpecific(currentActive, what) {
-        if (what == "attachments" && currentActive == "attachments") {
+        if (what === "attachments" && currentActive === "attachments") {
             // Hide files because attachments is the current view.
             ui.setShowFiles($stateParams.id, false);
         } else if (what === "attachments") {

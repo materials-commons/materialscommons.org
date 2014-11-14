@@ -8,6 +8,7 @@ import access
 import json
 from os.path import dirname
 import error
+from loader.model import note
 
 
 def getProcessesandProjects(object_id):
@@ -95,7 +96,6 @@ def create_object():
         error.not_acceptable("forward slash in sample name")
     else:
         sample['description'] = dmutil.get_optional('description', j)
-        sample['notes'] = dmutil.get_optional('notes', j)
         sample['available'] = dmutil.get_optional('available', j)
         sample['properties'] = dmutil.get_optional('properties', j)
         sample['alloy'] = dmutil.get_optional('alloy', j)
@@ -105,9 +105,18 @@ def create_object():
         sample['parent_id'] = dmutil.get_optional('parent_id', j)
         sample['path'] = dmutil.get_required('path', j)
         sample['project_id'] = dmutil.get_required('project_id', j)
+        notes = dmutil.get_optional('notes', j)
+        title = dmutil.get_optional('title', j)
         s = dmutil.insert_entry('samples', sample, return_created=True)
         sid = s['id']
         _join_sample_projects(dmutil.get_optional('projects', j, []), sid)
+        #Add note into notes table
+        if title:
+            print notes
+            print title
+            n = note.Note(user, notes, title, sid,
+                          'sample', sample['project_id'])
+            rv = dmutil.insert_entry('notes', n.__dict__, return_created=True)
         return jsonify(s)
 
 

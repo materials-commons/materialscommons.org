@@ -18,7 +18,8 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
     function initializeState() {
         var defaultDoc = {
             name: '',
-            notes: [],
+            notes: '',
+            title: '',
             available: true,
             projects: [
                 {'id': project.id, 'name': project.name}
@@ -41,6 +42,7 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
     $scope.create = function () {
         $scope.doc.path = $scope.doc.name;
         $scope.doc.project_id = project.id;
+        console.log($scope.doc)
         mcapi('/objects/new')
             .success(function (sample) {
                 project.samples.push(sample);
