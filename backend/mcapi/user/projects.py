@@ -56,7 +56,6 @@ def add_computed_attributes(projects, user):
         p['processes'] = []
         p['users'] = []
         p['notes'] = []
-
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
@@ -113,9 +112,8 @@ def add_processes(projects_by_id, project_ids):
 
 
 def add_notes(projects_by_id, project_ids):
-    notes = list(r.table('notes')
-                   .get_all(*project_ids, index='project_id')
-                   .run(g.conn, time_format='raw'))
+    notes = list(r.table('notes').get_all(*project_ids, index='project_id')
+                 .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, notes, 'project_id', 'notes')
 
 

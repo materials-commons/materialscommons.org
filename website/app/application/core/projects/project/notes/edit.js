@@ -1,16 +1,16 @@
 Application.Controllers.controller("projectNotesEdit",
-    ["$scope", "project", "User", "$stateParams", "recent", "projectState", projectNotesEdit]);
+    ["$scope", "project", "User", "$stateParams", "recent", "projectState", "mcapi", projectNotesEdit]);
 
-function projectNotesEdit($scope, project, User, $stateParams, recent, projectState) {
+function projectNotesEdit($scope, project, User, $stateParams, recent, projectState, mcapi) {
     var stateID = $stateParams.sid;
     $scope.project = project;
 
     function saveNote() {
         $scope.project.notes[$scope.index] = $scope.model;
-        project.put(User.keyparam()).then(function () {
-            // nothing to do yet.
-            recent.gotoLast($scope.project.id);
-        });
+        mcapi('/notes')
+            .success(function(note){
+                recent.gotoLast($scope.project.id);
+            }).put({'title': $scope.model.title, 'note': $scope.model.note, 'id': $scope.model.id})
     }
 
     $scope.updateNote = function () {
