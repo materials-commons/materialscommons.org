@@ -11,9 +11,9 @@ function homeNotesDirective() {
 }
 
 Application.Controllers.controller("homeNotesDirectiveController",
-                                   ["$scope", "$state",
+                                   ["$scope", "$state","Project",
                                     homeNotesDirectiveController]);
-function homeNotesDirectiveController($scope, $state) {
+function homeNotesDirectiveController($scope, $state, Project) {
     $scope.addNote = function() {
         $state.go("projects.project.notes.create");
     };
@@ -21,4 +21,11 @@ function homeNotesDirectiveController($scope, $state) {
     $scope.editNote = function(index) {
         $state.go("projects.project.notes.edit",{index: index});
     };
+
+    function init(){
+        $scope.sample_notes = Project.getNotes($scope.project, 'sample');
+        $scope.project_notes = Project.getNotes($scope.project, 'project');
+        $scope.all_notes = Project.getNotes($scope.project);
+    }
+    init();
 }

@@ -16,23 +16,20 @@
         </p>
     </div>
     <div class="row">
-        <div class="timeline-item" ng-repeat="note in project.notes">
-            <div class="row">
-                <div class="col-xs-3 date">
-                    <i  ng-click="editNote($index)" class="fa fa-edit cursor-pointer"></i>
-                    <small class="tex-navy">{{note.date | date: shortDate}}</small>
-                    <br>
-                    <small class="text-navy">{{note.date | date: "h:mma"}}</small>
-                </div>
-                <div class="col-xs-7 content no-top-border">
-                    <p class="m-b-xs">
-                     <!--<div ta-bind ng-model="note.message"></div>-->
-                     {{note.title}}
-                    </p>
-                </div>
-            </div>
-        </div>
-
+        <ul  class="list-group clear-list">
+            <li class="list-group-item">
+                Total
+                <a ui-sref="projects.project.notes.overview"><span class="pull-right">{{all_notes.length}}</span></a>
+            </li>
+            <li class="list-group-item">
+                Project notes
+                <a ui-sref="projects.project.notes.overview"><span class="pull-right">{{project_notes.length}}</span></a>
+            </li>
+            <li class="list-group-item">
+                Sample notes
+                <a ui-sref="projects.project.notes.overview"><span class="pull-right">{{sample_notes.length}}</span></a>
+            </li>
+        </ul>
     </div>
     <div class="row">
         <a ng-click="addNote()">Add Note</a>

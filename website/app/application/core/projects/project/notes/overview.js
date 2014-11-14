@@ -13,7 +13,6 @@ function projectNotesOverview($scope, Project, $state, project) {
                 return $scope.notes;
             case "sample":
                 $scope.notes = Project.getNotes(project, 'sample');
-                $scope.notes = Project.getNotes(project, 'sample');
                 return $scope.notes;
             case "datafile":
                 return  '';
