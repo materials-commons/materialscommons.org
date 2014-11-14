@@ -1,64 +1,34 @@
-<h4>Project Notes</h4>
 <div class="row">
-    <div style="background-color: white" class="col-lg-8 col-lg-offset-2">
-        <div class="row">
-            <div class="timeline-item" ng-repeat="note in project_notes">
-                <div class="row">
-                    <div class="col-xs-3 date">
-                        <i ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
-                        <small class="tex-navy">{{note.birthtime | toDateString}}</small>
-                    </div>
-                    <div class="col-xs-7 content no-top-border">
-                        <p ng-if="edit_index !== $index" class="m-b-xs">
-                            <b>{{note.title}}</b>
-
-                        <div ta-bind ng-model="note.note"></div>
-                        </p>
-                        <p ng-if="edit_index === $index" class="m-b-xs">
-                            <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-                            ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-                            ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                                          ng-model="note.note"></text-angular>
-                            <br>
-                            <button ng-click="updateNote($index)" class="btn btn-default btn-primary">Save</button>
-                        </p>
-                    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-2 col-xs-offset-2" for="select-category">Category:</label>
+        <div class="controls col-xs-4">
+            <select id="select-category"
+                    ui-select2="{placeholder: 'Select process', allowClear: true}"
+                    ng-multiple="false"
+                    ng-model="bk.category"
+                    class="form-control" ng-click="updateNotes()">
+                <option value="project">Project</option>
+                <option value="sample">Sample</option>
+                <option value="all">All</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-8 col-xs-offset-2" style="background-color: white" >
+        <div class="timeline-item" ng-repeat="note in notes">
+            <div class="row">
+                <div class="col-xs-3 date">
+                    <i ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
+                    <small class="tex-navy">{{note.birthtime | toDateString}}</small>
+                </div>
+                <div class="col-xs-7 content no-top-border">
+                    <p ng-if="edit_index !== $index" class="m-b-xs">
+                        <b>{{note.title}}</b>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<h4>Sample Notes</h4>
-<div class="row">
-    <div style="background-color: white" class="col-lg-8 col-lg-offset-2">
-        <div class="row">
-            <div ng-hide=sample_notes>
-                <p class="text-center">No notes created under samples</p>
-            </div>
-            <div class="timeline-item" ng-repeat="note in sample_notes">
-                <div class="row">
-                    <div class="col-xs-3 date">
-                        <i ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
-                        <small class="tex-navy">{{note.birthtime | toDateString}}</small>
-                    </div>
-                    <div class="col-xs-7 content no-top-border">
-                        <p ng-if="edit_index !== $index" class="m-b-xs">
-                            <b>{{note.title}}</b>
-
-                        <div ta-bind ng-model="note.note"></div>
-                        </p>
-                        <p ng-if="edit_index === $index" class="m-b-xs">
-                            <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
-                            ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
-                            ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                                          ng-model="note.note"></text-angular>
-                            <br>
-                            <button ng-click="updateNote($index)" class="btn btn-default btn-primary">Save</button>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

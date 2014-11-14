@@ -1,9 +1,9 @@
 Application.Controllers.controller('projectNotesCreate',
-                                   ["$scope", "User", "toastr", "projectState",
-                                    "$stateParams", "project", "recent",
-                                    projectNotesCreate]);
+    ["$scope", "User", "mcapi", "projectState",
+        "$stateParams", "project", "recent",
+        projectNotesCreate]);
 
-function projectNotesCreate($scope, User, toastr, projectState,
+function projectNotesCreate($scope, User, mcapi, projectState,
                             $stateParams, project, recent) {
     var projectID = project.id;
     var stateID = $stateParams.sid;
@@ -14,29 +14,25 @@ function projectNotesCreate($scope, User, toastr, projectState,
     };
     $scope.model = projectState.getset(projectID, stateID, defaultModel);
 
-    function saveNote() {
-        project.put(User.keyparam()).then(function(note) {
-            recent.gotoLast(projectID);
-        }, function(reason){
-            toastr.error(reason.data.error, 'Error', {
-                closeButton: true
-            });
-        });
-    }
-
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         recent.delete(projectID, stateID);
         projectState.delete(projectID, stateID);
         recent.gotoLast(projectID);
     };
 
     $scope.create = function () {
-        project.notes.push({
-            'message': $scope.model.note,
-            'who': User.u(),
-            'date': new Date(),
+        $scope.note = {
+            'item_id': projectID,
+            'item_type': 'project',
+            'creator': User.u(),
+            'project_id': project.id,
+            'note': $scope.model.note,
             'title': $scope.model.title
-        });
-        saveNote();
+        };
+        mcapi('/notes')
+            .success(function (note) {
+                project.notes.push(note);
+                recent.gotoLast($scope.project.id);
+            }).post($scope.note);
     };
 }

@@ -27,22 +27,23 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
     }
 
     function saveNote() {
-        $scope.project.put(User.keyparam()).then(function() {
-            $scope.model.note = "";
-            Projects.getList(true).then(function (projects) {
-                Projects.get($scope.project.id).then(function (project) {
-                    $scope.project = project;
-                    pubsub.send('update-tab-count.change');
-                    actionStatus.clearCurrentActionState($scope.project.id);
-                    actionStatus.toggleCurrentAction($scope.project.id);
-                    ui.setShowFiles($scope.project.id, true);
-                });
-            });
-        }, function(reason){
-            toastr.error(reason.data.error, 'Error', {
-                closeButton: true
-            });
-        });
+
+        //$scope.project.put(User.keyparam()).then(function() {
+        //    $scope.model.note = "";
+        //    Projects.getList(true).then(function (projects) {
+        //        Projects.get($scope.project.id).then(function (project) {
+        //            $scope.project = project;
+        //            pubsub.send('update-tab-count.change');
+        //            actionStatus.clearCurrentActionState($scope.project.id);
+        //            actionStatus.toggleCurrentAction($scope.project.id);
+        //            ui.setShowFiles($scope.project.id, true);
+        //        });
+        //    });
+        //}, function(reason){
+        //    toastr.error(reason.data.error, 'Error', {
+        //        closeButton: true
+        //    });
+        //});
     }
 
     $scope.cancel = function() {

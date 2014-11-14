@@ -77,6 +77,7 @@ def create_indices():
     create_index('property_sets', 'item_id')
     create_index('properties', 'item_id')
     create_index('properties', 'value')
+    create_index('notes', 'project_id')
 
     # old
     create_index('access', 'user_id')
