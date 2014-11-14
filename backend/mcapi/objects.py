@@ -111,7 +111,7 @@ def create_object():
         sid = s['id']
         _join_sample_projects(dmutil.get_optional('projects', j, []), sid)
         #Add note into notes table
-        if title:
+        if title or notes:
             print notes
             print title
             n = note.Note(user, notes, title, sid,

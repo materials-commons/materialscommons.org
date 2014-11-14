@@ -5,6 +5,7 @@ from flask import g, request, jsonify
 from .. import dmutil
 from loader.model import note
 
+
 @app.route('/notes/<project_id>', methods=['GET'])
 @jsonp
 def get_notes(project_id):
@@ -41,6 +42,6 @@ def update_note():
     if message or title:
         rv = r.table('notes').get(note_id).update({'title': title,
                                                    'note': message,
-                                                   'mtime': r.now()})\
+                                                   'mtime': r.now()}) \
             .run(g.conn)
         return jsonify(rv)
