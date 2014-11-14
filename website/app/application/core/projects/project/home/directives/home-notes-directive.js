@@ -14,7 +14,6 @@ Application.Controllers.controller("homeNotesDirectiveController",
                                    ["$scope", "$state",
                                     homeNotesDirectiveController]);
 function homeNotesDirectiveController($scope, $state) {
-
     $scope.addNote = function() {
         $state.go("projects.project.notes.create");
     };
@@ -22,6 +21,4 @@ function homeNotesDirectiveController($scope, $state) {
     $scope.editNote = function(index) {
         $state.go("projects.project.notes.edit",{index: index});
     };
-    console.log($scope.project);
-
 }
