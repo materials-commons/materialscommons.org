@@ -27,7 +27,6 @@ function actionCreateNoteController($scope, User, toastr, pubsub, actionStatus, 
     }
 
     function saveNote() {
-
         //$scope.project.put(User.keyparam()).then(function() {
         //    $scope.model.note = "";
         //    Projects.getList(true).then(function (projects) {
