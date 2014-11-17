@@ -2,18 +2,16 @@ from ..mcapp import app
 from ..decorators import jsonp, apikey
 import rethinkdb as r
 from flask import g, request, jsonify
-from .. import dmutil
+from .. import dmutil, error
 from loader.model import note
 
 
 @app.route('/notes/<project_id>', methods=['GET'])
 @jsonp
 def get_notes(project_id):
-    all = dict()
-    rr = list(r.table('notes').get_all(project_id, index='project_id')
+    notes = list(r.table('notes').get_all(project_id, index='project_id')
               .run(g.conn))
-    all['notes'] = rr
-    return dmutil.jsoner(all)
+    return dmutil.jsoner(notes)
 
 
 @app.route('/notes', methods=['POST'])
@@ -27,8 +25,8 @@ def add_note():
     message = dmutil.get_required('note', j)
     project_id = dmutil.get_required('project_id', j)
     n = note.Note(creator, message, title, item_id, item_type, project_id)
-    rv = dmutil.insert_entry('notes', n.__dict__, return_created=True)
-    return dmutil.jsoner(rv)
+    created_note = dmutil.insert_entry('notes', n.__dict__, return_created=True)
+    return dmutil.jsoner(created_note)
 
 
 @app.route('/notes', methods=['PUT'])
@@ -40,8 +38,9 @@ def update_note():
     message = dmutil.get_optional('note', j)
     note_id = dmutil.get_required('id', j)
     if message or title:
-        rv = r.table('notes').get(note_id).update({'title': title,
-                                                   'note': message,
-                                                   'mtime': r.now()}) \
-            .run(g.conn)
-        return jsonify(rv)
+        r.table('notes').get(note_id).update({'title': title, 'note': message,
+                                              'mtime': r.now()}).run(g.conn)
+        updated_note = dmutil.get_single_from_table('notes', note_id)
+        return updated_note
+    else:
+        return error.update_conflict("Unable to update note: " + note_id)
