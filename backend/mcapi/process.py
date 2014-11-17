@@ -10,6 +10,7 @@ import args
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
 @apikey
+@jsonp
 def get_processes_for_project(project_id):
     processes = get_processes(project_id)
     return dmutil.jsoner(processes)
