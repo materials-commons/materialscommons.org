@@ -1,3 +1,6 @@
+/**graph.node.info : is to store the complete node information.
+ Usage: on click node */
+
 Application.Services.factory("Graph", [graphService]);
 function graphService() {
     var graph = {
@@ -24,7 +27,8 @@ function graphService() {
                 color: {
                     background: '#FF7F6E',
                     border: "#666"
-                }
+                },
+                info: process
             });
             graph.nodes[0].level = 2;
             //build left side graph
@@ -64,6 +68,7 @@ function graphService() {
                 edges: {style: "arrow"},
                 smoothCurves: false
             };
+
             return graph;
         },
         createName: function (name) {
@@ -78,7 +83,7 @@ function graphService() {
                 to: to
             });
         },
-        constructNode: function (name, type) {
+        constructNode: function (name, type, info) {
             if (type === 'process') {
                 graph.nodes.push({
                     id: graph.count,
@@ -88,7 +93,8 @@ function graphService() {
                     color: {
                         background: '#FF7F6E',
                         border: "#666"
-                    }
+                    },
+                    info: info
                 });
             } else {
                 graph.nodes.push({
@@ -99,14 +105,15 @@ function graphService() {
                     color: {
                         background: '#109618',
                         border: "#666"
-                    }
+                    },
+                    info: info
                 });
             }
         },
 
         buildFiles: function (files, available_processes, stream) {
             files.forEach(function (file) {
-                graph.constructNode(file.other.name, 'file');
+                graph.constructNode(file.other.name, 'file', file);
                 if (stream === 'upstream') {
                     graph.constructEdge(graph.count, 0);
                     graph.nodes[graph.count].level = 1;
@@ -122,7 +129,7 @@ function graphService() {
         },
         buildSamples: function (samples, available_processes, stream) {
             samples.forEach(function (sample) {
-                graph.constructNode(sample.other.name, 'sample');
+                graph.constructNode(sample.other.name, 'sample', sample);
                 if (stream === 'upstream') {
                     graph.constructEdge(graph.count, 0);
                     graph.nodes[graph.count].level = 1;
@@ -151,7 +158,7 @@ function graphService() {
                 });
                 if (i > -1) {
                     graph.times_linked_item_to_process++;
-                    graph.constructNode(process.name, 'process');
+                    graph.constructNode(process.name, 'process', process);
                     if (graph.times_linked_item_to_process > 0) {
                         if (stream === 'upstream') {
                             graph.constructEdge(graph.count, graph.item_count);
