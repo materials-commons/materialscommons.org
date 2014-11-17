@@ -97,7 +97,7 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
                 // rebuild the list of processes. This is kind of ugly
                 // but works at the moment.
                 Restangular.one('processes').one('project', project.id)
-                    .getList().then(function(processes){
+                    .get(User.keyparam()).then(function(processes){
                         project.processes = processes;
                         closeProvenanceAction();
                     });

@@ -1,6 +1,6 @@
 Application.Controllers.controller('login',
-    ["$scope", "$state", "User", "alertService", "mcapi", "Nav", "pubsub", "model.projects", "projectFiles",
-        function ($scope, $state, User, alertService, mcapi, Nav, pubsub, projects, projectFiles) {
+    ["$scope", "$state", "User", "toastr", "mcapi", "Nav", "pubsub", "model.projects", "projectFiles",
+        function ($scope, $state, User, toastr, mcapi, Nav, pubsub, projects, projectFiles) {
             $scope.login = function () {
                 mcapi('/user/%/apikey', $scope.email, $scope.password)
                     .success(function (u) {
@@ -9,12 +9,14 @@ Application.Controllers.controller('login',
                         Nav.setActiveNav('home');
                         projects.clear();
                         projectFiles.clear();
-                        projects.getList().then(function(projects) {
+                        projects.getList().then(function (projects) {
                             $state.go('projects.project.home', {id: projects[0].id});
                         });
                     })
-                    .error(function (data) {
-                        alertService.sendMessage(data.error);
+                    .error(function (reason) {
+                        toastr.error(reason.error, 'Error', {
+                            closeButton: true
+                        });
                     }).put({password: $scope.password});
             };
 
