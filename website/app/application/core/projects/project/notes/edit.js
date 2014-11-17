@@ -7,7 +7,7 @@ function projectNotesEdit($scope, project, User, $stateParams, recent, projectSt
 
     function saveNote() {
         mcapi('/notes')
-            .success(function(note){
+            .success(function (note) {
                 $scope.project.notes[$scope.index] = note;
                 recent.gotoLast($scope.project.id);
             }).put({'title': $scope.model.title, 'note': $scope.model.note, 'id': $scope.model.id});
