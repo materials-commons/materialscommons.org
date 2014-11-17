@@ -18,7 +18,13 @@ function projectProvenanceOverview($scope, project, User, Graph, $stateParams) {
         $scope.process.network_options = {};
         activeIndex = index;
         $scope.graph = Graph.constructGraph($scope.process);
+        console.log($scope.graph);
         $scope.constructed_process = $scope.graph;
+    };
+
+    $scope.getDetails = function(properties) {
+        var selected = $scope.graph.nodes[properties.nodes];
+        console.log(selected);
     };
 
     $scope.apikey = User.apikey();
