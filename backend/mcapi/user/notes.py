@@ -45,4 +45,4 @@ def update_note():
         updated_note = dmutil.get_single_from_table('notes', note_id)
         return updated_note
     else:
-        return error.update_conflict("Unable to update note: " + note_id)
+        return error.not_acceptable("Unable to update note: " + note_id)
