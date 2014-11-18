@@ -2,6 +2,9 @@
     <div ng-if="tree_data.length == 0">
         <p class="text-center">No samples created under  project {{project.name}}</p> <br>
     </div>
+    <div ng-show="details" class="row">
+        <div sample-report sample="details"></div>
+    </div>
     <div class="row" ng-if="tree_data">
         <div class="col-lg-offset-2">
             <div class="col-lg-10">
@@ -16,8 +19,5 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div ng-if="details" class="row">
-        <div sample-report sample="details"></div>
     </div>
 </div>
