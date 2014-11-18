@@ -1,6 +1,7 @@
 from ..mcapp import app
 from ..decorators import apikey
 from .. import dmutil
+from .. import resp
 from flask import g, request
 import rethinkdb as r
 from .. import access
@@ -16,7 +17,7 @@ def create_provenance2(project_id):
     id = proc['id']
     create_inputs(j['inputs'], id, user)
     create_outputs(j['outputs'], id, user)
-    return dmutil.jsoner(proc)
+    return resp.to_json(proc)
 
 
 def create_process(j, user):

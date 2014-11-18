@@ -2,10 +2,10 @@ from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request, jsonify
 import rethinkdb as r
-from .. import args
 from .. import dmutil
 from .. import access
 from .. import error
+from .. import resp
 from loader.model import review
 
 
@@ -13,8 +13,8 @@ from loader.model import review
 @apikey(shared=True)
 @jsonp
 def get_review(id):
-    selection = r.table('reviews').get(id).run(g.conn, time_format='raw')
-    return args.json_as_format_arg(selection)
+    reviews = r.table('reviews').get(id).run(g.conn, time_format='raw')
+    return resp.to_json(reviews)
 
 
 @app.route('/reviews/<id>', methods=['DELETE'])
@@ -44,8 +44,9 @@ def add_review():
     r.title = dmutil.get_required('title', j)
     r.status = "open"
     r.project = dmutil.get_required('project', j)
-    rv = dmutil.insert_entry('reviews', r.__dict__, return_created=True)
-    return dmutil.jsoner(rv)
+    created_review = dmutil.insert_entry('reviews', r.__dict__,
+                                         return_created=True)
+    return resp.to_json(created_review)
 
 
 @app.route('/reviews/<id>', methods=['PUT'])

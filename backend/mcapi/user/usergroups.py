@@ -6,6 +6,7 @@ import rethinkdb as r
 from ..utils import set_dates
 from .. import error
 from .. import dmutil
+from .. import resp
 from .. import args
 from .. import access
 
@@ -33,7 +34,7 @@ def create_access_r():
             "User already exists %s" % (access['user_id']))
     else:
         id = dmutil.insert_entry('access', access)
-        return dmutil.jsoner({'id': id})
+        return resp.to_json_id(id)
 
 
 @app.route('/access/<id>/remove', methods=['DELETE'])
@@ -70,7 +71,7 @@ def newusergroup():
         new_u_group['projects'] = dmutil.get_optional('projects', u_group, [])
         set_dates(new_u_group)
         id = dmutil.insert_entry('usergroups', new_u_group)
-        return dmutil.jsoner_id(id)
+        return resp.to_json_id(id)
     else:
         return error.bad_request("Usergroup already exists: " +
                                  u_group['name'])

@@ -1,18 +1,9 @@
-import json
 import error
 import rethinkdb as r
-from flask import g, Response
+from flask import g
 from args import add_all_arg_options, json_as_format_arg, add_pluck_when_fields
 from mcexceptions import RequiredAttributeException, DatabaseError
 import sys
-
-
-def jsoner(what):
-    return Response(json.dumps(what), mimetype="application/json")
-
-
-def jsoner_id(id):
-    return Response(json.dumps({'id': id}), mimetype="application/json")
 
 
 def msg(s):

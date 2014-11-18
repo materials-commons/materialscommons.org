@@ -4,6 +4,7 @@ from flask import request, g
 import rethinkdb as r
 import error
 import dmutil
+import resp
 import access
 import args
 
@@ -13,7 +14,7 @@ import args
 @jsonp
 def get_processes_for_project(project_id):
     processes = get_processes(project_id)
-    return dmutil.jsoner(processes)
+    return resp.to_json(processes)
 
 
 def get_processes(project_id):
@@ -321,7 +322,7 @@ def create_process():
     p['citations'] = dmutil.get_optional('citations', j, [])
     p['status'] = dmutil.get_optional('status', j)
     id = dmutil.insert_entry('processes', p)
-    return dmutil.jsoner_id(id)
+    return resp.to_json_id(id)
 
 
 @app.route('/process/update/<path:processid>', methods=['PUT'])
