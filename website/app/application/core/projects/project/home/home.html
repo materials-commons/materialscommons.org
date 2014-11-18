@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-xs-12 info-box">
-        <div class="col-xs-5">
+    <div class="col-xs-12">
+        <div class="info-box">
             <h4 style="display: inline; padding-right: 5px;"> Welcome {{mcuser.fullname}}</h4>
             <a ng-click="editFullName = !editFullName">edit</a>
 
@@ -17,6 +17,15 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="info-box scroll">
+            <div home-provenance project="project"></div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-xs-4">
         <div class="info-box scroll">
@@ -40,11 +49,4 @@
         </div>
     </div>
 
-</div>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="info-box scroll">
-            <div home-provenance project="project"></div>
-        </div>
-    </div>
 </div>
