@@ -8,45 +8,45 @@
         <div ng-if="(project.open_reviews.length + project.closed_reviews.length) !== 0" class="col-lg-10">
             <table class="table table-striped table-condensed table-boxed">
                 <thead>
-                <th>
-                    <i class="fa fa-check-circle review-open"></i>
-                    <a ng-click="showReviews('open')">
-                        {{project.open_reviews.length}} open
-                    </a>
-                    <i class="fa fa-minus-circle review-close"></i>
-                    <a ng-click="showReviews('closed')">
-                        {{project.closed_reviews.length}} closed
-                    </a>
-                </th>
-                <th>Title</th>
-                <th>Items</th>
-                <th>Assigned to</th>
-                <th></th>
+                    <th>
+                        <i class="fa fa-check-circle review-open"></i>
+                        <a ng-click="showReviews('open')">
+                            {{project.open_reviews.length}} open
+                        </a>
+                        <i class="fa fa-minus-circle review-close"></i>
+                        <a ng-click="showReviews('closed')">
+                            {{project.closed_reviews.length}} closed
+                        </a>
+                    </th>
+                    <th>Title</th>
+                    <th>Items</th>
+                    <th>Assigned to</th>
+                    <th></th>
                 </thead>
                 <tbody>
-                <tr class="cursor-pointer"
-                    ui-sref="projects.project.reviews.edit({'index': $index, 'status': review.status})"
-                    ng-repeat="review in reviews">
-                    <td ng-if="review.status==='open'">
-                        <i class="fa fa-check-circle review-open"></i>
-                    </td>
-                    <td ng-if="review.status==='closed'">
-                        <i class="fa fa-minus-circle review-close"></i>
-                    </td>
-                    <td> {{review.title}}<p class="text-muted sub-text">{{review.author}}
-                        {{review.birthtime | toDateString}}</p>
-                    </td>
-                    <td>
-                        <ul ng-repeat="i in review.items">
-                            <li data-toggle="tooltip" data-placement="bottom" title="Path: {{i.path}}">{{i.name}}</li>
-                        </ul>
-                    </td>
-                    <td>{{review.assigned_to}}</td>
-                    <td ng-if="review.messages.length === 1"></td>
-                    <td ng-if="review.messages.length != 1">
-                        <i class="fa fa-comment"></i> {{review.messages.length-1}}
-                    </td>
-                </tr>
+                    <tr class="cursor-pointer"
+                        ui-sref="projects.project.reviews.edit({'index': $index, 'status': review.status})"
+                        ng-repeat="review in reviews">
+                        <td ng-if="review.status==='open'">
+                            <i class="fa fa-check-circle review-open"></i>
+                        </td>
+                        <td ng-if="review.status==='closed'">
+                            <i class="fa fa-minus-circle review-close"></i>
+                        </td>
+                        <td> {{review.title}}<p class="text-muted sub-text">{{review.author}}
+                            {{review.birthtime | toDateString}}</p>
+                        </td>
+                        <td>
+                            <ul ng-repeat="i in review.items">
+                                <li data-toggle="tooltip" data-placement="bottom" title="Path: {{i.path}}">{{i.name}}</li>
+                            </ul>
+                        </td>
+                        <td>{{review.assigned_to}}</td>
+                        <td ng-if="review.messages.length === 1"></td>
+                        <td ng-if="review.messages.length != 1">
+                            <i class="fa fa-comment"></i> {{review.messages.length-1}}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
