@@ -16,7 +16,7 @@
     </div>
     <div class="row" ng-repeat="row in review.messages | orderBy: date">
         <div class="col-lg-2 text-muted sub-text">
-            {{row.date}} --- {{row.who}}
+            {{row.date | date:'short'}} --- {{row.who}}
         </div>
         <div class="col-lg-8">
             <div ng-if="edit_index!==$index">

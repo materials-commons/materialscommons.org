@@ -28,9 +28,14 @@ function sidebarProjectsDirectiveController($scope, current, mcapi, Projects, $s
             return;
         }
         mcapi('/projects')
-            .success(function (data) {
+            .success(function (project) {
                 Projects.getList(true).then(function(projects) {
                     $scope.projects = projects;
+                    $scope.model.name = "";
+                    var i = _.indexOf($scope.projects, function(p) {
+                        return p.id == project.project_id;
+                    });
+                    $scope.setProject(projects[i]);
                 });
             }).post({'name': $scope.model.name});
     };

@@ -5,8 +5,8 @@ function projectSamplesOverview($scope, project, mcapi, $filter, pubsub) {
 
     $scope.sampleDetails = function(branch){
         mcapi('/objects/%', branch.id)
-            .success(function (data) {
-                $scope.details = data;
+            .success(function (sample) {
+                $scope.details = sample;
             }).jsonp();
     };
 

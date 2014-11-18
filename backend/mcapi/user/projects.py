@@ -314,6 +314,7 @@ def create_project():
     proj = project.Project(name, datadir_id, user)
     project_id = dmutil.insert_entry_id('projects', proj.__dict__)
     proj2datadir = {'project_id': project_id, 'datadir_id': datadir_id}
+    build_datadir_denorm(name, user, datadir_id, project_id)
     dmutil.insert_entry('project2datadir', proj2datadir)
     return args.json_as_format_arg(proj2datadir)
 
@@ -331,17 +332,18 @@ def make_toplevel_datadir(j, user):
     access = dmutil.get_optional('access', j, "private")
     ddir = datadir.DataDir(name, access, user, "")
     dir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
-    build_datadir_denorm(name, user, dir_id)
     return dir_id
 
 
-def build_datadir_denorm(name, owner, dir_id):
+def build_datadir_denorm(name, owner, dir_id, project_id):
     datadir_denorm = dict()
     datadir_denorm['name'] = name
     datadir_denorm['owner'] = owner
     datadir_denorm['datafiles'] = []
     datadir_denorm['id'] = dir_id
     datadir_denorm['birthtime'] = r.now()
+    datadir_denorm['project_id'] = project_id
+    datadir_denorm['tags'] = {}
     dmutil.insert_entry('datadirs_denorm', datadir_denorm)
 
 
