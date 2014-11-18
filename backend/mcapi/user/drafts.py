@@ -1,10 +1,11 @@
 from ..mcapp import app
 from ..decorators import crossdomain, apikey, jsonp
 import rethinkdb as r
-from flask import request, g, jsonify
+from flask import request, g
 import json
 from .. import access
 from .. import dmutil
+from .. import resp
 from .. import utils
 from .. import error
 from .. import args
@@ -44,7 +45,7 @@ def create_draft():
     d = Draft(user, name, project_id, project_name, description, clone_number)
     d.process = process
     o = dmutil.insert_entry('drafts', d.__dict__, return_created=True)
-    return dmutil.jsoner(o)
+    return resp.to_json(o)
 
 
 @app.route("/drafts2", methods=["POST"])
@@ -59,7 +60,7 @@ def create_draft2():
     draft['mtime'] = draft['birthtime']
     draft['dtype'] = dtype
     o = dmutil.insert_entry('drafts', draft, return_created=True)
-    return dmutil.jsoner(o)
+    return resp.to_json(o)
 
 
 @app.route("/drafts2/<project_id>", methods=['POST'])
@@ -78,7 +79,7 @@ def save_draft(project_id):
         j['birthtime'] = r.now()
         j['mtime'] = j['birthtime']
         entry = dmutil.insert_entry('drafts', j, return_created=True)
-    return dmutil.jsoner(entry)
+    return resp.to_json(entry)
 
 
 @app.route('/drafts/<draft_id>', methods=['PUT'])

@@ -1,17 +1,18 @@
 from ..mcapp import app
 from ..decorators import jsonp, apikey
 import rethinkdb as r
-from flask import g, request, jsonify
-from .. import dmutil, error
+from flask import g, request
+from .. import dmutil, error, resp
 from loader.model import note
 
 
 @app.route('/notes/<project_id>', methods=['GET'])
 @jsonp
 def get_notes(project_id):
-    notes = list(r.table('notes').get_all(project_id, index='project_id')
-              .run(g.conn))
-    return dmutil.jsoner(notes)
+    notes = list(r.table('notes')
+                 .get_all(project_id, index='project_id')
+                 .run(g.conn))
+    return resp.to_json(notes)
 
 
 @app.route('/notes', methods=['POST'])
@@ -25,8 +26,9 @@ def add_note():
     message = dmutil.get_required('note', j)
     project_id = dmutil.get_required('project_id', j)
     n = note.Note(creator, message, title, item_id, item_type, project_id)
-    created_note = dmutil.insert_entry('notes', n.__dict__, return_created=True)
-    return dmutil.jsoner(created_note)
+    created_note = dmutil.insert_entry('notes', n.__dict__,
+                                       return_created=True)
+    return resp.to_json(created_note)
 
 
 @app.route('/notes', methods=['PUT'])
