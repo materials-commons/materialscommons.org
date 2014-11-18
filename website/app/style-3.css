@@ -293,7 +293,7 @@
 
 .tip.left:after {
   border-top: 12px solid transparent;
-  border-right: 12px solid #fff;
+  border-right: 12px solid #e9e9ea;
   border-bottom: 12px solid transparent;
   left: -24px;
   top: 22px;
