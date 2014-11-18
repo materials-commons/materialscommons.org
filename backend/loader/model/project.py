@@ -1,5 +1,6 @@
 import rethinkdb as r
 
+
 class Project(object):
     def __init__(self, name, datadir, owner):
         self.name = name
@@ -13,3 +14,7 @@ class Project(object):
         self.reviews = []
         self.mytags = []
         self.todos = []
+        self.mediatypes = {}
+        self.size = 0
+        self.uses = []
+        self.shares = []

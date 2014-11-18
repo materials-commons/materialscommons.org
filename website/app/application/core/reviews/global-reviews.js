@@ -32,8 +32,8 @@ function globalReviewsController($scope, User, Projects, pubsub) {
     };
 
     function getAllReviews() {
-        $scope.open_reviews = [];
         Projects.getList().then(function (projects) {
+            $scope.open_reviews = [];
             projects.forEach(function(prj){
                 if(prj.open_reviews.length!==0){
                     prj.open_reviews.forEach(function(r){
@@ -44,6 +44,6 @@ function globalReviewsController($scope, User, Projects, pubsub) {
             });
         });
     }
-
+    $scope.open_reviews = [];
     $scope.user = User.u();
 }
