@@ -1,7 +1,9 @@
 Application.Controllers.controller("projectProvenanceOverview",
-    ["$scope", "project", "User", "Graph", "$stateParams", projectProvenanceOverview]);
+    ["$scope", "project", "User", "Graph", "$stateParams", "Restangular", projectProvenanceOverview]);
 
-function projectProvenanceOverview($scope, project, User, Graph, $stateParams) {
+function projectProvenanceOverview($scope, project, User, Graph, $stateParams, Restangular) {
+
+
     $scope.isActive = function (index) {
         return activeIndex === index;
     };
@@ -19,11 +21,15 @@ function projectProvenanceOverview($scope, project, User, Graph, $stateParams) {
         activeIndex = index;
         $scope.graph = Graph.constructGraph($scope.process);
         $scope.constructed_process = $scope.graph;
+        $scope.inputsample = '';
     };
 
-    //$scope.getDetails = function(properties) {
-    //    var selected = $scope.graph.nodes[properties.nodes];
-    //};
+    $scope.expandSample = function(id){
+        var i = _.indexOf($scope.project.samples, function(item){
+            return item.id === id;
+        });
+        $scope.inputsample = $scope.project.samples[i];
+    }
 
     $scope.apikey = User.apikey();
     $scope.project = project;
@@ -35,5 +41,4 @@ function projectProvenanceOverview($scope, project, User, Graph, $stateParams) {
             $scope.openProcess(0);
         }
     }
-
 }
