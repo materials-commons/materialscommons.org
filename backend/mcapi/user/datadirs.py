@@ -60,7 +60,7 @@ def construct_datadir(j, user):
     parent = dmutil.get_required('parent', j)
     access = dmutil.get_optional('access', j, "private")
     name = dmutil.get_required('name', j)
-    return datadir.DataDir(name, access, user, parent)
+    return datadir.DataDir(name, access, user, parent, "")
 
 
 @app.route('/datadirs/<datafile_id>/datafile')

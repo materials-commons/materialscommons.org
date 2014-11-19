@@ -313,6 +313,9 @@ def create_project():
     datadir_id = make_toplevel_datadir(j, user)
     proj = project.Project(name, datadir_id, user)
     project_id = dmutil.insert_entry_id('projects', proj.__dict__)
+    r.table("datadirs").get(datadir_id).update({
+        "project": project_id
+    }).run(g.conn)
     proj2datadir = {'project_id': project_id, 'datadir_id': datadir_id}
     build_datadir_denorm(name, user, datadir_id, project_id)
     dmutil.insert_entry('project2datadir', proj2datadir)
