@@ -1,268 +1,269 @@
 <!doctype html>
 <html ng-app="materialscommons" lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Materials Commons</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Materials Repository">
-        <meta name="author" content="">
-        <!-- Le styles -->
-        <link href="assets/css/bootstrap.flatly-3.2.css" rel="stylesheet">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="assets/css/animate.css" rel="stylesheet">
-        <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
-        <link href="assets/css/select2/select2.css" rel="stylesheet">
-        <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
-        <link href="assets/css/jqcloud.css" rel="stylesheet">
-        <link href="assets/css/tree-grid.css" rel="stylesheet">
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        <!-- Fav and touch icons -->
-        <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
+<head>
+    <meta charset="utf-8">
+    <title>Materials Commons</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Materials Repository">
+    <meta name="author" content="">
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.flatly-3.2.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/animate.css" rel="stylesheet">
+    <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="assets/css/select2/select2.css" rel="stylesheet">
+    <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
+    <link href="assets/css/jqcloud.css" rel="stylesheet">
+    <link href="assets/css/tree-grid.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
 
-        <link href="assets/css/thumbnail.css" rel="stylesheet">
-        <link href="assets/css/periodic-table.css" rel="stylesheet">
-        <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
-        <link href="assets/css/hotkeys.min.css" rel="stylesheet">
-        <link href="assets/css/angular-toastr.css" rel="stylesheet">
-        <link href="assets/css/vis.css" rel="stylesheet">
+    <link href="assets/css/thumbnail.css" rel="stylesheet">
+    <link href="assets/css/periodic-table.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
+    <link href="assets/css/hotkeys.min.css" rel="stylesheet">
+    <link href="assets/css/angular-toastr.css" rel="stylesheet">
+    <link href="assets/css/vis.css" rel="stylesheet">
 
-        <!-- Application style sheet -->
-        <link href="style-3.css" rel="stylesheet">
-    </head>
-    <body>
-        <a name="top"></a>
-        <div>
-            <sidebar></sidebar>
-            <div class="main-content">
-                <navbar></navbar>
-                <div class="row app-container">
-                    <div ui-view>
-                    </div>
-                </div>
+    <!-- Application style sheet -->
+    <link href="style-3.css" rel="stylesheet">
+</head>
+<body>
+<a name="top"></a>
+
+<div>
+    <sidebar></sidebar>
+    <div class="main-content">
+        <navbar></navbar>
+        <div class="row app-container">
+            <div ui-view>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- ---------------------------- External dependencies ----------------->
+<!-- ---------------------------- External dependencies ----------------->
 
-        <script src="assets/js/jquery-1.11.1.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.2/masonry.pkgd.min.js"></script>
-        <script src="//desandro.github.io/imagesloaded/imagesloaded.pkgd.min.js"></script>
-        <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/TreeModel-min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
-        <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.js"></script>-->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
-        <script src="assets/js/angular/angular-strap.min.js"></script>
-        <script src="assets/js/angular/angular-ui.js"></script>
-        <script src="assets/js/angular/angular-ui-router.min.0.2.11.js"></script>
-        <script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
-        <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
-        <script src="assets/js/angular/angular-validation.js"></script>
-        <script src="assets/js/angular/angular-validation-rule.js"></script>
-        <script src="assets/js/angular/draganddrop.js"></script>
-        <script src="assets/js/angular/hotkeys.min.js"></script>
-        <script src="assets/js/angular/ng-context-menu.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jqcloud-1.0.4.js"></script>
-        <script src="assets/js/underscore-min.js"></script>
-        <script src="assets/js/underscore.string.min.js"></script>
-        <script src="assets/js/angular/socket.js"></script>
-        <script src="assets/js/socket.io.js"></script>
-        <script src="assets/js/angular/angular-toastr.js"></script>
-        <script src="assets/js/angular/angular-masonry.js"></script>
-        <script src="assets/js/angular/tc-angular-chartjs.min.js"></script>
-        <script src="assets/js/Chart.min.js"></script>
-        <script src="assets/js/vis.js"></script>
+<script src="assets/js/jquery-1.11.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.2/masonry.pkgd.min.js"></script>
+<script src="//desandro.github.io/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="assets/js/select2.min.js"></script>
+<script src="assets/js/TreeModel-min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
+<script src="assets/js/angular/angular-strap.min.js"></script>
+<script src="assets/js/angular/angular-ui.js"></script>
+<script src="assets/js/angular/angular-ui-router.min.0.2.11.js"></script>
+<script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
+<script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
+<script src="assets/js/angular/angular-validation.js"></script>
+<script src="assets/js/angular/angular-validation-rule.js"></script>
+<script src="assets/js/angular/draganddrop.js"></script>
+<script src="assets/js/angular/hotkeys.min.js"></script>
+<script src="assets/js/angular/ng-context-menu.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jqcloud-1.0.4.js"></script>
+<script src="assets/js/underscore-min.js"></script>
+<script src="assets/js/underscore.string.min.js"></script>
+<script src="assets/js/angular/socket.js"></script>
+<script src="assets/js/socket.io.js"></script>
+<script src="assets/js/angular/angular-toastr.js"></script>
+<script src="assets/js/angular/angular-masonry.js"></script>
+<script src="assets/js/angular/tc-angular-chartjs.min.js"></script>
+<script src="assets/js/Chart.min.js"></script>
+<script src="assets/js/vis.js"></script>
 
-        <!------------------------------ Application --------------------------->
-        <script src="application/app.js"></script>
-        <script src="index/navbar.js"></script>
-        <script src="index/sidebar.js"></script>
-        <script src="index/sidebar-actions.js"></script>
-        <script src="index/sidebar-projects.js"></script>
-        <script src="index/sidebar-tags.js"></script>
-        <script src="index/sidebar-recent.js"></script>
+<!------------------------------ Application --------------------------->
+<script src="application/app.js"></script>
+<script src="index/navbar.js"></script>
+<script src="index/sidebar.js"></script>
+<script src="index/sidebar-actions.js"></script>
+<script src="index/sidebar-projects.js"></script>
+<script src="index/sidebar-tags.js"></script>
+<script src="index/sidebar-recent.js"></script>
 
-        <!------------------------------ Core app ------------------------------>
+<!------------------------------ Core app ------------------------------>
 
-        <!-- Navbar -->
-        <script src="application/core/help/help-controller.js"></script>
-        <script src="application/core/about/about-controller.js"></script>
-        <script src="application/core/contact/contact-controller.js"></script>
-        <script src="application/core/home/home-controller.js"></script>
-        <script src="application/core/login/login-controller.js"></script>
-        <script src="application/core/logout/logout-controller.js"></script>
+<!-- Navbar -->
+<script src="application/core/help/help-controller.js"></script>
+<script src="application/core/about/about-controller.js"></script>
+<script src="application/core/contact/contact-controller.js"></script>
+<script src="application/core/home/home-controller.js"></script>
+<script src="application/core/login/login-controller.js"></script>
+<script src="application/core/logout/logout-controller.js"></script>
 
-        <!-- Views -->
-        <!-- View: Account Groups -->
-        <script src="application/core/account/account-controller.js"></script>
-        <script src="application/core/account/password/password-controller.js"></script>
-        <script src="application/core/account/apikey/apikey-controller.js"></script>
-        <script src="application/core/account/usergroups/usergroup-controller.js"></script>
+<!-- Views -->
+<!-- View: Account Groups -->
+<script src="application/core/account/account-controller.js"></script>
+<script src="application/core/account/password/password-controller.js"></script>
+<script src="application/core/account/apikey/apikey-controller.js"></script>
+<script src="application/core/account/usergroups/usergroup-controller.js"></script>
 
-        <script src="application/core/account/templates/templates-controller.js"></script>
+<script src="application/core/account/templates/templates-controller.js"></script>
 
-        <!-- Toolbar reviews -->
-        <script src="application/core/reviews/global-reviews.js"></script>
+<!-- Toolbar reviews -->
+<script src="application/core/reviews/global-reviews.js"></script>
 
-        <!-- Toolbar machines -->
-        <script src="application/core/machines/machines-controller.js"></script>
+<!-- Toolbar machines -->
+<script src="application/core/machines/machines-controller.js"></script>
 
-        <!-- Toolbar projects -->
-        <script src="application/core/projects/projects-controller.js"></script>
-        <script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
-        <script src="application/core/projects/directives/provenance/show-provenance-template-steps.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-step-overview.js"></script>
-        <script src="application/core/projects/directives/provenance/process-details.js"></script>
-        <script src="application/core/projects/directives/provenance/process-runs.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-magic-bar.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-context.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-context-tags.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-step-sample.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-step-transform-sample.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-step-files.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-step-done.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-step-properties.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-step-process.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-next-step.js"></script>
-        <script src="application/core/projects/directives/provenance/wizard-review-content.js"></script>
-        <script src="application/core/projects/directives/provenance/show-process.js"></script>
-        <script src="application/core/projects/directives/provenance/show-step.js"></script>
-        <script src="application/core/projects/directives/provenance/show-process-runs.js"></script>
-        <script src="application/core/projects/directives/provenance/show-step-sample.js"></script>
-        <script src="application/core/projects/directives/provenance/show-step-files.js"></script>
-        <script src="application/core/projects/directives/provenance/show-step-properties.js"></script>
-        <script src="application/core/projects/_action-controller.js"></script>
-        <script src="application/core/projects/project/project-controller.js"></script>
-        <script src="application/core/projects/project/project-action-bar.js"></script>
-        <script src="application/core/projects/project/project-search-bar.js"></script>
-        <script src="application/core/projects/project/project-action-area.js"></script>
-        <script src="application/core/projects/project/sideboard-directive.js"></script>
-        <script src="application/core/projects/project/project-control-bar-directive.js"></script>
-        <script src="application/core/projects/project/project-tabs.js"></script>
-        <script src="application/core/projects/project/home/home.js"></script>
-        <script src="application/core/projects/project/home/directives/home-reviews-directive.js"></script>
-        <script src="application/core/projects/project/home/directives/home-samples-directive.js"></script>
-        <script src="application/core/projects/project/home/directives/home-files-directive.js"></script>
-        <script src="application/core/projects/project/home/directives/home-provenance-directive.js"></script>
-        <script src="application/core/projects/project/home/directives/home-notes-directive.js"></script>
-        <script src="application/core/projects/project/home/directives/home-tasks-directive.js"></script>
-        <script src="application/core/projects/project/files/files.js"></script>
-        <script src="application/core/projects/project/files/overview.js"></script>
-        <script src="application/core/projects/project/files/view.js"></script>
-        <script src="application/core/projects/project/files/project-file-tabs.js"></script>
-        <script src="application/core/projects/project/files/media-type-filter.js"></script>
-        <script src="application/core/projects/project/project-size-filter.js"></script>
-        <script src="application/core/projects/project/project-file-count-filter.js"></script>
-        <script src="application/core/projects/project/tags/tags.js"></script>
-        <script src="application/core/projects/project/tags/create.js"></script>
-        <script src="application/core/projects/project/samples/samples.js"></script>
-        <script src="application/core/projects/project/samples/overview.js"></script>
-        <script src="application/core/projects/project/samples/create.js"></script>
-        <script src="application/core/projects/project/provenance/provenance.js"></script>
-        <script src="application/core/projects/project/provenance/overview.js"></script>
-        <script src="application/core/projects/project/provenance/overview-show-process-details.js"></script>
-        <script src="application/core/projects/project/provenance/overview-process-list.js"></script>
-        <script src="application/core/projects/project/provenance/create.js"></script>
-        <script src="application/core/projects/project/provenance/drafts.js"></script>
-        <script src="application/core/projects/project/provenance/custompop-over.js"></script>
-        <script src="application/core/projects/project/tab-control-bar.js"></script>
-        <script src="application/core/projects/project/action-menu-directive.js"></script>
-        <script src="application/core/projects/project/project-description-directive.js"></script>
-        <script src="application/core/projects/project/action/create-sample-composition.js"></script>
-        <script src="application/core/projects/project/action/add-projects-to-sample.js"></script>
-        <script src="application/core/projects/project/action/sample-default-attributes.js"></script>
-        <script src="application/core/projects/project/action/create-sample-toolbar.js"></script>
-        <script src="application/core/projects/project/action/action-area-button.js"></script>
-        <script src="application/core/projects/project/action/action-status-service.js"></script>
-        <script src="application/core/projects/project/action/add-note-to-sample.js"></script>
-        <script src="application/core/projects/project/reviews/reviews.js"></script>
-        <script src="application/core/projects/project/reviews/overview.js"></script>
-        <script src="application/core/projects/project/reviews/edit.js"></script>
-        <script src="application/core/projects/project/reviews/create.js"></script>
-        <script src="application/core/projects/project/notes/notes.js"></script>
-        <script src="application/core/projects/project/notes/create.js"></script>
-        <script src="application/core/projects/project/notes/overview.js"></script>
-        <script src="application/core/projects/project/tasks/overview.js"></script>
-        <script src="application/core/projects/project/tasks/tasks.js"></script>
-        <script src="application/core/projects/project/tasks/create.js"></script>
-        <script src="application/core/projects/project/notes/edit.js"></script>
-        <script src="application/core/projects/project/provenance/viz-network-directive.js"></script>
-        <script src="application/core/projects/project/provenance/graph-service.js"></script>
+<!-- Toolbar projects -->
+<script src="application/core/projects/projects-controller.js"></script>
+<script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
+<script src="application/core/projects/directives/provenance/show-provenance-template-steps.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-step-overview.js"></script>
+<script src="application/core/projects/directives/provenance/process-details.js"></script>
+<script src="application/core/projects/directives/provenance/process-runs.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-magic-bar.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-context.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-context-tags.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-step-sample.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-step-transform-sample.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-step-files.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-step-done.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-step-properties.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-step-process.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-next-step.js"></script>
+<script src="application/core/projects/directives/provenance/wizard-review-content.js"></script>
+<script src="application/core/projects/directives/provenance/show-process.js"></script>
+<script src="application/core/projects/directives/provenance/show-step.js"></script>
+<script src="application/core/projects/directives/provenance/show-process-runs.js"></script>
+<script src="application/core/projects/directives/provenance/show-step-sample.js"></script>
+<script src="application/core/projects/directives/provenance/show-step-files.js"></script>
+<script src="application/core/projects/directives/provenance/show-step-properties.js"></script>
+<script src="application/core/projects/_action-controller.js"></script>
+<script src="application/core/projects/project/project-controller.js"></script>
+<script src="application/core/projects/project/project-action-bar.js"></script>
+<script src="application/core/projects/project/project-search-bar.js"></script>
+<script src="application/core/projects/project/project-action-area.js"></script>
+<script src="application/core/projects/project/sideboard-directive.js"></script>
+<script src="application/core/projects/project/project-control-bar-directive.js"></script>
+<script src="application/core/projects/project/project-tabs.js"></script>
+<script src="application/core/projects/project/home/home.js"></script>
+<script src="application/core/projects/project/home/directives/home-reviews-directive.js"></script>
+<script src="application/core/projects/project/home/directives/home-samples-directive.js"></script>
+<script src="application/core/projects/project/home/directives/home-files-directive.js"></script>
+<script src="application/core/projects/project/home/directives/home-provenance-directive.js"></script>
+<script src="application/core/projects/project/home/directives/home-notes-directive.js"></script>
+<script src="application/core/projects/project/home/directives/home-tasks-directive.js"></script>
+<script src="application/core/projects/project/files/files.js"></script>
+<script src="application/core/projects/project/files/overview.js"></script>
+<script src="application/core/projects/project/files/view.js"></script>
+<script src="application/core/projects/project/files/project-file-tabs.js"></script>
+<script src="application/core/projects/project/files/media-type-filter.js"></script>
+<script src="application/core/projects/project/project-size-filter.js"></script>
+<script src="application/core/projects/project/project-file-count-filter.js"></script>
+<script src="application/core/projects/project/tags/tags.js"></script>
+<script src="application/core/projects/project/tags/create.js"></script>
+<script src="application/core/projects/project/samples/samples.js"></script>
+<script src="application/core/projects/project/samples/overview.js"></script>
+<script src="application/core/projects/project/samples/create.js"></script>
+<script src="application/core/projects/project/provenance/provenance.js"></script>
+<script src="application/core/projects/project/provenance/overview.js"></script>
+<script src="application/core/projects/project/provenance/overview-show-process-details.js"></script>
+<script src="application/core/projects/project/provenance/overview-process-list.js"></script>
+<script src="application/core/projects/project/provenance/create.js"></script>
+<script src="application/core/projects/project/provenance/drafts.js"></script>
+<script src="application/core/projects/project/provenance/custompop-over.js"></script>
+<script src="application/core/projects/project/tab-control-bar.js"></script>
+<script src="application/core/projects/project/action-menu-directive.js"></script>
+<script src="application/core/projects/project/project-description-directive.js"></script>
+<script src="application/core/projects/project/action/create-sample-composition.js"></script>
+<script src="application/core/projects/project/action/add-projects-to-sample.js"></script>
+<script src="application/core/projects/project/action/sample-default-attributes.js"></script>
+<script src="application/core/projects/project/action/create-sample-toolbar.js"></script>
+<script src="application/core/projects/project/action/action-area-button.js"></script>
+<script src="application/core/projects/project/action/action-status-service.js"></script>
+<script src="application/core/projects/project/action/add-note-to-sample.js"></script>
+<script src="application/core/projects/project/reviews/reviews.js"></script>
+<script src="application/core/projects/project/reviews/overview.js"></script>
+<script src="application/core/projects/project/reviews/edit.js"></script>
+<script src="application/core/projects/project/reviews/create.js"></script>
+<script src="application/core/projects/project/notes/notes.js"></script>
+<script src="application/core/projects/project/notes/create.js"></script>
+<script src="application/core/projects/project/notes/overview.js"></script>
+<script src="application/core/projects/project/tasks/overview.js"></script>
+<script src="application/core/projects/project/tasks/tasks.js"></script>
+<script src="application/core/projects/project/tasks/create.js"></script>
+<script src="application/core/projects/project/notes/edit.js"></script>
+<script src="application/core/projects/project/provenance/viz-network-directive.js"></script>
+<script src="application/core/projects/project/provenance/graph-service.js"></script>
 
-        <!-------------------------------- Global directives ------------------------------->
-        <script src="application/directives/magicbox.js"></script>
-        <script src="application/directives/text-editor-directive.js"></script>
-        <script src="application/directives/paged-directive.js"></script>
-        <script src="application/directives/cgroup-directive.js"></script>
-        <script src="application/directives/dfproperties-directive.js"></script>
-        <script src="application/directives/adproperties-directive.js"></script>
-        <script src="application/directives/projecttree-directive.js"></script>
-        <script src="application/directives/upperlevel-process-directive.js"></script>
-        <script src="application/directives/upperlevel-object-directive.js"></script>
-        <script src="application/directives/periodic-table-directive.js"></script>
-        <script src="application/directives/iterate-properties-directive.js"></script>
-        <script src="application/directives/sample-report-directive.js"></script>
-        <script src="application/directives/plus-minus-toggle-directive.js"></script>
-        <script src="application/directives/tree-grid-directive.js"></script>
-        <script src="application/directives/df-report.js"></script>
-        <script src="application/core/projects/project/files/notes-directive.js"></script>
-        <script src="application/directives/display-tags.js"></script>
-        <script src="application/directives/select2-events.js"></script>
-        <script src="application/directives/properties/display-properties.js"></script>
-        <script src="application/directives/action-link.js"></script>
+<!-------------------------------- Global directives ------------------------------->
+<script src="application/directives/magicbox.js"></script>
+<script src="application/directives/text-editor-directive.js"></script>
+<script src="application/directives/paged-directive.js"></script>
+<script src="application/directives/cgroup-directive.js"></script>
+<script src="application/directives/dfproperties-directive.js"></script>
+<script src="application/directives/adproperties-directive.js"></script>
+<script src="application/directives/projecttree-directive.js"></script>
+<script src="application/directives/upperlevel-process-directive.js"></script>
+<script src="application/directives/upperlevel-object-directive.js"></script>
+<script src="application/directives/periodic-table-directive.js"></script>
+<script src="application/directives/iterate-properties-directive.js"></script>
+<script src="application/directives/sample-report-directive.js"></script>
+<script src="application/directives/plus-minus-toggle-directive.js"></script>
+<script src="application/directives/tree-grid-directive.js"></script>
+<script src="application/directives/df-report.js"></script>
+<script src="application/core/projects/project/files/notes-directive.js"></script>
+<script src="application/directives/display-tags.js"></script>
+<script src="application/directives/select2-events.js"></script>
+<script src="application/directives/properties/display-properties.js"></script>
+<script src="application/directives/action-link.js"></script>
 
-        <!-------------------------------- Global services --------------------------------->
-        <script src="application/services/user-service.js"></script>
-        <script src="application/services/project-colors-service.js"></script>
-        <script src="application/services/alert-service.js"></script>
-        <script src="application/services/watcher-service.js"></script>
-        <script src="application/services/pubsub-service.js"></script>
-        <script src="application/services/mcapi-service.js"></script>
-        <script src="application/services/project-files-service.js"></script>
-        <script src="application/services/provdrafts-service.js"></script>
-        <script src="application/services/draft.js"></script>
-        <script src="application/services/date-generate-service.js"></script>
-        <script src="application/services/nav-service.js"></script>
-        <script src="application/services/materials-service.js"></script>
-        <script src="application/services/cached-service-factory-service.js"></script>
-        <script src="application/services/action-service.js"></script>
-        <script src="application/services/project-path-service.js"></script>
-        <script src="application/services/tags.js"></script>
-        <script src="application/services/prov-magicbar-context.js"></script>
-        <script src="application/services/prov-step.js"></script>
-        <script src="application/services/review-service.js"></script>
-        <script src="application/services/process-list-service.js"></script>
-        <script src="application/services/ui.js"></script>
-        <script src="application/services/recent.js"></script>
-        <script src="application/services/current.js"></script>
-        <script src="application/services/project-state.js"></script>
-        <script src="application/services/project-service.js"></script>
+<!-------------------------------- Global services --------------------------------->
+<script src="application/services/user-service.js"></script>
+<script src="application/services/project-colors-service.js"></script>
+<script src="application/services/alert-service.js"></script>
+<script src="application/services/watcher-service.js"></script>
+<script src="application/services/pubsub-service.js"></script>
+<script src="application/services/mcapi-service.js"></script>
+<script src="application/services/project-files-service.js"></script>
+<script src="application/services/provdrafts-service.js"></script>
+<script src="application/services/draft.js"></script>
+<script src="application/services/date-generate-service.js"></script>
+<script src="application/services/nav-service.js"></script>
+<script src="application/services/materials-service.js"></script>
+<script src="application/services/cached-service-factory-service.js"></script>
+<script src="application/services/action-service.js"></script>
+<script src="application/services/project-path-service.js"></script>
+<script src="application/services/tags.js"></script>
+<script src="application/services/prov-magicbar-context.js"></script>
+<script src="application/services/prov-step.js"></script>
+<script src="application/services/review-service.js"></script>
+<script src="application/services/process-list-service.js"></script>
+<script src="application/services/ui.js"></script>
+<script src="application/services/recent.js"></script>
+<script src="application/services/current.js"></script>
+<script src="application/services/project-state.js"></script>
+<script src="application/services/project-service.js"></script>
 
-        <!-------------------------------- Global model services -------------------------->
-        <script src="application/services/model/projects-service.js"></script>
-        <script src="application/services/model/templates-service.js"></script>
+<!-------------------------------- Global model services -------------------------->
+<script src="application/services/model/projects-service.js"></script>
+<script src="application/services/model/templates-service.js"></script>
 
-        <!-------------------------------- Global filters --------------------------------->
-        <script src="application/filters/page-filter.js"></script>
-        <script src="application/filters/todatestring-filter.js"></script>
-        <script src="application/filters/reverse-filter.js"></script>
-        <script src="application/filters/review-filter.js"></script>
-        <script src="application/filters/bykey-filter.js"></script>
+<!-------------------------------- Global filters --------------------------------->
+<script src="application/filters/page-filter.js"></script>
+<script src="application/filters/todatestring-filter.js"></script>
+<script src="application/filters/reverse-filter.js"></script>
+<script src="application/filters/review-filter.js"></script>
+<script src="application/filters/bykey-filter.js"></script>
 
-        <!-- Index -->
-        <script src="index/_navigation-controller.js"></script>
-        <script src="index/_alerts-controller.js"></script>
+<!-- Index -->
+<script src="index/_navigation-controller.js"></script>
+<script src="index/_alerts-controller.js"></script>
 
-        <!-- Util -->
-        <script src="index/util.js"></script>
-        <script src="index/config.js"></script>
-    </body>
+<!-- Util -->
+<script src="index/util.js"></script>
+<script src="index/config.js"></script>
+</body>
 </html>
