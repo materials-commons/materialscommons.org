@@ -16,6 +16,9 @@
 </div>
 <div class="row">
     <div class="col-xs-5" style="background-color: white" >
+        <div ng-if="notes.length === 0">
+            There are no notes to display
+        </div>
         <div class="timeline-item" ng-repeat="note in notes">
             <div class="row">
                 <div class="col-xs-5 date">
@@ -31,4 +34,3 @@
         </div>
     </div>
 </div>
-
