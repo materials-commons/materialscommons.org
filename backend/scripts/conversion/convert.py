@@ -555,6 +555,21 @@ def delete_old_drafts(conn):
     r.table('drafts').delete().run(conn)
 
 
+def fix_or_delete_samples(conn):
+    samples = list(r.table("samples")
+                   .filter({"owner": "admin@materialscommons.org"})
+                   .run(conn))
+    for sample in samples:
+        proj = r.table("projects").get(sample["project_id"]).run(conn)
+        if proj is not None:
+            r.table("samples").get(sample["id"]).update({
+                "owner": proj["owner"]
+            }).run(conn)
+        else:
+            # Sample belongs to a non-existent project: delete it.
+            r.table("samples").get(sample["id"]).delete().run(conn)
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     mark_bad_projects(conn)
@@ -576,6 +591,7 @@ def main(conn, mcdir):
     populate_elements(conn)
     update_fullnames_and_last_login(conn)
     build_notes(conn)
+    fix_or_delete_samples(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
