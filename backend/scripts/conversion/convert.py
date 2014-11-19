@@ -494,6 +494,7 @@ def remove_conditions(conn):
 
 def remove_processes(conn):
     r.table('processes').delete(conn)
+    r.table('processes2samples').delete(conn)
 
 
 def remove_reviews(conn):
