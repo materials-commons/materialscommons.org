@@ -1,15 +1,15 @@
 Application.Controllers.controller('projectProvenanceCreate',
-                                   ["$scope", "project", "model.templates",
-                                    "model.projects", "User", "$filter", "provStep", "projectFiles",
-                                    "draft", "$stateParams", "projectState", "recent", "$timeout",
-                                    projectProvenanceCreate]);
+    ["$scope", "project", "model.templates",
+        "model.projects", "User", "$filter", "provStep", "projectFiles",
+        "draft", "$stateParams", "projectState", "recent", "$timeout",
+        projectProvenanceCreate]);
 
 function projectProvenanceCreate($scope, project, templates, projects,
                                  User, $filter, provStep, projectFiles, draft,
                                  $stateParams, projectState, recent, $timeout) {
     var stateID = $stateParams.sid;
 
-    $scope.start = function() {
+    $scope.start = function () {
         if (!$scope.wizardState.selectedTemplate) {
             return;
         }
@@ -21,7 +21,7 @@ function projectProvenanceCreate($scope, project, templates, projects,
         provStep.setStep($scope.wizardState.project.id, provStep.makeStep("process", "process"));
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         var projectID = $scope.wizardState.project.id;
         provStep.resetProject(projectID);
         recent.delete(project.id, stateID);
@@ -29,7 +29,7 @@ function projectProvenanceCreate($scope, project, templates, projects,
         recent.gotoLast(project.id);
     };
 
-    templates.getList().then(function(templates) {
+    templates.getList().then(function (templates) {
         $scope.templates = $filter('byKey')(templates, 'template_type', 'process');
         var t = $scope.templates[0];
         if (_.str.startsWith(t.category, "Process -")) {
@@ -39,12 +39,12 @@ function projectProvenanceCreate($scope, project, templates, projects,
         }
 
         // Set the category name for sorting purposes
-        $scope.templates.forEach(function(template) {
+        $scope.templates.forEach(function (template) {
             template.category = "Process - " + template.category;
         });
         // Add the preferred templates
         if (User.attr().preferences.templates.length !== 0) {
-            User.attr().preferences.templates.forEach(function(t) {
+            User.attr().preferences.templates.forEach(function (t) {
                 var template = $filter('byKey')(templates, 'id', t.id);
                 var preferred;
                 if (template) {
@@ -76,7 +76,7 @@ function projectProvenanceCreate($scope, project, templates, projects,
         if ($scope.wizardState.step !== null) {
             step = $scope.wizardState.step;
         }
-        $timeout(function() {
+        $timeout(function () {
             // Wrap in timeout to force dirty checking and to allow the other directives in
             // the page to load.
             provStep.setStep(project.id, step);

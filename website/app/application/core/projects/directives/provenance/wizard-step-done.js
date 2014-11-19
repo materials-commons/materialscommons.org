@@ -10,9 +10,9 @@ function wizardStepDoneDirective() {
 }
 
 Application.Controllers.controller('wizardStepDoneDirectiveController',
-                                   ["$scope", "provStep", "$stateParams",
-                                    "Restangular", "User", "$timeout", "current",
-                                    "projectState", "recent", wizardStepDoneDirectiveController]);
+    ["$scope", "provStep", "$stateParams",
+        "Restangular", "User", "$timeout", "current",
+        "projectState", "recent", wizardStepDoneDirectiveController]);
 function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Restangular, User,
                                            $timeout, current, projectState, recent) {
     var state = projectState.get($stateParams.id, $stateParams.sid);
@@ -25,7 +25,7 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
                 name: state.selectedTemplate.template_name
             });
         }
-        state.selectedTemplate.input_templates.forEach(function(t) {
+        state.selectedTemplate.input_templates.forEach(function (t) {
             if (!state.currentDraft.inputs[t.id].done) {
                 $scope.unfinishedSteps.push({
                     stepType: "inputs",
@@ -45,7 +45,7 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
             }
         }
 
-        state.selectedTemplate.output_templates.forEach(function(t) {
+        state.selectedTemplate.output_templates.forEach(function (t) {
             if (!state.currentDraft.outputs[t.id].done) {
                 $scope.unfinishedSteps.push({
                     stepType: "outputs",
@@ -72,7 +72,7 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
 
     determineDoneState();
 
-    $scope.gotoStep = function(stepType, stepName) {
+    $scope.gotoStep = function (stepType, stepName) {
         var step = provStep.makeStep(stepType, stepName);
         provStep.setStep($stateParams.id, step);
     };
@@ -84,12 +84,12 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
         recent.gotoLast($stateParams.id);
     }
 
-    $scope.submit = function() {
+    $scope.submit = function () {
         Restangular.one("provenance2")
             .post($stateParams.id,
-                  state.currentDraft,
-                  {apikey: User.apikey()})
-            .then(function(process) {
+            state.currentDraft,
+            {apikey: User.apikey()})
+            .then(function (process) {
                 var project = current.project();
                 // At this point the new process may have relationships
                 // with the existing processes. This is not currently
@@ -97,10 +97,22 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
                 // rebuild the list of processes. This is kind of ugly
                 // but works at the moment.
                 Restangular.one('processes').one('project', project.id)
-                    .get(User.keyparam()).then(function(processes){
+                    .get(User.keyparam()).then(function (processes) {
                         project.processes = processes;
+
                         closeProvenanceAction();
                     });
+                ////Remove draft if it exists:
+                var i = _.indexOf(project.drafts, function (d) {
+                    return d.id === state.currentDraft.id;
+                });
+                if (i !== -1) {
+                    Restangular.one("drafts", project.drafts[i].id)
+                        .remove({apikey: User.apikey()}).then(function () {
+                            project.drafts.splice(i, 1);
+                        });
+                }
+
             });
     };
 
@@ -112,7 +124,7 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
         } else {
             // we are working with an existing draft so
             // update that item in the list.
-            var i = _.indexOf(project.drafts, function(d) {
+            var i = _.indexOf(project.drafts, function (d) {
                 return d.id === draft.id;
             });
             if (i !== -1) {
@@ -122,22 +134,22 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
         }
     }
 
-    $scope.saveDraft = function() {
+    $scope.saveDraft = function () {
         var apikey = {apikey: User.apikey()};
         Restangular.one("drafts2")
             .post($stateParams.id, state.currentDraft, apikey)
-            .then(function(draft) {
+            .then(function (draft) {
                 updateDraft(draft);
                 closeProvenanceAction();
             });
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         // The bootstrap modal black backdrop isn't dismissed
         // if we don't wrap these functions in a timeout. It
         // appears that the changes to the dom are happening
         // too quickly.
-        $timeout(function() {
+        $timeout(function () {
             recent.delete($stateParams.id, $stateParams.sid);
             projectState.delete($stateParams.id, $stateParams.sid);
             closeProvenanceAction();
