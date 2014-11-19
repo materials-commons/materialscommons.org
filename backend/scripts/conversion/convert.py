@@ -494,10 +494,51 @@ def remove_conditions(conn):
 
 def remove_processes(conn):
     r.table('processes').delete(conn)
+    r.table('processes2samples').delete(conn)
 
 
 def remove_reviews(conn):
     r.table('reviews').delete(conn)
+
+
+def build_notes(conn):
+    r.table('notes').delete().run(conn)
+    # project notes
+    projects = r.table('projects').pluck('notes', 'id').run(conn)
+    for project in projects:
+        notes = project['notes']
+        # insert into notes table
+        if len(notes) != 0:
+            for each_note in notes:
+                now = r.now()
+                r.table('notes').insert({
+                    'item_id': project['id'],
+                    'item_type': 'project',
+                    'creator': each_note['who'],
+                    'note': each_note['message'],
+                    'title': each_note['title'],
+                    'birthtime': now,
+                    'mtime': now,
+                    'project_id': project['id']
+                }).run(conn)
+    # sample notes
+    samples = r.table('samples').pluck('notes', 'id', 'project_id').run(conn)
+    for sample in samples:
+        notes = sample['notes']
+        # insert into notes table
+        if len(notes) != 0 and 'project_id' in sample:
+            for each_note in notes:
+                now = r.now()
+                r.table('notes').insert({
+                    'item_id': sample['id'],
+                    'item_type': 'sample',
+                    'creator': each_note['who'],
+                    'note': each_note['message'],
+                    'title': '',
+                    'birthtime': now,
+                    'mtime': now,
+                    'project_id': sample['project_id']
+                }).run(conn)
 
 
 def populate_elements(conn):
@@ -512,6 +553,21 @@ def populate_elements(conn):
 
 def delete_old_drafts(conn):
     r.table('drafts').delete().run(conn)
+
+
+def fix_or_delete_samples(conn):
+    samples = list(r.table("samples")
+                   .filter({"owner": "admin@materialscommons.org"})
+                   .run(conn))
+    for sample in samples:
+        proj = r.table("projects").get(sample["project_id"]).run(conn)
+        if proj is not None:
+            r.table("samples").get(sample["id"]).update({
+                "owner": proj["owner"]
+            }).run(conn)
+        else:
+            # Sample belongs to a non-existent project: delete it.
+            r.table("samples").get(sample["id"]).delete().run(conn)
 
 
 def main(conn, mcdir):
@@ -534,6 +590,8 @@ def main(conn, mcdir):
     associate_samples_to_projects(conn)
     populate_elements(conn)
     update_fullnames_and_last_login(conn)
+    build_notes(conn)
+    fix_or_delete_samples(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
