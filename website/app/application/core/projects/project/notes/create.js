@@ -8,11 +8,6 @@ function projectNotesCreate($scope, User, mcapi, projectState,
     var projectID = project.id;
     var stateID = $stateParams.sid;
 
-    var defaultModel = {
-        note: "",
-        title: ""
-    };
-    $scope.model = projectState.getset(projectID, stateID, defaultModel);
 
     $scope.cancel = function () {
         recent.delete(projectID, stateID);
@@ -35,4 +30,18 @@ function projectNotesCreate($scope, User, mcapi, projectState,
                 recent.gotoLast($scope.project.id);
             }).post($scope.note);
     };
+
+    function initializeState() {
+        var defaultModel = {
+            note: "",
+            title: ""
+        };
+        $scope.model = projectState.getset(projectID, stateID, defaultModel);
+        recent.addIfNotExists(projectID, stateID, "New Note");
+    }
+
+    function init() {
+        initializeState();
+    }
+    init();
 }
