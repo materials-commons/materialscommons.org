@@ -88,13 +88,6 @@
                     <div  class="nav-dropdown-scrollbar" global-reviews></div>
                 </div>
             </li>
-            <li ng-class="{ navactive: isActiveStep('projects') }">
-                <a ng-click="showStep('projects')"
-                   ui-sref="projects.project.overview({id: firstProjectID})"
-                   class="navbar-link large-text">
-                    <i class="fa fa-fw fa-briefcase space-right"></i> Projects
-                </a>
-            </li>
             <li ng-class="{ navactive: isActiveStep('machines') }">
                 <a ng-click="showStep('machines')" ui-sref="machines"
                    class="navbar-link large-text">
