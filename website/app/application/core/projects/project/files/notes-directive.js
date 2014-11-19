@@ -19,7 +19,7 @@ function notesController($scope, mcapi, User, recent, Project) {
         mcapi('/notes')
             .success(function (note) {
                 $scope.project.notes.push(note);
-                recent.gotoLast($scope.project.id);
+                //recent.gotoLast($scope.project.id);
             }).post($scope.note);
     };
 
