@@ -44,8 +44,22 @@ function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectF
         recent.gotoLast($stateParams.id);
     };
 
+    function isImage(mime) {
+        switch (mime) {
+        case "image/gif":
+        case "image/jpeg":
+        case "image/png":
+        case "image/tiff":
+        case "image/x-ms-bmp":
+            return true;
+        default:
+            return false;
+        }
+    }
+
     function init() {
         $scope.file = {};
+        $scope.fileType = "";
         ui.setShowFiles($stateParams.id, true);
         $scope.user = User.u();
         $scope.user_tags = User.attr().preferences.tags;
@@ -54,14 +68,14 @@ function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectF
         // $scope.dir = $scope.model.projects[$stateParams.id].dir.children;
         //////end//////
         mcapi('/datafile/%', $stateParams.fileid)
-            .success(function (data) {
-                $scope.file = data;
+            .success(function (file) {
+                $scope.file = file;
                 $scope.trail = ProjectPath.get_trail();
                 $scope.dir = ProjectPath.get_dir();
                 $scope.fileType = "other";
-                if (isImage($scope.file.name)) {
+                if (isImage($scope.file.mediatype.mime)) {
                     $scope.fileType = "image";
-                } else if (_.str.endsWith($scope.file.name, "pdf")) {
+                } else if ($scope.file.mediatype.mime === "application/pdf") {
                     $scope.fileType = "pdf";
                 }
 
