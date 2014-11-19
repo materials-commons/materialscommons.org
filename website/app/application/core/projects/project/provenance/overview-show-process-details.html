@@ -17,7 +17,7 @@
                                 <i class="fa fa-fw fa-files-o"></i><i><b>{{key}} </b></i>
                                 <ul style="padding-left: 40px;"  ng-repeat="file in values">
                                     <li>
-                                        Name: {{file.other.name}}  <br>
+                                        Name: <a ui-sref="projects.project.files.view({fileid: file.value})">{{file.other.name}} </a> <br>
                                         Path: <i>{{file.other.fullname}}</i>
                                     </li>
 
@@ -68,7 +68,7 @@
                                 <i class="fa fa-fw fa-files-o"></i><i><b>{{key}} </b></i>
                                 <ul style="padding-left: 40px;"  ng-repeat="file in values">
                                     <li>
-                                        Name: {{file.other.name}}  <br>
+                                        Name:  <a ui-sref="projects.project.files.view({fileid: file.value})">{{file.other.name}} </a> <br>
                                         Path: <i>{{file.other.fullname}}</i>
                                     </li>
                                 </ul>
