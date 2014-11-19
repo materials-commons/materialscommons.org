@@ -1,8 +1,9 @@
 <div ng-if="update!=='true'" class="row">
 
     <h4>Note</h4>
-
     <div>
+        <input placeholder="Title" class="form-control" ng-model="model.title">
+
         <text-angular ta-toolbar="[['h1','h2','h3', 'h4','p'],
                       ['bold','italics','underline'],['ul','ol'],
                       ['justifyLeft','justifyCenter','justifyRight'],
@@ -18,20 +19,21 @@
     <div>
         <h4>Previous notes:</h4>
 
-        <div class="row" ng-repeat="n in doc.notes | orderBy: date">
+        <div class="row" ng-repeat="n in project.notes | byKey: 'item_id': doc.id">
             <div ng-if="edit_index==$index">
+                <input placeholder="Title" class="form-control" ng-model="n.title">
                 <text-angular ta-toolbar="[['h1','h2','h3', 'h4', 'h5', 'h6','p', 'quote'],
                               ['bold','italics','underline','ul','ol'],['undo', 'redo','clear'],
                               ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
-                              ng-model="n.message"></text-angular>
+                              ng-model="n.note"></text-angular>
                 <br>
-                <button ng-click="saveNotes($index)" class="btn btn-default btn-primary">Save</button>
+                <button ng-click="saveNotes(n)" class="btn btn-default btn-primary">Save</button>
             </div>
             <div ng-if="edit_index!==$index">
-                <div ta-bind ng-model="n.message"></div>
+                <div ta-bind ng-model="n.note"></div>
             </div>
             <div class="text-muted sub-text">
-                {{n.date}} --- {{n.who}}
+                {{n.mtime | toDateString}} --- {{n.creator}}
             </div>
             <div ng-if="edit_index!==$index">
                 <a ng-click="editNotes($index)">edit</a>
