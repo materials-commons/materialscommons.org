@@ -32,15 +32,15 @@ function actionFileController(toastr, $scope, mcapi, ProjectPath, User, projectF
                 i = _.indexOf($scope.dir, function (item) {
                     return item.id === entry.id;
                 });
-                if(i != -1){
-                    if ((Object.keys($scope.dir[i]['tags'])).indexOf($scope.user) === 0){
+                if (i != -1) {
+                    if ((Object.keys($scope.dir[i]['tags'])).indexOf($scope.user) === 0) {
                         $scope.dir[i]['tags'][$scope.user].push(selected_tag);
                     }
-                    else{
+                    else {
                         $scope.dir[i]['tags'][$scope.user] = [selected_tag];
                     }
                 }
-            }).error(function(e){
+            }).error(function (e) {
                 toastr.error(e.error, 'Error', {
                     closeButton: true
                 });

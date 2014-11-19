@@ -113,6 +113,7 @@ def add_processes(projects_by_id, project_ids):
 
 def add_notes(projects_by_id, project_ids):
     notes = list(r.table('notes').get_all(*project_ids, index='project_id')
+                 .order_by('mtime')
                  .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, notes, 'project_id', 'notes')
 
