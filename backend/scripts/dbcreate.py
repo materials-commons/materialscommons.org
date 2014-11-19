@@ -122,7 +122,7 @@ def create_indices():
     create_index('items2tags', 'item_id')
     create_index('datadirs_denorm', 'name')
     create_index('datadirs_denorm', 'project_id')
-    run(r.db("materialscommons").table("datadirs")
+    run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
 
 
