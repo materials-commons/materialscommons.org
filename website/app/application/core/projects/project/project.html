@@ -3,21 +3,13 @@
         <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
         <div style="padding-left: 10px; padding-right: 10px;">
             <div class="row">
-                <div class="col-xs-5">
-                    <h1 style="color: #41738c; font-weight: bold; font-size: 28px; margin-top: 5px">
-                        {{project.name}}
-                    </h1>
-                </div>
-                <div class="col-xs-7" style="padding-bottom: 7px; padding-top: 7px">
-                    <project-search-bar project="project"></project-search-bar>
-                </div>
+                <h3>{{project.name}} > Home <p style="float:right;font-size: 16px;">Welcome {{mcuser.fullname}} !
+                    (Last login on {{mcuser.last_login | toDateString}})</p></h3>
             </div>
-            <!-- <div style="padding-top: 3px">
-            <project-action-area project="project"></project-action-area>
-            </div> -->
             <div ui-view></div>
             <div ng-show="showFiles()" class="row">
-                <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true" color="{{colors.getCurrentProjectColor()}}"></project-tree>
+                <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true"
+                              color="{{colors.getCurrentProjectColor()}}"></project-tree>
                 <div class="row">
                     <project-description project-id="{{project.id}}"></project-description>
                 </div>

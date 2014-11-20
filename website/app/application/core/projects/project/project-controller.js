@@ -1,9 +1,9 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "provStep", "ui",
-                                    "project", "current", "pubsub", "recent",
+                                    "project", "current", "pubsub", "recent", "User",
                                     projectsProject]);
 
-function projectsProject ($scope, provStep, ui, project, current, pubsub, recent) {
+function projectsProject ($scope, provStep, ui, project, current, pubsub, recent, User) {
     recent.resetLast(project.id);
 
     current.setProject(project);
@@ -23,4 +23,6 @@ function projectsProject ($scope, provStep, ui, project, current, pubsub, recent
     $scope.isActive = function (tab) {
         return tab === $scope.activeTab;
     };
+    $scope.mcuser = User.attr();
+
 }
