@@ -3,8 +3,9 @@
         <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
         <div style="padding-left: 10px; padding-right: 10px;">
             <div class="row">
-                <h3>{{project.name}} > Home <p style="float:right;font-size: 16px;">Welcome {{mcuser.fullname}} !
-                    (Last login on {{mcuser.last_login | toDateString}})</p></h3>
+                <span style="color:#41738c;font-family: Helvetica;font-size: 18px;">{{project.name}}</span>
+                <span style="float:right;color:#555;font-family: Helvetica;font-size: 14px;">(Last login on {{mcuser.last_login | toDateString}})</span>
+                <span style="float:right; color:#333;font-family: Helvetica;font-size: 16px;">Welcome {{mcuser.fullname}} </span>
             </div>
             <div ui-view></div>
             <div ng-show="showFiles()" class="row">

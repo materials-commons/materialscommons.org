@@ -1,37 +1,22 @@
-<div>
-    <div class="row">
-        <h4 class="text-center" style="padding-bottom: 15px;">
-            <i class="fa fa-edit fa-fw"></i>
-            <strong>Notes</strong>
-        </h4>
+<div class="panel panel-primary" style="border-color: #c9c9c9;">
+    <div class="panel-heading" style="background-color: #3ea7a0;opacity: 85%;">
+        <i class="fa fa-fw fa-comment"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Reviews</span>
+        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all 15 reviews</a>
     </div>
-    <div class="row">
-        <p class="pull-right">
-            <strong>
-                You have
-                <a ui-sref="projects.project.notes.overview">{{project.notes.length}}
-                </a>
-                notes
-            </strong>
-        </p>
-    </div>
-    <div class="row">
-        <ul  class="list-group clear-list">
-            <li class="list-group-item">
-                Total
-                <a ui-sref="projects.project.notes.overview"><span class="pull-right">{{all_notes.length}}</span></a>
+    <div class="panel-body">
+        <ul style="list-style-type: none">
+            <li>
+                <i class="fa fa-fw fa-user  fa-2x"></i> tammasr commented on  <a>A Request for Revi</a>
+                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
             </li>
-            <li class="list-group-item">
-                Project notes
-                <a ui-sref="projects.project.notes.overview"><span class="pull-right">{{project_notes.length}}</span></a>
+            <li>
+                <i class="fa fa-fw fa-user fa-2x"></i> tammasr commented on  <a>A Request for Review 1</a>
+                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
             </li>
-            <li class="list-group-item">
-                Sample notes
-                <a ui-sref="projects.project.notes.overview"><span class="pull-right">{{sample_notes.length}}</span></a>
+            <li>
+                <i class="fa fa-fw fa-user  fa-2x"></i> tammasr commented on  <a>A Request for Review 1</a>
+                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
             </li>
         </ul>
-    </div>
-    <div class="row">
-        <a ng-click="addNote()">Add Note</a>
     </div>
 </div>
