@@ -1,70 +1,14 @@
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <i class="fa fa-fw fa-comment"></i>Reviews
-        <a style="float: right;"> View all 15 reviews</a>
+<div class="panel panel-primary" style="border-color: #c9c9c9;">
+    <div class="panel-heading" style="background-color: #4884b8;opacity: 85%;">
+        <i class="fa fa-fw fa-comment"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Reviews</span>
+        <a ui-sref="projects.project.reviews.overview" style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all 15 reviews</a>
     </div>
     <div class="panel-body">
-        <ul style="list-style-type: none">
+        <ul style="list-style-type: none" ng-repeat="review in recent_reviews">
             <li>
-                <i class="fa fa-fw fa-user  fa-2x"></i> tammasr commented on  <a>A Request for Reviewing File 1</a>
-                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
-            </li>
-            <li>
-                <i class="fa fa-fw fa-user fa-2x"></i> tammasr commented on  <a>A Request for Reviewing File 1</a>
-                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
-            </li>
-            <li>
-                <i class="fa fa-fw fa-user  fa-2x"></i> tammasr commented on  <a>A Request for Reviewing File 1</a>
-                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
+                <i class="fa fa-fw fa-user  fa-2x"></i> {{review.author}} commented on  <a>{{review.title}}</a>
+                <p style="padding-left: 35px;"><small class="text-muted">{{review.mtime | toDateString}}</small></p>
             </li>
         </ul>
     </div>
 </div>
-
-<!--<div>-->
-    <!--<div class="row">-->
-        <!--<h4 class="text-center" style="padding-bottom: 15px;">-->
-            <!--<i class="fa fa-comment fa-fw"></i>-->
-            <!--<strong>Reviews</strong>-->
-        <!--</h4>-->
-    <!--</div>-->
-    <!--<div style="padding-bottom: 8px;" class="row">-->
-        <!--<p class="pull-right">-->
-            <!--<strong>-->
-                <!--You have <a ui-sref="projects.project.reviews.overview">-->
-                <!--{{(project.open_reviews | byKey:'status':'open').length}} open-->
-                <!--</a>-->
-                <!--and {{(project.closed_reviews | byKey:'status':'closed').length}} closed reviews-->
-            <!--</strong>-->
-        <!--</p>-->
-    <!--</div>-->
-    <!--<div class="row">-->
-        <!--<div class="timeline-item" ng-repeat="rev in recent_reviews">-->
-            <!--<div class="row">-->
-                <!--<div class="col-xs-3 date">-->
-                    <!--<i  ng-click="editReview($index)" class="fa fa-edit cursor-pointer"></i>-->
-                    <!--<small class="tex-navy">{{rev.mtime | toDateString}}</small>-->
-                    <!--<br>-->
-                <!--</div>-->
-                <!--<div class="col-xs-7 content no-top-border">-->
-                    <!--<p class="m-b-xs">-->
-                        <!--<strong>{{rev.messages[rev.messages.length - 1].who}}</strong> has commented on {{rev.title}}. <br>-->
-                    <!--</p>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-    <!--</div>-->
-    <!--&lt;!&ndash;<h5><strong>Recent comments:</strong></h5>&ndash;&gt;-->
-    <!--&lt;!&ndash;<div class="feed-activity-list">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="feed-element" ng-repeat="rev in recent_reviews">&ndash;&gt;-->
-            <!--&lt;!&ndash;<span class="pull-left">&ndash;&gt;-->
-                <!--&lt;!&ndash;<i class="fa fa-fw fa-user"></i>&ndash;&gt;-->
-            <!--&lt;!&ndash;</span>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="media-body">&ndash;&gt;-->
-                <!--&lt;!&ndash;<strong>Sravya Tamma</strong> has commented on {{rev.title}}. <br>&ndash;&gt;-->
-                <!--&lt;!&ndash;<small class="text-muted">Date {{rev.mtime | toDateString}}</small>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--</div>-->
