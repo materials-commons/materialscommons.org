@@ -35,21 +35,18 @@
 </head>
 <body>
 <a name="top"></a>
-<navbar></navbar>
-<sidebar></sidebar>
+
+<div id="fixed">
+    <navbar style="z-index: 2;"></navbar>
+    <sidebar></sidebar>
+    <quickbar></quickbar>
+</div>
+
 <div class="main-content">
     <div class="row app-container">
         <div ui-view>
         </div>
     </div>
-</div>
-<div class="quick-bar" style="height: 100%">
-    fdgfd
-    <!--<ul>-->
-    <!--<li><i class="fa fa-fw fa-cubes fa-2x"></i></li>-->
-    <!--<li><i class="fa fa-fw fa-comment fa-2x"></i></li>-->
-    <!--<li><i class="fa fa-fw fa-file fa-2x"></i></li>-->
-    <!--</ul>-->
 </div>
 
 <!-- ---------------------------- External dependencies ----------------->
