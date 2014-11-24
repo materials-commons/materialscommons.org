@@ -34,20 +34,22 @@
     <link href="style-4.css" rel="stylesheet">
 </head>
 <body>
-<a name="top"></a>
-
-<div id="fixed">
+<div class="row">
     <navbar style="z-index: 2;"></navbar>
+</div>
+<div>
     <sidebar></sidebar>
+    <div class="main-content">
+        <div class="row app-container">
+            <div ui-view>
+            </div>
+        </div>
+    </div>
     <quickbar></quickbar>
 </div>
 
-<div class="main-content">
-    <div class="row app-container">
-        <div ui-view>
-        </div>
-    </div>
-</div>
+
+
 
 <!-- ---------------------------- External dependencies ----------------->
 
