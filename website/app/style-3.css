@@ -835,6 +835,18 @@ h4, .h4, h5, .h5, h6, .h6 {
   min-height: 100%;
 }
 
+.quick-bar {
+  width: 300px;
+  height: 100%;
+  background-color: #d1d100;
+  height: 100%;
+  min-height: 100%;
+  float:right;
+  positon: fixed;
+  margin-top: 0px;
+  margin-right: 0px;
+}
+
 .sidebar-list .list-group-item {
   background-color: #3b4247;
   border: 0px solid #3b4247;
