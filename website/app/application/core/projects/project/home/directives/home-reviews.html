@@ -1,13 +1,21 @@
 <div class="panel panel-primary" style="border-color: #c9c9c9;">
     <div class="panel-heading" style="background-color: #4884b8;opacity: 85%;">
-        <i class="fa fa-fw fa-comment"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Reviews</span>
-        <a ui-sref="projects.project.reviews.overview" style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all 15 reviews</a>
+        <i class="fa fa-fw fa-comment"></i><span
+            style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Reviews</span>
+        <a ui-sref="projects.project.reviews.overview"
+           style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;">
+            View all {{project.open_reviews.length}} reviews</a>
     </div>
     <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="review in recent_reviews">
+        <ul style="list-style-type: none" ng-repeat="review in recent_reviews | limitTo : 3">
             <li>
-                <i class="fa fa-fw fa-user  fa-2x"></i> {{review.author}} commented on  <a>{{review.title}}</a>
-                <p style="padding-left: 35px;"><small class="text-muted">{{review.mtime | toDateString}}</small></p>
+                <i class="fa fa-fw fa-user  fa-2x"></i> {{review.author}} commented on
+                <a ui-sref="projects.project.reviews.edit({'review_id': review.id, 'status': review.status})">
+                    {{review.title | truncate: 25 : '...':true}}</a>
+
+                <p style="padding-left: 35px;">
+                    <small class="text-muted">{{review.mtime | toDateString}}</small>
+                </p>
             </li>
         </ul>
     </div>

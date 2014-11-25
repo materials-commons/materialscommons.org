@@ -22,7 +22,7 @@
         <div class="timeline-item" ng-repeat="note in notes">
             <div class="row">
                 <div class="col-xs-5 date">
-                    <i ng-click="editNotes($index)" class="fa fa-edit cursor-pointer"></i>
+                    <i ng-click="editNotes(note.id)" class="fa fa-edit cursor-pointer"></i>
                     <small class="tex-navy">{{note.birthtime | toDateString}}</small>
                 </div>
                 <div class="col-xs-7 content no-top-border">

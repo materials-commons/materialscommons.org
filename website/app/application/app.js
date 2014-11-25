@@ -19,7 +19,7 @@ var app = angular.module('materialscommons',
                              'treeGrid',
                              'ngDragDrop',
                              'ng-context-menu',
-                             "cfp.hotkeys",
+                             "cfp.hotkeys",'angular.filter',
                              '$strap.directives', 'ui.bootstrap', 'toastr',
                              'tc.chartjs',
                              'application.core.constants', 'application.core.services',
@@ -199,7 +199,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: "projectReviewsOverview"
         })
         .state('projects.project.reviews.edit', {
-            url: '/edit/:index/:status',
+            url: '/edit/:review_id/:status',
             templateUrl: "application/core/projects/project/reviews/edit.html",
             controller: "projectReviewsEdit"
         })
@@ -219,7 +219,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: "projectNotesOverview"
         })
         .state('projects.project.notes.edit', {
-            url: '/edit/:index',
+            url: '/edit/:note_id',
             templateUrl: "application/core/projects/project/notes/edit.html",
             controller: "projectNotesEdit"
         })

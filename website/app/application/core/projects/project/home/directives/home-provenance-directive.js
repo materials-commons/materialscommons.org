@@ -11,9 +11,10 @@ function homeProvenanceDirective() {
 }
 
 Application.Controllers.controller("homeProvenanceDirectiveController",
-    ["$scope", "projectState", "$state",
+    ["$scope", "projectState", "$state", "User",
         homeProvenanceDirectiveController]);
-function homeProvenanceDirectiveController($scope, projectState, $state) {
+function homeProvenanceDirectiveController($scope, projectState, $state, User) {
+
     $scope.createName = function (name) {
         if (name.length > 25) {
             return name.substring(0, 25) + "...";
@@ -21,12 +22,9 @@ function homeProvenanceDirectiveController($scope, projectState, $state) {
         return name;
     };
 
-    $scope.addProvenance = function () {
-        var stateID = projectState.add($scope.project.id);
-        $state.go("projects.project.provenance.create", {sid: stateID});
-    };
-
+    console.log($scope.project);
     $scope.displayCount = function (process) {
         return _.keys(process).length;
     };
+
 }

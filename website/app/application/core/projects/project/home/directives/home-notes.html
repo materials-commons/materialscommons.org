@@ -1,21 +1,15 @@
 <div class="panel panel-primary" style="border-color: #c9c9c9;">
     <div class="panel-heading" style="background-color: #3ea7a0;opacity: 85%;">
-        <i class="fa fa-fw fa-comment"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Reviews</span>
-        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all 15 reviews</a>
+        <i class="fa fa-fw fa-edit"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Notes</span>
+        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;" ui-sref="projects.project.notes.overview"> View all {{all_notes.length}} notes</a>
     </div>
     <div class="panel-body">
-        <ul style="list-style-type: none">
+        <ul style="list-style-type: none" ng-repeat="note in all_notes | limitTo : 3">
             <li>
-                <i class="fa fa-fw fa-user  fa-2x"></i> tammasr commented on  <a>A Request for Revi</a>
-                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
-            </li>
-            <li>
-                <i class="fa fa-fw fa-user fa-2x"></i> tammasr commented on  <a>A Request for Review 1</a>
-                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
-            </li>
-            <li>
-                <i class="fa fa-fw fa-user  fa-2x"></i> tammasr commented on  <a>A Request for Review 1</a>
-                <p style="padding-left: 35px;"><small class="text-muted">10/8/2013 at 1:15pm </small></p>
+                {{note.creator}} created a <i>{{note.item_type}}</i> note:
+                <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
+                    {{note.title | truncate: 25 : '...':true}}</a>
+                <p><small class="text-muted">{{note.mtime | toDateString}}</small></p>
             </li>
         </ul>
     </div>
