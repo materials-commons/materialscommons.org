@@ -2,8 +2,8 @@ Application.Controllers.controller("projectNotesOverview",
     ["$scope", "Project", "$state", "project", projectNotesOverview]);
 
 function projectNotesOverview($scope, Project, $state, project) {
-    $scope.editNotes = function (index) {
-        $state.go('projects.project.notes.edit', {'index': index});
+    $scope.editNotes = function (id) {
+        $state.go('projects.project.notes.edit', {'note_id': id});
     };
 
     $scope.updateNotes = function(){

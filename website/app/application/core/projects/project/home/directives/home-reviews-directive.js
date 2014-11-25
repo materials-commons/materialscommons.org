@@ -22,7 +22,6 @@ function homeReviewsDirectiveController ($scope, User, projectState, $state) {
             var reviewTime = new Date(item.mtime.epoch_time * 1000);
             if (reviewTime > lastLogin) {
                 $scope.recent_reviews.push(item);
-                console.log($scope.recent_reviews);
             }
         });
     }

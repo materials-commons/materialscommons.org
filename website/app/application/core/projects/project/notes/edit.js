@@ -25,8 +25,13 @@ function projectNotesEdit($scope, project, User, $stateParams, recent, projectSt
     };
 
     function init() {
-        $scope.index = $stateParams.index;
-        $scope.model = project.notes[$scope.index];
+        var note_id = $stateParams.note_id;
+        $scope.index = _.indexOf(project.notes, function (each_note) {
+            return note_id === each_note.id;
+        });
+        if ($scope.index > -1) {
+            $scope.model = project.notes[$scope.index];
+        }
     }
 
     init();
