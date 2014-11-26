@@ -1,4 +1,4 @@
-from flask import request, make_response, current_app
+from flask import request, make_response, current_app, url_for, redirect
 from functools import wraps, update_wrapper, partial
 from datetime import timedelta
 import json
@@ -103,3 +103,15 @@ def json2dict(what):
         return json.loads(data)
     else:
         return json.loads(what)
+
+
+def recent_list(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        method = request.method
+        if method:
+            rv = f(*args, **kwargs)
+            #get url and parse out the types
+        else:
+            return f(*args, **kwargs)
+    return decorated_function
