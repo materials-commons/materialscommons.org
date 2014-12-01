@@ -9,7 +9,7 @@
             <th></th>
         </thead>
         <tbody>
-            <tr ng-repeat="r in open_reviews">
+            <tr ui-sref="projects.project.reviews.edit({review_id: r.id, id: r.project_id, status: r.status})" ng-repeat="r in open_reviews">
                 <td data-toggle="tooltip" title="{{r.title}}">
                     {{createName(r.title)}}
                     <p class="text-muted"
@@ -40,7 +40,7 @@
             <th></th>
         </thead>
         <tbody>
-            <tr ng-repeat="r in reviews =(open_reviews | byKey: 'assigned_to': user| byKey: 'status': 'open')">
+            <tr ui-sref="projects.project.reviews.edit({review_id: r.id, id: r.project_id, status: r.status})" ng-repeat="r in reviews =(open_reviews | byKey: 'assigned_to': user| byKey: 'status': 'open')">
                 <td data-toggle="tooltip"
                     title="{{r.title}}">
                     {{createName(r.title)}}

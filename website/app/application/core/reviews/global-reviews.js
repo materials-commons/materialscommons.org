@@ -38,6 +38,7 @@ function globalReviewsController($scope, User, Projects, pubsub) {
                 if(prj.open_reviews.length!==0){
                     prj.open_reviews.forEach(function(r){
                         r.project_name = prj.name;
+                        r.project_id = prj.id;
                     });
                     $scope.open_reviews = $scope.open_reviews.concat(prj.open_reviews);
                 }
