@@ -850,7 +850,7 @@ h4, .h4, h5, .h5, h6, .h6 {
     float: right;
     background: #CDCDCD;
     height: 900px;
-    min-height: 900px;
+    min-height: 100%;
     margin-top: -2px;
     top: 0;
     right: 0;
@@ -1754,5 +1754,3 @@ ul.menu-bar li {
     color: white;
     cursor: pointer
 }
-
-
