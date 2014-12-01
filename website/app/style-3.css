@@ -424,12 +424,17 @@ td.tag-width {
 
 .navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
     text-decoration: none;
-    background-color: #002953;
+    /* background-color: #002953; */
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .navactive {
     text-decoration: none;
-    background-color: #002953;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+      background-color: rgba(255, 255, 255, 0.1);
 }
 
 .navbar-custom .navbar-brand {
