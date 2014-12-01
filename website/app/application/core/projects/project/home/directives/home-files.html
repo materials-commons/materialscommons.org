@@ -1,9 +1,16 @@
 <div class="panel panel-primary" style="border-color: #c9c9c9;">
     <div class="panel-heading" style="background-color: #7c699f;opacity: 85%;">
         <i class="fa fa-fw fa-comment"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Files</span>
-        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all 359 reviews</a>
+        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all {{project | projectFileCount}} files</a>
     </div>
     <div class="panel-body">
-
+        <div class="row">
+            <ul class="list-group" >
+                <li class="list-group-item" ng-repeat="(key, value) in project.mediatypes">
+                    <span class="badge" ng-class-odd="'odd-badge'" ng-class-even="'even-badge'" >{{value.count}}</span>
+                    {{value.description}}
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

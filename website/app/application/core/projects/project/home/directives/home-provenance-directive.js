@@ -21,8 +21,6 @@ function homeProvenanceDirectiveController($scope, projectState, $state, User) {
         }
         return name;
     };
-
-    console.log($scope.project);
     $scope.displayCount = function (process) {
         return _.keys(process).length;
     };
