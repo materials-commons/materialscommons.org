@@ -534,7 +534,7 @@ def build_notes(conn):
                     'item_type': 'sample',
                     'creator': each_note['who'],
                     'note': each_note['message'],
-                    'title': '',
+                    'title': each_note['message'],
                     'birthtime': now,
                     'mtime': now,
                     'project_id': sample['project_id']
