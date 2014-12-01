@@ -832,7 +832,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .sidebar {
-    width: 250px; /* LC width */
+    width: 250px;
     margin-top: -10px;
     float: left;
     /*background-color: #3B4247;*/
@@ -850,10 +850,9 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .quickbar {
-    width: 50px; /* RC width */
-    /*padding: 0 10px; *//* RC padding */
+    width: 50px;
     float: right;
-    background: #CDCDCD;
+    background: #bfbfbf;
     height: 900px;
     min-height: 100%;
     margin-top: -2px;
