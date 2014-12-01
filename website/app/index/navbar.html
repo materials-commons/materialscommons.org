@@ -11,7 +11,7 @@
     </div>
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav list-inline">
-            <li id="new-item"
+            <li ng-if="false" id="new-item"
                 is-open="status.isopen"
                 class="dropdown">
                 <a ng-click="showStep('about')"
@@ -79,7 +79,7 @@
                 <a class="dropdown-toggle large-text" data-toggle="dropdown">
                     <i class="fa fa-comment space-right"></i> Reviews
                     <span ng-controller="globalReviewsController"
-                          class="badge ng-binding">
+                         style="background-color: #3e4b5c" class="badge ng-binding">
                         {{open_reviews.length}}
                     </span>
                 </a>

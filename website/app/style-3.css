@@ -405,7 +405,8 @@ td.tag-width {
     /* background-color: #0C5C86; */
     /* background-color: #204d65; */
     /* background-color: #4a7a93; */
-    background-color: #4e869f;
+    /*background-color: #4e869f;*/
+    background-color: #2b3643;
     color: #ffffff;
     border-radius: 0;
     padding-top: 0px;
@@ -829,7 +830,8 @@ h4, .h4, h5, .h5, h6, .h6 {
     width: 250px; /* LC width */
     margin-top: -10px;
     float: left;
-    background-color: #3B4247;
+    /*background-color: #3B4247;*/
+    background-color: #3e4b5c;
     height: 100%;
     min-height: 100%;
     position: fixed;
@@ -856,8 +858,9 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .sidebar-list .list-group-item {
-    background-color: #3b4247;
-    border: 0px solid #3b4247;
+    /*background-color: #3b4247;*/
+    background-color: #3e4b5c;
+    border: 0px solid #3e4b5c;
     font-size: 12pt;
     font-weight: 400;
     color: white;
@@ -880,7 +883,8 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .sidebar-list .sidebar-action {
-    background-color: #333333;
+    /*background-color: #333333;*/
+    background-color: rgba(0,0,0, 0.3);
 }
 
 .sidebar-list .list-group-item:first-child {
@@ -894,12 +898,14 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .sidebar-list a.list-group-item:hover {
-    background-color: #525A60;
+    /*background-color: #525A60;*/
+    background-color: rgba(255,255,255,0.1);
     color: white;
 }
 
 .sidebar-list a.list-group-item.active {
-    background-color: #4a5258;
+    /*background-color: #4a5258;*/
+    background-color: rgba(0,0,0,0.2);
     color: white;
     outline: none;
 }
