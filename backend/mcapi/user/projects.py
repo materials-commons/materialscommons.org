@@ -59,12 +59,13 @@ def add_computed_attributes(projects, user):
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
-    add_users(projects_by_id, project_ids)
-    add_reviews(projects_by_id, project_ids)
-    add_samples(projects_by_id, project_ids)
-    add_drafts(projects_by_id, project_ids, user)
-    add_processes(projects_by_id, project_ids)
-    add_notes(projects_by_id, project_ids)
+    if len(projects) > 0:
+        add_users(projects_by_id, project_ids)
+        add_reviews(projects_by_id, project_ids)
+        add_samples(projects_by_id, project_ids)
+        add_drafts(projects_by_id, project_ids, user)
+        add_processes(projects_by_id, project_ids)
+        add_notes(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
