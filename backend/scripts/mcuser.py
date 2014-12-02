@@ -12,7 +12,7 @@ class User(object):
     def __init__(self, name, email, password):
         self.name = name
         self.email = email
-        self.fullname = ""
+        self.fullname = name
         self.password = password
         self.id = email
         self.apikey = uuid.uuid1().hex
