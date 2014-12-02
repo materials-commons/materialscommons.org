@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp
+from ..decorators import crossdomain, apikey, jsonp, eventlog
 from flask import g, request, jsonify
 import rethinkdb as r
 from .. import dmutil
@@ -34,6 +34,7 @@ def delete_review(id):
 
 @app.route('/reviews', methods=['POST'])
 @apikey(shared=True)
+@eventlog
 def add_review():
     j = request.get_json()
     assigned_to = dmutil.get_required('assigned_to', j)
@@ -52,22 +53,26 @@ def add_review():
 @app.route('/reviews/<id>', methods=['PUT'])
 @apikey(shared=True)
 @jsonp
+@eventlog
 def update_review(id):
     j = request.get_json()
-    messages = dmutil.get_optional('messages', j)
+    review = dict()
+    messages= dmutil.get_optional('messages', j)
     status = dmutil.get_optional('status', j)
     items = dmutil.get_optional('items', j)
     if messages:
-        rv = r.table('reviews').get(id).update({
-            'messages': messages, 'mtime': r.now()
-        }).run(g.conn)
-    if status:
-        rv = r.table('reviews').get(id).update({
-            'status': status,
-            'mtime': r.now()
-        }).run(g.conn)
+        review['messages'] = messages
     if items:
-        rv = r.table('reviews').get(id).update({
-            'items': items, 'mtime': r.now()
-        }).run(g.conn)
-    return jsonify(rv)
+        review['items'] = items
+    if status:
+        review['status'] = status
+    print review
+    if 'messages' or 'status' or 'items' in review:
+        review['mtime'] = r.now()
+        result = r.table('reviews').get(id).\
+            update(review,return_changes=True).run(g.conn, time_format='raw')
+        updated_review = result['changes'][0]['new_val']
+        return resp.to_json(updated_review)
+    else:
+        return error.not_acceptable("Unable to update review: ")
+

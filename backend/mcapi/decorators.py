@@ -6,6 +6,10 @@ import apikeydb
 import error
 import access
 import mcexceptions
+import rethinkdb as r
+from flask import g, request
+import re
+
 
 
 def apikey(method=None, shared=False):
@@ -105,13 +109,70 @@ def json2dict(what):
         return json.loads(what)
 
 
-def recent_list(f):
+def eventlog(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         method = request.method
-        if method:
-            rv = f(*args, **kwargs)
-            #get url and parse out the types
+        rv = f(*args, **kwargs)
+        url = request.path
+        if method == 'POST':
+            data = json2dict(rv)
+            if re.match('/notes', url):
+                create_event(method, data['id'], 'note', data['title'],
+                             data['project_id'], data['creator'],
+                             data['mtime'], data['birthtime'])
+            elif re.match('/objects', url):
+                create_event(method, data['id'], 'sample', data['name'],
+                             data['project_id'], data['created_by'],
+                             '', data['birthtime'])
+            elif re.match('/reviews', url):
+                create_event(method, data['id'], 'review', data['title'],
+                             data['project'], data['author'],
+                             data['mtime'], data['birthtime'])
+            elif re.match('/provenance2', url):
+                create_event(method, data['id'], 'provenance', data['name'],
+                             data['project_id'], data['owner'],
+                             data['mtime'], data['birthtime'])
+            elif re.match('/drafts', url):
+                create_event(method, data['id'], 'draft',
+                             data['process']['name'],
+                             data['project_id'], data['owner'],
+                             data['mtime'], data['birthtime'])
+            return rv
+        elif method == 'PUT':
+            data = json2dict(rv)
+            print data
+            if re.match('/notes', url):
+                create_event(method, data['id'], 'note', data['title'],
+                             data['project_id'], data['creator'],
+                             data['mtime'], data['birthtime'])
+            elif re.match('/objects', url):
+                create_event(method, data['id'], 'sample', data['name'],
+                             data['project_id'], data['created_by'],
+                             '', data['birthtime'])
+            elif re.match('/reviews', url):
+                create_event(method, data['id'], 'review', data['title'],
+                             data['project'], data['author'],
+                             data['mtime'], data['birthtime'])
+            elif re.match('/drafts', url):
+                create_event(method, data['id'], 'draft',
+                             data['process']['name'],
+                             data['project_id'], data['owner'],
+                             data['mtime'], data['birthtime'])
+            return rv
         else:
             return f(*args, **kwargs)
     return decorated_function
+
+def create_event(method, item_id, item_type, title, project, owner, mtime, btime):
+    event = dict()
+    event['item_id'] = item_id
+    event['item_type'] = item_type
+    event['title'] = title
+    event['project_id'] = project
+    event['created_by'] = owner
+    event['birthtime'] = btime
+    event['mtime'] = mtime
+    event['method'] = method
+    r.table('events').insert(event).run(g.conn)
+

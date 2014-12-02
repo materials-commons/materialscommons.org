@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp
+from ..decorators import crossdomain, apikey, jsonp, eventlog
 import rethinkdb as r
 from flask import request, g
 import json
@@ -65,6 +65,7 @@ def create_draft2():
 
 @app.route("/drafts2/<project_id>", methods=['POST'])
 @apikey
+@eventlog
 def save_draft(project_id):
     j = request.get_json()
     j['project_id'] = project_id
@@ -85,6 +86,7 @@ def save_draft(project_id):
 @app.route('/drafts/<draft_id>', methods=['PUT'])
 @crossdomain(origin='*')
 @apikey
+@eventlog
 def update_draft(draft_id):
     j = request.get_json()
     need_to_update = False
