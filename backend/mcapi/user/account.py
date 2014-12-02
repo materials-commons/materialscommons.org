@@ -59,6 +59,7 @@ def list_usergroups_for_user(user):
                .run(g.conn, time_format='raw'))
     return json.dumps(res)
 
+
 @app.route('/users/<user>', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
@@ -66,8 +67,11 @@ def update(user):
     j = request.get_json()
     fullname = dmutil.get_optional('fullname', j)
     if fullname:
-        rv = r.table('users').get(user).update({'fullname': fullname}).run(g.conn)
+        rv = r.table('users').get(user).update({'fullname': fullname})\
+                                       .run(g.conn)
         return jsonify(rv)
+    return error.bad_request("Expected field not specified")
+
 
 @app.route('/user/<user>/preferred_templates', methods=['GET'])
 @apikey
