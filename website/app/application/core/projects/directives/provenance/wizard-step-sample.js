@@ -11,8 +11,8 @@ function wizardStepSampleDirective() {
 
 Application.Controllers.controller('wizardStepSampleDirectiveController',
                                    ["$scope", "provStep", "projectState", "$stateParams",
-                                    wizardStepSampleDirectiveController]);
-function wizardStepSampleDirectiveController($scope, provStep, projectState, $stateParams) {
+                                    "$state", wizardStepSampleDirectiveController]);
+function wizardStepSampleDirectiveController($scope, provStep, projectState, $stateParams, $state) {
     $scope.wizardState = projectState.get($stateParams.id, $stateParams.sid);
     var step = provStep.getCurrentStep($scope.wizardState.project.id);
     $scope.sample = $scope.wizardState.currentDraft[step.stepType][step.step].properties.sample;
@@ -35,6 +35,12 @@ function wizardStepSampleDirectiveController($scope, provStep, projectState, $st
             $scope.wizardState.currentDraft[stepType][stepName].done = false;
         }
     }
+
+    $scope.createSample = function() {
+        var state = null;
+        var stateID = projectState.add($stateParams.id, state);
+        $state.go("projects.project.samples.create", {sid: stateID});
+    };
 
     $scope.next = function() {
         var nextStep = provStep.nextStep(step.stepType, step.step,
