@@ -87,6 +87,7 @@ def create_object():
         sample['properties'] = dmutil.get_optional('properties', j)
         sample['alloy'] = dmutil.get_optional('alloy', j)
         sample['birthtime'] = r.now()
+        sample['mtime'] = sample['birthtime']
         sample['created_by'] = user
         sample['owner'] = user
         sample['parent_id'] = dmutil.get_optional('parent_id', j)

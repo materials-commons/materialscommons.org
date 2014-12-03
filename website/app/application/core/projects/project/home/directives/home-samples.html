@@ -2,17 +2,17 @@
     <div class="panel-heading" style="background-color: #f0ad4e;opacity: 100%;">
         <i class="fa fa-fw fa-comment"></i><span
             style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Samples</span>
-        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all
-            {{project.samples.length}} samples</a>
+        <a  ui-sref="projects.project.samples.overview" style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all
+            {{(project.events | byKey : 'item_type': 'sample').length}} samples</a>
     </div>
     <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="sample in project.samples | limitTo : 3">
+        <ul style="list-style-type: none" ng-repeat="event in project.events | byKey : 'item_type': 'sample'">
             <li>
-                {{sample.owner}} created <a ui-sref="projects.project.samples.overview">
-                {{sample.name | truncate: 25 : '...':true}}</a>
+                {{event.created_by}} created <a ui-sref="projects.project.samples.overview">
+                {{event.title | truncate: 25 : '...':true}}</a>
 
                 <p>
-                    <small class="text-muted">{{sample.birthtime | toDateString}}</small>
+                    <small class="text-muted">{{event.birthtime | toDateString}}</small>
                 </p>
             </li>
         </ul>

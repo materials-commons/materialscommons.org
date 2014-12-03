@@ -460,7 +460,7 @@ temporary rendered events).
 .fc-event,
 .fc-event:hover,
 .ui-widget .fc-event {
-	color: #fff; /* default TEXT color */
+	/*color: #fff; *//* default TEXT color */
 	text-decoration: none; /* if <a> has an href */
 }
 

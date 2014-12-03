@@ -124,7 +124,7 @@ def eventlog(f):
             elif re.match('/objects', url):
                 create_event(method, data['id'], 'sample', data['name'],
                              data['project_id'], data['created_by'],
-                             '', data['birthtime'])
+                             data['mtime'], data['birthtime'])
             elif re.match('/reviews', url):
                 create_event(method, data['id'], 'review', data['title'],
                              data['project'], data['author'],
@@ -149,20 +149,16 @@ def eventlog(f):
             elif re.match('/objects', url):
                 create_event(method, data['id'], 'sample', data['name'],
                              data['project_id'], data['created_by'],
-                             '', data['birthtime'])
+                             data['mtime'], data['birthtime'])
             elif re.match('/reviews', url):
                 create_event(method, data['id'], 'review', data['title'],
                              data['project'], data['author'],
-                             data['mtime'], data['birthtime'])
-            elif re.match('/drafts', url):
-                create_event(method, data['id'], 'draft',
-                             data['process']['name'],
-                             data['project_id'], data['owner'],
                              data['mtime'], data['birthtime'])
             return rv
         else:
             return f(*args, **kwargs)
     return decorated_function
+
 
 def create_event(method, item_id, item_type, title, project, owner, mtime, btime):
     event = dict()

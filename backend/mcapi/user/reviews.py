@@ -66,7 +66,6 @@ def update_review(id):
         review['items'] = items
     if status:
         review['status'] = status
-    print review
     if 'messages' or 'status' or 'items' in review:
         review['mtime'] = r.now()
         result = r.table('reviews').get(id).\
