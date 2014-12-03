@@ -67,6 +67,7 @@ def create_draft2():
 @apikey
 @eventlog
 def save_draft(project_id):
+    print 'post'
     j = request.get_json()
     j['project_id'] = project_id
     j['owner'] = access.get_user()
@@ -86,8 +87,8 @@ def save_draft(project_id):
 @app.route('/drafts/<draft_id>', methods=['PUT'])
 @crossdomain(origin='*')
 @apikey
-@eventlog
 def update_draft(draft_id):
+    print 'PUT'
     j = request.get_json()
     need_to_update = False
     process = dmutil.get_optional('process', j, None)
@@ -114,12 +115,12 @@ def update_draft(draft_id):
 
     if need_to_update:
         attrs['mtime'] = r.now()
-        rv = r.table('drafts').get(draft_id).update(attrs).run(g.conn)
-        if rv['errors'] != 0:
-            return error.\
-                update_conflict("Unable to update draft for id: %s"
-                                % (draft_id))
-    return args.json_as_format_arg({'id': draft_id})
+        result = r.table('drafts').get(draft_id).\
+            update(attrs, return_changes=True).run(g.conn, time_format='raw')
+        updated_draft = result['changes'][0]['new_val']
+        return resp.to_json(updated_draft)
+    else:
+        return error.not_acceptable("Unable to update draft: " + draft_id)
 
 
 @app.route('/drafts/<draft_id>', methods=['GET'])

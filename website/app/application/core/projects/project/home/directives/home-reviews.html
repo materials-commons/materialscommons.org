@@ -4,17 +4,17 @@
             style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Reviews</span>
         <a ui-sref="projects.project.reviews.overview"
            style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;">
-            View all {{project.open_reviews.length}} reviews</a>
+            View all {{(project.events | byKey: 'item_type': 'review').length}} reviews</a>
     </div>
     <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="review in recent_reviews | limitTo : 3">
+        <ul style="list-style-type: none" ng-repeat="event in project.events | byKey: 'item_type': 'review'">
             <li>
-                <i class="fa fa-fw fa-user  fa-2x"></i> {{review.author}} commented on
-                <a ui-sref="projects.project.reviews.edit({'review_id': review.id, 'status': review.status})">
-                    {{review.title | truncate: 25 : '...':true}}</a>
+                <i class="fa fa-fw fa-user  fa-2x"></i> {{event.created_by}} commented on
+                <a ui-sref="projects.project.reviews.edit({'review_id': event.item_id, 'status': 'open'})">
+                    {{event.title | truncate: 25 : '...':true}}</a>
 
                 <p style="padding-left: 35px;">
-                    <small class="text-muted">{{review.mtime | toDateString}}</small>
+                    <small class="text-muted">{{event.mtime | toDateString}}</small>
                 </p>
             </li>
         </ul>
