@@ -3,10 +3,10 @@
         <i class="fa fa-fw fa-comment"></i><span
             style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Samples</span>
         <a  ui-sref="projects.project.samples.overview" style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all
-            {{(project.events | byKey : 'item_type': 'sample').length}} samples</a>
+            {{samples.length}} samples</a>
     </div>
     <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="event in project.events | byKey : 'item_type': 'sample'">
+        <ul style="list-style-type: none" ng-repeat="event in samples">
             <li>
                 {{event.created_by}} created <a ui-sref="projects.project.samples.overview">
                 {{event.title | truncate: 25 : '...':true}}</a>

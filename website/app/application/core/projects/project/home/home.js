@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectHome',
-    ["$scope", "project", "User", "mcapi", "$compile", "uiCalendarConfig", "$filter","calendarEvents", projectHome]);
+    ["$scope", "project", "User", "mcapi", "$compile", "uiCalendarConfig", "Events", "pubsub", projectHome]);
 
-function projectHome($scope, project, User, mcapi, $compile, uiCalendarConfig, $filter, calendarEvents) {
+function projectHome($scope, project, User, mcapi, $compile, uiCalendarConfig,  Events, pubsub) {
     $scope.updateName = function () {
         mcapi('/users/%', $scope.mcuser.email)
             .success(function (u) {
@@ -12,39 +12,29 @@ function projectHome($scope, project, User, mcapi, $compile, uiCalendarConfig, $
 
     $scope.project = project;
     $scope.mcuser = User.attr();
-
-    $scope.eventSource = {};
-    var reviews = [];
-    var samples = [];
-    var notes = [];
-    var processes = [];
-    reviews = $filter("byKey")($scope.project.events, 'item_type', 'review');
-    samples = $filter("byKey")($scope.project.events, 'item_type', 'sample');
-    notes = $filter("byKey")($scope.project.events, 'item_type', 'note');
-    processes = $filter("byKey")($scope.project.events, 'item_type', 'provenance');
-    processes.push($filter("byKey")($scope.project.events, 'item_type', 'draft'));
-    processes = _.flatten(processes);
+    $scope.service = Events.classify($scope.project);
     $scope.event_reviews = {
         color: '#4884b8' ,
-        events: calendarEvents.groupEventsByDate(reviews)
+        events: Events.prepareCalendarEvent($scope.service.grouped_reviews)
     };
     $scope.event_notes = {
         color: '#3ea7a0' ,
-        events: calendarEvents.groupEventsByDate(notes)
+        events: Events.prepareCalendarEvent($scope.service.grouped_notes)
     };
     $scope.event_processes = {
         color: '#e26a6a' ,
-        events: calendarEvents.groupEventsByDate(processes)
+        events: Events.prepareCalendarEvent($scope.service.grouped_processes)
     };
     $scope.event_samples = {
         color: '#f0ad4e' ,
-        events: calendarEvents.groupEventsByDate(samples)
+        events: Events.prepareCalendarEvent($scope.service.grouped_samples)
     };
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function (date, jsEvent, view) {
-        console.log(date._d);
-        $scope.alertMessage = (date.title + ' was clicked ');
+        var d = date._d;
+        var clicked_date = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDay());
+        pubsub.send('clicked_date', clicked_date);
     };
     /* alert on Drop */
     $scope.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {

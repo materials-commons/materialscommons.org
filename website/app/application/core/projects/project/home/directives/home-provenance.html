@@ -3,15 +3,19 @@
         <i class="fa fa-fw fa-code-fork"></i><span
             style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Processes</span>
         <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"
-           ui-sref="projects.project.provenance.overview"> {{(project.events | byKey: 'item_type': 'provenance').length}} processes
+           ui-sref="projects.project.provenance.overview"> {{processes.length}} processes
         </a>
-        <a style="padding-right: 5px; float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"
-           ui-sref="projects.project.provenance.drafts">  View all
-              {{(project.events | byKey: 'item_type': 'draft').length}} Drafts,   </a>
     </div>
+
     <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="event in project.events | byKey: 'item_type': 'draft'">
-            <li>
+        <ul style="list-style-type: none" ng-repeat="event in processes">
+            <li ng-if="event.item_type == 'provenance'">
+                Submitted <a ui-sref="projects.project.provenance.overview">{{event.title | truncate: 25 : '...':true}}</a>
+                <p>
+                    <small class="text-muted">{{event.birthtime | toDateString}}</small>
+                </p>
+            </li>
+            <li ng-if="event.item_type == 'draft'">
                 Created a new process <a ui-sref="projects.project.provenance.drafts">{{event.title | truncate:
                 25 : '...':true}}</a>
                 <span class="label label-primary" style="background-color:#e26a6a">Draft</span>
@@ -20,14 +24,5 @@
                 </p>
             </li>
         </ul>
-        <ul style="list-style-type: none" ng-repeat="event in project.events | byKey: 'item_type': 'provenance'">
-            <li>
-                Submitted <a>{{event.title | truncate: 25 : '...':true}}</a>
-                <p>
-                    <small class="text-muted">{{event.birthtime | toDateString}}</small>
-                </p>
-            </li>
-        </ul>
     </div>
 </div>
-

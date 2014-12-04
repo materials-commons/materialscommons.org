@@ -4,10 +4,10 @@
             style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Reviews</span>
         <a ui-sref="projects.project.reviews.overview"
            style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;">
-            View all {{(project.events | byKey: 'item_type': 'review').length}} reviews</a>
+            View all {{reviews.length}} reviews</a>
     </div>
     <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="event in project.events | byKey: 'item_type': 'review'">
+        <ul style="list-style-type: none" ng-repeat="event in reviews">
             <li>
                 <i class="fa fa-fw fa-user  fa-2x"></i> {{event.created_by}} commented on
                 <a ui-sref="projects.project.reviews.edit({'review_id': event.item_id, 'status': 'open'})">
