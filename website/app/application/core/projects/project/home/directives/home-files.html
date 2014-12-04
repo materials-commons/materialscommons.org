@@ -14,7 +14,10 @@
                     <span class="badge"
                           ng-class-odd="'odd-badge'"
                           ng-class-even="'even-badge'" >
-                        <a style="color:white" ng-click="showFiles(key)">{{value.count}}</a>
+                        <a style="color:white"
+                           ui-sref="projects.project.files.list({mediatype: key})">
+                            {{value.count}}
+                        </a>
                     </span>
                 </li>
             </ul>
