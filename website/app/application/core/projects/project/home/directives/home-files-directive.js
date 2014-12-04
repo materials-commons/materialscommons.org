@@ -11,7 +11,9 @@ function homeFilesDirective() {
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
-                                   ["$scope",  homeFilesDirectiveController]);
-function homeFilesDirectiveController($scope) {
-
+                                   ["$scope",  "projectFiles", homeFilesDirectiveController]);
+function homeFilesDirectiveController($scope, projectFiles) {
+    //console.dir($scope.project);
+    var id = $scope.project.id;
+    console.dir(projectFiles.model.projects[id]);
 }
