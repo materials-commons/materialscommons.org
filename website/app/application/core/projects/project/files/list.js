@@ -1,7 +1,8 @@
 Application.Controllers.controller("projectFilesList",
                                    ["$scope", "projectFiles", "$stateParams",
+                                    "projectFileTabs", "$state",
                                     projectFilesListController]);
-function projectFilesListController($scope, projectFiles, $stateParams) {
+function projectFilesListController($scope, projectFiles, $stateParams, projectFileTabs, $state) {
     $scope.files = [];
     var treeModel = new TreeModel();
     var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
@@ -10,4 +11,9 @@ function projectFilesListController($scope, projectFiles, $stateParams) {
             $scope.files.push(node.model);
         }
     });
+
+    $scope.openFile = function(f) {
+        projectFileTabs.add($stateParams.id, f);
+        $state.go("projects.project.files.view", {fileid: f.id});
+    };
 }

@@ -1,12 +1,13 @@
 <div>
+    Search: <input class="form-control" type="text" ng-model="search.fullname">
     <table>
         <thead>
             <th>Name</th>
         </thead>
         <tbody>
-            <tr ng-repeat="file in files">
+            <tr ng-repeat="file in files | filter:search | orderBy:'fullname'">
                 <td>
-                    {{file.displayname}}
+                    <a ng-click="openFile(file)">{{file.fullname}}</a>
                 </td>
             </tr>
         </tbody>
