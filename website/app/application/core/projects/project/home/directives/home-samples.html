@@ -1,20 +1,25 @@
-<div class="panel panel-primary" style="border-color: #c9c9c9;">
-    <div class="panel-heading" style="background-color: #f0ad4e;opacity: 100%;">
-        <i class="fa fa-fw fa-cubes"></i><span
-            style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Samples</span>
-        <a ui-sref="projects.project.samples.overview" style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all
+<div class="panel panel-primary">
+    <div class="panel-heading samples-color">
+        <i class="fa fa-fw fa-cubes"></i>
+        <span>Samples</span>
+        <a ui-sref="projects.project.samples.overview"> View all
             {{project.samples.length}} samples</a>
     </div>
-    <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="sample in project.samples | limitTo : 3">
-            <li>
-                {{sample.owner}} created <a ui-sref="projects.project.samples.overview">
-                {{sample.name | truncate: 25 : '...':true}}</a>
-
-                <p>
-                    <small class="text-muted">{{sample.birthtime | toDateString}}</small>
-                </p>
+    <div class="panel-body home-panel-body">
+        <ul ng-if="project.samples.length !== 0" class="list-unstyled">
+            <li class="home-item"
+                ng-repeat="sample in project.samples | limitTo:3">
+                <div>
+                    {{sample.owner}} created <a ui-sref="projects.project.samples.overview">
+                    {{sample.name | truncate: 25 : '...':true}}</a>
+                    <p>
+                        <small class="text-muted">{{sample.birthtime | toDateString}}</small>
+                    </p>
+                </div>
             </li>
         </ul>
+        <div ng-if="project.samples.length === 0" class="no-content">
+            There are no samples.
+        </div>
     </div>
 </div>

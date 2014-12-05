@@ -1,16 +1,23 @@
-<div class="panel panel-primary" style="border-color: #c9c9c9;">
-    <div class="panel-heading" style="background-color: #3ea7a0;opacity: 85%;">
-        <i class="fa fa-fw fa-edit"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Notes</span>
-        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;" ui-sref="projects.project.notes.overview"> View all {{all_notes.length}} notes</a>
+<div class="panel panel-primary">
+    <div class="panel-heading notes-color">
+        <i class="fa fa-fw fa-edit"></i>
+        <span>Notes</span>
+        <a ui-sref="projects.project.notes.overview"> View all {{all_notes.length}} notes</a>
     </div>
-    <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="note in all_notes | limitTo : 3">
-            <li>
-                {{note.creator}} created a <i>{{note.item_type}}</i> note:
-                <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
-                    {{note.title | truncate: 25 : '...':true}}</a>
-                <p><small class="text-muted">{{note.mtime | toDateString}}</small></p>
+    <div class="panel-body home-panel-body">
+        <ul ng-if="all_notes.length !== 0" class="list-unstyled">
+            <li class="home-item"
+                ng-repeat="note in all_notes | limitTo:3">
+                <div>
+                    {{note.creator}} created a <i>{{note.item_type}}</i> note:
+                    <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
+                        {{note.title | truncate: 25 : '...':true}}</a>
+                    <p><small class="text-muted">{{note.mtime | toDateString}}</small></p>
+                </div>
             </li>
         </ul>
+        <div ng-if="all_notes.length === 0" class="no-content">
+            There are no notes.
+        </div>
     </div>
 </div>

@@ -1,31 +1,44 @@
-<div class="panel panel-primary" style="border-color: #c9c9c9;">
-    <div class="panel-heading" style="background-color: #e26a6a;opacity: 100%;">
-        <i class="fa fa-fw fa-code-fork"></i><span
-            style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Processes</span>
-        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"
-           ui-sref="projects.project.provenance.overview"> View all {{project.processes.length}} processes</a>
+<div class="panel panel-primary">
+    <div class="panel-heading processes-color">
+        <i class="fa fa-fw fa-code-fork"></i>
+        <span>Processes</span>
+        <a ui-sref="projects.project.provenance.overview">
+            View all {{project.processes.length}} processes
+        </a>
     </div>
-    <div class="panel-body">
-        <ul style="list-style-type: none" ng-repeat="draft in project.drafts | limitTo : 2">
-            <li>
-                Created a new process <a ui-sref="projects.project.provenance.drafts">{{draft.process.name | truncate:
-                25 : '...':true}}</a>
-                <span class="label label-primary" style="background-color:#e26a6a">Draft</span>
-
-                <p>
-                    <small class="text-muted">{{draft.mtime | toDateString}}</small>
-                </p>
+    <div class="panel-body home-panel-body">
+        <ul ng-if="project.drafts.length !== 0" class="list-unstyled">
+            <li class="home-item"
+                ng-repeat="draft in project.drafts | limitTo:3">
+                <div>
+                    Created a new process
+                    <a ui-sref="projects.project.provenance.drafts">
+                        {{draft.process.name | truncate:25:'...':true}}
+                    </a>
+                    <span class="label label-primary"
+                          style="background-color:#e26a6a">
+                        Draft
+                    </span>
+                    <p>
+                        <small class="text-muted">{{draft.mtime | toDateString}}</small>
+                    </p>
+                </div>
             </li>
         </ul>
-        <ul style="list-style-type: none" ng-repeat="process in project.processes | limitTo : 2">
-            <li>
-                Submitted <a>{{process.name | truncate: 25 : '...':true}}</a>
-
-                <p>
-                    <small class="text-muted">{{process.birthtime | toDateString}}</small>
-                </p>
+        <ul ng-if="project.processes.length !== 0" class="list-unstyled">
+            <li class="home-item"
+                ng-repeat="process in project.processes | limitTo:3">
+                <div>
+                    Submitted <a>{{process.name | truncate: 25 : '...':true}}</a>
+                    <p>
+                        <small class="text-muted">{{process.birthtime | toDateString}}</small>
+                    </p>
+                </div>
             </li>
         </ul>
+        <div ng-if="project.processes.length === 0 && project.drafts.length === 0"
+             class="no-content">
+            There are no processes or drafts.
+        </div>
     </div>
 </div>
-
