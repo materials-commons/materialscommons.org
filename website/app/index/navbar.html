@@ -10,62 +10,6 @@
            ng-click="goHome()">MaterialsCommons</a>
     </div>
     <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav list-inline">
-            <li id="new-item"
-                is-open="status.isopen"
-                class="dropdown">
-                <a ng-click="showStep('about')"
-                   class="dropdown-toggle large-text">
-                    <i class="fa fa-fw fa-plus"></i>
-                    New
-                    <span class="caret caret-light"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a role="menuitem"
-                           tabindex="1"
-                           ng-click=create('provenance')>
-                            <i class="fa fa-fw fa-code-fork"></i> New Provenance
-                        </a>
-                    </li>
-                    <li>
-                        <a role="menuitem"
-                           tabindex="2"
-                           ng-click="create('samples')">
-                            <i class="fa fa-fw fa-cubes"></i> New Sample
-                        </a>
-                    </li>
-                    <li>
-                        <a role="menuitem"
-                           tabindex="3"
-                           ng-click="create('reviews')">
-                            <i class="fa fa-fw fa-comment"></i> New Review
-                        </a>
-                    </li>
-                    <li>
-                        <a role="menitem"
-                           tabindex="4"
-                           ng-click="create('notes')">
-                            <i class="fa fa-fw fa-edit"></i> New Note
-                        </a>
-                    </li>
-                    <li>
-                        <a role="menuitem"
-                           tabindex="5"
-                           ng-click="create('tags')">
-                            <i class="fa fa-fw fa-tags"></i> New Tag
-                        </a>
-                    </li>
-                    <li>
-                        <a role="menuitem"
-                           tabindex="6"
-                           ng-click="create('tasks')">
-                            <i class="fa fa-fw fa-check-square"></i> New Task
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
         <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
             <li>
                 <a ui-sref="login" class="navbar-link larg-text">
@@ -79,7 +23,7 @@
                 <a class="dropdown-toggle large-text" data-toggle="dropdown">
                     <i class="fa fa-comment space-right"></i> Reviews
                     <span ng-controller="globalReviewsController"
-                          class="badge ng-binding">
+                         style="background-color: rgba(255, 255, 255, 0.3)" class="badge ng-binding">
                         {{open_reviews.length}}
                     </span>
                 </a>
@@ -103,32 +47,38 @@
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a ng-click="showStep('email')" ui-sref="account.password">
+                        <a ui-sref="account.password">
                             <i class="fa fa-fw fa-unlock-alt space-right"></i>
                             Change Password
                         </a>
                     </li>
                     <li>
-                        <a ng-click="showStep('email')" ui-sref="account.usergroup">
+                        <a ui-sref="account.settings">
                             <i class="fa fa-fw fa-user space-right"></i>
+                            Account Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="account.usergroup">
+                            <i class="fa fa-fw fa-users space-right"></i>
                             UserGroups
                         </a>
                     </li>
                     <li>
-                        <a ng-click="showStep('email')" ui-sref="account.templates">
+                        <a ui-sref="account.templates">
                             <i class="fa fa-fw fa-list-alt space-right"></i>
                             Templates
                         </a>
                     </li>
                     <li>
-                        <a ng-click="showStep('email')" ui-sref="account.apikey">
+                        <a ui-sref="account.apikey">
                             <i class="fa fa-fw fa-key space-right"></i>
                             Apikey
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a ng-click="showStep('email')" ui-sref="logout">
+                        <a ui-sref="logout">
                             <i class="fa fa-fw fa-sign-out space-right"></i>
                             Logout
                         </a>

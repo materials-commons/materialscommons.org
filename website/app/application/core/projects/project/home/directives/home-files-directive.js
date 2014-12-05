@@ -11,7 +11,6 @@ function homeFilesDirective() {
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
-                                   ["$scope",  homeFilesDirectiveController]);
+                                   ["$scope", homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope) {
-
 }

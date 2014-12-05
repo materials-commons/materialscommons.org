@@ -3,7 +3,6 @@ Application.Controllers.controller("projectSamples",
 
 function projectSamples($scope, project, projectState, $state) {
     $scope.projectID = project.id;
-    console.log('controller sample');
     $scope.createSample = function() {
         var state = null;
         var stateID = projectState.add(project.id, state);

@@ -84,20 +84,6 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
             .success(function(data){
                 $scope.elements = data;
             }).jsonp();
-
-        // $scope.events = [
-        //     {
-        //         name: "Heat Treatment A"
-        //     },
-
-        //     {
-        //         name: "Heat Treatment B"
-        //     },
-
-        //     {
-        //         name: "Cogged C"
-        //     }
-        // ];
     }
 
     init();
