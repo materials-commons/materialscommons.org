@@ -252,6 +252,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/files/view.html",
             controller: "projectFilesViewFile"
         })
+        .state('projects.project.files.list', {
+            url: "/list",
+            templateUrl: "application/core/projects/project/files/list.html",
+            controller: "projectFilesList"
+        })
         .state('projects.project.tags', {
             url: '/tags',
             templateUrl: "application/core/projects/project/tags/tags.html",
