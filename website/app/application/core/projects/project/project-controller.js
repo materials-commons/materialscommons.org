@@ -1,9 +1,10 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "provStep", "ui",
                                     "project", "current", "pubsub", "recent", "User",
-                                    projectsProject]);
+                                    "projectFiles", "mcapi", projectsProject]);
 
-function projectsProject ($scope, provStep, ui, project, current, pubsub, recent, User) {
+function projectsProject ($scope, provStep, ui, project, current,
+                          pubsub, recent, User, projectFiles, mcapi) {
     recent.resetLast(project.id);
 
     current.setProject(project);
@@ -25,4 +26,14 @@ function projectsProject ($scope, provStep, ui, project, current, pubsub, recent
     };
     $scope.mcuser = User.attr();
 
+    $scope.loaded = true;
+
+    if (!(project.id in projectFiles.model.projects)) {
+        $scope.loaded = false;
+        mcapi("/projects/%/tree2", project.id)
+            .success(function(files){
+                $scope.loaded = true;
+                projectFiles.model.projects[project.id] = files;
+            }).jsonp();
+    }
 }
