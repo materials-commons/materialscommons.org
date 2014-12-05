@@ -253,7 +253,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: "projectFilesViewFile"
         })
         .state('projects.project.files.list', {
-            url: "/list/:mediatype",
+            url: "/list",
             templateUrl: "application/core/projects/project/files/list.html",
             controller: "projectFilesList"
         })

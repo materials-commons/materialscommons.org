@@ -8,16 +8,15 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            <ul class="list-group" >
-                <li class="list-group-item" ng-repeat="(key, value) in project.mediatypes">
+            <ul class="list-group home-list">
+                <li class="list-group-item"
+                    ng-repeat="(key, value) in project.mediatypes"
+                    ng-click="showMediaType(key)">
                     {{value.description}}
                     <span class="badge"
                           ng-class-odd="'odd-badge'"
-                          ng-class-even="'even-badge'" >
-                        <a style="color:white"
-                           ui-sref="projects.project.files.list({mediatype: key})">
-                            {{value.count}}
-                        </a>
+                          ng-class-even="'even-badge'">
+                        {{value.count}}
                     </span>
                 </li>
             </ul>

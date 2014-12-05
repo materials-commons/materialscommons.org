@@ -11,6 +11,11 @@ function homeFilesDirective() {
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
-                                   ["$scope", homeFilesDirectiveController]);
-function homeFilesDirectiveController($scope) {
+                                   ["$scope", "$state", "listParams", "searchParams", homeFilesDirectiveController]);
+function homeFilesDirectiveController($scope, $state, listParams, searchParams) {
+    $scope.showMediaType = function(mediatype) {
+        listParams.set("file-list", "mediatype", mediatype);
+        searchParams.clear("file-list");
+        $state.go("projects.project.files.list");
+    };
 }
