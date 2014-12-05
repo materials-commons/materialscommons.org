@@ -6,7 +6,7 @@
            style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;">
             View all {{reviews.length}} reviews</a>
     </div>
-    <div class="panel-body">
+    <div class="panel-body"  style="max-height: 150px;overflow-y: auto;">
         <ul style="list-style-type: none" ng-repeat="event in reviews">
             <li>
                 <i class="fa fa-fw fa-user  fa-2x"></i> {{event.created_by}} commented on

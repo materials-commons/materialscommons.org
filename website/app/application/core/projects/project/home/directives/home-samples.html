@@ -6,7 +6,7 @@
             {{samples.length}} samples</a>
 
     </div>
-    <div class="panel-body">
+    <div class="panel-body"  style="max-height: 150px;overflow-y: auto;">
         <ul style="list-style-type: none" ng-repeat="event in samples">
             <li>
                 {{event.created_by}} created <a ui-sref="projects.project.samples.overview">
