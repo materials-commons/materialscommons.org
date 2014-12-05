@@ -3,7 +3,7 @@
         <i class="fa fa-fw fa-edit"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Notes</span>
         <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;" ui-sref="projects.project.notes.overview"> View all {{notes.length}} notes</a>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="max-height: 150px;overflow-y: auto;">
         <ul style="list-style-type: none" ng-repeat="note in notes">
             <li>
                 {{note.created_by}} created a <i>{{note.item_type}}</i> note:

@@ -26,7 +26,6 @@ function EventsService($filter) {
             service.processes.push($filter("byKey")(project.events, 'item_type', 'draft'));
             service.processes = _.flatten(service.processes);
             service.grouped_processes = this.groupEventsByDate(service.processes);
-
             return service;
         },
 
@@ -41,10 +40,10 @@ function EventsService($filter) {
         },
 
         prepareCalendarEvent: function(items) {
-            var d = new Date(0);
             var calendar_event = [];
             if (items !== {}) {
                 Object.keys(items).forEach(function (key) {
+                    var d = new Date(0);
                     var value = items[key][0];
                     d.setUTCSeconds(value.mtime.epoch_time);
                     calendar_event.push({title: value.title, start: d});

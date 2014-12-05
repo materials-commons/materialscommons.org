@@ -7,7 +7,7 @@
         </a>
     </div>
 
-    <div class="panel-body">
+    <div class="panel-body"  style="max-height: 150px;overflow-y: auto;">
         <ul style="list-style-type: none" ng-repeat="event in processes">
             <li ng-if="event.item_type == 'provenance'">
                 Submitted <a ui-sref="projects.project.provenance.overview">{{event.title | truncate: 25 : '...':true}}</a>
