@@ -32,7 +32,6 @@
 
     <!-- Application style sheet -->
     <link href="style-3.css" rel="stylesheet">
-    <link href="style-4.css" rel="stylesheet">
 </head>
 <body>
 <div class="row">
@@ -46,11 +45,38 @@
             </div>
         </div>
     </div>
-    <quickbar></quickbar>
 </div>
-
-
-
+<div class="modal fade"
+     ng-controller="newProjectModal"
+         id="newProject"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="contributorsLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Create New Project</h4>
+                </div>
+                <div class="modal-body">
+                    <label>Name:</label>
+                    <input ng-model="model.name" class="form-control">
+                    <br>
+                    <button ng-click="createProject()"
+                            class="btn btn-info"
+                            data-dismiss="modal">
+                        Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!-- ---------------------------- External dependencies ----------------->
 
@@ -117,6 +143,7 @@
 <!-- Views -->
 <!-- View: Account Groups -->
 <script src="application/core/account/account-controller.js"></script>
+<script src="application/core/account/settings.js"></script>
 <script src="application/core/account/password/password-controller.js"></script>
 <script src="application/core/account/apikey/apikey-controller.js"></script>
 <script src="application/core/account/usergroups/usergroup-controller.js"></script>
@@ -154,6 +181,7 @@
 <script src="application/core/projects/directives/provenance/show-step-files.js"></script>
 <script src="application/core/projects/directives/provenance/show-step-properties.js"></script>
 <script src="application/core/projects/_action-controller.js"></script>
+<script src="application/core/projects/create.js"></script>
 <script src="application/core/projects/project/project-controller.js"></script>
 <script src="application/core/projects/project/project-action-bar.js"></script>
 <script src="application/core/projects/project/project-search-bar.js"></script>
@@ -276,6 +304,7 @@
 <!-- Index -->
 <script src="index/_navigation-controller.js"></script>
 <script src="index/_alerts-controller.js"></script>
+<script src="index/projects-modal.js"></script>
 
 <!-- Util -->
 <script src="index/util.js"></script>

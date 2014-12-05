@@ -82,6 +82,10 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/apikey',
             templateUrl: 'application/core/account/apikey/apikey.html'
         })
+        .state('account.settings', {
+            url: '/settings',
+            templateUrl: 'application/core/account/settings.html'
+        })
         .state('account.usergroup', {
             url: '/usergroup',
             templateUrl: 'application/core/account/usergroups/usergroup.html'
@@ -115,6 +119,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
                     return Templates.getList();
                 }
             }
+        })
+        .state('projects.create', {
+            url: '/create',
+            templateUrl: 'application/core/projects/create.html',
+            controller: 'projectsCreate'
         })
         .state('projects.project', {
             url: '/project/:id',

@@ -13,3 +13,7 @@
     version 1.0.9
     files: tc-angular-chartjs.min.js
     Also depends on ../Chart.min.js
+*** angular-validation
+    [[https://github.com/huei90/angular-validation]]
+    version unknown
+    files: angular-validation.js, vangular-validation-rule.js
