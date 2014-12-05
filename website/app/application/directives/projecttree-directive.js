@@ -92,6 +92,7 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
                 }).jsonp();
         } else {
             $scope.loaded = true;
+            $scope.model.projects = projectFiles.model.projects;
             $scope.dir = $scope.model.projects[projectId].dir.children;
             ProjectPath.update_dir($scope.model.projects[projectId]);
             $scope.trail.push($scope.model.projects[projectId].dir);
