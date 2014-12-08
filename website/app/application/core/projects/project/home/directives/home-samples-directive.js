@@ -12,9 +12,20 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-                                   ["$scope", "projectState", "$state",
+                                   ["$scope",
                                     homeSamplesController]);
 
-function homeSamplesController($scope, projectState, $state) {
+function homeSamplesController($scope) {
+    var showSampleDetails = [];
+    for (var i = 0; i < $scope.project.samples.length; i++) {
+        showSampleDetails.push(false);
+    }
 
+    $scope.toggleDetails = function(index) {
+        showSampleDetails[index] = !showSampleDetails[index];
+    };
+
+    $scope.showDetails = function(index) {
+        return showSampleDetails[index];
+    };
 }

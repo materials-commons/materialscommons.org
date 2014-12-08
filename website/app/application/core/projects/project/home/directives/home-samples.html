@@ -10,11 +10,18 @@
             <li class="home-item"
                 ng-repeat="sample in project.samples | limitTo:3">
                 <div>
+                    <a ng-click="toggleDetails($index)" style="color: black">
+                        <i class="fa"
+                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
+                    </a>
                     {{sample.owner}} created <a ui-sref="projects.project.samples.overview">
-                    {{sample.name | truncate: 25 : '...':true}}</a>
+                        {{sample.name | truncate: 25 : '...':true}}</a>
                     <p>
                         <small class="text-muted">{{sample.birthtime | toDateString}}</small>
                     </p>
+                    <div ng-show="showDetails($index)">
+                        <home-sample-details sample="sample"></home-sample-details>
+                    </div>
                 </div>
             </li>
         </ul>
