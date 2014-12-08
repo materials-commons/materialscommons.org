@@ -1,10 +1,18 @@
 <div class="panel panel-primary">
-    <div class="panel-heading processes-color">
-        <i class="fa fa-fw fa-code-fork"></i>
-        <span>Processes</span>
-        <a ui-sref="projects.project.provenance.overview">
-            View all {{project.processes.length}} processes
-        </a>
+    <div class="panel-heading processes-color home-panel-heading">
+        <i class="fa fa-fw fa-code-fork bold"></i>
+        <span>
+            <a ui-sref="projects.project.provenance.overview">
+                Processes
+            </a>
+            ({{project.processes.length | number}})
+        </span>
+        <span class="pull-right add-item">
+            <a ui-sref="projects.project.provenance.create">
+                <i class="fa fa-fw fa-plus"></i>
+            </a>
+        </span>
+        <input type="text" ng-model="search.name" class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
         <ul ng-if="project.drafts.length !== 0" class="list-unstyled">
@@ -36,8 +44,7 @@
                 </div>
             </li>
         </ul>
-        <div ng-if="project.processes.length === 0 && project.drafts.length === 0"
-             class="no-content">
+        <div ng-if="project.processes.length === 0 && project.drafts.length === 0">
             There are no processes or drafts.
         </div>
     </div>
