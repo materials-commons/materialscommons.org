@@ -1,5 +1,4 @@
 <div>
-
     <div ng-if="!loaded">
         <div class="row col-lg-offset-5">
             <p><i class="fa fa-spinner fa-spin fa-4x"></i> Loading...</p>
@@ -10,17 +9,25 @@
             <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
         </div>
         <div style="padding-left: 10px; padding-right: 10px;">
-            <div class="row">
-                <span style="color:#41738c;font-family: Helvetica;font-size: 18px;">{{project.name}}</span>
-                <span style="float:right;color:#555;font-family: Helvetica;font-size: 16px;"> (Last login on {{mcuser.last_login | toDateString}})</span>
-                <span style="float:right; color:#333;font-family: Helvetica;font-size: 16px;">Welcome {{mcuser.fullname}} </span>
-            </div>
-            <div ui-view></div>
-            <div ng-show="showFiles()" class="row">
-                <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true"
-                              color="{{colors.getCurrentProjectColor()}}"></project-tree>
+
+            <div>
                 <div class="row">
-                    <project-description project-id="{{project.id}}"></project-description>
+                    <span style="color:#41738c;font-family: Helvetica;font-size: 18px;">{{project.name}}</span>
+                    <span style="float:right;color:#555;font-family: Helvetica;font-size: 16px;"> (Last login on {{mcuser.last_login | toDateString}})</span>
+                    <span style="float:right; color:#333;font-family: Helvetica;font-size: 16px;">Welcome {{mcuser.fullname}} </span>
+                </div>
+                <div ng-class="{'col-xs-4': showHelp()}" ng-show="showHelp()">
+                    <userguide></userguide>
+                </div>
+                <div ng-class="{'col-xs-8': showHelp(), 'col-xs-12': !showHelp()}">
+                    <div ui-view></div>
+                    <div ng-show="showFiles()" class="row">
+                        <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true"
+                                      color="{{colors.getCurrentProjectColor()}}"></project-tree>
+                        <div class="row">
+                            <project-description project-id="{{project.id}}"></project-description>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -19,6 +19,12 @@
             </li>
         </ul>
         <ul ng-show="email_address" class="nav navbar-nav navbar-right">
+            <li>
+                <a class="large-text"
+                   ng-click="toggleHelp()">
+                    Help
+                </a>
+            </li>
             <li ng-class="{ navactive: isActiveStep('reviews') }">
                 <a class="dropdown-toggle large-text" data-toggle="dropdown">
                     <i class="fa fa-comment space-right"></i> Reviews
