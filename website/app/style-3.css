@@ -1861,3 +1861,18 @@ ul.menu-bar li {
 .bold {
   font-weight: bold;
 }
+
+/* Style breadcrumbs */
+.breadcrumb {
+  background-color: #e9e9ea;
+  color: #41738c;
+  font-family: Helvetica;
+  font-size: 18px;
+  padding-top: 0px;
+  margin-bottom: 0px;
+}
+
+.breadcrumb > li + li:before {
+  content: '>';
+  color: #41738c;
+}
