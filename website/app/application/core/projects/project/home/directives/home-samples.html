@@ -2,18 +2,19 @@
     <div class="panel-heading" style="background-color: #f0ad4e;opacity: 100%;">
         <i class="fa fa-fw fa-cubes"></i><span
             style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Samples</span>
-        <a  ui-sref="projects.project.samples.overview" style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all
-            {{samples.length}} samples</a>
+        <a ui-sref="projects.project.samples.overview"
+           style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"> View all
+            {{(project.samples | event: project.date).length}} samples</a>
 
     </div>
-    <div class="panel-body"  style="max-height: 150px;overflow-y: auto;">
-        <ul style="list-style-type: none" ng-repeat="event in samples">
+    <div class="panel-body" style="max-height: 150px;overflow-y: auto;">
+        <ul style="list-style-type: none" ng-repeat="sample in project.samples | event: project.date">
             <li>
-                {{event.created_by}} created <a ui-sref="projects.project.samples.overview">
-                {{event.title | truncate: 25 : '...':true}}</a>
+                {{sample.created_by}} created <a ui-sref="projects.project.samples.overview">
+                {{sample.name | truncate: 25 : '...':true}}</a>
 
                 <p>
-                    <small class="text-muted">{{event.birthtime | toDateString}}</small>
+                    <small class="text-muted">{{sample.birthtime | toDateString}}</small>
                 </p>
             </li>
         </ul>

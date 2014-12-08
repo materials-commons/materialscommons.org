@@ -12,15 +12,8 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-                                   ["$scope", "pubsub", "Events",
+                                   ["$scope",
                                     homeSamplesController]);
 
-function homeSamplesController($scope, pubsub, Events) {
-    $scope.samples = [];
-    $scope.service = Events.getService();
-    $scope.samples = $scope.service.samples;
-    pubsub.waitOn($scope, "clicked_date", function(date) {
-        $scope.clicked_date = date;
-        $scope.samples = Events.getEventsByDate($scope.service.grouped_samples, $scope.clicked_date);
-    });
+function homeSamplesController($scope) {
 }
