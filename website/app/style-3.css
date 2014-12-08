@@ -979,7 +979,8 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .panel-heading.files-color {
-
+  background-color: #7c699f;
+  opacity: 85%;
 }
 
 .panel-heading.processes-color {
