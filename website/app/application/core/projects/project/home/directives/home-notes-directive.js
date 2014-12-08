@@ -21,7 +21,6 @@ function homeNotesDirectiveController($scope, Events, pubsub) {
     pubsub.waitOn($scope, "clicked_date", function(date) {
         $scope.clicked_date = date;
         $scope.notes = Events.getEventsByDate($scope.service.grouped_notes, $scope.clicked_date);
-
     });
 }
 

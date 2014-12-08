@@ -58,6 +58,10 @@ function EventsService($filter) {
 
         getEventsByDate: function(events, date){
             return events[date];
+        } ,
+
+        updateDate: function(date){
+            service.date = date;
         }
 
         //viewAllEvents: function(events){

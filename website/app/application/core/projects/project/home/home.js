@@ -33,6 +33,8 @@ function projectHome($scope, project, User, mcapi, $compile, uiCalendarConfig,  
     $scope.alertOnEventClick = function (date, jsEvent, view) {
         var d = date._d;
         var clicked_date = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDay());
+        //call service to update date
+        Events.updateDate(clicked_date);
         pubsub.send('clicked_date', clicked_date);
     };
 
@@ -70,8 +72,6 @@ function projectHome($scope, project, User, mcapi, $compile, uiCalendarConfig,  
             eventRender: $scope.eventRender
         }
     };
-
-
     /* event sources array*/
     $scope.eventSources = [$scope.event_reviews, $scope.event_notes, $scope.event_processes, $scope.event_samples];
 }
