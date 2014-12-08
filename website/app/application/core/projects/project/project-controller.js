@@ -1,10 +1,14 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "provStep", "ui",
                                     "project", "current", "pubsub", "recent", "User",
-                                    "projectFiles", "mcapi", projectsProject]);
+                                    "projectFiles", "mcapi", "help", projectsProject]);
 
 function projectsProject ($scope, provStep, ui, project, current,
-                          pubsub, recent, User, projectFiles, mcapi) {
+                          pubsub, recent, User, projectFiles, mcapi, help) {
+    $scope.showHelp = function() {
+        return help.isActive();
+    };
+
     recent.resetLast(project.id);
 
     current.setProject(project);
