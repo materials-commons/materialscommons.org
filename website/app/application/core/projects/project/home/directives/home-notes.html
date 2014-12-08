@@ -16,7 +16,11 @@
                 <p>
                     <small class="text-muted">{{note.mtime | toDateString}}</small>
                 </p>
+
             </li>
         </ul>
+        <div ng-if="all_notes.length === 0" class="no-content">
+            There are no notes.
+        </div>
     </div>
 </div>
