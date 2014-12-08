@@ -11,14 +11,7 @@ function homeProvenanceDirective() {
 }
 
 Application.Controllers.controller("homeProvenanceDirectiveController",
-    ["$scope", "Events", "pubsub",
+    ["$scope",
         homeProvenanceDirectiveController]);
-function homeProvenanceDirectiveController($scope, Events, pubsub) {
-    $scope.processes = [];
-    $scope.service = Events.getService();
-    //$scope.processes = $scope.service.processes;
-    pubsub.waitOn($scope, "clicked_date", function(date) {
-        $scope.clicked_date = date;
-        $scope.processes = Events.getEventsByDate($scope.service.grouped_processes, $scope.clicked_date);
-    });
+function homeProvenanceDirectiveController($scope) {
 }

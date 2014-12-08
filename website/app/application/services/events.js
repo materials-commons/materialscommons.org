@@ -1,75 +1,46 @@
-Application.Services.factory('Events', ["$filter", EventsService]);
+Application.Services.factory('Events',  ['$filter', EventsService]);
 
 function EventsService($filter) {
     var service = {
-        reviews: [],
-        samples: [],
-        notes: [],
-        processes: [],
-        grouped_notes: {},
-        grouped_reviews: {},
-        grouped_samples: {},
-        grouped_processes: {},
+        date: '',
 
-
-        classify: function(project){
-            service.reviews = $filter("byKey")(project.events, 'item_type', 'review');
-            service.grouped_reviews = this.groupEventsByDate(service.reviews);
-
-            service.samples = $filter("byKey")(project.events, 'item_type', 'sample');
-            service.grouped_samples = this.groupEventsByDate(service.samples);
-
-            service.notes = $filter("byKey")(project.events, 'item_type', 'note');
-            service.grouped_notes = this.groupEventsByDate(service.notes);
-
-            service.processes = $filter("byKey")(project.events, 'item_type', 'provenance');
-            service.processes.push($filter("byKey")(project.events, 'item_type', 'draft'));
-            service.processes = _.flatten(service.processes);
-            service.grouped_processes = this.groupEventsByDate(service.processes);
-            return service;
+        addConvertedTime: function (project) {
+            project.reviews = service.update(project.open_reviews);
+            project.samples = service.update(project.samples);
+            project.processes = service.update(project.processes);
+            project.notes = service.update(project.notes);
+            project.drafts = service.update(project.drafts);
+            return project;
         },
 
-        groupEventsByDate: function (events) {
-            events.forEach(function (event) {
-                var eventdate = new Date(0);
-                eventdate.setUTCSeconds(event.mtime.epoch_time);
-                event.converted_mtime = Date.UTC(eventdate.getUTCFullYear(), eventdate.getUTCMonth(), eventdate.getUTCDay());
+        update: function (items) {
+            items.forEach(function (item) {
+                var item_date = new Date(0);
+                item_date.setUTCSeconds(item.mtime.epoch_time);
+                item.converted_mtime = Date.UTC(item_date.getUTCFullYear(), item_date.getUTCMonth(), item_date.getUTCDay());
             });
-            //Group By date
-            return $filter('groupBy')(events, 'converted_mtime');
+            return items;
         },
 
-        prepareCalendarEvent: function(items) {
+        prepareCalendarEvent: function (items) {
             var calendar_event = [];
-            if (items !== {}) {
-                Object.keys(items).forEach(function (key) {
+            if (items.length !== 0) {
+                var grouped_by_convertedtime = $filter('groupBy')(items, 'converted_mtime');
+                Object.keys(grouped_by_convertedtime).forEach(function (key) {
                     var d = new Date(0);
-                    var value = items[key][0];
+                    var value = grouped_by_convertedtime[key][0];
                     d.setUTCSeconds(value.mtime.epoch_time);
                     calendar_event.push({title: value.title, start: d});
                 });
+                return calendar_event;
             }
-            return calendar_event;
+
         },
 
-        getService: function(){
-            return service;
-        },
-
-        getEventsByDate: function(events, date){
-            return events[date];
-        } ,
-
-        updateDate: function(date){
-            service.date = date;
+        updateDate: function (project, date) {
+            project.date = date;
+            return project;
         }
-
-        //viewAllEvents: function(events){
-        //    events.forEach(function(event){
-        //
-        //    });
-        //}
-
     };
     return service;
 }
