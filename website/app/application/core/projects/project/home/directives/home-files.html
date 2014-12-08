@@ -1,15 +1,21 @@
 <div class="panel panel-primary">
-    <div class="panel-heading files-color">
-        <i class="fa fa-fw fa-files-o"></i>
-        <span>Files</span>
-        <a ui-sref="projects.project.files.overview">
-            View all {{fileCount | number}} files
-        </a>
+    <div class="panel-heading files-color home-panel-heading home-panel-heading">
+        <i class="fa fa-fw fa-files-o bold"></i>
+        <span>
+            <a ui-sref="projects.project.files.overview">
+                Files
+            </a>
+            ({{fileCount | number}})
+        </span>
+        <span class="pull-right add-item">
+            <a><i class="fa fa-fw fa-plus"></i></a>
+        </span>
+        <input type="text" ng-model="search" class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
         <ul ng-if="fileCount !== 0" class="list-unstyled">
             <li class="home-item pointer"
-                ng-repeat="mediatype in mediatypes | orderBy:'attrs.count':true"
+                ng-repeat="mediatype in mediatypes | filter:search | orderBy:'attrs.count':true"
                 ng-click="showMediaType(mediatype.name)">
                 <div>
                     {{mediatype.attrs.description}}
@@ -24,7 +30,7 @@
                 </div>
             </li>
         </ul>
-        <div ng-if="fileCount === 0" class="no-content">
+        <div ng-if="fileCount === 0">
             There are no files.
         </div>
     </div>

@@ -1,14 +1,23 @@
 <div class="panel panel-primary">
-    <div class="panel-heading reviews-color">
-        <i class="fa fa-fw fa-comment"></i>
-        <span>Reviews</span>
-        <a ui-sref="projects.project.reviews.overview">
-            View all {{project.open_reviews.length}} reviews</a>
+    <div class="panel-heading reviews-color home-panel-heading">
+        <i class="fa fa-fw fa-comment bold"></i>
+        <span>
+            <a ui-sref="projects.project.reviews.overview">
+                Reviews
+            </a>
+            ({{project.open_reviews.length | number}})
+        </span>
+        <span class="pull-right add-item">
+            <a ui-sref="projects.project.reviews.create">
+                <i class="fa fa-fw fa-plus"></i>
+            </a>
+        </span>
+        <input type="text" ng-model="search" class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
         <ul ng-if="recent_reviews.length !== 0" class="list-unstyled">
             <li class="home-item"
-                ng-repeat="review in recent_reviews | limitTo:3">
+                ng-repeat="review in recent_reviews | filter:search | limitTo:3">
                 <div>
                     <i class="fa fa-fw fa-user fa-2x"></i> {{review.author}} commented on
                     <a ui-sref="projects.project.reviews.edit({'review_id': review.id, 'status': review.status})">
@@ -19,7 +28,7 @@
                 </div>
             </li>
         </ul>
-        <div ng-if="recent_reviews.length === 0" class="no-content">
+        <div ng-if="recent_reviews.length === 0">
             There are no reviews.
         </div>
     </div>
