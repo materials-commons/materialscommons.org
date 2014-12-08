@@ -30,19 +30,30 @@ function breadcrumbsService() {
             });
 
             if (i !== -1) {
-                self.pathByProject.splice(i+1);
+                if (i >= self.pathByProject[projectID].length) {
+                    // if we found the last element to clear, then
+                    // ignore otherwise the whole array will be cleared.
+                    // This is a safety check that allows the user to
+                    // clear from a name that is the last element and not
+                    // corrupt what is expected.
+                    return;
+                }
+                self.pathByProject[projectID].splice(i+1);
             }
         },
 
         // append adds a new element to the end of the path
         append: function(projectID, element) {
-            self.pathByProject.push(element);
+            self.pathByProject[projectID].push(element);
         },
 
         // clear clears the entries except for the first one which is
         // presumed to be the project name.
         clear: function(projectID) {
-            self.pathByProject.splice(1);
+            if (self.pathByProject[projectID].length > 1) {
+                console.log("length = " + self.pathByProject[projectID].length);
+                self.pathByProject[projectID].splice(1);
+            }
         }
     };
 
