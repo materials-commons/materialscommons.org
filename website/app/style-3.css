@@ -402,8 +402,8 @@ td.tag-width {
 }
 
 .navbar-custom {
-   /* background-color: #4e869f; */
-    background-color: #256188;
+  /* background-color: #4e869f; */
+  background-color: #256188;
   color: #ffffff;
   border-radius: 0;
   padding-top: 0px;
@@ -922,6 +922,89 @@ h4, .h4, h5, .h5, h6, .h6 {
 /*   margin-left: 15px; */
 /*   margin-right: 15px; */
 /* } */
+
+.home-list li.list-group-item:hover {
+  background-color: #eeeeee;
+}
+
+.home-item {
+  background-color: #fcfcfc;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-top-width: 1px;
+  border-bottom-color: #d1d1d1;
+  border-top-color: #ffffff;
+}
+
+.home-item:hover {
+  background-color: #eeeeee;
+}
+
+.no-content {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+.home-item div {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+.panel-primary {
+  border-color: #c9c9c9;
+}
+
+.home-panel-body {
+  padding: 0px;
+}
+
+.panel-heading.samples-color {
+  background-color: #f0ad4e;
+  opacity: 100%;
+}
+
+.panel-heading.reviews-color {
+  background-color: #4884b8;
+  opacity: 85%;
+}
+
+.panel-heading.notes-color {
+  background-color: #3ea7a0;
+  opacity: 85%;
+}
+
+.panel-heading.files-color {
+
+}
+
+.panel-heading.processes-color {
+  background-color: #e26a6a;
+  opacity: 100%;
+}
+
+.panel-heading span {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Helvetica;
+  color: white;
+}
+
+.panel-heading a {
+  float: right;
+  font-size: 12px;
+  text-decoration: underline;
+  font-family: Helvetica;
+  color: white;
+}
+
+.home-panel-body ul {
+  margin-bottom: 0px;
+}
 
 .nav-stacked > li > a,
 .nav-stacked > li.active > a:hover,

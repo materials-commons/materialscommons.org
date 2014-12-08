@@ -1,0 +1,23 @@
+<div>
+    <div class="row">
+        <div class="col-xs-4">
+            Search: <input class="form-control" type="text" ng-model="search.fullname">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table>
+                <thead>
+                    <th>Name</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="file in files | filter:search | orderBy:'fullname'">
+                        <td>
+                            <a ng-click="openFile(file)">{{file.fullname}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
