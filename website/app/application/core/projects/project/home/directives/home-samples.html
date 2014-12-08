@@ -2,8 +2,9 @@
     <div class="panel-heading samples-color">
         <i class="fa fa-fw fa-cubes"></i>
         <span>Samples</span>
-        <a ui-sref="projects.project.samples.overview"> View all
-            {{project.samples.length}} samples</a>
+        <a ui-sref="projects.project.samples.overview">
+            View all {{project.samples.length}} samples
+        </a>
     </div>
     <div class="panel-body home-panel-body">
         <ul ng-if="project.samples.length !== 0" class="list-unstyled">

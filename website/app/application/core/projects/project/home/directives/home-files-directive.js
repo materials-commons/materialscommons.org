@@ -19,4 +19,10 @@ function homeFilesDirectiveController($scope, $state, listParams, searchParams) 
         searchParams.clear("file-list");
         $state.go("projects.project.files.list");
     };
+
+    var totalFiles = 0;
+    for (var key in $scope.project.mediatypes) {
+        totalFiles += $scope.project.mediatypes[key].count;
+    }
+    $scope.fileCount = totalFiles;
 }

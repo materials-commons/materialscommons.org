@@ -13,8 +13,14 @@
             <div>
                 <div class="row">
                     <span style="color:#41738c;font-family: Helvetica;font-size: 18px;">{{project.name}}</span>
-                    <span style="float:right;color:#555;font-family: Helvetica;font-size: 16px;"> (Last login on {{mcuser.last_login | toDateString}})</span>
-                    <span style="float:right; color:#333;font-family: Helvetica;font-size: 16px;">Welcome {{mcuser.fullname}} </span>
+                    <div class="pull-right">
+                        <span style="color:#333;font-family: Helvetica;font-size: 16px;">
+                            Welcome {{mcuser.fullname}}
+                        </span>
+                        <small>
+                            (Last login on {{mcuser.last_login | toDateString}})
+                        </small>
+                    </div>
                 </div>
                 <div ng-class="{'col-xs-4': showHelp()}" ng-show="showHelp()">
                     <userguide></userguide>
