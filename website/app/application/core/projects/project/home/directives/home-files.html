@@ -9,17 +9,17 @@
     <div class="panel-body home-panel-body">
         <ul ng-if="fileCount !== 0" class="list-unstyled">
             <li class="home-item pointer"
-                ng-repeat="(key, value) in project.mediatypes"
-                ng-click="showMediaType(key)">
+                ng-repeat="mediatype in mediatypes | orderBy:'attrs.count':true"
+                ng-click="showMediaType(mediatype.name)">
                 <div>
-                    {{value.description}}
+                    {{mediatype.attrs.description}}
                     <span class="badge pull-right" style="margin-top:1px"
                           ng-class-odd="'odd-badge'"
                           ng-class-even="'even-badge'">
-                        {{value.count | number}}
+                        {{mediatype.attrs.count | number}}
                     </span>
                     <p>
-                        <small class="text-muted">{{value.size | bytes}}</small>
+                        <small class="text-muted">{{mediatype.attrs.size | bytes}}</small>
                     </p>
                 </div>
             </li>
