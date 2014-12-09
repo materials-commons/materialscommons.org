@@ -11,6 +11,34 @@ function breadcrumbsService() {
         }
     };
 
+    self.routeMap = {
+        "projects.project.home": ["Home"],
+        "projects.project.samples": ["Samples"],
+        "projects.project.samples.overview": ["Samples"],
+        "projects.project.samples.create": ["Samples", "New"],
+        "projects.project.tasks": ["Tasks"],
+        "projects.project.tasks.overview": ["Tasks"],
+        "projects.project.tasks.create": ["Tasks", "New"],
+        "projects.project.provenance": ["Provenance"],
+        "projects.project.provenance.overview": ["Provenance"],
+        "projects.project.provenance.create": ["Provenance", "New"],
+        "projects.project.provenance.drafts": ["Provenance", "Drafts"],
+        "projects.project.reviews": ["Reviews"],
+        "projects.project.reviews.overview": ["Reviews"],
+        "projects.project.reviews.create": ["Reviews", "New"],
+        "projects.project.reviews.edit": ["Reviews", "Edit"],
+        "projects.project.notes": ["Notes"],
+        "projects.project.notes.overview": ["Notes"],
+        "projects.project.notes.edit": ["Notes", "Edit"],
+        "projects.project.notes.create": ["Notes", "New"],
+        "projects.project.files": ["Files"],
+        "projects.project.files.overview": ["Files"],
+        "projects.project.files.view": ["Files", "View"],
+        "projects.project.files.list": ["Files", "List"],
+        "projects.project.tags": ["Tags"],
+        "projects.project.tags.create": ["Tags", "New"]
+    };
+
     self.service = {
         // createProject creates a new project entry. If the
         // project already exists it doesn't do anything.
@@ -51,9 +79,19 @@ function breadcrumbsService() {
         // presumed to be the project name.
         clear: function(projectID) {
             if (self.pathByProject[projectID].length > 1) {
-                console.log("length = " + self.pathByProject[projectID].length);
                 self.pathByProject[projectID].splice(1);
             }
+        },
+
+        fromRoute: function(projectID, route) {
+            self.service.clear(projectID);
+            var entries = self.routeMap[route];
+            if (!entries) {
+                return;
+            }
+            entries.forEach(function(entry) {
+                self.service.append(projectID, entry);
+            });
         }
     };
 
