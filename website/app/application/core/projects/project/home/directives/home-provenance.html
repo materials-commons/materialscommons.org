@@ -1,37 +1,53 @@
-<div class="panel panel-primary" style="border-color: #c9c9c9;">
-    <div class="panel-heading" style="background-color: #e26a6a;opacity: 100%;">
-        <i class="fa fa-fw fa-code-fork"></i><span
-            style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Processes</span>
-        <a style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;"
-           ui-sref="projects.project.provenance.overview"> {{(project.processes | event: project.date).length +
-            (project.drafts | event: project.date).length}} processes
-        </a>
+<div class="panel panel-primary">
+    <div class="panel-heading processes-color home-panel-heading">
+        <i class="fa fa-fw fa-code-fork bold"></i>
+<span>
+<a ui-sref="projects.project.provenance.overview">
+    Processes
+</a>
+ ({{(project.processes | event: project.date).length +
+            (project.drafts | event: project.date).length}})
+</span>
+<span class="pull-right add-item">
+<a ui-sref="projects.project.provenance.create">
+    <i class="fa fa-fw fa-plus"></i>
+</a>
+</span>
+        <input type="text" ng-model="search.name" class="pull-right col-xs-4">
     </div>
+    <div class="panel-body home-panel-body">
+        <ul ng-if="project.drafts.length !== 0" class="list-unstyled">
+            <li class="home-item"
+                ng-repeat="draft in project.drafts  | event : project.date">
+                <div>
+                    Created a new process
+                    <a ui-sref="projects.project.provenance.drafts">
+                        {{draft.process.name | truncate:25:'...':true}}
+                    </a>
+<span class="label label-primary"
+      style="background-color:#e26a6a">
+Draft
+</span>
 
-    <div class="panel-body" style="max-height: 150px;overflow-y: auto;">
-        <ul style="list-style-type: none" ng-repeat="process in project.processes | event : project.date">
-            <li>
-                Submitted <a ui-sref="projects.project.provenance.overview">{{process.name | truncate: 25 :
-                '...':true}}</a>
-
-                <p>
-                    <small class="text-muted">{{process.birthtime | toDateString}}</small>
-                </p>
+                    <p>
+                        <small class="text-muted">{{draft.mtime | toDateString}}</small>
+                    </p>
+                </div>
             </li>
         </ul>
-        <ul style="list-style-type: none" ng-repeat="draft in project.drafts | event : project.date">
-            <li>
-                Created a new process <a ui-sref="projects.project.provenance.drafts">{{draft.process.name | truncate:
-                25 : '...':true}}</a>
-                <span class="label label-primary" style="background-color:#e26a6a">Draft</span>
+        <ul ng-if="project.processes.length !== 0" class="list-unstyled">
+            <li class="home-item"
+                ng-repeat="process in project.processes  | event : project.date">
+                <div>
+                    Submitted <a>{{process.name | truncate: 25 : '...':true}}</a>
 
-                <p>
-                    <small class="text-muted">{{draft.mtime | toDateString}}</small>
-                </p>
+                    <p>
+                        <small class="text-muted">{{process.birthtime | toDateString}}</small>
+                    </p>
+                </div>
             </li>
         </ul>
-        <div ng-if="project.processes.length === 0 && project.drafts.length === 0"
-             class="no-content">
+        <div ng-if="project.processes.length === 0 && project.drafts.length === 0">
             There are no processes or drafts.
         </div>
     </div>
