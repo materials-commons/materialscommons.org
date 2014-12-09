@@ -1,4 +1,3 @@
-
 <div class="panel panel-primary">
     <div class="panel-heading notes-color home-panel-heading">
         <i class="fa fa-fw fa-edit bold"></i>
@@ -19,15 +18,20 @@
         <ul ng-if="project.notes.length !== 0" class="list-unstyled">
             <li class="home-item"
                 ng-repeat="note in project.notes  | event: project.date">
+
                 <div>
                     {{note.created_by}} created a <i> note:</i>
                     <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
                         {{note.title | truncate: 25 : '...':true}}</a>
-                    <p><small class="text-muted">{{note.mtime | toDateString}}</small></p>
+
+                    <p>
+                        <small class="text-muted">{{note.mtime | toDateString}}</small>
+                    </p>
                 </div>
             </li>
         </ul>
         <div ng-if="project.notes.length === 0">
+
             There are no notes.
         </div>
     </div>

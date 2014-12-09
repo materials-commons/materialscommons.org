@@ -928,7 +928,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .home-item {
-  background-color: #fcfcfc;
+  background-color: #ffffff;
   border-top-style: solid;
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -937,11 +937,19 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-top-color: #ffffff;
 }
 
+.home-panel-heading {
+  padding-right: 7px;
+}
+
+.add-item {
+  margin-left: 12px;
+}
+
 .home-item:hover {
   background-color: #eeeeee;
 }
 
-.no-content {
+.home-panel-body div {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 3px;
@@ -979,7 +987,8 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .panel-heading.files-color {
-
+  background-color: #7c699f;
+  opacity: 85%;
 }
 
 .panel-heading.processes-color {
@@ -987,19 +996,30 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: 100%;
 }
 
+.trythis:hover {
+  text-decoration: underline;
+}
+
+
+
 .panel-heading span {
+  font-size: 14px;
+  font-family: Helvetica;
+  color: white;
+}
+
+.panel-heading a {
   font-size: 14px;
   font-weight: bold;
   font-family: Helvetica;
   color: white;
 }
 
-.panel-heading a {
-  float: right;
-  font-size: 12px;
-  text-decoration: underline;
-  font-family: Helvetica;
-  color: white;
+.panel-heading input {
+  color: black;
+  margin-right: 5px;
+  border: 1px solid #dce4ec;
+  border-radius: 3px;
 }
 
 .home-panel-body ul {
@@ -1850,3 +1870,6 @@ ul.menu-bar li {
 
     /*box-sizing: border-box;*/
 /*}*/
+.bold {
+  font-weight: bold;
+}
