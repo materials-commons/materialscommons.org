@@ -8,8 +8,8 @@
              ({{(project.processes | event: project.date).length +
                         (project.drafts | event: project.date).length}})
             </span>
-            <span class="pull-right add-item">
-                <a ui-sref="projects.project.provenance.create">
+            <span class="add-item">
+                <a ui-sref="projects.project.provenance.create" tooltip="Add Process">
                     <i class="fa fa-fw fa-plus"></i>
                 </a>
             </span>

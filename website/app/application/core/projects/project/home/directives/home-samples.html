@@ -1,16 +1,17 @@
 <div class="panel panel-primary">
     <div class="panel-heading samples-color home-panel-heading">
-            <i class="fa fa-fw fa-cubes bold"></i>
-            <span>
-                <a ui-sref="projects.project.samples.overview">Samples</a>
-                ({{(project.samples | event: project.date).length}})
-            </span>
-            <span class="pull-right add-item">
-                <a ui-sref="projects.project.samples.create">
-                    <i class="fa fa-fw fa-plus"></i>
-                </a>
-            </span>
-            <input type="text" ng-model="search.name" class="pull-right col-xs-4">
+        <i class="fa fa-fw fa-cubes bold"></i>
+        <span>
+            <a ui-sref="projects.project.samples.overview">Samples</a>
+            ({{(project.samples | event: project.date).length}})
+        </span>
+        <span class="add-item">
+            <a ui-sref="projects.project.samples.create" tooltip="Add Sample">
+                <i class="fa fa-plus"></i>
+            </a>
+        </span>
+        <input type="text" ng-model="search.name"
+               placeholder="Search..." class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
         <ul ng-if="(project.samples | event: project.date).length !== 0" class="list-unstyled">
@@ -23,7 +24,7 @@
                            ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
                     </a>
                     {{sample.owner}} created <a ui-sref="projects.project.samples.overview">
-                    {{sample.name | truncate: 25 : '...':true}}</a>
+                        {{sample.name | truncate: 25 : '...':true}}</a>
 
                     <p>
                         <small class="text-muted">{{sample.birthtime | toDateString}}</small>
