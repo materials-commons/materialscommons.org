@@ -80,6 +80,7 @@ def create_indices():
     create_index('properties', 'item_id')
     create_index('properties', 'value')
     create_index('notes', 'project_id')
+    create_index('events', 'project_id')
 
     # old
     create_index('access', 'user_id')
