@@ -954,6 +954,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   padding-right: 15px;
   padding-bottom: 3px;
   padding-top: 3px;
+
 }
 
 .home-item div {
@@ -969,6 +970,8 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .home-panel-body {
   padding: 0px;
+  max-height: 350px;
+  overflow-y: auto;
 }
 
 .panel-heading.samples-color {
