@@ -32,9 +32,8 @@ function EventsService($filter) {
                     d.setUTCSeconds(value.mtime.epoch_time);
                     calendar_event.push({title: value.title, start: d});
                 });
-                return calendar_event;
             }
-
+            return calendar_event;
         },
 
         updateDate: function (project, date) {
