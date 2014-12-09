@@ -1,21 +1,31 @@
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-xs-6" >
         <div class="row">
-            <div home-reviews project="project"></div>
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar')">AgendaDay</button>
+                    <button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar')">AgendaWeek</button>
+                    <button class="btn btn-success" ng-click="changeView('month', 'myCalendar')">Month</button>
+                </div>
+            </div>
+            <div ui-calendar="uiConfig.calendar"  calendar="myCalendar" ng-model="eventSources"></div>
         </div>
         <div class="row">
-            <div home-samples project="project"></div>
-        </div>
-        <div class="row">
-            <div home-provenance project="project"></div>
+            <div home-files project="project"></div>
         </div>
     </div>
     <div class="col-xs-6">
         <div class="row">
+            <div home-samples project="project"></div>
+        </div>
+        <div class="row">
             <div home-notes project="project"></div>
         </div>
         <div class="row">
-            <div home-files project="project"></div>
+            <div home-reviews project="project"></div>
+        </div>
+        <div class="row">
+            <div home-provenance project="project"></div>
         </div>
     </div>
 </div>

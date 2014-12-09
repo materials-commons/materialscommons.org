@@ -11,14 +11,9 @@ function homeNotesDirective() {
 }
 
 Application.Controllers.controller("homeNotesDirectiveController",
-                                   ["$scope","Project",
-                                    homeNotesDirectiveController]);
-function homeNotesDirectiveController($scope, Project) {
+    ["$scope",
+        homeNotesDirectiveController]);
 
-    function init(){
-        $scope.sample_notes = Project.getNotes($scope.project, 'sample');
-        $scope.project_notes = Project.getNotes($scope.project, 'project');
-        $scope.all_notes = Project.getNotes($scope.project);
-    }
-    init();
+function homeNotesDirectiveController() {
 }
+

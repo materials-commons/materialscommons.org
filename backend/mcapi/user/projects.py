@@ -56,6 +56,7 @@ def add_computed_attributes(projects, user):
         p['processes'] = []
         p['users'] = []
         p['notes'] = []
+        p['events'] = []
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
@@ -66,6 +67,7 @@ def add_computed_attributes(projects, user):
         add_drafts(projects_by_id, project_ids, user)
         add_processes(projects_by_id, project_ids)
         add_notes(projects_by_id, project_ids)
+        add_events(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -117,6 +119,13 @@ def add_notes(projects_by_id, project_ids):
                  .order_by('mtime')
                  .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, notes, 'project_id', 'notes')
+
+
+def add_events(projects_by_id, project_ids):
+    events = list(r.table('events').get_all(*project_ids, index='project_id')
+                 .order_by('mtime')
+                 .run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, events, 'project_id', 'events')
 
 
 def add_computed_items(projects_by_id, items, projects_key, item_key):

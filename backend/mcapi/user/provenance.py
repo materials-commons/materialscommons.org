@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import apikey
+from ..decorators import apikey, eventlog
 from .. import dmutil
 from .. import resp
 from flask import g, request
@@ -10,6 +10,7 @@ from loader.model import process, note, property
 
 @app.route('/provenance2/<project_id>', methods=['POST'])
 @apikey
+@eventlog
 def create_provenance2(project_id):
     user = access.get_user()
     j = request.get_json()

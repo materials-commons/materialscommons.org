@@ -28,6 +28,7 @@
     <link href="assets/css/hotkeys.min.css" rel="stylesheet">
     <link href="assets/css/angular-toastr.css" rel="stylesheet">
     <link href="assets/css/vis.css" rel="stylesheet">
+    <link href="assets/css/fullcalendar.css" rel="stylesheet">
 
     <!-- Application style sheet -->
     <link href="style-3.css" rel="stylesheet">
@@ -47,35 +48,35 @@
 </div>
 <div class="modal fade"
      ng-controller="newProjectModal"
-         id="newProject"
-         tabindex="-1"
-         role="dialog"
-         aria-labelledby="contributorsLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Create New Project</h4>
-                </div>
-                <div class="modal-body">
-                    <label>Name:</label>
-                    <input ng-model="model.name" class="form-control">
-                    <br>
-                    <button ng-click="createProject()"
-                            class="btn btn-info"
-                            data-dismiss="modal">
-                        Create
-                    </button>
-                </div>
+     id="newProject"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="contributorsLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Create New Project</h4>
+            </div>
+            <div class="modal-body">
+                <label>Name:</label>
+                <input ng-model="model.name" class="form-control">
+                <br>
+                <button ng-click="createProject()"
+                        class="btn btn-info"
+                        data-dismiss="modal">
+                    Create
+                </button>
             </div>
         </div>
     </div>
+</div>
 
 <!-- ---------------------------- External dependencies ----------------->
 
@@ -113,6 +114,10 @@
 <script src="assets/js/Chart.min.js"></script>
 <script src="assets/js/vis.js"></script>
 <script src="assets/js/angular/angular-filter.js"></script>
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/calendar.js"></script>
+<script src="assets/js/fullcalendar.js"></script>
+
 
 <!------------------------------ Application --------------------------->
 <script src="application/app.js"></script>
@@ -289,6 +294,7 @@
 <script src="application/services/current.js"></script>
 <script src="application/services/project-state.js"></script>
 <script src="application/services/project-service.js"></script>
+<script src="application/services/events.js"></script>
 <script src="application/services/help.js"></script>
 
 <!-------------------------------- Global model services -------------------------->
@@ -301,6 +307,7 @@
 <script src="application/filters/reverse-filter.js"></script>
 <script src="application/filters/review-filter.js"></script>
 <script src="application/filters/bykey-filter.js"></script>
+<script src="application/filters/event-filter.js"></script>
 <script src="application/filters/bytes.js"></script>
 
 <!-- Index -->
