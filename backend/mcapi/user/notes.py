@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import jsonp, apikey
+from ..decorators import jsonp, apikey, eventlog
 import rethinkdb as r
 from flask import g, request
 from .. import dmutil, error, resp
@@ -17,6 +17,7 @@ def get_notes(project_id):
 
 @app.route('/notes', methods=['POST'])
 @apikey(shared=True)
+@eventlog
 def add_note():
     j = request.get_json()
     item_id = dmutil.get_required('item_id', j)
@@ -34,15 +35,17 @@ def add_note():
 @app.route('/notes', methods=['PUT'])
 @apikey(shared=True)
 @jsonp
+@eventlog
 def update_note():
     j = request.get_json()
     title = dmutil.get_optional('title', j)
     message = dmutil.get_optional('note', j)
     note_id = dmutil.get_required('id', j)
     if message or title:
-        r.table('notes').get(note_id).update({'title': title, 'note': message,
-                                              'mtime': r.now()}).run(g.conn)
-        updated_note = dmutil.get_single_from_table('notes', note_id)
-        return updated_note
+        result = r.table('notes').get(note_id).update(
+            {'title': title, 'note': message,'mtime': r.now()},
+            return_changes=True).run(g.conn, time_format='raw')
+        updated_note = result['changes'][0]['new_val']
+        return resp.to_json(updated_note)
     else:
         return error.not_acceptable("Unable to update note: " + note_id)

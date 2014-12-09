@@ -1,30 +1,30 @@
 <div class="panel panel-primary">
     <div class="panel-heading samples-color home-panel-heading">
-        <i class="fa fa-fw fa-cubes bold"></i>
-        <span>
-            <a ui-sref="projects.project.samples.overview">
-                Samples
-            </a>
-            ({{project.samples.length | number}})
-        </span>
-        <span class="pull-right add-item">
-            <a ui-sref="projects.project.samples.create">
-                <i class="fa fa-fw fa-plus"></i>
-            </a>
-        </span>
-        <input type="text" ng-model="search.name" class="pull-right col-xs-4">
+            <i class="fa fa-fw fa-cubes bold"></i>
+            <span>
+                <a ui-sref="projects.project.samples.overview">Samples</a>
+                ({{(project.samples | event: project.date).length}})
+            </span>
+            <span class="pull-right add-item">
+                <a ui-sref="projects.project.samples.create">
+                    <i class="fa fa-fw fa-plus"></i>
+                </a>
+            </span>
+            <input type="text" ng-model="search.name" class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
-        <ul ng-if="project.samples.length !== 0" class="list-unstyled">
+        <ul ng-if="(project.samples | event: project.date).length !== 0" class="list-unstyled">
             <li class="home-item"
-                ng-repeat="sample in project.samples | filter:search | limitTo:3">
+                ng-repeat="sample in project.samples | filter:search | event: project.date">
+
                 <div>
                     <a ng-click="toggleDetails($index)" style="color: black">
                         <i class="fa"
                            ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
                     </a>
                     {{sample.owner}} created <a ui-sref="projects.project.samples.overview">
-                        {{sample.name | truncate: 25 : '...':true}}</a>
+                    {{sample.name | truncate: 25 : '...':true}}</a>
+
                     <p>
                         <small class="text-muted">{{sample.birthtime | toDateString}}</small>
                     </p>
@@ -34,7 +34,7 @@
                 </div>
             </li>
         </ul>
-        <div ng-if="project.samples.length === 0">
+        <div ng-if="(project.samples | event: project.date).length === 0">
             There are no samples.
         </div>
     </div>

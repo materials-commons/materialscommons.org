@@ -1,32 +1,36 @@
 <div class="panel panel-primary">
     <div class="panel-heading notes-color home-panel-heading">
         <i class="fa fa-fw fa-edit bold"></i>
-        <span>
-            <a ui-sref="projects.project.notes.overview">
-                Notes
-            </a>
-            ({{all_notes.length | number}})
-        </span>
-        <span class="pull-right add-item">
-            <a ui-sref="projects.project.notes.create">
-                <i class="fa fa-fw fa-plus"></i>
-            </a>
-        </span>
-        <input type="text" ng-model="search" class="pull-right col-xs-4">
+            <span>
+                <a ui-sref="projects.project.notes.overview">
+                    Notes
+                </a>
+                ({{(project.notes | event: project.date).length}})
+            </span>
+            <span class="pull-right add-item">
+                <a ui-sref="projects.project.notes.create">
+                    <i class="fa fa-fw fa-plus"></i>
+                </a>
+            </span>
+            <input type="text" ng-model="search" class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
-        <ul ng-if="all_notes.length !== 0" class="list-unstyled">
+        <ul ng-if="(project.notes | event: project.date).length !== 0" class="list-unstyled">
             <li class="home-item"
-                ng-repeat="note in all_notes | filter:search | limitTo:3">
+                ng-repeat="note in project.notes  |  filter:search | event: project.date">
+
                 <div>
-                    {{note.creator}} created a <i>{{note.item_type}}</i> note:
+                    {{note.created_by}} created a <i> note:</i>
                     <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
                         {{note.title | truncate: 25 : '...':true}}</a>
-                    <p><small class="text-muted">{{note.mtime | toDateString}}</small></p>
+
+                    <p>
+                        <small class="text-muted">{{note.mtime | toDateString}}</small>
+                    </p>
                 </div>
             </li>
         </ul>
-        <div ng-if="all_notes.length === 0">
+        <div ng-if="(project.notes | event: project.date).length === 0">
             There are no notes.
         </div>
     </div>
