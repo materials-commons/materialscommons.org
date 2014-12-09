@@ -1,25 +1,37 @@
-<div class="panel panel-primary" style="border-color: #c9c9c9;">
-    <div class="panel-heading" style="background-color: #7c699f;opacity: 85%;">
-        <i class="fa fa-fw fa-files-o"></i><span style="font-size: 14px; font-weight:bold;font-family: Helvetica;color:white;">Files</span>
-        <a ui-sref="projects.project.files.overview"
-           style="float: right;font-size: 12px;text-decoration: underline;font-family: Helvetica;color:white;">
-            View all {{project | projectFileCount}} files
-        </a>
+<div class="panel panel-primary">
+    <div class="panel-heading files-color home-panel-heading home-panel-heading">
+        <i class="fa fa-fw fa-files-o bold"></i>
+        <span>
+            <a ui-sref="projects.project.files.overview">
+                Files
+            </a>
+            ({{fileCount | number}})
+        </span>
+        <span class="pull-right add-item">
+            <a><i class="fa fa-fw fa-plus"></i></a>
+        </span>
+        <input type="text" ng-model="search" class="pull-right col-xs-4">
     </div>
-    <div class="panel-body">
-        <div class="row">
-            <ul class="list-group home-list">
-                <li class="list-group-item"
-                    ng-repeat="(key, value) in project.mediatypes"
-                    ng-click="showMediaType(key)">
-                    {{value.description}}
-                    <span class="badge"
+    <div class="panel-body home-panel-body">
+        <ul ng-if="fileCount !== 0" class="list-unstyled">
+            <li class="home-item pointer"
+                ng-repeat="mediatype in mediatypes | filter:search | orderBy:'attrs.count':true"
+                ng-click="showMediaType(mediatype.name)">
+                <div>
+                    {{mediatype.attrs.description}}
+                    <span class="badge pull-right" style="margin-top:1px"
                           ng-class-odd="'odd-badge'"
                           ng-class-even="'even-badge'">
-                        {{value.count}}
+                        {{mediatype.attrs.count | number}}
                     </span>
-                </li>
-            </ul>
+                    <p>
+                        <small class="text-muted">{{mediatype.attrs.size | bytes}}</small>
+                    </p>
+                </div>
+            </li>
+        </ul>
+        <div ng-if="fileCount === 0">
+            There are no files.
         </div>
     </div>
 </div>

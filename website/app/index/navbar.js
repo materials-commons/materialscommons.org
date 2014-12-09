@@ -12,15 +12,19 @@ function navbarDirective() {
 
 Application.Controllers.controller("navbarDirectiveController",
                                    ["$scope", "current", "$state", "projectState",
-                                    "pubsub", "model.projects",
+                                    "pubsub", "model.projects", "help",
                                     navbarDirectiveController]);
 
-function navbarDirectiveController($scope, current, $state, projectState, pubsub, Projects) {
+function navbarDirectiveController($scope, current, $state, projectState, pubsub, Projects, help) {
     // This is needed to toggle the menu closed when an item is selected.
     // This is a part of how ui-bootstrap interacts with the menus and
     // the menu item does an ng-click.
     $scope.status = {
         isopen: false
+    };
+
+    $scope.toggleHelp = function() {
+        help.toggle();
     };
 
     $scope.open_reviews_count = 0;
