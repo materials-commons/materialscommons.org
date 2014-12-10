@@ -11,14 +11,14 @@
             </a>
         </span>
     </div>
-    <div class="panel-body home-panel-body">
+    <div class="panel-body home-panel-body no-max-height">
         <ul class="list-unstyled">
             <li class="home-item"
                 ng-repeat="file in files | filter:search | orderBy:'fullname' as matchingFiles">
                 <div>
                     <a ng-click="toggleDetails(file)" style="color: black">
                         <i class="fa"
-                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
+                           ng-class="{'fa-caret-right': !showDetails(file), 'fa-caret-down': showDetails(file)}"></i>
                     </a>
                     <a ng-click="openFile(file)">
                         {{file.displayname}}
