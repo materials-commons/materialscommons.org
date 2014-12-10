@@ -16,7 +16,6 @@ Application.Controllers.controller("homeSamplesController",
                                     homeSamplesController]);
 
 function homeSamplesController($scope) {
-
     var showSampleDetails = [];
     for (var i = 0; i < $scope.project.samples.length; i++) {
         showSampleDetails.push(false);

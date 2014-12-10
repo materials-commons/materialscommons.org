@@ -7,16 +7,17 @@
             </a>
             ({{fileCount | number}})
         </span>
-        <span class="add-item">
+        <input type="text" ng-model="search" class="pull-right col-xs-4"
+               placeholder="Search files...">
+        <span class="add-item pull-right">
             <a tooltip="Add File"><i class="fa fa-fw fa-plus"></i></a>
         </span>
-        <input type="text" ng-model="search" class="pull-right col-xs-4" placeholder="Search files...">
     </div>
     <div class="panel-body home-panel-body">
-        <ul ng-if="fileCount !== 0" class="list-unstyled">
+        <ul class="list-unstyled">
             <li class="home-item pointer"
-                ng-repeat="mediatype in mediatypes | filter:search | orderBy:'attrs.count':true"
-                ng-click="showMediaType(mediatype.name)">
+                ng-repeat="mediatype in mediatypes | filter:search | orderBy:'attrs.count':true as mtypes"
+                ng-click="showMediaType(mediatype.name, mediatype.attrs.description)">
                 <div>
                     {{mediatype.attrs.description}}
                     <span class="badge pull-right" style="margin-top:1px"
@@ -29,9 +30,11 @@
                     </p>
                 </div>
             </li>
+            <li ng-show="mtypes.length === 0" class="home-item">
+                <div>
+                    No files.
+                </div>
+            </li>
         </ul>
-        <div ng-if="fileCount === 0">
-            There are no files.
-        </div>
     </div>
 </div>

@@ -5,18 +5,18 @@
             <a ui-sref="projects.project.samples.overview">Samples</a>
             ({{samples.length}})
         </span>
-        <span class="add-item">
+        <input type="text" ng-model="search.name"
+               placeholder="Search samples..." class="pull-right col-xs-4">
+        <span class="add-item pull-right">
             <a ui-sref="projects.project.samples.create" tooltip="Add Sample">
                 <i class="fa fa-plus"></i>
             </a>
         </span>
-        <input type="text" ng-model="search.name"
-               placeholder="Search samples..." class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
-        <ul ng-show="samples.length !== 0" class="list-unstyled">
+        <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="sample in project.samples | filter:search | event: project.date as samples">
+                ng-repeat="sample in project.samples | filter:search | event:project.date as samples">
                 <div>
                     <a ng-click="toggleDetails($index)" style="color: black">
                         <i class="fa"
@@ -24,7 +24,6 @@
                     </a>
                     {{sample.owner}} created <a ui-sref="projects.project.samples.overview">
                         {{sample.name | truncate: 25 : '...':true}}</a>
-
                     <p>
                         <small class="text-muted">{{sample.birthtime | toDateString}}</small>
                     </p>
@@ -33,9 +32,11 @@
                     </div>
                 </div>
             </li>
+            <li ng-show="samples.length === 0" class="home-item">
+                <div>
+                    No samples.
+                </div>
+            </li>
         </ul>
-        <div ng-show="samples.length === 0">
-            There are no samples.
-        </div>
     </div>
 </div>
