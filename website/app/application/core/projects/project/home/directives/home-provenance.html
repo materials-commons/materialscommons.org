@@ -28,7 +28,10 @@
                           style="background-color:#e26a6a">
                         Draft
                     </span>
-                    <p><small class="text-muted">{{draft.mtime | toDateString}}</small> </p>
+
+                    <p>
+                        <small class="text-muted">{{draft.mtime | toDateString}}</small>
+                    </p>
                 </div>
             </li>
             <li ng-show="drafts.length === 0" class="home-item">
@@ -40,6 +43,7 @@
                 ng-repeat="process in project.processes | filter:search | event:project.date:project.nextdate as procs">
                 <div>
                     Submitted <a>{{process.name | truncate:25:'...':true}}</a>
+
                     <p>
                         <small class="text-muted">{{process.birthtime | toDateString}}</small>
                     </p>
