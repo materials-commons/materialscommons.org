@@ -1,9 +1,10 @@
 Application.Filters.filter('event', function () {
-    return function (items, date) {
+    return function (items, currentdate, nextdate) {
         var matches = [];
-        if (date) {
+        if (currentdate && nextdate) {
             items.forEach(function (item) {
-                if (item.converted_mtime === date) {
+                var mtime =  item.mtime.epoch_time * 1000;
+                if (mtime < nextdate && mtime  >= currentdate){
                     matches.push(item);
                 }
             });

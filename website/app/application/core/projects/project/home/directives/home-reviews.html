@@ -5,7 +5,7 @@
                 <a ui-sref="projects.project.reviews.overview">
                     Reviews
                 </a>
-            ({{(project.reviews | event: project.date).length}})
+            ({{(project.reviews | event: project.date : project.nextdate).length}})
             </span>
             <span class="pull-right add-item">
                 <a ui-sref="projects.project.reviews.create">
@@ -15,9 +15,9 @@
         <input type="text" ng-model="search" class="pull-right col-xs-4">
     </div>
     <div class="panel-body home-panel-body">
-        <ul ng-if="(project.reviews | event: project.date).length !== 0" class="list-unstyled">
+        <ul ng-if="(project.reviews | event: project.date : project.nextdate).length !== 0" class="list-unstyled">
             <li class="home-item"
-                ng-repeat="review in project.reviews |  filter:search | event: project.date">
+                ng-repeat="review in project.reviews |  filter:search | event: project.date : project.nextdate">
 
                 <div>
                     <i class="fa fa-fw fa-user fa-2x"></i> {{review.author}} commented on
@@ -30,7 +30,7 @@
                 </div>
             </li>
         </ul>
-        <div ng-if="(project.reviews | event: project.date).length === 0">
+        <div ng-if="(project.reviews | event: project.date : project.nextdate).length === 0">
 
             There are no reviews.
         </div>
