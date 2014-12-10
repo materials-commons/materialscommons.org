@@ -18,7 +18,7 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="note in project.notes | filter:search | event:project.date as notes">
+                ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                 <div>
                     {{note.created_by}} created a <i> note:</i>
                     <a ui-sref="projects.project.notes.edit({'note_id': note.id})">

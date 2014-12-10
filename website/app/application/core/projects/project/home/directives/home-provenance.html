@@ -18,7 +18,7 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="draft in project.drafts | filter:search | event:project.date as drafts">
+                ng-repeat="draft in project.drafts | filter:search | event:project.date:project.nextdate as drafts">
                 <div>
                     Created a new process
                     <a ui-sref="projects.project.provenance.drafts">
@@ -37,7 +37,7 @@
         </ul>
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="process in project.processes | filter:search | event:project.date as procs">
+                ng-repeat="process in project.processes | filter:search | event:project.date:project.nextdate as procs">
                 <div>
                     Submitted <a>{{process.name | truncate:25:'...':true}}</a>
                     <p>

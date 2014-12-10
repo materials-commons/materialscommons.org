@@ -16,7 +16,7 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="sample in project.samples | filter:search | event:project.date as samples">
+                ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
                 <div>
                     <a ng-click="toggleDetails($index)" style="color: black">
                         <i class="fa"
