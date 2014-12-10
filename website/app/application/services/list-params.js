@@ -12,7 +12,8 @@ function listParamsService() {
     function initForId(id) {
         self.filterById[id] = {
             filter: "",
-            key: ""
+            key: "",
+            description: ""
         };
     }
 
@@ -28,10 +29,11 @@ function listParamsService() {
 
     self.service = {
         // set sets the filter params for an id.
-        set: function(id, key, filter) {
+        set: function(id, key, filter, description) {
             var entry = getForId(id);
             entry.key = key;
             entry.filter = filter;
+            entry.description = description;
         },
 
         // get returns the filter params for an id.
@@ -45,6 +47,7 @@ function listParamsService() {
             var entry = getForId(id);
             entry.filter = "";
             entry.key = "";
+            entry.description = "";
         }
     };
 
