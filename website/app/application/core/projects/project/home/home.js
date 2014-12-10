@@ -33,8 +33,11 @@ function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig) {
 
     $scope.alertOnEventClick = function (date, jsEvent, view) {
         var d = date._d;
-        var clicked_date = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDay());
-        $scope.project = Events.updateDate($scope.project, clicked_date);
+        var clicked_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), d.getUTCDate());
+        var day = d.getUTCDate()+1;
+        var next_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), day);
+        $scope.project = Events.updateDate($scope.project, clicked_date, next_date);
+
     };
 
     $scope.changeView = function (view, calendar) {

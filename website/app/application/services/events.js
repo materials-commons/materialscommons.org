@@ -15,9 +15,8 @@ function EventsService($filter) {
 
         update: function (items) {
             items.forEach(function (item) {
-                var item_date = new Date(0);
-                item_date.setUTCSeconds(item.mtime.epoch_time);
-                item.converted_mtime = Date.UTC(item_date.getUTCFullYear(), item_date.getUTCMonth(), item_date.getUTCDay());
+                var item_date = new Date(item.mtime.epoch_time * 1000)
+                item.converted_mtime = Date.UTC(item_date.getUTCFullYear(), item_date.getUTCMonth(), item_date.getUTCDate());
             });
             return items;
         },
@@ -36,8 +35,16 @@ function EventsService($filter) {
             return calendar_event;
         },
 
-        updateDate: function (project, date) {
-            project.date = date;
+        updateDate: function (project, currentdate, nextdate) {
+            var today = new Date();
+            var today_utc = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+            if (today_utc === currentdate){
+                project.date = '';
+                project.nextdate = '';
+            }else{
+                project.date = currentdate;
+                project.nextdate = nextdate;
+            }
             return project;
         }
     };
