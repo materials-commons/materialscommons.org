@@ -278,9 +278,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 
 }]);
 
-app.run(["$rootScope", "User", "Restangular", "recent", "ui", appRun]);
+app.run(["$rootScope", "User", "Restangular", "recent", "ui", "pubsub", appRun]);
 
-function appRun($rootScope, User, Restangular, recent, ui) {
+function appRun($rootScope, User, Restangular, recent, ui, pubsub) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
@@ -295,5 +295,7 @@ function appRun($rootScope, User, Restangular, recent, ui) {
         if (!fromState.abstract) {
             recent.pushLast(projectID, "ignore", fromState.name, fromParams);
         }
+
+        pubsub.send("breadcrumbs", toState.name);
     });
 }

@@ -1,24 +1,25 @@
 <div class="panel panel-primary">
     <div class="panel-heading reviews-color home-panel-heading">
         <i class="fa fa-fw fa-comment bold"></i>
-            <span>
-                <a ui-sref="projects.project.reviews.overview">
-                    Reviews
-                </a>
-            ({{(project.reviews | event: project.date : project.nextdate).length}})
-            </span>
-            <span class="pull-right add-item">
-                <a ui-sref="projects.project.reviews.create">
-                    <i class="fa fa-fw fa-plus"></i>
-                </a>
-            </span>
-        <input type="text" ng-model="search" class="pull-right col-xs-4">
+        <span>
+            <a ui-sref="projects.project.reviews.overview">
+                Reviews
+            </a>
+            ({{reviews.length}})
+        </span>
+        <input type="text" ng-model="search" class="pull-right col-xs-4"
+               placeholder="Search reviews...">
+        <span class="add-item pull-right">
+            <a ui-sref="projects.project.reviews.create" tooltip="Add Review">
+                <i class="fa fa-fw fa-plus"></i>
+            </a>
+        </span>
+
     </div>
     <div class="panel-body home-panel-body">
-        <ul ng-if="(project.reviews | event: project.date : project.nextdate).length !== 0" class="list-unstyled">
+        <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="review in project.reviews |  filter:search | event: project.date : project.nextdate">
-
+                ng-repeat="review in project.reviews | filter:search | event: project.date: project.nextdate as reviews">
                 <div>
                     <i class="fa fa-fw fa-user fa-2x"></i> {{review.author}} commented on
                     <a ui-sref="projects.project.reviews.edit({'review_id': review.id, 'status': review.status})">
@@ -29,10 +30,9 @@
                     </p>
                 </div>
             </li>
+            <li ng-show="reviews.length === 0" class="home-item">
+                <div>No reviews.</div>
+            </li>
         </ul>
-        <div ng-if="(project.reviews | event: project.date : project.nextdate).length === 0">
-
-            There are no reviews.
-        </div>
     </div>
 </div>
