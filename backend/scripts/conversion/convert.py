@@ -569,6 +569,14 @@ def fix_or_delete_samples(conn):
             # Sample belongs to a non-existent project: delete it.
             r.table("samples").get(sample["id"]).delete().run(conn)
 
+#New Conversion
+def update_mtime_samples():
+    samples = list(r.table("samples").run(conn))
+    for sample in samples:
+            r.table("samples").get(sample["id"]).update({
+                "mtime": sample["birthtime"]
+            }).run(conn)
+
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
@@ -592,6 +600,7 @@ def main(conn, mcdir):
     update_fullnames_and_last_login(conn)
     build_notes(conn)
     fix_or_delete_samples(conn)
+    update_mtime_samples(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
