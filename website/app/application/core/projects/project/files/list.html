@@ -12,9 +12,9 @@
         </span>
     </div>
     <div class="panel-body home-panel-body no-max-height">
-        <ul class="list-unstyled">
+        <ul ng-show="loaded" class="list-unstyled">
             <li class="home-item"
-                ng-repeat="file in files | filter:search | orderBy:'fullname' as matchingFiles">
+                ng-repeat="file in files | filter:search | orderBy:'fullname' as matchingFiles" on-repeat-finished="files-loaded">
                 <div>
                     <a ng-click="toggleDetails(file)" style="color: black">
                         <i class="fa"
@@ -60,5 +60,6 @@
                 </div>
             </li>
         </ul>
+        <div ng-show="!loaded">Loading...</div>
     </div>
 </div>
