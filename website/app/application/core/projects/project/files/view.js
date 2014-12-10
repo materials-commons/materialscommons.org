@@ -44,19 +44,6 @@ function projectFilesViewFile(toastr, $scope, mcapi, ProjectPath, User, projectF
         recent.gotoLast($stateParams.id);
     };
 
-    function isImage(mime) {
-        switch (mime) {
-        case "image/gif":
-        case "image/jpeg":
-        case "image/png":
-        case "image/tiff":
-        case "image/x-ms-bmp":
-            return true;
-        default:
-            return false;
-        }
-    }
-
     function init() {
         $scope.file = {};
         $scope.fileType = "";
