@@ -13,7 +13,7 @@
             <a tooltip="Add File"><i class="fa fa-fw fa-plus"></i></a>
         </span>
     </div>
-    <div class="panel-body home-panel-body">
+    <div class="panel-body home-panel-body no-max-height">
         <ul class="list-unstyled">
             <li class="home-item pointer"
                 ng-repeat="mediatype in mediatypes | filter:search | orderBy:'attrs.count':true as mtypes"
