@@ -1876,3 +1876,9 @@ ul.menu-bar li {
 .bold {
   font-weight: bold;
 }
+.fc-row .fc-content-skeleton td{
+  cursor: pointer;
+}
+.fc-row .fc-content-skeleton td:active{
+  background-color: red;
+}
