@@ -942,7 +942,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .add-item {
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .home-item:hover {
