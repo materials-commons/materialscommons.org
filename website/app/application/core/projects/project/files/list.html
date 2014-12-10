@@ -16,7 +16,7 @@
             <li class="home-item"
                 ng-repeat="file in files | filter:search | orderBy:'fullname' as matchingFiles">
                 <div>
-                    <a ng-click="toggleDetails($index)" style="color: black">
+                    <a ng-click="toggleDetails(file)" style="color: black">
                         <i class="fa"
                            ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
                     </a>
@@ -26,17 +26,31 @@
                     <small class="text-muted"> {{file.size | bytes}}</small>
                     <span class="label label-info" ng-repeat="tag in tags(file)" style="margin-right: 5px">
                         <i class="fa"
-                               ng-class="'fa-' + tag.icon"
-                               style="color: {{tag.color}}">
-                            </i>
-                            {{tag.name}}
+                           ng-class="'fa-' + tag.icon"
+                           style="color: {{tag.color}}">
+                        </i>
+                        {{tag.name}}
                     </span>
                     <p>
                         <small class="text-muted">{{file.birthtime | toDateString}}</small>
                         <small class="text-muted" style="margin-left: 10px">{{file.fullname}}</small>
                     </p>
-                    <div ng-if="showDetails($index)">
-                        {{file | json}}
+                    <div ng-if="showDetails(file)">
+                        <div class="row">
+                            <div class="col-lg-7" ng-switch="" on="fileType">
+                                <div ng-switch-when="image">
+                                    <img class="img-responsive" ng-src="{{fileSrc(matchingFiles[$index])}}">
+                                </div>
+                                <div ng-switch-when="pdf">
+                                    <div class="embed-responsive embed-responsive-4by3">
+                                        <embed class="col-xs-8 embed-responsive-item" ng-src="{{fileSrc(matchingFiles[$index])}}"></embed>
+                                    </div>
+                                </div>
+                                <div ng-switch-default>
+                                    Not an image
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </li>
