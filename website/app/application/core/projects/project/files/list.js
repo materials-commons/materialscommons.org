@@ -7,10 +7,10 @@ function projectFilesListController($scope, projectFiles, $stateParams,
                                     projectFileTabs, $state, project,
                                     listParams, searchParams, User) {
     var listEntry = listParams.get("file-list");
-    console.dir(listEntry);
     var value = listEntry.filter;
     var key = listEntry.key;
     $scope.description = listEntry.description;
+    $scope.apikey = User.apikey();
 
     var searchEntry = searchParams.get("file-list");
     $scope.search = {
@@ -22,6 +22,7 @@ function projectFilesListController($scope, projectFiles, $stateParams,
     var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
     root.walk({strategy: 'pre'}, function(node) {
         if (node.model[key] == value) {
+            node.model.showDetails = false;
             $scope.files.push(node.model);
         }
     });
@@ -32,17 +33,17 @@ function projectFilesListController($scope, projectFiles, $stateParams,
         $state.go("projects.project.files.view", {fileid: f.id});
     };
 
-    var showFileDetails = [];
-    for (var i = 0; i < $scope.files.length; i++) {
-        showFileDetails.push(false);
-    }
-
-    $scope.toggleDetails = function(index) {
-        showFileDetails[index] = !showFileDetails[index];
+    $scope.toggleDetails = function(file) {
+        file.showDetails = !file.showDetails;
     };
 
-    $scope.showDetails = function(index) {
-        return showFileDetails[index];
+    $scope.showDetails = function(file) {
+        if (isImage(file.mediatype)) {
+            $scope.fileType = "image";
+        } else if (file.mediatype === "application/pdf") {
+            $scope.fileType = "pdf";
+        }
+        return file.showDetails;
     };
 
     $scope.tags = function(file) {
@@ -51,5 +52,9 @@ function projectFilesListController($scope, projectFiles, $stateParams,
             return file.tags[username];
         }
         return [];
+    };
+
+    $scope.fileSrc = function(file) {
+        return "datafiles/static/" + file.id+"?apikey=" + $scope.apikey;
     };
 }
