@@ -47,7 +47,8 @@
                                     </div>
                                 </div>
                                 <div ng-switch-default>
-                                    <code style="white-space:pre-line" ng-include="fileSrc(matchingFiles[$index])"></code>
+                                    <!-- <code "white-space:pre-line" ng-include="fileSrc(matchingFiles[$index])"></code> -->
+                                    <div hljs include="fileSrc(matchingFiles[$index])"></div>
                                 </div>
                             </div>
                         </div>
