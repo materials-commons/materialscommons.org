@@ -31,13 +31,23 @@ function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig) {
         events: Events.prepareCalendarEvent($scope.project.samples)
     };
 
-    $scope.alertOnEventClick = function (date, jsEvent, view) {
+    var  previous = '';
+    $scope.alertOnDayClick = function (date, jsEvent, view) {
+        if (previous !== ''){
+            previous.css('background-color', '');
+        }
+        $(this).css('background-color', 'lightgrey');
         var d = date._d;
         var clicked_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), d.getUTCDate());
         var day = d.getUTCDate()+1;
         var next_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), day);
         $scope.project = Events.updateDate($scope.project, clicked_date, next_date);
+        previous = $(this);
+    };
 
+    $scope.alertOnEventClick = function(event, jsEvent, view){
+        var date = event.start;
+        $scope.alertOnDayClick(date, jsEvent, view);
     };
 
     $scope.changeView = function (view, calendar) {
@@ -53,7 +63,8 @@ function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig) {
                 center: '',
                 right: 'today prev,next'
             },
-            dayClick: $scope.alertOnEventClick,
+            dayClick: $scope.alertOnDayClick,
+            eventClick: $scope.alertOnEventClick,
             eventDrop: $scope.alertOnDrop,
             eventResize: $scope.alertOnResize,
             eventRender: $scope.eventRender
