@@ -1,11 +1,15 @@
 Application.Controllers.controller("projectFilesList",
                                    ["$scope", "projectFiles", "$stateParams",
                                     "projectFileTabs", "$state", "project",
-                                    "listParams", "searchParams", "User",
+                                    "listParams", "searchParams", "User", "$timeout",
                                     projectFilesListController]);
 function projectFilesListController($scope, projectFiles, $stateParams,
                                     projectFileTabs, $state, project,
-                                    listParams, searchParams, User) {
+                                    listParams, searchParams, User, $timeout) {
+    $scope.loaded = false;
+    $scope.$on("files-loaded", function() {
+        $scope.loaded = true;
+    });
     var listEntry = listParams.get("file-list");
     var value = listEntry.filter;
     var key = listEntry.key;
@@ -17,14 +21,30 @@ function projectFilesListController($scope, projectFiles, $stateParams,
         fullname: searchEntry.search
     };
 
-    $scope.files = [];
-    var treeModel = new TreeModel();
-    var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
-    root.walk({strategy: 'pre'}, function(node) {
-        if (node.model[key] == value) {
-            node.model.showDetails = false;
-            $scope.files.push(node.model);
-        }
+    $scope.sideboardSearch = {
+        fullname: ""
+    };
+
+    $scope.filesExpanded = false;
+    $scope.sideboardExpanded = false;
+
+    $scope.sideboard = [];
+
+    // Wrap in timeout so that the controller can finish instantiating.
+    // The delay in loading this page comes from walking the tree and
+    // then displaying the results in the loop. The $scope.$on above
+    // will be fired when the loop is done. So the user will get a
+    // loading message until everything is ready.
+    $timeout(function() {
+        $scope.files = [];
+        var treeModel = new TreeModel();
+        var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
+        root.walk({strategy: 'pre'}, function(node) {
+            if (node.model[key] == value) {
+                node.model.showDetails = false;
+                $scope.files.push(node.model);
+            }
+        });
     });
 
     $scope.openFile = function(f) {
@@ -56,5 +76,26 @@ function projectFilesListController($scope, projectFiles, $stateParams,
 
     $scope.fileSrc = function(file) {
         return "datafiles/static/" + file.id+"?apikey=" + $scope.apikey;
+    };
+
+    $scope.onDrop = function(ignore, file) {
+        var i = _.indexOf($scope.sideboard, function(f) {
+            return f.id == file.id;
+        });
+
+        // If file is already in list then don't add it again.
+        if (i === -1) {
+            $scope.sideboard.push(file);
+        }
+    };
+
+    $scope.removeFromSideboard = function(file) {
+        var i = _.indexOf($scope.sideboard, function(f) {
+            return f.id === file.id;
+        });
+
+        if (i !== -1) {
+            $scope.sideboard.splice(i, 1);
+        }
     };
 }
