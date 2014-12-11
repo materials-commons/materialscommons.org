@@ -47,8 +47,10 @@
                                     </div>
                                 </div>
                                 <div ng-switch-default>
-                                    <!-- <code "white-space:pre-line" ng-include="fileSrc(matchingFiles[$index])"></code> -->
-                                    <div hljs include="fileSrc(matchingFiles[$index])"></div>
+                                    <div ng-if="matchingFiles[$index].size < 10000" hljs include="fileSrc(matchingFiles[$index])"></div>
+                                    <code ng-if="matchingFiles[$index].size > 10000 && matchingFiles[$index].size <= 2000000"
+                                          style="white-space:pre-line" ng-include="fileSrc(matchingFiles[$index])"></code>
+                                    <div ng-if="matchingFiles[$index].size > 2000000">File too big to display</div>
                                 </div>
                             </div>
                         </div>
