@@ -21,6 +21,15 @@ function projectFilesListController($scope, projectFiles, $stateParams,
         fullname: searchEntry.search
     };
 
+    $scope.sideboardSearch = {
+        fullname: ""
+    };
+
+    $scope.filesExpanded = false;
+    $scope.sideboardExpanded = false;
+
+    $scope.sideboard = [];
+
     // Wrap in timeout so that the controller can finish instantiating.
     // The delay in loading this page comes from walking the tree and
     // then displaying the results in the loop. The $scope.$on above
@@ -67,5 +76,16 @@ function projectFilesListController($scope, projectFiles, $stateParams,
 
     $scope.fileSrc = function(file) {
         return "datafiles/static/" + file.id+"?apikey=" + $scope.apikey;
+    };
+
+    $scope.onDrop = function(ignore, file) {
+        var i = _.indexOf($scope.sideboard, function(f) {
+            return f.id == file.id;
+        });
+
+        // If file is already in list then don't add it again.
+        if (i === -1) {
+            $scope.sideboard.push(file);
+        }
     };
 }

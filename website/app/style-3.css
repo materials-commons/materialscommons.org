@@ -973,6 +973,10 @@ h4, .h4, h5, .h5, h6, .h6 {
     overflow-y: auto;
 }
 
+.file-compare {
+  max-height: 800px;
+}
+
 .no-max-height {
   max-height: none;
 }
@@ -995,6 +999,11 @@ h4, .h4, h5, .h5, h6, .h6 {
 .panel-heading.files-color {
     background-color: #7c699f;
     opacity: 85%;
+}
+
+.panel-heading.sideboard-color {
+  background-color: #256188;
+  opacity: 85%;
 }
 
 .panel-heading.processes-color {
