@@ -3476,6 +3476,7 @@ Popover.prototype = {
 		var left; //
 
 		// compute top and left
+
 		top = options.top || 0;
 		if (options.left !== undefined) {
 			left = options.left;
