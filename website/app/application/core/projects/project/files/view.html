@@ -30,7 +30,10 @@
                 </div>
             </div>
             <div ng-switch-default>
-                Not an image
+                <div ng-if="file.size < 10000" hljs include="fileSrc"></div>
+                <code ng-if="file.size > 10000 && file.size <= 2000000"
+                      style="white-space:pre-line" ng-include="fileSrc"></code>
+                <div ng-if="file.size > 2000000"> File too big to display</div>
             </div>
         </div>
         <div class="col-lg-5">
