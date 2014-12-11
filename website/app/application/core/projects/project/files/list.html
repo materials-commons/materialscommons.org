@@ -55,7 +55,8 @@
                                             </div>
                                             <div ng-switch-when="pdf">
                                                 <div class="embed-responsive embed-responsive-4by3">
-                                                    <embed class="col-xs-8 embed-responsive-item" ng-src="{{fileSrc(matchingFiles[$index])}}"></embed>
+                                                    <embed class="col-xs-8 embed-responsive-item"
+                                                           ng-src="{{fileSrc(matchingFiles[$index])}}"></embed>
                                                 </div>
                                             </div>
                                             <div ng-switch-default>
@@ -108,6 +109,9 @@
                                 <a ng-click="toggleDetails(file)" style="color: black">
                                     <i class="fa"
                                        ng-class="{'fa-caret-right': !showDetails(file), 'fa-caret-down': showDetails(file)}"></i>
+                                </a>
+                                <a ng-click="removeFromSideboard(file)" class="pull-right">
+                                    <i class="fa fa-close"></i>
                                 </a>
                                 <a ng-click="openFile(file)">
                                     {{file.displayname}}
