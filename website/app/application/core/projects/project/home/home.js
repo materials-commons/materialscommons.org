@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectHome',
-    ["$scope", "project", "User", "mcapi", "Events", "uiCalendarConfig", projectHome]);
+    ["$scope", "project", "User", "mcapi", "Events", "uiCalendarConfig", "$compile", "$timeout", projectHome]);
 
-function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig) {
+function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig, $compile, $timeout) {
     $scope.updateName = function () {
         mcapi('/users/%', $scope.mcuser.email)
             .success(function (u) {
@@ -54,6 +54,15 @@ function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig) {
         uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
     };
 
+    $scope.eventRender = function( event, element, view ) {
+        $timeout(function(){
+            $(element).attr('tooltip', event.description);
+            $compile(element)($scope);
+        });
+    };
+
+    $scope.eventSources = [$scope.event_reviews, $scope.event_notes, $scope.event_processes, $scope.event_samples];
+
     $scope.uiConfig = {
         calendar: {
             height: 450,
@@ -65,10 +74,7 @@ function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig) {
             },
             dayClick: $scope.alertOnDayClick,
             eventClick: $scope.alertOnEventClick,
-            eventDrop: $scope.alertOnDrop,
-            eventResize: $scope.alertOnResize,
             eventRender: $scope.eventRender
         }
     };
-    $scope.eventSources = [$scope.event_reviews, $scope.event_notes, $scope.event_processes, $scope.event_samples];
 }
