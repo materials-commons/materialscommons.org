@@ -29,7 +29,7 @@ function EventsService($filter) {
                     var d = new Date(0);
                     var value = grouped_by_convertedtime[key][0];
                     d.setUTCSeconds(value.mtime.epoch_time);
-                    calendar_event.push({title: grouped_by_convertedtime[key].length , start: d});
+                    calendar_event.push({title: grouped_by_convertedtime[key].length , start: d, description: 'This is a desc....'});
                 });
             }
             return calendar_event;
