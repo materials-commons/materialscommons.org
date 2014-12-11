@@ -88,4 +88,14 @@ function projectFilesListController($scope, projectFiles, $stateParams,
             $scope.sideboard.push(file);
         }
     };
+
+    $scope.removeFromSideboard = function(file) {
+        var i = _.indexOf($scope.sideboard, function(f) {
+            return f.id === file.id;
+        });
+
+        if (i !== -1) {
+            $scope.sideboard.splice(i, 1);
+        }
+    };
 }
