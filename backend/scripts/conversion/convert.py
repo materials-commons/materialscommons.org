@@ -492,16 +492,16 @@ def mark_bad_projects(conn):
 
 
 def remove_conditions(conn):
-    r.table('conditions').delete(conn)
+    r.table('conditions').delete().run(conn)
 
 
 def remove_processes(conn):
-    r.table('processes').delete(conn)
-    r.table('processes2samples').delete(conn)
+    r.table('processes').delete().run(conn)
+    r.table('processes2samples').delete().run(conn)
 
 
 def remove_reviews(conn):
-    r.table('reviews').delete(conn)
+    r.table('reviews').delete().run(conn)
 
 
 def build_notes(conn):
@@ -527,6 +527,8 @@ def build_notes(conn):
     # sample notes
     samples = r.table('samples').pluck('notes', 'id', 'project_id').run(conn)
     for sample in samples:
+        if 'notes' not in sample:
+            continue
         notes = sample['notes']
         # insert into notes table
         if len(notes) != 0 and 'project_id' in sample:
@@ -574,7 +576,7 @@ def fix_or_delete_samples(conn):
 
 
 # New Conversion
-def update_mtime_samples():
+def update_mtime_samples(conn):
     samples = list(r.table("samples").run(conn))
     for sample in samples:
             r.table("samples").get(sample["id"]).update({
