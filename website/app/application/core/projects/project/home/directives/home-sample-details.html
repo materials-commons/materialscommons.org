@@ -3,7 +3,7 @@
         Description: {{sample.description}}
     </div>
 
-    <div style="margin-top: -15px;" class="row  sample-details">
+    <div  class="row sample-details">
         <div class="col-sm-4">
             <b ng-show="sample.properties.composition.unit">Composition:
                 <small>({{sample.properties.composition.unit}})</small>
@@ -20,7 +20,7 @@
             <ul class="list-group scroll-bar">
                 <li class="list-group-item"
                     ng-repeat="(key, value) in sample.properties | chopComposition as properties">{{key}}
-                    <span style="float: right;">{{value.value}} {{value.unit}}</span></li>
+                    <span class="pull-right">{{value.value}} {{value.unit}}</span></li>
             </ul>
         </div>
     </div>
