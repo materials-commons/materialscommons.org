@@ -18,14 +18,20 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
+                ng-click="toggleDetails($index)"
                 ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                 <div>
-                    {{note.created_by}} created a <i> note:</i>
+                    <i class="fa"
+                       ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
                     <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
                         {{note.title | truncate:25:'...':true}}</a>
                     <p>
                         <small class="text-muted">{{note.mtime | toDateString}}</small>
+                        <small style="padding-left: 10px;" class="text-muted">{{note.creator}}</small>
                     </p>
+                    <div ng-show="showDetails($index)">
+                        <home-note-details note="note"></home-note-details>
+                    </div>
                 </div>
             </li>
             <li ng-show="notes.length === 0" class="home-item">
