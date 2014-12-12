@@ -1,0 +1,44 @@
+<div class="panel panel-primary">
+    <div class="panel-heading processes-color home-panel-heading">
+        <i class="fa fa-fw fa-code-fork bold"></i>
+        <span>Processes ({{procs.length}})</span>
+        <span class="pull-right">
+            <a ng-click="listExpanded = !listExpanded">
+                <i class="fa"
+                   ng-class="{'fa-expand': !listExpanded, 'fa-compress': listExpanded}"></i>
+            </a>
+        </span>
+        <input type="text" ng-model="search.name" class="pull-right col-xs-4"
+               placeholder="Search processes...">
+    </div>
+    <div class="panel-body home-panel-body side-by-side">
+        <ul class="list-unstyled">
+            <li class="home-item"
+                ui-draggable="true"
+                drag="process"
+                ng-repeat="process in processes | filter:search | event:project.date:project.nextdate as procs">
+                <div>
+                    <a ng-click="openClose(process)" style="color: black">
+                        <i class="fa"
+                           ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}"></i>
+                    </a>
+                    {{process.name | truncate:25:'...':true}}
+                    <p>
+                        <small class="text-muted">
+                            {{process.birthtime | toDateString}}
+                        </small>
+                    </p>
+                    <div ng-if="process.showDetails">
+                        <overview-show-process-details></overview-show-process-details>
+                        <vis-network ng-model="constructed_process.network_data"
+                                     options="constructed_process.network_options">
+                        </vis-network>
+                    </div>
+                </div>
+            </li>
+            <li ng-show="procs.length === 0" class="home-item">
+                <div> No processes.</div>
+            </li>
+        </ul>
+    </div>
+</div>

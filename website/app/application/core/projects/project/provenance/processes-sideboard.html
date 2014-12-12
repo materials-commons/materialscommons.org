@@ -1,0 +1,52 @@
+<div class="panel panel-primary">
+    <div class="panel-heading sideboard-color home-panel-heading">
+        <i class="fa fa-fw fa-clipboard bold"></i>
+        <span>Sideboard ({{sideboardItems.length}})</span>
+        <span class="pull-right">
+            <a ng-click="sideboardExpanded = !sideboardExpanded">
+                <i class="fa"
+                   ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
+            </a>
+        </span>
+        <input type="text" ng-model="sideboardSearch.name"
+               placeholder="Search sideboard..." class="pull-right col-xs-4">
+    </div>
+    <div class="panel-body home-panel-body side-by-side">
+        <ul class="list-unstyled">
+            <li class="home-item">
+                <div ui-draggable="false"
+                     ui-on-drop="onDrop(i, $data)">
+                    <div class="dropzone">
+                        <h4 class="text-center">
+                            Drop here
+                        </h4>
+                    </div>
+                </div>
+            </li>
+            <li class="home-item"
+                ng-repeat="process in sideboard | filter:sideboardSearch | orderBy:'name' as sideboardItems">
+                <div>
+                    <a ng-click="openClose(process)" style="color: black">
+                        <i class="fa"
+                           ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}"></i>
+                    </a>
+                    <a ng-click="removeFromSideboard(process)" class="pull-right">
+                        <i class="fa fa-close"></i>
+                    </a>
+                    {{process.name | truncate:25:'...':true}}
+                    <p>
+                        <small class="text-muted">
+                            {{process.birthtime | toDateString}}
+                        </small>
+                    </p>
+                    <div ng-if="process.showDetails">
+                        network and details here
+                        <vis-network ng-model="constructed_process.network_data"
+                                     options="constructed_process.network_options">
+                        </vis-network>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
