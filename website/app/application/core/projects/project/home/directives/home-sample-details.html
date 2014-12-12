@@ -19,7 +19,7 @@
             <b>Properties:</b>
             <ul class="list-group scroll-bar">
                 <li class="list-group-item"
-                    ng-repeat="(key, value) in sample.properties | chopComposition as properties">{{key}}
+                    ng-repeat="(key, value) in sample.properties | removeKey:'composition' as properties">{{key}}
                     <span style="float: right;">{{value.value}} {{value.unit}}</span></li>
             </ul>
         </div>
