@@ -26,7 +26,7 @@
                         <li class="home-item"
                             ui-draggable="true"
                             drag="file"
-                            ng-repeat="file in files | filter:search | orderBy:'fullname' as matchingFiles" on-repeat-finished="files-loaded">
+                            ng-repeat="file in files | filter:search | orderBy:'fullname' | limitTo:500 as matchingFiles" on-repeat-finished="files-loaded">
                             <div>
                                 <a ng-click="toggleDetails(file)" style="color: black">
                                     <i class="fa"
@@ -47,9 +47,9 @@
                                     <small class="text-muted">{{file.birthtime | toDateString}}</small>
                                     <small class="text-muted" style="margin-left: 10px">{{file.fullname}}</small>
                                 </p>
-                                <div ng-if="showDetails(file)">
+                                <div ng-if="showDetails(file)" style="padding-left: 0px; padding-right: 0px;">
                                     <div class="row" style="padding-left: 0px; padding-right: 0px;">
-                                        <div class="col-xs-12" ng-switch="" on="fileType" style="padding-left: 0px; padding-right: 0px;">
+                                        <div class="col-xs-12" ng-switch="fileType" style="padding-left: 0px; padding-right: 0px;">
                                             <div ng-switch-when="image">
                                                 <img class="img-responsive" ng-src="{{fileSrc(matchingFiles[$index])}}">
                                             </div>
@@ -59,8 +59,9 @@
                                                            ng-src="{{fileSrc(matchingFiles[$index])}}"></embed>
                                                 </div>
                                             </div>
-                                            <div ng-switch-default>
-                                                <div ng-if="matchingFiles[$index].size < 10000" hljs include="fileSrc(matchingFiles[$index])"></div>
+                                            <div ng-switch-default style="padding-left: 0px; padding-right: 0px;">
+                                                <div ng-if="matchingFiles[$index].size < 10000" hljs
+                                                     include="fileSrc(matchingFiles[$index])" style="padding-left: 0px; padding-right: 0px;"></div>
                                                 <code ng-if="matchingFiles[$index].size > 10000 && matchingFiles[$index].size <= 2000000"
                                                       style="white-space:pre-line" ng-include="fileSrc(matchingFiles[$index])"></code>
                                                 <div ng-if="matchingFiles[$index].size > 2000000">File too big to display</div>
@@ -84,7 +85,7 @@
              ng-class="{'col-xs-6': !sideboardExpanded, 'col-xs-12': sideboardExpanded}">
             <div class="panel panel-primary">
                 <div class="panel-heading sideboard-color home-panel-heading">
-                    <i class="fa fa-fw fa-files-o bold"></i>
+                    <i class="fa fa-fw fa-clipboard bold"></i>
                     <span>Sideboard ({{sideboardFiles.length}})</span>
                     <span class="pull-right">
                         <a ng-click="sideboardExpanded = !sideboardExpanded">
@@ -93,14 +94,18 @@
                         </a>
                     </span>
                     <input type="text" ng-model="sideboardSearch.fullname"
-                           placeholder="Search files..." class="pull-right col-xs-4">
+                           placeholder="Search sideboard..." class="pull-right col-xs-4">
                 </div>
                 <div class="panel-body home-panel-body file-compare">
                     <ul class="list-unstyled">
-                        <li>
+                        <li class="home-item">
                             <div ui-draggable="false"
                                  ui-on-drop="onDrop(i, $data)">
-                                Drop here
+                                <div class="dropzone">
+                                    <h4 class="text-center">
+                                        Drop here
+                                    </h4>
+                                </div>
                             </div>
                         </li>
                         <li class="home-item"
@@ -128,7 +133,7 @@
                                     <small class="text-muted">{{file.birthtime | toDateString}}</small>
                                     <small class="text-muted" style="margin-left: 10px">{{file.fullname}}</small>
                                 </p>
-                                <div ng-if="showDetails(file)">
+                                <div ng-if="showDetails(file)" style="padding-left: 0px; padding-right: 0px;">
                                     <div class="row" style="padding-left: 0px; padding-right: 0px;">
                                         <div class="col-xs-12" ng-switch="" on="fileType" style="padding-left: 0px; padding-right: 0px;">
                                             <div ng-switch-when="image">
@@ -139,8 +144,10 @@
                                                     <embed class="col-xs-8 embed-responsive-item" ng-src="{{fileSrc(sideboardFiles[$index])}}"></embed>
                                                 </div>
                                             </div>
-                                            <div ng-switch-default>
-                                                <div ng-if="sideboardFiles[$index].size < 10000" hljs include="fileSrc(sideboardFiles[$index])"></div>
+                                            <div ng-switch-default style="padding-left: 0px; padding-right: 0px;">
+                                                <div ng-if="sideboardFiles[$index].size < 10000" hljs
+                                                     include="fileSrc(sideboardFiles[$index])"
+                                                     style="padding-left: 0px; padding-right: 0px;"></div>
                                                 <code ng-if="sideboardFiles[$index].size > 10000 && sideboardFiles[$index].size <= 2000000"
                                                       style="white-space:pre-line" ng-include="fileSrc(sideboardFiles[$index])"></code>
                                                 <div ng-if="sideboardFiles[$index].size > 2000000">File too big to display</div>
