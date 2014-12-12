@@ -39,7 +39,7 @@
                         </small>
                     </p>
                     <div ng-if="process.showDetails">
-                        network and details here
+                        <overview-show-process-details></overview-show-process-details>
                         <vis-network ng-model="constructed_process.network_data"
                                      options="constructed_process.network_options">
                         </vis-network>
