@@ -22,12 +22,11 @@
             <li class="home-item"
                 ui-draggable="true"
                 drag="file"
+                ng-click="toggleDetails(file)"
                 ng-repeat="file in files | filter:search | orderBy:'fullname' | limitTo:500 as matchingFiles" on-repeat-finished="files-loaded">
                 <div>
-                    <a ng-click="toggleDetails(file)" style="color: black">
-                        <i class="fa"
-                           ng-class="{'fa-caret-right': !showDetails(file), 'fa-caret-down': showDetails(file)}"></i>
-                    </a>
+                    <i class="fa"
+                       ng-class="{'fa-caret-right': !showDetails(file), 'fa-caret-down': showDetails(file)}"></i>
                     <a ng-click="openFile(file)">
                         {{file.displayname}}
                     </a>

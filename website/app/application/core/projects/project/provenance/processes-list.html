@@ -16,12 +16,11 @@
             <li class="home-item"
                 ui-draggable="true"
                 drag="process"
+                ng-click="openClose(process)"
                 ng-repeat="process in processes | filter:search | event:project.date:project.nextdate as procs">
                 <div>
-                    <a ng-click="openClose(process)" style="color: black">
-                        <i class="fa"
-                           ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}"></i>
-                    </a>
+                    <i class="fa"
+                       ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}"></i>
                     {{process.name | truncate:25:'...':true}}
                     <p>
                         <small class="text-muted">
