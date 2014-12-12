@@ -354,7 +354,10 @@ def move_samples_denorm(conn):
 
 def drop_unused_tables(conn):
     msg("Dropping unused tables: state")
-    r.table_drop('state').run(conn)
+    try:
+        r.table_drop('state').run(conn)
+    except:
+        pass
 
 
 def associate_samples_to_projects(conn):
@@ -569,7 +572,8 @@ def fix_or_delete_samples(conn):
             # Sample belongs to a non-existent project: delete it.
             r.table("samples").get(sample["id"]).delete().run(conn)
 
-#New Conversion
+
+# New Conversion
 def update_mtime_samples():
     samples = list(r.table("samples").run(conn))
     for sample in samples:
