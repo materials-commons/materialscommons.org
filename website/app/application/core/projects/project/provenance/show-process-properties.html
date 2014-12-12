@@ -1,0 +1,15 @@
+<div>
+    <div ng-repeat="(key, values) in properties">
+        <div ng-switch="key">
+            <div ng-switch-when="files">
+                <show-process-files files="values"></show-process-files>
+            </div>
+            <div ng-switch-when="sample">
+                <show-process-sample sample="values"></show-process-sample>
+            </div>
+            <div ng-switch-default>
+                <show-process-settings settings="values"></show-process-settings>
+            </div>
+        </div>
+    </div>
+</div>
