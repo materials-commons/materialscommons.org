@@ -24,11 +24,13 @@ def create_provenance2(project_id):
 def create_process(j, user):
     name = dmutil.get_required('name', j)
     template_id = dmutil.get_required('template_id', j)
+    template_name = dmutil.get_required('template_name', j)
     project_id = dmutil.get_required('project_id', j)
     machine = ""
     description = dmutil.get_optional('description', j, "")
     p = process.Process(name, user, template_id, project_id,
                         machine, description)
+    p.template_name = template_name
     tags = dmutil.get_optional('tags', j, [])
     notes = dmutil.get_optional('notes', j, [])
     runs = dmutil.get_optional('runs', j, [])
