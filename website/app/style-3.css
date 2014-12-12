@@ -973,7 +973,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   overflow-y: auto;
 }
 
-.file-compare {
+.side-by-side {
   max-height: 800px;
 }
 
