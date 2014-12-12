@@ -1,14 +1,19 @@
 <div>
+    Description : {{process.description}}
+    {{process}}
     <div class="row">
-        Description : {{process.description}}<br>
-        Date : {{process.birthtime | toDateString}}
-        <h4>Inputs</h4>
+        <strong>Inputs</strong>
+        <show-process-properties properties="process.inputs"></show-process-properties>
+    </div>
+    <div ng-if="false" class="row">
+        Description : {{process.description}}
+        <strong>Inputs</strong>
         <div class="row">
             <div ng-repeat="(key, values) in process.inputs">
                 <div ng-switch="key">
                     <div ng-switch-when="files">
                         <i class="fa fa-fw fa-files-o"></i><i><b>{{key}} </b></i>
-                        <ul style="padding-left: 40px;"  ng-repeat="file in values">
+                        <ul style="padding-left: 40px;" ng-repeat="file in values">
                             <li>
                                 Name: <a ui-sref="projects.project.files.view({fileid: file.value})">{{file.other.name}} </a> <br>
                                 Path: <i>{{file.other.fullname}}</i>
@@ -20,7 +25,7 @@
                         <i class="fa fa-fw fa-cube"></i><i><b>{{key}} </b></i>
                         <div style="padding-left: 40px;" >
                             <a ng-click="expandSample(values[0].value)">{{values[0].other.name}}</a>
-                            <div ng-if="inputsample!== ''">
+                            <div ng-if="inputsample !== ''">
                                 Owner: {{inputsample.owner}} <br>
                                 Description: {{inputsample.description}} <br>
                                 Properties:
