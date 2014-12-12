@@ -15,3 +15,19 @@ Application.Filters.filter('byKey', function () {
         return matches;
     };
 });
+
+
+Application.Filters.filter('chopComposition', function () {
+    return function (properties) {
+        var matches = {};
+        if (properties) {
+           angular.forEach(properties, function(value, key){
+              if (key !== 'composition'){
+                  matches[key] =  value;
+              }
+           });
+        }
+        return matches;
+    };
+});
+

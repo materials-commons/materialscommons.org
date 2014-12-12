@@ -1088,9 +1088,9 @@ h4, .h4, h5, .h5, h6, .h6 {
     background-color: lightgreen;
 }
 
-.list-group-item {
-    border: 1px solid #dadedf;
-}
+/*.list-group-item {*/
+    /*border: 1px solid #dadedf;*/
+/*}*/
 
 a.action-link {
     color: white;
@@ -1749,9 +1749,9 @@ ul.menu-bar li {
     border-right-color: #d5d5d5;
 }
 
-.list-group-item {
-    border: 2px solid #DADEDF;
-}
+/*.list-group-item {*/
+    /*border: 2px solid #DADEDF;*/
+/*}*/
 
 .feed-activity-list .feed-element {
     border-bottom: 1px solid #E7EAEC;
@@ -1900,4 +1900,13 @@ ul.menu-bar li {
 .breadcrumb > li + li:before {
     content: '>';
     color: #41738c;
+}
+
+.sample-details .list-group .list-group-item{
+    padding: 5px 8px;
+    border: 0.2px solid #bfbfbf;
+}
+.sample-details .list-group.scroll-bar{
+    max-height: 140px;
+    overflow-y: auto;
 }
