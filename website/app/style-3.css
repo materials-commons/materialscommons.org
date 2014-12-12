@@ -935,6 +935,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-top-width: 1px;
   border-bottom-color: #d1d1d1;
   border-top-color: #ffffff;
+  cursor: pointer;
 }
 
 .home-panel-heading {
@@ -1901,6 +1902,9 @@ ul.menu-bar li {
   border-radius: 3px;
 }
 
+.sample-details{
+  margin-top: -5px;
+}
 .sample-details .list-group .list-group-item{
     padding: 5px 8px;
     border: 0.2px solid #bfbfbf;
