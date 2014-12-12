@@ -11,7 +11,8 @@ function displayTagsDirective() {
     };
 }
 
-Application.Controllers.controller("displayTags", ["$scope", displayTagsDirectiveController]);
+Application.Controllers.controller("displayTagsDirectiveController",
+                                   ["$scope", displayTagsDirectiveController]);
 
 function displayTagsDirectiveController($scope) {
     $scope.tooltip = function(tag) {
