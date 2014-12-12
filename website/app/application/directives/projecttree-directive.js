@@ -170,7 +170,8 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
     };
 
     $scope.showFileCheckbox = function() {
-        return projectFiles.isActive($scope.projectID);
+        var active = projectFiles.isActive($scope.projectID);
+        return active;
     };
 
     $scope.init = function() {
