@@ -26,6 +26,11 @@
                         {{sample.name | truncate: 25 : '...':true}}</a>
                     <p>
                         <small class="text-muted">{{sample.birthtime | toDateString}}</small>
+                        <small ng-if="sample.properties.composition.value.length !== 0" style="padding-left: 30px;" class="text-muted">Composition({{sample.properties.composition.unit}}) :
+                            <span  class="text-muted" style="padding-left: 5px;" ng-repeat="each in sample.properties.composition.value">{{each.element}} -{{each.value}}</span>
+                        </small>
+                        <small ng-if="sample.properties.composition.value.length === 0" style="padding-left: 30px;" class="text-muted">Composition : None</small>
+
                     </p>
                     <div ng-show="showDetails($index)">
                         <home-sample-details sample="sample"></home-sample-details>
