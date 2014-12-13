@@ -23,24 +23,24 @@
                 ui-draggable="true"
                 drag="file"
                 ng-click="toggleDetails(file)"
-                ng-repeat="file in files | filter:search | orderBy:'fullname' | limitTo:500 as matchingFiles" on-repeat-finished="files-loaded">
+                ng-repeat="file in files | filter:search | orderBy:'fullname' | limitTo:1000 as matchingFiles track by file.id" on-repeat-finished="files-loaded">
                 <div>
                     <i class="fa"
                        ng-class="{'fa-caret-right': !showDetails(file), 'fa-caret-down': showDetails(file)}"></i>
                     <a ng-click="openFile(file)">
-                        {{file.displayname}}
+                        {{::file.displayname}}
                     </a>
-                    <small class="text-muted"> {{file.size | bytes}}</small>
+                    <small class="text-muted"> {{::file.size | bytes}}</small>
                     <span class="label label-info" ng-repeat="tag in tags(file)" style="margin-right: 5px">
                         <i class="fa"
                            ng-class="'fa-' + tag.icon"
                            style="color: {{tag.color}}">
                         </i>
-                        {{tag.name}}
+                        {{::tag.name}}
                     </span>
                     <p>
-                        <small class="text-muted">{{file.birthtime | toDateString}}</small>
-                        <small class="text-muted" style="margin-left: 10px">{{file.fullname}}</small>
+                        <small class="text-muted">{{::file.birthtime | toDateString}}</small>
+                        <small class="text-muted" style="margin-left: 10px">{{::file.fullname}}</small>
                     </p>
                     <div ng-if="showDetails(file)" style="padding-left: 0px; padding-right: 0px;">
                         <div class="row" style="padding-left: 0px; padding-right: 0px;">
