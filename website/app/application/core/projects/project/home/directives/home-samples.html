@@ -21,12 +21,32 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-click="toggleDetails($index)"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
-                <div>
-                    <i class="fa"
-                       ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
-                    <a ui-sref="projects.project.samples.overview"> {{sample.name | truncate: 25 : '...':true}} </a>
+                <div style="margin-bottom: 3px;">
+                    <span ng-click="toggleDetails($index)" style="cursor: pointer">
+                        <i class="fa"
+                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}">
+                        </i>
+                        {{sample.name | truncate: 25 : '...':true}}
+                    </span>
+                    <span stylex="border: 2px solid #e1e1e1; border-radius: 1px;"class="pull-right">
+                        <small class="bar-control">
+                            <a style="color:black" title="Add note">
+                                <i class="fa fa-fw fa-edit"></i>
+                            </a>
+                        </small>
+                        <small class="bar-control">
+                            <a style="color:black"
+                               ng-click="showComments=!showComments"
+                               title="Add comment">
+                                <i class="fa fa-fw fa-comments"></i>
+                            </a>
+                        </small>
+                    </span>
+                    <div ng-if="showComments"
+                         style="margin-top: 8px; margin-bottom: 8px; border-top: 1px solid #d1d1d1; border-bottom: 1px solid #d1d1d1">
+                        enter comments here
+                    </div>
                     <p>
                         <small ng-if="sample.properties.composition.value.length !== 0">
                             Composition({{sample.properties.composition.unit}}) :
@@ -39,9 +59,11 @@
                         </small>
                         <small class="text-muted">{{sample.birthtime | toDateString}}
                         </small>
-                        <small class="text-muted" style="padding-left: 10px;">{{sample.owner}}</small>
+                        <small class="text-muted"
+                               style="padding-left: 10px;">{{sample.owner}}
+                        </small>
                     </p>
-                    <div ng-show="showDetails($index)">
+                    <div ng-if="showDetails($index)">
                         <home-sample-details sample="sample"></home-sample-details>
                     </div>
                 </div>
