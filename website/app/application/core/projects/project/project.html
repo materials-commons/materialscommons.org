@@ -23,10 +23,10 @@
                 </div>
             </div>
             <div class="row">
-                <div ng-class="{'col-xs-4': showHelp()}" ng-show="showHelp()">
+                <div ng-class="{'col-xs-12': isExpanded('help'), 'col-xs-4': !isExpanded('help') && showHelp()}" ng-show="showHelp()">
                     <userguide></userguide>
                 </div>
-                <div ng-class="{'col-xs-8': showHelp(), 'col-xs-12': !showHelp()}">
+                <div ng-class="{'col-xs-8': showHelp(), 'col-xs-12': !showHelp()}" ng-show="!isExpanded('help')">
                     <div ui-view></div>
                     <div ng-show="showFiles()" class="row">
                         <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true"
