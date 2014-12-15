@@ -23,13 +23,13 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-click="toggleDetails($index)"
                 ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                 <div>
-                    <i class="fa"
-                       ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
-                    <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
-                        {{note.title | truncate:25:'...':true}}</a>
+                    <span ng-click="toggleDetails($index)" style="cursor: pointer">
+                         <i class="fa"
+                            ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
+                        {{note.title | truncate:25:'...':true}}
+                    </span>
                     <p>
                         <small class="text-muted">{{note.mtime | toDateString}}</small>
                         <small style="padding-left: 10px;" class="text-muted">{{note.creator}}</small>

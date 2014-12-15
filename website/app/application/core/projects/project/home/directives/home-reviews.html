@@ -28,10 +28,13 @@
                 <div>
                     <i class="fa"
                        ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
-                    <i class="fa fa-fw fa-user fa-2x"></i> {{review.author}} commented on
+                    {{review.author}} commented on
                     <a ui-sref="projects.project.reviews.edit({'review_id': review.id, 'status': review.status})">
                         {{review.title | truncate: 25 : '...':true}}</a>
-
+                     <span class="pull-right">
+                         <small class="text-muted" >{{review.messages.length}} </small>
+                        <i class="text-muted fa fa-fw" ng-class="{'fa-comment': review.messages.length !== 0}"></i>
+                    </span>
                     <p>
                         <small class="text-muted">{{review.mtime | toDateString}}</small>
                     </p>
