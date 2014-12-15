@@ -15,13 +15,13 @@ function EventsService($filter) {
 
         update: function (items) {
             items.forEach(function (item) {
-                var item_date = new Date(item.mtime.epoch_time * 1000)
+                var item_date = new Date(item.mtime.epoch_time * 1000);
                 item.converted_mtime = Date.UTC(item_date.getUTCFullYear(), item_date.getUTCMonth(), item_date.getUTCDate());
             });
             return items;
         },
 
-        prepareCalendarEvent: function (items) {
+        prepareCalendarEvent: function (items, title) {
             var calendar_event = [];
             if (items.length !== 0) {
                 var grouped_by_convertedtime = $filter('groupBy')(items, 'converted_mtime');
@@ -29,7 +29,7 @@ function EventsService($filter) {
                     var d = new Date(0);
                     var value = grouped_by_convertedtime[key][0];
                     d.setUTCSeconds(value.mtime.epoch_time);
-                    calendar_event.push({title: grouped_by_convertedtime[key].length , start: d, description: 'This is a desc....'});
+                    calendar_event.push({title: grouped_by_convertedtime[key].length + " " + title, start: d, description: ''});
                 });
             }
             return calendar_event;

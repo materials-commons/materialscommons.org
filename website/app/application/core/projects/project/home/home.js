@@ -16,19 +16,19 @@ function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig, $co
 
     $scope.event_reviews = {
         color: '#4884b8',
-        events: Events.prepareCalendarEvent($scope.project.reviews)
+        events: Events.prepareCalendarEvent($scope.project.reviews, "reviews")
     };
     $scope.event_notes = {
         color: '#3ea7a0',
-        events: Events.prepareCalendarEvent($scope.project.notes)
+        events: Events.prepareCalendarEvent($scope.project.notes, "notes")
     };
     $scope.event_processes = {
         color: '#e26a6a',
-        events: Events.prepareCalendarEvent($scope.project.processes)
+        events: Events.prepareCalendarEvent($scope.project.processes, "processes")
     };
     $scope.event_samples = {
         color: '#f0ad4e',
-        events: Events.prepareCalendarEvent($scope.project.samples)
+        events: Events.prepareCalendarEvent($scope.project.samples, "samples")
     };
 
     var  previous = '';

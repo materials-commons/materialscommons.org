@@ -10,9 +10,18 @@ function userguideDirective() {
 }
 
 Application.Controllers.controller("userguideDirectiveController",
-                                   ["$scope", "help", userguideDirectiveController]);
-function userguideDirectiveController($scope, help) {
+                                   ["$scope", "help", "ui", "$stateParams", userguideDirectiveController]);
+function userguideDirectiveController($scope, help, ui, $stateParams) {
     $scope.close = function() {
         help.toggle();
+        ui.setIsExpanded($stateParams.id, "help", false);
+    };
+
+    $scope.toggleExpand = function() {
+        ui.toggleIsExpanded($stateParams.id, "help");
+    };
+
+    $scope.isExpanded = function() {
+        return ui.isExpanded($stateParams.id, "help");
     };
 }

@@ -2,12 +2,11 @@
     <div class="panel-heading sideboard-color home-panel-heading">
         <i class="fa fa-fw fa-clipboard bold"></i>
         <span>Sideboard ({{sideboardFiles.length}})</span>
-        <span class="pull-right">
-            <a ng-click="sideboardExpanded = !sideboardExpanded">
-                <i class="fa"
-                   ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
-            </a>
-        </span>
+        <a ng-click="sideboardExpanded = !sideboardExpanded"
+           class="pull-right bar-control">
+            <i class="fa"
+               ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
+        </a>
         <input type="text" ng-model="sideboardSearch.fullname"
                placeholder="Search sideboard..." class="pull-right col-xs-4">
     </div>
