@@ -2,12 +2,11 @@
     <div class="panel-heading processes-color home-panel-heading">
         <i class="fa fa-fw fa-code-fork bold"></i>
         <span>Processes ({{procs.length}})</span>
-        <span class="pull-right">
-            <a ng-click="listExpanded = !listExpanded">
-                <i class="fa"
-                   ng-class="{'fa-expand': !listExpanded, 'fa-compress': listExpanded}"></i>
-            </a>
-        </span>
+        <a ng-click="listExpanded = !listExpanded"
+           class="pull-right bar-control">
+            <i class="fa"
+               ng-class="{'fa-expand': !listExpanded, 'fa-compress': listExpanded}"></i>
+        </a>
         <input type="text" ng-model="search.name" class="pull-right col-xs-4"
                placeholder="Search processes...">
     </div>

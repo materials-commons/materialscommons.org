@@ -5,6 +5,11 @@
             <a ui-sref="projects.project.samples.overview">Samples</a>
             ({{samples.length}})
         </span>
+        <a ng-click="sideboardExpanded = !sideboardExpanded"
+           class="pull-right bar-control">
+            <i class="fa"
+               ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
+        </a>
         <input type="text" ng-model="search.name"
                placeholder="Search samples..." class="pull-right col-xs-4">
         <span class="add-item pull-right">
@@ -16,25 +21,35 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-click="toggleDetails($index)"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
-                <div>
-                    <i class="fa"
-                       ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
-                     <a ui-sref="projects.project.samples.overview"> {{sample.name | truncate: 25 : '...':true}} </a>
+                <div style="margin-bottom: 3px;">
+                    <span ng-click="toggleDetails($index)" style="cursor: pointer">
+                        <i class="fa"
+                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}">
+                        </i>
+                        {{sample.name | truncate: 25 : '...':true}}
+                    </span>
+                    <span class="pull-right">
+                        <i style="color:#E3CF7A" class="fa fa-fw fa-star"></i>
+                        <i class="fa fa-fw" ng-class="{'fa-edit': sample.notes.length !== 0}"></i>
+                    </span>
                     <p>
                         <small ng-if="sample.properties.composition.value.length !== 0">
                             Composition({{sample.properties.composition.unit}}) :
-                            <span style="padding-left: 5px;" ng-repeat="each in sample.properties.composition.value">{{each.element}} -{{each.value}}</span>
+                            <span style="padding-left: 3px; "ng-repeat="each in sample.properties.composition.value">{{each.element}} -{{each.value}}</span>
                         </small>
+                    </p>
+                    <p>
                         <small ng-if="sample.properties.composition.value.length === 0">
                             Composition : None
                         </small>
-                        <small style="padding-left: 10px;" class="text-muted">{{sample.birthtime | toDateString}}
+                        <small class="text-muted">{{sample.birthtime | toDateString}}
                         </small>
-                        <small class="text-muted" style="padding-left: 10px;">{{sample.owner}}</small>
+                        <small class="text-muted"
+                               style="padding-left: 10px;">{{sample.owner}}
+                        </small>
                     </p>
-                    <div ng-show="showDetails($index)">
+                    <div ng-if="showDetails($index)">
                         <home-sample-details sample="sample"></home-sample-details>
                     </div>
                 </div>
