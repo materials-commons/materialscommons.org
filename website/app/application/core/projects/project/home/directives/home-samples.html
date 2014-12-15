@@ -29,24 +29,10 @@
                         </i>
                         {{sample.name | truncate: 25 : '...':true}}
                     </span>
-                    <span stylex="border: 2px solid #e1e1e1; border-radius: 1px;"class="pull-right">
-                        <small class="bar-control">
-                            <a style="color:black" title="Add note">
-                                <i class="fa fa-fw fa-edit"></i>
-                            </a>
-                        </small>
-                        <small class="bar-control">
-                            <a style="color:black"
-                               ng-click="showComments=!showComments"
-                               title="Add comment">
-                                <i class="fa fa-fw fa-comments"></i>
-                            </a>
-                        </small>
+                    <span class="pull-right">
+                        <i style="color:#E3CF7A" class="fa fa-fw fa-star"></i>
+                        <i class="fa fa-fw" ng-class="{'fa-edit': sample.notes.length !== 0}"></i>
                     </span>
-                    <div ng-if="showComments"
-                         style="margin-top: 8px; margin-bottom: 8px; border-top: 1px solid #d1d1d1; border-bottom: 1px solid #d1d1d1">
-                        enter comments here
-                    </div>
                     <p>
                         <small ng-if="sample.properties.composition.value.length !== 0">
                             Composition({{sample.properties.composition.unit}}) :
