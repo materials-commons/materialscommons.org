@@ -123,8 +123,8 @@ def add_notes(projects_by_id, project_ids):
 
 def add_events(projects_by_id, project_ids):
     events = list(r.table('events').get_all(*project_ids, index='project_id')
-                 .order_by('mtime')
-                 .run(g.conn, time_format='raw'))
+                  .order_by('mtime')
+                  .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, events, 'project_id', 'events')
 
 
