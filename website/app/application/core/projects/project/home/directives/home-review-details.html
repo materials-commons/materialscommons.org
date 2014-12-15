@@ -1,5 +1,16 @@
 <div class="row">
-     <ul ng-repeat="review in reviews">
+    <div class="feed-activity-list">
+        <div class="feed-element" ng-repeat="msg in review.messages">
+            <span class="pull-left">
+                <i class="fa fa-fw fa-user"></i>
+            </span>
 
-     </ul>
+            <div class="media-body">
+                <span ta-bind="text" ta-readonly='disabled' ng-model="msg.message">
+                </span>
+                <small class="text-muted">Date {{review.mtime | toDateString}}</small>
+                <small class="text-muted" style="padding-left: 5px;">Who  {{msg.who}}</small>
+            </div>
+        </div>
+    </div>
 </div>
