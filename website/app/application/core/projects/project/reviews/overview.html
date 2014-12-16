@@ -1,21 +1,21 @@
 <div class="row">
     <br>
 
-    <div ng-if="(project.open_reviews.length + project.closed_reviews.length) === 0">
+    <div ng-if="reviews.length === 0">
         <p class="text-center"> No reviews created under project {{project.name}}</p> <br>
     </div>
     <div class="col-lg-offset-2">
-        <div ng-if="(project.open_reviews.length + project.closed_reviews.length) !== 0" class="col-lg-10">
+        <div ng-if="reviews.length !== 0" class="col-lg-10">
             <table class="table table-striped table-condensed table-boxed">
                 <thead>
                     <th>
                         <i class="fa fa-check-circle review-open"></i>
                         <a ng-click="showReviews('open')">
-                            {{project.open_reviews.length}} open
+                            {{(project.reviews | byKey: 'status': 'open').length}} open
                         </a>
                         <i class="fa fa-minus-circle review-close"></i>
                         <a ng-click="showReviews('closed')">
-                            {{project.closed_reviews.length}} closed
+                            {{(project.reviews | byKey: 'status': 'closed').length}} closed
                         </a>
                     </th>
                     <th>Title</th>
