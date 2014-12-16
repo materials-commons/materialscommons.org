@@ -1,7 +1,7 @@
 Application.Controllers.controller("projectReviewsEdit",
-    ["$scope", "project", "User", "$stateParams", "mcapi", "pubsub", "$state", projectReviewsEdit]);
+    ["$scope", "project", "User", "$stateParams", "mcapi", "pubsub", "$state", "Review", projectReviewsEdit]);
 
-function projectReviewsEdit($scope, project, User, $stateParams, mcapi, pubsub, $state) {
+function projectReviewsEdit($scope, project, User, $stateParams, mcapi, pubsub, $state, Review) {
     $scope.project = project;
 
     $scope.editReview = function (index) {
@@ -25,17 +25,6 @@ function projectReviewsEdit($scope, project, User, $stateParams, mcapi, pubsub, 
         return project[which][i];
     }
 
-    function swapReview(reviewID, from, to) {
-        var i = _.indexOf(project[from], function (review) {
-            return review.id === reviewID;
-        });
-        if (i !== -1) {
-            var r = project[from][i];
-            project[from].splice(i, 1);
-            project[to].push(r);
-        }
-    }
-
     $scope.addComment = function () {
         if ($scope.model.comment.length === 0) {
             return;
@@ -56,9 +45,8 @@ function projectReviewsEdit($scope, project, User, $stateParams, mcapi, pubsub, 
         mcapi('/reviews/%', $scope.review.id)
             .success(function () {
                 $scope.review = '';
-                var review = findReview(reviewID, "open_reviews");
+                var review = findReview(reviewID, "reviews");
                 review.status = "closed";
-                swapReview(reviewID, "open_reviews", "closed_reviews");
                 reviewCount();
                 $state.go('projects.project.reviews.overview');
             }).put({'status': 'closed'});
@@ -69,36 +57,25 @@ function projectReviewsEdit($scope, project, User, $stateParams, mcapi, pubsub, 
         mcapi('/reviews/%', $scope.review.id)
             .success(function () {
                 $scope.review = '';
-                var review = findReview(reviewID, "closed_reviews");
+                var review = findReview(reviewID, "reviews");
                 review.status = "open";
-                swapReview(reviewID, "closed_reviews", "open_reviews");
                 reviewCount();
                 $state.go('projects.project.reviews.overview');
             }).put({'status': 'open'});
     };
+
     function reviewCount() {
         pubsub.send("reviews.change");
     }
 
     function init() {
         var review_id = $stateParams.review_id;
-        var i;
         if ($stateParams.status === 'open') {
-            i = _.indexOf($scope.project.open_reviews, function (open_review) {
-                return review_id === open_review.id;
-            });
-            if (i > -1) {
-                $scope.review = $scope.project.open_reviews[i];
-            }
+            $scope.reviews = Review.getReviews('open');
         } else {
-            $scope.review = $scope.project.closed_reviews[$stateParams.index];
-            i = _.indexOf($scope.project.closed_reviews, function (closed_review) {
-                return review_id === closed_review.id;
-            });
-            if (i > -1) {
-                $scope.review = $scope.project.closed_reviews[i];
-            }
+            $scope.reviews = Review.getReviews('closed');
         }
+        $scope.review = Review.findReview(review_id, 'reviews', project);
     }
 
     init();

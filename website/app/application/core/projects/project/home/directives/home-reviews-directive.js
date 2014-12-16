@@ -30,11 +30,12 @@ function homeReviewsDirectiveController ($scope, mcapi) {
         mcapi('/reviews/%', $scope.cached_review.id)
             .success(function () {
                 $scope.project.reviews[$scope.index].status = 'closed';
+                console.log($scope.project.reviews);
             }).put({'status': 'closed'});
     };
     $scope.cacheReview = function (review, index) {
        $scope.cached_review = review;
        $scope.index = index;
     };
-
+    console.log($scope.project);
 }

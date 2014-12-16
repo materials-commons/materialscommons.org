@@ -81,12 +81,7 @@ def add_reviews(projects_by_id, project_ids):
     reviews = list(r.table('reviews')
                    .get_all(*project_ids, index='project')
                    .run(g.conn, time_format='raw'))
-    open_reviews = [review for review in reviews if review['status'] == "open"]
-    closed_reviews = [review for review in reviews
-                      if review['status'] == "closed"]
-    add_computed_items(projects_by_id, open_reviews, 'project', 'open_reviews')
-    add_computed_items(projects_by_id, closed_reviews, 'project',
-                       'closed_reviews')
+    add_computed_items(projects_by_id, reviews, 'project', 'reviews')
 
 
 def add_samples(projects_by_id, project_ids):
