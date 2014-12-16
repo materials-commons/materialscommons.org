@@ -8,3 +8,14 @@ Application.Filters.filter('toDateString', function () {
         return "";
     };
 });
+
+//Application.Filters.filter('simplifyJavascriptDate', function () {
+//    return function (input) {
+//        if (input) {
+//            console.log(input);
+//            var s = new Date(myDate.getYear(), myDate.getMonth(), myDate.getDate());
+//            return s;
+//        }
+//        return "";
+//    };
+//});

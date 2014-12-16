@@ -23,20 +23,22 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-click="toggleDetails($index)"
                 ng-repeat="review in project.reviews | filter:search | event: project.date: project.nextdate as reviews">
                 <div>
                     <i class="fa"
                        ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
-                    {{review.author}} commented on
-                    <a ui-sref="projects.project.reviews.edit({'review_id': review.id, 'status': review.status})">
-                        {{review.title | truncate: 25 : '...':true}}</a>
-                     <span class="pull-right">
-                         <small class="text-muted" >{{review.messages.length}} </small>
-                        <i class="text-muted fa fa-fw" ng-class="{'fa-comment': review.messages.length !== 0}"></i>
+                    <span ng-click="toggleDetails($index)">
+                        {{review.title | truncate: 25 : '...':true}}</span>
+                     <span ng-click="toggleDetails($index)" class="pull-right">
+                        <i data-toggle="tooltip" data-placement="bottom" title="{{review.messages.length}}"
+                           class="pointer fa fa-fw" ng-class="{'fa-comment': review.messages.length !== 0}"></i>
                     </span>
                     <p>
-                        <small class="text-muted">{{review.mtime | toDateString}}</small>
+                        <small style="padding-left: 10px;" class="text-muted">
+                            Last commented by {{review.messages[(review.messages.length -1)].who}}
+                            on    {{(review.messages[(review.messages.length -1)].date)}}
+
+                        </small>
                     </p>
                     <div ng-show="showDetails($index)">
                         <home-review-details review="review"></home-review-details>
