@@ -1,7 +1,7 @@
 Application.Controllers.controller("projectReviewsEdit",
-    ["$scope", "project", "User", "$stateParams", "mcapi", "dateGenerate", "pubsub", "$state", projectReviewsEdit]);
+    ["$scope", "project", "User", "$stateParams", "mcapi", "pubsub", "$state", projectReviewsEdit]);
 
-function projectReviewsEdit($scope, project, User, $stateParams, mcapi, dateGenerate, pubsub, $state) {
+function projectReviewsEdit($scope, project, User, $stateParams, mcapi, pubsub, $state) {
     $scope.project = project;
 
     $scope.editReview = function (index) {
@@ -41,11 +41,11 @@ function projectReviewsEdit($scope, project, User, $stateParams, mcapi, dateGene
             return;
         }
 
-        var d = dateGenerate.new_date();
+        var d = new Date();
         $scope.review.messages.push({
             'message': $scope.model.comment,
             'who': User.u(),
-            'date': d
+            'date': d.toDateString()
         });
         mcapi('/reviews/%', $scope.review.id)
             .success(function (data) {

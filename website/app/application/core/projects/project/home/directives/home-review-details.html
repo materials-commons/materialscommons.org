@@ -1,16 +1,19 @@
 <div class="row">
-    <div class="feed-activity-list">
-        <div class="feed-element" ng-repeat="msg in review.messages">
-            <span class="pull-left">
-                <i class="fa fa-fw fa-user"></i>
-            </span>
-
-            <div class="media-body">
-                <span ta-bind="text" ta-readonly='disabled' ng-model="msg.message">
+    <div ng-repeat="comment in review.messages">
+        <div class="comment">
+            <div class="row">
+               <span class="pull-left">
+                <i class="fa fa-fw fa-user fa-2x"></i>  {{comment.who}}
                 </span>
-                <small class="text-muted">Date {{review.mtime | toDateString}}</small>
-                <small class="text-muted" style="padding-left: 5px;">Who  {{msg.who}}</small>
+                <span class="pull-right">
+                    <small>{{comment.date}}</small>
+                </span>
             </div>
+
+            <p>
+
+            <div ta-bind="text" ta-readonly='disabled' ng-model="comment.message"></div>
+            </p>
         </div>
     </div>
 </div>
