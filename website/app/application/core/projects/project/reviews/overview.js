@@ -32,6 +32,7 @@ function projectReviewsOverview($scope, mcapi, $filter, dateGenerate,
     }
 
     function init() {
+        console.log($scope.project);
         $scope.review = '';
         $scope.project = project;
         reviewCount();

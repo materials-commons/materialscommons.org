@@ -28,16 +28,23 @@
                     <i class="fa"
                        ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
                     <span ng-click="toggleDetails($index)">
-                        {{review.title | truncate: 25 : '...':true}}</span>
-                     <span ng-click="toggleDetails($index)" class="pull-right">
+                        {{review.title | truncate: 25 : '...':true}}
+                    </span>
+                     <span ng-click="toggleDetails($index)" class="pull-right" style="padding-left: 5px;">
                         <i data-toggle="tooltip" data-placement="bottom" title="{{review.messages.length}}"
                            class="pointer fa fa-fw" ng-class="{'fa-comment': review.messages.length !== 0}"></i>
                     </span>
+                     <span class="pull-right">
+                         <button class="btn btn-xs btn-mini btn-success">comment</button>
+                         <button ng-click="cacheReview(review, $index)" data-toggle="modal"
+                                 data-target="#confirm-close-review"
+                                 class="btn btn-xs btn-mini btn-danger">close</button>
+                    </span>
+
                     <p>
                         <small style="padding-left: 10px;" class="text-muted">
                             Last commented by {{review.messages[(review.messages.length -1)].who}}
-                            on    {{(review.messages[(review.messages.length -1)].date)}}
-
+                            on {{(review.messages[(review.messages.length -1)].date)}}
                         </small>
                     </p>
                     <div ng-show="showDetails($index)">
@@ -49,5 +56,29 @@
                 <div>No reviews.</div>
             </li>
         </ul>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-close-review" tabindex="-1" role="dialog"
+     aria-labelledby="confirmCloseLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelClose">Close Review</h4>
+            </div>
+            <div class="modal-body">
+                On closing review will be archived
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Dismiss
+                </button>
+                <button ng-click="closeReview()" type="button" class="btn btn-danger"
+                        data-dismiss="modal">
+                    Yes - Loosing all changes
+                </button>
+            </div>
+        </div>
     </div>
 </div>

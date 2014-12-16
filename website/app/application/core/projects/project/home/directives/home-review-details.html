@@ -1,6 +1,6 @@
 <div class="row">
     <div ng-repeat="comment in review.messages">
-        <div class="comment">
+        <div class="home-reviews-comment">
             <div class="row">
                <span class="pull-left">
                 <i class="fa fa-fw fa-user fa-2x"></i>  {{comment.who}}
@@ -9,11 +9,12 @@
                     <small>{{comment.date}}</small>
                 </span>
             </div>
-
             <p>
-
-            <div ta-bind="text" ta-readonly='disabled' ng-model="comment.message"></div>
+                <div ta-bind="text" ta-readonly='disabled' ng-model="comment.message"></div>
             </p>
+            <div>
+                <i class="fa fa-fw fa-paperclip"></i>
+            </div>
         </div>
     </div>
 </div>
