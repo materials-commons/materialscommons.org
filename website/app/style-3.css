@@ -1918,12 +1918,14 @@ ul.menu-bar li {
 .bar-control {
   padding-left: 10px;
 }
-.comment{
+.home-reviews-comment{
   background-color: #d7d7d7;
   border-radius: 3px;
   font-size: 12px;
-  /*padding: 9px 11px;*/
   min-height: 60px;
   max-height: 110px;
   overflow-y: auto;
+}
+.btn-xs.btn-mini{
+  line-height: 0.8;
 }
