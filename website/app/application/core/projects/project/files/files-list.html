@@ -8,7 +8,7 @@
             <i class="fa"
                ng-class="{'fa-expand': !filesExpanded, 'fa-compress': filesExpanded}"></i>
         </a>
-        <input type="text" ng-model="search.fullname"
+        <input type="text" ng-model="searchInput"
                placeholder="Search files..." class="pull-right col-xs-4">
         <span class="add-item pull-right">
             <a tooltip="Add File">
@@ -30,7 +30,7 @@
                         {{::file.displayname}}
                     </a>
                     <small class="text-muted"> {{::file.size | bytes}}</small>
-                    <span class="label label-info" ng-repeat="tag in tags(file)" style="margin-right: 5px">
+                    <span class="label label-info" ng-repeat="tag in ::tags(file)" style="margin-right: 5px">
                         <i class="fa"
                            ng-class="'fa-' + tag.icon"
                            style="color: {{tag.color}}">
