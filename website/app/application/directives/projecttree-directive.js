@@ -100,11 +100,12 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
     };
 
     $scope.fileSelected = function (entry) {
-            entry.selected = !entry.selected;
-            var channel = projectFiles.channel;
-            if (channel !== null) {
-                pubsub.send(channel, entry);
-            }
+        var selected = entry.selected;
+        entry.selected = selected;
+        var channel = projectFiles.channel;
+        if (channel !== null) {
+            pubsub.send(channel, entry);
+        }
     };
 
     $scope.truncateTrail = function (currentTrail, currentItem) {
