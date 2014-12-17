@@ -129,7 +129,6 @@ def add_computed_items(projects_by_id, items, projects_key, item_key):
         if project_id in projects_by_id:
             projects_by_id[project_id][item_key].append(item)
 
-
 @app.route('/projects/<project_id>/datadirs')
 @apikey(shared=True)
 @jsonp

@@ -1,14 +1,6 @@
 Application.Services.factory('Review',
     ["$filter", function ($filter) {
         var service = {
-            open_reviews: [],
-            closed_reviews: [],
-
-            classifyReviews: function (project) {
-                service.open_reviews = $filter('byKey')(project.reviews, 'status', 'open');
-                service.closed_reviews = $filter('byKey')(project.reviews, 'status', 'closed');
-                return service.open_reviews;
-            },
 
             getReviews: function (status) {
                 if (status === 'open') {
