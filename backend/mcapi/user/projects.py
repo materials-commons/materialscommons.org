@@ -49,8 +49,7 @@ def get_all_group_projects():
 
 def add_computed_attributes(projects, user):
     for p in projects:
-        p['open_reviews'] = []
-        p['closed_reviews'] = []
+        p['reviews'] = []
         p['samples'] = []
         p['drafts'] = []
         p['processes'] = []

@@ -11,6 +11,7 @@ function projectHome($scope, project, User, mcapi, Events, uiCalendarConfig, $co
     };
 
     $scope.project = project;
+    console.log($scope.project);
     $scope.mcuser = User.attr();
     $scope.project = Events.addConvertedTime($scope.project);
 
