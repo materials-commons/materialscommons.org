@@ -100,7 +100,8 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
     };
 
     $scope.fileSelected = function (entry) {
-            entry.selected = !entry.selected;
+        var selected = entry.selected;
+            entry.selected = selected;
             var channel = projectFiles.channel;
             if (channel !== null) {
                 pubsub.send(channel, entry);

@@ -19,14 +19,14 @@ function projectReviewsOverview($scope, mcapi, Review) {
 
     $scope.showReviews = function (status) {
         if (status === "open") {
-            $scope.reviews = Review.getReviews('open');
+            $scope.status = 'open';
         } else {
-            $scope.reviews = Review.getReviews('closed');
+            $scope.status = 'closed';
         }
     };
 
     function init() {
-        $scope.reviews = Review.classifyReviews($scope.project);
+        $scope.status = 'open';
     }
     init();
 }
