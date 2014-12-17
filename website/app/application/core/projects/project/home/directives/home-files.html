@@ -21,6 +21,19 @@
     <div class="panel-body home-panel-body no-max-height">
         <ul class="list-unstyled">
             <li class="home-item pointer"
+                ng-click="showMediaType('all', 'All')">
+                <div>
+                    All
+                    <span class="badge pull-right" style="margin-top: 1px"
+                          ng-class="badge-info">
+                        {{fileCount | number}}
+                    </span>
+                    <p>
+                        <small class="text-muted">{{ project.size | bytes}}</small>
+                    </p>
+                </div>
+            </li>
+            <li class="home-item pointer"
                 ng-repeat="mediatype in mediatypes | filter:search | orderBy:'attrs.count':true as mtypes"
                 ng-click="showMediaType(mediatype.name, mediatype.attrs.description)">
                 <div>

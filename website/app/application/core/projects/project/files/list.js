@@ -39,12 +39,19 @@ function projectFilesListController($scope, projectFiles, $stateParams,
         $scope.files = [];
         var treeModel = new TreeModel();
         var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
-        root.walk({strategy: 'pre'}, function(node) {
-            if (node.model[key] == value) {
+        if (value == "all") {
+            root.walk({strategy: 'pre'}, function(node) {
                 node.model.showDetails = false;
                 $scope.files.push(node.model);
-            }
-        });
+            });
+        } else {
+            root.walk({strategy: 'pre'}, function(node) {
+                if (node.model[key] == value) {
+                    node.model.showDetails = false;
+                    $scope.files.push(node.model);
+                }
+            });
+        }
     });
 
     $scope.openFile = function(f) {
