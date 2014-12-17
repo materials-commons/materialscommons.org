@@ -1902,14 +1902,14 @@ ul.menu-bar li {
 }
 
 /* Home page sample details when open */
-.sample-details {
+.item-details {
   margin-top: -5px;
 }
-.sample-details .list-group .list-group-item {
+.item-details .list-group .list-group-item {
     padding: 5px 8px;
     border: 0.2px solid #bfbfbf;
 }
-.sample-details .list-group.scroll-bar {
+.item-details .list-group.scroll-bar {
     max-height: 140px;
     overflow-y: auto;
 }
@@ -1919,7 +1919,7 @@ ul.menu-bar li {
   padding-left: 10px;
 }
 .home-reviews-comment{
-  background-color: #d7d7d7;
+  border: 0.2px solid #bfbfbf;
   border-radius: 3px;
   font-size: 12px;
   min-height: 60px;
