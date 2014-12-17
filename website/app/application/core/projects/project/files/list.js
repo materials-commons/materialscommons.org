@@ -69,6 +69,8 @@ function projectFilesListController($scope, projectFiles, $stateParams,
             $scope.fileType = "image";
         } else if (file.mediatype === "application/pdf") {
             $scope.fileType = "pdf";
+        } else {
+            $scope.fileType = file.mediatype;
         }
         return file.showDetails;
     };
@@ -82,7 +84,8 @@ function projectFilesListController($scope, projectFiles, $stateParams,
     };
 
     $scope.fileSrc = function(file) {
-        return "datafiles/static/" + file.id+"?apikey=" + $scope.apikey;
+        var url = "datafiles/static/" + file.id+"?apikey=" + $scope.apikey;
+        return url;
     };
 
     $scope.onDrop = function(ignore, file) {
