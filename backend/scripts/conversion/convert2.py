@@ -223,15 +223,29 @@ def update_mtime_samples(conn):
     msg("Done...")
 
 
+def build_datadir2datafile(conn):
+    msg("Building datadir2datafile table")
+    datadirs = list(r.table("datadirs").run(conn))
+    for dd in datadirs:
+        dfs = [{"datadir_id": dd['id'], "datafile_id": dfid}
+               for dfid in dd['datafiles']]
+        r.table("datadir2datafile").insert(dfs).run(conn)
+        r.table("datadirs").get(dd['id'])\
+                           .replace(r.row.without("datafiles"))\
+                           .run(conn)
+    msg("Done...")
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    delete_tag_table_entries(conn)
-    load_sample2item(conn)
-    delete_tag_table_entries(conn)
-    load_tags(conn)
-    drop_unused_tables(conn)
+    # delete_tag_table_entries(conn)
+    # load_sample2item(conn)
+    # delete_tag_table_entries(conn)
+    # load_tags(conn)
+    # drop_unused_tables(conn)
     # add_mediatypes(conn, mcdir)
-    update_mtime_samples(conn)
+    # update_mtime_samples(conn)
+    build_datadir2datafile(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
