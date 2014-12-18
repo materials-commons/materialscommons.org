@@ -15,8 +15,6 @@ def create_tables():
     create_table("usergroups")
     create_table("tags")
     create_table("news")
-    create_table("tags")
-    create_table("tag2item")
     create_table("notes")
     create_table("runs")
     create_table("properties")
@@ -30,20 +28,19 @@ def create_tables():
     create_table("drafts")
     create_table("samples")
     create_table('access')
-    create_table("sample2item")
     create_table("elements")
     create_table("events")
-
-
-    # old
     create_table("datafiles")
     create_table("datadirs")
     create_table("project2datadir")
     create_table("project2datafile")
     create_table("datadirs_denorm")
-    create_table("projects2samples")
-    create_table("processes2samples")
-    create_table("items2tags")
+    create_table("tag2item")
+    create_table("comment2item")
+    create_table("note2item")
+    create_table("review2item")
+    create_table("process2item")
+    create_table("sample2item")
 
 
 def create_table(table):
@@ -81,8 +78,6 @@ def create_indices():
     create_index('properties', 'value')
     create_index('notes', 'project_id')
     create_index('events', 'project_id')
-
-    # old
     create_index('access', 'user_id')
     create_index('access', 'project_id')
     create_index('access', 'dataset')
@@ -110,23 +105,21 @@ def create_indices():
     create_index('project2datafile', 'datafile_id')
     create_index('tag2item', 'tag_id')
     create_index('tag2item', 'item_id')
-    create_index('treatments', 'value')
-    create_index('treatments', 'sample_id')
     create_index('templates', 'template_pick')
     create_index('processes', 'project')
-    create_index('projects2samples', 'project_id')
-    create_index('projects2samples', 'sample_id')
-    create_index('processes2samples', 'sample_id')
-    create_index('processes2samples', 'project_id')
     create_index('datafiles_denorm', 'df_id')
     create_index('datafiles_denorm', 'process_id')
     create_index('datafiles_denorm', 'project_id')
     create_index('samples', 'project_id')
-    create_index('items2tags', 'item_id')
     create_index('datadirs_denorm', 'name')
     create_index('datadirs_denorm', 'project_id')
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
+
+    create_index('projects2samples', 'project_id')
+    create_index('projects2samples', 'sample_id')
+    create_index('processes2samples', 'sample_id')
+    create_index('processes2samples', 'project_id')
 
 
 def create_index(table, name):
