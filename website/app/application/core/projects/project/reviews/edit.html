@@ -36,6 +36,7 @@
     <div class="row">
         <div class="col-lg-4">
             <h4><u>Review these items:</u></h4>
+
             <p class="text-muted" ng-show="review.items.length == 0">None</p>
             <ul class="cursor-pointer" ng-repeat="i in review.items">
                 <li data-toggle="tooltip" data-placement="bottom" title="Path: {{i.path}}">{{i.name}}</li>
