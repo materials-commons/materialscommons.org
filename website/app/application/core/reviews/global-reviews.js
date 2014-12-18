@@ -3,7 +3,8 @@ Application.Directives.directive('globalReviews', actionReviewsDirective);
 function actionReviewsDirective() {
     return {
         controller: "globalReviewsController",
-        restrict: "A",
+        restrict: "AE",
+        replace: true,
         templateUrl: "application/core/reviews/global-reviews.html"
     };
 }
@@ -33,18 +34,18 @@ function globalReviewsController($scope, User, Projects, pubsub) {
 
     function getAllReviews() {
         Projects.getList().then(function (projects) {
-            $scope.open_reviews = [];
+            $scope.reviews = [];
             projects.forEach(function(prj){
-                if(prj.open_reviews.length!==0){
-                    prj.open_reviews.forEach(function(r){
+                if(prj.reviews.length!==0){
+                    prj.reviews.forEach(function(r){
                         r.project_name = prj.name;
                         r.project_id = prj.id;
                     });
-                    $scope.open_reviews = $scope.open_reviews.concat(prj.open_reviews);
+                    $scope.reviews = $scope.reviews.concat(prj.reviews);
                 }
             });
         });
     }
-    $scope.open_reviews = [];
+    $scope.reviews = [];
     $scope.user = User.u();
 }

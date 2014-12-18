@@ -1,9 +1,7 @@
 Application.Controllers.controller('projectReviewsOverview',
-    ["$scope", "mcapi", "$filter", "dateGenerate", "User",
-        "project", "pubsub", projectReviewsOverview]);
+    ["$scope", "mcapi", "Review", projectReviewsOverview]);
 
-function projectReviewsOverview($scope, mcapi, $filter, dateGenerate,
-                                User, project, pubsub) {
+function projectReviewsOverview($scope, mcapi, Review) {
 
     $scope.editReview = function (index) {
         $scope.edit_index = index;
@@ -21,27 +19,14 @@ function projectReviewsOverview($scope, mcapi, $filter, dateGenerate,
 
     $scope.showReviews = function (status) {
         if (status === "open") {
-            $scope.reviews = project.open_reviews;
+            $scope.status = 'open';
         } else {
-            $scope.reviews = project.closed_reviews;
+            $scope.status = 'closed';
         }
     };
 
-    function reviewCount() {
-        pubsub.send("reviews.change");
-    }
-
     function init() {
-        $scope.review = '';
-        $scope.project = project;
-        reviewCount();
-        $scope.reviews = project.open_reviews;
-        $scope.model = {
-            new_review: "",
-            assigned_to: "",
-            title: ""
-        };
+        $scope.status = 'open';
     }
-
     init();
 }

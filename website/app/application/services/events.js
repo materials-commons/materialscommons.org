@@ -5,7 +5,7 @@ function EventsService($filter) {
         date: '',
 
         addConvertedTime: function (project) {
-            project.reviews = service.update(project.open_reviews);
+            project.reviews = service.update(project.reviews);
             project.samples = service.update(project.samples);
             project.processes = service.update(project.processes);
             project.notes = service.update(project.notes);

@@ -1906,14 +1906,14 @@ ul.menu-bar li {
 }
 
 /* Home page sample details when open */
-.sample-details {
+.item-details {
   margin-top: -5px;
 }
-.sample-details .list-group .list-group-item {
+.item-details .list-group .list-group-item {
     padding: 5px 8px;
     border: 0.2px solid #bfbfbf;
 }
-.sample-details .list-group.scroll-bar {
+.item-details .list-group.scroll-bar {
     max-height: 140px;
     overflow-y: auto;
 }
@@ -1921,4 +1921,15 @@ ul.menu-bar li {
 /* Expand contract individual boxes */
 .bar-control {
   padding-left: 10px;
+}
+.home-reviews-comment{
+  border: 0.2px solid #bfbfbf;
+  border-radius: 3px;
+  font-size: 12px;
+  min-height: 60px;
+  max-height: 110px;
+  overflow-y: auto;
+}
+.btn-xs.btn-mini{
+  line-height: 0.8;
 }
