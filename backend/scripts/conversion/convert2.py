@@ -155,9 +155,7 @@ def drop_table(table_name, conn):
 def drop_unused_tables(conn):
     msg("Dropping unused tables...")
     drop_table("conditions", conn)
-    drop_table('processes', conn)
     drop_table('processes2samples', conn)
-    drop_table('reviews', conn)
     drop_table("datafiles_denorm", conn)
     drop_table("items2tags", conn)
     drop_table("processes2samples", conn)
@@ -167,6 +165,7 @@ def drop_unused_tables(conn):
 
 
 def load_tags(conn):
+    msg("Loading tags...")
     users = list(r.table("users").run(conn))
     for user in users:
         projects = list(r.table("projects")
@@ -189,9 +188,11 @@ def load_tags(conn):
                 "tags": True
             }
         })).run(conn)
+    msg("Done...")
 
 
 def load_sample2item(conn):
+    msg("Mapping projects to samples...")
     all = list(r.table("projects2samples").run(conn))
     for p2s in all:
         s = r.table("samples").get(p2s['sample_id']).run(conn)
@@ -202,30 +203,35 @@ def load_sample2item(conn):
             "item_name": p2s["project_name"],
             "item_type": "project"
         }).run(conn)
+    msg("Done...")
 
 
 def delete_tag_table_entries(conn):
+    msg("Cleaning up old tag entries...")
     r.table("tags").delete().run(conn)
     r.table("tag2item").delete().run(conn)
+    msg("Done...")
 
 
 def update_mtime_samples(conn):
+    msg("Adding mtime to samples")
     samples = list(r.table("samples").run(conn))
     for sample in samples:
             r.table("samples").get(sample["id"]).update({
                 "mtime": sample["birthtime"]
             }).run(conn)
+    msg("Done...")
 
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    #load_sample2item(conn)
-    #delete_tag_table_entries(conn)
-    #load_tags(conn)
-    #drop_unused_tables(conn)
-    add_mediatypes(conn, mcdir)
-    #update_mtime_samples(conn)
-    #delete_tag_table_entries(conn)
+    delete_tag_table_entries(conn)
+    load_sample2item(conn)
+    delete_tag_table_entries(conn)
+    load_tags(conn)
+    drop_unused_tables(conn)
+    # add_mediatypes(conn, mcdir)
+    update_mtime_samples(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
