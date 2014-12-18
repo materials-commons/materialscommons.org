@@ -36,22 +36,26 @@ function projectFilesListController($scope, projectFiles, $stateParams,
     // will be fired when the loop is done. So the user will get a
     // loading message until everything is ready.
     $timeout(function() {
-        $scope.files = [];
-        var treeModel = new TreeModel();
-        var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
-        if (value == "all") {
-            root.walk({strategy: 'pre'}, function(node) {
-                node.model.showDetails = false;
-                $scope.files.push(node.model);
-            });
-        } else {
-            root.walk({strategy: 'pre'}, function(node) {
-                if (node.model[key] == value) {
-                    node.model.showDetails = false;
-                    $scope.files.push(node.model);
-                }
-            });
-        }
+        $scope.files = projectFiles.model.projects[$stateParams.id].byMediaType[value];
+        // $scope.files.forEach(function(node) {
+        //     node.showDetails = false;
+        // });
+        return;
+        // var treeModel = new TreeModel();
+        // var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
+        // if (value == "all") {
+        //     root.walk({strategy: 'pre'}, function(node) {
+        //         node.model.showDetails = false;
+        //         $scope.files.push(node.model);
+        //     });
+        // } else {
+        //     root.walk({strategy: 'pre'}, function(node) {
+        //         if (node.model[key] == value) {
+        //             node.model.showDetails = false;
+        //             $scope.files.push(node.model);
+        //         }
+        //     });
+        // }
     });
 
     $scope.openFile = function(f) {
