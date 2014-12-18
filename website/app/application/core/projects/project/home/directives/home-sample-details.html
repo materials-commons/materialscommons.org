@@ -3,7 +3,7 @@
         Description: {{sample.description}}
     </div>
 
-    <div class="row sample-details">
+    <div  class="row item-details">
         <div class="col-sm-4">
             <b ng-show="sample.properties.composition.unit">Composition:
                 <small>({{sample.properties.composition.unit}})</small>
@@ -26,6 +26,6 @@
     </div>
     <div style="margin-top: -10px;" class="row">
         <b>Notes:</b>
-        <textarea class="form-control" style="height:40px; width:100%">This is a text wrapping ....</textarea>
+        <textarea ng-model="sample.notes" class="form-control" style="height:40px; width:100%" disabled></textarea>
     </div>
 </div>

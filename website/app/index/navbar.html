@@ -30,12 +30,13 @@
                     <i class="fa fa-comment space-right"></i> Reviews
                     <span ng-controller="globalReviewsController"
                          style="background-color: rgba(255, 255, 255, 0.3)" class="badge ng-binding">
-                        {{open_reviews.length}}
+                        {{(reviews | byKey:'status':'open').length}}
                     </span>
                 </a>
-                <div class="dropdown-menu reviews-dropdown">
+                <div class="dropdown-menu reviews-dropdown nav-dropdown-scrollbar">
                     <!--directive-->
-                    <div  class="nav-dropdown-scrollbar" global-reviews></div>
+                    <global-reviews></global-reviews>
+                    <!--<div  global-reviews class="" ></div>-->
                 </div>
             </li>
             <li>

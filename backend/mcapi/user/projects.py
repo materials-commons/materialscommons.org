@@ -49,8 +49,7 @@ def get_all_group_projects():
 
 def add_computed_attributes(projects, user):
     for p in projects:
-        p['open_reviews'] = []
-        p['closed_reviews'] = []
+        p['reviews'] = []
         p['samples'] = []
         p['drafts'] = []
         p['processes'] = []
@@ -81,12 +80,7 @@ def add_reviews(projects_by_id, project_ids):
     reviews = list(r.table('reviews')
                    .get_all(*project_ids, index='project')
                    .run(g.conn, time_format='raw'))
-    open_reviews = [review for review in reviews if review['status'] == "open"]
-    closed_reviews = [review for review in reviews
-                      if review['status'] == "closed"]
-    add_computed_items(projects_by_id, open_reviews, 'project', 'open_reviews')
-    add_computed_items(projects_by_id, closed_reviews, 'project',
-                       'closed_reviews')
+    add_computed_items(projects_by_id, reviews, 'project', 'reviews')
 
 
 def add_samples(projects_by_id, project_ids):
@@ -133,7 +127,6 @@ def add_computed_items(projects_by_id, items, projects_key, item_key):
         project_id = item[projects_key]
         if project_id in projects_by_id:
             projects_by_id[project_id][item_key].append(item)
-
 
 @app.route('/projects/<project_id>/datadirs')
 @apikey(shared=True)

@@ -14,6 +14,17 @@ Application.Controllers.controller("homeNotesDirectiveController",
     ["$scope",
         homeNotesDirectiveController]);
 
-function homeNotesDirectiveController() {
+function homeNotesDirectiveController($scope) {
+    var showNoteDetails = [];
+    for (var i = 0; i < $scope.project.notes.length; i++) {
+        showNoteDetails.push(false);
+    }
+    $scope.toggleDetails = function(index) {
+        showNoteDetails[index] = !showNoteDetails[index];
+    };
+
+    $scope.showDetails = function(index) {
+        return showNoteDetails[index];
+    };
 }
 

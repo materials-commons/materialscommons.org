@@ -5,7 +5,7 @@
             <a ui-sref="projects.project.reviews.overview">
                 Reviews
             </a>
-            ({{reviews.length}})
+            ({{(project.reviews | byKey: 'status': 'open').length}})
         </span>
         <a ng-click="sideboardExpanded = !sideboardExpanded"
            class="pull-right bar-control">
@@ -23,20 +23,61 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="review in project.reviews | filter:search | event: project.date: project.nextdate as reviews">
+                ng-repeat="review in project.reviews | byKey: 'status': 'open' |
+                 filter:search | event: project.date: project.nextdate as reviews">
                 <div>
-                    <i class="fa fa-fw fa-user fa-2x"></i> {{review.author}} commented on
-                    <a ui-sref="projects.project.reviews.edit({'review_id': review.id, 'status': review.status})">
-                        {{review.title | truncate: 25 : '...':true}}</a>
+                    <i class="fa"
+                       ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
+                    <span class="pointer" ng-click="toggleDetails($index)">
+                        {{review.title | truncate: 25 : '...':true}}
+                    </span>
+                     <span ng-click="toggleDetails($index)" class="pull-right"
+                           style="padding-left: 5px;">
+                        <i data-toggle="tooltip" data-placement="bottom"
+                           title="{{review.messages.length}}"
+                           class="pointer fa fa-fw" ng-class="{'fa-comments-o': review.messages.length !== 0}"></i>
+                    </span>
 
                     <p>
-                        <small class="text-muted">{{review.mtime | toDateString}}</small>
+                        <small style="padding-left: 10px;" class="text-muted">
+                            {{review.messages[(review.messages.length -1)].who}} commented on
+                            {{(review.messages[(review.messages.length -1)].date)}}
+                        </small>
+
                     </p>
+
+                </div>
+                <div ng-show="showDetails($index)">
+                    <div home-review-details review="review"></div>
                 </div>
             </li>
             <li ng-show="reviews.length === 0" class="home-item">
                 <div>No reviews.</div>
             </li>
         </ul>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-close-review" tabindex="-1" role="dialog"
+     aria-labelledby="confirmCloseLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelClose">Close Review</h4>
+            </div>
+            <div class="modal-body">
+                On closing review will be archived
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Dismiss
+                </button>
+                <button ng-click="closeReview()" type="button" class="btn btn-danger"
+                        data-dismiss="modal">
+                    Yes
+                </button>
+            </div>
+        </div>
     </div>
 </div>

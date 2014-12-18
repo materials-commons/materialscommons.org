@@ -110,7 +110,7 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
 
     $scope.truncateTrail = function (currentTrail, currentItem) {
         var i = _.indexOf(currentTrail, function(item) {
-            return item.displayname == currentItem.displayname;
+            return item.displayname === currentItem.displayname;
         });
 
         return currentTrail.slice(0, i+1);
