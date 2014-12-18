@@ -20,41 +20,41 @@ Application.Directives.directive('paged',
             link: function ($scope, element, attrs) {
                 $scope.size = function () {
                     return $scope.data.length;
-                }
+                };
 
                 $scope.end = function () {
                     var endItem = $scope.start() + $scope.pageSize;
                     return endItem > $scope.size() ? $scope.data.length : endItem;
-                }
+                };
 
                 $scope.start = function () {
                     return $scope.currentPage * $scope.pageSize;
-                }
+                };
 
                 $scope.showStart = function () {
                     var s = $scope.start();
                     return s + 1;
-                }
+                };
 
                 $scope.page = function () {
                     return $scope.size() ? ($scope.currentPage + 1) : 0;
-                }
+                };
 
                 $scope.hasNextPage = function () {
                     return $scope.page() < ($scope.size() / $scope.pageSize);
-                }
+                };
 
                 $scope.nextPage = function () {
                     $scope.currentPage = parseInt($scope.currentPage) + 1;
-                }
+                };
 
                 $scope.hasPreviousPage = function () {
-                    return $scope.currentPage != 0;
-                }
+                    return $scope.currentPage !== 0;
+                };
 
                 $scope.previousPage = function () {
                     $scope.currentPage = $scope.currentPage - 1;
-                }
+                };
 
                 try {
                     if (!angular.isDefined($scope.data)) {
@@ -71,5 +71,5 @@ Application.Directives.directive('paged',
                 } catch (e) {
                 }
             }
-        }
+        };
     });
