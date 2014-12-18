@@ -22,9 +22,21 @@
             </ul>
         </div>
     </div>
-
     <div class="row">
-        <div ng-repeat="comment in review.messages">
+        <span >
+            <button ng-click="addComment = !addComment" class="btn btn-xs btn-mini btn-success">comment</button>
+            <button ng-click="cacheReview(review)" data-toggle="modal"
+                    data-target="#confirm-close-review"
+                    class="btn btn-xs btn-mini btn-danger">close
+            </button>
+        </span>
+    </div>
+    <div ng-show="addComment" class="row">
+         <textarea placeholder="Add comment..." class="form-control" ng-model="model.comment"></textarea>
+        <button ng-click="addComment1(review)" class="btn btn-success">Add</button>
+    </div>
+    <div class="row">
+        <div ng-repeat="comment in review.messages | reverse">
             <div class="home-reviews-comment">
                 <div class="row">
                <span class="pull-left">
@@ -34,7 +46,8 @@
                 </div>
 
                 <div class="row">
-                    <div  style="padding-left: 10px;" ta-bind="text" ta-readonly='disabled' ng-model="comment.message"></div>
+                    <div style="padding-left: 10px;" ta-bind="text" ta-readonly='disabled'
+                         ng-model="comment.message"></div>
                 </div>
             </div>
         </div>

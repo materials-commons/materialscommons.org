@@ -11,9 +11,9 @@ function homeReviewsDirective () {
 }
 
 Application.Controllers.controller("homeReviewsDirectiveController",
-                                   ["$scope","mcapi", "Review",
+                                   ["$scope", "Review",
                                     homeReviewsDirectiveController]);
-function homeReviewsDirectiveController ($scope, mcapi, Review) {
+function homeReviewsDirectiveController ($scope, Review) {
     var showReviewDetails = [];
     for (var i = 0; i < $scope.project.notes.length; i++) {
         showReviewDetails.push(false);
@@ -27,13 +27,11 @@ function homeReviewsDirectiveController ($scope, mcapi, Review) {
     };
 
     $scope.closeReview = function () {
-        mcapi('/reviews/%', $scope.cached_review.id)
-            .success(function () {
-                $scope.project.reviews[$scope.index].status = 'closed';
-            }).put({'status': 'closed'});
+        Review.closeReview($scope.cached_review.id, $scope.project);
     };
-    $scope.cacheReview = function (review, index) {
+
+    $scope.cacheReview = function (review) {
        $scope.cached_review = review;
-       $scope.index = index;
     };
+
 }
