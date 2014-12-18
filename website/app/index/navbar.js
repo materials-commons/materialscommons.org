@@ -27,8 +27,6 @@ function navbarDirectiveController($scope, current, $state, projectState, pubsub
         help.toggle();
     };
 
-    $scope.open_reviews_count = 0;
-
     $scope.create = function(action) {
         var projectID = current.projectID();
         var route = "projects.project." + action + ".create";
@@ -37,13 +35,4 @@ function navbarDirectiveController($scope, current, $state, projectState, pubsub
         $scope.status = false;
         $state.go(route, {id: projectID, sid: stateID});
     };
-
-    pubsub.waitOn($scope, "reviews.change", function() {
-        Projects.getList().then(function (projects) {
-            $scope.open_reviews_count = 0;
-            projects.forEach(function(prj){
-                $scope.open_reviews_count++;
-            });
-        });
-    });
 }

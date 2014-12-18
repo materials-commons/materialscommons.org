@@ -1,5 +1,5 @@
 Application.Services.factory('Review',
-    ["$filter", "mcapi",  "User", function ($filter, mcapi, User) {
+    ["$filter", "mcapi", "User", "pubsub", function ($filter, mcapi, User, pubsub) {
         var service = {
 
             findReview: function (reviewID, which, project) {

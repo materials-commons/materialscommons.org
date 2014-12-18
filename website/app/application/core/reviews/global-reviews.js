@@ -3,7 +3,8 @@ Application.Directives.directive('globalReviews', actionReviewsDirective);
 function actionReviewsDirective() {
     return {
         controller: "globalReviewsController",
-        restrict: "A",
+        restrict: "AE",
+        replace: true,
         templateUrl: "application/core/reviews/global-reviews.html"
     };
 }
