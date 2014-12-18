@@ -22,7 +22,7 @@
                 ui-draggable="true"
                 drag="file"
                 ng-click="toggleDetails(file)"
-                ng-repeat="file in files | filter:search | orderBy:'name' | limitTo:1000 as matchingFiles track by file.id" on-repeat-finished="files-loaded">
+                ng-repeat="file in files | filter:search | orderBy:'name' | limitTo:50 as matchingFiles track by file.id" on-repeat-finished="files-loaded">
                 <div>
                     <i class="fa"
                        ng-class="{'fa-caret-right': !showDetails(file), 'fa-caret-down': showDetails(file)}"></i>
