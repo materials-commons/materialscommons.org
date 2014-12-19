@@ -20,7 +20,8 @@
             <ul class="list-group scroll-bar">
                 <li class="list-group-item"
                     ng-repeat="(key, value) in sample.properties | removeKey:'composition' as properties">{{key}}
-                    <span style="float: right;">{{value.value}} {{value.unit}}</span></li>
+                    <span style="float: right;">{{value.value}} {{value.unit}}</span>
+                </li>
             </ul>
         </div>
     </div>
