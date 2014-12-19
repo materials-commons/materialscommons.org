@@ -1,10 +1,14 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "provStep", "ui",
                                     "project", "current", "pubsub", "recent", "User",
-                                    "projectFiles", "mcapi", "help", projectsProject]);
+                                    "projectFiles", "mcapi", "help", "sideboard",
+                                    projectsProject]);
 
 function projectsProject ($scope, provStep, ui, project, current,
-                          pubsub, recent, User, projectFiles, mcapi, help) {
+                          pubsub, recent, User, projectFiles, mcapi,
+                          help, sideboard) {
+    $scope.sideboard = sideboard.get(project.id);
+
     $scope.showHelp = function() {
         return help.isActive();
     };

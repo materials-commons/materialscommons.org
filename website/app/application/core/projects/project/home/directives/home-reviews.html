@@ -23,6 +23,7 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
+                ng-class="{'open-item-details': showDetails($index)}"
                 ng-repeat="review in project.reviews | byKey: 'status': 'open' |
                  filter:search | event: project.date: project.nextdate as reviews">
                 <div>
@@ -31,6 +32,7 @@
                     <span class="pointer" ng-click="toggleDetails($index)">
                         {{review.title | truncate: 25 : '...':true}}
                     </span>
+
                      <span ng-click="toggleDetails($index)" class="pull-right"
                            style="padding-left: 5px;">
                         <i data-toggle="tooltip" data-placement="bottom"
@@ -43,11 +45,10 @@
                             {{review.messages[(review.messages.length -1)].who}} commented on
                             {{(review.messages[(review.messages.length -1)].date)}}
                         </small>
-
                     </p>
 
                 </div>
-                <div ng-show="showDetails($index)">
+                <div ng-if="showDetails($index)">
                     <div home-review-details review="review"></div>
                 </div>
             </li>
