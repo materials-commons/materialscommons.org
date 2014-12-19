@@ -151,10 +151,21 @@ def get_project_tree2(project_id):
     if proj is None:
         return error.bad_request("Unknown project id: %s" % (project_id))
     access.check(user, proj['owner'])
-    selection = list(r.table('project2datadir')
-                     .get_all(project_id, index='project_id')
-                     .eq_join("datadir_id", r.table('datadirs_denorm'))
-                     .zip().run(g.conn, time_format='raw'))
+    # selection = list(r.table('project2datadir')
+    #                  .get_all(project_id, index='project_id')
+    #                  .eq_join("datadir_id", r.table('datadirs_denorm'))
+    #                  .zip().run(g.conn, time_format='raw'))
+    selection = list(r.table("project2datadir")
+                     .get_all(project_id, index="project_id")
+                     .eq_join("datadir_id", r.table("datadirs"))
+                     .zip()
+                     .merge(lambda dd: {
+                         "datafiles": r.table("datadir2datafile")
+                         .get_all(dd['id'], index="datadir_id")
+                         .eq_join("datafile_id", r.table("datafiles"))
+                         .zip()
+                         .coerce_to("array")})
+                     .run(g.conn, time_format="raw"))
     return build_tree(selection)
 
 
@@ -188,7 +199,7 @@ def build_tree(datadirs):
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
                        ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
-        ditem.tags = ddir['tags']
+        ditem.tags = []  # ddir['tags']
         ditem.c_id = next_id
         next_id = next_id + 1
         #
@@ -210,8 +221,8 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
-            dfitem.tags = df['tags']
-            dfitem.mediatype = df['mediatype']
+            dfitem.tags = []  # df['tags']
+            dfitem.mediatype = df['mediatype']['mime']
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:

@@ -42,7 +42,7 @@ def datafile_for_user_by_id(datafileid):
     rr = args.add_pluck_when_fields(rr)
     df = rr.run(g.conn, time_format='raw')
     access.check(user, df['owner'], df['id'])
-    tags = list(r.table('items2tags')
+    tags = list(r.table('tag2item')
                 .get_all(datafileid, index='item_id')
                 .filter({'user': user})
                 .pluck('tag').run(g.conn))

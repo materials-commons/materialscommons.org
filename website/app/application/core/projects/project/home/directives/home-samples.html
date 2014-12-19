@@ -38,11 +38,11 @@
                             Composition({{sample.properties.composition.unit}}) :
                             <span style="padding-left: 3px; "ng-repeat="each in sample.properties.composition.value">{{each.element}} -{{each.value}}</span>
                         </small>
-                    </p>
-                    <p>
                         <small ng-if="sample.properties.composition.value.length === 0">
                             Composition : None
                         </small>
+                    </p>
+                    <p>
                         <small class="text-muted">{{sample.birthtime | toDateString}}
                         </small>
                         <small class="text-muted"
