@@ -8,6 +8,7 @@ function projectsProject ($scope, provStep, ui, project, current,
     $scope.showHelp = function() {
         return help.isActive();
     };
+
     $scope.isExpanded = function(what) {
         return help.isActive() && ui.isExpanded(project.id, what);
     };

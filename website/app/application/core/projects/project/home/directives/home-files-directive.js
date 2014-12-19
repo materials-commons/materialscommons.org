@@ -11,14 +11,22 @@ function homeFilesDirective() {
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
-                                   ["$scope", "$state", "listParams", "searchParams",
+                                   ["$scope", "$state", "listParams", "searchParams", "ui",
                                     homeFilesDirectiveController]);
-function homeFilesDirectiveController($scope, $state, listParams, searchParams) {
+function homeFilesDirectiveController($scope, $state, listParams, searchParams, ui) {
     $scope.showMediaType = function(mediatype, mediaTypeDescription) {
         listParams.set("file-list", "mediatype", mediatype,
                        "File type:" + mediaTypeDescription);
         searchParams.clear("file-list");
         $state.go("projects.project.files.list");
+    };
+
+    $scope.toggleExpanded = function() {
+        ui.toggleIsExpanded($scope.project.id, "files");
+    };
+
+    $scope.isExpanded = function() {
+        return ui.isExpanded($scope.project.id, "files");
     };
 
     function setupMediatypeAttrs() {
