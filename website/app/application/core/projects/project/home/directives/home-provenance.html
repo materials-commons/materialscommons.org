@@ -23,35 +23,28 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="draft in project.drafts | filter:search | event:project.date:project.nextdate as drafts">
+                ng-repeat="process in project.processes_drafts | filter:search | event:project.date:project.nextdate as procs">
                 <div>
-                    Created a new process
-                    <a ui-sref="projects.project.provenance.drafts">
-                        {{draft.process.name | truncate:25:'...':true}}
-                    </a>
-                    <span class="label label-primary"
-                          style="background-color:#e26a6a">
-                        Draft
+                    <span ng-click="toggleDetails($index, process)" style="cursor: pointer">
+                        <i class="fa"
+                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}">
+                        </i>
+                         <span ng-show="process.process">
+                              {{process.process.name | truncate:25:'...':true}}
+                                <span class="label label-primary"
+                                      style="background-color:#e26a6a">Draft </span>
+                         </span>
+                        <span ng-hide="process.process">
+                          {{process.name | truncate:25:'...':true}}
+
+                        </span>
                     </span>
-
-                    <p>
-                        <small class="text-muted">{{draft.mtime | toDateString}}</small>
-                    </p>
-                </div>
-            </li>
-            <li ng-show="drafts.length === 0" class="home-item">
-                <div> No drafts.</div>
-            </li>
-        </ul>
-        <ul class="list-unstyled">
-            <li class="home-item"
-                ng-repeat="process in project.processes | filter:search | event:project.date:project.nextdate as procs">
-                <div>
-                    Submitted <a>{{process.name | truncate:25:'...':true}}</a>
-
                     <p>
                         <small class="text-muted">{{process.birthtime | toDateString}}</small>
                     </p>
+                </div>
+                <div ng-if="showDetails($index)">
+                    <home-provenance-details ></home-provenance-details>
                 </div>
             </li>
             <li ng-show="procs.length === 0" class="home-item">
