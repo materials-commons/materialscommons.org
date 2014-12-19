@@ -5,10 +5,10 @@
             <a ui-sref="projects.project.samples.overview">Samples</a>
             ({{samples.length}})
         </span>
-        <a ng-click="sideboardExpanded = !sideboardExpanded"
+        <a ng-click="toggleExpanded()"
            class="pull-right bar-control">
             <i class="fa"
-               ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
+               ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
         </a>
         <input type="text" ng-model="search.name"
                placeholder="Search samples..." class="pull-right col-xs-4">
@@ -18,7 +18,7 @@
             </a>
         </span>
     </div>
-    <div class="panel-body home-panel-body">
+    <div class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
             <li class="home-item"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">

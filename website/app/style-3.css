@@ -1534,6 +1534,10 @@ label {
   background-color: #9fadbc;
 }
 
+.badge-white {
+  background-color: #ffffff;
+}
+
 .tab-active {
   color: white;
   font-style: normal;
