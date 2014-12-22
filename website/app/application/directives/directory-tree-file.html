@@ -1,4 +1,4 @@
-<div class="col-xs-12" ng-switch="fileType" style="padding-left: 0px; padding-right: 0px;">
+<div class="col-xs-12" ng-switch="fileType">
     <div ng-switch-when="image">
         <img class="img-responsive" ng-src="{{fileSrc(file)}}">
     </div>
@@ -8,9 +8,10 @@
                    ng-src="{{fileSrc(file)}}"></embed>
         </div>
     </div>
-    <div ng-switch-default style="padding-left: 0px; padding-right: 0px;">
-        <div ng-if="file.size <= 10000" hljs
-             include="fileSrc(file)" style="padding-left: 0px; padding-right: 0px;"></div>
+    <div ng-switch-default>
+        <div ng-if="file.size <= 10000"
+             hljs
+             include="fileSrc(file)"></div>
         <code ng-if="file.size > 10000 && file.size <= 2000000"
               style="white-space:pre-line" ng-include="fileSrc(file)"></code>
         <div ng-if="file.size > 2000000">File too big to display</div>

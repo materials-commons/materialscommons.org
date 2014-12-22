@@ -13,37 +13,42 @@ function directoryTreeDirective() {
 }
 
 Application.Controllers.controller("directoryTreeController",
-                                   ["$scope", "projectFiles", "User",
+                                   ["$scope", "projectFiles", "$debounce", "watcher",
+                                    "$filter",
                                     directoryTreeController]);
 
-function directoryTreeController($scope, projectFiles, User) {
+function directoryTreeController($scope, projectFiles, $debounce, watcher, $filter) {
     $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
     $scope.files.forEach(function(f) {
         f.showDetails = false;
     });
-    //console.dir($scope.files[0]);
-    $scope.loaded = true;
-    $scope.apikey = User.apikey();
 
     $scope.toggleDetails = function(file) {
         file.showDetails = !file.showDetails;
     };
 
     $scope.showDetails = function(file) {
-        if (file.type === 'datafile') {
-            if (isImage(file.mediatype)) {
-                $scope.fileType = "image";
-            } else if (file.mediatype === "application/pdf") {
-                $scope.fileType = "pdf";
-            } else {
-                $scope.fileType = file.mediatype;
-            }
-        }
         return file.showDetails;
     };
 
-    $scope.fileSrc = function(file) {
-        var url = "datafiles/static/" + file.id+"?apikey=" + $scope.apikey;
-        return url;
+    var search = {
+        name: ""
     };
+
+    watcher.watch($scope, "searchInput", function(s) {
+        if (search.name === s) {
+            return;
+        }
+        $debounce(applyQuery, 350);
+    });
+
+    function applyQuery() {
+        if ($scope.searchInput === "") {
+            $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
+        } else {
+            var filesToSearch = projectFiles.model.projects[$scope.project.id].byMediaType.all;
+            search.name = $scope.searchInput;
+            $scope.files = $filter('filter')(filesToSearch, search);
+        }
+    }
 }
