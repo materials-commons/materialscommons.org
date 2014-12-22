@@ -139,8 +139,10 @@ def add_mediatypes(conn, mcdir):
             r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
         r.table('projects').get(project_id)\
-                           .update({'mediatypes': mediatypes, 'size': project_size})\
-                           .run(conn)
+                           .update({
+                               'mediatypes': mediatypes,
+                               'size': project_size
+                           }).run(conn)
     msg("Done...")
 
 
