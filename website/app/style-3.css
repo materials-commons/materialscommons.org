@@ -939,10 +939,22 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-top-width: 1px;
   border-bottom-color: #d1d1d1;
   border-top-color: #ffffff;
+  padding-left: 15px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 .home-panel-heading {
   padding-right: 7px;
+}
+
+.file-item {
+  background-color: #ffffff;
+  border-top: none;
+  border-bottom: none;
+  padding-left: 15px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 .add-item {
@@ -953,7 +965,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   background-color: #eeeeee;
 }
 
-.home-panel-body div {
+.home-panel-body2 dir {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 3px;
