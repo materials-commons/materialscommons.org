@@ -21,7 +21,7 @@ var app = angular.module('materialscommons',
                              'ng-context-menu',
                              "cfp.hotkeys",'angular.filter', 'ui.calendar',
                              '$strap.directives', 'ui.bootstrap', 'toastr',
-                             'tc.chartjs', "hljs", "nsPopover",
+                             'tc.chartjs', "hljs", "nsPopover", "RecursionHelper",
                              'application.core.constants', 'application.core.services',
                              'application.core.controllers',
                              'application.core.filters', 'application.core.directives']);
