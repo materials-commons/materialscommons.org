@@ -4,36 +4,40 @@
             <a ng-click="showCalendar = !showCalendar">
                 <i class="fa fa-fw fa-2x fa-calendar"></i>
             </a>
+            <a ng-click="showSideboard = !showSideboard">
+                <i class="fa fa-fw fa-2x fa-clipboard"> </i>
+                <span class="badge badge-superscript-count">{{sideboard.length}}</span>
+            </a>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-xs-6" ng-if="showCalendar">
+            <div home-calendar project="project"></div>
+        </div>
+        <div class="col-xs-6" ng-if="showSideboard">
+            Sideboard here
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6" >
-            <div ng-if="showCalendar" class="row">
-                <div class="btn-toolbar">
-                    <div class="btn-group">
-                        <button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar')">Day</button>
-                        <button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar')">Week</button>
-                        <button class="btn btn-success" ng-click="changeView('month', 'myCalendar')">Month</button>
-                    </div>
-                </div>
-                <div style="padding-bottom: 16px;" ui-calendar="uiConfig.calendar" calendar="myCalendar" ng-model="eventSources"></div>
-            </div>
-            <div class="row">
+        <div ng-class="{'col-xs-6': !isExpandedInColumn(['reviews', 'files']), 'col-xs-12': isExpandedInColumn(['reviews', 'files'])}"
+             ng-show="!isExpandedInColumn(['samples', 'notes', 'processes'])">
+            <div class="row" ng-show="show('reviews')">
                 <div home-reviews project="project"></div>
             </div>
-            <div class="row">
+            <div class="row" ng-show="show('files')">
                 <div home-files project="project"></div>
             </div>
         </div>
-        <div class="col-xs-6">
-            <div class="row">
+        <div ng-class="{'col-xs-6': !isExpandedInColumn(['samples', 'notes', 'processes']), 'col-xs-12': isExpandedInColumn(['samples', 'notes', 'processes'])}"
+             ng-show="!isExpandedInColumn(['reviews', 'files'])">
+            <div class="row" ng-show="show('samples')">
                 <div home-samples project="project"></div>
             </div>
-            <div class="row">
+            <div class="row" ng-show="show('notes')">
                 <div home-notes project="project"></div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="show('processes')">
                 <div home-provenance project="project"></div>
             </div>
         </div>

@@ -7,10 +7,10 @@
             </a>
             ({{drafts.length + procs.length}})
         </span>
-        <a ng-click="sideboardExpanded = !sideboardExpanded"
+        <a ng-click="toggleExpanded()"
            class="pull-right bar-control">
             <i class="fa"
-               ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
+               ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
         </a>
         <input type="text" ng-model="search.name" class="pull-right col-xs-4"
                placeholder="Search processes...">
@@ -23,6 +23,7 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
+                ng-class="{'open-item-details': showDetails($index)}"
                 ng-repeat="process in project.processes_drafts | filter:search | event:project.date:project.nextdate as procs">
                 <div>
                     <span ng-click="toggleDetails($index, process)" style="cursor: pointer">

@@ -11,10 +11,10 @@ function homeNotesDirective() {
 }
 
 Application.Controllers.controller("homeNotesDirectiveController",
-    ["$scope",
-        homeNotesDirectiveController]);
+                                   ["$scope", "ui",
+                                    homeNotesDirectiveController]);
 
-function homeNotesDirectiveController($scope) {
+function homeNotesDirectiveController($scope, ui) {
     var showNoteDetails = [];
     for (var i = 0; i < $scope.project.notes.length; i++) {
         showNoteDetails.push(false);
@@ -26,5 +26,12 @@ function homeNotesDirectiveController($scope) {
     $scope.showDetails = function(index) {
         return showNoteDetails[index];
     };
-}
 
+    $scope.toggleExpanded = function() {
+        ui.toggleIsExpanded($scope.project.id, "notes");
+    };
+
+    $scope.isExpanded = function() {
+        return ui.isExpanded($scope.project.id, "notes");
+    };
+}

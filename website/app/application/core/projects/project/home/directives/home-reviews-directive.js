@@ -11,9 +11,9 @@ function homeReviewsDirective () {
 }
 
 Application.Controllers.controller("homeReviewsDirectiveController",
-                                   ["$scope", "Review",
+                                   ["$scope", "Review", "ui",
                                     homeReviewsDirectiveController]);
-function homeReviewsDirectiveController ($scope, Review) {
+function homeReviewsDirectiveController ($scope, Review, ui) {
     var showReviewDetails = [];
     for (var i = 0; i < $scope.project.notes.length; i++) {
         showReviewDetails.push(false);
@@ -31,7 +31,15 @@ function homeReviewsDirectiveController ($scope, Review) {
     };
 
     $scope.cacheReview = function (review) {
-       $scope.cached_review = review;
+        $scope.cached_review = review;
+    };
+
+    $scope.toggleExpanded = function() {
+        ui.toggleIsExpanded($scope.project.id, "reviews");
+    };
+
+    $scope.isExpanded = function() {
+        return ui.isExpanded($scope.project.id, "reviews");
     };
 
 }

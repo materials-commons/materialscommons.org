@@ -11,9 +11,16 @@ function homeProvenanceDirective() {
 }
 
 Application.Controllers.controller("homeProvenanceDirectiveController",
-    ["$scope",
-        homeProvenanceDirectiveController]);
-function homeProvenanceDirectiveController($scope) {
+                                   ["$scope", "ui",
+                                    homeProvenanceDirectiveController]);
+function homeProvenanceDirectiveController($scope, ui) {
+    $scope.toggleExpanded = function() {
+        ui.toggleIsExpanded($scope.project.id, "processes");
+    };
+
+    $scope.isExpanded = function() {
+        return ui.isExpanded($scope.project.id, "processes");
+    };
     var showProvenanceDetails = [];
     for (var i = 0; i < $scope.project.processes.length; i++) {
         showProvenanceDetails.push(false);
