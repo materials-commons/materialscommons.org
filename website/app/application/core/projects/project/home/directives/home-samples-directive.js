@@ -12,10 +12,10 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-                                   ["$scope",
+                                   ["$scope", "ui", "sideboard",
                                     homeSamplesController]);
 
-function homeSamplesController($scope) {
+function homeSamplesController($scope, ui, sideboard) {
     var showSampleDetails = [];
     for (var i = 0; i < $scope.project.samples.length; i++) {
         showSampleDetails.push(false);
@@ -27,5 +27,17 @@ function homeSamplesController($scope) {
 
     $scope.showDetails = function(index) {
         return showSampleDetails[index];
+    };
+
+    $scope.toggleExpanded = function() {
+        ui.toggleIsExpanded($scope.project.id, "samples");
+    };
+
+    $scope.isExpanded = function() {
+        return ui.isExpanded($scope.project.id, "samples");
+    };
+
+    $scope.addToSideboard = function(sample, event) {
+        sideboard.handleFromEvent($scope.project.id, sample, event);
     };
 }

@@ -967,6 +967,14 @@ h4, .h4, h5, .h5, h6, .h6 {
   padding-top: 3px;
 }
 
+.open-item-details {
+  background-color: #e9e7dd;
+  border-left: 2px solid #d1d1d1;
+  border-right: 2px solid #d1d1d1;
+  border-bottom: 2px solid #d1d1d1;
+  border-top: 2px solid #ffffff;
+}
+
 .panel-primary {
   border-color: #c9c9c9;
 }
@@ -1532,6 +1540,18 @@ label {
 
 .badge-light {
   background-color: #9fadbc;
+}
+
+.badge-superscript-count {
+  background-color: #ffffff;
+  color: #800000;
+  position: relative;
+  top: -15px;
+  left: -12px;
+}
+
+.in-sideboard {
+  color: #800000;
 }
 
 .tab-active {
