@@ -15,3 +15,18 @@ Application.Filters.filter('byKey', function () {
         return matches;
     };
 });
+
+
+Application.Filters.filter('removeKey', function () {
+    return function (properties, keyToRemove) {
+        var matches = {};
+        if (properties) {
+           angular.forEach(properties, function(value, key) {
+              if (key !== keyToRemove) {
+                  matches[key] = value;
+              }
+           });
+        }
+        return matches;
+    };
+});

@@ -580,10 +580,10 @@ body {
   opacity: 1;
 }
 
-/*.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {*/
-/*padding-left: 15px;*/
-/*padding-right: 15px;*/
-/*}*/
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 .form-horizontal .form-group {
   margin-bottom: 5px;
@@ -884,7 +884,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .sidebar-list .sidebar-action {
   /*background-color: #333333;*/
-  background-color: rgba(0,0,0, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-list .list-group-item:first-child {
@@ -899,7 +899,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .sidebar-list a.list-group-item:hover {
   /*background-color: #525A60;*/
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
 }
 
@@ -908,6 +908,10 @@ h4, .h4, h5, .h5, h6, .h6 {
   background-color: rgba(37, 97, 136, 0.4);
   color: white;
   outline: none;
+}
+
+.sidebar-list a.list-group-item i {
+  margin-left: 15px;
 }
 
 .sidebar-list a.list-group-item:focus {
@@ -928,7 +932,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .home-item {
-  background-color: #fcfcfc;
+  background-color: #ffffff;
   border-top-style: solid;
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -937,11 +941,19 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-top-color: #ffffff;
 }
 
+.home-panel-heading {
+  padding-right: 7px;
+}
+
+.add-item {
+  margin-right: 10px;
+}
+
 .home-item:hover {
   background-color: #eeeeee;
 }
 
-.no-content {
+.home-panel-body div {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 3px;
@@ -961,45 +973,74 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .home-panel-body {
   padding: 0px;
+  max-height: 439px;
+  overflow-y: auto;
+}
+
+.side-by-side {
+  max-height: 800px;
+}
+
+.no-max-height {
+  max-height: none;
 }
 
 .panel-heading.samples-color {
   background-color: #f0ad4e;
-  opacity: 100%;
+  opacity: 1;
 }
 
 .panel-heading.reviews-color {
   background-color: #4884b8;
-  opacity: 85%;
+  opacity: .85;
 }
 
 .panel-heading.notes-color {
   background-color: #3ea7a0;
-  opacity: 85%;
+  opacity: .85;
 }
 
 .panel-heading.files-color {
+  background-color: #7c699f;
+  opacity: .85;
+}
 
+.panel-heading.sideboard-color {
+  background-color: #256188;
+  opacity: .85;
 }
 
 .panel-heading.processes-color {
   background-color: #e26a6a;
-  opacity: 100%;
+  opacity: 1;
+}
+
+.trythis:hover {
+  text-decoration: underline;
+}
+
+.panel {
+  margin-bottom: 15px;
 }
 
 .panel-heading span {
+  font-size: 14px;
+  font-family: Helvetica;
+  color: white;
+}
+
+.panel-heading a {
   font-size: 14px;
   font-weight: bold;
   font-family: Helvetica;
   color: white;
 }
 
-.panel-heading a {
-  float: right;
-  font-size: 12px;
-  text-decoration: underline;
-  font-family: Helvetica;
-  color: white;
+.panel-heading input {
+  color: black;
+  margin-right: 5px;
+  border: 1px solid #dce4ec;
+  border-radius: 3px;
 }
 
 .home-panel-body ul {
@@ -1018,8 +1059,8 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .row.app-container {
-  margin-right: 15px;
-  margin-left: 10px;
+  margin-rightx: 15px;
+  margin-leftx: 10px;
 }
 
 .nav-tabs > li > a {
@@ -1051,9 +1092,6 @@ h4, .h4, h5, .h5, h6, .h6 {
   background-color: lightgreen;
 }
 
-.list-group-item {
-  border: 1px solid #dadedf;
-}
 
 a.action-link {
   color: white;
@@ -1120,7 +1158,7 @@ hr.carved {
   border: none;
   background: #ddd;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, rgb(221, 221, 221)), color-stop(0.5, rgb(255, 255, 255)));
-  background-image: -moz-linear-gradient(center top, rgb(221, 221, 221) 50%, rgb(255, 255, 255) 50%);
+  background-image: -moz-linear-gradient(center top, rgb(221, 221, 221) 0.5, rgb(255, 255, 255) 0.5);
 }
 
 a.show-process.active {
@@ -1712,10 +1750,6 @@ ul.menu-bar li {
   border-right-color: #d5d5d5;
 }
 
-.list-group-item {
-  border: 2px solid #DADEDF;
-}
-
 .feed-activity-list .feed-element {
   border-bottom: 1px solid #E7EAEC;
 }
@@ -1836,4 +1870,66 @@ ul.menu-bar li {
   padding-left: 10px;
   color: white;
   cursor: pointer
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.fc-row .fc-content-skeleton td {
+  cursor: pointer;
+}
+
+.fc-row .fc-content-skeleton td:active {
+  background-color: red;
+}
+
+/* Style breadcrumbs */
+.breadcrumb {
+  background-color: #e9e9ea;
+  color: #41738c;
+  font-family: Helvetica;
+  font-size: 18px;
+  padding-top: 0px;
+  margin-bottom: 0px;
+}
+
+.breadcrumb > li + li:before {
+  content: '>';
+  color: #41738c;
+}
+
+/* Drag and drop */
+.dropzone {
+  border:4px dashed #7a7a7a;
+  border-radius: 3px;
+}
+
+/* Home page sample details when open */
+.item-details {
+  margin-top: -5px;
+}
+.item-details .list-group .list-group-item {
+    padding: 5px 8px;
+    border: 0.2px solid #bfbfbf;
+}
+.item-details .list-group.scroll-bar {
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+/* Expand contract individual boxes */
+.bar-control {
+  padding-left: 10px;
+}
+.home-reviews-comment{
+  border: 0.2px solid #bfbfbf;
+  border-radius: 3px;
+  font-size: 12px;
+  min-height: 60px;
+  max-height: 110px;
+  overflow-y: auto;
+}
+.btn-xs.btn-mini{
+  line-height: 0.8;
 }

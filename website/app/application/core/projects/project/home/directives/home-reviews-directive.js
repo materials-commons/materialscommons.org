@@ -11,30 +11,27 @@ function homeReviewsDirective () {
 }
 
 Application.Controllers.controller("homeReviewsDirectiveController",
-                                   ["$scope", "User", "projectState", "$state",
+                                   ["$scope", "Review",
                                     homeReviewsDirectiveController]);
-function homeReviewsDirectiveController ($scope, User, projectState, $state) {
-    function computeRecentReviews() {
-        //Recent reviews
-        var lastLogin = new Date($scope.user.last_login.epoch_time * 1000);
-        $scope.recent_reviews = [];
-        $scope.project.open_reviews.forEach(function(item) {
-            var reviewTime = new Date(item.mtime.epoch_time * 1000);
-            if (reviewTime > lastLogin) {
-                $scope.recent_reviews.push(item);
-            }
-        });
+function homeReviewsDirectiveController ($scope, Review) {
+    var showReviewDetails = [];
+    for (var i = 0; i < $scope.project.notes.length; i++) {
+        showReviewDetails.push(false);
     }
-
-    $scope.editReview = function(index) {
-        $state.go("projects.project.reviews.overview",{index: index});
+    $scope.toggleDetails = function(index) {
+        showReviewDetails[index] = !showReviewDetails[index];
     };
 
-    $scope.addReview = function() {
-        var stateID = projectState.add($scope.project.id);
-        $state.go("projects.project.reviews.create", {sid: stateID});
+    $scope.showDetails = function(index) {
+        return showReviewDetails[index];
     };
 
-    $scope.user = User.attr();
-    computeRecentReviews();
+    $scope.closeReview = function () {
+        Review.closeReview($scope.cached_review.id, $scope.project);
+    };
+
+    $scope.cacheReview = function (review) {
+       $scope.cached_review = review;
+    };
+
 }

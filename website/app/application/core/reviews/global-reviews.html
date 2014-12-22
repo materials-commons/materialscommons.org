@@ -1,4 +1,4 @@
-<div  class="row">
+<div  class="row" >
     <h5 style="text-align: center"><b>Requested</b></h5>
     <br>
     <table class="table">
@@ -9,7 +9,8 @@
             <th></th>
         </thead>
         <tbody>
-            <tr ui-sref="projects.project.reviews.edit({review_id: r.id, id: r.project_id, status: r.status})" ng-repeat="r in open_reviews">
+            <tr ui-sref="projects.project.reviews.edit({review_id: r.id, id: r.project_id,
+            status: r.status})" ng-repeat="r in reviews | byKey:'status':'open' | byKey: 'author': user">
                 <td data-toggle="tooltip" title="{{r.title}}">
                     {{createName(r.title)}}
                     <p class="text-muted"
@@ -40,7 +41,8 @@
             <th></th>
         </thead>
         <tbody>
-            <tr ui-sref="projects.project.reviews.edit({review_id: r.id, id: r.project_id, status: r.status})" ng-repeat="r in reviews =(open_reviews | byKey: 'assigned_to': user| byKey: 'status': 'open')">
+            <tr ui-sref="projects.project.reviews.edit({review_id: r.id, id: r.project_id, status: r.status})"
+                ng-repeat="r in reviews | byKey: 'assigned_to': user| byKey: 'status': 'open'">
                 <td data-toggle="tooltip"
                     title="{{r.title}}">
                     {{createName(r.title)}}

@@ -100,16 +100,17 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
     };
 
     $scope.fileSelected = function (entry) {
-            entry.selected = !entry.selected;
-            var channel = projectFiles.channel;
-            if (channel !== null) {
-                pubsub.send(channel, entry);
-            }
+        var selected = entry.selected;
+        entry.selected = selected;
+        var channel = projectFiles.channel;
+        if (channel !== null) {
+            pubsub.send(channel, entry);
+        }
     };
 
     $scope.truncateTrail = function (currentTrail, currentItem) {
         var i = _.indexOf(currentTrail, function(item) {
-            return item.displayname == currentItem.displayname;
+            return item.displayname === currentItem.displayname;
         });
 
         return currentTrail.slice(0, i+1);
@@ -170,7 +171,8 @@ function ProjectTreeController ($scope, toastr, mcapi, projectFiles, pubsub, Pro
     };
 
     $scope.showFileCheckbox = function() {
-        return projectFiles.isActive($scope.projectID);
+        var active = projectFiles.isActive($scope.projectID);
+        return active;
     };
 
     $scope.init = function() {

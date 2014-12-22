@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectReviewsCreate',
-                                   ["$scope", "mcapi", "User", "$stateParams",
-                                    "project", "pubsub", "projectFiles",
-                                    "projectState", "recent", "ui", projectReviewsCreate]);
+    ["$scope", "mcapi", "User", "$stateParams",
+        "project", "pubsub", "projectFiles",
+        "projectState", "recent", "ui", projectReviewsCreate]);
 
 function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub,
                               projectFiles, projectState, recent, ui) {
@@ -29,7 +29,7 @@ function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub
         if (fileentry.selected) {
             $scope.model.files.push(fileentry);
         } else {
-            var i = _.indexOf($scope.model.files, function(entry) {
+            var i = _.indexOf($scope.model.files, function (entry) {
                 return entry.id == fileentry.id;
             });
             if (i != -1) {
@@ -51,7 +51,7 @@ function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub
             }).post($scope.review);
     }
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         projectFiles.setActive($stateParams.id, false);
         recent.gotoLast($stateParams.id);
         recent.delete($stateParams.id, $stateParams.sid);
@@ -64,17 +64,19 @@ function projectReviewsCreate($scope, mcapi, User, $stateParams, project, pubsub
                 'id': f.id,
                 'path': f.fullname,
                 'name': f.name,
-                'type': f.type});
+                'type': f.type
+            });
         });
 
         $scope.review.author = User.u();
         $scope.review.assigned_to = $scope.model.assigned_to;
         $scope.review.status = 'open';
         $scope.review.title = $scope.model.title;
+        var newdate = new Date();
         $scope.review.messages.push({
             'message': $scope.model.comment,
             'who': User.u(),
-            'date': new Date()
+            'date': newdate.toDateString()
         });
         $scope.review.project = $scope.project.id;
         saveData();

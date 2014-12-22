@@ -126,37 +126,67 @@ def create_item2tag():
     item2tag['tag'] = dmutil.get_required('tag', j)
     fullname = dmutil.get_optional('fullname', j)
     datadir_id = dmutil.get_optional('datadir_id', j)
-    tag_exists = list(r.table('items2tags').get_all(item2tag['item_id'], index='item_id').filter({'user': user, 'tag': item2tag['tag']}).run(g.conn))
+    tag_exists = list(r.table('tag2item')
+                      .get_all(item2tag['item_id'], index='item_id')
+                      .filter({'user': user, 'tag': item2tag['tag']})
+                      .run(g.conn))
     if tag_exists:
         return error.already_exists(
             "Duplicate entry. Tag Already exists")
     else:
-        result = dmutil.insert_entry_id('items2tags', item2tag)
+        result = dmutil.insert_entry_id('tag2item', item2tag)
         if result:
-            item2tag_join = r.table('items2tags').get(result).run(g.conn)
-            #update datadir_denorm
+            item2tag_join = r.table('tag2item').get(result).run(g.conn)
+            # update datadir_denorm
             if item2tag_join['item_type'] == 'datafile':
                 dir_name = os.path.dirname(fullname)
-                #print dir_name
-                dir_denorm = list(r.table('datadirs_denorm').get_all(dir_name, index='name').run(g.conn))
+                dir_denorm = list(r.table('datadirs_denorm')
+                                  .get_all(dir_name, index='name').run(g.conn))
                 if dir_denorm == []:
-                    dir_denorm = list(r.table('datadirs_denorm').filter({'datadir_id': datadir_id}).run(g.conn))
+                    dir_denorm = list(r.table('datadirs_denorm')
+                                      .filter({'datadir_id': datadir_id})
+                                      .run(g.conn))
                 for each_dir_denorm in dir_denorm:
                     files = each_dir_denorm['datafiles']
                     for each_file in files:
                         if each_file['id'] == item2tag_join['item_id']:
                             if user in each_file['tags']:
-                                each_file['tags'][user].append({'color': item2tag_join['tag']['color'] ,'name': item2tag_join['tag']['name'], 'icon': item2tag_join['tag']['icon']})
+                                each_file['tags'][user].append({
+                                    'color': item2tag_join['tag']['color'],
+                                    'name': item2tag_join['tag']['name'],
+                                    'icon': item2tag_join['tag']['icon']
+                                })
                             else:
                                 print 'no user in tags..'
-                                each_file['tags'] = {user : [{'color': item2tag_join['tag']['color'] ,'name': item2tag_join['tag']['name'], 'icon': item2tag_join['tag']['icon']}]}
-                    r.table('datadirs_denorm').get(each_dir_denorm['id']).update({'datafiles': files}).run(g.conn)
+                                each_file['tags'] = {
+                                    user: [{
+                                        'color': item2tag_join['tag']['color'],
+                                        'name': item2tag_join['tag']['name'],
+                                        'icon': item2tag_join['tag']['icon']
+                                    }]
+                                }
+                    r.table('datadirs_denorm').get(each_dir_denorm['id'])\
+                                              .update({'datafiles': files})\
+                                              .run(g.conn)
             if item2tag_join['item_type'] == 'datadir':
                 dir_denorm = {}
-                dir_denorm = r.table('datadirs_denorm').get(item2tag_join['item_id']).run(g.conn)
+                dir_denorm = r.table('datadirs_denorm')\
+                              .get(item2tag_join['item_id']).run(g.conn)
                 if user in dir_denorm['tags']:
-                    dir_denorm['tags'][user].append({'color': item2tag_join['tag']['color'] ,'name': item2tag_join['tag']['name'], 'icon': item2tag_join['tag']['icon']})
+                    dir_denorm['tags'][user].append({
+                        'color': item2tag_join['tag']['color'],
+                        'name': item2tag_join['tag']['name'],
+                        'icon': item2tag_join['tag']['icon']
+                    })
                 else:
-                    dir_denorm['tags'] = {user : [{'color': item2tag_join['tag']['color'] ,'name': item2tag_join['tag']['name'], 'icon': item2tag_join['tag']['icon']}]}
-                r.table('datadirs_denorm').get(item2tag_join['item_id']).update({'tags': dir_denorm['tags']}).run(g.conn)
+                    dir_denorm['tags'] = {
+                        user: [{
+                            'color': item2tag_join['tag']['color'],
+                            'name': item2tag_join['tag']['name'],
+                            'icon': item2tag_join['tag']['icon']
+                        }]
+                    }
+                r.table('datadirs_denorm').get(item2tag_join['item_id'])\
+                                          .update({'tags': dir_denorm['tags']})\
+                                          .run(g.conn)
         return result

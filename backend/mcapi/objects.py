@@ -1,5 +1,5 @@
 from mcapp import app
-from decorators import apikey, jsonp
+from decorators import apikey, jsonp,eventlog
 from flask import request, g, jsonify
 import rethinkdb as r
 import dmutil
@@ -71,22 +71,9 @@ def updateobject(object_id):
         error.update_conflict("Unable to update object: " + object_id)
 
 
-@app.route('/objects/<object_id>', methods=['PUT'])
-@apikey
-def update_availability(object_id):
-    j = request.get_json()
-    available = dmutil.get_required('available', j)
-    if available == 1:
-        r.table('samples').get(object_id)\
-                          .update({'available': True}).run(g.conn)
-    else:
-        r.table('samples').get(object_id)\
-                          .update({'available': False}).run(g.conn)
-    return args.json_as_format_arg({'id': object_id})
-
-
 @app.route('/objects/new', methods=['POST'])
 @apikey
+@eventlog
 def create_object():
     j = request.get_json()
     sample = dict()
@@ -100,6 +87,7 @@ def create_object():
         sample['properties'] = dmutil.get_optional('properties', j)
         sample['alloy'] = dmutil.get_optional('alloy', j)
         sample['birthtime'] = r.now()
+        sample['mtime'] = sample['birthtime']
         sample['created_by'] = user
         sample['owner'] = user
         sample['parent_id'] = dmutil.get_optional('parent_id', j)
@@ -112,8 +100,6 @@ def create_object():
         _join_sample_projects(dmutil.get_optional('projects', j, []), sid)
         #Add note into notes table
         if title or notes:
-            print notes
-            print title
             n = note.Note(user, notes, title, sid,
                           'sample', sample['project_id'])
             rv = dmutil.insert_entry('notes', n.__dict__, return_created=True)

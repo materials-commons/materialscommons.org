@@ -12,10 +12,10 @@ function navbarDirective() {
 
 Application.Controllers.controller("navbarDirectiveController",
                                    ["$scope", "current", "$state", "projectState",
-                                    "pubsub", "model.projects",
+                                    "pubsub", "model.projects", "help",
                                     navbarDirectiveController]);
 
-function navbarDirectiveController($scope, current, $state, projectState, pubsub, Projects) {
+function navbarDirectiveController($scope, current, $state, projectState, pubsub, Projects, help) {
     // This is needed to toggle the menu closed when an item is selected.
     // This is a part of how ui-bootstrap interacts with the menus and
     // the menu item does an ng-click.
@@ -23,7 +23,9 @@ function navbarDirectiveController($scope, current, $state, projectState, pubsub
         isopen: false
     };
 
-    $scope.open_reviews_count = 0;
+    $scope.toggleHelp = function() {
+        help.toggle();
+    };
 
     $scope.create = function(action) {
         var projectID = current.projectID();
@@ -33,13 +35,4 @@ function navbarDirectiveController($scope, current, $state, projectState, pubsub
         $scope.status = false;
         $state.go(route, {id: projectID, sid: stateID});
     };
-
-    pubsub.waitOn($scope, "reviews.change", function() {
-        Projects.getList().then(function (projects) {
-            $scope.open_reviews_count = 0;
-            projects.forEach(function(prj){
-                $scope.open_reviews_count++;
-            });
-        });
-    });
 }

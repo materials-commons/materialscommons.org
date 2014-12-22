@@ -11,14 +11,20 @@ function homeNotesDirective() {
 }
 
 Application.Controllers.controller("homeNotesDirectiveController",
-                                   ["$scope","Project",
-                                    homeNotesDirectiveController]);
-function homeNotesDirectiveController($scope, Project) {
+    ["$scope",
+        homeNotesDirectiveController]);
 
-    function init(){
-        $scope.sample_notes = Project.getNotes($scope.project, 'sample');
-        $scope.project_notes = Project.getNotes($scope.project, 'project');
-        $scope.all_notes = Project.getNotes($scope.project);
+function homeNotesDirectiveController($scope) {
+    var showNoteDetails = [];
+    for (var i = 0; i < $scope.project.notes.length; i++) {
+        showNoteDetails.push(false);
     }
-    init();
+    $scope.toggleDetails = function(index) {
+        showNoteDetails[index] = !showNoteDetails[index];
+    };
+
+    $scope.showDetails = function(index) {
+        return showNoteDetails[index];
+    };
 }
+
