@@ -30,39 +30,7 @@ function projectFilesListController($scope, projectFiles, $stateParams,
 
     $scope.sideboard = [];
 
-    // Wrap in timeout so that the controller can finish instantiating.
-    // The delay in loading this page comes from walking the tree and
-    // then displaying the results in the loop. The $scope.$on above
-    // will be fired when the loop is done. So the user will get a
-    // loading message until everything is ready.
-    $timeout(function() {
-        $scope.files = projectFiles.model.projects[$stateParams.id].byMediaType[value];
-        // $scope.files.forEach(function(node) {
-        //     node.showDetails = false;
-        // });
-        return;
-        // var treeModel = new TreeModel();
-        // var root = treeModel.parse(projectFiles.model.projects[$stateParams.id].dir);
-        // if (value == "all") {
-        //     root.walk({strategy: 'pre'}, function(node) {
-        //         node.model.showDetails = false;
-        //         $scope.files.push(node.model);
-        //     });
-        // } else {
-        //     root.walk({strategy: 'pre'}, function(node) {
-        //         if (node.model[key] == value) {
-        //             node.model.showDetails = false;
-        //             $scope.files.push(node.model);
-        //         }
-        //     });
-        // }
-    });
-
-    $scope.openFile = function(f) {
-        projectFileTabs.add($stateParams.id, f);
-        searchParams.set("file-list", "fullname", $scope.search.fullname);
-        $state.go("projects.project.files.view", {fileid: f.id});
-    };
+    $scope.files = projectFiles.model.projects[$stateParams.id].byMediaType[value];
 
     $scope.toggleDetails = function(file) {
         file.showDetails = !file.showDetails;
