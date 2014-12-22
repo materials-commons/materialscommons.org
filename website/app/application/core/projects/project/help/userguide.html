@@ -1,0 +1,24 @@
+<div style="padding-left: 5px">
+    <div class="panel panel-primary">
+        <div class="panel-heading help-color">
+            <i class="fa fa-fw fa-book"></i>
+            <span>Userguide</span>
+            <a ng-click="close()" class="pull-right bar-control"><i class="fa fa-fw fa-close"></i></a>
+            <a ng-click="toggleExpand()" class="pull-right bar-control">
+                <i class="fa"
+                   ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
+            </a>
+        </div>
+        <div class="panel-body home-panel-body no-max-height">
+            <div class="no-content">
+                userguide
+                <div class="col-xs-6">
+                    <img class="img-responsive" src="assets/img/userguide/sidebar.png">
+                </div>
+                <div class="col-xs-6">
+                    Describe the sidebar here.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

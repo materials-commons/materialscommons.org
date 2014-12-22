@@ -49,13 +49,13 @@ def get_all_group_projects():
 
 def add_computed_attributes(projects, user):
     for p in projects:
-        p['open_reviews'] = []
-        p['closed_reviews'] = []
+        p['reviews'] = []
         p['samples'] = []
         p['drafts'] = []
         p['processes'] = []
         p['users'] = []
         p['notes'] = []
+        p['events'] = []
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
@@ -66,6 +66,7 @@ def add_computed_attributes(projects, user):
         add_drafts(projects_by_id, project_ids, user)
         add_processes(projects_by_id, project_ids)
         add_notes(projects_by_id, project_ids)
+        add_events(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -79,12 +80,7 @@ def add_reviews(projects_by_id, project_ids):
     reviews = list(r.table('reviews')
                    .get_all(*project_ids, index='project')
                    .run(g.conn, time_format='raw'))
-    open_reviews = [review for review in reviews if review['status'] == "open"]
-    closed_reviews = [review for review in reviews
-                      if review['status'] == "closed"]
-    add_computed_items(projects_by_id, open_reviews, 'project', 'open_reviews')
-    add_computed_items(projects_by_id, closed_reviews, 'project',
-                       'closed_reviews')
+    add_computed_items(projects_by_id, reviews, 'project', 'reviews')
 
 
 def add_samples(projects_by_id, project_ids):
@@ -119,12 +115,18 @@ def add_notes(projects_by_id, project_ids):
     add_computed_items(projects_by_id, notes, 'project_id', 'notes')
 
 
+def add_events(projects_by_id, project_ids):
+    events = list(r.table('events').get_all(*project_ids, index='project_id')
+                  .order_by('mtime')
+                  .run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, events, 'project_id', 'events')
+
+
 def add_computed_items(projects_by_id, items, projects_key, item_key):
     for item in items:
         project_id = item[projects_key]
         if project_id in projects_by_id:
             projects_by_id[project_id][item_key].append(item)
-
 
 @app.route('/projects/<project_id>/datadirs')
 @apikey(shared=True)
@@ -149,10 +151,21 @@ def get_project_tree2(project_id):
     if proj is None:
         return error.bad_request("Unknown project id: %s" % (project_id))
     access.check(user, proj['owner'])
-    selection = list(r.table('project2datadir')
-                     .get_all(project_id, index='project_id')
-                     .eq_join("datadir_id", r.table('datadirs_denorm'))
-                     .zip().run(g.conn, time_format='raw'))
+    # selection = list(r.table('project2datadir')
+    #                  .get_all(project_id, index='project_id')
+    #                  .eq_join("datadir_id", r.table('datadirs_denorm'))
+    #                  .zip().run(g.conn, time_format='raw'))
+    selection = list(r.table("project2datadir")
+                     .get_all(project_id, index="project_id")
+                     .eq_join("datadir_id", r.table("datadirs"))
+                     .zip()
+                     .merge(lambda dd: {
+                         "datafiles": r.table("datadir2datafile")
+                         .get_all(dd['id'], index="datadir_id")
+                         .eq_join("datafile_id", r.table("datafiles"))
+                         .zip()
+                         .coerce_to("array")})
+                     .run(g.conn, time_format="raw"))
     return build_tree(selection)
 
 
@@ -186,7 +199,7 @@ def build_tree(datadirs):
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
                        ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
-        ditem.tags = ddir['tags']
+        ditem.tags = []  # ddir['tags']
         ditem.c_id = next_id
         next_id = next_id + 1
         #
@@ -208,8 +221,8 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
-            dfitem.tags = df['tags']
-            dfitem.mediatype = df['mediatype']
+            dfitem.tags = []  # df['tags']
+            dfitem.mediatype = df['mediatype']['mime']
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:

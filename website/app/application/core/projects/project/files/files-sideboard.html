@@ -1,0 +1,75 @@
+<div class="panel panel-primary">
+    <div class="panel-heading sideboard-color home-panel-heading">
+        <i class="fa fa-fw fa-clipboard bold"></i>
+        <span>Sideboard ({{sideboardFiles.length}})</span>
+        <a ng-click="sideboardExpanded = !sideboardExpanded"
+           class="pull-right bar-control">
+            <i class="fa"
+               ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
+        </a>
+        <input type="text" ng-model="sideboardSearch.fullname"
+               placeholder="Search sideboard..." class="pull-right col-xs-4">
+    </div>
+    <div class="panel-body home-panel-body side-by-side">
+        <ul class="list-unstyled">
+            <li class="home-item">
+                <div ui-draggable="false"
+                     ui-on-drop="onDrop(i, $data)">
+                    <div class="dropzone">
+                        <h4 class="text-center">
+                            Drop here
+                        </h4>
+                    </div>
+                </div>
+            </li>
+            <li class="home-item"
+                ng-click="toggleDetails(file)"
+                ng-repeat="file in sideboard | filter:sideboardSearch | orderBy:'fullname' as sideboardFiles" on-repeat-finished="files-loaded">
+                <div>
+                    <i class="fa"
+                       ng-class="{'fa-caret-right': !showDetails(file), 'fa-caret-down': showDetails(file)}"></i>
+                    <a ng-click="removeFromSideboard(file)" class="pull-right">
+                        <i class="fa fa-close"></i>
+                    </a>
+                    <a ng-click="openFile(file)">
+                        {{file.displayname}}
+                    </a>
+                    <small class="text-muted"> {{file.size | bytes}}</small>
+                    <span class="label label-info" ng-repeat="tag in tags(file)" style="margin-right: 5px">
+                        <i class="fa"
+                           ng-class="'fa-' + tag.icon"
+                           style="color: {{tag.color}}">
+                        </i>
+                        {{tag.name}}
+                    </span>
+                    <p>
+                        <small class="text-muted">{{file.birthtime | toDateString}}</small>
+                        <small class="text-muted" style="margin-left: 10px">{{file.fullname}}</small>
+                    </p>
+                    <div ng-if="showDetails(file)" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="row" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="col-xs-12" ng-switch="" on="fileType" style="padding-left: 0px; padding-right: 0px;">
+                                <div ng-switch-when="image">
+                                    <img class="img-responsive" ng-src="{{fileSrc(sideboardFiles[$index])}}">
+                                </div>
+                                <div ng-switch-when="pdf">
+                                    <div class="embed-responsive embed-responsive-4by3">
+                                        <embed class="col-xs-8 embed-responsive-item" ng-src="{{fileSrc(sideboardFiles[$index])}}"></embed>
+                                    </div>
+                                </div>
+                                <div ng-switch-default style="padding-left: 0px; padding-right: 0px;">
+                                    <div ng-if="sideboardFiles[$index].size < 10000" hljs
+                                         include="fileSrc(sideboardFiles[$index])"
+                                         style="padding-left: 0px; padding-right: 0px;"></div>
+                                    <code ng-if="sideboardFiles[$index].size > 10000 && sideboardFiles[$index].size <= 2000000"
+                                          style="white-space:pre-line" ng-include="fileSrc(sideboardFiles[$index])"></code>
+                                    <div ng-if="sideboardFiles[$index].size > 2000000">File too big to display</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,15 +1,14 @@
-var recognized_images = ["jpg", "png", "jpeg", "gif", "tif", "tiff"];
-
-function isImage(name) {
-    var i;
-    var s = name.toLowerCase();
-    for (i = 0; i < recognized_images.length; i++) {
-        if (endsWith(s, recognized_images[i])) {
-            return true;
-        }
+function isImage(mime) {
+    switch (mime) {
+    case "image/gif":
+    case "image/jpeg":
+    case "image/png":
+    case "image/tiff":
+    case "image/x-ms-bmp":
+        return true;
+    default:
+        return false;
     }
-
-    return false;
 }
 
 function numberWithCommas(n) {

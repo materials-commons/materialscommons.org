@@ -8,18 +8,33 @@
         <div ng-if="false">
             <provenance-wizard-magic-bar></provenance-wizard-magic-bar>
         </div>
-        <div style="padding-left: 10px; padding-right: 10px;">
+        <div>
             <div class="row">
-                <span style="color:#41738c;font-family: Helvetica;font-size: 18px;">{{project.name}}</span>
-                <span style="float:right;color:#555;font-family: Helvetica;font-size: 16px;"> (Last login on {{mcuser.last_login | toDateString}})</span>
-                <span style="float:right; color:#333;font-family: Helvetica;font-size: 16px;">Welcome {{mcuser.fullname}} </span>
+                <div class="col-xs-6">
+                    <breadcrumbs project="project"></breadcrumbs>
+                </div>
+                <div class="pull-right" style="margin-right: 20px;">
+                    <span style="color:#333;font-family: Helvetica;font-size: 16px;">
+                        Welcome {{mcuser.fullname}}
+                    </span>
+                    <small>
+                        (Last login on <a ui-sref="projects.project.home"> {{mcuser.last_login | toDateString}} </a>)
+                    </small>
+                </div>
             </div>
-            <div ui-view></div>
-            <div ng-show="showFiles()" class="row">
-                <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true"
-                              color="{{colors.getCurrentProjectColor()}}"></project-tree>
-                <div class="row">
-                    <project-description project-id="{{project.id}}"></project-description>
+            <div class="row">
+                <div ng-class="{'col-xs-12': isExpanded('help'), 'col-xs-4': !isExpanded('help') && showHelp()}" ng-show="showHelp()">
+                    <userguide></userguide>
+                </div>
+                <div ng-class="{'col-xs-8': showHelp(), 'col-xs-12': !showHelp()}" ng-show="!isExpanded('help')">
+                    <div ui-view></div>
+                    <div ng-show="showFiles()" class="row">
+                        <project-tree project="{{ project.id }}" from="{{from}}" tree-overview="true"
+                                      color="{{colors.getCurrentProjectColor()}}"></project-tree>
+                        <div class="row">
+                            <project-description project-id="{{project.id}}"></project-description>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

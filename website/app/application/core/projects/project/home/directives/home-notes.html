@@ -1,23 +1,47 @@
 <div class="panel panel-primary">
-    <div class="panel-heading notes-color">
-        <i class="fa fa-fw fa-edit"></i>
-        <span>Notes</span>
-        <a ui-sref="projects.project.notes.overview"> View all {{all_notes.length}} notes</a>
+    <div class="panel-heading notes-color home-panel-heading">
+        <i class="fa fa-fw fa-edit bold"></i>
+        <span>
+            <a ui-sref="projects.project.notes.overview">
+                Notes
+            </a>
+            ({{notes.length}})
+        </span>
+        <a ng-click="sideboardExpanded = !sideboardExpanded"
+           class="pull-right bar-control">
+            <i class="fa"
+               ng-class="{'fa-expand': !sideboardExpanded, 'fa-compress': sideboardExpanded}"></i>
+        </a>
+        <input type="text" ng-model="search" class="pull-right col-xs-4"
+               placeholder="Search notes...">
+        <span class="add-item pull-right">
+            <a ui-sref="projects.project.notes.create" tooltip="Add Note">
+                <i class="fa fa-fw fa-plus"></i>
+            </a>
+        </span>
     </div>
     <div class="panel-body home-panel-body">
-        <ul ng-if="all_notes.length !== 0" class="list-unstyled">
+        <ul class="list-unstyled">
             <li class="home-item"
-                ng-repeat="note in all_notes | limitTo:3">
+                ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                 <div>
-                    {{note.creator}} created a <i>{{note.item_type}}</i> note:
-                    <a ui-sref="projects.project.notes.edit({'note_id': note.id})">
-                        {{note.title | truncate: 25 : '...':true}}</a>
-                    <p><small class="text-muted">{{note.mtime | toDateString}}</small></p>
+                    <span ng-click="toggleDetails($index)" style="cursor: pointer">
+                         <i class="fa"
+                            ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
+                        {{note.title | truncate:25:'...':true}}
+                    </span>
+                    <p>
+                        <small class="text-muted">{{note.mtime | toDateString}}</small>
+                        <small style="padding-left: 10px;" class="text-muted">{{note.creator}}</small>
+                    </p>
+                    <div ng-show="showDetails($index)">
+                        <home-note-details note="note"></home-note-details>
+                    </div>
                 </div>
             </li>
+            <li ng-show="notes.length === 0" class="home-item">
+                <div>No notes.</div>
+            </li>
         </ul>
-        <div ng-if="all_notes.length === 0" class="no-content">
-            There are no notes.
-        </div>
     </div>
 </div>

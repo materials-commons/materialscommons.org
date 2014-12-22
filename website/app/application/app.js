@@ -19,9 +19,9 @@ var app = angular.module('materialscommons',
                              'treeGrid',
                              'ngDragDrop',
                              'ng-context-menu',
-                             "cfp.hotkeys",'angular.filter',
+                             "cfp.hotkeys",'angular.filter', 'ui.calendar',
                              '$strap.directives', 'ui.bootstrap', 'toastr',
-                             'tc.chartjs',
+                             'tc.chartjs', "hljs", "nsPopover",
                              'application.core.constants', 'application.core.services',
                              'application.core.controllers',
                              'application.core.filters', 'application.core.directives']);
@@ -278,9 +278,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 
 }]);
 
-app.run(["$rootScope", "User", "Restangular", "recent", "ui", appRun]);
+app.run(["$rootScope", "User", "Restangular", "recent", "ui", "pubsub", appRun]);
 
-function appRun($rootScope, User, Restangular, recent, ui) {
+function appRun($rootScope, User, Restangular, recent, ui, pubsub) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
@@ -295,5 +295,7 @@ function appRun($rootScope, User, Restangular, recent, ui) {
         if (!fromState.abstract) {
             recent.pushLast(projectID, "ignore", fromState.name, fromParams);
         }
+
+        pubsub.send("breadcrumbs", toState.name);
     });
 }

@@ -1,10 +1,17 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "provStep", "ui",
                                     "project", "current", "pubsub", "recent", "User",
-                                    "projectFiles", "mcapi", projectsProject]);
+                                    "projectFiles", "mcapi", "help", projectsProject]);
 
 function projectsProject ($scope, provStep, ui, project, current,
-                          pubsub, recent, User, projectFiles, mcapi) {
+                          pubsub, recent, User, projectFiles, mcapi, help) {
+    $scope.showHelp = function() {
+        return help.isActive();
+    };
+    $scope.isExpanded = function(what) {
+        return help.isActive() && ui.isExpanded(project.id, what);
+    };
+
     recent.resetLast(project.id);
 
     current.setProject(project);
@@ -32,10 +39,11 @@ function projectsProject ($scope, provStep, ui, project, current,
         $scope.loaded = false;
         mcapi("/projects/%/tree2", project.id)
             .success(function(files){
-                $scope.loaded = true;
                 var obj = {};
                 obj.dir = files[0];
                 projectFiles.model.projects[project.id] = obj;
+                projectFiles.loadByMediaType(project);
+                $scope.loaded = true;
             }).jsonp();
     }
 }

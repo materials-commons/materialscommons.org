@@ -1,0 +1,32 @@
+<div>
+    <div ng-if="sample.description">
+        Description: {{sample.description}}
+    </div>
+
+    <div  class="row item-details">
+        <div class="col-sm-4">
+            <b ng-show="sample.properties.composition.unit">Composition:
+                <small>({{sample.properties.composition.unit}})</small>
+            </b>
+            <ul class="list-group">
+                <li class="list-group-item "
+                    ng-repeat="each in sample.properties.composition.value">
+                    {{each.element}} <span class="pull-right">{{each.value}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-8">
+            <b>Properties:</b>
+            <ul class="list-group scroll-bar">
+                <li class="list-group-item"
+                    ng-repeat="(key, value) in sample.properties | removeKey:'composition' as properties">{{key}}
+                    <span style="float: right;">{{value.value}} {{value.unit}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="margin-top: -10px;" class="row">
+        <b>Notes:</b>
+        <textarea ng-model="sample.notes" class="form-control" style="height:40px; width:100%" disabled></textarea>
+    </div>
+</div>
