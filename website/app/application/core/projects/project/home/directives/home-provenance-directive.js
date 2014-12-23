@@ -21,20 +21,19 @@ function homeProvenanceDirectiveController($scope, ui) {
     $scope.isExpanded = function() {
         return ui.isExpanded($scope.project.id, "processes");
     };
-    var showProvenanceDetails = [];
-    for (var i = 0; i < $scope.project.processes.length; i++) {
-        showProvenanceDetails.push(false);
-    }
 
-    $scope.toggleDetails = function (index, process) {
-        showProvenanceDetails[index] = !showProvenanceDetails[index];
-    };
+    $scope.all = [];
+    $scope.project.processes.forEach(function(process) {
+        if (!('showDetails' in process)) {
+            process.showDetails = false;
+        }
+        $scope.all.push(process);
+    });
 
-    $scope.showDetails = function (index) {
-        return showProvenanceDetails[index];
-    };
-    var combined = [];
-    combined.push($scope.project.drafts);
-    combined.push($scope.project.processes);
-    $scope.project.processes_drafts = _.flatten(combined);
+    $scope.project.drafts.forEach(function(draft) {
+        if (!('showDetails' in draft)) {
+            draft.showDetails = false;
+        }
+        $scope.all.push(draft);
+    });
 }

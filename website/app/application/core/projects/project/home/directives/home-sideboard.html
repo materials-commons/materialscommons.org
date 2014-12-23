@@ -39,6 +39,11 @@
                                         show-sideboard="false">
                         </display-review>
                     </div>
+                    <div ng-switch-when="note">
+                        <display-note note="item"
+                                      show-sideboard="false">
+                        </display-note>
+                    </div>
                     <div ng-switch-default>
                         Showing nothing
                         {{item}}
