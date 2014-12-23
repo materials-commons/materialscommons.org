@@ -21,44 +21,9 @@
     <div class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-class="{'open-item-details': showDetails($index)}"
+                ng-class="{'open-item-details': sample.showDetails}"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
-                <div style="margin-bottom: 3px;">
-                    <span ng-click="toggleDetails($index)" style="cursor: pointer">
-                        <i class="fa"
-                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}">
-                        </i>
-                        {{sample.name | truncate: 35 : '...':true}}
-                    </span>
-
-                    <span class="pull-right">
-                        <a ng-click="addToSideboard(sample, $event)" id="{{sample.id}}">
-                            <i class="fa fa-fw fa-clipboard"></i>
-                        </a>
-                        <i style="color:#E3CF7A" class="fa fa-fw fa-star"></i>
-                        <i class="fa fa-fw"
-                           ng-class="{'fa-edit': sample.notes.length !== 0}"></i>
-                    </span>
-                    <p>
-                        <small ng-if="sample.properties.composition.value.length !== 0">
-                            Composition({{sample.properties.composition.unit}}) :
-                            <span style="padding-left: 3px; "ng-repeat="each in sample.properties.composition.value">{{each.element}} -{{each.value}}</span>
-                        </small>
-                        <small ng-if="sample.properties.composition.value.length === 0">
-                            Composition : None
-                        </small>
-                    </p>
-                    <p>
-                        <small class="text-muted">{{sample.birthtime | toDateString}}
-                        </small>
-                        <small class="text-muted"
-                               style="padding-left: 10px;">{{sample.owner}}
-                        </small>
-                    </p>
-                    <div ng-if="showDetails($index)">
-                        <home-sample-details sample="sample"></home-sample-details>
-                    </div>
-                </div>
+                <display-sample sample="sample" show-sideboard="true"></display-sample>
             </li>
             <li ng-show="samples.length === 0" class="home-item">
                 <div>

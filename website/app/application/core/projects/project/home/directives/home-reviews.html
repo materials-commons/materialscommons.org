@@ -23,34 +23,9 @@
     <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-class="{'open-item-details': showDetails($index)}"
-                ng-repeat="review in project.reviews | byKey: 'status': 'open' |
-                 filter:search | event: project.date: project.nextdate as reviews">
-                <div>
-                    <i class="fa"
-                       ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
-                    <span class="pointer" ng-click="toggleDetails($index)">
-                        {{review.title | truncate: 25 : '...':true}}
-                    </span>
-
-                     <span ng-click="toggleDetails($index)" class="pull-right"
-                           style="padding-left: 5px;">
-                        <i data-toggle="tooltip" data-placement="bottom"
-                           title="{{review.messages.length}}"
-                           class="pointer fa fa-fw" ng-class="{'fa-comments-o': review.messages.length !== 0}"></i>
-                    </span>
-
-                    <p>
-                        <small style="padding-left: 10px;" class="text-muted">
-                            {{review.messages[(review.messages.length -1)].who}} commented on
-                            {{(review.messages[(review.messages.length -1)].date)}}
-                        </small>
-                    </p>
-
-                </div>
-                <div ng-if="showDetails($index)">
-                    <div home-review-details review="review"></div>
-                </div>
+                ng-class="{'open-item-details': review.showDetails}"
+                ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews">
+                <display-review review="review" show-sideboard="true"></display-review>
             </li>
             <li ng-show="reviews.length === 0" class="home-item">
                 <div>No reviews.</div>

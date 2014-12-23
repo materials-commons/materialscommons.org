@@ -940,6 +940,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-bottom-color: #d1d1d1;
   border-top-color: #ffffff;
   padding-left: 15px;
+  padding-right: 15px;
   padding-top: 3px;
   padding-bottom: 3px;
 }
@@ -965,6 +966,10 @@ h4, .h4, h5, .h5, h6, .h6 {
   background-color: #eeeeee;
 }
 
+.tree-row:hover {
+  background-color: #eeeeee;
+}
+
 .home-panel-body2 dir {
   padding-left: 15px;
   padding-right: 15px;
@@ -972,7 +977,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   padding-top: 3px;
 }
 
-.home-item div {
+.home-item2 div {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 3px;

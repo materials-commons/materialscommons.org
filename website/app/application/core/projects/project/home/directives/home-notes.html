@@ -25,27 +25,7 @@
             <li class="home-item"
                 ng-class="{'open-item-details': showDetails($index)}"
                 ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
-                <div>
-                    <span ng-click="toggleDetails($index)" style="cursor: pointer">
-                        <i class="fa"
-                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}"></i>
-                        {{note.title | truncate:25:'...':true}}
-                    </span>
-                    <span class="pull-right">
-                        <a ng-click="addToSideboard(note, $event)" id="{{note.id}}">
-                            <i class="fa fa-fw fa-clipboard"></i>
-                        </a>
-                        <i class="fa fa-fw"></i>
-                        <i class="fa fa-fw"></i>
-                    </span>
-                    <p>
-                        <small class="text-muted">{{note.mtime | toDateString}}</small>
-                        <small style="padding-left: 10px;" class="text-muted">{{note.creator}}</small>
-                    </p>
-                    <div ng-if="showDetails($index)">
-                        <home-note-details note="note"></home-note-details>
-                    </div>
-                </div>
+                <display-note note="note" show-sideboard="true"></display-note>
             </li>
             <li ng-show="notes.length === 0" class="home-item">
                 <div>No notes.</div>

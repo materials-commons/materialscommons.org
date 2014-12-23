@@ -4,15 +4,15 @@
         drag="item"
         ng-repeat="item in items | orderBy:orderby | limitTo:500 as matches track by item.id">
         <div>
-            <directory-tree-display-entry file="item"></directory-tree-display-entry>
+            <mc-tree-header item="item"></mc-tree-header>
             <div ng-if="item.showDetails">
                 <div class="row">
                     <div ng-if="item.type === 'datadir'">
-                        <directory-tree-dir file="item"></directory-tree-dir>
+                        <mc-tree-dir item="item"></mc-tree-dir>
                     </div>
 
                     <div ng-if="item.type === 'datafile'">
-                        <directory-tree-file file="item"></directory-tree-file>
+                        <mc-tree-leaf item="item"></mc-tree-leaf>
                     </div>
                 </div>
             </div>

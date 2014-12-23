@@ -1,0 +1,31 @@
+<div>
+    <span class="pointer"
+          ng-click="review.showDetails = !review.showDetails">
+        <i class="fa fa-fw"
+           ng-class="{'fa-caret-right': !review.showDetails, 'fa-caret-down': review.showDetails}"></i>
+        {{review.title | truncate:25:'...':true}}
+    </span>
+
+    <span class="pull-right">
+        <a ng-if="showSideboard"
+           ng-click="addToSideboard(review, $event)"
+           id="{{review.id}}">
+            <i class="fa fa-fw fa-clipboard"></i>
+        </a>
+        <i data-toggle="tooltip" data-placement="bottom"
+           title="{{review.messages.length}}"
+           class="pointer fa fa-fw"
+           ng-class="{'fa-comments-o': review.messages.length !== 0}">
+        </i>
+    </span>
+
+    <p>
+        <small style="padding-left: 10px;" class="text-muted">
+            {{review.messages[(review.messages.length -1)].who}} commented on
+            {{(review.messages[(review.messages.length -1)].date)}}
+        </small>
+    </p>
+    <div ng-if="review.showDetails">
+        <div home-review-details review="review"></div>
+    </div>
+</div>
