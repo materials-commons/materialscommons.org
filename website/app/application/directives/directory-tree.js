@@ -20,14 +20,6 @@ Application.Controllers.controller("directoryTreeController",
 function directoryTreeController($scope, projectFiles, $debounce, watcher, $filter) {
     $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
 
-    $scope.toggleDetails = function(file) {
-        file.showDetails = !file.showDetails;
-    };
-
-    $scope.showDetails = function(file) {
-        return file.showDetails;
-    };
-
     var search = {
         name: ""
     };
