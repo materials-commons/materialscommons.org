@@ -6,26 +6,7 @@
             drag="f"
             ng-repeat="f in file.children | orderBy:'name' track by f.id">
             <div>
-                <div ng-click="toggleDetails(f)"
-                     style="cursor: pointer">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-caret-right': f.type === 'datadir' && !showDetails(f), 'fa-caret-down': f.type === 'datadir' && showDetails(f)}"></i>
-                    <i class="fa fa-fw fa-folder" style="color: #256188"
-                       ng-class="{'fa-folder': f.type === 'datadir', 'fa-file': f.type === 'datafile'}"></i>
-                    <span style="color: #389dc1">{{::f.displayname}}</span>
-                </div>
-                <span class="label label-info" ng-repeat="tag in ::tags(f)" style="margin-right: 5px">
-                    <i class="fa"
-                       ng-class="'fa-' + tag.icon"
-                       style="color: {{tag.color}}">
-                    </i>
-                    {{::tag.name}}
-                </span>
-                <p style="padding-left: 15px;">
-                    <small class="text-muted" style="margin-right: 10px;"> {{::f.size | bytes}}</small>
-                    <small class="text-muted">{{::f.birthtime | toDateString}}</small>
-                    <small class="text-muted" style="margin-left: 10px">{{::f.fullname}}</small>
-                </p>
+                <directory-tree-display-entry file="f"></directory-tree-display-entry>
                 <div ng-if="showDetails(f)" style="padding-left: 0px; padding-right: 0px;">
                     <div class="row" style="padding-left: 0px; padding-right: 0px;">
                         <div ng-if="f.type === 'datadir'">
@@ -37,11 +18,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </li>
-        <li ng-show="matchingFiles.length === 0" class="home-item">
-            <div>
-                No matches.
             </div>
         </li>
     </ul>
