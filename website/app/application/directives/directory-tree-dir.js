@@ -19,11 +19,7 @@ function directoryTreeDirDirective(RecursionHelper) {
 Application.Controllers.controller("directoryTreeDirDirectiveController",
                                    ["$scope", directoryTreeDirDirectiveController]);
 function directoryTreeDirDirectiveController($scope) {
-    console.log("directoryTreeDirDirectiveController");
     $scope.files = $scope.file.children;
-    $scope.files.forEach(function(f) {
-        f.showDetails = false;
-    });
 
     $scope.toggleDetails = function(file) {
         file.showDetails = !file.showDetails;
