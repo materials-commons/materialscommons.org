@@ -1,0 +1,28 @@
+<div>
+    <div ng-click="file.showDetails = !file.showDetails"
+         style="cursor: pointer">
+        <i class="fa fa-fw"
+           ng-class="{'fa-caret-right': file.type === 'datadir' && !file.showDetails, 'fa-caret-down': file.type === 'datadir' && file.showDetails}"></i>
+        <i class="fa fa-fw fa-folder" style="color: #256188"
+           ng-class="{'fa-folder': file.type === 'datadir', 'fa-file': file.type === 'datafile'}"></i>
+        <span style="color: #389dc1">{{::file.displayname}}</span>
+    </div>
+    <span class="label label-info" ng-repeat="tag in ::file.tags" style="margin-right: 5px">
+        <i class="fa"
+           ng-class="'fa-' + tag.icon"
+           style="color: {{tag.color}}">
+        </i>
+        {{::tag.name}}
+    </span>
+    <p style="padding-left: 15px;">
+        <small ng-if="file.type === 'datafile'" class="text-muted" style="margin-right: 10px;">
+            {{::file.size | bytes}}
+        </small>
+        <small class="text-muted" style="margin-right: 10px">
+            {{::file.birthtime | toDateString}}
+        </small>
+        <small class="text-muted">
+            {{::file.fullname}}
+        </small>
+    </p>
+</div>

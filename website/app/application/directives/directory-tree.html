@@ -23,28 +23,7 @@
                     drag="file"
                     ng-repeat="file in files | orderBy:'name' | limitTo:500 as matchingFiles track by file.id">
                     <div>
-                        <div ng-click="toggleDetails(file)"
-                             style="cursor: pointer;">
-                            <i class="fa fa-fw"
-                               ng-class="{'fa-caret-right': file.type === 'datadir' && !showDetails(file), 'fa-caret-down': file.type === 'datadir' && showDetails(file)}"></i>
-                            <i class="fa fa-fw fa-folder" style="color: #256188"
-                               ng-class="{'fa-folder': file.type === 'datadir', 'fa-file': file.type === 'datafile'}"></i>
-                            <span style="color: #389dc1">{{::file.displayname}}</span>
-                        </div>
-
-                        <span class="label label-info" ng-repeat="tag in ::tags(file)" style="margin-right: 5px">
-                            <i class="fa"
-                               ng-class="'fa-' + tag.icon"
-                               style="color: {{tag.color}}">
-                            </i>
-                            {{::tag.name}}
-                        </span>
-
-                        <p style="padding-left: 15px;">
-                            <small class="text-muted" style="margin-right: 10px;"> {{::file.size | bytes}}</small>
-                            <small class="text-muted">{{::file.birthtime | toDateString}}</small>
-                            <small class="text-muted" style="margin-left: 10px">{{::file.fullname}}</small>
-                        </p>
+                        <directory-tree-display-entry file="file"></directory-tree-display-entry>
                         <div ng-if="showDetails(file)">
                             <div class="row">
                                 <div ng-if="file.type === 'datadir'">
