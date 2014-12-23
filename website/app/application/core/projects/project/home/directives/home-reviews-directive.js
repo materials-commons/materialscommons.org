@@ -14,17 +14,11 @@ Application.Controllers.controller("homeReviewsDirectiveController",
                                    ["$scope", "Review", "ui",
                                     homeReviewsDirectiveController]);
 function homeReviewsDirectiveController ($scope, Review, ui) {
-    var showReviewDetails = [];
-    for (var i = 0; i < $scope.project.notes.length; i++) {
-        showReviewDetails.push(false);
-    }
-    $scope.toggleDetails = function(index) {
-        showReviewDetails[index] = !showReviewDetails[index];
-    };
-
-    $scope.showDetails = function(index) {
-        return showReviewDetails[index];
-    };
+    $scope.project.reviews.forEach(function(review) {
+        if (!('showDetails' in review)) {
+            review.showDetails = false;
+        }
+    });
 
     $scope.closeReview = function () {
         Review.closeReview($scope.cached_review.id, $scope.project);

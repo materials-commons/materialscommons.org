@@ -12,22 +12,16 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-                                   ["$scope", "ui", "sideboard",
+                                   ["$scope", "ui",
                                     homeSamplesController]);
 
 function homeSamplesController($scope, ui, sideboard) {
-    var showSampleDetails = [];
-    for (var i = 0; i < $scope.project.samples.length; i++) {
-        showSampleDetails.push(false);
-    }
 
-    $scope.toggleDetails = function(index) {
-        showSampleDetails[index] = !showSampleDetails[index];
-    };
-
-    $scope.showDetails = function(index) {
-        return showSampleDetails[index];
-    };
+    $scope.project.samples.forEach(function(sample) {
+        if (!('showDetails' in sample)) {
+            sample.showDetails = false;
+        }
+    });
 
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "samples");
@@ -35,9 +29,5 @@ function homeSamplesController($scope, ui, sideboard) {
 
     $scope.isExpanded = function() {
         return ui.isExpanded($scope.project.id, "samples");
-    };
-
-    $scope.addToSideboard = function(sample, event) {
-        sideboard.handleFromEvent($scope.project.id, sample, event);
     };
 }

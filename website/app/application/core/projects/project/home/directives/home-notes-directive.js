@@ -15,17 +15,11 @@ Application.Controllers.controller("homeNotesDirectiveController",
                                     homeNotesDirectiveController]);
 
 function homeNotesDirectiveController($scope, ui) {
-    var showNoteDetails = [];
-    for (var i = 0; i < $scope.project.notes.length; i++) {
-        showNoteDetails.push(false);
-    }
-    $scope.toggleDetails = function(index) {
-        showNoteDetails[index] = !showNoteDetails[index];
-    };
-
-    $scope.showDetails = function(index) {
-        return showNoteDetails[index];
-    };
+    $scope.project.notes.forEach(function(note) {
+        if (!('showDetails' in note)) {
+            note.showDetails = false;
+        }
+    });
 
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "notes");

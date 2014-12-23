@@ -11,16 +11,10 @@ function homeFilesDirective() {
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
-                                   ["$scope", "$state", "listParams", "searchParams", "ui",
-                                    homeFilesDirectiveController]);
-function homeFilesDirectiveController($scope, $state, listParams, searchParams, ui) {
-    $scope.showMediaType = function(mediatype, mediaTypeDescription) {
-        listParams.set("file-list", "mediatype", mediatype,
-                       "File type:" + mediaTypeDescription);
-        searchParams.clear("file-list");
-        $state.go("projects.project.files.list");
-    };
-
+                                   ["$scope", "ui", "projectFiles", "applySearch",
+                                    "$filter", homeFilesDirectiveController]);
+function homeFilesDirectiveController($scope, ui, projectFiles, applySearch, $filter) {
+    $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "files");
     };
@@ -29,25 +23,19 @@ function homeFilesDirectiveController($scope, $state, listParams, searchParams, 
         return ui.isExpanded($scope.project.id, "files");
     };
 
-    function setupMediatypeAttrs() {
-        // Count the total number of files, and put the
-        // mediatypes in an array that we can use normal
-        // angularjs filters on (since things like orderBy)
-        // won't work on a hash. Do this in a single loop
-        // to keep from having to go through the dictionary
-        // more than once.
-        var totalFiles = 0;
-        $scope.mediatypes = [];
-        for (var key in $scope.project.mediatypes) {
-            var o = {
-                name: key,
-                attrs: $scope.project.mediatypes[key]
-            };
-            $scope.mediatypes.push(o);
-            totalFiles += $scope.project.mediatypes[key].count;
-        }
-        $scope.fileCount = totalFiles;
-    }
+    applySearch($scope, "searchInput", applyQuery);
 
-    setupMediatypeAttrs();
+    function applyQuery() {
+        var search = {
+            name: ""
+        };
+
+        if ($scope.searchInput === "") {
+            $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
+        } else {
+            var filesToSearch = projectFiles.model.projects[$scope.project.id].byMediaType.all;
+            search.name = $scope.searchInput;
+            $scope.files = $filter('filter')(filesToSearch, search);
+        }
+    }
 }
