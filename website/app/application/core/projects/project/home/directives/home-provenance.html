@@ -5,7 +5,7 @@
             <a ui-sref="projects.project.provenance.overview">
                 Processes
             </a>
-            ({{drafts.length + procs.length}})
+            ({{procs.length}})
         </span>
         <a ng-click="toggleExpanded()"
            class="pull-right bar-control">
@@ -20,32 +20,32 @@
             </a>
         </span>
     </div>
-    <div class="panel-body home-panel-body">
+    <div class="panel-body home-panel-body"
+         ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-class="{'open-item-details': showDetails($index)}"
-                ng-repeat="process in project.processes_drafts | filter:search | event:project.date:project.nextdate as procs">
+                ng-class="{'open-item-details': process.showDetails}"
+                ng-repeat="process in all | filter:search | event:project.date:project.nextdate as procs">
                 <div>
-                    <span ng-click="toggleDetails($index, process)" style="cursor: pointer">
+                    <span ng-click="process.showDetails = !process.showDetails" style="cursor: pointer">
                         <i class="fa"
-                           ng-class="{'fa-caret-right': !showDetails($index), 'fa-caret-down': showDetails($index)}">
+                           ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}">
                         </i>
-                         <span ng-show="process.process">
-                              {{process.process.name | truncate:25:'...':true}}
-                                <span class="label label-primary"
-                                      style="background-color:#e26a6a">Draft </span>
-                         </span>
+                        <span ng-show="process.process">
+                            {{process.process.name | truncate:25:'...':true}}
+                            <span class="label label-primary"
+                                  style="background-color:#e26a6a">Draft </span>
+                        </span>
                         <span ng-hide="process.process">
-                          {{process.name | truncate:25:'...':true}}
-
+                            {{process.name | truncate:25:'...':true}}
                         </span>
                     </span>
                     <p>
                         <small class="text-muted">{{process.birthtime | toDateString}}</small>
                     </p>
-                </div>
-                <div ng-if="showDetails($index)">
-                    <home-provenance-details ></home-provenance-details>
+                    <div ng-if="process.showDetails">
+                        <home-provenance-details process="process"></home-provenance-details>
+                    </div>
                 </div>
             </li>
             <li ng-show="procs.length === 0" class="home-item">

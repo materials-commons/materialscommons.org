@@ -10,7 +10,8 @@
         <input type="text" ng-model="search.name" class="pull-right col-xs-4"
                placeholder="Search processes...">
     </div>
-    <div class="panel-body home-panel-body side-by-side">
+    <div class="panel-body home-panel-body"
+         ng-class="{'side-by-side': !listExpanded, 'no-max-height': listExpanded}">
         <ul class="list-unstyled">
             <li class="home-item"
                 ui-draggable="true"
