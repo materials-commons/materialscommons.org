@@ -17,32 +17,10 @@
             </span>
         </div>
         <div class="panel-body home-panel-body no-max-height">
-            <ul class="list-unstyled">
-                <li class="file-item"
-                    ui-draggable="true"
-                    drag="file"
-                    ng-repeat="file in files | orderBy:'name' | limitTo:500 as matchingFiles track by file.id">
-                    <div>
-                        <directory-tree-display-entry file="file"></directory-tree-display-entry>
-                        <div ng-if="showDetails(file)">
-                            <div class="row">
-                                <div ng-if="file.type === 'datadir'">
-                                    <directory-tree-dir file="file"></directory-tree-dir>
-                                </div>
-
-                                <div ng-if="file.type === 'datafile'">
-                                    <directory-tree-file file="file"></directory-tree-file>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li ng-show="matchingFiles.length === 0" class="home-item">
-                    <div>
-                        No matches.
-                    </div>
-                </li>
-            </ul>
+            <mc-tree items="files"
+                     matches="matchingFiles"
+                     orderby="'name'">
+            </mc-tree>
         </div>
     </div>
 </div>

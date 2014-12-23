@@ -1,0 +1,26 @@
+<ul class="list-unstyled">
+    <li class="file-item"
+        ui-draggable="true"
+        drag="item"
+        ng-repeat="item in items | orderBy:orderby | limitTo:500 as matches track by item.id">
+        <div>
+            <directory-tree-display-entry file="item"></directory-tree-display-entry>
+            <div ng-if="item.showDetails">
+                <div class="row">
+                    <div ng-if="item.type === 'datadir'">
+                        <directory-tree-dir file="item"></directory-tree-dir>
+                    </div>
+
+                    <div ng-if="item.type === 'datafile'">
+                        <directory-tree-file file="item"></directory-tree-file>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li ng-show="matches.length === 0" class="home-item">
+        <div>
+            No matches.
+        </div>
+    </li>
+</ul>
