@@ -1,19 +1,19 @@
-Application.Directives.directive('homeProvenance', homeProvenanceDirective);
-function homeProvenanceDirective() {
+Application.Directives.directive('homeProcesses', homeProcessesDirective);
+function homeProcessesDirective() {
     return {
         restrict: "EA",
-        controller: 'homeProvenanceDirectiveController',
+        controller: 'homeProcessesDirectiveController',
         scope: {
             project: '=project'
         },
-        templateUrl: 'application/core/projects/project/home/directives/home-provenance.html'
+        templateUrl: 'application/core/projects/project/home/directives/home-processes.html'
     };
 }
 
-Application.Controllers.controller("homeProvenanceDirectiveController",
+Application.Controllers.controller("homeProcessesDirectiveController",
                                    ["$scope", "ui",
-                                    homeProvenanceDirectiveController]);
-function homeProvenanceDirectiveController($scope, ui) {
+                                    homeProcessesDirectiveController]);
+function homeProcessesDirectiveController($scope, ui) {
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "processes");
     };
