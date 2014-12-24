@@ -4,7 +4,8 @@ function mcTreeHeaderDirective() {
     return {
         restrict: "E",
         scope: {
-            item: '=item'
+            item: '=item',
+            showSideboard: "=showSideboard"
         },
         controller: "mcTreeHeaderDirectiveController",
         replace: true,

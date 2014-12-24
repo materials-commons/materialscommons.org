@@ -6,7 +6,7 @@
             drag="child"
             ng-repeat="child in item.children | orderBy:'name' track by child.id">
             <div>
-                <mc-tree-header item="child"></mc-tree-header>
+                <mc-tree-header item="child" show-sideboard="true"></mc-tree-header>
                 <div ng-if="child.showDetails" style="padding-left: 0px; padding-right: 0px;">
                     <div class="row" style="padding-left: 0px; padding-right: 0px;">
                         <div ng-if="child.type === 'datadir'">
