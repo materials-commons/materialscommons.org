@@ -5,11 +5,31 @@ function uiService() {
     var self = this;
     self.byProject = {};
 
+    function columnEntry(name, show) {
+        return {
+            name: name,
+            show: show
+        };
+    }
+
     // initForProject initializes the ui state for a project.
     function initForProject(projectID) {
         self.byProject[projectID] = {
             files: false,
-            expanded: {}
+            expanded: {}//,
+            // homeColumns: {
+            //     column1: [
+            //         columnEntry("calendar", false),
+            //         columnEntry("reviews", true),
+            //         columnEntry("files", true)
+            //     ],
+            //     column2: [
+            //         columnEntry("sideboard", false),
+            //         columnEntry("samples", true),
+            //         columnEntry("notes", true),
+            //         columnEntry("processes", true)
+            //     ]
+            // }
         };
     }
 

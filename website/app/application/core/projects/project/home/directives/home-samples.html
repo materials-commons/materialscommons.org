@@ -5,11 +5,15 @@
             <a ui-sref="projects.project.samples.overview">Samples</a>
             ({{samples.length}})
         </span>
-        <a ng-click="toggleExpanded()"
-           class="pull-right bar-control">
-            <i class="fa"
-               ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
-        </a>
+        <span class="pull-right bar-control">
+            <a ng-click="splitScreen()">
+                <i class="fa fa-fw fa-columns"></i>
+            </a>
+            <a ng-click="toggleExpanded()">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
+            </a>
+        </span>
         <input type="text" ng-model="search.name"
                placeholder="Search samples..." class="pull-right col-xs-4">
         <span class="add-item pull-right">
