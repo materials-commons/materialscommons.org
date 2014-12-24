@@ -28,27 +28,9 @@
             </li>
             <li class="home-item"
                 ng-repeat="item in sideboard | filter:sideboardSearch | orderBy:'name' as matches">
-                <div ng-switch="item._type">
-                    <div ng-switch-when="sample">
-                        <display-sample sample="item"
-                                        show-sideboard="false">
-                        </display-sample>
-                    </div>
-                    <div ng-switch-when="review">
-                        <display-review review="item"
-                                        show-sideboard="false">
-                        </display-review>
-                    </div>
-                    <div ng-switch-when="note">
-                        <display-note note="item"
-                                      show-sideboard="false">
-                        </display-note>
-                    </div>
-                    <div ng-switch-default>
-                        Showing nothing
-                        {{item}}
-                    </div>
-                </div>
+                <display-item item="item"
+                              show-sideboard="false">
+                </display-item>
             </li>
         </ul>
     </div>
