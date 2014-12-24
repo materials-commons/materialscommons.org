@@ -1,0 +1,30 @@
+<div ng-switch="item._type">
+    <div ng-switch-when="sample">
+        <display-sample sample="item"
+                        show-sideboard="false">
+        </display-sample>
+    </div>
+    <div ng-switch-when="review">
+        <display-review review="item"
+                        show-sideboard="false">
+        </display-review>
+    </div>
+    <div ng-switch-when="note">
+        <display-note note="item"
+                      show-sideboard="false">
+        </display-note>
+    </div>
+    <div ng-switch-when="'process'">
+        <display-process process="item"
+                         show-sideboard="false">
+        </display-process>
+    </div>
+    <div ng-switch-when="datafile">
+        <display-file file="item"
+                      show-sideboard="false">
+        </display-file>
+    </div>
+    <div ng-switch-default>
+        New type not shown {{item._type}}
+    </div>
+</div>
