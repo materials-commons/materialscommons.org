@@ -2,25 +2,39 @@
     <div class="row">
         <div class="col-xs-12">
             <a ng-click="showCalendar = !showCalendar">
-                <i class="fa fa-fw fa-2x fa-calendar"></i>
+                <i class="fa fa-fw fa-2x fa-calendar" ng-class="{activated: !showCalendar}"></i>
             </a>
             <a ng-click="showSideboard = !showSideboard">
-                <i class="fa fa-fw fa-2x fa-clipboard"> </i>
+                <i class="fa fa-fw fa-2x fa-clipboard" ng-class="{activated: !showSideboard}"></i>
                 <span class="badge badge-superscript-count">{{sideboard.length}}</span>
             </a>
-        </div>
-    </div>
-    <div class="row" >
-        <div class="col-xs-6" ng-if="showCalendar">
-            <div home-calendar project="project"></div>
-        </div>
-        <div class="col-xs-6" ng-if="showSideboard">
-            <div home-sideboard project="project"></div>
+            <a ng-click="showReviews = !showReviews">
+                <i class="fa fa-fw fa-2x fa-comment" ng-class="{activated: !showReviews}"></i>
+                <span class="badge badge-superscript-count">{{project.reviews.length}}</span>
+            </a>
+            <a ng-click="showSamples = !showSamples">
+                <i class="fa fa-fw fa-2x fa-cubes" ng-class="{activated: !showSamples}"></i>
+                <span class="badge badge-superscript-count">{{project.samples.length}}</span>
+            </a>
+            <a ng-click="showFiles = !showFiles">
+                <i class="fa fa-fw fa-2x fa-files-o" ng-class="{activated: !showFiles}"></i>
+            </a>
+            <a ng-click="showNotes = !showNotes">
+                <i class="fa fa-fw fa-2x fa-edit" ng-class="{activated: !showNotes}"></i>
+                <span class="badge badge-superscript-count">{{project.notes.length}}</span>
+            </a>
+            <a ng-click="showProcesses = !showProcesses">
+                <i class="fa fa-fw fa-2x fa-code-fork" ng-class="{activated: !showProcesses}"></i>
+                <span class="badge badge-superscript-count">{{project.processes.length}}</span>
+            </a>
         </div>
     </div>
     <div class="row">
         <div ng-class="{'col-xs-6': !isExpandedInColumn(['reviews', 'files']), 'col-xs-12': isExpandedInColumn(['reviews', 'files'])}"
              ng-show="!isExpandedInColumn(['samples', 'notes', 'processes'])">
+            <div class="row" ng-if="showCalendar">
+                <div home-calendar project="project"></div>
+            </div>
             <div class="row" ng-show="show('reviews')">
                 <div home-reviews project="project"></div>
             </div>
@@ -30,6 +44,9 @@
         </div>
         <div ng-class="{'col-xs-6': !isExpandedInColumn(['samples', 'notes', 'processes']), 'col-xs-12': isExpandedInColumn(['samples', 'notes', 'processes'])}"
              ng-show="!isExpandedInColumn(['reviews', 'files'])">
+            <div class="row" ng-if="showSideboard">
+                <div home-sideboard project="project"></div>
+            </div>
             <div class="row" ng-show="show('samples')">
                 <div home-samples project="project"></div>
             </div>
@@ -39,6 +56,11 @@
 
             <div class="row" ng-show="show('processes')">
                 <div home-processes project="project"></div>
+            </div>
+        </div>
+        <div ng-if="false" class="col-xs-6">
+            <div class="row">
+                <div home-sideboard project="project"></div>
             </div>
         </div>
     </div>

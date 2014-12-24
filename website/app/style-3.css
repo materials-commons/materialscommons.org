@@ -1567,8 +1567,9 @@ label {
   left: -12px;
 }
 
-.in-sideboard {
-  color: #800000;
+.activated {
+  /* color: #800000; */
+  color: #8b3a3a;
 }
 
 .tab-active {

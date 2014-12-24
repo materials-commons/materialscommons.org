@@ -1,9 +1,33 @@
 Application.Controllers.controller('projectHome',
-    ["$scope", "project", "User", "mcapi", "ui", projectHome]);
+                                   ["$scope", "project", "User", "mcapi", "ui", projectHome]);
 
 function projectHome($scope, project, User, mcapi, ui) {
 
+    function userShow(what) {
+        switch(what) {
+        case "samples":
+            return $scope.showSamples;
+        case "reviews":
+            return $scope.showReviews;
+        case "notes":
+            return $scope.showNotes;
+        case "processes":
+            return $scope.showProcesses;
+        case "files":
+            return $scope.showFiles;
+        default:
+            return false;
+        }
+    }
+
     $scope.show = function(what) {
+        // If user is not showing this item then return false
+        var isUserShowing = userShow(what);
+        if (!isUserShowing) {
+            return false;
+        }
+
+        // Otherwise check status.
         var expanded = ui.anyExpandedExcept(project.id, what);
         // if expanded is true that means something is expanded
         // besides the requested entry, so return false to show
@@ -32,4 +56,12 @@ function projectHome($scope, project, User, mcapi, ui) {
 
     $scope.project = project;
     $scope.mcuser = User.attr();
+
+    $scope.showCalendar = false;
+    $scope.showSideboard = false;
+    $scope.showReviews = true;
+    $scope.showSamples = true;
+    $scope.showFiles = true;
+    $scope.showNotes = true;
+    $scope.showProcesses = true;
 }

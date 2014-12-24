@@ -37,12 +37,12 @@ function sideboardService() {
         },
 
         handleFromEvent: function(projectID, entry, event) {
-            if ($(event.target).hasClass("in-sideboard")) {
+            if ($(event.target).hasClass("activated")) {
                 self.service.delete(projectID, entry);
-                $(event.target).removeClass("in-sideboard");
+                $(event.target).removeClass("activated");
             } else {
                 self.service.add(projectID, entry);
-                $(event.target).addClass("in-sideboard");
+                $(event.target).addClass("activated");
             }
         }
     };
