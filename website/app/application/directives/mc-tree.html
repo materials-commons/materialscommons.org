@@ -3,20 +3,9 @@
         ui-draggable="true"
         drag="item"
         ng-repeat="item in items | orderBy:orderby | limitTo:500 as matches track by item.id">
-        <div>
-            <mc-tree-header item="item"></mc-tree-header>
-            <div ng-if="item.showDetails">
-                <div class="row">
-                    <div ng-if="item.type === 'datadir'">
-                        <mc-tree-dir item="item"></mc-tree-dir>
-                    </div>
-
-                    <div ng-if="item.type === 'datafile'">
-                        <mc-tree-leaf item="item"></mc-tree-leaf>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <mc-tree-display-item item="item"
+                              show-sideboard="true">
+        </mc-tree-display-item>
     </li>
     <li ng-show="matches.length === 0" class="home-item">
         <div>

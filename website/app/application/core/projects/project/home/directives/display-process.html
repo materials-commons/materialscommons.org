@@ -1,0 +1,28 @@
+<div>
+    <span ng-click="process.showDetails = !process.showDetails" style="cursor: pointer">
+        <i class="fa"
+           ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}">
+        </i>
+        <span ng-show="process.process">
+            {{process.process.name | truncate:25:'...':true}}
+            <span class="label label-primary"
+                  style="background-color:#e26a6a">Draft </span>
+        </span>
+        <span ng-hide="process.process">
+            {{process.name | truncate:25:'...':true}}
+        </span>
+    </span>
+    <span class="pull-right">
+        <a ng-if="showSideboard"
+           ng-click="addToSideboard(process, $event)"
+           id="{{process.id}}">
+            <id class="fa fa-fw fa-clipboard"></i>
+        </a>
+    </span>
+    <p>
+        <small class="text-muted">{{process.birthtime | toDateString}}</small>
+    </p>
+    <div ng-if="process.showDetails">
+        <home-process-details process="process"></home-process-details>
+    </div>
+</div>

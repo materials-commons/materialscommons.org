@@ -9,7 +9,7 @@
     </span>
     <span class="pull-right" style="padding-right: 15px;">
         <span ng-if="item.type === 'datafile'">
-            <a ng-click="addToSideboard(item, $event)" id={{item.id}}>
+            <a ng-if="showSideboard" ng-click="addToSideboard(item, $event)" id={{item.id}}>
                 <i class="fa fa-fw fa-clipboard"></i>
             </a>
             <a title="{{tooltip}}"

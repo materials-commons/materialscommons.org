@@ -1,0 +1,16 @@
+<div>
+    <mc-tree-header item="item"
+                    show-sideboard="showSideboard">
+    </mc-tree-header>
+    <div ng-if="item.showDetails">
+        <div class="row">
+            <div ng-if="item.type === 'datadir'">
+                <mc-tree-dir item="item"></mc-tree-dir>
+            </div>
+
+            <div ng-if="item.type === 'datafile'">
+                <mc-tree-leaf item="item"></mc-tree-leaf>
+            </div>
+        </div>
+    </div>
+</div>

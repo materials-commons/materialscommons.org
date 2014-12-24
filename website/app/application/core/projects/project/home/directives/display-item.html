@@ -14,7 +14,7 @@
                       show-sideboard="false">
         </display-note>
     </div>
-    <div ng-switch-when="'process'">
+    <div ng-switch-when="process">
         <display-process process="item"
                          show-sideboard="false">
         </display-process>
@@ -25,6 +25,9 @@
         </display-file>
     </div>
     <div ng-switch-default>
-        New type not shown {{item._type}}
+        <!-- For now display file until we change type to _type -->
+        <mc-tree-display-item item="item"
+                              show-sideboard="false">
+        </mc-tree-display-item>
     </div>
 </div>
