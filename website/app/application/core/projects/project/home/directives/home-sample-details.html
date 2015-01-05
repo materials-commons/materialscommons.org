@@ -26,7 +26,7 @@
         </div>
     </div>
     <div style="margin-top: -10px;" class="row">
-        <b>Notes:</b>
-        <textarea ng-model="sample.notes" class="form-control" style="height:40px; width:100%" disabled></textarea>
+        <br><b>Note:  <u>{{note.title}}</u></b>
+        <div class="sample-note"  ta-bind="text" ng-model="note.note" ta-readonly='disabled'></div>
     </div>
 </div>

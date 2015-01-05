@@ -19,4 +19,5 @@ function displaySampleDirectiveController($scope, sideboard, current) {
     $scope.addToSideboard = function(sample, event) {
         sideboard.handleFromEvent(current.projectID(), sample, event);
     };
+
 }
