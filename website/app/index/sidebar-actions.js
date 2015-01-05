@@ -17,7 +17,7 @@ function sidebarActionsDirectiveController($scope, $state) {
     $scope.activeAction = "home";
 
     $scope.isActionActive = function(action) {
-        return $scope.activeAction == action;
+        return $scope.activeAction === action;
     };
 
     $scope.setActionActive = function(action) {
