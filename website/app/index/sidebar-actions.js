@@ -10,22 +10,21 @@ function sidebarActionsDirective() {
 }
 
 Application.Controllers.controller("sidebarActionsDirectiveController",
-                                   ["$scope", "$state", sidebarActionsDirectiveController]);
+    ["$scope",  "homeCustomize", sidebarActionsDirectiveController]);
 
-function sidebarActionsDirectiveController($scope, $state) {
+function sidebarActionsDirectiveController($scope, homeCustomize) {
     $scope.showProjectActions = true;
     $scope.activeAction = "home";
 
-    $scope.isActionActive = function(action) {
+    $scope.isActionActive = function (action) {
         return $scope.activeAction === action;
     };
 
-    $scope.setActionActive = function(action) {
-        $scope.activeAction = action;
-        if (action !== "home") {
-            // append overview to route
-            action += ".overview";
-        }
-        $state.go("projects.project." + action, {id: $scope.project.id});
+    $scope.setActionActive = function (action) {
+        homeCustomize.setInfoBox(action);
+    };
+
+    $scope.getActionActive = function (what) {
+        return homeCustomize.getInfoBox(what);
     };
 }
