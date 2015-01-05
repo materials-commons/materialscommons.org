@@ -1567,9 +1567,8 @@ label {
   left: -12px;
 }
 
-.activated {
-  /* color: #800000; */
-  color: #8b3a3a;
+.inactive {
+  color: #8e8e8e;
 }
 
 .tab-active {
@@ -1733,6 +1732,10 @@ ul.menu-bar li {
 
 .close {
   color: black;
+}
+
+.sideboard-close {
+  color: #800000;
 }
 
 .pointer {
