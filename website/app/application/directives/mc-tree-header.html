@@ -23,9 +23,7 @@
                 <i class="fa fa-fw fa-close sideboard-close"></i>
             </a>
         </span>
-        <a ng-if="item.type === 'datadir'" title="{{tooltip}}" ng-click="upload(item)">
-            <i class="fa fa-fw" ng-class="faClass"></i>
-        </a>
+        <mc-flow-button ng-if="item.type === 'datadir'"></mc-flow-button>
     </span>
 
     <p>

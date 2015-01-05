@@ -12,8 +12,10 @@ function homeFilesDirective() {
 
 Application.Controllers.controller("homeFilesDirectiveController",
                                    ["$scope", "ui", "projectFiles", "applySearch",
-                                    "$filter", homeFilesDirectiveController]);
-function homeFilesDirectiveController($scope, ui, projectFiles, applySearch, $filter) {
+                                    "$filter", "mcFlow", "pubsub", "$timeout",
+                                    homeFilesDirectiveController]);
+function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
+                                      $filter, mcFlow, pubsub, $timeout) {
     $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "files");
@@ -24,6 +26,17 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch, $fi
     };
 
     applySearch($scope, "searchInput", applyQuery);
+
+    pubsub.waitOn($scope, "file-upload-added", function() {
+        console.log("got file-upload-added");
+        $timeout(function() {
+            console.dir(flow.files);
+            $scope.uploads = flow.files;
+        });
+    });
+
+    var flow = mcFlow.get();
+    $scope.uploads = flow.files;
 
     function applyQuery() {
         var search = {
