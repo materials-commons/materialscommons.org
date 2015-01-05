@@ -9,13 +9,18 @@
     </span>
     <span class="pull-right" style="padding-right: 15px;">
         <span ng-if="item.type === 'datafile'">
-            <a ng-if="showSideboard" ng-click="addToSideboard(item, $event)" id={{item.id}}>
-                <i class="fa fa-fw fa-clipboard"></i>
+            <a ng-if="showSideboard"
+               ng-click="addToSideboard(item, $event)">
+                <i class="fa fa-fw fa-clipboard inactive" id="{{item.id}}"></i>
             </a>
             <a title="{{tooltip}}"
                ng-href="{{downloadSrc(item)}}"
                download="{{item.name}}">
                 <i class="fa fa-fw" ng-class="faClass"></i>
+            </a>
+            <a ng-if="!showSideboard"
+               ng-click="addToSideboard(item, $event)">
+                <i class="fa fa-fw fa-close sideboard-close"></i>
             </a>
         </span>
         <a ng-if="item.type === 'datadir'" title="{{tooltip}}" ng-click="upload(item)">
