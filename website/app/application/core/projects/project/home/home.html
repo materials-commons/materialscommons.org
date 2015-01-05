@@ -2,29 +2,29 @@
     <div class="row">
         <div class="col-xs-12">
             <a ng-click="showCalendar = !showCalendar">
-                <i class="fa fa-fw fa-2x fa-calendar" ng-class="{activated: !showCalendar}"></i>
+                <i class="fa fa-fw fa-2x fa-calendar" ng-class="{inactive: !showCalendar}"></i>
             </a>
             <a ng-click="showSideboard = !showSideboard">
-                <i class="fa fa-fw fa-2x fa-clipboard" ng-class="{activated: !showSideboard}"></i>
+                <i class="fa fa-fw fa-2x fa-clipboard" ng-class="{inactive: !showSideboard}"></i>
                 <span class="badge badge-superscript-count">{{sideboard.length}}</span>
             </a>
             <a ng-click="showReviews = !showReviews">
-                <i class="fa fa-fw fa-2x fa-comment" ng-class="{activated: !showReviews}"></i>
+                <i class="fa fa-fw fa-2x fa-comment" ng-class="{inactive: !showReviews}"></i>
                 <span class="badge badge-superscript-count">{{project.reviews.length}}</span>
             </a>
             <a ng-click="showSamples = !showSamples">
-                <i class="fa fa-fw fa-2x fa-cubes" ng-class="{activated: !showSamples}"></i>
+                <i class="fa fa-fw fa-2x fa-cubes" ng-class="{inactive: !showSamples}"></i>
                 <span class="badge badge-superscript-count">{{project.samples.length}}</span>
             </a>
             <a ng-click="showFiles = !showFiles">
-                <i class="fa fa-fw fa-2x fa-files-o" ng-class="{activated: !showFiles}"></i>
+                <i class="fa fa-fw fa-2x fa-files-o" ng-class="{inactive: !showFiles}"></i>
             </a>
             <a ng-click="showNotes = !showNotes">
-                <i class="fa fa-fw fa-2x fa-edit" ng-class="{activated: !showNotes}"></i>
+                <i class="fa fa-fw fa-2x fa-edit" ng-class="{inactive: !showNotes}"></i>
                 <span class="badge badge-superscript-count">{{project.notes.length}}</span>
             </a>
             <a ng-click="showProcesses = !showProcesses">
-                <i class="fa fa-fw fa-2x fa-code-fork" ng-class="{activated: !showProcesses}"></i>
+                <i class="fa fa-fw fa-2x fa-code-fork" ng-class="{inactive: !showProcesses}"></i>
                 <span class="badge badge-superscript-count">{{project.processes.length}}</span>
             </a>
         </div>
