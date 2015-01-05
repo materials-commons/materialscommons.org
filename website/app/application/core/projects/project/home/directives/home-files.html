@@ -20,6 +20,12 @@
         </span>
     </div>
     <div class="panel-body home-panel-body no-max-height">
+        <ul class="list-unstyled">
+            <li class="home-item"
+                ng-repeat="file in uploads">
+                {{file.name}}
+            </li>
+        </ul>
         <mc-tree items="files"
                  matches="matchingFiles"
                  orderby="'name'">
