@@ -28,9 +28,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     applySearch($scope, "searchInput", applyQuery);
 
     pubsub.waitOn($scope, "file-upload-added", function() {
-        console.log("got file-upload-added");
         $timeout(function() {
-            console.dir(flow.files);
             $scope.uploads = flow.files;
         });
     });
