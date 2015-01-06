@@ -14,6 +14,7 @@ Application.Controllers.controller("homeSampleDetailsController",
         homeSampleDetailsController]);
 
 function homeSampleDetailsController($scope, current, Project) {
-    $scope.sample.notes = Project.getSpecificNotes(current.project(), $scope.sample.id, 'sample');
-    $scope.note = $scope.sample.notes[0];
+    //currently we have a single note for a sample. This could change at the time of sample rework
+    var notes = Project.getSpecificNotes(current.project(), $scope.sample.id, 'sample');
+    $scope.note = notes[0];
 }
