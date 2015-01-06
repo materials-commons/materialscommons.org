@@ -2,6 +2,7 @@
 
 CMD="$1"
 TESTING="$2"
+INITFLAG="$3"
 TESTSERVER=false
 SERVERTYPE="production"
 
@@ -26,16 +27,20 @@ function start_servers()
         (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
         sleep 3
         if [ $TESTSERVER != false ]; then
-            echo "  Restoring from file $MCDB_FILE..."
-            cp $MCDB_FILE $MCDB_DIR
-            FILE=$(basename $MCDB_FILE)
-            rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT
+            if [ "$REINIT" = "t" ]; then
+                echo "  Restoring from file $MCDB_FILE..."
+                cp $MCDB_FILE $MCDB_DIR
+                FILE=$(basename $MCDB_FILE)
+                rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT
+            fi
         fi
         echo "  Setting up database..."
         scripts/dbcreate.py
         if [ $TESTSERVER = "u" ]; then
-            echo "  Loading templates..."
-            (cd ./scripts; ./loadtemplates.sh -p $MCDB_PORT > /dev/null)
+            if [ "$REINIT" = "t" ]; then
+                echo "  Loading templates..."
+                (cd ./scripts; ./loadtemplates.sh -p $MCDB_PORT > /dev/null)
+            fi
         fi
     fi
 
@@ -75,7 +80,6 @@ function stop_servers()
     fi
 
     if [ $TESTSERVER = "u" ]; then
-        (cd $MCDB_DIR; rm -rf rethinkdb_data)
         if [ $(hostname) != "materialscommons" ]; then
             WEBSERVER_PID=$(ps -eo "pid,command" | grep web-server.js | grep 8000 | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
             if [ "$WEBSERVER_PID" != "" ]; then
@@ -151,6 +155,12 @@ elif [ "$TESTING" = "-t" ]; then
     SERVERTYPE="test"
 fi
 
+REINIT=f
+
+if [ "$INITFLAG" = "-r" ]; then
+    REINIT=t
+fi
+
 if [ $TESTSERVER = "t" ]; then
     export MC_SERVICE_PORT=5002
     export MCDB_PORT=30815
@@ -175,7 +185,9 @@ if [ $TESTSERVER = "t" ]; then
     if [ ! -d $MCDB_DIR ]; then
         mkdir $MCDB_DIR
     fi
-    (cd $MCDB_DIR; rm -rf rethinkdb_data)
+    if [ "$REINIT" = "t" ]; then
+        (cd $MCDB_DIR; rm -rf rethinkdb_data)
+    fi
 elif [ $TESTSERVER = "u" ]; then
     export MC_SERVICE_PORT=5002
     export MCDB_PORT=30815
@@ -196,7 +208,9 @@ elif [ $TESTSERVER = "u" ]; then
     if [ ! -d $MCDB_DIR ]; then
         mkdir $MCDB_DIR
     fi
-    (cd $MCDB_DIR; rm -rf rethinkdb_data)
+    if [ "$REINIT" = "t" ]; then
+        (cd $MCDB_DIR; rm -rf rethinkdb_data)
+    fi
 else
     export MCDB_PORT=28015
     export MCDB_CONNECTION="localhost:$MCDB_PORT"
