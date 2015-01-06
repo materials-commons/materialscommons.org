@@ -1737,8 +1737,16 @@ ul.menu-bar li {
     color: black;
 }
 
-.sideboard-close {
+.mc-danger {
     color: #800000;
+}
+
+.panel-element {
+  padding-left: 10px;
+}
+
+.mc-success {
+  color: #128F76;
 }
 
 .pointer {
@@ -1987,4 +1995,9 @@ ul.menu-bar li {
     background-color: white;
     border: 1px solid #c9c9c9;
     padding: 8px;
+}
+
+/* Progress bar */
+.progress {
+  background-color: #c9c9c9;
 }

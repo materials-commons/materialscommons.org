@@ -1,10 +1,12 @@
-Application.Directives.directive("mcFlowButton", ["mcFlow", "pubsub", mcFlowButtonDirective]);
+Application.Directives.directive("mcFlowButton", ["mcFlow", "current", mcFlowButtonDirective]);
 
-function mcFlowButtonDirective(mcFlow, pubsub) {
+function mcFlowButtonDirective(mcFlow, current) {
     return {
         restrict: 'E',
         replace: true,
-        scope: false,
+        scope: {
+            dir: "=dir"
+        },
         template: "<span style='color: #389dc1; cursor: pointer' title='Upload to directory'><i class='fa fa-fw fa-upload'></i></span>",
         link: function(scope, element, attrs) {
             var flow = mcFlow.get();
@@ -79,22 +81,25 @@ function mcFlowButtonDirective(mcFlow, pubsub) {
                     each(attributes, function (value, key) {
                         input.setAttribute(key, value);
                     });
+
                     // When new files are added, simply append them to the overall list
-                    //var $ = this;
                     input.addEventListener('change', function (e) {
+                        var project = current.project();
                         var files = [];
                         each(e.target.files, function(f) {
                             var o = {
                                 id: "newid_" + f.name,
                                 file: f,
                                 attrs: {
-                                    hello: 'world'
+                                    directory_name:  scope.dir.name,
+                                    directory_id: scope.dir.id,
+                                    project_id: project.id,
+                                    project_name: project.name
                                 }
                             };
                             files.push(o);
                         });
                         flow.addFiles(files, e);
-                        pubsub.send("file-upload-added");
                         e.target.value = '';
                     }, false);
                 }, this);
