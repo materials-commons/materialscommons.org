@@ -15,17 +15,9 @@
         </span>
         <input type="text" ng-model="searchInput" class="pull-right col-xs-4"
                placeholder="Search files...">
-        <span class="add-item pull-right">
-            <a tooltip="Add File"><i class="fa fa-fw fa-plus"></i></a>
-        </span>
     </div>
     <div class="panel-body home-panel-body no-max-height">
-        <ul class="list-unstyled">
-            <li class="home-item"
-                ng-repeat="file in uploads">
-                {{file.name}}
-            </li>
-        </ul>
+        <file-upload-panel></file-upload-panel>
         <mc-tree items="files"
                  matches="matchingFiles"
                  orderby="'name'">

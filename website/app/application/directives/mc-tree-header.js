@@ -14,9 +14,9 @@ function mcTreeHeaderDirective() {
 }
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current", "mcFlow",
+                                   ["$scope", "mcfile", "sideboard", "current",
                                     mcTreeHeaderDirectiveController]);
-function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, mcFlow) {
+function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
         $scope.faClass = "fa-upload";
@@ -24,11 +24,6 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, mcF
         $scope.tooltip = "Download file";
         $scope.faClass = "fa-download";
     }
-
-    $scope.upload = function(file, event) {
-        console.log("uploading to %O", file);
-        mcFlow.assignBrowse(event.target, false, false, []);
-    };
 
     $scope.downloadSrc = function(file) {
         return mcfile.downloadSrc(file.id);

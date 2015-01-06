@@ -20,10 +20,10 @@
             </a>
             <a ng-if="!showSideboard"
                ng-click="addToSideboard(item, $event)">
-                <i class="fa fa-fw fa-close sideboard-close"></i>
+                <i class="fa fa-fw fa-close mc-danger"></i>
             </a>
         </span>
-        <mc-flow-button ng-if="item.type === 'datadir'"></mc-flow-button>
+        <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
     </span>
 
     <p>
