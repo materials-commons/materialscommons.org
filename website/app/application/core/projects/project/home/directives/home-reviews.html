@@ -19,12 +19,12 @@
         <input type="text" ng-model="search" class="pull-right col-xs-4"
                placeholder="Search reviews...">
         <span class="add-item pull-right">
-            <a ui-sref="projects.project.reviews.create" tooltip="Add Review">
+            <a ng-click="createReview()" tooltip="Add Review">
                 <i class="fa fa-fw fa-plus"></i>
             </a>
         </span>
     </div>
-    <div class="panel-body home-panel-body">
+    <div ng-hide="bk.createReview" class="panel-body home-panel-body">
         <ul class="list-unstyled">
             <li class="home-item"
                 ng-class="{'open-item-details': review.showDetails}"
@@ -35,6 +35,9 @@
                 <div>No reviews.</div>
             </li>
         </ul>
+    </div>
+    <div ng-show="bk.createReview" class="panel-body home-panel-body">
+       <create-review bk="bk"></create-review>
     </div>
 </div>
 

@@ -36,4 +36,12 @@ function homeReviewsDirectiveController ($scope, Review, ui) {
         return ui.isExpanded($scope.project.id, "reviews");
     };
 
+    $scope.createReview = function(){
+        $scope.bk.createReview = true;
+    };
+
+    $scope.bk = {
+        createReview: false
+    };
+
 }

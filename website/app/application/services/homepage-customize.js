@@ -1,6 +1,6 @@
-Application.Services.factory("homeCustomize", homeCustomizeService);
+Application.Services.factory("homeCustomize", ["pubsub",homeCustomizeService]);
 
-function homeCustomizeService() {
+function homeCustomizeService(pubsub) {
 
     var service = {
         showReviews: true,
@@ -8,6 +8,7 @@ function homeCustomizeService() {
         showProcesses: true,
         showFiles: true,
         showSamples: true,
+        showCreateReview: false,
 
         setInfoBox: function (what) {
             switch (what) {
