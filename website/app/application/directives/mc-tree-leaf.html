@@ -5,15 +5,18 @@
     <div ng-switch-when="pdf">
         <div class="embed-responsive embed-responsive-4by3">
             <embed class="col-xs-8 embed-responsive-item"
-                   ng-src="{{fileSrc(item)}}"></embed>
+                   ng-src="{{fileSrc(item)}}">
+            </embed>
         </div>
     </div>
     <div ng-switch-default>
         <div ng-if="item.size <= 10000"
              hljs
-             include="fileSrc(item)"></div>
+             include="fileSrc(item)">
+        </div>
         <code ng-if="item.size > 10000 && item.size <= 2000000"
-              style="white-space:pre-line" ng-include="fileSrc(item)"></code>
+              style="white-space:pre-line" ng-include="fileSrc(item)">
+        </code>
         <div ng-if="item.size > 2000000">File too big to display</div>
     </div>
 </div>
