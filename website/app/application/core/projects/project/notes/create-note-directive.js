@@ -1,18 +1,32 @@
-Application.Controllers.controller('projectNotesCreate',
+
+Application.Directives.directive('createNote', createNoteDirective);
+function createNoteDirective() {
+    return {
+        restrict: "EA",
+        controller: 'createNoteDirectiveController',
+        scope: {
+            model: '=model'
+        },
+        templateUrl: 'application/core/projects/project/notes/create.html'
+    };
+}
+
+Application.Controllers.controller('createNoteDirectiveController',
     ["$scope", "User", "mcapi", "projectState",
-        "$stateParams", "project", "recent",
-        projectNotesCreate]);
+        "$stateParams", "current", "recent",
+        createNoteDirectiveController]);
 
-function projectNotesCreate($scope, User, mcapi, projectState,
-                            $stateParams, project, recent) {
-    var projectID = project.id;
+function createNoteDirectiveController($scope, User, mcapi, projectState,
+                            $stateParams, current, recent) {
+    $scope.project = current.project();
+    var projectID = $scope.project.id;
     var stateID = $stateParams.sid;
-
 
     $scope.cancel = function () {
         recent.delete(projectID, stateID);
         projectState.delete(projectID, stateID);
         recent.gotoLast(projectID);
+        $scope.model.createNote = false;
     };
 
     $scope.create = function () {
@@ -20,14 +34,15 @@ function projectNotesCreate($scope, User, mcapi, projectState,
             'item_id': projectID,
             'item_type': 'project',
             'creator': User.u(),
-            'project_id': project.id,
+            'project_id': $scope.project.id,
             'note': $scope.model.note,
             'title': $scope.model.title
         };
         mcapi('/notes')
             .success(function (note) {
-                project.notes.push(note);
+                $scope.project.notes.unshift(note);
                 recent.gotoLast($scope.project.id);
+                $scope.model.createNote = false;
             }).post($scope.note);
     };
 

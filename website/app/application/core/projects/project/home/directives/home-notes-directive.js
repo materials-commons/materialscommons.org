@@ -28,4 +28,12 @@ function homeNotesDirectiveController($scope, ui) {
     $scope.isExpanded = function() {
         return ui.isExpanded($scope.project.id, "notes");
     };
+
+    $scope.createNote = function(){
+        $scope.model.createNote = true;
+    };
+
+    $scope.model = {
+        createNote: false
+    };
 }
