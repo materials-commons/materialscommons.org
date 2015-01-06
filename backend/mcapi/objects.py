@@ -103,6 +103,7 @@ def create_object():
             n = note.Note(user, notes, title, sid,
                           'sample', sample['project_id'])
             rv = dmutil.insert_entry('notes', n.__dict__, return_created=True)
+            s['notes'] = rv
         return jsonify(s)
 
 
