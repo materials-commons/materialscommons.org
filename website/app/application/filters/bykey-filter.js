@@ -5,11 +5,9 @@ Application.Filters.filter('byKey', function () {
         var matches = [];
         if (items) {
             items.forEach(function(item) {
-                if (key in item) {
                     if (item[key] === value) {
                         matches.push(item);
                     }
-                }
             });
         }
         return matches;

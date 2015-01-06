@@ -1,10 +1,25 @@
-Application.Controllers.controller('projectSamplesCreate',
+
+
+Application.Directives.directive('createSample', createSampleDirective);
+function createSampleDirective() {
+    return {
+        restrict: "EA",
+        controller: 'createSampleDirectiveController',
+        scope: {
+            model: '=model'
+        },
+        templateUrl: 'application/core/projects/project/samples/create.html'
+    };
+}
+
+
+Application.Controllers.controller('createSampleDirectiveController',
                                    ["$scope", "mcapi", "model.projects", "projectState", "$stateParams",
-                                    "recent", "project", projectSamplesCreate]);
+                                    "recent", "current", createSampleDirectiveController]);
 
-function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParams, recent, project) {
+function createSampleDirectiveController($scope, mcapi, Projects, projectState, $stateParams, recent, current) {
     var stateID = $stateParams.sid;
-
+    $scope.project = current.project();
     $scope.onDrop = function(target, source) {
         if (source === "") {
             source = 0;
@@ -22,12 +37,12 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
             title: '',
             available: true,
             projects: [
-                {'id': project.id, 'name': project.name}
+                {'id': $scope.project.id, 'name': $scope.project.name}
             ],
             properties: {'composition': {'value': [], 'unit': ''}},
             showComposition: false
         };
-        $scope.doc = projectState.getset(project.id, stateID, defaultDoc);
+        $scope.doc = defaultDoc;
         $scope.bk = {
             selected_project: '',
             available: '',
@@ -36,18 +51,20 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
             element_name: '',
             element_value: ''
         };
-        recent.addIfNotExists(project.id, stateID, "New Sample");
+        recent.addIfNotExists($scope.project.id, stateID, "New Sample");
     }
 
     $scope.create = function () {
         $scope.doc.path = $scope.doc.name;
-        $scope.doc.project_id = project.id;
+        $scope.doc.project_id = $scope.project.id;
         mcapi('/objects/new')
             .success(function (sample) {
-                project.samples.push(sample);
-                recent.gotoLast(project.id);
-                recent.delete(project.id, stateID);
-                projectState.delete(project.id, stateID);
+                $scope.project.samples.unshift(sample);
+                $scope.project.notes.push(sample.notes);
+                recent.gotoLast($scope.project.id);
+                recent.delete($scope.project.id, stateID);
+                projectState.delete($scope.project.id, stateID);
+                $scope.model.createSample = false;
             }).post($scope.doc);
     };
 
@@ -56,9 +73,10 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
     };
 
     $scope.cancel = function () {
-        projectState.delete(project.id, stateID);
-        recent.delete(project.id, stateID);
-        recent.gotoLast(project.id);
+        projectState.delete($scope.project.id, stateID);
+        recent.delete($scope.project.id, stateID);
+        recent.gotoLast($scope.project.id);
+        $scope.model.createSample = false;
     };
 
     $scope.removeProjects = function (index) {
@@ -67,7 +85,6 @@ function projectSamplesCreate($scope, mcapi, Projects, projectState, $stateParam
 
     $scope.addComposition = function () {
         $scope.doc.properties.composition.value.push({'element': $scope.bk.element_name, 'value': $scope.bk.element_value});
-
     };
 
     $scope.removeComposition = function (i) {
