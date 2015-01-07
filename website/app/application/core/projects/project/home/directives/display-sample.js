@@ -16,7 +16,6 @@ Application.Controllers.controller("displaySampleDirectiveController",
                                     displaySampleDirectiveController]);
 
 function displaySampleDirectiveController($scope, sideboard, current) {
-    console.log('display');
     $scope.addToSideboard = function(sample, event) {
         sideboard.handleFromEvent(current.projectID(), sample, event);
     };

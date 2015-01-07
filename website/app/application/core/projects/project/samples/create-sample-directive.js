@@ -1,5 +1,3 @@
-
-
 Application.Directives.directive('createSample', createSampleDirective);
 function createSampleDirective() {
     return {
@@ -14,13 +12,13 @@ function createSampleDirective() {
 
 
 Application.Controllers.controller('createSampleDirectiveController',
-                                   ["$scope", "mcapi", "model.projects", "projectState", "$stateParams",
-                                    "recent", "current", createSampleDirectiveController]);
+    ["$scope", "mcapi", "model.projects", "projectState", "$stateParams",
+        "recent", "current", createSampleDirectiveController]);
 
 function createSampleDirectiveController($scope, mcapi, Projects, projectState, $stateParams, recent, current) {
     var stateID = $stateParams.sid;
     $scope.project = current.project();
-    $scope.onDrop = function(target, source) {
+    $scope.onDrop = function (target, source) {
         if (source === "") {
             source = 0;
         }
@@ -47,7 +45,7 @@ function createSampleDirectiveController($scope, mcapi, Projects, projectState, 
             selected_project: '',
             available: '',
             open: '',
-            classification: '' ,
+            classification: '',
             element_name: '',
             element_value: ''
         };
@@ -85,7 +83,10 @@ function createSampleDirectiveController($scope, mcapi, Projects, projectState, 
     };
 
     $scope.addComposition = function () {
-        $scope.doc.properties.composition.value.push({'element': $scope.bk.element_name, 'value': $scope.bk.element_value});
+        $scope.doc.properties.composition.value.push({
+            'element': $scope.bk.element_name,
+            'value': $scope.bk.element_value
+        });
     };
 
     $scope.removeComposition = function (i) {
@@ -99,7 +100,7 @@ function createSampleDirectiveController($scope, mcapi, Projects, projectState, 
             $scope.projects = projects;
         });
         mcapi('/objects/elements')
-            .success(function(data){
+            .success(function (data) {
                 $scope.elements = data;
             }).jsonp();
     }
