@@ -4,7 +4,13 @@ Application.Controllers.controller('projectHome',
 function projectHome($scope, project, User, mcapi, ui, homeCustomize) {
 
     $scope.show = function (what) {
-        return homeCustomize.getInfoBox(what);
+        var expanded = ui.anyExpandedExcept(project.id, what);
+        var result =  homeCustomize.showPanel(what);
+        if (result === true){
+            return !expanded;
+        }else{
+            return result;
+        }
     };
 
     $scope.isExpandedInColumn = function (what) {
@@ -27,8 +33,4 @@ function projectHome($scope, project, User, mcapi, ui, homeCustomize) {
 
     $scope.project = project;
     $scope.mcuser = User.attr();
-
-    //$scope.showCalendar = false;
-    //$scope.showSideboard = false;
-
 }
