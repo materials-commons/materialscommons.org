@@ -1,6 +1,6 @@
-Application.Services.factory("homeCustomize", ["pubsub",homeCustomizeService]);
+Application.Services.factory("homeCustomize", [homeCustomizeService]);
 
-function homeCustomizeService(pubsub) {
+function homeCustomizeService() {
 
     var service = {
         showReviews: true,
@@ -10,50 +10,32 @@ function homeCustomizeService(pubsub) {
         showSamples: true,
         showCreateReview: false,
 
-        setInfoBox: function (what) {
+        setPanelState: function (what) {
             switch (what) {
                 case "reviews":
-                    if (service.showReviews === true) {
-                        service.showReviews = false;
-                    } else {
-                        service.showReviews = true;
-                    }
+                    service.showReviews = !service.showReviews;
                     break;
                 case "notes":
-                    if (service.showNotes === true) {
-                        service.showNotes = false;
-                    } else {
-                        service.showNotes = true;
-                    }
+                    service.showNotes = !service.showNotes;
                     break;
                 case "processes":
-                    if (service.showProcesses === true) {
-                        service.showProcesses = false;
-                    } else {
-                        service.showProcesses = true;
-                    }
+                    service.showProcesses = !service.showProcesses
                     break;
                 case "files":
-                    if (service.showFiles === true) {
-                        service.showFiles = false;
-                    } else {
-                        service.showFiles = true;
-                    }
+                    service.showFiles = !service.showFiles
                     break;
                 case "samples":
-                    if (service.showSamples === true) {
-                        service.showSamples = false;
-                    } else {
-                        service.showSamples = true;
-                    }
+                    service.showSamples = !service.showSamples;
                     break;
                 default:
                     return false;
             }
         },
-        getInfoBox: function (what) {
+        showPanel: function (what) {
+
             switch (what) {
                 case "reviews":
+
                     return service.showReviews;
                 case "notes":
                     return service.showNotes;

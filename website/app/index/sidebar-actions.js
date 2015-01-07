@@ -16,15 +16,15 @@ function sidebarActionsDirectiveController($scope, homeCustomize) {
     $scope.showProjectActions = true;
     $scope.activeAction = "home";
 
-    $scope.isActionActive = function (action) {
+    $scope.isPanelActive = function (action) {
         return $scope.activeAction === action;
     };
 
-    $scope.setActionActive = function (action) {
-        homeCustomize.setInfoBox(action);
+    $scope.setActivePanel = function (action) {
+        homeCustomize.setPanelState(action);
     };
 
-    $scope.getActionActive = function (what) {
-        return homeCustomize.getInfoBox(what);
+    $scope.getActivePanel = function (what) {
+        return homeCustomize.showPanel(what);
     };
 }
