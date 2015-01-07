@@ -1,4 +1,4 @@
-Application.Services.factory('ui', uiService);
+Application.Services.factory('ui', [uiService]);
 
 // uiService tracks various ui component states by project.
 function uiService() {
@@ -7,8 +7,9 @@ function uiService() {
 
     function columnEntry(name, show) {
         return {
-            name: name,
-            show: show
+            //name: name,
+            //show: show
+            name: show
         };
     }
 
@@ -16,20 +17,16 @@ function uiService() {
     function initForProject(projectID) {
         self.byProject[projectID] = {
             files: false,
-            expanded: {}//,
-            // homeColumns: {
-            //     column1: [
-            //         columnEntry("calendar", false),
-            //         columnEntry("reviews", true),
-            //         columnEntry("files", true)
-            //     ],
-            //     column2: [
-            //         columnEntry("sideboard", false),
-            //         columnEntry("samples", true),
-            //         columnEntry("notes", true),
-            //         columnEntry("processes", true)
-            //     ]
-            // }
+            expanded: {},
+            panels: {
+                reviews: true,
+                samples: true,
+                files: true,
+                notes: true,
+                processes: true,
+                calendar: false,
+                sideboard: false
+            }
         };
     }
 
@@ -55,27 +52,27 @@ function uiService() {
 
     return {
         // showFiles returns the state of files.
-        showFiles: function(projectID) {
+        showFiles: function (projectID) {
             return getForProject(projectID).files;
         },
 
         // setShowFiles sets the state of files attribute.
-        setShowFiles: function(projectID, what) {
+        setShowFiles: function (projectID, what) {
             var filesState = getForProject(projectID);
             filesState.files = what;
         },
 
         // isExpanded returns true the state for the given true.
-        isExpanded: function(projectID, what) {
+        isExpanded: function (projectID, what) {
             return getIsExpanded(projectID, what);
         },
 
         // anyExpandedExcept checks if any expanded is set to true, except the
         // key given.
-        anyExpandedExcept: function(projectID, what) {
+        anyExpandedExcept: function (projectID, what) {
             var expanded = getForProject(projectID).expanded;
             var anyTrue = false;
-            Object.keys(expanded).forEach(function(key) {
+            Object.keys(expanded).forEach(function (key) {
                 if (key !== what && expanded[key]) {
                     anyTrue = true;
                 }
@@ -84,14 +81,24 @@ function uiService() {
         },
 
         // setIsExpanded sets the the given expanded state.
-        setIsExpanded: function(projectID, what, to) {
+        setIsExpanded: function (projectID, what, to) {
             var proj = getForProject(projectID);
             proj.expanded[what] = to;
         },
 
-        toggleIsExpanded: function(projectID, what) {
+        toggleIsExpanded: function (projectID, what) {
             var proj = getForProject(projectID);
             proj.expanded[what] = !getIsExpanded(projectID, what);
+        },
+
+        togglePanelState: function (what, projectID) {
+            var proj = getForProject(projectID);
+            proj.panels[what] = !proj.panels[what];
+        },
+
+        showPanel: function (what, projectID) {
+            var proj = getForProject(projectID);
+            return proj.panels[what];
         }
     };
 }
