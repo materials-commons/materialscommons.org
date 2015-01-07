@@ -13,6 +13,7 @@ function Project($filter) {
         },
         getSpecificNotes: function (project, item_id, item_type) {
             var notes = project.notes;
+            notes = _.compact(notes);  //remove undefined elements from array . This can be fixed during sample rework.
             if (item_type && item_id) {
                 var notes_by_item_type = $filter('byKey')(notes, 'item_type', item_type);
                 var notes_by_item_id = $filter('byKey')(notes_by_item_type, 'item_id', item_id);

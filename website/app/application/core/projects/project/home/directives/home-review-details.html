@@ -33,7 +33,7 @@
     </div>
     <div ng-show="addComment" class="row">
          <textarea placeholder="Add comment..." class="form-control" ng-model="model.comment"></textarea>
-        <button ng-click="addComment1(review)" class="btn btn-success">Add</button>
+        <button ng-click="addComment1(review)" class="btn btn-xs btn-mini btn-success">Add</button>
     </div>
     <div class="row">
         <div ng-repeat="comment in review.messages | reverse">
