@@ -65,6 +65,7 @@ function createSampleDirectiveController($scope, mcapi, Projects, projectState, 
                 recent.delete($scope.project.id, stateID);
                 projectState.delete($scope.project.id, stateID);
                 $scope.model.createSample = false;
+                initializeState();
             }).post($scope.doc);
     };
 
