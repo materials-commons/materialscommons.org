@@ -5,14 +5,6 @@ function uiService() {
     var self = this;
     self.byProject = {};
 
-    function columnEntry(name, show) {
-        return {
-            //name: name,
-            //show: show
-            name: show
-        };
-    }
-
     // initForProject initializes the ui state for a project.
     function initForProject(projectID) {
         self.byProject[projectID] = {
