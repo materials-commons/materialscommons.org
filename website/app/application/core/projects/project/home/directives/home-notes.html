@@ -24,8 +24,11 @@
             </a>
         </span>
     </div>
-    <div ng-hide="model.createNote" class="panel-body home-panel-body">
+    <div class="panel-body home-panel-body">
         <ul class="list-unstyled">
+            <li style="padding-top:10px;" ng-show="model.createNote">
+                <create-note model="model"></create-note>
+            </li>
             <li class="home-item"
                 ng-class="{'open-item-details': showDetails($index)}"
                 ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
@@ -35,8 +38,5 @@
                 <div>No notes.</div>
             </li>
         </ul>
-    </div>
-    <div ng-show="model.createNote" class="panel-body home-panel-body">
-        <create-note model="model"></create-note>
     </div>
 </div>

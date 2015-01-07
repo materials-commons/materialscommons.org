@@ -16,7 +16,7 @@
             </ul>
         </div>
         <div class="col-sm-8">
-            <b>Properties:</b>
+            <b ng-show="_.isNull(properties)">Properties: </b>
             <ul class="list-group scroll-bar">
                 <li class="list-group-item"
                     ng-repeat="(key, value) in sample.properties | removeKey:'composition' as properties">{{key}}
@@ -25,9 +25,8 @@
             </ul>
         </div>
     </div>
-    <div style="margin-top: -10px;" class="row">
+    <div style="margin-top: -10px;" class="row" ng-if="note">
         <br><b>Note:  <u>{{note.title}}</u></b>
         <div class="sample-note"  ta-bind="text" ng-model="note.note" ta-readonly='disabled'></div>
     </div>
-
 </div>

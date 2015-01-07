@@ -24,8 +24,11 @@
             </a>
         </span>
     </div>
-    <div ng-hide="bk.createReview" class="panel-body home-panel-body">
+    <div class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
+            <li style="padding-top:10px;" ng-show="bk.createReview" >
+                <create-review bk="bk"></create-review>
+            </li>
             <li class="home-item"
                 ng-class="{'open-item-details': review.showDetails}"
                 ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews">
@@ -35,9 +38,6 @@
                 <div>No reviews.</div>
             </li>
         </ul>
-    </div>
-    <div ng-show="bk.createReview" class="panel-body home-panel-body">
-       <create-review bk="bk"></create-review>
     </div>
 </div>
 

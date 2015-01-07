@@ -22,8 +22,11 @@
             </a>
         </span>
     </div>
-    <div ng-hide="model.createSample"  class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">
+    <div class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
+            <li style="padding-top:10px;" ng-show="model.createSample">
+                <create-sample model="model"></create-sample>
+            </li>
             <li class="home-item"
                 ng-class="{'open-item-details': sample.showDetails}"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
@@ -35,8 +38,5 @@
                 </div>
             </li>
         </ul>
-    </div>
-    <div ng-show="model.createSample" class="panel-body home-panel-body">
-        <create-sample model="model"></create-sample>
     </div>
 </div>
