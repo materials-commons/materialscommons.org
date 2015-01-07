@@ -4,12 +4,12 @@
             <b>Assigned to:</b>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a>johnea@umich.edu</a>
-                    <span class="pull-right">1</span>
+                    <a>{{review.assigned_to}}</a>
+                    <i class="fa fa-fw fa-comments-o"></i> <span class="badge badge-superscript-count" style="float: none; top: -6px; left: unset;">3</span>
                 </li>
                 <li class="list-group-item">
-                    <a>gtarcea@umich.edu</a>
-                    <span class="pull-right">2</span>
+                    <a>{{review.assigned_to}}</a>
+                    <i class="fa fa-fw fa-comments-o"></i> <span class="badge badge-superscript-count" style="float: none; top: -6px; left: unset;">6</span>
                 </li>
             </ul>
         </div>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="row">
-        <span >
+        <span>
             <button ng-click="addComment = !addComment" class="btn btn-xs btn-mini btn-success">comment</button>
             <button ng-click="cacheReview(review)" data-toggle="modal"
                     data-target="#confirm-close-review"
