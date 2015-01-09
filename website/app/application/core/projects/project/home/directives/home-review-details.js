@@ -10,13 +10,18 @@ function homeReviewDetailsDirective() {
 }
 
 Application.Controllers.controller("homeReviewsDetailsDirectiveController",
-    ["$scope", "Review",
+    ["$scope", "Review", "current",
         homeReviewsDetailsDirectiveController]);
-function homeReviewsDetailsDirectiveController($scope, Review) {
+function homeReviewsDetailsDirectiveController($scope, Review, current) {
     $scope.addComment1 = function (review) {
         Review.addComment($scope.model, review);
         $scope.addComment = false;
     };
+
+    $scope.closeReview = function (rev) {
+        Review.closeReview(rev.id, current.project());
+    };
+
     $scope.model = {
         comment: ''
     };
