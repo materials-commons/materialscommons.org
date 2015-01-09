@@ -38,4 +38,6 @@ function homeSamplesController($scope, ui) {
     $scope.model = {
         createSample: false
     };
+
+    $scope.drag = ui.showDragDrop('samples', $scope.project.id);
 }

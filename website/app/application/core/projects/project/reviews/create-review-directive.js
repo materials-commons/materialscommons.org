@@ -102,4 +102,8 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
         $scope.model.files[index].selected = false;
         $scope.model.files.splice(index, 1);
     };
+
+    $scope.attachItem = function(itemType){
+        ui.toggleDragDrop($scope.review, itemType, $scope.project.id);
+    };
 }

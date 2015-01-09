@@ -2017,3 +2017,9 @@ ul.menu-bar li {
 .underline{
     text-decoration: underline;
 }
+
+/*style to remove the dotted line around the element*/
+input[type="radio"]:focus, input[type="checkbox"]:focus {
+    outline: none;
+}
+
