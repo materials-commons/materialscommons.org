@@ -1,12 +1,13 @@
 <div>
     <div class="row item-details">
         <div class="col-sm-5">
-            <b>Assigned to:</b>
+            <b>Assigned to:</b> <span ng-show="model.filter_by"> <b><a ng-click="clearMessageFilter()">Clear</a></b> </span>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a>{{review.assigned_to}}</a>
-                    <span class="pull-right">
-                        <i class="fa fa-fw fa-comments-o"></i> <span class="badge badge-superscript-count" style="float: none; top: -6px;">6</span>
+                    <a style="color: #000000;" ng-class="{underline: model.filter_by !== ''}" ng-click="filterMessagesByWho(review.assigned_to)">{{review.assigned_to}}</a>
+                    <span ng-click="filterMessagesByWho(review.assigned_to)" class="pull-right">
+                        <i class="fa fa-fw fa-comments-o cursor-pointer"></i> <span class="badge badge-superscript-count"
+                                                                     style="float: none; top: -6px;">{{model.count}}</span>
                     </span>
                 </li>
             </ul>
@@ -22,30 +23,30 @@
     </div>
     <div class="row">
         <span>
-            <button ng-click="addComment = !addComment" class="btn btn-xs btn-mini btn-success">comment</button>
+            <button ng-click="model.addComment = !model.addComment" class="btn btn-xs btn-mini btn-success">comment</button>
             <button ng-click="closeReview(review)" data-toggle="modal"
                     data-target="#confirm-close-review"
                     class="btn btn-xs btn-mini btn-danger">close
             </button>
         </span>
     </div>
-    <div ng-show="addComment" class="row">
-         <textarea placeholder="Add comment..." class="form-control" ng-model="model.comment"></textarea>
+    <div ng-show="model.addComment" class="row">
+        <textarea placeholder="Add comment..." class="form-control" ng-model="model.comment"></textarea>
         <button ng-click="addComment1(review)" class="btn btn-xs btn-mini btn-success">Add</button>
     </div>
     <div class="row">
         <div ng-repeat="comment in review.messages | reverse">
-            <div class="home-reviews-comment">
+            <div class="home-reviews-comment" ng-class="{highlight_comment: comment.who === model.filter_by}">
                 <div class="row">
-               <span class="pull-left">
-                <i class="fa fa-fw fa-user fa-1x"></i>  {{comment.who}}
-                </span><br>
-                    <small style="padding-left: 20px;" class="text-muted">{{comment.date}}</small>
+                        <span class="pull-left">
+                            <i class="fa fa-fw fa-user fa-1x"></i>  {{comment.who}}
+                        </span><br>
+                        <small style="padding-left: 20px;" class="text-muted">{{comment.date}}</small>
                 </div>
 
                 <div class="row">
-                    <div style="padding-left: 10px;" ta-bind="text" ta-readonly='disabled'
-                         ng-model="comment.message"></div>
+                        <div style="padding-left: 10px;" ta-bind="text" ta-readonly='disabled'
+                            ng-model="comment.message"></div>
                 </div>
             </div>
         </div>
