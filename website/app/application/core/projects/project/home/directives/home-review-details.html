@@ -5,11 +5,9 @@
             <ul class="list-group">
                 <li class="list-group-item">
                     <a>{{review.assigned_to}}</a>
-                    <i class="fa fa-fw fa-comments-o"></i> <span class="badge badge-superscript-count" style="float: none; top: -6px; left: unset;">3</span>
-                </li>
-                <li class="list-group-item">
-                    <a>{{review.assigned_to}}</a>
-                    <i class="fa fa-fw fa-comments-o"></i> <span class="badge badge-superscript-count" style="float: none; top: -6px; left: unset;">6</span>
+                    <span class="pull-right">
+                        <i class="fa fa-fw fa-comments-o"></i> <span class="badge badge-superscript-count" style="float: none; top: -6px;">6</span>
+                    </span>
                 </li>
             </ul>
         </div>
@@ -25,7 +23,7 @@
     <div class="row">
         <span>
             <button ng-click="addComment = !addComment" class="btn btn-xs btn-mini btn-success">comment</button>
-            <button ng-click="cacheReview(review)" data-toggle="modal"
+            <button ng-click="closeReview(review)" data-toggle="modal"
                     data-target="#confirm-close-review"
                     class="btn btn-xs btn-mini btn-danger">close
             </button>

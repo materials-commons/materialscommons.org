@@ -2,16 +2,16 @@
     <div class="col-xs-12">
         <form name="Form" class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-xs-2">Review Title:<i class="fa fa-asterisk"></i></label>
+                <label class="control-label col-xs-3">Review Title: <i class="fa fa-asterisk"></i></label>
 
-                <div class="col-xs-4">
+                <div class="col-xs-6">
                     <input name="title" validator="required"  ng-model="model.title" class="form-control" type="text" placeholder="Title...">
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-xs-2">Assign To:<i class="fa fa-asterisk"></i></label>
+                <label class="control-label col-xs-3">Assign To:<i class="fa fa-asterisk"></i></label>
 
-                <div class="col-xs-4">
+                <div class="col-xs-6">
                     <select class="form-control" ng-model="model.assigned_to" name="assign_to" validator="required">
                         <option disabled>-- Assign to --</option>
                         <option ng-repeat="user in project.users">{{ user.user_id }}</option>
@@ -19,17 +19,16 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-xs-2">Comment:</label>
+                <label class="control-label col-xs-3">Comment:</label>
 
                 <div  class="col-xs-8">
-                    <text-angular ta-toolbar="[['h2', 'h5', 'h6', 'quote'],
-                              ['bold','italics','underline','ul','ol'],
-                              ['justifyLeft','justifyCenter','justifyRight'], ['insertLink', 'insertImage']]"
+                    <text-angular ta-toolbar="[['h2', 'h5', 'h6', 'quote','bold','italics','underline'],
+                              ['ul','ol', 'justifyLeft', 'insertLink', 'insertImage']]"
                                   ng-model="model.comment"></text-angular>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-xs-2">Select Files(from project tree):</label>
+                <label class="control-label col-xs-3">Select/Drag items:</label>
 
                 <div class="col-xs-8">
                     <div ng-show="model.files.length == 0">
@@ -42,7 +41,7 @@
                 </div>
             </div><br>
             <div class="form-group">
-                <label class="control-label col-xs-2"></label>
+                <label class="control-label col-xs-3"></label>
                 <button validation-submit="Form" ng-click="create()" class="btn btn-xs btn-mini btn-primary">Create</button>
                 <button ng-click="cancel()" class="btn btn-xs btn-mini btn-danger">Cancel</button>
             </div>
