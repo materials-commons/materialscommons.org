@@ -1,7 +1,7 @@
-Application.Services.factory('ui', [uiService]);
+Application.Services.factory('ui', ["pubsub",uiService]);
 
 // uiService tracks various ui component states by project.
-function uiService() {
+function uiService(pubsub) {
     var self = this;
     self.byProject = {};
 
@@ -18,13 +18,6 @@ function uiService() {
                 processes: true,
                 calendar: false,
                 sideboard: false
-            },
-            drag_panels: {
-                reviews: false,
-                samples: false,
-                files: false,
-                notes: false,
-                processes: false
             }
         };
     }
@@ -98,17 +91,7 @@ function uiService() {
         showPanel: function (what, projectID) {
             var proj = getForProject(projectID);
             return proj.panels[what];
-        },
-
-        toggleDragDrop: function (item, what, projectID) {
-            var proj = getForProject(projectID);
-            proj.drag_panels[what] =   !proj.drag_panels[what];
-            return  proj.drag_panels[what];
-        },
-
-        showDragDrop: function(what, projectID){
-            var proj = getForProject(projectID);
-            return  proj.drag_panels[what];
         }
+
     };
 }

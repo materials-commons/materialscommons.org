@@ -12,11 +12,34 @@ function displayNoteDirective() {
     };
 }
 Application.Controllers.controller("displayNoteDirectiveController",
-                                   ["$scope", "sideboard", "current",
+                                   ["$scope", "sideboard", "current","pubsub", "toggleDragButton",
                                     displayNoteDirectiveController]);
 
-function displayNoteDirectiveController($scope, sideboard, current) {
+function displayNoteDirectiveController($scope, sideboard, current, pubsub, toggleDragButton) {
     $scope.addToSideboard = function(note, event) {
         sideboard.handleFromEvent(current.projectID(), note, event);
+    };
+    $scope.bk = {
+        addToReview: false
+    };
+
+    pubsub.waitOn($scope, "toggle-notes.update", function () {
+        $scope.bk.addToReview = toggleDragButton.get('notes', 'addToReview');
+    });
+    $scope.addItem = function (type) {
+        switch (type) {
+            case "review":
+                pubsub.send('addNoteToReview', $scope.note);
+                break;
+            case "sample":
+                pubsub.send('addNoteToSample', $scope.note);
+                break;
+            case "provenance":
+                pubsub.send('addNoteToProvenance', $scope.note);
+                break;
+            case "file":
+                pubsub.send('addNoteToFile', $scope.note);
+                break;
+        }
     };
 }

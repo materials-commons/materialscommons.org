@@ -13,11 +13,11 @@ function createNoteDirective() {
 
 Application.Controllers.controller('createNoteDirectiveController',
     ["$scope", "User", "mcapi", "projectState",
-        "$stateParams", "current", "recent",
+        "$stateParams", "current", "recent","pubsub",
         createNoteDirectiveController]);
 
 function createNoteDirectiveController($scope, User, mcapi, projectState,
-                            $stateParams, current, recent) {
+                            $stateParams, current, recent, pubsub) {
     $scope.project = current.project();
     var projectID = $scope.project.id;
     var stateID = $stateParams.sid;

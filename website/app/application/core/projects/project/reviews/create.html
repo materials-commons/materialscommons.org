@@ -35,28 +35,25 @@
                     <div class="row">
                         <form role="form">
                             <label style="outline: none;" class="radio-inline">
-                                <input type="radio" ng-model="itemType" value="samples">Samples
+                                <input type="radio" ng-model="bk.itemType" value="samples">Samples
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" ng-model="itemType" value="processes">Provenance
+                                <input type="radio" ng-model="bk.itemType" value="notes">Notes
                             </label>
-                            <label class="radio-inline">
-                                <input type="radio" ng-model="itemType" value="files">Files
+                            <label style="outline: none;" class="radio-inline">
+                                <input type="radio" ng-model="bk.itemType" value="files">Files
                             </label>
-                            <button ng-click="attachItem()" class="btn btn-xs btn-mini btn-primary">Add</button>
+                            <button ng-click="addItems()" class="btn btn-xs btn-mini btn-primary">Add</button>
                         </form>
                     </div>
 
                 </div>
-                <!--<div class="col-xs-8">-->
-                <!--<div ng-show="model.files.length == 0">-->
-                <!--<p class="text-muted"> None </p>-->
-                <!--</div>-->
-                <!--<div ng-repeat="item in model.files">-->
-                <!--{{item.fullname}}-->
-                <!--<button type="button" class="close" ng-click="removeFile($index);">&times;</button>-->
-                <!--</div>-->
-                <!--</div>-->
+                <div class="col-xs-8">
+                    <div ng-repeat="item in model.attachments">
+                        <i class="fa fa-fw fa-paperclip "></i>{{item.name}}
+                        <a ng-click="removeAttachment($index);"><i class=" fa fa-fw fa-close mc-danger pull-right"></i></a>
+                    </div>
+                </div>
             </div>
             <br>
 

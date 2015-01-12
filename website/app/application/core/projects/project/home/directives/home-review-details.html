@@ -15,7 +15,7 @@
         <div class="col-sm-7">
             <b> <i class="fa fa-fw fa-paperclip"></i> Attachments:</b>
             <ul class="list-group">
-                <li class="list-group-item" ng-repeat="item in review.items">
+                <li class="list-group-item" ng-repeat="item in review.attachments">
                     <i class="fa fa-fw fa-file"></i> {{item.name | truncate: 25: '...'}}
                 </li>
             </ul>
