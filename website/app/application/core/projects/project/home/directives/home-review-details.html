@@ -16,7 +16,10 @@
             <b> <i class="fa fa-fw fa-paperclip"></i> Attachments:</b>
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="item in review.attachments">
-                    <i class="fa fa-fw fa-file"></i> {{item.name | truncate: 25: '...'}}
+                    <i class="fa fa-fw" ng-class="{'fa-cubes': item.type === 'sample', 'fa-file': item.type === 'file', 'fa-edit': item.type === 'note'}"
+                       style="color: #256188" class="fa fa-fw fa-folder fa-file"></i>
+                    {{item.name | truncate: 25: '...'}}
+
                 </li>
             </ul>
         </div>
