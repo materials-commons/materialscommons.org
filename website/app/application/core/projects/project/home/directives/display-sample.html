@@ -5,10 +5,9 @@
         </i>
         {{sample.name | truncate:35: '...':true}}
     </span>
-
     <span class="pull-right">
         <a ng-if="showSideboard"
-            ng-click="addToSideboard(sample, $event)"
+           ng-click="addToSideboard(sample, $event)"
            id="{{sample.id}}">
             <i class="fa fa-fw fa-clipboard inactive"></i>
         </a>
@@ -16,6 +15,13 @@
         <i class="fa fa-fw"
            ng-class="{'fa-edit': sample.notes.length !== 0}"></i>
     </span>
+
+    <p>
+        <button ng-if="bk.addToReview" class="btn btn-xs btn-mini btn-success" ng-click="addItem('review')">Add to review</button>
+        <button ng-if="bk.addToProvenance" class="btn btn-xs btn-mini btn-success" ng-click="addItem('provenance')">Add to Provenance</button>
+        <button ng-if="bk.addToNote" class="btn btn-xs btn-mini btn-success" ng-click="addItem('note')">Add to Note</button>
+    </p>
+
     <p>
         <small ng-if="sample.properties.composition.value.length !== 0">
             Composition({{sample.properties.composition.unit}}):

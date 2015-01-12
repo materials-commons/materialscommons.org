@@ -7,6 +7,12 @@
             ng-repeat="child in item.children | orderBy:'name' track by child.id">
             <div>
                 <mc-tree-header item="child" show-sideboard="true"></mc-tree-header>
+                <p ng-if="child.type === 'datafile'">
+                    <button  ng-if="bk.addToReview" class="btn btn-xs btn-mini btn-success" ng-click="addItem('review', child)">Add to review</button>
+                    <button ng-if="bk.addToSample" class="btn btn-xs btn-mini btn-success" ng-click="addItem('sample', child)">Add to Sample</button>
+                    <button ng-if="bk.addToProvenance" class="btn btn-xs btn-mini btn-success" ng-click="addItem('provenance', child)">Add to Provenance</button>
+                    <button ng-if="bk.addToNote" class="btn btn-xs btn-mini btn-success" ng-click="addItem('note', child)">Add to Note</button>
+                </p>
                 <div ng-if="child.showDetails" style="padding-left: 0px; padding-right: 0px;">
                     <div class="row" style="padding-left: 0px; padding-right: 0px;">
                         <div ng-if="child.type === 'datadir'">
