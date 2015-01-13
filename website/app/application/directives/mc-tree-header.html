@@ -13,6 +13,7 @@
                ng-click="addToSideboard(item, $event)">
                 <i class="fa fa-fw fa-clipboard inactive" id="{{item.id}}"></i>
             </a>
+
             <a title="{{tooltip}}"
                ng-href="{{downloadSrc(item)}}"
                download="{{item.name}}">

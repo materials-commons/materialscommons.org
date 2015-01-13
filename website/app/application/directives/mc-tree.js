@@ -6,7 +6,8 @@ function mcTreeDirective() {
         scope: {
             items: '=items',
             orderby: '=orderby',
-            matches: '=matches'
+            matches: '=matches',
+            bk: '=bk'
         },
         replace: true,
         templateUrl: 'application/directives/mc-tree.html'

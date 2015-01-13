@@ -18,7 +18,7 @@ function mcTreeDirDirective(RecursionHelper) {
 
 Application.Controllers.controller("mcTreeDirDirectiveController",
                                    ["$scope", "pubsub", "toggleDragButton", mcTreeDirDirectiveController]);
-function mcTreeDirDirectiveController($scope, pubsub, toggleDragButton) {
+function mcTreeDirDirectiveController($scope,pubsub, toggleDragButton) {
     $scope.items = $scope.item.children;
     $scope.bk = {
         addToReview: false,
@@ -27,10 +27,9 @@ function mcTreeDirDirectiveController($scope, pubsub, toggleDragButton) {
         addToNote: false
     };
 
-    pubsub.waitOn($scope, 'toggle-files.update', function () {
-        console.log('yes');
-        $scope.bk.addToReview = toggleDragButton.get('files', 'addToReview');
-    });
+    $scope.isActive = function(type, button){
+        return toggleDragButton.get(type, button);
+    };
 
     $scope.addItem = function (type, file) {
         switch (type) {
@@ -48,4 +47,5 @@ function mcTreeDirDirectiveController($scope, pubsub, toggleDragButton) {
                 break;
         }
     };
+
 }
