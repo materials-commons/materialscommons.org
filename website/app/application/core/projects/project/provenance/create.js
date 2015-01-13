@@ -8,7 +8,6 @@ function projectProvenanceCreate($scope, project, templates, projects,
                                  User, $filter, provStep, projectFiles, draft,
                                  $stateParams, projectState, recent, $timeout) {
     var stateID = $stateParams.sid;
-
     $scope.start = function () {
         if (!$scope.wizardState.selectedTemplate) {
             return;
