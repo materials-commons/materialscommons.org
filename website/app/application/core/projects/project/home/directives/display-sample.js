@@ -27,9 +27,9 @@ function displaySampleDirectiveController($scope, sideboard, current, pubsub, to
         addToNote: false
     };
 
-    pubsub.waitOn($scope, "toggle-samples.update", function () {
-        $scope.bk.addToReview = toggleDragButton.get('samples', 'addToReview');
-    });
+    $scope.isActive = function(type, button){
+        return toggleDragButton.get(type, button);
+    };
 
     $scope.addItem = function (type) {
         switch (type) {

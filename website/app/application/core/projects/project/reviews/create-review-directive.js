@@ -120,7 +120,6 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
         $scope.model.attachments.push({'id': provenance.id, 'name': provenance.name, 'type': 'provenance'});
     });
     pubsub.waitOn($scope, 'addFileToReview', function(file){
-        console.log(file);
         $scope.model.attachments.push({'id': file.id, 'name': file.name, 'type': 'file', 'path': file.fullname});
     });
 }

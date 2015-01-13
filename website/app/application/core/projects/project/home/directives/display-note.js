@@ -23,9 +23,10 @@ function displayNoteDirectiveController($scope, sideboard, current, pubsub, togg
         addToReview: false
     };
 
-    pubsub.waitOn($scope, "toggle-notes.update", function () {
-        $scope.bk.addToReview = toggleDragButton.get('notes', 'addToReview');
-    });
+    $scope.isActive = function(type, button){
+        return toggleDragButton.get(type, button);
+    };
+
     $scope.addItem = function (type) {
         switch (type) {
             case "review":
