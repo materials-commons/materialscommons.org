@@ -20,14 +20,6 @@ function homeReviewsDirectiveController ($scope, Review, ui) {
         }
     });
 
-    $scope.closeReview = function () {
-        Review.closeReview($scope.cached_review.id, $scope.project);
-    };
-
-    $scope.cacheReview = function (review) {
-        $scope.cached_review = review;
-    };
-
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "reviews");
     };

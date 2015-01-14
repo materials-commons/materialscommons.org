@@ -1,3 +1,8 @@
+
+body{
+    font-size: 15px;
+    font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 /* **************** Bootstrap overrides ******************* */
 
 /***********Begin sideboard.html ***********/
@@ -715,6 +720,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 .dropdown-menu > li a:hover,
 .dropdown-menu > li a:focus {
     background-color: #2c3e50;
+    color: #ffffff;
 }
 
 /*.modal-backdrop {*/
@@ -1115,8 +1121,11 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .ta-scroll-window .ta-bind {
     padding: 6px 30px;
+    height: 150px;
 }
-
+.ta-scroll-window.form-control {
+    height: 150px;
+}
 .selected {
     background-color: lightgreen;
 }
@@ -1762,11 +1771,12 @@ ul.menu-bar li {
 /* **** Info Boxes **** */
 .info-box {
     background-color: white;
-    border: 2px solid #d0d0d0;
-    border-top-width: 4px;
+    border: 1px solid #d0d0d0;
+    /*border-top-width: 4px;*/
+    border-top: none;
     padding: 4px;
-    box-shadow: 8px 8px 1px -5px #d9d9da;
-    margin-bottom: 15px;
+    /*box-shadow: 8px 8px 1px -5px #d9d9da;*/
+    /*margin-bottom: 15px;*/
 }
 
 .info-box.scroll {
@@ -2001,3 +2011,15 @@ ul.menu-bar li {
 .progress {
   background-color: #c9c9c9;
 }
+.highlight_comment{
+    border: 2px solid  cornflowerblue;
+}
+.underline{
+    text-decoration: underline;
+}
+
+/*style to remove the dotted line around the element*/
+input[type="radio"]:focus, input[type="checkbox"]:focus {
+    outline: none;
+}
+
