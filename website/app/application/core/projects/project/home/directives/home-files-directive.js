@@ -12,7 +12,7 @@ function homeFilesDirective() {
 
 Application.Controllers.controller("homeFilesDirectiveController",
                                    ["$scope", "ui", "projectFiles", "applySearch",
-                                    "$filter", homeFilesDirectiveController]);
+                                    "$filter",  homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
                                       $filter) {
     $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;

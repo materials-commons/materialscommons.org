@@ -10,21 +10,23 @@ function sidebarActionsDirective() {
 }
 
 Application.Controllers.controller("sidebarActionsDirectiveController",
-    ["$scope",  "homeCustomize", sidebarActionsDirectiveController]);
+    ["$scope", "ui", sidebarActionsDirectiveController]);
 
-function sidebarActionsDirectiveController($scope, homeCustomize) {
+function sidebarActionsDirectiveController($scope, ui) {
     $scope.showProjectActions = true;
     $scope.activeAction = "home";
-
-    $scope.isActionActive = function (action) {
+    $scope.isPanelActive = function (action) {
         return $scope.activeAction === action;
     };
 
-    $scope.setActionActive = function (action) {
-        homeCustomize.setInfoBox(action);
+    $scope.toggleActivePanel = function (action) {
+        ui.togglePanelState(action, $scope.project.id);
     };
 
-    $scope.getActionActive = function (what) {
-        return homeCustomize.getInfoBox(what);
+    $scope.getActivePanel = function (what) {
+        if ($scope.project) {
+            return ui.showPanel(what, $scope.project.id);
+        }
+        return true;
     };
 }

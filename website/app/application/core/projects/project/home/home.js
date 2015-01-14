@@ -1,10 +1,21 @@
 Application.Controllers.controller('projectHome',
-    ["$scope", "project", "User", "mcapi", "ui", "homeCustomize", projectHome]);
+    ["$scope", "project", "User", "mcapi", "ui", projectHome]);
 
-function projectHome($scope, project, User, mcapi, ui, homeCustomize) {
+function projectHome($scope, project, User, mcapi, ui) {
 
     $scope.show = function (what) {
-        return homeCustomize.getInfoBox(what);
+        var expanded = ui.anyExpandedExcept(project.id, what);
+        var result = ui.showPanel(what, project.id);
+        if (!result) {
+            // If user is not showing this item then return false
+            return result;
+        } else {
+            // if expanded is true that means something is expanded
+            // besides the requested entry, so return false to show
+            // this entry. Otherwise if expanded is false, that means
+            // nothing is expanded so return true.
+            return !expanded;
+        }
     };
 
     $scope.isExpandedInColumn = function (what) {
@@ -27,8 +38,4 @@ function projectHome($scope, project, User, mcapi, ui, homeCustomize) {
 
     $scope.project = project;
     $scope.mcuser = User.attr();
-
-    //$scope.showCalendar = false;
-    //$scope.showSideboard = false;
-
 }

@@ -46,8 +46,18 @@ Application.Services.factory('Review',
 
             reviewCount: function () {
                 pubsub.send("reviews.change");
-            }
+            },
 
+            countMessages: function (review) {
+                var count = 0;
+                //Currently we have only one Assigned To . Later this should change to an array.
+                review.messages.forEach(function (msg) {
+                    if (msg.who === review.author) {
+                        count++;
+                    }
+                });
+                return count;
+            }
         };
         return service;
     }]);
