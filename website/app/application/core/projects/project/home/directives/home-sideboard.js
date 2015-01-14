@@ -4,7 +4,8 @@ function homeSideboardDirective() {
         restrict: "A",
         controller: 'homeSideboardDirectiveController',
         scope: {
-            project: '=project'
+            project: '=project' ,
+            empty: '='
         },
         templateUrl: 'application/core/projects/project/home/directives/home-sideboard.html'
     };
@@ -14,5 +15,14 @@ Application.Controllers.controller("homeSideboardDirectiveController",
                                    ["$scope", "ui", "sideboard",
                                     homeSideboardDirectiveController]);
 function homeSideboardDirectiveController($scope, ui, sideboard) {
-    $scope.sideboard = sideboard.get($scope.project.id);
+    if($scope.empty){
+        $scope.sideboard = [];
+    }else{
+        $scope.sideboard = sideboard.get($scope.project.id);
+        console.log($scope.sideboard);
+    }
+    $scope.splitScreen = function(what){
+        ui.setColumn(what, '', $scope.project.id);
+    };
+
 }

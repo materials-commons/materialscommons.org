@@ -8,8 +8,9 @@
             ({{(project.reviews | byKey: 'status': 'open').length}})
         </span>
         <span class="pull-right bar-control">
-            <a ng-click="splitScreen()">
-                <i class="fa fa-fw fa-columns"></i>
+            <a ng-click="splitScreen('reviews', 'column1')">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitScreen(), 'fa-tablet': isSplitScreen()}"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"

@@ -1,4 +1,4 @@
-Application.Services.factory('ui', ["pubsub",uiService]);
+Application.Services.factory('ui', ["pubsub", uiService]);
 
 // uiService tracks various ui component states by project.
 function uiService(pubsub) {
@@ -18,7 +18,13 @@ function uiService(pubsub) {
                 processes: true,
                 calendar: false,
                 sideboard: false
-            }
+            },
+            split: {
+                column1: false,
+                column2: false,
+                sideboard: false
+            } ,
+            emptySplitBoard: false
         };
     }
 
@@ -91,6 +97,47 @@ function uiService(pubsub) {
         showPanel: function (what, projectID) {
             var proj = getForProject(projectID);
             return proj.panels[what];
+        },
+
+        setColumn: function (what, col, projectID) {
+            var proj = getForProject(projectID);
+                if(col){
+                    if (col === 'column1') {
+                        proj.split.column2 = !proj.split.column2;
+                    } else {
+                        proj.split.column1 = !proj.split.column1;
+                    }
+                }else{
+                    //consider what === sideboard
+                    proj.split.column1 = true;
+                    proj.split.column2 = false;
+                    proj.emptySplitBoard = true;
+                }
+            proj.split.sideboard = !proj.split.sideboard;
+            _.keys(proj.panels).forEach(function (key) {
+                if (key === what) {
+                    proj.panels[key] = true;
+                } else {
+                    proj.panels[key] = false;
+                }
+            });
+        },
+        getColumn: function (col, projectID) {
+            var proj = getForProject(projectID);
+            return proj.split[col];
+        } ,
+        getEmptySplitBoardStatus: function(projectID){
+            var proj = getForProject(projectID);
+            return proj.emptySplitBoard;
+        },
+        anySplitActivated: function(projectID){
+            var proj = getForProject(projectID);
+            console.log(proj);
+            if(proj.split.column1 === true || proj.split.column2 === true){
+                return true;
+            } else{
+                return false;
+            }
         }
 
     };

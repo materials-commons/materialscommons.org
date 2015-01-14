@@ -33,6 +33,10 @@ function homeNotesDirectiveController($scope, ui) {
         $scope.model.createNote = true;
     };
 
+    $scope.splitScreen = function(what, col){
+        ui.setColumn(what, col, $scope.project.id);
+    };
+
     $scope.model = {
         createNote: false
     };

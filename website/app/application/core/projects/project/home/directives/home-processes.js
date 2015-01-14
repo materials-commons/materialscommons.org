@@ -42,4 +42,7 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state) {
         var stateID = projectState.add($scope.project.id, state);
         $state.go("projects.project.provenance.create", {sid: stateID});
     };
+    $scope.splitScreen = function(what, col){
+        ui.setColumn(what, col, $scope.project.id);
+    };
 }
