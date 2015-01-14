@@ -53,9 +53,6 @@ def create_indices():
     create_index('access', 'project_id')
     create_index('access', 'dataset')
 
-    create_index('project2directory', 'directory_id')
-    create_index('project2directory', 'project_id')
-
     create_index('users', 'apikey')
 
     create_index('projects', 'name')
@@ -73,9 +70,6 @@ def create_indices():
     create_index('reviews', 'assigned_to')
     create_index('reviews', 'author')
     create_index('reviews', 'project')
-
-    create_index('project2file', 'project_id')
-    create_index('project2file', 'file_id')
 
     create_index('processes', 'project_id')
     create_index('processes', 'project')  # Keep one of these
