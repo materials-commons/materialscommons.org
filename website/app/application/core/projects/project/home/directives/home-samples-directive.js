@@ -35,6 +35,10 @@ function homeSamplesController($scope, ui) {
         $scope.model.createSample = true;
     };
 
+    $scope.splitScreen = function(what, col){
+        ui.setColumn(what, col, $scope.project.id);
+    };
+
     $scope.model = {
         createSample: false
     };

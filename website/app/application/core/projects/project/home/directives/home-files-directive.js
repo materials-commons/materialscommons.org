@@ -24,6 +24,10 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
         return ui.isExpanded($scope.project.id, "files");
     };
 
+    $scope.splitScreen = function(what, col){
+        ui.setColumn(what, col, $scope.project.id);
+    };
+
     applySearch($scope, "searchInput", applyQuery);
 
     function applyQuery() {

@@ -18,6 +18,7 @@ function projectHome($scope, project, User, mcapi, ui) {
         }
     };
 
+
     $scope.isExpandedInColumn = function (what) {
         var anyExpanded = false;
         what.forEach(function (entry) {
@@ -36,6 +37,15 @@ function projectHome($scope, project, User, mcapi, ui) {
             }).put({fullname: $scope.mcuser.fullname});
     };
 
+    $scope.isColumnActive = function(column){
+        return ui.getColumn(column,  $scope.project.id);
+    };
+
+    $scope.isEmptySplitBoard = function(){
+        return ui.getEmptySplitBoardStatus($scope.project.id);
+    };
+
     $scope.project = project;
     $scope.mcuser = User.attr();
+
 }
