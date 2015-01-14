@@ -1,5 +1,6 @@
 import rethinkdb as r
 
+
 class DataItem(object):
     def __init__(self, name, access, owner, item_type):
         # Delete?
