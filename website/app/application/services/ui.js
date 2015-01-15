@@ -22,8 +22,8 @@ function uiService(pubsub) {
             split: {
                 column1: false,
                 column2: false,
-                sideboard: false
-            } ,
+                column3: false
+            },
             emptySplitBoard: false
         };
     }
@@ -46,6 +46,17 @@ function uiService(pubsub) {
             proj.expanded[what] = false;
         }
         return proj.expanded[what];
+    }
+
+    function hidePanels(projectID, what) {
+        var proj = getForProject(projectID);
+        _.keys(proj.panels).forEach(function (key) {
+            if (key === what) {
+                proj.panels[key] = true;
+            } else {
+                proj.panels[key] = false;
+            }
+        });
     }
 
     return {
@@ -99,43 +110,53 @@ function uiService(pubsub) {
             return proj.panels[what];
         },
 
-        setColumn: function (what, col, projectID) {
+        //Eg:1  If 'what=reviews', 'col=column1": Meaning when you split reviews
+        //column 1 & 3 should be open
+        //And hide all other panels except for reviews.And col3 will have sideboard open.
+        //Eg: 2  If 'what=sideboard', 'col=column3"
+        // hide all panels except sideboard in column2. Along with that open empty sideboard in column 3
+        toggleColumns: function (what, col, projectID) {
             var proj = getForProject(projectID);
-                if(col){
-                    if (col === 'column1') {
+            var splitStatus = this.getSplitStatus(projectID);
+            if (splitStatus) {
+                initForProject(projectID);
+            } else {
+                switch (col) {
+                    case 'column1':
                         proj.split.column2 = !proj.split.column2;
-                    } else {
+                        proj.split.column3 = !proj.split.column3;
+                        break;
+                    case 'column2':
                         proj.split.column1 = !proj.split.column1;
-                    }
-                }else{
-                    //consider what === sideboard
-                    proj.split.column1 = true;
-                    proj.split.column2 = false;
-                    proj.emptySplitBoard = true;
+                        proj.split.column3 = !proj.split.column3;
+
+                        break;
+                    case 'column3':
+                        proj.split.column1 = true;
+                        proj.split.column2 = false;
+                        proj.split.column3 = !proj.split.column3;
+                        proj.emptySplitBoard = true;
+                        break;
                 }
-            proj.split.sideboard = !proj.split.sideboard;
-            _.keys(proj.panels).forEach(function (key) {
-                if (key === what) {
-                    proj.panels[key] = true;
-                } else {
-                    proj.panels[key] = false;
-                }
-            });
+                hidePanels(projectID, what);
+            }
+
         },
         getColumn: function (col, projectID) {
             var proj = getForProject(projectID);
             return proj.split[col];
-        } ,
-        getEmptySplitBoardStatus: function(projectID){
+        },
+        getEmptySplitStatus: function (projectID) {
             var proj = getForProject(projectID);
             return proj.emptySplitBoard;
         },
-        anySplitActivated: function(projectID){
+
+        getSplitStatus: function (projectID) {
             var proj = getForProject(projectID);
-            console.log(proj);
-            if(proj.split.column1 === true || proj.split.column2 === true){
+            if (proj.split.column1 === true || proj.split.column2 === true ||
+                proj.split.column3 === true) {
                 return true;
-            } else{
+            } else {
                 return false;
             }
         }

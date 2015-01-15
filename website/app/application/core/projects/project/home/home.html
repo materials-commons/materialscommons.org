@@ -29,7 +29,7 @@
             <div ng-class="{'col-xs-6': !isExpandedInColumn(['samples', 'notes', 'processes']), 'col-xs-12': isExpandedInColumn(['samples', 'notes', 'processes'])}"
                  ng-show="!isExpandedInColumn(['reviews', 'files'])">
                 <div class="row" ng-if="showSideboard">
-                    <div empty-side-board="false" home-sideboard project="project"></div>
+                    <div split-icon="true" home-sideboard project="project"></div>
                 </div>
                 <div class="row" ng-show="show('samples')">
                     <div home-samples project="project"></div>
@@ -43,12 +43,12 @@
                 </div>
             </div>
         </div>
-        <div ng-show="isColumnActive('sideboard')" class="col-xs-6">
+        <div ng-show="isColumnActive('column3')" class="col-xs-6">
             <div ng-show="!isEmptySplitBoard()" class="row">
-                <div  home-sideboard project="project"></div>
+                <div  split-icon="false" home-sideboard project="project"></div>
             </div>
             <div ng-show="isEmptySplitBoard()" class="row">
-                <div empty="true" home-sideboard project="project"></div>
+                <div empty="true" split-icon="false"  home-sideboard project="project"></div>
             </div>
         </div>
     </div>

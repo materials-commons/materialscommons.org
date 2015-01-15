@@ -5,7 +5,8 @@ function homeSideboardDirective() {
         controller: 'homeSideboardDirectiveController',
         scope: {
             project: '=project' ,
-            empty: '='
+            empty: '=',
+            splitIcon: '='
         },
         templateUrl: 'application/core/projects/project/home/directives/home-sideboard.html'
     };
@@ -19,10 +20,14 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
         $scope.sideboard = [];
     }else{
         $scope.sideboard = sideboard.get($scope.project.id);
-        console.log($scope.sideboard);
     }
-    $scope.splitScreen = function(what){
-        ui.setColumn(what, '', $scope.project.id);
+
+    $scope.splitScreen = function(what, col){
+        ui.toggleColumns(what, col, $scope.project.id);
+    };
+
+    $scope.isSplitExpanded = function () {
+        return ui.getSplitStatus($scope.project.id);
     };
 
 }

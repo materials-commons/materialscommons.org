@@ -6,7 +6,8 @@
         </span>
         <span class="pull-right bar-control">
             <a ng-click="splitScreen('files', 'column1')">
-                <i class="fa fa-fw fa-columns"></i>
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-tablet': isSplitExpanded()}"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"

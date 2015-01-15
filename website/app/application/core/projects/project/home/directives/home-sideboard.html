@@ -4,9 +4,10 @@
         <span>
             Items ({{matches.length | number}})
         </span>
-        <span class="pull-right bar-control">
-              <a ng-click="splitScreen('sideboard')">
-                  <i class="fa fa-fw fa-columns"></i>
+        <span ng-if="splitIcon" class="pull-right bar-control">
+              <a ng-click="splitScreen('sideboard', 'column3')">
+                  <i class="fa fa-fw"
+                     ng-class="{'fa-columns': !isSplitExpanded(), 'fa-tablet': isSplitExpanded()}"></i>
               </a>
         <a ng-click="toggleExpanded()"
            class="pull-right bar-control">
