@@ -11,9 +11,9 @@ function homeReviewsDirective () {
 }
 
 Application.Controllers.controller("homeReviewsDirectiveController",
-                                   ["$scope",  "ui",
+                                   ["$scope",  "ui","sideboard",
                                     homeReviewsDirectiveController]);
-function homeReviewsDirectiveController ($scope, ui) {
+function homeReviewsDirectiveController ($scope, ui, sideboard) {
     $scope.project.reviews.forEach(function(review) {
         if (!('showDetails' in review)) {
             review.showDetails = false;
