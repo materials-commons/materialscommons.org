@@ -29,7 +29,7 @@
                 <create-sample model="model"></create-sample>
             </li>
             <li class="home-item"
-                ng-class="{'open-item-details': sample.showDetails}"
+                ng-class="{'open-item-details': sample.showDetails}" ui-draggable="true" drag="sample"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
                 <display-sample sample="sample" show-sideboard="true"></display-sample>
             </li>
