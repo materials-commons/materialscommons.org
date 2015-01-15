@@ -8,18 +8,21 @@
         <span style="color: #389dc1">{{::item.displayname}}</span>
     </span>
     <span class="pull-right" style="padding-right: 15px;">
-        <span ng-if="item.type === 'datafile'">
-            <a ng-if="showSideboard"
+        <span  ng-if="item.type === 'datafile'">
+            <a ui-draggable="true"
+               drag="item" ng-if="showSideboard"
                ng-click="addToSideboard(item, $event)">
                 <i class="fa fa-fw fa-clipboard inactive" id="{{item.id}}"></i>
             </a>
 
-            <a title="{{tooltip}}"
+            <a ui-draggable="true"
+               drag="item" title="{{tooltip}}"
                ng-href="{{downloadSrc(item)}}"
                download="{{item.name}}">
                 <i class="fa fa-fw" ng-class="faClass"></i>
             </a>
-            <a ng-if="!showSideboard"
+            <a ui-draggable="true"
+               drag="item" ng-if="!showSideboard"
                ng-click="addToSideboard(item, $event)">
                 <i class="fa fa-fw fa-close mc-danger"></i>
             </a>
