@@ -29,7 +29,7 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
     };
 
     $scope.addToSideboard = function(file, event) {
-        sideboard.handleFromEvent(current.projectID(), file, event);
+        sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
     };
 
 }
