@@ -28,12 +28,6 @@ function homeReviewsDirectiveController ($scope, ui) {
         return ui.isExpanded($scope.project.id, "reviews");
     };
 
-    $scope.isSplitScreen = function () {
-        console.log(ui.anySplitActivated($scope.project));
-        return ui.anySplitActivated($scope.project);
-    };
-
-
     $scope.createReview = function(){
         $scope.bk.createReview = true;
     };
@@ -43,7 +37,11 @@ function homeReviewsDirectiveController ($scope, ui) {
     };
 
     $scope.splitScreen = function(what, col){
-        ui.setColumn(what, col, $scope.project.id);
+        ui.toggleColumns(what, col, $scope.project.id);
+    };
+
+    $scope.isSplitExpanded = function () {
+        return ui.getSplitStatus($scope.project.id);
     };
 
 }

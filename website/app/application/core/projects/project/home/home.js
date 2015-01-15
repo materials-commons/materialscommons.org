@@ -9,7 +9,7 @@ function projectHome($scope, project, User, mcapi, ui) {
         if (!result) {
             // If user is not showing this item then return false
             return result;
-        } else {
+        } else{
             // if expanded is true that means something is expanded
             // besides the requested entry, so return false to show
             // this entry. Otherwise if expanded is false, that means
@@ -17,7 +17,6 @@ function projectHome($scope, project, User, mcapi, ui) {
             return !expanded;
         }
     };
-
 
     $scope.isExpandedInColumn = function (what) {
         var anyExpanded = false;
@@ -42,7 +41,7 @@ function projectHome($scope, project, User, mcapi, ui) {
     };
 
     $scope.isEmptySplitBoard = function(){
-        return ui.getEmptySplitBoardStatus($scope.project.id);
+        return ui.getEmptySplitStatus($scope.project.id);
     };
 
     $scope.project = project;
