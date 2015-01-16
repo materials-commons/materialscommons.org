@@ -27,7 +27,6 @@ function uiService(pubsub) {
             emptySplitBoard: false
         };
     }
-
     // getForProject returns a ui state for a project. It
     // creates the project entry if it doesn't exist.
     function getForProject(projectID) {
