@@ -1,7 +1,5 @@
 <ul class="list-unstyled">
     <li class="file-item"
-        ui-draggable="true"
-        drag="item"
         ng-repeat="item in items | orderBy:orderby | limitTo:500 as matches track by item.id">
         <mc-tree-display-item item="item"
                               show-sideboard="true" bk="bk">
