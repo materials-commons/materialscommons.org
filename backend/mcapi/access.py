@@ -58,7 +58,6 @@ def _load_user(user, project_id):
                   .pluck('user_id')
                   .run(g.conn))
     _user_access_matrix[user] = users
-    # Load users in group into the list of users that can be accessed
 
 
 def _access_allowed(user, owner):
@@ -73,12 +72,12 @@ def remove_user(user):
         _user_access_matrix.pop(user, None)
 
 
-def check_ownership(usergroup, user):
-    ug = r.table('usergroups').get(usergroup).run(g.conn)
-    if ug is None:
-        return
-    if user != ug['owner']:
-        raise mcexceptions.AccessNotAllowedException(user)
+# def check_ownership(usergroup, user):
+#     ug = r.table('usergroups').get(usergroup).run(g.conn)
+#     if ug is None:
+#         return
+#     if user != ug['owner']:
+#         raise mcexceptions.AccessNotAllowedException(user)
 
 
 def get_apiuser():
