@@ -44,6 +44,5 @@ function projectAccessOverview($scope, $stateParams, mcapi, User, pubsub, curren
             }).jsonp();
         $scope.signed_in_user = User.u();
     }
-
     init();
 }
