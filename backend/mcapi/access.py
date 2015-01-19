@@ -9,7 +9,7 @@ _admins = []
 
 
 def check(user, owner, id="Unknown"):
-    if not allowed(user, owner):
+    if not allowed(user, owner, id):
         raise mcexceptions.AccessNotAllowedException(id)
 
 
@@ -19,11 +19,11 @@ def reset():
     _admins = []
 
 
-def _user_in_owner_group(user, owner):
+def _user_in_owner_group(user, owner, project_id):
     if is_administrator(user):
         return True
     elif owner not in _user_access_matrix:
-        _load_user(owner)
+        _load_user(owner, project_id)
     return _access_allowed(user, owner)
 
 
@@ -52,17 +52,20 @@ def load_admins():
             _admins.append(u)
 
 
-def _load_user(user):
-    groups = list(r.table('usergroups').filter({'owner': user}).run(g.conn))
-    _user_access_matrix[user] = {}
+def _load_user(user, project_id):
+    users = list(r.table('access')
+                  .get_all(project_id, index='project_id')
+                  .pluck('user_id')
+                  .run(g.conn))
+    _user_access_matrix[user] = users
     # Load users in group into the list of users that can be accessed
-    for group in groups:
-        for username in group['users']:
-            _user_access_matrix[user][username] = True
 
 
 def _access_allowed(user, owner):
-    return user in _user_access_matrix[owner]
+    if user in _user_access_matrix[owner]:
+        return True
+    else:
+        return False
 
 
 def remove_user(user):
@@ -89,10 +92,10 @@ def get_user():
     return request.args.get('user', default=apiuser)
 
 
-def allowed(user, owner):
+def allowed(user, owner, project_id):
     if user == owner:
         return True
-    if _user_in_owner_group(user, owner):
+    if _user_in_owner_group(user, owner, project_id):
         return True
     else:
         return False
