@@ -17,7 +17,7 @@ Application.Controllers.controller("displayNoteDirectiveController",
 
 function displayNoteDirectiveController($scope, sideboard, current, pubsub, toggleDragButton) {
     $scope.addToSideboard = function(note, event) {
-        sideboard.handleFromEvent(current.projectID(), note, event);
+        sideboard.handleFromEvent(current.projectID(), note, event, 'sideboard');
     };
     $scope.bk = {
         addToReview: false

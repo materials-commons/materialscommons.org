@@ -17,7 +17,7 @@ Application.Controllers.controller("displaySampleDirectiveController",
 
 function displaySampleDirectiveController($scope, sideboard, current, pubsub, toggleDragButton) {
     $scope.addToSideboard = function (sample, event) {
-        sideboard.handleFromEvent(current.projectID(), sample, event);
+        sideboard.handleFromEvent(current.projectID(), sample, event, 'sideboard');
     };
     $scope.project = current.project();
 

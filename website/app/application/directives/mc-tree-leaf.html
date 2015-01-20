@@ -15,6 +15,7 @@
              include="fileSrc(item)"></div>
         <code ng-if="item.size > 10000 && item.size <= 2000000"
               style="white-space:pre-line" ng-include="fileSrc(item)"></code>
+
         <div ng-if="item.size > 2000000">File too big to display</div>
     </div>
 </div>
