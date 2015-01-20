@@ -13,6 +13,7 @@ function breadcrumbsService() {
 
     self.routeMap = {
         "projects.project.home": ["Home"],
+        "projects.project.access": ["Access"],
         "projects.project.samples": ["Samples"],
         "projects.project.samples.overview": ["Samples"],
         "projects.project.samples.create": ["Samples", "New"],

@@ -11,9 +11,9 @@ function homeProcessesDirective() {
 }
 
 Application.Controllers.controller("homeProcessesDirectiveController",
-                                   ["$scope", "ui",
+                                   ["$scope", "ui", "projectState", "$state",
                                     homeProcessesDirectiveController]);
-function homeProcessesDirectiveController($scope, ui) {
+function homeProcessesDirectiveController($scope, ui, projectState, $state) {
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "processes");
     };
@@ -36,4 +36,18 @@ function homeProcessesDirectiveController($scope, ui) {
         }
         $scope.all.push(draft);
     });
+
+    $scope.createProvenance = function() {
+        var state = null;
+        var stateID = projectState.add($scope.project.id, state);
+        $state.go("projects.project.provenance.create", {sid: stateID});
+    };
+
+    $scope.splitScreen = function(what, col){
+        ui.toggleColumns(what, col, $scope.project.id);
+    };
+
+    $scope.isSplitExpanded = function () {
+        return ui.getSplitStatus($scope.project.id);
+    };
 }

@@ -1,62 +1,82 @@
 <div class="list-group sidebar-list">
-    <a class="list-group-item sidebar-action"
-       ng-click="showProjectActions = !showProjectActions"
-       style="color: #97c7e0">
-        {{project.name}}
-        <i class="fa"
-           ng-class="{'fa-chevron-right': !showProjectAction, 'fa-chevron-down': showProjectActions}">
-        </i>
-    </a>
+    <div class="list-group-item sidebar-action" style="padding-top: 8px; padding-bottom: 8px">
+        <a style="color: white" ng-click="showProjects = !showProjects">
+            <i class="fa fa-fw fa-briefcase"></i> {{project.name}}
+            <i class="fa"
+               ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
+            <span class="pull-right white">{{projects.length}}</span>
+        </a>
+
+        <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
+            <a class="list-group-item"
+               data-toggle="modal"
+               data-target="#newProject">
+                <i class="fa fa-fw fa-plus"></i> New Project
+            </a>
+            <hr class="carved"/>
+            <a class="list-group-item"
+               ng-repeat="p in projects"
+               ng-click="setProject(p)">
+                {{p.name}}
+            </a>
+        </div>
+    </div>
+
+    <div class="list-group-item sidebar-action" style="margin-top: 2px;">
+        <a style="color: white;" ng-class="isActive()" ng-click="showSettings()">
+            <i class="fa fa-fw fa-gear"></i>
+        </a>
+    </div>
 
     <div ng-show="showProjectActions">
         <a ng-show="false" class="list-group-item"
            ui-sref="projects.project.home{id: project.id}"
-           ng-click="setActionActive('home')"
-           ng-class="{active: isActionActive('home')}">
-            <i class="fa fa-fw fa-home"></i> Home
-        </a>
+           ng-click="toggleActivePanel('home')"
+           ng-class="{active: isPanelActive('home')}">
+            <i class="fa fa-fw fa-home"></i> Home</a>
 
-        <a class="list-group-item" ng-class="{disabled: !getActionActive('processes')}"
-           ng-click="setActionActive('processes')">
+
+        <a class="list-group-item" ng-class="{disabled: !getActivePanel('processes')}"
+           ng-click="toggleActivePanel('processes')">
             <i class="fa fa-fw fa-code-fork"></i> Provenance
             <span class="pull-right white">{{project.processes.length}}</span>
         </a>
 
-        <a class="list-group-item" ng-class="{disabled: !getActionActive('samples')}"
-           ng-click="setActionActive('samples')">
+        <a class="list-group-item" ng-class="{disabled: !getActivePanel('samples')}"
+           ng-click="toggleActivePanel('samples')">
             <i class="fa fa-fw fa-cubes"></i> Samples
             <span class="pull-right white">{{project.samples.length}}</span>
         </a>
 
-        <a class="list-group-item" ng-class="{disabled: !getActionActive('notes')}"
-           ng-click="setActionActive('notes')">
+        <a class="list-group-item" ng-class="{disabled: !getActivePanel('notes')}"
+           ng-click="toggleActivePanel('notes')">
             <i class="fa fa-fw fa-edit"></i> Notes
             <span class="pull-right white">{{project.notes.length}}</span>
         </a>
 
-        <a class="list-group-item" ng-class="{disabled: !getActionActive('files')}"
-           ng-click="setActionActive('files')">
+        <a class="list-group-item" ng-class="{disabled: !getActivePanel('files')}"
+           ng-click="toggleActivePanel('files')">
             <i class="fa fa-fw fa-files-o"></i> Files
             <span class="pull-right"
                   style="color: white">{{project | projectSize}}</span>
         </a>
 
-        <a class="list-group-item" ng-class="{disabled: !getActionActive('reviews')}"
-           ng-click="setActionActive('reviews')">
+        <a class="list-group-item" ng-class="{disabled: !getActivePanel('reviews')}"
+           ng-click="toggleActivePanel('reviews')">
             <i class="fa fa-fw fa-comment"></i> Reviews
             <span class="badge badge-light">{{(project.reviews | byKey: 'status': 'open').length}}</span>
         </a>
 
         <a ng-show="false" class="list-group-item"
-           ng-click="setActionActive('tasks')"
-           ng-class="{active: isActionActive('tasks')}">
+           ng-click="toggleActivePanel('tasks')"
+           ng-class="{active: isPanelActive('tasks')}">
             <i class="fa fa-fw fa-check-square"></i> Tasks
             <span class="badge badge-light">{{project.todos.length}}</span>
         </a>
 
         <a ng-show="false" class="list-group-item"
-           ng-click="setActionActive('preferences')"
-           ng-class="{active: isActionActive('preferences')}">
+           ng-click="toggleActivePanel('preferences')"
+           ng-class="{active: isPanelActive('preferences')}">
             <i class="fa fa-fw fa-gears"></i> Preferences
         </a>
     </div>

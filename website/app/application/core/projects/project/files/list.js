@@ -62,7 +62,7 @@ function projectFilesListController($scope, projectFiles, $stateParams,
 
     $scope.onDrop = function(ignore, file) {
         var i = _.indexOf($scope.sideboard, function(f) {
-            return f.id == file.id;
+            return f.id === file.id;
         });
 
         // If file is already in list then don't add it again.
