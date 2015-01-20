@@ -7,9 +7,8 @@ from ..utils import set_dates
 from .. import error
 from .. import dmutil
 from .. import resp
-from .. import args
-from .. import access
-from loader.model import access
+from .. import args, access
+from loader.model import access as am
 
 
 
@@ -22,9 +21,11 @@ def create_access_r():
     user_id = dmutil.get_required('user_id', j)
     project_id = dmutil.get_required('project_id', j)
     project_name = dmutil.get_required('project_name', j)
-    access_entry = access.Access(user_id, project_id, project_name)
-    access_id = dmutil.insert_entry('access', access_entry)
-    return resp.to_json_id(access_id)
+    access_entry = am.Access(user_id, project_id, project_name)
+    result = dmutil.insert_entry('access', access_entry.__dict__,
+                                 return_created=True)
+    access.check(user_id, '', project_id)
+    return resp.to_json(result)
 
 
 @app.route('/access/<id>/remove', methods=['DELETE'])
