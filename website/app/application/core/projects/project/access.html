@@ -12,7 +12,7 @@
                 <tr ng-repeat="ac in project.users | orderBy: 'user_id'">
                     <td>{{ac.user_id}}</td>
                     <!--<td>{{ac.permissions}}</td>-->
-                    <td ng-if="project.owner == signed_in_user">
+                    <td >
                         <button ng-click="deleteUser(ac.id)" class="btn btn-danger">Remove</button>
                     </td>
                     <td ng-if="project.owner !== signed_in_user">Not Authorized</td>
@@ -21,7 +21,7 @@
             </table>
         </div>
     </div>
-    <div class="row" ng-show="project.owner == signed_in_user">
+    <div class="row" >
         <div class="form-group">
             <div class="col-xs-4">
                 <select class="form-control" ng-model="bk.user_name">

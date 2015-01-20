@@ -5,11 +5,10 @@ import rethinkdb as r
 from .. import args
 from os.path import dirname, basename
 import json
-from .. import access
 from .. import dmutil
 from .. import validate
 from .. import error
-from loader.model import project, access
+from loader.model import access as am
 from loader.model import datadir
 from .. import process, access
 
@@ -19,35 +18,16 @@ from .. import process, access
 @jsonp
 def get_all_group_projects():
     user = access.get_user()
-    user = 'emarq@umich.edu'
     projects = []
-    # if access.is_administrator(user):
-    #     all_users = list(r.table('users').pluck('email').run(g.conn))
-    #     allowed_users = []
-    #     for u in all_users:
-    #         allowed_users.append(u['email'])
-    # else:
-    #     allowed_users = list(r.table('usergroups')
-    #                          .filter(r.row['users'].contains(user))
-    #                          .concat_map(lambda g: g['users'])
-    #                          .distinct().run(g.conn))
-    # users = '(' + '|'.join(allowed_users) + ')'
-    # if allowed_users == []:
-    #     rr = r.table('projects').filter({'owner': user})
-    #     rr = args.add_all_arg_options(rr)
-    #     projects = list(rr.run(g.conn, time_format='raw'))
-    # else:
-    #     rr = r.table('projects').filter(r.row['owner'].match(users))\
-    #                             .order_by('name')
-    #     rr = args.add_all_arg_options(rr)
-    #     selection = list(rr.run(g.conn, time_format='raw'))
-    #     for proj in selection:
-    #         if access.allowed(user, proj[u'owner']):
-    #             projects.append(proj)
-    #Commented *** : using access table instead of usergroups
-    projects = list(r.table('access').get_all(user, index='user_id')
-                    .eq_join('project_id', r.table('projects')).zip()
-                    .run(g.conn, time_format='raw'))
+    if access.is_administrator(user):
+        print 'admin '
+        projects = list(r.table('projects')
+                        .run(g.conn, time_format='raw'))
+    else:
+        print 'not admin'
+        projects = list(r.table('access').get_all(user, index='user_id')
+                        .eq_join('project_id', r.table('projects')).zip()
+                        .run(g.conn, time_format='raw'))
     add_computed_attributes(projects, user)
     return args.json_as_format_arg(projects)
 
@@ -341,7 +321,7 @@ def create_project():
     build_datadir_denorm(name, user, datadir_id, project_id)
     dmutil.insert_entry('project2datadir', proj2datadir)
     #add entry to access table
-    access_entry = access.Access(user, project_id, name)
+    access_entry = am.Access(user, project_id, name)
     dmutil.insert_entry('access', access_entry)
     return args.json_as_format_arg(proj2datadir)
 
