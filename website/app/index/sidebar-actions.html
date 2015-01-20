@@ -1,20 +1,40 @@
 <div class="list-group sidebar-list">
-    <a class="list-group-item sidebar-action"
-       ng-click="showProjectActions = !showProjectActions"
-       style="color: #97c7e0">
-        {{project.name}}
-        <i class="fa"
-           ng-class="{'fa-chevron-right': !showProjectActions, 'fa-chevron-down': showProjectActions}">
-        </i>
-    </a>
+    <div class="list-group-item sidebar-action" style="padding-top: 8px; padding-bottom: 8px">
+        <a style="color: white" ng-click="showProjects = !showProjects">
+            <i class="fa fa-fw fa-briefcase"></i> {{project.name}}
+            <i class="fa"
+               ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
+            <span class="pull-right white">{{projects.length}}</span>
+        </a>
+
+        <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
+            <a class="list-group-item"
+               data-toggle="modal"
+               data-target="#newProject">
+                <i class="fa fa-fw fa-plus"></i> New Project
+            </a>
+            <hr class="carved"/>
+            <a class="list-group-item"
+               ng-repeat="p in projects"
+               ng-click="setProject(p)">
+                {{p.name}}
+            </a>
+        </div>
+    </div>
+
+    <div class="list-group-item sidebar-action" style="margin-top: 2px;">
+        <a style="color: white;" ng-class="isActive()" ng-click="showSettings()">
+            <i class="fa fa-fw fa-gear"></i>
+        </a>
+    </div>
 
     <div ng-show="showProjectActions">
         <a ng-show="false" class="list-group-item"
            ui-sref="projects.project.home{id: project.id}"
            ng-click="toggleActivePanel('home')"
            ng-class="{active: isPanelActive('home')}">
-            <i class="fa fa-fw fa-home"></i> Home
-        </a>
+            <i class="fa fa-fw fa-home"></i> Home</a>
+
 
         <a class="list-group-item" ng-class="{disabled: !getActivePanel('processes')}"
            ng-click="toggleActivePanel('processes')">

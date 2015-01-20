@@ -6,8 +6,9 @@
             ({{samples.length}})
         </span>
         <span class="pull-right bar-control">
-            <a ng-click="splitScreen()">
-                <i class="fa fa-fw fa-columns"></i>
+            <a ng-click="splitScreen('samples', 'column2')">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"
@@ -28,7 +29,7 @@
                 <create-sample model="model"></create-sample>
             </li>
             <li class="home-item"
-                ng-class="{'open-item-details': sample.showDetails}"
+                ng-class="{'open-item-details': sample.showDetails}" ui-draggable="true" drag="sample"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
                 <display-sample sample="sample" show-sideboard="true"></display-sample>
             </li>

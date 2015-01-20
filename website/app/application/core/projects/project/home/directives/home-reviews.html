@@ -8,8 +8,9 @@
             ({{(project.reviews | byKey: 'status': 'open').length}})
         </span>
         <span class="pull-right bar-control">
-            <a ng-click="splitScreen()">
-                <i class="fa fa-fw fa-columns"></i>
+            <a ng-click="splitScreen('reviews', 'column1')">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"
@@ -31,7 +32,8 @@
             </li>
             <li class="home-item"
                 ng-class="{'open-item-details': review.showDetails}"
-                ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews">
+                ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews"
+                ui-draggable="true" drag="review">
                 <display-review review="review" show-sideboard="true"></display-review>
             </li>
             <li ng-show="reviews.length === 0" class="home-item">

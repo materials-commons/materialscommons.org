@@ -4,11 +4,18 @@
         <span>
             Items ({{matches.length | number}})
         </span>
+        <span ng-if="splitIcon" class="pull-right bar-control">
+              <a ng-click="splitScreen('sideboard', 'column3')">
+                  <i class="fa fa-fw"
+                     ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
+              </a>
         <a ng-click="toggleExpanded()"
            class="pull-right bar-control">
             <i class="fa"
                ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
         </a>
+        </span>
+
         <input type="text" ng-model="searchInput" class="pull-right col-xs-4"
                placeholder="Search sideboard...">
         <span class="add-item pull-right">
@@ -16,17 +23,17 @@
         </span>
     </div>
     <div class="panel-body home-panel-body no-max-height">
-        <ul class="list-unstyled">
+        <ul  class="list-unstyled">
             <li class="home-item"
                 ui-draggable="true"
-                ui-on-drop="onDrop(i, $data)">
+                ui-on-drop="onDrop(i, $data, $event)">
                 <div class="dropzone">
                     <h4 class="text-center">
                         Drop here
                     </h4>
                 </div>
             </li>
-            <li class="home-item"
+            <li class="home-item" ui-draggable="true" drag="item"
                 ng-repeat="item in sideboard | filter:sideboardSearch | orderBy:'name' as matches">
                 <display-item item="item"
                               show-sideboard="false">

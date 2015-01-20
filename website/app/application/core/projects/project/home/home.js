@@ -9,7 +9,7 @@ function projectHome($scope, project, User, mcapi, ui) {
         if (!result) {
             // If user is not showing this item then return false
             return result;
-        } else {
+        } else{
             // if expanded is true that means something is expanded
             // besides the requested entry, so return false to show
             // this entry. Otherwise if expanded is false, that means
@@ -36,6 +36,15 @@ function projectHome($scope, project, User, mcapi, ui) {
             }).put({fullname: $scope.mcuser.fullname});
     };
 
+    $scope.isColumnActive = function(column){
+        return ui.getColumn(column,  $scope.project.id);
+    };
+
+    $scope.isEmptySplitBoard = function(){
+        return ui.getEmptySplitStatus($scope.project.id);
+    };
+
     $scope.project = project;
     $scope.mcuser = User.attr();
+
 }

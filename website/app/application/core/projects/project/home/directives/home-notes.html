@@ -8,8 +8,9 @@
             ({{notes.length}})
         </span>
         <span class="pull-right bar-control">
-            <a ng-click="splitScreen()">
-                <i class="fa fa-fw fa-columns"></i>
+            <a ng-click="splitScreen('notes', 'column2')">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"
@@ -30,7 +31,7 @@
                 <create-note model="model"></create-note>
             </li>
             <li class="home-item"
-                ng-class="{'open-item-details': showDetails($index)}"
+                ng-class="{'open-item-details': showDetails($index)}"  ui-draggable="true" drag="note"
                 ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                 <display-note note="note" show-sideboard="true"></display-note>
             </li>

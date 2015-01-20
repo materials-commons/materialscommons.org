@@ -11,9 +11,9 @@ function homeReviewsDirective () {
 }
 
 Application.Controllers.controller("homeReviewsDirectiveController",
-                                   ["$scope", "Review", "ui",
+                                   ["$scope",  "ui","sideboard",
                                     homeReviewsDirectiveController]);
-function homeReviewsDirectiveController ($scope, Review, ui) {
+function homeReviewsDirectiveController ($scope, ui, sideboard) {
     $scope.project.reviews.forEach(function(review) {
         if (!('showDetails' in review)) {
             review.showDetails = false;
@@ -34,6 +34,14 @@ function homeReviewsDirectiveController ($scope, Review, ui) {
 
     $scope.bk = {
         createReview: false
+    };
+
+    $scope.splitScreen = function(what, col){
+        ui.toggleColumns(what, col, $scope.project.id);
+    };
+
+    $scope.isSplitExpanded = function () {
+        return ui.getSplitStatus($scope.project.id);
     };
 
 }
