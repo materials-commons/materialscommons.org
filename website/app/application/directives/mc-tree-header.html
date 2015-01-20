@@ -5,14 +5,15 @@
            ng-class="{'fa-caret-right': item.type === 'datadir' && !item.showDetails, 'fa-caret-down': item.type === 'datadir' && item.showDetails}"></i>
         <i class="fa fa-fw fa-folder" style="color: #256188"
            ng-class="{'fa-folder': item.type === 'datadir', 'fa-file': item.type === 'datafile'}"></i>
-        <span style="color: #389dc1">{{::item.displayname}}</span>
+        <span style="color: #389dc1" ui-draggable="true" drag="item" >{{::item.displayname}}</span>
     </span>
     <span class="pull-right" style="padding-right: 15px;">
-        <span ng-if="item.type === 'datafile'">
-            <a ng-if="showSideboard"
+        <span  ng-if="item.type === 'datafile'">
+            <a  ng-if="showSideboard"
                ng-click="addToSideboard(item, $event)">
                 <i class="fa fa-fw fa-clipboard inactive" id="{{item.id}}"></i>
             </a>
+
             <a title="{{tooltip}}"
                ng-href="{{downloadSrc(item)}}"
                download="{{item.name}}">
@@ -35,7 +36,7 @@
             {{::tag.name}}
         </span>
     </p>
-    <p style="padding-left: 15px;">
+    <p ui-draggable="true" drag="item"  style="padding-left: 15px;">
         <small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">
             {{::item.size | bytes}}
         </small>

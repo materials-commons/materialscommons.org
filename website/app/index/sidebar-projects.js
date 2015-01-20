@@ -14,12 +14,5 @@ Application.Controllers.controller("sidebarProjectsDirectiveController",
                                     sidebarProjectsDirectiveController]);
 
 function sidebarProjectsDirectiveController($scope, current, $state) {
-    $scope.showProjects = false;
 
-    $scope.setProject = function(project) {
-        $scope.project = project;
-        current.setProject(project);
-        $scope.showProjects = false;
-        $state.go("projects.project.home", {id: project.id});
-    };
 }

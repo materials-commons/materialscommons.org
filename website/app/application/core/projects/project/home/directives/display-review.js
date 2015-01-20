@@ -17,6 +17,7 @@ Application.Controllers.controller("displayReviewDirectiveController",
 
 function displayReviewDirectiveController($scope, sideboard, current) {
     $scope.addToSideboard = function(review, event) {
-        sideboard.handleFromEvent(current.projectID(), review, event);
+        sideboard.handleFromEvent(current.projectID(), review, event, 'sideboard');
     };
+
 }

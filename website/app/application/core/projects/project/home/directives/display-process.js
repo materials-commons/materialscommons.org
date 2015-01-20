@@ -17,6 +17,6 @@ Application.Controllers.controller("displayProcessDirectiveController",
 
 function displayProcessDirectiveController($scope, sideboard, current) {
     $scope.addToSideboard = function(process, event) {
-        sideboard.handleFromEvent(current.projectID(), process, event);
+        sideboard.handleFromEvent(current.projectID(), process, event, 'sideboard');
     };
 }

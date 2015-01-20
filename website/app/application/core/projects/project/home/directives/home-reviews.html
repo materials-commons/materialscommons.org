@@ -8,8 +8,9 @@
             ({{(project.reviews | byKey: 'status': 'open').length}})
         </span>
         <span class="pull-right bar-control">
-            <a ng-click="splitScreen()">
-                <i class="fa fa-fw fa-columns"></i>
+            <a ng-click="splitScreen('reviews', 'column1')">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"
@@ -24,43 +25,20 @@
             </a>
         </span>
     </div>
-    <div ng-hide="bk.createReview" class="panel-body home-panel-body">
+    <div class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
+            <li style="padding-top:10px;" ng-show="bk.createReview" >
+                <create-review bk="bk"></create-review>
+            </li>
             <li class="home-item"
                 ng-class="{'open-item-details': review.showDetails}"
-                ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews">
+                ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews"
+                ui-draggable="true" drag="review">
                 <display-review review="review" show-sideboard="true"></display-review>
             </li>
             <li ng-show="reviews.length === 0" class="home-item">
                 <div>No reviews.</div>
             </li>
         </ul>
-    </div>
-    <div ng-show="bk.createReview" class="panel-body home-panel-body">
-       <create-review bk="bk"></create-review>
-    </div>
-</div>
-
-<div class="modal fade" id="confirm-close-review" tabindex="-1" role="dialog"
-     aria-labelledby="confirmCloseLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header modal-header-danger">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabelClose">Close Review</h4>
-            </div>
-            <div class="modal-body">
-                On closing review will be archived
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Dismiss
-                </button>
-                <button ng-click="closeReview()" type="button" class="btn btn-danger"
-                        data-dismiss="modal">
-                    Yes
-                </button>
-            </div>
-        </div>
     </div>
 </div>

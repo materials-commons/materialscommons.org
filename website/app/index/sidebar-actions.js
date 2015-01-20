@@ -10,21 +10,37 @@ function sidebarActionsDirective() {
 }
 
 Application.Controllers.controller("sidebarActionsDirectiveController",
-    ["$scope",  "homeCustomize", sidebarActionsDirectiveController]);
+    ["$scope", "ui","current", "$state", sidebarActionsDirectiveController]);
 
-function sidebarActionsDirectiveController($scope, homeCustomize) {
+function sidebarActionsDirectiveController($scope, ui, current, $state) {
     $scope.showProjectActions = true;
     $scope.activeAction = "home";
-
-    $scope.isActionActive = function (action) {
+    $scope.isPanelActive = function (action) {
         return $scope.activeAction === action;
     };
 
-    $scope.setActionActive = function (action) {
-        homeCustomize.setInfoBox(action);
+    $scope.toggleActivePanel = function (action) {
+        ui.togglePanelState(action, $scope.project.id);
     };
 
-    $scope.getActionActive = function (what) {
-        return homeCustomize.getInfoBox(what);
+    $scope.getActivePanel = function (what) {
+        if ($scope.project) {
+            return ui.showPanel(what, $scope.project.id);
+        }
+        return true;
+    };
+
+    $scope.showProjects = false;
+
+    $scope.setProject = function(project) {
+        $scope.project = project;
+        current.setProject(project);
+        $scope.showProjects = false;
+        $state.go("projects.project.home", {id: project.id});
+    };
+
+    $scope.showSettings = function(){
+        $scope.project = current.project();
+        $state.go("projects.project.access", {id: $scope.project.id});
     };
 }

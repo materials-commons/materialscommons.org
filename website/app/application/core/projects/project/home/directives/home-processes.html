@@ -8,8 +8,9 @@
             ({{procs.length}})
         </span>
         <span class="pull-right bar-control">
-            <a ng-click="splitScreen()">
-                <i class="fa fa-fw fa-columns"></i>
+            <a ng-click="splitScreen('processes', 'column2')">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"
@@ -19,7 +20,7 @@
         <input type="text" ng-model="search.name" class="pull-right col-xs-4"
                placeholder="Search processes...">
         <span class="add-item pull-right">
-            <a ui-sref="projects.project.provenance.create" tooltip="Add Process">
+            <a ng-click="createProvenance()" tooltip="Add Process">
                 <i class="fa fa-fw fa-plus"></i>
             </a>
         </span>
@@ -28,7 +29,7 @@
          ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
             <li class="home-item"
-                ng-class="{'open-item-details': process.showDetails}"
+                ng-class="{'open-item-details': process.showDetails}" ui-draggable="true" drag="process"
                 ng-repeat="process in all | filter:search | event:project.date:project.nextdate as procs">
                 <display-process process="process"
                                  show-sideboard="true">

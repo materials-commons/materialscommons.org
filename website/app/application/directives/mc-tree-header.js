@@ -14,8 +14,7 @@ function mcTreeHeaderDirective() {
 }
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current",
-                                    mcTreeHeaderDirectiveController]);
+                                   ["$scope", "mcfile", "sideboard", "current", mcTreeHeaderDirectiveController]);
 function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
@@ -30,6 +29,7 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
     };
 
     $scope.addToSideboard = function(file, event) {
-        sideboard.handleFromEvent(current.projectID(), file, event);
+        sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
     };
+
 }

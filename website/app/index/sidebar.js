@@ -11,9 +11,9 @@ function sidebarDirective() {
 }
 
 Application.Controllers.controller("sidebarDirectiveController",
-                                   ["$scope", "recent", "current",
-                                    "pubsub", "model.projects", "User",
-                                    sidebarDirectiveController]);
+    ["$scope", "recent", "current",
+        "pubsub", "model.projects", "User",
+        sidebarDirectiveController]);
 
 function sidebarDirectiveController($scope, recent, current, pubsub, projects, User) {
     $scope.showAllRecent = false;
@@ -23,15 +23,15 @@ function sidebarDirectiveController($scope, recent, current, pubsub, projects, U
         $scope.recents = recent.getAll($scope.project.id);
     }
 
-    pubsub.waitOn($scope, "sidebar.project", function() {
-        projects.getList().then(function(p) {
+    pubsub.waitOn($scope, "sidebar.project", function () {
+        projects.getList().then(function (p) {
             $scope.projects = p;
         });
         var project = current.project();
         setupSidebar(project);
     });
 
-    $scope.isAuthenticated = function() {
+    $scope.isAuthenticated = function () {
         return User.isAuthenticated();
     };
 }

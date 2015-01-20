@@ -2,19 +2,38 @@
     <ul class="list-unstyled">
         <li class="file-item"
             style="border-top: none; border-bottom: none;"
-            ui-draggable="true"
-            drag="child"
             ng-repeat="child in item.children | orderBy:'name' track by child.id">
             <div>
                 <mc-tree-header item="child" show-sideboard="true"></mc-tree-header>
+                <div style="padding-left: 0px; padding-right: 0px;">
+                    <div class="row" style="padding-left: 0px; padding-right: 0px;">
+                        <div  ng-if="child.type === 'datafile'">
+                            <p style="padding-left: 15px;">
+                                <button ng-if="isActive('files','addToReview')"  class="btn btn-xs btn-mini btn-success"
+                                        ng-click="addItem('review', child)">Add to review
+                                </button>
+                                <!--<button ng-if="isActive('files','addToSample')" class="btn btn-xs btn-mini btn-success"-->
+                                        <!--ng-click="addItem('sample', child)">Add to Sample-->
+                                <!--</button>-->
+                                <!--<button ng-if="isActive('files','addToProvenance')" class="btn btn-xs btn-mini btn-success"-->
+                                        <!--ng-click="addItem('provenance', child)">Add to Provenance-->
+                                <!--</button>-->
+                                <!--<button ng-if="isActive('files','addToNote')" class="btn btn-xs btn-mini btn-success"-->
+                                        <!--ng-click="addItem('note', child)">-->
+                                    <!--Add to Note-->
+                                <!--</button>-->
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <div ng-if="child.showDetails" style="padding-left: 0px; padding-right: 0px;">
                     <div class="row" style="padding-left: 0px; padding-right: 0px;">
                         <div ng-if="child.type === 'datadir'">
                             <mc-tree-dir item="child"></mc-tree-dir>
                         </div>
 
-                        <div ng-if="child.type === 'datafile'">
-                            <mc-tree-leaf item="child"></mc-tree-leaf>
+                        <div   ng-if="child.type === 'datafile'">
+                            <mc-tree-leaf  item="child"></mc-tree-leaf>
                         </div>
                     </div>
                 </div>

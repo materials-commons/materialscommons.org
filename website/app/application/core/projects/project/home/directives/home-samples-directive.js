@@ -35,6 +35,14 @@ function homeSamplesController($scope, ui) {
         $scope.model.createSample = true;
     };
 
+    $scope.splitScreen = function(what, col){
+        ui.toggleColumns(what, col, $scope.project.id);
+    };
+
+    $scope.isSplitExpanded = function () {
+        return ui.getSplitStatus($scope.project.id);
+    };
+
     $scope.model = {
         createSample: false
     };
