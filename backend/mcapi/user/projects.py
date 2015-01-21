@@ -9,7 +9,7 @@ from .. import dmutil
 from .. import validate
 from .. import error
 from loader.model import access as am
-from loader.model import datadir
+from loader.model import datadir, project
 from .. import process, access
 
 
@@ -20,11 +20,9 @@ def get_all_group_projects():
     user = access.get_user()
     projects = []
     if access.is_administrator(user):
-        print 'admin '
         projects = list(r.table('projects')
                         .run(g.conn, time_format='raw'))
     else:
-        print 'not admin'
         projects = list(r.table('access').get_all(user, index='user_id')
                         .eq_join('project_id', r.table('projects')).zip()
                         .run(g.conn, time_format='raw'))
@@ -322,7 +320,7 @@ def create_project():
     dmutil.insert_entry('project2datadir', proj2datadir)
     #add entry to access table
     access_entry = am.Access(user, project_id, name)
-    dmutil.insert_entry('access', access_entry)
+    dmutil.insert_entry('access', access_entry.__dict__)
     return args.json_as_format_arg(proj2datadir)
 
 
