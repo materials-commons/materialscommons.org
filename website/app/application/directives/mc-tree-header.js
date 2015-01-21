@@ -14,8 +14,8 @@ function mcTreeHeaderDirective() {
 }
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current", mcTreeHeaderDirectiveController]);
-function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
+                                   ["$scope", "mcfile", "sideboard", "current", "toggleDragButton", "pubsub", mcTreeHeaderDirectiveController]);
+function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, toggleDragButton, pubsub) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
         $scope.faClass = "fa-upload";
@@ -30,6 +30,24 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
 
     $scope.addToSideboard = function(file, event) {
         sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
+    };
+
+    $scope.isActive = function(type, button){
+        return toggleDragButton.get(type, button);
+    };
+
+    $scope.addItem = function (type) {
+        switch (type) {
+            case "review":
+                pubsub.send('addFileToReview', $scope.item);
+                break;
+            case "note":
+                pubsub.send('addFileToNote', $scope.item);
+                break;
+            case "provenance":
+                pubsub.send('addFileToProvenance', $scope.item);
+                break;
+        }
     };
 
 }
