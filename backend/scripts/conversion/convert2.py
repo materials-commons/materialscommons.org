@@ -241,7 +241,7 @@ def build_datadir2datafile(conn):
 def admin_users(conn):
     r.table('users').get('gtarcea@umich.edu').update({'admin': True}).run(conn)
     r.table('users').get('tammasr@umich.edu').update({'admin': True}).run(conn)
-
+    msg("Done adding admins...")
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
