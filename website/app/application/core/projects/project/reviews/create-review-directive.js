@@ -24,7 +24,6 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
     projectFiles.setChannel(channel);
     projectFiles.setActive($stateParams.id, true);
     ui.setShowFiles($stateParams.id, true);
-
     var defaultModel = {
         comment: "",
         assigned_to: "",
@@ -65,6 +64,7 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
                 projectState.delete($scope.project.id, stateID);
                 pubsub.send("reviews.change");
                 $scope.bk.createReview = false;
+                $scope.model = {};
             }).error(function (reason) {
             }).post($scope.review);
     }
