@@ -1,6 +1,6 @@
 from ..mcapp import app
 from ..decorators import apikey, jsonp, crossdomain
-import json
+from .. import resp
 from flask import g, request
 import rethinkdb as r
 from ..utils import json_for_single_item_list
@@ -10,6 +10,7 @@ from ..import dmutil
 from ..import error
 from ..import validate
 from loader.model import datadir
+from projects import DItem2
 
 
 @app.route('/datadir/<path:datadirid>')
@@ -40,27 +41,35 @@ def datadirs_for_user():
 def create_datadir():
     user = access.get_user()
     j = request.get_json()
-    project = dmutil.get_required('project', j)
-    ddir = construct_datadir(j, user)
-    if validate.project_id_exists(project, user) is None:
+    project_id = dmutil.get_required('project_id', j)
+    level = dmutil.get_required('level', j)
+    proj = validate.project_id_exists(project_id, user)
+    if proj is None:
         return error.bad_request("Invalid request: bad project")
+    ddir = construct_datadir(j, proj['owner'])
     if validate.datadir_id_exists(ddir.parent, user) is None:
         return error.bad_request(
             "Invalid request: parent does not exist %s" % (ddir.parent))
-    ddir_exists = validate.datadir_id_exists(ddir.id, user)
-    if ddir_exists is not None:
-        return json_as_format_arg({'id': ddir_exists['id']})
-    ddir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
-    proj2datadir = {'project_id': project, 'datadir_id': ddir_id}
+    ddir_exists = validate.datadir_path_exists(ddir.name, project_id)
+    if ddir_exists:
+        return error.bad_request(
+            "Invalid request: datadir already exists")
+    ddir_new = dmutil.insert_entry('datadirs', ddir.__dict__, return_created=True)
+    ddir.id = ddir_new['id']
+    ddir.birthtime = ddir_new['birthtime']
+    ddir.mtime = ddir_new['mtime']
+    ddir.atime = ddir_new['atime']
+    proj2datadir = {'project_id': project_id, 'datadir_id': ddir_new['id']}
     dmutil.insert_entry('project2datadir', proj2datadir)
-    return json_as_format_arg({'id': ddir_id})
+    ditem = DItem2(ddir.id, ddir.name, "datadir",
+                   ddir_new['owner'], ddir_new['birthtime'], level)
+    return resp.to_json(ditem.__dict__)
 
 
 def construct_datadir(j, user):
     parent = dmutil.get_required('parent', j)
-    access = dmutil.get_optional('access', j, "private")
     name = dmutil.get_required('name', j)
-    return datadir.DataDir(name, access, user, parent, "")
+    return datadir.DataDir(name, user, parent, "")
 
 
 @app.route('/datadirs/<datafile_id>/datafile')
