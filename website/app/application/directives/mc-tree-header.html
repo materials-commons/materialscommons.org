@@ -63,4 +63,9 @@
             {{::item.fullname}}
         </small>
     </p>
+    <p>
+        <button ng-if="isActive('files','addToReview')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('review')">Add to review</button>
+        <!--<button ng-if="isActive('samples','addToProvenance')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('provenance')">Add to Provenance</button>-->
+        <!--<button ng-if="isActive('samples','addToNote')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('note')">Add to Note</button>-->
+    </p>
 </div>

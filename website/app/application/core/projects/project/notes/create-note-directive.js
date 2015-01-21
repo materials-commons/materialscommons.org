@@ -13,11 +13,11 @@ function createNoteDirective() {
 
 Application.Controllers.controller('createNoteDirectiveController',
     ["$scope", "User", "mcapi", "projectState",
-        "$stateParams", "current", "recent","pubsub",
+        "$stateParams", "current", "recent",
         createNoteDirectiveController]);
 
 function createNoteDirectiveController($scope, User, mcapi, projectState,
-                            $stateParams, current, recent, pubsub) {
+                            $stateParams, current, recent) {
     $scope.project = current.project();
     var projectID = $scope.project.id;
     var stateID = $stateParams.sid;
@@ -42,6 +42,7 @@ function createNoteDirectiveController($scope, User, mcapi, projectState,
             .success(function (note) {
                 $scope.project.notes.unshift(note);
                 recent.gotoLast($scope.project.id);
+                $scope.model = {};
                 $scope.model.createNote = false;
             }).post($scope.note);
     };
