@@ -9,7 +9,7 @@ _admins = []
 
 
 def check(user, owner, id="Unknown"):
-    if not allowed(user, owner):
+    if not allowed(user, owner, id):
         raise mcexceptions.AccessNotAllowedException(id)
 
 
@@ -19,12 +19,15 @@ def reset():
     _admins = []
 
 
-def _user_in_owner_group(user, owner):
+def _user_in_owner_group(user, project_id):
     if is_administrator(user):
         return True
-    elif owner not in _user_access_matrix:
-        _load_user(owner)
-    return _access_allowed(user, owner)
+    elif project_id not in _user_access_matrix:
+        _user_access_matrix[project_id] = []
+        _user_in_owner_group(user, project_id)
+    elif user not in _user_access_matrix[project_id]:
+        _load_user(project_id)
+    return _access_allowed(user, project_id)
 
 
 def is_administrator(user):
@@ -44,38 +47,43 @@ def get_admins():
 
 def load_admins():
     global _admins
-    admin_group = r.table('usergroups').get('admin').run(g.conn)
+    admin_group = list(r.table('users').get_all(True, index='admin')
+                       .run(g.conn))
     if admin_group is None:
         _admins = ['gtarcea@umich.edu', 'tammasr@umich.edu']
     else:
-        for u in admin_group['users']:
-            _admins.append(u)
+        for u in admin_group:
+            _admins.append(u['id'])
 
 
-def _load_user(user):
-    groups = list(r.table('usergroups').filter({'owner': user}).run(g.conn))
-    _user_access_matrix[user] = {}
-    # Load users in group into the list of users that can be accessed
-    for group in groups:
-        for username in group['users']:
-            _user_access_matrix[user][username] = True
+def _load_user(project_id):
+    users = list(r.table('access')
+                  .get_all(project_id, index='project_id')
+                  .pluck('user_id')
+                  .run(g.conn))
+    _user_access_matrix[project_id] = []
+    for u in users:
+            _user_access_matrix[project_id].append(u['user_id'])
 
 
-def _access_allowed(user, owner):
-    return user in _user_access_matrix[owner]
+def _access_allowed(user, project_id):
+    if user in _user_access_matrix[project_id]:
+        return True
+    else:
+        return False
 
 
-def remove_user(user):
-    if user in _user_access_matrix:
-        _user_access_matrix.pop(user, None)
+def remove_user(user, project_id):
+    if user in _user_access_matrix[project_id]:
+        _user_access_matrix[project_id].pop(user, None)
 
 
-def check_ownership(usergroup, user):
-    ug = r.table('usergroups').get(usergroup).run(g.conn)
-    if ug is None:
-        return
-    if user != ug['owner']:
-        raise mcexceptions.AccessNotAllowedException(user)
+# def check_ownership(usergroup, user):
+#     ug = r.table('usergroups').get(usergroup).run(g.conn)
+#     if ug is None:
+#         return
+#     if user != ug['owner']:
+#         raise mcexceptions.AccessNotAllowedException(user)
 
 
 def get_apiuser():
@@ -89,10 +97,10 @@ def get_user():
     return request.args.get('user', default=apiuser)
 
 
-def allowed(user, owner):
+def allowed(user, owner, project_id):
     if user == owner:
         return True
-    if _user_in_owner_group(user, owner):
+    if _user_in_owner_group(user, project_id):
         return True
     else:
         return False
