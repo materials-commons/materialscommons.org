@@ -14,8 +14,9 @@ function mcTreeHeaderDirective() {
 }
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current", mcTreeHeaderDirectiveController]);
-function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
+                                   ["$scope", "mcfile", "sideboard", "current", "mcapi",
+                                    mcTreeHeaderDirectiveController]);
+function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, mcapi) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
         $scope.faClass = "fa-upload";
@@ -30,6 +31,20 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current) {
 
     $scope.addToSideboard = function(file, event) {
         sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
+    };
+
+    $scope.newFolder = function(currentDir, name) {
+        mcapi('/datadirs')
+            .success(function(datadir){
+                currentDir.addFolder = false;
+                currentDir.children.push(datadir);
+            })
+            .post({
+                project_id: current.projectID(),
+                parent: currentDir.id,
+                name: currentDir.name + "/" + name,
+                level: currentDir.level+1
+            });
     };
 
 }
