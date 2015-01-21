@@ -3,7 +3,8 @@ function mcFlowService() {
     var self = this;
     self.flow = new Flow(
         {
-            target: "/upload"
+            target: "/upload",
+            testChunks: false
         }
     );
 
