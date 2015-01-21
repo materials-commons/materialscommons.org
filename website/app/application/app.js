@@ -85,14 +85,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/settings',
             templateUrl: 'application/core/account/settings.html'
         })
-        .state('account.usergroup', {
-            url: '/usergroup',
-            templateUrl: 'application/core/account/usergroups/usergroup.html'
-        })
-        .state('account.usergroup.users', {
-            url: '/users/:id',
-            templateUrl: 'application/core/account/usergroups/users.html'
-        })
+        //.state('account.usergroup', {
+        //    url: '/usergroup',
+        //    templateUrl: 'application/core/account/usergroups/usergroup.html'
+        //})
+        //.state('account.usergroup.users', {
+        //    url: '/users/:id',
+        //    templateUrl: 'application/core/account/usergroups/users.html'
+        //})
         .state('account.templates', {
             url: '/templates',
             templateUrl: 'application/core/account/templates/templates.html'
