@@ -238,6 +238,11 @@ def build_datadir2datafile(conn):
     msg("Done...")
 
 
+def admin_users(conn):
+    r.table('users').get('gtarcea@umich.edu').update({'admin': True}).run(conn)
+    r.table('users').get('tammasr@umich.edu').update({'admin': True}).run(conn)
+
+
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
     # delete_tag_table_entries(conn)
@@ -248,6 +253,7 @@ def main(conn, mcdir):
     # add_mediatypes(conn, mcdir)
     # update_mtime_samples(conn)
     build_datadir2datafile(conn)
+    admin_users(conn)
     msg("Finished.")
 
 if __name__ == "__main__":

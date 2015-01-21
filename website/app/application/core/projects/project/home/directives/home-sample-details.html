@@ -1,6 +1,7 @@
-<div>
-    <div ng-if="sample.description">
-        Description: {{sample.description}}
+<div class="row">
+    <br>
+    <div class="row" ng-if="sample.description">
+      Description: {{sample.description}}  <br>
     </div>
 
     <div  class="row item-details">
@@ -16,7 +17,7 @@
             </ul>
         </div>
         <div class="col-sm-8">
-            <b ng-show="_.isNull(properties)">Properties: </b>
+            <b >Properties: </b>
             <ul class="list-group scroll-bar">
                 <li class="list-group-item"
                     ng-repeat="(key, value) in sample.properties | removeKey:'composition' as properties">{{key}}

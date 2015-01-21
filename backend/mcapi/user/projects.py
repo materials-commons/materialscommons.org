@@ -5,13 +5,12 @@ import rethinkdb as r
 from .. import args
 from os.path import dirname, basename
 import json
-from .. import access
 from .. import dmutil
 from .. import validate
 from .. import error
-from loader.model import project
-from loader.model import datadir
-from .. import process
+from loader.model import access as am
+from loader.model import datadir, project
+from .. import process, access
 
 
 @app.route('/projects', methods=['GET'])
@@ -21,28 +20,12 @@ def get_all_group_projects():
     user = access.get_user()
     projects = []
     if access.is_administrator(user):
-        all_users = list(r.table('users').pluck('email').run(g.conn))
-        allowed_users = []
-        for u in all_users:
-            allowed_users.append(u['email'])
+        projects = list(r.table('projects')
+                        .run(g.conn, time_format='raw'))
     else:
-        allowed_users = list(r.table('usergroups')
-                             .filter(r.row['users'].contains(user))
-                             .concat_map(lambda g: g['users'])
-                             .distinct().run(g.conn))
-    users = '(' + '|'.join(allowed_users) + ')'
-    if allowed_users == []:
-        rr = r.table('projects').filter({'owner': user})
-        rr = args.add_all_arg_options(rr)
-        projects = list(rr.run(g.conn, time_format='raw'))
-    else:
-        rr = r.table('projects').filter(r.row['owner'].match(users))\
-                                .order_by('name')
-        rr = args.add_all_arg_options(rr)
-        selection = list(rr.run(g.conn, time_format='raw'))
-        for proj in selection:
-            if access.allowed(user, proj[u'owner']):
-                projects.append(proj)
+        projects = list(r.table('access').get_all(user, index='user_id')
+                        .eq_join('project_id', r.table('projects')).zip()
+                        .run(g.conn, time_format='raw'))
     add_computed_attributes(projects, user)
     return args.json_as_format_arg(projects)
 
@@ -151,7 +134,7 @@ def get_project_tree2(project_id):
     proj = r.table('projects').get(project_id).run(g.conn)
     if proj is None:
         return error.bad_request("Unknown project id: %s" % (project_id))
-    access.check(user, proj['owner'])
+    access.check(user, proj['owner'], project_id)
     # selection = list(r.table('project2datadir')
     #                  .get_all(project_id, index='project_id')
     #                  .eq_join("datadir_id", r.table('datadirs_denorm'))
@@ -335,6 +318,9 @@ def create_project():
     proj2datadir = {'project_id': project_id, 'datadir_id': datadir_id}
     build_datadir_denorm(name, user, datadir_id, project_id)
     dmutil.insert_entry('project2datadir', proj2datadir)
+    #add entry to access table
+    access_entry = am.Access(user, project_id, name)
+    dmutil.insert_entry('access', access_entry.__dict__)
     return args.json_as_format_arg(proj2datadir)
 
 
@@ -374,7 +360,7 @@ def get_reviews_for_project(id):
     project = r.table('projects').get(id).run(g.conn)
     if project is None:
         return error.not_found('No such project: %s' % (id))
-    access.check(user, project['owner'])
+    access.check(user, project['owner'], project['id'])
     reviews = list(r.table('reviews')
                    .get_all(id, index='project').order_by(r.desc('mtime'))
                    .run(g.conn, time_format='raw'))

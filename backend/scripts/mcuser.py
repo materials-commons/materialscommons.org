@@ -24,6 +24,7 @@ class User(object):
         self.homepage = ""
         self.last_login = r.now()
         self.notes = []
+        self.admin = False
         self.preferences = {
             "tags": [],
             "templates": []
@@ -79,8 +80,8 @@ if __name__ == "__main__":
         u = User(options.email, options.email, pwhash)
         r.table('users').insert(u.__dict__).run(conn)
         if options.admin:
-            r.table("usergroups").get("admin").update({
-                "users": r.row["users"].append(options.email)
+            r.table("users").get(options.email).update({
+                "admin": True
             }).run(conn)
         print "Add user: " + options.email
         apiport = 5002
