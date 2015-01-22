@@ -32,6 +32,7 @@ function displaySampleDirectiveController($scope, sideboard, current, pubsub, to
     };
 
     $scope.addItem = function (type) {
+        $scope.sample.show = true;
         switch (type) {
             case "review":
                 pubsub.send('addSampleToReview', $scope.sample);

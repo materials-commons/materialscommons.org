@@ -65,6 +65,7 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
                 pubsub.send("reviews.change");
                 $scope.bk.createReview = false;
                 $scope.model = {};
+                toggleDragButton.reset();
             }).error(function (reason) {
             }).post($scope.review);
     }
@@ -75,6 +76,8 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
         recent.delete($stateParams.id, $stateParams.sid);
         projectState.delete($stateParams.id, $stateParams.sid);
         $scope.bk.createReview = false;
+        toggleDragButton.reset();
+
     };
 
     $scope.create = function () {
@@ -96,16 +99,16 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
     $scope.removeAttachment = function (index) {
         $scope.model.attachments.splice(index, 1);
     };
-    $scope.addItems = function(){
-        switch($scope.bk.itemType){
+    $scope.addItems = function(action){
+        switch(action){
             case "samples":
-                toggleDragButton.toggle($scope.bk.itemType,'addToReview');
+                toggleDragButton.toggle(action,'addToReview');
                 break;
             case "notes":
-                toggleDragButton.toggle($scope.bk.itemType,'addToReview');
+                toggleDragButton.toggle(action,'addToReview');
                 break;
             case "files":
-                toggleDragButton.toggle($scope.bk.itemType,'addToReview');
+                toggleDragButton.toggle(action,'addToReview');
                 break;
         }
     };
