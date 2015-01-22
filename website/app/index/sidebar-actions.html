@@ -1,10 +1,10 @@
 <div class="list-group sidebar-list">
     <div class="list-group-item sidebar-action" style="padding-top: 8px; padding-bottom: 8px">
         <a style="color: white" ng-click="showProjects = !showProjects">
-            <i class="fa fa-fw fa-briefcase"></i> {{project.name}}
+            <i class="fa fa-fw fa-briefcase"></i> {{project.name | truncate: 15: '...'}}
             <i class="fa"
                ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
-            <span class="pull-right white">{{projects.length}}</span>
+            <span class="pull-right white">{{(projects | toDeleteProjects).length}}</span>
         </a>
 
         <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
@@ -15,7 +15,7 @@
             </a>
             <hr class="carved"/>
             <a class="list-group-item"
-               ng-repeat="p in projects"
+               ng-repeat="p in projects | toDeleteProjects"
                ng-click="setProject(p)">
                 {{p.name}}
             </a>
