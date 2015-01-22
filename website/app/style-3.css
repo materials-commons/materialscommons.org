@@ -1156,7 +1156,7 @@ a.important {
 a:hover,
 a:focus {
     text-decoration: underline;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 table a, .table a {
