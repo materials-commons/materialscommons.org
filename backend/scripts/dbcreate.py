@@ -42,6 +42,7 @@ def create_tables():
     create_table("process2item")
     create_table("sample2item")
     create_table("datadir2datafile")
+    create_table("uploads")
 
 
 def create_table(table):
@@ -138,6 +139,10 @@ def create_indices():
 
     create_index("datadir2datafile", "datadir_id")
     create_index("datadir2datafile", "datafile_id")
+
+    create_index("uploads", "owner")
+    create_index("uploads", "project_id")
+
 
 
 def create_index(table, name):
