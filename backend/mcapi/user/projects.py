@@ -112,20 +112,6 @@ def add_computed_items(projects_by_id, items, projects_key, item_key):
             projects_by_id[project_id][item_key].append(item)
 
 
-@app.route('/projects/<project_id>/datadirs')
-@apikey(shared=True)
-@jsonp
-def get_datadirs_for_project(project_id):
-    user = access.get_user()
-    rr = r.table('project2datadir').filter({'project_id': project_id})
-    rr = rr.eq_join('project_id', r.table('projects')).zip()
-    rr = rr.eq_join('datadir_id', r.table('datadirs')).zip()
-    selection = list(rr.run(g.conn, time_format='raw'))
-    if len(selection) > 0 and selection[0]['owner'] == user:
-        return args.json_as_format_arg(selection)
-    return args.json_as_format_arg([])
-
-
 @app.route('/projects/<project_id>/tree2')
 @apikey(shared=True)
 @jsonp
@@ -224,82 +210,6 @@ def build_tree(datadirs):
     return json.dumps(top_level_dirs, cls=DEncoder2)
 
 
-def build_tags(id, name, type, user):
-    tags2item = list(r.table('items2tags')
-                     .filter({
-                         'item_id': id,
-                         'item_type': type,
-                         'user': user
-                     }).run(g.conn))
-    return tags2item
-
-
-@app.route('/project/provenance/<project_id>', methods=['GET'])
-@apikey
-@jsonp
-def get_provenance(project_id):
-    prov = {}
-    rr = r.table('project2processes').filter({'project_id': project_id})
-    rr = rr.eq_join('process_id', r.table('processes')).zip()
-    rr = rr.pluck('id', 'name', 'input_files',
-                  'input_conditions', 'output_files', 'output_conditions')
-    items = list(rr.run(g.conn, time_format='raw'))
-    for p in items:
-        prov = {'process': process['name'],
-                'input_files': get_datafiles(p['input_files']),
-                'output_files': get_datafiles(p['output_files']),
-                'input_conditions': get_otherfiles(
-                    p['input_conditions']),
-                'output_conditions': get_otherfiles(
-                    p['output_conditions'])}
-    return args.json_as_format_arg(prov)
-
-
-def get_datafiles(files):
-    result = []
-    for id in files:
-        result.append(dmutil.get_single_from_table('datafiles', id))
-    return result
-
-
-def get_otherfiles(files):
-    result = []
-    for id in files:
-        result.append(dmutil.get_single_from_table('conditions', id))
-    return result
-
-
-@app.route('/projects/<id>', methods=['PUT'])
-@apikey
-@crossdomain(origin='*')
-def update_project(id):
-    item = {}
-    do_update = False
-    user = access.get_user()
-    j = request.get_json()
-
-    description = dmutil.get_optional('description', j, None)
-    if description:
-        item['description'] = description
-        do_update = True
-    todos = dmutil.get_optional('todos', j, None)
-    if todos is not None:
-        item['todos'] = todos
-        do_update = True
-    notes = dmutil.get_optional('notes', j, [])
-    if notes:
-        item['notes'] = notes
-        do_update = True
-    proj = r.table('projects').get(id).run(g.conn)
-    if proj is None:
-        return error.not_found('Project not found %s' % (id))
-    access.check(user, proj['owner'], proj['id'])
-    if do_update:
-        r.table('projects').get(id)\
-                           .update(item).run(g.conn)
-    return args.json_as_format_arg({'id': id})
-
-
 @app.route('/projects', methods=['POST'])
 @apikey
 @crossdomain(origin='*')
@@ -316,9 +226,8 @@ def create_project():
         "project": project_id
     }).run(g.conn)
     proj2datadir = {'project_id': project_id, 'datadir_id': datadir_id}
-    build_datadir_denorm(name, user, datadir_id, project_id)
     dmutil.insert_entry('project2datadir', proj2datadir)
-    #add entry to access table
+    # add entry to access table
     access_entry = am.Access(user, project_id, name)
     dmutil.insert_entry('access', access_entry.__dict__)
     return args.json_as_format_arg(proj2datadir)
@@ -338,18 +247,6 @@ def make_toplevel_datadir(j, user):
     ddir = datadir.DataDir(name, access, user, "")
     dir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
     return dir_id
-
-
-def build_datadir_denorm(name, owner, dir_id, project_id):
-    datadir_denorm = dict()
-    datadir_denorm['name'] = name
-    datadir_denorm['owner'] = owner
-    datadir_denorm['datafiles'] = []
-    datadir_denorm['id'] = dir_id
-    datadir_denorm['birthtime'] = r.now()
-    datadir_denorm['project_id'] = project_id
-    datadir_denorm['tags'] = {}
-    dmutil.insert_entry('datadirs_denorm', datadir_denorm)
 
 
 @app.route('/project/<id>/reviews')
