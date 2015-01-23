@@ -20,11 +20,12 @@ def get_all_group_projects():
     user = access.get_user()
     projects = []
     if access.is_administrator(user):
-        projects = list(r.table('projects')
+        projects = list(r.table('projects').order_by('name')
                         .run(g.conn, time_format='raw'))
     else:
         projects = list(r.table('access').get_all(user, index='user_id')
                         .eq_join('project_id', r.table('projects')).zip()
+                        .order_by('name')
                         .run(g.conn, time_format='raw'))
     add_computed_attributes(projects, user)
     return args.json_as_format_arg(projects)

@@ -29,24 +29,16 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-xs-3">Select/Drag items:</label>
+                <label class="control-label col-xs-3">Attach items:</label>
 
                 <div class="col-xs-8">
                     <div class="row">
                         <form role="form">
-                            <label style="outline: none;" class="radio-inline">
-                                <input type="radio" ng-model="bk.itemType" value="samples">Samples
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" ng-model="bk.itemType" value="notes">Notes
-                            </label>
-                            <label style="outline: none;" class="radio-inline">
-                                <input type="radio" ng-model="bk.itemType" value="files">Files
-                            </label>
-                            <button ng-click="addItems()" class="btn btn-xs btn-mini btn-primary">Add</button>
+                            <a ng-click="addItems('samples')"><i class="fa fa-fw fa-plus-square"> </i></a>Samples
+                            <a ng-click="addItems('notes')"><i class="fa fa-fw fa-plus-square" > </i></a> Notes
+                            <a ng-click="addItems('files')"><i class="fa fa-fw fa-plus-square"> </i></a> Files
                         </form>
                     </div>
-
                 </div>
                 <div class="col-xs-8">
                     <div ng-repeat="item in model.attachments">
