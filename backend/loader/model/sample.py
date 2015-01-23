@@ -14,6 +14,7 @@ class Sample(object):
         self.events = []
         self.birthtime = r.now()
         self.mtime = self.birthtime
+        self._type = "sample"
 
 
 class Element(object):
