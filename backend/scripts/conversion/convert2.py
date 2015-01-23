@@ -238,10 +238,26 @@ def build_datadir2datafile(conn):
     msg("Done...")
 
 
+def add_type(conn):
+    msg("Adding _type...")
+    r.table('samples').update({"_type": "sample"}).run(conn)
+    r.table('reviews').update({"_type": "review"}).run(conn)
+    r.table('notes').update({"_type": "note"}).run(conn)
+    r.table('processes').update({"_type": "process"}).run(conn)
+    r.table('datafiles').update({"_type": "datafile"}).run(conn)
+    r.table('datadirs').update({"_type": "datadir"}).run(conn)
+    r.table('projects').update({"_type": "project"}).run(conn)
+    r.table('users').update({"_type": "user"}).run(conn)
+    msg("Done...")
+
+
 def admin_users(conn):
+    msg("Adding admin flag...")
+    r.table('users').update({'admin': False}).run(conn)
     r.table('users').get('gtarcea@umich.edu').update({'admin': True}).run(conn)
     r.table('users').get('tammasr@umich.edu').update({'admin': True}).run(conn)
-    msg("Done adding admins...")
+    msg("Done...")
+
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
