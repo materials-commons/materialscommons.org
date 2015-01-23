@@ -52,6 +52,7 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
     };
 
     $scope.addItem = function (type) {
+        $scope.item.show = true;
         switch (type) {
         case "review":
             pubsub.send('addFileToReview', $scope.item);

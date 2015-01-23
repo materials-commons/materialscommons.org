@@ -25,6 +25,15 @@ function toggleDragButton() {
             }
         },
 
+        reset: function(){
+            service.addToReview=  {
+                'samples': false,
+                    'notes': false,
+                    'files': false,
+                    'provenance': false
+            };
+        },
+
         get: function (type, button) {
             return service[button][type];
         }
