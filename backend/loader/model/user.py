@@ -1,9 +1,9 @@
 import rethinkdb as r
 import uuid
 
+
 class User(object):
     def __init__(self, name, email, password):
-        self.name = name
         self.email = email
         self.fullname = ""
         self.password = password
@@ -15,4 +15,9 @@ class User(object):
         self.description = ""
         self.affiliation = ""
         self.homepage = ""
-        self.notes = []
+        self._type = "user"
+        self.last_login = self.birthtime
+        self.preferences = {
+            "tags": [],
+            "templates": []
+        }

@@ -12,3 +12,4 @@ class Review(object):
         self.birthtime = r.now()
         self.project = ""
         self.mtime = self.birthtime
+        self._type = "review"

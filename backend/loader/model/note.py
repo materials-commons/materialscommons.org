@@ -11,3 +11,4 @@ class Note(object):
         self.item_id = item_id
         self.item_type = item_type
         self.project_id = project_id
+        self._type = "note"

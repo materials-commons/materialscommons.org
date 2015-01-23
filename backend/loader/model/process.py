@@ -13,3 +13,4 @@ class Process(object):
         self.template_id = template_id
         self.project_id = project_id
         self.version = ""
+        self._type = "process"
