@@ -49,7 +49,7 @@ def load_admins():
     global _admins
     admin_group = list(r.table('users').get_all(True, index='admin')
                        .run(g.conn))
-    if admin_group is None:
+    if not admin_group:
         _admins = ['gtarcea@umich.edu', 'tammasr@umich.edu']
     else:
         for u in admin_group:
