@@ -12,6 +12,9 @@
            id="{{review.id}}">
             <i class="fa fa-fw fa-clipboard inactive"></i>
         </a>
+        <a ng-if="!showSideboard"  ng-click="remove(review, $event)">
+            <i class="fa fa-fw fa-close mc-danger"></i>
+        </a>
         <i data-toggle="tooltip" data-placement="bottom"
            title="{{review.messages.length}}"
            class="pointer fa fa-fw"

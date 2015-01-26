@@ -19,6 +19,9 @@ function displaySampleDirectiveController($scope, sideboard, current, pubsub, to
     $scope.addToSideboard = function (sample, event) {
         sideboard.handleFromEvent(current.projectID(), sample, event, 'sideboard');
     };
+    $scope.remove = function (sample, event) {
+        sideboard.handleFromEvent(current.projectID(), sample, event, 'sideboard');
+    };
     $scope.project = current.project();
 
     $scope.bk = {
@@ -27,7 +30,7 @@ function displaySampleDirectiveController($scope, sideboard, current, pubsub, to
         addToNote: false
     };
 
-    $scope.isActive = function(type, button){
+    $scope.isActive = function (type, button) {
         return toggleDragButton.get(type, button);
     };
 
@@ -45,4 +48,6 @@ function displaySampleDirectiveController($scope, sideboard, current, pubsub, to
                 break;
         }
     };
+
+
 }
