@@ -36,6 +36,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
 
     var previous = '';
     $scope.alertOnDayClick = function (date, jsEvent, view) {
+        $scope.message = 'Date';
         if (previous !== '') {
             previous.css('background-color', '');
         }
@@ -49,6 +50,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
     };
 
     $scope.alertOnEventClick = function(event, jsEvent, view) {
+        $scope.message = '';
         var date = event.start;
         $scope.alertOnDayClick(date, jsEvent, view);
     };
