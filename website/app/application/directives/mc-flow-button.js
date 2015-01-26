@@ -93,7 +93,7 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                                 directory_id: scope.dir.id,
                                 filename: f.name,
                                 filesize: f.size,
-                                filectime: f.lastModifiedDate.toUTCString(),
+                                filemtime: f.lastModifiedDate.toUTCString(),
                                 user_id: User.u()
                             };
                             matchFn = function(file) {
