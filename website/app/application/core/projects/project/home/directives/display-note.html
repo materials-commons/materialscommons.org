@@ -8,6 +8,9 @@
         <a ng-click="addToSideboard(note, $event)" id="{{note.id}}">
             <i class="fa fa-fw fa-clipboard inactive"></i>
         </a>
+           <a ng-if="!showSideboard"  ng-click="remove(note, $event)">
+               <i class="fa fa-fw fa-close mc-danger"></i>
+           </a>
         <i class="fa fa-fw"></i>
         <i class="fa fa-fw"></i>
     </span>

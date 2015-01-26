@@ -1,4 +1,4 @@
-<div >
+<div>
     <span class="pointer"
           ng-click="review.showDetails = !review.showDetails">
         <i class="fa fa-fw"
@@ -11,6 +11,9 @@
            ng-click="addToSideboard(review, $event)"
            id="{{review.id}}">
             <i class="fa fa-fw fa-clipboard inactive"></i>
+        </a>
+        <a ng-if="!showSideboard"  ng-click="remove(review, $event)">
+            <i class="fa fa-fw fa-close mc-danger"></i>
         </a>
         <i data-toggle="tooltip" data-placement="bottom"
            title="{{review.messages.length}}"

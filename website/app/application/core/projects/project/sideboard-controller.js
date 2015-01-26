@@ -5,7 +5,7 @@ function sideboardController($scope) {
 
     function itemIndex(item) {
         var i = _.indexOf($scope.sideboard, function(sideboardItem) {
-            return item.id == sideboardItem.id;
+            return item.id === sideboardItem.id;
         });
         return i;
     }

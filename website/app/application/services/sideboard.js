@@ -52,8 +52,8 @@ function sideboardService() {
                     self.service.add(projectID, entry, type);
                     $(event.target).removeClass("inactive");
                 } else {
-                    self.service.delete(projectID, entry);
-                    $("#" + entry.id).addClass("inactive");
+                    self.service.delete(projectID, entry, type);
+                    $(event.target).addClass("inactive");
                 }
             }
         }
