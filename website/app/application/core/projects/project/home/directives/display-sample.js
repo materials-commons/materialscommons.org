@@ -48,6 +48,4 @@ function displaySampleDirectiveController($scope, sideboard, current, pubsub, to
                 break;
         }
     };
-
-
 }
