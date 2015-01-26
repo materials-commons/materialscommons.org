@@ -622,6 +622,16 @@
             return ret;
         },
 
+        findFile: function(matchFn){
+            var found = false;
+            each(this.files, function(file) {
+                if (matchFn(file)) {
+                    found = true;
+                }
+            });
+            return found;
+        },
+
         /**
          * Returns the total size of all files in bytes.
          * @function
