@@ -1,6 +1,8 @@
-Application.Directives.directive("mcFlowButton", ["mcFlow", "current", mcFlowButtonDirective]);
+Application.Directives.directive("mcFlowButton",
+                                 ["mcFlow", "current", "mcapi", "User",
+                                  mcFlowButtonDirective]);
 
-function mcFlowButtonDirective(mcFlow, current) {
+function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
     return {
         restrict: 'E',
         replace: true,
@@ -85,21 +87,44 @@ function mcFlowButtonDirective(mcFlow, current) {
                     // When new files are added, simply append them to the overall list
                     input.addEventListener('change', function (e) {
                         var project = current.project();
-                        var files = [];
                         each(e.target.files, function(f) {
-                            var o = {
-                                id: "newid_" + f.name,
-                                file: f,
-                                attrs: {
-                                    directory_name:  scope.dir.name,
-                                    directory_id: scope.dir.id,
-                                    project_id: project.id,
-                                    project_name: project.name
-                                }
+                            var req = {
+                                project_id: project.id,
+                                directory_id: scope.dir.id,
+                                filename: f.name,
+                                filesize: f.size,
+                                filectime: f.lastModifiedDate.toUTCString(),
+                                user_id: User.u()
                             };
-                            files.push(o);
+                            matchFn = function(file) {
+                                if (file.name === req.filename &&
+                                    file.attrs.directory_id === req.directory_id &&
+                                    file.attrs.project_id === req.project_id) {
+                                    return true;
+                                }
+                                return false;
+                            };
+                            if (!flow.findFile(matchFn)) {
+                                var f2 = f;
+                                mcapi("/upload")
+                                    .success(function(resp){
+                                        var o = {
+                                            id: resp.request_id,
+                                            file: f,
+                                            attrs: {
+                                                directory_name:  scope.dir.name,
+                                                directory_id: scope.dir.id,
+                                                project_id: project.id,
+                                                project_name: project.name
+                                            }
+                                        };
+                                        flow.addFiles([o], e);
+                                    })
+                                    .error(function(data, status) {
+                                        //console.log("/upload failed %O", data, status);
+                                    }).post(req);
+                            }
                         });
-                        flow.addFiles(files, e);
                         e.target.value = '';
                     }, false);
                 }, this);
