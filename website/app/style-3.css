@@ -949,10 +949,7 @@ h4, .h4, h5, .h5, h6, .h6 {
     border-top-width: 1px;
     border-bottom-color: #d1d1d1;
     border-top-color: #ffffff;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding: 5px 15px;
 }
 
 .home-panel-heading {
@@ -1963,7 +1960,7 @@ ul.menu-bar li {
 
 /* Drag and drop */
 .dropzone {
-    border: 4px dashed #7a7a7a;
+    border: 2px dashed #7a7a7a;
     border-radius: 3px;
 }
 

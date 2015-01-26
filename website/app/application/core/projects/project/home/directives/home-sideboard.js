@@ -48,4 +48,5 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
             }
         }
     };
+
 }
