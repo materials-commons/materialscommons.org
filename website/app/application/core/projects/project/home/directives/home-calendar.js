@@ -54,7 +54,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
 
     $scope.alertOnEventClick = function(event, jsEvent, view) {
         var date = event.start;
-        $scope.alertMessage = (event.title + '  on  ' + date._d.toDateString()  + ' was clicked !');
+        $scope.alertMessage = (event.title + '  on  ' + date._d.toDateString()  + ' was clicked !' );
         $scope.alertOnDayClick(date, jsEvent, view, 'eventclick');
     };
 
@@ -68,6 +68,10 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
             $compile(element)($scope);
         });
     };
+
+    $scope.closeAlert = function(){
+        $scope.alertMessage = '';
+    } ;
 
     $scope.eventSources = [$scope.event_reviews, $scope.event_notes, $scope.event_processes, $scope.event_samples];
 
