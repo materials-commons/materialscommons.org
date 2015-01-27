@@ -1,17 +1,13 @@
 <div>
+    <div class="alert-danger calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+        <h4>{{alertMessage}}</h4>
+    </div>
     <div class="btn-toolbar">
         <div class="btn-group">
             <button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar')">Day</button>
             <button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar')">Week</button>
             <button class="btn btn-success" ng-click="changeView('month', 'myCalendar')">Month</button>
         </div>
-        <div   ng-if="message" class="pull-right alert alert-danger alert-dismissible fade in" role="alert">
-            <button class="close" aria-label="Close" data-dismiss="alert" type="button">
-                <span aria-hidden="true">×</span>
-            </button>
-            <strong>{{message}}</strong>
-        </div>
-
     </div>
     <div style="padding-bottom: 16px;" ui-calendar="uiConfig.calendar" calendar="myCalendar" ng-model="eventSources"></div>
 </div>

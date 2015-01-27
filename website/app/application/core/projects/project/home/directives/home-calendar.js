@@ -35,8 +35,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
     };
 
     var previous = '';
-    $scope.alertOnDayClick = function (date, jsEvent, view) {
-        $scope.message = 'Date';
+    $scope.alertOnDayClick = function (date, jsEvent, view, type) {
         if (previous !== '') {
             previous.css('background-color', '');
         }
@@ -45,14 +44,18 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
         var clicked_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), d.getUTCDate());
         var day = d.getUTCDate()+1;
         var next_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), day);
+        if (!type){
+            var temp = new Date(next_date);
+            $scope.alertMessage = ( temp.toDateString() + '  was clicked !');
+        }
         $scope.project = Events.updateDate($scope.project, clicked_date, next_date);
         previous = $(this);
     };
 
     $scope.alertOnEventClick = function(event, jsEvent, view) {
-        $scope.message = '';
         var date = event.start;
-        $scope.alertOnDayClick(date, jsEvent, view);
+        $scope.alertMessage = (event.title + '  on  ' + date._d.toDateString()  + ' was clicked !');
+        $scope.alertOnDayClick(date, jsEvent, view, 'eventclick');
     };
 
     $scope.changeView = function (view, calendar) {
