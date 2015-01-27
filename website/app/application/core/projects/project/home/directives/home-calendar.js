@@ -54,7 +54,8 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
 
     $scope.alertOnEventClick = function(event, jsEvent, view) {
         var date = event.start;
-        $scope.alertMessage = (event.title + '  on  ' + date._d.toDateString()  + ' was clicked !' );
+        $scope.alertMessage = (event.title + '  on  ' + date._d.toDateString()  +
+        ' was clicked ! ' + ' Filtered all items for ' + date._d.toDateString());
         $scope.alertOnDayClick(date, jsEvent, view, 'eventclick');
     };
 
