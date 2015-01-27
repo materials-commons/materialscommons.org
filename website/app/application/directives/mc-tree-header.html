@@ -5,7 +5,7 @@
            ng-class="{'fa-caret-right': item.type === 'datadir' && !item.showDetails, 'fa-caret-down': item.type === 'datadir' && item.showDetails}"></i>
         <i class="fa fa-fw fa-folder" style="color: #256188"
            ng-class="{'fa-folder': item.type === 'datadir', 'fa-file': item.type === 'datafile'}"></i>
-        <span style="color: #389dc1" ui-draggable="true" drag="item" >{{::item.displayname}}</span>
+        <span data-toggle="tooltip" data-placement="top" title="{{item.fullname}}" style="color: #389dc1" ui-draggable="true" drag="item" >{{::item.displayname}}</span>
     </span>
     <span class="pull-right" style="padding-right: 15px;">
         <span  ng-if="item.type === 'datafile'">
