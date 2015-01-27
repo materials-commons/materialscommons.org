@@ -109,6 +109,19 @@ function uiService(pubsub) {
             return proj.panels[what];
         },
 
+        resetPanels: function(projectID){
+            var proj = getForProject(projectID);
+            proj.panels= {
+                reviews: true,
+                samples: true,
+                files: true,
+                notes: true,
+                processes: true,
+                calendar: false,
+                sideboard: false
+            };
+        },
+
         //Eg:1  If 'what=reviews', 'col=column1": Meaning when you split reviews
         //column 1 & 3 should be open
         //And hide all other panels except for reviews.And col3 will have sideboard open.
