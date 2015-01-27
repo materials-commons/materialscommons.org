@@ -2,9 +2,7 @@
     <div class="panel-heading reviews-color home-panel-heading">
         <i class="fa fa-fw fa-comment bold"></i>
         <span>
-            <a ui-sref="projects.project.reviews.overview">
                 Reviews
-            </a>
             ({{(project.reviews | byKey: 'status': 'open').length}})
         </span>
         <span class="pull-right bar-control">
