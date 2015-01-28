@@ -47,7 +47,7 @@ def create_datadir():
     if proj is None:
         return error.bad_request("Invalid request: bad project")
     ddir = construct_datadir(j, proj['owner'])
-    if validate.datadir_id_exists(ddir.parent, user) is None:
+    if validate.datadir_id_exists(ddir.parent, project_id, user) is None:
         return error.bad_request(
             "Invalid request: parent does not exist %s" % (ddir.parent))
     ddir_exists = validate.datadir_path_exists(ddir.name, project_id)

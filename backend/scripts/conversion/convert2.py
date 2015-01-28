@@ -8,7 +8,7 @@ import rethinkdb as r
 from optparse import OptionParser
 import os
 import os.path
-import magic
+# import magic
 import sys
 import mimetypes
 
@@ -270,6 +270,7 @@ def main(conn, mcdir):
     # update_mtime_samples(conn)
     build_datadir2datafile(conn)
     admin_users(conn)
+    add_type(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
