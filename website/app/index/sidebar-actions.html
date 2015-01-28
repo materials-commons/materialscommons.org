@@ -30,7 +30,7 @@
 
     <div ng-show="showProjectActions">
         <a  class="list-group-item"
-           ui-sref="projects.project.home{id: project.id}"
+           ng-click="goHome()"
            ng-class="{active: isPanelActive('home')}">
             <i class="fa fa-fw fa-home"></i> Home</a>
 
