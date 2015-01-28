@@ -52,12 +52,16 @@ if __name__ == "__main__":
            .eq_join("datafile_id", r.table("datafiles"))\
            .zip()
     for fentry in rql.run(conn):
-        src_dir = file_dir(options.src, fentry['id'])
-        dest = file_dir(options.dest, fentry['id'])
-        print "Copy %s from %s to %s" % (fentry['name'], src_dir, dest)
-        mkdirp(dest)
+        if fentry['usesid'] != "":
+            src_dir = file_dir(options.src, fentry['usesid'])
+            dest_dir = file_dir(options.dest, fentry['usesid'])
+        else:
+            src_dir = file_dir(options.src, fentry['id'])
+            dest_dir = file_dir(options.dest, fentry['id'])
+        print "Copy %s from %s to %s" % (fentry['name'], src_dir, dest_dir)
+        mkdirp(dest_dir)
         src_file_path = os.path.join(src_dir, fentry['id'])
-        dest_file_path = os.path.join(dest, fentry['id'])
+        dest_file_path = os.path.join(dest_dir, fentry['id'])
         try:
             shutil.copy(src_file_path, dest_file_path)
         except:
