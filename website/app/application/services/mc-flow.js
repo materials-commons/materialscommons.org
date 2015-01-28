@@ -4,7 +4,8 @@ function mcFlowService() {
     self.flow = new Flow(
         {
             target: "/api/upload/chunk",
-            testChunks: false
+            testChunks: false,
+            fileParameterName: "chunkData"
         }
     );
 
