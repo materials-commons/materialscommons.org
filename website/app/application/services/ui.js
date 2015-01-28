@@ -171,7 +171,13 @@ function uiService(pubsub) {
             } else {
                 return false;
             }
+        },
+
+        showPanelByCalendarEvent: function(what, projectID){
+            hidePanels(projectID, what);
         }
+
+
 
     };
 }

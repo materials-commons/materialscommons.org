@@ -42,7 +42,11 @@
                 </div>
                 <div class="col-xs-8">
                     <div ng-repeat="item in model.attachments">
+                        <i ng-if="item.type === 'sample'" class="fa fa-fw fa-cube" style="color: #f0ad4e"></i>
+                        <i ng-if="item.type === 'note'" class="fa fa-fw fa-edit" style="color: #3ea7a0"></i>
+                        <i ng-if="item.type === 'file'" class="fa fa-fw fa-file" style="color: #7c699f"></i>
                         <i class="fa fa-fw fa-paperclip "></i>{{item.name}}
+
                         <a ng-click="removeAttachment($index);"><i class=" fa fa-fw fa-close mc-danger pull-right"></i></a>
                     </div>
                 </div>
