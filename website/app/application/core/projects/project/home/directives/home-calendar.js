@@ -11,9 +11,9 @@ function homeCalendarDirective() {
 }
 
 Application.Controllers.controller("homeCalendarController",
-                                   ["$scope", "Events", "uiCalendarConfig",
-                                    "$compile", "$timeout" ,"ui",
-                                    homeCalendarController]);
+    ["$scope", "Events", "uiCalendarConfig",
+        "$compile", "$timeout", "ui",
+        homeCalendarController]);
 function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $timeout, ui) {
     $scope.project = Events.addConvertedTime($scope.project);
 
@@ -42,20 +42,22 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
         $(this).css('background-color', 'lightgrey');
         var d = date._d;
         var clicked_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), d.getUTCDate());
-        var day = d.getUTCDate()+1;
+        var day = d.getUTCDate() + 1;
         var next_date = Date.UTC(d.getUTCFullYear(), (d.getUTCMonth()), day);
-        if (!type){
+        if (!type) {
             var temp = new Date(next_date);
-            $scope.alertMessage = ( temp.toDateString() + '  was clicked !');
+            $scope.alertMessage = ( 'Showing items for ' + temp.toDateString());
         }
         $scope.project = Events.updateDate($scope.project, clicked_date, next_date);
         previous = $(this);
     };
 
-    $scope.alertOnEventClick = function(event, jsEvent, view) {
+    $scope.alertOnEventClick = function (event, jsEvent, view) {
         var date = event.start;
-        $scope.alertMessage = (event.title + '  on  ' + date._d.toDateString()  +
-        ' was clicked ! ' + ' Filtered all items for ' + date._d.toDateString());
+        $scope.alertMessage = ('Showing ' + event.title + ' created on  ' + date._d.toDateString());
+        //Mask other panels
+        var what = event.title.split(' ')[1];
+        ui.showPanelByCalendarEvent(what, $scope.project.id);
         $scope.alertOnDayClick(date, jsEvent, view, 'eventclick');
     };
 
@@ -63,16 +65,25 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
         uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
     };
 
-    $scope.eventRender = function(event, element, view) {
-        $timeout(function() {
+    $scope.eventRender = function (event, element, view) {
+        $timeout(function () {
             $(element).attr('tooltip', event.description);
             $compile(element)($scope);
         });
     };
 
-    $scope.closeAlert = function(){
+    $scope.closeAlert = function () {
         $scope.alertMessage = '';
-    } ;
+    };
+
+    $scope.goHome = function () {
+        //When they clear the filter it should reset the panel state
+        // and day click should be today's date
+        ui.resetPanels($scope.project.id);
+        var date = {'_d': new Date()};
+        $scope.alertOnDayClick(date, '', '', '');
+        $scope.closeAlert();
+    };
 
     $scope.eventSources = [$scope.event_reviews, $scope.event_notes, $scope.event_processes, $scope.event_samples];
 

@@ -30,7 +30,8 @@ function sideboardService() {
             });
 
             if (i === -1) {
-                proj[type].push(entry);
+                var copy = angular.copy(entry);
+                proj[type].push(copy);
             }
         },
 
