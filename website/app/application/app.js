@@ -44,7 +44,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     $stateProvider
     // Navbar
         .state('home', {
-            url: '/home',
+            url: '/home'
         })
         .state('login', {
             url: '/login',
