@@ -1,7 +1,9 @@
 Application.Services.factory('User',
-    ["$cookieStore", function ($cookieStore) {
+    ["$cookieStore", "$window", function ($cookieStore, $window) {
         var self = this;
-        self.mcuser = $cookieStore.get('mcuser');
+        if($window.sessionStorage.mcuser){
+            self.mcuser = JSON.parse($window.sessionStorage.mcuser);
+        }
 
         return {
             isAuthenticated: function () {
@@ -10,12 +12,12 @@ Application.Services.factory('User',
 
             setAuthenticated: function (authenticated, u) {
                 if (!authenticated) {
-                    $cookieStore.remove('mcuser');
+                    $window.sessionStorage.mcuser = null;
                     self.mcuser = undefined;
                 } else {
                     var mcuser = {};
                     mcuser = u;
-                    $cookieStore.put('mcuser', mcuser);
+                    $window.sessionStorage.mcuser = JSON.stringify(mcuser);
                     self.mcuser = mcuser;
                 }
             },
@@ -40,13 +42,13 @@ Application.Services.factory('User',
             reset_apikey: function (new_key) {
                 if (self.mcuser) {
                     self.mcuser.apikey = new_key;
-                    $cookieStore.put('mcuser', self.mcuser);
+                    $window.sessionStorage.mcuser = self.mcuser;
                 }
             },
             save: function(user){
                 if(self.mcuser){
                     self.mcuser.fullname = user.fullname;
-                    $cookieStore.put('mcuser', self.mcuser);
+                    $window.sessionStorage.mcuser = self.mcuser;
                 }
             }
 
