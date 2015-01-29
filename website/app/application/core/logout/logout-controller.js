@@ -1,8 +1,9 @@
 Application.Controllers.controller('logout',
-    ["$rootScope", "$state", "$cookieStore", "User", "projectFiles", "ProvDrafts", "model.projects",
-        function ($rootScope, $state, $cookieStore, User, projectFiles, ProvDrafts, projects) {
+    ["$rootScope", "$state", "$window", "User", "projectFiles", "ProvDrafts", "model.projects",
+        function ($rootScope, $state, $window, User, projectFiles, ProvDrafts, projects) {
             $rootScope.email_address = '';
-            $cookieStore.remove('mcuser');
+            //$cookieStore.remove('mcuser');
+            $window.sessionStorage.removeItem('mcuser');
             User.setAuthenticated(false, '', '');
             projectFiles.clear();
             //ProvDrafts.clear();

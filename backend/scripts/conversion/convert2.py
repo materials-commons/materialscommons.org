@@ -8,7 +8,7 @@ import rethinkdb as r
 from optparse import OptionParser
 import os
 import os.path
-import magic
+# import magic
 import sys
 import mimetypes
 
@@ -160,7 +160,6 @@ def drop_unused_tables(conn):
     drop_table('processes2samples', conn)
     drop_table("datafiles_denorm", conn)
     drop_table("items2tags", conn)
-    drop_table("processes2samples", conn)
     drop_table("samples_denorm", conn)
     drop_table("treatments", conn)
     msg("Done...")
@@ -265,11 +264,12 @@ def main(conn, mcdir):
     # load_sample2item(conn)
     # delete_tag_table_entries(conn)
     # load_tags(conn)
-    # drop_unused_tables(conn)
+    drop_unused_tables(conn)
     # add_mediatypes(conn, mcdir)
-    # update_mtime_samples(conn)
+    update_mtime_samples(conn)
     build_datadir2datafile(conn)
     admin_users(conn)
+    add_type(conn)
     msg("Finished.")
 
 if __name__ == "__main__":

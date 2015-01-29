@@ -8,4 +8,5 @@ class DataDir(object):
         self.parent = parent
         self.birthtime = r.now()
         self.mtime = self.birthtime
+        self.atime = self.birthtime
         self._type = "datadir"

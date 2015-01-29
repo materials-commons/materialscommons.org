@@ -11,12 +11,12 @@ def project_name_exists(name, user):
     return False
 
 
-def project_id_exists(proj_id, owner=None):
-    return item_id_exists('projects', proj_id, owner)
+def project_id_exists(proj_id, project_id, owner=None):
+    return item_id_exists('projects', proj_id, project_id, owner)
 
 
-def datadir_id_exists(ddir_id, owner=None):
-    return item_id_exists('datadirs', ddir_id, owner)
+def datadir_id_exists(ddir_id, project_id, owner=None):
+    return item_id_exists('datadirs', ddir_id, project_id, owner)
 
 
 def datadir_path_exists(ddir_name, project_id):
@@ -34,11 +34,11 @@ def datadir_path_exists(ddir_name, project_id):
     return False
 
 
-def item_id_exists(table, item_id, user=None):
+def item_id_exists(table, item_id, project_id, user=None):
     item = r.table(table).get(item_id).run(g.conn)
     if item is not None:
         if user is not None:
-            if access.allowed(user, item['owner']):
+            if access.allowed(user, item['owner'], project_id):
                 return item
             else:
                 return None
