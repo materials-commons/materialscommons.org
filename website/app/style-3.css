@@ -1,4 +1,3 @@
-
 body{
     font-size: 15px;
     font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -1987,6 +1986,10 @@ ul.menu-bar li {
     padding-left: 10px;
 }
 
+.bar-control-left {
+  padding-right: 10px;
+}
+
 .home-reviews-comment {
     border: 0.2px solid #bfbfbf;
     border-radius: 3px;
@@ -2029,5 +2032,3 @@ input[type="radio"]:focus, input[type="checkbox"]:focus {
 .fa-upload{
     color: #e26a6a;
 }
-
-
