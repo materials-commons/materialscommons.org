@@ -104,13 +104,18 @@ function projectFilesService() {
             for (var mediatype in project.mediatypes) {
                 byMediaType[mediatype] = [];
             }
+            byMediaType.unknown = [];
             var treeModel = new TreeModel(),
                 root = treeModel.parse(service.model.projects[project.id].dir);
             root.walk({strategy: 'pre'}, function(node) {
                 if (node.model.type !== "datadir") {
                     node.model.showDetails = false;
                     byMediaType.all.push(node.model);
-                    byMediaType[node.model.mediatype].push(node.model);
+                    if (node.model.mediatype === "") {
+                        byMediaType.unknown.push(node.model);
+                    } else {
+                        byMediaType[node.model.mediatype].push(node.model);
+                    }
                 }
             });
         }
