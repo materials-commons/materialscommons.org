@@ -55,6 +55,7 @@ def create_indices():
     create_index('access', 'dataset')
 
     create_index('users', 'apikey')
+    create_index('users', 'admin')
 
     create_index('projects', 'name')
     create_index('projects', 'owner')
