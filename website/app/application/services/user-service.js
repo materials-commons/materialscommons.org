@@ -1,5 +1,5 @@
 Application.Services.factory('User',
-    ["$cookieStore", "$window", function ($cookieStore, $window) {
+    ["$window", function ($window) {
         var self = this;
         if($window.sessionStorage.mcuser){
             self.mcuser = JSON.parse($window.sessionStorage.mcuser);
