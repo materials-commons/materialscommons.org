@@ -1,13 +1,17 @@
-Application.Services.factory("mcFlow", mcFlowService);
-function mcFlowService() {
+Application.Services.factory("mcFlow", ["User", mcFlowService]);
+function mcFlowService(User) {
     var self = this;
     self.flow = new Flow(
         {
-            target: "/api/upload/chunk",
+            target: target,
             testChunks: false,
             fileParameterName: "chunkData"
         }
     );
+
+    function target() {
+        return "/api/upload/chunk?apikey=" + User.apikey();
+    }
 
     function each(obj, callback, context) {
         if (!obj) {
