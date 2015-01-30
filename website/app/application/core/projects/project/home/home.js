@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectHome',
-    ["$scope", "project", "User", "mcapi", "ui", projectHome]);
+    ["$scope", "project", "User", "mcapi", "ui", "sideboard", projectHome]);
 
-function projectHome($scope, project, User, mcapi, ui) {
+function projectHome($scope, project, User, mcapi, ui, sideboard) {
 
     $scope.show = function (what) {
         var expanded = ui.anyExpandedExcept(project.id, what);
@@ -46,5 +46,6 @@ function projectHome($scope, project, User, mcapi, ui) {
 
     $scope.project = project;
     $scope.mcuser = User.attr();
+    $scope.list = sideboard.get($scope.project.id);
 
 }
