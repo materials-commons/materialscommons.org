@@ -11,11 +11,12 @@ function displayFileUploadEntryDirective() {
     };
 }
 Application.Controllers.controller("displayFileUploadEntryDirectiveController",
-                                   ["$scope", "pubsub",
+                                   ["$scope", "mcapi",
                                     displayFileUploadEntryDirectiveController]);
 
-function displayFileUploadEntryDirectiveController($scope, pubsub) {
+function displayFileUploadEntryDirectiveController($scope, mcapi) {
     $scope.removeFromUpload = function(file) {
+        mcapi("/upload/%", file.uniqueIdentifier).delete();
         file.cancel();
     };
 }
