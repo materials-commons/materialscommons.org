@@ -6,7 +6,7 @@
     </span>
 
     <span class="pull-right">
-        <small ng-show="file.isComplete()"
+        <small ng-show="file.isComplete() && !file.error"
                class="panel-element mc-success">
             <strong>Uploaded</strong>
         </small>
