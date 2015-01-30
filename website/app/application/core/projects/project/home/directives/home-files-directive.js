@@ -20,6 +20,10 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
         ui.toggleIsExpanded($scope.project.id, "files");
     };
 
+    $scope.minimize = function() {
+        ui.togglePanelState('files', $scope.project.id);
+    };
+
     $scope.isExpanded = function() {
         return ui.isExpanded($scope.project.id, "files");
     };

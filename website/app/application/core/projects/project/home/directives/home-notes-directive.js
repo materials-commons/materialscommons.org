@@ -21,6 +21,10 @@ function homeNotesDirectiveController($scope, ui) {
         }
     });
 
+    $scope.minimize = function() {
+        ui.togglePanelState('notes', $scope.project.id);
+    };
+
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "notes");
     };

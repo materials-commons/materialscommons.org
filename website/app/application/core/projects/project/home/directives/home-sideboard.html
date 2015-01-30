@@ -5,15 +5,18 @@
             Items ({{matches.length | number}})
         </span>
         <span ng-if="splitIcon" class="pull-right bar-control">
-              <a ng-click="splitScreen('sideboard', 'column3')">
-                  <i class="fa fa-fw"
-                     ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
-              </a>
-        <a ng-click="toggleExpanded()"
-           class="pull-right bar-control">
-            <i class="fa"
-               ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
-        </a>
+            <a ng-click="splitScreen('sideboard', 'column3')">
+                <i class="fa fa-fw"
+                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
+            </a>
+            <a ng-click="minimize()">
+                <i class="fa fa-fw fa-minus"></i>
+            </a>
+            <a ng-click="toggleExpanded()"
+               class="pull-right bar-control">
+                <i class="fa"
+                   ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
+            </a>
         </span>
 
         <input type="text" ng-model="searchInput" class="pull-right col-xs-4"

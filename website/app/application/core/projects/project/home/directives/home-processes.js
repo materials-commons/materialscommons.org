@@ -22,6 +22,10 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state) {
         return ui.isExpanded($scope.project.id, "processes");
     };
 
+    $scope.minimize = function() {
+        ui.togglePanelState('processes', $scope.project.id);
+    };
+
     $scope.all = [];
     $scope.project.processes.forEach(function(process) {
         if (!('showDetails' in process)) {
