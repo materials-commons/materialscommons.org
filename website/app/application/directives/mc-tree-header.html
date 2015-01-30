@@ -5,9 +5,10 @@
            ng-class="{'fa-caret-right': item.type === 'datadir' && !item.showDetails, 'fa-caret-down': item.type === 'datadir' && item.showDetails}"></i>
         <i class="fa fa-fw fa-folder" style="color: #256188"
            ng-class="{'fa-folder': item.type === 'datadir', 'fa-file': item.type === 'datafile'}"></i>
-        <span data-toggle="tooltip" data-placement="top" title="{{item.fullname}}" style="color: #389dc1" ui-draggable="true" drag="item" >{{::item.displayname}}</span>
+        <span data-toggle="tooltip" data-placement="top" title="{{item.fullname}}" style="color: #389dc1"
+              ui-draggable="true" drag="item">{{::item.displayname}}</span>
     </span>
-    <span class="pull-right" style="padding-right: 15px;">
+    <span class="pull-right">
         <span ng-if="item.type === 'datafile'">
             <a ng-if="showSideboard"
                ng-click="addToSideboard(item, $event)">
@@ -24,10 +25,15 @@
                 <i class="fa fa-fw fa-close mc-danger"></i>
             </a>
         </span>
-        <a title="New Folder" ng-click="item.addFolder = !item.addFolder"><i ng-if="item.type === 'datadir'" class="fa fa-fw fa-plus"></i></a>
+        <span style="padding-right: 13px;">
+                <a title="New Folder" ng-click="item.addFolder = !item.addFolder"><i ng-if="item.type === 'datadir'"
+                                                                                     class="fa fa-fw fa-plus"></i></a>
 
         <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
+        </span>
+
     </span>
+
     <div class="row" ng-if="item.addFolder">
         <input type="text"
                placeholder="Folder Name..."
@@ -52,7 +58,8 @@
             {{::tag.name}}
         </span>
     </p>
-    <p ui-draggable="true" drag="item"  style="padding-left: 15px;">
+
+    <p ui-draggable="true" drag="item" style="padding-left: 15px;">
         <small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">
             {{::item.size | bytes}}
         </small>
@@ -63,9 +70,4 @@
             <!--{{::item.fullname}}-->
         </small>
     </p>
-    <!--<p>-->
-        <!--&lt;!&ndash;<button ng-class="{disabled: item.show}" ng-if="isActive('files','addToReview')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('review')">Add to review</button>&ndash;&gt;-->
-        <!--&lt;!&ndash;<button ng-if="isActive('samples','addToProvenance')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('provenance')">Add to Provenance</button>&ndash;&gt;-->
-        <!--&lt;!&ndash;<button ng-if="isActive('samples','addToNote')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('note')">Add to Note</button>&ndash;&gt;-->
-    <!--</p>-->
 </div>

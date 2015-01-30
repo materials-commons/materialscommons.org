@@ -46,7 +46,15 @@ function sideboardService() {
         },
 
         handleFromEvent: function(projectID, entry, event, type) {
+            var el = document.getElementById(entry.id);
             if (event.type === 'drop') {
+                //If entry type is file. Then there are no childNodes. We have to apply className to the parent element.
+                if (el.children.length === 0){
+                    el.className =  'fa fa-fw fa-clipboard';
+                }else{
+                    el.children[0].className =  'fa fa-fw fa-clipboard';
+                }
+
                 self.service.add(projectID, entry, type);
             } else {
                 if ($(event.target).hasClass("inactive")) {
@@ -55,6 +63,11 @@ function sideboardService() {
                 } else {
                     self.service.delete(projectID, entry, type);
                     $(event.target).addClass("inactive");
+                    if (el.children.length === 0){
+                        el.className =  'fa fa-fw fa-clipboard inactive';
+                    }else{
+                        el.children[0].className =  'fa fa-fw fa-clipboard inactive';
+                    }
                 }
             }
         }

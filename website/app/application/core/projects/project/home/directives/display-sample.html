@@ -7,10 +7,10 @@
     </span>
     <span class="pull-right">
         <a ng-if="showSideboard"
-           ng-click="addToSideboard(sample, $event)">
+           ng-click="addToSideboard(sample, $event)"    id="{{sample.id}}">
             <i class="fa fa-fw fa-clipboard inactive"></i>
         </a>
-        <a ng-if="!showSideboard"  ng-click="remove(sample, $event)">
+        <a ng-if="!showSideboard"  ng-click="remove(sample, $event)" >
             <i class="fa fa-fw fa-close mc-danger"></i>
         </a>
         <i style="color:#E3CF7A" class="fa fa-fw fa-star"></i>
