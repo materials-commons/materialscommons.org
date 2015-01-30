@@ -177,7 +177,5 @@ function uiService(pubsub) {
             hidePanels(projectID, what);
         }
 
-
-
     };
 }

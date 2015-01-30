@@ -13,8 +13,8 @@ function homeSideboardDirective() {
 }
 
 Application.Controllers.controller("homeSideboardDirectiveController",
-    ["$scope", "ui", "sideboard",
-        homeSideboardDirectiveController]);
+                                   ["$scope", "ui", "sideboard",
+                                    homeSideboardDirectiveController]);
 function homeSideboardDirectiveController($scope, ui, sideboard) {
     var result = [];
     if ($scope.empty) {
@@ -25,6 +25,10 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
         $scope.sideboard = result.sideboard;
 
     }
+
+    $scope.minimize = function() {
+        ui.togglePanelState('sideboard', $scope.project.id);
+    };
 
     $scope.splitScreen = function (what, col) {
         ui.toggleColumns(what, col, $scope.project.id);

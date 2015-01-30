@@ -9,13 +9,21 @@ function projectHome($scope, project, User, mcapi, ui, sideboard) {
         if (!result) {
             // If user is not showing this item then return false
             return result;
-        } else{
+        } else {
             // if expanded is true that means something is expanded
             // besides the requested entry, so return false to show
             // this entry. Otherwise if expanded is false, that means
             // nothing is expanded so return true.
             return !expanded;
         }
+    };
+
+    $scope.isMinimized = function(panel) {
+        return !ui.showPanel(panel, project.id);
+    };
+
+    $scope.openPanel = function(panel) {
+        ui.togglePanelState(panel, project.id);
     };
 
     $scope.isExpandedInColumn = function (what) {

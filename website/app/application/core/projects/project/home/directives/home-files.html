@@ -9,6 +9,9 @@
                 <i class="fa fa-fw"
                    ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
             </a>
+            <a ng-click="minimize()">
+                <i class="fa fa-fw fa-minus"></i>
+            </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"
                    ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>

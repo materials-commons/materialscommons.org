@@ -23,6 +23,10 @@ function homeSamplesController($scope, ui) {
         }
     });
 
+    $scope.minimize = function() {
+        ui.togglePanelState('samples', $scope.project.id);
+    };
+
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "samples");
     };

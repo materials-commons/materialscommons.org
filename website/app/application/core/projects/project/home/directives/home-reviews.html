@@ -2,13 +2,16 @@
     <div class="panel-heading reviews-color home-panel-heading">
         <i class="fa fa-fw fa-comment bold"></i>
         <span>
-                Reviews
+            Reviews
             ({{(project.reviews | byKey: 'status': 'open').length}})
         </span>
         <span class="pull-right bar-control">
             <a ng-click="splitScreen('reviews', 'column1')">
                 <i class="fa fa-fw"
                    ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
+            </a>
+            <a ng-click="minimize()">
+                <i class="fa fa-fw fa-minus"></i>
             </a>
             <a ng-click="toggleExpanded()">
                 <i class="fa fa-fw"

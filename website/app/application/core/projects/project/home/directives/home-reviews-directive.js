@@ -20,6 +20,10 @@ function homeReviewsDirectiveController ($scope, ui, sideboard) {
         }
     });
 
+    $scope.minimize = function() {
+        ui.togglePanelState('reviews', $scope.project.id);
+    };
+
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "reviews");
     };
