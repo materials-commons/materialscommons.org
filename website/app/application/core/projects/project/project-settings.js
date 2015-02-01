@@ -1,6 +1,19 @@
-Application.Controllers.controller("projectAccessOverview",
-    ["$scope", "$stateParams", "mcapi", "User", "pubsub", "current", projectAccessOverview]);
-function projectAccessOverview($scope, $stateParams, mcapi, User, pubsub, current) {
+Application.Directives.directive("projectSettings", projectSettingsDirective);
+function projectSettingsDirective() {
+    return {
+        scope: {
+            project: "=project"
+        },
+        restrict: "AE",
+        replace: true,
+        templateUrl: "application/core/projects/project/project-settings.html",
+        controller: "projectSettingsDirectiveController"
+    };
+}
+
+Application.Controllers.controller("projectSettingsDirectiveController",
+                                   ["$scope", "$stateParams", "mcapi", "User", "pubsub", "current", projectSettingsDirectiveController]);
+function projectSettingsDirectiveController($scope, $stateParams, mcapi, User, pubsub, current) {
 
     $scope.addUser = function () {
         mcapi('/access/new')
@@ -10,7 +23,7 @@ function projectAccessOverview($scope, $stateParams, mcapi, User, pubsub, curren
                     'user_id': $scope.bk.user_name,
                     'project_id': $scope.project.id,
                     'project_name': $scope.project.name
-                })
+                });
                 pubsub.send('access.change');
                 $scope.bk.user_name = '';
             }).post({
