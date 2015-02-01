@@ -2059,10 +2059,24 @@ ul.menu-bar li {
 input[type="radio"]:focus, input[type="checkbox"]:focus {
                              outline: none;
                            }
-.fa-download{
+
+
+.fa-download {
   color: #3ea7a0;
 }
 
-.fa-upload{
+.fa-upload {
   color: #e26a6a;
+}
+
+.loading-panel {
+  border: solid 3px #72AED5;
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #256188;
+}
+
+.loading-panel center h4 {
+  color: white;
 }

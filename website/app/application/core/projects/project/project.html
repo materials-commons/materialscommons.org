@@ -1,7 +1,9 @@
 <div>
     <div ng-if="!loaded">
-        <div class="row col-lg-offset-5">
-            <p><i class="fa fa-spinner fa-spin fa-4x"></i> Loading...</p>
+        <div class="loading-panel col-xs-4">
+            <center>
+                <h4><i class="fa fa-spinner fa-spin fa-4x"></i> Loading {{project.name}}...</h4>
+            </center>
         </div>
     </div>
     <div ng-if="loaded">
