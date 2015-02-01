@@ -46,7 +46,7 @@ function sidebarActionsDirectiveController($scope, ui, current, $state) {
 
     $scope.goHome = function () {
         $scope.project = current.project();
-        ui.resetPanels($scope.project.id)
+        ui.resetPanels($scope.project.id);
         $state.go("projects.project.home", {id: $scope.project.id});
     };
 }

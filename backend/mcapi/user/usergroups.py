@@ -9,7 +9,6 @@ from .. import args, access
 from loader.model import access as am
 
 
-
 @app.route('/access/new', methods=['POST'])
 @apikey
 @crossdomain(origin='*')

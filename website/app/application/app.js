@@ -140,11 +140,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             }],
             controller: "projectsProject"
         })
-        .state('projects.project.access', {
-            url: '/access',
-            templateUrl: "application/core/projects/project/access.html",
-            controller: "projectAccessOverview"
-        })
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
