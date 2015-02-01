@@ -1,7 +1,7 @@
 <div>
     <div ng-show="alertMessage != undefined && alertMessage != ''">
         <p><a ng-click="goHome()">Clear filter</a></p>
-        <alert close="closeAlert()">{{alertMessage}}</alert>
+        <alert close="goHome()">{{alertMessage}}</alert>
     </div>
 
     <div class="btn-toolbar">
