@@ -21,6 +21,7 @@ def get_all_group_projects():
     projects = []
     if access.is_administrator(user):
         projects = list(r.table('projects').order_by('name')
+                        .filter(r.row["owner"].ne("delete@materialscommons.org"))
                         .run(g.conn, time_format='raw'))
     else:
         projects = list(r.table('access').get_all(user, index='user_id')
