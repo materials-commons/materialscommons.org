@@ -1,7 +1,17 @@
 body{
   font-size: 15px;
   font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+  padding-top: 0px;
+  font-size: 13px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #e9e9ea;
 }
+
+.body-color {
+  color: #FBF9E2;
+}
+
 /* **************** Bootstrap overrides ******************* */
 
 /***********Begin sideboard.html ***********/
@@ -536,19 +546,6 @@ ul.nav li a:hover, a:focus {
 
 /************End index.html **************************/
 
-body {
-  padding-top: 0px;
-  font-size: 13px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background-color: #e9e9ea;
-  /* background-color: #FBF9E2; */
-  /* background-color: #f5d7aa; */
-}
-
-.body-color {
-  color: #FBF9E2;
-}
 
 /*.validation-invalid {*/
 /*color: #FF4136;*/
@@ -845,9 +842,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .main-content {
-  margin-top: 50px; /* Header height */
-  /* box-sizing: border-box; */
-  /* margin-left: 250px; */
+  margin-top: 41px;
 }
 
 .quickbar {
@@ -860,6 +855,10 @@ h4, .h4, h5, .h5, h6, .h6 {
   top: 0;
   right: 0;
   position: fixed;
+}
+
+.sidebar-list {
+  margin-bottom: 5px;
 }
 
 .sidebar-list .list-group-item {
@@ -2075,6 +2074,7 @@ input[type="radio"]:focus, input[type="checkbox"]:focus {
   margin-left: auto;
   margin-right: auto;
   background-color: #256188;
+  margin-top: 20px;
 }
 
 .loading-panel center h4 {

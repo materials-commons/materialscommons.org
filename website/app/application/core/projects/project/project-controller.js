@@ -18,7 +18,6 @@ function projectsProject ($scope, provStep, ui, project, current,
         $state.go("projects.project.home", {id: project.id});
     };
 
-
     $scope.showHelp = function() {
         return help.isActive();
     };

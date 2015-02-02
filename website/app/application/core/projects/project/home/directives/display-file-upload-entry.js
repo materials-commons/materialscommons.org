@@ -26,6 +26,5 @@ function displayFileUploadEntryDirectiveController($scope, mcapi) {
             return;
         }
         mcapi("/upload/%", file.uniqueIdentifier).delete();
-
     };
 }
