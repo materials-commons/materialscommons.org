@@ -7,44 +7,11 @@
         </div>
     </div>
     <div ng-if="loaded">
-        <div class="row">
-            <div class="col-xs-4">
-                <div class="list-group sidebar-list" style="margin-left: 10px;">
-                    <div class="list-group-item sidebar-action" style="padding-top: 8px; padding-bottom: 8px">
-                        <a style="color: white" ng-click="showProjects = !showProjects">
-                            <i class="fa fa-fw fa-briefcase"></i> {{project.name | truncate: 40: '...'}}
-                            <i class="fa"
-                               ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
-                            <span class="pull-right white">{{projects.length}}</span>
-                        </a>
-
-                        <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
-                            <a class="list-group-item"
-                               data-toggle="modal"
-                               data-target="#newProject">
-                                <i class="fa fa-fw fa-plus"></i> New Project
-                            </a>
-                            <hr class="carved"/>
-                            <a class="list-group-item"
-                               ng-repeat="p in projects"
-                               ng-click="setProject(p)">
-                                {{p.name}}
-                            </a>
-                        </div>
-                    </div>
-                    <!-- <breadcrumbs project="project"></breadcrumbs> -->
-                </div>
-            </div>
-            <div class="col-xs-8">
-                <div class="pull-right" style="margin-right: 20px;">
-                    <span style="color:grey;font-family: Helvetica;font-size: 16px;">
-                        Welcome {{mcuser.fullname}}
-                    </span>
-                    <small style="color: grey">
-                        (Last login on <a ui-sref="projects.project.home"> {{mcuser.last_login | toDateString}} </a>)
-                    </small>
-                </div>
-            </div>
+        <div class="row" style="background-color: #3e4b5c; padding-top: 5px; border-top: 1px solid black; border-bottom: 2px solid #c5c5c6">
+            <project-task-bar
+                project="project"
+                projects="projects">
+            </project-task-bar>
         </div>
         <div class="row">
             <div ng-class="{'col-sm-12': isExpanded('help'), 'col-sm-4': !isExpanded('help') && showHelp()}" ng-show="showHelp()">

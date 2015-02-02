@@ -1,0 +1,108 @@
+<div>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="list-group sidebar-list" style="margin-left: 10px;">
+                <div class="list-group-item sidebar-action" style="padding-top: 8px; padding-bottom: 8px">
+                    <a style="color: white" ng-click="showProjects = !showProjects">
+                        <i class="fa fa-fw fa-briefcase"></i> {{project.name | truncate: 40: '...'}}
+                        <i class="fa"
+                           ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
+                        <span class="pull-right white">{{projects.length}}</span>
+                    </a>
+
+                    <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
+                        <a class="list-group-item"
+                           data-toggle="modal"
+                           data-target="#newProject">
+                            <i class="fa fa-fw fa-plus"></i> New Project
+                        </a>
+                        <hr class="carved"/>
+                        <a class="list-group-item"
+                           ng-repeat="p in projects"
+                           ng-click="setProject(p)">
+                            {{p.name}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div class="pull-right" style="margin-right: 20px;">
+                <span style="color:white;font-family: Helvetica;font-size: 16px;">
+                    Welcome {{mcuser.fullname}}
+                </span>
+                <small style="color:white">
+                    (Last login on <a ui-sref="projects.project.home"> {{mcuser.last_login | toDateString}} </a>)
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-xs-2">
+                <a ng-click="showSettings = !showSettings">
+                    <i class="fa fa-fw fa-2x fa-gear" ng-class="{inactive: !showSettings}"></i>
+                </a>
+                <a ng-click="showCalendar = !showCalendar">
+                    <i class="fa fa-fw fa-2x fa-calendar" ng-class="{inactive: !showCalendar}"></i>
+                </a>
+            </div>
+
+            <div class="col-xs-10">
+                <a class="btn btn-default btn-sideboard minimized-window"
+                   ng-show="isMinimized('sideboard')"
+                   ng-click="openPanel('sideboard')">
+                    <span>
+                        <i class="fa fa-fw fa-clipboard bold"></i>
+                        Sideboard ({{list.sideboard.length}})
+                    </span>
+                </a>
+
+                <a class="btn btn-default btn-reviews minimized-window"
+                   ng-show="isMinimized('reviews')"
+                   ng-click="openPanel('reviews')">
+                    <span>
+                        <i class="fa fa-fw fa-comment bold"></i>
+                        Reviews ({{(project.reviews | byKey: 'status': 'open').length}})
+                    </span>
+                </a>
+
+                <a class="btn btn-default btn-files minimized-window"
+                   ng-show="isMinimized('files')"
+                   ng-click="openPanel('files')">
+                    <span>
+                        <i class="fa fa-fw fa-files-o bold"></i>
+                        Files
+                    </span>
+                </a>
+
+                <a class="btn btn-default btn-samples minimized-window"
+                   ng-show="isMinimized('samples')"
+                   ng-click="openPanel('samples')">
+                    <span>
+                        <i class="fa fa-fw fa-cubes bold"></i>
+                        Samples ({{project.samples.length}})
+                    </span>
+                </a>
+
+                <a class="btn btn-default btn-notes minimized-window"
+                   ng-show="isMinimized('notes')"
+                   ng-click="openPanel('notes')">
+                    <span>
+                        <i class="fa fa-fw fa-edit bold"></i>
+                        Notes ({{project.notes.length}})
+                    </span>
+                </a>
+
+                <a class="btn btn-default btn-processes minimized-window"
+                   ng-show="isMinimized('processes')"
+                   ng-click="openPanel('processes')">
+                    <span>
+                        <i class="fa fa-fw fa-code-fork bold"></i>
+                        Processes
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
