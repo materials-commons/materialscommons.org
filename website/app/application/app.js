@@ -145,36 +145,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "projectHome"
         })
-        .state('projects.project.samples', {
-            url: '/samples',
-            templateUrl: 'application/core/projects/project/samples/samples.html',
-            controller: "projectSamples"
-        })
-        .state('projects.project.samples.overview', {
-            url: '/overview',
-            templateUrl: "application/core/projects/project/samples/overview.html",
-            controller: "projectSamplesOverview"
-        })
-        .state('projects.project.samples.create', {
-            url: '/create/:sid',
-            templateUrl: 'application/core/projects/project/samples/create.html',
-            controller: "projectSamplesCreate"
-        })
-        .state('projects.project.tasks', {
-            url: '/tasks',
-            templateUrl: 'application/core/projects/project/tasks/tasks.html',
-            controller: "projectTasks"
-        })
-        .state('projects.project.tasks.overview', {
-            url: '/overview',
-            templateUrl: "application/core/projects/project/tasks/overview.html",
-            controller: "projectTasksOverview"
-        })
-        .state('projects.project.tasks.create', {
-            url: '/create/:sid',
-            templateUrl: 'application/core/projects/project/tasks/create.html',
-            controller: "projectTasksCreate"
-        })
         .state('projects.project.provenance', {
             url: '/provenance',
             templateUrl: 'application/core/projects/project/provenance/provenance.html',
@@ -189,81 +159,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/create/:sid',
             templateUrl: 'application/core/projects/project/provenance/create.html',
             controller: "projectProvenanceCreate"
-        })
-        .state('projects.project.provenance.drafts', {
-            url: '/drafts',
-            templateUrl: 'application/core/projects/project/provenance/drafts.html',
-            controller: "projectProvenanceDrafts"
-        })
-        .state('projects.project.reviews', {
-            url: '/reviews',
-            templateUrl: 'application/core/projects/project/reviews/reviews.html',
-            controller: "projectReviews"
-        })
-        .state('projects.project.reviews.overview', {
-            url: "/overview",
-            templateUrl: "application/core/projects/project/reviews/overview.html",
-            controller: "projectReviewsOverview"
-        })
-        .state('projects.project.reviews.edit', {
-            url: '/edit/:review_id/:status',
-            templateUrl: "application/core/projects/project/reviews/edit.html",
-            controller: "projectReviewsEdit"
-        })
-        .state('projects.project.reviews.create', {
-            url: "/create/:sid",
-            templateUrl: "application/core/projects/project/reviews/create.html",
-            controller: "projectReviewsCreate"
-        })
-        .state('projects.project.notes', {
-            url: '/notes',
-            templateUrl: 'application/core/projects/project/notes/notes.html',
-            controller: "projectNotes"
-        })
-        .state('projects.project.notes.overview', {
-            url: '/overview',
-            templateUrl: "application/core/projects/project/notes/overview.html",
-            controller: "projectNotesOverview"
-        })
-        .state('projects.project.notes.edit', {
-            url: '/edit/:note_id',
-            templateUrl: "application/core/projects/project/notes/edit.html",
-            controller: "projectNotesEdit"
-        })
-        .state('projects.project.notes.create', {
-            url: '/create/:sid',
-            templateUrl: "application/core/projects/project/notes/create.html",
-            controller: "projectNotesCreate"
-        })
-        .state('projects.project.files', {
-            url: "/files",
-            templateUrl: "application/core/projects/project/files/files.html",
-            controller: "projectFiles"
-        })
-        .state('projects.project.files.overview', {
-            url: "/overview",
-            templateUrl: "application/core/projects/project/files/overview.html",
-            controller: "projectFilesOverview"
-        })
-        .state('projects.project.files.view', {
-            url: "/view/:fileid",
-            templateUrl: "application/core/projects/project/files/view.html",
-            controller: "projectFilesViewFile"
-        })
-        .state('projects.project.files.list', {
-            url: "/list",
-            templateUrl: "application/core/projects/project/files/list.html",
-            controller: "projectFilesList"
-        })
-        .state('projects.project.tags', {
-            url: '/tags',
-            templateUrl: "application/core/projects/project/tags/tags.html",
-            controller: "projectTags"
-        })
-        .state('projects.project.tags.create', {
-            url: '/create/:sid',
-            templateUrl: "application/core/projects/project/tags/create.html",
-            controller: "projectTagsCreate"
         });
 
     $validationProvider.setErrorHTML(function (msg) {
