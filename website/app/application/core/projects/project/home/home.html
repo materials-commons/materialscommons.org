@@ -1,61 +1,70 @@
 <div>
     <div class="row">
         <div class="col-xs-12">
-            <a ng-click="showSettings = !showSettings">
-                <i class="fa fa-fw fa-2x fa-gear" ng-class="{inactive: !showSettings}"></i>
-            </a>
-            <a ng-click="showCalendar = !showCalendar">
-                <i class="fa fa-fw fa-2x fa-calendar" ng-class="{inactive: !showCalendar}"></i>
-            </a>
-            <a ng-click="showSideboard = !showSideboard">
-                <i class="fa fa-fw fa-2x fa-clipboard" ng-class="{inactive: !showSideboard}"></i>
-                <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
-            </a>
+            <div class="col-xs-2">
+                <a ng-click="showSettings = !showSettings">
+                    <i class="fa fa-fw fa-2x fa-gear" ng-class="{inactive: !showSettings}"></i>
+                </a>
+                <a ng-click="showCalendar = !showCalendar">
+                    <i class="fa fa-fw fa-2x fa-calendar" ng-class="{inactive: !showCalendar}"></i>
+                </a>
+            </div>
 
-            <a class="btn btn-default btn-reviews minimized-window"
-               ng-show="isMinimized('reviews')"
-               ng-click="openPanel('reviews')">
-                <span>
-                    <i class="fa fa-fw fa-comment bold"></i>
-                    Reviews ({{(project.reviews | byKey: 'status': 'open').length}})
-                </span>
-            </a>
+            <div class="col-xs-10">
+                <a class="btn btn-default btn-sideboard minimized-window"
+                   ng-show="isMinimized('sideboard')"
+                   ng-click="openPanel('sideboard')">
+                    <span>
+                        <i class="fa fa-fw fa-clipboard bold"></i>
+                        Sideboard ({{list.sideboard.length}})
+                    </span>
+                </a>
 
-            <a class="btn btn-default btn-files minimized-window"
-               ng-show="isMinimized('files')"
-               ng-click="openPanel('files')">
-                <span>
-                    <i class="fa fa-fw fa-files-o bold"></i>
-                    Files
-                </span>
-            </a>
+                <a class="btn btn-default btn-reviews minimized-window"
+                   ng-show="isMinimized('reviews')"
+                   ng-click="openPanel('reviews')">
+                    <span>
+                        <i class="fa fa-fw fa-comment bold"></i>
+                        Reviews ({{(project.reviews | byKey: 'status': 'open').length}})
+                    </span>
+                </a>
 
-            <a class="btn btn-default btn-samples minimized-window"
-               ng-show="isMinimized('samples')"
-               ng-click="openPanel('samples')">
-                <span>
-                    <i class="fa fa-fw fa-cubes bold"></i>
-                    Samples ({{project.samples.length}})
-                </span>
-            </a>
+                <a class="btn btn-default btn-files minimized-window"
+                   ng-show="isMinimized('files')"
+                   ng-click="openPanel('files')">
+                    <span>
+                        <i class="fa fa-fw fa-files-o bold"></i>
+                        Files
+                    </span>
+                </a>
 
-            <a class="btn btn-default btn-notes minimized-window"
-               ng-show="isMinimized('notes')"
-               ng-click="openPanel('notes')">
-                <span>
-                    <i class="fa fa-fw fa-edit bold"></i>
-                    Notes ({{project.notes.length}})
-                </span>
-            </a>
+                <a class="btn btn-default btn-samples minimized-window"
+                   ng-show="isMinimized('samples')"
+                   ng-click="openPanel('samples')">
+                    <span>
+                        <i class="fa fa-fw fa-cubes bold"></i>
+                        Samples ({{project.samples.length}})
+                    </span>
+                </a>
 
-            <a class="btn btn-default btn-processes minimized-window"
-               ng-show="isMinimized('processes')"
-               ng-click="openPanel('processes')">
-                <span>
-                    <i class="fa fa-fw fa-code-fork bold"></i>
-                    Processes
-                </span>
-            </a>
+                <a class="btn btn-default btn-notes minimized-window"
+                   ng-show="isMinimized('notes')"
+                   ng-click="openPanel('notes')">
+                    <span>
+                        <i class="fa fa-fw fa-edit bold"></i>
+                        Notes ({{project.notes.length}})
+                    </span>
+                </a>
+
+                <a class="btn btn-default btn-processes minimized-window"
+                   ng-show="isMinimized('processes')"
+                   ng-click="openPanel('processes')">
+                    <span>
+                        <i class="fa fa-fw fa-code-fork bold"></i>
+                        Processes
+                    </span>
+                </a>
+            </div>
         </div>
     </div>
     <div class="row" ng-show="showSettings" style="padding-left: 15px">
@@ -64,7 +73,7 @@
     <div class="row">
         <div ng-show="!isColumnActive('column1')">
             <div ng-class="{'col-xs-6': !isExpandedInColumn(['reviews', 'files']), 'col-xs-12': isExpandedInColumn(['reviews', 'files'])}"
-                 ng-show="!isExpandedInColumn(['samples', 'notes', 'processes'])">
+                 ng-show="!isExpandedInColumn(['samples', 'notes', 'processes', 'sideboard'])">
                 <div class="row" ng-if="showCalendar">
                     <div home-calendar project="project"></div>
                 </div>
@@ -77,9 +86,9 @@
             </div>
         </div>
         <div ng-show="!isColumnActive('column2')">
-            <div ng-class="{'col-xs-6': !isExpandedInColumn(['samples', 'notes', 'processes']), 'col-xs-12': isExpandedInColumn(['samples', 'notes', 'processes'])}"
+            <div ng-class="{'col-xs-6': !isExpandedInColumn(['samples', 'notes', 'processes', 'sideboard']), 'col-xs-12': isExpandedInColumn(['samples', 'notes', 'processes', 'sideboard'])}"
                  ng-show="!isExpandedInColumn(['reviews', 'files'])">
-                <div class="row" ng-if="showSideboard">
+                <div class="row" ng-show="show('sideboard')">
                     <div split-icon="true" home-sideboard project="project"></div>
                 </div>
                 <div class="row" ng-show="show('samples')">
