@@ -31,7 +31,6 @@ function displayNoteDirectiveController($scope, sideboard, current, pubsub, togg
     };
 
     $scope.addItem = function (type) {
-        $scope.note.show = true;
         switch (type) {
             case "review":
                 pubsub.send('addNoteToReview', $scope.note);

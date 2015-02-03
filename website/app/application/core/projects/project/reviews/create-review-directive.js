@@ -60,6 +60,7 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
         recent.delete($stateParams.id, $stateParams.sid);
         projectState.delete($stateParams.id, $stateParams.sid);
         $scope.bk.createReview = false;
+        $scope.model = {};
         toggleDragButton.reset('addToReview');
 
     };
