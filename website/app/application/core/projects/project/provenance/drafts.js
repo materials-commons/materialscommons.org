@@ -35,7 +35,7 @@ function projectProvenanceDrafts($scope, $stateParams, project, projectState,
             selectedTemplate: getTemplate($scope.drafts[index].process.template_id)
         };
         var stateID = projectState.add(project.id, wizardState);
-        $state.go("projects.project.provenance.create", {sid: stateID});
+        $state.go("projects.project.home.provenance", {sid: stateID});
     };
 
     $scope.deleteDraft = function(index) {
@@ -43,5 +43,9 @@ function projectProvenanceDrafts($scope, $stateParams, project, projectState,
             .remove({apikey: User.apikey()}).then(function() {
                 $scope.drafts.splice(index, 1);
             });
+    };
+
+    $scope.done = function() {
+        $state.go("projects.project.home");
     };
 }
