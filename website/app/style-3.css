@@ -860,7 +860,7 @@ h4, .h4, h5, .h5, h6, .h6 {
     left: 0;
     position: fixed;
     right: 0;
-    z-index: 1030;
+    z-index: 100;
     background-color: #3e4b5c;
     padding-top: 5px;
     border-top: 1px solid black;

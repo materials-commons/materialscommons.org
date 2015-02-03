@@ -19,9 +19,18 @@
             </li>
         </ul>
         <ul ng-show="email_address" class="nav navbar-nav navbar-right">
+
+            <li>
+                <a ng-click="goHome()"
+                   class="navbar-link large-text">
+                    <i class="fa fa-fw fa-home space-right"></i>
+                    Home
+                </a>
+            </li>
             <li>
                 <a class="large-text"
                    ng-click="toggleHelp()">
+                    <i class="fa fa-fw fa-question space-right"></i>
                     Help
                 </a>
             </li>
