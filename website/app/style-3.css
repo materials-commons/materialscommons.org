@@ -444,6 +444,7 @@ td.tag-width {
   /* background-color: #002953; */
   background-color: rgba(255, 255, 255, 0.1);
 }
+
 .navactive {
   text-decoration: none;
   background-color: rgba(255, 255, 255, 0.1);
@@ -1825,6 +1826,7 @@ ul.menu-bar li {
 .table-striped > tbody > tr:nth-child(2n+1) > th {
   background-color: #f4f4f6;
 }
+
 .close {
   color: black;
 }
