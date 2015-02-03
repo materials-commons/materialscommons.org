@@ -43,7 +43,7 @@ def add_review():
     r.messages = dmutil.get_required('messages', j)
     r.items = dmutil.get_optional('items', j)
     r.title = dmutil.get_required('title', j)
-    r.attachments = dmutil.get_required('attachments', j)
+    r.attachments = dmutil.get_optional('attachments', j)
     r.status = "open"
     r.project = dmutil.get_required('project', j)
     created_review = dmutil.insert_entry('reviews', r.__dict__,
