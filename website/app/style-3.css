@@ -1028,6 +1028,11 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: 1;
 }
 
+.btn-samples:hover {
+  background-color: #f0ad4e;
+  opacity: .85;
+}
+
 .panel-heading.reviews-color {
   background-color: #4884b8;
   opacity: .85;
@@ -1036,6 +1041,11 @@ h4, .h4, h5, .h5, h6, .h6 {
 .btn-reviews {
   background-color: #4884b8 ;
   opacity: .85;
+}
+
+.btn-reviews:hover {
+  background-color: #4884b8;
+  opacity: .75;
 }
 
 .minimized-window span {
@@ -1052,6 +1062,11 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .85;
 }
 
+.btn-notes:hover {
+  background-color: #3ea7a0;
+  opacity: .75;
+}
+
 .panel-heading.files-color {
   background-color: #7c699f;
   opacity: .85;
@@ -1060,6 +1075,11 @@ h4, .h4, h5, .h5, h6, .h6 {
 .btn-files {
   background-color: #7c699f;
   opacity: .85;
+}
+
+.btn-files:hover {
+  background-color: #7c699f;
+  opacity: .75;
 }
 
 .panel-heading.sideboard-color {
@@ -1072,6 +1092,11 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .85;
 }
 
+.btn-sideboard:hover {
+  background-color: #757575;
+  opacity: .75;
+}
+
 .panel-heading.processes-color {
   background-color: #e26a6a;
   opacity: 1;
@@ -1080,6 +1105,11 @@ h4, .h4, h5, .h5, h6, .h6 {
 .btn-processes {
   background-color: #e26a6a;
   opacity: 1;
+}
+
+.btn-processes:hover {
+  background-color: #e26a6a;
+  opacity: .85;
 }
 
 /* .trythis:hover { */
