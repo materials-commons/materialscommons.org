@@ -17,7 +17,8 @@ function uiService(pubsub) {
                 notes: true,
                 processes: true,
                 calendar: false,
-                sideboard: false
+                sideboard: false,
+                settings: false
             },
             split: {
                 column1: false,

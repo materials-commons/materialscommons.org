@@ -27,6 +27,10 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         return !ui.showPanel(panel, $scope.project.id);
     };
 
+    $scope.showPanel = function(panel) {
+        return ui.showPanel(panel, $scope.project.id);
+    };
+
     $scope.openPanel = function(panel) {
         ui.togglePanelState(panel, $scope.project.id);
     };
