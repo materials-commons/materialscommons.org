@@ -1,12 +1,12 @@
 Application.Controllers.controller('projectProvenanceCreate',
     ["$scope", "project", "model.templates",
         "model.projects", "User", "$filter", "provStep", "projectFiles",
-        "draft", "$stateParams", "projectState", "recent", "$timeout",
+     "draft", "$stateParams", "projectState", "$timeout", "$state",
         projectProvenanceCreate]);
 
 function projectProvenanceCreate($scope, project, templates, projects,
                                  User, $filter, provStep, projectFiles, draft,
-                                 $stateParams, projectState, recent, $timeout) {
+                                 $stateParams, projectState, $timeout, $state) {
     var stateID = $stateParams.sid;
     $scope.start = function () {
         if (!$scope.wizardState.selectedTemplate) {
@@ -16,16 +16,14 @@ function projectProvenanceCreate($scope, project, templates, projects,
         var title = "Wizard Process Step (" + templateName + ")";
         $scope.wizardState.currentDraft = draft.createProvenance($scope.wizardState.selectedTemplate, project.id);
         $scope.wizardState.showChooseProcess = false;
-        recent.addIfNotExists(project.id, stateID, templateName);
         provStep.setStep($scope.wizardState.project.id, provStep.makeStep("process", "process"));
     };
 
     $scope.cancel = function () {
         var projectID = $scope.wizardState.project.id;
         provStep.resetProject(projectID);
-        recent.delete(project.id, stateID);
         projectState.delete(project.id, stateID);
-        recent.gotoLast(project.id);
+        $state.go("projects.project.home");
     };
 
     templates.getList().then(function (templates) {
@@ -82,7 +80,6 @@ function projectProvenanceCreate($scope, project, templates, projects,
         });
         var templateName = $scope.wizardState.selectedTemplate.template_name;
         var name = $scope.wizardState.currentDraft.process.name;
-        recent.addIfNotExists(project.id, stateID, templateName + ": " + name);
     }
     $scope.wizardState.project = project;
 }
