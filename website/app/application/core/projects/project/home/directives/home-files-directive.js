@@ -53,6 +53,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
                 // obj.dir is root of project. Have it opened by default.
                 obj.dir.showDetails = true;
                 $scope.files = [projectFiles.model.projects[$scope.project.id].dir];
+                projectFiles.loadByMediaType($scope.project);
                 $scope.isReloading = false;
             }).jsonp();
     };
@@ -65,7 +66,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
         };
 
         if ($scope.searchInput === "") {
-            $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
+            $scope.files = [projectFiles.model.projects[$scope.project.id].dir];
         } else {
             var filesToSearch = projectFiles.model.projects[$scope.project.id].byMediaType.all;
             search.name = $scope.searchInput;
