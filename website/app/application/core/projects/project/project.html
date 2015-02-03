@@ -7,12 +7,13 @@
         </div>
     </div>
     <div ng-if="loaded">
-        <div class="row" style="background-color: #3e4b5c; padding-top: 5px; border-top: 1px solid black; border-bottom: 2px solid #c5c5c6;">
+        <div class="row project-task-bar">
             <project-task-bar
                 project="project"
                 projects="projects">
             </project-task-bar>
         </div>
+        <br><br><br><br><br>
         <div class="row">
             <div ng-class="{'col-sm-12': isExpanded('help'), 'col-sm-4': !isExpanded('help') && showHelp()}" ng-show="showHelp()">
                 <userguide></userguide>
