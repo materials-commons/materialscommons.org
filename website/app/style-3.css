@@ -52,15 +52,18 @@ body {
   margin-bottom: 10px !important;
 }
 
-.project-tabs > li.active > a, .tabs-bottom > li.active > a:hover, .tabs-bottom > li.active > a:focus {
-                                                                     color: white;
-                                                                     background-color: #4c9cc6;
-                                                                   }
+.project-tabs > li.active > a,
+.tabs-bottom > li.active > a:hover,
+.tabs-bottom > li.active > a:focus {
+  color: white;
+  background-color: #4c9cc6;
+}
 
-.project-tabs > li > a:hover, .tabs-bottom > li > a:focus {
-                                color: white;
-                                background-color: #72C2EC;
-                              }
+.project-tabs > li > a:hover,
+.tabs-bottom > li > a:focus {
+  color: white;
+  background-color: #72C2EC;
+}
 
 /****** Rounded tabs *******/
 .tabrow {
@@ -207,15 +210,17 @@ body {
   border-left: 1px solid #d2d2d2;
 }
 
-.overview-tabs > li.active > a:hover, .overview-tabs > li.active > a:focus {
-                                        color: white;
-                                        background-color: #4c9cc6;
-                                      }
+.overview-tabs > li.active > a:hover,
+.overview-tabs > li.active > a:focus {
+  color: white;
+  background-color: #4c9cc6;
+}
 
-.overview-tabs > li > a:hover, .overview-tabs > li > a:focus {
-                                 color: white;
-                                 background-color: #72C2EC;
-                               }
+.overview-tabs > li > a:hover,
+.overview-tabs > li > a:focus {
+  color: white;
+  background-color: #72C2EC;
+}
 
 .fa.fa-tag.space-right {
   padding: 7px;
@@ -433,20 +438,22 @@ td.tag-width {
   color: #ffffff;
 }
 
-.navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
-                                             text-decoration: none;
-                                             /* background-color: #002953; */
-                                             background-color: rgba(255, 255, 255, 0.1);
-                                           }
-
+.navbar-custom .navbar-nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  /* background-color: #002953; */
+  background-color: rgba(255, 255, 255, 0.1);
+}
 .navactive {
   text-decoration: none;
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-                                        background-color: rgba(255, 255, 255, 0.1);
-                                      }
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+}
 
 .navbar-custom .navbar-brand {
   color: #eeeeee;
@@ -465,9 +472,10 @@ td.tag-width {
   background-color: #eeeeee;
 }
 
-ul.nav li a:hover, a:focus {
-                     font-weight: normal;
-                   }
+ul.nav li a:hover,
+a:focus {
+  font-weight: normal;
+}
 
 /*.navbar-custom .icon-bar {*/
 /*background-color: #0C5C86;*/
@@ -1475,16 +1483,17 @@ label {
   border: 4px solid #c2e1f5;
 }
 
-.arrow_box_bottom:after, .arrow_box_bottom:before {
-                           bottom: 100%;
-                           left: 50%;
-                           border: solid transparent;
-                           content: " ";
-                           height: 0;
-                           width: 0;
-                           position: absolute;
-                           pointer-events: none;
-                         }
+.arrow_box_bottom:after,
+.arrow_box_bottom:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
 
 .arrow_box_bottom:after {
   border-color: rgba(136, 183, 213, 0);
@@ -1507,16 +1516,17 @@ label {
   border: 4px solid #c2e1f5;
 }
 
-.arrow_box_top:after, .arrow_box_top:before {
-                        top: 100%;
-                        left: 50%;
-                        border: solid transparent;
-                        content: " ";
-                        height: 0;
-                        width: 0;
-                        position: absolute;
-                        pointer-events: none;
-                      }
+.arrow_box_top:after,
+.arrow_box_top:before {
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
 
 .arrow_box_top:after {
   border-color: rgba(136, 183, 213, 0);
@@ -1745,7 +1755,6 @@ ul.menu-bar li {
   font-size: 12px;
   line-height: 1.428571429;
   border-radius: 15px;
-
 }
 
 .btn-circle.btn-lg {
@@ -1812,10 +1821,10 @@ ul.menu-bar li {
   border-top: 2px solid #d3d3d3;
 }
 
-.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
-                                                    background-color: #f4f4f6;
-                                                  }
-
+.table-striped > tbody > tr:nth-child(2n+1) > td,
+.table-striped > tbody > tr:nth-child(2n+1) > th {
+  background-color: #f4f4f6;
+}
 .close {
   color: black;
 }
@@ -1879,12 +1888,13 @@ ul.menu-bar li {
   margin-left: 40px;
 }
 
-.list-group-item.active, .list-group-item.active:hover {
-                           background-color: #d5d5d5;
-                           color: black;
-                           border: none;
-                           border-right-color: #d5d5d5;
-                         }
+.list-group-item.active,
+.list-group-item.active:hover {
+  background-color: #d5d5d5;
+  color: black;
+  border: none;
+  border-right-color: #d5d5d5;
+}
 
 .feed-activity-list .feed-element {
   border-bottom: 1px solid #E7EAEC;
@@ -2099,9 +2109,10 @@ ul.menu-bar li {
 }
 
 /*style to remove the dotted line around the element*/
-input[type="radio"]:focus, input[type="checkbox"]:focus {
-                             outline: none;
-                           }
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+  outline: none;
+}
 
 .fa-download {
   color: #3ea7a0;
