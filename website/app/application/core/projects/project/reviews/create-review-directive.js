@@ -12,12 +12,12 @@ function createReviewDirective() {
 
 
 Application.Controllers.controller('createReviewDirectiveController',
-    ["$scope", "mcapi", "User", "$stateParams",
-         "pubsub", "projectFiles",
-        "projectState", "recent", "ui", "current", "toggleDragButton", createReviewDirectiveController]);
+                                   ["$scope", "mcapi", "User", "$stateParams",
+                                    "pubsub", "projectFiles",
+                                    "projectState", "recent", "ui", "current", "toggleDragButton", createReviewDirectiveController]);
 
 function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubsub,
-                              projectFiles, projectState, recent, ui, current, toggleDragButton) {
+                                         projectFiles, projectState, recent, ui, current, toggleDragButton) {
     $scope.project = current.project();
     var channel = 'review.files';
     var stateID = $stateParams.sid;
@@ -36,9 +36,9 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
     $scope.model = projectState.getset($stateParams.id, $stateParams.sid, defaultModel);
     recent.addIfNotExists($scope.project.id, $stateParams.sid, "New Review");
 
-   if('files' in $scope.model){
-       projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);
-   }
+    if('files' in $scope.model){
+        projectFiles.resetSelectedFiles($scope.model.files, $scope.project.id);
+    }
 
     $scope.review = {'items': [], 'messages': []};
 
@@ -65,7 +65,7 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
                 pubsub.send("reviews.change");
                 $scope.bk.createReview = false;
                 $scope.model = {};
-                toggleDragButton.reset();
+                toggleDragButton.reset('addToReview');
             }).error(function (reason) {
             }).post($scope.review);
     }
@@ -76,7 +76,7 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
         recent.delete($stateParams.id, $stateParams.sid);
         projectState.delete($stateParams.id, $stateParams.sid);
         $scope.bk.createReview = false;
-        toggleDragButton.reset();
+        toggleDragButton.reset('addToReview');
 
     };
 
@@ -101,15 +101,15 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
     };
     $scope.addItems = function(action){
         switch(action){
-            case "samples":
-                toggleDragButton.toggle(action,'addToReview');
-                break;
-            case "notes":
-                toggleDragButton.toggle(action,'addToReview');
-                break;
-            case "files":
-                toggleDragButton.toggle(action,'addToReview');
-                break;
+        case "samples":
+            toggleDragButton.toggle(action,'addToReview');
+            break;
+        case "notes":
+            toggleDragButton.toggle(action,'addToReview');
+            break;
+        case "files":
+            toggleDragButton.toggle(action,'addToReview');
+            break;
         }
     };
 
