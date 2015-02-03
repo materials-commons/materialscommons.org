@@ -12,9 +12,9 @@ function wizardStepDoneDirective() {
 Application.Controllers.controller('wizardStepDoneDirectiveController',
     ["$scope", "provStep", "$stateParams",
         "Restangular", "User", "$timeout", "current",
-        "projectState", "recent", wizardStepDoneDirectiveController]);
+     "projectState", "pubsub", "$state", wizardStepDoneDirectiveController]);
 function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Restangular, User,
-                                           $timeout, current, projectState, recent) {
+                                           $timeout, current, projectState, pubsub, $state) {
     var state = projectState.get($stateParams.id, $stateParams.sid);
     $scope.unfinishedSteps = [];
     function determineDoneState() {
@@ -79,9 +79,7 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
 
     function closeProvenanceAction() {
         provStep.resetProject($stateParams.id);
-        recent.delete($stateParams.id, $stateParams.sid);
         projectState.delete($stateParams.id, $stateParams.sid);
-        recent.gotoLast($stateParams.id);
     }
 
     $scope.submit = function () {
@@ -110,9 +108,13 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
                     Restangular.one("drafts", project.drafts[i].id)
                         .remove({apikey: User.apikey()}).then(function () {
                             project.drafts.splice(i, 1);
+                            pubsub.send("processes.change");
+                            $state.go("projects.project.home");
                         });
+                } else {
+                    pubsub.send("processes.change");
+                    $state.go("projects.project.home");
                 }
-
             });
     };
 
@@ -141,6 +143,8 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
             .then(function (draft) {
                 updateDraft(draft);
                 closeProvenanceAction();
+                pubsub.send("processes.change");
+                $state.go("projects.project.home");
             });
     };
 
@@ -150,9 +154,9 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
         // appears that the changes to the dom are happening
         // too quickly.
         $timeout(function () {
-            recent.delete($stateParams.id, $stateParams.sid);
             projectState.delete($stateParams.id, $stateParams.sid);
             closeProvenanceAction();
+            $state.go("projects.project.home");
         }, 100);
     };
 }
