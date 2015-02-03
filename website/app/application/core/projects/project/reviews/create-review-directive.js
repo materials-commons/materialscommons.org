@@ -12,16 +12,13 @@ function createReviewDirective() {
 
 
 Application.Controllers.controller('createReviewDirectiveController',
-    ["$scope", "mcapi", "User", "$stateParams",
-        "pubsub", "projectFiles",
-        "projectState", "recent", "ui", "current", "toggleDragButton", createReviewDirectiveController]);
-
+                                   ["$scope", "mcapi", "User", "$stateParams",
+                                    "pubsub", "projectFiles",
+                                    "projectState", "recent", "ui", "current", "toggleDragButton", createReviewDirectiveController]);
 function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubsub,
                                          projectFiles, projectState, recent, ui, current, toggleDragButton) {
     $scope.project = current.project();
-    var channel = 'review.files';
     var stateID = $stateParams.sid;
-    projectFiles.setChannel(channel);
     projectFiles.setActive($stateParams.id, true);
     ui.setShowFiles($stateParams.id, true);
     var defaultModel = {
@@ -42,19 +39,6 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
 
     $scope.review = {'items': [], 'messages': []};
 
-    pubsub.waitOn($scope, channel, function (fileentry) {
-        if (fileentry.selected) {
-            $scope.model.files.push(fileentry);
-        } else {
-            var i = _.indexOf($scope.model.files, function (entry) {
-                return entry.id === fileentry.id;
-            });
-            if (i !== -1) {
-                $scope.model.files.splice(i, 1);
-            }
-        }
-    });
-
     function saveData() {
         mcapi('/reviews')
             .success(function (review) {
@@ -65,7 +49,7 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
                 pubsub.send("reviews.change");
                 $scope.bk.createReview = false;
                 $scope.model = {};
-                toggleDragButton.reset();
+                toggleDragButton.reset('addToReview');
             }).error(function (reason) {
             }).post($scope.review);
     }
@@ -76,7 +60,7 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
         recent.delete($stateParams.id, $stateParams.sid);
         projectState.delete($stateParams.id, $stateParams.sid);
         $scope.bk.createReview = false;
-        toggleDragButton.reset();
+        toggleDragButton.reset('addToReview');
 
     };
 
@@ -114,15 +98,27 @@ function createReviewDirectiveController($scope, mcapi, User, $stateParams, pubs
     };
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
-        $scope.model.attachments.push({'id': sample.id, 'name': sample.name, 'type': 'sample'});
+        addAttachment({'id': sample.id, 'name': sample.name, 'type': 'sample'});
     });
+
     pubsub.waitOn($scope, 'addNoteToReview', function (note) {
-        $scope.model.attachments.push({'id': note.id, 'name': note.title, 'type': 'note'});
+        addAttachment({'id': note.id, 'name': note.title, 'type': 'note'});
     });
+
     pubsub.waitOn($scope, 'addProvenanceToReview', function (provenance) {
-        $scope.model.attachments.push({'id': provenance.id, 'name': provenance.name, 'type': 'provenance'});
+        addAttachment({'id': provenance.id, 'name': provenance.name, 'type': 'provenance'});
     });
+
     pubsub.waitOn($scope, 'addFileToReview', function (file) {
-        $scope.model.attachments.push({'id': file.id, 'name': file.name, 'type': 'file', 'path': file.fullname});
+            addAttachment({'id': file.id, 'name': file.name, 'type': 'file', 'path': file.fullname});
     });
+
+    function addAttachment(item) {
+        var i = _.indexOf($scope.model.attachments, function (entry) {
+            return item.id === entry.id;
+        });
+        if (i === -1) {
+            $scope.model.attachments.push(item);
+        }
+    }
 }

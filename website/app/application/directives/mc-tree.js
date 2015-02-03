@@ -100,8 +100,8 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
         case "sample":
             pubsub.send('addFileToSample', file);
             break;
-        case "provenance":
-            pubsub.send('addFileToProvenance', file);
+        case "process":
+            pubsub.send('provenance.files', file);
             break;
         case "file":
             pubsub.send('addFileToNote', file);
@@ -141,7 +141,6 @@ Application.Controllers.controller("mcTreeLeafDirectiveController",
                                    ["$scope", "User", "mcfile",
                                     mcTreeLeafDirectiveController]);
 function mcTreeLeafDirectiveController($scope, User, mcfile) {
-    console.dir($scope.item);
     $scope.apikey = User.apikey();
 
     $scope.fileSrc = function(file) {

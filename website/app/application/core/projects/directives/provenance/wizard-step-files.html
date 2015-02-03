@@ -8,12 +8,10 @@
             <div class="row" ng-show="files.properties.files.length > 0">
                 <br>
                 <div ng-repeat="file in files.properties.files">
-                    <button type="button"
-                            class="close"
-                            ng-click="removeFile($index)">
-                        &times;
-                    </button>
                     {{file.fullname}}
+                    <a ng-click="removeFile($index)">
+                        <i class="fa fa-fw fa-close mc-danger pull-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
