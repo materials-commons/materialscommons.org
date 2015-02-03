@@ -63,6 +63,10 @@
                 class="btn btn-xs btn-mini btn-success"
                 ng-click="addItem('review', item)">Add to review
         </button>
+        <button ng-if="isActive('files', 'addToProv')"
+                class="btn btn-xs btn-mini btn-success"
+                ng-click="addItem('process', item)">Add to process
+        </button>
     </p>
     <p ui-draggable="true" drag="item" style="padding-left: 15px;">
         <small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">
