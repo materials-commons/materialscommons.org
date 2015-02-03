@@ -1,12 +1,12 @@
 <div>
-    <div class="row" ng-show="showSettings" style="padding-left: 15px">
+    <div class="row" ng-show="showPanel('settings')" style="padding-left: 15px">
         <project-settings project="project"></project-settings>
     </div>
     <div class="row">
         <div ng-show="!isColumnActive('column1')">
             <div ng-class="{'col-xs-6': !isExpandedInColumn(['reviews', 'files']), 'col-xs-12': isExpandedInColumn(['reviews', 'files'])}"
                  ng-show="!isExpandedInColumn(['samples', 'notes', 'processes', 'sideboard'])">
-                <div class="row" ng-if="showCalendar">
+                <div class="row" ng-if="showPanel('calendar')">
                     <div home-calendar project="project"></div>
                 </div>
                 <div class="row" ng-show="show('reviews')">

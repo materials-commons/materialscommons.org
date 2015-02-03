@@ -40,11 +40,11 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="col-xs-2">
-                <a ng-click="showSettings = !showSettings">
-                    <i class="fa fa-fw fa-2x fa-gear" ng-class="{inactive: !showSettings}"></i>
+                <a ng-click="openPanel('settings')">
+                    <i class="fa fa-fw fa-2x fa-gear" ng-class="{inactive: !showPanel('settings')}"></i>
                 </a>
-                <a ng-click="showCalendar = !showCalendar">
-                    <i class="fa fa-fw fa-2x fa-calendar" ng-class="{inactive: !showCalendar}"></i>
+                <a ng-click="openPanel('calendar')">
+                    <i class="fa fa-fw fa-2x fa-calendar" ng-class="{inactive: !showPanel('calendar')}"></i>
                 </a>
             </div>
 

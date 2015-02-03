@@ -18,6 +18,10 @@ function projectHome($scope, project, User, mcapi, ui, sideboard) {
         }
     };
 
+    $scope.showPanel = function(what) {
+        return ui.showPanel(what, project.id);
+    };
+
     $scope.isMinimized = function(panel) {
         return !ui.showPanel(panel, project.id);
     };
