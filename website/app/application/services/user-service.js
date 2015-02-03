@@ -1,8 +1,13 @@
 Application.Services.factory('User',
     ["$window", function ($window) {
         var self = this;
-        if($window.sessionStorage.mcuser){
-            self.mcuser = JSON.parse($window.sessionStorage.mcuser);
+        if ($window.sessionStorage.mcuser) {
+            try {
+                self.mcuser = JSON.parse($window.sessionStorage.mcuser);
+            } catch (err) {
+                console.log("Error parse mcuser in sessionStorage");
+                self.mcuser = null;
+            }
         }
 
         return {
