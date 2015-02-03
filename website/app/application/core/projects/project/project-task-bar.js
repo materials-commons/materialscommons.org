@@ -14,9 +14,9 @@ function projectTaskBarDirective() {
 
 Application.Controllers.controller("projectTaskBarDirectiveController",
                                    ["$scope", "current", "$state", "ui",
-                                    "User", "sideboard",
+                                    "User", "sideboard", "projectState",
                                     projectTaskBarDirectiveController]);
-function projectTaskBarDirectiveController($scope, current, $state, ui, User, sideboard) {
+function projectTaskBarDirectiveController($scope, current, $state, ui, User, sideboard, projectState) {
     $scope.setProject = function (project) {
         current.setProject(project);
         $scope.showProjects = false;
@@ -33,6 +33,12 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
 
     $scope.openPanel = function(panel) {
         ui.togglePanelState(panel, $scope.project.id);
+    };
+
+    $scope.openProvWizard = function() {
+        var state = null;
+        var stateID = projectState.add($scope.project.id, state);
+        $state.go("projects.project.home.provenance", {sid: stateID});
     };
 
     $scope.mcuser = User.attr();

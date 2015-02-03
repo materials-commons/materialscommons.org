@@ -18,7 +18,8 @@ function uiService(pubsub) {
                 processes: true,
                 calendar: false,
                 sideboard: false,
-                settings: false
+                settings: false,
+                provwizard: false
             },
             split: {
                 column1: false,

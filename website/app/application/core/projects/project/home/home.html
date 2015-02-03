@@ -2,6 +2,9 @@
     <div class="row" ng-show="showPanel('settings')" style="padding-left: 15px">
         <project-settings project="project"></project-settings>
     </div>
+    <div class="row" style="padding-left: 15px">
+        <div ui-view></div>
+    </div>
     <div class="row">
         <div ng-show="!isColumnActive('column1')">
             <div ng-class="{'col-xs-6': !isExpandedInColumn(['reviews', 'files']), 'col-xs-12': isExpandedInColumn(['reviews', 'files'])}"
