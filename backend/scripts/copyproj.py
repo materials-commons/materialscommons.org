@@ -55,14 +55,25 @@ if __name__ == "__main__":
         if fentry['usesid'] != "":
             src_dir = file_dir(options.src, fentry['usesid'])
             dest_dir = file_dir(options.dest, fentry['usesid'])
+            entry_id = fentry['usesid']
         else:
             src_dir = file_dir(options.src, fentry['id'])
             dest_dir = file_dir(options.dest, fentry['id'])
+            entry_id = fentry['id']
         print "Copy %s from %s to %s" % (fentry['name'], src_dir, dest_dir)
         mkdirp(dest_dir)
-        src_file_path = os.path.join(src_dir, fentry['id'])
-        dest_file_path = os.path.join(dest_dir, fentry['id'])
+        src_file_path = os.path.join(src_dir, entry_id)
+        dest_file_path = os.path.join(dest_dir, entry_id)
         try:
             shutil.copy(src_file_path, dest_file_path)
         except:
             print "Problem copying file %s" % (fentry['name'])
+
+        # Copy over conversion if it exists
+        src_conv_path = os.path.join(src_dir, ".conversion", entry_id)
+        if os.path.exists(src_conv_path):
+            dest_conv_path = os.path.join(dest_dir, ".conversion", entry_id)
+            try:
+                shutil.copy(src_conv_path, dest_conv_path)
+            except:
+                print "Problem copying conversion file %s" % (fentry['name'])
