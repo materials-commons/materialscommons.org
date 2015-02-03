@@ -48,37 +48,9 @@ function mcTreeDirDirective(RecursionHelper) {
 }
 
 Application.Controllers.controller("mcTreeDirDirectiveController",
-                                   ["$scope", "pubsub", "toggleDragButton", mcTreeDirDirectiveController]);
-function mcTreeDirDirectiveController($scope,pubsub, toggleDragButton) {
+                                   ["$scope", mcTreeDirDirectiveController]);
+function mcTreeDirDirectiveController($scope) {
     $scope.items = $scope.item.children;
-    $scope.bk = {
-        addToReview: false,
-        addToProvenance: false,
-        addToSample: false ,
-        addToNote: false
-    };
-
-    $scope.isActive = function(type, button){
-        return toggleDragButton.get(type, button);
-    };
-
-    $scope.addItem = function (type, file) {
-        switch (type) {
-            case "review":
-                pubsub.send('addFileToReview', file);
-                break;
-            case "sample":
-                pubsub.send('addFileToSample', file);
-                break;
-            case "provenance":
-                pubsub.send('addFileToProvenance', file);
-                break;
-            case "file":
-                pubsub.send('addFileToNote', file);
-                break;
-        }
-    };
-
 }
 
 
@@ -120,17 +92,19 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
         return toggleDragButton.get(type, button);
     };
 
-    $scope.addItem = function (type) {
-        $scope.item.show = true;
+    $scope.addItem = function (type, file) {
         switch (type) {
         case "review":
-            pubsub.send('addFileToReview', $scope.item);
+            pubsub.send('addFileToReview', file);
             break;
-        case "note":
-            pubsub.send('addFileToNote', $scope.item);
+        case "sample":
+            pubsub.send('addFileToSample', file);
             break;
         case "provenance":
-            pubsub.send('addFileToProvenance', $scope.item);
+            pubsub.send('addFileToProvenance', file);
+            break;
+        case "file":
+            pubsub.send('addFileToNote', file);
             break;
         }
     };
@@ -167,6 +141,7 @@ Application.Controllers.controller("mcTreeLeafDirectiveController",
                                    ["$scope", "User", "mcfile",
                                     mcTreeLeafDirectiveController]);
 function mcTreeLeafDirectiveController($scope, User, mcfile) {
+    console.dir($scope.item);
     $scope.apikey = User.apikey();
 
     $scope.fileSrc = function(file) {

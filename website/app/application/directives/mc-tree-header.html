@@ -26,10 +26,10 @@
             </a>
         </span>
         <span style="padding-right: 13px;">
-                <a title="New Folder" ng-click="item.addFolder = !item.addFolder"><i ng-if="item.type === 'datadir'"
-                                                                                     class="fa fa-fw fa-plus"></i></a>
+            <a title="New Folder" ng-click="item.addFolder = !item.addFolder"><i ng-if="item.type === 'datadir'"
+                                                                                 class="fa fa-fw fa-plus"></i></a>
 
-        <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
+            <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
         </span>
 
     </span>
@@ -58,7 +58,12 @@
             {{::tag.name}}
         </span>
     </p>
-
+    <p style="padding-left: 15px;" ng-if="item.type === 'datafile'">
+        <button ng-if="isActive('files','addToReview')"
+                class="btn btn-xs btn-mini btn-success"
+                ng-click="addItem('review', item)">Add to review
+        </button>
+    </p>
     <p ui-draggable="true" drag="item" style="padding-left: 15px;">
         <small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">
             {{::item.size | bytes}}
