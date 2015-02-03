@@ -1025,12 +1025,12 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-samples {
   background-color: #f0ad4e;
-  opacity: 1;
+  opacity: .85;
 }
 
 .btn-samples:hover {
   background-color: #f0ad4e;
-  opacity: .85;
+  opacity: 1;
 }
 
 .panel-heading.reviews-color {
@@ -1040,12 +1040,12 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-reviews {
   background-color: #4884b8 ;
-  opacity: .85;
+  opacity: .75;
 }
 
 .btn-reviews:hover {
   background-color: #4884b8;
-  opacity: .75;
+  opacity: .90;
 }
 
 .minimized-window span {
@@ -1059,12 +1059,12 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-notes {
   background-color: #3ea7a0;
-  opacity: .85;
+  opacity: .70;
 }
 
 .btn-notes:hover {
   background-color: #3ea7a0;
-  opacity: .75;
+  opacity: .90;
 }
 
 .panel-heading.files-color {
@@ -1074,12 +1074,12 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-files {
   background-color: #7c699f;
-  opacity: .85;
+  opacity: .75;
 }
 
 .btn-files:hover {
   background-color: #7c699f;
-  opacity: .75;
+  opacity: .90;
 }
 
 .panel-heading.sideboard-color {
@@ -1089,12 +1089,12 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-sideboard {
   background-color: #757575;
-  opacity: .85;
+  opacity: .75;
 }
 
 .btn-sideboard:hover {
   background-color: #757575;
-  opacity: .75;
+  opacity: .90;
 }
 
 .panel-heading.processes-color {
@@ -1104,12 +1104,12 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-processes {
   background-color: #e26a6a;
-  opacity: 1;
+  opacity: .85;
 }
 
 .btn-processes:hover {
   background-color: #e26a6a;
-  opacity: .85;
+  opacity: 1;
 }
 
 /* .trythis:hover { */
