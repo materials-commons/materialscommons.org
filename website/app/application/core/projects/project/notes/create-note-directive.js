@@ -27,6 +27,7 @@ function createNoteDirectiveController($scope, User, mcapi, projectState,
         projectState.delete(projectID, stateID);
         recent.gotoLast(projectID);
         $scope.model.createNote = false;
+        initializeState();
     };
 
     $scope.create = function () {
