@@ -9,16 +9,29 @@
                    ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
             </a>
         </div>
-        <div class="panel-body home-panel-body no-max-height">
-            <div class="no-content">
-                userguide
-                <div class="col-xs-6">
-                    <img class="img-responsive" src="assets/img/userguide/sidebar.png">
-                </div>
-                <div class="col-xs-6">
-                    Describe the sidebar here.
-                </div>
-            </div>
+        <div class="panel-body home-panel-body" style="overflow-y: auto;min-height:800px;">
+              <div>
+                  <ul class="list-group">
+                      <li ng-click="showNav = !showNav" class="list-group-item list-group-item-success">
+                          <i class=" fa fa-fw fa-bars"></i>
+                          <a>Nav bar</a>
+                          <div ng-show="showNav">
+                            Information about nav bar......
+                          </div>
+                      </li>
+                      <li class="list-group-item list-group-item-info"><i class=" fa fa-fw fa-briefcase"></i> <a>Project Task Bar</a></li>
+                      <li class="list-group-item list-group-item-warning"><i class=" fa fa-fw fa-home"></i> <a>Home Page</a></li>
+                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-comment-o"></i> <a>Reviews</a></li>
+                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-cubes"></i> Samples</li>
+                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-edit"></i> Notes</li>
+                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-code-fork"></i> Provenance</li>
+                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-copy"></i>File layout</li>
+                      <li class="list-group-item list-group-item-danger">  <i class=" fa fa-fw fa-plus"></i>How to create Review</li>
+                      <li class="list-group-item list-group-item-danger"><i class=" fa fa-fw fa-plus"></i> How to create Sample</li>
+                      <li class="list-group-item list-group-item-danger"><i class=" fa fa-fw fa-plus"></i> How to create Note</li>
+                      <li class="list-group-item list-group-item-danger"><i class=" fa fa-fw fa-plus"></i> How to create Provenance</li>
+                  </ul>
+              </div>
         </div>
     </div>
 </div>
