@@ -10,28 +10,104 @@
             </a>
         </div>
         <div class="panel-body home-panel-body" style="overflow-y: auto;min-height:800px;">
-              <div>
-                  <ul class="list-group">
-                      <li ng-click="showNav = !showNav" class="list-group-item list-group-item-success">
-                          <i class=" fa fa-fw fa-bars"></i>
-                          <a>Nav bar</a>
-                          <div ng-show="showNav">
+            <div>
+                <ul class="list-group">
+                    <li ng-click="showNav = !showNav" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-bars"></i>
+                        <a>Nav bar</a>
+
+                        <div style="padding-top: 20px;" ng-show="showNav">
+                            <img class="img-responsive" src="assets/img/userguide/navbar.png">
+                        </div>
+                    </li>
+                    <li  ng-click="showTaskbar = !showTaskbar" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-briefcase"></i>
+                        <a>Project Task Bar</a>
+
+                        <div style="padding-top: 20px;" ng-show="showTaskbar">
+                            <img class="img-responsive" src="assets/img/userguide/taskbar.png">
+                        </div>
+                    </li>
+                    <li  ng-click="showHome = !showHome"  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-home"></i> <a>Home Page</a>
+
+                        <div style="padding-top: 20px;" ng-show="showHome">
+                            <img class="img-responsive" src="assets/img/userguide/home.png">
+                        </div>
+                    </li>
+                    <li ng-click="showReviews = !showReviews" ng-class="{userguide_panel_active: showReviews}"  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-comment-o"></i> <a>Reviews</a>
+
+                        <div style="padding-top: 20px;"  ng-show="showReviews">
+                            <img class="img-responsive" src="assets/img/userguide/show-rev1.png">
+                            <p style="color: #000000;padding-top: 10px;">
+                                In earlier computing models, e.g. in client-server, the load for the application was shared between code
+                                on the server and code installed on each client locally. In other words, an application had its own client program which served as its
+                                user interface and had to be separately installed on each user's persona
+                                l computer. An upgrade to the server-side code of the application would typic
+                                ally also require an upgrade to the client-side code installed on each user w
+                            </p>
+                            <img class="img-responsive" src="assets/img/userguide/show-rev2.png">
+                        </div>
+                    </li>
+                    <li ng-click="showSamples = !showSamples" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-cubes"></i> <a>Samples</a>
+
+                        <div ng-show="showSamples">
                             Information about nav bar......
-                          </div>
-                      </li>
-                      <li class="list-group-item list-group-item-info"><i class=" fa fa-fw fa-briefcase"></i> <a>Project Task Bar</a></li>
-                      <li class="list-group-item list-group-item-warning"><i class=" fa fa-fw fa-home"></i> <a>Home Page</a></li>
-                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-comment-o"></i> <a>Reviews</a></li>
-                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-cubes"></i> Samples</li>
-                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-edit"></i> Notes</li>
-                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-code-fork"></i> Provenance</li>
-                      <li class="list-group-item list-group-item-success"><i class=" fa fa-fw fa-copy"></i>File layout</li>
-                      <li class="list-group-item list-group-item-danger">  <i class=" fa fa-fw fa-plus"></i>How to create Review</li>
-                      <li class="list-group-item list-group-item-danger"><i class=" fa fa-fw fa-plus"></i> How to create Sample</li>
-                      <li class="list-group-item list-group-item-danger"><i class=" fa fa-fw fa-plus"></i> How to create Note</li>
-                      <li class="list-group-item list-group-item-danger"><i class=" fa fa-fw fa-plus"></i> How to create Provenance</li>
-                  </ul>
-              </div>
+                        </div>
+                    </li>
+                    <li ng-click="showNotes = !showNotes" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-edit"></i> <a>Notes</a>
+
+                        <div ng-show="showNotes">
+                            Information about nav bar......
+                        </div>
+                    </li>
+                    <li ng-click="showProvenance = !showProvenance" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-code-fork"></i> <a>Provenance</a>
+
+                        <div ng-show="showProvenance">
+                            Information about nav bar......
+                        </div>
+                    </li>
+                    <li ng-click="showFile = !showFile" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-copy"></i><a>File layout</a>
+
+                        <div ng-show="showFile">
+                            Information about nav bar......
+                        </div>
+                    </li>
+                    <li ng-click="createReview = !createReview" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Review</a>
+
+                        <div ng-show="createReview">
+                            Information about nav bar......
+                        </div>
+                    </li>
+                    <li ng-click="createSample = !createSample" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Sample</a>
+
+                        <div ng-show="createSample">
+                            Information about nav bar......
+                        </div>
+                    </li>
+                    <li ng-click="createNote = !createNote" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Note</a>
+
+                        <div ng-show="createNote">
+                            Information about nav bar......
+                        </div>
+                    </li>
+                    <li ng-click="createProv = !createProv" class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Provenance</a>
+
+                        <div ng-show="createProv">
+                            Information about nav bar......
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

@@ -52,7 +52,7 @@ Application.Services.factory('Review',
                 var count = 0;
                 //Currently we have only one Assigned To . Later this should change to an array.
                 review.messages.forEach(function (msg) {
-                    if (msg.who === review.author) {
+                    if (msg.who === review.assigned_to) {
                         count++;
                     }
                 });

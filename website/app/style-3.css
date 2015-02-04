@@ -2136,3 +2136,7 @@ input[type="checkbox"]:focus {
 .loading-panel center h4 {
   color: white;
 }
+
+.userguide_panel_active{
+  background-color: #d9ffc4;
+}
