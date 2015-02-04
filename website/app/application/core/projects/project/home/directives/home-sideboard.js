@@ -26,6 +26,14 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
 
     }
 
+    $scope.toggleExpanded = function() {
+        ui.toggleIsExpanded($scope.project.id, "sideboard");
+    };
+
+    $scope.isExpanded = function() {
+        return ui.isExpanded($scope.project.id, "sideboard");
+    };
+
     $scope.minimize = function() {
         ui.togglePanelState('sideboard', $scope.project.id);
     };
@@ -52,5 +60,4 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
             }
         }
     };
-
 }
