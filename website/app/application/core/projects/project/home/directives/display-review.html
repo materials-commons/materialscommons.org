@@ -1,33 +1,35 @@
 <div>
-    <span class="pointer"
-          ng-click="review.showDetails = !review.showDetails">
-        <i class="fa fa-fw"
-           ng-class="{'fa-caret-right': !review.showDetails, 'fa-caret-down': review.showDetails}"></i>
-        {{review.title | truncate:25:'...':true}}
-    </span>
+    <div ui-draggable="true" drag="review">
+        <span class="pointer"
+              ng-click="review.showDetails = !review.showDetails">
+            <i class="fa fa-fw"
+               ng-class="{'fa-caret-right': !review.showDetails, 'fa-caret-down': review.showDetails}"></i>
+            {{review.title | truncate:25:'...':true}}
+        </span>
 
-    <span class="pull-right">
-        <a ng-if="showSideboard"
-           ng-click="addToSideboard(review, $event)"
-           id="{{review.id}}">
-            <i class="fa fa-fw fa-clipboard inactive"></i>
-        </a>
-        <a ng-if="!showSideboard"  ng-click="remove(review, $event)">
-            <i class="fa fa-fw fa-close mc-danger"></i>
-        </a>
-        <i data-toggle="tooltip" data-placement="bottom"
-           title="{{review.messages.length}}"
-           class="pointer fa fa-fw"
-           ng-class="{'fa-comments-o': review.messages.length !== 0}">
-        </i>
-    </span>
+        <span class="pull-right">
+            <a ng-if="showSideboard"
+               ng-click="addToSideboard(review, $event)"
+               id="{{review.id}}">
+                <i class="fa fa-fw fa-clipboard inactive"></i>
+            </a>
+            <i data-toggle="tooltip" data-placement="bottom"
+               title="{{review.messages.length}}"
+               class="pointer fa fa-fw"
+               ng-class="{'fa-comments-o': review.messages.length !== 0}">
+            </i>
+            <a ng-if="!showSideboard"  ng-click="remove(review, $event)">
+                <i class="fa fa-fw fa-close mc-danger"></i>
+            </a>
+        </span>
 
-    <p>
-        <small style="padding-left: 10px;" class="text-muted">
-            {{review.messages[(review.messages.length -1)].who}} commented on
-            {{(review.messages[(review.messages.length -1)].date)}}
-        </small>
-    </p>
+        <p>
+            <small style="padding-left: 10px;" class="text-muted">
+                {{review.messages[(review.messages.length -1)].who}} commented on
+                {{(review.messages[(review.messages.length -1)].date)}}
+            </small>
+        </p>
+    </div>
     <div ng-if="review.showDetails">
         <div home-review-details review="review"></div>
     </div>

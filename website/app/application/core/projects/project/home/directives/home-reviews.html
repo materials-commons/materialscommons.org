@@ -33,8 +33,7 @@
             </li>
             <li class="home-item"
                 ng-class="{'open-item-details': review.showDetails}"
-                ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews"
-                ui-draggable="true" drag="review">
+                ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews">
                 <display-review review="review" show-sideboard="true"></display-review>
             </li>
             <li ng-show="reviews.length === 0" class="home-item">
