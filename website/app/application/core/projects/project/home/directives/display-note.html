@@ -1,17 +1,16 @@
-<div>
+<div style="margin-bottom: 3px;">
     <span ng-click="note.showDetails = !note.showDetails" style="cursor: pointer">
-        <i class="fa"
+        <i class="fa fa-fw"
            ng-class="{'fa-caret-right': !note.showDetails, 'fa-caret-down': note.showDetails}"></i>
-        {{note.title | truncate:25:'...':true}}
+        {{note.title | truncate:35:'...':true}}
     </span>
     <span class="pull-right">
         <a ng-click="addToSideboard(note, $event)" id="{{note.id}}">
             <i class="fa fa-fw fa-clipboard inactive"></i>
         </a>
-           <a ng-if="!showSideboard"  ng-click="remove(note, $event)">
-               <i class="fa fa-fw fa-close mc-danger"></i>
-           </a>
-        <i class="fa fa-fw"></i>
+        <a ng-if="!showSideboard"  ng-click="remove(note, $event)">
+            <i class="fa fa-fw fa-close mc-danger"></i>
+        </a>
         <i class="fa fa-fw"></i>
     </span>
 

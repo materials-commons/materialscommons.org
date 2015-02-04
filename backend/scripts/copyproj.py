@@ -23,6 +23,7 @@ def file_dir(path, fid):
     path = os.path.join(path, pieces[1][0:2], pieces[1][2:4])
     return path
 
+
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
@@ -73,6 +74,7 @@ if __name__ == "__main__":
         src_conv_path = os.path.join(src_dir, ".conversion", entry_id)
         if os.path.exists(src_conv_path):
             dest_conv_path = os.path.join(dest_dir, ".conversion", entry_id)
+            mkdirp(dest_conv_path)
             try:
                 shutil.copy(src_conv_path, dest_conv_path)
             except:
