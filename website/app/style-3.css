@@ -1664,8 +1664,13 @@ label {
   left: -12px;
 }
 
-.inactive {
+.tool-inactive {
   color: #8e8e8e;
+}
+
+.tool-active {
+  color: white;
+  opacity: .85;
 }
 
 .tab-active {
@@ -2134,5 +2139,11 @@ input[type="checkbox"]:focus {
 }
 
 .loading-panel center h4 {
+  color: white;
+}
+
+/* task-bar */
+
+.task-bar-tool:hover {
   color: white;
 }
