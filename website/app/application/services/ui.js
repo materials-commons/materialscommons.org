@@ -1,7 +1,7 @@
-Application.Services.factory('ui', ["pubsub", uiService]);
+Application.Services.factory('ui', [uiService]);
 
 // uiService tracks various ui component states by project.
-function uiService(pubsub) {
+function uiService() {
     var self = this;
     self.byProject = {};
 
@@ -18,8 +18,7 @@ function uiService(pubsub) {
                 processes: true,
                 calendar: false,
                 sideboard: false,
-                settings: false,
-                provwizard: false
+                settings: false
             },
             split: {
                 column1: false,
@@ -29,6 +28,7 @@ function uiService(pubsub) {
             emptySplitBoard: false
         };
     }
+
     // getForProject returns a ui state for a project. It
     // creates the project entry if it doesn't exist.
     function getForProject(projectID) {
@@ -120,7 +120,8 @@ function uiService(pubsub) {
                 notes: true,
                 processes: true,
                 calendar: false,
-                sideboard: false
+                sideboard: false,
+                settings: false
             };
         },
 
@@ -154,12 +155,13 @@ function uiService(pubsub) {
                 }
                 hidePanels(projectID, what);
             }
-
         },
+
         getColumn: function (col, projectID) {
             var proj = getForProject(projectID);
             return proj.split[col];
         },
+
         getEmptySplitStatus: function (projectID) {
             var proj = getForProject(projectID);
             return proj.emptySplitBoard;
@@ -178,6 +180,5 @@ function uiService(pubsub) {
         showPanelByCalendarEvent: function(what, projectID){
             hidePanels(projectID, what);
         }
-
     };
 }

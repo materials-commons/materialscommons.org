@@ -1,10 +1,11 @@
 Application.Controllers.controller('projectProvenanceDrafts',
                                    ["$scope", "$stateParams", "project", "projectState",
                                     "model.templates", "Restangular", "User", "$state",
+                                    "pubsub",
                                     projectProvenanceDrafts]);
 
 function projectProvenanceDrafts($scope, $stateParams, project, projectState,
-                                 Templates, Restangular, User, $state) {
+                                 Templates, Restangular, User, $state, pubsub) {
     var templates = null;
     $scope.drafts = project.drafts;
 
@@ -42,6 +43,7 @@ function projectProvenanceDrafts($scope, $stateParams, project, projectState,
         Restangular.one("drafts", $scope.drafts[index].id)
             .remove({apikey: User.apikey()}).then(function() {
                 $scope.drafts.splice(index, 1);
+                pubsub.send("processes.change");
             });
     };
 
