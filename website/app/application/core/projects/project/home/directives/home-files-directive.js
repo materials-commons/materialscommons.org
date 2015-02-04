@@ -16,10 +16,12 @@ Application.Controllers.controller("homeFilesDirectiveController",
 function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
                                       $filter, mcapi) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
+
     // Root is name of project. Have it opened by default.
     f.showDetails = true;
     $scope.files = [f];
     $scope.files.showDetails = true;
+
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "files");
     };
