@@ -18,7 +18,9 @@ function uiService() {
                 processes: true,
                 calendar: false,
                 sideboard: false,
-                settings: false
+                settings: false,
+                provwizard: false,
+                drafts: false
             },
             split: {
                 column1: false,
@@ -106,6 +108,11 @@ function uiService() {
             proj.panels[what] = !proj.panels[what];
         },
 
+        setPanelState: function(what, projectID, to) {
+            var proj = getForProject(projectID);
+            proj.panels[what] = to;
+        },
+
         showPanel: function (what, projectID) {
             var proj = getForProject(projectID);
             return proj.panels[what];
@@ -121,7 +128,9 @@ function uiService() {
                 processes: true,
                 calendar: false,
                 sideboard: false,
-                settings: false
+                settings: false,
+                provwizard: false,
+                drafts: false
             };
         },
 
