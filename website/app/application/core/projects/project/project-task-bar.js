@@ -35,10 +35,32 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         ui.togglePanelState(panel, $scope.project.id);
     };
 
+    $scope.openDrafts = function() {
+        ui.togglePanelState("drafts", $scope.project.id);
+        if (ui.showPanel('drafts', $scope.project.id)) {
+            // Activating drafts. Provwizard shares this ui-view
+            // so set it to inactive;
+            ui.setPanelState("provwizard", $scope.project.id, false);
+            $state.go("projects.project.home.drafts");
+        } else {
+            // Deactivating the wizard
+            $state.go("projects.project.home");
+        }
+    };
+
     $scope.openProvWizard = function() {
-        var state = null;
-        var stateID = projectState.add($scope.project.id, state);
-        $state.go("projects.project.home.provenance", {sid: stateID});
+        ui.togglePanelState('provwizard', $scope.project.id);
+        if (ui.showPanel('provwizard', $scope.project.id)) {
+            // Activating the wizard. Drafts shares this ui-view
+            // so set it to inactive.
+            ui.setPanelState("drafts", $scope.project.id, false);
+            var state = null;
+            var stateID = projectState.add($scope.project.id, state);
+            $state.go("projects.project.home.provenance", {sid: stateID});
+        } else {
+            // Deactivating the wizard
+            $state.go("projects.project.home");
+        }
     };
 
     $scope.mcuser = User.attr();
