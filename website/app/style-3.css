@@ -983,6 +983,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   padding-left: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
+  padding-right: 15px;
 }
 
 .add-item {
@@ -1662,6 +1663,10 @@ label {
   position: relative;
   top: -15px;
   left: -12px;
+}
+
+.inactive {
+  color: #8e8e8e;
 }
 
 .tool-inactive {

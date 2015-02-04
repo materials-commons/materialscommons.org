@@ -19,9 +19,11 @@ function displayNoteDirectiveController($scope, sideboard, current, pubsub, togg
     $scope.addToSideboard = function(note, event) {
         sideboard.handleFromEvent(current.projectID(), note, event, 'sideboard');
     };
+
     $scope.remove = function (note, event) {
         sideboard.handleFromEvent(current.projectID(), note, event, 'sideboard');
     };
+
     $scope.bk = {
         addToReview: false
     };

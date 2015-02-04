@@ -32,7 +32,7 @@
                 <create-note model="model"></create-note>
             </li>
             <li class="home-item"
-                ng-class="{'open-item-details': showDetails($index)}"  ui-draggable="true" drag="note"
+                ng-class="{'open-item-details': showDetails($index)}"
                 ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                 <display-note note="note" show-sideboard="true"></display-note>
             </li>
