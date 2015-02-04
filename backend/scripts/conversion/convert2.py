@@ -8,7 +8,7 @@ import rethinkdb as r
 from optparse import OptionParser
 import os
 import os.path
-# import magic
+import magic
 import sys
 import mimetypes
 
@@ -78,7 +78,9 @@ def add_mediatypes(conn, mcdir):
     # Determine media types for files
     # and update the statistics for the
     # types in the project
+    file_count = r.table("datafiles").count().run(conn)
     projects = list(r.table('projects').run(conn))
+    print "Process %d files" % (file_count)
     for project in projects:
         msg("  Determining mediatypes for project %s" % (project['name']))
         mediatypes = {}
@@ -91,8 +93,12 @@ def add_mediatypes(conn, mcdir):
         # for each file in each directory determine its
         # mediatype. Update the file entry, and track
         # the count of different file mediatypes.
+        fcount = 0
         for d in datadirs:
             for f in d['datafiles']:
+                fcount = fcount+1
+                if fcount % 1000 == 0:
+                    print "Processed %d of %d files" % (fcount, file_count)
                 df = r.table('datafiles').get(f['id'])\
                                          .run(conn, time_format='raw')
                 dfid = df['id']
@@ -102,12 +108,12 @@ def add_mediatypes(conn, mcdir):
                 mime, ignore = mimetypes.guess_type(df["name"], strict=False)
                 description = None
                 if mime is None:
-                    msg("mimetypes couldn't guess type for %s" % (df["name"]))
+                    # msg("mimetypes couldn't guess type for %s" % (df["name"]))
                     path = datafile_path(mcdir, dfid)
                     if not os.path.isfile(path):
                         mime = "unknown"
                         description = "Unknown"
-                        msg("file not found: %s" % (path))
+                        # msg("file not found: %s" % (path))
                     else:
                         mime = magic.from_file(path, mime=True)
 
@@ -174,6 +180,8 @@ def load_tags(conn):
                         .run(conn))
         for project in projects:
             tags = []
+            if 'tags' not in user['preferences']:
+                continue
             for tag in user["preferences"]["tags"]:
                 tags.append({
                     "name": tag["name"],
@@ -260,12 +268,12 @@ def admin_users(conn):
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    # delete_tag_table_entries(conn)
-    # load_sample2item(conn)
-    # delete_tag_table_entries(conn)
-    # load_tags(conn)
+    delete_tag_table_entries(conn)
+    load_sample2item(conn)
+    delete_tag_table_entries(conn)
+    load_tags(conn)
     drop_unused_tables(conn)
-    # add_mediatypes(conn, mcdir)
+    add_mediatypes(conn, mcdir)
     update_mtime_samples(conn)
     build_datadir2datafile(conn)
     admin_users(conn)
