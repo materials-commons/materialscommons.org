@@ -10,9 +10,9 @@ function homeReviewDetailsDirective() {
 }
 
 Application.Controllers.controller("homeReviewsDetailsDirectiveController",
-    ["$scope", "Review", "current","$filter",
+    ["$scope", "Review", "current",
         homeReviewsDetailsDirectiveController]);
-function homeReviewsDetailsDirectiveController($scope, Review, current, $filter) {
+function homeReviewsDetailsDirectiveController($scope, Review, current) {
     $scope.addComment1 = function (review) {
         Review.addComment($scope.model, review);
         $scope.model.addComment = false;
@@ -22,18 +22,18 @@ function homeReviewsDetailsDirectiveController($scope, Review, current, $filter)
         Review.closeReview(rev.id, current.project());
     };
 
-    $scope.filterMessagesByWho = function(filter_by){
+    $scope.filterMessagesByWho = function (filter_by) {
         $scope.model.filter_by = filter_by;
     };
 
-    $scope.clearMessageFilter = function(){
+    $scope.clearMessageFilter = function () {
         $scope.model.filter_by = '';
     };
 
     $scope.model = {
         comment: '',
         count: Review.countMessages($scope.review),
-        addComment : false,
+        addComment: false,
         filter_by: ''
     };
     $scope.clearMessageFilter();
