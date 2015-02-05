@@ -12,9 +12,9 @@
         <div class="panel-body home-panel-body" style="overflow-y: auto;min-height:800px;">
             <div>
                 <ul class="list-group">
-                    <li ng-click="showNav = !showNav" class="list-group-item list-group-item">
+                    <li  class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-bars"></i>
-                        <a>Nav bar</a>
+                        <a ng-click="showNav = !showNav">Nav bar</a>
 
                         <div style="padding-top: 20px;" ng-show="showNav">
                             <img class="img-responsive" src="assets/img/userguide/navbar.png">
@@ -27,9 +27,9 @@
                             </p>
                         </div>
                     </li>
-                    <li ng-click="showTaskbar = !showTaskbar" class="list-group-item list-group-item">
+                    <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-briefcase"></i>
-                        <a>Project Task Bar</a>
+                        <a ng-click="showTaskbar = !showTaskbar" >Project Task Bar</a>
 
                         <div style="padding-top: 20px;" ng-show="showTaskbar">
                             <img class="img-responsive" src="assets/img/userguide/projectbar.png">
@@ -38,16 +38,16 @@
                             </p>
                         </div>
                     </li>
-                    <li ng-click="showHome = !showHome" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-home"></i> <a>Home Page</a>
+                    <li  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-home"></i> <a ng-click="showHome = !showHome">Home Page</a>
 
                         <div style="padding-top: 20px;" ng-show="showHome">
                             <img class="img-responsive" src="assets/img/userguide/home.png">
                         </div>
                     </li>
-                    <li ng-click="showReviews = !showReviews" ng-class="{userguide_panel_active: showReviews}"
+                    <li  ng-class="{userguide_panel_active: showReviews}"
                         class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-comment-o"></i> <a>Reviews</a>
+                        <i class=" fa fa-fw fa-comment-o"></i> <a ng-click="showReviews = !showReviews">Reviews</a>
 
                         <div style="padding-top: 20px;" ng-show="showReviews">
                             <img class="img-responsive" src="assets/img/userguide/show-rev1.png">
@@ -64,57 +64,57 @@
                             <img class="img-responsive" src="assets/img/userguide/show-rev2.png">
                         </div>
                     </li>
-                    <li ng-click="showSamples = !showSamples" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-cubes"></i> <a>Samples</a>
+                    <li  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
 
                         <div ng-show="showSamples">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li ng-click="showNotes = !showNotes" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-edit"></i> <a>Notes</a>
+                    <li  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-edit"></i> <a ng-click="showNotes = !showNotes">Notes</a>
 
                         <div ng-show="showNotes">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li ng-click="showProvenance = !showProvenance" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-code-fork"></i> <a>Provenance</a>
+                    <li class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-code-fork"></i> <a ng-click="showProvenance = !showProvenance">Provenance</a>
 
                         <div ng-show="showProvenance">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li ng-click="showFile = !showFile" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-copy"></i><a>File layout</a>
+                    <li  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">File layout</a>
 
                         <div ng-show="showFile">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li ng-click="createReview = !createReview" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Review</a>
+                    <li  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createReview = !createReview">How to create Review</a>
 
                         <div ng-show="createReview">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li ng-click="createSample = !createSample" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Sample</a>
+                    <li  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createSample = !createSample">How to create Sample</a>
 
                         <div ng-show="createSample">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li ng-click="createNote = !createNote" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Note</a>
+                    <li class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a  ng-click="createNote = !createNote">How to create Note</a>
 
                         <div ng-show="createNote">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li ng-click="createProv = !createProv" class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a>How to create Provenance</a>
+                    <li  class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createProv = !createProv">How to create Provenance</a>
 
                         <div ng-show="createProv">
                             Information about nav bar......
