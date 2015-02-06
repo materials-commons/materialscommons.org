@@ -44,10 +44,10 @@ function start_servers()
         fi
     fi
 
-    R=$(is_running "mcfs" "db-connect=localhost:$MCDB_PORT")
+    R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
     if [ "$R" = "" ]; then
-        echo "  Starting mcfs..."
-        mcfs --bind=0.0.0.0 --server-port=${MCFS_PORT} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" > /tmp/mcfs.out.${SERVERTYPE} 2>&1&
+        echo "  Starting mcstored..."
+        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" > /tmp/mcstored.out.${SERVERTYPE} 2>&1&
     fi
 
     if [ $TESTSERVER = "u" ]; then
@@ -74,9 +74,9 @@ function stop_servers()
         kill $line
     done
 
-    MCFS_PID=$(ps -eo "pid,command" | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$MCFS_PID" != "" ]; then
-        kill $MCFS_PID
+    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCSTORED_PID" != "" ]; then
+        kill $MCSTORED_PID
     fi
 
     if [ $TESTSERVER = "u" ]; then
@@ -99,8 +99,8 @@ function status_servers()
     echo "MCAPI Server (production):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCFS Server (production):"
-    ps -ef | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo "MCSTORED Server (production):"
+    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
     echo ======================================================
     echo
@@ -112,8 +112,8 @@ function status_servers()
     echo "MCAPI Server (test/unit):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCFS Server (test/unit):"
-    ps -ef | grep mcfs | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo "MCSTORED Server (test/unit):"
+    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     if [ $(hostname) != "materialscommons" ]; then
         echo
         echo "Webserver (test/unit):"
