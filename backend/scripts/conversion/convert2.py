@@ -80,6 +80,7 @@ def add_mediatypes(conn, mcdir):
     # types in the project
     file_count = r.table("datafiles").count().run(conn)
     projects = list(r.table('projects').run(conn))
+    fcount = 0
     print "Process %d files" % (file_count)
     for project in projects:
         msg("  Determining mediatypes for project %s" % (project['name']))
@@ -93,7 +94,6 @@ def add_mediatypes(conn, mcdir):
         # for each file in each directory determine its
         # mediatype. Update the file entry, and track
         # the count of different file mediatypes.
-        fcount = 0
         for d in datadirs:
             for f in d['datafiles']:
                 fcount = fcount+1
