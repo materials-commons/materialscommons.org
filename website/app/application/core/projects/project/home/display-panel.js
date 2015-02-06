@@ -17,7 +17,7 @@ Application.Controllers.controller("displayPanelDirectiveController",
 function displayPanelDirectiveController($scope, ui) {
     $scope.show = function (panel) {
         var expanded = ui.anyExpandedExcept($scope.project.id, panel);
-        var isShowing = ui.showPanel(panel, $scope.project.id);
+        var isShowing = ui.showPanel($scope.project.id, panel);
         if (!isShowing) {
             // If user is not showing this item then return false
             return isShowing;

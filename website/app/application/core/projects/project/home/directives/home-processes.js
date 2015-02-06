@@ -44,19 +44,17 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
     };
 
     $scope.minimize = function() {
-        ui.togglePanelState('processes', $scope.project.id);
+        ui.togglePanelState($scope.project.id, 'processes');
     };
 
-
-
-    $scope.createProvenance = function() {
+    $scope.createProcess = function() {
         var state = null;
         var stateID = projectState.add($scope.project.id, state);
-        $state.go("projects.project.provenance.create", {sid: stateID});
+        $state.go("projects.project.home.provenance", {sid: stateID});
     };
 
     $scope.splitScreen = function(what, col){
-        ui.toggleColumns(what, col, $scope.project.id);
+        ui.toggleColumns($scope.project.id, what, col);
     };
 
     $scope.isSplitExpanded = function () {

@@ -5,7 +5,7 @@
          Samples
             ({{samples.length}})
         </span>
-        <span class="pull-right bar-control">
+        <span ng-if="false" class="pull-right bar-control">
             <a ng-click="splitScreen('samples', 'column2')">
                 <i class="fa fa-fw"
                    ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
@@ -21,8 +21,8 @@
         <input type="text" ng-model="search.name"
                placeholder="Search samples..." class="pull-right col-xs-4">
         <span class="add-item pull-right">
-            <a ng-click="createSample()"  tooltip="Add Sample">
-                <i class="fa fa-plus"></i>
+            <a ng-click="createSample()" title="Add Sample">
+                <i class="fa fa-fw fa-plus"></i>
             </a>
         </span>
     </div>

@@ -27,7 +27,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     $scope.minimize = function() {
-        ui.togglePanelState('files', $scope.project.id);
+        ui.togglePanelState($scope.project.id, 'files')
     };
 
     $scope.isExpanded = function() {
@@ -35,7 +35,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     $scope.splitScreen = function(what, col){
-        ui.toggleColumns(what, col, $scope.project.id);
+        ui.toggleColumns($scope.project.id, what, col)
     };
 
     $scope.isSplitExpanded = function () {

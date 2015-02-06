@@ -4,15 +4,15 @@ Application.Controllers.controller('projectHome',
 function projectHome($scope, project, ui) {
 
     $scope.column1 = [
-        "reviews",
+        "processes",
         "files"
     ];
 
     $scope.column2 = [
         "sideboard",
         "samples",
-        "notes",
-        "processes"
+        "reviews",
+        "notes"
     ];
 
     $scope.onDropColumn1 = function(target, source) {
@@ -56,15 +56,15 @@ function projectHome($scope, project, ui) {
     };
 
     $scope.showPanel = function(what) {
-        return ui.showPanel(what, project.id);
+        return ui.showPanel(project.id, what);
     };
 
     $scope.isMinimized = function(panel) {
-        return !ui.showPanel(panel, project.id);
+        return !ui.showPanel(project.id, panel);
     };
 
     $scope.openPanel = function(panel) {
-        ui.togglePanelState(panel, project.id);
+        ui.togglePanelState(project.id, panel);
     };
 
     $scope.isExpandedInColumn = function (what) {
@@ -78,7 +78,7 @@ function projectHome($scope, project, ui) {
     };
 
     $scope.isColumnActive = function(column){
-        return ui.getColumn(column,  $scope.project.id);
+        return ui.getColumn($scope.project.id, column);
     };
 
     $scope.isEmptySplitBoard = function(){

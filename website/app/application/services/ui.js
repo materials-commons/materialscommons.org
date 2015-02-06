@@ -103,17 +103,17 @@ function uiService() {
             proj.expanded[what] = !getIsExpanded(projectID, what);
         },
 
-        togglePanelState: function (what, projectID) {
+        togglePanelState: function (projectID, what) {
             var proj = getForProject(projectID);
             proj.panels[what] = !proj.panels[what];
         },
 
-        setPanelState: function(what, projectID, to) {
+        setPanelState: function(projectID, what, to) {
             var proj = getForProject(projectID);
             proj.panels[what] = to;
         },
 
-        showPanel: function (what, projectID) {
+        showPanel: function (projectID, what) {
             var proj = getForProject(projectID);
             return proj.panels[what];
         },
@@ -139,7 +139,7 @@ function uiService() {
         //And hide all other panels except for reviews.And col3 will have sideboard open.
         //Eg: 2  If 'what=sideboard', 'col=column3"
         // hide all panels except sideboard in column2. Along with that open empty sideboard in column 3
-        toggleColumns: function (what, col, projectID) {
+        toggleColumns: function (projectID, what, col) {
             var proj = getForProject(projectID);
             var splitStatus = this.getSplitStatus(projectID);
             if (splitStatus) {
@@ -166,7 +166,7 @@ function uiService() {
             }
         },
 
-        getColumn: function (col, projectID) {
+        getColumn: function (projectID, col) {
             var proj = getForProject(projectID);
             return proj.split[col];
         },
@@ -186,7 +186,7 @@ function uiService() {
             }
         },
 
-        showPanelByCalendarEvent: function(what, projectID){
+        showPanelByCalendarEvent: function(projectID, what){
             hidePanels(projectID, what);
         }
     };

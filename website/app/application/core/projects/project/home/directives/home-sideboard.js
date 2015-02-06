@@ -23,7 +23,6 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
     } else {
         result = sideboard.get($scope.project.id);
         $scope.sideboard = result.sideboard;
-
     }
 
     $scope.toggleExpanded = function() {
@@ -35,11 +34,12 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
     };
 
     $scope.minimize = function() {
-        ui.togglePanelState('sideboard', $scope.project.id);
+        ui.togglePanelState($scope.project.id, 'sideboard');
     };
 
     $scope.splitScreen = function (what, col) {
-        ui.toggleColumns(what, col, $scope.project.id);
+        ui.toggleColumns($scope.project.id, what, col);
+        ui.toggleIsExpanded($scope.project.id, "sideboard");
     };
 
     $scope.isSplitExpanded = function () {
@@ -56,7 +56,6 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
             // If item is already in list then don't add it again.
             if (i === -1) {
                 sideboard.handleFromEvent($scope.project.id, item, event, 'sideboard');
-
             }
         }
     };

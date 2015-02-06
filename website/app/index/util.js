@@ -5,6 +5,7 @@ function isImage(mime) {
     case "image/png":
     case "image/tiff":
     case "image/x-ms-bmp":
+    case "image/bmp":
         return true;
     default:
         return false;
@@ -21,7 +22,7 @@ function numberWithCommas(n) {
 }
 
 function bytesToSizeStr(bytes) {
-    if(bytes == 0) return '0 Byte';
+    if(bytes === 0) return '0 Byte';
     var k = 1000;
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     var i = Math.floor(Math.log(bytes) / Math.log(k));

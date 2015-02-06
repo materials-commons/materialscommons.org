@@ -5,7 +5,7 @@
             Reviews
             ({{(project.reviews | byKey: 'status': 'open').length}})
         </span>
-        <span class="pull-right bar-control">
+        <span ng-if="false" class="pull-right bar-control">
             <a ng-click="splitScreen('reviews', 'column1')">
                 <i class="fa fa-fw"
                    ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
@@ -21,7 +21,7 @@
         <input type="text" ng-model="search" class="pull-right col-xs-4"
                placeholder="Search reviews...">
         <span class="add-item pull-right">
-            <a ng-click="createReview()" tooltip="Add Review">
+            <a ng-click="createReview()" title="Add Review">
                 <i class="fa fa-fw fa-plus"></i>
             </a>
         </span>

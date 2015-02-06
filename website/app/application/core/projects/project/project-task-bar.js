@@ -23,24 +23,68 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         $state.go("projects.project.home", {id: project.id});
     };
 
+    var panels = [
+        "processes",
+        "files",
+        "samples",
+        "reviews",
+        "notes",
+        "sideboard"
+    ];
+
+    function setAllPanels(to, current) {
+        panels.forEach(function(panel) {
+            if (current != panel) {
+                ui.setIsExpanded($scope.project.id, panel, to);
+                ui.setPanelState($scope.project.id, panel, to);
+            }
+        });
+    }
+
+    function showAllPanels() {
+        panels.forEach(function(panel) {
+            if (panel !== "sideboard") {
+                ui.setIsExpanded($scope.project.id, panel, false);
+                ui.setPanelState($scope.project.id, panel, true);
+            }
+        });
+    }
+
     $scope.isMinimized = function(panel) {
-        return !ui.showPanel(panel, $scope.project.id);
+        return !ui.showPanel($scope.project.id, panel);
     };
 
     $scope.showPanel = function(panel) {
-        return ui.showPanel(panel, $scope.project.id);
+        return ui.showPanel($scope.project.id, panel);
     };
 
     $scope.openPanel = function(panel) {
-        ui.togglePanelState(panel, $scope.project.id);
+        ui.togglePanelState($scope.project.id, panel);
+    };
+
+    $scope.isActive = function(panel) {
+        return ui.isExpanded($scope.project.id, panel);
+    };
+
+    $scope.toggleExpanded = function(panel) {
+        setAllPanels(false, panel);
+        ui.toggleIsExpanded($scope.project.id, panel);
+        if (!ui.showPanel($scope.project.id, panel) && ui.isExpanded($scope.project.id, panel)) {
+            ui.setPanelState($scope.project.id, panel, true);
+        } else if (!ui.isExpanded($scope.project.id, panel)) {
+            showAllPanels();
+            if (panel === "sideboard") {
+                ui.setPanelState($scope.project.id, panel, false);
+            }
+        }
     };
 
     $scope.openDrafts = function() {
-        ui.togglePanelState("drafts", $scope.project.id);
-        if (ui.showPanel('drafts', $scope.project.id)) {
+        ui.togglePanelState($scope.project.id, "drafts");
+        if (ui.showPanel($scope.project.id, "drafts")) {
             // Activating drafts. Provwizard shares this ui-view
             // so set it to inactive;
-            ui.setPanelState("provwizard", $scope.project.id, false);
+            ui.setPanelState($scope.project.id, "provwizard", false);
             $state.go("projects.project.home.drafts");
         } else {
             // Deactivating the wizard
@@ -49,11 +93,11 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     };
 
     $scope.openProvWizard = function() {
-        ui.togglePanelState('provwizard', $scope.project.id);
-        if (ui.showPanel('provwizard', $scope.project.id)) {
+        ui.togglePanelState($scope.project.id, "provwizard");
+        if (ui.showPanel($scope.project.id, "provwizard")) {
             // Activating the wizard. Drafts shares this ui-view
             // so set it to inactive.
-            ui.setPanelState("drafts", $scope.project.id, false);
+            ui.setPanelState($scope.project.id, "drafts", false);
             var state = null;
             var stateID = projectState.add($scope.project.id, state);
             $state.go("projects.project.home.provenance", {sid: stateID});
