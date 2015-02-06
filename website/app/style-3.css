@@ -1048,6 +1048,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .85;
 }
 
+.btn-samples-active,
 .btn-samples:hover {
   background-color: #f0ad4e;
   opacity: 1;
@@ -1063,6 +1064,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .75;
 }
 
+.btn-reviews-active,
 .btn-reviews:hover {
   background-color: #4884b8;
   opacity: .90;
@@ -1082,6 +1084,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .70;
 }
 
+.btn-notes-active,
 .btn-notes:hover {
   background-color: #3ea7a0;
   opacity: .90;
@@ -1097,6 +1100,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .75;
 }
 
+.btn-files-active,
 .btn-files:hover {
   background-color: #7c699f;
   opacity: .90;
@@ -1112,6 +1116,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .75;
 }
 
+.btn-sideboard-active,
 .btn-sideboard:hover {
   background-color: #757575;
   opacity: .90;
@@ -1127,6 +1132,7 @@ h4, .h4, h5, .h5, h6, .h6 {
   opacity: .85;
 }
 
+.btn-processes-active,
 .btn-processes:hover {
   background-color: #e26a6a;
   opacity: 1;

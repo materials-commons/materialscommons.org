@@ -21,7 +21,7 @@ function homeReviewsDirectiveController ($scope, ui, sideboard) {
     });
 
     $scope.minimize = function() {
-        ui.togglePanelState('reviews', $scope.project.id);
+        ui.togglePanelState($scope.project.id, 'reviews');
     };
 
     $scope.toggleExpanded = function() {
@@ -41,7 +41,7 @@ function homeReviewsDirectiveController ($scope, ui, sideboard) {
     };
 
     $scope.splitScreen = function(what, col){
-        ui.toggleColumns(what, col, $scope.project.id);
+        ui.toggleColumns($scope.project.id, what, col);
     };
 
     $scope.isSplitExpanded = function () {
