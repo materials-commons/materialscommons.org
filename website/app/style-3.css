@@ -2137,6 +2137,6 @@ input[type="checkbox"]:focus {
   color: white;
 }
 
-.userguide_panel_active{
-  background-color: #d9ffc4;
+.userguide-item{
+  background-color: grey;
 }
