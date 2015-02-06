@@ -12,109 +12,190 @@
         <div class="panel-body home-panel-body" style="overflow-y: auto;min-height:800px;">
             <div>
                 <ul class="list-group">
-                    <li  class="list-group-item list-group-item">
+                    <li class="list-group-item">
                         <i class=" fa fa-fw fa-bars"></i>
                         <a ng-click="showNav = !showNav">Nav bar</a>
 
                         <div style="padding-top: 20px;" ng-show="showNav">
-                            <img class="img-responsive" src="assets/img/userguide/navbar.png">
-                            <p style="padding:10px;">
-                                Under the navbar you can: <br>
-                                1. Change your password. <br>
-                                2. Change your username. <br>
-                                3. Customize the templates for provenance creation. <br>
-                                4. Reset your apikey.   <br>
+                            <h4 class="text-center">Navigation Bar</h4>
+
+                            <b>Navigation:</b>
+
+                            <p>MaterialsCommons navigation bar helps user to navigate between global pages.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/navbar1.png">
+                            </div>
+                            <b>Settings:</b>
+
+                            <p>Apart from navigation user can also update Username, password, customize templates
+                                and reset apikey.
                             </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/navbar1.1.png">
+                            </div>
+                            <b>Global Reviews:</b>
+
+                            <p>Global reviews section will show you all the reviews irrespective of what project you are
+                                in.
+                                Global reviews are categorized into 2 types. 1) Requested 2) To Conduct.
+                                Requested reviews are the reviews you have created and assigned to other users.
+                                Whereas To Conduct reviews are the reviews which are assigned to you by other users.
+                                Detailed information about the reviews are discussed in reviews section.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/navbar1.2.png">
+                            </div>
                         </div>
                     </li>
-                    <li class="list-group-item list-group-item">
+                    <li class="list-group-item">
                         <i class=" fa fa-fw fa-briefcase"></i>
-                        <a ng-click="showTaskbar = !showTaskbar" >Project Task Bar</a>
+                        <a ng-click="showTaskbar = !showTaskbar">Project Bar</a>
 
                         <div style="padding-top: 20px;" ng-show="showTaskbar">
-                            <img class="img-responsive" src="assets/img/userguide/projectbar.png">
-                            <p style="padding:10px;">
-                               You can switch between the existing projects or create a new project.
+                            <h4 class="text-center">Project Bar</h4>
+                            <b>Switch Projects</b>
+
+                            <p>Projects task bar indicates total number of projects user is associated with. Also
+                                user can switch between projects.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/projectbar.png">
+                            </div>
+                            <b>Create New Project</b>
+
+                            <p>To Create a new project click on the drop-down menu and select button called "New
+                                Project" and enter the new project name.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/projectbar1.1.png">
+                            </div>
+
+                            <p>
+                                Bottom of the project taskbar has icons for 1) Project Setting 2) Calendar 3) Panels
+                            </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/projectbar1.2.png">
+                            </div>
+                            <b>Project Settings</b>
+
+                            <p>Project settings help project owner to give permission/access to view their project.
+                                Owner can add/remove the users depending on with whom he/she wanted to share
+                                their project. Currently When a project is shared everything inside the project is
+                                shared.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/projectbar1.3.png">
+                            </div>
+                            <b>Calendar</b>
+
+                            <p>
+                                Calendar helps user to keep track of the items created and how
+                                many of them were created. You can click on a particular day to filter out all the items
+                                created/updated on that day.
+                            </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/projectbar1.4.png">
+                            </div>
+                            <b>Panels</b>
+
+                            <p> Panels refer to sideboard, Reviews, Files, Samples, Notes, Processes.
+                                More information about these panels are discussed under
+                                respective sections of userguide.
                             </p>
                         </div>
                     </li>
-                    <li  class="list-group-item list-group-item">
+                    <li class="list-group-item">
                         <i class=" fa fa-fw fa-home"></i> <a ng-click="showHome = !showHome">Home Page</a>
 
                         <div style="padding-top: 20px;" ng-show="showHome">
+                            <h4 class="text-center">Home Page</h4>
                             <img class="img-responsive" src="assets/img/userguide/home.png">
                         </div>
                     </li>
-                    <li  ng-class="{userguide_panel_active: showReviews}"
-                        class="list-group-item list-group-item">
+                    <li class="list-group-item">
                         <i class=" fa fa-fw fa-comment-o"></i> <a ng-click="showReviews = !showReviews">Reviews</a>
 
                         <div style="padding-top: 20px;" ng-show="showReviews">
-                            <img class="img-responsive" src="assets/img/userguide/show-rev1.png">
+                            <h4 class="text-center">Reviews</h4>
 
-                            <p style="color: #000000;padding-top: 10px;">
-                                In earlier computing models, e.g. in client-server, the load for the application was
-                                shared between code
-                                on the server and code installed on each client locally. In other words, an application
-                                had its own client program which served as its
-                                user interface and had to be separately installed on each user's persona
-                                l computer. An upgrade to the server-side code of the application would typic
-                                ally also require an upgrade to the client-side code installed on each user w
-                            </p>
-                            <img class="img-responsive" src="assets/img/userguide/show-rev2.png">
-                        </div>
-                    </li>
-                    <li  class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
+                            <p>Reviews panel will list all the reviews belonging to a project. List may contain
+                                reviews which you have requested to others or vice-versa.
+                                User will identify the review by title.</p>
 
-                        <div ng-show="showSamples">
-                            Information about nav bar......
-                        </div>
-                    </li>
-                    <li  class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-edit"></i> <a ng-click="showNotes = !showNotes">Notes</a>
-
-                        <div ng-show="showNotes">
-                            Information about nav bar......
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-rev1.png">
+                            </div>
+                            <p>When you click on the title, review toggles and details will be opened.
+                                You can comment on the review by clicking on the comment button.
+                                If you close the review it will be removed from the list. </p>
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-rev2.png">
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-code-fork"></i> <a ng-click="showProvenance = !showProvenance">Provenance</a>
+                        <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
 
-                        <div ng-show="showProvenance">
-                            Information about nav bar......
+                        <div style="padding-top: 20px;" ng-show="showSamples">
+                            <img class="img-responsive" src="assets/img/userguide/show-sample1.png">
+                            <img class="img-responsive" src="assets/img/userguide/show-sample1.1.png">
                         </div>
                     </li>
-                    <li  class="list-group-item list-group-item">
+                    <li class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-edit"></i> <a ng-click="showNotes = !showNotes">Notes</a>
+
+                        <div style="padding-top: 20px;" ng-show="showNotes">
+                            <img class="img-responsive" src="assets/img/userguide/show-notes.png">
+                            <img class="img-responsive" src="assets/img/userguide/show-notes1.1.png">
+                        </div>
+                    </li>
+                    <li class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-code-fork"></i> <a
+                            ng-click="showProvenance = !showProvenance">Provenance</a>
+
+                        <div style="padding-top: 20px;" ng-show="showProvenance">
+                            <img class="img-responsive" src="assets/img/userguide/show-process.png">
+                            <img class="img-responsive" src="assets/img/userguide/show-process1.1.png">
+                        </div>
+                    </li>
+                    <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">File layout</a>
 
                         <div ng-show="showFile">
                             Information about nav bar......
                         </div>
                     </li>
-                    <li  class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createReview = !createReview">How to create Review</a>
+                    <li class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createReview = !createReview">How to create
+                        Review</a>
 
-                        <div ng-show="createReview">
-                            Information about nav bar......
+                        <div style="padding-top: 20px;" ng-show="createReview">
+                            <img class="img-responsive" src="assets/img/userguide/create-rev.png">
+                            <img class="img-responsive" src="assets/img/userguide/create-rev1.1.png">
                         </div>
                     </li>
-                    <li  class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createSample = !createSample">How to create Sample</a>
+                    <li class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createSample = !createSample">How to create
+                        Sample</a>
 
                         <div ng-show="createSample">
                             Information about nav bar......
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a  ng-click="createNote = !createNote">How to create Note</a>
+                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createNote = !createNote">How to create Note</a>
 
-                        <div ng-show="createNote">
-                            Information about nav bar......
+                        <div style="padding-top: 20px;" ng-show="createNote">
+                            <img class="img-responsive" src="assets/img/userguide/create-note.png">
                         </div>
                     </li>
-                    <li  class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createProv = !createProv">How to create Provenance</a>
+                    <li class="list-group-item list-group-item">
+                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createProv = !createProv">How to create
+                        Provenance</a>
 
                         <div ng-show="createProv">
                             Information about nav bar......
