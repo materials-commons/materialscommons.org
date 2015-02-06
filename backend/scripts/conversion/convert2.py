@@ -234,7 +234,7 @@ def update_mtime_samples(conn):
 
 def build_datadir2datafile(conn):
     msg("Building datadir2datafile table")
-    datadirs = list(r.table("datadirs").run(conn))
+    datadirs = list(r.table("datadirs").has_fields("datafiles").run(conn))
     for dd in datadirs:
         dfs = [{"datadir_id": dd['id'], "datafile_id": dfid}
                for dfid in dd['datafiles']]
