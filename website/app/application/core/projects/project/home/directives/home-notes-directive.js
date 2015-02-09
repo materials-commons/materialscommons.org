@@ -22,7 +22,7 @@ function homeNotesDirectiveController($scope, ui) {
     });
 
     $scope.minimize = function() {
-        ui.togglePanelState('notes', $scope.project.id);
+        ui.togglePanelState($scope.project.id, 'notes');
     };
 
     $scope.toggleExpanded = function() {
@@ -38,7 +38,7 @@ function homeNotesDirectiveController($scope, ui) {
     };
 
     $scope.splitScreen = function(what, col){
-        ui.toggleColumns(what, col, $scope.project.id);
+        ui.toggleColumns($scope.project.id, what, col);
     };
 
     $scope.isSplitExpanded = function () {

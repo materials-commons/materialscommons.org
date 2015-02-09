@@ -1,7 +1,7 @@
-Application.Services.factory('ui', ["pubsub", uiService]);
+Application.Services.factory('ui', [uiService]);
 
 // uiService tracks various ui component states by project.
-function uiService(pubsub) {
+function uiService() {
     var self = this;
     self.byProject = {};
 
@@ -19,7 +19,8 @@ function uiService(pubsub) {
                 calendar: false,
                 sideboard: false,
                 settings: false,
-                provwizard: false
+                provwizard: false,
+                drafts: false
             },
             split: {
                 column1: false,
@@ -29,6 +30,7 @@ function uiService(pubsub) {
             emptySplitBoard: false
         };
     }
+
     // getForProject returns a ui state for a project. It
     // creates the project entry if it doesn't exist.
     function getForProject(projectID) {
@@ -101,12 +103,17 @@ function uiService(pubsub) {
             proj.expanded[what] = !getIsExpanded(projectID, what);
         },
 
-        togglePanelState: function (what, projectID) {
+        togglePanelState: function (projectID, what) {
             var proj = getForProject(projectID);
             proj.panels[what] = !proj.panels[what];
         },
 
-        showPanel: function (what, projectID) {
+        setPanelState: function(projectID, what, to) {
+            var proj = getForProject(projectID);
+            proj.panels[what] = to;
+        },
+
+        showPanel: function (projectID, what) {
             var proj = getForProject(projectID);
             return proj.panels[what];
         },
@@ -120,7 +127,10 @@ function uiService(pubsub) {
                 notes: true,
                 processes: true,
                 calendar: false,
-                sideboard: false
+                sideboard: false,
+                settings: false,
+                provwizard: false,
+                drafts: false
             };
         },
 
@@ -129,7 +139,7 @@ function uiService(pubsub) {
         //And hide all other panels except for reviews.And col3 will have sideboard open.
         //Eg: 2  If 'what=sideboard', 'col=column3"
         // hide all panels except sideboard in column2. Along with that open empty sideboard in column 3
-        toggleColumns: function (what, col, projectID) {
+        toggleColumns: function (projectID, what, col) {
             var proj = getForProject(projectID);
             var splitStatus = this.getSplitStatus(projectID);
             if (splitStatus) {
@@ -154,12 +164,13 @@ function uiService(pubsub) {
                 }
                 hidePanels(projectID, what);
             }
-
         },
-        getColumn: function (col, projectID) {
+
+        getColumn: function (projectID, col) {
             var proj = getForProject(projectID);
             return proj.split[col];
         },
+
         getEmptySplitStatus: function (projectID) {
             var proj = getForProject(projectID);
             return proj.emptySplitBoard;
@@ -175,9 +186,8 @@ function uiService(pubsub) {
             }
         },
 
-        showPanelByCalendarEvent: function(what, projectID){
+        showPanelByCalendarEvent: function(projectID, what){
             hidePanels(projectID, what);
         }
-
     };
 }

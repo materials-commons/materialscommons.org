@@ -34,7 +34,6 @@ def create_tables():
     create_table("datadirs")
     create_table("project2datadir")
     create_table("project2datafile")
-    create_table("datadirs_denorm")
     create_table("tag2item")
     create_table("comment2item")
     create_table("note2item")
@@ -102,13 +101,6 @@ def create_indices():
     create_index('project2datafile', 'project_id')
     create_index('project2datafile', 'datafile_id')
 
-    create_index('datafiles_denorm', 'df_id')
-    create_index('datafiles_denorm', 'process_id')
-    create_index('datafiles_denorm', 'project_id')
-
-    create_index('datadirs_denorm', 'name')
-    create_index('datadirs_denorm', 'project_id')
-
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
 
@@ -143,7 +135,6 @@ def create_indices():
 
     create_index("uploads", "owner")
     create_index("uploads", "project_id")
-
 
 
 def create_index(table, name):

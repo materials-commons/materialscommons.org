@@ -57,7 +57,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
         $scope.alertMessage = ('Showing ' + event.title + ' created on  ' + date._d.toDateString());
         //Mask other panels
         var what = event.title.split(' ')[1];
-        ui.showPanelByCalendarEvent(what, $scope.project.id);
+        ui.showPanelByCalendarEvent($scope.project.id, what);
         $scope.alertOnDayClick(date, jsEvent, view, 'eventclick');
     };
 

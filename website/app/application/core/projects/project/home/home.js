@@ -1,33 +1,70 @@
 Application.Controllers.controller('projectHome',
-    ["$scope", "project", "User", "mcapi", "ui", "sideboard", projectHome]);
+    ["$scope", "project", "ui", projectHome]);
 
-function projectHome($scope, project, User, mcapi, ui, sideboard) {
+function projectHome($scope, project, ui) {
 
-    $scope.show = function (what) {
-        var expanded = ui.anyExpandedExcept(project.id, what);
-        var result = ui.showPanel(what, project.id);
-        if (!result) {
-            // If user is not showing this item then return false
-            return result;
+    $scope.column1 = [
+        "processes",
+        "files"
+    ];
+
+    $scope.column2 = [
+        "sideboard",
+        "samples",
+        "reviews",
+        "notes"
+    ];
+
+    $scope.onDropColumn1 = function(target, source) {
+        console.log("onDropColumn1:", target, source);
+        var index = _.indexOf($scope.column1, function(panel) {
+            return panel == source;
+        });
+
+        if (index !== -1) {
+            // Moving in same column so remove the original entry
+            $scope.column1.splice(index, 1);
         } else {
-            // if expanded is true that means something is expanded
-            // besides the requested entry, so return false to show
-            // this entry. Otherwise if expanded is false, that means
-            // nothing is expanded so return true.
-            return !expanded;
+            // Moving across columns. So remove from column2.
+            index = _.indexOf($scope.column2, function(panel) {
+                return panel == source;
+            });
+            $scope.column2.splice(index, 1);
         }
+
+        $scope.column1.splice(target, 0, source);
+    };
+
+    $scope.onDropColumn2 = function(target, source) {
+        console.log("onDropColumn2:", target, source);
+        var index = _.indexOf($scope.column2, function(panel) {
+            return panel == source;
+        });
+
+        if (index !== -1) {
+            // Moving in same column so remove the original entry
+            $scope.column2.splice(index, 1);
+        } else {
+            // Moving across columns. So remove from column1.
+            index = _.indexOf($scope.column1, function(panel) {
+                return panel == source;
+            });
+            $scope.column1.splice(index, 1);
+        }
+
+        $scope.column2.splice(target, 0, source);
     };
 
     $scope.showPanel = function(what) {
-        return ui.showPanel(what, project.id);
+        return ui.showPanel(project.id, what);
     };
 
     $scope.isMinimized = function(panel) {
-        return !ui.showPanel(panel, project.id);
+        return !ui.showPanel(project.id, panel);
     };
 
     $scope.openPanel = function(panel) {
-        ui.togglePanelState(panel, project.id);
+        ui.togglePanelState(project.id, panel);
     };
 
     $scope.isExpandedInColumn = function (what) {
@@ -40,16 +77,8 @@ function projectHome($scope, project, User, mcapi, ui, sideboard) {
         return anyExpanded;
     };
 
-    $scope.updateName = function () {
-        mcapi('/users/%', $scope.mcuser.email)
-            .success(function (u) {
-                $scope.editFullName = false;
-                User.save($scope.mcuser);
-            }).put({fullname: $scope.mcuser.fullname});
-    };
-
     $scope.isColumnActive = function(column){
-        return ui.getColumn(column,  $scope.project.id);
+        return ui.getColumn($scope.project.id, column);
     };
 
     $scope.isEmptySplitBoard = function(){
@@ -57,7 +86,4 @@ function projectHome($scope, project, User, mcapi, ui, sideboard) {
     };
 
     $scope.project = project;
-    $scope.mcuser = User.attr();
-    $scope.list = sideboard.get($scope.project.id);
-
 }

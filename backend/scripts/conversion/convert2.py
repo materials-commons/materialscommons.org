@@ -8,7 +8,7 @@ import rethinkdb as r
 from optparse import OptionParser
 import os
 import os.path
-# import magic
+import magic
 import sys
 import mimetypes
 
@@ -31,7 +31,7 @@ def remove_existing_mediatypes(conn):
 
 
 def add_mediatypes(conn, mcdir):
-    remove_existing_mediatypes(conn)
+    # remove_existing_mediatypes(conn)
     mimetypes.add_type("application/matlab", ".m", strict=False)
 
     mediatypes_mapping = {
@@ -78,7 +78,10 @@ def add_mediatypes(conn, mcdir):
     # Determine media types for files
     # and update the statistics for the
     # types in the project
+    file_count = r.table("datafiles").count().run(conn)
     projects = list(r.table('projects').run(conn))
+    fcount = 0
+    print "Process %d files" % (file_count)
     for project in projects:
         msg("  Determining mediatypes for project %s" % (project['name']))
         mediatypes = {}
@@ -93,6 +96,9 @@ def add_mediatypes(conn, mcdir):
         # the count of different file mediatypes.
         for d in datadirs:
             for f in d['datafiles']:
+                fcount = fcount+1
+                if fcount % 1000 == 0:
+                    print "Processed %d of %d files" % (fcount, file_count)
                 df = r.table('datafiles').get(f['id'])\
                                          .run(conn, time_format='raw')
                 dfid = df['id']
@@ -102,12 +108,12 @@ def add_mediatypes(conn, mcdir):
                 mime, ignore = mimetypes.guess_type(df["name"], strict=False)
                 description = None
                 if mime is None:
-                    msg("mimetypes couldn't guess type for %s" % (df["name"]))
+                    # msg("mimetypes couldn't guess type for %s" % (df["name"]))
                     path = datafile_path(mcdir, dfid)
                     if not os.path.isfile(path):
                         mime = "unknown"
                         description = "Unknown"
-                        msg("file not found: %s" % (path))
+                        # msg("file not found: %s" % (path))
                     else:
                         mime = magic.from_file(path, mime=True)
 
@@ -135,8 +141,6 @@ def add_mediatypes(conn, mcdir):
                         'size': mediatypes[mime]['size'] + df['size'],
                         'description': description
                     }
-            # update datadirs_denorm to include mediatype
-            r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
         r.table('projects').get(project_id)\
                            .update({
@@ -159,6 +163,7 @@ def drop_unused_tables(conn):
     drop_table("conditions", conn)
     drop_table('processes2samples', conn)
     drop_table("datafiles_denorm", conn)
+    drop_table("datadirs_denorm", conn)
     drop_table("items2tags", conn)
     drop_table("samples_denorm", conn)
     drop_table("treatments", conn)
@@ -174,6 +179,8 @@ def load_tags(conn):
                         .run(conn))
         for project in projects:
             tags = []
+            if 'tags' not in user['preferences']:
+                continue
             for tag in user["preferences"]["tags"]:
                 tags.append({
                     "name": tag["name"],
@@ -214,6 +221,37 @@ def delete_tag_table_entries(conn):
     msg("Done...")
 
 
+def fix_project2datafile(conn):
+    msg("Fixing project2datafile...")
+    r.table_drop("project2datafile").run(conn)
+    r.table_create("project2datafile").run(conn)
+    r.table("project2datafile")\
+     .index_create("datafile_id").run(conn)
+    r.table("project2datafile")\
+     .index_create("project_id").run(conn)
+    dfs = list(r.table("project2datadir")
+               .eq_join("datadir_id",
+                        r.table("datadir2datafile"), index="datadir_id")
+               .zip().run(conn))
+    dfs_list = []
+    fcount = 0
+    for item in dfs:
+        entry = {
+            "project_id": item["project_id"],
+            "datafile_id": item["datafile_id"]
+        }
+        dfs_list.append(entry)
+        fcount = fcount+1
+        if len(dfs_list) == 1000:
+            r.table("project2datafile").insert(dfs_list).run(conn)
+            msg("  Inserted %d entries" % (fcount))
+            dfs_list = []
+    if len(dfs_list) != 0:
+        r.table("project2datafile").insert(dfs_list).run(conn)
+        msg("  Inserted %d entries" % (fcount))
+    msg("Done...")
+
+
 def update_mtime_samples(conn):
     msg("Adding mtime to samples")
     samples = list(r.table("samples").run(conn))
@@ -226,7 +264,7 @@ def update_mtime_samples(conn):
 
 def build_datadir2datafile(conn):
     msg("Building datadir2datafile table")
-    datadirs = list(r.table("datadirs").run(conn))
+    datadirs = list(r.table("datadirs").has_fields("datafiles").run(conn))
     for dd in datadirs:
         dfs = [{"datadir_id": dd['id'], "datafile_id": dfid}
                for dfid in dd['datafiles']]
@@ -260,16 +298,17 @@ def admin_users(conn):
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    # delete_tag_table_entries(conn)
-    # load_sample2item(conn)
-    # delete_tag_table_entries(conn)
-    # load_tags(conn)
-    drop_unused_tables(conn)
-    # add_mediatypes(conn, mcdir)
+    delete_tag_table_entries(conn)
+    load_sample2item(conn)
+    delete_tag_table_entries(conn)
+    fix_project2datafile(conn)
+    load_tags(conn)
+    add_mediatypes(conn, mcdir)
     update_mtime_samples(conn)
     build_datadir2datafile(conn)
     admin_users(conn)
     add_type(conn)
+    drop_unused_tables(conn)
     msg("Finished.")
 
 if __name__ == "__main__":

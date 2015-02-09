@@ -28,6 +28,8 @@ def convert_image(f):
         return True
     elif f["mediatype"]["mime"] == "image/x-ms-bmp":
         return True
+    elif f["mediatype"]["mime"] == "image/bmp":
+        return True
     else:
         return False
 

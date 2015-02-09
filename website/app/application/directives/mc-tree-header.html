@@ -1,54 +1,57 @@
 <div class="tree-row">
-    <span ng-click="item.showDetails = !item.showDetails"
-          style="cursor: pointer;">
-        <i class="fa fa-fw"
-           ng-class="{'fa-caret-right': item.type === 'datadir' && !item.showDetails, 'fa-caret-down': item.type === 'datadir' && item.showDetails}"></i>
-        <i class="fa fa-fw fa-folder" style="color: #256188"
-           ng-class="{'fa-folder': item.type === 'datadir', 'fa-file': item.type === 'datafile'}"></i>
-        <span data-toggle="tooltip" data-placement="top" title="{{item.fullname}}" style="color: #389dc1"
-              ui-draggable="true" drag="item">{{::item.displayname}}</span>
-    </span>
-    <span class="pull-right">
-        <span ng-if="item.type === 'datafile'">
-            <a ng-if="showSideboard"
-               ng-click="addToSideboard(item, $event)">
-                <i class="fa fa-fw fa-clipboard inactive" id="{{item.id}}"></i>
-            </a>
-
-            <a title="{{tooltip}}"
-               ng-href="{{downloadSrc(item)}}"
-               download="{{item.name}}">
-                <i class="fa fa-fw" ng-class="faClass"></i>
-            </a>
-            <a ng-if="!showSideboard"
-               ng-click="addToSideboard(item, $event)">
-                <i class="fa fa-fw fa-close mc-danger"></i>
-            </a>
+    <div ui-draggable="true" drag="item">
+        <span ng-click="item.showDetails = !item.showDetails"
+              style="cursor: pointer;">
+            <i class="fa fa-fw"
+               ng-class="{'fa-caret-right': item.type === 'datadir' && !item.showDetails, 'fa-caret-down': item.type === 'datadir' && item.showDetails}"></i>
+            <i class="fa fa-fw fa-folder" style="color: #256188"
+               ng-class="{'fa-folder': item.type === 'datadir', 'fa-file': item.type === 'datafile'}"></i>
+            <span data-toggle="tooltip" data-placement="top" title="{{item.fullname}}" style="color: #389dc1"
+                  ui-draggable="true" drag="item">{{::item.displayname}}</span>
         </span>
-        <span style="padding-right: 13px;">
-            <a title="New Folder" ng-click="item.addFolder = !item.addFolder"><i ng-if="item.type === 'datadir'"
-                                                                                 class="fa fa-fw fa-plus"></i></a>
+        <span class="pull-right">
+            <span ng-if="item.type === 'datafile'">
+                <a ng-if="showSideboard"
+                   ng-click="addToSideboard(item, $event)"
+                   id="{{item.id}}">
+                    <i class="fa fa-fw fa-clipboard inactive"></i>
+                </a>
 
-            <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
+                <a title="{{tooltip}}"
+                   ng-href="{{downloadSrc(item)}}"
+                   download="{{item.name}}">
+                    <i class="fa fa-fw" ng-class="faClass"></i>
+                </a>
+                <a ng-if="!showSideboard"
+                   ng-click="addToSideboard(item, $event)">
+                    <i class="fa fa-fw fa-close mc-danger"></i>
+                </a>
+            </span>
+            <span style="padding-rightx: 13px;">
+                <a title="New Folder" ng-click="item.addFolder = !item.addFolder">
+                    <i ng-if="item.type === 'datadir'"
+                       class="fa fa-fw fa-plus"></i>
+                </a>
+                <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
+            </span>
+
         </span>
 
-    </span>
-
-    <div class="row" ng-if="item.addFolder">
-        <input type="text"
-               placeholder="Folder Name..."
-               on-enter="newFolder(item, name)"
-               ng-model="name">
-        <button ng-click="newFolder(item, name);"
-                class="btn btn-xs btn-mini btn-success">
-            add
-        </button>
-        <button ng-click="item.addFolder = false;"
-                class="btn btn-xs btn-mini btn-danger">
-            cancel
-        </button>
+        <div class="row" ng-if="item.addFolder">
+            <input type="text"
+                   placeholder="Folder Name..."
+                   on-enter="newFolder(item, name)"
+                   ng-model="name">
+            <button ng-click="newFolder(item, name);"
+                    class="btn btn-xs btn-mini btn-success">
+                add
+            </button>
+            <button ng-click="item.addFolder = false;"
+                    class="btn btn-xs btn-mini btn-danger">
+                cancel
+            </button>
+        </div>
     </div>
-
     <p>
         <span class="label label-info" ng-repeat="tag in ::item.tags" style="margin-right: 5px">
             <i class="fa"

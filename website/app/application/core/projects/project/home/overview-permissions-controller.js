@@ -4,7 +4,7 @@ Application.Controllers.controller('projectsOverviewPermissions',
         $scope.addUser = function () {
             mcapi('/access/new')
                 .success(function (data) {
-                    $scope.project.users.push({'id': data.id, 'user_id': $scope.bk.user.email, 'project_id': $scope.project.id, 'project_name': $scope.project.name})
+                    $scope.project.users.push({'id': data.id, 'user_id': $scope.bk.user.email, 'project_id': $scope.project.id, 'project_name': $scope.project.name});
                     pubsub.send('access.change');
                     $scope.bk.user = '';
                 })
@@ -22,7 +22,7 @@ Application.Controllers.controller('projectsOverviewPermissions',
                         return (item.id === id);
                     });
                     if (i !== -1) {
-                        $scope.project.users.splice(i, 1)
+                        $scope.project.users.splice(i, 1);
                     }
                     pubsub.send('access.change');
                 }).delete();
@@ -31,7 +31,7 @@ Application.Controllers.controller('projectsOverviewPermissions',
         function init() {
             $scope.bk = {
                 user: ''
-            }
+            };
             Projects.get($stateParams.id).then(function(project) {
                 $scope.project = project;
             });
