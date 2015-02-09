@@ -232,8 +232,8 @@ def fix_project2datafile(conn):
     r.table("project2datafile")\
      .index_create("project_id").run(conn)
     dfs = list(r.table("project2datadir")
-               .eq_join("datadir_id", r.table("datadir2datafile",
-                                              index="datadir_id"))
+               .eq_join("datadir_id",
+                        r.table("datadir2datafile"), index="datadir_id")
                .zip().run(conn))
     for item in dfs:
         entry = {
