@@ -225,6 +225,7 @@ def delete_tag_table_entries(conn):
 
 
 def fix_project2datafile(conn):
+    msg("Fixing project2datafile...")
     r.table_drop("project2datafile").run(conn)
     r.table_create("project2datafile").run(conn)
     r.table("project2datafile")\
@@ -241,6 +242,7 @@ def fix_project2datafile(conn):
             "datafile_id": item["datafile_id"]
         }
         r.table("project2datafile").insert(entry).run(conn)
+    msg("Done...")
 
 
 def update_mtime_samples(conn):
