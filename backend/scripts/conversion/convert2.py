@@ -233,12 +233,22 @@ def fix_project2datafile(conn):
                .eq_join("datadir_id",
                         r.table("datadir2datafile"), index="datadir_id")
                .zip().run(conn))
+    dfs_list = []
+    fcount = 0
     for item in dfs:
         entry = {
             "project_id": item["project_id"],
             "datafile_id": item["datafile_id"]
         }
-        r.table("project2datafile").insert(entry).run(conn)
+        dfs_list.append(entry)
+        fcount = fcount+1
+        if len(dfs_list) == 1000:
+            r.table("project2datafile").insert(dfs_list).run(conn)
+            msg("  Inserted %d entries" % (fcount))
+            dfs_list = []
+    if len(dfs_list) != 0:
+        r.table("project2datafile").insert(dfs_list).run(conn)
+        msg("  Inserted %d entries" % (fcount))
     msg("Done...")
 
 
