@@ -145,7 +145,6 @@ def create_indices():
     create_index("uploads", "project_id")
 
 
-
 def create_index(table, name):
     run(r.db('materialscommons').table(table).index_create(name))
 
