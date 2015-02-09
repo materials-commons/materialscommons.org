@@ -2140,3 +2140,12 @@ input[type="checkbox"]:focus {
 .userguide-item{
   background-color: grey;
 }
+
+.watermark {
+  position: absolute;
+  opacity: 0.25;
+  font-size: 3em;
+  width: 100%;
+  text-align: center;
+  z-index: 1000;
+}

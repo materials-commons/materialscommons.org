@@ -1,4 +1,4 @@
-<div style="padding-left: 5px">
+<div style="padding-left: 5px;" >
     <div class="panel panel-primary">
         <div class="panel-heading help-color">
             <i class="fa fa-fw fa-book"></i>
@@ -9,13 +9,12 @@
                    ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
             </a>
         </div>
-        <div class="panel-body home-panel-body" style="overflow-y: auto;min-height:800px;">
+        <div class="panel-body home-panel-body " style="overflow-y: auto;min-height:800px;">
             <div>
                 <ul class="list-group">
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-bars"></i>
                         <a ng-click="showNav = !showNav">Nav bar</a>
-
                         <div style="padding-top: 20px;" ng-show="showNav">
                             <h4 class="text-center">Navigation Bar</h4>
 
@@ -28,37 +27,45 @@
                             </div>
                             <b>Settings:</b>
 
-                            <p>Apart from navigation user can also update Username, password, customize templates
-                                and reset apikey.
+                            <p>Apart from navigation user can also update their username, password, customize templates(
+                                for provenance) and reset apikey.
                             </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/navbar1.1.png">
                             </div>
-                            <b>Global Reviews:</b>
+                            <b>Global Reviews</b>
 
-                            <p>Global reviews section will show you all the reviews irrespective of what project you are
-                                in.
-                                Global reviews are categorized into 2 types. 1) Requested 2) To Conduct.
-                                Requested reviews are the reviews you have created and assigned to other users.
-                                Whereas To Conduct reviews are the reviews which are assigned to you by other users.
-                                Detailed information about the reviews are discussed in reviews section.</p>
+                            <p>Global reviews section will list all the active reviews from all the projects in your
+                                list.
+                                Global reviews are categorized into 2 types. 1) Requested 2) To Conduct.<br>
+                                <u>Requested reviews</u> are the reviews you have created and assigned to other users.
+                                Whereas <u>To Conduct reviews</u> are the reviews which are assigned to you by other
+                                users.
+                                Detailed information about the reviews are discussed in reviews section. When you click
+                                on a particular review it will take you to the respective project under which the review
+                                is created.</p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/navbar1.2.png">
                             </div>
+                            <b>Help </b>
+                            <p>Help page or Userguide is a manual which describes about what and how to use
+                                MaterialsCommons. For the ease of use, userguide is designed such that it can be opened
+                                on the side, while the user can still work on their respective panels. </p>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-briefcase"></i>
-                        <a ng-click="showTaskbar = !showTaskbar">Project Bar</a>
+                        <a ng-click="showProjectBar = !showProjectBar">Project Bar</a>
 
-                        <div style="padding-top: 20px;" ng-show="showTaskbar">
+                        <div style="padding-top: 20px;" ng-show="showProjectBar">
                             <h4 class="text-center">Project Bar</h4>
                             <b>Switch Projects</b>
 
-                            <p>Projects task bar indicates total number of projects user is associated with. Also
-                                user can switch between projects.</p>
+                            <p>Projects bar indicates total number of projects user has created/shared. Dropdown menu will
+                                give you the list of project names. When you click on project name it will take you to
+                                the respective Homepage.</p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/projectbar.png">
@@ -113,7 +120,22 @@
 
                         <div style="padding-top: 20px;" ng-show="showHome">
                             <h4 class="text-center">Home Page</h4>
-                            <img class="img-responsive" src="assets/img/userguide/home.png">
+                            <p>Homepage contains panels for Reviews, Samples, Files, Notes and Provenance.
+                                Content inside panels changes with respect to the project. In this section we will describe
+                                about commonly used icons and their function.</p>
+                            <b>1. Add to Sideboard</b>
+                            <p>This icon helps to compare various items. When you click item will be added to the board.
+                                After you add all the items split the sideboard such that you can compare items side-by-side.
+                            </p>
+                            <b>2. Search</b>
+                            <p>Search will filter out all the items matching the entered search name.</p>
+                            <b>3. Create</b>
+                            <p><a ng-click="showReviews = !showReviews">How to create Review</a></p>
+                            <p><a ng-click="showSamples = !showSamples">How to create Sample</a></p>
+                            <p><a ng-click="showNotes = !showNotes">How to create File</a></p>
+                            <p><a ng-click="showNotes = !showNotes">How to create Note</a></p>
+                            <p><a ng-click="showProvenance = !showProvenance">How to create Provenance</a></p>
+                            <img class="img-responsive" src="assets/img/userguide/home-annotated.png">
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -132,6 +154,7 @@
                             <p>When you click on the title, review toggles and details will be opened.
                                 You can comment on the review by clicking on the comment button.
                                 If you close the review it will be removed from the list. </p>
+
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/show-rev2.png">
                             </div>
@@ -141,16 +164,41 @@
                         <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
 
                         <div style="padding-top: 20px;" ng-show="showSamples">
-                            <img class="img-responsive" src="assets/img/userguide/show-sample1.png">
-                            <img class="img-responsive" src="assets/img/userguide/show-sample1.1.png">
+                            <h4 class="text-center">Samples</h4>
+
+                            <p>Samples panel will list all the samples belonging to a project. </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-sample1.png">
+                            </div>
+                            <p>When you click on the sample name you can see more information about the sample.
+                            </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-sample1.1.png">
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-edit"></i> <a ng-click="showNotes = !showNotes">Notes</a>
 
                         <div style="padding-top: 20px;" ng-show="showNotes">
-                            <img class="img-responsive" src="assets/img/userguide/show-notes.png">
-                            <img class="img-responsive" src="assets/img/userguide/show-notes1.1.png">
+                            <h4 class="text-center">Notes</h4>
+
+                            <p>Notes panel will list all the notes belonging to a project.
+                                User can create a notes for project/sample/file. Note creation is discussed more in
+                                detail
+                                under section <a ng-click="createNote = !createNote">How to create Note</a></p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-notes.png">
+                            </div>
+                            <p>When you click on the note title you can view detailed notes.
+                            </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-notes1.1.png">
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
@@ -158,15 +206,38 @@
                             ng-click="showProvenance = !showProvenance">Provenance</a>
 
                         <div style="padding-top: 20px;" ng-show="showProvenance">
-                            <img class="img-responsive" src="assets/img/userguide/show-process.png">
-                            <img class="img-responsive" src="assets/img/userguide/show-process1.1.png">
+                            <h4 class="text-center">Provenance</h4>
+
+                            <p>Provenance panel will list all the processes created for a project.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-process.png">
+                            </div>
+                            <p>When you click on the process name, process details will be opened.
+                                Graph will briefly describe about what are the
+                                inputs to the process and outputs from the process.
+                            </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/show-process1.1.png">
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">File layout</a>
 
-                        <div ng-show="showFile">
-                            Information about nav bar......
+                        <div style="padding-top: 20px;" ng-show="showFile">
+                            <h4 class="text-center">Files</h4>
+
+                            <p>Files panel will show you all your uploaded files for a project. It will preserve the
+                                directory layout. You can view the file by clicking on the name of the file.
+                                Search for a file: You can type in the name of the file under search panel which will
+                                filter the results or you can descend through the directories.
+                            </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/files.png">
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
