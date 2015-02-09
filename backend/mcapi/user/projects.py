@@ -196,6 +196,8 @@ def build_tree(datadirs):
             dfitem.tags = []  # df['tags']
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
+            elif 'mime' not in df['mediatype']:
+                dfitem.mediatype = "unknown"
             else:
                 dfitem.mediatype = df['mediatype']['mime']
             ditem.children.append(dfitem)
