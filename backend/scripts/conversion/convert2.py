@@ -31,7 +31,7 @@ def remove_existing_mediatypes(conn):
 
 
 def add_mediatypes(conn, mcdir):
-    remove_existing_mediatypes(conn)
+    # remove_existing_mediatypes(conn)
     mimetypes.add_type("application/matlab", ".m", strict=False)
 
     mediatypes_mapping = {
@@ -82,6 +82,12 @@ def add_mediatypes(conn, mcdir):
     projects = list(r.table('projects').run(conn))
     fcount = 0
     print "Process %d files" % (file_count)
+    projects = [
+        {
+            "id": "5fcfc6c4-0745-4fa0-9ed7-2b0ac92796c6",
+            "name": "EBSD"
+        }
+    ]
     for project in projects:
         msg("  Determining mediatypes for project %s" % (project['name']))
         mediatypes = {}
@@ -126,6 +132,9 @@ def add_mediatypes(conn, mcdir):
                     'mime': mime,
                     'description': description
                 }
+                if df['id'] == "0717c249-7675-4ce3-84b9-fda90d1943cb":
+                    msg("Updating file %s" % (df['id']))
+                    msg(m)
                 r.table('datafiles').get(df['id'])\
                                     .update({'mediatype': m})\
                                     .run(conn)
@@ -141,8 +150,6 @@ def add_mediatypes(conn, mcdir):
                         'size': mediatypes[mime]['size'] + df['size'],
                         'description': description
                     }
-            # update datadirs_denorm to include mediatype
-            r.table('datadirs_denorm').get(d['id']).update(d).run(conn)
         # update project with count
         r.table('projects').get(project_id)\
                            .update({
@@ -165,6 +172,7 @@ def drop_unused_tables(conn):
     drop_table("conditions", conn)
     drop_table('processes2samples', conn)
     drop_table("datafiles_denorm", conn)
+    drop_table("datadirs_denorm", conn)
     drop_table("items2tags", conn)
     drop_table("samples_denorm", conn)
     drop_table("treatments", conn)
@@ -268,16 +276,16 @@ def admin_users(conn):
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    delete_tag_table_entries(conn)
-    load_sample2item(conn)
-    delete_tag_table_entries(conn)
-    load_tags(conn)
-    drop_unused_tables(conn)
+    # elete_tag_table_entries(conn)
+    # load_sample2item(conn)
+    # delete_tag_table_entries(conn)
+    # load_tags(conn)
     add_mediatypes(conn, mcdir)
-    update_mtime_samples(conn)
-    build_datadir2datafile(conn)
-    admin_users(conn)
-    add_type(conn)
+    # update_mtime_samples(conn)
+    # build_datadir2datafile(conn)
+    # admin_users(conn)
+    # add_type(conn)
+    # drop_unused_tables(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
