@@ -15,13 +15,19 @@ Application.Controllers.controller("homeFilesDirectiveController",
                                     "$filter",  "mcapi", homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
                                       $filter, mcapi) {
-    $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
+    var f = projectFiles.model.projects[$scope.project.id].dir;
+
+    // Root is name of project. Have it opened by default.
+    f.showDetails = true;
+    $scope.files = [f];
+    $scope.files.showDetails = true;
+
     $scope.toggleExpanded = function() {
         ui.toggleIsExpanded($scope.project.id, "files");
     };
 
     $scope.minimize = function() {
-        ui.togglePanelState('files', $scope.project.id);
+        ui.togglePanelState($scope.project.id, 'files')
     };
 
     $scope.isExpanded = function() {
@@ -29,7 +35,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     $scope.splitScreen = function(what, col){
-        ui.toggleColumns(what, col, $scope.project.id);
+        ui.toggleColumns($scope.project.id, what, col)
     };
 
     $scope.isSplitExpanded = function () {
@@ -46,8 +52,10 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
                 var obj = {};
                 obj.dir = files[0];
                 projectFiles.model.projects[$scope.project.id] = obj;
-                //projectFiles.loadByMediaType($scope.project);
-                $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
+                // obj.dir is root of project. Have it opened by default.
+                obj.dir.showDetails = true;
+                $scope.files = [projectFiles.model.projects[$scope.project.id].dir];
+                projectFiles.loadByMediaType($scope.project);
                 $scope.isReloading = false;
             }).jsonp();
     };
@@ -60,7 +68,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
         };
 
         if ($scope.searchInput === "") {
-            $scope.files = projectFiles.model.projects[$scope.project.id].dir.children;
+            $scope.files = [projectFiles.model.projects[$scope.project.id].dir];
         } else {
             var filesToSearch = projectFiles.model.projects[$scope.project.id].byMediaType.all;
             search.name = $scope.searchInput;

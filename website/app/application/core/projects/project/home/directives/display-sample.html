@@ -1,47 +1,48 @@
 <div style="margin-bottom: 3px;">
-    <span ng-click="sample.showDetails = !sample.showDetails" style="cursor: pointer">
-        <i class="fa fa-fw"
-           ng-class="{'fa-caret-right': !sample.showDetails, 'fa-caret-down': sample.showDetails}">
-        </i>
-        {{sample.name | truncate:35: '...':true}}
-    </span>
-    <span class="pull-right">
-        <a ng-if="showSideboard"
-           ng-click="addToSideboard(sample, $event)"    id="{{sample.id}}">
-            <i class="fa fa-fw fa-clipboard inactive"></i>
-        </a>
-        <a ng-if="!showSideboard"  ng-click="remove(sample, $event)" >
-            <i class="fa fa-fw fa-close mc-danger"></i>
-        </a>
-        <i style="color:#E3CF7A" class="fa fa-fw fa-star"></i>
-        <i class="fa fa-fw"
-           ng-class="{'fa-edit': sample.notes.length !== 0}"></i>
-    </span>
+    <div ui-draggable="true" drag="sample">
+        <span ng-click="sample.showDetails = !sample.showDetails" style="cursor: pointer">
+            <i class="fa fa-fw"
+               ng-class="{'fa-caret-right': !sample.showDetails, 'fa-caret-down': sample.showDetails}">
+            </i>
+            {{sample.name | truncate:35: '...':true}}
+        </span>
+        <span class="pull-right">
+            <a ng-if="showSideboard"
+               ng-click="addToSideboard(sample, $event)" id="{{sample.id}}">
+                <i class="fa fa-fw fa-clipboard inactive"></i>
+            </a>
+            <i class="fa fa-fw"
+               ng-class="{'fa-edit': sample.notes.length !== 0}"></i>
+            <a ng-if="!showSideboard"  ng-click="remove(sample, $event)">
+                <i class="fa fa-fw fa-close mc-danger"></i>
+            </a>
+        </span>
 
-    <p>
-        <button ng-if="isActive('samples','addToReview')"
-                class="btn btn-xs btn-mini btn-success" ng-click="addItem('review')">Add to review
-        </button>
-        <!--<button ng-if="isActive('samples','addToProvenance')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('provenance')">Add to Provenance</button>-->
-        <!--<button ng-if="isActive('samples','addToNote')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('note')">Add to Note</button>-->
-    </p>
+        <p>
+            <button ng-if="isActive('samples','addToReview')"
+                    class="btn btn-xs btn-mini btn-success" ng-click="addItem('review')">Add to review
+            </button>
+            <!--<button ng-if="isActive('samples','addToProvenance')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('provenance')">Add to Provenance</button>-->
+            <!--<button ng-if="isActive('samples','addToNote')" class="btn btn-xs btn-mini btn-success" ng-click="addItem('note')">Add to Note</button>-->
+        </p>
 
-    <p>
-        <small ng-if="sample.properties.composition.value.length !== 0">
-            Composition({{sample.properties.composition.unit}}):
-            <span style="padding-left: 3px;" ng-repeat="each in sample.properties.composition.value">{{each.element}} -{{each.value}}</span>
-        </small>
-        <small ng-if="sample.properties.composition.value.length === 0">
-            Composition: None
-        </small>
-    </p>
-    <p>
-        <small class="text-muted">{{sample.birthtime | toDateString}}
-        </small>
-        <small class="text-muted"
-               style="padding-left: 10px;">{{sample.owner}}
-        </small>
-    </p>
+        <p>
+            <small ng-if="sample.properties.composition.value.length !== 0">
+                Composition({{sample.properties.composition.unit}}):
+                <span style="padding-left: 3px;" ng-repeat="each in sample.properties.composition.value">{{each.element}} -{{each.value}}</span>
+            </small>
+            <small ng-if="sample.properties.composition.value.length === 0">
+                Composition: None
+            </small>
+        </p>
+        <p>
+            <small class="text-muted">{{sample.birthtime | toDateString}}
+            </small>
+            <small class="text-muted"
+                   style="padding-left: 10px;">{{sample.owner}}
+            </small>
+        </p>
+    </div>
     <div ng-if="sample.showDetails">
         <home-sample-details></home-sample-details>
     </div>

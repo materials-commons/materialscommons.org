@@ -5,7 +5,7 @@
                 Notes
             ({{notes.length}})
         </span>
-        <span class="pull-right bar-control">
+        <span ng-if="false" class="pull-right bar-control">
             <a ng-click="splitScreen('notes', 'column2')">
                 <i class="fa fa-fw"
                    ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
@@ -21,7 +21,7 @@
         <input type="text" ng-model="search" class="pull-right col-xs-4"
                placeholder="Search notes...">
         <span class="add-item pull-right">
-            <a  ng-click="createNote()" tooltip="Add Note">
+            <a  ng-click="createNote()" title="Add Note">
                 <i class="fa fa-fw fa-plus"></i>
             </a>
         </span>
@@ -32,7 +32,7 @@
                 <create-note model="model"></create-note>
             </li>
             <li class="home-item"
-                ng-class="{'open-item-details': showDetails($index)}"  ui-draggable="true" drag="note"
+                ng-class="{'open-item-details': showDetails($index)}"
                 ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                 <display-note note="note" show-sideboard="true"></display-note>
             </li>

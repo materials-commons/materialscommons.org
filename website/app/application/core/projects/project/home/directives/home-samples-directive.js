@@ -24,7 +24,7 @@ function homeSamplesController($scope, ui) {
     });
 
     $scope.minimize = function() {
-        ui.togglePanelState('samples', $scope.project.id);
+        ui.togglePanelState($scope.project.id, 'samples');
     };
 
     $scope.toggleExpanded = function() {
@@ -40,7 +40,7 @@ function homeSamplesController($scope, ui) {
     };
 
     $scope.splitScreen = function(what, col){
-        ui.toggleColumns(what, col, $scope.project.id);
+        ui.toggleColumns($scope.project.id, what, col);
     };
 
     $scope.isSplitExpanded = function () {

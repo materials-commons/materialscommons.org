@@ -7,33 +7,22 @@
     </div>
     <div class="row">
         <div ng-show="!isColumnActive('column1')">
-            <div ng-class="{'col-xs-6': !isExpandedInColumn(['reviews', 'files']), 'col-xs-12': isExpandedInColumn(['reviews', 'files'])}"
-                 ng-show="!isExpandedInColumn(['samples', 'notes', 'processes', 'sideboard'])">
+            <div ng-class="{'col-xs-6': !isExpandedInColumn(column1), 'col-xs-12': isExpandedInColumn(column1)}"
+                 ng-show="!isExpandedInColumn(column2)">
                 <div class="row" ng-if="showPanel('calendar')">
                     <div home-calendar project="project"></div>
                 </div>
-                <div class="row" ng-show="show('reviews')">
-                    <div home-reviews project="project"></div>
-                </div>
-                <div class="row" ng-show="show('files')">
-                    <div home-files project="project"></div>
+                <div ng-repeat="panel in column1">
+                    <display-panel panel-name="panel" project="project"></display-panel>
                 </div>
             </div>
         </div>
         <div ng-show="!isColumnActive('column2')">
-            <div ng-class="{'col-xs-6': !isExpandedInColumn(['samples', 'notes', 'processes', 'sideboard']), 'col-xs-12': isExpandedInColumn(['samples', 'notes', 'processes', 'sideboard'])}"
-                 ng-show="!isExpandedInColumn(['reviews', 'files'])">
-                <div class="row" ng-show="show('sideboard')">
-                    <div split-icon="true" home-sideboard project="project"></div>
-                </div>
-                <div class="row" ng-show="show('samples')">
-                    <div home-samples project="project"></div>
-                </div>
-                <div class="row" ng-show="show('notes')">
-                    <div home-notes project="project"></div>
-                </div>
-                <div class="row" ng-show="show('processes')">
-                    <div home-processes project="project"></div>
+
+            <div ng-class="{'col-xs-6': !isExpandedInColumn(column2), 'col-xs-12': isExpandedInColumn(column2)}"
+                 ng-show="!isExpandedInColumn(column1)">
+                <div ng-repeat="panel in column2">
+                    <display-panel panel-name="panel" project="project"></display-panel>
                 </div>
             </div>
         </div>
