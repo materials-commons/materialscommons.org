@@ -82,12 +82,6 @@ def add_mediatypes(conn, mcdir):
     projects = list(r.table('projects').run(conn))
     fcount = 0
     print "Process %d files" % (file_count)
-    projects = [
-        {
-            "id": "5fcfc6c4-0745-4fa0-9ed7-2b0ac92796c6",
-            "name": "EBSD"
-        }
-    ]
     for project in projects:
         msg("  Determining mediatypes for project %s" % (project['name']))
         mediatypes = {}
@@ -230,6 +224,25 @@ def delete_tag_table_entries(conn):
     msg("Done...")
 
 
+def fix_project2datafile(conn):
+    r.table_drop("project2datafile").run(conn)
+    r.table_create("project2datafile").run(conn)
+    r.table("project2datafile")\
+     .index_create("datafile_id").run(conn)
+    r.table("project2datafile")\
+     .index_create("project_id").run(conn)
+    dfs = list(r.table("project2datadir")
+               .eq_join("datadir_id", r.table("datadir2datafile",
+                                              index="datadir_id"))
+               .zip())
+    for item in dfs:
+        entry = {
+            "project_id": item["project_id"],
+            "datafile_id": item["datafile_id"]
+        }
+        r.table("project2datafile").insert(entry).run(conn)
+
+
 def update_mtime_samples(conn):
     msg("Adding mtime to samples")
     samples = list(r.table("samples").run(conn))
@@ -276,16 +289,17 @@ def admin_users(conn):
 
 def main(conn, mcdir):
     msg("Beginning conversion steps:")
-    # elete_tag_table_entries(conn)
-    # load_sample2item(conn)
-    # delete_tag_table_entries(conn)
-    # load_tags(conn)
+    delete_tag_table_entries(conn)
+    load_sample2item(conn)
+    delete_tag_table_entries(conn)
+    fix_project2datafile(conn)
+    load_tags(conn)
     add_mediatypes(conn, mcdir)
-    # update_mtime_samples(conn)
-    # build_datadir2datafile(conn)
-    # admin_users(conn)
-    # add_type(conn)
-    # drop_unused_tables(conn)
+    update_mtime_samples(conn)
+    build_datadir2datafile(conn)
+    admin_users(conn)
+    add_type(conn)
+    drop_unused_tables(conn)
     msg("Finished.")
 
 if __name__ == "__main__":
