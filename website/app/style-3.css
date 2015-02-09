@@ -2159,12 +2159,14 @@ input[type="checkbox"]:focus {
 
 .watermark {
   position: absolute;
-  opacity: 0.25;
-  font-size: 3em;
+  opacity: 0.15;
+  font-size:120px;
+  transform:rotate(300deg);
   width: 100%;
   text-align: center;
   z-index: 1000;
 }
+
 
 .task-bar-tool:hover {
   color: white;
