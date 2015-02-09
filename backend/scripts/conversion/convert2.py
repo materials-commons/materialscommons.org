@@ -126,9 +126,6 @@ def add_mediatypes(conn, mcdir):
                     'mime': mime,
                     'description': description
                 }
-                if df['id'] == "0717c249-7675-4ce3-84b9-fda90d1943cb":
-                    msg("Updating file %s" % (df['id']))
-                    msg(m)
                 r.table('datafiles').get(df['id'])\
                                     .update({'mediatype': m})\
                                     .run(conn)
