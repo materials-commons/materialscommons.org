@@ -10,7 +10,6 @@
             </a>
         </div>
         <div class="panel-body home-panel-body " style="overflow-y: auto;min-height:800px;">
-
             <div>
                 <ul class="list-group">
                     <li class="list-group-item">
@@ -19,6 +18,7 @@
 
                         <div style="padding-top: 20px;" ng-show="showNav">
                             <h4 class="text-center">Navigation Bar</h4>
+                            <hr/>
                             <b>Navigation:</b>
 
                             <div class="watermark">Draft</div>
@@ -76,7 +76,7 @@
                             <div class="watermark">Draft</div>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/projectbar.png">
+                                <img class="img-responsive" src="assets/img/userguide/project-bar.png">
                             </div>
                             <b>Create New Project</b>
 
@@ -92,7 +92,14 @@
                             </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/projectbar1.2.png">
+                                <img class="img-responsive" src="assets/img/userguide/project-bar-icons.png">
+                            </div>
+                            <b>Drafts</b>
+
+                            <p>Drafts</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/draft.png">
                             </div>
                             <b>Project Settings</b>
 
@@ -102,10 +109,9 @@
                                 shared.</p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/projectbar1.3.png">
+                                <img class="img-responsive" src="assets/img/userguide/access.png">
                             </div>
                             <b>Calendar</b>
-
                             <div class="watermark">Draft</div>
                             <p>
                                 Calendar helps user to keep track of the items created and how
@@ -114,7 +120,7 @@
                             </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/projectbar1.4.png">
+                                <img class="img-responsive" src="assets/img/userguide/calendar.png">
                             </div>
                             <b>Panels</b>
 
@@ -174,15 +180,11 @@
                             <div class="watermark">Draft</div>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/show-rev1.png">
+                                <img class="img-responsive" src="assets/img/userguide/show-review.png">
                             </div>
                             <p>When you click on the title, review toggles and details will be opened.
                                 You can comment on the review by clicking on the comment button.
                                 If you close the review it will be removed from the list. </p>
-
-                            <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/show-rev2.png">
-                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
@@ -196,14 +198,10 @@
                             <div class="watermark">Draft</div>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/show-sample1.png">
+                                <img class="img-responsive" src="assets/img/userguide/show-sample.png">
                             </div>
                             <p>When you click on the sample name you can see more information about the sample.
                             </p>
-
-                            <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/show-sample1.1.png">
-                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
@@ -224,10 +222,6 @@
                             </div>
                             <p>When you click on the note title you can view detailed notes.
                             </p>
-
-                            <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/show-notes1.1.png">
-                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
@@ -274,6 +268,7 @@
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-plus"></i> <a ng-click="createReview = !createReview">How to create
                         Review</a>
+
                         <div style="padding-top: 20px;" ng-show="createReview">
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/create-rev-annotated.png">
