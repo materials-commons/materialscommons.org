@@ -80,6 +80,7 @@ def save_draft(project_id):
     else:
         j['birthtime'] = r.now()
         j['mtime'] = j['birthtime']
+        j['_type'] = 'process'
         entry = dmutil.insert_entry('drafts', j, return_created=True)
     return resp.to_json(entry)
 
