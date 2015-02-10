@@ -112,6 +112,7 @@
                                 <img class="img-responsive" src="assets/img/userguide/access.png">
                             </div>
                             <b>Calendar</b>
+
                             <div class="watermark">Draft</div>
                             <p>
                                 Calendar helps user to keep track of the items created and how
@@ -130,7 +131,6 @@
                             </p>
                         </div>
                     </li>
-                    <div class="watermark">Draft</div>
 
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-home"></i> <a ng-click="showHome = !showHome">Home Page</a>
@@ -172,19 +172,43 @@
 
                         <div style="padding-top: 20px;" ng-show="showReviews">
                             <h4 class="text-center">Reviews</h4>
-
-                            <p>Reviews panel will list all the reviews belonging to a project. List may contain
-                                reviews which you have requested to others or vice-versa.
-                                User will identify the review by title.</p>
+                            <hr/>
+                            <p>Panel will list all the reviews created inside a project. List may contain
+                                reviews which you have requested to others or vice-versa. When you click on the title,
+                                review toggles and details will be opened.
+                                You can comment on the review by clicking on the comment button.
+                                If you close the review it will be removed from the list (archived).
+                            </p>
 
                             <div class="watermark">Draft</div>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/show-review.png">
                             </div>
-                            <p>When you click on the title, review toggles and details will be opened.
-                                You can comment on the review by clicking on the comment button.
-                                If you close the review it will be removed from the list. </p>
+                            <b>How to create a review</b>
+
+                            <p>When you click Plus <i class="fa fa-plus"></i> icon it will open up a form where you can
+                                fill in the title, pick a user who has to review and add your comment. </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/create-rev.png">
+                            </div>
+                            <b>Attach samples/files/notes to review</b>
+
+                            <p>There is an option to attach samples/files/notes along with your comment. In order to
+                                attach click on the + sign of the respective item which will trigger and open up an
+                                option to add
+                                those items to your review. Example: If you want to attach a note, click on the + sign
+                                next to notes and then you will see options in the notes panel as shown in picture
+                                below. When you hit create it will create a
+                                review for a project and will be notified to the assignee under global-reviews( which is
+                                in
+                                navbar).
+                            </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/create-review-note-annotated.png">
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
@@ -193,15 +217,35 @@
                         <div style="padding-top: 20px;" ng-show="showSamples">
                             <h4 class="text-center">Samples</h4>
 
-                            <p>Samples panel will list all the samples belonging to a project. </p>
+                            <p>Panel will list all the samples inside a project. When you click on the sample name you
+                                can see more information about the sample.</p>
 
                             <div class="watermark">Draft</div>
-
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/show-sample.png">
                             </div>
-                            <p>When you click on the sample name you can see more information about the sample.
-                            </p>
+                            <b>How to create a sample</b>
+
+                            <p>When you click Plus <i class="fa fa-plus"></i> icon it will open up a form where you can
+                                fill in the name, alloy supplier and sample type. Icons annotated as 1, 2 and 3 (Image) are
+                                explained below:</p>
+                            <b>1. Composition</b>
+
+                            <p>When you click composition button, it will open up dropdown list of elements using which
+                                you can add composition to the sample</p>
+                            <b>2. Share across projects</b>
+
+                            <p>sample can be shared across various projects. So this icon helps you to associate
+                                sample across different projects.</p>
+                            <b>3. Sample note</b>
+
+                            <p>This icon helps you to add a notes to the sample which will appear under "Notes Panel"
+                                </p>
+                            <p>After you enter all the information then hit create which will add your new sample to the list.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/create-sample-annotated.png">
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
@@ -209,19 +253,30 @@
 
                         <div style="padding-top: 20px;" ng-show="showNotes">
                             <h4 class="text-center">Notes</h4>
+                            <hr/>
+                            <b>List: </b>
 
-                            <p>Notes panel will list all the notes belonging to a project.
-                                User can create a notes for project/sample/file. Note creation is discussed more in
-                                detail
-                                under section <a ng-click="createNote = !createNote">How to create Note</a></p>
+                            <p>Panel will list all the notes created inside a project.
+                                A note can be created for a project/sample/file.
+                                When you click on the note title you can view detailed message.
+                            </p>
 
                             <div class="watermark">Draft</div>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/show-notes.png">
                             </div>
-                            <p>When you click on the note title you can view detailed notes.
-                            </p>
+                            <b>How to create a note</b>
+
+                            <p>When you click Plus <i class="fa fa-plus"></i> icon it will open up a form where you can
+                                fill in the title and detailed message in the note area.
+                                You can attach images/links and format your text. When you hit create it will create a
+                                note for a project and it will then appear on your list. </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/create-note.png">
+                            </div>
+                            <p>Note creation for sample and file will be discussed under respective sections.</p>
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
@@ -249,7 +304,7 @@
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">File layout</a>
+                        <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">Files</a>
 
                         <div style="padding-top: 20px;" ng-show="showFile">
                             <h4 class="text-center">Files</h4>
@@ -265,47 +320,9 @@
                             </div>
                         </div>
                     </li>
-                    <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createReview = !createReview">How to create
-                        Review</a>
-
-                        <div style="padding-top: 20px;" ng-show="createReview">
-                            <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/create-rev-annotated.png">
-                            </div>
-                            <div class="watermark">Draft</div>
-
-                            <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/create-rev1.1.png">
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createSample = !createSample">How to create
-                        Sample</a>
-
-                        <div ng-show="createSample" style="padding-top: 20px;">
-                            <div class="watermark">Draft</div>
-                            Information about nav bar......
-                        </div>
-                    </li>
-                    <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createNote = !createNote">How to create Note</a>
-
-                        <div style="padding-top: 20px;" ng-show="createNote">
-                            <img class="img-responsive" src="assets/img/userguide/create-note.png">
-                        </div>
-                    </li>
-                    <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-plus"></i> <a ng-click="createProv = !createProv">How to create
-                        Provenance</a>
-
-                        <div ng-show="createProv" style="padding-top: 20px;">
-                            <div class="watermark">Draft</div>
-                            Information about nav bar......
-                        </div>
-                    </li>
                 </ul>
+                <div class="watermark" style="transform: none">Draft</div>
+
             </div>
         </div>
     </div>
