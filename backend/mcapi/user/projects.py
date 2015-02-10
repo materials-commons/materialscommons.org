@@ -184,6 +184,8 @@ def build_tree(datadirs):
         for df in ddir['datafiles']:
             if df['name'][0] == ".":
                 continue
+            if not df['current']:
+                continue
             dfitem = DItem2(df['id'], df['name'], 'datafile',
                             df['owner'], df['birthtime'], df['size'])
             dfitem.fullname = ddir['name'] + "/" + df['name']
