@@ -2162,7 +2162,7 @@ input[type="checkbox"]:focus {
   opacity: 0.15;
   font-size: 120px;
   transform: rotate(300deg);
-  width: 100%;
+  width: 400px;
   text-align: center;
   z-index: 1000;
 }
