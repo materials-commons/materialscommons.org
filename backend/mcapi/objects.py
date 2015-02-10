@@ -93,6 +93,7 @@ def create_object():
         sample['parent_id'] = dmutil.get_optional('parent_id', j)
         sample['path'] = dmutil.get_required('path', j)
         sample['project_id'] = dmutil.get_required('project_id', j)
+        sample['_type'] = 'sample'
         notes = dmutil.get_optional('notes', j)
         title = dmutil.get_optional('title', j)
         s = dmutil.insert_entry('samples', sample, return_created=True)
