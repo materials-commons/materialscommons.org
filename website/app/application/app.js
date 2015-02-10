@@ -8,6 +8,7 @@ Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
                          [
+                             'ngAnimate',
                              'ui',
                              'ngCookies',
                              'ui.router',
