@@ -18,6 +18,7 @@
             </div>
         </div>
         <div ng-show="!isColumnActive('column2')">
+
             <div ng-class="{'col-xs-6': !isExpandedInColumn(column2), 'col-xs-12': isExpandedInColumn(column2)}"
                  ng-show="!isExpandedInColumn(column1)">
                 <div ng-repeat="panel in column2">
