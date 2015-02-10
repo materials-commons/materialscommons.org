@@ -31,7 +31,7 @@ def remove_existing_mediatypes(conn):
 
 
 def add_mediatypes(conn, mcdir):
-    # remove_existing_mediatypes(conn)
+    remove_existing_mediatypes(conn)
     mimetypes.add_type("application/matlab", ".m", strict=False)
 
     mediatypes_mapping = {
