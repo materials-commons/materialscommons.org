@@ -12,7 +12,14 @@ gulp.task('partials', function() {
     return stream;
 });
 
-gulp.task('default', ['partials'], function() {
+gulp.task('other', function() {
+    var stream = gulp.src(["app/assets/fonts/**/*", "app/assets/ico/**/*", "app/assets/img/**/*"], {
+        base: "app"
+    }).pipe(gulp.dest("prod/"));
+    return stream;
+});
+
+gulp.task('default', ['partials', 'other'], function() {
     return gulp.src("./app/index.html")
         .pipe(usemin({
             css: ['concat'],
