@@ -227,7 +227,8 @@
                             <b>How to create a sample</b>
 
                             <p>When you click Plus <i class="fa fa-plus"></i> icon it will open up a form where you can
-                                fill in the name, alloy supplier and sample type. Icons annotated as 1, 2 and 3 (Image) are
+                                fill in the name, alloy supplier and sample type. Icons annotated as 1, 2 and 3 (Image)
+                                are
                                 explained below:</p>
                             <b>1. Composition</b>
 
@@ -240,8 +241,10 @@
                             <b>3. Sample note</b>
 
                             <p>This icon helps you to add a notes to the sample which will appear under "Notes Panel"
-                                </p>
-                            <p>After you enter all the information then hit create which will add your new sample to the list.</p>
+                            </p>
+
+                            <p>After you enter all the information then hit create which will add your new sample to the
+                                list.</p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/create-sample-annotated.png">
@@ -281,7 +284,7 @@
                     </li>
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-code-fork"></i> <a
-                            ng-click="showProvenance = !showProvenance">Provenance</a>
+                            ng-click="showProvenance = !showProvenance">Processes</a>
 
                         <div style="padding-top: 20px;" ng-show="showProvenance">
                             <h4 class="text-center">Provenance</h4>
@@ -295,12 +298,24 @@
                             </div>
                             <p>When you click on the process name, process details will be opened.
                                 Graph will briefly describe about what are the
-                                inputs to the process and outputs from the process.
-                            </p>
+                                inputs to the process and outputs from the process.</p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/show-process1.1.png">
                             </div>
+                            <b>How to create a provenance:</b>
+
+                            <p>Based on the template you choose, provenance steps may vary. In general we can classify
+                                the steps as:</p>
+                            <b>1. Process</b>
+
+                            <p>Process (experiment/computation): Choose a template from the dropdown list and hit start.
+                                Now enter the name of the process and other details and move on to the next step which
+                                is inputs </p>
+
+                            <b>2. Inputs</b>
+                            <b>3. Outputs</b>
+
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">

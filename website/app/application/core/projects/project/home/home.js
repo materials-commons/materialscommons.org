@@ -84,6 +84,6 @@ function projectHome($scope, project, ui) {
     $scope.isEmptySplitBoard = function(){
         return ui.getEmptySplitStatus($scope.project.id);
     };
-
     $scope.project = project;
+
 }
