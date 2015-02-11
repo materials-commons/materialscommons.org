@@ -8,6 +8,16 @@ var rev = require("gulp-rev");
 var clean = require("gulp-clean");
 var gulpSequence = require("gulp-sequence");
 
+// Default task to run. Runs the dependencies in order waiting for each to
+// complete before running the others.
+gulp.task('default', gulpSequence('clean', 'partials', 'other', 'select2', 'min'));
+
+// Cleans the destination directory.
+gulp.task('clean', function() {
+    var stream = gulp.src("prod/").pipe(clean({read: false, force: true}));
+    return stream;
+});
+
 // Brings over the angular html partials.
 gulp.task('partials', function() {
     var stream = gulp.src("app/**/*.html")
@@ -21,7 +31,6 @@ gulp.task('other', function() {
     var stream = gulp.src([
         "app/assets/fonts/**/*",
         "app/assets/ico/**/*",
-        "app/assets/css/select2/*",
         "app/assets/css/images/*",
         "app/assets/img/**/*",
         "app/style-3.css"], {
@@ -30,10 +39,16 @@ gulp.task('other', function() {
     return stream;
 });
 
-// Cleans the destination directory.
-gulp.task('clean', function() {
-    var stream = gulp.src("prod/").pipe(clean({read: false, force: true}));
-    return stream;
+// Bring over the select2 image assets and place
+// them in the path the select2 css file is
+// looking for them.
+gulp.task('select2', function() {
+    return gulp.src([
+        "app/assets/css/select2/*.png",
+        "app/assets/css/select2/*.gif"
+    ], {
+        base: "app/assets/css/select2"
+    }).pipe(gulp.dest("prod/assets/css"));
 });
 
 // Builds the new index.html, concats and minimizes
@@ -47,5 +62,3 @@ gulp.task('min', function() {
         }))
         .pipe(gulp.dest("prod/"));
 });
-
-gulp.task('default', gulpSequence('clean', 'partials', 'other', 'min'));
