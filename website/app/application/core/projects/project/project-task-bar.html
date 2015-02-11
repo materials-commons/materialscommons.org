@@ -55,9 +55,22 @@
                     <i class="fa fa-fw fa-2x fa-calendar task-bar-tool"
                        ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}"></i>
                 </a>
+                <a  ng-click="toggleExpanded('sideboard')" title="Sideboard">
+                    <i class="fa fa-fw fa-2x fa-clipboard task-bar-tool"
+                       ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"></i>
+                    <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
+                </a>
             </div>
 
             <div class="col-xs-10">
+                <a class="btn btn-default btn-sideboard minimized-window"
+                   ng-class="{'btn-processes-active': isActive('dashboard')}"
+                   ng-click="toggleExpanded('dashboard')">
+                    <span>
+                        <i class="fa fa-fw fa-tachometer bold"></i>
+                        Dashboard
+                    </span>
+                </a>
                 <a class="btn btn-default btn-processes minimized-window"
                    ng-class="{'btn-processes-active': isActive('processes')}"
                    ng-click="toggleExpanded('processes')">
@@ -100,16 +113,6 @@
                     <span>
                         <i class="fa fa-fw fa-edit bold"></i>
                         Notes ({{project.notes.length}})
-                    </span>
-                </a>
-
-
-                <a class="btn btn-default btn-sideboard minimized-window"
-                   ng-class="{'btn-sideboard-active': isActive('sideboard')}"
-                   ng-click="toggleExpanded('sideboard')">
-                    <span>
-                        <i class="fa fa-fw fa-clipboard bold"></i>
-                        Sideboard ({{list.sideboard.length}})
                     </span>
                 </a>
             </div>
