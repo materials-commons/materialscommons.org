@@ -1,5 +1,5 @@
 Application.Controllers.controller('machines',
-    ["$scope", "mcapi", "$injector", function ($scope, mcapi, $injector) {
+    ["$scope", "mcapi", "$injector","current", function ($scope, mcapi, $injector, current) {
         var $validationProvider = $injector.get('$validation');
 
         $scope.clear_machine = function () {
