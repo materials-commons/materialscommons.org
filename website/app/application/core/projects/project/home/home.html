@@ -13,7 +13,7 @@
                     <div home-calendar project="project"></div>
                 </div>
                 <div ng-repeat="panel in column1">
-                    <display-panel panel-name="panel" project="project"></display-panel>
+                    <display-panel split-icon="false"  panel-name="panel" project="project"></display-panel>
                 </div>
             </div>
         </div>
@@ -23,15 +23,18 @@
                 <div ng-repeat="panel in column2">
                     <display-panel panel-name="panel" project="project"></display-panel>
                 </div>
+                <div ng-show="showPanel('emptyboard')" class="row">
+                    <div empty="true" split-icon="false" home-sideboard project="project"></div>
+                </div>
             </div>
         </div>
-        <div ng-show="isColumnActive('column3')" class="col-xs-6">
-            <div ng-show="!isEmptySplitBoard()" class="row">
-                <div split-icon="false" home-sideboard project="project"></div>
-            </div>
-            <div ng-show="isEmptySplitBoard()" class="row">
-                <div empty="true" split-icon="false" home-sideboard project="project"></div>
-            </div>
-        </div>
+        <!--<div ng-show="isColumnActive('column3')" class="col-xs-6">-->
+        <!--<div ng-show="!isEmptySplitBoard()" class="row">-->
+        <!--<div split-icon="false" home-sideboard project="project"></div>-->
+        <!--</div>-->
+        <!--<div ng-show="isEmptyBoard()" class="row">-->
+        <!--<div empty="true" split-icon="false" home-sideboard project="project"></div>-->
+        <!--</div>-->
+        <!--</div>-->
     </div>
 </div>

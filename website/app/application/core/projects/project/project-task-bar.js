@@ -43,10 +43,13 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
 
     function showAllPanels() {
         panels.forEach(function (panel) {
-            if (panel !== "sideboard") {
+            //if (panel !== "sideboard") {
                 ui.setIsExpanded($scope.project.id, panel, false);
                 ui.setPanelState($scope.project.id, panel, true);
-            }
+                ui.setPanelState($scope.project.id, 'sideboard', false);
+                ui.setPanelState($scope.project.id, 'emptyboard', false);
+
+            //}
         });
     }
 
@@ -70,9 +73,11 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         if (panel === 'dashboard') {
             showAllPanels();
         } else {
+            console.log('1');
             setAllPanels(false, panel);
             ui.toggleIsExpanded($scope.project.id, panel);
             if (!ui.showPanel($scope.project.id, panel) && ui.isExpanded($scope.project.id, panel)) {
+                console.log('2');
                 ui.setPanelState($scope.project.id, panel, true);
             } else if (!ui.isExpanded($scope.project.id, panel)) {
                 showAllPanels();
@@ -83,6 +88,7 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         }
 
     };
+
 
     $scope.openDrafts = function () {
         ui.togglePanelState($scope.project.id, "drafts");
