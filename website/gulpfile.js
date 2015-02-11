@@ -32,8 +32,7 @@ gulp.task('other', function() {
         "app/assets/fonts/**/*",
         "app/assets/ico/**/*",
         "app/assets/css/images/*",
-        "app/assets/img/**/*",
-        "app/style-3.css"], {
+        "app/assets/img/**/*"], {
             base: "app"
         }).pipe(gulp.dest("prod/"));
     return stream;
@@ -56,8 +55,8 @@ gulp.task('select2', function() {
 gulp.task('min', function() {
     return gulp.src("./app/index.html")
         .pipe(usemin({
-            css: ['concat'],
-            //html: [minifyHtml({empty: true})],
+            css: [minifyCss(), 'concat'],
+            html: [minifyHtml({empty: true})],
             js: [ngmin(), uglify(), 'concat']
         }))
         .pipe(gulp.dest("prod/"));
