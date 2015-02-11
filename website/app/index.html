@@ -6,17 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Materials Repository">
     <meta name="author" content="">
-    <!-- Le styles -->
-    <link href="assets/css/bootstrap.css"  rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <!--<link href="assets/css/animate.css" rel="stylesheet">-->
-    <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
-    <link href="assets/css/select2/select2.css" rel="stylesheet">
-    <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
-    <link href="assets/css/jqcloud.css" rel="stylesheet">
-    <link href="assets/css/tree-grid.css" rel="stylesheet">
-    <link href="assets/css/zenburn.css" rel="stylesheet">
-    <link href="assets/css/nzAnimate.css" rel="stylesheet">
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -24,6 +15,15 @@
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/mc-favicon.ico">
 
+    <!-- build:css assets/css/style.css -->
+    <link href="assets/css/bootstrap.css"  rel="stylesheet">
+    <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="assets/css/select2/select2.css" rel="stylesheet">
+    <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
+    <link href="assets/css/jqcloud.css" rel="stylesheet">
+    <link href="assets/css/tree-grid.css" rel="stylesheet">
+    <link href="assets/css/zenburn.css" rel="stylesheet">
+    <link href="assets/css/nzAnimate.css" rel="stylesheet">
     <link href="assets/css/thumbnail.css" rel="stylesheet">
     <link href="assets/css/periodic-table.css" rel="stylesheet">
     <link href="assets/css/bootstrap-vertical-tabs.css" rel="stylesheet">
@@ -32,9 +32,9 @@
     <link href="assets/css/vis.css" rel="stylesheet">
     <link href="assets/css/fullcalendar.css" rel="stylesheet">
     <link href="assets/css/nsPopover.css" rel="stylesheet">
-
     <!-- Application style sheet -->
     <link href="style-3.css" rel="stylesheet">
+    <!-- endbuild -->
 </head>
 <body>
 <div class="row">
@@ -82,25 +82,39 @@
 
 <!-- ---------------------------- External dependencies ----------------->
 
-<script src="assets/js/flow.js"></script>
-<script src="assets/js/jquery-1.11.1.min.js"></script>
+<!--
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.2/masonry.pkgd.min.js"></script>
 <script src="//desandro.github.io/imagesloaded/imagesloaded.pkgd.min.js"></script>
-<script src="assets/js/select2.min.js"></script>
-<script src="assets/js/TreeModel-min.js"></script>
-<script src="assets/js/highlight.pack.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-cookies.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
+-->
+
+<!-- build:jsassets js/assets.js -->
+<script src="assets/js/jquery-1.11.2.min.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
+<script src="assets/js/angular/masonry.pkgd.min.js"></script>
+<script src="assets/js/angular/imagesloaded.pkgd.min.js"></script>
+<script src="assets/js/angular/angular.min.js"></script>
+<script src="assets/js/angular/angular-animate.min.js"></script>
+<script src="assets/js/angular/angular-cookies.min.js"></script>
+<script src='assets/js/angular/textAngular-sanitize.min.js'></script>
+<script src='assets/js/angular/textAngular.min.js'></script>
+<script src="assets/js/angular/restangular.min.js"></script>
+<script src="assets/js/flow.js"></script>
+<script src="assets/js/select2.min.js"></script>
+<script src="assets/js/TreeModel-min.js"></script>
+<script src="assets/js/highlight.pack.js"></script>
 <script src="assets/js/angular/angular-strap.min.js"></script>
 <script src="assets/js/angular/angular-ui.js"></script>
 <script src="assets/js/angular/angular-highlightjs.min.js"></script>
 <script src="assets/js/angular/angular-ui-router.min.0.2.11.js"></script>
 <script src="assets/js/ui-bootstrap-tpls-0.11.0.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular-sanitize.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.1/textAngular.min.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
 <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
 <script src="assets/js/angular/angular-validation.js"></script>
 <script src="assets/js/angular/angular-validation-rule.js"></script>
@@ -124,39 +138,25 @@
 <script src="assets/js/fullcalendar.js"></script>
 <script src="assets/js/angular/nsPopover.js"></script>
 <script src="assets/js/angular/angular-recursion.min.js"></script>
+<!-- endbuild -->
 
-
-<!------------------------------ Application --------------------------->
+<!-- build:appjs js/app.js -->
 <script src="application/app.js"></script>
 <script src="index/navbar.js"></script>
 <script src="index/quickbar.js"></script>
-
-<!------------------------------ Core app ------------------------------>
-
-<!-- Navbar -->
 <script src="application/core/help/help-controller.js"></script>
 <script src="application/core/about/about-controller.js"></script>
 <script src="application/core/contact/contact-controller.js"></script>
 <script src="application/core/login/login-controller.js"></script>
 <script src="application/core/logout/logout-controller.js"></script>
-
-<!-- Views -->
-<!-- View: Account Groups -->
 <script src="application/core/account/account-controller.js"></script>
 <script src="application/core/account/settings.js"></script>
 <script src="application/core/account/password/password-controller.js"></script>
 <script src="application/core/account/apikey/apikey-controller.js"></script>
 <script src="application/core/account/usergroups/usergroup-controller.js"></script>
-
 <script src="application/core/account/templates/templates-controller.js"></script>
-
-<!-- Toolbar reviews -->
 <script src="application/core/reviews/global-reviews.js"></script>
-
-<!-- Toolbar machines -->
 <script src="application/core/machines/machines-controller.js"></script>
-
-<!-- Toolbar projects -->
 <script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
 <script src="application/core/projects/directives/provenance/show-provenance-template-steps.js"></script>
 <script src="application/core/projects/directives/provenance/wizard-step-overview.js"></script>
@@ -267,8 +267,6 @@
 <script src="application/core/projects/project/notes/edit.js"></script>
 <script src="application/core/projects/project/provenance/vis-network-directive.js"></script>
 <script src="application/core/projects/project/provenance/graph-service.js"></script>
-
-<!-------------------------------- Global directives ------------------------------->
 <script src="application/directives/magicbox.js"></script>
 <script src="application/directives/text-editor-directive.js"></script>
 <script src="application/directives/paged-directive.js"></script>
@@ -293,8 +291,6 @@
 <script src="application/directives/on-repeat-finished.js"></script>
 <script src="application/directives/mc-flow-button.js"></script>
 <script src="application/directives/on-enter.js"></script>
-
-<!-------------------------------- Global services --------------------------------->
 <script src="application/services/user-service.js"></script>
 <script src="application/services/project-colors-service.js"></script>
 <script src="application/services/alert-service.js"></script>
@@ -331,12 +327,8 @@
 <script src="application/services/mc-flow.js"></script>
 <script src="application/services/homepage-customize.js"></script>
 <script src="application/core/projects/services/toggle-dragbuttons-service.js"></script>
-
-<!-------------------------------- Global model services -------------------------->
 <script src="application/services/model/projects-service.js"></script>
 <script src="application/services/model/templates-service.js"></script>
-
-<!-------------------------------- Global filters --------------------------------->
 <script src="application/filters/page-filter.js"></script>
 <script src="application/filters/todatestring-filter.js"></script>
 <script src="application/filters/reverse-filter.js"></script>
@@ -346,14 +338,11 @@
 <script src="application/filters/bytes.js"></script>
 <script src="application/filters/mfilter.js"></script>
 <script src="application/filters/project-to-delete-filter.js"></script>
-
-<!-- Index -->
 <script src="index/_navigation-controller.js"></script>
 <script src="index/_alerts-controller.js"></script>
 <script src="index/projects-modal.js"></script>
-
-<!-- Util -->
 <script src="index/util.js"></script>
 <script src="index/config.js"></script>
+<!-- endbuild -->
 </body>
 </html>
