@@ -73,11 +73,9 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         if (panel === 'dashboard') {
             showAllPanels();
         } else {
-            console.log('1');
             setAllPanels(false, panel);
             ui.toggleIsExpanded($scope.project.id, panel);
             if (!ui.showPanel($scope.project.id, panel) && ui.isExpanded($scope.project.id, panel)) {
-                console.log('2');
                 ui.setPanelState($scope.project.id, panel, true);
             } else if (!ui.isExpanded($scope.project.id, panel)) {
                 showAllPanels();
