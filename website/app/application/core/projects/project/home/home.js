@@ -5,11 +5,11 @@ function projectHome($scope, project, ui) {
 
     $scope.column1 = [
         "processes",
-        "files"
+        "files",
+        "sideboard"
     ];
 
     $scope.column2 = [
-        "sideboard",
         "samples",
         "reviews",
         "notes"
@@ -18,7 +18,7 @@ function projectHome($scope, project, ui) {
     $scope.onDropColumn1 = function(target, source) {
         console.log("onDropColumn1:", target, source);
         var index = _.indexOf($scope.column1, function(panel) {
-            return panel == source;
+            return panel === source;
         });
 
         if (index !== -1) {
@@ -81,9 +81,6 @@ function projectHome($scope, project, ui) {
         return ui.getColumn($scope.project.id, column);
     };
 
-    $scope.isEmptySplitBoard = function(){
-        return ui.getEmptySplitStatus($scope.project.id);
-    };
     $scope.project = project;
 
 }
