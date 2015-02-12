@@ -20,14 +20,13 @@ function uiService() {
                 sideboard: false,
                 settings: false,
                 provwizard: false,
-                drafts: false
+                drafts: false,
+                emptyboard: false
             },
             split: {
                 column1: false,
-                column2: false,
-                column3: false
-            },
-            emptySplitBoard: false
+                column2: false
+            }
         };
     }
 
@@ -108,7 +107,7 @@ function uiService() {
             proj.panels[what] = !proj.panels[what];
         },
 
-        setPanelState: function(projectID, what, to) {
+        setPanelState: function (projectID, what, to) {
             var proj = getForProject(projectID);
             proj.panels[what] = to;
         },
@@ -118,9 +117,9 @@ function uiService() {
             return proj.panels[what];
         },
 
-        resetPanels: function(projectID){
+        resetPanels: function (projectID) {
             var proj = getForProject(projectID);
-            proj.panels= {
+            proj.panels = {
                 reviews: true,
                 samples: true,
                 files: true,
@@ -130,7 +129,8 @@ function uiService() {
                 sideboard: false,
                 settings: false,
                 provwizard: false,
-                drafts: false
+                drafts: false,
+                emptyboard: false
             };
         },
 
@@ -166,27 +166,39 @@ function uiService() {
             }
         },
 
+        getSplitStatus: function (projectID) {
+            var proj = getForProject(projectID);
+            if (proj.expanded.sideboard === true) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+
+        togglesideboards: function (projectID) {
+            var proj = getForProject(projectID);
+            proj.split.column1 = false;
+            proj.split.column2 = false;
+            proj.panels = {
+                reviews: false,
+                samples: false,
+                files: false,
+                notes: false,
+                processes: false,
+                calendar: false,
+                sideboard: true,
+                settings: false,
+                provwizard: false,
+                drafts: false,
+                emptyboard: true
+            };
+        },
+
         getColumn: function (projectID, col) {
             var proj = getForProject(projectID);
             return proj.split[col];
         },
-
-        getEmptySplitStatus: function (projectID) {
-            var proj = getForProject(projectID);
-            return proj.emptySplitBoard;
-        },
-
-        getSplitStatus: function (projectID) {
-            var proj = getForProject(projectID);
-            if (proj.split.column1 === true || proj.split.column2 === true ||
-                proj.split.column3 === true) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-
-        showPanelByCalendarEvent: function(projectID, what){
+        showPanelByCalendarEvent: function (projectID, what) {
             hidePanels(projectID, what);
         }
     };

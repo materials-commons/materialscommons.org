@@ -38,8 +38,12 @@ function homeSideboardDirectiveController($scope, ui, sideboard) {
     };
 
     $scope.splitScreen = function (what, col) {
-        ui.toggleColumns($scope.project.id, what, col);
+        //ui.toggleColumns($scope.project.id, what, col);
+        //ui.toggleIsExpanded($scope.project.id, "sideboard");
+
+        ui.togglesideboards($scope.project.id);
         ui.toggleIsExpanded($scope.project.id, "sideboard");
+
     };
 
     $scope.isSplitExpanded = function () {
