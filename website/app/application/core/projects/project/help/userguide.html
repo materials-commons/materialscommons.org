@@ -13,6 +13,43 @@
             <div>
                 <ul class="list-group">
                     <li class="list-group-item">
+                        <i class=" fa fa-fw fa-book"></i> <a ng-click="showGloss = !showGloss">Glossary</a>
+
+                        <div style="padding-top: 20px; padding-left: 5px;" ng-show="showGloss">
+                            <h4 class="text-center">Glossary</h4>
+                            <hr/>
+                            <p><i class="fa fa-fw fa-tachometer"></i>Dashboard :</p>
+
+                            <p><i class="fa fa-fw fa-pencil-square-o"></i> Draft :</p>
+
+                            <p><i class="fa fa-fw fa-file"></i>File :</p>
+
+                            <p><i class="fa fa-fw fa-comment"></i>Global review :</p>
+
+                            <p><i class="fa fa-fw fa-home"></i>Home :</p>
+
+                            <p><i class="fa fa-fw"></i>Last login :</p>
+
+                            <p><i class="fa fa-fw"></i>Preferred template :</p>
+
+                            <p><i class="fa fa-fw fa-briefcase"></i>Project :</p>
+
+                            <p><i class="fa fa-fw fa-code-fork"></i>Provenance :</p>
+
+                            <p><i class="fa fa-fw fa-code-fork"></i>Process :</p>
+
+                            <p><i class="fa fa-fw fa-comment"></i>Review :</p>
+
+                            <p><i class="fa fa-fw fa-cubes"></i>Sample :</p>
+
+                            <p><i class="fa fa-fw "></i>Template :</p>
+
+                            <p><i class="fa fa-fw fa-clipboard"></i>Sideboard :</p>
+
+                            <div class="watermark">Draft :</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
                         <i class=" fa fa-fw fa-bars"></i>
                         <a ng-click="showNav = !showNav">Nav bar</a>
 
@@ -66,6 +103,7 @@
 
                         <div style="padding-top: 20px;" ng-show="showProjectBar">
                             <h4 class="text-center">Project Bar</h4>
+                            <hr/>
                             <b>Switch Projects</b>
 
                             <p>Projects bar indicates total number of projects user has created/shared. Dropdown menu
@@ -88,7 +126,8 @@
                             </div>
 
                             <p>
-                                Bottom of the project taskbar has icons for 1) Project Setting 2) Calendar 3) Panels
+                                Bottom of the project taskbar has icons for 1) Drafts 2) Project Setting 3) Calendar 4)
+                                Panels
                             </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
@@ -96,7 +135,7 @@
                             </div>
                             <b>Drafts</b>
 
-                            <p>Drafts</p>
+                            <p>Explained under processes section</p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/draft.png">
@@ -117,7 +156,7 @@
                             <p>
                                 Calendar helps user to keep track of the items created and how
                                 many of them were created. You can click on a particular day to filter out all the items
-                                created/updated on that day.
+                                created/updated on that day.To view all items click on "click filter" link.
                             </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
@@ -137,7 +176,7 @@
 
                         <div style="padding-top: 20px;" ng-show="showHome">
                             <h4 class="text-center">Home Page</h4>
-
+                            <hr/>
                             <p>Homepage contains panels for Reviews, Samples, Files, Notes and Provenance.
                                 Content inside panels changes with respect to the project. In this section we will
                                 describe
@@ -216,7 +255,7 @@
 
                         <div style="padding-top: 20px;" ng-show="showSamples">
                             <h4 class="text-center">Samples</h4>
-
+                            <hr/>
                             <p>Panel will list all the samples inside a project. When you click on the sample name you
                                 can see more information about the sample.</p>
 
@@ -288,6 +327,7 @@
 
                         <div style="padding-top: 20px;" ng-show="showProvenance">
                             <h4 class="text-center">Provenance</h4>
+                            <hr/>
 
                             <p>Provenance panel will list all the processes created for a project.</p>
 
@@ -389,7 +429,7 @@
 
                         <div style="padding-top: 20px;" ng-show="showFile">
                             <h4 class="text-center">Files</h4>
-
+                            <hr/>
                             <div class="watermark">Draft</div>
 
                             <p>Files panel will show you all your uploaded files for a project. It will preserve the
@@ -413,8 +453,8 @@
                             <p>If you want to upload a file into a directory then click on the upload icon <i
                                     class="fa fa-upload"></i> next to the folder into which you wanted to upload the
                                 file. Then a pop up window will appear through which you can browse and select a file.
-                                After you have selected it will appear under "Files to Upload List which is above the
-                                project tree. </p>
+                                After you select it will appear under "Files to Upload List" as shown in the image
+                                below. </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/upload-file-annotated.png">
