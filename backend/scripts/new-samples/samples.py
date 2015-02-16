@@ -249,9 +249,9 @@ def make_tables(conn):
     create_table("process2sample", conn, "sample_id", "process_id")
     create_table("attribute2process", conn, "attribute_id",
                  "process_id")
-    create_table("process", conn)
-    create_table("attribute", conn, "parent_id")
-    create_table("measurement", conn, "process_id")
+    create_table("processes", conn)
+    create_table("attributes", conn, "parent_id")
+    create_table("measurements", conn, "process_id")
     create_table("attribute2measurement", conn, "attribute_id",
                  "measurement_id")
     create_table("attribute_history", conn, "process_id", "attribute_id")
