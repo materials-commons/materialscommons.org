@@ -15,7 +15,7 @@
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-book"></i> <a ng-click="showGlossary = !showGlossary">Glossary</a>
 
-                        <div style="padding-top: 20px; padding-left: 5px;" ng-show="showGlossary">
+                        <div style="background-color: #e9e7dd;padding-top: 20px; padding-left: 5px;" ng-show="showGlossary">
                             <h4 class="text-center">Glossary</h4>
                             <hr/>
                             <div class="row">
@@ -27,12 +27,8 @@
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-pencil-square-o"></i> Draft:</div>
                                 <div class="col-xs-8">can be defined as an incomplete provenance step. When you save
-                                    your provenance as draft you can go back and modiify any step
+                                    your provenance as draft you can go back and modify at anytime.
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-3"><i class="fa fa-fw fa-comment"></i>Global reviews:</div>
-                                <div class="col-xs-8"></div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw"></i>Last login:</div>
@@ -40,36 +36,45 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-briefcase"></i>Project:</div>
-                                <div class="col-xs-8"></div>
+                                <div class="col-xs-8"> is defined as a workspace where you can store all the
+                                    information related to a project or perform some actions against them. Every project
+                                    will have its own defined workspace.
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw"></i>Provenance:</div>
-                                <div class="col-xs-8"></div>
+                                <div class="col-xs-8">is defined as the origin or source of data</div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-code-fork"></i>Process:</div>
-                                <div class="col-xs-8"></div>
+                                <div class="col-xs-8">is one of the key step in provenance creation. Process is defined
+                                    as an experiment / computation / data analysis with a set of inputs and outputs.
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw"></i>Panel:</div>
                                 <div class="col-xs-8">is a container to list various items (such
-                                    as reviews/samples/notes/processes/files) inside a project
+                                    as reviews/samples/notes/processes/files) inside a project.
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-comment"></i>Review:</div>
-                                <div class="col-xs-8"></div>
+                                <div class="col-xs-8">is defined as an assessment or examination of something with the
+                                    possibility or intention of instituting change if necessary.
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-cubes"></i>Sample:</div>
-                                <div class="col-xs-8">is defined as a material which will be an input into the
+                                <div class="col-xs-8">is defined as a material on which user can perform some
+                                    experiment. During provenance creation sample will be an input into the
                                     process.
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw "></i>Template:</div>
                                 <div class="col-xs-8">is a placeholder for detailed steps inside a
-                                    process(experiment/computation/data analysis). There are set of pre-defined templates
+                                    process(experiment/computation/data analysis). There are set of pre-defined
+                                    templates
                                     on Materials Commons.
                                 </div>
                             </div>
@@ -87,7 +92,7 @@
                         <i class=" fa fa-fw fa-bars"></i>
                         <a ng-click="showNav = !showNav">Nav bar</a>
 
-                        <div style="padding-top: 20px;" ng-show="showNav">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showNav">
                             <h4 class="text-center">Navigation Bar</h4>
                             <hr/>
                             <b>Navigation:</b>
@@ -135,7 +140,7 @@
                         <i class=" fa fa-fw fa-briefcase"></i>
                         <a ng-click="showProjectBar = !showProjectBar">Project Bar</a>
 
-                        <div style="padding-top: 20px;" ng-show="showProjectBar">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showProjectBar">
                             <h4 class="text-center">Project Bar</h4>
                             <hr/>
                             <b>Switch Projects</b>
@@ -208,7 +213,7 @@
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-home"></i> <a ng-click="showHome = !showHome">Home Page</a>
 
-                        <div style="padding-top: 20px;" ng-show="showHome">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showHome">
                             <h4 class="text-center">Home Page</h4>
                             <hr/>
                             <p>Homepage contains panels for Reviews, Samples, Files, Notes and Provenance.
@@ -243,7 +248,7 @@
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-comment-o"></i> <a ng-click="showReviews = !showReviews">Reviews</a>
 
-                        <div style="padding-top: 20px;" ng-show="showReviews">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showReviews">
                             <h4 class="text-center">Reviews</h4>
                             <hr/>
                             <p>Panel will list all the reviews created inside a project. List may contain
@@ -287,7 +292,7 @@
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
 
-                        <div style="padding-top: 20px;" ng-show="showSamples">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showSamples">
                             <h4 class="text-center">Samples</h4>
                             <hr/>
                             <p>Panel will list all the samples inside a project. When you click on the sample name you
@@ -327,7 +332,7 @@
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-edit"></i> <a ng-click="showNotes = !showNotes">Notes</a>
 
-                        <div style="padding-top: 20px;" ng-show="showNotes">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showNotes">
                             <h4 class="text-center">Notes</h4>
                             <hr/>
                             <b>List: </b>
@@ -359,7 +364,7 @@
                         <i class=" fa fa-fw fa-code-fork"></i> <a
                             ng-click="showProvenance = !showProvenance">Processes</a>
 
-                        <div style="padding-top: 20px;" ng-show="showProvenance">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showProvenance">
                             <h4 class="text-center">Provenance</h4>
                             <hr/>
 
@@ -461,7 +466,7 @@
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">Files</a>
 
-                        <div style="padding-top: 20px;" ng-show="showFile">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showFile">
                             <h4 class="text-center">Files</h4>
                             <hr/>
                             <div class="watermark">Draft</div>
