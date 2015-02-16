@@ -108,8 +108,9 @@ class Attribute2Process(object):
 
 
 class Measurement(object):
-    def __init__(self, value, units, process_id):
+    def __init__(self, value, value_type, units, process_id):
         self.value = value
+        self.value_type = value_type
         self.units = units
         self.process_id = process_id
         self.normalized_value = ""
@@ -259,12 +260,12 @@ def make_tables(conn):
 
 
 def create_sample1(conn):
-    s = Sample("sample1", "Empty sample", "jfadams@umich.edu")
+    s = Sample("sample1", "Empty sample", "test@mc.org")
     rv = insert(s.__dict__, "samples", conn)
     sample_id = rv['id']
     p2s = Project2Sample(PROJECTID, sample_id)
     insert(p2s.__dict__, "project2sample", conn)
-    process = Process("as_received", "jfadams@umich.edu", "",
+    process = Process("as_received", "test@mc.org", "",
                       PROJECTID, "sample1")
     rv = insert(process.__dict__, "processes", conn)
     process_id = rv['id']
@@ -290,9 +291,38 @@ def create_sample1(conn):
     rv = insert(a1.__dict__, "attributes", conn)
     a1id = rv['id']
     as2a = AttributeSet2Attribute(sample1_as_id, a1id)
-    insert(as2a.__dict__, "attribute_set2attribute")
+    insert(as2a.__dict__, "attribute_set2attribute", conn)
     a2proc = Attribute2Process(a1id, process_id)
-    insert(a2proc.__dict__, "attribte2process", conn)
+    insert(a2proc.__dict__, "attribute2process", conn)
+
+    #
+    # Add history for attribute
+    #
+
+    # Create a process that measures the attribute
+    process = Process("measures_composition", "test@mc.org", "",
+                      PROJECTID, "measure composition")
+    rv = insert(process.__dict__, "processes", conn)
+    mproc_id = rv['id']
+    p2s = Project2Process(PROJECTID, mproc_id)
+    insert(p2s.__dict__, "project2process", conn)
+    a2proc = Attribute2Process(a1id, mproc_id)
+    insert(a2proc.__dict__, "attribute2process", conn)
+
+    # Create measurement for the process
+    comp = {
+        "mg": 0.2
+    }
+    m = Measurement(comp, "json", "atomic_percentage", mproc_id)
+    m.normalized_value = m.value
+    m.normalized_units = m.units
+
+    ah = AttributeHistory(a1id, process_id, "", "", "")
+    ah.value = a1.value
+    ah.normalized_value = a1.normalized_value
+    ah.units = a1.units
+    ah.normalized_units = a1.normalized_units
+    ah.value_unknown = False
 
 
 def create_sample2(conn):
