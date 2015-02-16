@@ -133,8 +133,8 @@ class AttributeHistory(object):
         self.units = units
         self.normalized_units = ""
         self.normalized_value = ""
-        self.current = True
-        self.value_unknown = True
+        self.current = False
+        self.value_unknown = False
         self.order = 0
         self.when = r.now()
         self._type = "attribute_history"
@@ -278,12 +278,17 @@ def create_sample1(conn):
     insert(s2as.__dict__, "sample2attribute_set", conn)
 
     # Create attributes
+    comp1 = {
+        "mg" : 0.1
+    }
+    comp2 = {
+        "mg": 0.2
+    }
     a1 = Attribute()
     a1.name = "composition"
     a1.value_type = "json"
-    a1.value = {
-        "mg": 0.1
-    }
+    a1.value = comp2
+
     a1.units = "atomic_percentage"
     a1.value_unknown = False
     a1.normalized_value = a1.value
@@ -294,6 +299,16 @@ def create_sample1(conn):
     insert(as2a.__dict__, "attribute_set2attribute", conn)
     a2proc = Attribute2Process(a1id, process_id)
     insert(a2proc.__dict__, "attribute2process", conn)
+
+    # Need to setup the initial attribute history for this attribute
+    ah = AttributeHistory(a1id, process_id, "", "", "")
+    ah.current = False
+    ah.value_unknown = False
+    ah.value = comp1
+    ah.normalized_value = comp1
+    ah.units = a1.units
+    ah.normalized_units = a1.normalized_units
+    insert(ah.__dict__, "attribute_history", conn)
 
     #
     # Add history for attribute
@@ -310,19 +325,27 @@ def create_sample1(conn):
     insert(a2proc.__dict__, "attribute2process", conn)
 
     # Create measurement for the process
-    comp = {
-        "mg": 0.2
-    }
-    m = Measurement(comp, "json", "atomic_percentage", mproc_id)
+
+    m = Measurement(comp1, "json", "atomic_percentage", mproc_id)
     m.normalized_value = m.value
     m.normalized_units = m.units
+    rv = insert(m.__dict__, "measurements", conn)
+    m_id = rv['id']
+    a2m = Attribute2Measurement(a1id, m_id)
+    insert(a2m.__dict__, "attribute2measurement", conn)
 
-    ah = AttributeHistory(a1id, process_id, "", "", "")
+    # We set up a1 to have the current value, now we set the measurement.
+    # There are two history items, the first is when the attribute was
+    # first entered into the system
+    ah = AttributeHistory(a1id, process_id, m_id, "", "")
     ah.value = a1.value
     ah.normalized_value = a1.normalized_value
     ah.units = a1.units
     ah.normalized_units = a1.normalized_units
     ah.value_unknown = False
+    ah.current = True
+    ah.order = 1
+    insert(ah.__dict__, "attribute_history", conn)
 
 
 def create_sample2(conn):
