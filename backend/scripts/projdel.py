@@ -11,16 +11,24 @@ def delete_project(conn, project_id):
         print "No such project: %s" % (project_id)
         sys.exit(1)
     print "Deleting project %s with id %s" % (project['name'], project_id)
-    r.table("datadirs_denorm")\
+    r.table("project2datadir")\
      .get_all(project_id, index="project_id")\
      .delete().run(conn)
     dirs = list(r.table("datadirs")
                 .get_all(project_id, index="project")
                 .run(conn))
     for dir in dirs:
-        files = dir['datafiles']
-        if len(files) > 0:
-            r.table("datafiles").get_all(*files).delete().run(conn)
+        file_ids = list(r.table("datadir2datafile")
+                        .get_all(dir['id'], index="datadir_id")
+                        .run(conn))
+        ids = []
+        for fid in file_ids:
+            ids.append(fid['datafile_id'])
+        if ids:
+            r.table('datafiles').get_all(*ids).delete().run(conn)
+        r.table("datadir2datafile")\
+         .get_all(dir['id'], index="datadir_id")\
+         .delete().run(conn)
     r.table("datadirs")\
      .get_all(project_id, index="project")\
      .delete()\
