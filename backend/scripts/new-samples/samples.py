@@ -55,13 +55,12 @@ class Sample2File(object):
         self.datafile_id = file_id
 
 
+# TODO: Rename class and table to better reflect what it does.
 class Process2Sample(object):
-    def __init__(self, sample_id, process_id, attribute_set_id,
-                 relationship):
+    def __init__(self, sample_id, process_id, attribute_set_id):
         self.sample_id = sample_id
         self.process_id = process_id
         self.attribute_set_id = attribute_set_id
-        self.relationship = relationship
 
 
 class Project2Sample(object):
@@ -323,6 +322,9 @@ def create_sample1(conn):
     attr.name = "composition"
     attr_id = add_attribute(as_id, attr, conn)
 
+    p2s = Process2Sample(sample_id, process_id, as_id)
+    insert(p2s.__dict__, "process2sample", conn)
+
     # add measurement
     p = Property("json", {"mg": 0.1}, "aw", {"mg": 0.1}, "aw")
     m1_id = add_measurement("composition", p, attr_id, process_id, conn)
@@ -332,6 +334,9 @@ def create_sample1(conn):
     process = Process("sem", "test@mc.org", "", PROJECTID,
                       "measure composition")
     sem_process_id = add_process(process, conn)
+    p2s = Process2Sample(sample_id, sem_process_id, as_id)
+    insert(p2s.__dict__, "process2sample", conn)
+
     p = Property("json", {"mg": 0.2}, "aw", {"mg": 0.2}, "aw")
     m2_id = add_measurement("composition", p, attr_id, sem_process_id, conn)
     add_best_measure(attr_id, m2_id, conn)
