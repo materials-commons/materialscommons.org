@@ -28,3 +28,65 @@ r.db('samplesdb').table("samples")
                 .coerceTo("array")
         };
     });
+
+// Get all attributes for all samples, including attribute history.
+// Assumption: A sample only ever has one active attribute set.
+r.db('samplesdb').table("samples")
+    .eqJoin("id", r.db("samplesdb").table("sample2attribute_set"), {index: "sample_id"})
+    .zip()
+    .filter({current: true})
+    .merge(function(aset) {
+        return {
+            attributes: r.db("samplesdb").table("attribute_set2attribute")
+                .getAll(aset('attribute_set_id'), {index: "attribute_set_id"})
+                .eqJoin("attribute_id", r.db("samplesdb").table("attributes"))
+                .zip()
+                .merge(function(attr) {
+                    return {
+                        history: r.db("samplesdb").table("best_measure_history")
+                            .getAll(attr('id'), {index: "attribute_id"})
+                            .merge(function(best) {
+                                return {
+                                    measurement: r.db("samplesdb").table("measurements").get(best('measurement_id'))
+                                };
+                            })
+                            .coerceTo("array")
+                    };
+                })
+                .coerceTo("array")
+        };
+    });
+
+// Get all attributes for all samples, including attribute history
+// and attribute measurements.
+r.db('samplesdb').table("samples")
+    .eqJoin("id", r.db("samplesdb").table("sample2attribute_set"), {index: "sample_id"})
+    .zip()
+    .filter({current: true})
+    .merge(function(aset) {
+        return {
+            attributes: r.db("samplesdb").table("attribute_set2attribute")
+                .getAll(aset('attribute_set_id'), {index: "attribute_set_id"})
+                .eqJoin("attribute_id", r.db("samplesdb").table("attributes"))
+                .zip()
+                .merge(function(attr) {
+                    return {
+                        best_measure: r.db("samplesdb").table("measurements").get(attr('best_measure_id')),
+                        history: r.db("samplesdb").table("best_measure_history")
+                            .getAll(attr('id'), {index: "attribute_id"})
+                            .merge(function(best) {
+                                return {
+                                    measurement: r.db("samplesdb").table("measurements").get(best('measurement_id'))
+                                };
+                            })
+                            .coerceTo("array"),
+                        measurements: r.db("samplesdb").table("attribute2measurement")
+                            .getAll(attr('id'), {index: "attribute_id"})
+                            .eqJoin("measurement_id", r.db("samplesdb").table("measurements"))
+                            .zip()
+                            .coerceTo("array")
+                    };
+                })
+                .coerceTo("array")
+        };
+    });
