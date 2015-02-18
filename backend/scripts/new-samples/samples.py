@@ -41,13 +41,6 @@ class Sample(object):
         self.mtime = self.birthtime
         self._type = "sample"
 
-    def add_attribute_set(self, sample_id, aset, conn):
-        rv = insert(aset.__dict__, "attribute_sets", conn)
-        as_id = rv['id']
-        s2as = Sample2AttributeSet(as_id, sample_id, 0, True)
-        insert(s2as.__dict__, "sample2attribute_set", conn)
-        return as_id
-
 
 class Sample2File(object):
     def __init__(self, sample_id, file_id):
@@ -290,6 +283,14 @@ def add_process(proc, conn):
     return process_id
 
 
+def add_attribute_set(sample_id, aset, conn):
+    rv = insert(aset.__dict__, "attribute_sets", conn)
+    as_id = rv['id']
+    s2as = Sample2AttributeSet(as_id, sample_id, 0, True)
+    insert(s2as.__dict__, "sample2attribute_set", conn)
+    return as_id
+
+
 def add_attribute(as_id, attr, conn):
     rv = insert(attr.__dict__, "attributes", conn)
     attr_id = rv['id']
@@ -298,10 +299,22 @@ def add_attribute(as_id, attr, conn):
     return attr_id
 
 
+def add_attribute_id(as_id, attr_id, conn):
+    as2a = AttributeSet2Attribute(as_id, attr_id)
+    insert(as2a.__dict__, "attribute_set2attribute", conn)
+
+
 def add_best_measure(attr_id, m_id, conn):
     update(attr_id, {"best_measure_id": m_id}, "attributes", conn)
     best = BestMeasureHistory(attr_id, m_id)
     insert(best.__dict__, "best_measure_history", conn)
+
+
+def clear_current(sample_id, conn):
+    r.db("samplesdb").table("sample2attribute_set")\
+                     .get_all(sample_id, index="sample_id")\
+                     .update({"current": False})\
+                     .run(conn)
 
 
 def create_sample1(conn):
@@ -313,14 +326,15 @@ def create_sample1(conn):
     insert(p2s.__dict__, "project2sample", conn)
 
     process = Process("as_received", "test@mc.org", "",
-                      PROJECTID, "sample1")
+                      PROJECTID, "receive sample1")
     process_id = add_process(process, conn)
 
     aset = AttributeSet("as_received", "Initial Attributes", True, "")
-    as_id = s.add_attribute_set(sample_id, aset, conn)
+    as_id = add_attribute_set(sample_id, aset, conn)
     attr = Attribute()
     attr.name = "composition"
     attr_id = add_attribute(as_id, attr, conn)
+    comp_attr_id = attr_id
 
     p2s = Process2Sample(sample_id, process_id, as_id)
     insert(p2s.__dict__, "process2sample", conn)
@@ -340,6 +354,62 @@ def create_sample1(conn):
     p = Property("json", {"mg": 0.2}, "aw", {"mg": 0.2}, "aw")
     m2_id = add_measurement("composition", p, attr_id, sem_process_id, conn)
     add_best_measure(attr_id, m2_id, conn)
+
+    #
+    # Add second attribute - Grain size
+    #
+    attr = Attribute()
+    attr.name = "grain_size"
+    attr_id = add_attribute(as_id, attr, conn)
+
+    # Add a couple of measurements for the grain size attribute
+    p = Property("number", 1.08, "mm", 1.08, "mm")
+    add_measurement("grain_size", p, attr_id, sem_process_id, conn)
+    p = Property("number", 1.1, "mm", 1.1, "mm")
+    add_measurement("grain_size", p, attr_id, sem_process_id, conn)
+    p = Property("number", 1.09, "mm", 1.09, "mm")
+    m3_id = add_measurement("grain_size", p, attr_id, sem_process_id, conn)
+    add_best_measure(attr_id, m3_id, conn)
+
+    transform_sample1(sample_id, comp_attr_id, conn)
+
+
+def transform_sample1(sample_id, comp_attr_id, conn):
+    # Create the transforming process
+    process = Process("heat_treatment", "test@mc.org", "", PROJECTID,
+                      "heat treat sample1")
+    process_id = add_process(process, conn)
+
+    # Create a new attribute set since we transformed the sample
+
+    # Mark existing attributes for sample as not current
+    clear_current(sample_id, conn)
+    aset = AttributeSet("heat_treatment", "heat treated", True, "")
+    as_id = add_attribute_set(sample_id, aset, conn)
+
+    # TODO: Add API call to do this, or update existing API call to do it
+    p2s = Process2Sample(sample_id, process_id, as_id)
+    insert(p2s.__dict__, "process2sample", conn)
+
+    # Create new attribute set that changes grain size
+    # but leaves composition the same.
+    attr = Attribute()
+    attr.name = "grain_size"
+    attr_id = add_attribute(as_id, attr, conn)
+
+    # Add measurements
+    p = Property("number", 2.01, "mm", 2.01, "mm")
+    add_measurement("grain_size", p, attr_id, process_id, conn)
+
+    p = Property("number", 2.02, "mm", 2.02, "mm")
+    add_measurement("grain_size", p, attr_id, process_id, conn)
+
+    p = Property("number", 2.02, "mm", 2.02, "mm")
+    m_id = add_measurement("grain_size", p, attr_id, process_id, conn)
+    add_best_measure(attr_id, m_id, conn)
+
+    # Bring over the composition attribute
+    add_attribute_id(as_id, comp_attr_id, conn)
 
 
 def create_user(conn):
