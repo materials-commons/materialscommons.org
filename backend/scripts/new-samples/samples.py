@@ -340,6 +340,9 @@ def create_sample1(conn):
     insert(p2s.__dict__, "process2sample", conn)
 
     # add measurement
+    # First add an unset measurement
+    add_best_measure(attr_id, "", conn)
+
     p = Property("json", {"mg": 0.1}, "aw", {"mg": 0.1}, "aw")
     m1_id = add_measurement("composition", p, attr_id, process_id, conn)
     add_best_measure(attr_id, m1_id, conn)
