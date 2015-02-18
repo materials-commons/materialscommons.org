@@ -47,7 +47,7 @@ r.db('samplesdb').table("samples")
                             .getAll(attr('id'), {index: "attribute_id"})
                             .merge(function(best) {
                                 return {
-                                    measurement: r.db("samplesdb").table("measurements").get(best('measurement_id'))
+                                    measurement: r.db("samplesdb").table("measurements").get(best('measurement_id')).default("")
                                 };
                             })
                             .coerceTo("array")
@@ -76,7 +76,7 @@ r.db('samplesdb').table("samples")
                             .getAll(attr('id'), {index: "attribute_id"})
                             .merge(function(best) {
                                 return {
-                                    measurement: r.db("samplesdb").table("measurements").get(best('measurement_id'))
+                                    measurement: r.db("samplesdb").table("measurements").get(best('measurement_id')).default("")
                                 };
                             })
                             .coerceTo("array"),
