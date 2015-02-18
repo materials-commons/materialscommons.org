@@ -110,7 +110,7 @@ r.db('samplesdb').table("processes").getAll("4239c4f4-0b11-4edf-9a6d-23bff250d62
                             .getAll(attr("id"), {index: "attribute_id"})
                             .merge(function(best) {
                                 return {
-                                    measurement: r.db("samplesdb").table("measurements").get(best("measurement_id"))
+                                    measurement: r.db("samplesdb").table("measurements").get(best("measurement_id")).default("")
                                 };
                             })
                             .coerceTo("array"),
