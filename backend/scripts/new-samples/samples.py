@@ -400,7 +400,7 @@ def transform_sample1(sample_id, comp_attr_id, conn):
     attr.name = "grain_size"
     attr_id = add_attribute(as_id, attr, conn)
 
-    # Add measurements
+    # Add measurements for grain_size
     p = Property("number", 2.01, "mm", 2.01, "mm")
     add_measurement("grain_size", p, attr_id, process_id, conn)
 
@@ -413,6 +413,21 @@ def transform_sample1(sample_id, comp_attr_id, conn):
 
     # Bring over the composition attribute
     add_attribute_id(as_id, comp_attr_id, conn)
+
+    # Add property and measurements for tensile_strength
+    attr = Attribute()
+    attr.name = "tensile_strength"
+    attr_id = add_attribute(as_id, attr, conn)
+
+    p = Property("number", 1, "lb", 1, "lb")
+    add_measurement("tensile_strength", p, attr_id, process_id, conn)
+
+    p = Property("number", 2, "lb", 2, "lb")
+    add_measurement("tensile_strength", p, attr_id, process_id, conn)
+
+    p = Property("number", 3, "lb", 3, "lb")
+    m_id = add_measurement("tensile_strength", p, attr_id, process_id, conn)
+    add_best_measure(attr_id, m_id, conn)
 
 
 def create_user(conn):
