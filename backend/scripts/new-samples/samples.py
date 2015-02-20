@@ -10,6 +10,14 @@ class DatabaseError(Exception):
     pass
 
 
+class Value(object):
+    def __init__(self):
+        self.properties = {}
+
+    def add_property(self, name, prop):
+        self.properties[name] = prop.__dict__
+
+
 class Process(object):
     def __init__(self, name, owner, template_id, project_id,
                  description):
@@ -24,6 +32,36 @@ class Process(object):
         # we will need a process history table.
         self.version = ""
         self._type = "process"
+
+
+class Settings(object):
+    def __init__(self, name):
+        self.name = name
+        self.birthtime = r.now()
+        self._type = "settings"
+        self.settings = {}
+
+    def add_setting(self, name, _type, value, unit="", nvalue="", nunit=""):
+        p = Property(_type, value, unit, nvalue, nunit)
+        if p.nvalue == "":
+            p.nvalue = value
+        if p.nunits == "":
+            p.nunits = p.units
+        self.settings[name] = p.__dict__
+
+
+class Process2Setting(object):
+    def __init__(self, process_id, setting_id, _type):
+        self.process_id = process_id
+        self.setting_id = setting_id
+        self._type = _type
+
+
+class Process2File(object):
+    def __init__(self, process_id, file_id, _type):
+        self.process_id = process_id
+        self.datafile_id = file_id
+        self._type = _type
 
 
 class Project2Process(object):
@@ -50,10 +88,11 @@ class Sample2File(object):
 
 # TODO: Rename class and table to better reflect what it does.
 class Process2Sample(object):
-    def __init__(self, sample_id, process_id, attribute_set_id):
+    def __init__(self, sample_id, process_id, attribute_set_id, _type):
         self.sample_id = sample_id
         self.process_id = process_id
         self.attribute_set_id = attribute_set_id
+        self._type = _type
 
 
 class Project2Sample(object):
@@ -85,14 +124,6 @@ class AttributeSet2Attribute(object):
     def __init__(self, attribute_set_id, attribute_id):
         self.attribute_id = attribute_id
         self.attribute_set_id = attribute_set_id
-
-
-class Value(object):
-    def __init__(self):
-        self.properties = {}
-
-    def add_property(self, name, prop):
-        self.properties[name] = prop.__dict__
 
 
 class Property(object):
@@ -253,10 +284,13 @@ def make_tables(conn):
     create_table("attribute_sets", conn, "parent_id")
     create_table("project2sample", conn, "sample_id", "project_id")
     create_table("process2sample", conn, "sample_id", "process_id",
-                 "attribute_set_id")
+                 "attribute_set_id", "_type")
     create_table("attribute2process", conn, "attribute_id",
                  "process_id")
     create_table("processes", conn)
+    create_table("settings", conn)
+    create_table("process2setting", conn, "process_id", "setting_id", "_type")
+    create_table("process2file", conn, "process_id", "datafile_id", "_type")
     create_table("attributes", conn, "parent_id")
     create_table("measurements", conn, "process_id")
     create_table("attribute2measurement", conn, "attribute_id",
@@ -317,6 +351,13 @@ def clear_current(sample_id, conn):
                      .run(conn)
 
 
+def add_settings(process_id, settings, _type, conn):
+    rv = insert(settings.__dict__, "settings", conn)
+    setting_id = rv['id']
+    p2s = Process2Setting(process_id, setting_id, _type)
+    insert(p2s.__dict__, "process2setting", conn)
+
+
 def create_sample1(conn):
     # Set up sample with initial attribute set
     s = Sample("sample1", "Initial sample", "test@mc.org")
@@ -328,6 +369,9 @@ def create_sample1(conn):
     process = Process("as_received", "test@mc.org", "",
                       PROJECTID, "receive sample1")
     process_id = add_process(process, conn)
+    settings = Settings("as_received")
+    settings.add_setting("how", "string", "on paper")
+    add_settings(process_id, settings, "input", conn)
 
     aset = AttributeSet("as_received", "Initial Attributes", True, "")
     as_id = add_attribute_set(sample_id, aset, conn)
@@ -336,7 +380,7 @@ def create_sample1(conn):
     attr_id = add_attribute(as_id, attr, conn)
     comp_attr_id = attr_id
 
-    p2s = Process2Sample(sample_id, process_id, as_id)
+    p2s = Process2Sample(sample_id, process_id, as_id, "input")
     insert(p2s.__dict__, "process2sample", conn)
 
     # add measurement
@@ -350,8 +394,12 @@ def create_sample1(conn):
     # Add new process and measurement
     process = Process("sem", "test@mc.org", "", PROJECTID,
                       "measure composition")
+    settings = Settings("instrument_settings")
+    settings.add_setting("voltage", "number", 4, "kv")
+    settings.add_setting("current", "number", 10, "a")
     sem_process_id = add_process(process, conn)
-    p2s = Process2Sample(sample_id, sem_process_id, as_id)
+    add_settings(sem_process_id, settings, "input", conn)
+    p2s = Process2Sample(sample_id, sem_process_id, as_id, "input")
     insert(p2s.__dict__, "process2sample", conn)
 
     p = Property("json", {"mg": 0.2}, "aw", {"mg": 0.2}, "aw")
@@ -374,14 +422,18 @@ def create_sample1(conn):
     m3_id = add_measurement("grain_size", p, attr_id, sem_process_id, conn)
     add_best_measure(attr_id, m3_id, conn)
 
-    transform_sample1(sample_id, comp_attr_id, conn)
+    transform_sample1(sample_id, comp_attr_id, as_id, conn)
 
 
-def transform_sample1(sample_id, comp_attr_id, conn):
+def transform_sample1(sample_id, comp_attr_id, input_as_id, conn):
     # Create the transforming process
     process = Process("heat_treatment", "test@mc.org", "", PROJECTID,
                       "heat treat sample1")
     process_id = add_process(process, conn)
+    settings = Settings("instrument_settings")
+    settings.add_setting("temperature", "number", 400, "f")
+    settings.add_setting("time", "number", 180, "mins")
+    add_settings(process_id, settings, "input", conn)
 
     # Create a new attribute set since we transformed the sample
 
@@ -390,8 +442,12 @@ def transform_sample1(sample_id, comp_attr_id, conn):
     aset = AttributeSet("heat_treatment", "heat treated", True, "")
     as_id = add_attribute_set(sample_id, aset, conn)
 
+    # Input Process
+    p2s = Process2Sample(sample_id, process_id, input_as_id, "input")
+    insert(p2s.__dict__, "process2sample", conn)
+
     # TODO: Add API call to do this, or update existing API call to do it
-    p2s = Process2Sample(sample_id, process_id, as_id)
+    p2s = Process2Sample(sample_id, process_id, as_id, "output")
     insert(p2s.__dict__, "process2sample", conn)
 
     # Create new attribute set that changes grain size
