@@ -47,13 +47,13 @@ class SingleAttrQuery(PropertyPath):
 
     def match(self, value):
         if self._type == "LT":
-            return self.value < value
+            return value < self.value
         elif self._type == "LTE":
-            return self.value <= value
+            return value <= self.value
         elif self._type == "GT":
-            return self.value > value
+            return value > self.value
         elif self._type == "GTE":
-            return self.value >= value
+            return value >= self.value
         elif self._type == "EQ":
             return self.value == value
         else:
