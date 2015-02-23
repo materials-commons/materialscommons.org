@@ -27,18 +27,20 @@
                             </div>
                             <b>Overview</b>
 
-                            <p>Image below provides you with the basic overview. Each of the steps are described in
-                                detail below: </p>
+                            <p>Provenance is the heart of the Materials Commons.
+                                The flowchart below is designed to help user understand the workflow of how to create
+                                Provenance. Areas highlighted in grey are the essential steps to create provenance</p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive"
-                                     src="assets/img/userguide/user-start/user-start.png">
+                                     src="assets/img/userguide/user-start/usertstart2.png">
                             </div>
                             <b>Create Project</b>
 
                             <p>In-order to upload files first you have to create project(or workspace). To create a
                                 project click on drop-down list and hit "New Project" which will ask you to enter name
-                                for the project.</p>
+                                for the project. You can create multiple projects which means evry project will have its
+                                own workspace</p>
                             <b>Why you have to create project ?</b>
 
                             <p>Project is like your workspace where you can store files , notes, samples , provenance
@@ -63,9 +65,10 @@
                                 <img class="img-responsive"
                                      src="assets/img/userguide/user-start/upload-files-ustart.png">
                             </div>
-                            <b>Create Sample</b>
+                            <b><a ng-click="goTo('createSample')">Create Sample</a></b>
 
-                            <p>Under the samples panel click on + icon and fill in the details of the sample and hit
+                            <p>Under the samples panel click on <i class="fa fa-fw fa-plus"></i> icon and fill in the
+                                details of the sample and hit
                                 create which will add sample to the list.</p>
                             <b>Why you have to create sample ?</b>
 
@@ -373,7 +376,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="list-group-item list-group-item">
+                    <li  class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
 
                         <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showSamples">
@@ -386,7 +389,7 @@
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/show-sample.png">
                             </div>
-                            <b>How to create a sample</b>
+                            <b id="createSample">How to create a sample</b>
 
                             <p>When you click Plus <i class="fa fa-plus"></i> icon it will open up a form where you can
                                 fill in the name, alloy supplier and sample type. Icons annotated as 1, 2 and 3 (Image)
