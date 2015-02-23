@@ -102,40 +102,7 @@ class Query2(object):
         self.sub_queries = sub_queries
 
 
-class Query(object):
-    def __init__(self, value, *path):
-        self.value = value
-        self.path = path
-
-
-def is_property(best, *props):
-    in_path = best
-    for prop in props:
-        if prop in in_path:
-            in_path = in_path[prop]
-        else:
-            return False, ""
-    return True, in_path
-
-
-# def match_query(samples, *queries):
-#     matching_samples = []
-#     for sample in samples:
-#         matched_attrs = []
-#         for attr in sample["attributes"]:
-#             for query in queries:
-#                 matched, value = is_property(attr, *query.path)
-#                 print matched
-#                 if matched and str(value) == query.value:
-#                     matched_attrs.append(True)
-#                 elif (not matched) and query.is_unknown():
-#                     matched_attrs.append(True)
-#         if len(matched_attrs) == len(queries):
-#             matching_samples.append(sample)
-#     return matching_samples
-
-
-def match_query2(samples, *queries):
+def match_query(samples, *queries):
     matching_samples = []
     for sample in samples:
         matched_attrs = []
@@ -151,7 +118,7 @@ def match_query2(samples, *queries):
     return matching_samples
 
 
-def main(conn, queries):
+def search(conn, queries):
     value = list(r.table("samples")
                  .eq_join("id", r.table("sample2attribute_set"),
                           index="sample_id")
@@ -169,7 +136,7 @@ def main(conn, queries):
                      .coerce_to("array")
                  })
                  .run(conn, time_format="raw"))
-    ms = match_query2(value, *queries)
+    ms = match_query(value, *queries)
     print json.dumps(ms)
 
 
@@ -224,7 +191,7 @@ if __name__ == "__main__":
         sys.exit(1)
     queries = construct_queries(options.queries, options.rqueries)
     conn = r.connect("localhost", options.port, db="samplesdb")
-    main(conn, queries)
+    search(conn, queries)
     # sys.exit(0)
     # range_query = RangeQuery(4, "LT", 5, "LT", "ignore")
     # print range_query.match(4.5)
