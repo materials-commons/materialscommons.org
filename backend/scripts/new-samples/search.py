@@ -56,8 +56,14 @@ class SingleAttrQuery(PropertyPath):
             return value >= self.value
         elif self._type == "EQ":
             return self.value == value
+        elif self._type == "KN":
+            # if we got here then there is a value
+            return True
         else:
             return False
+
+    def is_unknown(self):
+        return self._type == "UNK"
 
 
 class RangeQuery(PropertyPath):
@@ -86,6 +92,9 @@ class RangeQuery(PropertyPath):
         else:
             return False
 
+    def is_unknown(self):
+        return False
+
 
 class Query2(object):
     def __init__(self, _type, *sub_queries):
@@ -109,18 +118,21 @@ def is_property(best, *props):
     return True, in_path
 
 
-def match_query(samples, *queries):
-    matching_samples = []
-    for sample in samples:
-        matched_attrs = []
-        for attr in sample["attributes"]:
-            for query in queries:
-                matched, value = is_property(attr, *query.path)
-                if matched and str(value) == query.value:
-                    matched_attrs.append(True)
-        if len(matched_attrs) == len(queries):
-            matching_samples.append(sample)
-    return matching_samples
+# def match_query(samples, *queries):
+#     matching_samples = []
+#     for sample in samples:
+#         matched_attrs = []
+#         for attr in sample["attributes"]:
+#             for query in queries:
+#                 matched, value = is_property(attr, *query.path)
+#                 print matched
+#                 if matched and str(value) == query.value:
+#                     matched_attrs.append(True)
+#                 elif (not matched) and query.is_unknown():
+#                     matched_attrs.append(True)
+#         if len(matched_attrs) == len(queries):
+#             matching_samples.append(sample)
+#     return matching_samples
 
 
 def match_query2(samples, *queries):
@@ -131,6 +143,8 @@ def match_query2(samples, *queries):
             for query in queries:
                 matched, value = query.path_match(attr)
                 if matched and query.match(value):
+                    matched_attrs.append(True)
+                elif not matched and query.is_unknown():
                     matched_attrs.append(True)
         if len(matched_attrs) == len(queries):
             matching_samples.append(sample)
