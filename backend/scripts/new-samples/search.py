@@ -137,6 +137,19 @@ def search(conn, queries):
                          "best_measure": r.table("measurements")
                          .get(attr["best_measure_id"])
                      })
+                     .coerce_to("array"),
+
+                     "processes": r.table("process2sample")
+                     .get_all(aset["sample_id"], index="sample_id")
+                     .eq_join("process_id", r.table("processes"))
+                     .zip()
+                     .merge(lambda proc: {
+                         "settings": r.table("process2setting")
+                         .get_all(proc['id'], index="process_id")
+                         .eq_join("setting_id", r.table("settings"))
+                         .zip()
+                         .coerce_to("array")
+                     })
                      .coerce_to("array")
                  })
                  .run(conn, time_format="raw"))
