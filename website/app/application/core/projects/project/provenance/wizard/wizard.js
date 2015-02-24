@@ -42,7 +42,7 @@ function provWizardController($scope, $timeout) {
     $scope.options = {
         stabilize: true,
         height: '700px',
-        width: '650px',
+        //width: '650px',
         dragNetwork: false,
         zoomable: true,
         hierarchicalLayout: {
