@@ -44,6 +44,7 @@ function provWizardController($scope, $timeout) {
         height: '700px',
         //width: '650px',
         dragNetwork: false,
+        navigation: true,
         zoomable: true,
         hierarchicalLayout: {
             enabled: true,
