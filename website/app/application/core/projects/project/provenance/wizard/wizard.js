@@ -46,6 +46,10 @@ function provWizardController($scope, $timeout) {
         dragNetwork: false,
         navigation: true,
         zoomable: true,
+        edges: {
+            width: 3,
+            style: "dash-line"
+        },
         hierarchicalLayout: {
             enabled: true,
             nodeSpacing: 500
