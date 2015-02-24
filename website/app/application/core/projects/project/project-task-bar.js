@@ -102,6 +102,8 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     };
 
     $scope.openProvWizard = function () {
+        $state.go("projects.project.new-wizard");
+        /*
         ui.togglePanelState($scope.project.id, "provwizard");
         if (ui.showPanel($scope.project.id, "provwizard")) {
             // Activating the wizard. Drafts shares this ui-view
@@ -114,6 +116,7 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
             // Deactivating the wizard
             $state.go("projects.project.home");
         }
+         */
     };
 
     $scope.mcuser = User.attr();
