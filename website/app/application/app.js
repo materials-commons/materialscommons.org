@@ -155,6 +155,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/provenance/:sid",
             templateUrl: 'application/core/projects/project/provenance/create.html',
             controller: "projectProvenanceCreate"
+        })
+        .state("projects.project.new-wizard", {
+            url: "/new-wizard",
+            templateUrl: "application/core/projects/project/provenance/wizard/wizard.html",
+            controller: "provWizardController"
         });
 
     $validationProvider.setErrorHTML(function (msg) {
