@@ -317,12 +317,19 @@ def add_process(proc, conn):
     return process_id
 
 
-def add_attribute_set(sample_id, aset, conn):
+def add_attribute_set(process_id, sample_id, aset, direction, conn):
     rv = insert(aset.__dict__, "attribute_sets", conn)
     as_id = rv['id']
     s2as = Sample2AttributeSet(as_id, sample_id, 0, True)
     insert(s2as.__dict__, "sample2attribute_set", conn)
+    p2s = Process2Sample(sample_id, process_id, as_id, direction)
+    insert(p2s.__dict__, "process2sample", conn)
     return as_id
+
+
+def add_attribute_set_id(process_id, sample_id, as_id, direction, conn):
+    p2s = Process2Sample(sample_id, process_id, as_id, direction)
+    insert(p2s.__dict__, "process2sample", conn)
 
 
 def add_attribute(as_id, attr, conn):
@@ -374,14 +381,11 @@ def create_sample1(conn):
     add_settings(process_id, settings, "input", conn)
 
     aset = AttributeSet("as_received", "Initial Attributes", True, "")
-    as_id = add_attribute_set(sample_id, aset, conn)
+    as_id = add_attribute_set(process_id, sample_id, aset, "output", conn)
     attr = Attribute()
     attr.name = "composition"
     attr_id = add_attribute(as_id, attr, conn)
     comp_attr_id = attr_id
-
-    p2s = Process2Sample(sample_id, process_id, as_id, "input")
-    insert(p2s.__dict__, "process2sample", conn)
 
     # add measurement
     # First add an unset measurement
@@ -399,8 +403,7 @@ def create_sample1(conn):
     settings.add_setting("current", "number", 10, "a")
     sem_process_id = add_process(process, conn)
     add_settings(sem_process_id, settings, "input", conn)
-    p2s = Process2Sample(sample_id, sem_process_id, as_id, "input")
-    insert(p2s.__dict__, "process2sample", conn)
+    add_attribute_set_id(sem_process_id, sample_id, as_id, "input", conn)
 
     p = Property("json", {"mg": 0.2}, "aw", {"mg": 0.2}, "aw")
     m2_id = add_measurement("composition", p, attr_id, sem_process_id, conn)
@@ -440,15 +443,10 @@ def transform_sample1(sample_id, comp_attr_id, input_as_id, conn):
     # Mark existing attributes for sample as not current
     clear_current(sample_id, conn)
     aset = AttributeSet("heat_treatment", "heat treated", True, "")
-    as_id = add_attribute_set(sample_id, aset, conn)
+    as_id = add_attribute_set(process_id, sample_id, aset, "output", conn)
 
     # Input Process
-    p2s = Process2Sample(sample_id, process_id, input_as_id, "input")
-    insert(p2s.__dict__, "process2sample", conn)
-
-    # TODO: Add API call to do this, or update existing API call to do it
-    p2s = Process2Sample(sample_id, process_id, as_id, "output")
-    insert(p2s.__dict__, "process2sample", conn)
+    add_attribute_set_id(process_id, sample_id, input_as_id, "input", conn)
 
     # Create new attribute set that changes grain size
     # but leaves composition the same.
@@ -484,6 +482,19 @@ def transform_sample1(sample_id, comp_attr_id, input_as_id, conn):
     p = Property("number", 3, "lb", 3, "lb")
     m_id = add_measurement("tensile_strength", p, attr_id, process_id, conn)
     add_best_measure(attr_id, m_id, conn)
+
+    analyze_heat_treated_sample(sample_id, as_id, conn)
+
+
+def analyze_heat_treated_sample(sample_id, as_id, conn):
+    process = Process("analyze", "test@mc.org", "", PROJECTID,
+                      "analyze the grain size")
+    p_id = add_process(process, conn)
+    settings = Settings("analysis_settings")
+    settings.add_setting("knob1", "number", 200, "mm")
+    settings.add_setting("knob2", "number", 300, "mm")
+    add_settings(p_id, settings, "input", conn)
+    add_attribute_set_id(p_id, sample_id, as_id, "input", conn)
 
 
 def create_user(conn):
