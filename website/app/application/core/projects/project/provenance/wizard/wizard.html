@@ -8,6 +8,12 @@
                 <button ng-click="addBetween()" class="btn btn-success">
                     Add Between
                 </button>
+                <button ng-click="focusOnNode()" class="btn btn-success">
+                    Focus On Node
+                </button>
+                <button ng-click="removeFocusOnNode()" class="btn btn-success">
+                    Remove Focus
+                </button>
                 <div style="border: 1px solid black; margin-top: 4px">
                     <vis-network ng-model="data" on-select="onSelect" options="options"></vis-network>
                 </div>
