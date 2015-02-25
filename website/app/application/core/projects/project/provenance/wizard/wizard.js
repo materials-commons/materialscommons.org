@@ -39,9 +39,14 @@ function provWizardController($scope, $timeout) {
         {id: 6, from: 2, to: 6}
     ];
 
+    var height = window.innerHeight || document.body.clientHeight;
+    console.log("height = ", height);
+
+    var heightToSet = height -180;
+
     $scope.options = {
         stabilize: true,
-        height: '700px',
+        height: heightToSet+"px",
         //width: '650px',
         dragNetwork: false,
         navigation: true,
