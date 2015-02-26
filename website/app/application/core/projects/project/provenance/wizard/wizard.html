@@ -2,13 +2,10 @@
     <div class="col-xs-12">
         <div class="col-xs-5">
             <div class="row">
-                <button ng-click="addNode()" class="btn btn-success">
+                <button ng-click="addProcess()" class="btn btn-success" ng-show="selectedNode !== null || selectedEdge !== null">
                     Add Process
                 </button>
-                <button ng-click="addBetween()" class="btn btn-success">
-                    Add Between
-                </button>
-                <button ng-click="focusOnNode()" class="btn btn-success">
+                <button ng-click="focusOnNode()" class="btn btn-success" ng-show="selectedNode != null">
                     Focus On Node
                 </button>
                 <button ng-click="removeFocusOnNode()" class="btn btn-success">
@@ -20,14 +17,6 @@
             </div>
         </div>
         <div class="col-xs-7">
-            <ul class="nav nav-tabs">
-                <li role="presentation" ng-class="{active: detailsActive}">
-                    <a ng-click="detailsActive=true; templatesActive=false;">Details</a>
-                </li>
-                <li role="presentation" ng-class="{active: templatesActive}">
-                    <a ng-click="detailsActive=false;templatesActive=true">Templates</a>
-                </li>
-            </ul>
             <div ui-view></div>
         </div>
     </div>

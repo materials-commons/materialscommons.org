@@ -1,0 +1,137 @@
+{
+    "id": "test-template",
+    "root": true,
+    "category": "SEM",
+    "name": "Test Template",
+    "description": "Template to test new format",
+    "process": [
+        {
+            "category": "Default",
+            "default_attributes": [
+                {
+                    "name": "Description",
+                    "description": "Describe the process",
+                    "attribute": "description",
+                    "_type": "text",
+                    "unit": "",
+                    "unit_choice": "",
+                    "nunit": "",
+                    "value": "",
+                    "value_choice": [],
+                    "default_value": "",
+                    "required": true,
+                    "apply": ""
+                },
+
+                {
+                    "name": "Files",
+                    "description": "Files, such as pictures, associated with this process",
+                    "attribute": "files",
+                    "_type": "list",
+                    "unit": "",
+                    "nunit": "",
+                    "unit_choice": "",
+                    "value": "",
+                    "value_choice": "",
+                    "required": false,
+                    "apply": ""
+                }
+            ],
+            "other_attributes": [
+            ]
+        },
+        {
+            "category": "Settings",
+            "attributes": [
+                {
+                    "name": "Detector",
+                    "attribute": "detector",
+                    "description": "Choose the detector. This will determine the other settings to prompt for.",
+                    "_type": "select",
+                    "unit": "",
+                    "nunit": "",
+                    "unit_choice": "",
+                    "value_choice": [
+                        {
+                            "name": "Secondary",
+                            "value": "secondary",
+                            "_type": "template_id"
+                        },
+                        {
+                            "name": "Backscatter",
+                            "value": "backscatter",
+                            "_type": "template_id"
+                        },
+                        {
+                            "name": "Other",
+                            "value": "other",
+                            "_type": "template_id"
+                        }
+                    ],
+                    "default_value": "",
+                    "required": true,
+                    "apply": ""
+                }
+            ]
+        }
+    ],
+
+    "inputs": [
+        {
+            "category": "Samples",
+            "attributes": [
+                {
+                    "name": "Samples",
+                    "description": "Samples transformed by this process",
+                    "attribute": "samples",
+                    "_type": "list",
+                    "unit": "",
+                    "nunit": "",
+                    "unit_choice": "",
+                    "value": "",
+                    "value_choice": "samples",
+                    "required": true,
+                    "apply": ""
+                }
+            ]
+        }
+    ],
+
+    "outputs": [
+        {
+            "category": "Samples",
+            "attributes": [
+                {
+                    "name": "Samples",
+                    "description": "Samples transformed by this process",
+                    "attribute": "samples",
+                    "_type": "list",
+                    "unit": "",
+                    "nunit": "",
+                    "unit_choice": "",
+                    "value": "",
+                    "value_choice": "samples",
+                    "required": true,
+                    "apply": "transform-sample test"
+                }
+            ]
+        },
+        {
+            "category": "Files",
+            "attributes": [
+                {
+                    "name": "Files",
+                    "description": "Files output by this process",
+                    "attribute": "files",
+                    "_type": "list",
+                    "unit": "",
+                    "nunit": "",
+                    "value": "",
+                    "value_choice": "files",
+                    "required": false,
+                    "apply": ""
+                }
+            ]
+        }
+    ]
+}
