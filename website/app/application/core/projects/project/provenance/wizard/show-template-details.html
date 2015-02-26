@@ -5,4 +5,36 @@
             Description: {{template.description}}<br>
         </div>
     </div>
+    <div class="row item-details">
+        <h4>Process Attributes</h4>
+        <div class="row" ng-repeat="category in template.process">
+            <strong>Category: {{category.category}}</strong>
+            <ul class="list-group">
+                <li class="list-group-item"
+                    ng-repeat="attribute in category.attributes">
+                    Attribute: {{attribute.name}}
+                    <br/>
+                    Description: {{attribute.description}}
+                    <br/>
+                    Required: {{attribute.required}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row item-details">
+        <h4>Inputs</h4>
+        <div class="row" ng-repeat="input in template.inputs">
+            <strong>Category: {{input.category}}</strong>
+            <ul class="list-group">
+                <li class="list-group-item"
+                    ng-repeat="attribute in input.attributes">
+                    Attribute: {{attribute.name}}
+                    <br/>
+                    Description: {{attribute.description}}
+                    <br/>
+                    Required: {{attribute.required}}
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
