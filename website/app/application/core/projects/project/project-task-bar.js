@@ -44,10 +44,10 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     function showAllPanels() {
         panels.forEach(function (panel) {
             //if (panel !== "sideboard") {
-                ui.setIsExpanded($scope.project.id, panel, false);
-                ui.setPanelState($scope.project.id, panel, true);
-                ui.setPanelState($scope.project.id, 'sideboard', false);
-                ui.setPanelState($scope.project.id, 'emptyboard', false);
+            ui.setIsExpanded($scope.project.id, panel, false);
+            ui.setPanelState($scope.project.id, panel, true);
+            ui.setPanelState($scope.project.id, 'sideboard', false);
+            ui.setPanelState($scope.project.id, 'emptyboard', false);
 
             //}
         });
