@@ -160,6 +160,21 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/new-wizard",
             templateUrl: "application/core/projects/project/provenance/wizard/wizard.html",
             controller: "provWizardController"
+        })
+        .state("projects.project.new-wizard.node-details", {
+            url: "/node-details/:node_id",
+            templateUrl: "application/core/projects/project/provenance/wizard/node-details.html",
+            controller: "nodeDetailsController"
+        })
+        .state("projects.project.new-wizard.edge-details", {
+            url: "/edge-details/:edge_id",
+            templateUrl: "application/core/projects/project/provenance/wizard/edge-details.html",
+            controller: "edgeDetailsController"
+        })
+        .state("projects.project.new-wizard.templates", {
+            url: "/templates",
+            templateUrl: "application/core/projects/project/provenance/wizard/templates.html",
+            controller: "chooseTemplateController"
         });
 
     $validationProvider.setErrorHTML(function (msg) {

@@ -1,7 +1,8 @@
 Application.Controllers.controller("provWizardController",
-                                   ["$scope", "$timeout", provWizardController]);
+                                   ["$scope", "$timeout", "$state", "pubsub", "templates",
+                                    provWizardController]);
 
-function provWizardController($scope, $timeout) {
+function provWizardController($scope, $timeout, $state, pubsub, templates) {
     $scope.detailsActive = true;
     $scope.templatesActive = false;
     $scope.templates = [
@@ -83,15 +84,46 @@ function provWizardController($scope, $timeout) {
             var index = _.indexOf($scope.data.nodes, function(node) {
                 return node.id+"" === nodeID;
             });
-            $scope.selectedNode = $scope.data.nodes[index];
-            $scope.selectedEdge = null;
+            $timeout(function() {
+                $scope.selectedNode = $scope.data.nodes[index];
+                $scope.selectedEdge = null;
+            });
+            $state.go("projects.project.new-wizard.node-details");
         } else {
-            $scope.selectedEdge = props.edges[0];
-            $scope.selectedNode = null;
+            $timeout(function() {
+                $scope.selectedEdge = props.edges[0];
+                $scope.selectedNode = null;
+            });
+            $state.go("projects.project.new-wizard.edge-details");
         }
     };
 
-    $scope.addNode = function() {
+    $scope.addProcess = function() {
+        $state.go("projects.project.new-wizard.templates");
+        // if ($scope.selectedNode) {
+        //     addFromNode();
+        // } else if ($scope.selectedEdge) {
+        //     addBetween();
+        // }
+    };
+
+    var template = null;
+
+    pubsub.waitOn($scope, "new-wizard.template.selected", function(templateID) {
+        var index = _.indexOf(templates, function(template) {
+            return template.id == templateID;
+        });
+        if (index !== -1) {
+            template = templates[index];
+            if ($scope.selectedNode) {
+                addFromNode();
+            } else if ($scope.selectedEdge) {
+                addBetween();
+            }
+        }
+    });
+
+    function addFromNode() {
         if (!$scope.selectedNode) {
             return;
         }
@@ -101,7 +133,7 @@ function provWizardController($scope, $timeout) {
         $timeout(function() {
             $scope.data.nodes.push({
                 id: lastNodeID,
-                label: "My new process " + lastNodeID,
+                label: template.name,
                 level: node.level+1,
                 group: "process"
             });
@@ -109,13 +141,11 @@ function provWizardController($scope, $timeout) {
                 from: node.id,
                 to: lastNodeID
             });
+            $scope.selectedNode = null;
         });
-    };
+    }
 
-    $scope.addBetween = function() {
-        if (!$scope.selectedEdge) {
-            return;
-        }
+    function addBetween() {
         var index = _.indexOf($scope.data.edges, function(edge) {
             return edge.id+"" == $scope.selectedEdge;
         });
@@ -133,7 +163,7 @@ function provWizardController($scope, $timeout) {
             lastNodeID++;
             $scope.data.nodes.push({
                 id: lastNodeID,
-                label: "Inbetween process " + lastNodeID,
+                label: template.name,
                 level: fromNode.level+1,
                 group: "process"
             });
@@ -152,46 +182,26 @@ function provWizardController($scope, $timeout) {
                 from: lastNodeID,
                 to: toNode.id
             });
+            $scope.selectedEdge = null;
         });
-    };
+    }
 
     $scope.focusOnNode = function() {
         if (!$scope.selectedNode) {
             return;
         }
 
-        console.dir($scope.selectedNode);
+        // console.dir($scope.selectedNode);
 
         var nodeID = $scope.selectedNode.id;
         var nodeLevel = $scope.selectedNode.level;
 
 
-        //console.log("==========");
-        // for (v in al) {
-        //     if (al.hasOwnProperty(v) && !visited[v]) {
-        //         groups.push(bfs(v, al, visited));
-        //     }
-        // }
-
-        //var newNodes = [];
-
-        // Get rid of all nodes that are parents this node,
-        // or that are at the same level as this node.
-        // $scope.data.nodes.forEach(function(node) {
-        //     if (node.id == nodeID) {
-        //         newNodes.push(node);
-        //     } else if (node.level > nodeLevel) {
-        //         if (isConnected(node, $scope.selectedNode)) {
-        //             newNodes.push(node);
-        //         }
-        //     }
-        // });
-
         var al = convertToAdjacencyList($scope.data.edges);
 
-        console.dir(al);
+        //console.dir(al);
 
-        console.dir(dfs($scope.selectedNode.id, al, $scope.selectedNode.level));
+        //console.dir(dfs($scope.selectedNode.id, al, $scope.selectedNode.level));
 
         if (true) {
             return;
@@ -203,19 +213,19 @@ function provWizardController($scope, $timeout) {
         });
     };
 
-    function isConnected(nodeToCheck, baseNode) {
-        if (nodeToCheck.level == baseNode.level + 1) {
-            // if no edge directly connects then return false
-            var connected = false;
-            $scope.data.edges.forEach(function(edge) {
-                if (nodeToCheck.id == edge.to && edge.from == baseNode.id) {
-                    connected = true;
-                }
-            });
-            return connected;
-        }
-        return true;
-    }
+    // function isConnected(nodeToCheck, baseNode) {
+    //     if (nodeToCheck.level == baseNode.level + 1) {
+    //         // if no edge directly connects then return false
+    //         var connected = false;
+    //         $scope.data.edges.forEach(function(edge) {
+    //             if (nodeToCheck.id == edge.to && edge.from == baseNode.id) {
+    //                 connected = true;
+    //             }
+    //         });
+    //         return connected;
+    //     }
+    //     return true;
+    // }
 
     $scope.removeFocusOnNode = function() {
         $timeout(function() {
