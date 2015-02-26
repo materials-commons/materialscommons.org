@@ -7,7 +7,7 @@
     "process": [
         {
             "category": "Default",
-            "default_attributes": [
+            "attributes": [
                 {
                     "name": "Description",
                     "description": "Describe the process",
@@ -37,7 +37,7 @@
                     "apply": ""
                 }
             ],
-            "other_attributes": [
+            "additional_attributes": [
             ]
         },
         {
@@ -72,7 +72,8 @@
                     "required": true,
                     "apply": ""
                 }
-            ]
+            ],
+            "additional_attributes": []
         }
     ],
 
@@ -93,7 +94,8 @@
                     "required": true,
                     "apply": ""
                 }
-            ]
+            ],
+            "additional_attributes": []
         }
     ],
 
@@ -114,7 +116,8 @@
                     "required": true,
                     "apply": "transform-sample test"
                 }
-            ]
+            ],
+            "additional_attributes": []
         },
         {
             "category": "Files",
@@ -131,7 +134,8 @@
                     "required": false,
                     "apply": ""
                 }
-            ]
+            ],
+            "additional_attributes": []
         }
     ]
 }
