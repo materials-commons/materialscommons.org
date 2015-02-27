@@ -20,7 +20,6 @@
     <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
     <link href="assets/css/select2/select2.css" rel="stylesheet">
     <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
-    <link href="assets/css/jqcloud.css" rel="stylesheet">
     <link href="assets/css/tree-grid.css" rel="stylesheet">
     <link href="assets/css/zenburn.css" rel="stylesheet">
     <link href="assets/css/nzAnimate.css" rel="stylesheet">
@@ -123,7 +122,6 @@
 <script src="assets/js/angular/hotkeys.min.js"></script>
 <script src="assets/js/angular/ng-context-menu.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/jqcloud-1.0.4.js"></script>
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/underscore.string.min.js"></script>
 <script src="assets/js/angular/socket.js"></script>
@@ -143,7 +141,6 @@
 <!-- build:appjs js/app.js -->
 <script src="application/app.js"></script>
 <script src="index/navbar.js"></script>
-<script src="index/quickbar.js"></script>
 <script src="application/core/help/help-controller.js"></script>
 <script src="application/core/about/about-controller.js"></script>
 <script src="application/core/contact/contact-controller.js"></script>
@@ -157,41 +154,16 @@
 <script src="application/core/account/templates/templates-controller.js"></script>
 <script src="application/core/reviews/global-reviews.js"></script>
 <script src="application/core/machines/machines-controller.js"></script>
-<script src="application/core/projects/directives/provenance/provenance-wizard-control-bar-directive.js"></script>
-<script src="application/core/projects/directives/provenance/show-provenance-template-steps.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-step-overview.js"></script>
-<script src="application/core/projects/directives/provenance/process-details.js"></script>
-<script src="application/core/projects/directives/provenance/process-runs.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-magic-bar.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-context.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-context-tags.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-step-sample.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-step-transform-sample.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-step-files.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-step-done.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-step-properties.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-step-process.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-next-step.js"></script>
-<script src="application/core/projects/directives/provenance/wizard-review-content.js"></script>
-<script src="application/core/projects/directives/provenance/show-process.js"></script>
-<script src="application/core/projects/directives/provenance/show-step.js"></script>
-<script src="application/core/projects/directives/provenance/show-process-runs.js"></script>
-<script src="application/core/projects/directives/provenance/show-step-sample.js"></script>
-<script src="application/core/projects/directives/provenance/show-step-files.js"></script>
-<script src="application/core/projects/directives/provenance/show-step-properties.js"></script>
-<script src="application/core/projects/_action-controller.js"></script>
 <script src="application/core/projects/create.js"></script>
 <script src="application/core/projects/project/sideboard-controller.js"></script>
 <script src="application/core/projects/project/project-settings.js"></script>
 <script src="application/core/projects/project/project-controller.js"></script>
 <script src="application/core/projects/project/project-task-bar.js"></script>
-<script src="application/core/projects/project/breadcrumbs-directive.js"></script>
 <script src="application/core/projects/project/project-action-bar.js"></script>
 <script src="application/core/projects/project/project-search-bar.js"></script>
 <script src="application/core/projects/project/project-action-area.js"></script>
 <script src="application/core/projects/project/sideboard-directive.js"></script>
 <script src="application/core/projects/project/project-control-bar-directive.js"></script>
-<script src="application/core/projects/project/breadcrumbs.js"></script>
 <script src="application/core/projects/project/project-tabs.js"></script>
 <script src="application/core/projects/project/home/home.js"></script>
 <script src="application/core/projects/project/home/display-panel.js"></script>
@@ -215,21 +187,8 @@
 <script src="application/core/projects/project/home/directives/home-process-details.js"></script>
 <script src="application/core/projects/project/home/directives/file-upload-panel.js"></script>
 <script src="application/core/projects/project/home/directives/display-file-upload-entry.js"></script>
-<script src="application/core/projects/project/files/files.js"></script>
-<script src="application/core/projects/project/files/overview.js"></script>
-<script src="application/core/projects/project/files/list.js"></script>
-<script src="application/core/projects/project/files/files-list.js"></script>
-<script src="application/core/projects/project/files/files-sideboard.js"></script>
-<script src="application/core/projects/project/files/view.js"></script>
-<script src="application/core/projects/project/files/project-file-tabs.js"></script>
-<script src="application/core/projects/project/files/media-type-filter.js"></script>
 <script src="application/core/projects/project/project-size-filter.js"></script>
 <script src="application/core/projects/project/project-file-count-filter.js"></script>
-<script src="application/core/projects/project/tags/tags.js"></script>
-<script src="application/core/projects/project/tags/create.js"></script>
-<script src="application/core/projects/project/samples/samples.js"></script>
-<script src="application/core/projects/project/samples/overview.js"></script>
-<script src="application/core/projects/project/samples/create-sample-directive.js"></script>
 <script src="application/core/projects/project/help/userguide.js"></script>
 <script src="application/core/projects/project/provenance/provenance.js"></script>
 <script src="application/core/projects/project/provenance/overview.js"></script>
@@ -239,38 +198,13 @@
 <script src="application/core/projects/project/provenance/wizard/templates.js"></script>
 <script src="application/core/projects/project/provenance/wizard/display-template.js"></script>
 <script src="application/core/projects/project/provenance/wizard/show-template-details.js"></script>
-<script src="application/core/projects/project/provenance/show-process-properties.js"></script>
-<script src="application/core/projects/project/provenance/show-process-settings.js"></script>
-<script src="application/core/projects/project/provenance/show-process-files.js"></script>
-<script src="application/core/projects/project/provenance/show-process-sample.js"></script>
 <script src="application/core/projects/project/provenance/processes-list.js"></script>
 <script src="application/core/projects/project/provenance/processes-sideboard.js"></script>
 <script src="application/core/projects/project/provenance/overview-show-process-details.js"></script>
 <script src="application/core/projects/project/provenance/overview-process-list.js"></script>
-<script src="application/core/projects/project/provenance/create.js"></script>
-<script src="application/core/projects/project/provenance/drafts.js"></script>
 <script src="application/core/projects/project/provenance/custompop-over.js"></script>
 <script src="application/core/projects/project/tab-control-bar.js"></script>
-<script src="application/core/projects/project/action-menu-directive.js"></script>
 <script src="application/core/projects/project/project-description-directive.js"></script>
-<script src="application/core/projects/project/action/create-sample-composition.js"></script>
-<script src="application/core/projects/project/action/add-projects-to-sample.js"></script>
-<script src="application/core/projects/project/action/sample-default-attributes.js"></script>
-<script src="application/core/projects/project/action/create-sample-toolbar.js"></script>
-<script src="application/core/projects/project/action/action-area-button.js"></script>
-<script src="application/core/projects/project/action/action-status-service.js"></script>
-<script src="application/core/projects/project/action/add-note-to-sample.js"></script>
-<script src="application/core/projects/project/reviews/reviews.js"></script>
-<script src="application/core/projects/project/reviews/overview.js"></script>
-<script src="application/core/projects/project/reviews/edit.js"></script>
-<script src="application/core/projects/project/reviews/create-review-directive.js"></script>
-<script src="application/core/projects/project/notes/notes.js"></script>
-<script src="application/core/projects/project/notes/create-note-directive.js"></script>
-<script src="application/core/projects/project/notes/overview.js"></script>
-<script src="application/core/projects/project/tasks/overview.js"></script>
-<script src="application/core/projects/project/tasks/tasks.js"></script>
-<script src="application/core/projects/project/tasks/create.js"></script>
-<script src="application/core/projects/project/notes/edit.js"></script>
 <script src="application/core/projects/project/provenance/vis-network-directive.js"></script>
 <script src="application/core/projects/project/provenance/graph-service.js"></script>
 <script src="application/directives/magicbox.js"></script>
@@ -280,8 +214,6 @@
 <script src="application/directives/dfproperties-directive.js"></script>
 <script src="application/directives/adproperties-directive.js"></script>
 <script src="application/directives/mc-tree.js"></script>
-<script src="application/directives/directory-tree.js"></script>
-<script src="application/directives/upperlevel-process-directive.js"></script>
 <script src="application/directives/upperlevel-object-directive.js"></script>
 <script src="application/directives/periodic-table-directive.js"></script>
 <script src="application/directives/iterate-properties-directive.js"></script>
@@ -289,11 +221,9 @@
 <script src="application/directives/plus-minus-toggle-directive.js"></script>
 <script src="application/directives/tree-grid-directive.js"></script>
 <script src="application/directives/df-report.js"></script>
-<script src="application/core/projects/project/files/notes-directive.js"></script>
 <script src="application/directives/display-tags.js"></script>
 <script src="application/directives/select2-events.js"></script>
 <script src="application/directives/properties/display-properties.js"></script>
-<script src="application/directives/action-link.js"></script>
 <script src="application/directives/on-repeat-finished.js"></script>
 <script src="application/directives/mc-flow-button.js"></script>
 <script src="application/directives/on-enter.js"></script>
@@ -310,7 +240,6 @@
 <script src="application/services/nav-service.js"></script>
 <script src="application/services/materials-service.js"></script>
 <script src="application/services/cached-service-factory-service.js"></script>
-<script src="application/services/action-service.js"></script>
 <script src="application/services/project-path-service.js"></script>
 <script src="application/services/tags.js"></script>
 <script src="application/services/prov-magicbar-context.js"></script>
@@ -318,7 +247,6 @@
 <script src="application/services/review-service.js"></script>
 <script src="application/services/process-list-service.js"></script>
 <script src="application/services/ui.js"></script>
-<script src="application/services/recent.js"></script>
 <script src="application/services/search-params.js"></script>
 <script src="application/services/list-params.js"></script>
 <script src="application/services/current.js"></script>

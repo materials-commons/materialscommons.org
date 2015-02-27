@@ -12,10 +12,10 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-                                   ["$scope", "ui",
+                                   ["$scope", "ui", "$state",
                                     homeSamplesController]);
 
-function homeSamplesController($scope, ui) {
+function homeSamplesController($scope, ui, $state) {
 
     $scope.project.samples.forEach(function(sample) {
         if (!('showDetails' in sample)) {
@@ -35,19 +35,15 @@ function homeSamplesController($scope, ui) {
         return ui.isExpanded($scope.project.id, "samples");
     };
 
-    $scope.createSample = function(){
-        $scope.model.createSample = true;
+    $scope.createSample = function () {
+        $state.go("projects.project.new-wizard");
     };
 
-    $scope.splitScreen = function(what, col){
+    $scope.splitScreen = function(what, col) {
         ui.toggleColumns($scope.project.id, what, col);
     };
 
     $scope.isSplitExpanded = function () {
         return ui.getSplitStatus($scope.project.id);
-    };
-
-    $scope.model = {
-        createSample: false
     };
 }
