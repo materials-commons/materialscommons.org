@@ -68,7 +68,7 @@
                             "_type": "template_id"
                         }
                     ],
-                    "default_value": "",
+                    "default_value": "Secondary",
                     "required": true,
                     "apply": ""
                 }
@@ -91,6 +91,7 @@
                     "unit_choice": "",
                     "value": "",
                     "value_choice": "samples",
+                    "default_value": "",
                     "required": true,
                     "apply": ""
                 }
@@ -113,6 +114,7 @@
                     "unit_choice": "",
                     "value": "",
                     "value_choice": "samples",
+                    "default_value": "",
                     "required": true,
                     "apply": "transform-sample test"
                 }
@@ -131,6 +133,7 @@
                     "nunit": "",
                     "value": "",
                     "value_choice": "files",
+                    "default_value": "",
                     "required": false,
                     "apply": ""
                 }
