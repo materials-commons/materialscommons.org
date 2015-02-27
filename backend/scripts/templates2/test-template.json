@@ -54,17 +54,17 @@
                     "value_choice": [
                         {
                             "name": "Secondary",
-                            "value": "secondary",
+                            "value": "test-template-secondary-settings",
                             "_type": "template_id"
                         },
                         {
                             "name": "Backscatter",
-                            "value": "backscatter",
+                            "value": "test-template-backscatter-settings",
                             "_type": "template_id"
                         },
                         {
                             "name": "Other",
-                            "value": "other",
+                            "value": "test-template-other-settings",
                             "_type": "template_id"
                         }
                     ],
