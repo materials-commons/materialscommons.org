@@ -7,4 +7,7 @@ function chooseTemplateController($scope, $timeout, templates) {
     $scope.searchInput = {
         name: ""
     };
+    templates.forEach(function(template) {
+        template.showDetails = false;
+    });
 }
