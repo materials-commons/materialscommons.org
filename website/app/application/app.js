@@ -152,11 +152,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/provenance/drafts.html",
             controller: "projectProvenanceDrafts"
         })
-        .state("projects.project.home.provenance", {
-            url: "/provenance/:sid",
-            templateUrl: 'application/core/projects/project/provenance/create.html',
-            controller: "projectProvenanceCreate"
-        })
+        // .state("projects.project.home.provenance", {
+        //     url: "/provenance/:sid",
+        //     templateUrl: 'application/core/projects/project/provenance/create.html',
+        //     controller: "projectProvenanceCreate"
+        // })
         .state("projects.project.new-wizard", {
             url: "/new-wizard",
             templateUrl: "application/core/projects/project/provenance/wizard/wizard.html",
@@ -176,6 +176,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/templates",
             templateUrl: "application/core/projects/project/provenance/wizard/templates.html",
             controller: "chooseTemplateController"
+        })
+        .state("projects.project.provenance", {
+            url: "/provenance/:item_id/:prov_type",
+            templateUrl: "application/core/projects/project/provenance/new/provenance.html",
+            controller: "projectProvenanceController"
         });
 
     $validationProvider.setErrorHTML(function (msg) {
@@ -188,24 +193,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
 
 }]);
 
-app.run(["$rootScope", "User", "Restangular", "recent", "ui", "pubsub", appRun]);
+app.run(["$rootScope", "User", "Restangular", appRun]);
 
-function appRun($rootScope, User, Restangular, recent, ui, pubsub) {
+function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
-            ui.setShowFiles(toParams.id, false);
         }
-    });
-
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        var projectID = fromParams.id;
-        if (!fromState.abstract) {
-            recent.pushLast(projectID, "ignore", fromState.name, fromParams);
-        }
-
-        pubsub.send("breadcrumbs", toState.name);
     });
 }
