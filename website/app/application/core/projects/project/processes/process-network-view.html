@@ -1,0 +1,18 @@
+<div>
+    <div class="col-xs-12">
+        <div class="row">
+            <button ng-click="addProcess()" class="btn btn-success" ng-show="selectedNode !== null || selectedEdge !== null">
+                Add Process
+            </button>
+            <button ng-click="focusOnNode()" class="btn btn-success" ng-show="selectedNode != null">
+                Focus On Node
+            </button>
+            <button ng-click="removeFocusOnNode()" class="btn btn-success">
+                Remove Focus
+            </button>
+            <div style="border: 1px solid black; margin-top: 4px">
+                <vis-network ng-model="network" on-select="onSelect" options="options"></vis-network>
+            </div>
+        </div>
+    </div>
+</div>

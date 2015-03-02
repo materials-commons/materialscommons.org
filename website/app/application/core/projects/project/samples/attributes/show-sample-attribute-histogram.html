@@ -1,0 +1,9 @@
+<div>
+    <input type="text" ng-model="xValues" placeholder="xvalues...">
+    <input type="text" ng-model="yValues" placeholder="yvalues">
+    <button ng-click="submit()" class="btn btn-success">Submit values</button>
+    <a ng-click="showChart = !showChart">show/hide chart</a>
+    <div ng-if="showChart">
+        <highchart config="histogramConfig"></highchart>
+    </div>
+</div>

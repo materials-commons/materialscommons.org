@@ -1,0 +1,20 @@
+<div style="margin-bottom: 3px;">
+    <div>
+        <span ng-click="attribute.showDetails = !attribute.showDetails" style="cursor: pointer">
+            <i class="fa fa-fw"
+               ng-class="{'fa-caret-right': !attribute.showDetails, 'fa-caret-down': attribute.showDetails}">
+            </i>
+            <div ng-if="false" class="checkbox checkbox-inline checkbox-primary"
+                 style="margin-top: 0px">
+                <input type="checkbox"
+                       ng-model="useTemplate" id="abc123">
+                <label for="abc123"></label>
+            </div>
+            {{attribute.name | truncate:35: '...':true}}
+        </span>
+    </div>
+    <div ng-if="attribute.showDetails">
+        <show-sample-attribute-details attribute="attribute" edit="edit">
+        </show-sample-attribute-details>
+    </div>
+</div>

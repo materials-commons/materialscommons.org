@@ -141,6 +141,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             }],
             controller: "projectsProject"
         })
+        .state("projects.project.samples", {
+            url: "/samples",
+            templateUrl: "application/core/projects/project/samples/samples.html",
+            controller: "projectSamples"
+        })
+        .state("projects.project.samples.create", {
+            url: "/samples/create",
+            templateUrl: "application/core/projects/project/samples/create.html",
+            controller: "projectSamplesCreate"
+        })
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
