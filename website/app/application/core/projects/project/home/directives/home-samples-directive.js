@@ -36,7 +36,7 @@ function homeSamplesController($scope, ui, $state) {
     };
 
     $scope.createSample = function () {
-        $state.go("projects.project.new-wizard");
+        $state.go("projects.project.samples.create");
     };
 
     $scope.splitScreen = function(what, col) {
