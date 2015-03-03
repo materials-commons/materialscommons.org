@@ -12,9 +12,9 @@ function homeFilesDirective() {
 
 Application.Controllers.controller("homeFilesDirectiveController",
                                    ["$scope", "ui", "projectFiles", "applySearch",
-                                    "$filter",  "mcapi", homeFilesDirectiveController]);
+                                    "$filter",  "mcapi","file", homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
-                                      $filter, mcapi) {
+                                      $filter, mcapi, file) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
@@ -35,7 +35,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     $scope.splitScreen = function(what, col){
-        ui.toggleColumns($scope.project.id, what, col)
+        ui.toggleColumns($scope.project.id, what, col) ;
     };
 
     $scope.isSplitExpanded = function () {
@@ -61,6 +61,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     applySearch($scope, "searchInput", applyQuery);
+    $scope.file = file.getFile();
 
     function applyQuery() {
         var search = {
@@ -75,4 +76,5 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
             $scope.files = $filter('filter')(filesToSearch, search);
         }
     }
+
 }
