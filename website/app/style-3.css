@@ -870,10 +870,46 @@ h4, .h4, h5, .h5, h6, .h6 {
   position: fixed;
   right: 0;
   z-index: 100;
-  background-color: #3e4b5c;
-  padding-top: 5px;
-  border-top: 1px solid black;
-  border-bottom: 2px solid #c5c5c6;
+  /*background-color: #3e4b5c;*/
+  /*background-color: darkgray;*/
+  /*padding-top: 5px;*/
+  /*border-top: 1px solid black;*/
+  /*border-bottom: 2px solid #c5c5c6;*/
+}
+
+.taskbar.nav.nav-tabs > li > a {
+  color: #7B7B7B;
+  font-size: 16px;
+}
+
+.taskbar.nav-tabs > li.active > a, .taskbar.nav-tabs > li.active > a:hover, .taskbar.nav-tabs > li.active > a:focus {
+  background-color: transparent;
+  border: none;
+}
+
+.taskbar.nav-tabs > li.active > a.task-item-active-processes, .taskbar.nav-tabs > li.active > a:hover.task-item-active-processes, .taskbar.nav-tabs > li.active > a:focus.task-item-active-processes {
+  border-bottom: 3px solid #e26a6a;
+  color: #e26a6a;
+}
+
+.taskbar.nav-tabs > li.active > a.task-item-active-files, .taskbar.nav-tabs > li.active > a:hover.task-item-active-files, .taskbar.nav-tabs > li.active > a:focus.task-item-active-files {
+  border-bottom: 3px solid #7c699f;
+  color: #7c699f;
+}
+
+.taskbar.nav-tabs > li.active > a.task-item-active-reviews, .taskbar.nav-tabs > li.active > a:hover.task-item-active-reviews, .taskbar.nav-tabs > li.active > a:focus.task-item-active-reviews {
+  border-bottom: 3px solid #4884b8;
+  color: #4884b8;
+}
+
+.taskbar.nav-tabs > li.active > a.task-item-active-notes, .taskbar.nav-tabs > li.active > a:hover.task-item-active-notes, .taskbar.nav-tabs > li.active > a:focus.task-item-active-notes {
+  border-bottom: 3px solid #3ea7a0;
+  color: #3ea7a0;
+}
+
+.taskbar.nav-tabs > li.active > a.task-item-active-samples, .taskbar.nav-tabs > li.active > a:hover.task-item-active-samples, .taskbar.nav-tabs > li.active > a:focus.task-item-active-samples {
+  border-bottom: 3px solid #f0ad4e;
+  color: #f0ad4e;
 }
 
 .sidebar-list {
@@ -911,7 +947,8 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .sidebar-list .sidebar-action {
   /*background-color: #333333;*/
-  background-color: rgba(0, 0, 0, 0.3);
+  /*background-color: rgba(0, 0, 0, 0.3);*/
+  background-color: darkgray;
 }
 
 .sidebar-list .list-group-item:first-child {
@@ -1052,6 +1089,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 .btn-samples:hover {
   background-color: #f0ad4e;
   opacity: 1;
+
 }
 
 .panel-heading.reviews-color {
@@ -1068,6 +1106,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 .btn-reviews:hover {
   background-color: #4884b8;
   opacity: .90;
+  color: white;
 }
 
 .minimized-window span {
@@ -1080,14 +1119,16 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .btn-notes {
-  background-color: #3ea7a0;
-  opacity: .70;
+  /*background-color: #3ea7a0;*/
+  /*opacity: .70;*/
+  color: white;
 }
 
 .btn-notes-active,
 .btn-notes:hover {
   background-color: #3ea7a0;
   opacity: .90;
+  color: black;
 }
 
 .panel-heading.files-color {
@@ -1102,8 +1143,9 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-files-active,
 .btn-files:hover {
-  background-color: #7c699f;
+  /*background-color: #7c699f;*/
   opacity: .90;
+  color: #ffffff;
 }
 
 .panel-heading.sideboard-color {
@@ -1134,8 +1176,9 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .btn-processes-active,
 .btn-processes:hover {
-  background-color: #e26a6a;
+  /*background-color: #e26a6a;*/
   opacity: 1;
+  color: white;
 }
 
 /* .trythis:hover { */
@@ -1678,11 +1721,16 @@ label {
 .tool-inactive {
   color: #8e8e8e;
 }
-
-.tool-active {
-  color: white;
-  opacity: .85;
+.taskbar.nav-tabs > li.active > a.tool-active, .taskbar.nav-tabs > li.active > a:hover.tool-active, .taskbar.nav-tabs > li.active > a:focus.tool-active {
+  border-bottom: 3px solid #e26a6a;
+  color: #e26a6a;
 }
+
+/*.tool-active {*/
+  /*color: white;*/
+  /*opacity: .85;*/
+  /*border-bottom: ;*/
+/*}*/
 
 .tab-active {
   color: white;
@@ -2165,8 +2213,4 @@ input[type="checkbox"]:focus {
   width: 400px;
   text-align: center;
   z-index: 1000;
-}
-
-.task-bar-tool:hover {
-  color: white;
 }
