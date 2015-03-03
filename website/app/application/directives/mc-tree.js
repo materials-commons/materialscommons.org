@@ -54,9 +54,9 @@ function mcTreeDirDirectiveController($scope) {
 
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi",
+                                   ["$scope", "mcfile", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi", "file",
                                     mcTreeHeaderDirectiveController]);
-function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, toggleDragButton, pubsub, mcapi) {
+function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, toggleDragButton, pubsub, mcapi, file) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
         $scope.faClass = "fa-upload";
@@ -85,6 +85,9 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
                 name: currentDir.name + "/" + name,
                 level: currentDir.level+1
             });
+    };
+    $scope.openFile = function(item) {
+        file.save(item);
     };
 
     $scope.isActive = function(type, button){
