@@ -194,7 +194,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
         .state("projects.project.files", {
             url: "/files",
             templateUrl: "application/core/projects/project/files/files.html",
-            controller: "projectFiles"
+            controller: "FilesController"
         })
         .state("projects.project.processes", {
             url: "/processes",

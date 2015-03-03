@@ -27,7 +27,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     $scope.minimize = function() {
-        ui.togglePanelState($scope.project.id, 'files')
+        ui.togglePanelState($scope.project.id, 'files');
     };
 
     $scope.isExpanded = function() {
