@@ -912,6 +912,11 @@ h4, .h4, h5, .h5, h6, .h6 {
   color: #f0ad4e;
 }
 
+.taskbar.nav-tabs > li.active > a.task-item-active-home, .taskbar.nav-tabs > li.active > a:hover.task-item-active-home, .taskbar.nav-tabs > li.active > a:focus.task-item-active-home {
+  border-bottom: 3px solid #757575;
+  color: #757575;
+}
+
 .sidebar-list {
   margin-bottom: 5px;
 }

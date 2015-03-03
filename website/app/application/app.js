@@ -190,7 +190,18 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/provenance/:item_id/:prov_type",
             templateUrl: "application/core/projects/project/provenance/new/provenance.html",
             controller: "projectProvenanceController"
+        })
+        .state("projects.project.files", {
+            url: "/files",
+            templateUrl: "application/core/projects/project/files/files.html",
+            controller: "projectFiles"
+        })
+        .state("projects.project.processes", {
+            url: "/processes",
+            templateUrl: "application/core/projects/project/processes/processes.html",
+            controller: "projectFiles"
         });
+
 
     $validationProvider.setErrorHTML(function (msg) {
         return '<span class="validation-invalid">' + msg + '</span>';

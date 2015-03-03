@@ -42,7 +42,8 @@
 
         <div class="col-xs-3">
             <ul class="taskbar nav nav-tabs" role="tablist">
-                <li role="presentation"><a ng-click="toggleExpanded('dashboard')" aria-controls="profile" role="tab"
+                <li role="presentation"><a ng-class="{'task-item-active-home': isActive('home')}"
+                                           ng-click="toggleExpanded('home')" aria-controls="profile" role="tab"
                                            data-toggle="tab">
                           <i class="fa fa-fw fa-home bold"></i>Home
                 </a></li>
