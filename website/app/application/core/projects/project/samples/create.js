@@ -1,11 +1,19 @@
 Application.Controllers.controller("projectSamplesCreate",
-                                   ["$scope", "templates", "pubsub",
+                                   ["$scope", "templates", "pubsub", "processCheck",
                                     projectSamplesCreate]);
-function projectSamplesCreate($scope, templates, pubsub) {
+function projectSamplesCreate($scope, templates, pubsub, processCheck) {
     var index = _.indexOf(templates, function(template) {
         return template.id == "sample";
     });
 
+    $scope.status = {
+        processOpen: true,
+        processDone: false,
+        sampleOpen: false,
+        sampleDone: false
+    };
+
+    $scope.allRequiredDone = false;
     $scope.sampleTemplate = templates[index];
 
     var network = {
@@ -19,7 +27,14 @@ function projectSamplesCreate($scope, templates, pubsub) {
     };
     pubsub.send("process.network", network);
 
-    $scope.updateName = function() {
-        network.nodes[1].label = $scope.name;
-    };
+    //$scope.updateName = function() {
+        //network.nodes[1].label = $scope.name;
+    //};
+
+    pubsub.waitOn($scope, "create.sample.attribute.done", function() {
+        $scope.allRequiredDone = processCheck.allRequiredDone($scope.sampleTemplate);
+        if ($scope.allRequiredDone) {
+            $scope.status.sampleDone = true;
+        }
+    });
 }

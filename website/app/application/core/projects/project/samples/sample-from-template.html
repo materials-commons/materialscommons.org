@@ -1,4 +1,4 @@
-<div class="col-xs-7">
+<div class="col-xs-12">
     <h3>Sample Attributes</h3>
     <div class="row">
         <input type="text" ng-model="searchInput.category" class="col-xs-12"
@@ -6,7 +6,12 @@
     </div>
     <div class="row">
         <ul class="list-unstyled">
-            <li ng-repeat="p in template.process | filter:searchInput | orderBy:'category'"
+            <li ng-repeat="p in template.process | filter:searchInput | filter: {category: 'Default'}"
+                class="home-item">
+                <display-sample-process-category process="p" edit="true">
+                </display-sample-process-category>
+            </li>
+            <li ng-repeat="p in template.process | filter:searchInput | filter:{category: '!Default'} | orderBy:'category'"
                 class="home-item">
                 <display-sample-process-category process="p" edit="true">
                 </display-sample-process-category>
