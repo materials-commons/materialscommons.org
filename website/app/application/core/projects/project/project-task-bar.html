@@ -38,36 +38,15 @@
             </div>
         </div>
     </div>
-    <div class="row">
-
+    <div class="row" >
         <div class="col-xs-3">
             <ul class="taskbar nav nav-tabs" role="tablist">
                 <li role="presentation"><a ng-class="{'task-item-active-home': isActive('home')}"
                                            ng-click="toggleExpanded('home')" aria-controls="profile" role="tab"
                                            data-toggle="tab">
-                          <i class="fa fa-fw fa-home bold"></i>Home
+                    <i class="fa fa-fw fa-home bold"></i>Home
                 </a></li>
             </ul>
-            <!--<a ng-click="openProvWizard()" title="Provenance Wizard">-->
-            <!--</a>-->
-            <!--<a ng-click="openDrafts()" title="Drafts">-->
-            <!--<i class="fa fa-fw fa-2x fa-pencil-square-o task-bar-tool"-->
-            <!--ng-class="{'tool-inactive': !showPanel('drafts'), 'tool-active': showPanel('drafts')}">-->
-            <!--</i>-->
-            <!--</a>-->
-            <!--<a ng-click="openPanel('settings')" title="Project Settings">-->
-            <!--<i class="fa fa-fw fa-2x fa-gear task-bar-tool"-->
-            <!--ng-class="{'tool-inactive': !showPanel('settings'), 'tool-active': showPanel('settings')}"></i>-->
-            <!--</a>-->
-            <!--<a ng-click="openPanel('calendar')" title="Event Calendar">-->
-            <!--<i class="fa fa-fw fa-2x fa-calendar task-bar-tool"-->
-            <!--ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}"></i>-->
-            <!--</a>-->
-            <!--<a  ng-click="toggleExpanded('sideboard')" title="Sideboard">-->
-            <!--<i class="fa fa-fw fa-2x fa-clipboard task-bar-tool"-->
-            <!--ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"></i>-->
-            <!--<span class="badge badge-superscript-count">{{list.sideboard.length}}</span>-->
-            <!--</a>-->
         </div>
 
 
@@ -102,23 +81,26 @@
         </div>
         <div class="col-xs-3 pull-right">
             <ul class="taskbar nav nav-tabs" role="tablist">
-                <li role="presentation"><a ng-click="openPanel('settings')" title="Project Settings">
+                <li role="presentation"><a ui-sref="projects.project.access" title="Project Settings">
                     <i class="fa fa-fw fa-1x fa-gear"
                        ng-class="{'tool-inactive': !showPanel('settings'), 'tool-active': showPanel('settings')}"></i>
                 </a></li>
-                <li role="presentation"><a ng-click="openDrafts()" title="Drafts">
+                <li role="presentation"><a ui-sref="projects.project.drafts" title="Drafts">
                     <i class="fa fa-fw fa-1x fa-pencil-square-o"
                        ng-class="{'tool-inactive': !showPanel('drafts'), 'tool-active': showPanel('drafts')}">
                     </i>
                 </a></li>
-                <li role="presentation"><a  ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}" ng-click="openPanel('calendar')" title="Event Calendar">
+                <li role="presentation"><a
+                        ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}"
+                        ng-click="openPanel('calendar')" title="Event Calendar">
                     <i class="fa fa-fw fa-1x fa-calendar"
-                      ></i>
+                            ></i>
                 </a>
                 </li>
                 <li>
-                    <a ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}" ng-click="toggleExpanded('sideboard')" title="Sideboard">
-                        <i class="fa fa-fw fa-1x fa-clipboard" ></i>
+                    <a ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"
+                       ng-click="toggleExpanded('sideboard')" title="Sideboard">
+                        <i class="fa fa-fw fa-1x fa-clipboard"></i>
                         <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
                     </a>
                 </li>

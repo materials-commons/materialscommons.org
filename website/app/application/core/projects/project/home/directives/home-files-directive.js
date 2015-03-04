@@ -12,9 +12,9 @@ function homeFilesDirective() {
 
 Application.Controllers.controller("homeFilesDirectiveController",
                                    ["$scope", "ui", "projectFiles", "applySearch",
-                                    "$filter",  "mcapi","file", homeFilesDirectiveController]);
+                                    "$filter",  "mcapi", homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
-                                      $filter, mcapi, file) {
+                                      $filter, mcapi) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
@@ -61,7 +61,6 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     applySearch($scope, "searchInput", applyQuery);
-    $scope.file = file.getFile();
 
     function applyQuery() {
         var search = {

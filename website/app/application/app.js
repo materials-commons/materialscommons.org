@@ -156,11 +156,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "projectHome"
         })
-        .state("projects.project.home.drafts", {
-            url: "/drafts",
-            templateUrl: "application/core/projects/project/provenance/drafts.html",
-            controller: "projectProvenanceDrafts"
-        })
+
         // .state("projects.project.home.provenance", {
         //     url: "/provenance/:sid",
         //     templateUrl: 'application/core/projects/project/provenance/create.html',
@@ -191,16 +187,28 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/provenance/new/provenance.html",
             controller: "projectProvenanceController"
         })
+
         .state("projects.project.files", {
             url: "/files",
             templateUrl: "application/core/projects/project/files/files.html",
             controller: "FilesController"
         })
-        .state("projects.project.processes", {
-            url: "/processes",
-            templateUrl: "application/core/projects/project/processes/processes.html",
-            controller: "projectFiles"
-        });
+        .state("projects.project.access", {
+            url: "/access",
+            templateUrl: "application/core/projects/project/access/access.html",
+            controller: "projectAccess"
+        })
+        .state("projects.project.drafts", {
+            url: "/drafts",
+            templateUrl: "application/core/projects/project/drafts/drafts.html",
+            controller: "projectDrafts"
+        })
+        .state("projects.project.reviews", {
+            url: "/reviews",
+            templateUrl: "application/core/projects/project/reviews/reviews.html",
+            controller: "projectReviews"
+        })
+    ;
 
 
     $validationProvider.setErrorHTML(function (msg) {

@@ -1237,7 +1237,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 .nav-tabs > li > a {
   margin-right: 2px;
   line-height: 1.42857143;
-  border: 1px solid #e7e7e7;
+  /*border: 1px solid #e7e7e7;*/
   border-radius: 4px 4px 0 0;
   border-bottom-color: transparent;
   border-left-color: transparent;
