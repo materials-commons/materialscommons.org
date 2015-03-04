@@ -1,8 +1,13 @@
 Application.Controllers.controller("FilesController",
     ["$scope", "projectFiles", "applySearch",
-        "$filter", FilesController]);
+        "$filter", "pubsub", "mcfile", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
-                         $filter) {
+                         $filter, pubsub, mcfile) {
+
+    pubsub.waitOn($scope, "activeFile.change", function () {
+        getActiveFile();
+    });
+
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
@@ -23,5 +28,22 @@ function FilesController($scope, projectFiles, applySearch,
             $scope.files = $filter('filter')(filesToSearch, search);
         }
     }
+
+    function getActiveFile() {
+        $scope.activeFile = projectFiles.getActiveFile();
+        if (isImage($scope.activeFile.mediatype)) {
+            $scope.fileType = "image";
+        } else if ($scope.activeFile.mediatype === "application/pdf") {
+            $scope.fileType = "pdf";
+        } else {
+            $scope.fileType = $scope.activeFile.mediatype;
+        }
+
+    }
+
+    $scope.fileSrc = function (file) {
+        return mcfile.src(file.id);
+    };
+
 
 }

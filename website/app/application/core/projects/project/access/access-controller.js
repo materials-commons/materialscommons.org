@@ -1,4 +1,4 @@
-Application.Controllers.controller('projectsOverviewPermissions',
+Application.Controllers.controller('projectAccess',
     ["$scope", "$stateParams", "mcapi", "User", "pubsub", "model.projects", "toastr", function ($scope, $stateParams, mcapi, User, pubsub, Projects, toastr) {
 
         $scope.addUser = function () {
