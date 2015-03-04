@@ -1,0 +1,39 @@
+<div class="col-xs-7">
+    <h3>Create sample</h3>
+    <strong>Please fill in the <i class="fa fa-fw fa-circle text-danger"></i>required sections. Sections marked <i class="fa fa-fw fa-circle text-icon-warning"></i>are optional. A <i class="fa fa-fw fa-check-circle text-success"></i>indicates the section has been completed.</strong>
+    <accordion close-others="true" class="process-steps">
+        <accordion-group is-open="status.processOpen">
+            <accordion-heading>
+                <h4>
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-check-circle text-success': status.processDone, 'fa-circle text-danger': !status.processDone}">
+                    </i>
+                    Process
+                    <i class="pull-right fa fa-fw"
+                       ng-class="{'fa-chevron-right': !status.processOpen, 'fa-chevron-down': status.processOpen}"></i>
+                </h4>
+
+            </accordion-heading>
+            Process template attributes here
+        </accordion-group>
+        <accordion-group is-open="status.sampleOpen">
+            <accordion-heading>
+                <h4>
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-check-circle text-success': status.sampleDone, 'fa-circle text-danger': !status.sampleDone}">
+                    </i>
+                    Sample
+                    <i class="pull-right fa fa-fw"
+                       ng-class="{'fa-chevron-right': !status.sampleOpen, 'fa-chevron-down': status.sampleOpen}"></i>
+                </h4>
+            </accordion-heading>
+            <sample-from-template template="sampleTemplate"></sample-from-template>
+        </accordion-group>
+    </accordion>
+    <button class="btn-success btn"
+            ng-click="done()"
+            ng-disabled="!allRequiredDone">
+        Done
+    </button>
+    <button class="btn-danger btn" ng-click="cancel()">Cancel</button>
+</div>
