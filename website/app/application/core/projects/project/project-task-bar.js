@@ -44,10 +44,10 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     function showAllPanels() {
         panels.forEach(function (panel) {
             //if (panel !== "sideboard") {
-                ui.setIsExpanded($scope.project.id, panel, false);
-                ui.setPanelState($scope.project.id, panel, true);
-                ui.setPanelState($scope.project.id, 'sideboard', false);
-                ui.setPanelState($scope.project.id, 'emptyboard', false);
+            ui.setIsExpanded($scope.project.id, panel, false);
+            ui.setPanelState($scope.project.id, panel, true);
+            ui.setPanelState($scope.project.id, 'sideboard', false);
+            ui.setPanelState($scope.project.id, 'emptyboard', false);
 
             //}
         });
@@ -65,26 +65,13 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         ui.togglePanelState($scope.project.id, panel);
     };
 
-    $scope.isActive = function (panel) {
-        return ui.isExpanded($scope.project.id, panel);
+    $scope.isActive = function (page) {
+        return ui.isActivePage($scope.project.id, page);
     };
 
     $scope.toggleExpanded = function (panel) {
-        if (panel === 'dashboard') {
-            showAllPanels();
-        } else {
-            setAllPanels(false, panel);
-            ui.toggleIsExpanded($scope.project.id, panel);
-            if (!ui.showPanel($scope.project.id, panel) && ui.isExpanded($scope.project.id, panel)) {
-                ui.setPanelState($scope.project.id, panel, true);
-            } else if (!ui.isExpanded($scope.project.id, panel)) {
-                showAllPanels();
-                if (panel === "sideboard") {
-                    ui.setPanelState($scope.project.id, panel, false);
-                }
-            }
-        }
-
+        ui.setActivePage($scope.project.id, panel);
+        $state.go('projects.project.'+ panel);
     };
 
 
