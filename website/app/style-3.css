@@ -12,6 +12,10 @@ body {
   color: #FBF9E2;
 }
 
+.text-icon-warning {
+  color: #ffeb3b;
+}
+
 /* **************** Bootstrap overrides ******************* */
 
 /***********Begin sideboard.html ***********/
@@ -35,6 +39,10 @@ body {
 
 .checkbox label:before {
   border: 2px solid #cccccc;
+}
+
+.checkbox-success label:before {
+  border: 2px solid #5cb85c;
 }
 
 /***********Begin sideboard.html ***********/
@@ -2169,4 +2177,9 @@ input[type="checkbox"]:focus {
 
 .task-bar-tool:hover {
   color: white;
+}
+
+.process-steps div div.panel-default div.panel-heading {
+  background-color: #f0ad4e;
+  opacity: 1;
 }
