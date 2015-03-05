@@ -485,6 +485,7 @@ td.tag-width {
 ul.nav li a:hover,
 a:focus {
   font-weight: normal;
+  background-color: darkgray;
 }
 
 /*.navbar-custom .icon-bar {*/
@@ -1738,6 +1739,9 @@ label {
 .taskbar.nav-tabs > li.active > a.tool-active, .taskbar.nav-tabs > li.active > a:hover.tool-active, .taskbar.nav-tabs > li.active > a:focus.tool-active {
   border-bottom: 3px solid #e26a6a;
   color: #e26a6a;
+}
+.taskbar{
+  border-bottom: none;
 }
 
 /*.tool-active {*/

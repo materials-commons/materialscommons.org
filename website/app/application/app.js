@@ -209,6 +209,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews"
         })
+        .state("projects.project.notes", {
+            url: "/notes",
+            templateUrl: "application/core/projects/project/notes/notes.html",
+            controller: "projectNotes"
+        })
+        .state("projects.project.sideboard", {
+            url: "/sideboard",
+            templateUrl: "application/core/projects/project/sideboard/sideboard.html",
+            controller: "projectSideboard"
+        })
     ;
 
 
