@@ -6,6 +6,54 @@
     "description": "All attributes for a sample",
     "process": [
         {
+            "category"  : "Default",
+            "descripion": "The default attributes required for every sample",
+            "attributes": [
+                {
+                    "name": "name",
+                    "description": "Name or identifier for sample",
+                    "attribute": "name",
+                    "_type": "string",
+                    "unit": "",
+                    "unit_choice": "",
+                    "nunit": "",
+                    "value": "",
+                    "value_choice": [],
+                    "default_value": "",
+                    "required": true,
+                    "apply": ""
+                },
+                {
+                    "name": "Description",
+                    "description": "Description of sample",
+                    "attribute": "description",
+                    "_type": "string",
+                    "unit": "",
+                    "unit_choice": "",
+                    "nunit": "",
+                    "value": "",
+                    "value_choice": [],
+                    "default_value": "",
+                    "required": true,
+                    "apply": ""
+                },
+                {
+                    "name": "Files",
+                    "description": "Files you would like to see when viewing this sample",
+                    "attribute": "files",
+                    "_type": "files",
+                    "unit": "",
+                    "unit_choice": "",
+                    "nunit": "",
+                    "value": "",
+                    "value_choice": [],
+                    "default_value": "",
+                    "required": false,
+                    "apply": ""
+                }
+            ]
+        },
+        {
             "category": "Scalar Attributes",
             "description": "Scalar Attributes",
             "attributes": [

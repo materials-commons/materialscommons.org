@@ -1,7 +1,19 @@
-Application.Controllers.controller("projectSamplesCreate",
+Application.Directives.directive("processFromTemplate", processFromTemplateDirective);
+function processFromTemplateDirective() {
+    return {
+        restrict: "E",
+        scope: {
+            template: "=template"
+        },
+        controller: "processFromTemplateDirectiveController",
+        templateUrl: "application/core/projects/project/processes/templates/process-from-template.html"
+    };
+}
+
+Application.Controllers.controller("processFromTemplateDirectiveController",
                                    ["$scope", "templates", "pubsub", "processCheck",
-                                    projectSamplesCreate]);
-function projectSamplesCreate($scope, templates, pubsub, processCheck) {
+                                    processFromTemplateDirectiveController]);
+function processFromTemplateDirectiveController($scope, templates, pubsub, processCheck) {
     var index = _.indexOf(templates, function(template) {
         return template.id == "sample";
     });

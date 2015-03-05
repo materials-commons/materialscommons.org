@@ -3,13 +3,13 @@
     "root": true,
     "category": "Create",
     "name": "As Received",
-    "description": "Template for receiving a new sample into the system",
+    "description": "Process for receiving a new sample into the system",
     "process":[
         {
             "category": "Default",
             "attributes": [
                 {
-                    "name": "Date received:",
+                    "name": "Date received",
                     "description": "Date sample was received",
                     "attribute": "date_received",
                     "_type": "date",
@@ -21,6 +21,34 @@
                     "default_value": "today",
                     "required": true,
                     "apply": "create-date"
+                },
+                {
+                    "name": "Description",
+                    "description": "Date sample was received",
+                    "attribute": "description",
+                    "_type": "string",
+                    "unit": "",
+                    "unit_choice": "",
+                    "nunit": "",
+                    "value": "",
+                    "value_choice": [],
+                    "default_value": "",
+                    "required": true,
+                    "apply": ""
+                },
+                {
+                    "name": "Files",
+                    "description": "Files you would like to see when viewing this process",
+                    "attribute": "files",
+                    "_type": "files",
+                    "unit": "",
+                    "unit_choice": "",
+                    "nunit": "",
+                    "value": "",
+                    "value_choice": [],
+                    "default_value": "",
+                    "required": false,
+                    "apply": ""
                 }
             ],
             "additional_attributes": []

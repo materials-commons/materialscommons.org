@@ -13,7 +13,16 @@ function showSampleAttributeStringDirective() {
 }
 
 Application.Controllers.controller("showSampleAttributeStringDirectiveController",
-                                   ["$scope", showSampleAttributeStringDirectiveController]);
-function showSampleAttributeStringDirectiveController($scope) {
+                                   ["$scope", "pubsub",
+                                    showSampleAttributeStringDirectiveController]);
+function showSampleAttributeStringDirectiveController($scope, pubsub) {
+    $scope.control = {
+        edit: $scope.edit
+    };
 
+    $scope.done = function() {
+        $scope.control.edit = false;
+        $scope.attribute.done = true;
+        pubsub.send("create.sample.attribute.done");
+    };
 }
