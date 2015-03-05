@@ -1,0 +1,62 @@
+<div class="col-xs-7">
+    <h3>{{template.name}}</h3>
+    <p>{{template.description}}</p>
+    <p>
+        <strong>
+            Please fill in the <i class="fa fa-fw fa-circle text-danger"></i>required sections. Sections marked <i class="fa fa-fw fa-circle text-icon-warning"></i>are optional. A <i class="fa fa-fw fa-check-circle text-success"></i>indicates the section has been completed.
+        </strong>
+    </p>
+    <accordion close-others="true" ng-class="templateClass">
+        <accordion-group ng-repeat="c = template.process"
+                         is-open="status.processSection[c.category].isOpen">
+            <accordion-heading>
+                <h4>
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-check-circle text-success': status.processSection[c.category].isDone, 'fa-circle text-danger': !status.processSection[c.category].isDone}">
+                    </i>
+                    Process - {{c.category}}
+                    <i class="pull-right fa fa-fw"
+                       ng-class="{'fa-chevron-right': !status.processSection[c.category].isOpen, 'fa-chevron-down': status.processSection[c.category].isOpen}"></i>
+                </h4>
+            </accordion-heading>
+            Process {{c.category}} attributes here
+        </accordion-group>
+
+        <accordion-group ng-repeat="c = template.inputs"
+                         is-open="status.inputsSections[c.category].isOpen">
+            <accordion-heading>
+                <h4>
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-check-circle text-success': status.inputsSections[c.category].isDone, 'fa-circle text-danger': !status.inputsSections[c.category].isDone}">
+                    </i>
+                    Input - {{c.category}}
+                    <i class="pull-right fa fa-fw"
+                       ng-class="{'fa-chevron-right': !status.inputsSections[c.category].isOpen, 'fa-chevron-down': status.inputsSections[c.category].isOpen}"></i>
+                </h4>
+            </accordion-heading>
+            Input {{c.category}} attributes here
+        </accordion-group>
+
+        <accordion-group ng-repeat="c = template.process"
+                         is-open="status.outputsSection[c.category].isOpen">
+            <accordion-heading>
+                <h4>
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-check-circle text-success': status.outputsSection[c.category].isDone, 'fa-circle text-danger': !status.outputsSection[c.category].isDone}">
+                    </i>
+                    Output - {{c.category}}
+                    <i class="pull-right fa fa-fw"
+                       ng-class="{'fa-chevron-right': !status.outputsSection[c.category].isOpen, 'fa-chevron-down': status.outputsSection[c.category].isOpen}"></i>
+                </h4>
+            </accordion-heading>
+            Output {{c.category}} attributes here
+        </accordion-group>
+
+    </accordion>
+    <button class="btn-success btn"
+            ng-click="done()"
+            ng-disabled="!allRequiredDone">
+        Done
+    </button>
+    <button class="btn-danger btn" ng-click="cancel()">Cancel</button>
+</div>

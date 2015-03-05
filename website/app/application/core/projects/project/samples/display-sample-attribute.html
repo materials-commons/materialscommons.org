@@ -4,12 +4,8 @@
             <i class="fa fa-fw"
                ng-class="{'fa-caret-right': !attribute.showDetails, 'fa-caret-down': attribute.showDetails}">
             </i>
-            <div ng-if="false" class="checkbox checkbox-inline checkbox-primary"
-                 style="margin-top: 0px">
-                <input type="checkbox"
-                       ng-model="useTemplate" id="abc123">
-                <label for="abc123"></label>
-            </div>
+            <i style="font-size: 8px;" class="fa fa-fw"
+               ng-class="{'fa-asterisk text-danger': attribute.required && !attribute.done, 'fa-check-circle text-success': attribute.done}"></i>
             {{attribute.name | truncate:35: '...':true}}
         </span>
     </div>

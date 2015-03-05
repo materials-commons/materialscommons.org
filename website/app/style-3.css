@@ -5,11 +5,16 @@ body {
   font-size: 13px;
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #e9e9ea;
+  /* background-color: #e9e9ea; */
+   background-color: #f5f5f5;
 }
 
 .body-color {
   color: #FBF9E2;
+}
+
+.text-icon-warning {
+  color: #ffeb3b;
 }
 
 /* **************** Bootstrap overrides ******************* */
@@ -35,6 +40,10 @@ body {
 
 .checkbox label:before {
   border: 2px solid #cccccc;
+}
+
+.checkbox-success label:before {
+  border: 2px solid #5cb85c;
 }
 
 /***********Begin sideboard.html ***********/
@@ -2218,4 +2227,13 @@ input[type="checkbox"]:focus {
   width: 400px;
   text-align: center;
   z-index: 1000;
+}
+
+.task-bar-tool:hover {
+  color: white;
+}
+
+.process-steps div div.panel-default div.panel-heading {
+  background-color: #e0e0e0;
+  opacity: 1;
 }
