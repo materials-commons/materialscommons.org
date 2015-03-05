@@ -5,7 +5,8 @@ body {
   font-size: 13px;
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #e9e9ea;
+  /* background-color: #e9e9ea; */
+   background-color: #f5f5f5;
 }
 
 .body-color {
@@ -2233,6 +2234,6 @@ input[type="checkbox"]:focus {
 }
 
 .process-steps div div.panel-default div.panel-heading {
-  background-color: #f0ad4e;
+  background-color: #e0e0e0;
   opacity: 1;
 }

@@ -4,9 +4,9 @@
     <accordion close-others="true" class="process-steps">
         <accordion-group is-open="status.processOpen">
             <accordion-heading>
-                <h4>
+                <h4 style="color:#555555">
                     <i class="fa fa-fw"
-                       ng-class="{'fa-check-circle text-success': status.processDone, 'fa-circle text-danger': !status.processDone}">
+                       ng-class="{'fa-check-circle text-success': status.processDone, 'fa-asterisk text-danger': !status.processDone}">
                     </i>
                     Process
                     <i class="pull-right fa fa-fw"
@@ -18,9 +18,9 @@
         </accordion-group>
         <accordion-group is-open="status.sampleOpen">
             <accordion-heading>
-                <h4>
+                <h4 style="color:#555555">
                     <i class="fa fa-fw"
-                       ng-class="{'fa-check-circle text-success': status.sampleDone, 'fa-circle text-danger': !status.sampleDone}">
+                       ng-class="{'fa-check-circle text-success': status.sampleDone, 'fa-asterisk text-danger': !status.sampleDone}">
                     </i>
                     Sample
                     <i class="pull-right fa fa-fw"
