@@ -4,77 +4,85 @@
     "category": "Create",
     "name": "As Received",
     "description": "Process for receiving a new sample into the system",
-    "process":[
+    "sections": [
         {
-            "category": "Default",
-            "attributes": [
+            "name": "Process Overview",
+            "categories":[
                 {
-                    "name": "Date received",
-                    "description": "Date sample was received",
-                    "attribute": "date_received",
-                    "_type": "date",
-                    "unit": "",
-                    "unit_choice": "",
-                    "nunit": "",
-                    "value": "",
-                    "value_choice": [],
-                    "default_value": "today",
-                    "required": true,
-                    "apply": "create-date"
-                },
-                {
-                    "name": "Description",
-                    "description": "Date sample was received",
-                    "attribute": "description",
-                    "_type": "string",
-                    "unit": "",
-                    "unit_choice": "",
-                    "nunit": "",
-                    "value": "",
-                    "value_choice": [],
-                    "default_value": "",
-                    "required": true,
-                    "apply": ""
-                },
-                {
-                    "name": "Files",
-                    "description": "Files you would like to see when viewing this process",
-                    "attribute": "files",
-                    "_type": "files",
-                    "unit": "",
-                    "unit_choice": "",
-                    "nunit": "",
-                    "value": "",
-                    "value_choice": [],
-                    "default_value": "",
-                    "required": false,
-                    "apply": ""
+                    "category": "Default",
+                    "attributes": [
+                        {
+                            "name": "Date received",
+                            "description": "Date sample was received",
+                            "attribute": "date_received",
+                            "_type": "date",
+                            "unit": "",
+                            "unit_choice": "",
+                            "nunit": "",
+                            "value": "",
+                            "value_choice": [],
+                            "default_value": "today",
+                            "required": true,
+                            "apply": "create-date"
+                        },
+                        {
+                            "name": "Description",
+                            "description": "Date sample was received",
+                            "attribute": "description",
+                            "_type": "string",
+                            "unit": "",
+                            "unit_choice": "",
+                            "nunit": "",
+                            "value": "",
+                            "value_choice": [],
+                            "default_value": "",
+                            "required": true,
+                            "apply": ""
+                        },
+                        {
+                            "name": "Files",
+                            "description": "Files you would like to see when viewing this process",
+                            "attribute": "files",
+                            "_type": "files",
+                            "unit": "",
+                            "unit_choice": "",
+                            "nunit": "",
+                            "value": "",
+                            "value_choice": [],
+                            "default_value": "",
+                            "required": false,
+                            "apply": ""
+                        }
+                    ],
+                    "additional_attributes": []
                 }
-            ],
-            "additional_attributes": []
-        }
-    ],
-    "inputs": [],
-    "outputs": [
+            ]
+        },
+
         {
-            "category": "Samples",
-            "attributes": [
+            "name": "Output Samples",
+            "categories": [
                 {
-                    "name": "Sample",
-                    "description": "Attributes for the sample",
-                    "attribute": "sample",
-                    "_type": "sample",
-                    "unit": "",
-                    "nunit": "",
-                    "unit_choice": "",
-                    "value": "",
-                    "value_choice": "",
-                    "default_value": "",
-                    "required": true,
-                    "apply": "create-sample"
+                    "category": "Samples",
+                    "attributes": [
+                        {
+                            "name": "Sample",
+                            "description": "Attributes for the sample",
+                            "attribute": "sample",
+                            "_type": "sample",
+                            "unit": "",
+                            "nunit": "",
+                            "unit_choice": "",
+                            "value": "",
+                            "value_choice": "",
+                            "default_value": "",
+                            "required": true,
+                            "apply": "create-sample"
+                        }
+                    ],
+                    "additional_attributes": []
                 }
-            ],
-            "additional_attributes": []
+            ]
         }
     ]
 }
