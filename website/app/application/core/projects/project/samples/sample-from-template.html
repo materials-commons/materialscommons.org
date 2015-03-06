@@ -8,13 +8,13 @@
         <ul class="list-unstyled">
             <li ng-repeat="p in template.process | filter:searchInput | filter: {category: 'Default'}"
                 class="home-item">
-                <display-sample-process-category process="p" edit="true">
-                </display-sample-process-category>
+                <template-section-category category="p" edit="true">
+                </template-section-category>
             </li>
             <li ng-repeat="p in template.process | filter:searchInput | filter:{category: '!Default'} | orderBy:'category'"
                 class="home-item">
-                <display-sample-process-category process="p" edit="true">
-                </display-sample-process-category>
+                <template-section-category category="p" edit="true">
+                </template-section-category>
             </li>
         </ul>
     </div>
