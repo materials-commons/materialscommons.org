@@ -320,6 +320,21 @@ function templateAttributePairDirective() {
 Application.Controllers.controller("templateAttributePairDirectiveController",
                                    ["$scope", templateAttributePairDirectiveController]);
 function templateAttributePairDirectiveController($scope) {
+    $scope.control = {
+        edit: $scope.edit
+    };
+
+    console.dir($scope.attribute);
+    $scope.attribute1 = $scope.attribute.attribute.attributes[0];
+    $scope.attribute2 = $scope.attribute.attribute.attributes[1];
+
+    $scope.done = function() {
+        $scope.control.edit = false;
+        $scope.attribute.done = true;
+        if ($scope.attribute.required) {
+            pubsub.send("create.sample.attribute.done");
+        }
+    };
 
 }
 
