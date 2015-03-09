@@ -19,5 +19,5 @@ function sampleFromTemplateDirectiveController($scope) {
     $scope.searchInput = {
         category: ""
     };
-    console.dir($scope.template);
+    //console.dir($scope.template);
 }

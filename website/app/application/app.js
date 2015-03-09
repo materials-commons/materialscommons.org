@@ -9,6 +9,7 @@ Application.Directives = angular.module('application.core.directives', []);
 var app = angular.module('materialscommons',
                          [
                              'ngAnimate',
+                             'ngSanitize',
                              'ui',
                              'highcharts-ng',
                              'ngCookies',
@@ -208,9 +209,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/reviews",
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews"
-        })
-    ;
+        });
 
+    createNumericValidator($validationProvider);
+
+    $validationProvider.showSuccessMessage = false;
 
     $validationProvider.setErrorHTML(function (msg) {
         return '<span class="validation-invalid">' + msg + '</span>';
@@ -221,6 +224,21 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     });
 
 }]);
+
+function createNumericValidator(validationProvider) {
+    var expression = {
+        numeric: /^[0-9]*\.?[0-9]+$/
+    };
+
+    var validationMsgs = {
+        numeric: {
+            error: "Invalid numeric value",
+            success: ""
+        }
+    };
+
+    validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
+}
 
 app.run(["$rootScope", "User", "Restangular", appRun]);
 

@@ -230,7 +230,26 @@ function templateAttributeLineDirective() {
 Application.Controllers.controller("templateAttributeLineDirectiveController",
                                    ["$scope", templateAttributeLineDirectiveController]);
 function templateAttributeLineDirectiveController($scope) {
-
+    $scope.linechartConfig = {
+        options: {
+            chart: {
+                type: "areaspline"
+            },
+            plotOptions: {
+                series: {
+                    stacking: ""
+                }
+            }
+        },
+        xAxis: {
+            categories: [1,2,3,4,5,6]
+        },
+        series: [
+            {
+                data: [10, 20, 30, 40, 50],
+                type: "line"
+            }]
+    };
 }
 
 Application.Directives.directive("templateAttributeList", templateAttributeListDirective);
@@ -268,9 +287,20 @@ function templateAttributeNumberDirective() {
 }
 
 Application.Controllers.controller("templateAttributeNumberDirectiveController",
-                                   ["$scope", templateAttributeNumberDirectiveController]);
+                                   ["$scope", "pubsub",
+                                    templateAttributeNumberDirectiveController]);
 function templateAttributeNumberDirectiveController($scope) {
+    $scope.control = {
+        edit: $scope.edit
+    };
 
+    $scope.done = function() {
+        $scope.control.edit = false;
+        $scope.attribute.done = true;
+        if ($scope.attribute.required) {
+            pubsub.send("create.sample.attribute.done");
+        }
+    };
 }
 
 Application.Directives.directive("templateAttributePair", templateAttributePairDirective);
@@ -318,6 +348,8 @@ function templateAttributeStringDirectiveController($scope, pubsub) {
     $scope.done = function() {
         $scope.control.edit = false;
         $scope.attribute.done = true;
-        pubsub.send("create.sample.attribute.done");
+        if ($scope.attribute.required) {
+            pubsub.send("create.sample.attribute.done");
+        }
     };
 }
