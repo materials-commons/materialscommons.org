@@ -1,2 +1,25 @@
 <div>
+    <div class="col-xs-offset-1"
+         ng-switch="control.edit">
+        <div ng-switch-when="true">
+            <form name="attributeNumber">
+                <input type="number"
+                       validator="required, numeric"
+                       required-error-message="Invalid {{attribute.name}}"
+                       numeric-error-message="Invalid2 {{attribute.name}}"
+                       ng-model="attribute.value">
+                <span ng-if="attribute.unit !== ''">{{attribute.unit}}</span>
+                <br>
+                <a validation-submit="attributeNumber"
+                   ng-click="done()">
+                    Done
+                </a>
+            </form>
+        </div>
+        <div ng-switch-default>
+            <span>{{attribute.value}}{{attribute.unit}}</span>
+            <br>
+            <a ng-click="control.edit = true; attribute.done = false">edit</a>
+        </div>
+    </div>
 </div>
