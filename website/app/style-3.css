@@ -2237,3 +2237,7 @@ input[type="checkbox"]:focus {
   background-color: #e0e0e0;
   opacity: 1;
 }
+
+textarea.no-resize {
+  resize: none;
+}
