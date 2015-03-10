@@ -27,7 +27,7 @@
                         },
                         {
                             "name": "Description",
-                            "description": "Date sample was received",
+                            "description": "Describe how you received the sample.",
                             "attribute": "description",
                             "_type": "string",
                             "unit": "",
@@ -60,20 +60,21 @@
         },
 
         {
-            "name": "Output Samples",
+            "name": "Samples",
             "categories": [
                 {
                     "category": "Samples",
                     "attributes": [
                         {
-                            "name": "Sample",
-                            "description": "Attributes for the sample",
-                            "attribute": "sample",
+                            "name": "Samples",
+                            "description": "Samples to create",
+                            "attribute": "samples",
                             "_type": "sample",
+                            "multiple": true,
                             "unit": "",
                             "nunit": "",
                             "unit_choice": "",
-                            "value": "",
+                            "value": [],
                             "value_choice": "",
                             "default_value": "",
                             "required": true,
