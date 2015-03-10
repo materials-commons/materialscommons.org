@@ -10,6 +10,7 @@ var app = angular.module('materialscommons',
                          [
                              'ngAnimate',
                              'ngSanitize',
+                             'ngMessages',
                              'ui',
                              'highcharts-ng',
                              'ngCookies',
