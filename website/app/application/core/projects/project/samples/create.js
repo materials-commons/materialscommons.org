@@ -3,7 +3,7 @@ Application.Controllers.controller("projectSamplesCreate",
                                     projectSamplesCreate]);
 function projectSamplesCreate($scope, templates, pubsub, processCheck) {
     var index = _.indexOf(templates, function(template) {
-        return template.id == "sample";
+        return template.id == "as_received";
     });
 
     $scope.status = {
@@ -14,7 +14,7 @@ function projectSamplesCreate($scope, templates, pubsub, processCheck) {
     };
 
     $scope.allRequiredDone = false;
-    $scope.sampleTemplate = templates[index];
+    $scope.template = templates[index];
 
     var network = {
         nodes: [
@@ -32,7 +32,7 @@ function projectSamplesCreate($scope, templates, pubsub, processCheck) {
     //};
 
     pubsub.waitOn($scope, "create.sample.attribute.done", function() {
-        $scope.allRequiredDone = processCheck.allRequiredDone($scope.sampleTemplate);
+        $scope.allRequiredDone = processCheck.allRequiredDone($scope.template);
         if ($scope.allRequiredDone) {
             $scope.status.sampleDone = true;
         }

@@ -368,3 +368,71 @@ function templateAttributeStringDirectiveController($scope, pubsub) {
         }
     };
 }
+
+Application.Directives.directive("templateAttributeDate", templateAttributeDateDirective);
+function templateAttributeDateDirective() {
+    return {
+        restrict: "E",
+        replace: true,
+        scope: {
+            attribute: "=attribute",
+            edit: "=edit"
+        },
+        controller: "templateAttributeDateDirectiveController",
+        templateUrl: "application/core/components/templates/partials/attributes/template-attribute-date.html"
+    };
+}
+
+Application.Controllers.controller("templateAttributeDateDirectiveController",
+                                   ["$scope", "pubsub",
+                                    templateAttributeDateDirectiveController]);
+function templateAttributeDateDirectiveController($scope, pubsub) {
+    $scope.control = {
+        edit: $scope.edit
+    };
+
+    if ($scope.attribute.value === "") {
+        $scope.attribute.value = new Date();
+    }
+
+    $scope.done = function() {
+        $scope.control.edit = false;
+        $scope.attribute.done = true;
+        if ($scope.attribute.required) {
+            pubsub.send("create.sample.attribute.done");
+        }
+    };
+}
+
+Application.Directives.directive("templateAttributeSample", templateAttributeSampleDirective);
+function templateAttributeSampleDirective() {
+    return {
+        restrict: "E",
+        replace: true,
+        scope: {
+            attribute: "=attribute",
+            edit: "=edit"
+        },
+        controller: "templateAttributeSampleDirectiveController",
+        templateUrl: "application/core/components/templates/partials/attributes/template-attribute-sample.html"
+    };
+}
+
+Application.Controllers.controller("templateAttributeSampleDirectiveController",
+                                   ["$scope", "pubsub",
+                                    templateAttributeSampleDirectiveController]);
+function templateAttributeSampleDirectiveController($scope, pubsub) {
+    $scope.control = {
+        edit: $scope.edit
+    };
+
+    console.dir($scope.sampleAttribute);
+
+    $scope.done = function() {
+        $scope.control.edit = false;
+        $scope.attribute.done = true;
+        if ($scope.attribute.required) {
+            pubsub.send("create.sample.attribute.done");
+        }
+    };
+}

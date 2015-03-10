@@ -1,0 +1,64 @@
+<div>
+    <div class="col-xs-offset-1"
+         ng-switch="control.edit">
+        <div ng-switch-when="true">
+            <form name="form" class="form-horizontal" novalidate>
+                <div class="form-group">
+                    <label for="sampleName"
+                           class="col-xs-3 control-label">
+                        Name
+                    </label>
+                    <div class="col-xs-6">
+                        <input type="text"
+                               class="form-control"
+                               id="sampleName"
+                               name="name"
+                               autocomplete="off"
+                               validate-unique-sample-name
+                               validator-samples="[{name: 'hello'}]"
+                               ng-model="attr.name">
+                        <span ng-show="form.name.$error.uniqueSampleName"
+                              class="text-danger">
+                            Sample name not unique
+                        </span>
+                        <span class="help-block">The name of the sample (must be unique for the project)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sampleDescription"
+                           class="col-xs-3 control-label">
+                        Description
+                    </label>
+                    <div class="col-xs-6">
+                        <textarea class="form-control no-resize"
+                                  id="sampleDescription"
+                                  ng-model="attr.description">
+                        </textarea>
+                        <span class="help-block">Describe the sample and add important notes.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sampleFrom"
+                           class="col-xs-3 control-label">
+                        From
+                    </label>
+                    <div class="col-xs-6">
+                        <input type="text"
+                               class="form-control"
+                               id="sampleFrom"
+                               autocomplete="off"
+                               ng-model="attr.from">
+                        <span class="help-block">Who you received the sample from, eg a vendor or another researcher</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div ng-switch-default>
+            <span>
+                {{attribute.value}}
+            </span>
+            <br>
+            <a ng-click="control.edit = true; attribute.done = false">edit</a>
+        </div>
+    </div>
+</div>

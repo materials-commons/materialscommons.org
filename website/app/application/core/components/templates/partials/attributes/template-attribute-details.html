@@ -12,6 +12,10 @@
             <template-attribute-line attribute="attribute" edit="edit">
             </template-attribute-line>
         </div>
+        <div ng-switch-when="date">
+            <template-attribute-date attribute="attribute" edit="edit">
+            </template-attribute-date>
+        </div>
         <div ng-switch-when="list">
             <template-attribute-list attribute="attribute" edit="edit">
             </template-attribute-list>
@@ -27,6 +31,14 @@
         <div ng-switch-when="string">
             <template-attribute-string attribute="attribute" edit="edit">
             </template-attribute-string>
+        </div>
+        <div ng-switch-when="template">
+            <template-attribute-template attribute="attribute" edit="edit">
+            </template-attribute-template>
+        </div>
+        <div ng-switch-when="sample">
+            <template-attribute-sample attribute="attribute" edit="edit">
+            </template-attribute-sample>
         </div>
     </div>
 </div>

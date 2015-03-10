@@ -1,0 +1,17 @@
+<div>
+    <div class="col-xs-offset-1"
+         ng-switch="control.edit">
+        <div ng-switch-when="true">
+            <datepicker ng-model="attribute.value"
+                        show-weeks="true" class="well well-sm">
+            </datepicker>
+            <br>
+            <a ng-click="done()">done</a>
+        </div>
+        <div ng-switch-default>
+            <span>{{attribute.value | date:'fullDate'}}</span>
+            <br>
+            <a ng-click="control.edit = true; attribute.done = false">edit</a>
+        </div>
+    </div>
+</div>
