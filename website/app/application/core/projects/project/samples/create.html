@@ -1,39 +1,42 @@
 <div class="col-xs-7">
-    <h3>Create sample</h3>
-    <strong>Please fill in the <i class="fa fa-fw fa-circle text-danger"></i>required sections. Sections marked <i class="fa fa-fw fa-check-circle text-success"></i>have been completed.</strong>
-    <accordion close-others="true" class="process-steps">
-        <accordion-group is-open="status.processOpen">
-            <accordion-heading>
-                <h4 style="color:#555555">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-check-circle text-success': status.processDone, 'fa-asterisk text-danger': !status.processDone}">
-                    </i>
-                    Process
-                    <i class="pull-right fa fa-fw"
-                       ng-class="{'fa-chevron-right': !status.processOpen, 'fa-chevron-down': status.processOpen}"></i>
-                </h4>
+    <process-from-template ng-if="true" edit="true" template="template"></process-from-template>
+    <div ng-if="false">
+        <h3>Create sample</h3>
+        <strong>Please fill in the <i class="fa fa-fw fa-asterisk text-danger"></i>required sections. Sections marked <i class="fa fa-fw fa-check-circle text-success"></i>have been completed.</strong>
+        <accordion close-others="true" class="process-steps">
+            <accordion-group is-open="status.processOpen">
+                <accordion-heading>
+                    <h4 style="color:#555555">
+                        <i class="fa fa-fw"
+                           ng-class="{'fa-check-circle text-success': status.processDone, 'fa-asterisk text-danger': !status.processDone}">
+                        </i>
+                        Process
+                        <i class="pull-right fa fa-fw"
+                           ng-class="{'fa-chevron-right': !status.processOpen, 'fa-chevron-down': status.processOpen}"></i>
+                    </h4>
 
-            </accordion-heading>
-            Process template attributes here
-        </accordion-group>
-        <accordion-group is-open="status.sampleOpen">
-            <accordion-heading>
-                <h4 style="color:#555555">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-check-circle text-success': status.sampleDone, 'fa-asterisk text-danger': !status.sampleDone}">
-                    </i>
-                    Sample
-                    <i class="pull-right fa fa-fw"
-                       ng-class="{'fa-chevron-right': !status.sampleOpen, 'fa-chevron-down': status.sampleOpen}"></i>
-                </h4>
-            </accordion-heading>
-            <sample-from-template template="sampleTemplate"></sample-from-template>
-        </accordion-group>
-    </accordion>
-    <button class="btn-success btn"
-            ng-click="done()"
-            ng-disabled="!allRequiredDone">
-        Done
-    </button>
-    <button class="btn-danger btn" ng-click="cancel()">Cancel</button>
+                </accordion-heading>
+                Process template attributes here
+            </accordion-group>
+            <accordion-group is-open="status.sampleOpen">
+                <accordion-heading>
+                    <h4 style="color:#555555">
+                        <i class="fa fa-fw"
+                           ng-class="{'fa-check-circle text-success': status.sampleDone, 'fa-asterisk text-danger': !status.sampleDone}">
+                        </i>
+                        Sample
+                        <i class="pull-right fa fa-fw"
+                           ng-class="{'fa-chevron-right': !status.sampleOpen, 'fa-chevron-down': status.sampleOpen}"></i>
+                    </h4>
+                </accordion-heading>
+                <sample-from-template template="sampleTemplate"></sample-from-template>
+            </accordion-group>
+        </accordion>
+        <button class="btn-success btn"
+                ng-click="done()"
+                ng-disabled="!allRequiredDone">
+            Done
+        </button>
+        <button class="btn-danger btn" ng-click="cancel()">Cancel</button>
+    </div>
 </div>
