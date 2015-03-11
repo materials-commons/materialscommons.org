@@ -7,25 +7,27 @@ Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
-                         [
-                             'ngAnimate',
-                             'ui',
-                             'highcharts-ng',
-                             'ngCookies',
-                             'ui.router',
-                             'ngHandsontable',
-                             'btford.socket-io',
-                             'restangular',
-                             'jmdobry.angular-cache',
-                             'validation', 'validation.rule',  'wu.masonry',
-                             'textAngular',
-                             'ngDragDrop',
-                             'ng-context-menu', "cfp.hotkeys",'angular.filter', 'ui.calendar',
-                             '$strap.directives', 'ui.bootstrap', 'toastr',
-                             "hljs", "nsPopover", "RecursionHelper",
-                             'application.core.constants', 'application.core.services',
-                             'application.core.controllers',
-                             'application.core.filters', 'application.core.directives']);
+    [
+        'ngAnimate',
+        'ngSanitize',
+        'ngMessages',
+        'ui',
+        'highcharts-ng',
+        'ngCookies',
+        'ui.router',
+        'ngHandsontable',
+        'btford.socket-io',
+        'restangular',
+        'jmdobry.angular-cache',
+        'validation', 'validation.rule', 'wu.masonry',
+        'textAngular',
+        'ngDragDrop',
+        'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
+        '$strap.directives', 'ui.bootstrap', 'toastr',
+        "hljs", "nsPopover", "RecursionHelper",
+        'application.core.constants', 'application.core.services',
+        'application.core.controllers',
+        'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
@@ -44,7 +46,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     mcglobals = {};
     doConfig();
     $stateProvider
-    // Navbar
+        // Navbar
         .state('home', {
             url: '/home'
         })
@@ -65,11 +67,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/machines/machines.html'
         })
 
-    /*
-     ########################################################################
-     ####################### Account ##################################
-     ########################################################################
-     */
+        /*
+         ########################################################################
+         ####################### Account ##################################
+         ########################################################################
+         */
         .state('account', {
             url: '/account',
             templateUrl: 'application/core/account/account.html'
@@ -99,11 +101,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/account/templates/templates.html'
         })
 
-    /*
-     ########################################################################
-     ########################### Projects ###################################
-     ########################################################################
-     */
+        /*
+         ########################################################################
+         ########################### Projects ###################################
+         ########################################################################
+         */
         .state('projects', {
             url: '/projects',
             abstract: true,
@@ -115,7 +117,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
                 },
 
                 Templates: "model.templates",
-                templates: function(Templates) {
+                templates: function (Templates) {
                     return Templates.getList();
                 }
             }
@@ -130,14 +132,14 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
                 project: ["$stateParams", "model.projects", "projects", "templates",
-                          function ($stateParams, Projects, projects, templates) {
-                              // We use templates as a dependency so that they are all loaded
-                              // before getting to this step. Otherwise the order of items
-                              // being resolved isn't in the order we need them.
-                              return Projects.get($stateParams.id);
-                          }]
+                    function ($stateParams, Projects, projects, templates) {
+                        // We use templates as a dependency so that they are all loaded
+                        // before getting to this step. Otherwise the order of items
+                        // being resolved isn't in the order we need them.
+                        return Projects.get($stateParams.id);
+                    }]
             },
-            onEnter: ["pubsub", "project", function(pubsub, project) {
+            onEnter: ["pubsub", "project", function (pubsub, project) {
                 pubsub.send("reviews.change");
             }],
             controller: "projectsProject"
@@ -218,9 +220,9 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/sideboard",
             templateUrl: "application/core/projects/project/sideboard/sideboard.html",
             controller: "projectSideboard"
-        })
-    ;
-
+        });
+    createNumericValidator($validationProvider);
+    $validationProvider.showSuccessMessage = false;
 
     $validationProvider.setErrorHTML(function (msg) {
         return '<span class="validation-invalid">' + msg + '</span>';
@@ -231,6 +233,21 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     });
 
 }]);
+
+function createNumericValidator(validationProvider) {
+    var expression = {
+        numeric: /^[0-9]*\.?[0-9]+$/
+    };
+
+    var validationMsgs = {
+        numeric: {
+            error: "Invalid numeric value",
+            success: ""
+        }
+    };
+
+    validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
+}
 
 app.run(["$rootScope", "User", "Restangular", appRun]);
 

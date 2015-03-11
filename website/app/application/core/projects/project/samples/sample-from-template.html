@@ -6,15 +6,15 @@
     </div>
     <div class="row">
         <ul class="list-unstyled">
-            <li ng-repeat="p in template.process | filter:searchInput | filter: {category: 'Default'}"
+            <li ng-repeat="c in template.sections[0].categories | filter:searchInput | filter: {category: 'Default'}"
                 class="home-item">
-                <display-sample-process-category process="p" edit="true">
-                </display-sample-process-category>
+                <template-section-category category="c" edit="true">
+                </template-section-category>
             </li>
-            <li ng-repeat="p in template.process | filter:searchInput | filter:{category: '!Default'} | orderBy:'category'"
+            <li ng-repeat="c in template.sections[0].categories | filter:searchInput | filter:{category: '!Default'} | orderBy:'category'"
                 class="home-item">
-                <display-sample-process-category process="p" edit="true">
-                </display-sample-process-category>
+                <template-section-category category="c" edit="true">
+                </template-section-category>
             </li>
         </ul>
     </div>

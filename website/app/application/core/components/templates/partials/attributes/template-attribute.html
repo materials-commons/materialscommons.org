@@ -4,13 +4,13 @@
             <i class="fa fa-fw"
                ng-class="{'fa-caret-right': !attribute.showDetails, 'fa-caret-down': attribute.showDetails}">
             </i>
-            <i style="font-size: 8px;" class="fa fa-fw"
+            <i style="font-size: 10px;" class="fa fa-fw"
                ng-class="{'fa-asterisk text-danger': attribute.required && !attribute.done, 'fa-check-circle text-success': attribute.done}"></i>
             {{attribute.name | truncate:35: '...':true}}
         </span>
     </div>
     <div ng-if="attribute.showDetails">
-        <show-sample-attribute-details attribute="attribute" edit="edit">
-        </show-sample-attribute-details>
+        <template-attribute-details attribute="attribute" edit="edit">
+        </template-attribute-details>
     </div>
 </div>
