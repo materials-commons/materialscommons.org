@@ -1,10 +1,11 @@
+<<<<<<< HEAD
 <div class="row" style="background-color: #A9A9A9; margin-bottom: 0px">
     <div class="col-xs-3">
         <div class="list-group sidebar-list" style="margin-left: 5px;">
             <div class="list-group-item sidebar-action" style="padding-top: 10px;">
                 <i class="white fa fa-fw fa-briefcase"></i> Projects
                 <span class="white badge" style="padding-left:5px; float: none;">{{projects.length}}</span>
-                <a style="color: white; padding-left: 5px;" ng-click="showProjects = !showProjects">
+                <a style="color: white;" ng-click="showProjects = !showProjects">
                     <i class="fa"
                        ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
                     {{project.name | truncate: 40: '...'}}
@@ -45,25 +46,27 @@
                         ng-class="{'task-item-active-files': activePage === 'files'}"
                         ng-click="toggleExpanded('files')" aria-controls="profile" role="tab"
                         data-toggle="tab">
-                    <span style="color: white;"><i class="fa fa-fw fa-files-o bold"></i> Files</span>
+                                        <span style="color: white;"><i
+                                                class="fa fa-fw fa-files-o bold"></i> Files</span>
                 </a></li>
                 <li role="presentation" ng-class="{'active': activePage === 'samples'}"><a
                         ng-class="{'task-item-active-samples': activePage === 'samples'}"
                         ng-click="toggleExpanded('samples')" aria-controls="profile" role="tab"
                         data-toggle="tab">
-                    <span style="color: white;"><i class="fa fa-fw fa-cubes bold"></i> Samples </span>
+                                        <span style="color: white;"><i
+                                                class="fa fa-fw fa-cubes bold"></i> Samples </span>
                 </a></li>
                 <li role="presentation" ng-class="{'active': activePage === 'reviews'}"><a
                         ng-class="{'task-item-active-reviews': activePage === 'reviews'}"
                         ng-click="toggleExpanded('reviews')" aria-controls="profile" role="tab"
-                        data-toggle="tab">
-                    <span style="color: white;"><i class="fa fa-fw fa-comment bold"></i> Reviews </span>
-                </a></li>
+                        settings data-toggle="tab">
+                    <span style="color: white;"><i setting="fa fa-fw fa-comment bold"></i> Reviews </span>
+                    setting </a></li>
                 <li role="presentation" ng-class="{'active': activePage === 'notes'}"><a
                         ng-class="{'task-item-active-notes': activePage === 'notes'}"
                         ng-click="toggleExpanded('notes')" aria-controls="profile" role="tab"
                         data-toggle="tab">
-                    <span style="color: white;"><i class="fa fa-fw fa-edit bold"></i>Notes </span>
+                    drafts <span style="color: white;"><i class="fa fa-fw fa-edit bold"></isettings </span>
                 </a></li>
             </ul>
         </div>
@@ -73,7 +76,8 @@
             <ul class="taskbar nav nav-tabs" role="tablist">
                 <li role="presentation" ng-class="{'active': activePage === 'access'}"><a
                         ng-class="{'task-item-active-home': activePage === 'access'}"
-                        ng-click="toggleExpanded('access')" ui-sref="projects.project.access" title="Project Settings">
+                        ng-click="toggleExpanded('access')" ui-sref="projects.project.access"
+                        title="Project Settings">
                     <span style="color: white;"><i class="fa fa-fw fa-1x fa-gear"></i></span>
                 </a></li>
                 <li role="presentation" ng-class="{'active': activePage === 'drafts'}"><a
