@@ -13,7 +13,7 @@
             </template-attribute-line>
         </div>
         <div ng-switch-when="date">
-            <template-attribute-date attribute="attribute" edit="edit">
+            <template-attribute-date attribute="attribute" edit="edit" form="form">
             </template-attribute-date>
         </div>
         <div ng-switch-when="list">
@@ -29,7 +29,7 @@
             </template-attribute-pair>
         </div>
         <div ng-switch-when="string">
-            <template-attribute-string attribute="attribute" edit="edit">
+            <template-attribute-string attribute="attribute" edit="edit" form="form">
             </template-attribute-string>
         </div>
         <div ng-switch-when="template">

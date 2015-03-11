@@ -1,13 +1,58 @@
 <div>
-    <h4>{{category.category}}</h4>
-    <div ng-if="category.attributes.length > 7" class="row">
-        <input type="text" ng-model="searchInput.name" class="col-xs-12"
-               placeholder="Search attributes...">
+    <div ng-click="category.showDetails = !category.showDetails"
+         style="cursor: pointer">
+
+        <h4>
+            <i class="fa fa-fw"
+               ng-class="{'fa-asterisk text-danger': isRequired(), 'fa-check-circle text-success': isDone()}">
+            </i>
+            {{category.category}}
+            <i class="fa fa-fw"
+               ng-class="{'fa-caret-right': !category.showDetails, 'fa-caret-down': category.showDetails}">
+            </i>
+        </h4>
     </div>
-    <ul class="list-unstyled">
-        <li ng-repeat="attribute in category.attributes | filter:searchInput">
-            <template-attribute attribute="attribute" edit="edit">
-            </template-attribute>
-        </li>
-    </ul>
+    <div ng-if="category.showDetails">
+        <div ng-if="category.attributes.length > 7" class="row">
+            <input type="text" ng-model="searchInput.name" class="col-xs-12"
+                   placeholder="Search attributes...">
+        </div>
+        <div ng-switch="control.edit">
+            <div ng-switch-when="true">
+                <form name="form" class="form-horizontal" novalidate>
+                    <div class="form-group"
+                         ng-repeat="attribute in category.attributes | filter:searchInput">
+                        <template-attribute-details attribute="attribute" form="form" edit="edit">
+                        </template-attribute-details>
+                    </div>
+                    <div ng-if="!category.custom_controls">
+                        <button class="btn btn-success"
+                                ng-click="done()"
+                                ng-disabled="form.$invalid">
+                            Done
+                        </button>
+                        <button class="btn btn-danger"
+                                ng-click="clear()">
+                            Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div ng-switch-default>
+                <div ng-if="!category.custom_controls">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <template-attribute-details
+                                    ng-repeat="attribute in category.attributes"
+                                    attribute="attribute" edit="false">
+                                </template-attribute-details>
+                            </dl>
+                            <a ng-click="control.edit = true">edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

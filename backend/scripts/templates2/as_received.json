@@ -64,6 +64,7 @@
             "categories": [
                 {
                     "category": "Samples",
+                    "custom_controls": true,
                     "attributes": [
                         {
                             "name": "Samples",

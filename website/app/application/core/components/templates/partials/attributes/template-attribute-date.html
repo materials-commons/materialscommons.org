@@ -1,17 +1,43 @@
 <div>
-    <div class="col-xs-offset-1"
-         ng-switch="control.edit">
+    <div ng-switch="control.edit">
         <div ng-switch-when="true">
-            <datepicker ng-model="attribute.value"
-                        show-weeks="true" class="well well-sm">
-            </datepicker>
-            <br>
-            <a ng-click="done()">done</a>
+            <label class="col-xs-3 control-label" for="dateInput">
+                {{attribute.name}}
+                <i ng-if="attribute.required"
+                   class="fa fa-fw fa-asterisk text-danger"></i>
+            </label>
+            <div class="col-xs-6">
+                <p class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           datepicker-popup="fullDate"
+                           id="dateInput"
+                           name="dateInput"
+                           is-open="control.isOpen"
+                           ng-model="attribute.value"
+                           ng-required="attribute.required"
+                           datepicker-options="dateOptions"
+                           ng-required="true">
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="open($event)">
+                            <i class="fa fa-fw fa-calendar"></i>
+                        </button>
+                    </span>
+                </p>
+                <span ng-show="form.dateInput.$error.required"
+                      class="text-danger">
+                    You must supply a {{attribute.name}}.
+                </span>
+                <span class="help-block">
+                    {{attribute.description}}
+                </span>
+            </div>
         </div>
         <div ng-switch-default>
-            <span>{{attribute.value | date:'fullDate'}}</span>
-            <br>
-            <a ng-click="control.edit = true; attribute.done = false">edit</a>
+            <dt>{{attribute.name}}</dt>
+            <dd>{{attribute.value | date:'fullDate'}}</dd>
         </div>
     </div>
 </div>
