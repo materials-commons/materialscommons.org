@@ -1,31 +1,30 @@
-<<<<<<< HEAD
 <div class="row" style="background-color: #A9A9A9; margin-bottom: 0px">
     <div class="col-xs-3">
-        <div class="list-group sidebar-list" style="margin-left: 5px;">
-            <div class="list-group-item sidebar-action" style="padding-top: 10px;">
-                <i class="white fa fa-fw fa-briefcase"></i> Projects
-                <span class="white badge" style="padding-left:5px; float: none;">{{projects.length}}</span>
-                <a style="color: white;" ng-click="showProjects = !showProjects">
-                    <i class="fa"
-                       ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
-                    {{project.name | truncate: 40: '...'}}
-                </a>
 
-                <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
-                    <a class="list-group-item"
-                       data-toggle="modal"
-                       data-target="#newProject">
-                        <i class="fa fa-fw fa-plus"></i> New Project
+            <div class="list-group sidebar-list" style="margin-left: 10px;">
+                <div class="list-group-item sidebar-action" style="padding-top: 10px;">
+                    <i class="white fa fa-fw fa-briefcase"></i> Projects
+                    <span class="white badge" style="float: none;">{{projects.length}}</span>
+                    <a style="color: white; padding-left: 5px;" ng-click="showProjects = !showProjects">
+                        <i class="fa"
+                           ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
+                        {{project.name | truncate: 40: '...'}}
                     </a>
-                    <hr class="carved"/>
-                    <a class="list-group-item"
-                       ng-repeat="p in projects"
-                       ng-click="setProject(p)">
-                        {{p.name}}
-                    </a>
+                    <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
+                        <a class="list-group-item"
+                           data-toggle="modal"
+                           data-target="#newProject">
+                            <i class="fa fa-fw fa-plus"></i> New Project
+                        </a>
+                        <hr class="carved"/>
+                        <a class="list-group-item"
+                           ng-repeat="p in projects"
+                           ng-click="setProject(p)">
+                            {{p.name}}
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
     <div class="col-xs-6">
         <div style="padding-left: 80px;">
@@ -61,18 +60,18 @@
                         ng-click="toggleExpanded('reviews')" aria-controls="profile" role="tab"
                         settings data-toggle="tab">
                     <span style="color: white;"><i setting="fa fa-fw fa-comment bold"></i> Reviews </span>
-                    setting </a></li>
+                </a></li>
                 <li role="presentation" ng-class="{'active': activePage === 'notes'}"><a
                         ng-class="{'task-item-active-notes': activePage === 'notes'}"
                         ng-click="toggleExpanded('notes')" aria-controls="profile" role="tab"
                         data-toggle="tab">
-                    drafts <span style="color: white;"><i class="fa fa-fw fa-edit bold"></isettings </span>
+                    <span style="color: white;"><i class="fa fa-fw fa-edit bold"></i>Notes </span>
                 </a></li>
             </ul>
         </div>
     </div>
     <div class="col-xs-3">
-        <div class="pull-right">
+        <div>
             <ul class="taskbar nav nav-tabs" role="tablist">
                 <li role="presentation" ng-class="{'active': activePage === 'access'}"><a
                         ng-class="{'task-item-active-home': activePage === 'access'}"
