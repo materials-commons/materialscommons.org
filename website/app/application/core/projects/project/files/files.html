@@ -16,39 +16,44 @@
 
         </div>
     </div>
-    <div class="col-xs-6">
-        <!--<div class="row">-->
-            <!--<button class="btn btn-success">Edit</button>-->
-            <!--<button class="btn btn-success">Cancel</button>-->
-        <!--</div>-->
-          <h4>{{activeFile.name}}</h4>
-        <div  ng-switch="fileType">
-            <div ng-switch-when="image">
-                <img class="img-responsive" ng-src="{{fileSrc(activeFile)}}">
-            </div>
-            <div ng-switch-when="pdf">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <embed class="col-xs-8 embed-responsive-item"
-                           ng-src="{{fileSrc(activeFile)}}">
-                    </embed>
+    <h4>{{activeFile.name}}</h4>
+
+    <div ng-show="activeFile" class="col-xs-6">
+        <div class="row">
+            <div style="overflow-y: auto;" class="panel-body even-odd">
+                <div  style="width:300px; height: 300px;" ng-switch="fileType">
+                    <div ng-switch-when="image">
+                        <img class="img-responsive" ng-src="{{fileSrc(activeFile)}}">
+                    </div>
+                    <div ng-switch-when="pdf">
+                        <div class="embed-responsive embed-responsive-4by3">
+                            <embed class="col-xs-8 embed-responsive-item"
+                                   ng-src="{{fileSrc(activeFile)}}">
+                            </embed>
+                        </div>
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-if="activeFile.size <= 10000"
+                             hljs
+                             include="fileSrc(activeFile)">
+                        </div>
+                        <code ng-if="activeFile.size > 10000 && activeFile.size <= 2000000"
+                              style="white-space:pre-line" ng-include="fileSrc(activeFile)">
+                        </code>
+                        <div ng-if="activeFile.size > 2000000">File too big to display</div>
+                    </div>
                 </div>
             </div>
-            <div ng-switch-default>
-                <div ng-if="activeFile.size <= 10000"
-                     hljs
-                     include="fileSrc(activeFile)">
-                </div>
-                <code ng-if="activeFile.size > 10000 && activeFile.size <= 2000000"
-                      style="white-space:pre-line" ng-include="fileSrc(activeFile)">
-                </code>
-                <div ng-if="activeFile.size > 2000000">File too big to display</div>
+        </div>
+        <div class="row">
+            <div style="background-color: #d3d3d3;height: 200px;overflow-y: auto;" class="panel-body even-odd">
+                <b>Notes</b>
             </div>
         </div>
-        <div class="panel-body">
-             <b>Notes</b>
-        </div>
-        <div class="panel-body">
-            <b>Tags</b>
+        <div class="row">
+            <div style="height: 200px;overflow-y: auto;" class="panel-body even-odd">
+                <b>Tags</b>
+            </div>
         </div>
     </div>
 </div>
