@@ -4,7 +4,7 @@
 
         <h4>
             <i class="fa fa-fw"
-               ng-class="{'fa-asterisk text-danger': isRequired(), 'fa-check-circle text-success': isDone()}">
+               ng-class="{'fa-asterisk text-danger': isRequired() && !control.isDone, 'fa-check-circle text-success': control.isDone}">
             </i>
             {{category.category}}
             <i class="fa fa-fw"

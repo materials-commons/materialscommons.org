@@ -1,39 +1,53 @@
 Application.Services.factory("processCheck", processService);
 function processService() {
     return {
-        allRequiredDone: allRequiredDone
+        allRequiredDone: allRequiredDone,
+        categoryRequiredDone: categoryRequiredDone,
+        categoryHasRequired: categoryHasRequired,
+        sectionRequiredDone: sectionRequiredDone,
+        sectionHasRequired: sectionHasRequired
     };
 
     ///////////////////////////
 
+    // allRequiredDone checks if all required template sections
+    // have been completed.
     function allRequiredDone(template) {
-        for (var i = 0; i < template.sections.length; i++) {
-            var section = template.sections[i];
-            if (!allRequiredDoneForSection(section)) {
-                return false;
-            }
-        }
-
-        return true;
+        return _.some(template.sections, sectionRequiredDone);
     }
 
-    function allRequiredDoneForSection(section) {
-        var foundRequiredNotDone = false;
-        var attributes, attr;
-        var categories = section.categories;
-        attrCheck:
-        for (var i = 0; i < categories.length; i++) {
-            attributes = categories[i].attributes;
-            for (var j = 0; j < attributes.length; j++) {
-                attr = attributes[j];
-                if (attr.required && !attr.done)  {
-                    foundRequiredNotDone = true;
-                    break attrCheck;
-                }
-            }
-        }
-        return !foundRequiredNotDone;
+    // sectionDone checks if all required section categories
+    // have been completed.
+    function sectionRequiredDone(section) {
+        return _.some(section.categories, categoryRequiredDone);
     }
 
+    // categoryDone checks if all required category attributes
+    // have been completed.
+    function categoryRequiredDone(category) {
+        var requiredNotDoneFound = _.some(category.attributes, function(attr) {
+            if (attr.required && !attr.done) {
+                console.log("required attr not done", attr.name);
+                return true;
+            }
+            return false;
+        });
 
+        return !requiredNotDoneFound;
+    }
+
+    function hasRequired(template) {
+        return _.some(template.sections, sectionHasRequired);
+    }
+
+    function sectionHasRequired(section) {
+        return _.some(template.categories, categoryHasRequired);
+    }
+
+    function categoryHasRequired(category) {
+        var hasRequired = _.some(category.attributes, function(attr) {
+            return attr.required;
+        });
+        return hasRequired;
+    }
 }
