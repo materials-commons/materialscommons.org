@@ -1,0 +1,20 @@
+{
+  "name": "materialscommons",
+  "version": "0.1.0",
+  "homepage": "https://github.com/materials-commons/materialscommons.org",
+  "authors": [
+    "V. Glenn Tarcea <gtarcea@umich.edu>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.12.1"
+  }
+}
