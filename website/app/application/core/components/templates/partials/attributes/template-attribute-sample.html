@@ -54,15 +54,44 @@
                         <span class="help-block">Who you received the sample from, eg a vendor or another researcher</span>
                     </div>
                 </div>
-                <button class="btn btn-success" ng-disabled="form.$invalid">Done</button>
+                <button class="btn btn-success"
+                        ng-click="done()"
+                        ng-disabled="form.$invalid">
+                    Done
+                </button>
+                <button class="btn btn-info"
+                        ng-click="doneAndAddAnother()"
+                        ng-disabled="form.$invalid">
+                    Done Add Another
+                </button>
+                <button class="btn btn-danger"
+                        ng-click="cancel()">
+                    Cancel
+                </button>
             </form>
         </div>
         <div ng-switch-default>
-            <span>
-                {{attribute.value}}
-            </span>
-            <br>
-            <a ng-click="control.edit = true; attribute.done = false">edit</a>
+            <div class="form-group">
+                <div ng-repeat="sample in attribute.value"
+                     class="panel panel-default">
+                    <div class="panel-body">
+                        <span class="pull-left"
+                              style="font-size: 12px; font-weight: 700; color: #959595; letter-spacing:1px"> {{sample.name}}</span>
+                        <br>
+                        <dl class="dl-horizontal">
+                            <dt>Description</dt>
+                            <dd>{{sample.description}}</dd>
+                            <dt>From</dt>
+                            <dd>{{sample.from}}</dd>
+                        </dl>
+                        <a ng-click="edit($index)">edit</done>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success"
+                    ng-click="addAnother()">
+                Add Another
+            </button>
         </div>
     </div>
 </div>

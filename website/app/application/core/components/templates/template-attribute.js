@@ -25,7 +25,8 @@ function templateAttributeDetailsDirective() {
         replace: true,
         scope: {
             attribute: "=attribute",
-            edit: "=edit"
+            edit: "=edit",
+            form: "=form"
         },
         controller: "templateAttributeDetailsDirectiveController",
         templateUrl: "application/core/components/templates/partials/attributes/template-attribute-details.html"
@@ -345,7 +346,8 @@ function templateAttributeStringDirective() {
         replace: true,
         scope: {
             attribute: "=attribute",
-            edit: "=edit"
+            edit: "=edit",
+            form: "=form"
         },
         controller: "templateAttributeStringDirectiveController",
         templateUrl: "application/core/components/templates/partials/attributes/template-attribute-string.html"
@@ -376,7 +378,8 @@ function templateAttributeDateDirective() {
         replace: true,
         scope: {
             attribute: "=attribute",
-            edit: "=edit"
+            edit: "=edit",
+            form: "=form"
         },
         controller: "templateAttributeDateDirectiveController",
         templateUrl: "application/core/components/templates/partials/attributes/template-attribute-date.html"
@@ -387,20 +390,24 @@ Application.Controllers.controller("templateAttributeDateDirectiveController",
                                    ["$scope", "pubsub",
                                     templateAttributeDateDirectiveController]);
 function templateAttributeDateDirectiveController($scope, pubsub) {
+    $scope.dateOptions = {
+        formatYear: "yy",
+        startingDay: 1
+    };
+
     $scope.control = {
-        edit: $scope.edit
+        edit: $scope.edit,
+        isOpen: false
     };
 
     if ($scope.attribute.value === "") {
         $scope.attribute.value = new Date();
     }
 
-    $scope.done = function() {
-        $scope.control.edit = false;
-        $scope.attribute.done = true;
-        if ($scope.attribute.required) {
-            pubsub.send("create.sample.attribute.done");
-        }
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.control.isOpen = true;
     };
 }
 
@@ -423,16 +430,98 @@ Application.Controllers.controller("templateAttributeSampleDirectiveController",
                                     templateAttributeSampleDirectiveController]);
 function templateAttributeSampleDirectiveController($scope, pubsub) {
     $scope.control = {
-        edit: $scope.edit
+        edit: $scope.edit,
+        editIndex: -1
     };
 
-    console.dir($scope.sampleAttribute);
+    $scope.attr = {
+        name: "",
+        description: "",
+        from: ""
+    };
 
-    $scope.done = function() {
+    /*
+     * If edit is set, but there are multiple items, then
+     * show the list of items to the user and let them
+     * pick which one they are going to edit.
+     */
+    if ($scope.attribute.value.length < 2) {
+        $scope.control.edit = false;
+    }
+
+    // View methods
+    $scope.addAnother = addAnother;
+    $scope.doneAndAddAnother = doneAndAddAnother;
+    $scope.cancel = cancel;
+    $scope.done = done;
+    $scope.edit = edit;
+
+    ///////////////////////////////////
+
+    // cancel clears the temporary attributes. If there are
+    // no values then leave the edit page up, otherwise go
+    // back to the list of items.
+    function cancel() {
+        clearAttrs();
+        if ($scope.attribute.value.length !== 0) {
+            $scope.control.edit = false;
+            $scope.control.editIndex = -1;
+        }
+    }
+
+    // clearAttrs resets the temporary attr view model.
+    function clearAttrs() {
+        $scope.attr.name = "";
+        $scope.attr.description = "";
+        $scope.attr.from = "";
+    }
+
+    // edit sets up editing of one of the samples.
+    function edit(index) {
+        $scope.attr.name = $scope.attribute.value[index].name;
+        $scope.attr.description = $scope.attribute.value[index].description;
+        $scope.attr.from = $scope.attribute.value[index].from;
+        $scope.control.editIndex = index;
+        $scope.control.edit = true;
+        $scope.attribute.done = false;
+    }
+
+    // addAnother allows the user to add another sample.
+    function addAnother() {
+        $scope.control.edit = true;
+        clearAttrs();
+    }
+
+    // done is called when the user is finished adding in attributes
+    // for a sample.
+    function done() {
+        addAttrsToValue();
         $scope.control.edit = false;
         $scope.attribute.done = true;
         if ($scope.attribute.required) {
             pubsub.send("create.sample.attribute.done");
         }
-    };
+    }
+
+    // doneAndAddAnother adds a sample, but leaves the edit
+    // view up so another sample can be added. It clears the
+    // view model attrs of the previous values.
+    function doneAndAddAnother() {
+        addAttrsToValue();
+        clearAttrs();
+    }
+
+    // addAttrsToValue updates or adds a sample to the list of samples
+    // in the view.
+    function addAttrsToValue() {
+        if ($scope.control.editIndex === -1) {
+            $scope.attribute.value.push(angular.copy($scope.attr));
+        } else {
+            var attr = $scope.attribute.value[$scope.control.editIndex];
+            attr.name = $scope.attr.name;
+            attr.description = $scope.attr.description;
+            attr.from = $scope.attr.from;
+            $scope.control.editIndex = -1;
+        }
+    }
 }

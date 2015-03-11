@@ -67,9 +67,33 @@ function showSectionCategoryDirective() {
     };
 }
 
-Application.Controllers.controller("showSectionCategoryDirectiveController", ["$scope", showSectionCategoryDirectiveController]);
-function showSectionCategoryDirectiveController($scope) {
+Application.Controllers.controller("showSectionCategoryDirectiveController",
+                                   ["$scope", "pubsub",
+                                    showSectionCategoryDirectiveController]);
+function showSectionCategoryDirectiveController($scope, pubsub) {
     $scope.searchInput = {
         name: ""
+    };
+
+    $scope.control = {
+        edit: $scope.edit
+    };
+
+    $scope.isDone = function() {
+        return false;
+    };
+
+    $scope.isRequired = isRequired;
+
+    function isRequired(){
+        return true;
+    }
+
+    $scope.done = function() {
+        $scope.control.edit = false;
+        if (isRequired()) {
+            // Change the name for what we are waiting on.
+            pubsub.send("create.sample.attribute.done");
+        }
     };
 }
