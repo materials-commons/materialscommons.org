@@ -402,6 +402,7 @@ function templateAttributeDateDirectiveController($scope, pubsub) {
 
     if ($scope.attribute.value === "") {
         $scope.attribute.value = new Date();
+        $scope.attribute.done = true;
     }
 
     $scope.open = function($event) {
@@ -499,7 +500,7 @@ function templateAttributeSampleDirectiveController($scope, pubsub) {
         $scope.control.edit = false;
         $scope.attribute.done = true;
         if ($scope.attribute.required) {
-            pubsub.send("create.sample.attribute.done");
+            pubsub.send("process.section.category.done");
         }
     }
 

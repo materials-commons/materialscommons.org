@@ -68,32 +68,47 @@ function showSectionCategoryDirective() {
 }
 
 Application.Controllers.controller("showSectionCategoryDirectiveController",
-                                   ["$scope", "pubsub",
+                                   ["$scope", "pubsub", "processCheck",
                                     showSectionCategoryDirectiveController]);
-function showSectionCategoryDirectiveController($scope, pubsub) {
+function showSectionCategoryDirectiveController($scope, pubsub, processCheck) {
     $scope.searchInput = {
         name: ""
     };
 
     $scope.control = {
-        edit: $scope.edit
+        edit: $scope.edit,
+        isDone: false
     };
 
-    $scope.isDone = function() {
-        return false;
-    };
+    // Wait for events to check our done status. This will only be
+    // fired by categories that handle their own processing.
+    pubsub.waitOn($scope, "process.section.category.done", function() {
+        console.log("process.section.category.done received");
+        if (processCheck.categoryRequiredDone($scope.category)) {
+            $scope.control.isDone = true;
+        }
+    });
 
+    // view methods
     $scope.isRequired = isRequired;
+    $scope.done = done;
+
+    ////////////////////////////////
 
     function isRequired(){
-        return true;
+        return processCheck.categoryHasRequired($scope.category);
     }
 
-    $scope.done = function() {
+    function done() {
         $scope.control.edit = false;
+        console.log("checking if category is done");
+        if (processCheck.categoryRequiredDone($scope.category)) {
+            console.log("category is done");
+            $scope.control.isDone = true;
+        }
         if (isRequired()) {
             // Change the name for what we are waiting on.
             pubsub.send("create.sample.attribute.done");
         }
-    };
+    }
 }
