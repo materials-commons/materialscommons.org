@@ -2248,3 +2248,11 @@ input[type="checkbox"]:focus {
 textarea.no-resize {
   resize: none;
 }
+
+.alternative_cls{
+  overflow-y: auto;
+  height: 300px;
+}
+.alternative_cls:nth-child(odd){
+  background-color: #d3d3d3;
+}
