@@ -927,7 +927,6 @@ h4, .h4, h5, .h5, h6, .h6 {
   color: #757575;
 }
 
-
 .sidebar-list {
   margin-bottom: 5px;
 }
@@ -2249,10 +2248,24 @@ textarea.no-resize {
   resize: none;
 }
 
-.alternative_cls{
+.alternative_cls {
   overflow-y: auto;
   height: 300px;
 }
-.alternative_cls:nth-child(odd){
+
+.alternative_cls:nth-child(odd) {
   background-color: #d3d3d3;
+}
+
+.sidebar-wrapper {
+  border-right: 1px solid #d3d3d3;
+  height: 450px;
+  margin-top: -5px;
+  overflow-y: auto;
+  transition: all 0.5s ease 0s;
+  z-index: 1000;
+  overflow-y: auto;
+}
+.main-wrapper{
+  margin-left: -300px;
 }
