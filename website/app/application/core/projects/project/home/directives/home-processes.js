@@ -50,7 +50,8 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
     $scope.createProcess = function() {
         var state = null;
         var stateID = projectState.add($scope.project.id, state);
-        $state.go("projects.project.home.provenance", {sid: stateID});
+        //$state.go("projects.project.home.provenance", {sid: stateID});
+        $state.go("projects.project.new-wizard");
     };
 
     $scope.splitScreen = function(what, col){
