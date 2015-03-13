@@ -1,11 +1,15 @@
 Application.Services.factory("processCheck", processService);
 function processService() {
     return {
+        // check that required items are done
         allRequiredDone: allRequiredDone,
-        categoryRequiredDone: categoryRequiredDone,
-        categoryHasRequired: categoryHasRequired,
         sectionRequiredDone: sectionRequiredDone,
-        sectionHasRequired: sectionHasRequired
+        categoryRequiredDone: categoryRequiredDone,
+
+        // check if there are required items.
+        hasRequired: hasRequired,
+        sectionHasRequired: sectionHasRequired,
+        categoryHasRequired: categoryHasRequired
     };
 
     ///////////////////////////
@@ -25,25 +29,36 @@ function processService() {
     // categoryDone checks if all required category attributes
     // have been completed.
     function categoryRequiredDone(category) {
-        var requiredNotDoneFound = _.some(category.attributes, function(attr) {
-            if (attr.required && !attr.done) {
-                console.log("required attr not done", attr.name);
-                return true;
+        var requiredNotDoneFound = _.some(category.attributes, checkRequiredNotDone);
+        return !requiredNotDoneFound;
+
+        ///////////////////////
+
+        function checkRequiredNotDone(attr) {
+            if (attr.required) {
+                if (attr.value instanceof Array && attr.value.length === 0) {
+                    return true;
+                } else if (attr.value === "" || attr.value === null) {
+                    return true;
+                }
             }
             return false;
-        });
-
-        return !requiredNotDoneFound;
+        }
     }
 
+    // hasRequired checks if there is at least one section that is required.
     function hasRequired(template) {
         return _.some(template.sections, sectionHasRequired);
     }
 
+    // sectionHasRequired checks if there is at least one category that
+    // is required.
     function sectionHasRequired(section) {
         return _.some(template.categories, categoryHasRequired);
     }
 
+    // categoryHasRequired checks if there is at least one attribute
+    // that is required.
     function categoryHasRequired(category) {
         var hasRequired = _.some(category.attributes, function(attr) {
             return attr.required;

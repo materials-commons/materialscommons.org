@@ -12,9 +12,9 @@ function processFromTemplateDirective() {
 }
 
 Application.Controllers.controller("processFromTemplateDirectiveController2",
-                                   ["$scope",
+                                   ["$scope", "pubsub", "processCheck", "$state",
                                     processFromTemplateDirectiveController2]);
-function processFromTemplateDirectiveController2($scope) {
+function processFromTemplateDirectiveController2($scope, pubsub, processCheck, $state) {
     $scope.status = {
         sections: {}
     };
@@ -28,10 +28,26 @@ function processFromTemplateDirectiveController2($scope) {
     }
 
     $scope.done = function() {
-        console.log("done for process-from-template");
+        $state.go("projects.project.home");
     };
 
     $scope.allRequiredDone = false;
+
+    pubsub.waitOn($scope, "process.done", function(sectionName) {
+        $scope.status.sections[sectionName].isDone = true;
+        if (allRequiredSectionsDone()) {
+            $scope.allRequiredDone = true;
+        }
+    });
+
+    ////////////////////////////
+
+    function allRequiredSectionsDone() {
+        var foundNotDone = _.some($scope.status.sections, function(section) {
+                                      return !section.isDone;
+                                  });
+        return !foundNotDone;
+    }
 }
 
 Application.Directives.directive("showTemplateSection", showTemplateSectionDirective);
@@ -47,11 +63,19 @@ function showTemplateSectionDirective() {
     };
 }
 
-Application.Controllers.controller("showTemplateSectionDirectiveController", ["$scope", showTemplateSectionDirectiveController]);
-function showTemplateSectionDirectiveController($scope) {
+Application.Controllers.controller("showTemplateSectionDirectiveController",
+                                   ["$scope", "pubsub", "processCheck",
+                                    showTemplateSectionDirectiveController]);
+function showTemplateSectionDirectiveController($scope, pubsub, processCheck) {
     $scope.searchInput = {
         category: ""
     };
+
+    pubsub.waitOn($scope, "process.section.done", function() {
+        if (processCheck.sectionRequiredDone($scope.section)) {
+            pubsub.send("process.done", $scope.section.name);
+        }
+    });
 }
 
 Application.Directives.directive("showSectionCategory", showSectionCategoryDirective);
@@ -83,10 +107,7 @@ function showSectionCategoryDirectiveController($scope, pubsub, processCheck) {
     // Wait for events to check our done status. This will only be
     // fired by categories that handle their own processing.
     pubsub.waitOn($scope, "process.section.category.done", function() {
-        console.log("process.section.category.done received");
-        if (processCheck.categoryRequiredDone($scope.category)) {
-            $scope.control.isDone = true;
-        }
+        checkAndPropagateDone();
     });
 
     // view methods
@@ -101,14 +122,16 @@ function showSectionCategoryDirectiveController($scope, pubsub, processCheck) {
 
     function done() {
         $scope.control.edit = false;
-        console.log("checking if category is done");
+        checkAndPropagateDone();
+    }
+
+    function checkAndPropagateDone() {
         if (processCheck.categoryRequiredDone($scope.category)) {
-            console.log("category is done");
             $scope.control.isDone = true;
         }
+
         if (isRequired()) {
-            // Change the name for what we are waiting on.
-            pubsub.send("create.sample.attribute.done");
+            pubsub.send("process.section.done");
         }
     }
 }

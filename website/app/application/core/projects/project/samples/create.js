@@ -1,20 +1,15 @@
 Application.Controllers.controller("projectSamplesCreate",
                                    ["$scope", "templates", "pubsub", "processCheck",
                                     projectSamplesCreate]);
-function projectSamplesCreate($scope, templates, pubsub, processCheck) {
+function projectSamplesCreate($scope, templates, pubsub) {
+    // Eventually move this code out of the controller and
+    // instead inject the template we are using.
     var index = _.indexOf(templates, function(template) {
         return template.id == "as_received";
     });
 
-    $scope.status = {
-        processOpen: true,
-        processDone: false,
-        sampleOpen: false,
-        sampleDone: false
-    };
-
     $scope.allRequiredDone = false;
-    $scope.template = templates[index];
+    $scope.template = angular.copy(templates[index]);
 
     var network = {
         nodes: [
@@ -26,15 +21,4 @@ function projectSamplesCreate($scope, templates, pubsub, processCheck) {
         ]
     };
     pubsub.send("process.network", network);
-
-    //$scope.updateName = function() {
-        //network.nodes[1].label = $scope.name;
-    //};
-
-    pubsub.waitOn($scope, "create.sample.attribute.done", function() {
-        $scope.allRequiredDone = processCheck.allRequiredDone($scope.template);
-        if ($scope.allRequiredDone) {
-            $scope.status.sampleDone = true;
-        }
-    });
 }
