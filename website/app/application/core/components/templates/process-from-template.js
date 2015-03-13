@@ -15,17 +15,8 @@ Application.Controllers.controller("processFromTemplateDirectiveController2",
                                    ["$scope", "pubsub", "processCheck", "$state",
                                     processFromTemplateDirectiveController2]);
 function processFromTemplateDirectiveController2($scope, pubsub, processCheck, $state) {
-    $scope.status = {
-        sections: {}
-    };
 
-    for (var i = 0; i < $scope.template.sections.length; i++) {
-        var section = $scope.template.sections[i];
-        $scope.status.sections[section.name] = {
-            isOpen: i === 0 ? true : false,
-            isDone: false
-        };
-    }
+    setupTemplateSectionsState();
 
     $scope.done = function() {
         $state.go("projects.project.home");
@@ -40,6 +31,9 @@ function processFromTemplateDirectiveController2($scope, pubsub, processCheck, $
         }
     });
 
+    // view methods
+    $scope.isRequired = isRequired;
+
     ////////////////////////////
 
     function allRequiredSectionsDone() {
@@ -47,6 +41,26 @@ function processFromTemplateDirectiveController2($scope, pubsub, processCheck, $
                                       return !section.isDone;
                                   });
         return !foundNotDone;
+    }
+
+    function isRequired(sectionName) {
+        var sectionStatus = $scope.status.sections[sectionName];
+        return sectionStatus.isDone ? false : sectionStatus.isRequired;
+    }
+
+    function setupTemplateSectionsState() {
+        $scope.status = {
+            sections: {}
+        };
+
+        for (var i = 0; i < $scope.template.sections.length; i++) {
+            var section = $scope.template.sections[i];
+            $scope.status.sections[section.name] = {
+                isOpen: i === 0 ? true : false,
+                isDone: false,
+                isRequired: processCheck.sectionHasRequired(section)
+            };
+        }
     }
 }
 

@@ -11,7 +11,7 @@
             <accordion-heading>
                 <h4 style="color: #555555">
                     <i class="fa fa-fw"
-                       ng-class="{'fa-check-circle text-success': status.sections[section.name].isDone, 'fa-asterisk text-danger': !status.sections[section.name].isDone}">
+                       ng-class="{'fa-check-circle text-success': status.sections[section.name].isDone, 'fa-asterisk text-danger': isRequired(section.name)}">
                     </i>
                     {{section.name}}
                     <i class="pull-right fa fa-fw"

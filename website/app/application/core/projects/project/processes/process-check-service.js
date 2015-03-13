@@ -54,7 +54,7 @@ function processService() {
     // sectionHasRequired checks if there is at least one category that
     // is required.
     function sectionHasRequired(section) {
-        return _.some(template.categories, categoryHasRequired);
+        return _.some(section.categories, categoryHasRequired);
     }
 
     // categoryHasRequired checks if there is at least one attribute
