@@ -182,8 +182,6 @@ function templateAttributeHistogramDirectiveController($scope) {
         $scope.yValues.split(",").forEach(function(val) {
             seriesData.push(parseInt(val, 10));
         });
-        console.dir(categories);
-        console.dir(seriesData);
         $scope.histogramConfig.xAxis.categories = categories;
         $scope.histogramConfig.series[0].data = seriesData;
     };
@@ -325,7 +323,6 @@ function templateAttributePairDirectiveController($scope) {
         edit: $scope.edit
     };
 
-    console.dir($scope.attribute);
     $scope.attribute1 = $scope.attribute.attribute.attributes[0];
     $scope.attribute2 = $scope.attribute.attribute.attributes[1];
 
@@ -444,9 +441,13 @@ function templateAttributeSampleDirectiveController($scope, pubsub) {
     /*
      * If edit is set, but there are multiple items, then
      * show the list of items to the user and let them
-     * pick which one they are going to edit.
+     * pick which one they are going to edit. If there is
+     * only one item and edit is set then load that items
+     * value up for editing.
      */
-    if ($scope.attribute.value.length < 2) {
+    if ($scope.attribute.value.length == 1 && $scope.control.edit) {
+        edit(0);
+    } else if ($scope.attribute.value.length > 1) {
         $scope.control.edit = false;
     }
 
@@ -455,7 +456,7 @@ function templateAttributeSampleDirectiveController($scope, pubsub) {
     $scope.doneAndAddAnother = doneAndAddAnother;
     $scope.cancel = cancel;
     $scope.done = done;
-    $scope.edit = edit;
+    $scope.editEntry = editEntry;
 
     ///////////////////////////////////
 
@@ -478,7 +479,7 @@ function templateAttributeSampleDirectiveController($scope, pubsub) {
     }
 
     // edit sets up editing of one of the samples.
-    function edit(index) {
+    function editEntry(index) {
         $scope.attr.name = $scope.attribute.value[index].name;
         $scope.attr.description = $scope.attribute.value[index].description;
         $scope.attr.from = $scope.attribute.value[index].from;
