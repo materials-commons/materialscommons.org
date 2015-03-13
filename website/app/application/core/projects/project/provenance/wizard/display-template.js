@@ -18,7 +18,7 @@ function displayTemplateDirectiveController($scope, watcher, $state, pubsub) {
     watcher.watch($scope, "useTemplate", function() {
         if ($scope.useTemplate) {
             pubsub.send("new-wizard.template.selected", $scope.template.id);
-            $state.go("projects.project.new-wizard.node-details");
+            $state.go("projects.project.new-wizard.create-process", {template_id: $scope.template.id});
         }
     });
 
