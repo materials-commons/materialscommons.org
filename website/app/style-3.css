@@ -6,7 +6,7 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
   /* background-color: #e9e9ea; */
-   background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 .body-color {
@@ -485,6 +485,7 @@ td.tag-width {
 ul.nav li a:hover,
 a:focus {
   font-weight: normal;
+  background-color: darkgray;
 }
 
 /*.navbar-custom .icon-bar {*/
@@ -1735,15 +1736,20 @@ label {
 .tool-inactive {
   color: #8e8e8e;
 }
+
 .taskbar.nav-tabs > li.active > a.tool-active, .taskbar.nav-tabs > li.active > a:hover.tool-active, .taskbar.nav-tabs > li.active > a:focus.tool-active {
   border-bottom: 3px solid #e26a6a;
   color: #e26a6a;
 }
 
+.taskbar {
+  border-bottom: none;
+}
+
 /*.tool-active {*/
-  /*color: white;*/
-  /*opacity: .85;*/
-  /*border-bottom: ;*/
+/*color: white;*/
+/*opacity: .85;*/
+/*border-bottom: ;*/
 /*}*/
 
 .tab-active {
@@ -2240,4 +2246,26 @@ input[type="checkbox"]:focus {
 
 textarea.no-resize {
   resize: none;
+}
+
+.alternative_cls {
+  overflow-y: auto;
+  height: 300px;
+}
+
+.alternative_cls:nth-child(odd) {
+  background-color: #d3d3d3;
+}
+
+.sidebar-wrapper {
+  border-right: 1px solid #d3d3d3;
+  height: 550px;
+  margin-top: -5px;
+  overflow-y: auto;
+  transition: all 0.5s ease 0s;
+  z-index: 1000;
+  overflow-y: auto;
+}
+.main-wrapper{
+  margin-left: -300px;
 }
