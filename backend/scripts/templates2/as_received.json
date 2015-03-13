@@ -7,6 +7,7 @@
     "sections": [
         {
             "name": "Process Overview",
+            "apply": "process",
             "categories":[
                 {
                     "category": "Default",
@@ -38,7 +39,21 @@
                             "default_value": "",
                             "required": true,
                             "apply": ""
-                        },
+                        }
+                    ],
+                    "additional_attributes": []
+                }
+            ]
+        },
+
+        {
+            "name": "Process Files",
+            "apply": "files",
+            "categories": [
+                {
+                    "category": "Files",
+                    "custom_controls": true,
+                    "attributes":[
                         {
                             "name": "Files",
                             "description": "Files you would like to see when viewing this process",
@@ -53,14 +68,14 @@
                             "required": false,
                             "apply": ""
                         }
-                    ],
-                    "additional_attributes": []
+                    ]
                 }
             ]
         },
 
         {
-            "name": "Samples",
+            "name": "Process Samples",
+            "apply": "sample",
             "categories": [
                 {
                     "category": "Samples",
@@ -78,8 +93,7 @@
                             "value": [],
                             "value_choice": "",
                             "default_value": "",
-                            "required": true,
-                            "apply": "create-sample"
+                            "required": true
                         }
                     ],
                     "additional_attributes": []
