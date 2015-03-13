@@ -1,1 +1,137 @@
-<h4>Reviews</h4>
+<div><br>
+
+    <div class="row">
+        <div class="col-xs-3">
+            <button class="btn btn-info">Create</button>
+        </div>
+        <div class="col-xs-4 pull-right">
+            <div class="form-group has-feedback">
+                <input style="padding-left: 35px;" ng-model="searchInput" placeholder="Search Reviews..."
+                       class="form-control">
+                <span style="left: 0;padding-left: 10px;" class="fa fa-fw fa-search form-control-feedback"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="border: 1px solid #757575; height: 600px;display: block;">
+        <div class="row" style="height:50px; background-color: #EFEFEF;border-bottom: 1px solid #d3d3d3">
+            <div class="col-xs-1" style="padding-top: 12px;color:#757575">
+                <b><a>All Reviews</a></b>
+            </div>
+            <div class="col-xs-1" style="padding-top: 12px;color:#757575">
+                <b>My Reviews</b>
+            </div>
+            <div class="col-xs-1" style="padding-top: 12px;color:#757575">
+                <b>Closed Reviews</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-3 sidebar-wrapper">
+                <ul class="list-group" style="margin-left: -10px; margin-right: -10px;">
+                    <li class="list-group-item">
+                        <span class="pull-right" style="color: gray;"><i  class="fa fa-fw fa-comments-o"></i> 4 </span>
+                        <i class="fa fa-fw fa fa-circle" style="color: green;"></i>abc review   <span style="color: gray; padding-left: 8px;">Fri, Dec19, 2014</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right"><i class="fa fa-fw fa-comments-o"></i> 3 </span>
+                        <i class="fa fa-fw fa fa-circle" style="color: green;"></i>abc 123
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right"><i class="fa fa-fw fa-comments-o"></i> 2</span>
+                        <i class="fa fa-fw fa fa-minus-circle" style="color: red;"></i>defg454354
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right"><i class="fa fa-fw fa-comments-o"></i> 4 </span>
+                        <i class="fa fa-fw fa fa-circle" style="color: green;"></i>abc review git
+                    </li>
+
+                </ul>
+            </div>
+            <div style="overflow-y: auto;max-height: 500px;">
+
+                <div class="col-xs-9">
+                    <div class="row">
+                        <div class="col-xs-4 col-xs-offset-1">
+                            Requested by: bpuchala@umich.edu
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="row ">
+                        <div class="col-xs-4 col-xs-offset-1">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <i class="fa fa-fw fa-user"></i><b>Assigned to:</b>
+                                </li>
+                                <li class="list-group-item">
+                                    jfadams@umich.edu
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-1">
+
+                        </div>
+                        <div class="col-xs-4">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <i class="fa fa-fw fa-paperclip"></i><b>Attachments:</b>
+                                </li>
+                                <li class="list-group-item">
+                                    T5
+                                </li>
+                                <li class="list-group-item">
+                                    T5 Round Bar Fatigue Sample
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-8 col-xs-offset-1">
+                            <i class="fa fa-fw fa-comments-o"></i> <b>Comments</b><br><br>
+
+                            <div class="row">
+                                <i class="fa fa-fw fa-user"></i> gtarcea@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span>
+                                <br><br>
+
+                                <div class="row"
+                                     style="background-color: white;padding: 10px;border: 1px solid #d3d3d3;">
+                                    This is a test comment.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <i class="fa fa-fw fa-user"></i> huaying@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span><br><br>
+
+                                <div class="row"
+                                     style="background-color: white;padding: 10px;border: 1px solid #d3d3d3;">
+                                    This is a test comment.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <i class="fa fa-fw fa-user"></i> huaying@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span><br><br>
+
+                                <div class="row"
+                                     style="background-color: white;padding: 10px;border: 1px solid #d3d3d3;">
+                                    This is a test comment.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <i class="fa fa-fw fa-user"></i> tammasr@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span>
+                                <br><br>
+
+                                <div class="row">
+                                    <textarea placeholder="Add comment..." class="form-control"
+                                              ng-model="model.comment"></textarea>
+                                    <br>
+                                    <button class="btn btn-success">Comment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

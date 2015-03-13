@@ -1,7 +1,18 @@
+<div class="row">
+    <div class="col-xs-3">
+        <div class="pull-left">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a
+                        ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}"
+                        ng-click="openPanel('calendar')" title="Event Calendar">
+                    <i class="fa fa-fw fa-1x fa-calendar"></i>
+                </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 <div>
-    <!--<div class="row" ng-show="showPanel('settings')" style="padding-left: 15px">-->
-        <!--<project-settings project="project"></project-settings>-->
-    <!--</div>-->
     <div class="row" style="padding-left: 15px">
         <div ui-view></div>
     </div>
@@ -18,28 +29,6 @@
             <div home-reviews project="project"></div>
             <div home-notes project="project"></div>
         </div>
-        <!--<div ng-show="!isColumnActive('column1')">-->
-        <!--<div ng-class="{'col-xs-6': !isExpandedInColumn(column1), 'col-xs-12': isExpandedInColumn(column1)}"-->
-        <!--ng-show="!isExpandedInColumn(column2)">-->
-        <!--<div class="row" ng-if="showPanel('calendar')">-->
-        <!--<div home-calendar project="project"></div>-->
-        <!--</div>-->
-        <!--<div ng-repeat="panel in column1">-->
-        <!--<display-panel split-icon="false"  panel-name="panel" project="project"></display-panel>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div ng-show="!isColumnActive('column2')">-->
-        <!--<div ng-class="{'col-xs-6': !isExpandedInColumn(column2), 'col-xs-12': isExpandedInColumn(column2)}"-->
-        <!--ng-show="!isExpandedInColumn(column1)">-->
-        <!--<div ng-repeat="panel in column2">-->
-        <!--<display-panel panel-name="panel" project="project"></display-panel>-->
-        <!--</div>-->
-        <!--<div ng-show="showPanel('emptyboard')" class="row">-->
-        <!--<div empty="true" split-icon="false" home-sideboard project="project"></div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
     </div>
 
 </div>
