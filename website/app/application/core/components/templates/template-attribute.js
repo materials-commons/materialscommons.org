@@ -81,6 +81,9 @@ function templateAttributeHistogramDirectiveController($scope) {
 
     $scope.histogramConfig = {
         options: {
+            title: {
+                text: $scope.attribute.name
+            },
             chart: {
                 renderTo: "container",
                 type: "column"
