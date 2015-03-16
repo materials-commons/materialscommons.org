@@ -1,33 +1,22 @@
 <div class="row" style="background-color: #A9A9A9; margin-bottom: 0px">
     <div class="col-xs-3">
-
-            <div class="list-group sidebar-list" style="margin-left: 10px;">
-                <div class="list-group-item sidebar-action" style="padding-top: 10px;">
-                    <i class="white fa fa-fw fa-briefcase"></i> Projects
-                    <span class="white badge" style="float: none;">{{projects.length}}</span>
-                    <a style="color: white; padding-left: 5px;" ng-click="showProjects = !showProjects">
-                        <i class="fa"
-                           ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
-                        {{project.name | truncate: 40: '...'}}
-                    </a>
-                    <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
-                        <a class="list-group-item"
-                           data-toggle="modal"
-                           data-target="#newProject">
-                            <i class="fa fa-fw fa-plus"></i> New Project
-                        </a>
-                        <hr class="carved"/>
-                        <a class="list-group-item"
-                           ng-repeat="p in projects"
-                           ng-click="setProject(p)">
-                            {{p.name}}
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <ul style="padding-left: 5px;" class="taskbar nav nav-tabs">
+            <li class="dropdown">
+                <a  title="{{project.name}}" class="dropdown-toggle" data-toggle="dropdown" style="color: white; padding-left: 5px;">
+                    <i class="white fa fa-fw fa-briefcase"></i>
+                    {{project.name | truncate: 14: '...'}} <span class="white badge" style="float: none;">{{projects.length}}</span> <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu projects-dropdown nav-dropdown-scrollbar" role="menu">
+                    <li data-toggle="modal"
+                        data-target="#newProject"><a><i class="fa fa-fw fa-plus"></i>New Project</a></li>
+                    <li class="divider"></li>
+                    <li  ng-repeat="p in projects"
+                         ng-class="{'active-project': p.id === project.id}" ng-click="setProject(p)"><a >{{p.name}}</a></li>
+                </ul>
+        </ul>
     </div>
-    <div class="col-xs-6">
-        <div style="padding-left: 80px;">
+    <div class="col-xs-7">
+        <div style="padding-left: 30px;">
             <ul class="taskbar nav nav-tabs" role="tablist">
                 <li role="presentation" ng-class="{'active': activePage === 'home'}"><a
                         ng-class="{'task-item-active-home': activePage === 'home'}"
@@ -70,7 +59,7 @@
             </ul>
         </div>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-2">
         <div>
             <ul class="taskbar nav nav-tabs" role="tablist">
                 <li role="presentation" ng-class="{'active': activePage === 'access'}"><a
@@ -96,3 +85,4 @@
         </div>
     </div>
 </div>
+

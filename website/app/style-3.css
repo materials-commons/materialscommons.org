@@ -487,6 +487,10 @@ a:focus {
   font-weight: normal;
   background-color: darkgray;
 }
+.active-project{
+  background-color: grey;
+  font-weight: bold;
+}
 
 /*.navbar-custom .icon-bar {*/
 /*background-color: #0C5C86;*/
@@ -540,6 +544,11 @@ a:focus {
 
 }
 
+.projects-dorpdown {
+  min-width: 300px;
+  font-size: 13px;
+  color: darkgray;
+}
 /*For the tip in the dropdown menu*/
 .navbar .nav > li > .dropdown-menu:before {
   border-bottom: 7px solid rgba(0, 0, 0, 0.2);
