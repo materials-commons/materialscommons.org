@@ -278,7 +278,8 @@ function templateAttributeNumberDirective() {
         replace: true,
         scope: {
             attribute: "=attribute",
-            edit: "=edit"
+            edit: "=edit",
+            form: "=form"
         },
         controller: "templateAttributeNumberDirectiveController",
         templateUrl: "application/core/components/templates/partials/attributes/template-attribute-number.html"

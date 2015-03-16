@@ -16,7 +16,9 @@ function showTemplateDetailsDirective(RecursionHelper) {
     };
 }
 Application.Controllers.controller("showTemplateDetailsDirectiveController",
-                                   ["$scope", showTemplateDetailsDirectiveController]);
+                                   ["$scope", "templateConstructer",
+                                    showTemplateDetailsDirectiveController]);
 
-function showTemplateDetailsDirectiveController($scope) {
+function showTemplateDetailsDirectiveController($scope, templateConstructer) {
+    $scope.template = templateConstructer.constructTemplate($scope.template);
 }

@@ -21,5 +21,4 @@ function displayTemplateDirectiveController($scope, watcher, $state, pubsub) {
             $state.go("projects.project.new-wizard.create-process", {template_id: $scope.template.id});
         }
     });
-
 }
