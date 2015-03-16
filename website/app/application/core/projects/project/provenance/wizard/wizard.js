@@ -20,7 +20,7 @@ function provWizardController($scope, $timeout, $state, pubsub, templates) {
     ];
 
     var nodes = [
-        {id: 1, label: "My Sample", level: 0, group: "sample"},
+        {id: 1, label: "Heat Treatment", level: 0, group: "process"},
         {id: 2, label: "Section", level: 1, group: "process"},
         {id: 3, label: "SEM", level: 1, group: "process"},
         {id: 4, label: "SEM Analysis", level: 2, group: "process"}
