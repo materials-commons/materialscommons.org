@@ -96,6 +96,8 @@ function showTemplateSectionDirectiveController($scope, pubsub, processCheck) {
         category: ""
     };
 
+    $scope.section.categories[0].showDetails = true;
+
     pubsub.waitOn($scope, "process.section.done", function() {
         if (processCheck.sectionRequiredDone($scope.section)) {
             pubsub.send("process.done", $scope.section.name);
