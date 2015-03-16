@@ -900,6 +900,11 @@ h4, .h4, h5, .h5, h6, .h6 {
   color: #7B7B7B;
   font-size: 16px;
 }
+.taskbar.small-icon.nav.nav-tabs > li > a {
+  color: #7B7B7B;
+  font-size: 16px;
+  padding: 10px 5px;
+}
 
 .taskbar.nav-tabs > li.active > a, .taskbar.nav-tabs > li.active > a:hover, .taskbar.nav-tabs > li.active > a:focus {
   background-color: transparent;
@@ -934,6 +939,11 @@ h4, .h4, h5, .h5, h6, .h6 {
 .taskbar.nav-tabs > li.active > a.task-item-active-home, .taskbar.nav-tabs > li.active > a:hover.task-item-active-home, .taskbar.nav-tabs > li.active > a:focus.task-item-active-home {
   border-bottom: 3px solid #757575;
   color: #757575;
+}
+.taskbar.small-icon.nav-tabs > li.active > a.task-item-active-home, .taskbar.small-icon.nav-tabs > li.active > a:hover.task-item-active-home, .taskbar.small-icon.nav-tabs > li.active > a:focus.task-item-active-home {
+  border-bottom: 3px solid #757575;
+  color: #757575;
+  padding: 10px 5px;
 }
 
 .sidebar-list {
