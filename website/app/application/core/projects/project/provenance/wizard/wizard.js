@@ -23,9 +23,7 @@ function provWizardController($scope, $timeout, $state, pubsub, templates) {
         {id: 1, label: "My Sample", level: 0, group: "sample"},
         {id: 2, label: "Section", level: 1, group: "process"},
         {id: 3, label: "SEM", level: 1, group: "process"},
-        {id: 4, label: "My Sample Cut 1", level: 2, group: "sample"},
-        {id: 5, label: "My Sample Cut 2", level: 2, group: "sample"},
-        {id: 6, label: "SEM Analysis", level: 2, group: "process"}
+        {id: 4, label: "SEM Analysis", level: 2, group: "process"}
     ];
 
     var savedNodes = nodes;
@@ -36,10 +34,7 @@ function provWizardController($scope, $timeout, $state, pubsub, templates) {
     var edges = [
         {id: 1, from: 1, to: 2},
         {id: 2, from: 1, to: 3},
-        {id: 3, from: 2, to: 4},
-        {id: 4, from: 2, to: 5},
-        {id: 5, from: 3, to: 6},
-        {id: 6, from: 2, to: 6}
+        {id: 3, from: 3, to: 4},
     ];
 
     var height = window.innerHeight || document.body.clientHeight;

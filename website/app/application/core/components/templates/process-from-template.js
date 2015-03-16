@@ -4,7 +4,8 @@ function processFromTemplateDirective() {
         restrict: "E",
         scope: {
             template: "=template",
-            edit: "=edit"
+            edit: "=edit",
+            whenDone: "@whenDone"
         },
         controller: "processFromTemplateDirectiveController2",
         templateUrl: "application/core/components/templates/partials/process-from-template.html"
@@ -13,14 +14,12 @@ function processFromTemplateDirective() {
 
 Application.Controllers.controller("processFromTemplateDirectiveController2",
                                    ["$scope", "pubsub", "processCheck", "$state",
+                                    "templateConstructer",
                                     processFromTemplateDirectiveController2]);
-function processFromTemplateDirectiveController2($scope, pubsub, processCheck, $state) {
-
+function processFromTemplateDirectiveController2($scope, pubsub, processCheck,
+                                                 $state, templateConstructer) {
+    $scope.template = templateConstructer.constructTemplate($scope.template);
     setupTemplateSectionsState();
-
-    $scope.done = function() {
-        $state.go("projects.project.home");
-    };
 
     $scope.allRequiredDone = false;
 
@@ -33,20 +32,10 @@ function processFromTemplateDirectiveController2($scope, pubsub, processCheck, $
 
     // view methods
     $scope.isRequired = isRequired;
+    $scope.done = done;
+    $scope.cancel = cancel;
 
     ////////////////////////////
-
-    function allRequiredSectionsDone() {
-        var foundNotDone = _.some($scope.status.sections, function(section) {
-                                      return !section.isDone;
-                                  });
-        return !foundNotDone;
-    }
-
-    function isRequired(sectionName) {
-        var sectionStatus = $scope.status.sections[sectionName];
-        return sectionStatus.isDone ? false : sectionStatus.isRequired;
-    }
 
     function setupTemplateSectionsState() {
         $scope.status = {
@@ -61,6 +50,28 @@ function processFromTemplateDirectiveController2($scope, pubsub, processCheck, $
                 isRequired: processCheck.sectionHasRequired(section)
             };
         }
+    }
+
+    function done() {
+        var gotoState = $scope.whenDone ? $scope.whenDone : "projects.project.home";
+        $state.go(gotoState);
+    }
+
+    function cancel() {
+        var gotoState = $scope.whenDone ? $scope.whenDone : "projects.project.home";
+        $state.go(gotoState);
+    }
+
+    function allRequiredSectionsDone() {
+        var foundNotDone = _.some($scope.status.sections, function(section) {
+                                      return !section.isDone;
+                                  });
+        return !foundNotDone;
+    }
+
+    function isRequired(sectionName) {
+        var sectionStatus = $scope.status.sections[sectionName];
+        return sectionStatus.isDone ? false : sectionStatus.isRequired;
     }
 }
 

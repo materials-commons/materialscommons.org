@@ -7,8 +7,8 @@
             <div class="checkbox checkbox-inline checkbox-primary"
                  style="margin-top: 0px">
                 <input type="checkbox"
-                       ng-model="useTemplate" id="abc123">
-                <label for="abc123"></label>
+                       ng-model="useTemplate" id="{{template.id}}">
+                <label for="{{template.id}}"></label>
             </div>
             {{template.name | truncate:35: '...':true}}
         </span>
