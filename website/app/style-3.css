@@ -1744,7 +1744,7 @@ label {
   background-color: #ffffff;
   color: #800000;
   position: relative;
-  top: -15px;
+  top: -13px;
   left: -12px;
 }
 
@@ -1754,6 +1754,10 @@ label {
 
 .tool-inactive {
   color: #8e8e8e;
+}
+
+.taskbar.nav-tabs > li.active {
+  margin-bottom: 0;
 }
 
 .taskbar.nav-tabs > li.active > a.tool-active, .taskbar.nav-tabs > li.active > a:hover.tool-active, .taskbar.nav-tabs > li.active > a:focus.tool-active {
