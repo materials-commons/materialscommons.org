@@ -73,11 +73,29 @@ function templateAttributeHistogramDirective() {
     };
 }
 
+Application.Controllers.controller("ModalAddMeasurements", ["$scope", "$modalInstance", ModalAddMeasurements]);
+function ModalAddMeasurements($scope, $modalInstance) {
+    $scope.close = function() {
+        $modalInstance.close('close clicked');
+    };
+}
+
 Application.Controllers.controller("templateAttributeHistogramDirectiveController",
-                                   ["$scope", templateAttributeHistogramDirectiveController]);
-function templateAttributeHistogramDirectiveController($scope) {
+                                   ["$scope", "$modal", templateAttributeHistogramDirectiveController]);
+function templateAttributeHistogramDirectiveController($scope, $modal) {
     var categories = [];
     var seriesData = [];
+
+    $scope.addMeasurement = function() {
+        var modal = $modal.open({
+            templateUrl: "application/core/projects/project/provenance/wizard/add-measurements.html",
+            controller: "ModalAddMeasurements",
+            size: 'lg'
+        });
+        modal.result.then(function(result) {
+            console.log("from modal:", result);
+        });
+    };
 
     $scope.histogramConfig = {
         options: {
