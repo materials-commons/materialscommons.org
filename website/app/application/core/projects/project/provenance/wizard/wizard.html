@@ -1,22 +1,37 @@
 <div>
     <div class="col-xs-12">
-        <div class="col-xs-5">
+        <div ng-if="!control.graphHidden" class="col-xs-5">
             <div class="row">
-                <button ng-click="addProcess()" class="btn btn-success" ng-show="selectedNode !== null || selectedEdge !== null">
-                    Add Process
-                </button>
-                <button ng-click="focusOnNode()" class="btn btn-success" ng-show="selectedNode != null">
-                    Focus On Node
-                </button>
-                <button ng-click="removeFocusOnNode()" class="btn btn-success">
-                    Remove Focus
-                </button>
-                <div style="border: 1px solid black; margin-top: 4px">
-                    <vis-network ng-model="data" on-select="onSelect" options="options"></vis-network>
+                <div ng-if="!control.graphHidden">
+                    <button ng-click="addProcess()" class="btn btn-success" ng-show="selectedNode !== null || selectedEdge !== null">
+                        Add Process
+                    </button>
+                    <button ng-click="focusOnNode()" class="btn btn-success" ng-show="selectedNode != null">
+                        Focus On Node
+                    </button>
+                    <button ng-click="removeFocusOnNode()" class="btn btn-success">
+                        Remove Focus
+                    </button>
+                    <a class="pull-right"
+                       ng-click="control.graphHidden = !control.graphHidden">
+                        Hide <i class="fa fa-fw fa-chevron-left"></i>
+                    </a>
+                    <div style="border: 1px solid black; margin-top: 4px">
+                        <vis-network ng-model="data" on-select="onSelect" options="options"></vis-network>
+                    </div>
                 </div>
+
             </div>
         </div>
-        <div class="col-xs-7">
+        <div ng-if="control.graphHidden" class="col-xs-1">
+            <div class="row">
+                <a class="pull-right"
+                   ng-click="control.graphHidden = !control.graphHidden">
+                    Show graph <i class="fa fa-fw fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+        <div ng-class="{'col-xs-7': !control.graphHidden, 'col-xs-11': control.graphHidden}">
             <div ui-view></div>
         </div>
     </div>

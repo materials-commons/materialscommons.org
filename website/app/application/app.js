@@ -190,13 +190,43 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/provenance/wizard/create.html",
             controller: "createProvenanceFromTemplate",
             resolve: {
-                template: ["templates", "$stateParams",
-                           function(templates, $stateParams) {
+                template: ["templates", "$stateParams", "templateConstructer",
+                           function(templates, $stateParams, templateConstructer) {
                                var index = _.indexOf(templates, function(template) {
                                    return template.id === $stateParams.template_id;
                                });
-                               return index === -1 ? {} : templates[index];
+                               return index === -1 ? {} : templateConstructer.constructTemplate(templates[index]);
                            }]
+            }
+        })
+        .state("projects.project.new-wizard.create-process.edit", {
+            url: "/edit/:section/:category/:attribute",
+            templateUrl: "application/core/projects/project/provenance/wizard/edit.html",
+            controller: "createProvenanceEdit",
+            resolve: {
+                section: ["template", "$stateParams", function(template, $stateParams) {
+                    var index = _.indexOf(template.sections, function(section) {
+                        return section.name === $stateParams.section;
+                    });
+                    return template.sections[index];
+                }],
+                category: ["section", "$stateParams", function(section, $stateParams) {
+                    var index = _.indexOf(section.categories, function(category) {
+                        return category.category == $stateParams.category;
+                    });
+                    return section.categories[index];
+                }],
+
+                attribute: ["category", "$stateParams", function(category, $stateParams) {
+                    if ($stateParams.attribute) {
+                        var index = _.indexOf(category.attributes, function(attribute) {
+                            return attribute.attribute == $stateParams.attribute;
+                        });
+                        return category.attributes[index];
+                    } else {
+                        return false;
+                    }
+                }]
             }
         })
         .state("projects.project.provenance", {

@@ -6,7 +6,7 @@
             <i class="fa fa-fw"
                ng-class="{'fa-asterisk text-danger': isRequired() && !control.isDone, 'fa-check-circle text-success': control.isDone}">
             </i>
-            {{category.category}}
+            {{::category.category}}
             <i class="fa fa-fw"
                ng-class="{'fa-caret-right': !category.showDetails, 'fa-caret-down': category.showDetails}">
             </i>

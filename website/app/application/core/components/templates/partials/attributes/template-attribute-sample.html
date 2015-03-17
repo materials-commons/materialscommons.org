@@ -76,13 +76,13 @@
                      class="panel panel-default">
                     <div class="panel-body">
                         <span class="pull-left"
-                              style="font-size: 12px; font-weight: 700; color: #959595; letter-spacing:1px"> {{sample.name}}</span>
+                              style="font-size: 12px; font-weight: 700; color: #959595; letter-spacing:1px"> {{::sample.name}}</span>
                         <br>
                         <dl class="dl-horizontal">
                             <dt>Description</dt>
-                            <dd>{{sample.description}}</dd>
+                            <dd>{{::sample.description}}</dd>
                             <dt>From</dt>
-                            <dd>{{sample.from}}</dd>
+                            <dd>{{::sample.from}}</dd>
                         </dl>
                         <a ng-click="editEntry($index)">edit</done>
                     </div>

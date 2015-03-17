@@ -3,6 +3,10 @@ Application.Controllers.controller("provWizardController",
                                     provWizardController]);
 
 function provWizardController($scope, $timeout, $state, pubsub, templates) {
+    $scope.control = {
+        graphHidden: false
+    };
+
     $scope.detailsActive = true;
     $scope.templatesActive = false;
     $scope.templates = [

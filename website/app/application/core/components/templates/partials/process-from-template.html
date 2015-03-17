@@ -1,30 +1,43 @@
 <div>
-    <h3>Process: {{template.name}} <small>({{template.description}})</small></h3>
-    <p>
-        <strong>
-            Please fill in the <i class="fa fa-fw fa-asterisk text-danger"></i>required sections. A <i class="fa fa-fw fa-check-circle text-success"></i>indicates the section has been completed.
-        </strong>
-    </p>
-    <accordion close-others="true" class="process-steps">
-        <accordion-group ng-repeat="section in template.sections"
-                         is-open="status.sections[section.name].isOpen">
-            <accordion-heading>
-                <h4 style="color: #555555">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-check-circle text-success': status.sections[section.name].isDone, 'fa-asterisk text-danger': isRequired(section.name)}">
-                    </i>
-                    {{section.name}}
-                    <i class="pull-right fa fa-fw"
-                       ng-class="{'fa-chevron-right': !status.sections[section.name].isOpen, 'fa-chevron-down': status.sections[section.name].isOpen}"></i>
-                </h4>
-            </accordion-heading>
-            <show-template-section section="section"></show-template-section>
-        </accordion-group>
-    </accordion>
-    <button class="btn-success btn"
-            ng-click="done()"
-            ng-disabled="!allRequiredDone">
-        Done
-    </button>
-    <button class="btn-danger btn" ng-click="cancel()">Cancel</button>
+    <div class="col-xs-4" style="margin-top:34px">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:#e0e0e0; opacity:1">
+                <h4>{{::template.name}}</h4>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    <li ng-repeat="section in template.sections">
+                        <strong>{{section.name}}</strong>
+                        <ul class="list-unstyled" style="padding-left:10px">
+                            <li ng-repeat="category in section.categories">
+                                <strong><a>{{category.category}}</a></strong>
+                                <ul class="list-unstyled" style="padding-left:10px">
+                                    <li ng-repeat="attribute in category.attributes">
+                                        <a>
+                                            <i class="fa fa-fw"
+                                               ng-class="{'fa-asterisk': attribute.required}">
+                                            </i>
+                                            {{attribute.name}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-8" style="padding-top:34px">
+        <div class="panel panel-default">
+            <div class="panel-heading"
+                 style="background-color:#e0e0e0; opacity:1">
+                <h4>Thing we clicked on here</h4>
+            </div>
+            <div class="panel-body">
+                Attribute here
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
 </div>

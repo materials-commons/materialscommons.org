@@ -2239,6 +2239,11 @@ input[type="checkbox"]:focus {
   color: white;
 }
 
+.panel-heading-grey {
+  background-color: #e0e0e0;
+  opacity: 1;
+}
+
 .process-steps div div.panel-default div.panel-heading {
   background-color: #e0e0e0;
   opacity: 1;
