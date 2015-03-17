@@ -6,7 +6,7 @@
             </i>
             <i style="font-size: 10px;" class="fa fa-fw"
                ng-class="{'fa-asterisk text-danger': attribute.required && !attribute.done, 'fa-check-circle text-success': attribute.done}"></i>
-            {{attribute.name | truncate:35: '...':true}}
+            {{::attribute.name | truncate:35: '...':true}}
         </span>
     </div>
     <div ng-if="attribute.showDetails">

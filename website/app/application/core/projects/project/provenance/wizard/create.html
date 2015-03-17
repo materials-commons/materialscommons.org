@@ -1,4 +1,36 @@
 <div>
-    <process-from-template template="template" edit="true" when-done="projects.project.new-wizard">
-    </process-from-template>
+    <div class="col-xs-4" style="margin-top:34px">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:#e0e0e0; opacity:1">
+                <h4>{{::template.name}}</h4>
+            </div>
+            <div class="panel-body">
+                <input type="text" ng-model="search.name" class="col-xs-12"
+                       placeholder="Search properties...">
+                <ul class="list-unstyled">
+                    <li ng-repeat="section in template.sections">
+                        <strong>{{section.name}}</strong>
+                        <ul class="list-unstyled" style="padding-left:10px">
+                            <li ng-repeat="category in section.categories">
+                                <strong><a ui-sref=".edit({section: section.name, category: category.category, attribute: ''})">{{category.category}}</a></strong>
+                                <ul class="list-unstyled" style="padding-left:10px">
+                                    <li ng-repeat="attribute in category.attributes | filter:search">
+                                        <a ui-sref=".edit({section: section.name, category: category.category, attribute: attribute.attribute})">
+                                            <i class="fa fa-fw"
+                                               ng-class="{'fa-asterisk': attribute.required}">
+                                            </i>
+                                            {{attribute.name}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-8" style="padding-top:34px">
+        <div ui-view></div>
+    </div>
 </div>
