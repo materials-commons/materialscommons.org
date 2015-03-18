@@ -1,6 +1,7 @@
 <div>
     <div ui-draggable="true" drag="process">
-        <span ng-click="process.showDetails = !process.showDetails" style="cursor: pointer">
+        <span ng-click="gotoProcess()" style="cursor: pointer">
+            <!-- ng-click="process.showDetails = !process.showDetails" style="cursor: pointer"> -->
             <i class="fa"
                ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}">
             </i>
