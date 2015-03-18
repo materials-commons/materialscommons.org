@@ -6,7 +6,11 @@ function provWizardController($scope, $timeout, $state, pubsub, templates) {
     $scope.control = {
         graphHidden: false
     };
-
+    $state.go("projects.project.new-wizard.node-details");
+    $scope.onLoaded = function(network) {
+        network.selectNodes([1], true);
+        $scope.network = network;
+    };
     $scope.detailsActive = true;
     $scope.templatesActive = false;
     $scope.templates = [
@@ -24,7 +28,7 @@ function provWizardController($scope, $timeout, $state, pubsub, templates) {
     ];
 
     var nodes = [
-        {id: 1, label: "Heat Treatment", level: 0, group: "process"},
+        {id: 1, label: "Heat Treatment", level: 0, group: "selected"},
         {id: 2, label: "Section", level: 1, group: "process"},
         {id: 3, label: "SEM", level: 1, group: "process"},
         {id: 4, label: "SEM Analysis", level: 2, group: "process"}
@@ -65,6 +69,10 @@ function provWizardController($scope, $timeout, $state, pubsub, templates) {
             },
             process: {
                 shape: "box"
+            },
+            selected: {
+                shape: "box",
+                style: "dash-line"
             }
         }
     };
@@ -141,6 +149,10 @@ function provWizardController($scope, $timeout, $state, pubsub, templates) {
                 to: lastNodeID
             });
             $scope.selectedNode = null;
+
+        });
+        $scope.network.on('stabilized', function() {
+            $scope.network.selectNodes([lastNodeID], true);
         });
     }
 
