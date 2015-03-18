@@ -11,14 +11,14 @@ function displayTemplateDirective() {
     };
 }
 Application.Controllers.controller("displayTemplateDirectiveController",
-                                   ["$scope", "watcher", "$state", "pubsub",
+                                   ["$scope", "$state", "pubsub",
                                     displayTemplateDirectiveController]);
 
-function displayTemplateDirectiveController($scope, watcher, $state, pubsub) {
-    watcher.watch($scope, "useTemplate", function() {
+function displayTemplateDirectiveController($scope, $state, pubsub) {
+    $scope.templateChosen = function() {
         if ($scope.useTemplate) {
             pubsub.send("new-wizard.template.selected", $scope.template.id);
             $state.go("projects.project.new-wizard.create-process", {template_id: $scope.template.id});
         }
-    });
+    };
 }
