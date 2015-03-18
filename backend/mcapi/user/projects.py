@@ -91,6 +91,14 @@ def add_processes(projects_by_id, project_ids):
     processes = []
     # for project_id in project_ids:
     #     processes.extend(process.get_processes(project_id))
+    birthtime = r.now().to_json().run(g.conn)
+    for project_id in project_ids:
+        processes.append({
+            "name": "Heat Treatment",
+            "id": "abc123",
+            "birthtime": json.loads(birthtime),
+            "project_id": project_id
+        })
     add_computed_items(projects_by_id, processes, 'project_id', 'processes')
 
 

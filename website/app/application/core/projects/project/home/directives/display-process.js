@@ -12,15 +12,19 @@ function displayProcessDirective() {
     };
 }
 Application.Controllers.controller("displayProcessDirectiveController",
-                                   ["$scope", "sideboard", "current",
+                                   ["$scope", "sideboard", "current", "$state",
                                     displayProcessDirectiveController]);
 
-function displayProcessDirectiveController($scope, sideboard, current) {
+function displayProcessDirectiveController($scope, sideboard, current, $state) {
     $scope.addToSideboard = function(process, event) {
         sideboard.handleFromEvent(current.projectID(), process, event, 'sideboard');
     };
 
     $scope.remove = function (process, event) {
         sideboard.handleFromEvent(current.projectID(), process, event, 'sideboard');
+    };
+
+    $scope.gotoProcess = function() {
+        $state.go("projects.project.new-wizard");
     };
 }
