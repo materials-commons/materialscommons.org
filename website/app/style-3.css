@@ -896,6 +896,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 .taskbar.nav.nav-tabs > li > a {
   color: #ffffff;
   font-size: 16px;
+  border-radius: 0 0 0 0;
 }
 
 .taskbar.nav-tabs > li.active > a, .taskbar.nav-tabs > li.active > a:hover, .taskbar.nav-tabs > li.active > a:focus {
@@ -1713,25 +1714,6 @@ label {
 .tool-inactive {
   color: #8e8e8e;
 }
-
-.taskbar.nav-tabs > li.active {
-  margin-bottom: 0;
-}
-
-.taskbar.nav-tabs > li.active > a.tool-active, .taskbar.nav-tabs > li.active > a:hover.tool-active, .taskbar.nav-tabs > li.active > a:focus.tool-active {
-  border-bottom: 3px solid #e26a6a;
-  color: #e26a6a;
-}
-
-.taskbar {
-  border-bottom: none;
-}
-
-/*.tool-active {*/
-/*color: white;*/
-/*opacity: .85;*/
-/*border-bottom: ;*/
-/*}*/
 
 .tab-active {
   color: white;
