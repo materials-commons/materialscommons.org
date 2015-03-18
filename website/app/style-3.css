@@ -893,6 +893,9 @@ h4, .h4, h5, .h5, h6, .h6 {
   z-index: 100;
 }
 
+.taskbar{
+  border-bottom: transparent;
+}
 .taskbar.nav.nav-tabs > li > a {
   color: #ffffff;
   font-size: 16px;
