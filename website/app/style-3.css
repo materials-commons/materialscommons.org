@@ -2229,3 +2229,13 @@ textarea.no-resize {
 .main-wrapper {
   margin-left: -300px;
 }
+.file-details{
+  border-top: 4px solid #4d90fe;
+}
+.file-details > a{
+  color: #000000;
+}
+.file-details > a:active{
+  font-weight: bold;
+  color: #000000;
+}
