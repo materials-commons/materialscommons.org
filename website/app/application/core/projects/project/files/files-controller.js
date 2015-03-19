@@ -3,7 +3,9 @@ Application.Controllers.controller("FilesController",
         "$filter", "pubsub", "mcfile", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
                          $filter, pubsub, mcfile) {
-
+    $scope.bk = {
+        content: 'details'
+    }
     pubsub.waitOn($scope, "activeFile.change", function () {
         getActiveFile();
     });
@@ -44,6 +46,8 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.fileSrc = function (file) {
         return mcfile.src(file.id);
     };
-
+    $scope.showContent = function(content){
+        $scope.bk.content = content;
+    };
 
 }
