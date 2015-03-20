@@ -2,6 +2,69 @@ Application.Controllers.controller("nodeDetailsController",
                                    ["$scope", "$timeout", nodeDetailsController]);
 
 function nodeDetailsController($scope, $timeout) {
+    $scope.hasSubvalues = function(attribute) {
+        console.log(attribute.value instanceof Array);
+        return attribute.value instanceof Array;
+    };
+
+    $scope.sections = [
+        {
+            name: "Overview",
+            attributes: [
+                {
+                    name: "Details",
+                    value: ""
+                },
+            ]
+        },
+        {
+            name: "Settings",
+            attributes: [
+                {
+                    name: "Device",
+                    value: ""
+                },
+                {
+                    name: "Files",
+                    value: []
+                },
+            ]
+        },
+        {
+            name: "Inputs",
+            attributes: [
+                {
+                    name: "Samples",
+                    value: ["sample1", "sample2"]
+                },
+                {
+                    name: "Files",
+                    value: ["file1", "file2"]
+                },
+                {
+                    name: "Measurements",
+                    value: ["measurement1", "measurement2"]
+                }
+            ]
+        },
+        {
+            name: "Outputs",
+            attributes: [
+                {
+                    name: "Samples",
+                    value: ["sample1", "sample2"]
+                },
+                {
+                    name: "Files",
+                    value: ["file1", "file2"]
+                },
+                {
+                    name: "Measurements",
+                    value: ["measurement1", "measurement2"]
+                }
+            ]
+        }
+    ];
     var data = [];
     var value = 0;
     for (var i = 0; i < 1000; i++) {
