@@ -6,7 +6,8 @@ function mcTreeDirective() {
         scope: {
             items: '=items',
             orderby: '=orderby',
-            matches: '=matches'
+            matches: '=matches',
+            checkBox: '='
         },
         replace: true,
         templateUrl: 'application/directives/mc-tree.html'
@@ -20,7 +21,8 @@ function mcTreeHeaderDirective() {
         restrict: "E",
         scope: {
             item: '=item',
-            showSideboard: "=showSideboard"
+            showSideboard: "=showSideboard",
+            checkBox: '='
         },
         controller: "mcTreeHeaderDirectiveController",
         replace: true,

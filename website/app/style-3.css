@@ -893,9 +893,10 @@ h4, .h4, h5, .h5, h6, .h6 {
   z-index: 100;
 }
 
-.taskbar{
+.taskbar {
   border-bottom: transparent;
 }
+
 .taskbar.nav.nav-tabs > li > a {
   color: #ffffff;
   font-size: 16px;
@@ -1010,13 +1011,13 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 /*.file-item {*/
-  /*background-color: #ffffff;*/
-  /*border-top: none;*/
-  /*border-bottom: none;*/
-  /*padding-left: 15px;*/
-  /*padding-top: 5px;*/
-  /*padding-bottom: 5px;*/
-  /*padding-right: 15px;*/
+/*background-color: #ffffff;*/
+/*border-top: none;*/
+/*border-bottom: none;*/
+/*padding-left: 15px;*/
+/*padding-top: 5px;*/
+/*padding-bottom: 5px;*/
+/*padding-right: 15px;*/
 /*}*/
 
 .add-item {
@@ -1710,7 +1711,6 @@ label {
   color: #8e8e8e;
 }
 
-
 .tab-active {
   color: white;
   font-style: normal;
@@ -2229,77 +2229,97 @@ textarea.no-resize {
 .main-wrapper {
   margin-left: -300px;
 }
-.file-details{
+
+.file-details {
   border-top: 4px solid #4d90fe;
 }
-.file-details > a{
+
+.file-details > a {
   color: #000000;
 }
-.file-details > a:active{
+
+.file-details > a:active {
   font-weight: bold;
   color: #000000;
 }
 
+.file-heading {
+  padding: 10px;
+  height: 50px;
+  background-color: #EFEFEF;
+  border-bottom: 1px solid #d3d3d3;
+  border-right: 1px solid #d3d3d3
+}
+
 .tree, .tree ul {
-  margin:0;
-  padding:0;
-  list-style:none
+  margin: 0;
+  padding: 0;
+  list-style: none
 }
+
 .tree ul {
-  margin-left:1em;
-  position:relative
+  margin-left: 1em;
+  position: relative
 }
+
 .tree ul ul {
-  margin-left:.5em
+  margin-left: .5em
 }
+
 .tree ul:before {
-  content:"";
-  display:block;
-  width:0;
-  position:absolute;
-  top:0;
-  bottom:0;
-  left:0;
-  border-left:1px solid
+  content: "";
+  display: block;
+  width: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 1px solid
 }
+
 .tree li {
-  margin:0;
-  padding:0 1em;
-  line-height:2em;
-  color:#369;
-  font-weight:700;
-  position:relative
+  margin: 0;
+  padding: 0 1em;
+  line-height: 2em;
+  color: #369;
+  font-weight: 700;
+  position: relative
 }
+
 .tree ul li:before {
-  content:"";
-  display:block;
-  width:10px;
-  height:0;
-  border-top:1px solid;
-  margin-top:-1px;
-  position:absolute;
-  top:1em;
-  left:0
+  content: "";
+  display: block;
+  width: 10px;
+  height: 0;
+  border-top: 1px solid;
+  margin-top: -1px;
+  position: absolute;
+  top: 1em;
+  left: 0
 }
+
 .tree ul li:last-child:before {
-  background:#fff;
-  height:auto;
-  top:1em;
-  bottom:0
+  background: #fff;
+  height: auto;
+  top: 1em;
+  bottom: 0
 }
+
 .indicator {
-  margin-right:5px;
+  margin-right: 5px;
 }
+
 .tree li a {
   text-decoration: none;
-  color:#369;
+  color: #369;
 }
+
 .tree li button, .tree li button:active, .tree li button:focus {
   text-decoration: none;
-  color:#369;
-  border:none;
-  background:transparent;
-  margin:0px 0px 0px 0px;
-  padding:0px 0px 0px 0px;
+  color: #369;
+  border: none;
+  background: transparent;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
   outline: 0;
 }

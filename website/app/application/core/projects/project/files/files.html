@@ -1,9 +1,7 @@
 <div class="row"><br>
 
     <div class="row">
-        <div class="col-xs-3">
-            <button class="btn btn-info">Select</button>
-        </div>
+
         <div class="col-xs-4 pull-right">
             <div class="form-group has-feedback">
                 <input style="padding-left: 35px;" ng-model="searchInput" placeholder="Search Files..."
@@ -13,22 +11,48 @@
         </div>
     </div>
     <div class="row" style="border: 1px solid #757575; height: 600px;">
-        <div class="col-xs-5" style="margin-left: -10px;">
-            <div class="row"
-                 style="padding: 10px; height:50px; background-color: #EFEFEF;border-bottom: 1px solid #d3d3d3;border-right: 1px solid #d3d3d3">
-                <h4>Tree</h4>
+        <div class="col-xs-3" style="margin-left: -10px;">
+            <div class="row file-heading">
+                <div class="col-xs-2">
+                    <button class="btn btn-info" ng-click="showCheckBox = !showCheckBox">Select</button>
+                </div>
+                <div class="col-xs-8">
+                    <ul class="nav nav-pills">
+                        <li role="presentation"><a
+                                ng-click="toggleExpanded('access')"
+                                title="Add sub folder">
+                            <i class="fa fa-fw fa-plus fa-1x"></i>
+                        </a></li>
+                        <li role="presentation"><a
+                                ng-click="toggleExpanded('access')"
+                                title="Add sub folder">
+                            <i class="fa fa-fw fa-upload fa-1x"></i>
+                        </a></li>
+                        <li role="presentation"><a
+                                ng-click="toggleExpanded('access')"
+                                title="Add sub folder">
+                            <i class="fa fa-fw fa-download fa-1x"></i>
+                        </a></li>
+                        <li role="presentation"><a
+                                ng-click="toggleExpanded('access')"
+                                title="Add sub folder">
+                            <i class="fa fa-fw fa-clipboard"></i>
+                        </a></li>
+                    </ul>
+                </div>
             </div>
             <div class="row">
                 <div class="sidebar-wrapper">
                     <file-upload-panel></file-upload-panel>
                     <mc-tree items="files"
                              matches="matchingFiles"
-                             orderby="'name'">
+                             orderby="'name'"
+                            check-box="showCheckBox">
                     </mc-tree>
                 </div>
             </div>
         </div>
-        <div class="col-xs-7" ng-show="activeFile" style="overflow-y: auto;height:550px;"><br>
+        <div class="col-xs-9" ng-show="activeFile" style="overflow-y: auto;height:550px;"><br>
 
             <div class="row">
                 <div class="col-xs-4"><h4><i class="fa fa-fw fa-file fa-1x"></i>{{activeFile.name}}</h4></div>
@@ -43,10 +67,10 @@
             </div>
             <div ng-if="bk.content === 'details'">
                 <div class="row">
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         <div ng-switch="fileType">
                             <div ng-switch-when="image">
-                                <img  class="img-responsive center-block"
+                                <img class="img-responsive center-block"
                                      ng-src="{{fileSrc(activeFile)}}">
                             </div>
                             <div ng-switch-when="pdf">
@@ -69,35 +93,36 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr/>
-                <div class="row" style="padding: 10px;">
-                    <b><i class="fa fa-fw fa-lock fa-2x"></i> </b> Not shared
-                </div>
-                <hr/>
-                <div class="row" style="padding: 10px;">
-                    Add a Note ...<span class="pull-right"><i class="fa fa-fw fa-edit"></i></span>
-                </div>
-                <hr/>
-                <div class="row" style="padding: 10px;">
-                    <div class="col-xs-2"> Media Type:</div>
-                    <div class="col-xs-2">{{activeFile.mediatype}}</div>
-                    <br>
+                    <div class="col-xs-6">
+                        <div class="row" style="padding: 10px;">
+                            <b><i class="fa fa-fw fa-lock fa-2x"></i> </b> Not shared
+                        </div>
+                        <hr/>
+                        <div class="row" style="padding: 10px;">
+                            Add a Note ...<span class="pull-right"><i class="fa fa-fw fa-edit"></i></span>
+                        </div>
+                        <hr/>
+                        <div class="row" style="padding: 10px;">
+                            <div class="col-xs-2"> Media Type:</div>
+                            <div class="col-xs-2">{{activeFile.mediatype}}</div>
+                            <br>
 
-                    <div class="col-xs-2"> Owner:</div>
-                    <div class="col-xs-2">{{activeFile.owner}}</div>
-                    <br>
+                            <div class="col-xs-2"> Owner:</div>
+                            <div class="col-xs-2">{{activeFile.owner}}</div>
+                            <br>
 
-                    <div class="col-xs-2"> Created:</div>
-                    <div class="col-xs-2">{{activeFile.birthtime | toDateString}}</div>
-                    <br>
+                            <div class="col-xs-2"> Created:</div>
+                            <div class="col-xs-2">{{activeFile.birthtime | toDateString}}</div>
+                            <br>
+                        </div>
+                        <hr/>
+                        <div class="row" style="padding: 10px;">
+                            <b> <i class="fa f-fw fa-tags fa-2x"></i></b> Tags :<span class="pull-right"><i
+                                class="fa fa-fw fa-edit"></i></span>
+                        </div>
+                        <hr/>
+                    </div>
                 </div>
-                <hr/>
-                <div class="row" style="padding: 10px;">
-                    <b> <i class="fa f-fw fa-tags fa-2x"></i></b> Tags :<span class="pull-right"><i
-                        class="fa fa-fw fa-edit"></i></span>
-                </div>
-                <hr/>
             </div>
             <div ng-if="bk.content === 'activity'">
                 Activity Log here...
@@ -105,7 +130,4 @@
 
         </div>
     </div>
-</div>
-
-</div>
 </div>
