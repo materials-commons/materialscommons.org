@@ -49,5 +49,8 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.showContent = function(content){
         $scope.bk.content = content;
     };
+    $scope.toggleCheckBox = function(){
+        $scope.bk.content =  true;
+    };
 
 }

@@ -2,7 +2,7 @@
     <ul>
         <li ng-repeat="item in items | orderBy:orderby | limitTo:500 as matches track by item.id">
             <mc-tree-display-item item="item"
-                                  show-sideboard="true">
+                                  show-sideboard="true" check-box="checkBox">
             </mc-tree-display-item>
         </li>
         <li ng-show="matches.length === 0" class="home-item">
