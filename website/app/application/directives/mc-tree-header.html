@@ -9,8 +9,8 @@
             <span ng-if="item.type !== 'datafile'" data-toggle="tooltip" data-placement="top" title="{{item.fullname}}"
                   style="color: #389dc1"
                   ui-draggable="true" drag="item">{{::item.displayname}}</span>
-            <span ng-if="item.type === 'datafile'"  title="{{item.fullname}}"
-                  style="color: #389dc1"    ng-click="openFile(item)"
+            <span ng-if="item.type === 'datafile'" title="{{item.fullname}}"
+                  style="color: #389dc1" ng-click="openFile(item)"
                   ui-draggable="true" drag="item">{{::item.displayname}}</span>
         </span>
         <span class="pull-right">
@@ -38,7 +38,6 @@
                 </a>
                 <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
             </span>
-
         </span>
 
         <div class="row" ng-if="item.addFolder">
