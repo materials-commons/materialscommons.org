@@ -42,16 +42,16 @@
                      class="col-xs-6"><a>Activity</a></div>
             </div>
             <div ng-if="bk.content === 'details'">
-                <div>
-                    <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-5">
                         <div ng-switch="fileType">
                             <div ng-switch-when="image">
-                                <img style="width: 100%; height: 300px;" class="img-responsive center-block"
+                                <img  class="img-responsive center-block"
                                      ng-src="{{fileSrc(activeFile)}}">
                             </div>
                             <div ng-switch-when="pdf">
                                 <div class="embed-responsive embed-responsive-4by3">
-                                    <embed style="width: 100%; height: 300px;" class="col-xs-8 embed-responsive-item"
+                                    <embed class="col-xs-8 embed-responsive-item"
                                            ng-src="{{fileSrc(activeFile)}}">
                                     </embed>
                                 </div>
