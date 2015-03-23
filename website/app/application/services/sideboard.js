@@ -46,6 +46,8 @@ function sideboardService() {
         },
 
         handleFromEvent: function(projectID, entry, event, type) {
+            console.log('yes');
+            console.log(event);
             var el = $("#" + entry.id + " > i");
             if (el.hasClass("inactive")) {
                 self.service.add(projectID, entry, type);
