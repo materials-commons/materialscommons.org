@@ -1,5 +1,5 @@
 <div class="tree-row">
-    <div ui-draggable="true" drag="item">
+    <div ng-mouseenter="show= true" ng-mouseleave="show = false" ui-draggable="true" drag="item">
         <span ng-click="item.showDetails = !item.showDetails"
               style="cursor: pointer;">
             <b><i class="fa fa-fw"
@@ -11,8 +11,21 @@
                   ui-draggable="true" drag="item">{{::item.displayname}}</span>
             <span ng-if="item.type === 'datafile'" title="{{item.fullname}}"
                   style="color: #389dc1" ng-click="openFile(item)"
-                  ui-draggable="true" drag="item">{{::item.displayname}} - {{checkBox}}</span>
+                  ui-draggable="true" drag="item">{{::item.displayname}}</span>
         </span>
+        <span  ng-show="show" class="pull-right">
+                <a   title="New Folder" ng-click="item.addFolder = !item.addFolder">
+                    <i ng-if="item.type === 'datadir'"
+                       class="fa fa-fw fa-plus"></i>
+                </a>
+            <a ng-click="addToSideboard(item, $event)">
+                <i ng-if="item.type === 'datafile'"
+                   class="fa fa-fw fa-clipboard"></i>
+            </a>
+                <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
+        </span>
+
+
         <!--<span class="pull-right">-->
         <!--<span ng-if="item.type === 'datafile'">-->
         <!--<a ng-if="showSideboard"-->
