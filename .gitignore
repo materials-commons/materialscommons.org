@@ -8,3 +8,4 @@ materialscommons/
 materials.tar.gz
 node_modules
 npm-debug.log
+coverage
