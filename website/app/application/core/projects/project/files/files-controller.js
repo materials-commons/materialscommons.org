@@ -17,7 +17,7 @@ function FilesController($scope, projectFiles, applySearch,
 
     applySearch($scope, "searchInput", applyQuery);
 
-    $scope.downloadSrc = function(file) {
+    $scope.downloadSrc = function (file) {
         return mcfile.downloadSrc(file.id);
     };
 
@@ -50,8 +50,12 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.fileSrc = function (file) {
         return mcfile.src(file.id);
     };
-    $scope.showContent = function(content){
+    $scope.showContent = function (content) {
         $scope.bk.content = content;
+    };
+
+    $scope.saveNote = function () {
+
     };
 
 }
