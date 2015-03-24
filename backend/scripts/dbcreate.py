@@ -11,41 +11,58 @@ def create_database():
 
 
 def create_tables():
-    create_table("users")
-    create_table("usergroups")
+    create_table("users", "apikey", "admin")
+    create_table("usergroups", "owner", "name")
     create_table("tags")
     create_table("news")
-    create_table("notes")
+    create_table("notes", "project_id")
     create_table("runs")
-    create_table("properties")
-    create_table("property_sets")
-    create_table("reviews")
-    create_table("processes")
+    create_table("properties", "item_id", "value")
+    create_table("property_sets", "item_id")
+    create_table("reviews", "assigned_to", "author", "project")
+    create_table("processes", "project_id", "project")
     create_table("machines")
-    create_table("projects")
+    create_table("projects", "name", "owner")
     create_table("templates")
     create_table("ui")
     create_table("drafts")
-    create_table("samples")
-    create_table('access')
+    create_table("samples", "project_id")
+    create_table('access', "user_id", "project_id", "dataset")
     create_table("elements")
-    create_table("events")
-    create_table("datafiles")
-    create_table("datadirs")
-    create_table("project2datadir")
-    create_table("project2datafile")
-    create_table("tag2item")
-    create_table("comment2item")
-    create_table("note2item")
-    create_table("review2item")
-    create_table("process2item")
-    create_table("sample2item")
-    create_table("datadir2datafile")
-    create_table("uploads")
+    create_table("events", "project_id")
+
+    create_table("datafiles", "name", "owner",
+                 "checksum", "usesid", "mediatype")
+    run(r.db("materialscommons").table("datafiles")
+        .index_create("mime", r.row["mediatype"]["mime"]))
+
+    create_table("datadirs", "name", "project_id")
+    create_table("project2datadir", "datadir_id", "project_id")
+    create_table("project2datafile", "project_id", "datafile_id")
+    create_table("tag2item", "tag_id", "item_id")
+    create_table("comment2item", "comment_id", "item_id")
+    create_table("note2item", "note_id", "item_id")
+    create_table("review2item", "review_id", "item_id")
+    create_table("process2item", "process_id", "item_id")
+    create_table("sample2item", "sample_id", "item_id")
+    create_table("datadir2datafile", "datadir_id", "datafile_id")
+    create_table("uploads", "uploads", "project_id")
+
+    create_samples_model()
 
 
-def create_table(table):
+def create_samples_model():
+    pass
+
+
+def create_table(table, *args):
     run(r.db('materialscommons').table_create(table))
+    for index_name in args:
+        create_index(table, index_name)
+
+
+def create_index(table, name, conn):
+    run(r.db('materialscommons').table(table).index_create(name))
 
 
 def create_indices():
@@ -104,14 +121,6 @@ def create_indices():
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
 
-    # projects2samples can be deleted
-    create_index('projects2samples', 'project_id')
-    create_index('projects2samples', 'sample_id')
-
-    # processes2samples can be deleted
-    create_index('processes2samples', 'sample_id')
-    create_index('processes2samples', 'project_id')
-
     create_index('tag2item', 'tag_id')
     create_index('tag2item', 'item_id')
 
@@ -135,10 +144,6 @@ def create_indices():
 
     create_index("uploads", "owner")
     create_index("uploads", "project_id")
-
-
-def create_index(table, name):
-    run(r.db('materialscommons').table(table).index_create(name))
 
 
 def run(rql):
