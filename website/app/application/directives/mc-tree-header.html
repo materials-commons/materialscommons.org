@@ -18,41 +18,13 @@
                     <i ng-if="item.type === 'datadir'"
                        class="fa fa-fw fa-plus"></i>
                 </a>
-            <a ng-click="addToSideboard(item, $event)">
-                <i ng-if="item.type === 'datafile'"
-                   class="fa fa-fw fa-clipboard"></i>
-            </a>
+                <a  ng-if="item.type === 'datafile'"
+                   ng-click="addToSideboard(item, $event)"
+                   id="{{item.id}}">
+                    <i class="fa fa-fw fa-clipboard inactive"></i>
+                </a>
                 <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
         </span>
-
-
-        <!--<span class="pull-right">-->
-        <!--<span ng-if="item.type === 'datafile'">-->
-        <!--<a ng-if="showSideboard"-->
-        <!--ng-click="addToSideboard(item, $event)"-->
-        <!--id="{{item.id}}">-->
-        <!--<i class="fa fa-fw fa-clipboard inactive"></i>-->
-        <!--</a>-->
-
-        <!--<a title="{{tooltip}}"-->
-        <!--ng-href="{{downloadSrc(item)}}"-->
-        <!--download="{{item.name}}">-->
-        <!--<i class="fa fa-fw" ng-class="faClass"></i>-->
-        <!--</a>-->
-        <!--<a ng-if="!showSideboard"-->
-        <!--ng-click="addToSideboard(item, $event)">-->
-        <!--<i class="fa fa-fw fa-close mc-danger"></i>-->
-        <!--</a>-->
-        <!--</span>-->
-        <!--<span style="padding-rightx: 13px;">-->
-        <!--<a title="New Folder" ng-click="item.addFolder = !item.addFolder">-->
-        <!--<i ng-if="item.type === 'datadir'"-->
-        <!--class="fa fa-fw fa-plus"></i>-->
-        <!--</a>-->
-        <!--<mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>-->
-        <!--</span>-->
-        <!--</span>-->
-
         <div class="row" ng-if="item.addFolder">
             <input type="text"
                    placeholder="Folder Name..."

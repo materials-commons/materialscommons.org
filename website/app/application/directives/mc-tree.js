@@ -66,10 +66,6 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
         $scope.faClass = "fa-download";
     }
 
-    $scope.downloadSrc = function(file) {
-        return mcfile.downloadSrc(file.id);
-    };
-
     $scope.addToSideboard = function(file, event) {
         sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
     };

@@ -17,6 +17,10 @@ function FilesController($scope, projectFiles, applySearch,
 
     applySearch($scope, "searchInput", applyQuery);
 
+    $scope.downloadSrc = function(file) {
+        return mcfile.downloadSrc(file.id);
+    };
+
     function applyQuery() {
         var search = {
             name: ""
@@ -48,9 +52,6 @@ function FilesController($scope, projectFiles, applySearch,
     };
     $scope.showContent = function(content){
         $scope.bk.content = content;
-    };
-    $scope.toggleCheckBox = function(){
-        $scope.bk.content =  true;
     };
 
 }
