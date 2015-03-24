@@ -29,9 +29,11 @@ function* samples(next) {
 var router2 = require('koa-router')();
 router2.get('/samples', samples);
 
+var usersModel = require('./model/db/users')(r);
+var keycache = require('./apikey-cache')(usersModel);
 var apikey = require('./apikey');
 
-app.use(apikey(r));
+app.use(apikey(keycache));
 app.use(mount('/', projects.routes())).use(projects.allowedMethods());
 app.use(mount('/', router2.routes()));
 app.listen(3000);
