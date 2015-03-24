@@ -6,6 +6,9 @@ from .. import error
 from .. import access
 from .. import resp
 from .. import dmutil
+from loader.model import note
+from loader.model import note2item
+
 
 
 @app.route('/datafile/<datafileid>', methods=['GET'])
@@ -41,10 +44,6 @@ def update_datafile(datafile_id):
         tag = r.table("tags").get(tag_id).run(g.conn)
         if tag is None:
             return error.bad_request("No such tag: %s" % (tag_id))
-
-
-
-
         # Make sure file isn't already tagged with this tag
         tags = list(r.table("tag2item")
                     .get_all(df['id'], index="item_id")
@@ -61,3 +60,30 @@ def update_datafile(datafile_id):
             "item_type": "datafile"
         }).run(g.conn)
         return resp.to_json(df)
+
+
+@app.route("/datafile/<datafile_id>/note", methods=['PUT'])
+@apikey()
+def update_datafile_note(datafile_id):
+    j = request.get_json()
+    owner = dmutil.get_required('owner', j)
+    title = dmutil.get_required('title', j)
+    note_msg = dmutil.get_required('note', j)
+    project_id = dmutil.get_required('project_id', j)
+    n = note.Note(owner, note, title, project_id)
+    note2item_join = list(r.table('note2item').get_all(datafile_id, index='item_id')\
+        .run(g.conn))
+    if note2item_join:
+        print 'join'
+        result = r.table('notes').get(note2item_join[0]['note_id']).update(
+            {'note': note_msg, 'title': title, 'mtime': r.now()
+            },return_changes=True).run(g.conn)
+        updated_note = result['changes'][0]['new_val']
+        return resp.to_json(updated_note)
+    else:
+        print 'new'
+        created_note = dmutil.insert_entry('notes', n.__dict__,
+                                       return_created=True)
+        n2item = note2item.Note2Item(datafile_id, 'datafile', created_note['id'])
+        dmutil.insert_entry('note2item', n2item.__dict__)
+        return resp.to_json(created_note)
