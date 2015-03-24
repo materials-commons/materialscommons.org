@@ -1,7 +1,5 @@
 <div class="row"><br>
-
     <div class="row">
-
         <div class="col-xs-4 pull-right">
             <div class="form-group has-feedback">
                 <input style="padding-left: 35px;" ng-model="searchInput" placeholder="Search Files..."
@@ -13,33 +11,6 @@
     <div class="row" style="border: 1px solid #757575; height: 600px;">
         <div class="col-xs-3" style="margin-left: -10px;">
             <div class="row file-heading">
-                <div class="col-xs-2">
-                    <button class="btn btn-info" ng-click="showCheckBox = !showCheckBox">Select</button>
-                </div>
-                <!--<div class="col-xs-8">-->
-                    <!--<ul class="nav nav-pills">-->
-                        <!--<li role="presentation"><a-->
-                                <!--ng-click="toggleExpanded('access')"-->
-                                <!--title="Add sub folder">-->
-                            <!--<i class="fa fa-fw fa-plus fa-1x"></i>-->
-                        <!--</a></li>-->
-                        <!--<li role="presentation"><a-->
-                                <!--ng-click="toggleExpanded('access')"-->
-                                <!--title="Add sub folder">-->
-                            <!--<i class="fa fa-fw fa-upload fa-1x"></i>-->
-                        <!--</a></li>-->
-                        <!--<li role="presentation"><a-->
-                                <!--ng-click="toggleExpanded('access')"-->
-                                <!--title="Add sub folder">-->
-                            <!--<i class="fa fa-fw fa-download fa-1x"></i>-->
-                        <!--</a></li>-->
-                        <!--<li role="presentation"><a-->
-                                <!--ng-click="toggleExpanded('access')"-->
-                                <!--title="Add sub folder">-->
-                            <!--<i class="fa fa-fw fa-clipboard"></i>-->
-                        <!--</a></li>-->
-                    <!--</ul>-->
-                <!--</div>-->
             </div>
             <div class="row">
                 <div class="sidebar-wrapper">
@@ -47,20 +18,21 @@
                     <mc-tree items="files"
                              matches="matchingFiles"
                              orderby="'name'"
-                            check-box="showCheckBox">
+                             check-box="showCheckBox">
                     </mc-tree>
                 </div>
             </div>
         </div>
-        <div class="col-xs-9" ng-show="activeFile" style="overflow-y: auto;height:550px;"><br>
-
+        <div class="col-xs-9" ng-if="activeFile" style="overflow-y: auto;height:550px;"><br>
             <div class="row">
-                <div class="col-xs-4"><h4><i class="fa fa-fw fa-file fa-1x"></i>{{activeFile.name}}</h4></div>
-                <div class="col-xs-2">
-                    <a ng-click="toggleExpanded('access')"
-                            title="Add sub folder">
-                        <i class="fa fa-fw fa-download fa-1x"></i>
-                    </a>
+                <div class="col-xs-4">
+                    <h4><i class="fa fa-fw fa-file fa-1x"></i>
+                        {{activeFile.name}}
+                        <a ng-href="{{downloadSrc(activeFile)}}"
+                           download="{{activeFile.name}}">
+                            <i class="fa fa-fw fa-download"></i>
+                        </a>
+                    </h4>
                 </div>
                 <div class="col-xs-1 fa fa-fw fa-close fa-1x pull-right"></div>
             </div>
