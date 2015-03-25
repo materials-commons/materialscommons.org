@@ -10,7 +10,7 @@ var ropts = {
 };
 var r = require('rethinkdbdash')(ropts);
 var projectsModel = require('./model/db/projects')(r);
-var projects = require('./resources/projects')(projectsModel);
+var projects = require('./resources/projects-routes')(projectsModel);
 
 var bus = Bus.create({redis: ['redis://localhost:6379']});
 
