@@ -4,18 +4,13 @@ var koa = require('koa');
 var app = module.exports = koa();
 require('koa-qs')(app);
 
-var ropts = {
-    db: 'materialscommons',
-    port: 30815
-};
-var r = require('rethinkdbdash')(ropts);
-
-var model = require('./db/model')(r);
+var model = require('./model-loader')(module.parent);
 var projects = require('./resources/projects-routes')(model.projects);
 var keycache = require('./apikey-cache')(model.users);
 var apikey = require('./apikey')(keycache);
 
-app.use(apikey);
+app.use(apikey); // This checks for valid apikey on all routes after this
+
 app.use(mount('/', projects.routes())).use(projects.allowedMethods());
 
 if (!module.parent) {
