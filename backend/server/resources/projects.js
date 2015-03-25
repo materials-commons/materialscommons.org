@@ -1,14 +1,14 @@
-module.exports = function(model) {
+module.exports = function(projects) {
     'use strict';
-    let router = require('koa-router')();
-    router.get('/projects', projects);
-    return router;
+    return {
+        all: all
+    };
 
     /////////////////
 
-    function* projects(next) {
+    function* all(next) {
         let user = this.mcapp.user;
-        this.body = yield model.getProjectsForUser(user.id, user.isadmin);
+        this.body = yield projects.forUser(user);
         yield next;
     }
 
