@@ -32,9 +32,9 @@ module.exports = function(r) {
             return {
                 users: r.table('access')
                     .getAll(project('id'), {index: 'project_id'})
-                    .map(function(access) {
-                        return access.merge({
-                            'user': access('user_id')
+                    .map(function(entry) {
+                        return entry.merge({
+                            'user': entry('user_id')
                         });
                     })
                     .pluck('user', 'permissions')
