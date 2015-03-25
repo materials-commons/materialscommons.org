@@ -9,7 +9,7 @@ var projects = require('./resources/projects-routes')(model.projects);
 var keycache = require('./apikey-cache')(model.users);
 var apikey = require('./apikey')(keycache);
 
-app.use(apikey); // This checks for valid apikey on all routes after this
+app.use(apikey); // This checks for valid apikey on all routes after this line
 
 app.use(mount('/', projects.routes())).use(projects.allowedMethods());
 
