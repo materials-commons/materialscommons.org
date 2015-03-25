@@ -19,7 +19,7 @@ def create_tables():
     create_table("runs")
     create_table("properties", "item_id", "value")
     create_table("property_sets", "item_id")
-    create_table("reviews", "assigned_to", "author", "project")
+    create_table("reviews", "assigned_to", "author", "project_id")
     create_table("processes", "project_id", "project")
     create_table("machines")
     create_table("projects", "name", "owner")
