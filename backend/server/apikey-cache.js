@@ -30,7 +30,7 @@ module.exports = function(model) {
             map[user.apikey] = {
                 id: user.id,
                 apikey: user.apikey,
-                isadmin: !!user.admin
+                isAdmin: !!user.admin
             };
         });
         return map;
