@@ -17,14 +17,9 @@ module.exports = function(model) {
             return keycache[apikey];
         }
 
-        keycache = yield loadCache();
-        return keycache[apikey];
-    }
-
-    //
-    function* loadCache() {
         let users = yield model.getUsers();
-        return users2map(users);
+        keycache = users2map(users);
+        return keycache[apikey];
     }
 
     // users2map converts the array of users into a map

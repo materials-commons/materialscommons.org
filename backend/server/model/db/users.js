@@ -8,8 +8,8 @@ module.exports = function(r) {
     ///////////
 
     // getUsers returns all the users in the database.
-    function* getUsers() {
-        return yield r.table('users').run();
+    function getUsers() {
+        return r.table('users').run();
     }
 
     // getUser gets the user by index. If no index is given then it
