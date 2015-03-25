@@ -61,7 +61,7 @@ def create_table(table, *args):
         create_index(table, index_name)
 
 
-def create_index(table, name, conn):
+def create_index(table, name):
     run(r.db('materialscommons').table(table).index_create(name))
 
 
