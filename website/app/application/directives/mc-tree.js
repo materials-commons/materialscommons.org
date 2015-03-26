@@ -49,21 +49,28 @@ function mcTreeDirDirective(RecursionHelper) {
 }
 
 Application.Controllers.controller("mcTreeDirDirectiveController",
-                                   ["$scope", mcTreeDirDirectiveController]);
+                                   ["$scope",  mcTreeDirDirectiveController]);
 function mcTreeDirDirectiveController($scope) {
     $scope.items = $scope.item.children;
 }
 
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi", "projectFiles",                                    mcTreeHeaderDirectiveController]);
-function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, toggleDragButton, pubsub, mcapi, projectFiles) {
+                                   ["$scope",  "pubsub", "projectFiles", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi", "projectFiles",                                    mcTreeHeaderDirectiveController]);
+function mcTreeHeaderDirectiveController($scope, pubsub, projectFiles,sideboard, current, toggleDragButton, pubsub, mcapi, projectFiles) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
         $scope.faClass = "fa-upload";
     } else {
         $scope.tooltip = "Download file";
         $scope.faClass = "fa-download";
+    }
+
+    pubsub.waitOn($scope, "activeFile.change", function () {
+        getActiveFile();
+    });
+    function getActiveFile(){
+        $scope.activeFile = projectFiles.getActiveFile();
     }
 
     $scope.addToSideboard = function(file, event) {

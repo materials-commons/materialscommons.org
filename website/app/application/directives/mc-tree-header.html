@@ -1,4 +1,4 @@
-<div class="tree-row">
+<div class="tree-row" ng-class="{'active-file': activeFile.id === item.id}">
     <div ng-mouseenter="show= true" ng-mouseleave="show = false" ui-draggable="true" drag="item">
         <span ng-click="item.showDetails = !item.showDetails"
               style="cursor: pointer;">
