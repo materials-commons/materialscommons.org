@@ -20,9 +20,22 @@ module.exports = function(r) {
                 .zip();
         }
 
+        rql = transformDates(rql);
         rql = addComputed(rql);
 
         return run(rql);
+    }
+
+    // transformDates removes the rethinkdb specific date
+    // fields
+    function transformDates(rql) {
+        rql = rql.merge(function(project) {
+            return {
+                mtime: project('mtime').toEpochTime(),
+                birthtime: project('birthtime').toEpochTime()
+            };
+        });
+        return rql;
     }
 
     // addComputed adds additional attributes to the rql that
