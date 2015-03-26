@@ -79,13 +79,16 @@
                         </div>
                         <hr/>
                         <div class="row" style="padding: 10px;">
-                            <span ng-show="editNote"> Add a Note ...</span> <span class="pull-right">
+                            <span ng-show="!editNote"> <b><i class="fa fa-fw fa-edit fa-2x"></i> </b>Note</span> <span class="pull-right">
                             <a ng-click="editNote = !editNote"><i class="fa fa-fw fa-edit"></i></a></span>
+                            <div class="row" ng-if="activeFile.note">
+                                <p><b>Title</b>: {{activeFile.note.title}}  </p>
+                                <div ta-bind ng-model="activeFile.note.note"></div>
+                            </div>
+
                         </div>
-                        <div class="row" ng-show="!editNote">
+                        <div class="row" ng-show="editNote">
                             <create-note item-type="datafile" item="activeFile"></create-note>
-                            <!--<textarea class="form-control" ng-model="activeFile.note" placeholder="Edit here..."></textarea>-->
-                            <!--<button ng-click="saveNote()" class="btn btn-success btn-xs">Save</button>-->
                         </div>
                         <hr/>
                         <div class="row" style="padding: 10px;">

@@ -25,29 +25,23 @@ function createNoteDirectiveController($scope, User, mcapi, projectState,
     $scope.cancel = function () {
         recent.delete(projectID, stateID);
         projectState.delete(projectID, stateID);
-        recent.gotoLast(projectID);
         $scope.noteModel.createNote = false;
         initializeState();
     };
 
-    $scope.create = function () {
-        console.log($scope.itemType);
-        console.log($scope.item);
-
-        $scope.note = {
+    $scope.save = function () {
+        $scope.item.note = {
             'owner': User.u(),
             'project_id': $scope.project.id,
             'note': $scope.noteModel.note,
             'title': $scope.noteModel.title
         };
-        console.log($scope.note);
         switch ($scope.itemType) {
             case "datafile":
-                console.log($scope.item);
                 mcapi('/datafile/%/note', $scope.item.id)
                     .success(function (note) {
-                        console.log('success');
-                    }).put($scope.note);
+                        console.log(note);
+                    }).put($scope.item.note);
                 break;
             case "project":
 

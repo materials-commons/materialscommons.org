@@ -1,6 +1,7 @@
 <div class="tree">
     <ul>
-        <li ng-repeat="item in items | orderBy:orderby | limitTo:500 as matches track by item.id">
+        <li ng-repeat="item in items | orderBy:orderby | limitTo:500
+        as matches track by item.id">
             <mc-tree-display-item item="item"
                                   show-sideboard="true" check-box="checkBox">
             </mc-tree-display-item>
@@ -11,5 +12,4 @@
             </div>
         </li>
     </ul>
-
 </div>
