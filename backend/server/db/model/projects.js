@@ -1,8 +1,12 @@
 module.exports = function(r) {
     'use strict';
     let run = require('./run');
+    let getSingle = require('./get-single');
     return {
-        forUser: forUser
+        forUser: forUser,
+        get: function(id, index) {
+            return getSingle(r, 'projects', id, index);
+        }
     };
 
     ///////////////
@@ -69,4 +73,6 @@ module.exports = function(r) {
 
         return rql;
     }
+
+
 };

@@ -1,8 +1,13 @@
 module.exports = function(r) {
     'use strict';
+
+    let getSingle = require('get-single');
     return {
         getUsers: getUsers,
-        getUser: getUser
+        getUser: getUser,
+        get: function(id, index) {
+            return getSingle(r, 'users', id, index);
+        }
     };
 
     ///////////
