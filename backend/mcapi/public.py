@@ -3,8 +3,8 @@ from decorators import crossdomain, apikey, jsonp
 import json
 from flask import jsonify, g, request
 import rethinkdb as r
-from loader.model import user
-import dmutil
+from loader.model import user, tag
+import dmutil, resp
 from utils import make_password_hash
 import error
 from args import json_as_format_arg
@@ -12,11 +12,23 @@ import access
 import os.path
 
 
-@app.route('/tags')
+@app.route('/tags', methods=['GET'])
 @jsonp
 def all_tags():
-    selection = list(r.table('tags').run(g.conn))
-    return json.dumps(selection)
+    selection = list(r.table('tags').run(g.conn, time_format='raw'))
+    return resp.to_json(selection)
+
+@app.route('/tags', methods=['POST'])
+@apikey(shared=True)
+def add_tag():
+    j = request.get_json()
+    id = dmutil.get_required('id', j)
+    owner = dmutil.get_required('owner', j)
+    model_tag = tag.Tag(id, owner)
+    res = dmutil.insert_entry('tags', model_tag.__dict__, return_created=True)
+    if res:
+        print res
+        return resp.to_json(res)
 
 
 @app.route('/tags/count')

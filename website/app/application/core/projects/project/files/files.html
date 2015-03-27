@@ -25,7 +25,6 @@
             </div>
         </div>
         <div class="col-xs-9" ng-if="activeFile" style="overflow-y: auto;height:550px;"><br>
-
             <div class="row">
                 <div class="col-xs-4">
                     <h4><i class="fa fa-fw fa-file fa-1x"></i>
@@ -108,6 +107,13 @@
                         <div class="row" style="padding: 10px;">
                             <b> <i class="fa f-fw fa-tags fa-2x"></i></b> Tags :<span class="pull-right"><i
                                 class="fa fa-fw fa-edit"></i></span>
+                            <div class="row">
+                                <tags-input on-tag-added="addTag($tag)" on-tag-removed="removeTag($tag)" ng-model="tags" placeholder="Add a Tag" replace-spaces-with-dashes="false">
+                                    <!--<auto-complete source="loadMovies($query)"-->
+                                                   <!--min-length="0"-->
+                                                   <!--debounce-delay="0"-->
+                                                   <!--max-results="10"></auto-complete>                                </tags-input>-->
+                            </div>
                         </div>
                         <hr/>
                     </div>

@@ -1,11 +1,22 @@
 Application.Controllers.controller("FilesController",
     ["$scope", "projectFiles", "applySearch",
-        "$filter", "pubsub", "mcfile", FilesController]);
+        "$filter", "pubsub", "mcfile", "tags", "User", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
-                         $filter, pubsub, mcfile) {
+                         $filter, pubsub, mcfile, tags, User) {
+    $scope.addTag = function (tag) {
+        var tag_obj = {'id': tag.text, 'owner': User.u()};
+        tags.createTag(tag_obj);
+    };
+
+    $scope.removeTag = function (tag) {
+        var tag_obj = {'id': tag.text, 'item_id': $scope.activeFile.id};
+        tags.createTag(tag_obj);
+    };
+
     $scope.bk = {
         content: 'details'
-    }
+    };
+
     pubsub.waitOn($scope, "activeFile.change", function () {
         getActiveFile();
     });
@@ -53,9 +64,4 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.showContent = function (content) {
         $scope.bk.content = content;
     };
-
-    $scope.saveNote = function () {
-
-    };
-
 }
