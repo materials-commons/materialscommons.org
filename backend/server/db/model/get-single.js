@@ -1,7 +1,6 @@
 module.exports = function getSingle(r, table, id, index) {
     'use strict';
 
-    console.log('getSingle', table, id, index);
     let run = require('./run');
     if (index) {
         return run(r.table(table).getAll(id, {index: index}))
