@@ -1,7 +1,7 @@
 module.exports = function(r) {
     'use strict';
 
-    let getSingle = require('get-single');
+    let getSingle = require('./get-single');
     return {
         getUsers: getUsers,
         getUser: getUser,

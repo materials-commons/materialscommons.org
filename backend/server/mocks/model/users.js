@@ -1,4 +1,3 @@
-var promise = require('bluebird');
 var getSingle = require('./get-single');
 
 module.exports = {
@@ -30,7 +29,10 @@ function getUsers() {
 }
 
 function get(id, index) {
-    return promise.resolve().then(function() {
-        return getSingle(users, id, index);
+    'use strict';
+
+    return new Promise(function(resolve, reject) {
+        let user = getSingle(users, id, index);
+        resolve(user);
     });
 }
