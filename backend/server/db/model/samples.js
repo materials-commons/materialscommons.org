@@ -2,9 +2,13 @@ module.exports = function(r) {
     'use strict';
 
     let run = require('./run');
+    let getSingle = require('./get-single');
     return {
         create: create,
-        forUser: forUser
+        forUser: forUser,
+        get: function(id, index) {
+            return getSingle(r, 'samples', id, index);
+        }
     };
 
     /////////////////

@@ -24,7 +24,9 @@ function forUser(user) {
 }
 
 function get(id, index) {
-    return promise.resolve().then(function() {
-        return getSingle(projects, id, index);
+    'use strict';
+    return new Promise(function(resolve, reject) {
+        let project = getSingle(projects, id, index);
+        resolve(project);
     });
 }

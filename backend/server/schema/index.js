@@ -1,13 +1,21 @@
 var Schema = require('js-data-schema');
 var schema = new Schema();
+var promise = require('bluebird');
+
 
 module.exports = function(model) {
     'use strict';
 
+    let schemaRules = require('./schema-rules')(model);
     defineRules();
+    let samples = defineSamplesSchema();
+    samples.validateAsync = promise.promisify(samples.validate);
+    samples.validateYield = promise.coroutine(function *(what) {
+        yield samples.validateAsync(what);
+    });
 
     return {
-        samples: defineSamplesSchema()
+        samples: samples //defineSamplesSchema()
     };
 
     /////////////// Define Schemas ///////////////
@@ -17,15 +25,17 @@ module.exports = function(model) {
             name:{
                 type: 'string',
                 minLength: 1,
-                exists: 'users' // this needs to be samples and not exist.
+                mustNotExist: 'samples:name'
             },
             project_id: {
                 type: 'string',
-                minLength: 1
+                minLength: 1,
+                mustExist: 'projects'
             },
             owner: {
                 type: 'string',
-                minLength: 1
+                minLength: 1,
+                mustExist: 'users'
             },
             description: {
                 type: 'string',
@@ -41,21 +51,8 @@ module.exports = function(model) {
     /////////////// Define Rules ///////////////
 
     function defineRules() {
-        schema.defineRule('exists', validateExists, true);
+        schema.defineRule('mustExist', schemaRules.mustExist, true);
+        schema.defineRule('mustExistProj', schemaRules.mustExist, true);
+        schema.defineRule('mustNotExist', schemaRules.mustNotExist, true);
     }
-
-    function validateExists(what, modelName, done) {
-        model[modelName].get(what).then(function(value) {
-            let error = null;
-            if (!value) {
-                error = {
-                    rule: 'exists',
-                    actual: what,
-                    expected: 'did not find ' + what + ' in model'
-                };
-            }
-            done(error);
-        });
-    }
-
 };
