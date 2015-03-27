@@ -9,11 +9,11 @@ Application.Services.factory('tags', ["mcapi",
                         return tag;
                     }).post(tag);
             },
-           removeTag: function (tag) {
-                mcapi('/tags/%/item/%')
+           removeTag: function (tag_id, item_id) {
+                mcapi('/tags/%/item/%', tag_id, item_id)
                     .success(function (tag) {
                         return tag;
-                    }).delete(tag);
+                    }).delete();
             }
         };
         return service;

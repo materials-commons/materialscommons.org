@@ -30,6 +30,12 @@ def add_tag():
         print res
         return resp.to_json(res)
 
+@app.route('/tags/<tag_id>/item/<item_id>', methods=['DELETE'])
+@apikey(shared=True)
+def remove_tag(tag_id, item_id):
+    sel = r.table('item2tag').get_all(tag_id, index='tag_id').filter({'item_id': \
+        item_id}).delete().run(g.conn)
+    return jsonify(sel)
 
 @app.route('/tags/count')
 @jsonp
