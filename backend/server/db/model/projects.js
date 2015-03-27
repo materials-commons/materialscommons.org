@@ -73,6 +73,4 @@ module.exports = function(r) {
 
         return rql;
     }
-
-
 };
