@@ -1,7 +1,6 @@
 /* jshint expr: true */
 
-//var model = require('../mocks/model');
-var model = require('../model-loader')(true);
+var model = require('../mocks/model');
 var schema = require('./index')(model);
 var should = require('should');
 var atf = require('../specs/atf');
@@ -68,7 +67,6 @@ describe('Sample Schema', function() {
             let rv = null;
             try {
                 should.exist(err);
-                console.dir(err);
                 let e = err.project_id.errors[0];
                 e.rule.should.eql('exists');
                 e.actual.should.eql('does not exist');
@@ -94,7 +92,7 @@ describe('Sample Schema', function() {
                 should.exist(err);
                 let e = err.owner.errors[0];
                 e.rule.should.eql('exists');
-                e.action.should.eql('does not exist');
+                e.actual.should.eql('does-not-exist');
             } catch (error) {
                 rv = error;
             }
