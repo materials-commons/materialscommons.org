@@ -6,7 +6,6 @@ module.exports = function(model) {
 
     function mustExist(what, modelName, done) {
         'use strict';
-        console.log('mustExist', what, modelName);
         model[modelName].get(what).then(function(value) {
             let error = null;
             if (!value) {
@@ -22,7 +21,6 @@ module.exports = function(model) {
 
     function mustNotExist(what, spec, done) {
         'use strict';
-        console.log("mustNotExist", what, spec);
 
         let pieces = spec.split(':'),
             modelName = pieces[0],

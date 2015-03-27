@@ -13,7 +13,6 @@ describe('Users', function() {
     it('should have length 2', function(done) {
         co(function*() {
             var users2 = yield mockUsers.getUsers();
-            console.log("here");
             users2.should.have.length(3);
         }).then(function() {
             done();
