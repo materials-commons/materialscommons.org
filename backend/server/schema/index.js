@@ -52,7 +52,6 @@ module.exports = function(model) {
 
     function defineRules() {
         schema.defineRule('mustExist', schemaRules.mustExist, true);
-        schema.defineRule('mustExistProj', schemaRules.mustExist, true);
         schema.defineRule('mustNotExist', schemaRules.mustNotExist, true);
     }
 };
