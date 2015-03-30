@@ -18,23 +18,24 @@ def all_tags():
     selection = list(r.table('tags').run(g.conn, time_format='raw'))
     return resp.to_json(selection)
 
-@app.route('/tags', methods=['POST'])
+@app.route('/tags/item/<item_id>', methods=['POST'])
 @apikey(shared=True)
-def add_tag():
+def add_tag(item_id):
     j = request.get_json()
     id = dmutil.get_required('id', j)
     owner = dmutil.get_required('owner', j)
     model_tag = tag.Tag(id, owner)
     res = dmutil.insert_entry('tags', model_tag.__dict__, return_created=True)
     if res:
-        print res
+        res = r.table('tag2item').insert({'tag_id': res['id'], 'item_id': item_id}).run(g.conn)
         return resp.to_json(res)
 
 @app.route('/tags/<tag_id>/item/<item_id>', methods=['DELETE'])
 @apikey(shared=True)
 def remove_tag(tag_id, item_id):
-    sel = r.table('item2tag').get_all(tag_id, index='tag_id').filter({'item_id': \
-        item_id}).delete().run(g.conn)
+    print tag_id
+    sel = r.table('tag2item').get_all(tag_id, index='tag_id')\
+        .filter({'item_id': item_id}).delete().run(g.conn)
     return jsonify(sel)
 
 @app.route('/tags/count')
