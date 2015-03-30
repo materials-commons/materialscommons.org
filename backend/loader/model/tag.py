@@ -5,4 +5,4 @@ class Tag(object):
         self.id = name
         self.birthtime = r.now()
         self.mtime = self.birthtime
-        self.owner = self.owner
+        self.owner = owner

@@ -108,7 +108,7 @@
                             <b> <i class="fa f-fw fa-tags fa-2x"></i></b> Tags :<span class="pull-right"><i
                                 class="fa fa-fw fa-edit"></i></span>
                             <div class="row">
-                                <tags-input on-tag-added="addTag($tag)" on-tag-removed="removeTag($tag)" ng-model="tags" placeholder="Add a Tag" replace-spaces-with-dashes="false">
+                                <tags-input on-tag-added="addTag($tag)" display-property="id" on-tag-removed="removeTag($tag)" ng-model="activeFile.tags" placeholder="Add a Tag" replace-spaces-with-dashes="false">
                                     <!--<auto-complete source="loadMovies($query)"-->
                                                    <!--min-length="0"-->
                                                    <!--debounce-delay="0"-->

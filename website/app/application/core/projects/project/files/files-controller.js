@@ -7,6 +7,7 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.bk = {
         content: 'details'
     };
+    $scope.tags = [{'id': 'april1'}];
 
     pubsub.waitOn($scope, "activeFile.change", function () {
         getActiveFile();
@@ -56,16 +57,15 @@ function FilesController($scope, projectFiles, applySearch,
         $scope.bk.content = content;
     };
     /*
-    ######################
-    ####### Tags #########
-    ######################
+     ######################
+     ####### Tags #########
+     ######################
      */
     $scope.addTag = function (tag) {
         var tag_obj = {'id': tag.id, 'owner': User.u()};
-        tags.createTag(tag_obj);
+        tags.createTag(tag_obj, $scope.activeFile.id);
     };
     $scope.removeTag = function (tag) {
-        var tag_obj = {'id': tag.id, 'item_id': $scope.activeFile.id};
-        tags.createTag(tag_obj);
+        tags.removeTag(tag.id, $scope.activeFile.id);
     };
 }
