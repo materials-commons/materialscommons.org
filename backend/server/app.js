@@ -3,6 +3,7 @@ var router = require('koa-router')();
 var koa = require('koa');
 var app = module.exports = koa();
 require('koa-qs')(app);
+require('./init')();
 
 var model = require('./model-loader')(module.parent);
 var schema = require('./schema')(model);
@@ -11,7 +12,7 @@ var samples = require('./resources/samples-routes')(model.samples, schema);
 var keycache = require('./apikey-cache')(model.users);
 var apikey = require('./apikey')(keycache);
 
-app.use(apikey); // This checks for valid apikey on all routes after this line
+app.use(apikey); // Check for valid apikey on all routes after this line
 
 app.use(mount('/', projects.routes())).use(projects.allowedMethods());
 app.use(mount('/', samples.routes())).use(samples.allowedMethods());
