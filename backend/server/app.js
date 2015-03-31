@@ -7,7 +7,7 @@ require('koa-qs')(app);
 var model = require('./model-loader')(module.parent);
 var schema = require('./schema')(model);
 var projects = require('./resources/projects-routes')(model.projects);
-var samples = require('./resources/samples-routes')(model.samples, schema.samples);
+var samples = require('./resources/samples-routes')(model.samples, schema);
 var keycache = require('./apikey-cache')(model.users);
 var apikey = require('./apikey')(keycache);
 
