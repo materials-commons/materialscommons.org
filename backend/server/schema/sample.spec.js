@@ -26,7 +26,7 @@ describe('Sample Schema', function() {
                 err.should.be.an.instanceOf(Object).and.have.property('name');
                 err.name.errors.should.be.length(1);
                 let error = err.name.errors[0];
-                error.rule.should.eql('notExists');
+                error.rule.should.eql('mustNotExist');
             } catch (error) {
                 rv = error;
             }
@@ -68,7 +68,7 @@ describe('Sample Schema', function() {
             try {
                 should.exist(err);
                 let e = err.project_id.errors[0];
-                e.rule.should.eql('exists');
+                e.rule.should.eql('mustExist');
                 e.actual.should.eql('does not exist');
             } catch (error) {
                 rv = error;
@@ -91,7 +91,7 @@ describe('Sample Schema', function() {
             try {
                 should.exist(err);
                 let e = err.owner.errors[0];
-                e.rule.should.eql('exists');
+                e.rule.should.eql('mustExist');
                 e.actual.should.eql('does-not-exist');
             } catch (error) {
                 rv = error;
