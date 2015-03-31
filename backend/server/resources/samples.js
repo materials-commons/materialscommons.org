@@ -1,6 +1,6 @@
-module.exports = function(samples, samplesSchema) {
+module.exports = function(samples, schema) {
     'use strict';
-
+    let ec = require('./error-code');
     let parse = require('co-body');
 
     return {
@@ -18,18 +18,40 @@ module.exports = function(samples, samplesSchema) {
         yield next;
     }
 
+    // create creates a new sample. It validates the submitted
+    // entry and enters default values in for optional missing
+    // attributes.
     function *create(next) {
         try {
-            let sample = yield parse(this);
-            samplesSchema.stripNonSchemaAttrs(sample);
-            yield samplesSchema.validateAsync(sample);
+            let sample = prepareSample(yield parse(this));
+            yield validateSample(sample);
             let inserted = yield samples.create(sample);
             this.status = 200;
             this.body = inserted;
             yield next;
         } catch (err) {
-            this.status = 406;
-            this.body = 'bad sample definition';
+            let e = ec(err);
+            this.status = e.status();
+            this.body = e.error();
+        }
+
+        /////////////////
+
+        // prepareSample strips out unknown attributes and adds
+        // default values for optional attributes.
+        function prepareSample(sample) {
+            schema.samples.stripNonSchemaAttrs(sample);
+            schema.samples.addDefaultsToTarget(sample);
+            return sample;
+        }
+
+        // validateSample validates the sample and any properties
+        // included with the sample.
+        function *validateSample(sample) {
+            yield schema.samples.validateAsync(sample);
+            for (let i = 0; i < sample.properties.length; i++) {
+                yield schema.properties.validateAsync(sample.properties[i]);
+            }
         }
     }
 
