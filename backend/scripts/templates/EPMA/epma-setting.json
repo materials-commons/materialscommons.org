@@ -1,0 +1,116 @@
+{
+    "id": "epma-settings" ,
+    "category": "EPMA",
+    "authors": ["tradiasa@umich.edu"],
+    "attribute": "instrument-settings",
+    "default_properties": [
+        {
+            "name": "Voltage(kV)",
+            "attribute": "voltage",
+            "type": "number",
+            "unit": "kV",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Beam Current(nA)",
+            "attribute": "beam_current",
+            "type": "number",
+            "unit": "nA",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Beam Size(µm)",
+            "attribute": "beam_size",
+            "type": "number",
+            "unit": "µm",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Element",
+            "attribute": "element",
+            "type": "text",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "X-ray line",
+            "attribute": "x_ray_line",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": ["Kα","Lα","Kβ"],
+            "required": false
+        },
+        {
+            "name": "Spectrometer",
+            "attribute": "spectrometer",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": ["1", "2", "3", "4", "5"],
+            "required": false
+        },
+        {
+            "name": "Crystal Drop",
+            "attribute": "crystal_drop",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [{"name": "LTAP", "value" : "LTAP"},
+                             {"name": "TAP", "value" : "TAP"},
+                             {"name": "LLIF", "value" : "LLIF"},
+                             {"name": "LPET", "value" : "LPET"},
+                             {"name": "LPCO", "value" : "LPCO"},
+                             {"name": "PET", "value" : "PET"},
+                             {"name": "LIF", "value" : "LIF"},
+                             {"name": "PC1", "value" : "PC1"},
+                             {"name": "PC2", "value" : "PC2"},
+                             {"name": "PC3", "value" : "PC3"}],
+            "required": false
+        },
+        {
+            "name": "Background",
+            "attribute": "background",
+            "type": "select",
+            "unit": "",
+            "unit_choice": [],
+            "value": "",
+            "value_choice": [{"name": "-800", "value" : "-800"},
+                             {"name": "800", "value" : "800"}],
+            "required": false
+        },
+        {
+            "name": "Standard" ,
+            "attribute": "standard",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        }
+    ],
+    "additional_properties":[],
+    "owner": "admin@materialscommons.org",
+    "template_description": "" ,
+    "template_birthtime": "",
+    "template_mtime": "",
+    "template_name": "Settings" ,
+    "template_type": "condition",
+    "template_pick": "instrument"
+}
