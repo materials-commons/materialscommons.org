@@ -51,7 +51,9 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": ["Kα","Lα","Kβ"],
+            "value_choice": [{"name": "Kα", "value" : "Kα"},
+                             {"name": "Lα", "value" : "Lα"},
+                             {"name": "Kβ", "value" : "Kβ"}],
             "required": false
         },
         {
@@ -61,7 +63,11 @@
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": ["1", "2", "3", "4", "5"],
+            "value_choice": [{"name": "1", "value" : "1"},
+                                {"name": "2", "value" : "2"},
+                                {"name": "3", "value" : "3"},
+                                {"name": "4", "value" : "4"},
+                                {"name": "5", "value" : "5"}],
             "required": false
         },
         {
