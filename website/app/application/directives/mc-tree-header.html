@@ -40,15 +40,6 @@
             </button>
         </div>
     </div>
-    <p>
-        <span class="label label-info" ng-repeat="tag in ::item.tags" style="margin-right: 5px">
-            <i class="fa"
-               ng-class="'fa-' + tag.icon"
-               style="color: {{tag.color}}">
-            </i>
-            {{::tag.name}}
-        </span>
-    </p>
 
     <p style="padding-left: 15px;" ng-if="item.type === 'datafile'">
         <button ng-if="isActive('files','addToReview')"
