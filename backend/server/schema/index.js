@@ -12,7 +12,8 @@ module.exports = function(model) {
     defineRules();
 
     return {
-        samples: defineSamplesSchema()
+        samples: defineSamplesSchema(),
+        properties: definePropertiesSchema()
     };
 
     /////////////// Define Schemas ///////////////
@@ -43,13 +44,38 @@ module.exports = function(model) {
                 nullable: true
             }
         });
+        samples.setDefaults({
+            description: '',
+            properties: []
+        });
         samples.validateAsync = promise.promisify(samples.validate);
         return samples;
     }
 
     function definePropertiesSchema() {
         let properties = schema.defineSchema('Properties', {
-
+            name: {
+                type: 'string',
+                nullable: false
+            },
+            _type: {
+                type: 'string',
+                minLength: 1,
+                isValidPropertyType: true
+            },
+            value: {
+                nullable: false
+            },
+            units: {
+                type: 'string',
+                minLength: 1,
+                isValidUnit: true
+            },
+            measurement_id: {
+                type: 'string',
+                nullable: false
+                //mustExist: 'measurements'
+            }
         });
         properties.validateAsync = promise.promisify(properties.validate);
         return properties;
@@ -65,5 +91,7 @@ module.exports = function(model) {
     function defineRules() {
         schema.defineRule('mustExist', schemaRules.mustExist, true);
         schema.defineRule('mustNotExist', schemaRules.mustNotExist, true);
+        schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
+        schema.defineRule('isValidUnit', schemaRules.isValidUnit);
     }
 };
