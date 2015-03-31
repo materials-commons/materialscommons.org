@@ -47,4 +47,13 @@ describe('Properties Schema', function() {
         let errors = schema.properties.validateSync(p);
         should.not.exist(errors);
     });
+
+    it('should only validate name and ignore other fields', function() {
+        let p = {
+            name: 'name'
+        };
+
+        let errors = schema.properties.validateSync(p, true);
+        should.not.exist(errors);
+    })
 });
