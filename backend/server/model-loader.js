@@ -1,7 +1,8 @@
 module.exports = function modelLoader(isParent) {
     'use strict';
 
-    if (isParent) {
+    if (isParent || process.env.MCTEST) {
+        console.log('using mocks/model');
         return require('./mocks/model');
     }
 

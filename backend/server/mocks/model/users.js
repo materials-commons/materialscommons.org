@@ -1,4 +1,5 @@
 var getSingle = require('./get-single');
+var promise = require('bluebird');
 
 module.exports = {
     getUsers: getUsers,

@@ -1,7 +1,9 @@
 var getSingle = require('./get-single');
+var promise = require('bluebird');
 
 module.exports = {
-    get: get
+    get: get,
+    create: create
 };
 
 var samples = [
@@ -21,5 +23,13 @@ function get(id, index) {
     return new Promise(function(resolve, reject) {
         let sample = getSingle(samples, id, index);
         resolve(sample);
+    });
+}
+
+function create(sample) {
+    return promise.resolve().then(function() {
+        sample.id = sample.name;
+        samples.push(sample);
+        return sample;
     });
 }

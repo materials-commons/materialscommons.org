@@ -10,7 +10,7 @@ module.exports = function(model) {
             let error = null;
             if (!value) {
                 error = {
-                    rule: 'exists',
+                    rule: 'mustExist',
                     actual: what,
                     expected: 'did not find ' + what + ' in model'
                 };
@@ -30,7 +30,7 @@ module.exports = function(model) {
             if (value) {
                 // found a match, when we shouldn't have
                 error = {
-                    rule: 'notExists',
+                    rule: 'mustNotExist',
                     actual: what,
                     expected: `found ${what} in model`
                 };

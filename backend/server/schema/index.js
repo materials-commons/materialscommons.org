@@ -7,21 +7,18 @@ module.exports = function(model) {
     'use strict';
 
     let schemaRules = require('./schema-rules')(model);
+    let dataTypes = require('./schema-data-types');
+    defineTypes();
     defineRules();
-    let samples = defineSamplesSchema();
-    samples.validateAsync = promise.promisify(samples.validate);
-    samples.validateYield = promise.coroutine(function *(what) {
-        yield samples.validateAsync(what);
-    });
 
     return {
-        samples: samples //defineSamplesSchema()
+        samples: defineSamplesSchema()
     };
 
     /////////////// Define Schemas ///////////////
 
     function defineSamplesSchema() {
-        return schema.defineSchema('Sample', {
+        let samples = schema.defineSchema('Samples', {
             name:{
                 type: 'string',
                 minLength: 1,
@@ -46,6 +43,21 @@ module.exports = function(model) {
                 nullable: true
             }
         });
+        samples.validateAsync = promise.promisify(samples.validate);
+        return samples;
+    }
+
+    function definePropertiesSchema() {
+        let properties = schema.defineSchema('Properties', {
+
+        });
+        properties.validateAsync = promise.promisify(properties.validate);
+        return properties;
+    }
+
+    /////////////// Define Types ///////////////
+    function defineTypes() {
+        schema.defineDataType('Measurement', dataTypes.measurement);
     }
 
     /////////////// Define Rules ///////////////
