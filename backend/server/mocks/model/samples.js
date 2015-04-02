@@ -6,7 +6,8 @@ var samples = require('./data').samples;
 module.exports = {
     get: get,
     create: create,
-    update: update
+    update: update,
+    findInProject: findInProject
 };
 
 function get(id, index) {
@@ -39,5 +40,15 @@ function update(id, fields) {
             samples[index][key] = fields[key];
         }
         return samples[index];
+    });
+}
+
+function findInProject(projectID, index, key) {
+    'use strict';
+    return promise.resolve().then(function() {
+        let matching = _.filter(samples, function(sample){
+            return sample.project_id === projectID && sample[index] === key;
+        });
+        return matching;
     });
 }
