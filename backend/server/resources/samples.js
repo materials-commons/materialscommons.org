@@ -48,6 +48,7 @@ module.exports = function(samples, schema) {
     }
 
     function *update(next) {
+        'use strict';
         try {
             let fields = prepareSample(yield parse(this));
             yield validateFields(fields);

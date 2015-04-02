@@ -1,23 +1,13 @@
 var getSingle = require('./get-single');
 var promise = require('bluebird');
 var _ = require('lodash');
+var samples = require('./data').samples;
 
 module.exports = {
     get: get,
     create: create,
     update: update
 };
-
-var samples = [
-    {
-        id: 'sample1',
-        name: 'sample1'
-    },
-    {
-        id: 'sample2',
-        name: 'sample2'
-    }
-];
 
 function get(id, index) {
     'use strict';
@@ -37,6 +27,7 @@ function create(sample) {
 }
 
 function update(id, fields) {
+    'use strict';
     return promise.resolve().then(function() {
         let index = _.indexOf(samples, function(sample) {
             return sample.id == id;

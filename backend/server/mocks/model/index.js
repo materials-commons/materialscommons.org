@@ -1,5 +1,6 @@
 module.exports =  {
     users: require('./users'),
     projects: require('./projects'),
-    samples: require('./samples')
+    samples: require('./samples'),
+    access: require('./access')
 };

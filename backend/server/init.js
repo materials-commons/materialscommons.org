@@ -2,11 +2,11 @@ module.exports = function() {
     'use strict';
 
     let _ = require('lodash');
+    var self = {};
 
     // extendedIndexOf extends the lodash indexOf implementation to support
     // passing a function to check for equality.
     function extendedIndexOf(array, test) {
-        var self = this;
 
         // save a reference to the core implementation
         self.indexOfValue = _.indexOf;

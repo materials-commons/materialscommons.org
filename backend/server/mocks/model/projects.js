@@ -1,21 +1,11 @@
 var promise = require('bluebird');
 var getSingle = require('./get-single');
+var projects = require('./data').projects;
 
 module.exports = {
     forUser: forUser,
     get: get
 };
-
-var projects = [
-    {
-        id: 'project1',
-        name: 'project1'
-    },
-    {
-        id: 'project2',
-        name: 'project2'
-    }
-];
 
 function forUser(user) {
      return promise.resolve().then(function() {
