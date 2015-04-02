@@ -6,13 +6,8 @@ require('koa-qs')(app);
 require('./init')();
 
 var model = require('./model-loader')(module.parent);
-var schema = require('./schema')(model);
-var keycache = require('./apikey-cache')(model.users);
-var apikey = require('./apikey')(keycache);
-var projectAccessCache = require('./project-access-cache')(model.access);
-var validateProjectAccess = require('./project-access')(projectAccessCache);
-var projects = require('./resources/projects-routes')(model, schema,
-                                                      validateProjectAccess);
+var apikey = require('./apikey')(model.users);
+var projects = require('./resources/projects-routes')(model);
 
 router.get('/login', function *login(next) {
     console.log("calling login");

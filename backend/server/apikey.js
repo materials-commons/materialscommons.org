@@ -1,8 +1,9 @@
 // apikey module validates the apikey argument used in the call. It
 // caches the list of users to make lookups faster.
 var httpStatus = require('http-status');
-module.exports = function(apikeyCache) {
+module.exports = function(users) {
     'use strict';
+    let apikeyCache = require('./apikey-cache')(users);
     // validateAPIKey Looks up the apikey. If none is specified, or a
     // bad key is passed then abort the calls and send back an 401.
     return function *validateAPIKey(next) {

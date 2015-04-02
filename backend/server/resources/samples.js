@@ -52,7 +52,7 @@ module.exports = function(samples, schema) {
         try {
             let fields = prepareSample(yield parse(this));
             yield validateFields(fields);
-            let updated = yield samples.update(this.params.id, fields);
+            let updated = yield samples.update(this.params.sample_id, fields);
             this.status = 200;
             this.body = updated;
             yield next;
