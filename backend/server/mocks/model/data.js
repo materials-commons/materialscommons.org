@@ -38,11 +38,13 @@ module.exports = {
     samples: [
         {
             id: 'sample1',
-            name: 'sample1'
+            name: 'sample1',
+            project_id: 'project1'
         },
         {
             id: 'sample2',
-            name: 'sample2'
+            name: 'sample2',
+            project_id: 'project2'
         }
     ],
 
