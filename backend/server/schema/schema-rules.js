@@ -59,7 +59,23 @@ module.exports = function(model) {
         });
     }
 
+    // mustNotExistInProject ensures that the item doesn't exist in
+    // the project.
+    function mustNotExistInProject(what, spec, done) {
+        let pieces = spec.split(':'),
+            modelName = pieces[0],
+            index = pieces[1];
+        model[modelName].findInProject(this.project_id, index, what).then(function(matches) {
+            let error = matches.length === 0 ? null : {
+                rule: 'mustNotExistInProject',
+                actual: 'what',
+                expected: `${index}:${what} should not exist in project ${this.project_id}`
+            };
+            done(error);
+        });
+    }
 
+    // isValidPropertyType checks the different known types for a property.
     function isValidPropertyType(what, _ignore) {
         let invalid = {
             rule: 'isValidPropertyType',
@@ -69,6 +85,7 @@ module.exports = function(model) {
         return _.indexOf(propertyTypes, what) === -1 ? invalid : null;
     }
 
+    // isValidUnit checks the different known types for unit.
     function isValidUnit(what, _ignore) {
         let invalid = {
             rule: 'isValidUnit',
