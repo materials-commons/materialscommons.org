@@ -1,3 +1,5 @@
+var model = null;
+
 module.exports = function modelLoader(isParent) {
     'use strict';
 
@@ -5,11 +7,15 @@ module.exports = function modelLoader(isParent) {
         return require('./mocks/model');
     }
 
-    let ropts = {
-        db: process.env.MCDB || 'materialscommons',
-        port: process.env.MCPORT || 30815
-    };
+    if (!model) {
+        let ropts = {
+            db: process.env.MCDB || 'materialscommons',
+            port: process.env.MCPORT || 30815
+        };
 
-    let r = require('rethinkdbdash')(ropts);
-    return require('./db/model')(r);
+        let r = require('rethinkdbdash')(ropts);
+        model = require('./db/model')(r);
+    }
+
+    return model;
 };
