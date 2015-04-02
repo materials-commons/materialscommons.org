@@ -15,19 +15,20 @@ Application.Controllers.controller("homeProcessesDirectiveController",
                                     homeProcessesDirectiveController]);
 function homeProcessesDirectiveController($scope, ui, projectState, $state, pubsub) {
     function segmentProcesses() {
-        $scope.all = [];
+        $scope.bk = {
+            all: []
+        }
         $scope.project.processes.forEach(function(process) {
             if (!('showDetails' in process)) {
                 process.showDetails = false;
             }
-            $scope.all.push(process);
+            $scope.bk.all.push(process);
         });
-
         $scope.project.drafts.forEach(function(draft) {
             if (!('showDetails' in draft)) {
                 draft.showDetails = false;
             }
-            $scope.all.push(draft);
+            $scope.bk.all.push(draft);
         });
     }
 
