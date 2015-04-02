@@ -10,7 +10,6 @@ var apikey = require('./apikey')(model.users);
 var projects = require('./resources/projects-routes')(model);
 
 router.get('/login', function *login(next) {
-    console.log("calling login");
     this.unprotected = true;
     this.body = "login";
     this.status = 200;
