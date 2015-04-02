@@ -1,12 +1,26 @@
 #-*- restclient -*-
 
+# GET login -- shouldn't require an apikey
+GET http://localhost:3000/login
+
 # GET all projects
 GET http://localhost:3000/projects?apikey=adminkey
 
 #
 # POST with existing sample -- should fail
 #
-POST http://localhost:3000/samples?apikey=adminkey
+POST http://localhost:3000/projects/project1/samples?apikey=adminkey
+Content-Type: application/json
+{
+        "name": "sample1",
+        "project_id": "project1",
+        "owner": "admin"
+}
+
+#
+# POST with bad project -- should fail
+#
+POST http://localhost:3000/projects/does-not-exist/samples?apikey=adminkey
 Content-Type: application/json
 {
         "name": "sample1",
@@ -61,4 +75,22 @@ Content-Type: application/json
                 }
         ],
         "extra": true
+}
+
+#
+# PUT update existing sample with no content type -- should fail
+#
+PUT http://localhost:3000/samples/sample1?apikey=adminkey
+{
+        "name": "sample1-changed"
+}
+
+#
+# PUT update existing sample -- should succeed
+#
+PUT http://localhost:3000/samples/sample1?apikey=adminkey
+Content-Type: application/json
+{
+        "name": "sample1-changed2",
+        "description": "The description"
 }

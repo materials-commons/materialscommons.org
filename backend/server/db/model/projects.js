@@ -3,6 +3,7 @@ module.exports = function(r) {
     let run = require('./run');
     let getSingle = require('./get-single');
     return {
+        all: all,
         forUser: forUser,
         get: function(id, index) {
             return getSingle(r, 'projects', id, index);
@@ -10,6 +11,15 @@ module.exports = function(r) {
     };
 
     ///////////////
+
+
+    // all returns all the projects in the database. It only returns the
+    // project entries in the projects table. It doesn't attempt to
+    // build all the related entries.
+    function all() {
+        let rql = r.table('projects').filter(r.row('owner').ne('delete@materialscommons.org'));
+        return run(rql);
+    }
 
     // forUser returns all the projects for a specific user. It handles
     // the case where a user is an administrator.
