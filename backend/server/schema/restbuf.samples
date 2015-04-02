@@ -31,7 +31,7 @@ Content-Type: application/json
 #
 # POST with new sample -- should succeed
 #
-POST http://localhost:3000/samples?apikey=adminkey
+POST http://localhost:3000/projects/project1/samples?apikey=adminkey
 Content-Type: application/json
 {
         "name": "new-sample",
@@ -52,7 +52,7 @@ Content-Type: application/json
 #
 # POST with new sample and bad property -- should fail
 #
-POST http://localhost:3000/samples?apikey=adminkey
+POST http://localhost:3000/projects/project1/samples?apikey=adminkey
 Content-Type: application/json
 {
         "name": "new-sample2",
@@ -80,7 +80,7 @@ Content-Type: application/json
 #
 # PUT update existing sample with no content type -- should fail
 #
-PUT http://localhost:3000/samples/sample1?apikey=adminkey
+PUT http://localhost:3000/projects/project1/samples/sample1?apikey=adminkey
 {
         "name": "sample1-changed"
 }
@@ -88,7 +88,7 @@ PUT http://localhost:3000/samples/sample1?apikey=adminkey
 #
 # PUT update existing sample -- should succeed
 #
-PUT http://localhost:3000/samples/sample1?apikey=adminkey
+PUT http://localhost:3000/projects/project1/samples/sample1?apikey=adminkey
 Content-Type: application/json
 {
         "name": "sample1-changed2",
