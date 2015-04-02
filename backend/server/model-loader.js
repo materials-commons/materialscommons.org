@@ -3,11 +3,13 @@ var model = null;
 module.exports = function modelLoader(isParent) {
     'use strict';
 
-    if (isParent || process.env.MCTEST) {
-        return require('./mocks/model');
+    if (model) {
+        return model;
     }
 
-    if (!model) {
+    if (isParent || process.env.MCTEST) {
+        model = require('./mocks/model');
+    } else {
         let ropts = {
             db: process.env.MCDB || 'materialscommons',
             port: process.env.MCPORT || 30815
