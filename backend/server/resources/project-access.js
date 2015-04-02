@@ -1,9 +1,12 @@
-module.exports = function(projectAccessCache) {
+module.exports = function(access) {
     'use strict';
     let httpStatus = require('http-status');
+    let projectAccessCache = require('./project-access-cache')(access);
     return function *validateProject(next) {
+        console.log(this.params.project_id);
         let projectID = this.params.project_id;
         let project = yield projectAccessCache.find(projectID);
+
         if (! project) {
             this.throw(httpStatus.BAD_REQUEST, "Unknown project");
         }
