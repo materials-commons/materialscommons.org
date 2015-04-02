@@ -30,7 +30,6 @@ function update(id, fields) {
     'use strict';
     return promise.resolve().then(function() {
         let index = _.indexOf(samples, function(sample) {
-            console.log(sample.id, id);
             return sample.id == id;
         });
         if (index === -1) {
