@@ -19,6 +19,7 @@ module.exports = function(model) {
     return {
         mustExist: mustExist,
         mustNotExist: mustNotExist,
+        mustNotExistInProject: mustNotExistInProject,
         isValidPropertyType: isValidPropertyType,
         isValidUnit: isValidUnit
     };
@@ -65,11 +66,12 @@ module.exports = function(model) {
         let pieces = spec.split(':'),
             modelName = pieces[0],
             index = pieces[1];
+        let project_id = this.project_id;
         model[modelName].findInProject(this.project_id, index, what).then(function(matches) {
             let error = matches.length === 0 ? null : {
                 rule: 'mustNotExistInProject',
                 actual: 'what',
-                expected: `${index}:${what} should not exist in project ${this.project_id}`
+                expected: `${index}:${what} should not exist in project ${project_id}`
             };
             done(error);
         });
