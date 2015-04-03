@@ -12,20 +12,30 @@ def create_database():
 
 def create_tables():
     create_table("users", "apikey", "admin")
+
+    # User groups should go away once mcstored is updated
     create_table("usergroups", "owner", "name")
+
     create_table("tags")
-    create_table("news")
     create_table("notes", "project_id")
+
+    # Are runs, properties, and property_sets needed?
     create_table("runs")
     create_table("properties", "item_id", "value")
     create_table("property_sets", "item_id")
+
     create_table("reviews", "assigned_to", "author", "project_id")
-    create_table("processes", "project_id", "project")
+
+    # Is machines needed?
     create_table("machines")
+
     create_table("projects", "name", "owner")
     create_table("templates")
     create_table("ui")
+
+    # Drafts should be going away
     create_table("drafts")
+
     create_table("samples", "project_id")
     create_table('access', "user_id", "project_id", "dataset")
     create_table("elements")
@@ -43,12 +53,30 @@ def create_tables():
     create_table("comment2item", "comment_id", "item_id")
     create_table("note2item", "note_id", "item_id")
     create_table("review2item", "review_id", "item_id")
-    create_table("process2item", "process_id", "item_id")
-    create_table("sample2item", "sample_id", "item_id")
     create_table("datadir2datafile", "datadir_id", "datafile_id")
     create_table("uploads", "uploads", "project_id")
 
-    create_samples_model()
+    # Create samples model
+    create_table("processes", "template_id")
+    create_table("project2process", "project_id", "process_id")
+    create_table("sample2datafile", "sample_id", "datafile_id")
+    create_table("sample2attributeset", "sample_id", "attribute_set_id")
+    create_table("attributeset2attribute", "attribute_set_id", "attribute_id")
+    create_table("attributesets", "parent_id")
+    create_table("project2sample", "sample_id", "project_id")
+    create_table("process2sample", "sample_id", "process_id",
+                 "attribute_set_id", "_type")
+    create_table("attribute2process", "attribute_id",
+                 "process_id")
+    create_table("settings")
+    create_table("process2setting", "process_id", "setting_id", "_type")
+    create_table("process2file", "process_id", "datafile_id", "_type")
+    create_table("attributes", "parent_id")
+    create_table("measurements", "process_id")
+    create_table("attribute2measurement", "attribute_id",
+                 "measurement_id")
+    create_table("best_measure_history", "process_id", "attribute_id")
+
 
 
 def create_samples_model():
