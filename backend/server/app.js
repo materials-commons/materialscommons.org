@@ -1,5 +1,4 @@
 var mount = require('koa-mount');
-var router = require('koa-router')();
 var koa = require('koa');
 var app = module.exports = koa();
 require('koa-qs')(app);
@@ -9,22 +8,20 @@ var model = require('./model-loader')(module.parent);
 var apikey = require('./apikey')(model.users);
 var projects = require('./resources/projects-routes')(model);
 
-router.get('/login', function *login(next) {
-    this.unprotected = true;
+var loginRoute = require('koa-router')();
+loginRoute.get('/login', function *login(next) {
     this.body = "login";
     this.status = 200;
     yield next;
 });
 
-app.use(mount('/', router.routes())).use(router.allowedMethods());
-app.use(apikey); // Check for valid apikey on all routes after this line
-//app.use(projectCtx);
+app.use(apikey);
+app.use(mount('/', loginRoute.routes())).use(loginRoute.allowedMethods());
 app.use(mount('/', projects.routes())).use(projects.allowedMethods());
 
 if (!module.parent) {
     app.listen(3000);
 }
-
 
 //////////////////////
 
