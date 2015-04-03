@@ -26,7 +26,7 @@ describe('Sample Schema', function() {
                 err.should.be.an.instanceOf(Object).and.have.property('name');
                 err.name.errors.should.be.length(1);
                 let error = err.name.errors[0];
-                error.rule.should.eql('mustNotExist');
+                error.rule.should.eql('mustNotExistInProject');
             } catch (error) {
                 rv = error;
             }
@@ -52,7 +52,7 @@ describe('Sample Schema', function() {
             }
             done(rv);
         }
-        atf(function *testWithYield() {
+        atf(function *testCorrectSample() {
             let sample = {
                 name: 'sample',
                 project_id: 'project1',
@@ -62,49 +62,25 @@ describe('Sample Schema', function() {
         }, validateNoError);
     });
 
-    it('should fail on an non existent project', function(done) {
-        function validate(err) {
+    it('should not error for a sample that exists in a different project', function(done) {
+        function validateError(err) {
             let rv = null;
             try {
-                should.exist(err);
-                let e = err.project_id.errors[0];
-                e.rule.should.eql('mustExist');
-                e.actual.should.eql('does not exist');
+                should.not.exist(err);
             } catch (error) {
                 rv = error;
             }
             done(rv);
         }
-        atf(function *() {
+
+        atf(function *testSampleInDifferentProject() {
             let sample = {
-                name: 'sample',
-                project_id: 'does not exist',
+                name: 'sample1',
+                project_id: 'project2',
                 owner: 'admin'
             };
             yield schema.samples.validateAsync(sample);
-        }, validate);
+        }, validateError);
     });
 
-    it('should fail on an non existant user', function(done) {
-        function validate(err) {
-            let rv = null;
-            try {
-                should.exist(err);
-                let e = err.owner.errors[0];
-                e.rule.should.eql('mustExist');
-                e.actual.should.eql('does-not-exist');
-            } catch (error) {
-                rv = error;
-            }
-            done(rv);
-        }
-        atf(function *() {
-            let sample = {
-                name: 'sample',
-                project_id: 'project1',
-                owner: 'does-not-exist'
-            };
-            yield schema.samples.validateAsync(sample);
-        }, validate);
-    });
 });

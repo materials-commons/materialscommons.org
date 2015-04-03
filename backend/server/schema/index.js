@@ -22,18 +22,16 @@ module.exports = function(model) {
         let samples = schema.defineSchema('Samples', {
             name:{
                 type: 'string',
-                minLength: 1,
-                mustNotExist: 'samples:name'
+                nullable: false,
+                mustNotExistInProject: 'samples:name'
             },
             project_id: {
                 type: 'string',
-                minLength: 1,
-                mustExist: 'projects'
+                nullable: false
             },
             owner: {
                 type: 'string',
-                minLength: 1,
-                mustExist: 'users'
+                nullable: false
             },
             description: {
                 type: 'string',
@@ -91,6 +89,8 @@ module.exports = function(model) {
     function defineRules() {
         schema.defineRule('mustExist', schemaRules.mustExist, true);
         schema.defineRule('mustNotExist', schemaRules.mustNotExist, true);
+        schema.defineRule('mustNotExistInProject',
+                          schemaRules.mustNotExistInProject, true);
         schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
         schema.defineRule('isValidUnit', schemaRules.isValidUnit);
     }
