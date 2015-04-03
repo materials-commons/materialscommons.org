@@ -24,6 +24,8 @@ module.exports = function(samples, schema) {
     function *create(next) {
         try {
             let sample = prepareSample(yield parse(this));
+            sample.project_id = this.params.project_id;
+            sample.owner = this.reqctx.user.id;
             yield validateSample(sample);
             let inserted = yield samples.create(sample);
             this.status = 200;
@@ -51,6 +53,7 @@ module.exports = function(samples, schema) {
         'use strict';
         try {
             let fields = prepareSample(yield parse(this));
+            fields.project_id = this.params.project_id;
             yield validateFields(fields);
             let updated = yield samples.update(this.params.sample_id, fields);
             this.status = 200;
