@@ -97,7 +97,7 @@ function wizardStepDoneDirectiveController($scope, provStep, $stateParams, Resta
                 Restangular.one('processes').one('project', project.id)
                     .get(User.keyparam()).then(function (processes) {
                         project.processes = processes;
-
+                        pubsub.send("processes.change");
                         closeProvenanceAction();
                     });
                 ////Remove draft if it exists:

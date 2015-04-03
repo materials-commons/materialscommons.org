@@ -71,8 +71,8 @@
             "required": false
         },
         {
-            "name": "Crystal Drop",
-            "attribute": "crystal_drop",
+            "name": "Crystal",
+            "attribute": "crystal",
             "type": "select",
             "unit": "",
             "unit_choice": [],
@@ -92,17 +92,58 @@
         {
             "name": "Background",
             "attribute": "background",
-            "type": "select",
+            "type": "text",
             "unit": "",
             "unit_choice": [],
             "value": "",
-            "value_choice": [{"name": "-800", "value" : "-800"},
-                             {"name": "800", "value" : "800"}],
+            "value_choice": [],
             "required": false
         },
         {
             "name": "Standard" ,
             "attribute": "standard",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Scan Type" ,
+            "attribute": "scan_type",
+            "type": "select" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [{"name": "Line", "value" : "line"},
+                            {"name": "Grid", "value" : "grid"},
+                            {"name": "Point", "value" : "point"}],
+            "required": false
+        },
+        {
+            "name": "Step Size (µm)" ,
+            "attribute": "step_size",
+            "type": "number" ,
+            "unit": "(µm)" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Grid Dimensions" ,
+            "attribute": "grid_dimensions",
+            "type": "text" ,
+            "unit": "" ,
+            "unit_choice": [],
+            "value": "" ,
+            "value_choice": [],
+            "required": false
+        },
+        {
+            "name": "Location" ,
+            "attribute": "location",
             "type": "text" ,
             "unit": "" ,
             "unit_choice": [],
