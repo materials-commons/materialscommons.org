@@ -18,17 +18,18 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
         $scope.bk = {
             all: []
         }
-        $scope.project.processes.forEach(function(process) {
-            if (!('showDetails' in process)) {
-                process.showDetails = false;
-            }
-            $scope.bk.all.push(process);
-        });
+
         $scope.project.drafts.forEach(function(draft) {
             if (!('showDetails' in draft)) {
                 draft.showDetails = false;
             }
             $scope.bk.all.push(draft);
+        });
+        $scope.project.processes.forEach(function(process) {
+            if (!('showDetails' in process)) {
+                process.showDetails = false;
+            }
+            $scope.bk.all.push(process);
         });
     }
 
