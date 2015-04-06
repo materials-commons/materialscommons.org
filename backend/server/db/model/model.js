@@ -2,6 +2,7 @@ module.exports = function(r) {
     'use strict';
 
     let db = require('./db')(r);
+    let _ = require('lodash');
 
     return {
         Sample: Sample,
@@ -45,16 +46,26 @@ module.exports = function(r) {
         this._type = "process";
     }
 
+    function Process2Setting(processID, settingID) {
+        this.setting_id = settingID;
+        this.process_id = processID;
+    }
+
+    function Process2Measurement(processID, mID) {
+        this.measurement_id = mID;
+        this.process_id = processID;
+    }
+
     function Settings(name) {
         this.name = name;
         this.birthtime = r.now();
         this._type = "settings";
-        this.settings = {};
+        this.properties = {};
     }
 
-    Settings.prototype.addSetting = function(name, _type, value, units, nvalue, nunits) {
+    Settings.prototype.addProperty = function(name, _type, value, units, nvalue, nunits) {
         let p = new Property(_type, value, units ? units : "", nvalue ? nvalue : value, nunits ? nunits : units);
-        this.settings[name] = p;
+        this.properties[name] = p;
     };
 
     function Property(_type, value, units, nvalue, nunits) {
@@ -69,13 +80,20 @@ module.exports = function(r) {
         this.properties[name] = val;
     }
 
-    function Measurement(processID) {
-        this.process_id = processID;
+    function Measurement(name, sampleID) {
+        this.name = name;
+        this.sample_id = sampleID;
         this._type = "measurement";
         this.properties = {};
     }
 
     Measurement.prototype.addProperty = addProperty;
+
+    function Measurement2DataFile(mID, fileID, location) {
+        this.measurement_id = mID;
+        this.datafile_id = fileID;
+        this.location = location;
+    }
 
     function Attribute2Measurement(attrID, measurementID) {
         this.attribute_id = attrID;
@@ -118,9 +136,8 @@ module.exports = function(r) {
         this._type = 'best_measure_history';
     }
 
-    function *addMeasurement(name, prop, attrID, processID) {
-        let m = new Measurement(processID);
-        m.addProperty(name, prop);
+    function *addMeasurement(name, prop, attrID, processID, sampleID) {
+        let m = new Measurement(name, processID, sampleID);
         let rv = yield db.insert('measurements', m);
         let mid = rv.id;
         let a2m = new Attribute2Measurement(attrID, mid);
@@ -128,12 +145,7 @@ module.exports = function(r) {
         return mid;
     }
 
-    function *addProcess(projectID, process) {
-        let proc = yield db.insert('processes', process);
-        let p2proc = new Project2Process(projectID, proc.id);
-        yield db.insert('project2process', p2proc);
-        return p2proc.id;
-    }
+
 
     function *addAttributeSet(processID, sampleID, attrSet, direction) {
         let aset = db.insert('attributesets', attrSet);
@@ -167,10 +179,18 @@ module.exports = function(r) {
         yield db.insert('best_measure_history', bmHistory);
     }
 
-    function *addSettings(processID, settings, _type) {
-        let setting = yield db.insert('settings', settings);
-        p2s = new Process2Setting(processID, setting.id, _type);
-        yield db.insert('process2setting', p2s);
+    //////////////////////////////// moved into specific model //////////////
+
+    function *addProcess(projectID, process) {
+        let proc = yield db.insert('processes', process);
+        let p2proc = new Project2Process(projectID, proc.id);
+        yield db.insert('project2process', p2proc);
+        return p2proc.id;
     }
 
+    function *addSettings(processID, settings, direction) {
+        let setting = yield db.insert('settings', settings);
+        let p2s = new Process2Setting(processID, setting.id, direction);
+        yield db.insert('process2setting', p2s);
+    }
 };
