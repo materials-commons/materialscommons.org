@@ -73,6 +73,8 @@ def create_tables():
     create_table("process2file", "process_id", "datafile_id", "_type")
     create_table("attributes", "parent_id")
     create_table("measurements", "process_id")
+    create_table("process2measurement", "process_id", "measurement_id")
+    create_table("measurement2datafile", "measurement_id", "datafile_id")
     create_table("attribute2measurement", "attribute_id",
                  "measurement_id")
     create_table("best_measure_history", "process_id", "attribute_id")
