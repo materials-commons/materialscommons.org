@@ -20,9 +20,12 @@ module.exports = function(model) {
         mustExist: mustExist,
         mustNotExist: mustNotExist,
         mustNotExistInProject: mustNotExistInProject,
+        mustExistInProject: mustExistInProject,
         isValidPropertyType: isValidPropertyType,
         isValidUnit: isValidUnit
     };
+
+    ////////////////////////////////////////
 
     // mustExist looks up an entry in the named table by id. If
     // the entry doesn't exist it returns an error.
@@ -70,11 +73,25 @@ module.exports = function(model) {
         model[modelName].findInProject(this.project_id, index, what).then(function(matches) {
             let error = matches.length === 0 ? null : {
                 rule: 'mustNotExistInProject',
-                actual: 'what',
+                actual: what,
                 expected: `${index}:${what} should not exist in project ${project_id}`
             };
             done(error);
         });
+    }
+
+    // mustExistInProject ensures that the item exists in the project.
+    function mustExistInProject(what, modelName, done) {
+        let project_id = this.project_id;
+        model[modelName].findInProject(this.project_id, 'id', what)
+            .then(function(matches) {
+                let error = matches.length !== 0 ? null : {
+                    rules: 'mustExistInProject',
+                    actual: what,
+                    expected: `${what} should exist in project ${project_id}`
+                };
+                done(error);
+            });
     }
 
     // isValidPropertyType checks the different known types for a property.
