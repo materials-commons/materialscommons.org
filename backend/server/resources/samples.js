@@ -10,6 +10,8 @@ module.exports = function(samples, schema) {
         update: update
     };
 
+    ///////////////////////////////////////
+
     function *all(next) {
         yield next;
     }
@@ -78,6 +80,8 @@ module.exports = function(samples, schema) {
             }
         }
     }
+
+    //////////////////////////////
 
     // prepareSample strips out unknown attributes and adds
     // default values for optional attributes.
