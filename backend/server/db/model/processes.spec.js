@@ -10,13 +10,22 @@ describe('Processes', function() {
     let p = require('./processes')(r);
 
     describe('#create', function() {
-        it('should do something', function(done) {
+        it('should create a process', function(done) {
             function validate(err) {
                 console.log("err", err);
                 done(err);
             }
             atf(function *() {
-                yield p.create({});
+                let process = {
+                    name: 'as_received',
+                    owner: 'test@mc.org',
+                    template_id: 'as_received',
+                    description : '',
+                    project_id: 'abc123',
+                    settings: [],
+                    measurements: []
+                };
+                yield p.create(process);
             }, validate);
         });
     });
