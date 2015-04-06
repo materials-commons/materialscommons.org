@@ -1,4 +1,5 @@
 module.exports = function(r) {
+    'use strict';
 
     return {
         insert: insert,
