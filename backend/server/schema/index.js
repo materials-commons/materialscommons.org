@@ -13,7 +13,7 @@ module.exports = function(model) {
 
     return {
         samples: defineSamplesSchema(),
-        properties: definePropertiesSchema()
+        processes: defineProcessSchema()
     };
 
     /////////////// Define Schemas ///////////////
@@ -21,6 +21,10 @@ module.exports = function(model) {
     function defineProcessSchema() {
         let process = schema.defineSchema('Process', {
             owner: {
+                type: 'string',
+                nullable: false
+            },
+            project_id: {
                 type: 'string',
                 nullable: false
             },
@@ -33,7 +37,7 @@ module.exports = function(model) {
                 nullable: false,
                 mustExist: 'templates'
             },
-            description: {
+            what: {
                 type: 'string',
                 nullable: true
             },
@@ -49,19 +53,11 @@ module.exports = function(model) {
                 type: 'array',
                 nullable: true
             },
-            files_used: {
-                type: 'array',
-                nullable: true
-            },
             samples_created: {
                 type: 'array',
                 nullable: true
             },
-            samples_used: {
-                type: 'array',
-                nullable: true
-            },
-            measurements: {
+            measurements_created: {
                 type: 'array',
                 nullable: true
             }
@@ -70,10 +66,8 @@ module.exports = function(model) {
             description: '',
             how: '',
             files_created: [],
-            files_used: [],
             samples_created: [],
-            samples_used: [],
-            measurements: []
+            measurements_created: []
         });
         process.validateAsync = promise.promisify(process.validate);
         return process;
@@ -116,35 +110,6 @@ module.exports = function(model) {
         return samples;
     }
 
-    function definePropertiesSchema() {
-        let properties = schema.defineSchema('Properties', {
-            name: {
-                type: 'string',
-                nullable: false
-            },
-            _type: {
-                type: 'string',
-                minLength: 1,
-                isValidPropertyType: true
-            },
-            value: {
-                nullable: false
-            },
-            units: {
-                type: 'string',
-                minLength: 1,
-                isValidUnit: true
-            },
-            measurement_id: {
-                type: 'string',
-                nullable: false
-                //mustExist: 'measurements'
-            }
-        });
-        properties.validateAsync = promise.promisify(properties.validate);
-        return properties;
-    }
-
     function defineMeasurementsSchema() {
         let measurements = schema.defineSchema('Measurement', {
             name: {
@@ -176,7 +141,18 @@ module.exports = function(model) {
                 nullable: true
             },
 
-            file: {
+            sample_id: {
+                type: 'string',
+                nullable: false,
+                mustExistInProject: 'samples'
+            },
+
+            from_measurements: {
+                type: 'array',
+                nullable: true
+            },
+
+            from_file: {
                 nullable: true,
 
                 file_id: {
