@@ -13,47 +13,172 @@
             <div>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <i class=" fa fa-fw fa-book"></i> <a ng-click="showGloss = !showGloss">Glossary</a>
+                        <i class=" fa fa-fw fa-bars"></i>
+                        <a ng-click="userStart = !userStart">User Start</a>
 
-                        <div style="padding-top: 20px; padding-left: 5px;" ng-show="showGloss">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userStart">
+                            <h4 class="text-center">User Start</h4>
+                            <hr/>
+                            <div class="row">
+                                When you login for the first time into Materials Commons we expect you will have no
+                                projects / data entered.
+                                User Start is intended to help all the new users who are trying to understand what
+                                MaterialsCommons does.
+                            </div>
+                            <b>Overview</b>
+
+                            <p>Provenance is the heart of the Materials Commons.
+                                The flowchart below is designed to help user understand the workflow of how to create
+                                Provenance. Areas highlighted in grey are the essential steps to create provenance</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive"
+                                     src="assets/img/userguide/user-start/usertstart2.png">
+                            </div>
+                            <b>Create Project</b>
+
+                            <p>In-order to upload files first you have to create project(or workspace). To create a
+                                project click on drop-down list and hit "New Project" which will ask you to enter name
+                                for the project. You can create multiple projects which means evry project will have its
+                                own workspace</p>
+                            <b>Why you have to create project ?</b>
+
+                            <p>Project is like your workspace where you can store files , notes, samples , provenance
+                                related to that project.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive"
+                                     src="assets/img/userguide/user-start/create-project-ustart.png">
+                            </div>
+                            <b>Upload files</b>
+
+                            <p>Under the files panel you will see an empty project folder is created. Now you can click
+                                the upload icon <i class="fa fa-fw fa-upload"></i>
+                                to upload your files into the project.</p>
+                            <b>Why you have to upload files ?</b>
+
+                            <p> Prior to creating the provenance (refer to the flowchart) you will have to upload your
+                                data onto Material
+                                Commons. So that this uploaded data will be available during provenance creation.</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive"
+                                     src="assets/img/userguide/user-start/upload-files-ustart.png">
+                            </div>
+                            <b><a ng-click="goTo('createSample')">Create Sample</a></b>
+
+                            <p>Under the samples panel click on <i class="fa fa-fw fa-plus"></i> icon and fill in the
+                                details of the sample and hit
+                                create which will add sample to the list.</p>
+                            <b>Why you have to create sample ?</b>
+
+                            <p>Sample is a piece of material on which you wanted to perform some experiments. Similar to
+                                file uploads you have to create your sample so that it will be available for you to
+                                choose during provenance creation </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive"
+                                     src="assets/img/userguide/user-start/create-sample-ustart.png">
+                            </div>
+                            <b>Associate Provenance</b>
+
+                            <p>Under the processes panel click on the <i class="fa fa-fw fa-plus"></i> icon to create
+                                process. Then
+                                from the drop-down list select what type of experiment/analysis you wanted to run and
+                                then associate your data at the input/output steps.</p>
+                            <b>Why you have to create provenance?</b>
+
+                            <p>The purpose of creating provenance is to keep track of the history of changes done to
+                                the data items. </p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive"
+                                     src="assets/img/userguide/user-start/create-provenance-ustart.png">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <i class=" fa fa-fw fa-book"></i> <a ng-click="showGlossary = !showGlossary">Glossary</a>
+
+                        <div style="background-color: #e9e7dd;padding-top: 20px; padding-left: 5px;"
+                             ng-show="showGlossary">
                             <h4 class="text-center">Glossary</h4>
                             <hr/>
-                            <p><i class="fa fa-fw fa-tachometer"></i>Dashboard :</p>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw fa-tachometer"></i>Dashboard:</div>
+                                <div class="col-xs-8">is the area where you can see all
+                                    panels for a project.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw fa-pencil-square-o"></i> Draft:</div>
+                                <div class="col-xs-8">can be defined as an incomplete provenance step. When you save
+                                    your provenance as draft you can go back and modify at anytime.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw"></i>Last login:</div>
+                                <div class="col-xs-8">will provide your last login date onto Materials Commons.</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw fa-briefcase"></i>Project:</div>
+                                <div class="col-xs-8"> is defined as a workspace where you can store all the
+                                    information related to a project or perform some actions against them. Every project
+                                    will have its own defined workspace.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw"></i>Provenance:</div>
+                                <div class="col-xs-8">is defined as the history of data</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw fa-code-fork"></i>Process:</div>
+                                <div class="col-xs-8">is one of the key step in provenance creation. Process is defined
+                                    as an experiment / computation / data analysis with a set of inputs and outputs.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw"></i>Panel:</div>
+                                <div class="col-xs-8">is a container to list various items (such
+                                    as reviews/samples/notes/processes/files) inside a project.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw fa-comment"></i>Review:</div>
+                                <div class="col-xs-8">is defined as an assessment or examination of something with the
+                                    possibility or intention of instituting change if necessary.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw fa-cubes"></i>Sample:</div>
+                                <div class="col-xs-8">is defined as a material on which user can perform some
+                                    experiment. During provenance creation sample will be an input into the
+                                    process.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw "></i>Template:</div>
+                                <div class="col-xs-8">is a placeholder for detailed steps inside a
+                                    process(experiment/computation/data analysis). There are set of pre-defined
+                                    templates
+                                    on Materials Commons.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3"><i class="fa fa-fw fa-clipboard"></i>Sideboard:</div>
+                                <div class="col-xs-8">is an area where you can add/drag various items to compare
+                                    side-by-side.
+                                </div>
+                            </div>
 
-                            <p><i class="fa fa-fw fa-pencil-square-o"></i> Draft :</p>
-
-                            <p><i class="fa fa-fw fa-file"></i>File :</p>
-
-                            <p><i class="fa fa-fw fa-comment"></i>Global review :</p>
-
-                            <p><i class="fa fa-fw fa-home"></i>Home :</p>
-
-                            <p><i class="fa fa-fw"></i>Last login :</p>
-
-                            <p><i class="fa fa-fw"></i>Preferred template :</p>
-
-                            <p><i class="fa fa-fw fa-briefcase"></i>Project :</p>
-
-                            <p><i class="fa fa-fw"></i>Provenance :</p>
-
-                            <p><i class="fa fa-fw fa-code-fork"></i>Process :</p>
-
-                            <p><i class="fa fa-fw fa-comment"></i>Review :</p>
-
-                            <p><i class="fa fa-fw fa-cubes"></i>Sample :</p>
-
-                            <p><i class="fa fa-fw "></i>Template :</p>
-
-                            <p><i class="fa fa-fw fa-clipboard"></i>Sideboard :</p>
-
-                            <div class="watermark">Draft :</div>
+                            <div class="watermark">Draft</div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-bars"></i>
                         <a ng-click="showNav = !showNav">Nav bar</a>
 
-                        <div style="padding-top: 20px;" ng-show="showNav">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showNav">
                             <h4 class="text-center">Navigation Bar</h4>
                             <hr/>
                             <b>Navigation:</b>
@@ -101,7 +226,7 @@
                         <i class=" fa fa-fw fa-briefcase"></i>
                         <a ng-click="showProjectBar = !showProjectBar">Project Bar</a>
 
-                        <div style="padding-top: 20px;" ng-show="showProjectBar">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showProjectBar">
                             <h4 class="text-center">Project Bar</h4>
                             <hr/>
                             <b>Switch Projects</b>
@@ -172,9 +297,10 @@
                     </li>
 
                     <li class="list-group-item">
-                        <i class=" fa fa-fw fa-home"></i> <a ng-click="showHome = !showHome">Home Page</a>
+                        <i class=" fa fa-fw fa-home"></i> <a ng-click="showHome = !showHome">Home
+                        Page</a>
 
-                        <div style="padding-top: 20px;" ng-show="showHome">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showHome">
                             <h4 class="text-center">Home Page</h4>
                             <hr/>
                             <p>Homepage contains panels for Reviews, Samples, Files, Notes and Provenance.
@@ -209,7 +335,7 @@
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-comment-o"></i> <a ng-click="showReviews = !showReviews">Reviews</a>
 
-                        <div style="padding-top: 20px;" ng-show="showReviews">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showReviews">
                             <h4 class="text-center">Reviews</h4>
                             <hr/>
                             <p>Panel will list all the reviews created inside a project. List may contain
@@ -250,10 +376,10 @@
                             </div>
                         </div>
                     </li>
-                    <li class="list-group-item list-group-item">
+                    <li  class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
 
-                        <div style="padding-top: 20px;" ng-show="showSamples">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showSamples">
                             <h4 class="text-center">Samples</h4>
                             <hr/>
                             <p>Panel will list all the samples inside a project. When you click on the sample name you
@@ -263,7 +389,7 @@
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/show-sample.png">
                             </div>
-                            <b>How to create a sample</b>
+                            <b id="createSample">How to create a sample</b>
 
                             <p>When you click Plus <i class="fa fa-plus"></i> icon it will open up a form where you can
                                 fill in the name, alloy supplier and sample type. Icons annotated as 1, 2 and 3 (Image)
@@ -293,7 +419,7 @@
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-edit"></i> <a ng-click="showNotes = !showNotes">Notes</a>
 
-                        <div style="padding-top: 20px;" ng-show="showNotes">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showNotes">
                             <h4 class="text-center">Notes</h4>
                             <hr/>
                             <b>List: </b>
@@ -325,7 +451,7 @@
                         <i class=" fa fa-fw fa-code-fork"></i> <a
                             ng-click="showProvenance = !showProvenance">Processes</a>
 
-                        <div style="padding-top: 20px;" ng-show="showProvenance">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showProvenance">
                             <h4 class="text-center">Provenance</h4>
                             <hr/>
 
@@ -427,7 +553,7 @@
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">Files</a>
 
-                        <div style="padding-top: 20px;" ng-show="showFile">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showFile">
                             <h4 class="text-center">Files</h4>
                             <hr/>
                             <div class="watermark">Draft</div>

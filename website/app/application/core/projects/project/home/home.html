@@ -17,9 +17,15 @@
         <div ui-view></div>
     </div>
     <div class="row">
-        <div class="col-xs-6">
-            <div class="row" ng-if="showPanel('calendar')">
-                <div home-calendar project="project"></div>
+        <div ng-show="!isColumnActive('column1')">
+            <div ng-class="{'col-xs-6': !isExpandedInColumn(column1), 'col-xs-12': isExpandedInColumn(column1)}"
+                 ng-show="!isExpandedInColumn(column2)">
+                <div class="row" ng-if="showPanel('calendar')">
+                    <div home-calendar project="project"></div>
+                </div>
+                <div ng-repeat="panel in column1">
+                    <display-panel split-icon="false" panel-name="panel" project="project"></display-panel>
+                </div>
             </div>
             <div home-processes project="project"></div>
             <div home-files project="project"></div>
