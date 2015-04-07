@@ -1,9 +1,6 @@
 <div>
     <div ui-draggable="true" drag="process">
         <span ng-click="process.showDetails = !process.showDetails" style="cursor: pointer">
-            <i class="fa"
-               ng-class="{'fa-caret-right': !process.showDetails, 'fa-caret-down': process.showDetails}">
-            </i>
             <span ng-show="process.process">
                 {{process.process.name | truncate:25:'...':true}}
                 <span class="label label-primary"
@@ -14,19 +11,8 @@
             </span>
         </span>
         <span class="pull-right">
-            <a ng-if="showSideboard"
-               ng-click="addToSideboard(process, $event)"
-               id="{{process.id}}">
-                <i class="fa fa-fw fa-clipboard inactive"></i>
-            </a>
-            <i class="fa fa-fw"></i>
-            <a ng-if="!showSideboard" ng-click="remove(process, $event)">
-                <i class="fa fa-fw fa-close mc-danger"></i>
-            </a>
-        </span>
-        <p>
             <small class="text-muted">{{process.birthtime | toDateString}}</small>
-        </p>
+        </span>
     </div>
     <div ng-if="process.showDetails">
         <home-process-details process="process"></home-process-details>
