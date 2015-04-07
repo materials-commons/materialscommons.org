@@ -24,10 +24,20 @@ module.exports = function(r) {
         return items;
     }
 
-    function *insert(table, json) {
+    function *insert(table, json, options) {
+        let asArray = options ? options.toArray : false;
         let rql = r.table(table);
         let result = yield rql.insert(json, {returnChanges: true}).run();
-        return result.changes[0].new_val;
+        if (result.changes.length == 1) {
+            let val = result.changes[0].new_val;
+            return asArray ? [val] : val;
+        } else {
+            let results = [];
+            result.changes.forEach(function(result) {
+                results.push(result.new_val);
+            });
+            return results;
+        }
     }
 
 
