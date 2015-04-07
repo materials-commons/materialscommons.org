@@ -2327,3 +2327,8 @@ textarea.no-resize {
 .active-file {
   background-color: #d3d3d3;
 }
+
+.home-item:nth-child(odd){
+  background-color: #F5F5F5;
+}
+
