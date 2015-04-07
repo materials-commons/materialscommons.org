@@ -31,7 +31,7 @@
         <ul class="list-unstyled">
             <li class="home-item"
                 ng-class="{'open-item-details': process.showDetails}"
-                ng-repeat="process in all | filter:search | event:project.date:project.nextdate as procs">
+                ng-repeat="process in bk.all | filter:search | event:project.date:project.nextdate as procs">
                 <display-process process="process"
                                  show-sideboard="true">
                 </display-process>

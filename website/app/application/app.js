@@ -48,7 +48,8 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     $stateProvider
         // Navbar
         .state('home', {
-            url: '/home'
+            url: '/home',
+            templateUrl: 'application/core/splash.html'
         })
         .state('login', {
             url: '/login',
