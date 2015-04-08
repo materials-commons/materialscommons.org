@@ -22,7 +22,8 @@ module.exports = function(model) {
         mustNotExistInProject: mustNotExistInProject,
         mustExistInProject: mustExistInProject,
         isValidPropertyType: isValidPropertyType,
-        isValidUnit: isValidUnit
+        isValidUnit: isValidUnit,
+        oneOf: oneOf
     };
 
     ////////////////////////////////////////
@@ -112,5 +113,22 @@ module.exports = function(model) {
             expected: `units to be one of ${propertyUnits}`
         };
         return _.indexOf(propertyUnits, what) === -1 ? invalid : null;
+    }
+
+    /**
+     */
+    function oneOf(what, spec) {
+        let attrs = spec.split(':');
+        for (let i = 0; i < attrs.length; i++) {
+            if (_.has(this, attrs[i])) {
+                return null;
+            }
+        }
+
+        return {
+            rule: 'oneOf',
+            actual: this,
+            expected: `one of the following attributes ${attrs}`
+        };
     }
 };
