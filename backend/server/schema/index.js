@@ -24,40 +24,49 @@ module.exports = function(model) {
                 type: 'string',
                 nullable: false
             },
+
             project_id: {
                 type: 'string',
                 nullable: false
             },
+
             name: {
                 type: 'string',
                 nullable: false
             },
+
             template_id: {
                 type: 'string',
                 nullable: false,
                 mustExist: 'templates'
             },
+
             what: {
                 type: 'string',
                 nullable: true
             },
+
             how: {
                 type: 'string',
                 nullable: true
             },
+
             settings: {
                 type: 'array',
                 nullable: false
             },
-            files_created: {
-                type: 'array',
-                nullable: true
-            },
+
             samples_created: {
                 type: 'array',
                 nullable: true
             },
+
             measurements_created: {
+                type: 'array',
+                nullable: true
+            },
+
+            samples_transformed: {
                 type: 'array',
                 nullable: true
             }
@@ -65,9 +74,9 @@ module.exports = function(model) {
         process.setDefaults({
             description: '',
             how: '',
-            files_created: [],
             samples_created: [],
-            measurements_created: []
+            measurements_created: [],
+            samples_transformed: []
         });
         process.validateAsync = promise.promisify(process.validate);
         return process;
@@ -147,6 +156,16 @@ module.exports = function(model) {
                 mustExistInProject: 'samples'
             },
 
+            attribute_id: {
+                type: 'string',
+                oneOf: 'attribute_id:attribute_set_id'
+            },
+
+            attribute_set_id: {
+                type: 'string',
+                oneOf: 'attribute_id:attribute_set_id'
+            },
+
             from_measurements: {
                 type: 'array',
                 nullable: true
@@ -221,5 +240,6 @@ module.exports = function(model) {
                           schemaRules.mustExistInProject, true);
         schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
         schema.defineRule('isValidUnit', schemaRules.isValidUnit);
+        schema.defineRule('oneOf', schemaRules.oneOf);
     }
 };
