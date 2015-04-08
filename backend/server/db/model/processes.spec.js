@@ -20,9 +20,19 @@ describe('Processes', function() {
                 yield r.table('project2process').delete();
                 yield r.table('settings').delete();
                 yield r.table('process2setting').delete();
-                yield r.table('setting_properties').delete();
                 yield r.table('measurements').delete();
                 yield r.table('process2measurement').delete();
+                yield r.table('setting_properties').delete();
+                yield r.table('attributes').delete();
+                yield r.table('attribute2measurement').delete();
+                yield r.table('attributeset2attribute').delete();
+                yield r.table('attribute2process').delete();
+                yield r.table('samples').delete();
+                yield r.table('attributeset').delete();
+                yield r.table('sample2attributeset').delete();
+                yield r.table('process2sample').delete();
+                yield r.table('project2sample').delete();
+                yield r.table('best_measure_history').delete();
             }, done);
         });
 
@@ -62,6 +72,7 @@ describe('Processes', function() {
                             units: 'fraction',
                             value: 0.5,
                             sample_id: 'sample_1_id',
+                            attribute_id: 'attribute_id_1',
                             from_measurements: ['measure1', 'measure2']
                         },
                         {
@@ -74,6 +85,7 @@ describe('Processes', function() {
                             },
                             units: 'at%',
                             sample_id: 'sample_2_id',
+                            attribute_set_id: 'attribute_set_id_1',
                             from_file: {
                                 datafile_id: 'file_id_1',
                                 grid: {

@@ -28,6 +28,16 @@ promise.coroutine(function *() {
     yield * createTable('measurements', 'process_id');
     yield * createTable('process2measurement', 'process_id', 'measurement_id');
     yield * createTable('setting_properties', 'setting_id');
+    yield * createTable('attributes', 'parent_id');
+    yield * createTable('attribute2measurement', 'attribute_id', 'measurement_id');
+    yield * createTable('attributeset2attribute', 'attribute_set_id', 'attribute_id');
+    yield * createTable('attribute2process', 'attribute_id', 'process_id');
+    yield * createTable('samples');
+    yield * createTable('attributeset', 'parent_id');
+    yield * createTable('sample2attributeset', 'sample_id', 'attribute_set_id');
+    yield * createTable('process2sample', 'process_id', 'sample_id', 'attribute_set_id');
+    yield * createTable('project2sample', 'project_id', 'sample_id');
+    yield * createTable('best_measure_history', 'process_id', 'attribute_id', 'measurement_id');
     yield r.getPool().drain();
 
     /////////////////////////////
