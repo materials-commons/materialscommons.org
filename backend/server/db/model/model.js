@@ -104,16 +104,19 @@ module.exports = function(r) {
         this.best_measure_id = '';
     }
 
-    function AttributeSet(name, attribute, current, parent_id) {
-        this.name = name;
-        this.attribute = attribute;
-        this.current = current;
-        this.parent_id = parent_id;
+    function AttributeSet(current, parent_id) {
+        this.current = current ? current : false;
+        this.parent_id = parent_id ? parent_id : '';
     }
 
     function Attribute2Measurement(attrID, measurementID) {
         this.attribute_id = attrID;
         this.measurement_id = measurementID;
+    }
+
+    function Attribute2Process(attrID, processID) {
+        this.attribute_id = attrID;
+        this.process_id = processID;
     }
 
     function Project2Process(projectID, processID) {
@@ -126,7 +129,7 @@ module.exports = function(r) {
         this.sample_id = sampleID;
     }
 
-    function Sample2AttributeSet(asetID, sampleID, version, current) {
+    function Sample2AttributeSet(sampleID, asetID, current) {
         this.attribute_set_id = asetID;
         this.sample_id = sampleID;
         this.version  = version;
@@ -220,6 +223,7 @@ module.exports = function(r) {
         Property: Property,
         Measurement: Measurement,
         Attribute: Attribute,
+        Attribute2Process: Attribute2Process,
         Attribute2Measurement: Attribute2Measurement,
         AttributeSet: AttributeSet,
         AttributeSet2Attribute: AttributeSet2Attribute,
