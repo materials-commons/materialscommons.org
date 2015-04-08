@@ -2332,3 +2332,58 @@ textarea.no-resize {
   background-color: #F5F5F5;
 }
 
+header {
+  background:
+  url('assets/img/splash/bg1.png');
+  background-size: cover;
+  height: 70vh;
+  margin-top: -45px;
+  background-position: 10% 60%;
+}
+.login-splash {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 50px;
+  width: 500px;
+  background-color: white;
+}
+
+.icon-splash{
+  background-color: white;
+  height: 30vh;
+  padding-top: 70px;
+}
+
+.process-splash{
+  height: 100vh;
+  padding-top: 70px;
+}
+
+.sample-splash{
+  background-color: white;
+  height: 100vh;
+  padding-top: 70px;
+}
+.review-splash{
+  height: 100vh;
+  padding-top: 70px;
+}
+
+.file-splash{
+  background-color: white;
+  height: 100vh;
+  padding-top: 70px;
+}
+.note-splash{
+  height: 100vh;
+  padding-top: 70px;
+}
+
+.corner{
+  background-color: grey;
+  color: white;
+}
+

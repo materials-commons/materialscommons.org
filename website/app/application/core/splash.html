@@ -1,180 +1,249 @@
 <div ng-controller="login">
+    <div id="top" class="row">
+        <header>
+            <div class="row">
+                <h1 style="color: white; padding: 30px;">Materials Commons</h1>
+            </div>
+            <div class="row">
+                <div class="login-splash">
+                    <div class="row">
+                        <div  class="row">
+                            <input  ng-model="email" name="email" required="" class="form-control"
+                                   placeholder="Email..."
+                                   type="email">
+                        </div>
+                        <br>
 
+                        <div class="row">
+                            <input ng-model="password" required="" class="form-control" placeholder="Password..."
+                                   type="password">
+                        </div>
+                        <br>
 
-    <div class="row">
-        <div class="col-xs-offset-3">
-            <img style="height: 400px;" src="assets/img/splash/under-construction.png">
-        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <input type="checkbox" ng-model="rememberMe"> Remember me
+                            </div>
+                            <div class="col-xs-5">
+                                <a>Forgot Password?</a>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <button class="btn btn-default btn-primary" style="width: 100%" ng-click="login()">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
     </div>
-    <br> <br><br>
-
-
-    <div class="row">
-        <div class="col-xs-offset-4">
-            <div class="col-xs-1" style="padding-right: 100px;"><a ng-click="goTo('process01')"><img
+    <div class="row icon-splash">
+        <div class="col-xs-offset-2">
+            <div class="col-xs-1" style="padding-right: 150px;"><a ng-click="goTo('process01')"><img
                     style="height: 60px;"
                     src="assets/img/splash/process-icon.png"></a>
+
+                <p style="color: grey;padding-top: 8px;">PROCESS</p>
             </div>
-            <div class="col-xs-1" style="padding-right: 100px;"><a ng-click="goTo('sample01')"> <img
+            <div class="col-xs-1" style="padding-right: 150px;"><a ng-click="goTo('sample01')"> <img
                     style="height: 60px;"
                     src="assets/img/splash/sample_icon.png"></a>
+
+                <p style="color: grey;padding-top: 8px;">SAMPLE</p>
             </div>
-            <div class="col-xs-1" style="padding-right: 100px;"><a ng-click="goTo('review01')"><img
+            <div class="col-xs-1" style="padding-right: 150px;"><a ng-click="goTo('review01')"><img
                     style="height: 60px;"
                     src="assets/img/splash/review_icon.png"></a>
+
+                <p style="color: grey;padding-top: 8px;">REVIEW</p>
             </div>
-            <div class="col-xs-1" style="padding-right: 100px;"><a ng-click="goTo('file01')"><img style="height: 60px;"
+            <div class="col-xs-1" style="padding-right: 150px;"><a ng-click="goTo('file01')"><img style="height: 60px;"
                                                                                                   src="assets/img/splash/file_icon.png"></a>
+
+                <p style="color: grey;padding-top: 8px;padding-left: 15px;">FILE</p>
             </div>
-            <div class="col-xs-1" style="padding-right: 100px;"><a ng-click="goTo('notes01')"><img style="height: 60px;"
+            <div class="col-xs-1" style="padding-right: 150px;"><a ng-click="goTo('notes01')"><img style="height: 60px;"
                                                                                                    src="assets/img/splash/note_icon.png"></a>
+
+                <p style="color: grey;padding-top: 8px;padding-left: 15px;">NOTE</p>
             </div>
-            <div class="col-xs-1" style="padding-right: 100px;"><a><img
+            <div class="col-xs-2" style="padding-right: 150px;"><a><img
                     style="height: 60px;"
-                    src="assets/img/splash/calendar_icon.png"></a></div>
+                    src="assets/img/splash/calendar_icon.png"></a>
+
+                <p style="color: grey;padding-top: 5px;">CALENDAR</p>
+            </div>
         </div>
     </div>
-    <br> <br> <br>
+    <div class="row process-splash" id="process01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-5">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/process-icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Track Your Processes</span>
+                    </div>
+                    <br>
 
-    <!--<div class="row">-->
-    <!--<div class="col-xs-3" style="padding: 40px;background-color: white">-->
-    <!--<div class="row">-->
-    <!--<input ng-model="email" name="email" required="" class="form-control" placeholder="Email..."-->
-    <!--type="email">-->
-    <!--</div>-->
-    <!--<br>-->
+                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        A portfolio website, for example, would probably be best shown in a fixed-width layout, so that
+                        you
+                        have
+                        more control over the design.</p>
 
-    <!--<div class="row">-->
-    <!--<input ng-model="password" required="" class="form-control" placeholder="Password..." type="password">-->
-    <!--</div>-->
-    <!--<br>-->
-
-    <!--<div class="row">-->
-    <!--<div class="col-xs-6">-->
-    <!--<input type="checkbox" ng-model="rememberMe"> Remember me-->
-    <!--</div>-->
-    <!--<div class="col-xs-5">-->
-    <!--Forgot Password?-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<br>-->
-
-    <!--<div class="row">-->
-    <!--<button class="btn btn-default btn-primary" style="width: 100%" ng-click="login()">Login</button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <div class="row" id="process01">
-        <div class="col-xs-offset-3" style="height: 400px; width: 900px; background-color: white;padding: 50px;">
-            <div class="col-xs-5">
-                <div class="row"><br><br><br>
-                    <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/process-icon.png">
-                    <span style="font-size: 18px; font-weight: 500">Track Your Processes</span>
                 </div>
-                <br>
+                <div class="col-xs-2">
 
-                <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                    A portfolio website, for example, would probably be best shown in a fixed-width layout, so that you
-                    have
-                    more control over the design.</p>
-
-            </div>
-            <div class="col-xs-4">
-
+                </div>
+                <div class="col-xs-4">
+                    <img src="assets/img/splash/process.png">
+                </div>
             </div>
         </div>
+
     </div>
     <br><br>
 
-    <div class="row" id="sample01">
-        <div class="col-xs-offset-3" style="height: 400px; width: 900px;">
-            <div class="col-xs-3">
-                <img style="height: 300px;" src="assets/img/splash/sample.png">
-            </div>
-            <div class="col-xs-3">
-
-            </div>
-            <div class="col-xs-6">
-                <div class="row"><br><br><br>
-                    <img style="height: 40px;" src="assets/img/splash/sample_icon.png">
-                    <span style="font-size: 18px; font-weight: 500">Create Samples</span>
+    <div class="row sample-splash" id="sample01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-4">
+                    <img style="height: 300px;" src="assets/img/splash/sample.png">
                 </div>
-                <br>
+                <div class="col-xs-2">
 
-                <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                    A portfolio website, for example, would probably be best shown in a fixed-width layout, so that you
-                    have
-                    more control over the design.</p>
+                </div>
+                <div class="col-xs-5">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;" src="assets/img/splash/sample_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Create Samples</span>
+                    </div>
+                    <br>
 
+                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        A portfolio website, for example, would probably be best shown in a fixed-width layout, so that
+                        you
+                        have
+                        more control over the design.</p>
+                </div>
             </div>
         </div>
     </div>
     <br>
 
-    <div class="row" id="review01">
-        <div class="col-xs-offset-3" style="height: 400px; width: 900px; background-color: white;padding: 50px;">
-            <div class="col-xs-5">
-                <div class="row"><br><br><br>
-                    <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/review_icon.png">
-                    <span style="font-size: 18px; font-weight: 500">Send Reviews</span>
+    <div class="row review-splash" id="review01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-5">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/review_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Send Reviews</span>
+                    </div>
+                    <br>
+
+                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        A portfolio website, for example, would probably be best shown in a fixed-width layout, so that
+                        you
+                        have
+                        more control over the design.</p>
+
                 </div>
-                <br>
+                <div class="col-xs-1">
 
-                <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                    A portfolio website, for example, would probably be best shown in a fixed-width layout, so that you
-                    have
-                    more control over the design.</p>
-
-            </div>
-            <div class="col-xs-4">
+                </div>
+                <div class="col-xs-4">
+                    <img  style="height: 400px;" src="assets/img/splash/review.png">
+                </div>
 
             </div>
         </div>
     </div>
     <br><br>
 
-    <div class="row" id="file01">
-        <div class="col-xs-offset-3" style="height: 400px; width: 900px;">
-            <div class="col-xs-3">
-                <img style="height: 300px;" src="assets/img/splash/sample.png">
-            </div>
-            <div class="col-xs-3">
-
-            </div>
-            <div class="col-xs-6">
-                <div class="row"><br><br><br>
-                    <img style="height: 40px;" src="assets/img/splash/file_icon.png">
-                    <span style="font-size: 18px; font-weight: 500">Upload Files</span>
+    <div class="row file-splash" id="file01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-6">
+                    <img src="assets/img/splash/file.png">
                 </div>
-                <br>
 
-                <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                    A portfolio website, for example, would probably be best shown in a fixed-width layout, so that you
-                    have
-                    more control over the design.</p>
+                <div class="col-xs-6">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;" src="assets/img/splash/file_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Upload Files</span>
+                    </div>
+                    <br>
 
+                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        A portfolio website, for example, would probably be best shown in a fixed-width layout, so that
+                        you
+                        have
+                        more control over the design.</p>
+
+                </div>
             </div>
         </div>
     </div>
     <br><br>
 
-    <div class="row" id="notes01">
-        <div class="col-xs-offset-3" style="height: 400px; width: 900px; background-color: white;padding: 50px;">
-            <div class="col-xs-5">
-                <div class="row"><br><br><br>
-                    <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/note_icon.png">
-                    <span style="font-size: 18px; font-weight: 500">Manage Notes</span>
+    <div class="row note-splash" id="notes01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-4">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/note_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Manage Notes</span>
+                    </div>
+                    <br>
+
+                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        A portfolio website, for example, would probably be best shown in a fixed-width layout, so that
+                        you
+                        have
+                        more control over the design.</p>
+
                 </div>
-                <br>
+                <div class="col-xs-2">
 
-                <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                    A portfolio website, for example, would probably be best shown in a fixed-width layout, so that you
-                    have
-                    more control over the design.</p>
-
-            </div>
-            <div class="col-xs-4">
-
+                </div>
+                <div class="col-xs-5">
+                    <img src="assets/img/splash/note.png">
+                </div>
             </div>
         </div>
     </div>
