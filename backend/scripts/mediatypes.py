@@ -8,6 +8,8 @@ from optparse import OptionParser
 import os
 import os.path
 import magic
+import mimetypes
+import sys
 
 
 def datafile_path(mcdir, datafile_id):
@@ -16,38 +18,75 @@ def datafile_path(mcdir, datafile_id):
 
 
 def main(conn, mcdir):
+    mimetypes.add_type("application/matlab", ".m", strict=False)
+
+    mediatypes_mapping = {
+        'text/xml': "XML",
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': "Spreadsheet",
+        'image/jpeg': "JPEG",
+        'application/postscript': "Postscript",
+        'image/png': "PNG",
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': "Word",
+        'application/json': "JSON",
+        'image/vnd.ms-modi': "MS-Document Imaging",
+        'application/vnd.ms-xpsdocument': "MS-Postscript",
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation': "Presentation",
+        'image/vnd.radiance': "Radiance",
+        'application/vnd.sealedmedia.softseal.pdf': "Softseal PDF",
+        'application/vnd.hp-PCL': "PCL",
+        'Composite Document File V2 Document, No summary info': "Composite Document File",
+        'application/xslt+xml': "XSLT",
+        'image/gif': "GIF",
+        'application/matlab': "matlab",
+        'application/pdf': "PDF",
+        'application/xml': "XML",
+        'application/vnd.ms-excel': "MS-Excel",
+        'image/bmp': "BMP",
+        'image/tiff': "TIFF",
+        'image/vnd.adobe.photoshop': "Photoshop",
+        'application/pkcs7-signature': "PKCS",
+        'image/vnd.dwg': "DWG",
+        'application/vnd.ms-powerpoint.presentation.macroEnabled.12': "MS-PowerPoint",
+        'application/octet-stream': "Binary",
+        'application/rtf': "RTF",
+        'text/plain': "Text",
+        'application/vnd.ms-powerpoint': "MS-PowerPoint",
+        'application/x-troff-man': "TROFF",
+        'video/x-ms-wmv': "WMV Video",
+        'application/vnd.chemdraw+xml': "ChemDraw",
+        'text/html': "HTML",
+        'video/mpeg': "MPEG Video",
+        'text/csv': "CSV",
+        'application/zip': "ZIP",
+        'application/msword': "MS-Word"
+    }
     files = list(r.table('datafiles')
-                 .get_all("", index='mediatype')
+                 .get_all("", index='mime')
                  .run(conn))
     for f in files:
         fid = f['id']
         path = datafile_path(mcdir, fid)
-        if not os.path.isfile(path):
-            continue
-        mediatype = magic.from_file(path, mime=True)
-        for ddid in f['datadirs']:
-            ddir = r.table('datadirs_denorm').get(ddid).run(conn)
-            fsize = 0
-            for df in ddir['datafiles']:
-                if df['id'] == fid:
-                    df['mediatype'] = mediatype
-                    fsize = df['size']
-                    break
-            r.table('datadirs_denorm').get(ddid)\
-                                      .update(ddir)\
-                                      .run(conn)
-            p2ds = list(r.table('project2datadir')
-                        .get_all(ddid, index="datadir_id")
-                        .run(conn))
-            for p2d in p2ds:
-                project_id = p2d['project_id']
-                project = r.table('projects').get(project_id).run(conn)
-                project['size'] += fsize
-                if mediatype in project['mediatypes']:
-                    project['mediatypes'][mediatype] += 1
-                else:
-                    project['mediatypes'][mediatype] = 1
-                r.table('projects').get(project_id).update(project).run(conn)
+        mime, ignore = mimetypes.guess_type(f["name"], strict=False)
+        description = None
+        if mime is None:
+            if not os.path.isfile(path):
+                mime = "unknown"
+                description = "Unknown"
+            else:
+                mime = magic.from_file(path, mime=True)
+
+        if description is None:
+            if mime not in mediatypes_mapping:
+                description = "Unmapped type: %s" % (mime)
+            else:
+                description = mediatypes_mapping[mime]
+        m = {
+            'mime': mime,
+            'description': description
+        }
+        r.table('datafiles').get(f['id'])\
+                            .update({'mediatype': m})\
+                            .run(conn)
 
 
 if __name__ == "__main__":
@@ -59,7 +98,7 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
     if options.mcdir is None:
         print "You must specify the location of mcdir"
-        os.exit(1)
+        sys.exit(1)
 
     conn = r.connect('localhost', options.port, db='materialscommons')
     main(conn, options.mcdir)
