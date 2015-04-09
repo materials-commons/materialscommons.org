@@ -14,9 +14,10 @@ module.exports = function(processes, schema) {
     // values for optional missing attributes.
     function *create(next) {
         try {
-            let process = prepareProcess(yield parse(this));
+            let process = yield parse(this);
             process.project_id = this.params.project_id;
             process.owner = this.reqctx.user.id;
+            process = prepareProcess(process);
             yield validateProcess(process);
             let inserted = yield processes.create(process);
             this.status = 200;
@@ -38,10 +39,10 @@ module.exports = function(processes, schema) {
          */
         function *validateProcess(process) {
             yield schema.processes.validateAsync(process);
-            yield *validateSettings(process.settings);
-            yield *validateFiles(process.files_created, process.files_used);
-            yield *validateSamples(process.samples_created, process.samples_used);
-            yield *validateMeasurements(process.measurements);
+            yield *validateSettings(process.setup.settings);
+            yield *validateFiles(process.project_id, process.files_created, process.setup.files);
+            yield *validateSamples(process.samples_created, process.samples_transformed);
+            yield *validateMeasurements(process.measurements_taken);
         }
 
         /**
@@ -59,32 +60,60 @@ module.exports = function(processes, schema) {
         /**
          * validateFiles validates the files in a process. Each file is
          * is an object defined by the Files schema.
-         *
+         * @param {String} projectID - project files belong to.
          * @param{Array} files_created - Files created by this process.
          * @param{Array} files_used = Files used (input into) by this process.
          */
-        function *validateFiles(files_created, files_used) {
-            for (let i = 0; i < files_created.length; i++) {
-                yield schema.files.validateAsync(files_created[i]);
+        function *validateFiles(projectID, files_created, files_used) {
+            let filesList;
+            let reason = {
+                rule: 'validateFiles',
+                what: '',
+                expected: `all files in ${filesList} to be in project`
+            };
+
+            let count = yield schema.model.files.countInProject(files_created, projectID);
+            if (count != files_created.length) {
+                filesList = files_created;
+                throw new Error(reason);
             }
 
-            for (let i = 0; i < files_used.length; i++) {
-                yield schema.files.validateAsync(files_used[i]);
+            count = yield schema.model.files.countInProject(files_used, projectID);
+            if (count != files_used.length) {
+                filesList = files_used;
+                throw new Error(reason);
             }
         }
 
         /**
          * Validates the samples for a process.
          *
-         * @param{Array} samples_created - The samples created by this process
-         * @param{Array} samples_used = The samples used by (input into) this process
+         * @param{Array} samplesCreated - The samples created by this process
+         * @param{Array} samplesTransformed = The samples transformed by this process
          */
-        function *validateSamples(samples_created, samples_used) {
-            for (let i = 0; i < samples_created.length; i++) {
-                yield schema.samples.validateAsync(samples_created[i]);
+        function *validateSamples(samplesCreated, samplesTransformed) {
+            for (let i = 0; i < samplesCreated.length; i++) {
+                yield schema.samples.validateAsync(samplesCreated[i]);
             }
-            for (let i = 0; i < samples_used.length; i++) {
-                yield schema.samples.validateAsync(samples_used[i]);
+
+            let model = schema.model.samples;
+            for (let i = 0; i < samplesTransformed.length; i++) {
+                yield schema.transformedSamples.validateAsync(samplesTransformed[i]);
+
+                // validate the attribute ids for the transformed samples
+                let shares = samplesTransformed[i].shares;
+                let uses = samplesTransformed[i].uses;
+                let asetID = samplesTransformed[i].attribute_set_id;
+
+                let count = yield model.countAttributesInSample(asetID, shares);
+                if (count !== shares.length) {
+                    throw new Error('unknown attributes in shares');
+                }
+
+                count = yield model.countAttributesInSample(asetID, uses);
+                if (count !== uses.length) {
+                    throw new Error('unknown attributes in uses');
+                }
             }
         }
 
@@ -104,6 +133,12 @@ module.exports = function(processes, schema) {
     function prepareProcess(process) {
         schema.processes.stripNonSchemaAttrs(process);
         schema.processes.addDefaultsToTarget(process);
+
+        // Add owner and project to created samples
+        process.samples_created.forEach(function(s) {
+            s.owner = process.owner;
+            s.project_id = process.project_id;
+        });
         return process;
     }
 };

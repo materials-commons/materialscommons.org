@@ -18,11 +18,11 @@ describe('Processes', function() {
             atf(function *() {
                 yield r.table('processes').delete();
                 yield r.table('project2process').delete();
-                yield r.table('settings').delete();
-                yield r.table('process2setting').delete();
+                yield r.table('setups').delete();
+                yield r.table('process2setup').delete();
                 yield r.table('measurements').delete();
                 yield r.table('process2measurement').delete();
-                yield r.table('setting_properties').delete();
+                yield r.table('setup_properties').delete();
                 yield r.table('attributes').delete();
                 yield r.table('attribute2measurement').delete();
                 yield r.table('attributeset2attribute').delete();
@@ -33,6 +33,8 @@ describe('Processes', function() {
                 yield r.table('process2sample').delete();
                 yield r.table('project2sample').delete();
                 yield r.table('best_measure_history').delete();
+                yield r.table('process2setupfile').delete();
+                yield r.table('process2outputfile').delete();
             }, done);
         });
 
@@ -49,22 +51,25 @@ describe('Processes', function() {
                     what : 'I measured the composition and area fraction for my samples',
                     how: 'I ran the SEM with the voltage set to max (4ev) so the back scatter array could maximize its detection ratios',
                     project_id: 'abc123',
-                    settings: [
-                        {
-                            display_name: 'SEM Settings',
-                            name: 'sem_settings',
-                            properties: [
-                                {
-                                    display_name: 'Volts',
-                                    name: 'volts',
-                                    _type: 'number',
-                                    value: 4,
-                                    units: 'ev'
-                                }
-                            ]
-                        }
-                    ],
-                    measurements_created: [
+                    setup: {
+                        settings: [
+                            {
+                                display_name: 'SEM Settings',
+                                name: 'sem_settings',
+                                properties: [
+                                    {
+                                        display_name: 'Volts',
+                                        name: 'volts',
+                                        _type: 'number',
+                                        value: 4,
+                                        units: 'ev'
+                                    }
+                                ]
+                            }
+                        ],
+                        files: []
+                    },
+                    measurements_taken: [
                         {
                             name: 'Area fraction',
                             attribute: 'area_fraction',
@@ -96,7 +101,16 @@ describe('Processes', function() {
                                 }
                             }
                         }
-                    ]
+                    ],
+                    samples_created: [
+                        {
+                            name: 'new sample 1',
+                            description: 'my sample'
+                        }
+                    ],
+                    samples_transformed: [
+                    ],
+                    files_created: []
                 };
                 yield p.create(process);
             }, validate);

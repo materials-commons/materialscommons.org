@@ -23,11 +23,11 @@ promise.coroutine(function *() {
     yield r.dbCreate('mctest');
     yield * createTable('processes', 'template_id');
     yield * createTable('project2process', 'project_id', 'process_id');
-    yield * createTable('settings');
-    yield * createTable('process2setting', 'process_id', 'setting_id');
+    yield * createTable('setups');
+    yield * createTable('process2setup', 'process_id', 'setup_id');
     yield * createTable('measurements', 'process_id');
     yield * createTable('process2measurement', 'process_id', 'measurement_id');
-    yield * createTable('setting_properties', 'setting_id');
+    yield * createTable('setup_properties', 'setting_id');
     yield * createTable('attributes', 'parent_id');
     yield * createTable('attribute2measurement', 'attribute_id', 'measurement_id');
     yield * createTable('attributeset2attribute', 'attribute_set_id', 'attribute_id');
@@ -38,6 +38,8 @@ promise.coroutine(function *() {
     yield * createTable('process2sample', 'process_id', 'sample_id', 'attribute_set_id');
     yield * createTable('project2sample', 'project_id', 'sample_id');
     yield * createTable('best_measure_history', 'process_id', 'attribute_id', 'measurement_id');
+    yield * createTable('process2setupfile', 'process_id', 'datafile_id');
+    yield * createTable('process2output', 'process_id', 'datafile_id');
     yield r.getPool().drain();
 
     /////////////////////////////
