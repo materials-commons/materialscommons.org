@@ -2,10 +2,10 @@
     <div ng-mouseenter="show= true" ng-mouseleave="show = false" ui-draggable="true" drag="item">
         <span ng-click="item.showDetails = !item.showDetails"
               style="cursor: pointer;">
-            <b><i class="fa fa-fw"
+            <b style="color: #D2C4D5"><i class="fa fa-fw"
                   ng-class="{'fa-folder ': item.type === 'datadir' && !item.showDetails, 'fa-folder-open': item.type === 'datadir' && item.showDetails}"></i>
             </b>
-            <i ng-class="{'fa fa-fw fa-file': item.type === 'datafile'}"></i>
+            <i style="color: #BFBFBF" ng-class="{'fa fa-fw fa-file': item.type === 'datafile'}"></i>
             <span ng-if="item.type !== 'datafile'" data-toggle="tooltip" data-placement="top" title="{{item.fullname}}"
                   style="color: #389dc1"
                   ui-draggable="true" drag="item">{{::item.displayname}}</span>
@@ -51,12 +51,12 @@
                 ng-click="addItem('process', item)">Add to process
         </button>
     </p>
-    <p ui-draggable="true" drag="item" style="padding-left: 15px;">
-        <small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">
-            {{::item.size | bytes}}
-        </small>
-        <small class="text-muted" style="margin-right: 10px">
-            {{::item.birthtime | toDateString}}
-        </small>
-    </p>
+    <!--<p ui-draggable="true" drag="item" style="padding-left: 15px;">-->
+        <!--<small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">-->
+            <!--{{::item.size | bytes}}-->
+        <!--</small>-->
+        <!--<small class="text-muted" style="margin-right: 10px">-->
+            <!--{{::item.birthtime | toDateString}}-->
+        <!--</small>-->
+    <!--</p>-->
 </div>

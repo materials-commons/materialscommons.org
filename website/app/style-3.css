@@ -874,17 +874,6 @@ h4, .h4, h5, .h5, h6, .h6 {
   margin-top: 41px;
 }
 
-.quickbar {
-  width: 50px;
-  float: right;
-  background: #bfbfbf;
-  height: 900px;
-  min-height: 100%;
-  margin-top: -2px;
-  top: 0;
-  right: 0;
-  position: fixed;
-}
 
 .project-task-bar {
   left: 0;
@@ -909,89 +898,18 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-bottom: 1px solid #F5F5F5;
 }
 
-.sidebar-list {
-  margin-bottom: 5px;
-}
-
-.sidebar-list .list-group-item {
-  /*background-color: #3b4247;*/
-  background-color: #3e4b5c;
-  border: 0px solid #3e4b5c;
-  font-size: 12pt;
-  font-weight: 400;
-  color: white;
-  margin-top: 1px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
-
-.sidebar-list .list-group-item.disabled {
-  color: grey;
-}
-
-.sidebar-list .list-group-item:not(:first-child) {
-  /* margin-left: 15px; */
-  /* margin-right: 15px; */
-}
-
-.sidebar-action-list {
-  background-color: #3b4247;
-  border: 0px solid #3b4247;
-  font-size: 12pt;
-  font-weight: 400;
-  color: white;
-}
-
-.sidebar-list .sidebar-action {
-  /*background-color: #333333;*/
-  /*background-color: rgba(0, 0, 0, 0.3);*/
-  background-color: darkgray;
-}
-
-.sidebar-list .list-group-item:first-child {
-  border-top-right-radius: 0px !important;
-  border-top-left-radius: 0px !important;
-}
-
-.sidebar-list .list-group-item:last-child {
-  border-bottom-right-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-}
-
-.sidebar-list a.list-group-item:hover {
-  /*background-color: #525A60;*/
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-.sidebar-list a.list-group-item.active {
-  /* background-color: rgba(0,0,0,0.2); */
-  background-color: rgba(37, 97, 136, 0.4);
-  color: white;
-  outline: none;
-}
-
-.sidebar-list a.list-group-item i {
-  margin-left: 15px;
-}
-
-.sidebar-list a.list-group-item:focus {
-  background-color: #4a5258;
-  color: white;
-  outline: none;
-}
-
-/* .sidebar-list a.list-group-item:not(:first-child):hover { */
-/*   background-color: #4a5258; */
-/*   color: white; */
-/*   margin-left: 15px; */
-/*   margin-right: 15px; */
-/* } */
-
 .home-list li.list-group-item:hover {
   background-color: #eeeeee;
 }
+.dashboard-item {
+  background-color: #ffffff;
+  padding: 20px;
+  height: 50px;
+}
 
+.dashboard-item:nth-child(odd){
+  background-color: #F5F5F5;
+}
 .home-item {
   background-color: #ffffff;
   border-top-style: solid;
@@ -1006,19 +924,14 @@ h4, .h4, h5, .h5, h6, .h6 {
   padding-bottom: 5px;
 }
 
+.home-item:nth-child(odd){
+  background-color: #F5F5F5;
+}
+
 .home-panel-heading {
   padding-right: 7px;
 }
 
-/*.file-item {*/
-/*background-color: #ffffff;*/
-/*border-top: none;*/
-/*border-bottom: none;*/
-/*padding-left: 15px;*/
-/*padding-top: 5px;*/
-/*padding-bottom: 5px;*/
-/*padding-right: 15px;*/
-/*}*/
 
 .add-item {
   margin-right: 10px;
@@ -1030,20 +943,6 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .tree-row:hover {
   background-color: #eeeeee;
-}
-
-.home-panel-body2 dir {
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 3px;
-  padding-top: 3px;
-}
-
-.home-item2 div {
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 3px;
-  padding-top: 3px;
 }
 
 .open-item-details {
@@ -1060,8 +959,9 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .home-panel-body {
   padding: 0px;
-  max-height: 439px;
+  max-height: 206px;
   overflow-y: auto;
+  min-height: 206px;
 }
 
 .side-by-side {
@@ -1241,19 +1141,6 @@ h4, .h4, h5, .h5, h6, .h6 {
   color: #2c3e50;
   border-bottom-color: transparent;
   cursor: default;
-}
-
-#machines {
-  display: none;
-}
-
-.ta-scroll-window .ta-bind {
-  padding: 6px 30px;
-  height: 150px;
-}
-
-.ta-scroll-window.form-control {
-  height: 150px;
 }
 
 .selected {
@@ -2274,7 +2161,7 @@ textarea.no-resize {
   top: 0;
   bottom: 0;
   left: 0;
-  border-left: 1px solid
+  border-left: 1px dotted #D2C4D5
 }
 
 .tree li {
@@ -2291,7 +2178,7 @@ textarea.no-resize {
   display: block;
   width: 10px;
   height: 0;
-  border-top: 1px solid;
+  border-top: 1px dotted #D2C4D5;
   margin-top: -1px;
   position: absolute;
   top: 1em;
@@ -2328,9 +2215,6 @@ textarea.no-resize {
   background-color: #d3d3d3;
 }
 
-.home-item:nth-child(odd){
-  background-color: #F5F5F5;
-}
 
 header {
   background:
@@ -2387,4 +2271,3 @@ header {
   background-color: grey;
   color: white;
 }
-
