@@ -84,3 +84,78 @@ describe('Sample Schema', function() {
     });
 
 });
+
+describe('Measurements Schema', function() {
+    'use strict';
+
+    it('should error when no name is given', function(done) {
+        function validateError(err) {
+            let rv = null;
+            should.exist(err);
+            done(rv);
+        }
+        atf(function *() {
+            let m = {
+                attribute: 'area_fraction',
+                _type: 'number',
+                value: 4,
+                units: 'mm',
+                sample_id: 'sample1',
+                project_id: 'project1',
+                attribute_id: 'abc123'
+            };
+            yield schema.measurements.validateAsync(m);
+        }, validateError);
+    });
+
+    it('should error when neither attribute_id or attribute_set_id are given',
+       function(done) {
+           function validateError(err) {
+               let rv = null;
+               try {
+                   should.exist(err);
+               } catch (error) {
+                   rv = error;
+               }
+               done(rv);
+           }
+           atf(function *() {
+               let m = {
+                   name: 'Area Fraction',
+                   attribute: 'area_fraction',
+                   _type: 'number',
+                   value: 4,
+                   units: 'mm',
+                   sample_id: 'sample1',
+                   project_id: 'project1'
+               };
+               yield schema.measurements.validateAsync(m);
+           }, validateError);
+       });
+
+    it('should pass when attribute_id is given, but not attribute_set_id',
+       function(done) {
+           function validateError(err) {
+               let rv = null;
+               try {
+                   should.not.exist(err);
+               } catch (error) {
+                   rv = error;
+               }
+               done(rv);
+           }
+           atf(function *() {
+               let m = {
+                   name: 'Area Fraction',
+                   attribute: 'area_fraction',
+                   _type: 'number',
+                   value: 4,
+                   units: 'mm',
+                   sample_id: 'sample1',
+                   project_id: 'project1',
+                   attribute_id: 'attrid'
+               };
+               yield schema.measurements.validateAsync(m);
+           }, validateError);
+       });
+});

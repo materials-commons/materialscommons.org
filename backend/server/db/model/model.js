@@ -25,8 +25,8 @@ module.exports = function(r) {
         this._type = "process";
     }
 
-    function Process2Setting(processID, settingID) {
-        this.setting_id = settingID;
+    function Process2Setup(processID, setupID) {
+        this.setup_id = settingID;
         this.process_id = processID;
     }
 
@@ -42,15 +42,25 @@ module.exports = function(r) {
         this._type = _type;
     }
 
-    function Settings(name, attribute) {
+    function Process2Setupfile(processID, fileID) {
+        this.process_id = processID;
+        this.datafile_id = fileID;
+    }
+
+    function Process2Outputfile(processID, fileID) {
+        this.process_id = processID;
+        this.datafile_id = fileID;
+    }
+
+    function Setups(name, attribute) {
         this.name = name;
         this.attribute = attribute;
         this.birthtime = r.now();
         this._type = "settings";
     }
 
-    function SettingProperty(settingID, name, attribute, _type, value, units) {
-        this.setting_id = settingID;
+    function SetupProperty(setupID, name, attribute, _type, value, units) {
+        this.setup_id = setupID;
         this.name = name;
         this.attribute = attribute;
         this._type = _type;
@@ -215,11 +225,13 @@ module.exports = function(r) {
     return {
         Sample: Sample,
         Process: Process,
-        Process2Setting: Process2Setting,
+        Process2Setup: Process2Setup,
         Process2Measurement: Process2Measurement,
         Process2Sample: Process2Sample,
-        Settings: Settings,
-        SettingProperty: SettingProperty,
+        Process2Setupfile: Process2Setupfile,
+        Process2Outputfile: Process2Outputfile,
+        Setups: Setups,
+        SetupProperty: SetupProperty,
         Property: Property,
         Measurement: Measurement,
         Attribute: Attribute,

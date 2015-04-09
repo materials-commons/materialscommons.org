@@ -7,7 +7,8 @@ module.exports = function(r) {
         forUser: forUser,
         get: function(id, index) {
             return getSingle(r, 'projects', id, index);
-        }
+        },
+        r: r
     };
 
     ///////////////

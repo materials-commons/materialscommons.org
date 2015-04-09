@@ -13,7 +13,10 @@ module.exports = function(model) {
 
     return {
         samples: defineSamplesSchema(),
-        processes: defineProcessSchema()
+        transformedSamples: defineTransformedSamplesSchema(),
+        processes: defineProcessSchema(),
+        measurements: defineMeasurementsSchema(),
+        model: model
     };
 
     /////////////// Define Schemas ///////////////
@@ -51,9 +54,17 @@ module.exports = function(model) {
                 nullable: true
             },
 
-            settings: {
-                type: 'array',
-                nullable: false
+            setup: {
+                nullable: false,
+                type: 'object',
+                settings: {
+                    type: 'array',
+                    nullable: false
+                },
+                files: {
+                    type: 'array',
+                    nullable: false
+                }
             },
 
             samples_created: {
@@ -61,12 +72,17 @@ module.exports = function(model) {
                 nullable: true
             },
 
-            measurements_created: {
+            measurements_taken: {
                 type: 'array',
                 nullable: true
             },
 
             samples_transformed: {
+                type: 'array',
+                nullable: true
+            },
+
+            files_created: {
                 type: 'array',
                 nullable: true
             }
@@ -75,11 +91,41 @@ module.exports = function(model) {
             description: '',
             how: '',
             samples_created: [],
-            measurements_created: [],
-            samples_transformed: []
+            measurements_taken: [],
+            samples_transformed: [],
+            files_created: []
         });
         process.validateAsync = promise.promisify(process.validate);
         return process;
+    }
+
+    function defineTransformedSamplesSchema() {
+        let transformed = schema.defineSchema('TransformedSamples', {
+            sample_id: {
+                type: 'string',
+                nullable: false,
+                mustExistInProject: 'samples:id'
+            },
+            attribute_set_id: {
+                type: 'string',
+                nullable: false,
+                mustBelongToSample: true
+            },
+            uses: {
+                type: 'array',
+                nullable: true
+            },
+            shares: {
+                type: 'array',
+                nullable: true
+            }
+        });
+        transformed.setDefaults({
+            uses: [],
+            shares: []
+        });
+        transformed.validateAsync = promise.promisify(transformed.validate);
+        return transformed;
     }
 
     function defineSamplesSchema() {
@@ -91,11 +137,11 @@ module.exports = function(model) {
             },
             project_id: {
                 type: 'string',
-                nullable: false
+                nullable: true
             },
             owner: {
                 type: 'string',
-                nullable: false
+                nullable: true
             },
             description: {
                 type: 'string',
@@ -120,8 +166,13 @@ module.exports = function(model) {
     }
 
     function defineMeasurementsSchema() {
-        let measurements = schema.defineSchema('Measurement', {
+        let measurements = schema.defineSchema('Measurements', {
             name: {
+                type: 'string',
+                nullable: false
+            },
+
+            attribute: {
                 type: 'string',
                 nullable: false
             },
@@ -142,11 +193,8 @@ module.exports = function(model) {
                 isValidUnit: true
             },
 
-            nvalue: {
-                nullable: true
-            },
-
-            nunits: {
+            project_id: {
+                type: 'string',
                 nullable: true
             },
 
@@ -157,12 +205,10 @@ module.exports = function(model) {
             },
 
             attribute_id: {
-                type: 'string',
                 oneOf: 'attribute_id:attribute_set_id'
             },
 
             attribute_set_id: {
-                type: 'string',
                 oneOf: 'attribute_id:attribute_set_id'
             },
 

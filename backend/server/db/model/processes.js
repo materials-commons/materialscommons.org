@@ -17,7 +17,8 @@ module.exports = function(r) {
     let db = require('./db')(r);
 
     return {
-        create: create
+        create: create,
+        r: r
     };
 
     ///////////////// Module public methods /////////////////
@@ -35,12 +36,14 @@ module.exports = function(r) {
         let p = new model.Process(process.name, process.owner,
                                   process.template_id, process.what, process.how);
         let proc = yield addProcess(process.project_id, p);
-        let settings = yield addSettings(proc.id, process.settings);
-        let measurements = yield addMeasurements(proc.id, process.measurements_created);
+        let settings = yield addSetup(proc.id, process.setup);
+        let measurements = yield addMeasurements(proc.id, process.measurements_taken);
         let samples_created = yield addCreatedSamples(process.samples_created,
                                                       process.project_id, proc.id, process.owner);
         let samples_transformed = yield addTransformedSamples(process.samples_transformed,
                                                               proc.id);
+        let output_files = yield addOutputFiles(proc.id, process.files_created);
+
         // Construct the process just created. The process definition for creation
         // is different from the actual instantiated process model.
         proc.settings = settings;
@@ -74,32 +77,64 @@ module.exports = function(r) {
      *
      * @returns {Object} - The settings object inserted into the database.
      */
-    function *addSettings(processID, settings) {
+    function *addSetup(processID, setup) {
+        let settings = yield addSetupSettings(processID, setup.settings);
+        let setupFiles = yield addSetupFiles(processID, setup.files);
+        return {
+            settings: settings,
+            files: setupFiles
+        };
+    }
+
+    /**
+     *
+     * @param {} processID
+     * @param {} settings
+     * @returns {}
+     */
+    function *addSetupSettings(processID, settings) {
         let created = [];
         for (let i = 0; i < settings.length; i++) {
             let current = settings[i];
 
             // Create the setting
-            let s = new model.Settings(current.name, current.attribute);
-            let setting = yield db.insert('settings', s);
+            let s = new model.Setups(current.name, current.attribute);
+            let setup = yield db.insert('setups', s);
 
             // Associate it with the process
-            let p2s = new model.Process2Setting(processID, setting.id);
-            yield db.insert('process2setting', p2s);
+            let p2s = new model.Process2Setting(processID, setup.id);
+            yield db.insert('process2setup', p2s);
 
             // Create each property for the setting. Add these to the
             // setting variable so we can return a setting object with
             // all of its properties.
-            setting.properties = [];
+            setup.properties = [];
             for (let j = 0; j < current.properties.length; j++) {
                 let p = current.properties[j];
-                let prop = new model.SettingProperty(setting.id, p.name, p.attribute,
+                let prop = new model.SetupProperty(setup.id, p.name, p.attribute,
                                                      p._type, p.value, p.units);
-                let sprop = yield db.insert('setting_properties', prop);
-                setting.properties.push(sprop);
+                let sprop = yield db.insert('setup_properties', prop);
+                setup.properties.push(sprop);
             }
-            created.push(setting);
+            created.push(setup);
         }
+        return created;
+    }
+
+    /**
+     * @name addSetupFiles
+     * @description adds the files that were used to setup this process.
+     * @param {String} processID
+     * @param {Array} files
+     * @returns {Array}
+     */
+    function *addSetupFiles(processID, files) {
+        let toAdd = [];
+        for (let i = 0; i < files.length; i++) {
+            let p2sf = new model.Process2Setupfile(processID, files[i]);
+            toAdd.push(p2sf);
+        }
+        let created = yield db.insert('process2setupfile', toAdd);
         return created;
     }
 
@@ -400,5 +435,21 @@ module.exports = function(r) {
             entry.attribute_id = newAttrID;
         });
         yield db.insert('best_measure_history', original);
+    }
+
+    /**
+     * @name addOutputFiles
+     * @description Adds the files that were produced by the process.
+     * @param {String} processID - Process to add files to
+     * @param {Array} files - A list of files ids to associate with the process
+     */
+    function *addOutputFiles(processID, files) {
+        let addTo = [];
+        for (let i = 0; i < files.length; i++) {
+            let p2of = new model.Process2Outputfile(processID, files[i]);
+            addTo.push(p2of);
+        }
+        let created = yield db.insert('process2outputfile', addTo);
+        return created;
     }
 };

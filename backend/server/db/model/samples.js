@@ -4,13 +4,13 @@ module.exports = function(r) {
     let run = require('./run');
     let getSingle = require('./get-single');
     return {
-        create: create,
         update: update,
         forUser: forUser,
         get: function(id, index) {
             return getSingle(r, 'samples', id, index);
         },
-        findInProject: findInProject
+        findInProject: findInProject,
+        countAttributesInSample: countAttributesInSample
     };
 
     /////////////////
@@ -19,13 +19,6 @@ module.exports = function(r) {
         let rql;
 
         return run(rql);
-    }
-
-    function *create(protoSample) {
-
-        //*****************************************
-        // Need to decide what is being returned.
-        //*****************************************
     }
 
     function update(sample) {
@@ -42,6 +35,13 @@ module.exports = function(r) {
                 .zip()
                 .filter(filterTerm);
         return run(rql);
+    }
+
+    function *countAttributesInSample(asetID, attrIDs) {
+        attrIDs.push({index: 'attribute_id'});
+        let rql = r.table('attributeset2attribute').getAll.apply(this, attrIDs);
+        let count = yield rql.filter({attribute_set_id: asetID}).count();
+        return count;
     }
 
 };
