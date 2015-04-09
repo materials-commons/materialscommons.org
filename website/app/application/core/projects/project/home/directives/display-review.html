@@ -1,7 +1,7 @@
 <div>
-    <div ui-draggable="true" drag="review">
         <span class="pointer"
               ng-click="review.showDetails = !review.showDetails">
+            {{review.title}}
         </span>
 
         <span style="float: right;">
@@ -9,19 +9,14 @@
                   <i style="color: #FDAC6B;" class="fa fa-comment fa-stack-1x"></i>
                   <i style="font-size: 10px;" class="fa fa-stack-1x fa-inverse">{{review.messages.length}}</i>
               </a>
-
-            <a ng-if="!showSideboard" ng-click="remove(review, $event)">
-                <i class="fa fa-fw fa-close mc-danger"></i>
-            </a>
         </span>
 
         <p>
-            <small style="padding-left: 15px;" class="text-muted">
+            <small  class="text-muted">
                <i class="fa fa-fw fa-user"></i> {{review.messages[(review.messages.length -1)].who}}
                 <small style="padding-left: 30px;">{{(review.messages[(review.messages.length -1)].date)}}</small>
             </small>
         </p>
-    </div>
     <div ng-if="review.showDetails">
         <div home-review-details review="review"></div>
     </div>

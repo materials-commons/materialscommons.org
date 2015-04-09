@@ -1,10 +1,9 @@
 <div>
-    <div ui-draggable="true" drag="process">
         <span ng-click="process.showDetails = !process.showDetails" style="cursor: pointer">
-            <span ng-show="process.process">
+            <span  ng-show="process.process">
                 {{process.process.name | truncate:25:'...':true}}
                 <span class="label label-primary"
-                      style="background-color:#e26a6a">Draft</span>
+                      style="background-color:#e26a6a;">Draft</span>
             </span>
             <span ng-hide="process.process">
                 {{process.name | truncate:25:'...':true}}
@@ -13,7 +12,6 @@
         <span class="pull-right">
             <small class="text-muted">{{process.birthtime | toDateString}}</small>
         </span>
-    </div>
     <div ng-if="process.showDetails">
         <home-process-details process="process"></home-process-details>
     </div>
