@@ -2342,13 +2342,14 @@ header {
 }
 .login-splash {
   position: absolute;
-  top: 30%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   padding: 50px;
-  width: 500px;
-  background-color: white;
+  width: 400px;
+  /*background-color: white;*/
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .icon-splash{
