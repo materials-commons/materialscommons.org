@@ -12,7 +12,7 @@ module.exports = function(r) {
     };
 
     function *countInProject(ids, projectID) {
-        let rql = r.table('datafiles').getAll.apply(this, ids);
+        let rql = r.table('datafiles').getAll(r.args(ids));
         let count = yield rql.filter({project_id: projectID}).count();
         return count;
     }
