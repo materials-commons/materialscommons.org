@@ -48,6 +48,33 @@ module.exports = {
         }
     ],
 
+    samples_attribute_set: [
+        {
+            sample_id: 'sample1',
+            attribute_set_id: 'aset_sample_1',
+            attributes: [
+                {
+                    id: 'attr_1'
+                },
+                {
+                    id: 'attr_2'
+                }
+            ]
+        },
+        {
+            sample_id: 'sample2',
+            attribute_set_id: 'aset_sample_2',
+            attributes: [
+                {
+                    id: 'attr_1'
+                },
+                {
+                    id: 'attr_2'
+                }
+            ]
+        }
+    ],
+
     projects: [
         {
             id: 'project1',
