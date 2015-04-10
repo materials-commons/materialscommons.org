@@ -958,13 +958,11 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .panel.card{
-  max-height: 275px;
-  overflow: hidden;
-  min-height: 275px;
+  max-height: 290px;
+  overflow-y: auto;
+  min-height: 290px;
 }
-.panel.card:hover{
-  overflow-y: scroll;
-}
+
 .panel.card > .panel-body{
   padding: 0px;
 }

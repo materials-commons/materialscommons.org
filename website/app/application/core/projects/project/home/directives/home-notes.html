@@ -53,7 +53,7 @@
         <div class="panel-body"
              ng-class="{'no-max-height': isExpanded()}">
             <ul class="list-unstyled">
-                <li class="dashboard-item note" style="height: 70px;border-bottom: dotted #d3d3d3;"
+                <li class="dashboard-item note" style="height: 70px;border-bottom: dotted #d3d3d3;margin-right: 3px;"
                     ng-class="{'open-item-details': showDetails($index)}"
                     ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                     <display-note note="note" show-sideboard="true"></display-note>
