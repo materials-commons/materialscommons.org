@@ -153,7 +153,7 @@ describe('Measurements Schema', function() {
                    units: 'mm',
                    sample_id: 'sample1',
                    project_id: 'project1',
-                   attribute_id: 'attrid'
+                   attribute_id: 'attr_1'
                };
                yield schema.measurements.validateAsync(m);
            }, validateError);
