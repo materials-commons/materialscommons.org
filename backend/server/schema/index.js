@@ -113,11 +113,13 @@ module.exports = function(model) {
             },
             uses: {
                 type: 'array',
-                nullable: true
+                nullable: true,
+                mustBeForAttributeSet: true
             },
             shares: {
                 type: 'array',
-                nullable: true
+                nullable: true,
+                mustBeForAttributeSet: true
             }
         });
         transformed.setDefaults({
@@ -205,16 +207,19 @@ module.exports = function(model) {
             },
 
             attribute_id: {
-                oneOf: 'attribute_id:attribute_set_id'
+                oneOf: 'attribute_id:attribute_set_id',
+                mustBeForSample: 'attribute'
             },
 
             attribute_set_id: {
-                oneOf: 'attribute_id:attribute_set_id'
+                oneOf: 'attribute_id:attribute_set_id',
+                mustBeForSample: 'attributeset'
             },
 
             from_measurements: {
                 type: 'array',
-                nullable: true
+                nullable: true,
+                mustBeValidMeasurements: true
             },
 
             from_file: {
@@ -231,22 +236,26 @@ module.exports = function(model) {
 
                     row_start: {
                         type: 'number',
-                        nullable: false
+                        nullable: false,
+                        gtOrEq: 0
                     },
 
                     row_end: {
                         type: 'number',
-                        nullable: false
+                        nullable: false,
+                        gtOrEq: 'row_start'
                     },
 
                     column_start: {
                         type: 'number',
-                        nullable: false
+                        nullable: false,
+                        gtOrEq: 0
                     },
 
                     column_end: {
                         type: 'number',
-                        nullable: false
+                        nullable: false,
+                        gtOrEq: 'column_start'
                     }
                 },
 
@@ -255,24 +264,20 @@ module.exports = function(model) {
 
                     start: {
                         type: 'number',
-                        nullable: false
+                        nullable: false,
+                        gtOrEq: 0
                     },
 
                     end: {
                         type: 'number',
-                        nullable: false
+                        nullable: false,
+                        gtOrEq: 'start'
                     }
                 }
             }
         });
         measurements.validateAsync = promise.promisify(measurements.validate);
         return measurements;
-    }
-
-    /////////////// Define Types ///////////////
-
-    function defineTypes() {
-        schema.defineDataType('Measurement', dataTypes.measurement);
     }
 
     /////////////// Define Rules ///////////////
@@ -284,6 +289,12 @@ module.exports = function(model) {
                           schemaRules.mustNotExistInProject, true);
         schema.defineRule('mustExistInProject',
                           schemaRules.mustExistInProject, true);
+        schema.defineRule('mustBeForSample',
+                          schemaRules.mustBeForSample, true);
+        schema.defineRule('mustBeForAttributeSet',
+                          schemaRules.mustBeForAttributeSet, true);
+        schema.defineRule('mustBeValidMeasurements',
+                          schemeRules.mustBeValidMeasurements, true);
         schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
         schema.defineRule('isValidUnit', schemaRules.isValidUnit);
         schema.defineRule('oneOf', schemaRules.oneOf);
