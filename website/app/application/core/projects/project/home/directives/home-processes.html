@@ -45,13 +45,13 @@
 
 
 <div class="row">
-    <div class="panel" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
+    <div class="panel card" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
         <div class="panel-heading" style="padding-top: 20px;">
             <img style="height: 35px;padding-bottom: 10px;"
                  src="assets/img/splash/process-icon.png">
             <span style="color: #3A9EE3; font-size: 20px;padding-left: 15px;">PROCESS</span>
         </div>
-        <div class="panel-body home-panel-body"
+        <div class="panel-body"
              ng-class="{'no-max-height': isExpanded()}">
             <ul class="list-unstyled">
                 <li class="dashboard-item"
@@ -61,7 +61,7 @@
                                      show-sideboard="true">
                     </display-process>
                 </li>
-                <li ng-show="procs.length === 0" class="home-item">
+                <li ng-show="procs.length === 0" class="dashboard-item">
                     <div> No processes.</div>
                 </li>
             </ul>

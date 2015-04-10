@@ -44,16 +44,16 @@
 <!--</div>-->
 
 <div class="row">
-    <div class="panel" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
+    <div class="panel card" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
         <div class="panel-heading" style="padding-top: 20px;border-bottom: 1px solid #dfdfdf">
             <img style="height: 35px;padding-bottom: 10px;"
                  src="assets/img/splash/note_icon.png">
             <span style="color: #7DAF50; font-size: 20px;padding-left: 15px;">NOTE</span>
         </div>
-        <div class="panel-body home-panel-body"
+        <div class="panel-body"
              ng-class="{'no-max-height': isExpanded()}">
             <ul class="list-unstyled">
-                <li class="dashboard-item" style="height: 70px;border-bottom: dotted #d3d3d3;"
+                <li class="dashboard-item note" style="height: 70px;border-bottom: dotted #d3d3d3;"
                     ng-class="{'open-item-details': showDetails($index)}"
                     ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
                     <display-note note="note" show-sideboard="true"></display-note>
