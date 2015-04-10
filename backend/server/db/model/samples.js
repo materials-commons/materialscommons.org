@@ -10,7 +10,10 @@ module.exports = function(r) {
             return getSingle(r, 'samples', id, index);
         },
         findInProject: findInProject,
-        countAttributesInSample: countAttributesInSample
+        countAttributesInSample: countAttributesInSample,
+        validateAttribute: validateAttribute,
+        validateAttributeSet: validateAttributeSet,
+        getMeasurements: getMeasurements
     };
 
     /////////////////
@@ -38,10 +41,62 @@ module.exports = function(r) {
     }
 
     function *countAttributesInSample(asetID, attrIDs) {
-        attrIDs.push({index: 'attribute_id'});
-        let rql = r.table('attributeset2attribute').getAll.apply(this, attrIDs);
+        let rql = r.table('attributeset2attribute')
+                .getAll(r.args(attrIDs), {index:'attribute_id'});
         let count = yield rql.filter({attribute_set_id: asetID}).count();
         return count;
     }
 
+    /**
+     * Returns a list of sample ids that contain this attribute id.
+     * @param {String} sampleID - The sample id the attribute id should be in.
+     * @param {String} attributeID - The attribute id to lookup.
+     * @returns {Promise}
+     */
+    function validateAttribute(sampleID, attributeID) {
+        let rql = r.table('sample2attributeset')
+                .getAll(sampleID, {index: 'sample_id'})
+                .eqJoin('attribute_set_id',
+                        r.table('attributeset2attribute'),
+                        {index: 'attribute_set_id'})
+                .zip()
+                .filter({attribute_id: attributeID});
+        return run(rql);
+    }
+
+    /**
+     * Returns a list of samples that contain the given attribute set id.
+     * @param {String} sampleID - The sample id the attribute set should be.
+     * @param {String} attrSetID - The attribute set id to lookup.
+     * @returns {Promise}
+     */
+    function validateAttributeSet(sampleID, attrSetID) {
+        let rql = r.table('sample2attributeset')
+                .getAll(sampleID, {index: 'sample_id'})
+                .filter({attribute_set_id: attrSetID});
+        return run(rql);
+    }
+
+    /**
+     * Returns a list of the measurements given that apply to the sampleID.
+     * @param {String} sampleID - The sample id to filter by
+     * @param {Array} measurements - Measurement ids to retrieve
+     * @returns {Promise}
+     */
+    function getMeasurements(sampleID, measurements) {
+        let rql = r.table('measurements').getAll(r.args(this, measurements));
+        return run(rql.filter({sample_id: sampleID}));
+    }
+
+    /**
+     * Returns the attribute ids from attrs that are in the given
+     * attribute set id.
+     * @param {String} asetID - The attribute set id all attributes must belong to.
+     * @param {Array} attrs - The list of attributes to retrieve (filtered by asetID)
+     */
+    function getAttributesFromAS(asetID, attrs) {
+        let rql = r.table('attributeset2attribute')
+                .getAll(r.args(attrs), {index: 'attribute_id'});
+        return run(rql.filter({attribute_set_id: asetID}));
+    }
 };
