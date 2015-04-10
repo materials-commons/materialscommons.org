@@ -957,11 +957,16 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-color: #c9c9c9;
 }
 
-.home-panel-body {
+.panel.card{
+  max-height: 275px;
+  overflow: hidden;
+  min-height: 275px;
+}
+.panel.card:hover{
+  overflow-y: scroll;
+}
+.panel.card > .panel-body{
   padding: 0px;
-  max-height: 206px;
-  overflow-y: auto;
-  min-height: 206px;
 }
 
 .side-by-side {
@@ -2270,4 +2275,14 @@ header {
 .corner{
   background-color: grey;
   color: white;
+}
+
+.note:nth-child(odd){
+  border-right: 6px solid #7DAF50
+}
+.fc-toolbar h2 {
+  font-size: 20px;
+}
+.fc table {
+  width: 500px;
 }

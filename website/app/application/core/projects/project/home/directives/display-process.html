@@ -1,5 +1,5 @@
 <div>
-        <span ng-click="process.showDetails = !process.showDetails" style="cursor: pointer">
+        <span ng-click="" style="cursor: pointer">
             <span  ng-show="process.process">
                 {{process.process.name | truncate:25:'...':true}}
                 <span class="label label-primary"
@@ -12,7 +12,4 @@
         <span class="pull-right">
             <small class="text-muted">{{process.birthtime | toDateString}}</small>
         </span>
-    <div ng-if="process.showDetails">
-        <home-process-details process="process"></home-process-details>
-    </div>
 </div>

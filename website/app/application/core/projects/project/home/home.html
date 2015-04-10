@@ -11,16 +11,17 @@
             <!--</ul>-->
         <!--</div>-->
     <!--</div>-->
-<!--</div>-->  <br>
+<!--</div>-->
+<br>
 <div>
     <div class="row" style="padding-left: 15px">
         <div ui-view></div>
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <div class="row" ng-if="showPanel('calendar')">
-                <div home-calendar project="project"></div>
-            </div>
+            <!--<div class="row" ng-if="showPanel('calendar')">-->
+                <!--<div home-calendar project="project"></div>-->
+            <!--</div>-->
             <div home-processes project="project"></div>
             <div home-reviews project="project"></div>
             <div home-notes project="project"></div>
@@ -28,6 +29,7 @@
         <div class="col-xs-6">
             <div home-samples project="project"></div>
             <div home-files project="project"></div>
+            <div home-calendar project="project"></div>
         </div>
     </div>
 
