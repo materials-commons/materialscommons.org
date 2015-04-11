@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^2.9.14",
-    "busmq": "^0.8.7",
+    "busmq": "^0.8.8",
     "hiredis": "^0.2.0",
     "js-data": "^1.5.11",
     "js-data-rethinkdb": "^1.1.2",
