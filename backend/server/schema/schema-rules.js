@@ -34,7 +34,7 @@ module.exports = function(model) {
     // mustExist looks up an entry in the named table by id. If
     // the entry doesn't exist it returns an error.
     function mustExist(what, modelName, done) {
-        model[modelName].get(what).then(function(value) {
+        model[modelName].get(what).then((value) => {
             let error = null;
             if (!value) {
                 error = {
@@ -53,7 +53,7 @@ module.exports = function(model) {
         let pieces = spec.split(':'),
             modelName = pieces[0],
             modelIndex = pieces[1];
-        model[modelName].get(what, modelIndex).then(function(value) {
+        model[modelName].get(what, modelIndex).then((value) => {
             let error = null;
             if (value) {
                 // found a match, when we shouldn't have
@@ -74,21 +74,22 @@ module.exports = function(model) {
             modelName = pieces[0],
             index = pieces[1];
         let project_id = this.project_id;
-        model[modelName].findInProject(this.project_id, index, what).then(function(matches) {
-            let error = matches.length === 0 ? null : {
-                rule: 'mustNotExistInProject',
-                actual: what,
-                expected: `${index}:${what} should not exist in project ${project_id}`
-            };
-            done(error);
-        });
+        model[modelName].findInProject(this.project_id, index, what)
+            .then((matches) => {
+                let error = matches.length === 0 ? null : {
+                    rule: 'mustNotExistInProject',
+                    actual: what,
+                    expected: `${index}:${what} should not exist in project ${project_id}`
+                };
+                done(error);
+            });
     }
 
     // mustExistInProject ensures that the item exists in the project.
     function mustExistInProject(what, modelName, done) {
         let project_id = this.project_id;
         model[modelName].findInProject(this.project_id, 'id', what)
-            .then(function(matches) {
+            .then((matches) => {
                 let error = matches.length !== 0 ? null : {
                     rules: 'mustExistInProject',
                     actual: what,
@@ -156,6 +157,7 @@ module.exports = function(model) {
             return;
         }
 
+
         let sample_id = this.sample_id;
         if (idType === 'attribute') {
             model.samples.validateAttribute(sample_id, id).then(checkMatch);
@@ -169,15 +171,13 @@ module.exports = function(model) {
             });
         }
 
-        return;
-
-        /////////////////////////////////////
+        //////////////////
 
         /**
          * Checks if there were any matches. If not generates an error.
          * @param {Array} matches - A list of matching items.
          */
-        function checkMatch(matches) {
+        function checkMatch (matches) {
             if (matches.length !== 0) {
                 done(null);
             } else {
@@ -189,6 +189,7 @@ module.exports = function(model) {
                 done(error);
             }
         }
+
     }
 
     /**
@@ -207,8 +208,6 @@ module.exports = function(model) {
         } else {
             model.sample.getMeasurements(sampleID, measurements).then(checkMeasures);
         }
-
-        return;
 
         //////////////////
 
@@ -255,7 +254,7 @@ module.exports = function(model) {
             expected: `all attributes to belong to attribute set ${asetID}`
         };
         model.sample.getAttributesFromAS(asetID, attributes)
-            .then(function(attrs) {
+            .then((attrs) => {
                 done(attrs.length !== attributes.length ? error : null);
             });
     }
