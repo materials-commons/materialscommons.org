@@ -54,10 +54,26 @@ module.exports = {
             attribute_set_id: 'aset_sample_1',
             attributes: [
                 {
-                    id: 'attr_1'
+                    id: 'attr_1',
+                    measurements: [
+                        {
+                            id: 'measure_1',
+                            _type: 'number'
+                        },
+                        {
+                            id: 'measure_2',
+                            _type: 'number'
+                        }
+                    ]
                 },
                 {
-                    id: 'attr_2'
+                    id: 'attr_2',
+                    measurements: [
+                        {
+                            id: 'measure_1',
+                            _type: 'string'
+                        }
+                    ]
                 }
             ]
         },
@@ -66,10 +82,26 @@ module.exports = {
             attribute_set_id: 'aset_sample_2',
             attributes: [
                 {
-                    id: 'attr_1'
+                    id: 'attr_1',
+                    measurements: [
+                        {
+                            id: 'measure_1',
+                            _type: 'number'
+                        },
+                        {
+                            id: 'measure_2',
+                            _type: 'number'
+                        }
+                    ]
                 },
                 {
-                    id: 'attr_2'
+                    id: 'attr_2',
+                    measurements: [
+                        {
+                            id: 'measure_1',
+                            _type: 'string'
+                        }
+                    ]
                 }
             ]
         }
