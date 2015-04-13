@@ -25,7 +25,8 @@ module.exports = function(model) {
         isValidUnit: isValidUnit,
         oneOf: oneOf,
         mustBeForSample: mustBeForSample,
-        mustBeValidMeasurements: mustBeValidMeasurements
+        mustBeValidMeasurements: mustBeValidMeasurements,
+        mustBeForAttributeSet: mustBeForAttributeSet
     };
 
     ////////////////////////////////////////
