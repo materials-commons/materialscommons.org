@@ -1,0 +1,62 @@
+<div>
+    <div class="row">
+        <h3>Description: {{template.description}}</h3>
+    </div>
+    <div class="row item-details">
+        <h4>Process Attributes</h4>
+        <div class="row" ng-repeat="category in template.process">
+            <strong>Category: {{category.category}}</strong>
+            <ul class="list-group">
+                <li class="list-group-item"
+                    ng-repeat="attribute in category.attributes">
+                    Attribute: {{attribute.name}}
+                    <br/>
+                    Description: {{attribute.description}}
+                    <br/>
+                    Required: {{attribute.required}}
+                    <div ng-if="attribute.default_value">
+                        Default Value: {{attribute.default_value}}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row item-details">
+        <h4>Inputs</h4>
+        <div class="row" ng-repeat="input in template.inputs">
+            <strong>Category: {{input.category}}</strong>
+            <ul class="list-group">
+                <li class="list-group-item"
+                    ng-repeat="attribute in input.attributes">
+                    Attribute: {{attribute.name}}
+                    <br/>
+                    Description: {{attribute.description}}
+                    <br/>
+                    Required: {{attribute.required}}
+                    <div ng-if="attribute.default_value">
+                        Default Value: {{attribute.default_value}}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row item-details">
+        <h4>Outputs</h4>
+        <div class="row" ng-repeat="output in template.outputs">
+            <strong>Category: {{output.category}}</strong>
+            <ul class="list-group">
+                <li class="list-group-item"
+                    ng-repeat="attribute in output.attributes">
+                    Attribute: {{attribute.name}}
+                    <br/>
+                    Description: {{attribute.description}}
+                    <br/>
+                    Required: {{attribute.required}}
+                    <div ng-if="attribute.default_value">
+                        Default Value: {{attribute.default_value}}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -310,7 +310,6 @@ previous button's border...
 --------------------------------------------------------------------------------------------------*/
 
 .fc table {
-	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
 	border-spacing: 0;

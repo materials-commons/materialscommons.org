@@ -69,12 +69,13 @@ def add_reviews(projects_by_id, project_ids):
 
 
 def add_samples(projects_by_id, project_ids):
-    samples = list(r.table('projects2samples')
-                   .get_all(*project_ids, index='project_id')
-                   .eq_join('sample_id', r.table('samples'))
-                   .zip()
-                   .order_by('name')
-                   .run(g.conn, time_format='raw'))
+    # samples = list(r.table('projects2samples')
+    #                .get_all(*project_ids, index='project_id')
+    #                .eq_join('sample_id', r.table('samples'))
+    #                .zip()
+    #                .order_by('name')
+    #                .run(g.conn, time_format='raw'))
+    samples = []
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
@@ -88,8 +89,8 @@ def add_drafts(projects_by_id, project_ids, user):
 
 def add_processes(projects_by_id, project_ids):
     processes = []
-    for project_id in project_ids:
-        processes.extend(process.get_processes(project_id))
+    # for project_id in project_ids:
+    #     processes.extend(process.get_processes(project_id))
     add_computed_items(projects_by_id, processes, 'project_id', 'processes')
 
 
@@ -132,7 +133,15 @@ def get_project_tree2(project_id):
                          .get_all(dd['id'], index="datadir_id")
                          .eq_join("datafile_id", r.table("datafiles"))
                          .zip()
-                         .coerce_to("array")})
+                         .coerce_to("array")
+                    .merge(lambda df: {
+                         "tags": r.table("tag2item")
+                         .get_all(df['id'], index="item_id")
+                         .eq_join("tag_id", r.table("tags"))
+                         .zip().pluck('id')
+                         .coerce_to("array")
+                         })
+                    })
                      .run(g.conn, time_format="raw"))
     return build_tree(selection)
 
@@ -191,7 +200,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
-            dfitem.tags = []  # df['tags']
+            dfitem.tags = df['tags']
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
             elif 'mime' not in df['mediatype']:

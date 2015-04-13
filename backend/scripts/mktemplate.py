@@ -23,7 +23,7 @@ if __name__ == "__main__":
     if existing:
         r.table('templates').get(data['id']).delete().run(conn)
         r.table('templates').insert(data).run(conn)
-        print 'template deleted and re-inserted into the database'
+        print '  Template deleted and re-inserted into the database...'
     else:
         r.table('templates').insert(data).run(conn)
-        print 'template inserted into the database'
+        print '  Template inserted into the database...'
