@@ -57,6 +57,19 @@ Application.Services.factory('Review',
                     }
                 });
                 return count;
+            },
+            setActiveReview: function(rev_id, reviews){
+                var i = _.indexOf(reviews, function(rev){
+                    return rev.id === rev_id;
+                });
+                if (i !== -1){
+                    service.activeReview = reviews[i];
+                    pubsub.send('review.change');
+                    return service.activeReview;
+                }
+            } ,
+            getActiveReview: function(){
+                return service.activeReview;
             }
         };
         return service;

@@ -212,6 +212,11 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews"
         })
+        .state("projects.project.reviews.edit", {
+            url: "/:review_id",
+            templateUrl: "application/core/projects/project/reviews/edit.html",
+            controller: "projectEditReview"
+        })
         .state("projects.project.notes", {
             url: "/notes",
             templateUrl: "application/core/projects/project/notes/notes.html",

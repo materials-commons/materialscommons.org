@@ -54,6 +54,7 @@
              ng-class="{'no-max-height': isExpanded()}">
             <ul class="list-unstyled">
                 <li class="dashboard-item" style="height: 70px;border-bottom: dotted #d3d3d3;"
+                    ui-sref="projects.project.reviews.edit({'review_id': review.id})"
                     ng-class="{'open-item-details': review.showDetails}"
                     ng-repeat="review in project.reviews | byKey: 'status': 'open' | filter:search | event: project.date: project.nextdate as reviews">
                     <display-review review="review" show-sideboard="true"></display-review>
