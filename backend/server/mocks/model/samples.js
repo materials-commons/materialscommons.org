@@ -11,7 +11,9 @@ module.exports = {
     findInProject: findInProject,
     countAttributesInSample: countAttributesInSample,
     validateAttribute: validateAttribute,
-    validateAttributeSet: validateAttributeSet
+    validateAttributeSet: validateAttributeSet,
+    getMeasurements: getMeasurements,
+    getAttributesFromAS: getAttributesFromAS
 };
 
 function get(id, index) {
@@ -86,5 +88,58 @@ function validateAttributeSet(sampleID, attrSetID) {
             return item.sample_id == sampleID && item.attribute_set_id === attrSetID;
         });
         return matches;
+    });
+}
+
+function getMeasurements(sampleID, measurements) {
+    'use strict';
+    return promise.resolve().then(function() {
+        // find attribute sets for this sampleID
+        let matches = _.filter(samples_attribute_set, function(item) {
+            return item.sample_id === sampleID;
+        });
+        let measures = [];
+        // for each matching attribute sets go through its attributes
+        matches.forEach(function(attrSet) {
+            attrSet.attributes.forEach(function(attr) {
+                // for each attribute go through its measurements and
+                // check if any of those measurements ids are in the
+                // list of measurements we were passed. If we find a
+                // match append the measurement to measures.
+                attr.measurements.forEach(function(m) {
+                    let index = _.indexOf(measurements, function(id) {
+                        return id === m.id;
+                    });
+                    if (index !== -1) {
+                        measures.push(m);
+                    }
+                });
+            });
+        });
+        return measures;
+    });
+}
+
+function getAttributesFromAS(asetID, attrs) {
+    return promise.resolve().then(function() {
+        // find attribute sets matching asetID
+        let matches = _.filter(samples_attribute_set, function(item) {
+            return item.attribute_set_id === asetID;
+        });
+        let attributes = [];
+        // for each attribute set go through the list of attributes,
+        // and see if that attribute is in the list of attrs. If it
+        // is then append it to attributes.
+        matches.forEach(function(attrSet) {
+            attrSet.attributes.forEach(function(attr) {
+                let index = _.indexOf(attrs, function(id) {
+                    return id === attr.id;
+                });
+                if (index !== -1) {
+                    attributes.push(attr);
+                }
+            });
+        });
+        return attributes;
     });
 }
