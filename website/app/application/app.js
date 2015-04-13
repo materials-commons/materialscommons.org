@@ -212,11 +212,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews"
         })
-        .state("projects.project.reviews.edit", {
-            url: "/:review_id",
-            templateUrl: "application/core/projects/project/reviews/edit.html",
-            controller: "projectEditReview"
-        })
         .state("projects.project.notes", {
             url: "/notes",
             templateUrl: "application/core/projects/project/notes/notes.html",
@@ -226,6 +221,16 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/sideboard",
             templateUrl: "application/core/projects/project/sideboard/sideboard.html",
             controller: "projectSideboard"
+        })
+        .state("projects.project.reviews.edit", {
+            url: "/:review_id",
+            templateUrl: "application/core/projects/project/reviews/edit.html",
+            controller: "projectEditReview"
+        })
+        .state("projects.project.files.edit", {
+            url: "/:file_id",
+            templateUrl: "application/core/projects/project/files/edit.html",
+            controller: "FilesEditController"
         });
     createNumericValidator($validationProvider);
     $validationProvider.showSuccessMessage = false;
