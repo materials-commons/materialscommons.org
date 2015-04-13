@@ -8,7 +8,6 @@ module.exports = function(model) {
 
     let schemaRules = require('./schema-rules')(model);
     let dataTypes = require('./schema-data-types');
-    defineTypes();
     defineRules();
 
     return {
@@ -294,7 +293,7 @@ module.exports = function(model) {
         schema.defineRule('mustBeForAttributeSet',
                           schemaRules.mustBeForAttributeSet, true);
         schema.defineRule('mustBeValidMeasurements',
-                          schemeRules.mustBeValidMeasurements, true);
+                          schemaRules.mustBeValidMeasurements, true);
         schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
         schema.defineRule('isValidUnit', schemaRules.isValidUnit);
         schema.defineRule('oneOf', schemaRules.oneOf);
