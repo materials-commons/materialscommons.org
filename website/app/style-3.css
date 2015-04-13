@@ -874,7 +874,6 @@ h4, .h4, h5, .h5, h6, .h6 {
   margin-top: 41px;
 }
 
-
 .project-task-bar {
   left: 0;
   position: fixed;
@@ -901,15 +900,17 @@ h4, .h4, h5, .h5, h6, .h6 {
 .home-list li.list-group-item:hover {
   background-color: #eeeeee;
 }
+
 .dashboard-item {
   background-color: #ffffff;
   padding: 20px;
   height: 50px;
 }
 
-.dashboard-item:nth-child(odd){
+.dashboard-item:nth-child(odd) {
   background-color: #F5F5F5;
 }
+
 .home-item {
   background-color: #ffffff;
   border-top-style: solid;
@@ -924,14 +925,13 @@ h4, .h4, h5, .h5, h6, .h6 {
   padding-bottom: 5px;
 }
 
-.home-item:nth-child(odd){
+.home-item:nth-child(odd) {
   background-color: #F5F5F5;
 }
 
 .home-panel-heading {
   padding-right: 7px;
 }
-
 
 .add-item {
   margin-right: 10px;
@@ -957,13 +957,13 @@ h4, .h4, h5, .h5, h6, .h6 {
   border-color: #c9c9c9;
 }
 
-.panel.card{
+.panel.card {
   max-height: 290px;
   overflow-y: auto;
   min-height: 290px;
 }
 
-.panel.card > .panel-body{
+.panel.card > .panel-body {
   padding: 0px;
 }
 
@@ -2218,15 +2218,14 @@ textarea.no-resize {
   background-color: #d3d3d3;
 }
 
-
 header {
-  background:
-  url('assets/img/splash/bg1.png');
+  background: url('assets/img/splash/bg1.png');
   background-size: cover;
   height: 70vh;
   margin-top: -45px;
   background-position: 10% 60%;
 }
+
 .login-splash {
   position: absolute;
   top: 40%;
@@ -2239,48 +2238,60 @@ header {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-.icon-splash{
+.icon-splash {
   background-color: white;
   height: 30vh;
   padding-top: 70px;
 }
 
-.process-splash{
+.process-splash {
   height: 100vh;
   padding-top: 70px;
 }
 
-.sample-splash{
+.sample-splash {
   background-color: white;
   height: 100vh;
   padding-top: 70px;
 }
-.review-splash{
+
+.review-splash {
   height: 100vh;
   padding-top: 70px;
 }
 
-.file-splash{
+.file-splash {
   background-color: white;
   height: 100vh;
   padding-top: 70px;
 }
-.note-splash{
+
+.note-splash {
   height: 100vh;
   padding-top: 70px;
 }
 
-.corner{
+.corner {
   background-color: grey;
   color: white;
 }
 
-.note:nth-child(odd){
+.note:nth-child(odd) {
   border-right: 6px solid #7DAF50
 }
+
 .fc-toolbar h2 {
   font-size: 20px;
 }
+
 .fc table {
   width: 100%;
+}
+
+.review-open {
+  color: green;
+}
+
+.review-closed {
+  color: red;
 }
