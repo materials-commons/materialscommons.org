@@ -121,6 +121,7 @@ function getMeasurements(sampleID, measurements) {
 }
 
 function getAttributesFromAS(asetID, attrs) {
+    'use strict';
     return promise.resolve().then(function() {
         // find attribute sets matching asetID
         let matches = _.filter(samples_attribute_set, function(item) {
