@@ -24,4 +24,8 @@ function userguideDirectiveController($scope, help, ui, $stateParams) {
     $scope.isExpanded = function() {
         return ui.isExpanded($stateParams.id, "help");
     };
+    $scope.goTo = function(what){
+        $scope.showSamples = true;
+    };
+
 }

@@ -6,7 +6,8 @@ function mcTreeDirective() {
         scope: {
             items: '=items',
             orderby: '=orderby',
-            matches: '=matches'
+            matches: '=matches',
+            checkBox: '='
         },
         replace: true,
         templateUrl: 'application/directives/mc-tree.html'
@@ -20,7 +21,8 @@ function mcTreeHeaderDirective() {
         restrict: "E",
         scope: {
             item: '=item',
-            showSideboard: "=showSideboard"
+            showSideboard: "=showSideboard",
+            checkBox: '='
         },
         controller: "mcTreeHeaderDirectiveController",
         replace: true,
@@ -47,15 +49,15 @@ function mcTreeDirDirective(RecursionHelper) {
 }
 
 Application.Controllers.controller("mcTreeDirDirectiveController",
-                                   ["$scope", mcTreeDirDirectiveController]);
+                                   ["$scope",  mcTreeDirDirectiveController]);
 function mcTreeDirDirectiveController($scope) {
     $scope.items = $scope.item.children;
 }
 
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi", "projectFiles",                                    mcTreeHeaderDirectiveController]);
-function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, toggleDragButton, pubsub, mcapi, projectFiles) {
+                                   ["$scope",  "pubsub", "projectFiles", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi", "projectFiles",                                    mcTreeHeaderDirectiveController]);
+function mcTreeHeaderDirectiveController($scope, pubsub, projectFiles,sideboard, current, toggleDragButton, pubsub, mcapi, projectFiles) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
         $scope.faClass = "fa-upload";
@@ -64,9 +66,12 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
         $scope.faClass = "fa-download";
     }
 
-    $scope.downloadSrc = function(file) {
-        return mcfile.downloadSrc(file.id);
-    };
+    pubsub.waitOn($scope, "activeFile.change", function () {
+        getActiveFile();
+    });
+    function getActiveFile(){
+        $scope.activeFile = projectFiles.getActiveFile();
+    }
 
     $scope.addToSideboard = function(file, event) {
         sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
