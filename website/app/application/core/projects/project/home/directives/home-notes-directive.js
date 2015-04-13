@@ -11,33 +11,33 @@ function homeNotesDirective() {
 }
 
 Application.Controllers.controller("homeNotesDirectiveController",
-                                   ["$scope", "ui",
-                                    homeNotesDirectiveController]);
+    ["$scope", "ui",
+        homeNotesDirectiveController]);
 
 function homeNotesDirectiveController($scope, ui) {
-    $scope.project.notes.forEach(function(note) {
+    $scope.project.notes.forEach(function (note) {
         if (!('showDetails' in note)) {
             note.showDetails = false;
         }
     });
 
-    $scope.minimize = function() {
+    $scope.minimize = function () {
         ui.togglePanelState($scope.project.id, 'notes');
     };
 
-    $scope.toggleExpanded = function() {
+    $scope.toggleExpanded = function () {
         ui.toggleIsExpanded($scope.project.id, "notes");
     };
 
-    $scope.isExpanded = function() {
+    $scope.isExpanded = function () {
         return ui.isExpanded($scope.project.id, "notes");
     };
 
-    $scope.createNote = function(){
+    $scope.createNote = function () {
         $scope.model.createNote = true;
     };
 
-    $scope.splitScreen = function(what, col){
+    $scope.splitScreen = function (what, col) {
         ui.toggleColumns($scope.project.id, what, col);
     };
 

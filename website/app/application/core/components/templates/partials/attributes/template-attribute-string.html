@@ -1,0 +1,29 @@
+<div>
+    <div ng-switch="edit">
+        <div ng-switch-when="true">
+            <label class="col-xs-3 control-label" for="stringInput">
+                {{attribute.name}}
+                <i ng-if="attribute.required"
+                   class="fa fa-fw fa-asterisk text-danger"></i>
+            </label>
+            <div class="col-xs-6">
+                <input type="text"
+                       id="stringInput"
+                       class="form-control"
+                       name="stringInput"
+                       ng-required="attribute.required"
+                       ng-model="attribute.value">
+                <span ng-show="form.stringInput.$error.required" class="text-danger">
+                    You must supply a {{attribute.name}}.
+                </span>
+                <span class="help-block">
+                    {{attribute.description}}
+                </span>
+            </div>
+        </div>
+        <div ng-switch-default>
+            <dt>{{attribute.name}}</dt>
+            <dd>{{attribute.value}}</dd>
+        </div>
+    </div>
+</div>

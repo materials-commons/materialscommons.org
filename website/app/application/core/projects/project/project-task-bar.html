@@ -1,121 +1,84 @@
-<div>
-    <div class="row">
-        <div class="col-xs-4">
-            <div class="list-group sidebar-list" style="margin-left: 10px;">
-                <div class="list-group-item sidebar-action" style="padding-top: 5px; padding-bottom: 5px">
-                    <a style="color: white;" ng-click="showProjects = !showProjects">
-                        <i class="fa fa-fw fa-briefcase"></i> {{project.name | truncate: 40: '...'}}
-                        <i class="fa"
-                           ng-class="{'fa-chevron-right': !showProjects, 'fa-chevron-down': showProjects}"></i>
-                        <span class="pull-right white">{{projects.length}}</span>
-                    </a>
+<div class="row" style="background-color: #518394; margin-bottom: 0px">
+    <div class="col-xs-3">
+        <ul style="padding-left: 5px;" class="taskbar nav nav-tabs">
+            <li class="dropdown">
+                <a title="{{project.name}}" class="dropdown-toggle" data-toggle="dropdown"
+                   style="color: white; padding-left: 5px;">
+                    <i class="white fa fa-fw fa-briefcase"></i>
+                    {{project.name | truncate: 17: '...'}} <span class="white badge" style="float: none;">{{projects.length}}</span>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu projects-dropdown nav-dropdown-scrollbar" role="menu">
+                    <li data-toggle="modal"
+                        data-target="#newProject"><a><i class="fa fa-fw fa-plus"></i>New Project</a></li>
+                    <li class="divider"></li>
+                    <li ng-repeat="p in projects"
+                        ng-class="{'active-project': p.id === project.id}" ng-click="setProject(p)"><a>{{p.name}}</a>
+                    </li>
+                </ul>
+        </ul>
+    </div>
+    <div class="col-xs-7">
+        <div>
+            <ul class="taskbar nav nav-tabs" role="tablist">
+                <li role="presentation" ng-class="{'active': activePage === 'home'}"><a
+                        ng-click="toggleExpanded('home')" aria-controls="profile" role="tab"
+                        data-toggle="tab">
+                    <i class="fa fa-fw fa-home bold"></i>Home
+                </a></li>
+                <li role="presentation" ng-class="{'active': activePage === 'processes'}"><a
 
-                    <div ng-show="showProjects" style="overflow: auto; max-height: 300px;">
-                        <a class="list-group-item"
-                           data-toggle="modal"
-                           data-target="#newProject">
-                            <i class="fa fa-fw fa-plus"></i> New Project
-                        </a>
-                        <hr class="carved"/>
-                        <a class="list-group-item"
-                           ng-repeat="p in projects"
-                           ng-click="setProject(p)">
-                            {{p.name}}
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-8">
-            <div class="pull-right" style="margin-right: 20px;">
-                <span style="color:white;font-family: Helvetica;font-size: 16px;">
-                    Welcome {{mcuser.fullname}}
-                </span>
-                <small style="color:white">
-                    (Last login on <a ui-sref="projects.project.home"> {{mcuser.last_login | toDateString}} </a>)
-                </small>
-            </div>
+                        ng-click="toggleExpanded('processes')" aria-controls="profile" role="tab"
+                        data-toggle="tab">
+                    <i class="fa fa-fw fa-code-fork bold"></i>Processes
+                </a></li>
+                <li role="presentation" ng-class="{'active': activePage === 'files'}"><a
+                        ng-click="toggleExpanded('files')" aria-controls="profile" role="tab"
+                        data-toggle="tab">
+                    <i
+                            class="fa fa-fw fa-files-o bold"></i> Files
+                </a></li>
+                <li role="presentation" ng-class="{'active': activePage === 'samples'}"><a
+                        ng-click="toggleExpanded('samples')" aria-controls="profile" role="tab"
+                        data-toggle="tab">
+                    <i
+                            class="fa fa-fw fa-cubes bold"></i> Samples
+                </a></li>
+                <li role="presentation" ng-class="{'active': activePage === 'reviews'}"><a
+                        ng-click="toggleExpanded('reviews')" aria-controls="profile" role="tab"
+                        settings data-toggle="tab">
+                    <i class="fa fa-fw fa-comment bold"></i> Reviews
+                </a></li>
+                <li role="presentation" ng-class="{'active': activePage === 'notes'}"><a
+                        ng-click="toggleExpanded('notes')" aria-controls="profile" role="tab"
+                        data-toggle="tab">
+                    <i class="fa fa-fw fa-edit bold"></i>Notes
+                </a></li>
+            </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="col-xs-2">
-                <a ng-click="openProvWizard()" title="Provenance Wizard">
-                </a>
-                <a ng-click="openDrafts()" title="Drafts">
-                    <i class="fa fa-fw fa-2x fa-pencil-square-o task-bar-tool"
-                       ng-class="{'tool-inactive': !showPanel('drafts'), 'tool-active': showPanel('drafts')}">
-                    </i>
-                </a>
-                <a ng-click="openPanel('settings')" title="Project Settings">
-                    <i class="fa fa-fw fa-2x fa-gear task-bar-tool"
-                       ng-class="{'tool-inactive': !showPanel('settings'), 'tool-active': showPanel('settings')}"></i>
-                </a>
-                <a ng-click="openPanel('calendar')" title="Event Calendar">
-                    <i class="fa fa-fw fa-2x fa-calendar task-bar-tool"
-                       ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}"></i>
-                </a>
-                <a  ng-click="toggleExpanded('sideboard')" title="Sideboard">
-                    <i class="fa fa-fw fa-2x fa-clipboard task-bar-tool"
-                       ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"></i>
-                    <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
-                </a>
-            </div>
-
-            <div class="col-xs-10">
-                <a class="btn btn-default btn-sideboard minimized-window"
-                   ng-class="{'btn-processes-active': isActive('dashboard')}"
-                   ng-click="toggleExpanded('dashboard')">
-                    <span>
-                        <i class="fa fa-fw fa-tachometer bold"></i>
-                        Dashboard
-                    </span>
-                </a>
-                <a class="btn btn-default btn-processes minimized-window"
-                   ng-class="{'btn-processes-active': isActive('processes')}"
-                   ng-click="toggleExpanded('processes')">
-                    <span>
-                        <i class="fa fa-fw fa-code-fork bold"></i>
-                        Processes
-                    </span>
-                </a>
-
-                <a class="btn btn-default btn-files minimized-window"
-                   ng-class="{'btn-files-active': isActive('files')}"
-                   ng-click="toggleExpanded('files')">
-                    <span>
-                        <i class="fa fa-fw fa-files-o bold"></i>
-                        Files
-                    </span>
-                </a>
-
-                <a class="btn btn-default btn-samples minimized-window"
-                   ng-class="{'btn-samples-active': isActive('samples')}"
-                   ng-click="toggleExpanded('samples')">
-                    <span>
-                        <i class="fa fa-fw fa-cubes bold"></i>
-                        Samples ({{project.samples.length}})
-                    </span>
-                </a>
-
-                <a class="btn btn-default btn-reviews minimized-window"
-                   ng-class="{'btn-reviews-active': isActive('reviews')}"
-                   ng-click="toggleExpanded('reviews')">
-                    <span>
-                        <i class="fa fa-fw fa-comment bold"></i>
-                        Reviews ({{(project.reviews | byKey: 'status': 'open').length}})
-                    </span>
-                </a>
-
-                <a class="btn btn-default btn-notes minimized-window"
-                   ng-class="{'btn-notes-active': isActive('notes')}"
-                   ng-click="toggleExpanded('notes')">
-                    <span>
-                        <i class="fa fa-fw fa-edit bold"></i>
-                        Notes ({{project.notes.length}})
-                    </span>
-                </a>
-            </div>
+    <div class="col-xs-2">
+        <div>
+            <ul class="taskbar nav nav-tabs" role="tablist">
+                <li role="presentation" ng-class="{'active': activePage === 'access'}"><a  style="padding: 10px 5px;"
+                        ng-click="toggleExpanded('access')" ui-sref="projects.project.access"
+                        title="Project Settings">
+                    <i class="fa fa-fw fa-1x fa-gear"></i>
+                </a></li>
+                <li role="presentation" ng-class="{'active': activePage === 'drafts'}"><a style="padding: 10px 5px;"
+                        ng-click="toggleExpanded('drafts')" title="Drafts">
+                        <i class="fa fa-fw fa-1x fa-pencil-square-o">
+                        </i>
+                </a></li>
+                <li ng-class="{'active': activePage === 'sideboard'}">
+                    <a style="padding: 10px 5px;" ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"
+                       ng-click="toggleExpanded('sideboard')" title="Sideboard">
+                            <i class="fa fa-fw fa-1x fa-clipboard"></i>
+                            <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
+

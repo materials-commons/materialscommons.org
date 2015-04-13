@@ -3,20 +3,21 @@
  * for manipulating the selected flag in the list of files in a project, as well as channel
  * that controllers, directives and services can set to receive events on.
  */
-Application.Services.factory('projectFiles', [projectFilesService]);
-function projectFilesService() {
+Application.Services.factory('projectFiles', ['pubsub', projectFilesService]);
+function projectFilesService(pubsub) {
     var service = {
         model: {
             projects: {}
         },
         channel: null,
         activeByProject: {},
+        activeFile: {},
 
-        setActive: function(projectID, active) {
+        setActive: function (projectID, active) {
             service.activeByProject[projectID] = active;
         },
 
-        isActive: function(projectID) {
+        isActive: function (projectID) {
             if (!(projectID in service.activeByProject)) {
                 service.activeByProject[projectID] = false;
             }
@@ -76,7 +77,7 @@ function projectFilesService() {
          * Sets the selected flag to true for all files listed in files.
          */
         setFilesSelected: function (files, projectId) {
-            if (files.length == 0) {
+            if (files.length === 0) {
                 return;
             }
 
@@ -97,7 +98,7 @@ function projectFilesService() {
 
         // Sets up a list of files by mediatype. The type "all" is used to
         // list all files in a project.
-        loadByMediaType: function(project) {
+        loadByMediaType: function (project) {
             service.model.projects[project.id].byMediaType = {};
             var byMediaType = service.model.projects[project.id].byMediaType;
             byMediaType.all = [];
@@ -115,13 +116,24 @@ function projectFilesService() {
                         byMediaType.unknown.push(node.model);
                     } else if (!(node.model.mediatype in byMediaType)) {
                         byMediaType[node.model.mediatype] = [];
+                         byMediaType[node.model.mediatype] = [];
                         byMediaType[node.model.mediatype].push(node.model);
                     } else {
                         byMediaType[node.model.mediatype].push(node.model);
                     }
                 }
             });
+        },
+
+        setActiveFile: function (what) {
+            service.activeFile = what;
+            pubsub.send('activeFile.change');
+        },
+        getActiveFile: function () {
+            return service.activeFile;
         }
+
+
     };
     return service;
 }

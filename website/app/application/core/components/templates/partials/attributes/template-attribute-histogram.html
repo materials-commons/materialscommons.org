@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="row">
+        <h5>Best Measure</h5>
+        <div class="row">
+            <div class="col-xs-3" style="overflow: auto; max-height: 300px">
+                <hot-table
+                    settings="{colHeaders: true, afterSelection: afterSelection, contextMenu: true}"
+                    rowHeaders="false"
+                    datarows="db.items">
+
+                    <hot-column data="category" title="'Categories'"></hot-column>
+                    <hot-column data="value" title="'Series'"></hot-column>
+                </hot-table>
+            </div>
+        </div>
+        <button ng-click="afterSelectionSubmit()" class="btn btn-success">Submit values</button>
+        <a ng-click="showChart = !showChart">show/hide chart</a>
+        <div ng-if="showChart">
+            <highchart config="histogramConfig"></highchart>
+        </div>
+    </div>
+    <div class="row">
+        <h5>Measurements</h5>
+        <a ng-click="openAddMeasurements = !openAddMeasurements">add measurement</a>
+        <div ng-if="openAddMeasurements">
+            <div class="col-xs-6">
+                <strong>Categories (one entry per line)</strong>
+                <textarea ng-model="measurement.categories" class="col-xs-10" rows="20"></textarea>
+            </div>
+            <div class="col-xs-6">
+                <strong>Values (one entry per line)</strong>
+                <textarea ng-model="measurement.values" class="col-xs-10" rows="20"></textarea>
+            </div>
+            <div class="row">
+                <button ng-click="submitMeasurement()" class="btn btn-success">Submit</button>
+                <button ng-click="clear()" class="btn btn-danger">Clear</button>
+                <button ng-click="viewInGraph()" class="btn btn-primary">View Graph</button>
+            </div>
+            <div class="row" ng-if="showMeasurementGraph">
+                <highchart config="histogramMeasurementConfig"></highchart>
+            </div>
+        </div>
+        <ul class="list-unstyled">
+            <li ng-repeat="measure in measurements">
+                {{meaure.process}}
+            </li>
+        </ul>
+    </div>
+</div>

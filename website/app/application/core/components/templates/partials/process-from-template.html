@@ -1,0 +1,30 @@
+<div>
+    <h3>Process: {{template.name}} <small>({{template.description}})</small></h3>
+    <p>
+        <strong>
+            Please fill in the <i class="fa fa-fw fa-asterisk text-danger"></i>required sections. A <i class="fa fa-fw fa-check-circle text-success"></i>indicates the section has been completed.
+        </strong>
+    </p>
+    <accordion close-others="true" class="process-steps">
+        <accordion-group ng-repeat="section in template.sections"
+                         is-open="status.sections[section.name].isOpen">
+            <accordion-heading>
+                <h4 style="color: #555555">
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-check-circle text-success': status.sections[section.name].isDone, 'fa-asterisk text-danger': !status.sections[section.name].isDone}">
+                    </i>
+                    {{section.name}}
+                    <i class="pull-right fa fa-fw"
+                       ng-class="{'fa-chevron-right': !status.sections[section.name].isOpen, 'fa-chevron-down': status.sections[section.name].isOpen}"></i>
+                </h4>
+            </accordion-heading>
+            <show-template-section section="section"></show-template-section>
+        </accordion-group>
+    </accordion>
+    <button class="btn-success btn"
+            ng-click="done()"
+            ng-disabled="!allRequiredDone">
+        Done
+    </button>
+    <button class="btn-danger btn" ng-click="cancel()">Cancel</button>
+</div>
