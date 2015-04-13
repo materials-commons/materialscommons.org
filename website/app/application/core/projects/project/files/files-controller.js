@@ -1,8 +1,13 @@
 Application.Controllers.controller("FilesController",
     ["$scope", "projectFiles", "applySearch",
-        "$filter", "pubsub", "mcfile", FilesController]);
+        "$filter", "pubsub", "mcfile", "tags", "User", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
-                         $filter, pubsub, mcfile) {
+                         $filter, pubsub, mcfile, tags, User) {
+
+    $scope.bk = {
+        content: 'details'
+    };
+    $scope.tags = [{'id': 'april1'}];
 
     pubsub.waitOn($scope, "activeFile.change", function () {
         getActiveFile();
@@ -14,6 +19,10 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.files = [f];
 
     applySearch($scope, "searchInput", applyQuery);
+
+    $scope.downloadSrc = function (file) {
+        return mcfile.downloadSrc(file.id);
+    };
 
     function applyQuery() {
         var search = {
@@ -44,6 +53,19 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.fileSrc = function (file) {
         return mcfile.src(file.id);
     };
-
-
+    $scope.showContent = function (content) {
+        $scope.bk.content = content;
+    };
+    /*
+     ######################
+     ####### Tags #########
+     ######################
+     */
+    $scope.addTag = function (tag) {
+        var tag_obj = {'id': tag.id, 'owner': User.u()};
+        tags.createTag(tag_obj, $scope.activeFile.id);
+    };
+    $scope.removeTag = function (tag) {
+        tags.removeTag(tag.id, $scope.activeFile.id);
+    };
 }

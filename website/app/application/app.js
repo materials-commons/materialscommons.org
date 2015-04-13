@@ -7,27 +7,27 @@ Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
-                         [
-                             'ngAnimate',
-                             'ngSanitize',
-                             'ngMessages',
-                             'ui',
-                             'highcharts-ng',
-                             'ngCookies',
-                             'ui.router',
-                             'ngHandsontable',
-                             'btford.socket-io',
-                             'restangular',
-                             'jmdobry.angular-cache',
-                             'validation', 'validation.rule', 'wu.masonry',
-                             'textAngular',
-                             'ngDragDrop',
-                             'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
-                             '$strap.directives', 'ui.bootstrap', 'toastr',
-                             "hljs", "nsPopover", "RecursionHelper",
-                             'application.core.constants', 'application.core.services',
-                             'application.core.controllers',
-                             'application.core.filters', 'application.core.directives']);
+    [
+        'ngAnimate',
+        'ngSanitize',
+        'ngMessages',
+        'ui',
+        'highcharts-ng',
+        'ngCookies',
+        'ui.router',
+        'ngHandsontable',
+        'btford.socket-io',
+        'restangular',
+        'jmdobry.angular-cache',
+        'validation', 'validation.rule', 'wu.masonry',
+        'textAngular',
+        'ngDragDrop', 'ngTagsInput',
+        'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
+        '$strap.directives', 'ui.bootstrap', 'toastr',
+        "hljs", "nsPopover", "RecursionHelper",
+        'application.core.constants', 'application.core.services',
+        'application.core.controllers',
+        'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
@@ -48,7 +48,8 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
     $stateProvider
     // Navbar
         .state('home', {
-            url: '/home'
+            url: '/home',
+            templateUrl: 'application/core/splash.html'
         })
         .state('login', {
             url: '/login',

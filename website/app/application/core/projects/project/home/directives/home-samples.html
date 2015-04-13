@@ -1,42 +1,66 @@
-<div class="panel panel-primary">
-    <div class="panel-heading samples-color home-panel-heading">
-        <i class="fa fa-fw fa-cubes bold"></i>
-        <span>
-         Samples
-            ({{samples.length}})
-        </span>
-        <span ng-if="false" class="pull-right bar-control">
-            <a ng-click="splitScreen('samples', 'column2')">
-                <i class="fa fa-fw"
-                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
-            </a>
-            <a ng-click="minimize()">
-                <i class="fa fa-fw fa-minus"></i>
-            </a>
-            <a ng-click="toggleExpanded()">
-                <i class="fa fa-fw"
-                   ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
-            </a>
-        </span>
-        <input type="text" ng-model="search.name"
-               placeholder="Search samples..." class="pull-right col-xs-4">
-        <span class="add-item pull-right">
-            <a ng-click="createSample()" title="Add Sample">
-                <i class="fa fa-fw fa-plus"></i>
-            </a>
-        </span>
+<!--<div class="panel panel-primary">-->
+    <!--<div class="panel-heading samples-color home-panel-heading">-->
+        <!--<i class="fa fa-fw fa-cubes bold"></i>-->
+        <!--<span>-->
+         <!--Samples-->
+            <!--({{samples.length}})-->
+        <!--</span>-->
+        <!--<span ng-if="false" class="pull-right bar-control">-->
+            <!--<a ng-click="splitScreen('samples', 'column2')">-->
+                <!--<i class="fa fa-fw"-->
+                   <!--ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>-->
+            <!--</a>-->
+            <!--<a ng-click="minimize()">-->
+                <!--<i class="fa fa-fw fa-minus"></i>-->
+            <!--</a>-->
+            <!--<a ng-click="toggleExpanded()">-->
+                <!--<i class="fa fa-fw"-->
+                   <!--ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>-->
+            <!--</a>-->
+        <!--</span>-->
+        <!--<input type="text" ng-model="search.name"-->
+               <!--placeholder="Search samples..." class="pull-right col-xs-4">-->
+        <!--<span class="add-item pull-right">-->
+            <!--<a ng-click="createSample()" title="Add Sample">-->
+                <!--<i class="fa fa-fw fa-plus"></i>-->
+            <!--</a>-->
+        <!--</span>-->
+    <!--</div>-->
+    <!--<div class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">-->
+        <!--<ul class="list-unstyled">-->
+            <!--<li style="padding-top:10px;" ng-show="model.createSample">-->
+                <!--<create-sample model="model"></create-sample>-->
+            <!--</li>-->
+            <!--<li class="home-item"-->
+                <!--ng-class="{'open-item-details': sample.showDetails}"-->
+                <!--ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">-->
+                <!--<display-sample sample="sample" show-sideboard="true"></display-sample>-->
+            <!--</li>-->
+            <!--<li ng-show="samples.length === 0" class="home-item">-->
+                <!--<div>-->
+                    <!--No samples.-->
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="row">
+    <div class="panel card" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
+    <div class="panel-heading" style="padding-top: 20px;">
+        <img style="height: 35px;padding-bottom: 10px;"
+             src="assets/img/splash/sample_icon.png">
+        <span style="color: #00B69A; font-size: 20px;padding-left: 15px;">SAMPLE</span>
     </div>
-    <div class="panel-body home-panel-body" ng-class="{'no-max-height': isExpanded()}">
+    <div class="panel-body home-panel-body"
+         ng-class="{'no-max-height': isExpanded()}">
         <ul class="list-unstyled">
-            <li style="padding-top:10px;" ng-show="model.createSample">
-                <create-sample model="model"></create-sample>
-            </li>
-            <li class="home-item"
+            <li class="dashboard-item"
                 ng-class="{'open-item-details': sample.showDetails}"
                 ng-repeat="sample in project.samples | filter:search | event:project.date : project.nextdate as samples">
                 <display-sample sample="sample" show-sideboard="true"></display-sample>
             </li>
-            <li ng-show="samples.length === 0" class="home-item">
+            <li ng-show="samples.length === 0" class="dashboard-item">
                 <div>
                     No samples.
                 </div>
@@ -44,3 +68,5 @@
         </ul>
     </div>
 </div>
+</div>
+

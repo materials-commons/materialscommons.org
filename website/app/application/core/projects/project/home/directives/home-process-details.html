@@ -70,7 +70,6 @@
     </div>
 
     <div ng-show="process.process">
-
         <div class="row item-details">
             <b>Inputs</b>
             <ul class="list-group">
@@ -90,22 +89,24 @@
                         </div>
                         <div ng-switch-when="sample">
                             <ul style="padding-left: 30px;">
-                                <li ng-repeat="item in value">
-                                    {{item.other.name}}
-                                </li>
+                                {{value.properties.sample.sample.name}}
                             </ul>
                         </div>
                         <div ng-switch-default>
                             <ul style="padding-left: 30px;">
                                 <li ng-repeat="item in value.properties">
-                                    {{item.name}} : {{item.value}} {{item.unit}}
+                                    <span ng-if="item.value.value">
+                                        {{item.name}} : {{item.value.value}} {{item.unit}}
+                                    </span>
+                                    <span ng-if="!item.value.value">
+                                        {{item.name}} : {{item.value}} {{item.unit}}
+                                    </span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </li>
             </ul>
-
         </div>
         <div class="row item-details">
             <b>Outputs</b>

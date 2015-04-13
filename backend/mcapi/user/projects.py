@@ -141,7 +141,15 @@ def get_project_tree2(project_id):
                          .get_all(dd['id'], index="datadir_id")
                          .eq_join("datafile_id", r.table("datafiles"))
                          .zip()
-                         .coerce_to("array")})
+                         .coerce_to("array")
+                    .merge(lambda df: {
+                         "tags": r.table("tag2item")
+                         .get_all(df['id'], index="item_id")
+                         .eq_join("tag_id", r.table("tags"))
+                         .zip().pluck('id')
+                         .coerce_to("array")
+                         })
+                    })
                      .run(g.conn, time_format="raw"))
     return build_tree(selection)
 
@@ -200,7 +208,7 @@ def build_tree(datadirs):
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
-            dfitem.tags = []  # df['tags']
+            dfitem.tags = df['tags']
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
             elif 'mime' not in df['mediatype']:

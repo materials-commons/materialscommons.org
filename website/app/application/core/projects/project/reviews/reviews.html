@@ -6,7 +6,7 @@
         </div>
         <div class="col-xs-4 pull-right">
             <div class="form-group has-feedback">
-                <input style="padding-left: 35px;" ng-model="searchInput" placeholder="Search Reviews..."
+                <input style="padding-left: 35px;" ng-model="search" placeholder="Search Reviews..."
                        class="form-control">
                 <span style="left: 0;padding-left: 10px;" class="fa fa-fw fa-search form-control-feedback"></span>
             </div>
@@ -15,45 +15,39 @@
     <div class="row" style="border: 1px solid #757575; height: 600px;display: block;">
         <div class="row" style="height:50px; background-color: #EFEFEF;border-bottom: 1px solid #d3d3d3">
             <div class="col-xs-1" style="padding-top: 12px;color:#757575">
-                <b><a>All Reviews</a></b>
+                <b><a ng-class="{underline: type === 'all_reviews'}"
+                      ng-click="listReviewsByType('all_reviews')">All Reviews</a></b>
             </div>
             <div class="col-xs-1" style="padding-top: 12px;color:#757575">
-                <b>My Reviews</b>
+                <b><a ng-class="{underline: type === 'my_reviews'}"
+                      ng-click="listReviewsByType('my_reviews')">My Reviews</a></b>
             </div>
             <div class="col-xs-1" style="padding-top: 12px;color:#757575">
-                <b>Closed Reviews</b>
+                <b><a ng-class="{underline: type === 'closed_reviews'}"
+                      ng-click="listReviewsByType('closed_reviews')">Closed Reviews</a></b>
             </div>
         </div>
 
         <div class="row">
             <div class="col-xs-3 sidebar-wrapper">
                 <ul class="list-group" style="margin-left: -10px; margin-right: -10px;">
-                    <li class="list-group-item">
-                        <span class="pull-right" style="color: gray;"><i class="fa fa-fw fa-comments-o"></i> 4 </span>
-                        <i class="fa fa-fw fa fa-circle" style="color: green;"></i>abc review <span
-                            style="color: gray; padding-left: 8px;">Fri, Dec19, 2014</span>
+                    <li class="list-group-item pointer"
+                        ng-repeat="each_review in reviews | filter:search | event: project.date: project.nextdate as reviews"
+                        ng-class="{active: review.id === each_review.id}" ng-click="openReview(each_review)">
+                        <span class="pull-right" style="color: gray;"><i class="fa fa-fw fa-comments-o"></i>
+                            {{each_review.messages.length}} </span>
+                        <i ng-class="{'fa fa-circle review-open': each_review.status === 'open',
+                        'fa fa-minus-circle review-closed': each_review.status === 'closed'}"></i> {{each_review.title}}<span
+                            style="color: gray; padding-left: 8px;">
+                        {{(each_review.messages[(each_review.messages.length -1)].date)}}</span>
                     </li>
-                    <li class="list-group-item">
-                        <span class="pull-right"><i class="fa fa-fw fa-comments-o"></i> 3 </span>
-                        <i class="fa fa-fw fa fa-circle" style="color: green;"></i>abc 123
-                    </li>
-                    <li class="list-group-item">
-                        <span class="pull-right"><i class="fa fa-fw fa-comments-o"></i> 2</span>
-                        <i class="fa fa-fw fa fa-minus-circle" style="color: red;"></i>defg454354
-                    </li>
-                    <li class="list-group-item">
-                        <span class="pull-right"><i class="fa fa-fw fa-comments-o"></i> 4 </span>
-                        <i class="fa fa-fw fa fa-circle" style="color: green;"></i>abc review git
-                    </li>
-
                 </ul>
             </div>
             <div style="overflow-y: auto;max-height: 500px;">
-
-                <div class="col-xs-9">
+                <div ng-show="review" class="col-xs-9">
                     <div class="row">
                         <div class="col-xs-4 col-xs-offset-1">
-                            Requested by: bpuchala@umich.edu
+                            Requested by: {{review.author}}
                         </div>
                     </div>
                     <br>
@@ -65,7 +59,7 @@
                                     <i class="fa fa-fw fa-user"></i><b>Assigned to:</b>
                                 </li>
                                 <li class="list-group-item">
-                                    jfadams@umich.edu
+                                    {{review.assigned_to}}
                                 </li>
                             </ul>
                         </div>
@@ -77,55 +71,35 @@
                                 <li class="list-group-item">
                                     <i class="fa fa-fw fa-paperclip"></i><b>Attachments:</b>
                                 </li>
-                                <li class="list-group-item">
-                                    T5
-                                </li>
-                                <li class="list-group-item">
-                                    T5 Round Bar Fatigue Sample
+                                <li ng-repeat="attachment in review.attachments" class="list-group-item">
+                                    {{attachment.name}}
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-
                     <div class="row">
                         <div class="col-xs-8 col-xs-offset-1">
                             <i class="fa fa-fw fa-comments-o"></i> <b>Comments</b><br><br>
 
-                            <div class="row">
-                                <i class="fa fa-fw fa-user"></i> gtarcea@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span>
+                            <div ng-repeat="message in review.messages" class="row">
+                                <i class="fa fa-fw fa-user"></i> {{message.who}} <span style="padding-left: 5px;">{{message.date}}</span>
                                 <br><br>
 
-                                <div class="row"
+                                <div ta-bind ng-model="message.message" class="row"
                                      style="background-color: white;padding: 10px;border: 1px solid #d3d3d3;">
-                                    This is a test comment.
-                                </div>
-                            </div>
-                            <div class="row">
-                                <i class="fa fa-fw fa-user"></i> huaying@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span><br><br>
 
-                                <div class="row"
-                                     style="background-color: white;padding: 10px;border: 1px solid #d3d3d3;">
-                                    This is a test comment.
                                 </div>
                             </div>
-                            <div class="row">
-                                <i class="fa fa-fw fa-user"></i> huaying@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span><br><br>
-
-                                <div class="row"
-                                     style="background-color: white;padding: 10px;border: 1px solid #d3d3d3;">
-                                    This is a test comment.
-                                </div>
-                            </div>
-                            <div class="row">
-                                <i class="fa fa-fw fa-user"></i> tammasr@umich.edu <span style="padding-left: 5px;">Fri, Dec19, 2014</span>
+                            <div ng-show="review.status === 'open'" class="row">
+                                <i class="fa fa-fw fa-user"></i> {{user}}<span style="padding-left: 5px;">{{today.toDateString()}}</span>
                                 <br><br>
 
                                 <div class="row">
                                     <textarea placeholder="Add comment..." class="form-control"
                                               ng-model="model.comment"></textarea>
                                     <br>
-                                    <button class="btn btn-success">Comment</button>
+                                    <button ng-click="addComment()" class="btn btn-success">Comment</button>
                                 </div>
                             </div>
                         </div>

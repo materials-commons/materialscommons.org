@@ -1,13 +1,15 @@
-<ul class="list-unstyled">
-    <li class="file-item"
-        ng-repeat="item in items | orderBy:orderby | limitTo:500 as matches track by item.id">
-        <mc-tree-display-item item="item"
-                              show-sideboard="true">
-        </mc-tree-display-item>
-    </li>
-    <li ng-show="matches.length === 0" class="home-item">
-        <div>
-            No matches.
-        </div>
-    </li>
-</ul>
+<div class="tree">
+    <ul>
+        <li ng-repeat="item in items | orderBy:orderby | limitTo:500
+        as matches track by item.id">
+            <mc-tree-display-item item="item"
+                                  show-sideboard="true" check-box="checkBox">
+            </mc-tree-display-item>
+        </li>
+        <li ng-show="matches.length === 0" class="home-item">
+            <div>
+                No matches.
+            </div>
+        </li>
+    </ul>
+</div>

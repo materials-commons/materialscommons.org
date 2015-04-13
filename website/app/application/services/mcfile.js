@@ -1,15 +1,15 @@
 Application.Services.factory("mcfile", ["User", mcfileService]);
 function mcfileService(User) {
     return {
-        src: function(fileID) {
+        src: function (fileID) {
             var apikey = User.apikey();
-            var url = "datafiles/static/" + fileID+"?apikey=" + apikey;
+            var url = "datafiles/static/" + fileID + "?apikey=" + apikey;
             return url;
         },
 
-        downloadSrc: function(fileID) {
+        downloadSrc: function (fileID) {
             var apikey = User.apikey();
-            var url = "datafiles/static/" + fileID+"?apikey=" + apikey + "&download=true";
+            var url = "datafiles/static/" + fileID + "?apikey=" + apikey + "&download=true";
             return url;
         }
     };
