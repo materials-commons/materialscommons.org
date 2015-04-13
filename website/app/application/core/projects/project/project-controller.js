@@ -51,6 +51,7 @@ function projectsProject ($scope, provStep, ui, project, current,
         $scope.loaded = false;
         mcapi("/projects/%/tree2", project.id)
             .success(function(files){
+                console.dir(files);
                 var obj = {};
                 obj.dir = files[0];
                 projectFiles.model.projects[project.id] = obj;
