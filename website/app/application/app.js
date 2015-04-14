@@ -41,7 +41,7 @@ app.factory('msocket', ["socketFactory", function (socketFactory) {
     return msocket;
 }]);
 
-app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $validationProvider) {
+app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", function ($stateProvider, $validationProvider, $urlRouterProvider) {
 
     mcglobals = {};
     doConfig();
@@ -232,6 +232,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/files/edit.html",
             controller: "FilesEditController"
         });
+    $urlRouterProvider.otherwise('/home');
     createNumericValidator($validationProvider);
     $validationProvider.showSuccessMessage = false;
 
