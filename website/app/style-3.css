@@ -2382,3 +2382,13 @@ header {
   color: #cacaca;
   line-height: 0;
 }
+
+.sidebar-wrapper {
+  border-right: 1px solid #d3d3d3;
+  height: 550px;
+  margin-top: -5px;
+  overflow-y: auto;
+  transition: all 0.5s ease 0s;
+  z-index: 1000;
+  overflow-y: auto;
+}

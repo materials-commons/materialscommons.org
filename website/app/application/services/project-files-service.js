@@ -127,7 +127,6 @@ function projectFilesService(pubsub) {
 
         setActiveFile: function (what) {
             service.activeFile = what;
-            pubsub.send('activeFile.change');
         },
         getActiveFile: function () {
             return service.activeFile;

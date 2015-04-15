@@ -1,7 +1,15 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "projectFiles", "applySearch",
-        "$filter", "pubsub", "mcfile", "tags", "User", FilesEditController]);
-function FilesEditController($scope, projectFiles, applySearch,
-                         $filter, pubsub, mcfile, tags, User) {
+    ["$scope", "$stateParams", "projectFiles", "pubsub", FilesEditController]);
+function FilesEditController($scope, $stateParams, projectFiles, pubsub) {
+
+    function init() {
+        if ($stateParams.file_id) {
+            $scope.activeFile = projectFiles.getActiveFile();
+        } else {
+            $scope.activeFile = {};
+        }
+    }
+
+    init();
 
 }
