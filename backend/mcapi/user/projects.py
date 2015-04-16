@@ -69,12 +69,12 @@ def add_reviews(projects_by_id, project_ids):
 
 
 def add_samples(projects_by_id, project_ids):
-    # samples = list(r.table('projects2samples')
-    #                .get_all(*project_ids, index='project_id')
-    #                .eq_join('sample_id', r.table('samples'))
-    #                .zip()
-    #                .order_by('name')
-    #                .run(g.conn, time_format='raw'))
+    samples = list(r.table('projects2samples')
+                   .get_all(*project_ids, index='project_id')
+                   .eq_join('sample_id', r.table('samples'))
+                   .zip()
+                   .order_by('name')
+                   .run(g.conn, time_format='raw'))
     samples = []
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
@@ -89,8 +89,8 @@ def add_drafts(projects_by_id, project_ids, user):
 
 def add_processes(projects_by_id, project_ids):
     processes = []
-    # for project_id in project_ids:
-    #     processes.extend(process.get_processes(project_id))
+    for project_id in project_ids:
+        processes.extend(process.get_processes(project_id))
     add_computed_items(projects_by_id, processes, 'project_id', 'processes')
 
 

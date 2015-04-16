@@ -7,3 +7,5 @@ apitest
 materialscommons/
 materials.tar.gz
 node_modules
+coverage
+sbin

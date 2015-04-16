@@ -438,6 +438,10 @@ td.tag-width {
   padding-bottom: 0px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .navbar-custom .navbar-nav > li > a {
   padding-left: 20px;
   padding-right: 20px;
@@ -482,10 +486,22 @@ td.tag-width {
   background-color: #eeeeee;
 }
 
-ul.nav li a:hover,
-a:focus {
+ul.taskbar.nav li a:hover,
+ul.taskbar.nav li a:focus {
   font-weight: normal;
-  background-color: darkgray;
+  background-color: #f5f5f5;
+  color: #7990a3;
+  border-bottom: 1px solid #518394;
+}
+
+ul.taskbar.nav li.projects-drop-down a:hover,
+ul.taskbar.nav li.projects-drop-down a:focus {
+  font-weight: normal;
+  /* background-color: #f5f5f5; */
+  background-color: #45707D;
+  color: #fff;
+  border: 0;
+  border-top: 1px solid #518394;
 }
 
 .active-project {
@@ -892,10 +908,10 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .taskbar.nav-tabs > li.active > a, .taskbar.nav-tabs > li.active > a:hover, .taskbar.nav-tabs > li.active > a:focus {
-  background-color: #F5F5F5;
-  color: #7990a3;
-  border-bottom: 1px solid #F5F5F5;
-}
+                                                                              background-color: #F5F5F5;
+                                                                              color: #7990a3;
+                                                                              border-bottom: 1px solid #F5F5F5;
+                                                                            }
 
 .home-list li.list-group-item:hover {
   background-color: #eeeeee;
@@ -2195,14 +2211,14 @@ textarea.no-resize {
 }
 
 .tree li button, .tree li button:active, .tree li button:focus {
-  text-decoration: none;
-  color: #369;
-  border: none;
-  background: transparent;
-  margin: 0px 0px 0px 0px;
-  padding: 0px 0px 0px 0px;
-  outline: 0;
-}
+                                           text-decoration: none;
+                                           color: #369;
+                                           border: none;
+                                           background: transparent;
+                                           margin: 0px 0px 0px 0px;
+                                           padding: 0px 0px 0px 0px;
+                                           outline: 0;
+                                         }
 
 .active-file {
   background-color: #d3d3d3;
@@ -2319,6 +2335,12 @@ header {
   border: 1px solid #e7e7e7;
 }
 
+.details-container.processes-container .navbar-default .navbar-nav > li.active > a {
+  color: #3A9EE3;
+  background-color: #FFFFFF;
+  border-bottom: 5px solid #3A9EE3;
+}
+
 .details-sidebar .list-group {
   margin-right: 15px;
   margin-left: 15px;
@@ -2362,8 +2384,7 @@ header {
   padding-left: 15px;
 }
 
-.btn-review {
-  background-color: #FDB600;
+.btn-details-container {
   color: #ffffff;
   border: none;
   border-radius: 0px;
@@ -2371,6 +2392,14 @@ header {
   padding-left: 30px;
   padding-right: 30px;
   text-transform: uppercase;
+}
+
+.btn-review {
+  background-color: #FDB600;
+}
+
+.btn-process {
+  background-color: #3A9EE3;
 }
 
 .review-active {
@@ -2381,14 +2410,4 @@ header {
 .review-inactive {
   color: #cacaca;
   line-height: 0;
-}
-
-.sidebar-wrapper {
-  border-right: 1px solid #d3d3d3;
-  height: 550px;
-  margin-top: -5px;
-  overflow-y: auto;
-  transition: all 0.5s ease 0s;
-  z-index: 1000;
-  overflow-y: auto;
 }
