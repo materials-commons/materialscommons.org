@@ -438,6 +438,10 @@ td.tag-width {
   padding-bottom: 0px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .navbar-custom .navbar-nav > li > a {
   padding-left: 20px;
   padding-right: 20px;
@@ -482,10 +486,12 @@ td.tag-width {
   background-color: #eeeeee;
 }
 
-ul.nav li a:hover,
+ul.taskbar.nav li a:hover,
 a:focus {
   font-weight: normal;
-  background-color: darkgray;
+  background-color: #f5f5f5;
+  color: #7990a3;
+  border-bottom: 1px solid #518394;
 }
 
 .active-project {
