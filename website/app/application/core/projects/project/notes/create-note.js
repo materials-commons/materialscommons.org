@@ -13,11 +13,11 @@ function createNoteDirective() {
 
 Application.Controllers.controller('createNoteDirectiveController',
     ["$scope", "User", "mcapi", "projectState",
-        "$stateParams", "current", "recent",
+        "$stateParams", "current", "recent", "pubsub",
         createNoteDirectiveController]);
 
 function createNoteDirectiveController($scope, User, mcapi, projectState,
-                                       $stateParams, current, recent) {
+                                       $stateParams, current, recent, pubsub) {
     $scope.project = current.project();
     var projectID = $scope.project.id;
     var stateID = $stateParams.sid;
@@ -38,9 +38,10 @@ function createNoteDirectiveController($scope, User, mcapi, projectState,
         };
         switch ($scope.itemType) {
             case "datafile":
+                console.log($scope.item);
                 mcapi('/datafile/%/note', $scope.item.id)
                     .success(function (note) {
-                        console.log(note);
+                        pubsub.send('datafile-note.change');
                     }).put($scope.item.note);
                 break;
             case "project":
