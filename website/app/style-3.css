@@ -2384,8 +2384,7 @@ header {
   padding-left: 15px;
 }
 
-.btn-review {
-  background-color: #FDB600;
+.btn-details-container {
   color: #ffffff;
   border: none;
   border-radius: 0px;
@@ -2395,15 +2394,12 @@ header {
   text-transform: uppercase;
 }
 
+.btn-review {
+  background-color: #FDB600;
+}
+
 .btn-process {
   background-color: #3A9EE3;
-  color: #ffffff;
-  border: none;
-  border-radius: 0px;
-  font-weight: bold;
-  padding-left: 30px;
-  padding-right: 30px;
-  text-transform: uppercase;
 }
 
 .review-active {
