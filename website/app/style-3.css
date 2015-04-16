@@ -2330,7 +2330,6 @@ header {
   overflow-y: auto;
   transition: all 0.5s ease 0s;
   z-index: 1000;
-  overflow-y: auto;
   background-color: white;
   border: 1px solid #e7e7e7;
 }
@@ -2339,6 +2338,12 @@ header {
   color: #3A9EE3;
   background-color: #FFFFFF;
   border-bottom: 5px solid #3A9EE3;
+}
+
+.details-container.files-container .navbar-default .navbar-nav > li.active > a {
+  color: #AC91BA;
+  background-color: #FFFFFF;
+  border-bottom: 5px solid #AC91BA;
 }
 
 .details-sidebar .list-group {
@@ -2377,7 +2382,6 @@ header {
   overflow-y: auto;
   transition: all 0.5s ease 0s;
   z-index: 1000;
-  overflow-y: auto;
   background-color: white;
   border: 1px solid #e7e7e7;
   padding-top: 30px;
@@ -2400,6 +2404,10 @@ header {
 
 .btn-process {
   background-color: #3A9EE3;
+}
+
+.btn-files{
+  background-color: #AC91BA;
 }
 
 .review-active {
