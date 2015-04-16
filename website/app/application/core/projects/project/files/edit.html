@@ -10,7 +10,7 @@
                 </a>
             </h4>
         </div>
-        <div class="col-xs-1 fa fa-fw fa-close fa-1x pull-right"></div>
+        <div ng-click="closeFile()"><i class="col-xs-1 fa fa-fw fa-close fa-1x pull-right pointer"></i></div>
     </div>
     <div class="row" style="border-top: 1px solid #d3d3d3;">
         <div ng-click="showContent('details')" ng-class="{'file-details': bk.content === 'details'}"
@@ -34,6 +34,8 @@
                             </embed>
                         </div>
                     </div>
+                    <div ng-switch-when="xls">Download the excel file
+                    </div>
                     <div ng-switch-default>
                         <div ng-if="activeFile.size <= 10000"
                              hljs include="fileSrc(activeFile)">
@@ -49,22 +51,21 @@
             </div>
             <div class="col-xs-6">
                 <div class="row" style="padding: 10px;">
-                    <b><i class="fa fa-fw fa-lock fa-2x"></i> </b> Not shared
+                    <b><i class="fa fa-fw fa-lock fa-2x"></i> </b> This file is not shared across projects
                 </div>
                 <hr/>
                 <div class="row" style="padding: 10px;">
-                    <span ng-show="!editNote"> <b><i class="fa fa-fw fa-edit fa-2x"></i> </b>Note</span> <span
+                    <span ng-show="!bk.editNote"> <b><i class="fa fa-fw fa-edit fa-2x"></i> </b>Note</span> <span
                         class="pull-right">
-                            <a ng-click="editNote = !editNote"><i class="fa fa-fw fa-edit"></i></a></span>
+                            <a ng-click="editNote()"><i class="fa fa-fw fa-edit"></i></a></span>
 
-                    <div class="row" ng-if="activeFile.note">
+                    <div class="row" ng-show="!bk.editNote">
                         <p><b>Title</b>: {{activeFile.note.title}} </p>
 
                         <div ta-bind ng-model="activeFile.note.note"></div>
                     </div>
-
                 </div>
-                <div class="row" ng-show="editNote">
+                <div class="row" ng-show="bk.editNote">
                     <create-note item-type="datafile" item="activeFile"></create-note>
                 </div>
                 <hr/>

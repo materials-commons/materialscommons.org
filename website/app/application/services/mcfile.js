@@ -9,7 +9,7 @@ function mcfileService(User) {
 
         downloadSrc: function (fileID) {
             var apikey = User.apikey();
-            var url = "datafiles/static/" + fileID + "?apikey=" + apikey + "&download=true";
+            var url = "datafiles/static/" + fileID + "?apikey=" + apikey + "&original=true";
             return url;
         }
     };

@@ -18,10 +18,6 @@
                     <i ng-if="item.type === 'datadir'"
                        class="fa fa-fw fa-plus"></i>
                 </a>
-                <a  ng-if="item.type === 'datafile'"
-                   ng-click="addToSideboard(item, $event)"
-                   id="{{item.id}}">
-                    <i class="fa fa-fw fa-clipboard inactive"></i>
                 </a>
                 <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
         </span>
@@ -51,12 +47,4 @@
                 ng-click="addItem('process', item)">Add to process
         </button>
     </p>
-    <!--<p ui-draggable="true" drag="item" style="padding-left: 15px;">-->
-        <!--<small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">-->
-            <!--{{::item.size | bytes}}-->
-        <!--</small>-->
-        <!--<small class="text-muted" style="margin-right: 10px">-->
-            <!--{{::item.birthtime | toDateString}}-->
-        <!--</small>-->
-    <!--</p>-->
 </div>
