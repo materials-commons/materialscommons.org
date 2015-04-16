@@ -1,20 +1,10 @@
-
 <div class="row">
-    <div class="col-xs-12 details-container">
+    <div class="col-xs-12 details-container files-container">
         <nav class="navbar navbar-default">
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a>all Files</a></li>
-                    <li><a class="">Archived</a></li>
                 </ul>
-                <div style="padding-top: 20px;" class="col-xs-4 pull-right">
-                    <div class="form-group has-feedback">
-                        <input style="padding-left: 35px;" ng-model="searchInput" placeholder="Search Files..."
-                               class="form-control">
-                        <span style="left: 0;padding-left: 10px;"
-                              class="fa fa-fw fa-search form-control-feedback"></span>
-                    </div>
-                </div>
             </div>
         </nav>
 
@@ -24,7 +14,7 @@
             <div class="details-sidebar">
                 <div class="row">
                     <div style="text-align: center;margin-top: 20px;">
-                        <button class="btn-review btn btn-default"> Upload</button>
+                        <button class="btn-details-container btn-files btn btn-default"> Upload</button>
                     </div>
                 </div>
                 <file-upload-panel></file-upload-panel>
@@ -40,35 +30,4 @@
             <div ui-view></div>
         </div>
     </div>
-    </div>
-
-
-<!--<div class="row"><br>-->
-
-    <!--<div class="row">-->
-        <!--<div class="col-xs-4 pull-right">-->
-            <!--<div class="form-group has-feedback">-->
-                <!--<input style="padding-left: 35px;" ng-model="searchInput" placeholder="Search Files..."-->
-                       <!--class="form-control">-->
-                <!--<span style="left: 0;padding-left: 10px;" class="fa fa-fw fa-search form-control-feedback"></span>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="row" style="border: 1px solid #757575; height: 600px;">-->
-        <!--<div class="col-xs-3" style="margin-left: -10px;">-->
-            <!--<div class="row file-heading">-->
-            <!--</div>-->
-            <!--<div class="row">-->
-                <!--<div class="sidebar-wrapper">-->
-                    <!--<file-upload-panel></file-upload-panel>-->
-                    <!--<mc-tree items="files"-->
-                             <!--matches="matchingFiles"-->
-                             <!--orderby="'name'"-->
-                             <!--check-box="showCheckBox">-->
-                    <!--</mc-tree>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div ui-view></div>-->
-    <!--</div>-->
-<!--</div>-->
+</div>
