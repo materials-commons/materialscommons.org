@@ -17,7 +17,7 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
     function segmentProcesses() {
         $scope.bk = {
             all: []
-        }
+        };
 
         $scope.project.drafts.forEach(function(draft) {
             if (!('showDetails' in draft)) {
