@@ -1,5 +1,5 @@
-<div class="col-xs-9" ng-if="activeFile" style="overflow-y: auto;height:550px;"><br>
 
+<div class="details-main-content"  ng-if="activeFile">
     <div class="row">
         <div class="col-xs-4">
             <h4><i class="fa fa-fw fa-file fa-1x"></i>
@@ -60,9 +60,9 @@
                             <a ng-click="editNote()"><i class="fa fa-fw fa-edit"></i></a></span>
 
                     <div class="row" ng-show="!bk.editNote">
-                        <p><b>Title</b>: {{activeFile.note.title}} </p>
+                        <p><b>Title</b>: {{activeFile.notes[0].title}} </p>
 
-                        <div ta-bind ng-model="activeFile.note.note"></div>
+                        <div ta-bind ng-model="activeFile.notes[0].note"></div>
                     </div>
                 </div>
                 <div class="row" ng-show="bk.editNote">
@@ -105,5 +105,4 @@
     <div ng-if="bk.content === 'activity'">
         Activity Log here...
     </div>
-
 </div>

@@ -139,7 +139,12 @@ def get_project_tree2(project_id):
                          .get_all(df['id'], index="item_id")
                          .eq_join("tag_id", r.table("tags"))
                          .zip().pluck('id')
-                         .coerce_to("array")
+                         .coerce_to("array"),
+                        "notes": r.table("note2item")
+                        .get_all(df['id'], index="item_id")
+                        .eq_join("note_id", r.table("notes"))
+                        .zip()
+                        .coerce_to("array")
                          })
                     })
                      .run(g.conn, time_format="raw"))
@@ -201,6 +206,7 @@ def build_tree(datadirs):
             dfitem.c_id = next_id
             next_id = next_id + 1
             dfitem.tags = df['tags']
+            dfitem.notes = df['notes']
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
             elif 'mime' not in df['mediatype']:

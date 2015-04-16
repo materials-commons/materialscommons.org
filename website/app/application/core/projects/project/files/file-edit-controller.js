@@ -33,7 +33,6 @@ function FilesEditController($scope, $stateParams, projectFiles, User,mcfile, pu
         $scope.bk.editNote =  !$scope.bk.editNote;
     };
 
-
     function getActiveFile() {
         $scope.activeFile = projectFiles.getActiveFile();
         if (isImage($scope.activeFile.mediatype)) {
