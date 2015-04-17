@@ -908,10 +908,10 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .taskbar.nav-tabs > li.active > a, .taskbar.nav-tabs > li.active > a:hover, .taskbar.nav-tabs > li.active > a:focus {
-                                                                              background-color: #F5F5F5;
-                                                                              color: #7990a3;
-                                                                              border-bottom: 1px solid #F5F5F5;
-                                                                            }
+  background-color: #F5F5F5;
+  color: #7990a3;
+  border-bottom: 1px solid #F5F5F5;
+}
 
 .home-list li.list-group-item:hover {
   background-color: #eeeeee;
@@ -2211,14 +2211,14 @@ textarea.no-resize {
 }
 
 .tree li button, .tree li button:active, .tree li button:focus {
-                                           text-decoration: none;
-                                           color: #369;
-                                           border: none;
-                                           background: transparent;
-                                           margin: 0px 0px 0px 0px;
-                                           padding: 0px 0px 0px 0px;
-                                           outline: 0;
-                                         }
+  text-decoration: none;
+  color: #369;
+  border: none;
+  background: transparent;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  outline: 0;
+}
 
 .active-file {
   background-color: #d3d3d3;
@@ -2406,7 +2406,7 @@ header {
   background-color: #3A9EE3;
 }
 
-.btn-files{
+.btn-files {
   background-color: #AC91BA;
 }
 

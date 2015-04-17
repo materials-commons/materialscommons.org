@@ -7,27 +7,27 @@ Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
-                         [
-                             'ngAnimate',
-                             'ngSanitize',
-                             'ngMessages',
-                             'ui',
-                             'highcharts-ng',
-                             'ngCookies',
-                             'ui.router',
-                             'ngHandsontable',
-                             'btford.socket-io',
-                             'restangular',
-                             'jmdobry.angular-cache',
-                             'validation', 'validation.rule', 'wu.masonry',
-                             'textAngular',
-                             'ngDragDrop', 'ngTagsInput',
-                             'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
-                             '$strap.directives', 'ui.bootstrap', 'toastr',
-                             "hljs", "nsPopover", "RecursionHelper",
-                             'application.core.constants', 'application.core.services',
-                             'application.core.controllers',
-                             'application.core.filters', 'application.core.directives']);
+    [
+        'ngAnimate',
+        'ngSanitize',
+        'ngMessages',
+        'ui',
+        'highcharts-ng',
+        'ngCookies',
+        'ui.router',
+        'ngHandsontable',
+        'btford.socket-io',
+        'restangular',
+        'jmdobry.angular-cache',
+        'validation', 'validation.rule', 'wu.masonry',
+        'textAngular',
+        'ngDragDrop', 'ngTagsInput',
+        'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
+        '$strap.directives', 'ui.bootstrap', 'toastr',
+        "hljs", "nsPopover", "RecursionHelper",
+        'application.core.constants', 'application.core.services',
+        'application.core.controllers',
+        'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
@@ -46,7 +46,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
     mcglobals = {};
     doConfig();
     $stateProvider
-    // Navbar
+        // Navbar
         .state('home', {
             url: '/home',
             templateUrl: 'application/core/splash.html'
@@ -68,11 +68,11 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: 'application/core/machines/machines.html'
         })
 
-    /*
-     ########################################################################
-     ####################### Account ##################################
-     ########################################################################
-     */
+        /*
+         ########################################################################
+         ####################### Account ##################################
+         ########################################################################
+         */
         .state('account', {
             url: '/account',
             templateUrl: 'application/core/account/account.html'
@@ -89,24 +89,24 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             url: '/settings',
             templateUrl: 'application/core/account/settings.html'
         })
-    //.state('account.usergroup', {
-    //    url: '/usergroup',
-    //    templateUrl: 'application/core/account/usergroups/usergroup.html'
-    //})
-    //.state('account.usergroup.users', {
-    //    url: '/users/:id',
-    //    templateUrl: 'application/core/account/usergroups/users.html'
-    //})
+        //.state('account.usergroup', {
+        //    url: '/usergroup',
+        //    templateUrl: 'application/core/account/usergroups/usergroup.html'
+        //})
+        //.state('account.usergroup.users', {
+        //    url: '/users/:id',
+        //    templateUrl: 'application/core/account/usergroups/users.html'
+        //})
         .state('account.templates', {
             url: '/templates',
             templateUrl: 'application/core/account/templates/templates.html'
         })
 
-    /*
-     ########################################################################
-     ########################### Projects ###################################
-     ########################################################################
-     */
+        /*
+         ########################################################################
+         ########################### Projects ###################################
+         ########################################################################
+         */
         .state('projects', {
             url: '/projects',
             abstract: true,
@@ -133,12 +133,12 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
                 project: ["$stateParams", "model.projects", "projects", "templates",
-                          function ($stateParams, Projects, projects, templates) {
-                              // We use templates as a dependency so that they are all loaded
-                              // before getting to this step. Otherwise the order of items
-                              // being resolved isn't in the order we need them.
-                              return Projects.get($stateParams.id);
-                          }]
+                    function ($stateParams, Projects, projects, templates) {
+                        // We use templates as a dependency so that they are all loaded
+                        // before getting to this step. Otherwise the order of items
+                        // being resolved isn't in the order we need them.
+                        return Projects.get($stateParams.id);
+                    }]
             },
             onEnter: ["pubsub", "project", function (pubsub, project) {
                 pubsub.send("reviews.change");
