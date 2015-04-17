@@ -125,7 +125,11 @@ def get_project_tree2(project_id):
     if proj is None:
         return error.bad_request("Unknown project id: %s" % (project_id))
     access.check(user, proj['owner'], project_id)
-    return cache.get_project_tree(project_id)
+    reload = request.args.get('reload')
+    if reload is None:
+        return cache.get_project_tree(project_id)
+    else:
+        return cache.reload_project_tree(project_id)
 
 
 @app.route('/projects', methods=['POST'])
