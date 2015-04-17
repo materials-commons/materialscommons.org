@@ -65,7 +65,7 @@ def get_project_tree(project_id):
 def reload_project_tree(project_id):
     if project_id in project_tree_cache:
         del project_tree_cache[project_id]
-    get_project_tree(project_id)
+    return get_project_tree(project_id)
 
 
 class DItem2:
