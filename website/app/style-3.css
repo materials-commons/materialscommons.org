@@ -1192,6 +1192,7 @@ a.important {
 a:hover,
 a:focus {
   text-decoration: underline;
+  cursor: pointer;
   /*font-weight: bold;*/
 }
 
