@@ -2388,6 +2388,22 @@ header {
   padding-left: 15px;
 }
 
+.details-main-content .headings{
+  font-size: 18px; color: #FDB600; text-transform: uppercase
+}
+
+.details-main-content .who{
+  color: #919191;font-weight: bold
+}
+
+.details-main-content .divider{
+  border-top: 3px dotted #d3d3d3;
+}
+
+.details-main-content .link{
+  color:#64B5F6;font-weight: bold;
+}
+
 .btn-details-container {
   color: #ffffff;
   border: none;

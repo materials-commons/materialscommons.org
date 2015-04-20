@@ -134,7 +134,7 @@ def get_project_tree2(project_id):
                          .eq_join("datafile_id", r.table("datafiles"))
                          .zip()
                          .coerce_to("array")
-                    .merge(lambda df: {
+                     .merge(lambda df: {
                          "tags": r.table("tag2item")
                          .get_all(df['id'], index="item_id")
                          .eq_join("tag_id", r.table("tags"))
