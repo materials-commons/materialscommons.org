@@ -2314,10 +2314,11 @@ header {
 }
 
 .details-container .navbar-default .navbar-nav > li > a {
-  font-size: 16px;
+  font-size: 18px;
   text-transform: uppercase;
   color: #979797;
-  font-weight: bold;
+  /*font-weight: bold;*/
+  line-height: 28px;
 }
 
 .details-container .navbar-default .navbar-nav > li.active > a {
@@ -2435,4 +2436,8 @@ header {
 .review-inactive {
   color: #cacaca;
   line-height: 0;
+}
+
+.ta-scroll-window.form-control {
+  height: 200px;
 }
