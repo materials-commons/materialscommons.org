@@ -16,6 +16,7 @@ function projectEditReview($scope, project, $stateParams,Review, User) {
     $scope.today = new Date();
     $scope.reviews = $scope.project.reviews;
     $scope.model = {
+        title: "",
         comment: ''
     };
 

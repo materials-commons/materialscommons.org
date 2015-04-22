@@ -89,14 +89,6 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             url: '/settings',
             templateUrl: 'application/core/account/settings.html'
         })
-        //.state('account.usergroup', {
-        //    url: '/usergroup',
-        //    templateUrl: 'application/core/account/usergroups/usergroup.html'
-        //})
-        //.state('account.usergroup.users', {
-        //    url: '/users/:id',
-        //    templateUrl: 'application/core/account/usergroups/users.html'
-        //})
         .state('account.templates', {
             url: '/templates',
             templateUrl: 'application/core/account/templates/templates.html'
@@ -190,6 +182,11 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: "application/core/projects/project/files/files.html",
             controller: "FilesController"
         })
+        .state("projects.project.files.edit", {
+            url: "/:file_id",
+            templateUrl: "application/core/projects/project/files/edit.html",
+            controller: "FilesEditController"
+        })
         .state("projects.project.access", {
             url: "/access",
             templateUrl: "application/core/projects/project/access/access.html",
@@ -210,6 +207,11 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: "application/core/projects/project/reviews/edit.html",
             controller: "projectEditReview"
         })
+        .state("projects.project.reviews.create", {
+            url: "/create",
+            templateUrl: "application/core/projects/project/reviews/create.html",
+            controller: "projectCreatetReview"
+        })
         .state("projects.project.notes", {
             url: "/notes",
             templateUrl: "application/core/projects/project/notes/notes.html",
@@ -220,11 +222,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: "application/core/projects/project/sideboard/sideboard.html",
             controller: "projectSideboard"
         })
-        .state("projects.project.files.edit", {
-            url: "/:file_id",
-            templateUrl: "application/core/projects/project/files/edit.html",
-            controller: "FilesEditController"
-        })
+
         .state("projects.project.processes", {
             url: "/processes",
             templateUrl: "application/core/projects/project/processes/processes.html",
