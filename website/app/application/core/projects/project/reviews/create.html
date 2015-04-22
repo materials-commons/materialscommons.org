@@ -1,4 +1,3 @@
-
 <div class="details-main-content">
     <div class="row" style="color: #d3d3d3;">
         {{today.toString()}}
@@ -7,18 +6,21 @@
         <div class="col-xs-4">
             <div class="headings">Assign To</div>
             <div class="row">
-                <select data-placeholder="Choose Assignee" class="form-control" ng-model="model.assigned_to"
+                <select ng-change="addUser()" ng-model="selectedUser" data-placeholder="Choose Assignee" class="form-control"
                         validator="required">
                     <option ng-repeat="user in project.users">{{ user.user_id }}</option>
                 </select>
             </div>
             <br>
-                <span class="fa-stack fa-lg">
+            <div ng-repeat="each_user in model.assigned_to">
+                  <span class="fa-stack fa-lg">
                 <i style="color: #C0C0C0" class="fa fa-circle fa-stack-2x"></i>
                 <i style="color: white;" class="fa fa-user fa-stack-1x"></i>
                 </span>
-            <span class="who"> jfadams.umich.edu </span> <i style="padding-left: 30px;"
-                                                            class="fa fa-fw fa-close"></i>
+                <span class="who"> {{each_user}}</span> <i ng-click="removeUser(each_user)" style="padding-left: 30px;"
+                                                                   class="fa fa-fw fa-close"></i>
+            </div>
+
         </div>
     </div>
     <hr class="divider"/>
@@ -31,7 +33,7 @@
             </button>
             <br><br>
 
-            <div ng-repeat="attachment in review.attachments">
+            <div ng-repeat="attachment in model.attachments">
                 <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i><a class="link pointer">{{attachment.name}}</a>
             </div>
         </div>
