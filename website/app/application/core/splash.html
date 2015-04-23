@@ -47,7 +47,7 @@
                     style="height: 60px;"
                     src="assets/img/splash/process-icon.png"></a>
 
-                <p style="color: grey;padding-top: 8px;">PROCESS</p>
+                <p style="color: grey;padding-top: 8px;">PROVENANCE</p>
             </div>
             <div class="col-xs-1" style="padding-right: 150px;"><a ng-click="goTo('sample01')"> <img
                     style="height: 60px;"
@@ -91,14 +91,20 @@
                 <div class="col-xs-5">
                     <div class="row"><br><br><br>
                         <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/process-icon.png">
-                        <span style="font-size: 18px; font-weight: 500">Track Your Processes</span>
+                        <span style="font-size: 18px; font-weight: 500">Track Your Steps</span>
                     </div>
                     <br>
 
-                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                        Have a quick overview or dive into rich details about your processes. See the inputs and outputs
-                        of each process and discover the relationships between the processes.
-                    </p>
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Have a quick overview or dive into rich details about your steps.</li>
+                            <li>Dig deep into processes to know how your data is linked though provenance or
+                                discover relationships between processes
+                            </li>
+                            <li>Track your experiment or computational settings.</li>
+                            <li>Rich graphical views</li>
+                        </ul>
+                    </div>
 
                 </div>
                 <div class="col-xs-2">
@@ -109,7 +115,48 @@
                 </div>
             </div>
         </div>
+        <br><br><br><br>
 
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-cubes fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Samples</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Dig into the steps to know more about sample measurements and explore the provenance graph to see
+                        how your data has been transformed
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-files-o fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Files</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Attach files to your steps which builds relationships between processes.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-code-fork fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Workflow</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Workflows assist scientists and programmers to track their
+                        data through all transformations, analyses, and interpretations.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
     <br><br>
 
@@ -135,12 +182,54 @@
                     </div>
                     <br>
 
-                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                        Create a sample and keep track of the whole process of the experiments and research on its
-                        segments and transforms.
-                        Also you can keep track of series of measurements for the sample by running through different
-                        processes. And choose best value measure at any point of time
-                    </p>
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Create once and reuse. Keep track of history of changes.</li>
+                            <li>Share between different projects</li>
+                            <li>Track how your sample has undergone transformation through hierarchy.</li>
+                            <li>Ability to store multiple measures – look at history n change best value</li>
+                            <li>Take a look back at the history of measures and freely edit your best value measured.
+                            </li>
+                            <li>Support different types of measures : histogram, scatter plot, integer, string etc.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-flask fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Composition</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Easy selection of elements from periodic table.</p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-briefcase fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Share</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Ability to share your sample between projects.</p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-history fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Versions</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Easy way to look back in time for the old versions of your files.</p>
                 </div>
             </div>
         </div>
@@ -160,25 +249,71 @@
                 <div class="col-xs-5">
                     <div class="row"><br><br><br>
                         <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/review_icon.png">
-                        <span style="font-size: 18px; font-weight: 500">Send Reviews</span>
+                        <span style="font-size: 18px; font-weight: 500">Reviews</span>
                     </div>
                     <br>
 
-                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                        This feature allows user to request a review on files/ samples/ processes so that other users can
-                        take a look at your work and respond accordingly. You can assign a
-                        review to all the users who share your project.
-                        Get involved in conversations over your team's
-                        research findings.</p>
-
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Ask your adviser / researchers / collaborators to look at your data.</li>
+                            <li>Attach data and Share your thoughts with your team mates.</li>
+                            <li>Reviews helps to see if your team mates have followed up with leads you're working
+                                together and helps your team stay in sync
+                            </li>
+                            <li>Manage your conversations in a better way at one place</li>
+                            <li>Relax....we will notify you when you have any new messages or requests when you log-back
+                                in.
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-xs-1">
 
                 </div>
                 <div class="col-xs-4">
-                    <img style="height: 400px;" src="assets/img/splash/review.png">
+                    <img style="width: 600px; height: 300px;" src="assets/img/splash/review.png">
                 </div>
 
+            </div>
+        </div>
+        <br><br><br>
+
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-check-circle review-open fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Active Review</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Is a state where users can actively communicate back and forth.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-minus-circle review-close fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4> Archived Review</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Review can be closed at any point of time.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-paperclip fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Attachments</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Attach files / samples/ processes and request for a review.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -204,8 +339,54 @@
                     </div>
                     <br>
 
-                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                        Easy upload, download and preview of your files. Also you can create sub folders under each project which helps you to preserve the structure
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Materials-Commons provides multiple simultaneous, stable and resumable uploads.</li>
+                            <li>Easy download and preview of your files</li>
+                            <li>Ability to add subfolders for easy management of your data.</li>
+                            <li>Easily you can get back to your old versions of a file.</li>
+                            <li>Compare and analyze files side by side by dragging them onto sideboard.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-upload fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Upload</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Easy upload from your local system onto Materials Commons
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-download fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4> Download</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Helps you to download files onto your local system
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-refresh fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Refresh</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Refresh the file structure to view all the new uploads
                     </p>
                 </div>
             </div>
@@ -229,10 +410,14 @@
                     </div>
                     <br>
 
-                    <p style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
-                        Add notes to samples or files or projects to help memorize your updates to them. Or simply jot down lines
-                        for your reference.
-                    </p>
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Simply jot down lines and style your text with our editor.</li>
+                            <li>Manage all your notes at one place.</li>
+                            <li>Attach notes to samples or files or projects to help memorize your updates to them</li>
+                            <li>Tag your notes to make it searchable.</li>
+                        </ul>
+                    </div>
 
                 </div>
                 <div class="col-xs-2">
