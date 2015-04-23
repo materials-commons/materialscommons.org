@@ -1,17 +1,17 @@
 Application.Controllers.controller('projectReviews',
-    ["$scope", "project", "$filter" , "Review", "pubsub", "User",projectReviews]);
+    ["$scope", "project", "$filter", "Review", "pubsub", "User", projectReviews]);
 
-function projectReviews($scope, project,  $filter, Review, pubsub, User) {
+function projectReviews($scope, project, $filter, Review, pubsub, User) {
 
-    pubsub.waitOn($scope, 'review.change', function(){
+    pubsub.waitOn($scope, 'review.change', function () {
         $scope.review = Review.getActiveReview();
     });
 
     $scope.project = project;
 
-    $scope.listReviewsByType = function(type){
+    $scope.listReviewsByType = function (type) {
         $scope.type = type;
-        switch (type){
+        switch (type) {
             case "all_reviews":
                 $scope.reviews = $scope.project.reviews;
                 break;
