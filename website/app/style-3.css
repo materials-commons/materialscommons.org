@@ -2226,3 +2226,7 @@ header {
   background-color: grey;
   color: white;
 }
+
+.icon-splash > ul > li {
+  padding-right: 80px;
+}
