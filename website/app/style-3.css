@@ -2193,29 +2193,29 @@ header {
 .icon-splash {
   background-color: white;
   height: 30vh;
-  padding-top: 70px;
+  padding-top: 40px;
 }
 .process-splash {
   height: 100vh;
-  padding-top: 70px;
+  padding-top: 40px;
 }
 .sample-splash {
   background-color: white;
   height: 100vh;
-  padding-top: 70px;
+  padding-top: 40px;
 }
 .review-splash {
   height: 100vh;
-  padding-top: 70px;
+  padding-top: 40px;
 }
 .file-splash {
   background-color: white;
   height: 100vh;
-  padding-top: 70px;
+  padding-top: 40px;
 }
 .note-splash {
   height: 100vh;
-  padding-top: 70px;
+  padding-top: 40px;
 }
 .corner {
   background-color: grey;
