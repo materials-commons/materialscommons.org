@@ -2190,38 +2190,46 @@ header {
   /*background-color: white;*/
   background-color: rgba(255, 255, 255, 0.3);
 }
+
 .icon-splash {
   background-color: white;
   height: 30vh;
   padding-top: 40px;
 }
+
 .process-splash {
   height: 100vh;
   padding-top: 40px;
 }
+
 .sample-splash {
   background-color: white;
   height: 100vh;
   padding-top: 40px;
 }
+
 .review-splash {
   height: 100vh;
   padding-top: 40px;
 }
+
 .file-splash {
   background-color: white;
   height: 100vh;
   padding-top: 40px;
 }
+
 .note-splash {
   height: 100vh;
   padding-top: 40px;
 }
-.calendar-splash{
+
+.calendar-splash {
   background-color: white;
   height: 100vh;
   padding-top: 40px;
 }
+
 .corner {
   background-color: grey;
   color: white;
