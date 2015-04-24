@@ -2236,5 +2236,6 @@ header {
 }
 
 .icon-splash > ul > li {
-  padding-right: 80px;
+  padding-right: 40px;
+  padding-left: 40px;
 }
