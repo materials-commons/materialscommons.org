@@ -8,4 +8,6 @@ materialscommons/
 materials.tar.gz
 node_modules
 bower_components
+sbin
+coverage
 
