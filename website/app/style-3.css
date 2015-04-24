@@ -2217,6 +2217,11 @@ header {
   height: 100vh;
   padding-top: 40px;
 }
+.calendar-splash{
+  background-color: white;
+  height: 100vh;
+  padding-top: 40px;
+}
 .corner {
   background-color: grey;
   color: white;
