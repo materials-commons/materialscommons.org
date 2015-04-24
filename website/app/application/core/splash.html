@@ -43,29 +43,49 @@
     </div>
     <div class="row icon-splash">
         <ul class="list-inline text-center">
-            <li><a ng-click="goTo('process01')"><img
-                    style="height: 60px;"
-                    src="assets/img/splash/process-icon.png"></a>
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('process01')">
+                        <img style="height: 60px;"
+                             src="assets/img/splash/process-icon.png"></a>
 
-                <p style="color: grey;padding-top: 8px;">PROVENANCE</p></li>
-            <li><a ng-click="goTo('sample01')"> <img
-                    style="height: 60px;"
-                    src="assets/img/splash/sample_icon.png"></a>
+                    <p style="color: grey;padding-top: 8px;">PROVENANCE</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('sample01')">
+                        <img style="height: 60px;"
+                             src="assets/img/splash/sample_icon.png"></a>
 
-                <p style="color: grey;padding-top: 8px;">SAMPLE</p></li>
-            <li><a ng-click="goTo('review01')"><img
-                    style="height: 60px;"
-                    src="assets/img/splash/review_icon.png"></a>
+                    <p style="color: grey;padding-top: 8px;">SAMPLES</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('review01')">
+                        <img style="height: 60px;"
+                             src="assets/img/splash/review_icon.png"></a>
 
-                <p style="color: grey;padding-top: 8px;">REVIEW</p></li>
-            <li><a ng-click="goTo('file01')"><img style="height: 60px;"
-                                                  src="assets/img/splash/file_icon.png"></a>
+                    <p style="color: grey;padding-top: 8px;">REVIEWS</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('file01')"><img style="height: 60px;"
+                                                      src="assets/img/splash/file_icon.png"></a>
 
-                <p style="color: grey;padding-top: 8px;padding-left: 15px;">FILE</p></li>
-            <li><a ng-click="goTo('notes01')"><img style="height: 60px;"
-                                                   src="assets/img/splash/note_icon.png"></a>
+                    <p style="color: grey;padding-top: 8px;">FILES</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;" class="text-center">
+                    <a ng-click="goTo('notes01')"><img style="height: 60px;"
+                                                       src="assets/img/splash/note_icon.png"></a>
 
-                <p style="color: grey;padding-top: 8px;padding-left: 15px;">NOTE</p></li>
+                    <p style="color: grey;padding-top: 8px;">NOTES</p>
+                </div>
+            </li>
         </ul>
     </div>
     <div class="row process-splash" id="process01">
@@ -439,8 +459,6 @@
             </div>
         </div>
     </div>
-    <br><br>
-
     <div ng-if="false" class="row calendar-splash" id="calendar01">
         <div class="row">
             <ul class="nav pull-right scroll-top corner">
