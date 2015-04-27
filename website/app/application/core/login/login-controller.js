@@ -20,6 +20,7 @@ function loginController($scope, $state, User, toastr, mcapi, Nav, pubsub, proje
                 });
             })
             .error(function (reason) {
+                $scope.message = "Incorrect Password/Username!"
                 toastr.error(reason.error, 'Error', {
                     closeButton: true
                 });

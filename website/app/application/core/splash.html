@@ -20,7 +20,9 @@
                                type="password">
                     </div>
                     <br>
-
+                    <p style="color:red;" ng-if="message">
+                        <b>{{message}}</b>
+                    </p>
                     <div ng-if="false" class="row">
                         <div class="col-xs-6">
                             <input type="checkbox" ng-model="rememberMe"> Remember me
@@ -36,8 +38,10 @@
                             Login
                         </button>
                     </div>
+
                 </div>
             </div>
+
 
         </header>
     </div>
