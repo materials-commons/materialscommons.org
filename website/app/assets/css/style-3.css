@@ -2179,23 +2179,25 @@ header {
   background-position: 10% 60%;
 }
 
-/*.login-splash {*/
-  /*position: absolute;*/
-  /*top: 40%;*/
-  /*left: 50%;*/
-  /*transform: translate(-50%, -50%);*/
-  /*text-align: center;*/
-  /*padding: 50px;*/
-  /*width: 400px;*/
-  /*background-color: white;*/
-  /*background-color: rgba(255, 255, 255, 0.3);*/
-/*}*/
-
 .login-splash {
-  padding: 50px;
-  background-color: rgba(255, 255, 255, 0.3);
+  /*position: absolute;*/
+  /*top: 20%;*/
+  /*left: 30%;*/
+  margin-right: auto;
+  margin-left: auto;
+  /*transform: translate(-50%, -50%);*/
   text-align: center;
+  padding: 50px;
+  width: 400px;
+  background-color: white;
+  background-color: rgba(255, 255, 255, 0.3);
 }
+
+/*.login-splash {*/
+  /*padding: 50px;*/
+  /*background-color: rgba(255, 255, 255, 0.3);*/
+  /*text-align: center;*/
+/*}*/
 
 .icon-splash {
   background-color: white;
