@@ -27,7 +27,7 @@
                             ui-sref="projects.project.reviews.edit({'review_id': each_review.id})">
 
                        <span class="pull-right">
-                            <a ng-if="review.messages.length !== 0" class="fa-stack fa-2x">
+                            <a style="font-size: 25px;" ng-if="review.messages.length !== 0" class="fa-stack fa-2x">
                                 <i ng-class="{'review-active': review.id === each_review.id, 'review-inactive': review.id !== each_review.id}"
                                    class="fa fa-comment fa-stack-1x"></i>
                                 <i style='font-size: 13px;line-height: 0;font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;font-weight: bold'
@@ -35,10 +35,6 @@
                             </a>
                         </span>
                             {{each_review.title}}
-
-                        <span>
-                            {{(each_review.messages[(each_review.messages.length -1)].date)}}
-                        </span>
                         </li>
                     </ul>
                 </div>

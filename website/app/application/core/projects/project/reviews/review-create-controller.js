@@ -12,14 +12,15 @@ function projectCreatetReview($scope, project, User) {
         assigned_to: [],
         attachments: ''
     };
-
-
     $scope.addUser = function () {
         $scope.model.assigned_to.push($scope.selectedUser);
     };
     $scope.removeUser = function (user) {
         var i = _.indexOf($scope.model.assigned_to, user);
         $scope.model.assigned_to.splice(i, 1);
+    };
+    $scope.addAttachments = function(){
 
     };
 }
+
