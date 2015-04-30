@@ -53,18 +53,23 @@
         </div>
         <div class="panel-body"
              ng-class="{'no-max-height': isExpanded()}">
-            <ul class="list-unstyled">
-                <li class="dashboard-item"
-                    ng-class="{'open-item-details': process.showDetails}"
-                    ng-repeat="process in bk.all | filter:search | event:project.date:project.nextdate as procs">
-                    <display-process process="process"
-                                     show-sideboard="true">
-                    </display-process>
-                </li>
-                <li ng-show="procs.length === 0" class="dashboard-item">
-                    <div> No processes.</div>
-                </li>
-            </ul>
+            <div style="width: 100%;height:100%"
+                 angular-grid="gridOptions"
+                 class="ag-fresh ag-basic">
+            </div>
+
+            <!--<ul class="list-unstyled">-->
+                <!--<li class="dashboard-item"-->
+                    <!--ng-class="{'open-item-details': process.showDetails}"-->
+                    <!--ng-repeat="process in bk.all | filter:search | event:project.date:project.nextdate as procs">-->
+                    <!--<display-process process="process"-->
+                                     <!--show-sideboard="true">-->
+                    <!--</display-process>-->
+                <!--</li>-->
+                <!--<li ng-show="procs.length === 0" class="dashboard-item">-->
+                    <!--<div> No processes.</div>-->
+                <!--</li>-->
+            <!--</ul>-->
         </div>
     </div>
 </div>
