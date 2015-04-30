@@ -1,7 +1,6 @@
 Application.Services.factory('Review',
     ["$filter", "mcapi", "User", "pubsub", function ($filter, mcapi, User, pubsub) {
         var service = {
-
             findReview: function (reviewID, which, project) {
                 var i = _.indexOf(project[which], function (review) {
                     return review.id === reviewID;

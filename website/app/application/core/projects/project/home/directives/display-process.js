@@ -12,14 +12,17 @@ function displayProcessDirective() {
     };
 }
 Application.Controllers.controller("displayProcessDirectiveController",
-                                   ["$scope", "sideboard", "current",
+                                   ["$scope", "sideboard", "current","pubsub",
                                     displayProcessDirectiveController]);
 
-function displayProcessDirectiveController($scope, sideboard, current) {
+function displayProcessDirectiveController($scope, sideboard, current, pubsub) {
     $scope.addToSideboard = function(process, event) {
         sideboard.handleFromEvent(current.projectID(), process, event, 'sideboard');
     };
     $scope.remove = function (process, event) {
         sideboard.handleFromEvent(current.projectID(), process, event, 'sideboard');
+    };
+    $scope.addItem = function (process) {
+        pubsub.send('addProcessToReview', process);
     };
 }
