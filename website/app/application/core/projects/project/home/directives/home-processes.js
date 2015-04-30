@@ -31,6 +31,26 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
             }
             $scope.bk.all.push(process);
         });
+
+        var columnDefs = [
+            {displayName: "", field: "name", width: 300, template: '<span style="font-weight: bold;" ng-bind="data.name"></span>' +
+            '<p style="padding-top:12px;"><small  class="text-muted">April 30, 2015</small></p>' , cellStyle:{border: 0}},
+            {displayName: "", field: "owner", width: 300 ,  template: '<span style="padding-top:100px;" ng-bind="data.owner"></span>', cellStyle:{border: 0}},
+            {displayName: "", field: "", width: 300,  cellStyle:{border: 0}}
+        ];
+        var rowData = []
+        $scope.project.processes.forEach(function(process) {
+            rowData.push({name: process.name, owner: process.owner});
+        });
+        $scope.gridOptions = {
+            columnDefs: columnDefs,
+            rowData: rowData,
+            enableColResize: true,
+            headerHeight: 0,
+            rowHeight:60,
+            //colWidth: 500,
+            angularCompileRows:true
+        };
     }
 
     pubsub.waitOn($scope, "processes.change", function() {
@@ -64,4 +84,15 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
     };
 
     segmentProcesses();
+
+
+
+
+
+
+
+
+
+
+
 }
