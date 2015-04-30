@@ -6,7 +6,7 @@ function modalFilesDirective() {
         scope: {
             project: '=project'
         },
-        templateUrl: 'application/core/projects/project/home/directives/home-files.html'
+        templateUrl: 'application/core/projects/project/modal/files-modal.html'
     };
 }
 
@@ -43,7 +43,6 @@ function modalFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
 
     $scope.isReloading = false;
-
     $scope.reloadFiles = function() {
         $scope.isReloading = !$scope.isReloading;
 

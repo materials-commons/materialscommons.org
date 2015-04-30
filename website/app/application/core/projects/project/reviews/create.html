@@ -36,8 +36,11 @@
             </button>
             <br><br>
 
-            <div ng-repeat="attachment in model.attachments">
-                <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i><a class="link pointer">{{attachment.name}}</a>
+            <div class="row" ng-repeat="attachment in model.attachments">
+                <div class="col-xs-5">
+                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                    <a class="link pointer">{{attachment.name}}</a>
+                </div>
             </div>
         </div>
 

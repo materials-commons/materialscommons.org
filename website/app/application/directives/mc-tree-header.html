@@ -11,7 +11,9 @@
                   ui-draggable="true" drag="item">{{::item.displayname}}</span>
             <span ng-if="item.type === 'datafile'" title="{{item.fullname}}"
                   style="color: #389dc1" ng-click="openFile(item)"
-                  ui-draggable="true" drag="item">{{::item.displayname}}</span>
+                  ui-draggable="true" drag="item">{{::item.displayname}}
+
+            </span>
         </span>
         <span  ng-show="show" class="pull-right">
                 <a   title="New Folder" ng-click="item.addFolder = !item.addFolder">
