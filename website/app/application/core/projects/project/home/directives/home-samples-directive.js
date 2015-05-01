@@ -12,38 +12,41 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-                                   ["$scope", "ui", "$state",
+                                   ["$scope",
                                     homeSamplesController]);
 
-function homeSamplesController($scope, ui, $state) {
+function homeSamplesController($scope) {
 
-    $scope.project.samples.forEach(function(sample) {
-        if (!('showDetails' in sample)) {
-            sample.showDetails = false;
-        }
+    var rowData = [];
+    $scope.project.samples.forEach(function (sample) {
+        rowData.push({
+            name: sample.title,
+            composition: n ,
+            owner: sample.owner,
+            mtime: sample.mtime
+        });
     });
-
-    $scope.minimize = function() {
-        ui.togglePanelState($scope.project.id, 'samples');
+    var columnDefs = [
+        {
+            displayName: "",
+            field: "title",
+            width: 900,
+            template: '<span ng-bind="data.title"></span>' +
+            '<p class="text-muted"><small><i class="fa fa-fw fa-user"></i>' +
+            '<span  class="text-muted">{{data.owner}}</span>' +
+            '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>' +
+            '<div style="font-size: 12px;" class="text-muted" ta-bind="text" ng-model="data.msg"></div>',
+            cellStyle: {border: 0}
+        }
+    ];
+    $scope.gridOptions = {
+        columnDefs: columnDefs,
+        rowData: rowData,
+        enableColResize: true,
+        headerHeight: 0,
+        rowHeight: 85,
+        rowStyle: {'border-bottom': 'dotted #d3d3d3'},
+        angularCompileRows: true
     };
 
-    $scope.toggleExpanded = function() {
-        ui.toggleIsExpanded($scope.project.id, "samples");
-    };
-
-    $scope.isExpanded = function() {
-        return ui.isExpanded($scope.project.id, "samples");
-    };
-
-    $scope.createSample = function () {
-        $state.go("projects.project.samples.create");
-    };
-
-    $scope.splitScreen = function(what, col) {
-        ui.toggleColumns($scope.project.id, what, col);
-    };
-
-    $scope.isSplitExpanded = function () {
-        return ui.getSplitStatus($scope.project.id);
-    };
 }

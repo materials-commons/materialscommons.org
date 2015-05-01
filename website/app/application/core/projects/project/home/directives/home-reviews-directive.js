@@ -37,14 +37,14 @@ function homeReviewsDirectiveController($scope) {
         {
             displayName: "",
             field: "messages",
-            width: 530,
+            width: 620,
             template: '<span class="pull-right">' +
             '<a ng-if="data.messages.length !== 0" class="fa-stack fa-2x">' +
             '<i style="color: #FDAC6B;" class="fa fa-comment fa-stack-1x"></i>' +
             '<i style="font-size: 10px;" class="fa fa-stack-1x fa-inverse">{{data.messages.length}}</i>' +
             '</span>',
             cellStyle: {border: 0}
-        },
+        }
     ];
     $scope.gridOptions = {
         columnDefs: columnDefs,

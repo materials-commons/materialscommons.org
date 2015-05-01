@@ -29,7 +29,7 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
                 field: "name",
                 width: 300,
                 template: '<span ng-bind="data.name"></span>' +
-                '<p><small><small  class="text-muted">April 30, 2015</small></small></p>',
+                '<p><small><small  class="text-muted">{{data.mtime | toDateString}}</small></small></p>',
                 cellStyle: {border: 0}
             },
             {
@@ -43,7 +43,7 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
         ];
         var rowData = [];
         $scope.project.processes.forEach(function (process) {
-            rowData.push({name: process.name, owner: process.owner});
+            rowData.push({name: process.name, owner: process.owner, mtime: process.mtime});
         });
 
         $scope.gridOptions = {
