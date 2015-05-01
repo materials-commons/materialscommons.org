@@ -977,9 +977,9 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .panel.card {
-  max-height: 290px;
+  max-height: 310px;
   overflow-y: auto;
-  min-height: 290px;
+  min-height: 310px;
 }
 
 .panel.card > .panel-body {
@@ -2459,6 +2459,23 @@ header {
 .ta-scroll-window.form-control {
   height: 200px;
 }
+
 .ag-fresh .ag-root {
   border: none;
+  font-family: inherit;
+}
+
+.ag-fresh .ag-cell{
+  padding: 18px;
+}
+
+.ag-body-viewport{
+  overflow: hidden;
+}
+
+.ag-fresh .ag-row-even {
+  background-color: #f5f5f5;
+}
+.ag-fresh .ag-row-odd {
+  background-color: #fff;
 }
