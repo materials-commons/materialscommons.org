@@ -11,15 +11,16 @@ function homeNotesDirective() {
 }
 
 Application.Controllers.controller("homeNotesDirectiveController",
-    ["$scope", "ui",
+    ["$scope", "$filter",
         homeNotesDirectiveController]);
 
-function homeNotesDirectiveController($scope, ui) {
+function homeNotesDirectiveController($scope, $filter) {
     var rowData = [];
     $scope.project.notes.forEach(function (note) {
+        var n = $filter('truncate')( note.note,140, '...');
         rowData.push({
             title: note.title,
-            note: note.note,
+            msg: n ,
             owner: note.creator,
             mtime: note.mtime
         });
@@ -28,12 +29,12 @@ function homeNotesDirectiveController($scope, ui) {
         {
             displayName: "",
             field: "title",
-            width: 830,
+            width: 900,
             template: '<span ng-bind="data.title"></span>' +
-            '<p><small class="text-muted"><i class="fa fa-fw fa-user"></i>' +
-            '<span ng-bind="data.owner"></span>' +
-            '<small  style="padding-left: 60px;" ng-bind="data.mtime"></small></small></p>' +
-            '<p ta-bind="text" ng-model="data.note" ta-readonly="disabled"></p>',
+            '<p class="text-muted"><small><i class="fa fa-fw fa-user"></i>' +
+            '<span  class="text-muted">{{data.owner}}</span>' +
+            '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>' +
+            '<div style="font-size: 12px;" class="text-muted" ta-bind="text" ng-model="data.msg"></div>',
             cellStyle: {border: 0}
         }
     ];
@@ -42,35 +43,9 @@ function homeNotesDirectiveController($scope, ui) {
         rowData: rowData,
         enableColResize: true,
         headerHeight: 0,
-        rowHeight: 65,
+        rowHeight: 85,
         rowStyle: {'border-bottom': 'dotted #d3d3d3'},
         angularCompileRows: true
     };
-    $scope.minimize = function () {
-        ui.togglePanelState($scope.project.id, 'notes');
-    };
 
-    $scope.toggleExpanded = function () {
-        ui.toggleIsExpanded($scope.project.id, "notes");
-    };
-
-    $scope.isExpanded = function () {
-        return ui.isExpanded($scope.project.id, "notes");
-    };
-
-    $scope.createNote = function () {
-        $scope.model.createNote = true;
-    };
-
-    $scope.splitScreen = function (what, col) {
-        ui.toggleColumns($scope.project.id, what, col);
-    };
-
-    $scope.isSplitExpanded = function () {
-        return ui.getSplitStatus($scope.project.id);
-    };
-
-    $scope.model = {
-        createNote: false
-    };
 }
