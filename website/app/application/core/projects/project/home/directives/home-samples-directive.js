@@ -19,9 +19,14 @@ function homeSamplesController($scope) {
 
     var rowData = [];
     $scope.project.samples.forEach(function (sample) {
+        var composition = '';
+        sample.properties.composition.value.forEach(function(val){
+            composition = composition + '  ' + val.element + ': ' + val.value;
+        })
+        composition = composition + '  ' + sample.properties.composition.unit;
         rowData.push({
-            name: sample.title,
-            composition: n ,
+            name: sample.name,
+            composition: composition ,
             owner: sample.owner,
             mtime: sample.mtime
         });
@@ -31,11 +36,11 @@ function homeSamplesController($scope) {
             displayName: "",
             field: "title",
             width: 900,
-            template: '<span ng-bind="data.title"></span>' +
-            '<p class="text-muted"><small><i class="fa fa-fw fa-user"></i>' +
+            template: '<span ng-bind="data.name"></span>' +
+            '<p class="text-muted"><small><small  class="text-muted">{{data.composition}}</small>' +
+            '<i style="padding-left: 60px; class="fa fa-fw fa-user"></i>' +
             '<span  class="text-muted">{{data.owner}}</span>' +
-            '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>' +
-            '<div style="font-size: 12px;" class="text-muted" ta-bind="text" ng-model="data.msg"></div>',
+            '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>',
             cellStyle: {border: 0}
         }
     ];
@@ -44,7 +49,7 @@ function homeSamplesController($scope) {
         rowData: rowData,
         enableColResize: true,
         headerHeight: 0,
-        rowHeight: 85,
+        rowHeight: 65,
         rowStyle: {'border-bottom': 'dotted #d3d3d3'},
         angularCompileRows: true
     };

@@ -25,4 +25,7 @@ function displayProcessDirectiveController($scope, sideboard, current, pubsub) {
     $scope.addItem = function (process) {
         pubsub.send('addProcessToReview', process);
     };
+    $scope.popUp = function(){
+
+    };
 }

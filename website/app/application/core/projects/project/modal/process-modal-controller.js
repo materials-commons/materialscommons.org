@@ -6,7 +6,7 @@ function modalProcessesDirective() {
         scope: {
             project: '=project'
         },
-        templateUrl: 'application/core/projects/project/home/directives/home-processes.html'
+        templateUrl: 'application/core/projects/project/modal/process-modal.html'
     };
 }
 
@@ -18,7 +18,6 @@ function modalProcessesDirectiveController($scope, ui, projectState, $state, pub
         $scope.bk = {
             all: []
         };
-
         $scope.project.drafts.forEach(function(draft) {
             if (!('showDetails' in draft)) {
                 draft.showDetails = false;
