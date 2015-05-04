@@ -31,9 +31,11 @@
         <div class="row" style="padding: 15px;">
             <br>
             <button data-toggle="modal" data-target=".bs-example-modal-lg"
-                    style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 " class="btn btn-default"><i
-                    class="fa fa-fw fa-plus"></i> ADD
+            style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 " class="btn btn-default"><i
+            class="fa fa-fw fa-plus"></i> ADD
             </button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-1">open 1st modal</button>
+
             <br><br>
 
             <div class="row" ng-repeat="attachment in model.attachments">
@@ -66,52 +68,41 @@
             <button class=" btn btn-default btn-review  btn-details-container">Send</button>
         </div>
     </div>
-</div>
+<!-- Button trigger modal -->
 
-<div class="modal fade bs-example-modal-lg" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="modal-1" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Attachments</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Modal 1</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist" id="myTab">
-                        <li class="active"><a data-target="#1" data-toggle="tab">Files</a></li>
-                        <li><a data-target="#2" data-toggle="tab">Samples</a></li>
-                        <li><a data-target="#3" data-toggle="tab">Processes</a></li>
 
-                    </ul>
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="1">
-                            <div style="padding: 10px;">
-                                <div modal-files project="project"></div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="2">
-                            <div style="padding: 10px;">
-                                <div home-samples project="project"></div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="3">
-                            <div style="padding: 10px;">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-2">Open 2nd modal</button>
 
-                                <div modal-processes project="project"></div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
+</div>
+
+<div id="modal-2" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Modal 2</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
