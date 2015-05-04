@@ -1,36 +1,88 @@
 <div>
         <span ng-click="" style="cursor: pointer">
-            <span  ng-show="process.process">
+            <span ng-show="process.process">
                 {{process.process.name | truncate:25:'...':true}}
                 <span class="label label-primary"
                       style="background-color:#e26a6a;">Draft</span>
             </span>
-            <span  data-toggle="modal" data-target="#modalOneModal"  ng-hide="process.process">
+            <span data-toggle="modal" data-target="#modal-2" ng-hide="process.process">
                 {{process.name | truncate:25:'...':true}}
             </span>
         </span>
         <span class="pull-right">
             <small class="text-muted">{{process.birthtime | toDateString}}</small>
         </span>
-    <div id="modalOneModal"  class="modal fade bg-info" role="dialog" aria-labelledby="modelOneLabel" aria-hidden="true">
+
+    <div id="modal-2" class="modal" style="overflow:auto" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="modelOneLabel">{{process.name}}</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                    <h4 class="modal-title">{{process.name}}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        Describe your process here
+                        <b>Inputs</b>
+                        <ul class="">
+                            <li class="" ng-repeat="(key, values) in process.inputs">
+                                    <b>{{key}}</b>
+                                <div ng-switch="" on="key">
+                                    <div ng-switch-when="files">
+                                        <ul style="padding-left: 30px;">
+                                            <li ng-repeat="item in values">
+                                                <a ui-sref="projects.project.files.view({'fileid': item.id})">
+                                                    {{item.other.name}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div ng-switch-when="sample">
+                                        <ul style="padding-left: 30px;">
+                                            <li ng-repeat="item in values">
+                                                {{item.other.name}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div ng-switch-default>
+                                        <ul style="padding-left: 30px;">
+                                            <li ng-repeat="item in values">
+                                                {{item.display_name}} : {{item.value}} {{item.unit}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <b>Outputs</b>
+                        <ul class="">
+                            <li class="" ng-repeat="(key, values) in process.outputs">
+                                    <b>{{key}}</b>
+                                <div ng-switch="" on="key">
+                                    <div ng-switch-when="files">
+                                        <ul style="padding-left: 30px;">
+                                            <li ng-repeat="item in values">
+                                                <a ui-sref="projects.project.files.view({'fileid': item.id})">
+                                                    {{item.other.name}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div ng-switch-default>
+                                        <ul style="padding-left: 30px;">
+                                            <li ng-repeat="item in values">
+                                                {{item.display_name}} : {{item.value}} {{item.unit}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <!--<div class="modal-footer" id="woModalFoot">-->
-                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                <!--</div>-->
+                <div class="modal-footer" id="woModalFoot">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-
 </div>

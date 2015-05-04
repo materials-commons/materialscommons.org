@@ -11,8 +11,7 @@
                 <li class="dashboard-item"
                     ng-class="{'open-item-details': process.showDetails}"
                     ng-repeat="process in bk.all | filter:search | event:project.date:project.nextdate as procs">
-                    <display-process process="process"
-                                     show-sideboard="true">
+                    <display-process process="process">
                     </display-process>
                 </li>
                 <li ng-show="procs.length === 0" class="dashboard-item">
