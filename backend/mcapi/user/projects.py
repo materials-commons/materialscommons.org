@@ -76,7 +76,7 @@ def add_samples(projects_by_id, project_ids):
                    .zip()
                    .order_by('name')
                    .run(g.conn, time_format='raw'))
-    samples = []
+    #samples = []
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
