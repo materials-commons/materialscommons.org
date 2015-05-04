@@ -1,0 +1,38 @@
+{
+  "name": "angular-grid",
+  "version": "1.4.1",
+  "description": "High performance and feature rich data grid for AngularJS",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceolter/angular-grid.git"
+  },
+  "keywords": [
+    "grid",
+    "data",
+    "table",
+    "angular"
+  ],
+  "author": "Niall Crosby <info@angulargrid.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ceolter/angular-grid/issues"
+  },
+  "homepage": "http://www.angulargrid.com/",
+  "devDependencies": {
+    "browserify": "^9.0.8",
+    "gulp": "^3.8.11",
+    "gulp-foreach": "^0.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.0.1",
+    "gulp-uglify": "^1.2.0",
+    "nib": "^1.1.0",
+    "streamify": "^0.2.4",
+    "stylus": "^0.50.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
