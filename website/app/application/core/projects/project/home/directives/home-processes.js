@@ -11,9 +11,9 @@ function homeProcessesDirective() {
 }
 
 Application.Controllers.controller("homeProcessesDirectiveController",
-    ["$scope", "ui", "projectState", "$state", "pubsub",
+    ["$scope", "projectState", "$state", "pubsub",
         homeProcessesDirectiveController]);
-function homeProcessesDirectiveController($scope, ui, projectState, $state, pubsub) {
+function homeProcessesDirectiveController($scope,  projectState, $state, pubsub) {
     function segmentProcesses() {
         $scope.bk = {all: []};
         $scope.project.drafts.forEach(function (draft) {
@@ -65,6 +65,4 @@ function homeProcessesDirectiveController($scope, ui, projectState, $state, pubs
         $state.go("projects.project.home.provenance", {sid: stateID});
     };
     segmentProcesses();
-
-
 }

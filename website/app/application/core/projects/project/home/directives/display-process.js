@@ -2,32 +2,35 @@ Application.Directives.directive("displayProcess", displayProcessDirective);
 function displayProcessDirective() {
     return {
         restrict: "E",
-        replace: true,
         scope: {
-            process: "=process",
-            showSideboard: "=showSideboard"
+            modal: "=modal"
         },
         controller: "displayProcessDirectiveController",
         templateUrl: "application/core/projects/project/home/directives/display-process.html"
     };
 }
+
 Application.Controllers.controller("displayProcessDirectiveController",
-    ["$scope", "sideboard", "current", "pubsub", "Graph",
+    ["$scope", "$log",
         displayProcessDirectiveController]);
 
-function displayProcessDirectiveController($scope, sideboard, current, pubsub, Graph) {
-    $scope.addToSideboard = function (process, event) {
-        sideboard.handleFromEvent(current.projectID(), process, event, 'sideboard');
+function displayProcessDirectiveController($scope, $log) {
+
+    $scope.selected = {
+        item: $scope.modal.process
     };
-    $scope.remove = function (process, event) {
-        sideboard.handleFromEvent(current.projectID(), process, event, 'sideboard');
+    $scope.process = $scope.modal.process;
+    $scope.ok = function () {
+        $scope.modal.instance.close($scope.selected);
     };
-    $scope.addItem = function (process) {
-        pubsub.send('addProcessToReview', process);
+
+    $scope.cancel = function () {
+        $scope.modal.instance.dismiss('cancel');
     };
-    if ('name' in $scope.process) {
-        $scope.graph = Graph.constructGraph($scope.process);
-    } else {
-        $scope.graph = '';
-    }
+
+    $scope.modal.instance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+    }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+    });
 }

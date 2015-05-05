@@ -11,56 +11,76 @@ function modalProcessesDirective() {
 }
 
 Application.Controllers.controller("modalProcessesDirectiveController",
-    ["$scope", "ui", "projectState", "$state", "pubsub",
+    ["$scope", "$modal", "pubsub",
         modalProcessesDirectiveController]);
-function modalProcessesDirectiveController($scope, ui, projectState, $state, pubsub) {
-    function segmentProcesses() {
-        $scope.bk = {
-            all: []
+function modalProcessesDirectiveController($scope, $modal, pubsub) {
+    $scope.bk = {all: []};
+    $scope.project.drafts.forEach(function (draft) {
+        $scope.bk.all.push(draft);
+    });
+    $scope.project.processes.forEach(function (process) {
+        $scope.bk.all.push(process);
+    });
+
+    var columnDefs = [
+        {
+            displayName: "",
+            field: "selected",
+            width: 100,
+            checkboxSelection: true,
+            cellStyle: {border: 0}
+        },
+        {
+            displayName: "",
+            field: "name",
+            width: 300,
+            cellClicked: cellClickedFunc,
+            template: '<span><a>{{data.name}}</a></span>' +
+            '<p><small><small  class="text-muted">{{data.mtime | toDateString}}</small></small></p>',
+            cellStyle: {border: 0}
+        },
+        {
+            displayName: "",
+            field: "owner",
+            width: 300,
+            cellTemplate: '<span ng-bind="data.owner"></span>',
+            cellStyle: {border: 0}
+        },
+        {displayName: "", field: "", width: 300, cellStyle: {border: 0}}
+    ];
+
+    var rowData = [];
+    $scope.project.processes.forEach(function (process) {
+        process.selected = true;
+        rowData.push(process);
+    });
+
+    $scope.gridOptions = {
+        columnDefs: columnDefs,
+        rowData: rowData,
+        enableColResize: true,
+        headerHeight: 0,
+        rowHeight: 60,
+        angularCompileRows: true,
+        rowSelection: 'multiple',
+        rowSelected: function (process) {
+            pubsub.send('addProcessToReview', process);
+        },
+        suppressRowClickSelection: true
+    };
+
+    function cellClickedFunc(params) {
+        $scope.modal = {
+            instance: null,
+            process: params.data
         };
-        $scope.project.drafts.forEach(function(draft) {
-            if (!('showDetails' in draft)) {
-                draft.showDetails = false;
-            }
-            $scope.bk.all.push(draft);
-        });
-        $scope.project.processes.forEach(function(process) {
-            if (!('showDetails' in process)) {
-                process.showDetails = false;
-            }
-            $scope.bk.all.push(process);
+
+        $scope.modal.instance = $modal.open({
+            template: '<display-process modal="modal"></display-process>',
+            scope: $scope,
+            size: 'lg'
         });
     }
 
-    pubsub.waitOn($scope, "processes.change", function() {
-        segmentProcesses();
-    });
 
-    $scope.toggleExpanded = function() {
-        ui.toggleIsExpanded($scope.project.id, "processes");
-    };
-
-    $scope.isExpanded = function() {
-        return ui.isExpanded($scope.project.id, "processes");
-    };
-
-    $scope.minimize = function() {
-        ui.togglePanelState($scope.project.id, 'processes');
-    };
-
-    $scope.createProcess = function() {
-        var state = null;
-        var stateID = projectState.add($scope.project.id, state);
-        $state.go("projects.project.home.provenance", {sid: stateID});
-    };
-
-    $scope.splitScreen = function(what, col){
-        ui.toggleColumns($scope.project.id, what, col);
-    };
-
-    $scope.isSplitExpanded = function () {
-        return ui.getSplitStatus($scope.project.id);
-    };
-
-    segmentProcesses();
 }
