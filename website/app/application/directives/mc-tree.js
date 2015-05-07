@@ -6,9 +6,9 @@ function mcTreeDirective() {
         scope: {
             items: '=items',
             orderby: '=orderby',
-            matches: '=matches'
+            matches: '=matches',
+            attachment: '='
         },
-        replace: true,
         templateUrl: 'application/directives/mc-tree.html'
     };
 }
@@ -20,10 +20,10 @@ function mcTreeHeaderDirective() {
         restrict: "E",
         scope: {
             item: '=item',
-            showSideboard: "=showSideboard"
+            showSideboard: "=showSideboard" ,
+            attachment: '='
         },
         controller: "mcTreeHeaderDirectiveController",
-        replace: true,
         templateUrl: 'application/directives/mc-tree-header.html'
     };
 }
@@ -71,8 +71,13 @@ function mcTreeHeaderDirectiveController($scope, pubsub, projectFiles, sideboard
         $scope.activeFile = projectFiles.getActiveFile();
     }
 
-    $scope.addToSideboard = function (file, event) {
-        sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
+    $scope.addItem = function () {
+        if ($scope.item.selected){
+            $scope.item.selected = !$scope.item.selected;
+        } else{
+            $scope.item.selected = true;
+        }
+        pubsub.send('addFileToReview', $scope.item);
     };
 
     $scope.newFolder = function (currentDir, name) {
@@ -97,9 +102,6 @@ function mcTreeHeaderDirectiveController($scope, pubsub, projectFiles, sideboard
         return toggleDragButton.get(type, button);
     };
 
-    $scope.addItem = function (file) {
-        pubsub.send('addFileToReview', file);
-    };
 }
 
 Application.Directives.directive("mcTreeDisplayItem", mcTreeDisplayItemDirective);

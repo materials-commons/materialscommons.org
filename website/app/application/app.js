@@ -210,7 +210,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.reviews.create", {
             url: "/create",
             templateUrl: "application/core/projects/project/reviews/create.html",
-            controller: "projectCreatetReview"
+            controller: "projectCreateReview"
         })
         .state("projects.project.notes", {
             url: "/notes",

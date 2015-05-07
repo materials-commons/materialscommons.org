@@ -1,7 +1,7 @@
-Application.Controllers.controller('projectCreatetReview',
-    ["$scope", "project", "User", "pubsub", "$modal", "Review", projectCreatetReview]);
+Application.Controllers.controller('projectCreateReview',
+    ["$scope", "project", "User", "pubsub", "$modal", "Review", projectCreateReview]);
 
-function projectCreatetReview($scope, project, User, pubsub, $modal, Review) {
+function projectCreateReview($scope, project, User, pubsub, $modal, Review) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment({'id': sample.id, 'name': sample.name, 'type': 'sample'});
@@ -13,14 +13,15 @@ function projectCreatetReview($scope, project, User, pubsub, $modal, Review) {
         addAttachment({'id': file.id, 'name': file.name, 'type': 'file', 'path': file.fullname});
     });
     $scope.project = project;
-    $scope.user = User.u();
-    $scope.today = new Date();
     $scope.model = {
         title: "",
         comment: '',
         assigned_to: [],
         attachments: []
     };
+    $scope.user = User.u();
+    $scope.today = new Date();
+
     $scope.addUser = function () {
         $scope.model.assigned_to.push($scope.selectedUser);
     };
@@ -29,15 +30,19 @@ function projectCreatetReview($scope, project, User, pubsub, $modal, Review) {
         var i = _.indexOf($scope.model.assigned_to, user);
         $scope.model.assigned_to.splice(i, 1);
     };
+
     $scope.removeAttachment = function (item) {
-        Review.checkedItems(item);
-        addAttachment(item);
+        if (item.type !== 'file') {
+            Review.checkedItems(item);
+            addAttachment(item);
+        }
     };
+
     function addAttachment(item) {
         var i = _.indexOf($scope.model.attachments, function (entry) {
             return item.id === entry.id;
         });
-        if (i === -1) {
+        if (i < 0) {
             $scope.model.attachments.push(item);
         } else {
             $scope.model.attachments.splice(i, 1);
@@ -46,7 +51,7 @@ function projectCreatetReview($scope, project, User, pubsub, $modal, Review) {
 
     $scope.modal = {
         instance: null,
-        items: ['item1', 'item2', 'item3']
+        items: []
     };
 
     $scope.open = function (size) {
@@ -57,4 +62,29 @@ function projectCreatetReview($scope, project, User, pubsub, $modal, Review) {
         });
 
     };
+
+    $scope.createReview = function () {
+        $scope.review.author = User.u();
+        $scope.review.assigned_to = $scope.model.assigned_to;
+        $scope.review.status = 'open';
+        $scope.review.title = $scope.model.title;
+        $scope.review.attachments = $scope.model.attachments;
+        var newdate = new Date();
+        $scope.review.messages.push({
+            'message': $scope.model.comment,
+            'who': User.u(),
+            'date': newdate.toDateString()
+        });
+        $scope.review.project = $scope.project.id;
+        saveData();
+    };
+    function saveData() {
+        mcapi('/reviews')
+            .success(function (review) {
+                $scope.project.reviews.unshift(review);
+                pubsub.send("reviews.change");
+            }).error(function (reason) {
+            }).post($scope.review);
+    }
+
 }
