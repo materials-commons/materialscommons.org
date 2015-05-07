@@ -1,6 +1,7 @@
 Application.Services.factory('Review',
     ["$filter", "mcapi", "User", "pubsub", function ($filter, mcapi, User, pubsub) {
         var service = {
+            checked_items: [],
             findReview: function (reviewID, which, project) {
                 var i = _.indexOf(project[which], function (review) {
                     return review.id === reviewID;
@@ -69,6 +70,20 @@ Application.Services.factory('Review',
             } ,
             getActiveReview: function(){
                 return service.activeReview;
+            },
+
+            checkedItems: function(proc){
+                var i = _.indexOf(service.checked_items, function (entry) {
+                    return proc.id === entry.id;
+                });
+                if(i < 0){
+                    service.checked_items.push(proc);
+                } else{
+                    service.checked_items.splice(i, 1);
+                }
+            },
+            getCheckedItems: function(){
+                return service.checked_items;
             }
         };
         return service;
