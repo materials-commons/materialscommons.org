@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectCreatetReview',
-    ["$scope", "project", "User", "pubsub", "$modal", "$log" ,projectCreatetReview]);
+    ["$scope", "project", "User", "pubsub", "$modal", "Review", projectCreatetReview]);
 
-function projectCreatetReview($scope, project, User, pubsub,$modal, $log) {
+function projectCreatetReview($scope, project, User, pubsub, $modal, Review) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment({'id': sample.id, 'name': sample.name, 'type': 'sample'});
@@ -29,16 +29,18 @@ function projectCreatetReview($scope, project, User, pubsub,$modal, $log) {
         var i = _.indexOf($scope.model.assigned_to, user);
         $scope.model.assigned_to.splice(i, 1);
     };
-
+    $scope.removeAttachment = function (item) {
+        Review.checkedItems(item);
+        addAttachment(item);
+    };
     function addAttachment(item) {
         var i = _.indexOf($scope.model.attachments, function (entry) {
             return item.id === entry.id;
         });
         if (i === -1) {
             $scope.model.attachments.push(item);
-        } else{
-
-            //$scope.model.attachments.splice(i, 1);
+        } else {
+            $scope.model.attachments.splice(i, 1);
         }
     }
 

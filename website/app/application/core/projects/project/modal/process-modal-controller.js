@@ -11,9 +11,9 @@ function modalProcessesDirective() {
 }
 
 Application.Controllers.controller("modalProcessesDirectiveController",
-    ["$scope", "$modal", "pubsub",
+    ["$scope", "$modal", "pubsub","Review",
         modalProcessesDirectiveController]);
-function modalProcessesDirectiveController($scope, $modal, pubsub) {
+function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
     $scope.bk = {all: []};
     $scope.project.drafts.forEach(function (draft) {
         $scope.bk.all.push(draft);
@@ -48,12 +48,11 @@ function modalProcessesDirectiveController($scope, $modal, pubsub) {
         },
         {displayName: "", field: "", width: 300, cellStyle: {border: 0}}
     ];
-
     var rowData = [];
     $scope.project.processes.forEach(function (process) {
-        process.selected = true;
         rowData.push(process);
     });
+
 
     $scope.gridOptions = {
         columnDefs: columnDefs,
@@ -63,7 +62,10 @@ function modalProcessesDirectiveController($scope, $modal, pubsub) {
         rowHeight: 60,
         angularCompileRows: true,
         rowSelection: 'multiple',
+        ready: readyFunc,
+        cellClicked: cellClickedFunc,
         rowSelected: function (process) {
+            Review.checkedItems(process);
             pubsub.send('addProcessToReview', process);
         },
         suppressRowClickSelection: true
@@ -82,5 +84,14 @@ function modalProcessesDirectiveController($scope, $modal, pubsub) {
         });
     }
 
-
+    function readyFunc() {
+        var i1 ;
+        var checked_entries = Review.getCheckedItems();
+        checked_entries.forEach(function(entry){
+                i1 = _.indexOf($scope.gridOptions.rowData, function (item) {
+                    return item.id === entry.id;
+                });
+                $scope.gridOptions.api.selectIndex(i1, true, true);
+        });
+    }
 }
