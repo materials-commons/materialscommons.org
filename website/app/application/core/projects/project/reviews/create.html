@@ -1,4 +1,5 @@
 <div class="details-main-content">
+    {{model}}
     <div class="row" style="color: #d3d3d3;">
         {{today.toString()}}
     </div>
@@ -30,8 +31,9 @@
         <div class="col-xs-12 headings">Attachment</div>
         <div class="row" style="padding: 15px;">
             <br>
-            <button ng-click="open('lg')" style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 " class="btn btn-default"><i
-            class="fa fa-fw fa-plus"></i> ADD
+            <button ng-click="open('lg')" style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 "
+                    class="btn btn-default"><i
+                    class="fa fa-fw fa-plus"></i> ADD
             </button>
             <br><br>
             <div class="row" ng-repeat="attachment in model.attachments">
@@ -59,7 +61,7 @@
             <button class="btn btn-danger">Cancel</button>
         </div>
         <div class="col-xs-3">
-            <button class=" btn btn-default btn-review  btn-details-container">Send</button>
+            <button ng-click="createReview()" class=" btn btn-default btn-review  btn-details-container">Send</button>
         </div>
     </div>
 </div>

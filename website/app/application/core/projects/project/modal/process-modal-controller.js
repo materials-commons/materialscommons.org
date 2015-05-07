@@ -11,7 +11,7 @@ function modalProcessesDirective() {
 }
 
 Application.Controllers.controller("modalProcessesDirectiveController",
-    ["$scope", "$modal", "pubsub","Review",
+    ["$scope", "$modal", "pubsub", "Review",
         modalProcessesDirectiveController]);
 function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
     $scope.bk = {all: []};
@@ -85,13 +85,15 @@ function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
     }
 
     function readyFunc() {
-        var i1 ;
+        var i;
         var checked_entries = Review.getCheckedItems();
-        checked_entries.forEach(function(entry){
-                i1 = _.indexOf($scope.gridOptions.rowData, function (item) {
-                    return item.id === entry.id;
-                });
-                $scope.gridOptions.api.selectIndex(i1, true, true);
+        checked_entries.forEach(function (entry) {
+            i = _.indexOf($scope.gridOptions.rowData, function (item) {
+                return item.id === entry.id;
+            });
+            if (i > -1) {
+                $scope.gridOptions.api.selectIndex(i, true, true);
+            }
         });
     }
 }
