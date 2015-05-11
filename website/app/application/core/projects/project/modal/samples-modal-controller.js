@@ -28,7 +28,11 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
             name: sample.name,
             composition: composition,
             owner: sample.owner,
-            mtime: sample.mtime
+            mtime: sample.mtime,
+            properties: sample.properties,
+            notes: sample.notes,
+            id: sample.id
+
         });
     });
     var columnDefs = [
@@ -43,17 +47,20 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
             displayName: "",
             field: "title",
             width: 600,
-            template: '<span ng-bind="data.name"></span>' +
-            '<p class="text-muted"><small><small  class="text-muted">{{data.composition}}</small>' +
+            cellClicked: cellClickedFunc,
+            template: '<span><a>{{data.name}}</a></span>' +
+            '<p class="text-muted"><small><small class="text-muted">{{data.composition}}</small>' +
             '<i style="padding-left: 60px; class="fa fa-fw fa-user"></i>' +
             '<span  class="text-muted">{{data.owner}}</span>' +
             '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>',
             cellStyle: {border: 0}
-        }
+        } ,
+        {displayName: "", field: "", width: 300, cellStyle: {border: 0}}
+
     ];
     $scope.gridOptions = {
         columnDefs: columnDefs,
-        rowData: $scope.project.samples,
+        rowData: rowData,
         enableColResize: true,
         headerHeight: 0,
         rowHeight: 65,
@@ -61,10 +68,9 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
         angularCompileRows: true,
         rowSelection: 'multiple',
         ready: readyFunc,
-        cellClicked: cellClickedFunc,
-        rowSelected: function (process) {
-            Review.checkedItems(process);
-            pubsub.send('addSampleToReview', process);
+        rowSelected: function (sample) {
+            Review.checkedItems(sample);
+            pubsub.send('addSampleToReview', sample);
         },
         suppressRowClickSelection: true
     };
@@ -72,13 +78,21 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
     function cellClickedFunc(params) {
         $scope.modal = {
             instance: null,
-            process: params.data
+            items: [params.data]
         };
 
         $scope.modal.instance = $modal.open({
-            template: '<display-sample modal="modal"></display-sample>',
-            scope: $scope,
-            size: 'lg'
+            size: 'lg' ,
+            templateUrl: 'application/core/projects/project/home/directives/display-sample.html',
+            controller: 'ModalInstanceCtrl',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function(){
+                    return $scope.project;
+                }
+            }
         });
     }
 

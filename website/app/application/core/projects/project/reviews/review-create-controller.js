@@ -1,9 +1,10 @@
 Application.Controllers.controller('projectCreateReview',
-    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", projectCreateReview]);
+    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state",projectCreateReview]);
 
-function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi) {
+function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
+        console.log(sample);
         addAttachment({'id': sample.id, 'name': sample.name, 'type': 'sample'});
     });
     pubsub.waitOn($scope, 'addProcessToReview', function (process) {
@@ -42,9 +43,17 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
 
     $scope.open = function (size) {
         $scope.modal.instance = $modal.open({
-            template: '<div modal-instance modal="modal" project="project">',
-            scope: $scope,
-            size: size
+            templateUrl: 'application/core/projects/project/reviews/myModalContent.html',
+            controller: 'ModalInstanceCtrl',
+            size: size,
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function(){
+                    return $scope.project;
+                }
+            }
         });
 
     };

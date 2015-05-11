@@ -28,7 +28,9 @@ function projectEditReview($scope, project, $stateParams,Review, User) {
         if ($stateParams.review_id){
             $scope.review = Review.setActiveReview($stateParams.review_id, $scope.project.reviews);
         }   else{
-            $scope.review = $scope.project.reviews[0];
+            if ($scope.project.reviews.length > 0){
+                $scope.review = $scope.project.reviews[0];
+            }
         }
     }
     init();
