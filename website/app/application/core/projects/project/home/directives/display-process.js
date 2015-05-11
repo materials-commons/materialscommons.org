@@ -1,9 +1,9 @@
 Application.Directives.directive("displayProcess", displayProcessDirective);
 function displayProcessDirective() {
     return {
-        restrict: "E",
+        restrict: "AE",
         scope: {
-            modal: "=modal"
+            modal: "="
         },
         controller: "displayProcessDirectiveController",
         templateUrl: "application/core/projects/project/home/directives/display-process.html"
@@ -17,11 +17,11 @@ Application.Controllers.controller("displayProcessDirectiveController",
 function displayProcessDirectiveController($scope, $log) {
 
     $scope.selected = {
-        item: $scope.modal.process
+        item: $scope.modal.item
     };
-    $scope.process = $scope.modal.process;
+
     $scope.ok = function () {
-        $scope.modal.instance.close($scope.selected);
+        $scope.modal.instance.close($scope.selected.item);
     };
 
     $scope.cancel = function () {

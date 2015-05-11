@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectCreateReview',
-    ["$scope", "project", "User", "pubsub", "$modal", "Review", projectCreateReview]);
+    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", projectCreateReview]);
 
-function projectCreateReview($scope, project, User, pubsub, $modal, Review) {
+function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment({'id': sample.id, 'name': sample.name, 'type': 'sample'});
@@ -12,15 +12,6 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review) {
     pubsub.waitOn($scope, 'addFileToReview', function (file) {
         addAttachment({'id': file.id, 'name': file.name, 'type': 'file', 'path': file.fullname});
     });
-    $scope.project = project;
-    $scope.model = {
-        title: "",
-        comment: '',
-        assigned_to: [],
-        attachments: []
-    };
-    $scope.user = User.u();
-    $scope.today = new Date();
 
     $scope.addUser = function () {
         $scope.model.assigned_to.push($scope.selectedUser);
@@ -49,11 +40,6 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review) {
         }
     }
 
-    $scope.modal = {
-        instance: null,
-        items: []
-    };
-
     $scope.open = function (size) {
         $scope.modal.instance = $modal.open({
             template: '<div modal-instance modal="modal" project="project">',
@@ -64,6 +50,7 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review) {
     };
 
     $scope.createReview = function () {
+        $scope.review = {messages: []};
         $scope.review.author = User.u();
         $scope.review.assigned_to = $scope.model.assigned_to;
         $scope.review.status = 'open';
@@ -81,10 +68,31 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review) {
     function saveData() {
         mcapi('/reviews')
             .success(function (review) {
+                init();
                 $scope.project.reviews.unshift(review);
                 pubsub.send("reviews.change");
+                $state.go('projects.project.reviews.edit', {review_id: review.id});
             }).error(function (reason) {
             }).post($scope.review);
     }
+
+
+    function init() {
+        $scope.project = project;
+        $scope.user = User.u();
+        $scope.today = new Date();
+        $scope.model = {
+            title: "",
+            comment: '',
+            assigned_to: [],
+            attachments: []
+        };
+        $scope.modal = {
+            instance: null,
+            items: []
+        };
+    }
+
+    init();
 
 }

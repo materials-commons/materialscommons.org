@@ -4,9 +4,12 @@
             <nav class="navbar navbar-default">
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a>all</a></li>
-                        <li><a class="">My Reviews</a></li>
-                        <li><a class="">Archived</a></li>
+                        <li ng-class="{active: type === 'all_reviews'}"><a ng-click="listReviewsByType('all_reviews')">all</a>
+                        </li>
+                        <li ng-class="{active: type === 'my_reviews'}"><a ng-click="listReviewsByType('my_reviews')">My
+                            Reviews</a></li>
+                        <li ng-class="{active: type === 'closed_reviews'}"><a
+                                ng-click="listReviewsByType('closed_reviews')">Archived</a></li>
                     </ul>
                 </div>
             </nav>
@@ -17,7 +20,9 @@
                 <div class="details-sidebar">
                     <div class="row">
                         <div style="text-align: center;margin-top: 20px;">
-                            <button ui-sref="projects.project.reviews.create" class="btn-review  btn-details-container btn btn-default"> create</button>
+                            <button ui-sref="projects.project.reviews.create"
+                                    class="btn-review  btn-details-container btn btn-default"> create
+                            </button>
                         </div>
                     </div>
                     <ul class="list-group" style="">
@@ -38,7 +43,6 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
             <div class="col-xs-8" stylex="margin-left: 10px;">
                 <div ui-view></div>
