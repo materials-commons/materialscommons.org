@@ -1,8 +1,24 @@
-<div style="margin-bottom: 3px;">
-        <span ng-click="" style="cursor: pointer">
-            {{sample.name}}
-        </span>
-        <span class="pull-right">
-            <small class="text-muted">{{sample.birthtime | toDateString}}</small>
-        </span>
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">{{selected.item.name}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div><label>Owner:</label>  {{selected.item.owner}}</div>
+            <div><label>Updated:</label> {{selected.item.mtime | toDateString}}</div>
+            <div><label>Properties:</label>
+                <ul>
+                    <li ng-repeat="(key, value) in selected.item.properties" ng-hide="key === 'composition'">
+                       {{key}} : {{value.value}} {{value.unit}}
+                    </li>
+                </ul>
+            </div>
+            <div ng-if="selected.item.notes.length > 0"><label>Notes:</label> {{selected.item.mtime | toDateString}}</div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
 </div>
