@@ -2299,7 +2299,7 @@ header {
 }
 
 .review-open {
-  color: green;
+  color: #7DAF50;
 }
 
 .review-closed {
@@ -2333,6 +2333,7 @@ header {
 
 .details-sidebar {
   min-height: 550px;
+  max-height: 600px; /*This should be true across all the detail pages*/
   overflow-y: auto;
   transition: all 0.5s ease 0s;
   z-index: 1000;
@@ -2434,6 +2435,9 @@ header {
   text-transform: uppercase;
 }
 
+.btn-cancel{
+  background-color: #E57373;
+}
 .btn-review {
   background-color: #FFB500;
 }
