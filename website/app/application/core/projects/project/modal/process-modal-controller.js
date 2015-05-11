@@ -74,11 +74,11 @@ function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
     function cellClickedFunc(params) {
         $scope.modal = {
             instance: null,
-            process: params.data
+            item: params.data
         };
 
         $scope.modal.instance = $modal.open({
-            template: '<display-process modal="modal"></display-process>',
+            template: '<div display-process modal="modal"></div>',
             scope: $scope,
             size: 'lg'
         });

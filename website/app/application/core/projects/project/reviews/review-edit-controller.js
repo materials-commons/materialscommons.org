@@ -10,6 +10,10 @@ function projectEditReview($scope, project, $stateParams,Review, User) {
         Review.addComment($scope.model,  $scope.review);
         $scope.model.comment = '';
     };
+    $scope.archiveReview = function(){
+        Review.closeReview($scope.review.id, project);
+        $state.go('projects.project.reviews');
+    };
 
     $scope.project = project;
     $scope.user = User.u();
