@@ -23,26 +23,6 @@ function modalFilesDirectiveController($scope, ui, projectFiles, applySearch,
     $scope.files = [f];
     $scope.files.showDetails = true;
 
-    $scope.toggleExpanded = function() {
-        ui.toggleIsExpanded($scope.project.id, "files");
-    };
-
-    $scope.minimize = function() {
-        ui.togglePanelState($scope.project.id, 'files');
-    };
-
-    $scope.isExpanded = function() {
-        return ui.isExpanded($scope.project.id, "files");
-    };
-
-    $scope.splitScreen = function(what, col){
-        ui.toggleColumns($scope.project.id, what, col) ;
-    };
-
-    $scope.isSplitExpanded = function () {
-        return ui.getSplitStatus($scope.project.id);
-    };
-
     $scope.isReloading = false;
     $scope.reloadFiles = function() {
         $scope.isReloading = !$scope.isReloading;

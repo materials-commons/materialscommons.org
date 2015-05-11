@@ -1,13 +1,13 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">{{modal.item.name}}</h3>
+        <h3 class="modal-title">{{selected.item.name}}</h3>
     </div>
     <div class="modal-body">
         <div class="row">
             <div ng-repeat="each in ['inputs', 'outputs']">
                  <b>{{each}}</b>
                 <ul>
-                    <li  ng-repeat="(key, values) in modal.item[each]">
+                    <li  ng-repeat="(key, values) in selected.item[each]">
                         <b>{{key}}</b>
 
                         <div ng-switch="" on="key">

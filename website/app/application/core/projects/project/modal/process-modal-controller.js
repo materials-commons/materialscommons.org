@@ -63,7 +63,7 @@ function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
         angularCompileRows: true,
         rowSelection: 'multiple',
         ready: readyFunc,
-        cellClicked: cellClickedFunc,
+        //cellClicked: cellClickedFunc,
         rowSelected: function (process) {
             Review.checkedItems(process);
             pubsub.send('addProcessToReview', process);
@@ -74,13 +74,23 @@ function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
     function cellClickedFunc(params) {
         $scope.modal = {
             instance: null,
-            item: params.data
+            items: [params.data]
         };
 
         $scope.modal.instance = $modal.open({
-            template: '<div display-process modal="modal"></div>',
-            scope: $scope,
-            size: 'lg'
+            //template: '<div display-process modal="modal"></div>',
+            //scope: $scope,
+            size: 'lg' ,
+            templateUrl: 'application/core/projects/project/home/directives/display-process.html',
+            controller: 'ModalInstanceCtrl',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function(){
+                    return $scope.project;
+                }
+            }
         });
     }
 
