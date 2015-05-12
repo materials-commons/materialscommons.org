@@ -1,7 +1,9 @@
 Application.Services.factory('Review',
-    ["$filter", "mcapi", "User", "pubsub", function ($filter, mcapi, User, pubsub) {
+    ["$filter", "mcapi", "User", "pubsub", '$state', function ($filter, mcapi, User, pubsub, $state) {
         var service = {
             checked_items: [],
+            //reviews: [],
+            activeReview: {},
             findReview: function (reviewID, which, project) {
                 var i = _.indexOf(project[which], function (review) {
                     return review.id === reviewID;
@@ -15,7 +17,7 @@ Application.Services.factory('Review',
                     .success(function () {
                         var review = service.findReview(reviewID, "reviews", project);
                         review.status = "closed";
-                        service.reviewCount();
+                        $state.go('projects.project.reviews', {category: 'closed'});
                     }).put({'status': 'closed'});
             },
 
@@ -58,31 +60,32 @@ Application.Services.factory('Review',
                 });
                 return count;
             },
-            setActiveReview: function(rev_id, reviews){
-                var i = _.indexOf(reviews, function(rev){
-                    return rev.id === rev_id;
-                });
-                if (i !== -1){
-                    service.activeReview = reviews[i];
-                    pubsub.send('review.change');
-                    return service.activeReview;
-                }
-            } ,
-            getActiveReview: function(){
-                return service.activeReview;
+            setActiveReview: function (rev){
+                service.activeReview = rev;
+                pubsub.send('activeReview.change');
             },
 
-            checkedItems: function(proc){
+            getActiveReview: function () {
+                return service.activeReview;
+            },
+            //setReviews: function(revs){
+            //    service.reviews = revs;
+            //    pubsub.send('reviews.change');
+            //},
+            //getReviews: function(){
+            //    return service.reviews;
+            //},
+            checkedItems: function (proc) {
                 var i = _.indexOf(service.checked_items, function (entry) {
                     return proc.id === entry.id;
                 });
-                if(i < 0){
+                if (i < 0) {
                     service.checked_items.push(proc);
-                } else{
+                } else {
                     service.checked_items.splice(i, 1);
                 }
             },
-            getCheckedItems: function(){
+            getCheckedItems: function () {
                 return service.checked_items;
             }
         };
