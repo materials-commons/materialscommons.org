@@ -9,7 +9,7 @@
                 <select ng-change="addUser()" ng-model="selectedUser" data-placeholder="Choose Assignee"
                         class="form-control"
                         validator="required">
-                    <option ng-repeat="user in project.users">{{ user.user_id }}</option>
+                    <option ng-repeat="user in users">{{ user }}</option>
                 </select>
             </div>
             <br>
@@ -22,7 +22,6 @@
                 <span class="who"> {{each_user}}</span> <i ng-click="removeUser(each_user)" style="padding-left: 30px;"
                                                            class="fa fa-fw fa-close"></i>
             </div>
-
         </div>
     </div>
     <hr class="divider"/>
@@ -39,7 +38,10 @@
             <div class="row" ng-repeat="attachment in model.attachments">
                 <div class="col-xs-5">
                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                    <a class="link pointer">{{attachment.name}}</a>
+                    <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png" style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'file'" src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
+                    <a class="link pointer" style="padding-left: 15px;">{{attachment.name}}</a>
                     <i ng-click="removeAttachment(attachment)" class="fa fa-fw fa-close pull-right"></i>
                 </div>
             </div>

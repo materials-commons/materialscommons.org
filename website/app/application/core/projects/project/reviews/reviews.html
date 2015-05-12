@@ -4,12 +4,11 @@
             <nav class="navbar navbar-default">
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li ng-class="{active: type === 'all_reviews'}"><a ng-click="listReviewsByType('all_reviews')">all</a>
+                        <li ng-class="{active: type === 'all'}"><a ng-click="listReviewsByType('all')">all</a>
                         </li>
-                        <li ng-class="{active: type === 'my_reviews'}"><a ng-click="listReviewsByType('my_reviews')">My
-                            Reviews</a></li>
-                        <li ng-class="{active: type === 'closed_reviews'}"><a
-                                ng-click="listReviewsByType('closed_reviews')">Archived</a></li>
+                        <li ng-class="{active: type === 'due'}"><a ng-click="listReviewsByType('due')">Due</a></li>
+                        <li ng-class="{active: type === 'closed'}"><a
+                                ng-click="listReviewsByType('closed')">Archived</a></li>
                     </ul>
                 </div>
             </nav>
@@ -27,7 +26,7 @@
                     </div>
                     <ul class="list-group" style="">
                         <li class="list-group-item pointer"
-                            ng-repeat="each_review in reviews | filter:search | event: project.date: project.nextdate as reviews"
+                            ng-repeat="each_review in reviews"
                             ng-class="{active: review.id === each_review.id}"
                             ui-sref="projects.project.reviews.edit({'review_id': each_review.id})">
 
@@ -36,7 +35,7 @@
                                 <i ng-class="{'review-active': review.id === each_review.id, 'review-inactive': review.id !== each_review.id}"
                                    class="fa fa-comment fa-stack-1x"></i>
                                 <i style='font-size: 13px;line-height: 0;font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;font-weight: bold'
-                                   class="fa fa-stack-1x fa-inverse">4</i>
+                                   class="fa fa-stack-1x fa-inverse">{{each_review.messages.length}}</i>
                             </a>
                         </span>
                             {{each_review.title}}

@@ -198,12 +198,12 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectDrafts"
         })
         .state("projects.project.reviews", {
-            url: "/reviews",
+            url: "/reviews/:category",
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews"
         })
         .state("projects.project.reviews.edit", {
-            url: "/:review_id",
+            url: "/edit/:review_id",
             templateUrl: "application/core/projects/project/reviews/edit.html",
             controller: "projectEditReview"
         })
