@@ -1,39 +1,51 @@
 Application.Controllers.controller('projectReviews',
-    ["$scope", "project", "$filter", "Review", "pubsub", "User", "$state", projectReviews]);
+    ["$scope", "project", "$filter", "Review", "pubsub", "User", "$state", "$stateParams", projectReviews]);
 
-function projectReviews($scope, project, $filter, Review, pubsub, User, $state) {
+function projectReviews($scope, project, $filter, Review, pubsub, User, $state, $stateParams) {
 
-    pubsub.waitOn($scope, 'review.change', function () {
+    pubsub.waitOn($scope, 'activeReview.change', function () {
         $scope.review = Review.getActiveReview();
     });
-
+    //pubsub.waitOn($scope, 'reviews.change', function () {
+    //    $scope.reviews = Review.getReviews();
+    //});
     $scope.listReviewsByType = function (type) {
         $scope.type = type;
         switch (type) {
-            case "all_reviews":
-                $scope.reviews = $scope.project.reviews;
-                if ($scope.project.reviews.length > 0) {
-                    $state.go('projects.project.reviews.edit', {review_id: $scope.reviews[0].id});
+            case "all":
+                $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
+                if ($scope.reviews.length > 0) {
+                    Review.setActiveReview($scope.reviews[0]);
+                    $state.go('projects.project.reviews.edit', {category: 'all', review_id: $scope.reviews[0].id});
                 }
                 break;
-            case "my_reviews":
-                $scope.reviews = $filter('byKey')($scope.project.reviews, 'author', User.u());
-                if ($scope.project.reviews.length > 0) {
-                    $state.go('projects.project.reviews.edit', {review_id: $scope.reviews[0].id});
+            case "due":
+                $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
+                if ($scope.reviews.length > 0) {
+                    Review.setActiveReview($scope.reviews[0]);
+                    $state.go('projects.project.reviews.edit', {category: 'due',  review_id: $scope.reviews[0].id});
                 }
                 break;
-            case "closed_reviews":
+            case "closed":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
-                if ($scope.project.reviews.length > 0) {
-                    $state.go('projects.project.reviews.edit', {review_id: $scope.reviews[0].id});
+                if ($scope.reviews.length > 0) {
+                    Review.setActiveReview($scope.reviews[0]);
+                    $state.go('projects.project.reviews.edit', {category: 'closed', review_id: $scope.reviews[0].id});
                 }
                 break;
         }
-    }
+    };
 
     function init() {
         $scope.project = project;
-        $scope.listReviewsByType('all_reviews');
+        if ($stateParams.category === 'due') {
+            $scope.listReviewsByType('due');
+        } else if ($stateParams.category === 'closed') {
+            $scope.listReviewsByType('closed');
+        } else {
+            $stateParams.category = 'all';
+            $scope.listReviewsByType('all');
+        }
     }
 
     init();

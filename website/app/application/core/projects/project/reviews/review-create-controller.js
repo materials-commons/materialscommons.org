@@ -1,10 +1,9 @@
 Application.Controllers.controller('projectCreateReview',
-    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state",projectCreateReview]);
+    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state", "$filter", projectCreateReview]);
 
-function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state) {
+function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state, $filter) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
-        console.log(sample);
         addAttachment({'id': sample.id, 'name': sample.name, 'type': 'sample'});
     });
     pubsub.waitOn($scope, 'addProcessToReview', function (process) {
@@ -16,11 +15,18 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
 
     $scope.addUser = function () {
         $scope.model.assigned_to.push($scope.selectedUser);
+        var i = _.indexOf($scope.users, function (user) {
+            return user === $scope.selectedUser;
+        });
+        if (i > -1) {
+            $scope.users.splice(i, 1);
+        }
     };
 
     $scope.removeUser = function (user) {
         var i = _.indexOf($scope.model.assigned_to, user);
         $scope.model.assigned_to.splice(i, 1);
+        $scope.users.push(user);
     };
 
     $scope.removeAttachment = function (item) {
@@ -50,7 +56,7 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
                 modal: function () {
                     return $scope.modal;
                 },
-                project: function(){
+                project: function () {
                     return $scope.project;
                 }
             }
@@ -79,7 +85,8 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
             .success(function (review) {
                 init();
                 $scope.project.reviews.unshift(review);
-                pubsub.send("reviews.change");
+                $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
+                Review.setReviews($scope.reviews);
                 $state.go('projects.project.reviews.edit', {review_id: review.id});
             }).error(function (reason) {
             }).post($scope.review);
@@ -88,6 +95,10 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
 
     function init() {
         $scope.project = project;
+        $scope.users = [];
+        $scope.project.users.forEach(function (u) {
+            $scope.users.push(u.user_id);
+        });
         $scope.user = User.u();
         $scope.today = new Date();
         $scope.model = {

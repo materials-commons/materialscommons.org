@@ -1,7 +1,6 @@
 <div class="details-main-content">
-    <div class="row">
-        <i ng-class="{'fa-minus-circle review-closed': review.status === 'closed',
-       'fa-circle review-open': review.status === 'open'}" class="fa fa-fw"></i>{{review.status}}
+    <div ng-if="review.status === 'closed'" class="row">
+        <i ng-class="{'fa-minus-circle review-closed': review.status === 'closed'}" class="fa fa-fw"></i><span class="headings" style="color: #e57373">closed</span>
     </div>
     <div class="row" style="padding: 10px;color: #C0C0C0">
         {{(review.messages[(review.messages.length -1)].date)}}
@@ -24,8 +23,13 @@
                             <i style="color: #C0C0C0" class="fa fa-circle fa-stack-2x"></i>
                             <i style="color: white;" class="fa fa-user fa-stack-1x"></i>
                         </span>
-            <span class="who"> {{review.assigned_to[0]}} and <a ng-click="others = !others">
-                {{review.assigned_to.length-1}} others </a></span>
+            <span class="who"> {{review.assigned_to[0]}}
+                <span ng-show="review.assigned_to.length > 1">
+                    and <a ng-click="others = !others">
+                            {{review.assigned_to.length-1}} others
+                        </a>
+                </span>
+            </span>
 
             <div style="padding-left: 40px;" class="row" ng-if="others">
                 <ul class="list-inline">
@@ -44,7 +48,11 @@
 
             <div class="row" ng-repeat="attachment in review.attachments">
                 <div style="padding-left: 10px;line-height: 35px;">
-                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i><a class="link">{{attachment.name}}</a>
+                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                    <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png" style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'file'" src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
+                    <a class="link" style="padding-left: 15px;">{{attachment.name}}</a>
                 </div>
             </div>
         </div>

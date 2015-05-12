@@ -1,37 +1,45 @@
 Application.Controllers.controller('projectEditReview',
-    ["$scope", "project", "$stateParams","Review", "User",projectEditReview]);
+    ["$scope", "project", "$stateParams", "Review", "User", "$filter", projectEditReview]);
 
-function projectEditReview($scope, project, $stateParams,Review, User) {
+function projectEditReview($scope, project, $stateParams, Review, User, $filter) {
 
-    $scope.openReview = function(review){
+    $scope.openReview = function (review) {
         $scope.review = review;
     };
-    $scope.addComment = function(){
-        Review.addComment($scope.model,  $scope.review);
+    $scope.addComment = function () {
+        Review.addComment($scope.model, $scope.review);
         $scope.model.comment = '';
     };
-    $scope.archiveReview = function(){
+    $scope.archiveReview = function () {
         Review.closeReview($scope.review.id, project);
-        $state.go('projects.project.reviews');
     };
 
     $scope.project = project;
     $scope.user = User.u();
     $scope.today = new Date();
-    $scope.reviews = $scope.project.reviews;
     $scope.model = {
         title: "",
         comment: ''
     };
+    function init() {
+        if ($stateParams.review_id) {
+            if ($stateParams.category === 'due') {
+                $scope.reviews =   $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
+            } else if ($stateParams.category === 'closed') {
+                $scope.reviews =  $filter('byKey')($scope.project.reviews, 'status', 'closed');
+            } else {
+                $scope.reviews =  $filter('byKey')($scope.project.reviews, 'status', 'open');
+            }
 
-    function init(){
-        if ($stateParams.review_id){
-            $scope.review = Review.setActiveReview($stateParams.review_id, $scope.project.reviews);
-        }   else{
-            if ($scope.project.reviews.length > 0){
-                $scope.review = $scope.project.reviews[0];
+            var i = _.indexOf($scope.reviews, function (rev) {
+                return $stateParams.review_id === rev.id;
+            });
+            if (i !== -1) {
+                $scope.review = $scope.reviews[i];
+                Review.setActiveReview($scope.review);
             }
         }
     }
+
     init();
 }
