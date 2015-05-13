@@ -68,13 +68,13 @@ Application.Services.factory('Review',
             getActiveReview: function () {
                 return service.activeReview;
             },
-            //setReviews: function(revs){
-            //    service.reviews = revs;
-            //    pubsub.send('reviews.change');
-            //},
-            //getReviews: function(){
-            //    return service.reviews;
-            //},
+            setReviews: function(revs){
+                service.reviews = revs;
+                pubsub.send('reviews.change');
+            },
+            getReviews: function(){
+                return service.reviews;
+            },
             checkedItems: function (proc) {
                 var i = _.indexOf(service.checked_items, function (entry) {
                     return proc.id === entry.id;
