@@ -6,9 +6,10 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
     pubsub.waitOn($scope, 'activeReview.change', function () {
         $scope.review = Review.getActiveReview();
     });
-    //pubsub.waitOn($scope, 'reviews.change', function () {
-    //    $scope.reviews = Review.getReviews();
-    //});
+    pubsub.waitOn($scope, 'reviews.change', function () {
+        $scope.reviews = Review.getReviews();
+        console.log($scope.reviews);
+    });
     $scope.listReviewsByType = function (type) {
         $scope.type = type;
         switch (type) {
@@ -42,6 +43,8 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
             $scope.listReviewsByType('due');
         } else if ($stateParams.category === 'closed') {
             $scope.listReviewsByType('closed');
+        } else if ($stateParams.category === 'all') {
+            $scope.listReviewsByType('all');
         } else {
             $stateParams.category = 'all';
             $scope.listReviewsByType('all');

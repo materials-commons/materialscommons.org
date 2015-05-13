@@ -61,7 +61,6 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
                 }
             }
         });
-
     };
 
     $scope.createReview = function () {
@@ -80,6 +79,7 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
         $scope.review.project = $scope.project.id;
         saveData();
     };
+
     function saveData() {
         mcapi('/reviews')
             .success(function (review) {
@@ -87,11 +87,10 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
                 $scope.project.reviews.unshift(review);
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
                 Review.setReviews($scope.reviews);
-                $state.go('projects.project.reviews.edit', {review_id: review.id});
+                $state.go('projects.project.reviews.edit', {category: 'all', review_id: review.id});
             }).error(function (reason) {
             }).post($scope.review);
     }
-
 
     function init() {
         $scope.project = project;
@@ -114,5 +113,4 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
     }
 
     init();
-
 }
