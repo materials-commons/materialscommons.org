@@ -13,7 +13,7 @@ function homeProcessesDirective() {
 Application.Controllers.controller("homeProcessesDirectiveController",
     ["$scope", "projectState", "$state", "pubsub",
         homeProcessesDirectiveController]);
-function homeProcessesDirectiveController($scope,  projectState, $state, pubsub) {
+function homeProcessesDirectiveController($scope, projectState, $state, pubsub) {
     function segmentProcesses() {
         $scope.bk = {all: []};
         $scope.project.drafts.forEach(function (draft) {
@@ -45,7 +45,6 @@ function homeProcessesDirectiveController($scope,  projectState, $state, pubsub)
         $scope.project.processes.forEach(function (process) {
             rowData.push({name: process.name, owner: process.owner, mtime: process.mtime});
         });
-
         $scope.gridOptions = {
             columnDefs: columnDefs,
             rowData: rowData,
