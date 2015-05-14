@@ -22,7 +22,7 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
         var composition = '';
         sample.properties.composition.value.forEach(function (val) {
             composition = composition + '  ' + val.element + ': ' + val.value;
-        })
+        });
         composition = composition + '  ' + sample.properties.composition.unit;
         rowData.push({
             name: sample.name,
