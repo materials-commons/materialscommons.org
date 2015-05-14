@@ -11,10 +11,10 @@ function homeFilesDirective() {
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
-    ["$scope", "ui", "projectFiles", "applySearch",
-        "$filter", "mcapi", homeFilesDirectiveController]);
-function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
-                                      $filter, mcapi) {
+    ["$scope",  "projectFiles",
+        "$filter", homeFilesDirectiveController]);
+function homeFilesDirectiveController($scope, projectFiles,
+                                      $filter) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
@@ -61,7 +61,7 @@ function homeFilesDirectiveController($scope, ui, projectFiles, applySearch,
     };
     function groupInnerCellRenderer(params) {
         if (params.node.type === 'datadir') {
-            return '' + params.node.name;
+            return '' + params.node.displayname;
         }
         //var image = params.node.level === 0 ? 'disk' : 'folder';
         //var imageFullUrl = '/example-file-browser/' + image + '.png';

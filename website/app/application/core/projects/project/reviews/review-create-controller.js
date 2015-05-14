@@ -10,6 +10,7 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
         addAttachment({'id': process.id, 'name': process.name, 'type': 'process'});
     });
     pubsub.waitOn($scope, 'addFileToReview', function (file) {
+        console.log(file);
         addAttachment({'id': file.id, 'name': file.name, 'type': 'file', 'path': file.fullname});
     });
 
@@ -30,10 +31,8 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
     };
 
     $scope.removeAttachment = function (item) {
-        if (item.type !== 'file') {
             Review.checkedItems(item);
             addAttachment(item);
-        }
     };
 
     function addAttachment(item) {
