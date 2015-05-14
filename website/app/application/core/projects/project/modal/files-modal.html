@@ -3,17 +3,13 @@
         <div class="panel-heading" style="padding-top: 20px;">
             <img style="height: 35px;padding-bottom: 10px;"
                  src="assets/img/splash/file_icon.png">
-            <span style="color: #9F88C1; font-size: 20px;padding-left: 15px;">FILE</span>
-            <a ng-click="reloadFiles()" class="pull-right bar-control-left">
-                <i class="fa fa-fw fa-refresh" ng-class="{'fa-spin': isReloading}"></i>
-            </a>
+            <span style="color: #9F88C1; font-size: 20px;padding-left: 15px;">FILES</span>
         </div>
         <div class="panel-body home-panel-body no-max-height">
-            <file-upload-panel></file-upload-panel>
-            <mc-tree items="files"
-                     matches="matchingFiles"
-                     orderby="'name'">
-            </mc-tree>
+            <div style="padding: 20px;width: 100%; height: 100%;"
+                 angular-grid="gridOptions"
+                 class="ag-file-browser">
+            </div>
         </div>
     </div>
 </div>
