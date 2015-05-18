@@ -69,7 +69,7 @@ def reload_project_tree(project_id):
 
 
 class DItem2:
-    def __init__(self, id, name, type, owner, birthtime, size):
+    def __init__(self, id, name, type, owner, birthtime, size, df_id):
         self.id = id
         self.selected = False
         self.c_id = ""
@@ -83,6 +83,7 @@ class DItem2:
         self.displayname = basename(name)
         self.type = type
         self.children = []
+        self.df_id = df_id
 
 
 class DEncoder2(json.JSONEncoder):
@@ -96,7 +97,7 @@ def build_tree(datadirs):
     top_level_dirs = []
     for ddir in datadirs:
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
-                       ddir['birthtime'], 0)
+                       ddir['birthtime'], 0, '')
         ditem.level = ditem.name.count('/')
         ditem.tags = []  # ddir['tags']
         ditem.c_id = next_id
@@ -118,7 +119,7 @@ def build_tree(datadirs):
             if not df['current']:
                 continue
             dfitem = DItem2(df['id'], df['name'], 'datafile',
-                            df['owner'], df['birthtime'], df['size'])
+                            df['owner'], df['birthtime'], df['size'], df['id'])
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
             next_id = next_id + 1
@@ -141,7 +142,7 @@ def build_tree(datadirs):
             # name and add children. When we finally see it
             # we will grab the children and add them to the
             # real object.
-            parent = DItem2('', parent_name, 'datadir', '', '', 0)
+            parent = DItem2('', parent_name, 'datadir', '', '', 0, '')
             parent.children.append(ditem)
             all_data_dirs[parent_name] = parent
     return json.dumps(top_level_dirs, cls=DEncoder2)

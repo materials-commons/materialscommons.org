@@ -7,7 +7,7 @@ Application.Filters.filter('byKey', function () {
             if (key === 'assigned_to') {
                 items.forEach(function (item) {
                     var i = _.indexOf(item[key], function (entry) {
-                        return item === entry;
+                        return value === entry;
                     });
                     if (i > -1) {
                         matches.push(item);

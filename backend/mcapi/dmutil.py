@@ -95,7 +95,7 @@ def insert_entry(table_name, entry, return_created=False):
     if g.rethinkdb_version > 113:
         rr = r.table(table_name).insert(entry, return_changes=True)
     else:
-        rr = r.table(table_name).insert(entry, return_vals=True)
+        rr = r.table(table_name).insert(entry, return_changes=True)
     rv = rr.run(g.conn, time_format='raw')
     return insert_status(rv, return_created=return_created)
 
@@ -104,7 +104,7 @@ def insert_entry_id(table_name, entry):
     if g.rethinkdb_version > 113:
         rr = r.table(table_name).insert(entry, return_changes=True)
     else:
-        rr = r.table(table_name).insert(entry, return_vals=True)
+        rr = r.table(table_name).insert(entry, return_changes=True)
     rv = rr.run(g.conn)
     if rv['inserted'] == 1:
         if 'generated_keys' in rv:

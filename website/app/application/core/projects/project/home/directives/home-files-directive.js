@@ -11,10 +11,10 @@ function homeFilesDirective() {
 }
 
 Application.Controllers.controller("homeFilesDirectiveController",
-    ["$scope",  "projectFiles",
-        "$filter", homeFilesDirectiveController]);
+    ["$scope", "projectFiles",
+        "$filter", "$modal", homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope, projectFiles,
-                                      $filter) {
+                                      $filter, $modal) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
@@ -26,20 +26,38 @@ function homeFilesDirectiveController($scope, projectFiles,
             displayName: "",
             field: "name",
             width: 350,
-            template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span ng-bind="data.name"></span>'
+            template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span><a data-toggle="tooltip" data-placement="top" title="{{data.name}}">{{data.name | truncate:15:"...":true }}</a></span>'
         },
-        {displayName: "", field: "size", width: 250},
+        {
+            displayName: "", field: "size", width: 250, cellRenderer: function (params) {
+            if (params.data.size === 0) {
+                return '';
+            } else {
+                return parseInt(params.data.size / 1024) + ' mb';
+            }
+        }
+        },
         {displayName: "", field: "birthtime", width: 250}
     ];
     var treeModel = new TreeModel(),
         root = treeModel.parse(f);
-    root.walk({strategy: 'pre'}, function(node){
-        if (node.model.type === 'datadir'){
+    root.walk({strategy: 'pre'}, function (node) {
+        if (node.model.type === 'datadir') {
             node.model.group = true;
-            node.model.data = {name: node.model.name, size: node.model.size, birthtime: $filter('toDateString')(node.model.birthtime)};
-        }else{
+            node.model.data = {
+                name: node.model.displayname,
+                size: node.model.size,
+                type: node.model.type,
+                birthtime: $filter('toDateString')(node.model.birthtime)
+            };
+        } else {
             node.model.group = false;
-            node.model.data = {name: node.model.name, size: node.model.size, birthtime: $filter('toDateString')(node.model.birthtime)};
+            node.model.data = {
+                name: node.model.name,
+                size: node.model.size,
+                type: node.model.type,
+                birthtime: $filter('toDateString')(node.model.birthtime)
+            };
         }
     });
 
@@ -60,12 +78,7 @@ function homeFilesDirectiveController($scope, projectFiles,
         groupInnerCellRenderer: groupInnerCellRenderer
     };
     function groupInnerCellRenderer(params) {
-        if (params.node.type === 'datadir') {
-            return '' + params.node.displayname;
-        }
-        //var image = params.node.level === 0 ? 'disk' : 'folder';
-        //var imageFullUrl = '/example-file-browser/' + image + '.png';
-        //return '<img src="'+imageFullUrl+'" style="padding-left: 4px;" /> ' + params.data.name;
+        var template = params.data.type === 'datadir' ? params.data.name : 'File';
+        return template;
     }
-
 }

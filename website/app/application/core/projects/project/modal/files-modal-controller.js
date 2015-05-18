@@ -13,8 +13,8 @@ function modalFilesDirective() {
 
 Application.Controllers.controller("modalFilesDirectiveController",
     ["$scope", "projectFiles",
-        "$filter", "Review", "pubsub", modalFilesDirectiveController]);
-function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub) {
+        "$filter", "Review", "pubsub", "$modal", modalFilesDirectiveController]);
+function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub, $modal) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
     // Root is name of project. Have it opened by default.
     f.showDetails = true;
@@ -25,10 +25,21 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             displayName: "",
             field: "displayname",
             width: 350 ,
-            checkboxSelection: true
-            //template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span ng-bind="data.name"></span>'
+            checkboxSelection: true,
+            cellClicked: cellClickedFunc,
+            template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
+            '<a data-toggle="tooltip" data-placement="top" title="{{data.name}}">{{data.name | truncate:15:"...":true }}</a></span>'
+
         },
-        {displayName: "", field: "size", width: 150},
+        {
+            displayName: "", field: "size", width: 250, cellRenderer: function (params) {
+            if (params.data.size === 0) {
+                return '';
+            } else {
+                return parseInt(params.data.size / 1024) + ' mb';
+            }
+        }
+        },
         {displayName: "", field: "birthtime", width: 250}
     ];
     var treeModel = new TreeModel(),
@@ -38,21 +49,23 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
         if (node.model.type === 'datadir') {
             node.model.group = true;
             node.model.data = {
-                name: node.model.name,
-                displayname: node.model.displayname,
+                name: node.model.displayname,
                 size: node.model.size,
-                birthtime: $filter('toDateString')(node.model.birthtime),
-                id: node.model.id
+                type: node.model.type,
+                birthtime: $filter('toDateString')(node.model.birthtime)
             };
         } else {
             node.model.group = false;
             node.model.data = {
                 name: node.model.name,
                 size: node.model.size,
-                displayname: node.model.displayname,
+                type: node.model.type,
                 birthtime: $filter('toDateString')(node.model.birthtime),
-                id: node.model.id
-                //selected: node.model.selected
+                mediatype: node.model.mediatype,
+                id: node.model.df_id,
+                tags: node.model.tags,
+                owner: node.model.owner,
+                notes: node.model.notes
             };
         }
     });
@@ -65,7 +78,6 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
         enableSorting: true,
         rowHeight: 30,
         angularCompileRows: true,
-        //ready: readyFunc1,
         icons: {
             groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
@@ -76,33 +88,34 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             Review.checkedItems(file);
             pubsub.send('addFileToReview', file);
         },
-        groupInnerCellRenderer: groupInnerCellRenderer,
-        groupSelection: true,
-        groupCheckboxSelection: 'group',
-        groupUseEntireRow: false
+        groupInnerCellRenderer: groupInnerCellRenderer
+        //groupSelection: true,
+        //groupCheckboxSelection: 'group',
+        //groupUseEntireRow: false
     };
     function groupInnerCellRenderer(params) {
-        if (params.node.type === 'datadir') {
-            return params.node.displayname;
-        } else {
-            return 'ABCCCC';
-        }
+        var template = params.data.type === 'datadir' ? params.data.name : 'File';
+        return template;
     }
 
-    //function readyFunc1() {
-    //    var i;
-    //    var checked_entries = Review.getCheckedItems();
-    //    checked_entries.forEach(function (entry) {
-    //        console.log(entry);
-    //        i = _.indexOf($scope.files, function (item) {
-    //            console.dir(item);
-    //            return item.id === entry.id;
-    //        });
-    //        if (i > -1) {
-    //            console.log('yes');
-    //            $scope.gridOptions.api.selectIndex(i, true, true);
-    //        }
-    //    });
-    //}
+    function cellClickedFunc(params) {
+        $scope.modal = {
+            instance: null,
+            items: [params.data]
+        };
 
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/home/directives/display-file.html',
+            controller: 'ModalInstanceCtrl',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    }
 }
