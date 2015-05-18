@@ -4,13 +4,15 @@ Application.Filters.filter('byKey', function () {
     return function (items, key, value) {
         var matches = [];
         if (items) {
-            if (key === 'assigned_to') {
+            if (key === 'assigned_to') { //assigned_to field is an array.
                 items.forEach(function (item) {
                     var i = _.indexOf(item[key], function (entry) {
                         return value === entry;
                     });
                     if (i > -1) {
-                        matches.push(item);
+                        if(item.status === 'open'){
+                            matches.push(item);
+                        }
                     }
                 });
             } else {
