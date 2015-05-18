@@ -8,7 +8,6 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
     });
     pubsub.waitOn($scope, 'reviews.change', function () {
         $scope.reviews = Review.getReviews();
-        console.log($scope.reviews);
     });
     $scope.listReviewsByType = function (type) {
         $scope.type = type;
@@ -24,7 +23,7 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
                 if ($scope.reviews.length > 0) {
                     Review.setActiveReview($scope.reviews[0]);
-                    $state.go('projects.project.reviews.edit', {category: 'due',  review_id: $scope.reviews[0].id});
+                    $state.go('projects.project.reviews.edit', {category: 'due', review_id: $scope.reviews[0].id});
                 }
                 break;
             case "closed":

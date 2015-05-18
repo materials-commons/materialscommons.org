@@ -20,7 +20,7 @@
                 <i style="color: white;" class="fa fa-user fa-stack-1x"></i>
                 </span>
                 <span class="who"> {{each_user}}</span> <i ng-click="removeUser(each_user)" style="padding-left: 30px;"
-                                                           class="fa fa-fw fa-close"></i>
+                                                           class="fa fa-fw fa-close pointer"></i>
             </div>
         </div>
     </div>
@@ -34,19 +34,22 @@
                     class="fa fa-fw fa-plus"></i> ADD
             </button>
             <br><br>
-
             <div class="row" ng-repeat="attachment in model.attachments">
                 <div class="col-xs-5">
                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                    <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
-                    <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png" style="height: 40px;padding-bottom: 10px;">
-                    <img ng-if="attachment.type === 'file'" src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png"
+                         style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png"
+                         style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png"
+                         style="height: 40px;padding-bottom: 10px;">
                     <a class="link pointer" style="padding-left: 15px;">{{attachment.name}}</a>
                     <i ng-click="removeAttachment(attachment)" class="fa fa-fw fa-close pull-right"></i>
                 </div>
             </div>
         </div>
     </div>
+
     <hr class="divider"/>
     <div class="row">
         <div class="col-xs-12 headings">Message</div>
