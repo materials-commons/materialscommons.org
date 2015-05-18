@@ -50,6 +50,7 @@ function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
     ];
     var rowData = [];
     $scope.project.processes.forEach(function (process) {
+        process.type = 'process';
         rowData.push(process);
     });
 

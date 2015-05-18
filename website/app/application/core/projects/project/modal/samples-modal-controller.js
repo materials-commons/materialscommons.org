@@ -31,8 +31,8 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
             mtime: sample.mtime,
             properties: sample.properties,
             notes: sample.notes,
-            id: sample.id
-
+            id: sample.id,
+            type: 'sample'
         });
     });
     var columnDefs = [

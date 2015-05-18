@@ -4,14 +4,13 @@ Application.Controllers.controller('projectCreateReview',
 function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state, $filter) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
-        addAttachment({'id': sample.id, 'name': sample.name, 'type': 'sample'});
+        addAttachment(sample);
     });
     pubsub.waitOn($scope, 'addProcessToReview', function (process) {
-        addAttachment({'id': process.id, 'name': process.name, 'type': 'process'});
+        addAttachment(process);
     });
     pubsub.waitOn($scope, 'addFileToReview', function (file) {
-        console.log(file);
-        addAttachment({'id': file.id, 'name': file.name, 'type': 'file', 'path': file.fullname});
+        addAttachment(file);
     });
 
     $scope.addUser = function () {
@@ -31,8 +30,8 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
     };
 
     $scope.removeAttachment = function (item) {
-            Review.checkedItems(item);
-            addAttachment(item);
+        Review.checkedItems(item);
+        addAttachment(item);
     };
 
     function addAttachment(item) {
@@ -63,7 +62,7 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
     };
 
     $scope.createReview = function () {
-        $scope.review = {messages: []};
+        $scope.review = {messages: [], attachments: []};
         $scope.review.author = User.u();
         $scope.review.assigned_to = $scope.model.assigned_to;
         $scope.review.status = 'open';
@@ -90,6 +89,7 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
             }).error(function (reason) {
             }).post($scope.review);
     }
+
 
     function init() {
         $scope.project = project;
