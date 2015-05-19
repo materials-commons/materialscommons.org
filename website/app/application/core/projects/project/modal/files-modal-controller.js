@@ -52,23 +52,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             }
         }
     ];
-    var treeModel = new TreeModel(),
-        root = treeModel.parse(f);
 
-    root.walk({strategy: 'pre'}, function (node) {
-        node.model.data = {
-                name: node.model.name,
-                size: node.model.size,
-                type: node.model.type,
-                birthtime: $filter('toDateString')(node.model.birthtime),
-                mediatype: node.model.mediatype,
-                id: node.model.df_id,
-                tags: node.model.tags,
-                owner: node.model.owner,
-                notes: node.model.notes,
-                path: node.model.fullname
-            };
-    });
     $scope.gridOptions = {
         columnDefs: columnDefs,
         rowData: $scope.files,
