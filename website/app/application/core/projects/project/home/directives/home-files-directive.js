@@ -26,40 +26,30 @@ function homeFilesDirectiveController($scope, projectFiles,
             displayName: "",
             field: "name",
             width: 350,
-            template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span><a data-toggle="tooltip" data-placement="top" title="{{data.name}}">{{data.name | truncate:15:"...":true }}</a></span>'
+            //template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
+            //'<a data-toggle="tooltip" data-placement="top" title="{{displayname}}">ABC</a></span>'
+            cellRenderer: function (params) {
+                return '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
+                    '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
+                    params.node.name + '</a></span>';
+            }
         },
         {
             displayName: "", field: "size", width: 250, cellRenderer: function (params) {
-            if (params.data.size === 0) {
+            if (params.node.size === 0) {
                 return '';
             } else {
-                return parseInt(params.data.size / 1024) + ' mb';
+                return parseInt(params.node.size / 1024) + ' mb';
             }
         }
         },
-        {displayName: "", field: "birthtime", width: 250}
-    ];
-    var treeModel = new TreeModel(),
-        root = treeModel.parse(f);
-    root.walk({strategy: 'pre'}, function (node) {
-        if (node.model.type === 'datadir') {
-            node.model.group = true;
-            node.model.data = {
-                name: node.model.displayname,
-                size: node.model.size,
-                type: node.model.type,
-                birthtime: $filter('toDateString')(node.model.birthtime)
-            };
-        } else {
-            node.model.group = false;
-            node.model.data = {
-                name: node.model.name,
-                size: node.model.size,
-                type: node.model.type,
-                birthtime: $filter('toDateString')(node.model.birthtime)
-            };
+        {
+            displayName: "", field: "birthtime", width: 250,
+            cellRenderer: function (params) {
+                return $filter('toDateString')(params.node.birthtime);
+            }
         }
-    });
+    ];
 
     $scope.gridOptions = {
         columnDefs: columnDefs,
@@ -78,7 +68,7 @@ function homeFilesDirectiveController($scope, projectFiles,
         groupInnerCellRenderer: groupInnerCellRenderer
     };
     function groupInnerCellRenderer(params) {
-        var template = params.data.type === 'datadir' ? params.data.name : 'File';
+        var template = params.node.type === 'datadir' ? params.node.displayname : 'File';
         return template;
     }
 }

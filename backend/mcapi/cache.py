@@ -102,6 +102,7 @@ def build_tree(datadirs):
         ditem.tags = []  # ddir['tags']
         ditem.c_id = next_id
         next_id = next_id + 1
+        ditem.group = True
         #
         # The item may have been added as a parent
         # before it was actually seen. We check for
@@ -125,6 +126,7 @@ def build_tree(datadirs):
             next_id = next_id + 1
             dfitem.tags = df['tags']
             dfitem.notes = df['notes']
+            dfitem.group = False
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
             elif 'mime' not in df['mediatype']:
