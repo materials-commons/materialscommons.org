@@ -65,6 +65,7 @@ def add_users(projects_by_id, project_ids):
 def add_reviews(projects_by_id, project_ids):
     reviews = list(r.table('reviews')
                    .get_all(*project_ids, index='project')
+                   .order_by('mtime')
                    .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, reviews, 'project', 'reviews')
 
