@@ -43,7 +43,7 @@
     <hr class="divider"/>
 
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             <div class="headings">Attachments</div>
 
             <div class="row" ng-repeat="attachment in review.attachments">
@@ -53,6 +53,7 @@
                     <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png" style="height: 40px;padding-bottom: 10px;">
                     <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
                     <a class="link" style="padding-left: 15px;" ng-click="openDetails(attachment)">{{attachment.name}}</a>
+                    <p style="padding-left: 80px"><small class="text-muted">{{attachment.path}}</small></p>
                 </div>
             </div>
         </div>
