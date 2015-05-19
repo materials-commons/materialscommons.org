@@ -90,7 +90,37 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
             }).post($scope.review);
     }
 
-
+    $scope.openDetails = function (params) {
+        $scope.modal = {
+            instance: null,
+            items: [params]
+        };
+        var template = '';
+        switch (params.type){
+            case "datafile":
+                template = 'application/core/projects/project/home/directives/display-file.html';
+                break;
+            case "sample":
+                template = 'application/core/projects/project/home/directives/display-sample.html';
+                break;
+            case "process":
+                template = 'application/core/projects/project/home/directives/display-process.html';
+                break;
+        }
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: template,
+            controller: 'ModalInstanceCtrl',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
     function init() {
         $scope.project = project;
         $scope.users = [];

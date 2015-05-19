@@ -43,8 +43,8 @@
                          style="height: 40px;padding-bottom: 10px;">
                     <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png"
                          style="height: 40px;padding-bottom: 10px;">
-                    <a class="link pointer" style="padding-left: 15px;">{{attachment.name}}</a>
-                    <i ng-click="removeAttachment(attachment)" class="fa fa-fw fa-close pull-right"></i>
+                    <a ng-click="openDetails(attachment)" class="link pointer" style="padding-left: 15px;">{{attachment.name}}</a>
+                    <i ng-click="removeAttachment(attachment)" class="fa fa-fw fa-close pull-right pointer"></i>
                 </div>
             </div>
         </div>

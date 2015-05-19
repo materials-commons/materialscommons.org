@@ -14,24 +14,21 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
         switch (type) {
             case "all":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
-                if ($scope.reviews.length > 0) {
-                    Review.setActiveReview($scope.reviews[0]);
-                    $state.go('projects.project.reviews.edit', {category: 'all', review_id: $scope.reviews[0].id});
-                }
+                Review.listReviewsByType($scope.reviews, type);
+                break;
+            case "my_reviews":
+                $scope.reviews = $filter('byKey')($scope.project.reviews, 'author', User.u());
+                $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
+                Review.listReviewsByType($scope.reviews, type);
                 break;
             case "due":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
-                if ($scope.reviews.length > 0) {
-                    Review.setActiveReview($scope.reviews[0]);
-                    $state.go('projects.project.reviews.edit', {category: 'due', review_id: $scope.reviews[0].id});
-                }
+                $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
+                Review.listReviewsByType($scope.reviews, type);
                 break;
             case "closed":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
-                if ($scope.reviews.length > 0) {
-                    Review.setActiveReview($scope.reviews[0]);
-                    $state.go('projects.project.reviews.edit', {category: 'closed', review_id: $scope.reviews[0].id});
-                }
+                Review.listReviewsByType($scope.reviews, type);
                 break;
         }
     };
@@ -42,11 +39,12 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
             $scope.listReviewsByType('due');
         } else if ($stateParams.category === 'closed') {
             $scope.listReviewsByType('closed');
-        } else if ($stateParams.category === 'all') {
-            $scope.listReviewsByType('all');
+        }
+        else if ($stateParams.category === 'all') {
+                $scope.listReviewsByType('all');
         } else {
-            $stateParams.category = 'all';
-            $scope.listReviewsByType('all');
+            $stateParams.category = 'my_reviews';
+            $scope.listReviewsByType('my_reviews');
         }
     }
 
