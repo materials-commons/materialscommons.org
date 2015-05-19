@@ -40,7 +40,7 @@
             </div>
             <div class="col-xs-6">
                 <div><label>Owner:</label>{{selected.item.owner}}</div>
-                <div><label>Created:</label>{{selected.item.birthtime}}</div>
+                <div><label>Created:</label>{{selected.item.birthtime | toDateString}}</div>
                 <div><label>Media Type:</label>{{selected.item.mediatype}}</div>
                 <div><label>Tags:</label>
                     <tags-input display-property="id"

@@ -87,6 +87,12 @@ Application.Services.factory('Review',
             },
             getCheckedItems: function () {
                 return service.checked_items;
+            },
+            listReviewsByType: function(reviews, type){
+                if (reviews.length > 0) {
+                    service.setActiveReview(reviews[0]);
+                    $state.go('projects.project.reviews.edit', {category: type, review_id: reviews[0].id});
+                }
             }
         };
         return service;
