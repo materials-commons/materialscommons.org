@@ -19,7 +19,7 @@
                         Help
                     </a>
                 </li>
-                <li ng-class="{ navactive: isActiveStep('reviews') }">
+                <li ng-if="false" ng-class="{ navactive: isActiveStep('reviews') }">
                     <a class="dropdown-toggle pointer large-text"
                        data-toggle="dropdown">
                         <i class="fa fa-comment space-right"></i> Reviews
@@ -34,7 +34,7 @@
                         <!--<div  global-reviews class="" ></div>-->
                     </div>
                 </li>
-                <li>
+                <li ng-if="false">
                     <a ng-click="showStep('machines')" ui-sref="machines"
                        class="navbar-link large-text">
                         <i class="fa fa-fw fa-gears space-right"></i>

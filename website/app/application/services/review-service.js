@@ -2,7 +2,6 @@ Application.Services.factory('Review',
     ["$filter", "mcapi", "User", "pubsub", '$state', function ($filter, mcapi, User, pubsub, $state) {
         var service = {
             checked_items: [],
-            //reviews: [],
             activeReview: {},
             findReview: function (reviewID, which, project) {
                 var i = _.indexOf(project[which], function (review) {
@@ -60,7 +59,8 @@ Application.Services.factory('Review',
                 });
                 return count;
             },
-            setActiveReview: function (rev){
+
+            setActiveReview: function (rev) {
                 service.activeReview = rev;
                 pubsub.send('activeReview.change');
             },
@@ -68,27 +68,32 @@ Application.Services.factory('Review',
             getActiveReview: function () {
                 return service.activeReview;
             },
-            setReviews: function(revs){
+
+            setReviews: function (revs) {
                 service.reviews = revs;
                 pubsub.send('reviews.change');
             },
-            getReviews: function(){
+
+            getReviews: function () {
                 return service.reviews;
             },
-            checkedItems: function (proc) {
+
+            checkedItems: function (item) {
                 var i = _.indexOf(service.checked_items, function (entry) {
-                    return proc.id === entry.id;
+                    return item.id === entry.id;
                 });
                 if (i < 0) {
-                    service.checked_items.push(proc);
+                    service.checked_items.push(item);
                 } else {
                     service.checked_items.splice(i, 1);
                 }
             },
+
             getCheckedItems: function () {
                 return service.checked_items;
             },
-            listReviewsByType: function(reviews, type){
+
+            listReviewsByType: function (reviews, type) {
                 if (reviews.length > 0) {
                     service.setActiveReview(reviews[0]);
                     $state.go('projects.project.reviews.edit', {category: type, review_id: reviews[0].id});
