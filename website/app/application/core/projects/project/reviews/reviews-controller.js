@@ -41,7 +41,7 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
             $scope.listReviewsByType('closed');
         }
         else if ($stateParams.category === 'all') {
-                $scope.listReviewsByType('all');
+            $scope.listReviewsByType('all');
         } else {
             $stateParams.category = 'my_reviews';
             $scope.listReviewsByType('my_reviews');
