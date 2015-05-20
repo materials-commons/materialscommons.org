@@ -4,7 +4,8 @@
             <nav class="navbar navbar-default">
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li ng-class="{active: type === 'my_reviews'}"><a ng-click="listReviewsByType('my_reviews')">My Reviews</a>
+                        <li ng-class="{active: type === 'my_reviews'}"><a ng-click="listReviewsByType('my_reviews')">My
+                            Reviews</a>
                         </li>
                         <li ng-class="{active: type === 'due'}"><a ng-click="listReviewsByType('due')">Due</a></li>
 
@@ -29,19 +30,19 @@
                     </div>
                     <ul class="list-group" style="">
                         <li class="list-group-item pointer"
-                            ng-repeat="review in reviews"
-                            ng-class="{active: review.id === review.id}"
+                            ng-repeat="each_review in reviews"
+                            ng-class="{active: review.id === each_review.id}"
                             ui-sref="projects.project.reviews.edit({'review_id': each_review.id})">
-
-                       <span class="pull-right">
-                            <a style="font-size: 25px;" ng-if="review.messages.length !== 0" class="fa-stack fa-2x">
-                                <i ng-class="{'review-active': review.id === review.id, 'review-inactive': review.id !== review.id}"
-                                   class="fa fa-comment fa-stack-1x"></i>
-                                <i style='font-size: 13px;line-height: 0;font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;font-weight: bold'
-                                   class="fa fa-stack-1x fa-inverse">{{review.messages.length}}</i>
-                            </a>
-                        </span>
-                            {{review.title}}
+                                <span class="pull-right">
+                                        <a style="font-size: 25px;" ng-if="review.messages.length !== 0"
+                                           class="fa-stack fa-2x">
+                                            <i ng-class="{'review-active': review.id === each_review.id, 'review-inactive': review.id !== each_review.id}"
+                                               class="fa fa-comment fa-stack-1x"></i>
+                                            <i style='font-size: 13px;line-height: 0;font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;font-weight: bold'
+                                               class="fa fa-stack-1x fa-inverse">{{each_review.messages.length}}</i>
+                                        </a>
+                                </span>
+                            {{each_review.title}}
                         </li>
                     </ul>
                 </div>

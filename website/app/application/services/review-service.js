@@ -2,6 +2,7 @@ Application.Services.factory('Review',
     ["$filter", "mcapi", "User", "pubsub", '$state', function ($filter, mcapi, User, pubsub, $state) {
         var service = {
             checked_items: [],
+            reviews: [],
             activeReview: {},
             findReview: function (reviewID, which, project) {
                 var i = _.indexOf(project[which], function (review) {
