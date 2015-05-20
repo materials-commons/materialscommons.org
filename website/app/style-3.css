@@ -2413,14 +2413,14 @@ header {
   border-top: 3px dotted #d3d3d3;
 }
 
-.details-main-content .link{
+.details-main-content .link {
   color: #64B5F6;
   font-weight: 400;
   line-height: 20px;
   cursor: pointer;
 }
 
-.close-link{
+.close-link {
   cursor: pointer;
   color: #F4626C;
 }
@@ -2435,9 +2435,10 @@ header {
   text-transform: uppercase;
 }
 
-.btn-cancel{
+.btn-cancel {
   background-color: #E57373;
 }
+
 .btn-review {
   background-color: #FFB500;
 }
@@ -2469,17 +2470,18 @@ header {
   font-family: inherit;
 }
 
-.ag-fresh .ag-cell{
+.ag-fresh .ag-cell {
   padding: 18px;
 }
 
-.ag-body-viewport{
+.ag-body-viewport {
   overflow: hidden;
 }
 
 .ag-fresh .ag-row-even {
   background-color: #f5f5f5;
 }
+
 .ag-fresh .ag-row-odd {
   background-color: #fff;
 }

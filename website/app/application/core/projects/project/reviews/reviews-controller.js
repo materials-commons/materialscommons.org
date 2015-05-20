@@ -1,14 +1,16 @@
 Application.Controllers.controller('projectReviews',
-    ["$scope", "project", "$filter", "Review", "pubsub", "User", "$state", "$stateParams", projectReviews]);
+    ["$scope", "project", "$filter", "Review", "pubsub", "User", "$stateParams", projectReviews]);
 
-function projectReviews($scope, project, $filter, Review, pubsub, User, $state, $stateParams) {
+function projectReviews($scope, project, $filter, Review, pubsub, User, $stateParams) {
 
     pubsub.waitOn($scope, 'activeReview.change', function () {
         $scope.review = Review.getActiveReview();
     });
+
     pubsub.waitOn($scope, 'reviews.change', function () {
         $scope.reviews = Review.getReviews();
     });
+
     $scope.listReviewsByType = function (type) {
         $scope.type = type;
         switch (type) {
@@ -35,17 +37,7 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $state, 
 
     function init() {
         $scope.project = project;
-        if ($stateParams.category === 'due') {
-            $scope.listReviewsByType('due');
-        } else if ($stateParams.category === 'closed') {
-            $scope.listReviewsByType('closed');
-        }
-        else if ($stateParams.category === 'all') {
-            $scope.listReviewsByType('all');
-        } else {
-            $stateParams.category = 'my_reviews';
-            $scope.listReviewsByType('my_reviews');
-        }
+        $scope.listReviewsByType($stateParams.category === "" ? 'my_reviews' : $stateParams.category);
     }
 
     init();
