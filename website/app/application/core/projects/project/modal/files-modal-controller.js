@@ -26,7 +26,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             field: "name",
             width: 350,
             checkboxSelection: true,
-            cellClicked: cellClickedFunc,
+            cellClicked: cellClicked,
             //template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
             //'<a data-toggle="tooltip" data-placement="top" title="{{displayname}}">ABC</a></span>'
             cellRenderer: function (params) {
@@ -37,16 +37,21 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
 
         },
         {
-            displayName: "", field: "size", width: 250, cellRenderer: function (params) {
-            if (params.node.size === 0) {
-                return '';
-            } else {
-                return parseInt(params.node.size / 1024) + ' mb';
+            displayName: "",
+            field: "size",
+            width: 250,
+            cellRenderer: function (params) {
+                if (params.node.size === 0) {
+                    return '';
+                } else {
+                    return parseInt(params.node.size / 1024) + ' mb';
+                }
             }
-        }
         },
         {
-            displayName: "", field: "birthtime", width: 250,
+            displayName: "",
+            field: "birthtime",
+            width: 250,
             cellRenderer: function (params) {
                 return $filter('toDateString')(params.node.birthtime);
             }
@@ -65,23 +70,23 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
         icons: {
             groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
-
         },
         suppressRowClickSelection: true,
-        rowSelected: checkboxClickedFunc,
+        rowSelected: checkboxClicked,
         groupInnerCellRenderer: groupInnerCellRenderer
     };
+
     function groupInnerCellRenderer(params) {
         var template = params.node.type === 'datadir' ? params.node.displayname : 'File';
         return template;
     }
 
-    function checkboxClickedFunc(params) {
+    function checkboxClicked(params) {
         Review.checkedItems(params);
         pubsub.send('addFileToReview', params);
     }
 
-    function cellClickedFunc(params) {
+    function cellClicked(params) {
         $scope.modal = {
             instance: null,
             items: [params.node]

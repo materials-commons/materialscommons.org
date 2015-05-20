@@ -12,9 +12,9 @@ function homeFilesDirective() {
 
 Application.Controllers.controller("homeFilesDirectiveController",
     ["$scope", "projectFiles",
-        "$filter", "$modal", homeFilesDirectiveController]);
+        "$filter",  homeFilesDirectiveController]);
 function homeFilesDirectiveController($scope, projectFiles,
-                                      $filter, $modal) {
+                                      $filter) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.

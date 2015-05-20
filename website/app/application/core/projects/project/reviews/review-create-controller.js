@@ -6,9 +6,11 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
     });
+
     pubsub.waitOn($scope, 'addProcessToReview', function (process) {
         addAttachment(process);
     });
+
     pubsub.waitOn($scope, 'addFileToReview', function (file) {
         addAttachment(file);
     });
@@ -121,6 +123,10 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
             }
         });
     };
+    $scope.cancel = function(){
+     init();
+    }
+
     function init() {
         $scope.project = project;
         $scope.users = [];
