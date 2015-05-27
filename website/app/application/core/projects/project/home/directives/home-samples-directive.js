@@ -12,42 +12,46 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-                                   ["$scope", "ui",
+                                   ["$scope",
                                     homeSamplesController]);
 
-function homeSamplesController($scope, ui) {
+function homeSamplesController($scope) {
 
-    $scope.project.samples.forEach(function(sample) {
-        if (!('showDetails' in sample)) {
-            sample.showDetails = false;
-        }
+    var rowData = [];
+    $scope.project.samples.forEach(function (sample) {
+        var composition = '';
+        sample.properties.composition.value.forEach(function(val){
+            composition = composition + '  ' + val.element + ': ' + val.value;
+        })
+        composition = composition + '  ' + sample.properties.composition.unit;
+        rowData.push({
+            name: sample.name,
+            composition: composition ,
+            owner: sample.owner,
+            mtime: sample.mtime
+        });
     });
-
-    $scope.minimize = function() {
-        ui.togglePanelState($scope.project.id, 'samples');
+    var columnDefs = [
+        {
+            displayName: "",
+            field: "title",
+            width: 900,
+            template: '<span ng-bind="data.name"></span>' +
+            '<p class="text-muted"><small><small  class="text-muted">{{data.composition}}</small>' +
+            '<i style="padding-left: 60px; class="fa fa-fw fa-user"></i>' +
+            '<span  class="text-muted">{{data.owner}}</span>' +
+            '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>',
+            cellStyle: {border: 0}
+        }
+    ];
+    $scope.gridOptions = {
+        columnDefs: columnDefs,
+        rowData: rowData,
+        enableColResize: true,
+        headerHeight: 0,
+        rowHeight: 65,
+        rowStyle: {'border-bottom': 'dotted #d3d3d3'},
+        angularCompileRows: true
     };
 
-    $scope.toggleExpanded = function() {
-        ui.toggleIsExpanded($scope.project.id, "samples");
-    };
-
-    $scope.isExpanded = function() {
-        return ui.isExpanded($scope.project.id, "samples");
-    };
-
-    $scope.createSample = function(){
-        $scope.model.createSample = true;
-    };
-
-    $scope.splitScreen = function(what, col){
-        ui.toggleColumns($scope.project.id, what, col);
-    };
-
-    $scope.isSplitExpanded = function () {
-        return ui.getSplitStatus($scope.project.id);
-    };
-
-    $scope.model = {
-        createSample: false
-    };
 }

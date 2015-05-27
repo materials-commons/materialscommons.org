@@ -9,19 +9,22 @@ Application.Directives = angular.module('application.core.directives', []);
 var app = angular.module('materialscommons',
     [
         'ngAnimate',
+        'ngSanitize',
+        'ngMessages',
         'ui',
+        'highcharts-ng',
         'ngCookies',
         'ui.router',
+        'ngHandsontable',
         'btford.socket-io',
         'restangular',
         'jmdobry.angular-cache',
         'validation', 'validation.rule', 'wu.masonry',
-        'textAngular',
-        'treeGrid',
-        'ngDragDrop',
+        'textAngular', 'angularGrid',
+        'ngDragDrop', 'ngTagsInput',
         'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
-        'tc.chartjs', "hljs", "nsPopover", "RecursionHelper",
+        "hljs", "nsPopover", "RecursionHelper",
         'application.core.constants', 'application.core.services',
         'application.core.controllers',
         'application.core.filters', 'application.core.directives']);
@@ -134,23 +137,145 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             }],
             controller: "projectsProject"
         })
+        .state("projects.project.samples", {
+            url: "/samples",
+            templateUrl: "application/core/projects/project/samples/samples.html",
+            controller: "projectSamples"
+        })
+        .state("projects.project.samples.create", {
+            url: "/create",
+            templateUrl: "application/core/projects/project/samples/create.html",
+            controller: "projectSamplesCreate"
+        })
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "projectHome"
         })
-        .state("projects.project.home.drafts", {
-            url: "/drafts",
-            templateUrl: "application/core/projects/project/provenance/drafts.html",
-            controller: "projectProvenanceDrafts"
+        .state("projects.project.new-wizard", {
+            url: "/new-wizard",
+            templateUrl: "application/core/projects/project/provenance/wizard/wizard.html",
+            controller: "provWizardController"
         })
-        .state("projects.project.home.provenance", {
-            url: "/provenance/:sid",
-            templateUrl: 'application/core/projects/project/provenance/create.html',
-            controller: "projectProvenanceCreate"
+        .state("projects.project.new-wizard.node-details", {
+            url: "/node-details/:node_id",
+            templateUrl: "application/core/projects/project/provenance/wizard/node-details.html",
+            controller: "nodeDetailsController"
+        })
+        .state("projects.project.new-wizard.edge-details", {
+            url: "/edge-details/:edge_id",
+            templateUrl: "application/core/projects/project/provenance/wizard/edge-details.html",
+            controller: "edgeDetailsController"
+        })
+        .state("projects.project.new-wizard.templates", {
+            url: "/templates",
+            templateUrl: "application/core/projects/project/provenance/wizard/templates.html",
+            controller: "chooseTemplateController"
+        })
+        .state("projects.project.new-wizard.create-process", {
+            url: "/create/:template_id",
+            templateUrl: "application/core/projects/project/provenance/wizard/create.html",
+            controller: "createProvenanceFromTemplate",
+            resolve: {
+                template: ["templates", "$stateParams", "templateConstructer",
+                           function(templates, $stateParams, templateConstructer) {
+                               var index = _.indexOf(templates, function(template) {
+                                   return template.id === $stateParams.template_id;
+                               });
+                               return index === -1 ? {} : templateConstructer.constructTemplate(templates[index]);
+                           }]
+            }
+        })
+        .state("projects.project.new-wizard.create-process.edit", {
+            url: "/edit/:section/:category/:attribute",
+            templateUrl: "application/core/projects/project/provenance/wizard/edit.html",
+            controller: "createProvenanceEdit",
+            resolve: {
+                section: ["template", "$stateParams", function(template, $stateParams) {
+                    var index = _.indexOf(template.sections, function(section) {
+                        return section.name === $stateParams.section;
+                    });
+                    return template.sections[index];
+                }],
+                category: ["section", "$stateParams", function(section, $stateParams) {
+                    var index = _.indexOf(section.categories, function(category) {
+                        return category.category === $stateParams.category;
+                    });
+                    return section.categories[index];
+                }],
+
+                attribute: ["category", "$stateParams", function(category, $stateParams) {
+                    if ($stateParams.attribute) {
+                        var index = _.indexOf(category.attributes, function(attribute) {
+                            return attribute.attribute === $stateParams.attribute;
+                        });
+                        return category.attributes[index];
+                    } else {
+                        return false;
+                    }
+                }]
+            }
+        })
+        .state("projects.project.provenance", {
+            url: "/provenance/:item_id/:prov_type",
+            templateUrl: "application/core/projects/project/provenance/new/provenance.html",
+            controller: "projectProvenanceController"
+        })
+        .state("projects.project.files", {
+            url: "/files",
+            templateUrl: "application/core/projects/project/files/files.html",
+            controller: "FilesController"
+        })
+        .state("projects.project.files.edit", {
+            url: "/:file_id",
+            templateUrl: "application/core/projects/project/files/edit.html",
+            controller: "FilesEditController"
+        })
+        .state("projects.project.access", {
+            url: "/access",
+            templateUrl: "application/core/projects/project/access/access.html",
+            controller: "projectAccess"
+        })
+        .state("projects.project.drafts", {
+            url: "/drafts",
+            templateUrl: "application/core/projects/project/drafts/drafts.html",
+            controller: "projectDrafts"
+        })
+        .state("projects.project.reviews", {
+            url: "/reviews/:category",
+            templateUrl: "application/core/projects/project/reviews/reviews.html",
+            controller: "projectReviews"
+        })
+        .state("projects.project.reviews.edit", {
+            url: "/edit/:review_id",
+            templateUrl: "application/core/projects/project/reviews/edit.html",
+            controller: "projectEditReview"
+        })
+        .state("projects.project.reviews.create", {
+            url: "/reviews/create",
+            templateUrl: "application/core/projects/project/reviews/create.html",
+            controller: "projectCreateReview"
+        })
+        .state("projects.project.notes", {
+            url: "/notes",
+            templateUrl: "application/core/projects/project/notes/notes.html",
+            controller: "projectNotes"
+        })
+        .state("projects.project.sideboard", {
+            url: "/sideboard",
+            templateUrl: "application/core/projects/project/sideboard/sideboard.html",
+            controller: "projectSideboard"
+        })
+
+        .state("projects.project.processes", {
+            url: "/processes",
+            templateUrl: "application/core/projects/project/processes/processes.html",
+            controller: "ProcessesController",
+            controllerAs: 'processes'
         });
     $urlRouterProvider.otherwise('/home');
-
+    createNumericValidator($validationProvider);
+    $validationProvider.showSuccessMessage = false;
     $validationProvider.setErrorHTML(function (msg) {
         return '<span class="validation-invalid">' + msg + '</span>';
     });
@@ -161,18 +286,31 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
 
 }]);
 
-app.run(["$rootScope", "User", "Restangular", "recent", "ui", "pubsub", appRun]);
+function createNumericValidator(validationProvider) {
+    var expression = {
+        numeric: /^[0-9]*\.?[0-9]+$/
+    };
 
-function appRun($rootScope, User, Restangular, recent, ui, pubsub) {
+    var validationMsgs = {
+        numeric: {
+            error: "Invalid numeric value",
+            success: ""
+        }
+    };
+
+    validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
+}
+
+app.run(["$rootScope", "User", "Restangular", appRun]);
+
+function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
-            ui.setShowFiles(toParams.id, false);
         }
     });
-
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         var projectID = fromParams.id;
         if (!fromState.abstract) {

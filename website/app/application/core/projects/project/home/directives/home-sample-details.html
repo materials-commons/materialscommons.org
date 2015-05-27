@@ -4,13 +4,13 @@
       Description: {{sample.description}}  <br>
     </div>
 
-    <div  class="row item-details">
+    <div class="row item-details">
         <div class="col-sm-4">
             <b ng-show="sample.properties.composition.unit">Composition:
                 <small>({{sample.properties.composition.unit}})</small>
             </b>
             <ul class="list-group">
-                <li class="list-group-item "
+                <li class="list-group-item"
                     ng-repeat="each in sample.properties.composition.value">
                     {{each.element}} <span class="pull-right">{{each.value}}</span>
                 </li>

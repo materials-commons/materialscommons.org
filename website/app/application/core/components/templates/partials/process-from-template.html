@@ -1,0 +1,43 @@
+<div>
+    <div class="col-xs-4" style="margin-top:34px">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:#e0e0e0; opacity:1">
+                <h4>{{::template.name}}</h4>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    <li ng-repeat="section in template.sections">
+                        <strong>{{section.name}}</strong>
+                        <ul class="list-unstyled" style="padding-left:10px">
+                            <li ng-repeat="category in section.categories">
+                                <strong><a>{{category.category}}</a></strong>
+                                <ul class="list-unstyled" style="padding-left:10px">
+                                    <li ng-repeat="attribute in category.attributes">
+                                        <a>
+                                            <i class="fa fa-fw"
+                                               ng-class="{'fa-asterisk': attribute.required}">
+                                            </i>
+                                            {{attribute.name}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-8" style="padding-top:34px">
+        <div class="panel panel-default">
+            <div class="panel-heading"
+                 style="background-color:#e0e0e0; opacity:1">
+                <h4>Thing we clicked on here</h4>
+            </div>
+            <div class="panel-body">
+                Attribute here
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
+</div>

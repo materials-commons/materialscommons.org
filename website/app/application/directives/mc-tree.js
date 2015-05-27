@@ -7,8 +7,8 @@ function mcTreeDirective() {
             items: '=items',
             orderby: '=orderby',
             matches: '=matches',
+            attachment: '='
         },
-        replace: true,
         templateUrl: 'application/directives/mc-tree.html'
     };
 }
@@ -20,10 +20,10 @@ function mcTreeHeaderDirective() {
         restrict: "E",
         scope: {
             item: '=item',
-            showSideboard: "=showSideboard"
+            showSideboard: "=showSideboard" ,
+            attachment: '='
         },
         controller: "mcTreeHeaderDirectiveController",
-        replace: true,
         templateUrl: 'application/directives/mc-tree-header.html'
     };
 }
@@ -39,24 +39,23 @@ function mcTreeDirDirective(RecursionHelper) {
         controller: "mcTreeDirDirectiveController",
         replace: true,
         templateUrl: 'application/directives/mc-tree-dir.html',
-        compile: function(element) {
-            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
+        compile: function (element) {
+            return RecursionHelper.compile(element, function (scope, iElement, iAttrs, controller, transcludeFn) {
             });
         }
     };
 }
 
 Application.Controllers.controller("mcTreeDirDirectiveController",
-                                   ["$scope", mcTreeDirDirectiveController]);
+    ["$scope", mcTreeDirDirectiveController]);
 function mcTreeDirDirectiveController($scope) {
     $scope.items = $scope.item.children;
 }
 
 
 Application.Controllers.controller("mcTreeHeaderDirectiveController",
-                                   ["$scope", "mcfile", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi",
-                                    mcTreeHeaderDirectiveController]);
-function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, toggleDragButton, pubsub, mcapi) {
+    ["$scope", "pubsub", "projectFiles", "sideboard", "current", "toggleDragButton", "pubsub", "mcapi", "projectFiles", "$state", mcTreeHeaderDirectiveController]);
+function mcTreeHeaderDirectiveController($scope, pubsub, projectFiles, sideboard, current, toggleDragButton, pubsub, mcapi, projectFiles, $state) {
     if ($scope.item.type === "datadir") {
         $scope.tooltip = "Upload to directory";
         $scope.faClass = "fa-upload";
@@ -65,17 +64,25 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
         $scope.faClass = "fa-download";
     }
 
-    $scope.downloadSrc = function(file) {
-        return mcfile.downloadSrc(file.id);
+    pubsub.waitOn($scope, "activeFile.change", function () {
+        getActiveFile();
+    });
+    function getActiveFile() {
+        $scope.activeFile = projectFiles.getActiveFile();
+    }
+
+    $scope.addItem = function () {
+        if ($scope.item.selected){
+            $scope.item.selected = !$scope.item.selected;
+        } else{
+            $scope.item.selected = true;
+        }
+        pubsub.send('addFileToReview', $scope.item);
     };
 
-    $scope.addToSideboard = function(file, event) {
-        sideboard.handleFromEvent(current.projectID(), file, event, 'sideboard');
-    };
-
-    $scope.newFolder = function(currentDir, name) {
+    $scope.newFolder = function (currentDir, name) {
         mcapi('/datadirs')
-            .success(function(datadir){
+            .success(function (datadir) {
                 currentDir.addFolder = false;
                 currentDir.children.push(datadir);
             })
@@ -83,30 +90,18 @@ function mcTreeHeaderDirectiveController($scope, mcfile, sideboard, current, tog
                 project_id: current.projectID(),
                 parent: currentDir.id,
                 name: currentDir.name + "/" + name,
-                level: currentDir.level+1
+                level: currentDir.level + 1
             });
     };
+    $scope.openFile = function (item) {
+        projectFiles.setActiveFile(item);
+        $state.go('projects.project.files.edit', {'file_id': item.id});
+    };
 
-    $scope.isActive = function(type, button){
+    $scope.isActive = function (type, button) {
         return toggleDragButton.get(type, button);
     };
 
-    $scope.addItem = function (type, file) {
-        switch (type) {
-        case "review":
-            pubsub.send('addFileToReview', file);
-            break;
-        case "sample":
-            pubsub.send('addFileToSample', file);
-            break;
-        case "process":
-            pubsub.send('provenance.files', file);
-            break;
-        case "file":
-            pubsub.send('addFileToNote', file);
-            break;
-        }
-    };
 }
 
 Application.Directives.directive("mcTreeDisplayItem", mcTreeDisplayItemDirective);
@@ -118,7 +113,7 @@ function mcTreeDisplayItemDirective() {
             item: "=item",
             showSideboard: "=showSideboard"
         },
-         templateUrl: "application/directives/mc-tree-display-item.html"
+        templateUrl: "application/directives/mc-tree-display-item.html"
     };
 }
 
@@ -137,12 +132,12 @@ function mcTreeLeafDirective() {
 }
 
 Application.Controllers.controller("mcTreeLeafDirectiveController",
-                                   ["$scope", "User", "mcfile",
-                                    mcTreeLeafDirectiveController]);
+    ["$scope", "User", "mcfile",
+        mcTreeLeafDirectiveController]);
 function mcTreeLeafDirectiveController($scope, User, mcfile) {
     $scope.apikey = User.apikey();
 
-    $scope.fileSrc = function(file) {
+    $scope.fileSrc = function (file) {
         return mcfile.src(file.id);
     };
 

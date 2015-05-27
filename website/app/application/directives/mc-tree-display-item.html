@@ -1,6 +1,6 @@
 <div>
     <mc-tree-header item="item"
-                    show-sideboard="showSideboard">
+                    show-sideboard="showSideboard" check-box="checkBox">
     </mc-tree-header>
     <div ng-if="item.showDetails">
         <div class="row">
@@ -9,7 +9,7 @@
             </div>
 
             <div ng-if="item.type === 'datafile'">
-                <mc-tree-leaf item="item"></mc-tree-leaf>
+                <!--<mc-tree-leaf item="item"></mc-tree-leaf>-->
             </div>
         </div>
     </div>

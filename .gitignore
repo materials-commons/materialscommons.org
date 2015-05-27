@@ -7,7 +7,7 @@ apitest
 materialscommons/
 materials.tar.gz
 node_modules
-bower_components
-sbin
 coverage
-
+sbin
+bower_components/
+rethinkdb_data/
