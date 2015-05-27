@@ -1,11 +1,11 @@
-
 Application.Directives.directive('createNote', createNoteDirective);
 function createNoteDirective() {
     return {
         restrict: "EA",
         controller: 'createNoteDirectiveController',
         scope: {
-            model: '=model'
+            item: '=item',
+            itemType: '@'
         },
         templateUrl: 'application/core/projects/project/notes/create.html'
     };
@@ -13,39 +13,58 @@ function createNoteDirective() {
 
 Application.Controllers.controller('createNoteDirectiveController',
     ["$scope", "User", "mcapi", "projectState",
-        "$stateParams", "current", "recent",
+        "$stateParams", "current", "recent", "pubsub", "projectFiles",
         createNoteDirectiveController]);
 
 function createNoteDirectiveController($scope, User, mcapi, projectState,
-                                       $stateParams, current, recent) {
+                                       $stateParams, current, recent, pubsub, projectFiles) {
     $scope.project = current.project();
     var projectID = $scope.project.id;
     var stateID = $stateParams.sid;
 
     $scope.cancel = function () {
-        recent.delete(projectID, stateID);
-        projectState.delete(projectID, stateID);
-        recent.gotoLast(projectID);
-        $scope.model.createNote = false;
-        initializeState();
+        switch ($scope.itemType) {
+            case "datafile":
+                 pubsub.send('datafile-note.change');
+                break;
+            case "project":
+                recent.delete(projectID, stateID);
+                projectState.delete(projectID, stateID);
+                $scope.noteModel.createNote = false;
+                initializeState();
+                break;
+            case "sample":
+                recent.delete(projectID, stateID);
+                projectState.delete(projectID, stateID);
+                $scope.noteModel.createNote = false;
+                initializeState();
+                break;
+        }
     };
 
-    $scope.create = function () {
-        $scope.note = {
-            'item_id': projectID,
-            'item_type': 'project',
-            'creator': User.u(),
+    $scope.save = function () {
+        $scope.item.note = {
+            'owner': User.u(),
             'project_id': $scope.project.id,
-            'note': $scope.model.note,
-            'title': $scope.model.title
+            'note': $scope.noteModel.note,
+            'title': $scope.noteModel.title
         };
-        mcapi('/notes')
-            .success(function (note) {
-                $scope.project.notes.unshift(note);
-                recent.gotoLast($scope.project.id);
-                $scope.model = {};
-                $scope.model.createNote = false;
-            }).post($scope.note);
+        switch ($scope.itemType) {
+            case "datafile":
+                mcapi('/datafile/%/note', $scope.item.id)
+                    .success(function (note) {
+                        $scope.item.notes = [note];
+                        projectFiles.setActiveFile($scope.item);
+                        pubsub.send('datafile-note.change');
+                    }).put($scope.item.note);
+                break;
+            case "project":
+
+                break;
+            case "sample":
+
+                break;
+        }
     };
 
     function initializeState() {
@@ -53,12 +72,16 @@ function createNoteDirectiveController($scope, User, mcapi, projectState,
             note: "",
             title: ""
         };
-        $scope.model = projectState.getset(projectID, stateID, defaultModel);
+        $scope.noteModel = projectState.getset(projectID, stateID, defaultModel);
+        if($scope.itemType === 'datafile' && $scope.item.notes){
+            $scope.noteModel = $scope.item.notes[0];
+        }
         recent.addIfNotExists(projectID, stateID, "New Note");
     }
 
     function init() {
         initializeState();
     }
+
     init();
 }
