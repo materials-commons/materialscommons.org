@@ -10,6 +10,9 @@ function uiService() {
         self.byProject[projectID] = {
             files: false,
             expanded: {},
+            activePage: {
+                'home': 'home'
+            },
             panels: {
                 reviews: true,
                 samples: true,
@@ -77,7 +80,14 @@ function uiService() {
         isExpanded: function (projectID, what) {
             return getIsExpanded(projectID, what);
         },
-
+        isActivePage: function (projectID) {
+            var proj = getForProject(projectID);
+            if(_.values(proj.activePage)[0]){
+                return _.values(proj.activePage)[0];
+            }else{
+                return 'home';
+            }
+        },
         // anyExpandedExcept checks if any expanded is set to true, except the
         // key given.
         anyExpandedExcept: function (projectID, what) {
@@ -102,6 +112,11 @@ function uiService() {
             proj.expanded[what] = !getIsExpanded(projectID, what);
         },
 
+        setActivePage: function (projectID, what) {
+            var proj = getForProject(projectID);
+            proj.activePage[what] = what;
+            return proj.activePage[what];
+        },
         togglePanelState: function (projectID, what) {
             var proj = getForProject(projectID);
             proj.panels[what] = !proj.panels[what];

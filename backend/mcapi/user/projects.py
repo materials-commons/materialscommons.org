@@ -11,6 +11,7 @@ from .. import error
 from loader.model import access as am
 from loader.model import datadir, project
 from .. import process, access
+from .. import cache
 
 
 @app.route('/projects', methods=['GET'])
@@ -64,6 +65,7 @@ def add_users(projects_by_id, project_ids):
 def add_reviews(projects_by_id, project_ids):
     reviews = list(r.table('reviews')
                    .get_all(*project_ids, index='project')
+                   .order_by('mtime')
                    .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, reviews, 'project', 'reviews')
 
@@ -75,6 +77,7 @@ def add_samples(projects_by_id, project_ids):
                    .zip()
                    .order_by('name')
                    .run(g.conn, time_format='raw'))
+    #samples = []
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
@@ -123,96 +126,11 @@ def get_project_tree2(project_id):
     if proj is None:
         return error.bad_request("Unknown project id: %s" % (project_id))
     access.check(user, proj['owner'], project_id)
-    selection = list(r.table("project2datadir")
-                     .get_all(project_id, index="project_id")
-                     .eq_join("datadir_id", r.table("datadirs"))
-                     .zip()
-                     .merge(lambda dd: {
-                         "datafiles": r.table("datadir2datafile")
-                         .get_all(dd['id'], index="datadir_id")
-                         .eq_join("datafile_id", r.table("datafiles"))
-                         .zip()
-                         .coerce_to("array")})
-                     .run(g.conn, time_format="raw"))
-    return build_tree(selection)
-
-
-class DItem2:
-    def __init__(self, id, name, type, owner, birthtime, size):
-        self.id = id
-        self.selected = False
-        self.c_id = ""
-        self.level = 0
-        self.parent_id = ""
-        self.name = name
-        self.owner = owner
-        self.mediatype = ""
-        self.birthtime = birthtime
-        self.size = size
-        self.displayname = basename(name)
-        self.type = type
-        self.children = []
-
-
-class DEncoder2(json.JSONEncoder):
-    def default(self, o):
-        return o.__dict__
-
-
-def build_tree(datadirs):
-    next_id = 0
-    all_data_dirs = {}
-    top_level_dirs = []
-    for ddir in datadirs:
-        ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
-                       ddir['birthtime'], 0)
-        ditem.level = ditem.name.count('/')
-        ditem.tags = []  # ddir['tags']
-        ditem.c_id = next_id
-        next_id = next_id + 1
-        #
-        # The item may have been added as a parent
-        # before it was actually seen. We check for
-        # this case and grab the children to add to
-        # us now that we have the details for the ditem.
-        if ditem.name in all_data_dirs:
-            existing_ditem = all_data_dirs[ditem.name]
-            ditem.children = existing_ditem.children
-        all_data_dirs[ditem.name] = ditem
-        if ditem.level == 0:
-            top_level_dirs.append(ditem)
-        for df in ddir['datafiles']:
-            if df['name'][0] == ".":
-                continue
-            if not df['current']:
-                continue
-            dfitem = DItem2(df['id'], df['name'], 'datafile',
-                            df['owner'], df['birthtime'], df['size'])
-            dfitem.fullname = ddir['name'] + "/" + df['name']
-            dfitem.c_id = next_id
-            next_id = next_id + 1
-            dfitem.tags = []  # df['tags']
-            if 'mediatype' not in df:
-                dfitem.mediatype = "unknown"
-            elif 'mime' not in df['mediatype']:
-                dfitem.mediatype = "unknown"
-            else:
-                dfitem.mediatype = df['mediatype']['mime']
-            ditem.children.append(dfitem)
-        parent_name = dirname(ditem.name)
-        if parent_name in all_data_dirs:
-            parent = all_data_dirs[parent_name]
-            parent.children.append(ditem)
-        else:
-            # We haven't seen the parent yet, but we need
-            # to add the children. So, create a parent with
-            # name and add children. When we finally see it
-            # we will grab the children and add them to the
-            # real object.
-            parent = DItem2('', parent_name, 'datadir', '', '', 0)
-            parent.children.append(ditem)
-            all_data_dirs[parent_name] = parent
-    return json.dumps(top_level_dirs, cls=DEncoder2)
+    reload = request.args.get('reload')
+    if reload is None:
+        return cache.get_project_tree(project_id)
+    else:
+        return cache.reload_project_tree(project_id)
 
 
 @app.route('/projects', methods=['POST'])

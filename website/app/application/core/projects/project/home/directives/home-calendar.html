@@ -1,16 +1,22 @@
-<div>
-    <div ng-show="alertMessage != undefined && alertMessage != ''">
-        <p><a ng-click="goHome()">Clear filter</a></p>
-        <alert close="goHome()">{{alertMessage}}</alert>
-    </div>
-
-    <div class="btn-toolbar">
-        <div class="btn-group">
-            <button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar')">Day</button>
-            <button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar')">Week</button>
-            <button class="btn btn-success" ng-click="changeView('month', 'myCalendar')">Month</button>
+<div class="row">
+    <div class="panel" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
+        <div ng-show="alertMessage != undefined && alertMessage != ''">
+            <p><a ng-click="goHome()">Clear filter</a></p>
+            <alert close="goHome()">{{alertMessage}}</alert>
         </div>
+        <!--<div class="panel-heading" style="padding-top: 20px;">-->
+            <!--<div class="btn-toolbar">-->
+                <!--<div class="btn-group">-->
+                    <!--<button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar')">Day</button>-->
+                    <!--<button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar')">Week</button>-->
+                    <!--<button class="btn btn-success" ng-click="changeView('month', 'myCalendar')">Month</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="panel-body">
+            <div style="padding-bottom: 6px;" ui-calendar="uiConfig.calendar" calendar="myCalendar"
+                 ng-model="eventSources"></div>
+        </div>
+
     </div>
-    <div style="padding-bottom: 16px;" ui-calendar="uiConfig.calendar" calendar="myCalendar"
-         ng-model="eventSources"></div>
 </div>

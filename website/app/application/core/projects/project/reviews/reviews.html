@@ -1,23 +1,55 @@
-<div class="row">
-    <div class="text-center">
-        <h4> Reviews </h4>
-    </div>
-    <div>
-        <ul class="list-inline center-block text-center">
-            <li>
-                <a class="large-text" ui-sref="projects.project.reviews.overview({id: projectID})">
-                    Overview
-                </a>
-            </li>
-            <li>
-                <a class="large-text"
-                   ng-click="createReview()">
-                   New
-                </a>
-            </li>
-        </ul>
-    </div>
+<div>
     <div class="row">
-        <div ui-view></div>
+        <div class="col-xs-12 details-container">
+            <nav class="navbar navbar-default">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li ng-class="{active: type === 'my_reviews'}"><a ng-click="listReviewsByType('my_reviews')">My
+                            Reviews</a>
+                        </li>
+                        <li ng-class="{active: type === 'due'}"><a ng-click="listReviewsByType('due')">Due</a></li>
+
+                        <li ng-class="{active: type === 'all'}"><a ng-click="listReviewsByType('all')">all</a>
+                        </li>
+                        <li ng-class="{active: type === 'closed'}"><a
+                                ng-click="listReviewsByType('closed')">Archived</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-xs-4">
+                <div class="details-sidebar">
+                    <div class="row">
+                        <div style="text-align: center;margin-top: 20px;">
+                            <button ui-sref="projects.project.reviews.create"
+                                    class="btn-review  btn-details-container btn btn-default"> create
+                            </button>
+                        </div>
+                    </div>
+                    <ul class="list-group" style="">
+                        <li class="list-group-item pointer"
+                            ng-repeat="each_review in reviews"
+                            ng-class="{active: review.id === each_review.id}"
+                            ui-sref="projects.project.reviews.edit({'review_id': each_review.id})">
+                                <span class="pull-right">
+                                        <a style="font-size: 25px;" ng-if="review.messages.length !== 0"
+                                           class="fa-stack fa-2x">
+                                            <i ng-class="{'review-active': review.id === each_review.id, 'review-inactive': review.id !== each_review.id}"
+                                               class="fa fa-comment fa-stack-1x"></i>
+                                            <i style='font-size: 13px;line-height: 0;font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;font-weight: bold'
+                                               class="fa fa-stack-1x fa-inverse">{{each_review.messages.length}}</i>
+                                        </a>
+                                </span>
+                            {{each_review.title}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-8" stylex="margin-left: 10px;">
+                <div ui-view></div>
+            </div>
+        </div>
     </div>
 </div>

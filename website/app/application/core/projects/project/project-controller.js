@@ -1,12 +1,12 @@
 Application.Controllers.controller('projectsProject',
                                    ["$scope", "provStep", "ui",
-                                    "project", "current", "pubsub", "recent", "User",
+                                    "project", "current", "pubsub", "User",
                                     "projectFiles", "mcapi", "help", "sideboard", "projects",
                                     "$state",
                                     projectsProject]);
 
 function projectsProject ($scope, provStep, ui, project, current,
-                          pubsub, recent, User, projectFiles, mcapi,
+                          pubsub, User, projectFiles, mcapi,
                           help, sideboard, projects, $state) {
     $scope.projects = projects;
     $scope.sideboard = sideboard.get(project.id);
@@ -25,8 +25,6 @@ function projectsProject ($scope, provStep, ui, project, current,
     $scope.isExpanded = function(what) {
         return help.isActive() && ui.isExpanded(project.id, what);
     };
-
-    recent.resetLast(project.id);
 
     current.setProject(project);
     pubsub.send("sidebar.project");

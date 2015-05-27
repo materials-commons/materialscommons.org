@@ -34,7 +34,7 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
 
     function setAllPanels(to, current) {
         panels.forEach(function (panel) {
-            if (current != panel) {
+            if (current !== panel) {
                 ui.setIsExpanded($scope.project.id, panel, to);
                 ui.setPanelState($scope.project.id, panel, to);
             }
@@ -65,26 +65,9 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
         ui.togglePanelState($scope.project.id, panel);
     };
 
-    $scope.isActive = function (panel) {
-        return ui.isExpanded($scope.project.id, panel);
-    };
-
     $scope.toggleExpanded = function (panel) {
-        if (panel === 'dashboard') {
-            showAllPanels();
-        } else {
-            setAllPanels(false, panel);
-            ui.toggleIsExpanded($scope.project.id, panel);
-            if (!ui.showPanel($scope.project.id, panel) && ui.isExpanded($scope.project.id, panel)) {
-                ui.setPanelState($scope.project.id, panel, true);
-            } else if (!ui.isExpanded($scope.project.id, panel)) {
-                showAllPanels();
-                if (panel === "sideboard") {
-                    ui.setPanelState($scope.project.id, panel, false);
-                }
-            }
-        }
-
+        $scope.activePage = ui.setActivePage($scope.project.id, panel);
+        $state.go('projects.project.' + panel);
     };
 
 
@@ -102,20 +85,24 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     };
 
     $scope.openProvWizard = function () {
-        ui.togglePanelState($scope.project.id, "provwizard");
-        if (ui.showPanel($scope.project.id, "provwizard")) {
-            // Activating the wizard. Drafts shares this ui-view
-            // so set it to inactive.
-            ui.setPanelState($scope.project.id, "drafts", false);
-            var state = null;
-            var stateID = projectState.add($scope.project.id, state);
-            $state.go("projects.project.home.provenance", {sid: stateID});
-        } else {
-            // Deactivating the wizard
-            $state.go("projects.project.home");
-        }
+        $state.go("projects.project.new-wizard");
+        /*
+         ui.togglePanelState($scope.project.id, "provwizard");
+         if (ui.showPanel($scope.project.id, "provwizard")) {
+         // Activating the wizard. Drafts shares this ui-view
+         // so set it to inactive.
+         ui.setPanelState($scope.project.id, "drafts", false);
+         var state = null;
+         var stateID = projectState.add($scope.project.id, state);
+         $state.go("projects.project.home.provenance", {sid: stateID});
+         } else {
+         // Deactivating the wizard
+         $state.go("projects.project.home");
+         }
+         */
     };
 
     $scope.mcuser = User.attr();
     $scope.list = sideboard.get($scope.project.id);
+    $scope.activePage = ui.isActivePage($scope.project.id);
 }
