@@ -113,6 +113,9 @@ function projectFilesService() {
                     byMediaType.all.push(node.model);
                     if (node.model.mediatype === "") {
                         byMediaType.unknown.push(node.model);
+                    } else if (!(node.model.mediatype in byMediaType)) {
+                        byMediaType[node.model.mediatype] = [];
+                        byMediaType[node.model.mediatype].push(node.model);
                     } else {
                         byMediaType[node.model.mediatype].push(node.model);
                     }

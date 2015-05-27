@@ -1,0 +1,498 @@
+<div ng-controller="login">
+    <div id="top" class="row">
+        <header>
+            <div class="row">
+                <h1 style="color: white; padding: 30px;">Materials Commons</h1>
+            </div>
+            <div class="row">
+                <div class="login-splash">
+                    <div class="row">
+                        <input ng-model="email" name="email" required="" class="form-control"
+                               placeholder="Email..."
+                               type="email">
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <input ng-model="password" required=""
+                               class="form-control" placeholder="Password..."
+                               on-enter="login()"
+                               type="password">
+                    </div>
+                    <br>
+                    <p style="color:red;" ng-if="message">
+                        <b>{{message}}</b>
+                    </p>
+                    <div ng-if="false" class="row">
+                        <div class="col-xs-6">
+                            <input type="checkbox" ng-model="rememberMe"> Remember me
+                        </div>
+                        <div class="col-xs-5">
+                            <a>Forgot Password?</a>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="login()">
+                            Login
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </header>
+    </div>
+    <div class="row icon-splash">
+        <ul class="list-inline text-center">
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('process01')">
+                        <img style="height: 60px;"
+                             src="assets/img/splash/process-icon.png"></a>
+
+                    <p style="color: grey;padding-top: 8px;">PROVENANCE</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('sample01')">
+                        <img style="height: 60px;"
+                             src="assets/img/splash/sample_icon.png"></a>
+
+                    <p style="color: grey;padding-top: 8px;">SAMPLES</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('review01')">
+                        <img style="height: 60px;"
+                             src="assets/img/splash/review_icon.png"></a>
+
+                    <p style="color: grey;padding-top: 8px;">REVIEWS</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;">
+                    <a ng-click="goTo('file01')"><img style="height: 60px;"
+                                                      src="assets/img/splash/file_icon.png"></a>
+
+                    <p style="color: grey;padding-top: 8px;">FILES</p>
+                </div>
+            </li>
+            <li>
+                <div style="width: 90px;" class="text-center">
+                    <a ng-click="goTo('notes01')"><img style="height: 60px;"
+                                                       src="assets/img/splash/note_icon.png"></a>
+
+                    <p style="color: grey;padding-top: 8px;">NOTES</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="row process-splash" id="process01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-5">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/process-icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Track Your Steps</span>
+                    </div>
+                    <br>
+
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>You can get a quick overview or dive into rich details about your workflow</li>
+                            <li>Dig deep into processes to see how your data is linked though provenance or
+                                discover relationships between processes
+                            </li>
+                            <li>Track your experimental or computational settings</li>
+                            <li>Rich graphical views</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-xs-2">
+
+                </div>
+                <div class="col-xs-4">
+                    <img src="assets/img/splash/process.png">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-cubes fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Samples</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Look into the steps to see your sample measurements or explore the provenance graph to
+                        see how your sample has been transformed.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-files-o fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Files</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Attach files to your steps which builds relationships between processes.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-code-fork fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Workflow</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Workflows assist researchers in tracking their
+                        data through all its transformations, analyses, and interpretations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row sample-splash" id="sample01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-4">
+                    <img style="height: 300px;" src="assets/img/splash/sample.png">
+                </div>
+                <div class="col-xs-2">
+
+                </div>
+                <div class="col-xs-5">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;" src="assets/img/splash/sample_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Handle Samples</span>
+                    </div>
+                    <br>
+
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Create once and reuse. Keep track of history of changes</li>
+                            <li>Share between different projects</li>
+                            <li>Track how your sample has undergone transformations</li>
+                            <li>Ability to store multiple measures</li>
+                            <li>Take a look back at the history of measures and easily edit your sample's properties
+                            </li>
+                            <li>Supports different types of measures : histogram, charts, integer, string etc...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-flask fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Composition</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Easy selection of elements from periodic table.</p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-briefcase fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Share</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Ability to share your sample between projects.</p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-history fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Versions</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Easy way to view your sample's history of transformations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row review-splash" id="review01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-5">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/review_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Reviews</span>
+                    </div>
+                    <br>
+
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li> Easily request other project members to look at your data</li>
+                            <li>Attach data and share your thoughts with your team mates</li>
+                            <li>Correspondence history helps your team stay in sync
+                            </li>
+                            <li>Manage your conversations in a better way in one place</li>
+                            <li>Relax... we will notify you when you have any new messages or requests when you log-back
+                                in.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+
+                </div>
+                <div class="col-xs-4">
+                    <img style="width: 500px; height: 400px;" src="assets/img/splash/review.png">
+                </div>
+
+            </div>
+        </div>
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-check-circle review-open fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Active Review</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Quickly see which reviews are active and have new messages.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-minus-circle review-close fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4> Archived Review</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Go back to your archived reviews to establish context.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-paperclip fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Attachments</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Attach files/samples/processes to a review.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row file-splash" id="file01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-6">
+                    <img style="width: 550px; height: 400px;" src="assets/img/splash/file.png">
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;" src="assets/img/splash/file_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Manage Files</span>
+                    </div>
+                    <br>
+
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>MaterialsCommons provides multiple simultaneous and resumable uploads</li>
+                            <li>Easy download and preview your files</li>
+                            <li>Ability to add subfolders for easy management of your data</li>
+                            <li>Go back to old versions of a file</li>
+                            <li>Compare and analyze files side by side</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-upload fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Upload</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Easy upload from your local system onto Materials Commons.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-download fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4> Download</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Helps you to download files onto your local system.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-refresh fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Refresh</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Refresh the file structure to view all updates.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row note-splash" id="notes01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-4">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/note_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Attach Notes</span>
+                    </div>
+                    <br>
+
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Simply jot down lines and style your text with our editor</li>
+                            <li>Manage all your notes in one place</li>
+                            <li>Attach notes to samples/files/projects</li>
+                            <li>Tag your notes to help you easily find them</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-xs-3">
+
+                </div>
+                <div class="col-xs-4">
+                    <img src="assets/img/splash/note.png">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-font fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Styling</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Style your notes using a rich text editor.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-link fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Add Links</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        Add links to your notes.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-offset-1 col-xs-2">
+                <div class="row">
+                    <i class="fa fa-fw fa-file-image-o  fa-4x"></i>
+                </div>
+                <div class="row">
+                    <h4>Attach Images</h4>
+
+                    <p style="color: grey; font-size: 15px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        The rich text editor allows you to to attach images to your notes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="false" class="row calendar-splash" id="calendar01">
+        <div class="row">
+            <ul class="nav pull-right scroll-top corner">
+                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                    <i class="glyphicon glyphicon-chevron-up"></i></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="col-xs-4">
+                    <div class="row"><br><br><br>
+                        <img style="height: 40px;padding-right: 10px;" src="assets/img/splash/calendar_icon.png">
+                        <span style="font-size: 18px; font-weight: 500">Track Events</span>
+                    </div>
+                    <br>
+
+                    <div style="padding-left: 25px; color: grey; font-size: 16px; font-family: 'Helvetica Neue', Helvetica, Ariel, sans-serif;">
+                        <ul>
+                            <li>Easily review your progress</li>
+                            <li>Quickly get to items on a particular day</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+
+                </div>
+                <div class="col-xs-6">
+                    <img style="width: 650px; height: 500px;" src="assets/img/splash/calendar.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
