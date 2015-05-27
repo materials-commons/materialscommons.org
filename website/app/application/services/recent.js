@@ -22,14 +22,14 @@ function recentService($state, $stateParams) {
             routeType = routeType.slice(0, n);
         }
         switch (routeType) {
-        case "provenance": return "fa-code-fork";
-        case "samples": return "fa-cubes";
-        case "notes": return "fa-edit";
-        case "files": return "fa-file";
-        case "reviews": return "fa-comment";
-        case "home": return "fa-home";
-        case "tasks": return "fa-check-square";
-        default: return "";
+            case "provenance": return "fa-code-fork";
+            case "samples": return "fa-cubes";
+            case "notes": return "fa-edit";
+            case "files": return "fa-file";
+            case "reviews": return "fa-comment";
+            case "home": return "fa-home";
+            case "tasks": return "fa-check-square";
+            default: return "";
         }
     };
 

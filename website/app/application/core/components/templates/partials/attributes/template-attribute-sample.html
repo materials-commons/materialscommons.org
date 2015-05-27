@@ -1,0 +1,97 @@
+<div>
+    <div ng-switch="control.edit">
+        <div ng-switch-when="true">
+            <form name="form" class="form-horizontal" novalidate>
+                <div class="form-group">
+                    <label for="sampleName"
+                           class="col-xs-3 control-label">
+                        Name <i class="fa fa-fw fa-asterisk text-danger"></i>
+                    </label>
+                    <div class="col-xs-6">
+                        <input type="text"
+                               class="form-control"
+                               id="sampleName"
+                               name="name"
+                               autocomplete="off"
+                               validate-unique-sample-name
+                               validator-samples="[{name: 'hello'}]"
+                               required
+                               ng-model="attr.name">
+                        <span ng-show="form.name.$error.uniqueSampleName"
+                              class="text-danger">
+                            Sample name not unique
+                        </span>
+                        <span ng-show="form.name.$error.required" class="text-danger">
+                            You must supply a name
+                        </span>
+                        <span class="help-block">The name of the sample (must be unique for the project)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sampleDescription"
+                           class="col-xs-3 control-label">
+                        Description
+                    </label>
+                    <div class="col-xs-6">
+                        <textarea class="form-control no-resize"
+                                  id="sampleDescription"
+                                  ng-model="attr.description">
+                        </textarea>
+                        <span class="help-block">Describe the sample and add important notes.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sampleFrom"
+                           class="col-xs-3 control-label">
+                        From
+                    </label>
+                    <div class="col-xs-6">
+                        <input type="text"
+                               class="form-control"
+                               id="sampleFrom"
+                               autocomplete="off"
+                               ng-model="attr.from">
+                        <span class="help-block">Who you received the sample from, eg a vendor or another researcher</span>
+                    </div>
+                </div>
+                <button class="btn btn-success"
+                        ng-click="done()"
+                        ng-disabled="form.$invalid">
+                    Done
+                </button>
+                <button class="btn btn-info"
+                        ng-click="doneAndAddAnother()"
+                        ng-disabled="form.$invalid">
+                    Done Add Another
+                </button>
+                <button class="btn btn-danger"
+                        ng-click="cancel()">
+                    Cancel
+                </button>
+            </form>
+        </div>
+        <div ng-switch-default>
+            <div class="form-group">
+                <div ng-repeat="sample in attribute.value"
+                     class="panel panel-default">
+                    <div class="panel-body">
+                        <span class="pull-left"
+                              style="font-size: 12px; font-weight: 700; color: #959595; letter-spacing:1px"> {{::sample.name}}</span>
+                        <br>
+                        <dl class="dl-horizontal">
+                            <dt>Description</dt>
+                            <dd>{{::sample.description}}</dd>
+                            <dt>From</dt>
+                            <dd>{{::sample.from}}</dd>
+                        </dl>
+                        <a ng-click="editEntry($index)">edit</done>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success"
+                    ng-click="addAnother()">
+                Add Another
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div>
+    <div class="col-xs-offset-1"
+         ng-switch="control.edit">
+        <div ng-switch-when="true">
+            <label class="col-xs-3 control-label" for="numberInput">
+                {{::attribute.name}}
+                <i ng-if="attribute.required"
+                   class="fa fa-fw fa-asterisk text-danger"></i>
+            </label>
+            <div class="col-xs-6">
+                <div class="col-xs-8">
+                    <input type="number"
+                           id="numberInput"
+                           step="any"
+                           class="form-control"
+                           ng-required="attribute.required"
+                           ng-model="attribute.value">
+                </div>
+                <span ng-if="attribute.unit !== ''">{{::attribute.unit}}</span>
+                <span ng-show="form.numberInput.$error.required"
+                      class="text-danger">
+                    You must supply a {{::attribute.name}}
+                </span>
+                <span class="help-block">
+                    {{::attribute.description}}
+                </span>
+            </div>
+        </div>
+        <div ng-switch-default>
+            <dt>{{::attribute.name}}</dt>
+            <dd>
+                <span ng-if="attribute.value">
+                    {{::attribute.value}}
+                    <span ng-if="attribute.unit !== ''">{{::attribute.unit}}</span>
+                </span>
+            </dd>
+        </div>
+    </div>
+</div>
