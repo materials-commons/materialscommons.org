@@ -2214,3 +2214,84 @@ input[type="checkbox"]:focus {
   text-align: center;
   z-index: 1000;
 }
+
+.task-bar-tool:hover {
+  color: white;
+}
+
+header {
+  background: url('../img/splash/bg1.png');
+  background-size: cover;
+  height: 70vh;
+  margin-top: -45px;
+  background-position: 10% 60%;
+}
+
+.login-splash {
+  /*position: absolute;*/
+  /*top: 20%;*/
+  /*left: 30%;*/
+  margin-right: auto;
+  margin-left: auto;
+  /*transform: translate(-50%, -50%);*/
+  text-align: center;
+  padding: 50px;
+  width: 400px;
+  background-color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/*.login-splash {*/
+  /*padding: 50px;*/
+  /*background-color: rgba(255, 255, 255, 0.3);*/
+  /*text-align: center;*/
+/*}*/
+
+.icon-splash {
+  background-color: white;
+  height: 30vh;
+  padding-top: 40px;
+}
+
+.process-splash {
+  height: 100vh;
+  /*padding-top: 20px;*/
+}
+
+.sample-splash {
+  background-color: white;
+  height: 100vh;
+  /*padding-top: 20px;*/
+}
+
+.review-splash {
+  height: 100vh;
+  /*padding-top: 20px;*/
+}
+
+.file-splash {
+  background-color: white;
+  height: 100vh;
+  /*padding-top: 20px;*/
+}
+
+.note-splash {
+  height: 100vh;
+  /*padding-top: 20px;*/
+}
+
+.calendar-splash {
+  background-color: white;
+  height: 100vh;
+  /*padding-top: 20px;*/
+}
+
+.corner {
+  background-color: grey;
+  color: white;
+}
+
+.icon-splash > ul > li {
+  padding-right: 40px;
+  padding-left: 40px;
+}
