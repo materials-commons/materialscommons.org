@@ -15,12 +15,6 @@ function is_running()
 function start_servers()
 {
     echo Starting $SERVERTYPE servers...
-    R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
-    if [ "$R" = "" ]; then
-        echo "  Starting mcapiserver..."
-        ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
-    fi
-
     R=$(is_running "rethinkdb" "driver-port $MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting rethinkdb..."
@@ -42,6 +36,12 @@ function start_servers()
                 (cd ./scripts; ./loadtemplates.sh -p $MCDB_PORT > /dev/null)
             fi
         fi
+    fi
+
+    R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
+    if [ "$R" = "" ]; then
+        echo "  Starting mcapiserver..."
+        ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
     fi
 
     R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
