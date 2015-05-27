@@ -7,27 +7,27 @@ Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
 
 var app = angular.module('materialscommons',
-                         [
-                             'ngAnimate',
-                             'ngSanitize',
-                             'ngMessages',
-                             'ui',
-                             'highcharts-ng',
-                             'ngCookies',
-                             'ui.router',
-                             'ngHandsontable',
-                             'btford.socket-io',
-                             'restangular',
-                             'jmdobry.angular-cache',
-                             'validation', 'validation.rule', 'wu.masonry',
-                             'textAngular',
-                             'ngDragDrop',
-                             'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
-                             '$strap.directives', 'ui.bootstrap', 'toastr',
-                             "hljs", "nsPopover", "RecursionHelper",
-                             'application.core.constants', 'application.core.services',
-                             'application.core.controllers',
-                             'application.core.filters', 'application.core.directives']);
+    [
+        'ngAnimate',
+        'ngSanitize',
+        'ngMessages',
+        'ui',
+        'highcharts-ng',
+        'ngCookies',
+        'ui.router',
+        'ngHandsontable',
+        'btford.socket-io',
+        'restangular',
+        'jmdobry.angular-cache',
+        'validation', 'validation.rule', 'wu.masonry',
+        'textAngular', 'angularGrid',
+        'ngDragDrop', 'ngTagsInput',
+        'ng-context-menu', "cfp.hotkeys", 'angular.filter', 'ui.calendar',
+        '$strap.directives', 'ui.bootstrap', 'toastr',
+        "hljs", "nsPopover", "RecursionHelper",
+        'application.core.constants', 'application.core.services',
+        'application.core.controllers',
+        'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
@@ -41,14 +41,15 @@ app.factory('msocket', ["socketFactory", function (socketFactory) {
     return msocket;
 }]);
 
-app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $validationProvider) {
+app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", function ($stateProvider, $validationProvider, $urlRouterProvider) {
 
     mcglobals = {};
     doConfig();
     $stateProvider
     // Navbar
         .state('home', {
-            url: '/home'
+            url: '/home',
+            templateUrl: 'application/core/splash.html'
         })
         .state('login', {
             url: '/login',
@@ -88,14 +89,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: '/settings',
             templateUrl: 'application/core/account/settings.html'
         })
-    //.state('account.usergroup', {
-    //    url: '/usergroup',
-    //    templateUrl: 'application/core/account/usergroups/usergroup.html'
-    //})
-    //.state('account.usergroup.users', {
-    //    url: '/users/:id',
-    //    templateUrl: 'application/core/account/usergroups/users.html'
-    //})
         .state('account.templates', {
             url: '/templates',
             templateUrl: 'application/core/account/templates/templates.html'
@@ -159,12 +152,6 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "projectHome"
         })
-
-    // .state("projects.project.home.provenance", {
-    //     url: "/provenance/:sid",
-    //     templateUrl: 'application/core/projects/project/provenance/create.html',
-    //     controller: "projectProvenanceCreate"
-    // })
         .state("projects.project.new-wizard", {
             url: "/new-wizard",
             templateUrl: "application/core/projects/project/provenance/wizard/wizard.html",
@@ -212,7 +199,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
                 }],
                 category: ["section", "$stateParams", function(section, $stateParams) {
                     var index = _.indexOf(section.categories, function(category) {
-                        return category.category == $stateParams.category;
+                        return category.category === $stateParams.category;
                     });
                     return section.categories[index];
                 }],
@@ -220,7 +207,7 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
                 attribute: ["category", "$stateParams", function(category, $stateParams) {
                     if ($stateParams.attribute) {
                         var index = _.indexOf(category.attributes, function(attribute) {
-                            return attribute.attribute == $stateParams.attribute;
+                            return attribute.attribute === $stateParams.attribute;
                         });
                         return category.attributes[index];
                     } else {
@@ -234,11 +221,15 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             templateUrl: "application/core/projects/project/provenance/new/provenance.html",
             controller: "projectProvenanceController"
         })
-
         .state("projects.project.files", {
             url: "/files",
             templateUrl: "application/core/projects/project/files/files.html",
             controller: "FilesController"
+        })
+        .state("projects.project.files.edit", {
+            url: "/:file_id",
+            templateUrl: "application/core/projects/project/files/edit.html",
+            controller: "FilesEditController"
         })
         .state("projects.project.access", {
             url: "/access",
@@ -251,9 +242,19 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             controller: "projectDrafts"
         })
         .state("projects.project.reviews", {
-            url: "/reviews",
+            url: "/reviews/:category",
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews"
+        })
+        .state("projects.project.reviews.edit", {
+            url: "/edit/:review_id",
+            templateUrl: "application/core/projects/project/reviews/edit.html",
+            controller: "projectEditReview"
+        })
+        .state("projects.project.reviews.create", {
+            url: "/reviews/create",
+            templateUrl: "application/core/projects/project/reviews/create.html",
+            controller: "projectCreateReview"
         })
         .state("projects.project.notes", {
             url: "/notes",
@@ -264,7 +265,15 @@ app.config(["$stateProvider", "$validationProvider", function ($stateProvider, $
             url: "/sideboard",
             templateUrl: "application/core/projects/project/sideboard/sideboard.html",
             controller: "projectSideboard"
+        })
+
+        .state("projects.project.processes", {
+            url: "/processes",
+            templateUrl: "application/core/projects/project/processes/processes.html",
+            controller: "ProcessesController",
+            controllerAs: 'processes'
         });
+    $urlRouterProvider.otherwise('/home');
     createNumericValidator($validationProvider);
     $validationProvider.showSuccessMessage = false;
 

@@ -1,34 +1,38 @@
-<div class="row">
-    <div class="col-xs-3">
-        <div class="pull-left">
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation"><a
-                        ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}"
-                        ng-click="openPanel('calendar')" title="Event Calendar">
-                    <i class="fa fa-fw fa-1x fa-calendar"></i>
-                </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div>
+<!--<div class="row">-->
+    <!--<div class="col-xs-3">-->
+        <!--<div class="pull-left">-->
+            <!--<ul class="nav nav-tabs" role="tablist">-->
+                <!--<li role="presentation"><a-->
+                        <!--ng-class="{'tool-inactive': !showPanel('calendar'), 'tool-active': showPanel('calendar')}"-->
+                        <!--ng-click="openPanel('calendar')" title="Event Calendar">-->
+                    <!--<i class="fa fa-fw fa-1x fa-calendar"></i>-->
+                <!--</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<br>
+<div style="">
     <div class="row" style="padding-left: 15px">
         <div ui-view></div>
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <div class="row" ng-if="showPanel('calendar')">
-                <div home-calendar project="project"></div>
-            </div>
+            <!--<div class="row" ng-if="showPanel('calendar')">-->
+                <!--<div home-calendar project="project"></div>-->
+            <!--</div>-->
             <div home-processes project="project"></div>
-            <div home-files project="project"></div>
+            <div home-reviews project="project"></div>
+            <div home-notes project="project"></div>
         </div>
         <div class="col-xs-6">
             <div home-samples project="project"></div>
-            <div home-reviews project="project"></div>
-            <div home-notes project="project"></div>
+            <div home-files project="project"></div>
+            <div home-calendar project="project"></div>
         </div>
     </div>
 
 </div>
+
+

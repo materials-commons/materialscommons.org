@@ -4,12 +4,12 @@
             style="border-top: none; border-bottom: none;"
             ng-repeat="child in item.children | orderBy:'name' track by child.id">
             <div>
-                <mc-tree-header item="child" show-sideboard="true"></mc-tree-header>
+                <mc-tree-header item="child" show-sideboard="true" attachment="attachment"></mc-tree-header>
 
                 <div ng-if="child.showDetails" style="padding-left: 0px; padding-right: 0px;">
                     <div class="row" style="padding-left: 0px; padding-right: 0px;">
                         <div ng-if="child.type === 'datadir'">
-                            <mc-tree-dir item="child"></mc-tree-dir>
+                            <mc-tree-dir attachment="attachment" item="child"></mc-tree-dir>
                         </div>
                         <!--<div ng-if="child.type === 'datafile'">-->
                             <!--<mc-tree-leaf item="child"></mc-tree-leaf>-->
@@ -19,5 +19,4 @@
             </div>
         </li>
     </ul>
-
 </div>

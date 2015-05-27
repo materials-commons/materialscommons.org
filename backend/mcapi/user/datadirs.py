@@ -10,7 +10,7 @@ from ..import dmutil
 from ..import error
 from ..import validate
 from loader.model import datadir
-from projects import DItem2
+from ..cache import DItem2
 
 
 @app.route('/datadir/<path:datadirid>')
