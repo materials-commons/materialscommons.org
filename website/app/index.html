@@ -23,7 +23,7 @@
     <link href="assets/css/tree-grid.css" rel="stylesheet">
     <link href="assets/css/zenburn.css" rel="stylesheet">
     <link href="assets/css/nzAnimate.css" rel="stylesheet">
-    <link href="assets/css/thumbnail.css" rel="stylesheet">
+    <!--<link href="assets/css/thumbnail.css" rel="stylesheet">-->
     <link href="assets/css/periodic-table.css" rel="stylesheet">
     <link href="assets/css/hotkeys.min.css" rel="stylesheet">
     <link href="assets/css/angular-toastr.css" rel="stylesheet">
@@ -31,7 +31,12 @@
     <link href="assets/css/fullcalendar.css" rel="stylesheet">
     <link href="assets/css/nsPopover.css" rel="stylesheet">
     <link href="assets/css/handsontable.full.css" rel="stylesheet">
+    <link href="assets/css/ng-tags-input.css" rel="stylesheet">
+    <link href="bower_components/ag-grid/dist/angularGrid.css" rel="stylesheet">
+    <link href="bower_components/ag-grid/dist/theme-fresh.css" rel="stylesheet">
+
     <!-- Application style sheet -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900,100,100italic,300italic,400italic,500italic,700italic,900italic' rel='stylesheet' type='text/css'>
     <link href="style-3.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
@@ -84,7 +89,6 @@
 <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.2/masonry.pkgd.min.js"></script>
-<script src="//desandro.github.io/imagesloaded/imagesloaded.pkgd.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-sanitize.min.js"></script>
@@ -122,6 +126,7 @@
 <script src="assets/js/angular/angular-highlightjs.min.js"></script>
 <script src="assets/js/angular/angular-ui-router.min.0.2.11.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>
 <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
 <script src="assets/js/angular/draganddrop.js"></script>
 <script src="assets/js/angular/hotkeys.min.js"></script>
@@ -143,6 +148,8 @@
 <script src="assets/js/angular/angular-recursion.min.js"></script>
 <script src="bower_components/angular-validation/dist/angular-validation.js"></script>
 <script src="bower_components/angular-validation/dist/angular-validation-rule.js"></script>
+<script src="bower_components/ag-grid/dist/angularGrid.js"></script>
+<script src="assets/js/ng-tags-input.js"></script>
 <!-- endbuild -->
 
 <!-- build:appjs js/app.js -->
@@ -191,7 +198,6 @@
 <script src="application/core/projects/project/home/directives/home-processes.js"></script>
 <script src="application/core/projects/project/home/directives/home-notes-directive.js"></script>
 <script src="application/core/projects/project/home/directives/home-tasks-directive.js"></script>
-<script src="application/core/projects/project/home/directives/home-tags-directive.js"></script>
 <script src="application/core/projects/project/home/directives/home-note-details.js"></script>
 <script src="application/core/projects/project/home/directives/home-review-details.js"></script>
 <script src="application/core/projects/project/home/directives/home-process-details.js"></script>
@@ -200,6 +206,7 @@
 <script src="application/core/projects/project/samples/samples.js"></script>
 <script src="application/core/projects/project/samples/create.js"></script>
 <script src="application/core/projects/project/samples/sample-from-template.js"></script>
+<script src="application/core/projects/project/processes/processes-controller.js"></script>
 <script src="application/core/projects/project/processes/process-network-view.js"></script>
 <script src="application/core/projects/project/processes/process-check-service.js"></script>
 <script src="application/core/projects/project/project-size-filter.js"></script>
@@ -222,13 +229,19 @@
 <script src="application/core/projects/project/provenance/custompop-over.js"></script>
 
 <script src="application/core/projects/project/files/files-controller.js"></script>
+<script src="application/core/projects/project/files/file-edit-controller.js"></script>
 <script src="application/core/projects/project/access/access-controller.js"></script>
 <script src="application/core/projects/project/drafts/drafts-controller.js"></script>
 <script src="application/core/projects/project/reviews/reviews-controller.js"></script>
-<script src="application/core/projects/project/reviews/create-review.js"></script>
+<script src="application/core/projects/project/reviews/review-create-controller.js"></script>
+<script src="application/core/projects/project/reviews/review-edit-controller.js"></script>
+<script src="application/core/projects/project/reviews/modal-instance-directive.js"></script>
 <script src="application/core/projects/project/notes/notes-controller.js"></script>
 <script src="application/core/projects/project/notes/create-note.js"></script>
 <script src="application/core/projects/project/sideboard/sideboard-controller.js"></script>
+<script src="application/core/projects/project/modal/files-modal-controller.js"></script>
+<script src="application/core/projects/project/modal/process-modal-controller.js"></script>
+<script src="application/core/projects/project/modal/samples-modal-controller.js"></script>
 
 <script src="application/core/projects/project/tab-control-bar.js"></script>
 <script src="application/core/projects/project/project-description-directive.js"></script>

@@ -1,44 +1,19 @@
-<div class="panel panel-primary">
-    <div class="panel-heading notes-color home-panel-heading">
-        <i class="fa fa-fw fa-edit bold"></i>
-        <span>
-                Notes
-            ({{notes.length}})
-        </span>
-        <span ng-if="false" class="pull-right bar-control">
-            <a ng-click="splitScreen('notes', 'column2')">
-                <i class="fa fa-fw"
-                   ng-class="{'fa-columns': !isSplitExpanded(), 'fa-close mc-danger': isSplitExpanded()}"></i>
-            </a>
-            <a ng-click="minimize()">
-                <i class="fa fa-fw fa-minus"></i>
-            </a>
-            <a ng-click="toggleExpanded()">
-                <i class="fa fa-fw"
-                   ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
-            </a>
-        </span>
-        <input type="text" ng-model="search" class="pull-right col-xs-4"
-               placeholder="Search notes...">
-        <span class="add-item pull-right">
-            <a  ng-click="createNote()" title="Add Note">
-                <i class="fa fa-fw fa-plus"></i>
-            </a>
-        </span>
-    </div>
-    <div class="panel-body home-panel-body">
-        <ul class="list-unstyled">
-            <li style="padding-top:10px;" ng-show="model.createNote">
-                <create-note model="model"></create-note>
-            </li>
-            <li class="home-item"
-                ng-class="{'open-item-details': showDetails($index)}"
-                ng-repeat="note in project.notes | filter:search | event:project.date:project.nextdate as notes">
-                <display-note note="note" show-sideboard="true"></display-note>
-            </li>
-            <li ng-show="notes.length === 0" class="home-item">
-                <div>No notes.</div>
-            </li>
-        </ul>
+<div class="row">
+    <div class="panel card" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
+        <div class="panel-heading" style="padding-top: 20px;">
+            <img style="height: 35px;padding-bottom: 10px;"
+                 src="assets/img/splash/note_icon.png">
+            <span style="color: #7DAF50; font-size: 20px;padding-left: 15px;">NOTE</span>
+        </div>
+        <div class="panel-body"
+             ng-class="{'no-max-height': isExpanded()}">
+            <div ng-if="project.notes.length!== 0" style="width: 100%;height:100%"
+                 angular-grid="gridOptions"
+                 class="ag-fresh ag-basic">
+            </div>
+            <div ng-if="project.notes.length === 0">
+                <p style="padding-left:20px;">No Notes.</p>
+            </div>
+        </div>
     </div>
 </div>

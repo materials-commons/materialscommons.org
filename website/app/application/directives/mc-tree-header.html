@@ -1,44 +1,27 @@
-<div class="tree-row">
-    <div ui-draggable="true" drag="item">
+<div class="tree-row" ng-class="{'active-file': activeFile.id === item.id}">
+    <div ng-mouseenter="show= true" ng-mouseleave="show = false" ui-draggable="true" drag="item">
         <span ng-click="item.showDetails = !item.showDetails"
               style="cursor: pointer;">
-            <i class="fa fa-fw"
-               ng-class="{'fa-caret-right': item.type === 'datadir' && !item.showDetails, 'fa-caret-down': item.type === 'datadir' && item.showDetails}"></i>
-            <i class="fa fa-fw fa-folder" style="color: #256188"
-               ng-class="{'fa-folder': item.type === 'datadir', 'fa-file': item.type === 'datafile'}"></i>
+            <b style="color: #D2C4D5"><i class="fa fa-fw"
+                                         ng-class="{'fa-folder ': item.type === 'datadir' && !item.showDetails, 'fa-folder-open': item.type === 'datadir' && item.showDetails}"></i>
+            </b>
+            <i style="color: #BFBFBF" ng-class="{'fa fa-fw fa-file': item.type === 'datafile'}"></i>
             <span ng-if="item.type !== 'datafile'" data-toggle="tooltip" data-placement="top" title="{{item.fullname}}"
                   style="color: #389dc1"
                   ui-draggable="true" drag="item">{{::item.displayname}}</span>
-            <span ng-if="item.type === 'datafile'"  title="{{item.fullname}}"
-                  style="color: #389dc1"    ng-click="openFile(item)"
-                  ui-draggable="true" drag="item">{{::item.displayname}}</span>
-        </span>
-        <span class="pull-right">
-            <span ng-if="item.type === 'datafile'">
-                <a ng-if="showSideboard"
-                   ng-click="addToSideboard(item, $event)"
-                   id="{{item.id}}">
-                    <i class="fa fa-fw fa-clipboard inactive"></i>
-                </a>
+            <span ng-if="item.type === 'datafile'" title="{{item.fullname}}"
+                  style="color: #389dc1" ng-click="openFile(item)"
+                  ui-draggable="true" drag="item">{{::item.displayname}}
 
-                <a title="{{tooltip}}"
-                   ng-href="{{downloadSrc(item)}}"
-                   download="{{item.name}}">
-                    <i class="fa fa-fw" ng-class="faClass"></i>
-                </a>
-                <a ng-if="!showSideboard"
-                   ng-click="addToSideboard(item, $event)">
-                    <i class="fa fa-fw fa-close mc-danger"></i>
-                </a>
             </span>
-            <span style="padding-rightx: 13px;">
+            <span class="pull-right"><input ng-click="addItem()" ng-checked="item.selected" type="checkbox"></span>
+        </span>
+        <span ng-show="show" class="pull-right">
                 <a title="New Folder" ng-click="item.addFolder = !item.addFolder">
                     <i ng-if="item.type === 'datadir'"
                        class="fa fa-fw fa-plus"></i>
                 </a>
-                <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
-            </span>
-
+            <mc-flow-button dir="item" ng-if="item.type === 'datadir'"></mc-flow-button>
         </span>
 
         <div class="row" ng-if="item.addFolder">
@@ -56,15 +39,6 @@
             </button>
         </div>
     </div>
-    <p>
-        <span class="label label-info" ng-repeat="tag in ::item.tags" style="margin-right: 5px">
-            <i class="fa"
-               ng-class="'fa-' + tag.icon"
-               style="color: {{tag.color}}">
-            </i>
-            {{::tag.name}}
-        </span>
-    </p>
 
     <p style="padding-left: 15px;" ng-if="item.type === 'datafile'">
         <button ng-if="isActive('files','addToReview')"
@@ -75,13 +49,5 @@
                 class="btn btn-xs btn-mini btn-success"
                 ng-click="addItem('process', item)">Add to process
         </button>
-    </p>
-    <p ui-draggable="true" drag="item" style="padding-left: 15px;">
-        <small ng-if="item.type === 'datafile'" class="text-muted" style="margin-right: 10px;">
-            {{::item.size | bytes}}
-        </small>
-        <small class="text-muted" style="margin-right: 10px">
-            {{::item.birthtime | toDateString}}
-        </small>
     </p>
 </div>
