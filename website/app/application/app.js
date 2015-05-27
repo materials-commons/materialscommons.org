@@ -301,9 +301,9 @@ function createNumericValidator(validationProvider) {
     validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
 }
 
-app.run(["$rootScope", "User", "Restangular", appRun]);
+app.run(["$rootScope", "User", "Restangular","pubsub", "recent",appRun]);
 
-function appRun($rootScope, User, Restangular) {
+function appRun($rootScope, User, Restangular, pubsub,recent) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
