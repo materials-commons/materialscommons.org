@@ -2070,7 +2070,7 @@ input[type="checkbox"]:focus {
 }
 
 .fa-download {
-  color: #3ea7a0;
+  color: #9782be;
 }
 
 .fa-upload {
@@ -2409,10 +2409,15 @@ header {
   padding-left: 15px;
 }
 
+.review{
+  color:#FDB600;
+}
+.file{
+  color: #9782be;;
+}
 .details-main-content .headings {
   font-size: 16px;
   font-weight: 400;
-  color: #FDB600;
   text-transform: uppercase;
   line-height: 24px;
 }

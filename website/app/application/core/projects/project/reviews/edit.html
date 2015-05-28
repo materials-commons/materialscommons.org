@@ -1,13 +1,13 @@
 <div class="details-main-content">
     <div ng-if="review.status === 'closed'" class="row">
-        <i ng-class="{'fa-minus-circle review-closed': review.status === 'closed'}" class="fa fa-fw"></i><span class="headings" style="color: #e57373">closed</span>
+        <i ng-class="{'fa-minus-circle review-closed': review.status === 'closed'}" class="fa fa-fw"></i><span class="review headings" style="color: #e57373">closed</span>
     </div>
     <div class="row" style="padding: 10px;color: #C0C0C0">
         {{(review.messages[(review.messages.length -1)].date)}}
     </div>
     <div class="row">
         <div class="col-xs-5">
-            <div class="headings">Requested By</div>
+            <div class="review headings">Requested By</div>
             <div style="padding-left: 10px; ">
                         <span class="fa-stack fa-lg">
                             <i style="color: #C0C0C0" class="fa fa-circle fa-stack-2x"></i>
@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-xs-5 col-xs-offset-1">
-            <div class="headings">Assigned To</div>
+            <div class="review headings">Assigned To</div>
                         <span class="fa-stack fa-lg">
                             <i style="color: #C0C0C0" class="fa fa-circle fa-stack-2x"></i>
                             <i style="color: white;" class="fa fa-user fa-stack-1x"></i>
@@ -44,7 +44,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="headings">Attachments</div>
+            <div class="review headings">Attachments</div>
 
             <div class="row" ng-repeat="attachment in review.attachments">
                 <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
@@ -61,7 +61,7 @@
     <hr class="divider"/>
     <div class="row">
         <div class="col-xs-12">
-            <div class="headings">Comments</div>
+            <div class="review headings">Comments</div>
             <div>
                 <ul class="list-group">
                     <li class="list-group-item" style="border: none;" ng-repeat="message in review.messages">

@@ -227,7 +227,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "FilesController"
         })
         .state("projects.project.files.edit", {
-            url: "/:file_id",
+            url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
             controller: "FilesEditController"
         })
