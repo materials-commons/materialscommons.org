@@ -35,6 +35,7 @@ function FilesEditController($scope, $stateParams, projectFiles, User,mcfile, pu
 
     function getActiveFile() {
         $scope.activeFile = projectFiles.getActiveFile();
+        console.log($scope.activeFile);
         if (isImage($scope.activeFile.mediatype)) {
             $scope.fileType = "image";
         } else if ($scope.activeFile.mediatype === "application/pdf") {
@@ -49,6 +50,7 @@ function FilesEditController($scope, $stateParams, projectFiles, User,mcfile, pu
     }
     function init() {
         if ($stateParams.file_id) {
+            console.log($stateParams.file_id);
             getActiveFile();
         } else {
             $scope.activeFile = '';
