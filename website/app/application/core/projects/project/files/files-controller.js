@@ -1,15 +1,13 @@
 Application.Controllers.controller("FilesController",
     ["$scope", "projectFiles", "applySearch",
-        "pubsub", "mcfile", "$state", FilesController]);
+        "pubsub", "mcfile", "$state", "pubsub", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
-                         $filter, mcfile, $state) {
+                         $filter, mcfile, $state, pubsub) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
     $scope.files = [f];
-
     applySearch($scope, "searchInput", applyQuery);
-
 
     function applyQuery() {
         var search = {
@@ -29,18 +27,17 @@ function FilesController($scope, projectFiles, applySearch,
         return mcfile.src(file.id);
     };
     var columnDefs = [
-        {
-            displayName: "",
-            field: "name",
-            width: 350,
-            cellClicked: cellClicked,
-            cellRenderer: function (params) {
-                return '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
-                    '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
-                    params.node.name + '</a></span>';
-            }
-        }
-    ];
+            {
+                displayName: "",
+                field: "name",
+                width: 350,
+                cellClicked: cellClicked,
+                cellRenderer: function (params) {
+                    return '<i style="color: #BFBFBF;"  class="fa fa-fw fa-file"></i><span>' +
+                        '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
+                        params.node.name + '</a></span>';
+                }
+            }];
 
     $scope.gridOptions = {
         columnDefs: columnDefs,
@@ -54,7 +51,6 @@ function FilesController($scope, projectFiles, applySearch,
         icons: {
             groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
-
         },
         groupInnerCellRenderer: groupInnerCellRenderer
     };
@@ -62,6 +58,7 @@ function FilesController($scope, projectFiles, applySearch,
         var template = params.node.type === 'datadir' ? params.node.displayname : 'File';
         return template;
     }
+
     function cellClicked(params) {
         projectFiles.setActiveFile(params.node);
         $state.go('projects.project.files.edit', {'file_id': params.node.df_id});

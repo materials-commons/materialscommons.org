@@ -51,7 +51,7 @@ function createNoteDirectiveController($scope, User, mcapi, projectState,
         };
         switch ($scope.itemType) {
             case "datafile":
-                mcapi('/datafile/%/note', $scope.item.id)
+                mcapi('/datafile/%/note', $scope.item.df_id)
                     .success(function (note) {
                         $scope.item.notes = [note];
                         projectFiles.setActiveFile($scope.item);
