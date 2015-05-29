@@ -26,5 +26,5 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     signal.signal(signal.SIGHUP, reload_users)
     conn = mcdb_connect()
-    cache.load_project_tree_cache(conn)
+    # cache.load_project_tree_cache(conn)
     app.run(debug=True, host=_HOST, port=int(options.port), processes=5)

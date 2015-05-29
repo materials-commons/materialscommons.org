@@ -27,8 +27,8 @@ def load_project_tree_cache(conn):
 
 
 def get_project_tree(project_id):
-    if project_id in project_tree_cache:
-        return project_tree_cache[project_id]
+    # if project_id in project_tree_cache:
+    #     return project_tree_cache[project_id]
 
     if gconn is not None:
         conn = gconn
@@ -129,17 +129,17 @@ def build_tree(datadirs):
             dfitem.notes = df['notes']
             dfitem.group = False
             # data dict() is used during  checkbox selection using angularGrid
-            data = dict()
-            data['name'] = dfitem.name
-            data['owner'] = dfitem.owner
-            data['type'] = dfitem.type
-            data['mediatype'] = dfitem.mediatype
-            data['tags'] = dfitem.tags
-            data['notes'] = dfitem.notes
-            data['birthtime'] = dfitem.birthtime
-            data['id'] = dfitem.id
-            data['path'] = dfitem.fullname
-            dfitem.data = data
+            # data = dict()
+            # data['name'] = dfitem.name
+            # data['owner'] = dfitem.owner
+            # data['type'] = dfitem.type
+            # data['mediatype'] = dfitem.mediatype
+            # data['tags'] = dfitem.tags
+            # data['notes'] = dfitem.notes
+            # data['birthtime'] = dfitem.birthtime
+            # data['id'] = dfitem.id
+            # data['path'] = dfitem.fullname
+            # dfitem.data = data
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
             elif 'mime' not in df['mediatype']:
