@@ -66,8 +66,8 @@
 
                 <div class="row" ng-show="!bk.editNote">
                     <div class="col-xs-3">Title:</div>
-                    <div ng-if="activeFile.notes" class="col-xs-8">{{activeFile.notes[0].title}}</div>
-                    <div class="col-xs-11" ta-bind ng-model="activeFile.notes[0].note"></div>
+                    <div class="col-xs-8">{{activeFile.notes[0].title}}</div>
+                    <div ng-if="activeFile.notes.length !== 0" class="col-xs-11" ta-bind ng-model="activeFile.notes[0].note"></div>
                 </div>
                 <div class="row" ng-show="bk.editNote">
                     <create-note item-type="datafile" item="activeFile"></create-note>
@@ -76,7 +76,7 @@
             <div class="file headings">tag</div>
             <div class="row" style="padding: 10px;">
                 <div class="row">
-                    <tags-input on-tag-added="addTag($tag)" display-property="id"
+                    <tags-input on-tag-added="addTag($tag)" display-property="tag_id"
                                 on-tag-removed="removeTag($tag)" ng-model="activeFile.tags"
                                 placeholder="Add a Tag" replace-spaces-with-dashes="false">
                         <!--<auto-complete source="loadMovies($query)"-->

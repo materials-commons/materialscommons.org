@@ -27,8 +27,6 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             width: 350,
             checkboxSelection: true,
             cellClicked: cellClicked,
-            //template: '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
-            //'<a data-toggle="tooltip" data-placement="top" title="{{displayname}}">ABC</a></span>'
             cellRenderer: function (params) {
                 return '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
                     '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
