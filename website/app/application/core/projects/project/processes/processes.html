@@ -11,29 +11,6 @@
                 </div>
             </nav>
         </div>
-
-        <div class="row" style="margin-top: 20px;">
-            <div class="col-xs-4">
-                <div class="details-sidebar">
-                    <div class="row">
-                        <div style="text-align: center; margin-top: 20px;">
-                            <button class="btn-details-container btn-process btn btn-default"> create</button>
-                        </div>
-                    </div>
-                    <ul class="list-group" style="">
-                        <li class="list-group-item pointer"
-                            ng-repeat="process in processes.all | filter:search"
-                            ng-class="{active: current.id === process.id}"
-                            ui-sref="projects.project.process.edit({'process_id': process.id})">
-                            {{process.name}}
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-            <div class="col-xs-8" stylex="margin-left: 10px;">
-                <div ui-view></div>
-            </div>
-        </div>
+        <div ui-view></div>
     </div>
 </div>
