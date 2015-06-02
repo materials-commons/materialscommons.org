@@ -1,0 +1,132 @@
+<div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-xs-4">
+            <div class="details-sidebar">
+                <div class="row">
+                    <div class="col-xs-8" style="margin-top: 10px;">
+                        <h4 class="text-center process">{{template}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <b>Process Information</b>
+
+                        <div><label>Name:</label>{{model.process_info.name}}</div>
+                        <div><label>Description:</label>{{model.process_info.description}}</div>
+                    </div>
+                </div>
+                <hr class="divider"/>
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <b>Set Up</b>
+                    </div>
+                </div>
+                <hr class="divider"/>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <b>Sample Measurements</b>
+                    </div>
+                </div>
+                <hr class="divider"/>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <b>Attachments</b>
+
+                        <div class="row" ng-repeat="attachment in model.attachments">
+                            <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                            <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png"
+                                 style="height: 40px;padding-bottom: 10px;">
+                            <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png"
+                                 style="height: 40px;padding-bottom: 10px;">
+                            <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png"
+                                 style="height: 40px;padding-bottom: 10px;">
+                            <a ng-click="openDetails(attachment)" class="link pointer"
+                               style="padding-left: 15px;">{{attachment.name}}</a>
+                        </div>
+                    </div>
+                </div>
+                <hr class="divider"/>
+            </div>
+        </div>
+        <div class="col-xs-8 details-main-content" stylex="margin-left: 10px;">
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="process headings">process information</div>
+                    <br>
+
+                    <div class="row process-form ">
+                        <input class="col-xs-10" class="form-control" ng-model="model.process_info.name"
+                               placeholder="Process Name">
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <input class="col-xs-10" class="form-control" ng-model="model.process_info.description"
+                               placeholder="Description">
+                    </div>                                          Ruyi.Hao@rndsystems.com
+                    <br>
+
+                    <div class="row">
+                        <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a>Setup</a></span>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a>Measurement</a></span>
+                    </div>
+                    <br>
+
+                    <!--<div style="color:#3a9ee3" class="row">-->
+                        <!--<i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a>Sample</a></span>-->
+                    <!--</div>-->
+                    <!--<br>-->
+                    <hr class="divider"/>
+                    <div class="row">
+                        <div class="col-xs-12 process headings">Attachment</div>
+                        <div class="row" style="padding: 15px;">
+                            <br>
+                            <button ng-click="open('lg')"
+                                    style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 "
+                                    class="btn btn-default"><i
+                                    class="fa fa-fw fa-plus"></i> ADD
+                            </button>
+                            <br><br>
+
+                            <div class="row" ng-repeat="attachment in model.attachments">
+                                <div class="col-xs-5">
+                                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                                    <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png"
+                                         style="height: 40px;padding-bottom: 10px;">
+                                    <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png"
+                                         style="height: 40px;padding-bottom: 10px;">
+                                    <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png"
+                                         style="height: 40px;padding-bottom: 10px;">
+                                    <a ng-click="openDetails(attachment)" class="link pointer"
+                                       style="padding-left: 15px;">{{attachment.name}}</a>
+                                    <i ng-click="removeAttachment(attachment)"
+                                       class="fa fa-fw fa-close pull-right pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <br>
+
+                        <div class="col-xs-3">
+                            <button ng-click="cancel()" class="btn-details-container btn btn-default btn btn-cancel">
+                                Cancel
+                            </button>
+                        </div>
+                        <div class="col-xs-3">
+                            <button ng-click="createProcess()"
+                                    class=" btn btn-default btn-process  btn-details-container">Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

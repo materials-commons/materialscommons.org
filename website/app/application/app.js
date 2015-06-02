@@ -178,12 +178,12 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "createProvenanceFromTemplate",
             resolve: {
                 template: ["templates", "$stateParams", "templateConstructer",
-                           function(templates, $stateParams, templateConstructer) {
-                               var index = _.indexOf(templates, function(template) {
-                                   return template.id === $stateParams.template_id;
-                               });
-                               return index === -1 ? {} : templateConstructer.constructTemplate(templates[index]);
-                           }]
+                    function (templates, $stateParams, templateConstructer) {
+                        var index = _.indexOf(templates, function (template) {
+                            return template.id === $stateParams.template_id;
+                        });
+                        return index === -1 ? {} : templateConstructer.constructTemplate(templates[index]);
+                    }]
             }
         })
         .state("projects.project.new-wizard.create-process.edit", {
@@ -191,22 +191,22 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: "application/core/projects/project/provenance/wizard/edit.html",
             controller: "createProvenanceEdit",
             resolve: {
-                section: ["template", "$stateParams", function(template, $stateParams) {
-                    var index = _.indexOf(template.sections, function(section) {
+                section: ["template", "$stateParams", function (template, $stateParams) {
+                    var index = _.indexOf(template.sections, function (section) {
                         return section.name === $stateParams.section;
                     });
                     return template.sections[index];
                 }],
-                category: ["section", "$stateParams", function(section, $stateParams) {
-                    var index = _.indexOf(section.categories, function(category) {
+                category: ["section", "$stateParams", function (section, $stateParams) {
+                    var index = _.indexOf(section.categories, function (category) {
                         return category.category === $stateParams.category;
                     });
                     return section.categories[index];
                 }],
 
-                attribute: ["category", "$stateParams", function(category, $stateParams) {
+                attribute: ["category", "$stateParams", function (category, $stateParams) {
                     if ($stateParams.attribute) {
-                        var index = _.indexOf(category.attributes, function(attribute) {
+                        var index = _.indexOf(category.attributes, function (attribute) {
                             return attribute.attribute === $stateParams.attribute;
                         });
                         return category.attributes[index];
@@ -266,13 +266,23 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: "application/core/projects/project/sideboard/sideboard.html",
             controller: "projectSideboard"
         })
-
         .state("projects.project.processes", {
             url: "/processes",
             templateUrl: "application/core/projects/project/processes/processes.html",
             controller: "ProcessesController",
             controllerAs: 'processes'
+        })
+        .state("projects.project.processes.list", {
+            url: "/list",
+            templateUrl: "application/core/projects/project/processes/list.html",
+            controller: "ProcessListController"
+        })
+        .state("projects.project.processes.create", {
+            url: "/create",
+            templateUrl: "application/core/projects/project/processes/create.html",
+            controller: "ProcessCreateController"
         });
+
     $urlRouterProvider.otherwise('/home');
     createNumericValidator($validationProvider);
     $validationProvider.showSuccessMessage = false;
@@ -301,9 +311,9 @@ function createNumericValidator(validationProvider) {
     validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
 }
 
-app.run(["$rootScope", "User", "Restangular","pubsub", "recent",appRun]);
+app.run(["$rootScope", "User", "Restangular", "pubsub", "recent", appRun]);
 
-function appRun($rootScope, User, Restangular, pubsub,recent) {
+function appRun($rootScope, User, Restangular, pubsub, recent) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {

@@ -1,6 +1,7 @@
 Application.Controllers.controller('ProcessesController',
-                                   ["$scope", "project", ProcessesController]);
+    ["$scope", "project", "$state", ProcessesController]);
 
-function ProcessesController($scope, project) {
+function ProcessesController($scope, project, $state) {
     this.all = project.processes;
+    $state.go('projects.project.processes.list');
 }
