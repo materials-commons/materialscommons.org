@@ -11,8 +11,8 @@
                     <div class="col-xs-8">
                         <b>Process Information</b>
 
-                        <div><label>Name:</label>{{model.process_info.name}}</div>
-                        <div><label>Description:</label>{{model.process_info.description}}</div>
+                        <div><label>What:</label>{{model.process_info.what}}</div>
+                        <div><label>Why:</label>{{model.process_info.why}}</div>
                     </div>
                 </div>
                 <hr class="divider"/>
@@ -25,24 +25,32 @@
                 <hr class="divider"/>
                 <div class="row">
                     <div class="col-xs-8">
-                        <b>Sample Measurements</b>
+                        <b>Samples</b>
+
+                        <div class="row" ng-repeat="attachment in model.attachments">
+                            <div ng-if="attachment.type === 'sample'">
+                                <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                                <img src="assets/img/splash/sample_icon.png"
+                                     style="height: 40px;padding-bottom: 10px;">
+                                <a ng-click="openDetails(attachment)" class="link pointer"
+                                   style="padding-left: 15px;">{{attachment.name}}</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr class="divider"/>
                 <div class="row">
                     <div class="col-xs-8">
-                        <b>Attachments</b>
+                        <b>Files</b>
 
                         <div class="row" ng-repeat="attachment in model.attachments">
-                            <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                            <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png"
-                                 style="height: 40px;padding-bottom: 10px;">
-                            <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png"
-                                 style="height: 40px;padding-bottom: 10px;">
-                            <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png"
-                                 style="height: 40px;padding-bottom: 10px;">
-                            <a ng-click="openDetails(attachment)" class="link pointer"
-                               style="padding-left: 15px;">{{attachment.name}}</a>
+                            <div ng-if="attachment.type === 'datafile'">
+                                <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                                <img src="assets/img/splash/file_icon.png"
+                                     style="height: 40px;padding-bottom: 10px;">
+                                <a ng-click="openDetails(attachment)" class="link pointer"
+                                   style="padding-left: 15px;">{{attachment.name}}</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -54,31 +62,27 @@
                 <div class="col-xs-8">
                     <div class="process headings">process information</div>
                     <br>
-
-                    <div class="row process-form ">
-                        <input class="col-xs-10" class="form-control" ng-model="model.process_info.name"
-                               placeholder="Process Name">
+                    What did you do ?
+                    <div class="row">
+                        <textarea placeholder="What" ng-model="model.process_info.what" class="form-control col-xs-8">
+                        </textarea>
+                    </div>
+                    <br>
+                    Why did you do?
+                    <div class="row">
+                        <textarea placeholder="Why" ng-model="model.process_info.what" class="form-control col-xs-8">
+                        </textarea>
                     </div>
                     <br>
 
                     <div class="row">
-                        <input class="col-xs-10" class="form-control" ng-model="model.process_info.description"
-                               placeholder="Description">
-                    </div>
-                    <br>
-
-                    <div class="row">
-                        <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a ng-click="setUp()">Setup</a></span>
-                    </div>
-                    <br>
-
-                    <div class="row">
-                        <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a>Measurement</a></span>
+                        <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a
+                            ng-click="">Setup</a></span>
                     </div>
                     <br>
                     <hr class="divider"/>
                     <div class="row">
-                        <div class="col-xs-12 process headings">Attachment</div>
+                        <div class="col-xs-12 process headings">Samples</div>
                         <div class="row" style="padding: 15px;">
                             <br>
                             <button ng-click="open('lg')"
@@ -89,13 +93,41 @@
                             <br><br>
 
                             <div class="row" ng-repeat="attachment in model.attachments">
-                                <div class="col-xs-5">
+                                <div ng-if="attachment.type === 'sample'" class="col-xs-12">
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                                    <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png"
+                                    <img src="assets/img/splash/sample_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png"
-                                         style="height: 40px;padding-bottom: 10px;">
-                                    <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png"
+                                    <a ng-click="openDetails(attachment)" class="link pointer"
+                                       style="padding-left: 15px;">{{attachment.name}}</a>
+                                    <span style="padding-left: 20px">
+                                        <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span
+                                            style="color:#3a9ee3"><a
+                                            ng-click="addMeasurement(attachment)">Measurement</a></span>
+
+                                    </span>
+                                    <i ng-click="removeAttachment(attachment)"
+                                       class="fa fa-fw fa-close pull-right pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="divider"/>
+                    <div class="row">
+                        <div class="col-xs-12 process headings">Files</div>
+                        <div class="row" style="padding: 15px;">
+                            <br>
+                            What files are used by this process? <br>
+                            <button ng-click="open('lg')"
+                                    style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 "
+                                    class="btn btn-default"><i
+                                    class="fa fa-fw fa-plus"></i> ADD
+                            </button>
+                            <br><br>
+
+                            <div class="row" ng-repeat="attachment in model.attachments">
+                                <div ng-if="attachment.type === 'datafile'" class="col-xs-5">
+                                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                                    <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer"
                                        style="padding-left: 15px;">{{attachment.name}}</a>
@@ -103,6 +135,26 @@
                                        class="fa fa-fw fa-close pull-right pointer"></i>
                                 </div>
                             </div>
+                            What files are produced by this process?<br>
+                            <button ng-click="open('lg')"
+                                    style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 "
+                                    class="btn btn-default"><i
+                                    class="fa fa-fw fa-plus"></i> ADD
+                            </button>
+                            <br><br>
+
+                            <div class="row" ng-repeat="attachment in model.attachments">
+                                <div ng-if="attachment.type === 'datafile'" class="col-xs-5">
+                                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                                    <img src="assets/img/splash/file_icon.png"
+                                         style="height: 40px;padding-bottom: 10px;">
+                                    <a ng-click="openDetails(attachment)" class="link pointer"
+                                       style="padding-left: 15px;">{{attachment.name}}</a>
+                                    <i ng-click="removeAttachment(attachment)"
+                                       class="fa fa-fw fa-close pull-right pointer"></i>
+                                </div>
+                            </div>
+                            <br><br>
                         </div>
                     </div>
 
