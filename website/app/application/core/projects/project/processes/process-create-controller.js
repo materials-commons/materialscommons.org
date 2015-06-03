@@ -11,7 +11,7 @@ function ProcessCreateController($scope, project, $state, Template, $modal, pubs
         items: ''
     };
     $scope.model = {
-        process_info: {name: '', description: ''},
+        process_info: {what: '', why:''},
         measurements: [],
         samples: {},
         attachments: []
@@ -39,6 +39,27 @@ function ProcessCreateController($scope, project, $state, Template, $modal, pubs
             $scope.model.attachments.splice(i, 1);
         }
     }
+
+    $scope.addMeasurement = function(sample){
+            $scope.modal = {
+                instance: null,
+                items: [sample]
+            };
+
+            $scope.modal.instance = $modal.open({
+                size: 'lg',
+                templateUrl: 'application/core/projects/project/processes/measurements.html',
+                controller: 'MeasurementController',
+                resolve: {
+                    modal: function () {
+                        return $scope.modal;
+                    },
+                    project: function () {
+                        return $scope.project;
+                    }
+                }
+            });
+    };
 
     $scope.open = function (size) {
         $scope.modal.instance = $modal.open({
