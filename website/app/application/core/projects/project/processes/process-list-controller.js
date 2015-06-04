@@ -1,10 +1,8 @@
-Application.Controllers.controller('ProcessListController',
-    ["$scope", "project", "$state","$modal", ProcessListController]);
+Application.Controllers.controller('projectListProcess',
+    ["$scope", "project", "$state","$modal", projectListProcess]);
 
-function ProcessListController($scope, project, $state, $modal) {
+function projectListProcess($scope, project, $stateParams, $modal) {
     this.all = project.processes;
-    $state.go('projects.project.processes.list');
-
     $scope.chooseTemplate = function () {
         $scope.modal = {
             instance: null,
