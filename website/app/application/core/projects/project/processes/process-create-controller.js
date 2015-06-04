@@ -1,7 +1,7 @@
-Application.Controllers.controller('ProcessCreateController',
-    ["$scope", "project", "$state", "Template", "$modal", "pubsub",ProcessCreateController]);
+Application.Controllers.controller('projectCreateProcess',
+    ["$scope", "project", "$state", "Template", "$modal", "pubsub",projectCreateProcess]);
 
-function ProcessCreateController($scope, project, $state, Template, $modal, pubsub) {
+function projectCreateProcess($scope, project, $state, Template, $modal, pubsub) {
     $state.go('projects.project.processes.create');
 
     $scope.template = Template.getActiveTemplate();
