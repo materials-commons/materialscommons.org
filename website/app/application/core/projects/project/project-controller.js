@@ -53,7 +53,6 @@ function projectsProject ($scope, provStep, ui, project, current,
             .success(function(files){
                 var obj = {};
                 obj.dir = files[0];
-                console.dir(obj.dir);
                 projectFiles.model.projects[project.id] = obj;
                 projectFiles.loadByMediaType(project);
                 $scope.loaded = true;

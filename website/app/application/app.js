@@ -269,18 +269,18 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.processes", {
             url: "/processes",
             templateUrl: "application/core/projects/project/processes/processes.html",
-            controller: "ProcessesController",
+            controller: "projectProcesses",
             controllerAs: 'processes'
         })
         .state("projects.project.processes.list", {
             url: "/list",
             templateUrl: "application/core/projects/project/processes/list.html",
-            controller: "ProcessListController"
+            controller: "projectListProcess"
         })
         .state("projects.project.processes.create", {
             url: "/create",
             templateUrl: "application/core/projects/project/processes/create.html",
-            controller: "ProcessCreateController"
+            controller: "projectCreateProcess"
         });
 
     $urlRouterProvider.otherwise('/home');

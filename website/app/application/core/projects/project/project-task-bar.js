@@ -67,7 +67,11 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
 
     $scope.toggleExpanded = function (panel) {
         $scope.activePage = ui.setActivePage($scope.project.id, panel);
-        $state.go('projects.project.' + panel);
+        if (panel === 'processes'){
+            $state.go('projects.project.processes.list');
+        }else{
+            $state.go('projects.project.' + panel);
+        }
     };
 
 
