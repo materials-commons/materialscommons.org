@@ -29,6 +29,19 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         addAttachment(file);
     });
 
+    pubsub.waitOn($scope, 'addMeasurementToSample', function (sample) {
+        addMeasurementToSample(sample);
+    });
+
+    function addMeasurementToSample(sample){
+        var i = _.indexOf($scope.model.attachments.samples, function (entry) {
+            return sample.id === entry.id;
+        });
+        console.log(i);
+        $scope.model.attachments.samples[i] = sample;
+        console.dir( $scope.model.attachments.samples[i]);
+    }
+
     function addAttachment(item) {
         var what;
         switch ($scope.type) {
@@ -50,13 +63,12 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         } else {
             $scope.model.attachments[what].splice(i, 1);
         }
-
     }
 
     $scope.addMeasurement = function (sample) {
         $scope.modal = {
             instance: null,
-            items: [sample]
+            sample: sample
         };
 
         $scope.modal.instance = $modal.open({
@@ -73,7 +85,6 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
             }
         });
     };
-
     $scope.open = function (size, type) {
         $scope.type = type;
         $scope.modal.instance = $modal.open({
