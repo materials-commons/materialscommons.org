@@ -22,7 +22,17 @@
                 </div>
             </div>
             <div class="col-xs-8 details-main-content">
-                <b>{{measurement}}</b> Details here...
+                <div ng-if="enterValue === false">
+                    <div class="row pull-right">
+                        <button class="btn btn-primary" ng-click="enterValue(measurement)">Enter {{measurement}}</button>
+                    </div>
+                    <b>{{measurement}}</b> Details here...
+                </div>
+                <div ng-if="enterValue===true">
+                    <b>{{measure}}</b>
+                     <input class="form-control col-xs-4" ng-model="value" placeholder="Enter value...">
+                </div>
+
             </div>
         </div>
     </div>
@@ -31,3 +41,4 @@
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </div>
+
