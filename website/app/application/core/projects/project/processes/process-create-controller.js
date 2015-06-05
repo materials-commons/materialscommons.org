@@ -1,5 +1,5 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "$state", "Template", "$modal", "pubsub",projectCreateProcess]);
+    ["$scope", "project", "$state", "Template", "$modal", "pubsub", projectCreateProcess]);
 
 function projectCreateProcess($scope, project, $state, Template, $modal, pubsub) {
     $state.go('projects.project.processes.create');
@@ -11,10 +11,10 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         items: ''
     };
     $scope.model = {
-        process_info: {what: '', why:''},
+        process_info: {what: '', why: ''},
         measurements: [],
         samples: {},
-        attachments: []
+        attachments: {inputFiles: [], outputFiles: [], samples: []}
     };
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
@@ -30,38 +30,52 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     });
 
     function addAttachment(item) {
-        var i = _.indexOf($scope.model.attachments, function (entry) {
+        var what;
+        switch ($scope.type) {
+            case "samples":
+                what = 'samples';
+                break;
+            case "inputFiles":
+                what = 'inputFiles';
+                break;
+            case "outputFiles":
+                what = 'outputFiles';
+                break;
+        }
+        var i = _.indexOf($scope.model.attachments[what], function (entry) {
             return item.id === entry.id;
         });
         if (i < 0) {
-            $scope.model.attachments.push(item);
+            $scope.model.attachments[what].push(item);
         } else {
-            $scope.model.attachments.splice(i, 1);
+            $scope.model.attachments[what].splice(i, 1);
         }
+
     }
 
-    $scope.addMeasurement = function(sample){
-            $scope.modal = {
-                instance: null,
-                items: [sample]
-            };
+    $scope.addMeasurement = function (sample) {
+        $scope.modal = {
+            instance: null,
+            items: [sample]
+        };
 
-            $scope.modal.instance = $modal.open({
-                size: 'lg',
-                templateUrl: 'application/core/projects/project/processes/measurements.html',
-                controller: 'MeasurementController',
-                resolve: {
-                    modal: function () {
-                        return $scope.modal;
-                    },
-                    project: function () {
-                        return $scope.project;
-                    }
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/processes/measurements.html',
+            controller: 'MeasurementController',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
                 }
-            });
+            }
+        });
     };
 
-    $scope.open = function (size) {
+    $scope.open = function (size, type) {
+        $scope.type = type;
         $scope.modal.instance = $modal.open({
             templateUrl: 'application/core/projects/project/reviews/myModalContent.html',
             controller: 'ModalInstanceCtrl',
