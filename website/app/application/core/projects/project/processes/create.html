@@ -26,12 +26,19 @@
                         <b>Samples</b>
 
                         <div class="row" ng-repeat="attachment in model.attachments.samples">
-                            <div ng-if="attachment.type === 'sample'">
                                 <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                 <img src="assets/img/splash/sample_icon.png"
                                      style="height: 40px;padding-bottom: 10px;">
                                 <a ng-click="openDetails(attachment)" class="link pointer"
                                    style="padding-left: 15px;">{{attachment.name}}</a>
+                            <div class="row">
+                                <div class="col-xs-offset-2">
+                                    <ul>
+                                        <li ng-repeat="measure in attachment.measurements">
+                                            {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
