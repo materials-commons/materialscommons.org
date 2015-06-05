@@ -8,9 +8,10 @@ function MeasurementController($scope, project, $state,  $log, modal, Template) 
         item: {}
     };
     $scope.measurements = ["Composition", "Area Fraction", "Volume Fraction", "Height"];
-
+    $scope.enterValue = false;
 
     $scope.showDetails = function(measurement){
+        $scope.enterValue = false;
         $scope.measurement = measurement;
         $scope.selected.item = measurement;
     };
@@ -31,4 +32,9 @@ function MeasurementController($scope, project, $state,  $log, modal, Template) 
     }, function () {
         $log.info('Modal dismissed at: ' + new Date());
     });
+
+    $scope.enterValue = function(measure){
+        $scope.enterValue = true;
+        $scope.measure = measure;
+    };
 }
