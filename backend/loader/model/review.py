@@ -13,3 +13,4 @@ class Review(object):
         self.project = ""
         self.mtime = self.birthtime
         self._type = "review"
+        self.attachments = []

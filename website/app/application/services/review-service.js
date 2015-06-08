@@ -1,7 +1,9 @@
 Application.Services.factory('Review',
-    ["$filter", "mcapi", "User", "pubsub", function ($filter, mcapi, User, pubsub) {
+    ["$filter", "mcapi", "User", "pubsub", '$state', function ($filter, mcapi, User, pubsub, $state) {
         var service = {
-
+            checked_items: [],
+            reviews: [],
+            activeReview: {},
             findReview: function (reviewID, which, project) {
                 var i = _.indexOf(project[which], function (review) {
                     return review.id === reviewID;
@@ -15,7 +17,7 @@ Application.Services.factory('Review',
                     .success(function () {
                         var review = service.findReview(reviewID, "reviews", project);
                         review.status = "closed";
-                        service.reviewCount();
+                        $state.go('projects.project.reviews', {category: 'closed'});
                     }).put({'status': 'closed'});
             },
 
@@ -57,6 +59,46 @@ Application.Services.factory('Review',
                     }
                 });
                 return count;
+            },
+
+            setActiveReview: function (rev) {
+                service.activeReview = rev;
+                pubsub.send('activeReview.change');
+            },
+
+            getActiveReview: function () {
+                return service.activeReview;
+            },
+
+            setReviews: function (revs) {
+                service.reviews = revs;
+                pubsub.send('reviews.change');
+            },
+
+            getReviews: function () {
+                return service.reviews;
+            },
+
+            checkedItems: function (item) {
+                var i = _.indexOf(service.checked_items, function (entry) {
+                    return item.id === entry.id;
+                });
+                if (i < 0) {
+                    service.checked_items.push(item);
+                } else {
+                    service.checked_items.splice(i, 1);
+                }
+            },
+
+            getCheckedItems: function () {
+                return service.checked_items;
+            },
+
+            listReviewsByType: function (reviews, type) {
+                if (reviews.length > 0) {
+                    service.setActiveReview(reviews[0]);
+                    $state.go('projects.project.reviews.edit', {category: type, review_id: reviews[0].id});
+                }
             }
         };
         return service;
