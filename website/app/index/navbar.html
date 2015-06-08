@@ -1,5 +1,5 @@
 <div ng-show="email_address" ng-controller="_indexNavigation">
-    <nav class="navbar navbar-custom navbar-fixed-top" >
+    <nav class="navbar navbar-custom navbar-fixed-top">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -11,45 +11,31 @@
                ng-click="goHome()">MaterialsCommons</a>
         </div>
         <div class="collapse navbar-collapse">
-            <ul ng-hide="email_address" class="nav navbar-nav navbar-right">
-                <!--<li>-->
-                <!--<a ui-sref="login" class="navbar-link larg-text">-->
-                <!--<i class="fa fa-fw fa-user"></i>-->
-                <!--login-->
-                <!--</a>-->
-                <!--</li>-->
-            </ul>
             <ul ng-show="email_address" class="nav navbar-nav navbar-right">
-
                 <li>
-                    <a ng-click="goHome()"
-                       class="navbar-link large-text">
-                        <i class="fa fa-fw fa-home space-right"></i>
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a class="large-text"
+                    <a class="large-text pointer"
                        ng-click="toggleHelp()">
                         <i class="fa fa-fw fa-question space-right"></i>
                         Help
                     </a>
                 </li>
-                <li ng-class="{ navactive: isActiveStep('reviews') }">
-                    <a class="dropdown-toggle large-text" data-toggle="dropdown">
+                <li ng-if="false" ng-class="{ navactive: isActiveStep('reviews') }">
+                    <a class="dropdown-toggle pointer large-text"
+                       data-toggle="dropdown">
                         <i class="fa fa-comment space-right"></i> Reviews
                     <span ng-controller="globalReviewsController"
                           style="background-color: rgba(255, 255, 255, 0.3)" class="badge ng-binding">
                         {{(reviews | byKey:'status':'open').length}}
                     </span>
                     </a>
+
                     <div class="dropdown-menu reviews-dropdown nav-dropdown-scrollbar">
                         <!--directive-->
                         <global-reviews></global-reviews>
                         <!--<div  global-reviews class="" ></div>-->
                     </div>
                 </li>
-                <li>
+                <li ng-if="false">
                     <a ng-click="showStep('machines')" ui-sref="machines"
                        class="navbar-link large-text">
                         <i class="fa fa-fw fa-gears space-right"></i>
@@ -58,7 +44,8 @@
                 </li>
 
                 <li class="dropdown divider">
-                    <a ng-click="showStep('email')" class="dropdown-toggle large-text" data-toggle="dropdown">
+                    <a ng-click="showStep('email')"
+                       class="dropdown-toggle pointer large-text" data-toggle="dropdown">
                         <i class="fa fa-fw fa-user space-right"></i>{{email_address}}
                         <span class="caret caret-light"></span>
                     </a>
@@ -100,5 +87,4 @@
             </ul>
         </div>
     </nav>
-
 </div>

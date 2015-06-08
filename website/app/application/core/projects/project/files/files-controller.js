@@ -1,28 +1,13 @@
 Application.Controllers.controller("FilesController",
     ["$scope", "projectFiles", "applySearch",
-        "$filter", "pubsub", "mcfile", "tags", "User", FilesController]);
+        "pubsub", "mcfile", "$state", "pubsub", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
-                         $filter, pubsub, mcfile, tags, User) {
-
-    $scope.bk = {
-        content: 'details'
-    };
-    $scope.tags = [{'id': 'april1'}];
-
-    pubsub.waitOn($scope, "activeFile.change", function () {
-        getActiveFile();
-    });
-
+                         $filter, mcfile, $state, pubsub) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
     $scope.files = [f];
-
     applySearch($scope, "searchInput", applyQuery);
-
-    $scope.downloadSrc = function (file) {
-        return mcfile.downloadSrc(file.id);
-    };
 
     function applyQuery() {
         var search = {
@@ -38,34 +23,45 @@ function FilesController($scope, projectFiles, applySearch,
         }
     }
 
-    function getActiveFile() {
-        $scope.activeFile = projectFiles.getActiveFile();
-        if (isImage($scope.activeFile.mediatype)) {
-            $scope.fileType = "image";
-        } else if ($scope.activeFile.mediatype === "application/pdf") {
-            $scope.fileType = "pdf";
-        } else {
-            $scope.fileType = $scope.activeFile.mediatype;
-        }
-
-    }
-
     $scope.fileSrc = function (file) {
         return mcfile.src(file.id);
     };
-    $scope.showContent = function (content) {
-        $scope.bk.content = content;
+    var columnDefs = [
+            {
+                displayName: "",
+                field: "name",
+                width: 350,
+                cellClicked: cellClicked,
+                cellRenderer: function (params) {
+                    return '<i style="color: #BFBFBF;"  class="fa fa-fw fa-file"></i><span>' +
+                        '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
+                        params.node.name + '</a></span>';
+                }
+            }];
+
+    $scope.gridOptions = {
+        columnDefs: columnDefs,
+        rowData: $scope.files,
+        rowSelection: 'multiple',
+        rowsAlreadyGrouped: true,
+        enableColResize: true,
+        enableSorting: true,
+        rowHeight: 30,
+        angularCompileRows: true,
+        icons: {
+            groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
+            groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
+        },
+        groupInnerCellRenderer: groupInnerCellRenderer
     };
-    /*
-     ######################
-     ####### Tags #########
-     ######################
-     */
-    $scope.addTag = function (tag) {
-        var tag_obj = {'id': tag.id, 'owner': User.u()};
-        tags.createTag(tag_obj, $scope.activeFile.id);
-    };
-    $scope.removeTag = function (tag) {
-        tags.removeTag(tag.id, $scope.activeFile.id);
-    };
+    function groupInnerCellRenderer(params) {
+        var template = params.node.type === 'datadir' ? params.node.displayname : 'File';
+        return template;
+    }
+
+    function cellClicked(params) {
+        projectFiles.setActiveFile(params.node);
+        $state.go('projects.project.files.edit', {'file_id': params.node.df_id});
+    }
+
 }

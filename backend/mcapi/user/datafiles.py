@@ -72,7 +72,7 @@ def update_datafile_note(datafile_id):
     if n2item:
         return update_join(n, n2item)
     else:
-        new_note = dmutil.insert_entry('notes', n.__dict__,
+        new_note = dmutil.insert_entry('notes', n,
                                        return_created=True)
         n2item = note2item.Note2Item(datafile_id, 'datafile', new_note['id'])
         dmutil.insert_entry('note2item', n2item.__dict__)

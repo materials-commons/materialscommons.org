@@ -89,7 +89,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
 
     $scope.uiConfig = {
         calendar: {
-            height: 250,
+            height: 450,
             editable: true,
             header: {
                 left: 'title',
