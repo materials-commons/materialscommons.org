@@ -9,6 +9,7 @@ Application.Services.factory('tags', ["mcapi",
                         return tag;
                     }).post(tag);
             },
+
             removeTag: function (tag_id, item_id) {
                 mcapi('/tags/%/item/%', tag_id, item_id)
                     .success(function (tag) {
