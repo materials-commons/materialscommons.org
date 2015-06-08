@@ -1,6 +1,6 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "$stateParams", "projectFiles", "User","mcfile", "pubsub", "tags",FilesEditController]);
-function FilesEditController($scope, $stateParams, projectFiles, User,mcfile, pubsub, tags) {
+    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", FilesEditController]);
+function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags) {
     $scope.bk = {
         editNote: false
     };
@@ -10,15 +10,16 @@ function FilesEditController($scope, $stateParams, projectFiles, User,mcfile, pu
     });
 
     $scope.addTag = function (tag) {
-        var tag_obj = {'id': tag.id, 'owner': User.u()};
+        var tag_obj = {'id': tag.tag_id, 'owner': User.u()};
         tags.createTag(tag_obj, $scope.activeFile.df_id);
     };
+
     $scope.removeTag = function (tag) {
-        tags.removeTag(tag.id, $scope.activeFile.df_id);
+        tags.removeTag(tag.tag_id, $scope.activeFile.df_id);
     };
 
-    $scope.editNote = function(){
-        $scope.bk.editNote =  !$scope.bk.editNote;
+    $scope.editNote = function () {
+        $scope.bk.editNote = !$scope.bk.editNote;
     };
 
     $scope.downloadSrc = function (file) {
@@ -26,25 +27,24 @@ function FilesEditController($scope, $stateParams, projectFiles, User,mcfile, pu
     };
 
     $scope.fileSrc = function (file) {
-        if(file){
+        if (file) {
             return mcfile.src(file.df_id);
         }
     };
 
-    $scope.closeFile = function(){
-        $scope.activeFile = '';
+    $scope.closeFile = function () {
+        $scope.activeFile = null;
     };
 
     function getActiveFile() {
         $scope.activeFile = projectFiles.getActiveFile();
-        console.log($scope.activeFile);
         if (isImage($scope.activeFile.mediatype)) {
             $scope.fileType = "image";
         } else if ($scope.activeFile.mediatype === "application/pdf") {
             $scope.fileType = "pdf";
         }
         else if ($scope.activeFile.mediatype === "application/vnd.ms-excel") {
-                $scope.fileType = "xls";
+            $scope.fileType = "xls";
         } else {
             $scope.fileType = $scope.activeFile.mediatype;
         }
@@ -61,5 +61,4 @@ function FilesEditController($scope, $stateParams, projectFiles, User,mcfile, pu
     }
 
     init();
-
 }
