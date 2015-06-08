@@ -26,16 +26,29 @@
                         <b>Samples</b>
 
                         <div class="row" ng-repeat="attachment in model.attachments.samples">
-                                <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                                <img src="assets/img/splash/sample_icon.png"
-                                     style="height: 40px;padding-bottom: 10px;">
-                                <a ng-click="openDetails(attachment)" class="link pointer"
-                                   style="padding-left: 15px;">{{attachment.name}}</a>
+                            <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                            <img src="assets/img/splash/sample_icon.png"
+                                 style="height: 40px;padding-bottom: 10px;">
+                            <a ng-click="openDetails(attachment)" class="link pointer"
+                               style="padding-left: 15px;">{{attachment.name}}</a>
+
                             <div class="row">
                                 <div class="col-xs-offset-2">
                                     <ul>
                                         <li ng-repeat="measure in attachment.measurements">
-                                            {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}}</span>
+                                            <div ng-switch="measure.type">
+                                                <div ng-switch-when="number">
+                                                    {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}}</span>
+                                                </div>
+                                                <div ng-switch-when="string">
+                                                    {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}}</span>
+                                                </div>
+                                                <div ng-switch-when="histogram">
+                                                    <a href="" popover="I have a title!"
+                                                       popover-title="The title." >{{measure.name}} <i class="fa fa-bar-chart"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </li>
                                     </ul>
                                 </div>
@@ -55,6 +68,16 @@
                                      style="height: 40px;padding-bottom: 10px;">
                                 <a ng-click="openDetails(attachment)" class="link pointer"
                                    style="padding-left: 15px;">{{attachment.name}}</a>
+                                <div class="row">
+                                    <div class="col-xs-offset-2">
+                                        <ul>
+                                            <li ng-repeat="link in attachment.links">
+                                                <img src="assets/img/splash/sample_icon.png"
+                                                     style="height: 40px;padding-bottom: 10px;"> {{link}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row" ng-repeat="attachment in model.attachments.outputFiles">
@@ -64,6 +87,16 @@
                                      style="height: 40px;padding-bottom: 10px;">
                                 <a ng-click="openDetails(attachment)" class="link pointer"
                                    style="padding-left: 15px;">{{attachment.name}}</a>
+                                <div class="row">
+                                    <div class="col-xs-offset-2">
+                                        <ul>
+                                            <li ng-repeat="link in attachment.links">
+                                                <img src="assets/img/splash/sample_icon.png"
+                                                     style="height: 40px;padding-bottom: 10px;"> {{link}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -117,7 +150,6 @@
                                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span
                                             style="color:#3a9ee3"><a
                                             ng-click="addMeasurement(attachment)">Measurement</a></span>
-
                                     </span>
                                     <i ng-click="removeAttachment(attachment)"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
@@ -140,14 +172,29 @@
                             <br><br>
 
                             <div class="row" ng-repeat="attachment in model.attachments.inputFiles">
-                                <div ng-if="attachment.type === 'datafile'" class="col-xs-8">
+                                <div ng-if="attachment.type === 'datafile'" class="col-xs-12">
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openDetails(attachment)" class="link pointer"
-                                       style="padding-left: 15px;">{{attachment.name}}</a>
-                                    <i ng-click="removeAttachment(attachment)"
+                                    <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
+                                    <i style="padding-left: 20px;"  ng-click="removeAttachment(attachment)"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
+
+                                    <span style="padding-left: 20px">
+                                      <i class="fa fa-link fa-fw sample"></i>
+                                        <span><a class="sample"
+                                            ng-click="link = !link">Link Sample</a>
+                                        </span>
+                                    </span>
+                                    <div ng-if="link" class="row">
+                                        <select  ng-change="linkSample(attachment, 'inputFiles')"
+                                                 ng-model="selectedSample"
+                                                 data-placeholder="Choose Sample"
+                                                 class="form-control"
+                                                 validator="required">
+                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             What files are produced by this process?<br>
@@ -159,14 +206,30 @@
                             <br><br>
 
                             <div class="row" ng-repeat="attachment in model.attachments.outputFiles">
-                                <div ng-if="attachment.type === 'datafile'" class="col-xs-8">
+                                <div ng-if="attachment.type === 'datafile'" class="col-xs-12">
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openDetails(attachment)" class="link pointer"
-                                       style="padding-left: 15px;">{{attachment.name}}</a>
-                                    <i ng-click="removeAttachment(attachment)"
+                                    <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
+
+                                    <i style="padding-left: 20px;"  ng-click="removeAttachment(attachment)"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
+                                    <span style="padding-left: 20px">
+                                      <i class="fa fa-link fa-fw sample"></i>
+                                        <span><a class="sample"
+                                                 ng-click="link = !link">Link Sample</a>
+                                        </span>
+                                    </span>
+                                    <div ng-if="link" class="row">
+                                        <select  ng-change="linkSample(attachment, 'outputFiles')"
+                                                 ng-model="selectedSample"
+                                                 data-placeholder="Choose Sample"
+                                                 class="form-control"
+                                                 validator="required">
+                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}</option>
+                                        </select>
+                                    </div>
+
                                 </div>
                             </div>
                             <br><br>
