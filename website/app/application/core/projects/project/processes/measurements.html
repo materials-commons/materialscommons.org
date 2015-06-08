@@ -1,0 +1,60 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Choose Measurement</h3>
+    </div>
+    <br>
+
+    <div class="row" style="padding-left:30px;">
+        <input type="text" ng-model="search" class="col-xs-12"
+               placeholder="Search ...">
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="details-sidebar">
+                    <ul class="list-group">
+                        <li ng-class="{'active': measurement === selected.item}" ng-click="showDetails(measurement)"
+                            ng-repeat="measurement in measurements | filter:search"
+                            class="list-group-item pointer">
+                            <div>{{measurement}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-8 details-main-content">
+                <div ng-if="enterValue === false">
+                    <div class="row pull-right">
+                        <button class="btn btn-primary" ng-click="editMeasurement(measurement)">Enter {{measurement}}
+                        </button>
+                    </div>
+                    <b>{{measurement}}</b> Details here...
+                </div>
+                <div ng-if="enterValue===true">
+                    <div class="row" ng-repeat="choice  in choices">
+                        <div class="col-xs-3">
+                            <b>{{measure}}:</b>
+                        </div>
+                        <div class="col-xs-5">
+                            <input class="form-control" ng-model="choice.value" placeholder="Value...">
+                        </div>
+                        <div class="col-xs-2">
+                            <i ng-click="addNewChoice()" style="color:#3a9ee3" class="fa fa-plus fa-fw"></i>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <button class="btn btn-primary" ng-click="done()">Done</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</div>
+

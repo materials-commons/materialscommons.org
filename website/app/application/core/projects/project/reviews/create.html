@@ -1,63 +1,72 @@
-<div class="row info-box">
-    <div class="col-xs-12">
-        <form name="Form" class="form-horizontal">
-            <div class="form-group">
-                <label class="control-label col-xs-3">Review Title: <i class="fa fa-asterisk"></i></label>
-
-                <div class="col-xs-6">
-                    <input name="title" validator="required" ng-model="model.title" class="form-control" type="text"
-                           placeholder="Title...">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-xs-3">Assign To:<i class="fa fa-asterisk"></i></label>
-
-                <div class="col-xs-6">
-                    <select class="form-control" ng-model="model.assigned_to" name="assign_to" validator="required">
-                        <option disabled>-- Assign to --</option>
-                        <option ng-repeat="user in project.users">{{ user.user_id }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-xs-3">Comment:</label>
-
-                <div class="col-xs-8">
-                    <text-angular ta-toolbar="[['h2', 'h5', 'h6', 'quote','bold','italics','underline'],
-                              ['ul','ol', 'justifyLeft', 'insertLink', 'insertImage']]"
-                                  ng-model="model.comment"></text-angular>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-xs-3">Attach items:</label>
-
-                <div class="col-xs-8">
-                    <div class="row">
-                        <form role="form">
-                            <a ng-click="addItems('samples')"><i class="fa fa-fw fa-plus-square"> </i></a>Samples
-                            <a ng-click="addItems('notes')"><i class="fa fa-fw fa-plus-square" > </i></a> Notes
-                            <a ng-click="addItems('files')"><i class="fa fa-fw fa-plus-square"> </i></a> Files
-                        </form>
-                    </div>
-                </div>
-                <div class="col-xs-8">
-                    <div ng-repeat="item in model.attachments">
-                        <i ng-if="item.type === 'sample'" class="fa fa-fw fa-cube" style="color: #f0ad4e"></i>
-                        <i ng-if="item.type === 'note'" class="fa fa-fw fa-edit" style="color: #3ea7a0"></i>
-                        <i ng-if="item.type === 'file'" class="fa fa-fw fa-file" style="color: #7c699f"></i>
-                        <i class="fa fa-fw fa-paperclip "></i>{{item.name}}
-
-                        <a ng-click="removeAttachment($index);"><i class=" fa fa-fw fa-close mc-danger pull-right"></i></a>
-                    </div>
-                </div>
+<div class="details-main-content">
+    <div class="row" style="color: #d3d3d3;">
+        {{today.toString()}}
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="headings">Assign To</div>
+            <div class="row">
+                <select ng-change="addUser()" ng-model="selectedUser" data-placeholder="Choose Assignee"
+                        class="form-control"
+                        validator="required">
+                    <option ng-repeat="user in users">{{ user }}</option>
+                </select>
             </div>
             <br>
-            <div class="form-group">
-                <label class="control-label col-xs-3"></label>
-                <button validation-submit="Form" ng-click="create()" class="btn btn-xs btn-mini btn-primary">Create
-                </button>
-                <button ng-click="cancel()" class="btn btn-xs btn-mini btn-danger">Cancel</button>
+
+            <div ng-repeat="each_user in model.assigned_to">
+                  <span class="fa-stack fa-lg">
+                <i style="color: #C0C0C0" class="fa fa-circle fa-stack-2x"></i>
+                <i style="color: white;" class="fa fa-user fa-stack-1x"></i>
+                </span>
+                <span class="who"> {{each_user}}</span> <i ng-click="removeUser(each_user)" style="padding-left: 30px;"
+                                                           class="fa fa-fw fa-close pointer"></i>
             </div>
-        </form>
+        </div>
+    </div>
+    <hr class="divider"/>
+    <div class="row">
+        <div class="col-xs-12 headings">Attachment</div>
+        <div class="row" style="padding: 15px;">
+            <br>
+            <button ng-click="open('lg')" style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 "
+                    class="btn btn-default"><i
+                    class="fa fa-fw fa-plus"></i> ADD
+            </button>
+            <br><br>
+            <div class="row" ng-repeat="attachment in model.attachments">
+                <div class="col-xs-5">
+                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                    <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png"
+                         style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png"
+                         style="height: 40px;padding-bottom: 10px;">
+                    <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png"
+                         style="height: 40px;padding-bottom: 10px;">
+                    <a ng-click="openDetails(attachment)" class="link pointer" style="padding-left: 15px;">{{attachment.name}}</a>
+                    <i ng-click="removeAttachment(attachment)" class="fa fa-fw fa-close pull-right pointer"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider"/>
+    <div class="row">
+        <div class="col-xs-12 headings">Message</div>
+        <div class="col-xs-8">
+            <input placeholder="SUBJECT" class="form-control" ng-model="model.title"><br>
+            <text-angular ta-toolbar="[['h2', 'h5', 'h6', 'quote','bold','italics','underline'],
+                              ['ul','ol', 'justifyLeft', 'insertLink', 'insertImage']]"
+                          ng-model="model.comment"></text-angular>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+        <div class="col-xs-3">
+            <button ng-click="cancel()" class="btn-details-container btn btn-default btn btn-cancel">Cancel</button>
+        </div>
+        <div class="col-xs-3">
+            <button ng-click="createReview()" class=" btn btn-default btn-review  btn-details-container">Send</button>
+        </div>
     </div>
 </div>

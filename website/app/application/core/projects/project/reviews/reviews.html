@@ -1,112 +1,55 @@
-<div><br>
-
+<div>
     <div class="row">
-        <div class="col-xs-3">
-            <button class="btn btn-info">Create</button>
-        </div>
-        <div class="col-xs-4 pull-right">
-            <div class="form-group has-feedback">
-                <input style="padding-left: 35px;" ng-model="search" placeholder="Search Reviews..."
-                       class="form-control">
-                <span style="left: 0;padding-left: 10px;" class="fa fa-fw fa-search form-control-feedback"></span>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="border: 1px solid #757575; height: 600px;display: block;">
-        <div class="row" style="height:50px; background-color: #EFEFEF;border-bottom: 1px solid #d3d3d3">
-            <div class="col-xs-1" style="padding-top: 12px;color:#757575">
-                <b><a ng-class="{underline: type === 'all_reviews'}"
-                      ng-click="listReviewsByType('all_reviews')">All Reviews</a></b>
-            </div>
-            <div class="col-xs-1" style="padding-top: 12px;color:#757575">
-                <b><a ng-class="{underline: type === 'my_reviews'}"
-                      ng-click="listReviewsByType('my_reviews')">My Reviews</a></b>
-            </div>
-            <div class="col-xs-1" style="padding-top: 12px;color:#757575">
-                <b><a ng-class="{underline: type === 'closed_reviews'}"
-                      ng-click="listReviewsByType('closed_reviews')">Closed Reviews</a></b>
-            </div>
+        <div class="col-xs-12 details-container">
+            <nav class="navbar navbar-default">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li ng-class="{active: type === 'my_reviews'}"><a ng-click="listReviewsByType('my_reviews')">My
+                            Reviews</a>
+                        </li>
+                        <li ng-class="{active: type === 'due'}"><a ng-click="listReviewsByType('due')">Due</a></li>
+
+                        <li ng-class="{active: type === 'all'}"><a ng-click="listReviewsByType('all')">all</a>
+                        </li>
+                        <li ng-class="{active: type === 'closed'}"><a
+                                ng-click="listReviewsByType('closed')">Archived</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
 
-        <div class="row">
-            <div class="col-xs-3 sidebar-wrapper">
-                <ul class="list-group" style="margin-left: -10px; margin-right: -10px;">
-                    <li class="list-group-item pointer"
-                        ng-repeat="each_review in reviews | filter:search | event: project.date: project.nextdate as reviews"
-                        ng-class="{active: review.id === each_review.id}" ng-click="openReview(each_review)">
-                        <span class="pull-right" style="color: gray;"><i class="fa fa-fw fa-comments-o"></i>
-                            {{each_review.messages.length}} </span>
-                        <i ng-class="{'fa fa-circle review-open': each_review.status === 'open',
-                        'fa fa-minus-circle review-closed': each_review.status === 'closed'}"></i> {{each_review.title}}<span
-                            style="color: gray; padding-left: 8px;">
-                        {{(each_review.messages[(each_review.messages.length -1)].date)}}</span>
-                    </li>
-                </ul>
-            </div>
-            <div style="overflow-y: auto;max-height: 500px;">
-                <div ng-show="review" class="col-xs-9">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-xs-4">
+                <div class="details-sidebar">
                     <div class="row">
-                        <div class="col-xs-4 col-xs-offset-1">
-                            Requested by: {{review.author}}
+                        <div style="text-align: center;margin-top: 20px;">
+                            <button ui-sref="projects.project.reviews.create"
+                                    class="btn-review  btn-details-container btn btn-default"> create
+                            </button>
                         </div>
                     </div>
-                    <br>
-
-                    <div class="row ">
-                        <div class="col-xs-4 col-xs-offset-1">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <i class="fa fa-fw fa-user"></i><b>Assigned to:</b>
-                                </li>
-                                <li class="list-group-item">
-                                    {{review.assigned_to}}
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xs-1">
-
-                        </div>
-                        <div class="col-xs-4">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <i class="fa fa-fw fa-paperclip"></i><b>Attachments:</b>
-                                </li>
-                                <li ng-repeat="attachment in review.attachments" class="list-group-item">
-                                    {{attachment.name}}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-8 col-xs-offset-1">
-                            <i class="fa fa-fw fa-comments-o"></i> <b>Comments</b><br><br>
-
-                            <div ng-repeat="message in review.messages" class="row">
-                                <i class="fa fa-fw fa-user"></i> {{message.who}} <span style="padding-left: 5px;">{{message.date}}</span>
-                                <br><br>
-
-                                <div ta-bind ng-model="message.message" class="row"
-                                     style="background-color: white;padding: 10px;border: 1px solid #d3d3d3;">
-
-                                </div>
-                            </div>
-                            <div ng-show="review.status === 'open'" class="row">
-                                <i class="fa fa-fw fa-user"></i> {{user}}<span style="padding-left: 5px;">{{today.toDateString()}}</span>
-                                <br><br>
-
-                                <div class="row">
-                                    <textarea placeholder="Add comment..." class="form-control"
-                                              ng-model="model.comment"></textarea>
-                                    <br>
-                                    <button ng-click="addComment()" class="btn btn-success">Comment</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item pointer"
+                            ng-repeat="each_review in reviews"
+                            ng-class="{active: review.id === each_review.id}"
+                            ui-sref="projects.project.reviews.edit({'review_id': each_review.id})">
+                                <span class="pull-right">
+                                        <a style="font-size: 25px;" ng-if="review.messages.length !== 0"
+                                           class="fa-stack fa-2x">
+                                            <i ng-class="{'review-active': review.id === each_review.id, 'review-inactive': review.id !== each_review.id}"
+                                               class="fa fa-comment fa-stack-1x"></i>
+                                            <i style='font-size: 13px;line-height: 0;font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;font-weight: bold'
+                                               class="fa fa-stack-1x fa-inverse">{{each_review.messages.length}}</i>
+                                        </a>
+                                </span>
+                            {{each_review.title}}
+                        </li>
+                    </ul>
                 </div>
             </div>
-
+            <div class="col-xs-8" stylex="margin-left: 10px;">
+                <div ui-view></div>
+            </div>
         </div>
     </div>
 </div>

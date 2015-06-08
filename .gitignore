@@ -9,3 +9,6 @@ materials.tar.gz
 node_modules
 npm-debug.log
 coverage
+sbin
+bower_components/
+rethinkdb_data/

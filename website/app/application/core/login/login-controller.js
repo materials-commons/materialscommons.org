@@ -20,6 +20,7 @@ function loginController($scope, $state, User, toastr, mcapi, Nav, pubsub, proje
                 });
             })
             .error(function (reason) {
+                $scope.message = "Incorrect Password/Username!"
                 toastr.error(reason.error, 'Error', {
                     closeButton: true
                 });
@@ -33,7 +34,6 @@ function loginController($scope, $state, User, toastr, mcapi, Nav, pubsub, proje
         // set the location.hash to the id of
         // the element you wish to scroll to.
         $location.hash(id);
-
         // call $anchorScroll()
         $anchorScroll();
     };

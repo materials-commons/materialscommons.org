@@ -1,0 +1,91 @@
+<div class="row" ng-if="activeFile">
+    <div class="col-xs-7" style="padding-right: 1px;">
+        <div class="details-main-content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="headings">{{activeFile.name}}
+                        <a ng-href="{{downloadSrc(activeFile)}}" download="{{activeFile.name}}">
+                        <span style="color: #9782be;padding-left:10px;" class="fa-stack fa-lg">
+                              <i class="fa fa-circle-thin fa-stack-2x"></i>
+                              <i class="fa fa-download fa-stack-1x fa-inverse"></i>
+                        </span></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-11" ng-switch="fileType">
+                    <div ng-switch-when="image">
+                        <img class="img-responsive center-block"
+                             ng-src="{{fileSrc(activeFile)}}">
+                    </div>
+                    <div ng-switch-when="pdf">
+                        <div class="embed-responsive embed-responsive-4by3">
+                            <embed class="col-xs-8 embed-responsive-item"
+                                   ng-src="{{fileSrc(activeFile)}}">
+                            </embed>
+                        </div>
+                    </div>
+                    <div ng-switch-when="xls">Download the excel file
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-if="activeFile.size <= 10000"
+                             hljs include="fileSrc(activeFile)">
+                        </div>
+                        <code
+                                ng-if="activeFile.size > 10000 && activeFile.size <= 2000000"
+                                style="white-space:pre-line" ng-include="fileSrc(activeFile)">
+                        </code>
+
+                        <div ng-if="activeFile.size > 2000000">File too big to display</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5" style="padding-left: 0px;">
+        <div class="details-main-content">
+            <div class="file headings">details</div>
+            <div class="row">
+                <div class="col-xs-3"> Type:</div>
+                <div class="col-xs-6">{{activeFile.mediatype}}</div>
+                <br>
+
+                <div class="col-xs-3"> Owner:</div>
+                <div class="col-xs-6">{{activeFile.owner}}</div>
+                <br>
+
+                <div class="col-xs-3"> Created:</div>
+                <div class="col-xs-6">{{activeFile.birthtime | toDateString}}</div>
+                <br>
+            </div>
+            <div class="file headings">note</div>
+            <div class="row">
+                    <span class="pull-right">
+                            <a ng-click="editNote()"><i class="fa fa-fw fa-edit"></i></a></span>
+
+                <div class="row" ng-show="!bk.editNote">
+                    <div class="col-xs-3">Title:</div>
+                    <div class="col-xs-8">{{activeFile.notes[0].title}}</div>
+                    <div ng-if="activeFile.notes.length !== 0" class="col-xs-11" ta-bind ng-model="activeFile.notes[0].note"></div>
+                </div>
+                <div class="row" ng-show="bk.editNote">
+                    <create-note item-type="datafile" item="activeFile"></create-note>
+                </div>
+            </div>
+            <div class="file headings">tag</div>
+            <div class="row" style="padding: 10px;">
+                <div class="row">
+                    <tags-input on-tag-added="addTag($tag)" display-property="tag_id"
+                                on-tag-removed="removeTag($tag)" ng-model="activeFile.tags"
+                                placeholder="Add a Tag" replace-spaces-with-dashes="false">
+                        <!--<auto-complete source="loadMovies($query)"-->
+                        <!--min-length="0"-->
+                        <!--debounce-delay="0"-->
+                        <!--max-results="10"></auto-complete>
+                        </tags-input>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

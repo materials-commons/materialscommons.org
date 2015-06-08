@@ -1,41 +1,44 @@
 Application.Controllers.controller('projectReviews',
-    ["$scope", "project", "ui", "User", "$filter" , "Review", projectReviews]);
+    ["$scope", "project", "$filter", "Review", "pubsub", "User", "$stateParams", projectReviews]);
 
-function projectReviews($scope, project, ui, User, $filter, Review) {
+function projectReviews($scope, project, $filter, Review, pubsub, User, $stateParams) {
 
-    $scope.showPanel = function (what) {
-        return ui.showPanel(project.id, what);
-    };
-    $scope.openPanel = function (panel) {
-        ui.togglePanelState(project.id, panel);
-    };
-    $scope.project = project;
+    pubsub.waitOn($scope, 'activeReview.change', function () {
+        $scope.review = Review.getActiveReview();
+    });
 
-    $scope.openReview = function(review){
-      $scope.review = review;
-    };
-    $scope.addComment = function(){
-        Review.addComment($scope.model,  $scope.review);
-    };
+    pubsub.waitOn($scope, 'reviews.change', function () {
+        $scope.reviews = Review.getReviews();
+    });
 
-    $scope.listReviewsByType = function(type){
+    $scope.listReviewsByType = function (type) {
         $scope.type = type;
-        switch (type){
-            case "all_reviews":
-                $scope.reviews = $scope.project.reviews;
+        switch (type) {
+            case "all":
+                $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
+                Review.listReviewsByType($scope.reviews, type);
                 break;
             case "my_reviews":
-                $scope.reviews = $filter('byKey')($scope.project.reviews, 'author', $scope.user);
+                $scope.reviews = $filter('byKey')($scope.project.reviews, 'author', User.u());
+                $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
+                Review.listReviewsByType($scope.reviews, type);
                 break;
-            case "closed_reviews":
+            case "due":
+                $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
+                $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
+                Review.listReviewsByType($scope.reviews, type);
+                break;
+            case "closed":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
+                Review.listReviewsByType($scope.reviews, type);
                 break;
         }
     };
-    $scope.user = User.u();
-    $scope.today = new Date();
-    $scope.reviews = $scope.project.reviews;
-    $scope.model = {
-        comment: ''
-    };
+
+    function init() {
+        $scope.project = project;
+        $scope.listReviewsByType($stateParams.category === "" ? 'my_reviews' : $stateParams.category);
+    }
+
+    init();
 }
