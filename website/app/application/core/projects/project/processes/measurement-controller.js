@@ -1,5 +1,5 @@
 Application.Controllers.controller('MeasurementController',
-    ["$scope", "project", "$state", "$log", "modal", "Template", "pubsub",MeasurementController]);
+    ["$scope", "project", "$state", "$log", "modal", "Template", "pubsub", MeasurementController]);
 
 function MeasurementController($scope, project, $state, $log, modal, Template, pubsub) {
     $scope.modal = modal;
@@ -7,7 +7,12 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
     $scope.selected = {
         item: {}
     };
-    $scope.measurements = ["Composition", "Area Fraction", "Volume Fraction", "Height"];
+    //$scope.measurements = ["Composition", "Area Fraction", "Volume Fraction", "Height"];
+    $scope.measurements = [
+        {name: "composition", type: "string"},
+        {name: "Volume Fraction", type: "number"},
+        {name: "Height", type: "histogram"}
+    ];
     $scope.enterValue = false;
     $scope.choices = [{id: '1'}];
 
@@ -30,23 +35,23 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
     $scope.editMeasurement = function (measure) {
         $scope.enterValue = true;
         $scope.measure = measure;
-        $scope.choices = [{id: '1', 'name': measure}];
+        $scope.choices = [{id: '1', 'name': measure.name, 'type': measure.type}];
     };
 
     $scope.done = function () {
         $scope.enterValue = false;
-        $scope.modal.sample.measurements = [];
-        $scope.modal.sample.measurements = $scope.choices;
+        $scope.modal.sample.measurements.push($scope.choices);
+        $scope.modal.sample.measurements = _.flatten($scope.modal.sample.measurements);
         pubsub.send('addMeasurementToSample', $scope.modal.sample);
     };
 
-    $scope.addNewChoice = function() {
-        var newItemNo = $scope.choices.length+1;
-        $scope.choices.push({'id': newItemNo, 'name': $scope.measure});
+    $scope.addNewChoice = function () {
+        var newItemNo = $scope.choices.length + 1;
+        $scope.choices.push({'id': newItemNo, 'name': $scope.measure.name, 'type': $scope.measure.type});
     };
 
-    $scope.removeChoice = function() {
-        var lastItem = $scope.choices.length-1;
+    $scope.removeChoice = function () {
+        var lastItem = $scope.choices.length - 1;
         $scope.choices.splice(lastItem);
     };
 
