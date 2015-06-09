@@ -69,7 +69,7 @@ def reload_project_tree(project_id):
 
 
 class DItem2:
-    def __init__(self, id, name, type, owner, birthtime, size, df_id):
+    def __init__(self, id, name, type, owner, birthtime, size):
         self.id = id
         self.selected = False
         self.c_id = ""
@@ -83,7 +83,7 @@ class DItem2:
         self.displayname = basename(name)
         self.type = type
         self.children = []
-        self.df_id = df_id
+        self.df_id = id
         self.data = {}
 
 
@@ -98,11 +98,11 @@ def build_tree(datadirs):
     top_level_dirs = []
     for ddir in datadirs:
         ditem = DItem2(ddir['id'], ddir['name'], 'datadir', ddir['owner'],
-                       ddir['birthtime'], 0, '')
+                       ddir['birthtime'], 0)
         ditem.level = ditem.name.count('/')
-        ditem.tags = []  # ddir['tags']
+        ditem.tags = []
         ditem.c_id = next_id
-        next_id = next_id + 1
+        next_id += 1
         ditem.group = True
         #
         # The item may have been added as a parent
@@ -121,25 +121,13 @@ def build_tree(datadirs):
             if not df['current']:
                 continue
             dfitem = DItem2(df['id'], df['name'], 'datafile',
-                            df['owner'], df['birthtime'], df['size'], df['id'])
+                            df['owner'], df['birthtime'], df['size'])
             dfitem.fullname = ddir['name'] + "/" + df['name']
             dfitem.c_id = next_id
-            next_id = next_id + 1
+            next_id += 1
             dfitem.tags = df['tags']
             dfitem.notes = df['notes']
             dfitem.group = False
-            # data dict() is used during  checkbox selection using angularGrid
-            # data = dict()
-            # data['name'] = dfitem.name
-            # data['owner'] = dfitem.owner
-            # data['type'] = dfitem.type
-            # data['mediatype'] = dfitem.mediatype
-            # data['tags'] = dfitem.tags
-            # data['notes'] = dfitem.notes
-            # data['birthtime'] = dfitem.birthtime
-            # data['id'] = dfitem.id
-            # data['path'] = dfitem.fullname
-            # dfitem.data = data
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
             elif 'mime' not in df['mediatype']:
@@ -157,7 +145,7 @@ def build_tree(datadirs):
             # name and add children. When we finally see it
             # we will grab the children and add them to the
             # real object.
-            parent = DItem2('', parent_name, 'datadir', '', '', 0, '')
+            parent = DItem2('', parent_name, 'datadir', '', '', 0)
             parent.children.append(ditem)
             all_data_dirs[parent_name] = parent
     return json.dumps(top_level_dirs, cls=DEncoder2)
