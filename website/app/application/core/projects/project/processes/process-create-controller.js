@@ -18,7 +18,7 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     //};
     $scope.bk = {
         selectedSample: {}
-    }
+    };
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -48,7 +48,7 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
             datafile.links.push($scope.bk.selectedSample);
         }
         $scope.model.attachments[type][i] = datafile;
-    }
+    };
 
     function addMeasurementToSample(sample) {
         var i = _.indexOf($scope.model.attachments.samples, function (entry) {
