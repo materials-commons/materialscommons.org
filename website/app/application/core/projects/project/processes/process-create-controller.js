@@ -11,11 +11,11 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         samples: {},
         attachments: {inputFiles: [], outputFiles: [], samples: []}
     };
-    $scope.dynamicPopover = {
-        content: 'Hello World',
-        templateUrl: 'application/core/projects/project/processes/histogram.html',
-        title: 'Title'
-    };
+    //$scope.dynamicPopover = {
+    //    content: 'Hello World',
+    //    templateUrl: 'application/core/projects/project/processes/histogram.html',
+    //    title: 'Title'
+    //};
     $scope.bk = {
         selectedSample: {}
     }
@@ -37,7 +37,6 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     });
 
     $scope.linkSample = function(datafile, type){
-        console.log($scope.bk.selectedSample);
         var i = _.indexOf($scope.model.attachments[type], function (entry) {
             return datafile.id === entry.id;
         });
