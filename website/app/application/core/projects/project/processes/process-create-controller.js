@@ -15,6 +15,9 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         content: 'Hello World',
         templateUrl: 'application/core/projects/project/processes/histogram.html',
         title: 'Title'
+    };
+    $scope.bk = {
+        selectedSample: {}
     }
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
@@ -34,17 +37,16 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     });
 
     $scope.linkSample = function(datafile, type){
-        console.log(datafile);
-        console.log($scope.selectedSample);
+        console.log($scope.bk.selectedSample);
         var i = _.indexOf($scope.model.attachments[type], function (entry) {
             return datafile.id === entry.id;
         });
         if ('links' in datafile){
-            datafile.links.push('T5');
+            datafile.links.push($scope.bk.selectedSample);
 
         }   else{
             datafile.links = [];
-            datafile.links.push('T5');
+            datafile.links.push($scope.bk.selectedSample);
         }
         $scope.model.attachments[type][i] = datafile;
     }
