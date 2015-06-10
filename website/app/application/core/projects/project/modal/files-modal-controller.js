@@ -70,7 +70,6 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
         },
         rowSelected:  function (row) {
-            console.log(row);
             Review.checkedItems(row);
             pubsub.send('addFileToReview', row);
         },
@@ -84,7 +83,6 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
     }
 
     function cellClicked(params) {
-        console.dir(params);
         $scope.modal = {
             instance: null,
             items: [params.node]
