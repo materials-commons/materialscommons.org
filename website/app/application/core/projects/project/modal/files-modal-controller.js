@@ -21,6 +21,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
     $scope.files = [f];
     $scope.files.showDetails = true;
     var columnDefs = [
+
         {
             displayName: "",
             field: "name",
@@ -32,12 +33,11 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
                     '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
                     params.node.name + '</a></span>';
             }
-
         },
         {
             displayName: "",
             field: "size",
-            width: 250,
+            width: 150,
             cellRenderer: function (params) {
                 if (params.node.size === 0) {
                     return '';
@@ -69,19 +69,17 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
         },
+        rowSelected:  function (row) {
+            Review.checkedItems(row);
+            pubsub.send('addFileToReview', row);
+        },
         suppressRowClickSelection: true,
-        rowSelected: checkboxClicked,
         groupInnerCellRenderer: groupInnerCellRenderer
     };
 
     function groupInnerCellRenderer(params) {
         var template = params.node.type === 'datadir' ? params.node.displayname : 'File';
         return template;
-    }
-
-    function checkboxClicked(params) {
-        Review.checkedItems(params);
-        pubsub.send('addFileToReview', params);
     }
 
     function cellClicked(params) {
@@ -104,4 +102,5 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             }
         });
     }
+
 }
