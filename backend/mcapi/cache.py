@@ -128,18 +128,18 @@ def build_tree(datadirs):
             dfitem.tags = df['tags']
             dfitem.notes = df['notes']
             dfitem.group = False
-            # data dict() is used during  checkbox selection using angularGrid
-            # data = dict()
-            # data['name'] = dfitem.name
-            # data['owner'] = dfitem.owner
-            # data['type'] = dfitem.type
-            # data['mediatype'] = dfitem.mediatype
-            # data['tags'] = dfitem.tags
-            # data['notes'] = dfitem.notes
-            # data['birthtime'] = dfitem.birthtime
-            # data['id'] = dfitem.id
-            # data['path'] = dfitem.fullname
-            # dfitem.data = data
+            # data dict()
+            data = dict()
+            data['name'] = dfitem.name
+            data['owner'] = dfitem.owner
+            data['type'] = dfitem.type
+            data['mediatype'] = dfitem.mediatype
+            data['tags'] = dfitem.tags
+            data['notes'] = dfitem.notes
+            data['birthtime'] = dfitem.birthtime
+            data['id'] = dfitem.id
+            data['path'] = dfitem.fullname
+            dfitem.data = data
             if 'mediatype' not in df:
                 dfitem.mediatype = "unknown"
             elif 'mime' not in df['mediatype']:
