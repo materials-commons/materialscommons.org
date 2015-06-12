@@ -50,9 +50,9 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
         $scope.choices.push({'id': newItemNo, 'name': $scope.measure.name, 'type': $scope.measure.type});
     };
 
-    $scope.removeChoice = function () {
-        var lastItem = $scope.choices.length - 1;
-        $scope.choices.splice(lastItem);
+    $scope.removeChoice = function (index) {
+        //var lastItem = $scope.choices.length - 1;
+        $scope.choices.splice(index, 1);
     };
 
     $scope.modal.instance.result.then(function (selectedItem) {
