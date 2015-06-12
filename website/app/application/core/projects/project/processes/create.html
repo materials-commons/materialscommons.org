@@ -8,9 +8,22 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-8">
-                        <div><label>What did you do ?</label>{{model.process_info.what}}</div>
-                        <div><label>Why did you do this?</label>{{model.process_info.why}}</div>
+                    <div class="col-xs-12">
+                        <label>What did you do ?</label>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{model.process_info.what}}
+
+                            </div>
+                        </div>
+                        <label>Why did you do this?</label>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{model.process_info.why}}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr class="divider"/>
@@ -45,7 +58,8 @@
                                                 </div>
                                                 <div ng-switch-when="histogram">
                                                     <a href="" popover="I have a title!"
-                                                       popover-title="The title." >{{measure.name}} <i class="fa fa-bar-chart"></i>
+                                                       popover-title="The title.">{{measure.name}} <i
+                                                            class="fa fa-bar-chart"></i>
                                                     </a>
                                                 </div>
                                             </div>
@@ -68,6 +82,7 @@
                                      style="height: 40px;padding-bottom: 10px;">
                                 <a ng-click="openDetails(attachment)" class="link pointer"
                                    style="padding-left: 15px;">{{attachment.name}}</a>
+
                                 <div class="row">
                                     <div class="col-xs-offset-2">
                                         <ul>
@@ -87,6 +102,7 @@
                                      style="height: 40px;padding-bottom: 10px;">
                                 <a ng-click="openDetails(attachment)" class="link pointer"
                                    style="padding-left: 15px;">{{attachment.name}}</a>
+
                                 <div class="row">
                                     <div class="col-xs-offset-2">
                                         <ul>
@@ -124,7 +140,7 @@
 
                     <div class="row">
                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a
-                            ng-click="">Setup</a></span>
+                            ng-click="setUp()">Setup</a></span>
                     </div>
                     <br>
                     <hr class="divider"/>
@@ -177,22 +193,23 @@
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
-                                    <i style="padding-left: 20px;"  ng-click="removeAttachment(attachment)"
+                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment)"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
 
                                     <span style="padding-left: 20px">
                                       <i class="fa fa-link fa-fw sample"></i>
                                         <span><a class="sample"
-                                            ng-click="link = !link">Link Sample</a>
+                                                 ng-click="link = !link">Link Sample</a>
                                         </span>
                                     </span>
+
                                     <div ng-if="link" class="row">
-                                        <select  ng-change="linkSample(attachment, 'inputFiles')"
-                                                 ng-model="bk.selectedSample"
-                                                 data-placeholder="Choose Sample"
-                                                 class="form-control"
-                                                 validator="required">
-                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}</option>
+                                        <select ng-change="linkSample(attachment, 'inputFiles')"
+                                                ng-model="bk.selectedSample"
+                                                data-placeholder="Choose Sample"
+                                                class="form-control">
+                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -212,7 +229,7 @@
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
 
-                                    <i style="padding-left: 20px;"  ng-click="removeAttachment(attachment)"
+                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment)"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
                                     <span style="padding-left: 20px">
                                       <i class="fa fa-link fa-fw sample"></i>
@@ -220,13 +237,14 @@
                                                  ng-click="link = !link">Link Sample</a>
                                         </span>
                                     </span>
+
                                     <div ng-if="link" class="row">
-                                        <select  ng-change="linkSample(attachment, 'outputFiles')"
-                                                 ng-model="bk.selectedSample"
-                                                 data-placeholder="Choose Sample"
-                                                 class="form-control"
-                                                 validator="required">
-                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}</option>
+                                        <select ng-change="linkSample(attachment, 'outputFiles')"
+                                                ng-model="bk.selectedSample"
+                                                data-placeholder="Choose Sample"
+                                                class="form-control">
+                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}
+                                            </option>
                                         </select>
                                     </div>
 
