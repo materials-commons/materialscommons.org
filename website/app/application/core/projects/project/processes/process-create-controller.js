@@ -37,7 +37,6 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     });
 
     $scope.linkSample = function(datafile, type){
-        console.log($scope.bk.selectedSample);
         var i = _.indexOf($scope.model.attachments[type], function (entry) {
             return datafile.id === entry.id;
         });
@@ -49,7 +48,9 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
             datafile.links.push($scope.bk.selectedSample);
         }
         $scope.model.attachments[type][i] = datafile;
-    }
+        $scope.bk.selectedSample = '';
+
+    };
 
     function addMeasurementToSample(sample) {
         var i = _.indexOf($scope.model.attachments.samples, function (entry) {
@@ -114,6 +115,25 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
             templateUrl: 'application/core/projects/project/reviews/myModalContent.html',
             controller: 'ModalInstanceCtrl',
             size: size,
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
+
+    $scope.setUp = function(){
+        $scope.modal = {
+            instance: null,
+            items: []
+        };
+        $scope.modal.instance = $modal.open({
+            templateUrl: 'application/core/projects/project/processes/setup.html',
+            controller: 'setupInstanceController',
             resolve: {
                 modal: function () {
                     return $scope.modal;
