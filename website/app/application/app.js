@@ -137,16 +137,6 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             }],
             controller: "projectsProject"
         })
-        .state("projects.project.samples", {
-            url: "/samples",
-            templateUrl: "application/core/projects/project/samples/samples.html",
-            controller: "projectSamples"
-        })
-        .state("projects.project.samples.create", {
-            url: "/create",
-            templateUrl: "application/core/projects/project/samples/create.html",
-            controller: "projectSamplesCreate"
-        })
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
@@ -281,6 +271,21 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             url: "/create",
             templateUrl: "application/core/projects/project/processes/create.html",
             controller: "projectCreateProcess"
+        })
+        .state("projects.project.samples", {
+            url: "/samples/:category",
+            templateUrl: "application/core/projects/project/samples/samples.html",
+            controller: "projectSamples"
+        })
+        .state("projects.project.samples.create", {
+            url: "/samples/create",
+            templateUrl: "application/core/projects/project/samples/create.html",
+            controller: "projectCreateSample"
+        })
+        .state("projects.project.samples.edit", {
+            url: "/edit/:sample_id",
+            templateUrl: "application/core/projects/project/samples/edit.html",
+            controller: "projectEditSample"
         });
 
     $urlRouterProvider.otherwise('/home');

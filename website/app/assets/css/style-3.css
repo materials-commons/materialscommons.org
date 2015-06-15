@@ -2366,6 +2366,13 @@ header {
   border-bottom: 5px solid #AC91BA;
 }
 
+
+.details-container.samples-container .navbar-default .navbar-nav > li.active > a {
+  color: #26A69A;
+  background-color: #FFFFFF;
+  border-bottom: 5px solid #26A69A;
+}
+
 .details-sidebar .list-group {
   margin-right: 15px;
   margin-left: 15px;
@@ -2419,7 +2426,7 @@ header {
   color: #1E88E5;;
 }
 .sample{
-  color: #28AA9A;;
+  color: #26A69A;;
 }
 .details-main-content .headings {
   font-size: 16px;
@@ -2473,6 +2480,10 @@ header {
 
 .btn-files {
   background-color: #AC91BA;
+}
+
+.btn-sample {
+  background-color: #26A69A;
 }
 
 .review-active {
