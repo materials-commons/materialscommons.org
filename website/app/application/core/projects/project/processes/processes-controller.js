@@ -1,6 +1,6 @@
 Application.Controllers.controller('projectProcesses',
-    ["$scope", "project", "$state", projectProcesses]);
+    ["project", projectProcesses]);
 
-function projectProcesses($scope, project, $state) {
+function projectProcesses(project) {
     this.all = project.processes;
 }
