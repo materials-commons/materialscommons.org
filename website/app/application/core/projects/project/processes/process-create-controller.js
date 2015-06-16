@@ -36,14 +36,14 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         addMeasurementToSample(sample);
     });
 
-    $scope.linkSample = function(datafile, type){
+    $scope.linkSample = function (datafile, type) {
         var i = _.indexOf($scope.model.attachments[type], function (entry) {
             return datafile.id === entry.id;
         });
-        if ('links' in datafile){
+        if ('links' in datafile) {
             datafile.links.push($scope.bk.selectedSample);
 
-        }   else{
+        } else {
             datafile.links = [];
             datafile.links.push($scope.bk.selectedSample);
         }
@@ -125,7 +125,7 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         });
     };
 
-    $scope.setUp = function(){
+    $scope.setUp = function () {
         $scope.modal = {
             instance: null,
             items: []
