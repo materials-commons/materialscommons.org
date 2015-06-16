@@ -5,7 +5,7 @@ function projectSamplesCreate($scope, templates, pubsub) {
     // Eventually move this code out of the controller and
     // instead inject the template we are using.
     var index = _.indexOf(templates, function(template) {
-        return template.id == "as_received";
+        return template.id === "as_received";
     });
 
     $scope.allRequiredDone = false;
