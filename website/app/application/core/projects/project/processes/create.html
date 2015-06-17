@@ -57,8 +57,8 @@
                                                     {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}}</span>
                                                 </div>
                                                 <div ng-switch-when="histogram">
-                                                    <a href="" popover="I have a title!"
-                                                       popover-title="The title.">{{measure.name}} <i
+                                                    <a href="" popover="Graph displayed here...."
+                                                       popover-title="Particle size distribution">{{measure.name}} <i
                                                             class="fa fa-bar-chart"></i>
                                                     </a>
                                                 </div>
@@ -120,7 +120,7 @@
                 <hr class="divider"/>
             </div>
         </div>
-        <div class="col-xs-8 details-main-content" stylex="margin-left: 10px;">
+        <div class="col-xs-8" stylex="margin-left: 10px;">
             <div class="row">
                 <div class="col-xs-8">
                     <div class="process headings">process information</div>
@@ -137,7 +137,6 @@
                         </textarea>
                     </div>
                     <br>
-
                     <div class="row">
                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a
                             ng-click="setUp()">Setup</a></span>
