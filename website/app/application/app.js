@@ -280,7 +280,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.samples.create", {
             url: "/samples/create",
             templateUrl: "application/core/projects/project/samples/create.html",
-            controller: "projectCreateSample"
+            controller: "projectSamplesCreate"
         })
         .state("projects.project.samples.edit", {
             url: "/edit/:sample_id",
