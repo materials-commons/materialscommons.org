@@ -11,7 +11,7 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
     $scope.measurements = [
         {name: "composition", type: "string"},
         {name: "Volume Fraction", type: "number"},
-        {name: "Height", type: "histogram"}
+        {name: "Particle size distribution", type: "histogram"}
     ];
     $scope.enterValue = false;
     $scope.choices = [{id: '1'}];

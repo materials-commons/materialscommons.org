@@ -2,7 +2,6 @@ Application.Controllers.controller('projectEditSample',
     ["$scope", "$modal", projectEditSample]);
 
 function projectEditSample($scope, $modal) {
-
     $scope.processes = ["SEM Imaging", "Heat Treatment", "As Received"];
     $scope.attachments = ["A1.jpg", "B1.png"];
     $scope.measurements = function () {
@@ -27,3 +26,4 @@ function projectEditSample($scope, $modal) {
     };
 
 }
+
