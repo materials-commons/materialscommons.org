@@ -31,6 +31,10 @@
                 <div class="row">
                     <div class="col-xs-8">
                         <b>Set Up</b>
+                        <ul>
+                            <li ng-if="model.attachments.setup.voltage !== ''">Voltage: {{model.attachments.setup.voltage }}</li>
+                            <li ng-if="model.attachments.setup.pressure !== ''">Pressure: {{model.attachments.setup.pressure }}</li>
+                        </ul>
                     </div>
                 </div>
                 <hr class="divider"/>
@@ -137,6 +141,7 @@
                         </textarea>
                     </div>
                     <br>
+
                     <div class="row">
                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a
                             ng-click="setUp()">Setup</a></span>

@@ -9,13 +9,8 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         process_info: {what: '', why: ''},
         measurements: [],
         samples: {},
-        attachments: {inputFiles: [], outputFiles: [], samples: []}
+        attachments: {inputFiles: [], outputFiles: [], samples: [], setup: {voltage: '', pressure: ''}}
     };
-    //$scope.dynamicPopover = {
-    //    content: 'Hello World',
-    //    templateUrl: 'application/core/projects/project/processes/histogram.html',
-    //    title: 'Title'
-    //};
     $scope.bk = {
         selectedSample: {}
     };
@@ -34,6 +29,10 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
 
     pubsub.waitOn($scope, 'addMeasurementToSample', function (sample) {
         addMeasurementToSample(sample);
+    });
+
+    pubsub.waitOn($scope, 'addSetupToSample', function (selected) {
+        addSetupToSample(selected);
     });
 
     $scope.linkSample = function (datafile, type) {
@@ -56,6 +55,11 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
             return sample.id === entry.id;
         });
         $scope.model.attachments.samples[i] = sample;
+    }
+
+    function addSetupToSample(selected) {
+        $scope.model.attachments.setup.voltage = selected.voltage;
+        $scope.model.attachments.setup.pressure = selected.pressure;
     }
 
     function addAttachment(item) {
