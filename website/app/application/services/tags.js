@@ -1,6 +1,6 @@
 Application.Services.factory('tags', ["mcapi",
     function tags(mcapi) {
-        var service = {
+        return {
             tags: [],
 
             createTag: function (tag, item_id) {
@@ -9,6 +9,7 @@ Application.Services.factory('tags', ["mcapi",
                         return tag;
                     }).post(tag);
             },
+
             removeTag: function (tag_id, item_id) {
                 mcapi('/tags/%/item/%', tag_id, item_id)
                     .success(function (tag) {
@@ -16,5 +17,4 @@ Application.Services.factory('tags', ["mcapi",
                     }).delete();
             }
         };
-        return service;
     }]);
