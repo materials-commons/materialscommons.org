@@ -5,16 +5,14 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     $state.go('projects.project.processes.create');
 
     $scope.template = Template.getActiveTemplate();
-
-    $scope.modal = {
-        instance: null,
-        items: ''
-    };
     $scope.model = {
         process_info: {what: '', why: ''},
         measurements: [],
         samples: {},
-        attachments: {inputFiles: [], outputFiles: [], samples: []}
+        attachments: {inputFiles: [], outputFiles: [], samples: [], setup: {voltage: '', pressure: ''}}
+    };
+    $scope.bk = {
+        selectedSample: {}
     };
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
@@ -33,13 +31,35 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         addMeasurementToSample(sample);
     });
 
-    function addMeasurementToSample(sample){
+    pubsub.waitOn($scope, 'addSetupToSample', function (selected) {
+        addSetupToSample(selected);
+    });
+
+    $scope.linkSample = function (datafile, type) {
+        var i = _.indexOf($scope.model.attachments[type], function (entry) {
+            return datafile.id === entry.id;
+        });
+        if ('links' in datafile) {
+            datafile.links.push($scope.bk.selectedSample);
+
+        } else {
+            datafile.links = [];
+            datafile.links.push($scope.bk.selectedSample);
+        }
+        $scope.model.attachments[type][i] = datafile;
+        $scope.bk.selectedSample = '';
+    };
+
+    function addMeasurementToSample(sample) {
         var i = _.indexOf($scope.model.attachments.samples, function (entry) {
             return sample.id === entry.id;
         });
-        console.log(i);
         $scope.model.attachments.samples[i] = sample;
-        console.dir( $scope.model.attachments.samples[i]);
+    }
+
+    function addSetupToSample(selected) {
+        $scope.model.attachments.setup.voltage = selected.voltage;
+        $scope.model.attachments.setup.pressure = selected.pressure;
     }
 
     function addAttachment(item) {
@@ -47,6 +67,7 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         switch ($scope.type) {
             case "samples":
                 what = 'samples';
+                item.measurements = [];
                 break;
             case "inputFiles":
                 what = 'inputFiles';
@@ -68,7 +89,8 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     $scope.addMeasurement = function (sample) {
         $scope.modal = {
             instance: null,
-            sample: sample
+            sample: sample,
+            items: []
         };
 
         $scope.modal.instance = $modal.open({
@@ -86,11 +108,35 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         });
     };
     $scope.open = function (size, type) {
+
+        $scope.modal = {
+            instance: null,
+            items: []
+        };
         $scope.type = type;
         $scope.modal.instance = $modal.open({
             templateUrl: 'application/core/projects/project/reviews/myModalContent.html',
             controller: 'ModalInstanceCtrl',
             size: size,
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
+
+    $scope.setUp = function () {
+        $scope.modal = {
+            instance: null,
+            items: []
+        };
+        $scope.modal.instance = $modal.open({
+            templateUrl: 'application/core/projects/project/processes/setup.html',
+            controller: 'setupInstanceController',
             resolve: {
                 modal: function () {
                     return $scope.modal;

@@ -1,8 +1,39 @@
 <div>
-    <div class="col-xs-5">
-        <process-network-view network="network" templates="templates"></process-network-view>
-    </div
-    <div class="col-xs-7">
-        <div ui-view></div>
+    <div class="row">
+        <div class="col-xs-12 details-container samples-container">
+            <nav class="navbar navbar-default">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a>All</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-xs-4">
+                <div class="details-sidebar">
+                    <div class="row">
+                        <div style="text-align: center;margin-top: 20px;">
+                            <button ui-sref="projects.project.samples.create"
+                                    class="btn-sample  btn-details-container btn btn-default"> create
+                            </button>
+                        </div>
+                    </div>
+                    <ul class="list-group">
+                        <li ui-sref="projects.project.samples.edit" style="color: #26A69A" class="list-group-item pointer bold">
+                            <i class="fa fa-fw fa-cubes sample"></i>
+                            MG + AL ROI sample</li>
+                        <li class="list-group-item pointer"><i class="fa fa-fw fa-cubes sample"></i>We43 Init sample</li>
+                        <li class="list-group-item pointer"><i class="fa fa-fw fa-cubes sample"></i>As received sample</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-8" stylex="margin-left: 10px;">
+                <div ui-view></div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
