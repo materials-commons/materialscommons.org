@@ -6,10 +6,20 @@
                     <button ng-click="chooseTemplate()" class="btn-details-container btn-process btn btn-default"> create</button>
                 </div>
             </div>
+            <ul  class="list-group">
+                <li ui-sref="projects.project.process.edit({'process_id': process.id})"
+                    ng-class="{active: current.id === process.id}"
+                    class="list-group-item pointer"
+                    ng-repeat="process in project.processes"
+                        ng-click="viewProcess(process)">
+                    <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;">
+                    {{process.name}}
+                </li>
+            </ul>
             <ul class="list-group">
-                <li class="list-group-item pointer">Atom Probe - 02/04/2015</li>
-                <li class="list-group-item pointer">Initial We43 testing</li>
-                <li class="list-group-item pointer">As Received Sample MgAl</li>
+                <li class="list-group-item pointer process"> <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;"> Atom Probe - 02/04/2015</li>
+                <li class="list-group-item pointer"> <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;"> Initial We43 testing</li>
+                <li class="list-group-item pointer"> <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;"> As Received Sample MgAl</li>
                 <!--<li class="list-group-item pointer"-->
                 <!--ng-repeat="process in processes.all | filter:search"-->
                 <!--ng-class="{active: current.id === process.id}"-->
