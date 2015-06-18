@@ -1,8 +1,16 @@
 Application.Controllers.controller('projectListProcess',
-    ["$scope", "project", "$state","$modal", projectListProcess]);
+    ["$scope", "project", "$state", "$modal", projectListProcess]);
 
-function projectListProcess($scope, project, $stateParams, $modal) {
-    this.all = project.processes;
+function projectListProcess($scope, project, $state, $modal) {
+    $scope.project = project;
+    $scope.current = project.processes[0];
+    //$state.go('projects.project.processes.list.edit', {process_id : $scope.current.id});
+
+    $scope.viewProcess = function (process) {
+        $scope.current = process;
+        $state.go('projects.project.processes.list.edit', {process_id : $scope.current.id});
+    };
+
     $scope.chooseTemplate = function () {
         $scope.modal = {
             instance: null,
@@ -23,4 +31,5 @@ function projectListProcess($scope, project, $stateParams, $modal) {
             }
         });
     };
+
 }
