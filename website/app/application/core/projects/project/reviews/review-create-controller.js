@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectCreateReview',
-    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state", "$filter", projectCreateReview]);
+    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state", "$filter", "modalInstance",projectCreateReview]);
 
-function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state, $filter) {
+function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state, $filter, modalInstance) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -93,39 +93,12 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
     }
 
     $scope.openDetails = function (params) {
-        $scope.modal = {
-            instance: null,
-            items: [params]
-        };
-        var template = '';
-        switch (params.type){
-            case "datafile":
-                template = 'application/core/projects/project/home/directives/display-file.html';
-                break;
-            case "sample":
-                template = 'application/core/projects/project/home/directives/display-sample.html';
-                break;
-            case "process":
-                template = 'application/core/projects/project/home/directives/display-process.html';
-                break;
-        }
-        $scope.modal.instance = $modal.open({
-            size: 'lg',
-            templateUrl: template,
-            controller: 'ModalInstanceCtrl',
-            resolve: {
-                modal: function () {
-                    return $scope.modal;
-                },
-                project: function () {
-                    return $scope.project;
-                }
-            }
-        });
+        modalInstance.openModal(params, project);
     };
+
     $scope.cancel = function(){
      init();
-    }
+    };
 
     function init() {
         $scope.project = project;
