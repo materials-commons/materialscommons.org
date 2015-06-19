@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectEditReview',
-    ["$scope", "project", "$stateParams", "Review", "User", "$filter", "$modal",projectEditReview]);
+    ["$scope", "project", "$stateParams", "Review", "User", "$filter", "modalInstance",projectEditReview]);
 
-function projectEditReview($scope, project, $stateParams, Review, User, $filter, $modal) {
+function projectEditReview($scope, project, $stateParams, Review, User, $filter, modalInstance) {
 
     $scope.openReview = function (review) {
         $scope.review = review;
@@ -15,35 +15,7 @@ function projectEditReview($scope, project, $stateParams, Review, User, $filter,
     };
 
     $scope.openDetails = function (params) {
-        $scope.modal = {
-            instance: null,
-            items: [params]
-        };
-        var template = '';
-        switch (params.type){
-            case "datafile":
-                 template = 'application/core/projects/project/home/directives/display-file.html';
-                break;
-            case "sample":
-                 template = 'application/core/projects/project/home/directives/display-sample.html';
-                break;
-            case "process":
-                template = 'application/core/projects/project/home/directives/display-process.html';
-                break;
-        }
-        $scope.modal.instance = $modal.open({
-            size: 'lg',
-            templateUrl: template,
-            controller: 'ModalInstanceCtrl',
-            resolve: {
-                modal: function () {
-                    return $scope.modal;
-                },
-                project: function () {
-                    return $scope.project;
-                }
-            }
-        });
+        modalInstance.openModal(params, project);
     };
     $scope.project = project;
     $scope.user = User.u();
