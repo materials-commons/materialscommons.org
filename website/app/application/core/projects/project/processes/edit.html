@@ -3,10 +3,14 @@
         {{current.birthtime | toDateString}}
     </div>
     <div class="row">
-        <div class="col-xs-12">
-            <div>Description about process:</div>
-            <div>Reason you performed the process:</div>
-            <div>Owner: {{current.owner}}</div>
+        <div class="col-xs-8">
+            <div class="process headings">Details:</div>
+
+            <div class="row"><b>Description about process:</b> <br>
+                is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an un</div>
+            <div class="row"><b>Reason you performed the process:</b><br>
+                is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an un</div>
+            <div class="row"><b>Owner: </b>{{current.owner}}</div>
         </div>
     </div>
 
@@ -29,7 +33,7 @@
                 <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                 <img src="assets/img/splash/sample_icon.png"
                      style="height: 40px;padding-bottom: 10px;">
-                <a>{{sample.other.name}}</a>
+                <a ng-click="open(sample)">{{sample.other.name}}</a>
 
                 <div class="row col-xs-offset-1">
                     <div class="col-xs-5">
@@ -57,7 +61,7 @@
                 <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                     <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                    <a class="link" style="padding-left: 15px;">{{attachment.other.name}}</a>
+                    <a ng-click="open(attachment)" class="link" style="padding-left: 15px;">{{attachment.other.name}}</a>
                     <p style="padding-left: 80px"><small class="text-muted">{{attachment.other.fullname}}</small></p>
                 </div>
             </div>
@@ -67,7 +71,7 @@
                 <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                     <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                    <a class="link" style="padding-left: 15px;">{{attachment.other.name}}</a>
+                    <a ng-click="open(attachment)" class="link" style="padding-left: 15px;">{{attachment.other.name}}</a>
                     <p style="padding-left: 80px"><small class="text-muted">{{attachment.other.fullname}}</small></p>
                 </div>
             </div>

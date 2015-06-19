@@ -1,13 +1,19 @@
 Application.Controllers.controller('TemplateInstanceController',
-    ["$scope", "project", "$state","$log", "modal","Template",  TemplateInstanceController]);
+    ["$scope", "project", "$state","$log", "modal","Template", "mcapi", TemplateInstanceController]);
 
-function TemplateInstanceController($scope, project, $state,  $log, modal, Template) {
+function TemplateInstanceController($scope, project, $state,  $log, modal, Template, mcapi) {
     $scope.modal = modal;
     this.all = project.processes;
     $scope.selected = {
         item: {}
     };
+
     $scope.templates = ["Heat Treatment","Elasticity","Cogging","Heat Condition"];
+
+    mcapi("/templates")
+        .success(function(templates){
+          $scope.templates = templates;
+        }).jsonp();
 
     $scope.showDetails = function(template){
         $scope.template = template;
