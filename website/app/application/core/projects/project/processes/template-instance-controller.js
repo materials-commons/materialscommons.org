@@ -16,7 +16,6 @@ function TemplateInstanceController($scope, project, $state,  $log, modal, Templ
         }).jsonp();
 
     $scope.showDetails = function(template){
-        $scope.template = template;
         $scope.selected.item = template;
     };
 
