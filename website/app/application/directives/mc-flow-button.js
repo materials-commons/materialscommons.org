@@ -93,6 +93,7 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                                 directory_id: scope.dir.id,
                                 filename: f.name,
                                 filesize: f.size,
+                                chunk_size: flow.opts.chunkSize,
                                 filemtime: f.lastModifiedDate.toUTCString(),
                                 user_id: User.u()
                             };
