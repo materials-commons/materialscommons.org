@@ -5,7 +5,8 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
     $scope.template = Template.getActiveTemplate();
     $scope.model = {
         process_info: {what: '', why: ''},
-        attachments: {inputFiles: [], outputFiles: [], samples: [], setup: {voltage: '', pressure: ''}}
+        attachments: {inputFiles: [], outputFiles: [], samples: []} ,
+        setUp: []
     };
 
     $scope.bk = {
@@ -28,8 +29,8 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
         updateSampleMeasurement(sample);
     });
 
-    pubsub.waitOn($scope, 'addSetupToSample', function (selected) {
-        addSetupToSample(selected);
+    pubsub.waitOn($scope, 'addSetup', function (setup) {
+        addSetup(setup);
     });
 
     $scope.linkSample = function (datafile, type) {
@@ -53,9 +54,8 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
         $scope.model.attachments.samples[i] = sample;
     }
 
-    function addSetupToSample(selected) {
-        $scope.model.attachments.setup.voltage = selected.voltage;
-        $scope.model.attachments.setup.pressure = selected.pressure;
+    function addSetup(setup) {
+        $scope.model.setup = setup;
     }
 
     function addAttachment(item) {
@@ -130,7 +130,7 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
             items: []
         };
         $scope.modal.instance = $modal.open({
-            templateUrl: 'application/core/projects/project/processes/setup.html',
+            templateUrl: 'application/processes/process-settings.html',
             controller: 'setupInstanceController',
             resolve: {
                 modal: function () {

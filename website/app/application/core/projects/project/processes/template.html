@@ -14,15 +14,16 @@
                 <div class="details-sidebar">
                     <ul class="list-group">
                         <li ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
-                            ng-repeat="template in templates | filter:search | byKey: 'template_type': 'process'"
+                            ng-repeat="template in templates | filter:search"
                             class="list-group-item pointer">
-                            <div>{{template.id}}</div>
+                            <div>{{template.name}}</div>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="col-xs-8 details-main-content">
-                <b>{{selected.item.id}}</b> is selected...
+                <b>Description: </b> <br>
+                {{selected.item.description}}
             </div>
         </div>
     </div>
