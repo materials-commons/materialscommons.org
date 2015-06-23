@@ -1,26 +1,17 @@
 Application.Controllers.controller('projectListProcess',
-    ["$scope", "project", "$state","$modal", projectListProcess]);
+    ["$scope", "project", "$state", "modalInstance", projectListProcess]);
 
-function projectListProcess($scope, project, $stateParams, $modal) {
-    this.all = project.processes;
-    $scope.chooseTemplate = function () {
-        $scope.modal = {
-            instance: null,
-            items: []
-        };
+function projectListProcess($scope, project, $state, modalInstance) {
+    $scope.project = project;
+    $scope.current = project.processes[0];
 
-        $scope.modal.instance = $modal.open({
-            size: 'lg',
-            templateUrl: 'application/core/projects/project/processes/template.html',
-            controller: 'TemplateInstanceController',
-            resolve: {
-                modal: function () {
-                    return $scope.modal;
-                },
-                project: function () {
-                    return $scope.project;
-                }
-            }
-        });
+    $scope.viewProcess = function (process) {
+        $scope.current = process;
+        $state.go('projects.project.processes.list.edit', {process_id : $scope.current.id});
     };
+
+    $scope.chooseTemplate = function () {
+        modalInstance.chooseTemplate(project);
+    };
+
 }

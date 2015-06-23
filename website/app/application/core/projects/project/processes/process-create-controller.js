@@ -2,7 +2,7 @@ Application.Controllers.controller('projectCreateProcess',
     ["$scope", "project", "$state", "Template", "$modal", "pubsub", projectCreateProcess]);
 
 function projectCreateProcess($scope, project, $state, Template, $modal, pubsub) {
-    $state.go('projects.project.processes.create');
+    //$state.go('projects.project.processes.create');
 
     $scope.template = Template.getActiveTemplate();
     $scope.model = {
@@ -11,6 +11,7 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         samples: {},
         attachments: {inputFiles: [], outputFiles: [], samples: [], setup: {voltage: '', pressure: ''}}
     };
+
     $scope.bk = {
         selectedSample: {}
     };
@@ -41,7 +42,6 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         });
         if ('links' in datafile) {
             datafile.links.push($scope.bk.selectedSample);
-
         } else {
             datafile.links = [];
             datafile.links.push($scope.bk.selectedSample);
