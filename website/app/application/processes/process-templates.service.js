@@ -11,12 +11,12 @@ function processTemplates() {
     ];
 
     return {
-        templates: function() {
+        templates: function () {
             return self.templates;
         },
 
-        newInstance: function(template) {
-            return new template.fn()
+        newInstance: function (template) {
+            return new template.fn();
         }
-    }
+    };
 }
