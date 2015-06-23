@@ -7,7 +7,6 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
     $scope.selected = {
         item: {}
     };
-    //$scope.measurements = ["Composition", "Area Fraction", "Volume Fraction", "Height"];
     $scope.measurements = [
         {name: "composition", type: "string"},
         {name: "Volume Fraction", type: "number"},
@@ -42,7 +41,7 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
         $scope.enterValue = false;
         $scope.modal.sample.measurements.push($scope.choices);
         $scope.modal.sample.measurements = _.flatten($scope.modal.sample.measurements);
-        pubsub.send('addMeasurementToSample', $scope.modal.sample);
+        pubsub.send('updateSampleMeasurement', $scope.modal.sample);
     };
 
     $scope.addNewChoice = function () {
@@ -51,7 +50,6 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
     };
 
     $scope.removeChoice = function (index) {
-        //var lastItem = $scope.choices.length - 1;
         $scope.choices.splice(index, 1);
     };
 
