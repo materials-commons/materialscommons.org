@@ -4,12 +4,12 @@
             <div class="details-sidebar">
                 <div class="row">
                     <div class="col-xs-8" style="margin-top: 10px;">
-                        <h4 class="text-center process">{{template}}</h4>
+                        <h4 class="text-center process">{{template.id}}</h4>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <label>What did you do ?</label>
+                        <label>How would you describe your process?</label>
 
                         <div class="row">
                             <div class="col-xs-12">
@@ -32,8 +32,12 @@
                     <div class="col-xs-8">
                         <b>Set Up</b>
                         <ul>
-                            <li ng-if="model.attachments.setup.voltage !== ''">Voltage: {{model.attachments.setup.voltage }}</li>
-                            <li ng-if="model.attachments.setup.pressure !== ''">Pressure: {{model.attachments.setup.pressure }}</li>
+                            <li ng-if="model.attachments.setup.voltage !== ''">Voltage:
+                                {{model.attachments.setup.voltage }}
+                            </li>
+                            <li ng-if="model.attachments.setup.pressure !== ''">Pressure:
+                                {{model.attachments.setup.pressure }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -129,7 +133,7 @@
                 <div class="col-xs-8">
                     <div class="process headings">process information</div>
                     <br>
-                    What did you do ?
+                    How would you describe your process?
                     <div class="row">
                         <textarea placeholder="What" ng-model="model.process_info.what" class="form-control col-xs-8">
                         </textarea>
