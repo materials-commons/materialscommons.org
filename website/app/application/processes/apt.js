@@ -20,9 +20,6 @@ function Apt() {
                         value: "voltage"
                     },
                     {
-
-                    },
-                    {
                         name: "Laser",
                         value: "laser"
                     }
