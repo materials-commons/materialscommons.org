@@ -1,5 +1,5 @@
 Application.Services.factory('Template',
-    [function () {
+    ["processTemplates" , function (processTemplates) {
         var service = {
             activeTemplate: {},
 
@@ -7,7 +7,8 @@ Application.Services.factory('Template',
                 return service.activeTemplate;
             },
             setActiveTemplate: function (template) {
-                service.activeTemplate = template;
+                service.activeTemplate = processTemplates.newInstance(template);
+                console.dir(service);
             }
         };
         return service;

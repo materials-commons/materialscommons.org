@@ -1,19 +1,16 @@
 Application.Controllers.controller('TemplateInstanceController',
-    ["$scope", "project", "$state","$log", "modal","Template", "mcapi", TemplateInstanceController]);
+    ["$scope", "project", "$state","$log", "modal","Template", "mcapi", "processTemplates", TemplateInstanceController]);
 
-function TemplateInstanceController($scope, project, $state,  $log, modal, Template, mcapi) {
+function TemplateInstanceController($scope, project, $state,  $log, modal, Template, mcapi, processTemplates) {
     $scope.modal = modal;
     this.all = project.processes;
     $scope.selected = {
         item: {}
     };
-
-    $scope.templates = ["Heat Treatment","Elasticity","Cogging","Heat Condition"];
-
-    mcapi("/templates")
-        .success(function(templates){
-          $scope.templates = templates;
-        }).jsonp();
+    //mcapi("/templates")
+    //    .success(function(templates){
+    //      $scope.templates = templates;
+    //    }).jsonp();
 
     $scope.showDetails = function(template){
         $scope.selected.item = template;
@@ -35,4 +32,13 @@ function TemplateInstanceController($scope, project, $state,  $log, modal, Templ
     }, function () {
         $log.info('Modal dismissed at: ' + new Date());
     });
+
+
+    function init(){
+
+        //$scope.templates = ["Heat Treatment","Elasticity","Cogging","Heat Condition"];
+        $scope.templates = processTemplates.templates();
+        console.dir($scope.templates);
+    }
+    init();
 }
