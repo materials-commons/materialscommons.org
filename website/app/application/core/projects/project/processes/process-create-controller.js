@@ -1,14 +1,10 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "$state", "Template", "$modal", "pubsub", projectCreateProcess]);
+    ["$scope", "project", "Template", "$modal", "pubsub", projectCreateProcess]);
 
-function projectCreateProcess($scope, project, $state, Template, $modal, pubsub) {
-    //$state.go('projects.project.processes.create');
-
+function projectCreateProcess($scope, project, Template, $modal, pubsub) {
     $scope.template = Template.getActiveTemplate();
     $scope.model = {
         process_info: {what: '', why: ''},
-        measurements: [],
-        samples: {},
         attachments: {inputFiles: [], outputFiles: [], samples: [], setup: {voltage: '', pressure: ''}}
     };
 
@@ -28,8 +24,8 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         addAttachment(file);
     });
 
-    pubsub.waitOn($scope, 'addMeasurementToSample', function (sample) {
-        addMeasurementToSample(sample);
+    pubsub.waitOn($scope, 'updateSampleMeasurement', function (sample) {
+        updateSampleMeasurement(sample);
     });
 
     pubsub.waitOn($scope, 'addSetupToSample', function (selected) {
@@ -50,7 +46,7 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
         $scope.bk.selectedSample = '';
     };
 
-    function addMeasurementToSample(sample) {
+    function updateSampleMeasurement(sample) {
         var i = _.indexOf($scope.model.attachments.samples, function (entry) {
             return sample.id === entry.id;
         });
@@ -89,8 +85,7 @@ function projectCreateProcess($scope, project, $state, Template, $modal, pubsub)
     $scope.addMeasurement = function (sample) {
         $scope.modal = {
             instance: null,
-            sample: sample,
-            items: []
+            sample: sample
         };
 
         $scope.modal.instance = $modal.open({
