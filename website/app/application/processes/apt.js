@@ -50,7 +50,7 @@ function Apt() {
         },
         {
             property:{
-                name: "Voltage Pulse Fraction (%)",
+                name: "Voltage Pulse Fraction",
                 attribute: "voltage_pulse_fraction",
                 description: "",
                 value: null,
@@ -66,7 +66,7 @@ function Apt() {
         },
         {
             property:{
-                name: "Laser Pulse Energy (pJ)",
+                name: "Laser Pulse Energy",
                 attribute: "laser_pulse_energy",
                 description: "",
                 value: null,
@@ -82,13 +82,13 @@ function Apt() {
         },
         {
             property:{
-                name: "Laser Wavelength (nm)",
+                name: "Laser Wavelength",
                 attribute: "laser_wavelength",
                 description: "",
                 value: null,
                 units: [],
                 unit: "nm",
-                _type: "selection",
+                _type: "number",
                 required: false,
                 choices: []
             },
@@ -98,7 +98,7 @@ function Apt() {
         },
         {
             property:{
-                name: "Pulse Frequency (kHz)",
+                name: "Pulse Frequency",
                 attribute: "pulse_frequency",
                 description: "",
                 value: null,
