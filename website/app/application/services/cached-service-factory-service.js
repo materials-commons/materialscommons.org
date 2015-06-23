@@ -9,8 +9,8 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
         var cache = this.cache;
         var r = Restangular.withConfig(function (config) {
             config.setBaseUrl(mcglobals.apihost);
-            config.setJsonp(true);
-            config.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
+            //config.setJsonp(true);
+            //config.setDefaultRequestParams('jsonp', {callback: 'JSON_CALLBACK'});
             config.addResponseInterceptor(function (data, operation) {
                 function handleGetPost() {
                     var d = data.data;
@@ -24,7 +24,7 @@ function CachedServiceFactoryService (Restangular, $angularCacheFactory, User, $
                 }
 
                 function handleGetList() {
-                    var items = data.data,
+                    var items = data,
                         i,
                         l = items.length;
 

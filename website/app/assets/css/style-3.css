@@ -2135,6 +2135,10 @@ textarea.no-resize {
   margin-left: -300px;
 }
 
+.modal.fade .modal-dialog {
+  transform: translate(0,0);
+}
+
 .file-details {
   border-top: 4px solid #4d90fe;
 }

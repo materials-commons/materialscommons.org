@@ -1,4 +1,4 @@
-from flask import request, make_response, current_app, url_for, redirect
+from flask import request, make_response, current_app, g
 from functools import wraps, update_wrapper, partial
 from datetime import timedelta
 import json
@@ -7,9 +7,7 @@ import error
 import access
 import mcexceptions
 import rethinkdb as r
-from flask import g, request
 import re
-
 
 
 def apikey(method=None, shared=False):
@@ -141,7 +139,6 @@ def eventlog(f):
             return rv
         elif method == 'PUT':
             data = json2dict(rv)
-            print data
             if re.match('/notes', url):
                 create_event(method, data['id'], 'note', data['title'],
                              data['project_id'], data['creator'],
@@ -160,7 +157,8 @@ def eventlog(f):
     return decorated_function
 
 
-def create_event(method, item_id, item_type, title, project, owner, mtime, btime):
+def create_event(method, item_id, item_type, title, project,
+                 owner, mtime, btime):
     event = dict()
     event['item_id'] = item_id
     event['item_type'] = item_type
@@ -171,4 +169,3 @@ def create_event(method, item_id, item_type, title, project, owner, mtime, btime
     event['mtime'] = mtime
     event['method'] = method
     r.table('events').insert(event).run(g.conn)
-
