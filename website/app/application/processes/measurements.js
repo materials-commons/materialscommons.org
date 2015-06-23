@@ -214,14 +214,14 @@ function FatigueLife() {
         attribute: "stress_ratio",
         _type: "fraction",
         units:[],
-        unit: null,
+        unit: null
     };
     this.attribute2 = {
         name: "Cycles to failure",
         attribute: "cycles_to_failure",
         _type: "number",
         units:[],
-        unit: null,
+        unit: null
     }
     this.units = [];
     this.nunit = "";
@@ -240,14 +240,14 @@ function CrackGrowth() {
         attribute: "stress_intensity",
         _type: "number",
         units:[],
-        unit: "GPa*m^(1/2)",
+        unit: "GPa*m^(1/2)"
     };
     this.attribute2 = {
         name: "da/dN",
         attribute: "da_dn",
         _type: "number",
         units:[],
-        unit: "m/cycle",
+        unit: "m/cycle"
     }
     this.units = [];
     this.nunit = "";
