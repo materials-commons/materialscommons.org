@@ -269,6 +269,7 @@ function FatigueLife() {
             attribute: "stress_ratio",
             _type: "fraction",
             units: [],
+            value: null,
             unit: null
         },
         attribute2: {
@@ -276,6 +277,7 @@ function FatigueLife() {
             attribute: "cycles_to_failure",
             _type: "number",
             units: [],
+            value: null,
             unit: null
         },
         units: [],
@@ -298,6 +300,7 @@ function CrackGrowth() {
             attribute: "stress_intensity",
             _type: "number",
             units: [],
+            value: null,
             unit: "GPa*m^(1/2)"
         },
         attribute2: {
@@ -305,6 +308,7 @@ function CrackGrowth() {
             attribute: "da_dn",
             _type: "number",
             units: [],
+            value: null,
             unit: "m/cycle"
         },
         units: [],
