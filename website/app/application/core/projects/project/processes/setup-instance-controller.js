@@ -11,6 +11,7 @@ function setupInstanceController($scope, project, $state,  $log, modal, pubsub, 
     $scope.settings = template.settings;
 
     $scope.ok = function () {
+        console.dir($scope.settings);
         $scope.modal.instance.close($scope.selected.item);
         pubsub.send('addSetupToSample', $scope.selected.item);
         $state.go('projects.project.processes.create');
