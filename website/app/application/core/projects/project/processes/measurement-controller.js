@@ -23,8 +23,7 @@ function MeasurementController($scope, project, $state, $log, modal, Template, p
 
     $scope.ok = function () {
         $scope.modal.instance.close($scope.selected.item);
-        Template.setActiveTemplate($scope.selected.item);
-        $state.go('projects.project.processes.create');
+        //$state.go('projects.project.processes.create');
     };
 
     $scope.cancel = function () {
