@@ -7,6 +7,9 @@ function Apt() {
     this.output_files = [];
     this.samples = [];
     this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.who = "";
     this.settings = [
         {
             property: {

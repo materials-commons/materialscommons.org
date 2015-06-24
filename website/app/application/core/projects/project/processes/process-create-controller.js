@@ -3,12 +3,6 @@ Application.Controllers.controller('projectCreateProcess',
 
 function projectCreateProcess($scope, project, Template, $modal, pubsub) {
     $scope.template = Template.getActiveTemplate();
-    $scope.model = {
-        process_info: {what: '', why: ''},
-        attachments: {inputFiles: [], outputFiles: [], samples: []} ,
-        setUp: []
-    };
-
     $scope.bk = {
         selectedSample: {}
     };
@@ -34,7 +28,7 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
     });
 
     $scope.linkSample = function (datafile, type) {
-        var i = _.indexOf($scope.model.attachments[type], function (entry) {
+        var i = _.indexOf($scope.template[type], function (entry) {
             return datafile.id === entry.id;
         });
         if ('links' in datafile) {
@@ -43,19 +37,19 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
             datafile.links = [];
             datafile.links.push($scope.bk.selectedSample);
         }
-        $scope.model.attachments[type][i] = datafile;
+        $scope.template[type][i] = datafile;
         $scope.bk.selectedSample = '';
     };
 
     function updateSampleMeasurement(sample) {
-        var i = _.indexOf($scope.model.attachments.samples, function (entry) {
+        var i = _.indexOf($scope.template.samples, function (entry) {
             return sample.id === entry.id;
         });
-        $scope.model.attachments.samples[i] = sample;
+        $scope.template.samples[i] = sample;
     }
 
     function addSetup(setup) {
-        $scope.model.setup = setup;
+        $scope.template.setup = setup;
     }
 
     function addAttachment(item) {
@@ -65,22 +59,46 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
                 what = 'samples';
                 item.measurements = [];
                 break;
-            case "inputFiles":
-                what = 'inputFiles';
+            case "input_files":
+                what = 'input_files';
                 break;
-            case "outputFiles":
-                what = 'outputFiles';
+            case "output_files":
+                what = 'output_files';
                 break;
         }
-        var i = _.indexOf($scope.model.attachments[what], function (entry) {
+        var i = _.indexOf($scope.template[what], function (entry) {
             return item.id === entry.id;
         });
         if (i < 0) {
-            $scope.model.attachments[what].push(item);
+            $scope.template[what].push(item);
         } else {
-            $scope.model.attachments[what].splice(i, 1);
+            $scope.template[what].splice(i, 1);
         }
     }
+
+    $scope.removeAttachment = function(item, what){
+        var i = _.indexOf($scope.template[what], function (entry) {
+            return item.id === entry.id;
+        });
+       if(i > -1) {
+            $scope.template[what].splice(i, 1);
+        }
+    };
+
+    $scope.removeLink = function(link, what, attachment){
+        var i = _.indexOf($scope.template[what], function (entry) {
+            return attachment.id === entry.id;
+        });
+        if(i > -1) {
+            var j = _.indexOf($scope.template[what][i].links, function (entry) {
+                return link.id === entry.id;
+            });
+
+            if(j > -1){
+                $scope.template[what][i].links.splice(j, 1);
+            }
+        }
+    };
 
     $scope.addMeasurement = function (sample) {
         $scope.modal = {
@@ -103,7 +121,6 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
         });
     };
     $scope.open = function (size, type) {
-
         $scope.modal = {
             instance: null,
             items: []
@@ -141,5 +158,9 @@ function projectCreateProcess($scope, project, Template, $modal, pubsub) {
                 }
             }
         });
+    };
+
+    $scope.createProcess = function(){
+        console.dir($scope.template);
     };
 }
