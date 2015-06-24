@@ -12,7 +12,7 @@ module.exports = function modelLoader(isParent) {
     } else {
         let ropts = {
             db: process.env.MCDB || 'materialscommons',
-            port: process.env.MCPORT || 30815
+            port: process.env.MCDB_PORT || 30815
         };
 
         let r = require('rethinkdbdash')(ropts);
