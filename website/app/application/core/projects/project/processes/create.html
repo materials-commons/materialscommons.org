@@ -13,7 +13,7 @@
 
                         <div class="row">
                             <div class="col-xs-12">
-                                {{model.process_info.what}}
+                                {{template.what}}
 
                             </div>
                         </div>
@@ -21,7 +21,7 @@
 
                         <div class="row">
                             <div class="col-xs-12">
-                                {{model.process_info.why}}
+                                {{template.why}}
                             </div>
                         </div>
                     </div>
@@ -29,11 +29,11 @@
                 <hr class="divider"/>
 
                 <div class="row">
-                    <div class="col-xs-8">
+                    <div class="col-xs-12">
                         <b>Set Up</b>
                         <ul>
-                            <li ng-repeat="setting in model.setUp">
-                                {{setting.property.name}} :: {{setting.property.value}} {{setting.property.unit}}
+                            <li ng-repeat="setting in template.settings">
+                                <i>{{setting.property.name}}</i> :: {{setting.property.value}} {{setting.property.unit}}
                             </li>
                         </ul>
                     </div>
@@ -43,7 +43,7 @@
                     <div class="col-xs-8">
                         <b>Samples</b>
 
-                        <div class="row" ng-repeat="attachment in model.attachments.samples">
+                        <div class="row" ng-repeat="attachment in template.samples">
                             <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                             <img src="assets/img/splash/sample_icon.png"
                                  style="height: 40px;padding-bottom: 10px;">
@@ -80,7 +80,7 @@
                     <div class="col-xs-8">
                         <b>Files</b>
 
-                        <div class="row" ng-repeat="attachment in model.attachments.inputFiles">
+                        <div class="row" ng-repeat="attachment in template.input_files">
                             <div ng-if="attachment.type === 'datafile'">
                                 <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                 <img src="assets/img/splash/file_icon.png"
@@ -93,14 +93,17 @@
                                         <ul>
                                             <li ng-repeat="link in attachment.links">
                                                 <img src="assets/img/splash/sample_icon.png"
-                                                     style="height: 40px;padding-bottom: 10px;"> {{link}}
+                                                     style="height: 40px;padding-bottom: 10px;"> {{link.name}}
+                                                <i ng-click="removeLink(link, 'input_files', attachment)"
+                                                   class="fa fa-fw fa-close pull-right pointer"></i>
                                             </li>
                                         </ul>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-repeat="attachment in model.attachments.outputFiles">
+                        <div class="row" ng-repeat="attachment in template.output_files">
                             <div ng-if="attachment.type === 'datafile'">
                                 <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                 <img src="assets/img/splash/file_icon.png"
@@ -113,10 +116,13 @@
                                         <ul>
                                             <li ng-repeat="link in attachment.links">
                                                 <img src="assets/img/splash/sample_icon.png"
-                                                     style="height: 40px;padding-bottom: 10px;"> {{link}}
+                                                     style="height: 40px;padding-bottom: 10px;"> {{link.name}}
+                                                <i ng-click="removeLink(link, 'output_files', attachment)"
+                                                   class="fa fa-fw fa-close pull-right pointer"></i>
                                             </li>
                                         </ul>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -128,17 +134,20 @@
         <div class="col-xs-8" stylex="margin-left: 10px;">
             <div class="row">
                 <div class="col-xs-8">
-                    <div class="process headings">process information</div>
+                    Name your process
+                    <div class="row">
+                        <input ng-model="template.name" class="form-control" style="width: 200px;" >
+                    </div>
                     <br>
                     How would you describe your process?
                     <div class="row">
-                        <textarea placeholder="What" ng-model="model.process_info.what" class="form-control col-xs-8">
+                        <textarea placeholder="What" ng-model="template.what" class="form-control col-xs-8">
                         </textarea>
                     </div>
                     <br>
                     Why did you do?
                     <div class="row">
-                        <textarea placeholder="Why" ng-model="model.process_info.why" class="form-control col-xs-8">
+                        <textarea placeholder="Why" ng-model="template.why" class="form-control col-xs-8">
                         </textarea>
                     </div>
                     <br>
@@ -160,7 +169,7 @@
                             </button>
                             <br><br>
 
-                            <div class="row" ng-repeat="attachment in model.attachments.samples">
+                            <div class="row" ng-repeat="attachment in template.samples">
                                 <div ng-if="attachment.type === 'sample'" class="col-xs-12">
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/sample_icon.png"
@@ -172,7 +181,7 @@
                                             style="color:#3a9ee3"><a
                                             ng-click="addMeasurement(attachment)">Measurement</a></span>
                                     </span>
-                                    <i ng-click="removeAttachment(attachment)"
+                                    <i ng-click="removeAttachment(attachment, 'samples')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
                                 </div>
 
@@ -185,20 +194,20 @@
                         <div class="row" style="padding: 15px;">
                             <br>
                             What files are used by this process? <br>
-                            <button ng-click="open('lg', 'inputFiles')"
+                            <button ng-click="open('lg', 'input_files')"
                                     style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 "
                                     class="btn btn-default"><i
                                     class="fa fa-fw fa-plus"></i> ADD
                             </button>
                             <br><br>
 
-                            <div class="row" ng-repeat="attachment in model.attachments.inputFiles">
+                            <div class="row" ng-repeat="attachment in template.input_files">
                                 <div ng-if="attachment.type === 'datafile'" class="col-xs-12">
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
-                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment)"
+                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment, 'input_files')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
 
                                     <span style="padding-left: 20px">
@@ -209,32 +218,32 @@
                                     </span>
 
                                     <div ng-if="link" class="row">
-                                        <select ng-change="linkSample(attachment, 'inputFiles')"
+                                        <select ng-change="linkSample(attachment, 'input_files')"
                                                 ng-model="bk.selectedSample"
                                                 data-placeholder="Choose Sample"
-                                                class="form-control">
-                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}
-                                            </option>
+                                                class="form-control"
+                                                ng-options="sample.name for sample in template.samples">
+
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             What files are produced by this process?<br>
-                            <button ng-click="open('lg', 'outputFiles')"
+                            <button ng-click="open('lg', 'output_files')"
                                     style="border: 3px dotted #d3d3d3;border-radius: 3px;color: #d3d3d3 "
                                     class="btn btn-default"><i
                                     class="fa fa-fw fa-plus"></i> ADD
                             </button>
                             <br><br>
 
-                            <div class="row" ng-repeat="attachment in model.attachments.outputFiles">
+                            <div class="row" ng-repeat="attachment in template.output_files">
                                 <div ng-if="attachment.type === 'datafile'" class="col-xs-12">
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
 
-                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment)"
+                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment, 'output_files')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
                                     <span style="padding-left: 20px">
                                       <i class="fa fa-link fa-fw sample"></i>
@@ -244,12 +253,12 @@
                                     </span>
 
                                     <div ng-if="link" class="row">
-                                        <select ng-change="linkSample(attachment, 'outputFiles')"
+                                        <select ng-change="linkSample(attachment, 'output_files')"
                                                 ng-model="bk.selectedSample"
                                                 data-placeholder="Choose Sample"
-                                                class="form-control">
-                                            <option ng-repeat="sample in model.attachments.samples">{{ sample.name }}
-                                            </option>
+                                                class="form-control"
+                                                ng-options="sample.name for sample in template.samples">
+
                                         </select>
                                     </div>
 
