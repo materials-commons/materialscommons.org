@@ -8,7 +8,6 @@ Application.Services.factory('Template',
             },
             setActiveTemplate: function (template) {
                 service.activeTemplate = processTemplates.newInstance(template);
-                console.dir(service);
             }
         };
         return service;
