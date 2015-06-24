@@ -9,23 +9,17 @@ var model = require('./model-loader')(module.parent);
 var apikey = require('./apikey')(model.users);
 var projects = require('./resources/projects-routes')(model);
 
-var loginRoute = require('koa-router')();
-loginRoute.get('/login', function *login(next) {
-    this.body = "login";
-    this.status = 200;
-    yield next;
-});
-
 app.use(apikey);
-app.use(mount('/', loginRoute.routes())).use(loginRoute.allowedMethods());
 app.use(mount('/', projects.routes())).use(projects.allowedMethods());
 
-
+//model.r.table('access').changes().toStream().on('data', function(data) {
+//    console.log(data);
+//});
 
 
 if (!module.parent) {
     var cli = cliArgs([
-        { name: 'port', type: Number, alias: 'p', description: 'Port to listen on'}
+        {name: 'port', type: Number, alias: 'p', description: 'Port to listen on'}
     ]);
 
     var options = cli.parse();
