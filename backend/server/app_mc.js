@@ -1,3 +1,4 @@
+var cliArgs = require('command-line-args');
 var mount = require('koa-mount');
 var koa = require('koa');
 var app = module.exports = koa();
@@ -19,8 +20,18 @@ app.use(apikey);
 app.use(mount('/', loginRoute.routes())).use(loginRoute.allowedMethods());
 app.use(mount('/', projects.routes())).use(projects.allowedMethods());
 
+
+
+
 if (!module.parent) {
-    app.listen(3000);
+    var cli = cliArgs([
+        { name: 'port', type: Number, alias: 'p', description: 'Port to listen on'}
+    ]);
+
+    var options = cli.parse();
+    var port = options.port || 3000;
+    console.log('Listening on port: ' + port);
+    app.listen(port);
 }
 
 //////////////////////
