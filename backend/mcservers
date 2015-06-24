@@ -50,6 +50,12 @@ function start_servers()
         mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" > /tmp/mcstored.out.${SERVERTYPE} 2>&1&
     fi
 
+    R=$(is_running "sbin/app_mc.js" "p $MC_APP_SERVICE_PORT")
+    if [ "$R" = "" ]; then
+        echo "  Starting app_mc..."
+        node sbin/app_mc.js -p $MC_APP_SERVICE_PORT > /tmp/app_mc.out.${SERVERTYPE} 2>&1&
+    fi
+
     if [ $TESTSERVER = "u" ]; then
         if [ $(hostname) != "materialscommons" ]; then
             R=$(is_running "web-server.js" 8000)
@@ -79,6 +85,11 @@ function stop_servers()
         kill $MCSTORED_PID
     fi
 
+    APPMC_PID=$(ps -eo "pid,command" | grep "app_mc.js" | grep "p $MC_APP_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$APPMC_PID" != "" ]; then
+        kill $APPMC_PID
+    fi
+
     if [ $TESTSERVER = "u" ]; then
         if [ $(hostname) != "materialscommons" ]; then
             WEBSERVER_PID=$(ps -eo "pid,command" | grep web-server.js | grep 8000 | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
@@ -99,6 +110,9 @@ function status_servers()
     echo "MCAPI Server (production):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
+    echo "MCAPI Node Server (production):"
+    ps -ef | grep app_mc.js | grep "p $MC_APP_SERVICE_PORT" | grep -v grep
+    echo
     echo "MCSTORED Server (production):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
@@ -106,11 +120,15 @@ function status_servers()
     echo
     export MCDB_PORT=30815
     export MC_SERVICE_PORT=5002
+    export MC_APP_SERVICE_PORT=5004
     echo "RethinkDB (test/unit):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
     echo "MCAPI Server (test/unit):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCAPI Node Server (test/unit):"
+    ps -ef | grep app_mc.js | grep "p $MC_APP_SERVICE_PORT" | grep -v grep
     echo
     echo "MCSTORED Server (test/unit):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
@@ -163,6 +181,7 @@ fi
 
 if [ $TESTSERVER = "t" ]; then
     export MC_SERVICE_PORT=5002
+    export MC_APP_SERVICE_PORT=5004
     export MCDB_PORT=30815
     export MCDB_DIR=~/testdb
     export MCDB_CONNECTION="localhost:$MCDB_PORT"
@@ -190,6 +209,7 @@ if [ $TESTSERVER = "t" ]; then
     fi
 elif [ $TESTSERVER = "u" ]; then
     export MC_SERVICE_PORT=5002
+    export MC_APP_SERVICE_PORT=5004
     export MCDB_PORT=30815
     export MCDB_CONNECTION="localhost:$MCDB_PORT"
     export MCDB_DIR=~/testdb
@@ -214,6 +234,7 @@ elif [ $TESTSERVER = "u" ]; then
 else
     export MCDB_PORT=28015
     export MCDB_CONNECTION="localhost:$MCDB_PORT"
+    export MC_APP_SERVICE_PORT=3000
     export MC_SERVICE_PORT=5000
     export RETHINKDB_HTTP_PORT=8080
     export RETHINKDB_CLUSTER_PORT=29015
