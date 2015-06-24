@@ -1,4 +1,12 @@
+
 function Apt() {
+    this.name = "APT";
+    this.description = "Atom Probe Tomography";
+    this._type = "APT";
+    this.input_files = [];
+    this.output_files = [];
+    this.samples = [];
+    this.project_id = "";
     this.settings = [
         {
             property: {
