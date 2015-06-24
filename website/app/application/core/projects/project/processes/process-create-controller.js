@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "Template", "$modal", "pubsub", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", projectCreateProcess]);
 
-function projectCreateProcess($scope, project, Template, $modal, pubsub) {
-    $scope.template = Template.getActiveTemplate();
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub) {
+    $scope.template = processTemplates.getActiveTemplate();
     $scope.bk = {
         selectedSample: {}
     };
