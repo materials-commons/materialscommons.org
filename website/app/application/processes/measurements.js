@@ -1,261 +1,424 @@
-
 function Composition() {
-    this.name = "Composition";
-    this.attribute = "composition";
-    this.description = "Composition of sample";
-    this._type = "composition";
-    this._category = "scalar";
-    this.units = ["at%", "wt%"];
-    this.nunit = "at%";
-    this.unit = null;
-    this.value = null;
+    this.property = {
+        name: "Composition",
+        attribute: "composition",
+        description: "Composition of sample",
+        _type: "composition",
+        _category: "scalar",
+        units: ["at%", "wt%"],
+        nunit: "at%",
+        unit: null,
+        value: null
+    };
+
+    this.validators = [];
 }
 
 function AreaFraction() {
-    this.name = "Area fraction";
-    this.attribute = "area_fraction";
-    this.description = "";
-    this._type = "fraction";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.property = {
+        name: "Area Fraction",
+        attribute: "area_fraction",
+        description: "",
+        _type: "fraction",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
+    };
+    this.validators = [];
 }
 
 function VolumeFraction() {
-    this.name = "Volume fraction";
-    this.attribute = "volume_fraction";
-    this.description = "";
-    this._type = "fraction";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.property = {
+        name: "Volume Fraction",
+        attribute: "volume_fraction",
+        description: "",
+        _type: "fraction",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
+    };
+
+    this.validators = [];
 }
 
 function DislocationDensity() {
-    this.name = "Dislocation density";
-    this.attribute = "dislocation_density";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "m^-2";
-    this.unit = "m^-2";
-    this.value = null;
+    this.property = {
+        name: "Dislocation Density",
+        attribute: "dislocation_density",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "m^-2",
+        unit: "m^-2",
+        value: null
+    };
+
+    this.validators = [];
 }
 
 function Length() {
-    this.name = "Length";
-    this.attribute = "length";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "m";
-    this.unit = "m";
-    this.value = null;
+    this.property = {
+        name: "Length",
+        attribute: "length",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "m",
+        unit: "m",
+        value: null
+    };
+
+    this.validators = [];
 }
 
 function Width() {
-    this.name = "Width";
-    this.attribute = "width";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "m";
-    this.unit = "m";
-    this.value = null;
+    this.property = {
+        name: "Width",
+        attribute: "width",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "m",
+        unit: "m",
+        value: null
+    };
+    this.validators = [];
 }
 
 function Height() {
-    this.name = "Height";
-    this.attribute = "height";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "m";
-    this.unit = "m";
-    this.value = null;
+    this.property = {
+        name: "Height",
+        attribute: "height",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "m",
+        unit: "m",
+        value: null
+    };
+    this.validators = [];
 }
 
 function Density() {
-    this.name = "Density";
-    this.attribute = "density";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "kg/m^3";
-    this.unit = "kg/m^3";
-    this.value = null;
+    this.property = {
+        name: "Density",
+        attribute: "density",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "kg/m^3",
+        unit: "kg/m^3",
+        value: null
+    };
+    this.validators = [];
 }
 
 function Volume() {
-    this.name = "Volume";
-    this.attribute = "volume";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "m^3";
-    this.unit = "m^3";
-    this.value = null;
+    this.property = {
+        name: "Volume",
+        attribute: "volume",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "m^3",
+        unit: "m^3",
+        value: null
+    };
+    this.validators = [];
 }
 
 function YoungsModulus() {
-    this.name = "Young's modulus";
-    this.attribute = "youngs_modulus";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "GPa";
-    this.unit = "GPa";
-    this.value = null;
+    this.property = {
+        name: "Young's modulus",
+        attribute: "youngs_modulus",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "GPa",
+        unit: "GPa",
+        value: null
+    };
+    this.validators = [];
 }
 
 function TensileYieldStrength() {
-    this.name = "Tensile Yield Strength";
-    this.attribute = "tensile_yield_strength";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "GPa";
-    this.unit = "GPa";
-    this.value = null;
+    this.property = {
+        name: "Tensile Yield Strength",
+        attribute: "tensile_yield_strength",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "GPa",
+        unit: "GPa",
+        value: null
+    };
+    this.validators = [];
 }
 
 function UltimateTensileStrength() {
-    this.name = "Ultimate Tensile Strength";
-    this.attribute = "ultimate_tensile_strength";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "GPa";
-    this.unit = "GPa";
-    this.value = null;
+    this.property = {
+        name: "Ultimate Tensile Strength",
+        attribute: "ultimate_tensile_strength",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "GPa",
+        unit: "GPa",
+        value: null
+    };
+    this.validators = [];
 }
 
 function StrainToFracture() {
-    this.name = "Strain To Fracture";
-    this.attribute = "strain_to_fracture";
-    this.description = "";
-    this._type = "fraction";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.property = {
+        name: "Strain To Fracture",
+        attribute: "strain_to_fracture",
+        description: "",
+        _type: "fraction",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
+    };
+    this.validators = [];
 }
 
 function SpaceGroup() {
-    this.name = "Space Group";
-    this.attribute = "space_group";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.property = {
+        name: "Space Group",
+        attribute: "space_group",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
+    };
+    this.validators = [];
 }
 
 function PointGroup() {
-    this.name = "Point Group";
-    this.attribute = "point_group";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.property = {
+        name: "Point Group",
+        attribute: "point_group",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
+    };
+    this.validators = [];
 }
 
 function CrystalSystem() {
-    this.name = "Crystal System";
-    this.attribute = "crystal_system";
-    this.description = "";
-    this._type = "string";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.property = {
+        name: "Crystal System",
+        attribute: "crystal_system",
+        description: "",
+        _type: "string",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
+    };
+    this.validators = [];
 }
 
 function BandGap() {
-    this.name = "Band Gap";
-    this.attribute = "band_gap";
-    this.description = "";
-    this._type = "number";
-    this._category = "scalar";
-    this.units = [];
-    this.nunit = "eV";
-    this.unit = "eV";
-    this.value = null;
+    this.property = {
+        name: "Band Gap",
+        attribute: "band_gap",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
 }
 
 function FatigueLife() {
-    this.name = "Fatigue Life";
-    this.attribute = "fatigue_life";
-    this.description = "";
-    this._type = "pair";
-    this._category = "Pairs";
-    this.attribute1 = {
-        name: "Stress ratio",
-        attribute: "stress_ratio",
-        _type: "fraction",
-        units:[],
-        unit: null
+    this.property = {
+        name: "Fatigue Life",
+        attribute: "fatigue_life",
+        description: "",
+        _type: "pair",
+        _category: "pairs",
+        attribute1: {
+            name: "Stress ratio",
+            attribute: "stress_ratio",
+            _type: "fraction",
+            units: [],
+            unit: null
+        },
+        attribute2: {
+            name: "Cycles to failure",
+            attribute: "cycles_to_failure",
+            _type: "number",
+            units: [],
+            unit: null
+        },
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
     };
-    this.attribute2 = {
-        name: "Cycles to failure",
-        attribute: "cycles_to_failure",
-        _type: "number",
-        units:[],
-        unit: null
-    }
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.validators = [];
 }
 
 function CrackGrowth() {
-    this.name = "Crack Growth";
-    this.attribute = "crack_growth";
-    this.description = "";
-    this._type = "pair";
-    this._category = "Pairs";
-    this.attribute1 = {
-        name: "Stress intensity",
-        attribute: "stress_intensity",
-        _type: "number",
-        units:[],
-        unit: "GPa*m^(1/2)"
+    this.property = {
+        name: "Crack Growth",
+        attribute: "crack_growth",
+        description: "",
+        _type: "pair",
+        _category: "pairs",
+        attribute1: {
+            name: "Stress intensity",
+            attribute: "stress_intensity",
+            _type: "number",
+            units: [],
+            unit: "GPa*m^(1/2)"
+        },
+        attribute2: {
+            name: "da/dN",
+            attribute: "da_dn",
+            _type: "number",
+            units: [],
+            unit: "m/cycle"
+        },
+        units: [],
+        nunit: "",
+        unit: null,
+        value: null
     };
-    this.attribute2 = {
-        name: "da/dN",
-        attribute: "da_dn",
-        _type: "number",
-        units:[],
-        unit: "m/cycle"
-    }
-    this.units = [];
-    this.nunit = "";
-    this.unit = null;
-    this.value = null;
+    this.validators = [];
 }
 
+function ParticleSizeDistribution() {
+    this.property = {
+        name: "Particle Size Distribution",
+        attribute: "particle_size_distribution",
+        description: "",
+        _type: "histogram",
+        _category: "chart",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
+}
 
+function ParticleShapeDistribution() {
+    this.property = {
+        name: "Particle Shape Distribution",
+        attribute: "particle_shape_distribution",
+        description: "",
+        _type: "histogram",
+        _category: "chart",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
+}
+
+function GrainSizeDistribution() {
+    this.property = {
+        name: "Grain Size Distribution",
+        attribute: "grain_size_distribution",
+        description: "",
+        _type: "histogram",
+        _category: "chart",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
+}
+
+function GrainOrientationDistribution() {
+    this.property = {
+        name: "Grain Orientation Distribution",
+        attribute: "grain_orientation_distribution",
+        description: "",
+        _type: "histogram",
+        _category: "chart",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
+}
+
+function StressStrain() {
+    this.property = {
+        name: "Stress Vs Strain",
+        attribute: "stress_strain",
+        description: "",
+        _type: "line",
+        _category: "chart",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
+}
+
+function StressDisplacement() {
+    this.property = {
+        name: "Stress Vs Displacement",
+        attribute: "stress_displacement",
+        description: "",
+        _type: "line",
+        _category: "chart",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
+}
+
+function PhasesPresent() {
+    this.property = {
+        name: "Phases Present",
+        attribute: "phases_present",
+        description: "",
+        _type: "list",
+        _category: "array",
+        units: [],
+        nunit: "eV",
+        unit: "eV",
+        value: null
+    };
+    this.validators = [];
+}
 
 
 
