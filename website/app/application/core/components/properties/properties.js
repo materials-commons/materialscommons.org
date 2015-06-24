@@ -6,8 +6,8 @@ function displayPropertyDirective() {
         scope: {
             property: "=property"
         },
-        templateUrl: "application/core/components/properties/partials/displayProperty.html"
-    }
+        templateUrl: "application/core/components/properties/partials/display-property.html"
+    };
 }
 
 Application.Directives.directive("propertyNumber", propertyNumberDirective);
@@ -18,7 +18,7 @@ function propertyNumberDirective() {
             property: "=property"
         },
         templateUrl: "application/core/components/properties/partials/property-number.html"
-    }
+    };
 }
 
 Application.Directives.directive("propertyString", propertyStringDirective);
@@ -29,18 +29,18 @@ function propertyStringDirective() {
             property: "=property"
         },
         templateUrl: "application/core/components/properties/partials/property-string.html"
-    }
+    };
 }
 
 Application.Directives.directive("propertyPair", propertyPairDirective);
 function propertyPairDirective() {
     return {
-        restrict: "E",
+        restrit: "E",
         scope: {
             property: "=property"
         },
         templateUrl: "application/core/components/properties/partials/property-pair.html"
-    }
+    };
 }
 
 Application.Directives.directive("propertySelection", propertySelectionDirective);
@@ -51,7 +51,7 @@ function propertySelectionDirective() {
             property: "=property"
         },
         templateUrl: "application/core/components/properties/partials/property-selection.html"
-    }
+    };
 }
 
 Application.Directives.directive("propertyComposition", propertyCompositionDirective);
@@ -62,7 +62,7 @@ function propertyCompositionDirective() {
             property: "=property"
         },
         templateUrl: "application/core/components/properties/partials/property-composition.html"
-    }
+    };
 }
 
 Application.Directives.directive("propertyList", propertyListDirective);
@@ -73,7 +73,7 @@ function propertyListDirective() {
             property: "=property"
         },
         templateUrl: "application/core/components/properties/partials/property-list.html"
-    }
+    };
 }
 
 Application.Directives.directive("propertyHistogram", propertyHistogramDirective);
@@ -85,7 +85,7 @@ function propertyHistogramDirective() {
         },
         controller: "propertyHistogramDirectiveController",
         templateUrl: "application/core/components/properties/partials/property-histogram.html"
-    }
+    };
 }
 
 Application.Controllers.controller("propertyHistogramDirectiveController",
@@ -239,7 +239,7 @@ function propertyLineDirective() {
         },
         controller: "propertyLineDirectiveController",
         templateUrl: "application/core/components/properties/partials/property-line.html"
-    }
+    };
 }
 
 Application.Controllers.controller("propertyLineDirectiveController",

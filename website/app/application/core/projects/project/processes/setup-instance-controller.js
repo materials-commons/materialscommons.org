@@ -1,17 +1,16 @@
 Application.Controllers.controller('setupInstanceController',
-    ["$scope", "project", "$state","$log", "modal", "pubsub", "Template", setupInstanceController]);
+    ["$scope", "project", "$state","$log", "modal", "pubsub", "processTemplates", setupInstanceController]);
 
-function setupInstanceController($scope, project, $state,  $log, modal, pubsub, Template) {
+function setupInstanceController($scope, project, $state,  $log, modal, pubsub, processTemplates) {
     $scope.modal = modal;
     $scope.selected = {
         item: {}
     };
-    var template = Template.getActiveTemplate();
+    var template = processTemplates.getActiveTemplate();
 
     $scope.settings = template.settings;
 
     $scope.ok = function () {
-        console.dir($scope.settings);
         $scope.modal.instance.close($scope.selected.item);
         pubsub.send('addSetupToSample', $scope.selected.item);
         $state.go('projects.project.processes.create');
