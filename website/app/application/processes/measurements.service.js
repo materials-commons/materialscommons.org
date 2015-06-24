@@ -2,6 +2,7 @@ Application.Services.factory("measurements", measurementsService);
 
 function measurementsService() {
     var self = this;
+    self.activeTemplate = {};
     self.measurements = [
         {
             name: "Composition",
@@ -163,6 +164,7 @@ function measurementsService() {
         newInstance: function(m) {
             return new m.fn();
         }
-    }
+    };
 }
 
+;

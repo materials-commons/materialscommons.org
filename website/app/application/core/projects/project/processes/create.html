@@ -54,9 +54,9 @@
                                 <div class="col-xs-offset-2">
                                     <ul>
                                         <li ng-repeat="measure in attachment.measurements">
-                                            <div ng-switch="measure.type">
+                                            <div ng-switch="measure._type">
                                                 <div ng-switch-when="number">
-                                                    {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}}</span>
+                                                    {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}} {{measure.unit}}</span>
                                                 </div>
                                                 <div ng-switch-when="string">
                                                     {{measure.name}}: <span style="padding-left: 20px;"> {{measure.value}}</span>
