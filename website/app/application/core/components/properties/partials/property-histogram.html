@@ -1,0 +1,29 @@
+<div>
+    <div class="row">
+        <h5>Measurements</h5>
+        <a ng-click="openAddMeasurements = !openAddMeasurements">add measurement</a>
+        <div ng-if="openAddMeasurements">
+            <div class="col-xs-6">
+                <strong>Categories (one entry per line)</strong>
+                <textarea ng-model="measurement.categories" class="col-xs-10" rows="20"></textarea>
+            </div>
+            <div class="col-xs-6">
+                <strong>Values (one entry per line)</strong>
+                <textarea ng-model="measurement.values" class="col-xs-10" rows="20"></textarea>
+            </div>
+            <div class="row">
+                <button ng-click="submitMeasurement()" class="btn btn-success">Submit</button>
+                <button ng-click="clear()" class="btn btn-danger">Clear</button>
+                <button ng-click="viewInGraph()" class="btn btn-primary">View Graph</button>
+            </div>
+            <div class="row" ng-if="showMeasurementGraph">
+                <highchart config="histogramMeasurementConfig"></highchart>
+            </div>
+        </div>
+        <ul class="list-unstyled">
+            <li ng-repeat="measure in measurements">
+                {{measure.process}}
+            </li>
+        </ul>
+    </div>
+</div>
