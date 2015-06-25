@@ -5,11 +5,13 @@ function Apt() {
     this._type = "APT";
     this.input_files = [];
     this.output_files = [];
-    this.samples = [];
+    this.input_samples = [];
+    this.output_samples = [];
     this.project_id = "";
     this.what = "";
     this.why = "";
     this.who = "";
+    this.does_transform = false;
     this.settings = [
         {
             property: {
