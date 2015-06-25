@@ -33,19 +33,15 @@ module.exports = function(r) {
      * @returns {Object} - The new process created from the definition.
      */
     function *create(process) {
-        let p = new model.Process(process.name, process.owner,
-                                  process.template_id, process.what, process.how);
+        let p = new model.Process(process.name, process.owner, process._type, process.what, process.how);
         let proc = yield addProcess(process.project_id, p);
-        let settings = yield addSetup(proc.id, process.setup);
-        let measurements = yield addMeasurements(proc.id, process.measurements_taken);
-        let samples_created = yield addCreatedSamples(process.samples_created,
-                                                      process.project_id, proc.id, process.owner);
-        let samples_transformed = yield addTransformedSamples(process.samples_transformed,
-                                                              proc.id);
-        let output_files = yield addOutputFiles(proc.id, process.files_created);
+        let settings = yield addSetup(proc.id, process.settings);
+        let measurements = yield addSampleMeasurements(proc.id, process.input_samples);
+        yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
+        yield addTransformedSamples(process.transformed_samples, proc.id);
+        yield addFiles(proc.id, process.input_files, 'in');
+        yield addFiles(proc.id, process.output_files, 'out');
 
-        // Construct the process just created. The process definition for creation
-        // is different from the actual instantiated process model.
         proc.settings = settings;
         proc.measurements = measurements;
 
@@ -73,7 +69,7 @@ module.exports = function(r) {
      * Creates the settings for the process and inserts it into the database.
      *
      * @param {String} processID - The database id for the created process.
-     * @param {Arrays} settings - The settings to create.
+     * @param {Array} setup - The settings to create.
      *
      * @returns {Object} - The settings object inserted into the database.
      */
@@ -152,7 +148,7 @@ module.exports = function(r) {
      *
      * @returns {Array} - A list of the measurements that were inserted into the database.
      */
-    function *addMeasurements(processID, measurements) {
+    function *addSampleMeasurements(processID, measurements) {
         let created = [];
         for (let i = 0; i < measurements.length; i++) {
             let current = measurements[i];
@@ -203,7 +199,7 @@ module.exports = function(r) {
      * @param {String} mID - The measurement
      */
     function *addMeasurementToAttribute(attrID, mID) {
-        let a2m = new model.Attribute2Measurement(attrID, mID);
+        let a2m = new model.Property2Measurement(attrID, mID);
         yield db.insert('attribute2measurement', a2m);
     }
 
@@ -220,13 +216,13 @@ module.exports = function(r) {
         let attr = new model.Attribute(m.name, m.attribute);
         let createdAttr = yield db.insert('attributes', attr);
 
-        let a2m = new model.Attribute2Measurement(createdAttr.id, m.id);
+        let a2m = new model.Property2Measurement(createdAttr.id, m.id);
         yield db.insert('attribute2measurement', a2m);
 
-        let as2a = new model.AttributeSet2Attribute(attrSetID, createdAttr.id);
+        let as2a = new model.PropertySet2Property(attrSetID, createdAttr.id);
         yield db.insert('attributeset2attribute', as2a);
 
-        let a2p = new model.Attribute2Process(createdAttr.id, processID);
+        let a2p = new model.Property2Process(createdAttr.id, processID);
         yield db.insert('attribute2process', a2p);
     }
 
@@ -277,9 +273,9 @@ module.exports = function(r) {
     function *addNewSample(name, description, owner) {
         let s = new model.Sample(name, description, owner);
         let sample = yield db.insert('samples', s);
-        let aset = new model.AttributeSet();
+        let aset = new model.PropertySet();
         let createdASet = yield db.insert('attributeset', aset);
-        let s2as = new model.Sample2AttributeSet(sample.id, createdASet.id, true);
+        let s2as = new model.Sample2PropertySet(sample.id, createdASet.id, true);
         yield db.insert('sample2attributeset', s2as);
         return {
             sample: sample,
@@ -314,16 +310,13 @@ module.exports = function(r) {
     function *addTransformedSamples(samples, processID) {
         for (let i = 0; i < samples.length; i++) {
             let current = samples[i];
-            let aset = new model.AttributeSet(true, current.attribute_set_id);
-            let asetCreated = yield db.insert('attributeset', aset);
-            let s2as = new model.Sample2AttributeSet(current.sample_id, createdASet.id, true);
-            yield db.insert('sample2attributeset', s2as);
-            let oldASetID = current.attribute_set_id;
-            yield r.table('sample2attributeset')
-                .getAll(oldASetID, {index: 'attribute_set_id'})
-                .update({current: false});
-            yield fillAttributeSet(asetCreated.id, current.shares,
-                                   current.uses, processID);
+            let aset = new model.PropertySet(true, current.property_set_id);
+            let asetCreated = yield db.insert('propertyset', aset);
+            let s2ps = new model.Sample2PropertySet(current.sample_id, createdASet.id, true);
+            yield db.insert('sample2propertyset', s2ps);
+            let oldPSetID = current.property_set_id;
+            yield r.table('sample2propertyset').getAll(oldPSetID, {index: 'property_set_id'}).update({current: false});
+            yield fillAttributeSet(asetCreated.id, current.shares, current.uses, processID);
         }
     }
 
@@ -341,13 +334,13 @@ module.exports = function(r) {
     /**
      * Create shared attributes. This method copies associates those
      * attributes with the given attribute set.
-     * @param {String} asetID - The attribute set to add attributes to
+     * @param {String} psetID - The attribute set to add attributes to
      * @param {Array} shares - A list of attribute ids to associate with the attributeset.
      */
-    function *fillFromShares(asetID, shares) {
+    function *fillFromShares(psetID, shares) {
         for (let i = 0; i < shares.length; i++) {
-            let as2a = new model.AttributeSet2Attribute(asetID, shares[i]);
-            yield db.insert('attributeset2attribute', as2a);
+            let ps2p = new model.PropertySet2Property(psetID, shares[i]);
+            yield db.insert('propertyset2property', ps2p);
         }
     }
 
@@ -382,7 +375,7 @@ module.exports = function(r) {
             // TODO: Talk to Brian about above.
 
             // Add to attribute set
-            let as2a = new model.AttributeSet2Attribute(asetID, newAttr.id);
+            let as2a = new model.PropertySet2Property(asetID, newAttr.id);
             yield db.insert('attributeset2attribute', as2a);
         }
     }
@@ -438,18 +431,18 @@ module.exports = function(r) {
     }
 
     /**
-     * @name addOutputFiles
+     * @name addFiles
      * @description Adds the files that were produced by the process.
      * @param {String} processID - Process to add files to
      * @param {Array} files - A list of files ids to associate with the process
      */
-    function *addOutputFiles(processID, files) {
+    function *addFiles(processID, files, direction) {
         let addTo = [];
         for (let i = 0; i < files.length; i++) {
-            let p2of = new model.Process2Outputfile(processID, files[i]);
+            let p2of = new model.Process2File(processID, files[i], direction);
             addTo.push(p2of);
         }
-        let created = yield db.insert('process2outputfile', addTo);
+        let created = yield db.insert('process2file', addTo);
         return created;
     }
 };
