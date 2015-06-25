@@ -13,7 +13,7 @@
             <div class="col-xs-4">
                 <div class="details-sidebar">
                     <ul class="list-group">
-                        <li ng-class="{'active': template === currentMeasurement}" ng-click="showDetails(template)"
+                        <li ng-class="{'active': template === chosenProperty}" ng-click="showDetails(template)"
                             ng-repeat="template in templates | filter:search"
                             class="list-group-item pointer">
                             <div>{{template.name}}</div>
@@ -24,16 +24,16 @@
             <div class="col-xs-8 details-main-content">
                 <div ng-if="enterValue === false">
                     <b>Details: </b> <br><br>
-                    Category : {{currentMeasurement.category}} <br>
+                    Category : {{chosenProperty.category}} <br>
 
                     <div class="row">
-                        <button class="btn btn-primary" ng-click="editMeasurement(currentMeasurement)">Enter
+                        <button class="btn btn-primary" ng-click="editMeasurement(chosenProperty)">Enter
                             {{measurement.name}}
                         </button>
                     </div>
                 </div>
                 <div ng-if="enterValue===true">
-                    <div class="row" ng-repeat="property in currentMeasurement.properties">
+                    <div class="row" ng-repeat="property in chosenProperty.measures">
                         <div class="col-xs-8">
                             <display-property property="property"></display-property>
                         </div>
@@ -59,7 +59,7 @@
 
                     <div class="row">
                         <div class="col-xs-3">
-                            <button class="btn btn-primary" ng-click="done()">Done</button>
+                            <button class="btn btn-primary" ng-click="save()">Save</button>
                         </div>
                     </div>
                 </div>
