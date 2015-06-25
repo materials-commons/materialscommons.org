@@ -11,7 +11,7 @@ function Apt() {
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.who = "";
+    this.owner = "";
     this.settings = [
         {
             property: {
