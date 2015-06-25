@@ -4,6 +4,7 @@ module.exports = function models(r) {
         users: require('./users')(r),
         samples: require('./samples')(r),
         access: require('./access')(r),
-        files: require('./files')(r)
+        files: require('./files')(r),
+        r: r
     };
 };
