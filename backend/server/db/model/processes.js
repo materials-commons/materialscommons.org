@@ -200,7 +200,7 @@ module.exports = function(r) {
      */
     function *addMeasurementToAttribute(attrID, mID) {
         let a2m = new model.Property2Measurement(attrID, mID);
-        yield db.insert('attribute2measurement', a2m);
+        yield db.insert('property2measurement', a2m);
     }
 
     /**
@@ -214,16 +214,16 @@ module.exports = function(r) {
      */
     function *addNewAttribute(m, attrSetID, processID) {
         let attr = new model.Attribute(m.name, m.attribute);
-        let createdAttr = yield db.insert('attributes', attr);
+        let createdAttr = yield db.insert('properties', attr);
 
         let a2m = new model.Property2Measurement(createdAttr.id, m.id);
-        yield db.insert('attribute2measurement', a2m);
+        yield db.insert('property2measurement', a2m);
 
         let as2a = new model.PropertySet2Property(attrSetID, createdAttr.id);
-        yield db.insert('attributeset2attribute', as2a);
+        yield db.insert('propertyset2property', as2a);
 
         let a2p = new model.Property2Process(createdAttr.id, processID);
-        yield db.insert('attribute2process', a2p);
+        yield db.insert('property2process', a2p);
     }
 
     /**
@@ -274,9 +274,9 @@ module.exports = function(r) {
         let s = new model.Sample(name, description, owner);
         let sample = yield db.insert('samples', s);
         let aset = new model.PropertySet();
-        let createdASet = yield db.insert('attributeset', aset);
+        let createdASet = yield db.insert('propertyset', aset);
         let s2as = new model.Sample2PropertySet(sample.id, createdASet.id, true);
-        yield db.insert('sample2attributeset', s2as);
+        yield db.insert('sample2propertyset', s2as);
         return {
             sample: sample,
             asetID: createdASet.id
@@ -354,7 +354,7 @@ module.exports = function(r) {
             let attrID = uses[i];
 
             // Get the attribute we are going to copy
-            let attr = yield r.table('attributes').get(attrID);
+            let attr = yield r.table('properties').get(attrID);
 
             // Save this attributes id for later use.
             let origID = attr.id;
@@ -365,7 +365,7 @@ module.exports = function(r) {
             attr.mtime = attr.birthtime;
 
             // Now insert new attribute
-            let newAttr = yield db.insert('attributes', attr);
+            let newAttr = yield db.insert('properties', attr);
 
             // Attach all dependent tables and joins.
             yield attachDependencies(newAttr.id, origID);
@@ -376,7 +376,7 @@ module.exports = function(r) {
 
             // Add to attribute set
             let as2a = new model.PropertySet2Property(asetID, newAttr.id);
-            yield db.insert('attributeset2attribute', as2a);
+            yield db.insert('propertyset2property', as2a);
         }
     }
 
@@ -400,14 +400,14 @@ module.exports = function(r) {
      */
     function *attachMeasurements(newAttrID, fromAttrID) {
         // Get original attributes measurements
-        let rql = r.table('attribute2measurement')
-                .getAll(fromAttrID, {index: 'attribute_id'});
+        let rql = r.table('property2measurement')
+                .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
         // Change id to newAttrID and insert into table
         original.forEach(function(m) {
             m.attribute_id = newAttrID;
         });
-        yield db.insert('attribute2measurement', original);
+        yield db.insert('property2measurement', original);
     }
 
     /**
@@ -420,7 +420,7 @@ module.exports = function(r) {
     function *attachBestMeasureHistory(newAttrID, fromAttrID) {
         // Get original attributes best measure history
         let rql = r.table('best_measure_history')
-                .getAll(fromAttrID, {index: 'attribute_id'});
+                .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
 
         // Change to newAttrID and insert
