@@ -7,11 +7,11 @@ function Apt() {
     this.output_files = [];
     this.input_samples = [];
     this.output_samples = [];
+    this.transformed_samples = [];
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.who = "";
-    this.does_transform = false;
+    this.owner = "";
     this.settings = [
         {
             property: {
