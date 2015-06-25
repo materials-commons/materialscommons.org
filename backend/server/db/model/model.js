@@ -14,19 +14,19 @@ module.exports = function(r) {
         this._type = "sample";
     }
 
-    function Process(name, owner, templateID, what, how) {
+    function Process(name, owner, ptype, what, how) {
         this.name = name;
         this.owner = owner;
         this.what = what;
         this.how = how;
-        this.template_id = templateID;
+        this.process_type = ptype;
         this.birthtime = r.now();
         this.mtime = this.birthtime;
         this._type = "process";
     }
 
     function Process2Setup(processID, setupID) {
-        this.setup_id = settingID;
+        this.setup_id = setupID;
         this.process_id = processID;
     }
 
@@ -47,7 +47,7 @@ module.exports = function(r) {
         this.datafile_id = fileID;
     }
 
-    function Process2Outputfile(processID, fileID) {
+    function Process2File(processID, fileID) {
         this.process_id = processID;
         this.datafile_id = fileID;
     }
@@ -66,18 +66,6 @@ module.exports = function(r) {
         this._type = _type;
         this.value = value;
         this.units = units;
-    }
-
-    function Property(_type, value, units, nvalue, nunits) {
-        this._type = _type;
-        this.value = value;
-        this.units = units;
-        this.nvalue = nvalue;
-        this.nunits = nunits;
-    }
-
-    function addProperty(name, val) {
-        this.properties[name] = val;
     }
 
     function Measurement(name, attribute, sampleID) {
@@ -105,7 +93,7 @@ module.exports = function(r) {
         this.measurements = measurements;
     };
 
-    function Attribute(name, attribute) {
+    function Property(name, attribute) {
         this.parent_id = '';
         this.birthtime = r.now();
         this._type = 'attribute';
@@ -114,17 +102,17 @@ module.exports = function(r) {
         this.best_measure_id = '';
     }
 
-    function AttributeSet(current, parent_id) {
+    function PropertySet(current, parent_id) {
         this.current = current ? current : false;
         this.parent_id = parent_id ? parent_id : '';
     }
 
-    function Attribute2Measurement(attrID, measurementID) {
+    function Property2Measurement(attrID, measurementID) {
         this.attribute_id = attrID;
         this.measurement_id = measurementID;
     }
 
-    function Attribute2Process(attrID, processID) {
+    function Property2Process(attrID, processID) {
         this.attribute_id = attrID;
         this.process_id = processID;
     }
@@ -146,7 +134,7 @@ module.exports = function(r) {
         this.current = current;
     }
 
-    function AttributeSet2Attribute(asetID, attrID) {
+    function PropertySet2Property(asetID, attrID) {
         this.attribute_set_id = asetID;
         this.attribute_id = attrID;
     }
@@ -163,7 +151,7 @@ module.exports = function(r) {
         let m = new Measurement(name, processID, sampleID);
         let rv = yield db.insert('measurements', m);
         let mid = rv.id;
-        let a2m = new Attribute2Measurement(attrID, mid);
+        let a2m = new Property2Measurement(attrID, mid);
         yield db.insert('attribute2measurement', a2m);
         return mid;
     }
@@ -187,14 +175,14 @@ module.exports = function(r) {
     function *addAttribute(asetID, attr) {
         'use strict';
         let newAttr = yield db.insert('attributes', attr);
-        let as2a = new AttributeSet2Attribute(asetID, newAttr.id);
+        let as2a = new PropertySet2Property(asetID, newAttr.id);
         yield db.insert('attributeset2attribute', as2a);
         return as2a.id;
     }
 
     function *addAttributeID(asetID, attrID) {
         'use strict';
-        let as2a = new AttributeSet2Attribute(asetID, attrID);
+        let as2a = new PropertySet2Property(asetID, attrID);
         yield db.insert('attributeset2attribute', as2a);
     }
 
@@ -229,19 +217,18 @@ module.exports = function(r) {
         Process2Measurement: Process2Measurement,
         Process2Sample: Process2Sample,
         Process2Setupfile: Process2Setupfile,
-        Process2Outputfile: Process2Outputfile,
+        Process2File: Process2File,
         Setups: Setups,
         SetupProperty: SetupProperty,
-        Property: Property,
         Measurement: Measurement,
-        Attribute: Attribute,
-        Attribute2Process: Attribute2Process,
-        Attribute2Measurement: Attribute2Measurement,
-        AttributeSet: AttributeSet,
-        AttributeSet2Attribute: AttributeSet2Attribute,
+        Property: Property,
+        Property2Process: Property2Process,
+        Property2Measurement: Property2Measurement,
+        PropertySet: PropertySet,
+        PropertySet2Property: PropertySet2Property,
         Project2Process: Project2Process,
         Project2Sample: Project2Sample,
-        Sample2AttributeSet: Sample2AttributeSet,
+        Sample2PropertySet: Sample2AttributeSet,
         BestMeasureHistory: BestMeasureHistory
     };
 };
