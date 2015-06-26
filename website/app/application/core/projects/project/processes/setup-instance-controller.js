@@ -8,7 +8,7 @@ function setupInstanceController($scope, project, $state,  $log, modal, pubsub, 
     };
     var template = processTemplates.getActiveTemplate();
 
-    $scope.settings = template.settings;
+    $scope.settings = template.setup.settings[0].properties;
 
     $scope.ok = function () {
         $scope.modal.instance.close($scope.selected.item);
