@@ -8,10 +8,10 @@ module.exports = function(model) {
     let samples = require('./samples')(model.samples, schema);
     let processes = require('./processes')(model.processes, schema);
 
-    router.get('/projects', projects.all);
-    router.post('/projects/:project_id/processes', validateProjectAccess, processes.create);
-    router.post('/projects/:project_id/samples', validateProjectAccess, samples.create);
-    router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
+    router.get('/projects2', projects.all);
+    router.post('/projects2/:project_id/processes', validateProjectAccess, processes.create);
+    router.post('/projects2/:project_id/samples', validateProjectAccess, samples.create);
+    router.put('/projects2/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
 
     return router;
 };

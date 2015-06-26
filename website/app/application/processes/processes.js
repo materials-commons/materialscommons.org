@@ -1,4 +1,3 @@
-
 function Apt() {
     this.name = "APT";
     this.description = "Atom Probe Tomography";
@@ -12,217 +11,226 @@ function Apt() {
     this.what = "";
     this.why = "";
     this.owner = "";
-    this.settings = [
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
         {
-            property: {
-                name: "Mode",
-                attribute: "mode",
-                description: "",
-                value: null,
-                units: [],
-                unit: null,
-                _type: "selection",
-                required: true,
-                choices: [
-                    {
-                        name: "FIM",
-                        value: "fim"
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Mode",
+                        attribute: "mode",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "selection",
+                        required: true,
+                        choices: [
+                            {
+                                name: "FIM",
+                                value: "fim"
+                            },
+                            {
+                                name: "Voltage",
+                                value: "voltage"
+                            },
+                            {
+                                name: "Laser",
+                                value: "laser"
+                            }
+                        ]
                     },
-                    {
-                        name: "Voltage",
-                        value: "voltage"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Specimen Temperature",
+                        attribute: "specimen_temperature",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "K",
+                        _type: "number",
+                        required: true,
+                        choices: []
                     },
-                    {
-                        name: "Laser",
-                        value: "laser"
-                    }
-                ]
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Specimen Temperature",
-                attribute: "specimen_temperature",
-                description: "",
-                value: null,
-                units: [],
-                unit: "K",
-                _type: "number",
-                required: true,
-                choices: []
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Voltage Pulse Fraction",
-                attribute: "voltage_pulse_fraction",
-                description: "",
-                value: null,
-                units: [],
-                unit:"percentage",
-                _type: "number",
-                required: false,
-                choices: []
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Laser Pulse Energy",
-                attribute: "laser_pulse_energy",
-                description: "",
-                value: null,
-                units: ["pJ", "nJ"],
-                unit: null,
-                _type: "number",
-                required: false,
-                choices: []
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Laser Wavelength",
-                attribute: "laser_wavelength",
-                description: "",
-                value: null,
-                units: [],
-                unit: "nm",
-                _type: "number",
-                required: false,
-                choices: []
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Pulse Frequency",
-                attribute: "pulse_frequency",
-                description: "",
-                value: null,
-                units: [],
-                unit: "kHz",
-                _type: "number",
-                required: false,
-                choices: []
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Evaporation Control",
-                attribute: "evaporation_control",
-                description: "",
-                value: null,
-                units: [],
-                unit: null,
-                _type: "selection",
-                required: false,
-                choices: [
-                    {
-                        "name": "Constant Detector Rate",
-                        "value" : "constant_detector_rate"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Voltage Pulse Fraction",
+                        attribute: "voltage_pulse_fraction",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "percentage",
+                        _type: "number",
+                        required: false,
+                        choices: []
                     },
-                    {
-                        "name": "Constant Evaporation Rate",
-                        "value" : "constant_evaporation_rate"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Laser Pulse Energy",
+                        attribute: "laser_pulse_energy",
+                        description: "",
+                        value: null,
+                        units: ["pJ", "nJ"],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
                     },
-                    {
-                        "name": "Constant Charge Rate Ratio",
-                        "value" : "constant_charge_rate_ratio"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Laser Wavelength",
+                        attribute: "laser_wavelength",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "nm",
+                        _type: "number",
+                        required: false,
+                        choices: []
                     },
-                    {
-                        "name": "Other",
-                        "value" : "other"
-                    }
-                ]
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Evaporation Rate",
-                attribute: "evaporation_rate",
-                description: "",
-                value: null,
-                units: [],
-                unit: "Atom/Pulse",
-                required: false,
-                _type: "number",
-                choices: []
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Imaging Gas",
-                attribute: "imaging_gas",
-                description: "",
-                value: null,
-                units: [],
-                unit: null,
-                required: false,
-                _type: "selection",
-                choices: [
-                    {
-                        "name": "He",
-                        "value" : "He"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Pulse Frequency",
+                        attribute: "pulse_frequency",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "kHz",
+                        _type: "number",
+                        required: false,
+                        choices: []
                     },
-                    {
-                        "name": "Ar",
-                        "value" : "Ar"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Evaporation Control",
+                        attribute: "evaporation_control",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {
+                                "name": "Constant Detector Rate",
+                                "value": "constant_detector_rate"
+                            },
+                            {
+                                "name": "Constant Evaporation Rate",
+                                "value": "constant_evaporation_rate"
+                            },
+                            {
+                                "name": "Constant Charge Rate Ratio",
+                                "value": "constant_charge_rate_ratio"
+                            },
+                            {
+                                "name": "Other",
+                                "value": "other"
+                            }
+                        ]
                     },
-                    {
-                        "name": "Ne",
-                        "value" : "Ne"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Evaporation Rate",
+                        attribute: "evaporation_rate",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "Atom/Pulse",
+                        required: false,
+                        _type: "number",
+                        choices: []
                     },
-                    {
-                        "name": "Other",
-                        "value" : "other"
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Imaging Gas",
+                        attribute: "imaging_gas",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        required: false,
+                        _type: "selection",
+                        choices: [
+                            {
+                                "name": "He",
+                                "value": "He"
+                            },
+                            {
+                                "name": "Ar",
+                                "value": "Ar"
+                            },
+                            {
+                                "name": "Ne",
+                                "value": "Ne"
+                            },
+                            {
+                                "name": "Other",
+                                "value": "other"
+                            },
+                            {
+                                "name": "None",
+                                "value": "none"
+                            }
+                        ]
                     },
-                    {
-                        "name": "None",
-                        "value" : "none"
-                    }
-                ]
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
-        },
-        {
-            property:{
-                name: "Pressure",
-                attribute: "pressure",
-                description: "",
-                value: null,
-                units: ["atm", "Pa", "torr"],
-                unit: null,
-                required: false,
-                _type: "number",
-                choices: []
-            },
-            validators: [],
-            valid: false,
-            errorMessage: ""
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Pressure",
+                        attribute: "pressure",
+                        description: "",
+                        value: null,
+                        units: ["atm", "Pa", "torr"],
+                        unit: null,
+                        required: false,
+                        _type: "number",
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
         }
     ];
 }
