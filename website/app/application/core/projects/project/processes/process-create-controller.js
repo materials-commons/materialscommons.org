@@ -46,7 +46,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             return sample.id === entry.id;
         });
         $scope.template.input_samples[i] = sample;
-        console.dir($scope.template);
     }
 
     function addSetup(setup) {
@@ -58,7 +57,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         switch (item.type) {
             case "sample":
                 what = 'input_samples';
-                item.measurements = [];
                 item.property_set_id = "";
                 item.new_properties = [];
                 item.properties = [];
@@ -166,7 +164,8 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     };
 
     $scope.createProcess = function () {
-        refineSampleProperties();
+        $scope.template = refineSampleProperties();
+        console.dir($scope.template);
     };
 
     function refineSampleProperties() {
@@ -174,18 +173,18 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             sample.properties = refine(sample.properties);
             sample.new_properties = refine(sample.new_properties);
         });
+        return $scope.template;
     }
 
     function refine(items) {
-        var properties = [];
-        var groupedItems = $filter('groupBy')(items, 'name');
-        angular.forEach(groupedItems, function (values, key) {
-            var property = {name: key, property_id:values[0].property_id, measurements: []};
-            values.forEach(function (item) {
-                property.measurements.push({value: item.value, _type: item._type, unit: item.unit});
+        var each_measure = {};
+        items.forEach(function(item){
+            item.measurements = [];
+            item.measures.forEach(function(m){
+                each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
+                item.measurements.push(each_measure);
             });
-            properties.push(property);
         });
-        return properties;
+       return items;
     }
 }

@@ -9,14 +9,15 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, $filte
     $scope.enterValue = false;
 
     $scope.showDetails = function (template) {
+        var old_measures = [];
         $scope.enterValue = false;
         $scope.chosenProperty = template;
-        var existing_measures = existingMeasures($scope.chosenProperty);
-        if (existing_measures.length === 0) {
+        if(!('measures' in $scope.chosenProperty)){
             $scope.chosenProperty.measures = [];
-        } else {
-            $scope.chosenProperty.measures = [];
-            $scope.chosenProperty.measures = existing_measures;
+        }
+        old_measures = existingMeasures($scope.chosenProperty, $scope.modal.sample);
+        if (old_measures.length !== 0) {
+            $scope.chosenProperty.measures = old_measures;
         }
     };
 
@@ -29,14 +30,14 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, $filte
     };
 
     $scope.editMeasurement = function () {
-        $scope.propertyInstance = measurements.newInstance($scope.chosenProperty);
         $scope.enterValue = true;
-        $scope.chosenProperty.measures.push($scope.propertyInstance.property);
+        var propertyInstance = measurements.newInstance($scope.chosenProperty);
+        $scope.chosenProperty.measures.push(propertyInstance.property);
     };
 
     $scope.save = function () {
         $scope.enterValue = false;
-        storeProperties($scope.chosenProperty);
+        $scope.modal.sample = storeProperties($scope.chosenProperty);
         pubsub.send('updateSampleMeasurement', $scope.modal.sample);
     };
 
@@ -56,43 +57,56 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, $filte
     });
 
     function storeProperties(chosenProperty) {
-        var i = _.indexOf($scope.copySample.properties, function (entry) {
+        var i, j;
+        i = _.indexOf($scope.copySample.properties, function (entry) {
             return chosenProperty.name === entry.name;
         });
         if (i === -1) {
-            chosenProperty.measures.forEach(function (item) {
-                $scope.modal.sample.new_properties.push(item);
-            });
-        } else {
-            var property_id = $scope.copySample.properties[i].property_id;
-            chosenProperty.measures.forEach(function (item) {
-                item.property_id =  property_id;
-                $scope.modal.sample.properties.push(item);
-            });
-        }
-
-    }
-
-    function existingMeasures(chosenProperty) {
-        var existing_measures = [];
-        var i = _.indexOf($scope.modal.sample.properties, function (entry) {
-            return chosenProperty.name === entry.name;
-        });
-        if (i === -1) {
-            var j = _.indexOf($scope.modal.sample.new_properties, function (entry) {
+            //check if there this property is already there in new properties.
+            j = _.indexOf($scope.modal.sample.new_properties, function (entry) {
                 return chosenProperty.name === entry.name;
             });
             if (j === -1) {
-                return existing_measures;
+                $scope.modal.sample.new_properties.push(chosenProperty);
             } else {
-                existing_measures = $filter('byKey')($scope.modal.sample.new_properties, 'name', chosenProperty.name);
-                return existing_measures;
+                $scope.modal.sample.new_properties[j].measures = chosenProperty.measures;
             }
         } else {
-            existing_measures = $filter('byKey')($scope.modal.sample.properties, 'name', chosenProperty.name);
-            return existing_measures;
+            j = null;
+            var property_id = $scope.copySample.properties[i].property_id;
+            j = _.indexOf($scope.modal.sample.properties, function (entry) {
+                return chosenProperty.name === entry.name;
+            });
+            if (j === -1) {
+                chosenProperty.property_id = property_id;
+                $scope.modal.sample.properties.push(chosenProperty);
+            } else {
+                $scope.modal.sample.properties[j].measures = chosenProperty.measures;
+            }
         }
+        return $scope.modal.sample;
+    }
 
+    function existingMeasures(chosenProperty, sample) {
+
+        $scope.measures = [];
+        var i = _.indexOf(sample.properties, function (entry) {
+            return chosenProperty.name === entry.name;
+        });
+        if (i === -1) {
+            var j = _.indexOf(sample.new_properties, function (item) {
+                return chosenProperty.name === item.name;
+            });
+            if (j === -1) {
+                return $scope.measures;
+            } else {
+                $scope.measures = sample.new_properties[j].measures;
+                return $scope.measures;
+            }
+        } else {
+            $scope.measures = sample.properties[i].measures;
+            return $scope.measures;
+        }
     }
 
     function init() {
