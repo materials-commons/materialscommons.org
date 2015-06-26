@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", "$filter", projectCreateProcess]);
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub) {
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, $filter) {
     $scope.template = processTemplates.getActiveTemplate();
     $scope.bk = {
         selectedSample: {}
@@ -42,10 +42,11 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub)
     };
 
     function updateSampleMeasurement(sample) {
-        var i = _.indexOf($scope.template.samples, function (entry) {
+        var i = _.indexOf($scope.template.input_samples, function (entry) {
             return sample.id === entry.id;
         });
-        $scope.template.samples[i] = sample;
+        $scope.template.input_samples[i] = sample;
+        console.dir($scope.template);
     }
 
     function addSetup(setup) {
@@ -54,10 +55,14 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub)
 
     function addAttachment(item) {
         var what;
-        switch ($scope.type) {
-            case "samples":
-                what = 'samples';
+        switch (item.type) {
+            case "sample":
+                what = 'input_samples';
                 item.measurements = [];
+                item.property_set_id = "";
+                item.new_properties = [];
+                item.properties = [];
+                item.transformed_properties = [];
                 break;
             case "input_files":
                 what = 'input_files';
@@ -69,32 +74,32 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub)
         var i = _.indexOf($scope.template[what], function (entry) {
             return item.id === entry.id;
         });
-        if (i < 0) {
+        if (i === -1) {
             $scope.template[what].push(item);
         } else {
             $scope.template[what].splice(i, 1);
         }
     }
 
-    $scope.removeAttachment = function(item, what){
+    $scope.removeAttachment = function (item, what) {
         var i = _.indexOf($scope.template[what], function (entry) {
             return item.id === entry.id;
         });
-       if(i > -1) {
+        if (i > -1) {
             $scope.template[what].splice(i, 1);
         }
     };
 
-    $scope.removeLink = function(link, what, attachment){
+    $scope.removeLink = function (link, what, attachment) {
         var i = _.indexOf($scope.template[what], function (entry) {
             return attachment.id === entry.id;
         });
-        if(i > -1) {
+        if (i > -1) {
             var j = _.indexOf($scope.template[what][i].links, function (entry) {
                 return link.id === entry.id;
             });
 
-            if(j > -1){
+            if (j > -1) {
                 $scope.template[what][i].links.splice(j, 1);
             }
         }
@@ -103,7 +108,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub)
     $scope.addMeasurement = function (sample) {
         $scope.modal = {
             instance: null,
-            sample: sample
+            sample: sample,
         };
 
         $scope.modal.instance = $modal.open({
@@ -160,7 +165,27 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub)
         });
     };
 
-    $scope.createProcess = function(){
-        console.dir($scope.template);
+    $scope.createProcess = function () {
+        refineSampleProperties();
     };
+
+    function refineSampleProperties() {
+        $scope.template.input_samples.forEach(function (sample) {
+            sample.properties = refine(sample.properties);
+            sample.new_properties = refine(sample.new_properties);
+        });
+    }
+
+    function refine(items) {
+        var properties = [];
+        var groupedItems = $filter('groupBy')(items, 'name');
+        angular.forEach(groupedItems, function (values, key) {
+            var property = {name: key, property_id:values[0].property_id, measurements: []};
+            values.forEach(function (item) {
+                property.measurements.push({value: item.value, _type: item._type, unit: item.unit});
+            });
+            properties.push(property);
+        });
+        return properties;
+    }
 }
