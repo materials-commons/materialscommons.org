@@ -5,6 +5,7 @@ function Sample() {
     this.properties = [];       // is an array of object ExistingProperty()
     this.new_properties = [];   // is an array of NewProperty()
     this.transformed_properties = []; // is an array of TransformedProperty()
+    this.new_sample = false;   // if its new sample there won't be an id and property_set_id
 }
 
 function ExistingProperty() {
