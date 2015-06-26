@@ -27,17 +27,11 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         addSetup(setup);
     });
 
-    $scope.linkSample = function (datafile, type) {
-        var i = _.indexOf($scope.template[type], function (entry) {
-            return datafile.id === entry.id;
+    $scope.linkSample = function (datafile) {
+        var i = _.indexOf($scope.template.input_samples, function (entry) {
+            return $scope.bk.selectedSample.id === entry.id;
         });
-        if ('links' in datafile) {
-            datafile.links.push($scope.bk.selectedSample);
-        } else {
-            datafile.links = [];
-            datafile.links.push($scope.bk.selectedSample);
-        }
-        $scope.template[type][i] = datafile;
+        $scope.template.input_samples[i].files.push({id: datafile.id, name: datafile.name});
         $scope.bk.selectedSample = '';
     };
 
@@ -61,12 +55,14 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                 item.new_properties = [];
                 item.properties = [];
                 item.transformed_properties = [];
+                item.files = [];
                 break;
-            case "input_files":
-                what = 'input_files';
-                break;
-            case "output_files":
-                what = 'output_files';
+            case "datafile":
+                if ($scope.type === 'input_files') {
+                    what = 'input_files';
+                } else {
+                    what = 'output_files';
+                }
                 break;
         }
         var i = _.indexOf($scope.template[what], function (entry) {
@@ -106,7 +102,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     $scope.addMeasurement = function (sample) {
         $scope.modal = {
             instance: null,
-            sample: sample,
+            sample: sample
         };
 
         $scope.modal.instance = $modal.open({
@@ -123,6 +119,28 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             }
         });
     };
+
+    $scope.transformation = function () {
+        $scope.modal = {
+            instance: null,
+            sample: sample
+        };
+
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/processes/transformation.html',
+            controller: 'TransformationController',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
+
     $scope.open = function (size, type) {
         $scope.modal = {
             instance: null,
@@ -178,13 +196,13 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
 
     function refine(items) {
         var each_measure = {};
-        items.forEach(function(item){
+        items.forEach(function (item) {
             item.measurements = [];
-            item.measures.forEach(function(m){
+            item.measures.forEach(function (m) {
                 each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
                 item.measurements.push(each_measure);
             });
         });
-       return items;
+        return items;
     }
 }
