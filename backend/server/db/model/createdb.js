@@ -28,7 +28,7 @@ promise.coroutine(function *() {
     yield * createTable('measurements', 'process_id');
     yield * createTable('measure2datafile', 'measurement_id', 'datafile_id');
     yield * createTable('process2measurement', 'process_id', 'measurement_id');
-    yield * createTable('setup_properties', 'setting_id');
+    yield * createTable('setupproperties', 'setting_id');
     yield * createTable('attributes', 'parent_id');
     yield * createTable('attribute2measurement', 'attribute_id', 'measurement_id');
     yield * createTable('attributeset2attribute', 'attribute_set_id', 'attribute_id');

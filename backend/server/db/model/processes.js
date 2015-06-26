@@ -9,10 +9,9 @@
  *
  * @param {Object} r - The rethinkdbdash instance.
  */
-module.exports = function(r) {
+module.exports = function (r) {
     'use strict';
 
-    let _ = require('lodash');
     let model = require('./model')(r);
     let db = require('./db')(r);
 
@@ -35,29 +34,20 @@ module.exports = function(r) {
     function *create(process) {
         let p = new model.Process(process.name, process.owner, process._type, process.what, process.how);
         let proc = yield addProcess(process.project_id, p);
-        let settings = yield addSetup(proc.id, process.settings);
-        let measurements = yield addSampleMeasurements(proc.id, process.input_samples);
+        let settings = yield addProcessSetup(proc.id, process.setup);
+        yield addSampleMeasurements(proc.id, process.input_samples);
         yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
         yield addTransformedSamples(process.transformed_samples, proc.id);
         yield addFiles(proc.id, process.input_files, 'in');
         yield addFiles(proc.id, process.output_files, 'out');
 
         proc.settings = settings;
-        proc.measurements = measurements;
-
         return proc;
     }
 
     ///////////////// Module private methods /////////////////
 
-    /**
-     * Creates a new process and adds it to the given project.
-     *
-     * @param {String} projectID - The projectID this process belongs to.
-     * @param {Object} process - The process definition from create.
-     *
-     * @returns {Object} - The process inserted into the database.
-     */
+    // addProcess inserts the process and add it to the project.
     function *addProcess(projectID, process) {
         let p = yield db.insert('processes', process);
         let p2proc = new model.Project2Process(projectID, p.id);
@@ -65,15 +55,8 @@ module.exports = function(r) {
         return p;
     }
 
-    /**
-     * Creates the settings for the process and inserts it into the database.
-     *
-     * @param {String} processID - The database id for the created process.
-     * @param {Array} setup - The settings to create.
-     *
-     * @returns {Object} - The settings object inserted into the database.
-     */
-    function *addSetup(processID, setup) {
+    // addProcessSetup adds the process setup settings
+    function *addProcessSetup(processID, setup) {
         let settings = yield addSetupSettings(processID, setup.settings);
         let setupFiles = yield addSetupFiles(processID, setup.files);
         return {
@@ -82,12 +65,8 @@ module.exports = function(r) {
         };
     }
 
-    /**
-     *
-     * @param {} processID
-     * @param {} settings
-     * @returns {}
-     */
+    // addSetupSettings will add each setting property for the process
+    // to the database.
     function *addSetupSettings(processID, settings) {
         let created = [];
         for (let i = 0; i < settings.length; i++) {
@@ -106,10 +85,10 @@ module.exports = function(r) {
             // all of its properties.
             setup.properties = [];
             for (let j = 0; j < current.properties.length; j++) {
-                let p = current.properties[j];
-                let prop = new model.SetupProperty(setup.id, p.name, p.attribute,
-                                                     p._type, p.value, p.units);
-                let sprop = yield db.insert('setup_properties', prop);
+                let p = current.properties[j].property;
+                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute, p._type, p.value,
+                    p.unit);
+                let sprop = yield db.insert('setupproperties', prop);
                 setup.properties.push(sprop);
             }
             created.push(setup);
@@ -117,13 +96,7 @@ module.exports = function(r) {
         return created;
     }
 
-    /**
-     * @name addSetupFiles
-     * @description adds the files that were used to setup this process.
-     * @param {String} processID
-     * @param {Array} files
-     * @returns {Array}
-     */
+    // addSetupFiles adds the files used in setup to the database.
     function *addSetupFiles(processID, files) {
         let toAdd = [];
         for (let i = 0; i < files.length; i++) {
@@ -134,97 +107,111 @@ module.exports = function(r) {
         return created;
     }
 
-    /**
-     * Adds all the measurements to the attributes. Creates a new attribute if
-     * the measurement is for an attribute that isn't currently in the sample.
-     * The method determines that an attribute is a new attribute if no
-     * attribute_id is included in the measurement, but an attribute_set_id is
-     * included. The attribute_set_id is required so that the new attribute can
-     * be attached to the proper version of the sample, since a sample and
-     * attribute set uniquely define a sample version.
-     *
-     * @param {String} processID - The process these measurements came from.
-     * @param {Array} measurements - An array of measurement definitions.
-     *
-     * @returns {Array} - A list of the measurements that were inserted into the database.
-     */
-    function *addSampleMeasurements(processID, measurements) {
-        let created = [];
-        for (let i = 0; i < measurements.length; i++) {
-            let current = measurements[i];
-            let m = createMeasurementModel(current);
-            let measurement = yield db.insert('measurements', m);
 
-            if (_.has(current, 'attribute_id')) {
-                // measurement on an existing attribute
-                yield addMeasurementToAttribute(current.attribute_id, measurement.id);
-            } else if (_.has(current, 'attribute_set_id')) {
-                // new attribute being measured
-                yield addNewAttribute(measurement, current.attribute_set_id, processID);
-            }
-            created.push(measurement);
+    /**
+     * @name addSampleMeasurements
+     * adds all the new measurements for an existing property in a sample.
+     *
+     * @param processID {String} - process id to add measurements to
+     * @param samples {Array} - The samples to add
+     * @returns {Array}
+     */
+    function *addSampleMeasurements(processID, samples) {
+        for (let i = 0; i < samples.length; i++) {
+            let sample = samples[i];
+            let sampleID = sample.id;
+            let samplePSetID = sample.property_set_id;
+
+            let measurements = yield addExistingPropertyMeasurements(sampleID, sample.properties);
+            yield addMeasurementsToProcess(processID, measurements);
+
+            measurements = yield addNewPropertyMeasurements(sampleID, samplePSetID, sample.new_properties);
+            yield addMeasurementsToProcess(processID, measurements);
         }
-        // TODO: Add the measurements to the attribute and return the
-        // attributes, rather than just a list of created measurements.
-        yield addMeasurementsToProcess(processID, created);
+    }
+
+    /**
+     * Adds measurements to existing properties
+     *
+     * @name addExistingPropertyMeasurements
+     * @param sampleID {String} - The sampleID to add existing new property measurements to.
+     * @param properties {Array} - A list of existing properties with new measurements.
+     * @returns {Array} - A list of the measurements that were added.
+     */
+    function *addExistingPropertyMeasurements(sampleID, properties) {
+        let created = [];
+        for (let i = 0; i < properties.length; i++) {
+            let current = properties[i];
+            let pID = current.property_id;
+            let pName = current.name;
+            let pAttr = current.attribute;
+            let measurements = yield addPropertyMeasurements(pID, pName, pAttr, sampleID, current.measurements);
+            created.push.apply(created, measurements);
+        }
         return created;
     }
 
     /**
-     * creates a new measurement from the measurement definition. Handles
-     * book keeping tasks such as where the measurement was derived from
-     * such as a file, or from another set of measurements.
+     * Adds new property to sample and adds its measurements to database.
      *
-     * @param {Object} from - The measurement definition to create the model from.
-     *
-     * @returns {Object} - The new measurement model.
+     * @name addNewPropertyMeasurements
+     * @param sampleID
+     * @param psetID
+     * @param properties
+     * @returns {Array} - A list of the measurements that were added.
      */
-    function createMeasurementModel(from) {
-        let m = new model.Measurement(from.name, from.attribute, from.sample_id);
-        m.setValue(from.value, from.units, from._type,
-                   from.nvalue, from.nunits);
-
-        if (_.has(from, 'from_file')) {
-            m.setFile(from.from_file);
-        } else if (_.has(from, 'from_measurements')) {
-            m.setMeasurements(from.from_measurements);
+    function *addNewPropertyMeasurements(sampleID, psetID, properties) {
+        let created = [];
+        for (let i = 0; i < properties.length; i++) {
+            let current = properties[i];
+            let p = new model.Property(current.name, current.attribute);
+            let inserted = yield db.insert('properties', p);
+            let ps2p = new model.PropertySet2Property(inserted.id, psetID);
+            yield db.insert('propertset2property', ps2p);
+            let measurements = yield addPropertyMeasurements(inserted.id, current.name, current.attribute, sampleID, current.measurements);
+            created.push.apply(created, measurements);
         }
-        return m;
+        return created;
     }
 
     /**
-     * Takes a measurement and associates it with the given attribute.
+     * Adds all measurements for property to database.
      *
-     * @param {String} attrID - The attribute the measurement is for.
-     * @param {String} mID - The measurement
+     * @name addPropertyMeasurements
+     * @param pID {String} - The property ID.
+     * @param pName {String} - The property name.
+     * @param pAttr {String} - The property attribute.
+     * @param sampleID {String} - The sample ID property is associated with.
+     * @param measurements {Array} - A list of measurements taken on property.
+     * @returns {Array} - A list of the new measurements that were added to the database.
      */
-    function *addMeasurementToAttribute(attrID, mID) {
-        let a2m = new model.Property2Measurement(attrID, mID);
-        yield db.insert('property2measurement', a2m);
+    function *addPropertyMeasurements(pID, pName, pAttr, sampleID, measurements) {
+        let createdMeasurements = [];
+        for (let i = 0; i < measurements.length; i++) {
+            let current = measurements[i];
+            let m = new model.Measurement(pName, pAttr, sampleID);
+            m.value = current.value;
+            m.units = current.unit;
+            m._type = current._type;
+            let inserted = yield db.insert('measurements', m);
+            createdMeasurements.push(inserted);
+            yield addMeasurementToProperty(pID, inserted.id)
+        }
+        return createdMeasurements;
     }
 
     /**
-     * Creates a new attribute and adds it to the given attribute set. Associates
-     * the given measurement with that attribute.
+     * Takes a measurement and associates it with the given property.
      *
-     * @param {Object} m - The measurement for the attribute.
-     * @param {String} attrSetID - The attribute set the new attribute belongs to.
-     * @param {String} processID - The process that created this attribute.
-     *
+     * @param {String} propID - The property id the measurement is for.
+     * @param {String} mID - The measurement id.
      */
-    function *addNewAttribute(m, attrSetID, processID) {
-        let attr = new model.Attribute(m.name, m.attribute);
-        let createdAttr = yield db.insert('properties', attr);
-
-        let a2m = new model.Property2Measurement(createdAttr.id, m.id);
+    function *addMeasurementToProperty(propID, mID) {
+        let a2m = new model.Property2Measurement(propID, mID);
         yield db.insert('property2measurement', a2m);
-
-        let as2a = new model.PropertySet2Property(attrSetID, createdAttr.id);
-        yield db.insert('propertyset2property', as2a);
-
-        let a2p = new model.Property2Process(createdAttr.id, processID);
-        yield db.insert('property2process', a2p);
     }
+
+
 
     /**
      * Adds measurements to the given process. This allows for tracking
@@ -236,7 +223,7 @@ module.exports = function(r) {
      */
     function *addMeasurementsToProcess(processID, measurements) {
         let p2ms = [];
-        measurements.forEach(function(m) {
+        measurements.forEach(function (m) {
             let p2m = new model.Process2Measurement(processID, m.id);
             p2ms.push(p2m);
         });
@@ -325,6 +312,7 @@ module.exports = function(r) {
      * @param {String} asetID - Attribute set to fill in.
      * @param {Array} shares - A list of attribute ids this attribute set shares.
      * @param {Array} uses - A list of attribute ids to use to create new attributes.
+     * @param processID {String} - The process id
      */
     function *fillAttributeSet(asetID, shares, uses, processID) {
         yield fillFromShares(asetID, shares);
@@ -401,10 +389,10 @@ module.exports = function(r) {
     function *attachMeasurements(newAttrID, fromAttrID) {
         // Get original attributes measurements
         let rql = r.table('property2measurement')
-                .getAll(fromAttrID, {index: 'property_id'});
+            .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
         // Change id to newAttrID and insert into table
-        original.forEach(function(m) {
+        original.forEach(function (m) {
             m.attribute_id = newAttrID;
         });
         yield db.insert('property2measurement', original);
@@ -420,11 +408,11 @@ module.exports = function(r) {
     function *attachBestMeasureHistory(newAttrID, fromAttrID) {
         // Get original attributes best measure history
         let rql = r.table('best_measure_history')
-                .getAll(fromAttrID, {index: 'property_id'});
+            .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
 
         // Change to newAttrID and insert
-        original.forEach(function(entry) {
+        original.forEach(function (entry) {
             entry.attribute_id = newAttrID;
         });
         yield db.insert('best_measure_history', original);
