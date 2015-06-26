@@ -10,17 +10,21 @@ function Sample() {
 
 function ExistingProperty() {
     this.name = "";
+    this.attribute = "";
     this.property_id = "";
     this.measurements = [];    // is an array of SampleMeasurement()
 }
 
 function NewProperty() {
     this.name = "";
+    this.attribute = "";
     this.measurements = [];   // is an array of SampleMeasurement()
 }
 
 
 function TransformedProperty() {
+    this.name = "";
+    this.attribute = "";
     this.property_id = "";
     this.action = ""; //Action can be share/copy/unknown
 }
