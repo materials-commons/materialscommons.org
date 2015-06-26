@@ -8,6 +8,7 @@ function Sample() {
 }
 
 function ExistingProperty() {
+    this.name = "";
     this.property_id = "";
     this.measurements = [];    // is an array of SampleMeasurement()
 }
