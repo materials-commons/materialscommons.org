@@ -14,9 +14,9 @@ function projectTaskBarDirective() {
 
 Application.Controllers.controller("projectTaskBarDirectiveController",
     ["$scope", "current", "$state", "ui",
-        "User", "sideboard", "projectState",
+        "User", "sideboard", "$state", "taskBarState",
         projectTaskBarDirectiveController]);
-function projectTaskBarDirectiveController($scope, current, $state, ui, User, sideboard, projectState) {
+function projectTaskBarDirectiveController($scope, current, $state, ui, User, sideboard, $state, taskBarState) {
     $scope.setProject = function (project) {
         current.setProject(project);
         $scope.showProjects = false;
@@ -66,7 +66,7 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     };
 
     $scope.toggleExpanded = function (panel) {
-        $scope.activePage = ui.setActivePage($scope.project.id, panel);
+        $scope.activePage = taskBarState.setActiveState(panel);
         if (panel === 'processes'){
             $state.go('projects.project.processes.list');
         }else{
@@ -105,8 +105,13 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
          }
          */
     };
+    function init(){
+        $scope.activePage = taskBarState.getActiveState($state);
+        console.log($scope.activePage);
+        $scope.mcuser = User.attr();
+        $scope.list = sideboard.get($scope.project.id);
 
-    $scope.mcuser = User.attr();
-    $scope.list = sideboard.get($scope.project.id);
-    $scope.activePage = ui.isActivePage($scope.project.id);
+    }
+    init();
+
 }
