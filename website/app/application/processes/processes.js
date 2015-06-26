@@ -11,6 +11,7 @@ function Apt() {
     this.what = "";
     this.why = "";
     this.owner = "";
+    this.does_transform = false;
     this.setup = {
         files: []
     };
