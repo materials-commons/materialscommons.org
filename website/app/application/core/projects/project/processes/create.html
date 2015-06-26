@@ -54,36 +54,21 @@
                                 <div class="col-xs-offset-2">
                                     <ul>
                                         <li ng-repeat="property in sample.new_properties">
-                                            <div ng-switch="property._type">
-                                                <div ng-switch-when="number">
-                                                    {{property.name}}: <span style="padding-left: 20px;"> {{property.value}} {{property.unit}}</span>
-                                                </div>
-                                                <div ng-switch-when="string">
-                                                    {{property.name}}: <span style="padding-left: 20px;"> {{property.value}}</span>
-                                                </div>
-                                                <div ng-switch-when="histogram">
-                                                    <a href="" popover="Graph displayed here...."
-                                                       popover-title="Particle size distribution">{{property.name}} <i
-                                                            class="fa fa-bar-chart"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <ul>
-                                        <li ng-repeat="property in sample.properties">
-                                            <div ng-switch="property._type">
-                                                <div ng-switch-when="number">
-                                                    {{property.name}}: <span style="padding-left: 20px;"> {{property.value}} {{property.unit}}</span>
-                                                </div>
-                                                <div ng-switch-when="string">
-                                                    {{property.name}}: <span style="padding-left: 20px;"> {{property.value}}</span>
-                                                </div>
-                                                <div ng-switch-when="histogram">
-                                                    <a href="" popover="Graph displayed here...."
-                                                       popover-title="Particle size distribution">{{property.name}} <i
-                                                            class="fa fa-bar-chart"></i>
-                                                    </a>
+                                            {{property.name}}
+                                            <div ng-repeat="measure in property.measures">
+                                                <div ng-switch="property._type">
+                                                    <div ng-switch-when="number">
+                                                        <span style="padding-left: 20px;"> {{measure.value}} {{measure.unit}}</span>
+                                                    </div>
+                                                    <div ng-switch-when="string">
+                                                       <span style="padding-left: 20px;"> {{measure.value}}</span>
+                                                    </div>
+                                                    <div ng-switch-when="histogram">
+                                                        <a href="" popover="Graph displayed here...."
+                                                           popover-title="Particle size distribution">{{measure.name}} <i
+                                                                class="fa fa-bar-chart"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </li>
