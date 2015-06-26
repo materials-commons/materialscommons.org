@@ -59,13 +59,14 @@ module.exports = function(r) {
         this._type = "settings";
     }
 
-    function SetupProperty(setupID, name, attribute, _type, value, units) {
+    function SetupProperty(setupID, name, description, attribute, _type, value, unit) {
         this.setup_id = setupID;
         this.name = name;
+        this.description = description;
         this.attribute = attribute;
         this._type = _type;
         this.value = value;
-        this.units = units;
+        this.units = unit;
     }
 
     function Measurement(name, attribute, sampleID) {
