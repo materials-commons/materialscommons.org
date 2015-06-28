@@ -3,6 +3,7 @@ module.exports = function(access) {
 
     let _ = require('lodash');
     let projectAccessCache = {};
+    let adminUsersCache = {};
     return {
         find: find,
         clear: clear,
@@ -13,6 +14,13 @@ module.exports = function(access) {
     // If the projectAccessCache hasn't been loaded it loads the
     // cache.
     function *find(project_id) {
+        if (_.isEmpty(adminUsersCache)) {
+            let adminUsers = yield access.adminUsers();
+            adminUsers.forEach(function(user) {
+                adminUsersCache[user.id] = user;
+            });
+        }
+
         if (! _.isEmpty(projectAccessCache)) {
             return projectAccessCache[project_id];
         }
@@ -33,9 +41,14 @@ module.exports = function(access) {
     // first so that the projectAccessCache was preloaded. If the
     // projectAccessCache is empty then it returns false (no access).
     function validateAccess(project_id, user) {
+        if (user.id in adminUsersCache) {
+            return true;
+        }
+
         if (_.isEmpty(projectAccessCache)) {
             return false;
         }
+
         if (!(project_id in projectAccessCache)) {
             return false;
         }
