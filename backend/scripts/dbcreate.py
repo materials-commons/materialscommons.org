@@ -61,13 +61,15 @@ def create_tables():
     create_table("project2process", "project_id", "process_id")
     create_table("sample2datafile", "sample_id", "datafile_id")
     create_table("sample2attributeset", "sample_id", "attribute_set_id")
-    create_table("attributeset2attribute", "attribute_set_id", "attribute_id")
-    create_table("attributesets", "parent_id")
+    create_table("propertyset2attribute", "attribute_set_id", "attribute_id")
+    create_table("propertysets", "parent_id")
     create_table("project2sample", "sample_id", "project_id")
     create_table("process2sample", "sample_id", "process_id",
                  "attribute_set_id", "_type")
     create_table("attribute2process", "attribute_id",
                  "process_id")
+    create_table("setups")
+    create_table("setupproperties", "setting_id")
     create_table("settings")
     create_table("process2setting", "process_id", "setting_id", "_type")
     create_table("process2file", "process_id", "datafile_id", "_type")
@@ -78,11 +80,6 @@ def create_tables():
     create_table("attribute2measurement", "attribute_id",
                  "measurement_id")
     create_table("best_measure_history", "process_id", "attribute_id")
-
-
-
-def create_samples_model():
-    pass
 
 
 def create_table(table, *args):
