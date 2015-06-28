@@ -38,6 +38,7 @@ promise.coroutine(function *() {
     yield * createTable('project2sample', 'project_id', 'sample_id');
     yield * createTable('best_measure_history', 'process_id', 'attribute_id', 'measurement_id'); // TODO: Review indices
     yield * createTable('process2file'); // TODO: Review indices
+    yield * createTable('propertysets');
     yield r.getPool().drain();
 
     /////////////////////////////
