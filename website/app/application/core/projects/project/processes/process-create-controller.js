@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", "$filter", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", projectCreateProcess]);
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, $filter) {
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi) {
     $scope.template = processTemplates.getActiveTemplate();
     $scope.bk = {
         selectedSample: {}
@@ -49,21 +49,21 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     function addAttachment(item) {
         var what;
         switch (item.type) {
-            case "sample":
-                what = 'input_samples';
-                item.property_set_id = "";
-                item.new_properties = [];
-                item.properties = [];
-                item.transformed_properties = [];
-                item.files = [];
-                break;
-            case "datafile":
-                if ($scope.type === 'input_files') {
-                    what = 'input_files';
-                } else {
-                    what = 'output_files';
-                }
-                break;
+        case "sample":
+            what = 'input_samples';
+            item.property_set_id = "";
+            item.new_properties = [];
+            item.properties = [];
+            item.transformed_properties = [];
+            item.files = [];
+            break;
+        case "datafile":
+            if ($scope.type === 'input_files') {
+                what = 'input_files';
+            } else {
+                what = 'output_files';
+            }
+            break;
         }
         var i = _.indexOf($scope.template[what], function (entry) {
             return item.id === entry.id;
@@ -184,6 +184,19 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     $scope.createProcess = function () {
         $scope.template = refineSampleProperties();
         console.dir($scope.template);
+        console.log("=====");
+        console.dir(project);
+        console.log("====");
+        mcapi('/projects2/%/processes', project.id)
+            .success(function (proc) {
+                console.log("success");
+                console.dir(proc);
+            })
+            .error(function (err) {
+                console.log("err");
+                console.log(err);
+            })
+            .post($scope.template);
     };
 
     function refineSampleProperties() {
