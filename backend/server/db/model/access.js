@@ -2,7 +2,8 @@ module.exports = function(r) {
     'use strict';
 
     return {
-        allByProject: allByProject
+        allByProject: allByProject,
+        adminUsers: adminUsers,
     };
 
     function allByProject() {
@@ -16,5 +17,9 @@ module.exports = function(r) {
             });
             return byProject;
         });
+    }
+
+    function adminUsers() {
+        return r.table('users').filter({admin: true}).run();
     }
 };
