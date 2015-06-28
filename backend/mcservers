@@ -53,6 +53,7 @@ function start_servers()
     R=$(is_running "sbin/app_mc.js" "p $MC_APP_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting app_mc..."
+        gulp build-server
         node sbin/app_mc.js -p $MC_APP_SERVICE_PORT > /tmp/app_mc.out.${SERVERTYPE} 2>&1&
     fi
 
