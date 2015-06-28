@@ -167,7 +167,7 @@ module.exports = function (r) {
             let p = new model.Property(current.name, current.attribute);
             let inserted = yield db.insert('properties', p);
             let ps2p = new model.PropertySet2Property(inserted.id, psetID);
-            yield db.insert('propertset2property', ps2p);
+            yield db.insert('propertyset2property', ps2p);
             let measurements = yield addPropertyMeasurements(inserted.id, current.name, current.attribute, sampleID, current.measurements);
             created.push.apply(created, measurements);
         }
