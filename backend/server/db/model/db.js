@@ -1,6 +1,8 @@
 module.exports = function(r) {
     'use strict';
 
+    let _ = require('lodash');
+
     return {
         insert: insert,
         update: update,
@@ -17,6 +19,9 @@ module.exports = function(r) {
 
     function *updateAll(rql, json) {
         let items = [];
+        if (_.isArray(json) && json.length === 0) {
+            return items;
+        }
         let results = yield rql.update(json, {returnChanges: true}).run();
         results.changes.forEach(function(item) {
             items.push(item.new_val);
@@ -26,6 +31,9 @@ module.exports = function(r) {
 
     function *insert(table, json, options) {
         let asArray = options ? options.toArray : false;
+        if (_.isArray(json) && json.length === 0) {
+            return asArray ? [] : {};
+        }
         let rql = r.table(table);
         let result = yield rql.insert(json, {returnChanges: true}).run();
         if (result.changes.length == 1) {

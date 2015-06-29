@@ -77,7 +77,7 @@ module.exports = function (r) {
             let setup = yield db.insert('setups', s);
 
             // Associate it with the process
-            let p2s = new model.Process2Setting(processID, setup.id);
+            let p2s = new model.Process2Setup(processID, setup.id);
             yield db.insert('process2setup', p2s);
 
             // Create each property for the setting. Add these to the
@@ -103,7 +103,10 @@ module.exports = function (r) {
             let p2sf = new model.Process2Setupfile(processID, files[i]);
             toAdd.push(p2sf);
         }
-        let created = yield db.insert('process2setupfile', toAdd);
+        let created = [];
+        if (toAdd.length !== 0) {
+            created = yield db.insert('process2setupfile', toAdd);
+        }
         return created;
     }
 
@@ -337,7 +340,7 @@ module.exports = function (r) {
      * @param {String} asetID - The attribute set to update
      * @param {Array} uses - A list of attributes to create new attributes from
      */
-    function *fillFromUses(asetID, uses, processID) {
+    function *fillFromUses(asetID, uses) {
         for (let i = 0; i < uses.length; i++) {
             let attrID = uses[i];
 
@@ -423,6 +426,8 @@ module.exports = function (r) {
      * @description Adds the files that were produced by the process.
      * @param {String} processID - Process to add files to
      * @param {Array} files - A list of files ids to associate with the process
+     * @param direction
+     * @return {*}
      */
     function *addFiles(processID, files, direction) {
         let addTo = [];
