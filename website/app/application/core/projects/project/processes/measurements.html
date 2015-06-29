@@ -11,7 +11,7 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-xs-4">
-                <div class="details-sidebar">
+                <div class="details-sidebar" style="margin-bottom: ">
                     <ul class="list-group">
                         <li ng-class="{'active': template === chosenProperty}" ng-click="showDetails(template)"
                             ng-repeat="template in templates | filter:search"
@@ -43,18 +43,6 @@
                         <div class="col-xs-1">
                             <i ng-click="removeChoice($index)" style="color:#e57373" class="fa fa-minus fa-fw"></i>
                         </div>
-                        <!--<div class="col-xs-3">-->
-                        <!--<b>{{measurement.name}}:</b>-->
-                        <!--</div>-->
-                        <!--<div class="col-xs-5">-->
-                        <!--<input class="form-control" ng-model="choice.value" placeholder="Value...">-->
-                        <!--</div>-->
-                        <!--<div class="col-xs-1">-->
-                        <!--<i ng-click="addNewChoice()" style="color:#3a9ee3" class="fa fa-plus fa-fw"></i>-->
-                        <!--</div>-->
-                        <!--<div class="col-xs-1">-->
-                        <!--<i ng-click="removeChoice($index)" style="color:#e57373" class="fa fa-minus fa-fw"></i>-->
-                        <!--</div>-->
                     </div>
 
                     <div class="row">
