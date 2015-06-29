@@ -31,7 +31,7 @@
     "rethinkdbdash": "^1.16.13"
   },
   "devDependencies": {
-    "gulp": "^3.8.11",
+    "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-clean": "^0.3.1",
     "gulp-minify-css": "^1.0.0",
