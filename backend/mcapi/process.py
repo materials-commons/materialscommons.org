@@ -14,10 +14,12 @@ import args
 @jsonp
 def get_processes_for_project(project_id):
     processes = get_processes(project_id)
+    print processes
     return resp.to_json(processes)
 
 
 def get_processes(project_id):
+
     processes = list(r.table("processes")
                      .get_all(project_id, index="project_id")
                      .run(g.conn, time_format="raw"))
