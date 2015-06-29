@@ -20,10 +20,14 @@ function homeSamplesController($scope) {
     var rowData = [];
     $scope.project.samples.forEach(function (sample) {
         var composition = '';
-        sample.properties.composition.value.forEach(function(val){
-            composition = composition + '  ' + val.element + ': ' + val.value;
-        })
-        composition = composition + '  ' + sample.properties.composition.unit;
+        if ('composition' in sample.properties) {
+            sample.properties.composition.value.forEach(function (val) {
+                composition = composition + '  ' + val.element + ': ' + val.value;
+            })
+            composition = composition + '  ' + sample.properties.composition.unit;
+        } else {
+            composition = 'unknown';
+        }
         rowData.push({
             name: sample.name,
             composition: composition ,
