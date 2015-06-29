@@ -99,10 +99,11 @@ module.exports = function (r) {
     // addSetupFiles adds the files used in setup to the database.
     function *addSetupFiles(processID, files) {
         let toAdd = [];
-        for (let i = 0; i < files.length; i++) {
-            let p2sf = new model.Process2Setupfile(processID, files[i]);
+        files.forEach(file => {
+            let p2sf = new model.Process2Setupfile(processID, file);
             toAdd.push(p2sf);
-        }
+        });
+
         let created = [];
         if (toAdd.length !== 0) {
             created = yield db.insert('process2setupfile', toAdd);
@@ -226,7 +227,7 @@ module.exports = function (r) {
      */
     function *addMeasurementsToProcess(processID, measurements) {
         let p2ms = [];
-        measurements.forEach(function (m) {
+        measurements.forEach(m => {
             let p2m = new model.Process2Measurement(processID, m.id);
             p2ms.push(p2m);
         });
