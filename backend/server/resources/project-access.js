@@ -3,8 +3,6 @@ module.exports = function(access) {
     let httpStatus = require('http-status');
     let projectAccessCache = require('./project-access-cache')(access);
     return function *validateProject(next) {
-        console.log(this.url);
-        console.log(this.params);
         let projectID = this.params.project_id;
         let project = yield projectAccessCache.find(projectID);
 
