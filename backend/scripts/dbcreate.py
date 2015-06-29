@@ -22,7 +22,6 @@ def create_tables():
     # Are runs, properties, and property_sets needed?
     create_table("runs")
     create_table("properties", "item_id", "value")
-    create_table("property_sets", "item_id")
 
     create_table("reviews", "assigned_to", "author", "project_id")
 
