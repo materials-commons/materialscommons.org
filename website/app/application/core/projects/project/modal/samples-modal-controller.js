@@ -20,17 +20,21 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
     var rowData = [];
     $scope.project.samples.forEach(function (sample) {
         var composition = '';
-        sample.properties.composition.value.forEach(function (val) {
-            composition = composition + '  ' + val.element + ': ' + val.value;
-        });
-        composition = composition + '  ' + sample.properties.composition.unit;
+        if ('composition' in sample.properties) {
+            sample.properties.composition.value.forEach(function (val) {
+                composition = composition + '  ' + val.element + ': ' + val.value;
+            });
+            composition = composition + '  ' + sample.properties.composition.unit;
+        } else {
+            composition = 'unknown';
+        }
         rowData.push({
             name: sample.name,
             composition: composition,
             owner: sample.owner,
             mtime: sample.mtime,
             properties: sample.properties,
-            notes: sample.notes,
+            //notes: sample.notes,
             id: sample.id,
             type: 'sample'
         });

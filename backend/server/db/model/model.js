@@ -75,7 +75,6 @@ module.exports = function(r) {
         this.sample_id = sampleID;
         this._type = "measurement";
         this.file = {};
-        this.measurements = [];
     }
 
     Measurement.prototype.setValue = function(value, units, _type, nvalue, nunits) {
@@ -88,10 +87,6 @@ module.exports = function(r) {
 
     Measurement.prototype.setFile = function(f) {
         this.file = f;
-    };
-
-    Measurement.prototype.setMeasurements = function(measurements) {
-        this.measurements = measurements;
     };
 
     function Property(name, attribute) {
@@ -147,69 +142,6 @@ module.exports = function(r) {
         this._type = 'best_measure_history';
     }
 
-    function *addMeasurement(name, prop, attrID, processID, sampleID) {
-        'use strict';
-        let m = new Measurement(name, processID, sampleID);
-        let rv = yield db.insert('measurements', m);
-        let mid = rv.id;
-        let a2m = new Property2Measurement(attrID, mid);
-        yield db.insert('attribute2measurement', a2m);
-        return mid;
-    }
-
-    function *addAttributeSet(processID, sampleID, attrSet, direction) {
-        'use strict';
-        let aset = db.insert('attributesets', attrSet);
-        let s2as = new Sample2AttributeSet(aset.id, sampleID, 0, true);
-        yield db.insert('sample2attributeset', s2as);
-        let p2s = new Process2Sample(sampleID, processID, aset.id, direction);
-        yield db.insert('process2sample', p2s);
-        return aset.id;
-    }
-
-    function *addAttributeSetID(processID, sampleID, asetID, direction) {
-        'use strict';
-        let p2s = new Process2Sample(processID, sampleID, asetID, direction);
-        yield db.insert('process2sample', p2s);
-    }
-
-    function *addAttribute(asetID, attr) {
-        'use strict';
-        let newAttr = yield db.insert('attributes', attr);
-        let as2a = new PropertySet2Property(asetID, newAttr.id);
-        yield db.insert('attributeset2attribute', as2a);
-        return as2a.id;
-    }
-
-    function *addAttributeID(asetID, attrID) {
-        'use strict';
-        let as2a = new PropertySet2Property(asetID, attrID);
-        yield db.insert('attributeset2attribute', as2a);
-    }
-
-    function *addBestMeasure(attrID, mID) {
-        'use strict';
-        yield db.update('attributes', attr_id, {best_measure_id: mID});
-        let bmHistory = new BestMeasureHistory(attrID, mID);
-        yield db.insert('best_measure_history', bmHistory);
-    }
-
-    //////////////////////////////// moved into specific model //////////////
-
-    function *addProcess(projectID, process) {
-        'use strict';
-        let proc = yield db.insert('processes', process);
-        let p2proc = new Project2Process(projectID, proc.id);
-        yield db.insert('project2process', p2proc);
-        return p2proc.id;
-    }
-
-    function *addSettings(processID, settings, direction) {
-        'use strict';
-        let setting = yield db.insert('settings', settings);
-        let p2s = new Process2Setting(processID, setting.id, direction);
-        yield db.insert('process2setting', p2s);
-    }
 
     return {
         Sample: Sample,
