@@ -71,12 +71,14 @@ def add_reviews(projects_by_id, project_ids):
 
 
 def add_samples(projects_by_id, project_ids):
-    samples = list(r.table('projects2samples')
+    samples = list(r.table('project2sample')
                    .get_all(*project_ids, index='project_id')
                    .eq_join('sample_id', r.table('samples'))
                    .zip()
                    .order_by('name')
                    .run(g.conn, time_format='raw'))
+    for sample in samples:
+        sample['properties'] = {}
     #samples = []
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
