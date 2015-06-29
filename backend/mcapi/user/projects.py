@@ -93,7 +93,6 @@ def add_drafts(projects_by_id, project_ids, user):
 
 def add_processes(projects_by_id, project_ids):
     processes = []
-    print project_ids
     for project_id in project_ids:
         processes.extend(process.get_processes(project_id))
     add_computed_items(projects_by_id, processes, 'project_id', 'processes')
