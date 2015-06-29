@@ -4,7 +4,8 @@
             <div class="details-sidebar">
                 <div class="row">
                     <div class="col-xs-12" style="margin-top: 10px;">
-                        <div class="pull-right"><a ui-sref="projects.project.processes.list"> <i class="fa fa-fw fa-backward"></i> Back to processes list</a></div>
+                        <div class="pull-right"><a ui-sref="projects.project.processes.list"> <i
+                                class="fa fa-fw fa-backward"></i> Back to processes list</a></div>
                         <h4 class="text-center process">{{template.name}}</h4>
                     </div>
                 </div>
@@ -33,8 +34,10 @@
                     <div class="col-xs-12">
                         <b>Set Up</b>
                         <ul>
-                            <li ng-repeat="setting in template.setup.settings[0].properties">
-                                <i>{{setting.property.name}}</i> :: {{setting.property.value}} {{setting.property.unit}}
+                            <li ng-repeat="setting in template.setup.settings[0].properties" ng-if="setting.property.value">
+                                <i>{{setting.property.name}}</i> ::
+                                    {{setting.property.value}} {{setting.property.unit}}
+
                             </li>
                         </ul>
                     </div>
@@ -63,12 +66,13 @@
                                                         <span style="padding-left: 30px;"> {{measure.value}} {{measure.unit}}</span>
                                                     </div>
                                                     <div ng-switch-when="string">
-                                                       <span style="padding-left: 30px;"> {{measure.value}}</span>
+                                                        <span style="padding-left: 30px;"> {{measure.value}}</span>
                                                     </div>
                                                     <div ng-switch-when="histogram">
                                                         <a href="" popover="Graph displayed here...."
-                                                           popover-title="Particle size distribution">{{measure.name}} <i
-                                                                class="fa fa-bar-chart"></i>
+                                                           popover-title="Particle size distribution">{{measure.name}}
+                                                            <i
+                                                                    class="fa fa-bar-chart"></i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -88,8 +92,9 @@
                                                     </div>
                                                     <div ng-switch-when="histogram">
                                                         <a href="" popover="Graph displayed here...."
-                                                           popover-title="Particle size distribution">{{measure.name}} <i
-                                                                class="fa fa-bar-chart"></i>
+                                                           popover-title="Particle size distribution">{{measure.name}}
+                                                            <i
+                                                                    class="fa fa-bar-chart"></i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -124,16 +129,16 @@
                                    style="padding-left: 15px;">{{attachment.name}}</a>
 
                                 <!--<div class="row">-->
-                                    <!--<div class="col-xs-offset-2">-->
-                                        <!--<ul>-->
-                                            <!--<li ng-repeat="link in attachment.links">-->
-                                                <!--<img src="assets/img/splash/sample_icon.png"-->
-                                                     <!--style="height: 40px;padding-bottom: 10px;"> {{link.name}}-->
-                                                <!--<i ng-click="removeLink(link, 'input_files', attachment)"-->
-                                                   <!--class="fa fa-fw fa-close pull-right pointer"></i>-->
-                                            <!--</li>-->
-                                        <!--</ul>-->
-                                    <!--</div>-->
+                                <!--<div class="col-xs-offset-2">-->
+                                <!--<ul>-->
+                                <!--<li ng-repeat="link in attachment.links">-->
+                                <!--<img src="assets/img/splash/sample_icon.png"-->
+                                <!--style="height: 40px;padding-bottom: 10px;"> {{link.name}}-->
+                                <!--<i ng-click="removeLink(link, 'input_files', attachment)"-->
+                                <!--class="fa fa-fw fa-close pull-right pointer"></i>-->
+                                <!--</li>-->
+                                <!--</ul>-->
+                                <!--</div>-->
 
                                 <!--</div>-->
                             </div>
@@ -147,16 +152,16 @@
                                    style="padding-left: 15px;">{{attachment.name}}</a>
 
                                 <!--<div class="row">-->
-                                    <!--<div class="col-xs-offset-2">-->
-                                        <!--<ul>-->
-                                            <!--<li ng-repeat="link in attachment.links">-->
-                                                <!--<img src="assets/img/splash/sample_icon.png"-->
-                                                     <!--style="height: 40px;padding-bottom: 10px;"> {{link.name}}-->
-                                                <!--<i ng-click="removeLink(link, 'output_files', attachment)"-->
-                                                   <!--class="fa fa-fw fa-close pull-right pointer"></i>-->
-                                            <!--</li>-->
-                                        <!--</ul>-->
-                                    <!--</div>-->
+                                <!--<div class="col-xs-offset-2">-->
+                                <!--<ul>-->
+                                <!--<li ng-repeat="link in attachment.links">-->
+                                <!--<img src="assets/img/splash/sample_icon.png"-->
+                                <!--style="height: 40px;padding-bottom: 10px;"> {{link.name}}-->
+                                <!--<i ng-click="removeLink(link, 'output_files', attachment)"-->
+                                <!--class="fa fa-fw fa-close pull-right pointer"></i>-->
+                                <!--</li>-->
+                                <!--</ul>-->
+                                <!--</div>-->
 
                                 <!--</div>-->
                             </div>
@@ -171,7 +176,7 @@
                 <div class="col-xs-8">
                     Name your process
                     <div class="row">
-                        <input ng-model="template.name" class="form-control" style="width: 200px;" >
+                        <input ng-model="template.name" class="form-control" style="width: 200px;">
                     </div>
                     <br>
                     How would you describe your process?
@@ -247,7 +252,8 @@
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
-                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment, 'input_files')"
+                                    <i style="padding-left: 20px;"
+                                       ng-click="removeAttachment(attachment, 'input_files')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
 
                                     <span style="padding-left: 20px">
@@ -283,7 +289,8 @@
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
 
-                                    <i style="padding-left: 20px;" ng-click="removeAttachment(attachment, 'output_files')"
+                                    <i style="padding-left: 20px;"
+                                       ng-click="removeAttachment(attachment, 'output_files')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
                                     <span style="padding-left: 20px">
                                       <i class="fa fa-link fa-fw sample"></i>

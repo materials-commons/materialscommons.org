@@ -1,11 +1,7 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi","$state", projectCreateProcess]);
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi) {
-    $scope.template = processTemplates.getActiveTemplate();
-    $scope.bk = {
-        selectedSample: {}
-    };
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -189,10 +185,16 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         console.log("====");
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
+                $scope.template = '';
+                $scope.bk = {
+                    selectedSample: {}
+                };
+                $state.go('projects.project.processes.list');
                 console.log("success");
                 console.dir(proc);
             })
             .error(function (err) {
+                $scope.template = '';
                 console.log("err");
                 console.log(err);
             })
@@ -218,4 +220,13 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
         return items;
     }
+
+    function init(){
+        $scope.template = processTemplates.getActiveTemplate();
+        $scope.bk = {
+            selectedSample: {}
+        };
+
+    }
+    init();
 }
