@@ -107,7 +107,6 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     };
     function init(){
         $scope.activePage = taskBarState.getActiveState($state);
-        console.log($scope.activePage);
         $scope.mcuser = User.attr();
         $scope.list = sideboard.get($scope.project.id);
 

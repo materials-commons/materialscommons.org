@@ -10,7 +10,7 @@ function projectsProject ($scope, provStep, ui, project, current,
                           help, sideboard, projects, $state) {
     $scope.projects = projects;
     $scope.sideboard = sideboard.get(project.id);
-
+    console.dir($scope.projects);
     $scope.setProject = function (project) {
         $scope.project = project;
         current.setProject(project);
