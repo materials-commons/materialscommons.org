@@ -13,7 +13,6 @@ module.exports = function(processes, schema) {
     // It validates the submitted entry and enters in default
     // values for optional missing attributes.
     function *create(next) {
-        console.log("in process create");
         try {
             let process = yield parse(this);
             process.project_id = this.params.project_id;
@@ -25,7 +24,6 @@ module.exports = function(processes, schema) {
             this.body = inserted;
             yield next;
         } catch (err) {
-            console.log(err);
             console.log(err, err.stack.split("\n"));
             let e = ec(err);
             this.status = e.status();
@@ -68,7 +66,7 @@ module.exports = function(processes, schema) {
          * @param{Array} files_used = Files used (input into) by this process.
          */
         function *validateFiles(projectID, files_created, files_used) {
-            let filesList;
+            let filesList = "";
             let reason = {
                 rule: 'validateFiles',
                 what: '',
