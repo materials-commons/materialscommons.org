@@ -9,6 +9,12 @@ function processTemplates() {
             description: "Atom Probe Tomography",
             fn: Apt,
             does_transform: false
+        },
+        {
+            name: "SEM",
+            description: "Stem Electron Microscopy",
+            fn: Sem,
+            does_transform: false
         }
     ];
 

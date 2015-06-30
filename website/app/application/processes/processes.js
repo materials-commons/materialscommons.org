@@ -235,3 +235,165 @@ function Apt() {
         }
     ];
 }
+
+function Sem() {
+    this.name = "SEM";
+    this.description = "Stem Electron Microscopy";
+    this._type = "SEM";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Voltage",
+                        attribute: "voltage",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "kV",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Current",
+                        attribute: "current",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "A",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Stage Tilt",
+                        attribute: "stage_tilt",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "°",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        "name": "Magnification",
+                        "attribute": "magnification",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        "name": "Specimen/Stage Bias",
+                        "attribute": "specimen_stage_bias",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "V",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        "name": "Stage",
+                        "attribute": "stage",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {"name": "Standard", "value": "standard"},
+                            {"name": "Cryo", "value": "cryo"}
+                        ]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        "name": "Detector",
+                        "attribute": "detector",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Secondary", "value": "secondary"},
+                            {"name": "Backscattered", "value": "backscattered"},
+                            {"name": "Other", "value": "other"}
+                        ]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        "name": "Working Distance",
+                        "attribute": "working_distance",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "mm",
+                        required: false,
+                        _type: "number",
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
