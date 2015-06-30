@@ -45,8 +45,7 @@ def get_setup(project_id, processes):
                             .filter({"id": row['setup_id']})
                             .eq_join("id", r.table("setupproperties"),
                                      index="setup_id").zip()
-                            .coerce_to('array'),
-                            'samples': r.table('samples')
+                            .coerce_to('array')
                         })
                  .run(g.conn, time_format="raw"))
     msg("setup....")
