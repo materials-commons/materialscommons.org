@@ -131,6 +131,8 @@ module.exports = function (r) {
 
             measurements = yield addNewPropertyMeasurements(sampleID, samplePSetID, sample.new_properties);
             yield addMeasurementsToProcess(processID, measurements);
+            let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
+            yield db.insert('process2sample', proc2sample);
         }
     }
 
