@@ -7,6 +7,12 @@ import dmutil
 import resp
 import access
 import args
+import sys
+
+
+def msg(s):
+    print s
+    sys.stdout.flush()
 
 
 @app.route('/processes/project/<project_id>', methods=['GET'])
@@ -15,6 +21,44 @@ import args
 def get_processes_for_project(project_id):
     processes = get_processes(project_id)
     return resp.to_json(processes)
+
+
+def get_process_information(project_id):
+    processes = list(r.table('project2process')
+                     .get_all(project_id, index="project_id")
+                     .eq_join("process_id", r.table("processes"))
+                     .zip().run(g.conn, time_format="raw"))
+    by_ids = {p['id']: p for p in processes}
+    get_setup(project_id, by_ids)
+    get_samples(project_id, by_ids)
+    get_files(project_id, by_ids)
+    return processes
+
+
+def get_setup(project_id, processes):
+    msg(processes.keys())
+    setup = list(r.table('process2setup')
+                 .get_all(*processes.keys(), index="process_id")
+                 .merge(lambda row:
+                        {
+                            'setup_properties': r.table('setups')
+                            .filter({"id": row['setup_id']})
+                            .eq_join("id", r.table("setupproperties"),
+                                     index="setup_id").zip()
+                            .coerce_to('array'),
+                            'samples': r.table('samples')
+                        })
+                 .run(g.conn, time_format="raw"))
+    msg("setup....")
+    msg(setup)
+
+
+def get_samples(project_id, by_ids):
+    pass
+
+
+def get_files(project_id, by_ids):
+    pass
 
 
 def get_processes(project_id):
