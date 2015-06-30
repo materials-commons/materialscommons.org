@@ -35,7 +35,7 @@ module.exports = function(r) {
         this.process_id = processID;
     }
 
-    function Process2Sample(sampleID, processID, asetID, _type) {
+    function Process2Sample(processID, sampleID, asetID, _type) {
         this.sample_id = sampleID;
         this.process_id = processID;
         this.attribute_set_id = asetID;
