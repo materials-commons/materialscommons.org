@@ -4,7 +4,8 @@ Application.Controllers.controller('projectCreateProcess',
 function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi) {
     $scope.template = processTemplates.getActiveTemplate();
     $scope.bk = {
-        selectedSample: {}
+        selectedSample: {} ,
+        newSample: {}
     };
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
@@ -182,11 +183,12 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     };
 
     $scope.createProcess = function () {
-        $scope.template = refineSampleProperties();
+        if($scope.template._type === 'as_received'){
+            $scope.template.output_samples.push($scope.bk.newSample);
+        } else{
+            $scope.template = refineSampleProperties();
+        }
         console.dir($scope.template);
-        console.log("=====");
-        console.dir(project);
-        console.log("====");
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
                 console.log("success");

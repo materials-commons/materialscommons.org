@@ -9,6 +9,12 @@ function processTemplates() {
             description: "Atom Probe Tomography",
             fn: Apt,
             does_transform: false
+        },
+        {
+            name: "As Received",
+            description: "As Received process is used to create new samples.",
+            fn: AsReceived,
+            does_transform: false
         }
     ];
 
