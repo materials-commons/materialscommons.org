@@ -126,7 +126,7 @@ module.exports = function(r) {
     function Sample2PropertySet(sampleID, psetID, current) {
         this.property_set_id = psetID;
         this.sample_id = sampleID;
-        this.version  = version;
+        this.version  = '';
         this.current = current;
     }
 

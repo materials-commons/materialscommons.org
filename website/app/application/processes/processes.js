@@ -235,3 +235,24 @@ function Apt() {
         }
     ];
 }
+
+function AsReceived() {
+    this.name = "As Received";
+    this.description = "As Received process is used to create new samples.";
+    this._type = "as_received";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: [],
+        settings: []
+    };
+}
+
