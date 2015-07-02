@@ -131,7 +131,7 @@ module.exports = function(r) {
         this.current = current;
     }
 
-    function PropertySet2Property(asetID, attrID) {
+    function PropertySet2Property(attrID, asetID) {
         this.attribute_set_id = asetID;
         this.attribute_id = attrID;
     }

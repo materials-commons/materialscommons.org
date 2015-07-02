@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectEditSample',
-    ["$scope", "$modal", "$stateParams", "project", projectEditSample]);
+    ["$scope", "$modal", "$stateParams", "project", "mcapi", projectEditSample]);
 
-function projectEditSample($scope, $modal, $stateParams, project) {
+function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
     $scope.processes = ["SEM Imaging", "Heat Treatment", "As Received"];
     $scope.attachments = ["A1.jpg", "B1.png"];
 
@@ -26,6 +26,17 @@ function projectEditSample($scope, $modal, $stateParams, project) {
         });
     };
 
+    function getMeasurements(){
+        mcapi('/sample/measurements/%', $scope.current.id)
+            .success(function (sample) {
+
+            })
+            .error(function (err) {
+
+            })
+            .jsonp();
+    }
+
     function init() {
         $scope.project = project;
         var i = _.indexOf($scope.project.samples, function (sample) {
@@ -34,6 +45,7 @@ function projectEditSample($scope, $modal, $stateParams, project) {
         if (i > -1) {
             $scope.current = $scope.project.samples[i];
         }
+        getMeasurements();
     }
 
     init();

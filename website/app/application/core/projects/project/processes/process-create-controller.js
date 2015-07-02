@@ -48,12 +48,19 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         $scope.template.setup = setup;
     }
 
+    function getPropertySetID(sample){
+        mcapi('/sample/property_set/%', sample.id)
+            .success(function (result) {
+               return result.property_set_id
+            }).jsonp();
+    }
+
     function addAttachment(item) {
         var what;
         switch (item.type) {
         case "sample":
             what = 'input_samples';
-            item.property_set_id = "";
+            //item.property_set_id = getPropertySetID(item);
             item.new_properties = [];
             item.properties = [];
             item.transformed_properties = [];
