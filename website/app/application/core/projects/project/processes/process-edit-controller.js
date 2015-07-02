@@ -41,11 +41,7 @@ function projectEditProcess($scope, project, $stateParams,  modalInstance) {
         });
         if (i > -1) {
             $scope.current = $scope.project.processes[i];
-            $scope.process = {
-                samples: $scope.current.inputs.sample,
-                files_used: $scope.current.inputs.files,
-                files_produced: $scope.current.outputs.files
-            };
+            console.dir($scope.current);
         }
     }
 

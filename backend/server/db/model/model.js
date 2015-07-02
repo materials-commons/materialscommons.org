@@ -47,9 +47,10 @@ module.exports = function(r) {
         this.datafile_id = fileID;
     }
 
-    function Process2File(processID, fileID) {
+    function Process2File(processID, fileID, direction) {
         this.process_id = processID;
         this.datafile_id = fileID;
+        this.direction = direction;
     }
 
     function Setups(name, attribute) {
