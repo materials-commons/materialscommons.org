@@ -11,6 +11,23 @@ import error
 from loader.model import note
 
 
+@app.route('/sample/measurements/<sample_id>')
+@jsonp
+def get_sample_measurements(sample_id):
+    list(r.table('sample2propertyset').get_all(sample_id, index='sample_id')
+                        .run(g.conn))
+    pass
+
+
+@app.route('/sample/property_set/<sample_id>', methods=['GET'])
+@jsonp
+def get_current_propertyset(sample_id):
+    sample2property_set = list(r.table('sample2propertyset').get_all(sample_id,
+                index='sample_id').filter({'current': True})
+                .run(g.conn, time_format="raw"))
+    return args.json_as_format_arg(sample2property_set)
+
+
 def getProcessesandProjects(object_id):
     processes = list(r.table('processes2samples')
                      .get_all(object_id, index='sample_id')
