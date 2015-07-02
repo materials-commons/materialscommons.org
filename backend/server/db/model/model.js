@@ -35,10 +35,10 @@ module.exports = function(r) {
         this.process_id = processID;
     }
 
-    function Process2Sample(processID, sampleID, asetID, _type) {
+    function Process2Sample(processID, sampleID, psetID, _type) {
         this.sample_id = sampleID;
         this.process_id = processID;
-        this.attribute_set_id = asetID;
+        this.process_set_id = psetID;
         this._type = _type;
     }
 
@@ -123,10 +123,10 @@ module.exports = function(r) {
         this.sample_id = sampleID;
     }
 
-    function Sample2AttributeSet(sampleID, asetID, current) {
-        this.attribute_set_id = asetID;
+    function Sample2PropertySet(sampleID, psetID, current) {
+        this.property_set_id = psetID;
         this.sample_id = sampleID;
-        this.version  = version;
+        this.version  = '';
         this.current = current;
     }
 
@@ -161,7 +161,7 @@ module.exports = function(r) {
         PropertySet2Property: PropertySet2Property,
         Project2Process: Project2Process,
         Project2Sample: Project2Sample,
-        Sample2PropertySet: Sample2AttributeSet,
+        Sample2PropertySet: Sample2PropertySet,
         BestMeasureHistory: BestMeasureHistory
     };
 };
