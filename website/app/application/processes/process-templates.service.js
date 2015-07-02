@@ -13,7 +13,13 @@ function processTemplates() {
         {
             name: "SEM",
             description: "Stem Electron Microscopy",
-            fn: Sem,
+            fn: Sem ,
+            does_transform: false
+        },
+        {
+            name: "As Received",
+            description: "As Received process is used to create new samples.",
+            fn: AsReceived,
             does_transform: false
         }
     ];
