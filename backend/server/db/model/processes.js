@@ -266,8 +266,8 @@ module.exports = function (r) {
     function *addNewSample(name, description, owner) {
         let s = new model.Sample(name, description, owner);
         let sample = yield db.insert('samples', s);
-        let aset = new model.PropertySet();
-        let createdASet = yield db.insert('propertyset', aset);
+        let aset = new model.PropertySet(true);
+        let createdASet = yield db.insert('propertysets', aset);
         let s2as = new model.Sample2PropertySet(sample.id, createdASet.id, true);
         yield db.insert('sample2propertyset', s2as);
         return {

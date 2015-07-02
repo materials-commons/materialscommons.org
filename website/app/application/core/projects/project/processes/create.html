@@ -30,7 +30,7 @@
                 </div>
                 <hr class="divider"/>
 
-                <div class="row">
+                <div ng-if="template._type !== 'as_received'" class="row">
                     <div class="col-xs-12">
                         <b>Set Up</b>
                         <ul>
@@ -43,8 +43,9 @@
                         </ul>
                     </div>
                 </div>
-                <hr class="divider"/>
-                <div class="row">
+                <div ng-if="template._type !== 'as_received'" class="row">
+                    <hr class="divider"/>
+
                     <div class="col-xs-8">
                         <b>Samples</b>
 
@@ -116,11 +117,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" ng-if="template._type === 'as_received'">
+                    <b>New Sample</b>
+
+                    <div style="padding-left: 20px;" class="col-xs-8">
+
+                        <div ng-if="bk.newSample.name">Name: {{bk.newSample.name}}</div>
+                        <div ng-if="bk.newSample.description">Description: {{bk.newSample.description}}</div>
+                    </div>
+                </div>
                 <hr class="divider"/>
                 <div class="row">
                     <div class="col-xs-8">
                         <b>Files</b>
-
                         <div class="row" ng-repeat="attachment in template.input_files">
                             <div ng-if="attachment.type === 'datafile'">
                                 <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
@@ -129,19 +138,6 @@
                                 <a ng-click="openDetails(attachment)" class="link pointer"
                                    style="padding-left: 15px;">{{attachment.name}}</a>
 
-                                <!--<div class="row">-->
-                                <!--<div class="col-xs-offset-2">-->
-                                <!--<ul>-->
-                                <!--<li ng-repeat="link in attachment.links">-->
-                                <!--<img src="assets/img/splash/sample_icon.png"-->
-                                <!--style="height: 40px;padding-bottom: 10px;"> {{link.name}}-->
-                                <!--<i ng-click="removeLink(link, 'input_files', attachment)"-->
-                                <!--class="fa fa-fw fa-close pull-right pointer"></i>-->
-                                <!--</li>-->
-                                <!--</ul>-->
-                                <!--</div>-->
-
-                                <!--</div>-->
                             </div>
                         </div>
                         <div class="row" ng-repeat="attachment in template.output_files">
@@ -151,20 +147,6 @@
                                      style="height: 40px;padding-bottom: 10px;">
                                 <a ng-click="openDetails(attachment)" class="link pointer"
                                    style="padding-left: 15px;">{{attachment.name}}</a>
-
-                                <!--<div class="row">-->
-                                <!--<div class="col-xs-offset-2">-->
-                                <!--<ul>-->
-                                <!--<li ng-repeat="link in attachment.links">-->
-                                <!--<img src="assets/img/splash/sample_icon.png"-->
-                                <!--style="height: 40px;padding-bottom: 10px;"> {{link.name}}-->
-                                <!--<i ng-click="removeLink(link, 'output_files', attachment)"-->
-                                <!--class="fa fa-fw fa-close pull-right pointer"></i>-->
-                                <!--</li>-->
-                                <!--</ul>-->
-                                <!--</div>-->
-
-                                <!--</div>-->
                             </div>
                         </div>
                     </div>
@@ -193,13 +175,13 @@
                     </div>
                     <br>
 
-                    <div class="row">
+                    <div ng-if="template._type !== 'as_received'" class="row">
                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a
                             ng-click="setUp()">Setup</a></span>
                     </div>
                     <br>
                     <hr class="divider"/>
-                    <div class="row">
+                    <div ng-if="template._type !== 'as_received'" class="row">
                         <div class="col-xs-12 process headings">Samples</div>
                         <div class="row" style="padding: 15px;">
                             <br>
@@ -234,6 +216,25 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row" ng-if="template._type === 'as_received'">
+                        <div class="process headings">Create Sample</div>
+                        <br>
+
+                        <div class="col-xs-8">
+                            Name your sample
+                            <div class="row">
+                                <input ng-model="bk.newSample.name" class="form-control" style="width: 200px;">
+                            </div>
+                            <br>
+                            How would you describe your sample?
+                            <div class="row">
+                                <textarea placeholder="describe your sample" ng-model="bk.newSample.description"
+                                          class="form-control col-xs-8">
+                                </textarea>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
                     <hr class="divider"/>
                     <div class="row">
                         <div class="col-xs-12 process headings">Files</div>
@@ -253,6 +254,7 @@
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
+
                                     <i style="padding-left: 20px;"
                                        ng-click="removeAttachment(attachment, 'input_files')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
@@ -270,7 +272,6 @@
                                                 data-placeholder="Choose Sample"
                                                 class="form-control"
                                                 ng-options="sample.name for sample in template.input_samples">
-
                                         </select>
                                     </div>
                                 </div>
@@ -288,7 +289,8 @@
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
+                                    <a ng-click="openDetails(attachment)"
+                                       class="link pointer">{{attachment.name}}</a>
 
                                     <i style="padding-left: 20px;"
                                        ng-click="removeAttachment(attachment, 'output_files')"
@@ -320,7 +322,8 @@
                         <br>
 
                         <div class="col-xs-3">
-                            <button ng-click="cancel()" class="btn-details-container btn btn-default btn btn-cancel">
+                            <button ng-click="cancel()"
+                                    class="btn-details-container btn btn-default btn btn-cancel">
                                 Cancel
                             </button>
                         </div>
