@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state",projectCreateProcess]);
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi) {
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state) {
     $scope.template = processTemplates.getActiveTemplate();
     $scope.bk = {
         selectedSample: {} ,
@@ -188,11 +188,11 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         } else{
             $scope.template = refineSampleProperties();
         }
-        console.dir($scope.template);
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
                 console.log("success");
                 console.dir(proc);
+                $state.go('projects.project.processes.list');
             })
             .error(function (err) {
                 console.log("err");
