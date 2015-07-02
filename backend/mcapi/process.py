@@ -26,38 +26,43 @@ def get_processes_for_project(project_id):
 def get_process_information(project_id):
     processes = list(r.table('project2process')
                      .get_all(project_id, index="project_id")
-                     .eq_join("process_id", r.table("processes"))
-                     .zip().run(g.conn, time_format="raw"))
-    by_ids = {p['id']: p for p in processes}
-    get_setup(project_id, by_ids)
-    get_samples(project_id, by_ids)
-    get_files(project_id, by_ids)
+                     .eq_join("process_id", r.table("processes")).zip()
+                     .order_by(r.desc('birthtime'))
+                     .merge(lambda process:
+                            {
+                                'setup': r.table('process2setup')
+                                .get_all(process['process_id'],
+                                         index='process_id')
+                                .eq_join("setup_id", r.table("setups")).zip()
+                                .merge(lambda setup: {
+                                        'setupproperties':
+                                            r.table('setupproperties')
+                                            .get_all(setup['setup_id'],
+                                                     index="setup_id")
+                                            .coerce_to('array')
+                                    })
+                                .coerce_to('array'),
+
+                                'samples': r.table('process2sample')
+                                .get_all(process['process_id'],
+                                         index='process_id')
+                                .eq_join('sample_id', r.table("samples")).zip()
+                                .coerce_to('array'),
+
+                                'files_used': r.table('process2file')
+                                .get_all(process['process_id'],
+                                index='process_id').filter({
+                                'direction' : "in"})
+                                .coerce_to('array'),
+
+                                'files_produced': r.table('process2file')
+                                .get_all(process['process_id'],
+                                index='process_id').filter({
+                                'direction' : "out"})
+                                .coerce_to('array')
+                            })
+                     .run(g.conn, time_format="raw"))
     return processes
-
-
-def get_setup(project_id, processes):
-    msg(processes.keys())
-    setup = list(r.table('process2setup')
-                 .get_all(*processes.keys(), index="process_id")
-                 .merge(lambda row:
-                        {
-                            'setup_properties': r.table('setups')
-                            .filter({"id": row['setup_id']})
-                            .eq_join("id", r.table("setupproperties"),
-                                     index="setup_id").zip()
-                            .coerce_to('array')
-                        })
-                 .run(g.conn, time_format="raw"))
-    msg("setup....")
-    msg(setup)
-
-
-def get_samples(project_id, by_ids):
-    pass
-
-
-def get_files(project_id, by_ids):
-    pass
 
 
 def get_processes(project_id):
