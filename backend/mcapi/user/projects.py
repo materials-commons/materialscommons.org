@@ -79,7 +79,6 @@ def add_samples(projects_by_id, project_ids):
                    .run(g.conn, time_format='raw'))
     for sample in samples:
         sample['properties'] = {}
-    #samples = []
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
