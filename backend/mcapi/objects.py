@@ -14,8 +14,7 @@ from loader.model import note
 @app.route('/sample/measurements/<sample_id>')
 @jsonp
 def get_sample_measurements(sample_id):
-    list(r.table('sample2propertyset').get_all(sample_id, index='sample_id')
-                        .run(g.conn))
+    #r.table(''properties)
     pass
 
 
