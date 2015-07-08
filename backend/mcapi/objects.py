@@ -1,5 +1,5 @@
 from mcapp import app
-from decorators import apikey, jsonp,eventlog
+from decorators import apikey, jsonp, eventlog
 from flask import request, g, jsonify
 import rethinkdb as r
 import dmutil
@@ -9,21 +9,33 @@ import json
 from os.path import dirname
 import error
 from loader.model import note
+import resp
 
 
-@app.route('/sample/measurements/<sample_id>')
+@app.route('/sample/measurements/<sample_id>/propertyset/<ps_id>')
 @jsonp
-def get_sample_measurements(sample_id):
-    #r.table(''properties)
-    pass
+def get_sample_measurements(sample_id, ps_id):
+    measurements = list(r.table('propertyset2property').get_all(ps_id,
+        index='attribute_set_id') \
+        .eq_join('attribute_id', r.table('properties')).zip()\
+        .merge(lambda property:
+        {
+            'measurements':
+                r.table('property2measurement')
+        .get_all(property['id'], index="attribute_id")
+        .eq_join('measurement_id', r.table('measurements')).zip()
+        .coerce_to('array')
+        }).run(g.conn, time_format="raw"))
+    return resp.to_json(measurements)
 
 
 @app.route('/sample/property_set/<sample_id>', methods=['GET'])
 @jsonp
 def get_current_propertyset(sample_id):
     sample2property_set = list(r.table('sample2propertyset').get_all(sample_id,
-                index='sample_id').filter({'current': True})
-                .run(g.conn, time_format="raw"))
+    index='sample_id').filter(
+        {'current': True})
+                               .run(g.conn, time_format="raw"))
     return args.json_as_format_arg(sample2property_set)
 
 
@@ -59,11 +71,11 @@ def get_all_objects():
 @app.route('/objects/project/<project_id>', methods=['GET'])
 @jsonp
 def get_all_objects_by_project(project_id):
-    rr = r.table('samples')\
-          .filter(lambda sample: sample['projects']
-                  .map(lambda element: element['id'].eq(project_id))
-                  .reduce(lambda left, right: left+right))\
-          .order_by(r.desc('birthtime'))
+    rr = r.table('samples') \
+        .filter(lambda sample: sample['projects']
+                .map(lambda element: element['id'].eq(project_id))
+                .reduce(lambda left, right: left + right)) \
+        .order_by(r.desc('birthtime'))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -71,8 +83,8 @@ def get_all_objects_by_project(project_id):
 @app.route('/objects/user/<user>', methods=['GET'])
 @jsonp
 def get_objects_user(user):
-    rr = r.table('samples').filter({'owner': user})\
-                           .order_by(r.desc('birthtime'))
+    rr = r.table('samples').filter({'owner': user}) \
+        .order_by(r.desc('birthtime'))
     selection = list(rr.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -115,7 +127,7 @@ def create_object():
         s = dmutil.insert_entry('samples', sample, return_created=True)
         sid = s['id']
         _join_sample_projects(dmutil.get_optional('projects', j, []), sid)
-        #Add note into notes table
+        # Add note into notes table
         if title or notes:
             n = note.Note(user, notes, title, sid,
                           'sample', sample['project_id'])
@@ -172,9 +184,9 @@ def join_table_entries(sample_id):
 @apikey
 @jsonp
 def get_samples_by_project(project_id):
-    rv = r.table('projects2samples')\
-          .get_all(project_id, index='project_id')\
-          .eq_join('sample_id', r.table('samples')).zip()
+    rv = r.table('projects2samples') \
+        .get_all(project_id, index='project_id') \
+        .eq_join('sample_id', r.table('samples')).zip()
     selection = list(rv.run(g.conn, time_format='raw'))
     return args.json_as_format_arg(selection)
 
@@ -198,10 +210,10 @@ class DEncoder2(json.JSONEncoder):
 @apikey
 @jsonp
 def sample_tree(project_id):
-    samples = r.table('projects2samples')\
-               .get_all(project_id, index='project_id')\
-               .eq_join('sample_id', r.table('samples'))\
-               .zip().run(g.conn)
+    samples = r.table('projects2samples') \
+        .get_all(project_id, index='project_id') \
+        .eq_join('sample_id', r.table('samples')) \
+        .zip().run(g.conn)
     all_samples = {}
     top_level_samples = []
     for samp in samples:

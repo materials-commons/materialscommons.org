@@ -1,9 +1,8 @@
 Application.Controllers.controller('viewMeasurementController',
-    ["$scope", "project", "$state", "$log", "modal", "Template", viewMeasurementController]);
+    ["$scope", "project", "$state", "$log", "modal", viewMeasurementController]);
 
-function viewMeasurementController($scope, project, $state, $log, modal, Template) {
+function viewMeasurementController($scope, project, $state, $log, modal) {
     $scope.modal = modal;
-    $scope.modal.items = ["Mg+AL","Nd+Br","Al+W+Tn","Unknown"];
     this.all = project.processes;
     $scope.selected = {
         item: {}
@@ -11,7 +10,7 @@ function viewMeasurementController($scope, project, $state, $log, modal, Templat
 
     $scope.ok = function () {
         $scope.modal.instance.close($scope.selected.item);
-        Template.setActiveTemplate($scope.selected.item);
+        //Template.setActiveTemplate($scope.selected.item);
         $state.go('projects.project.samples.edit');
     };
 
