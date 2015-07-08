@@ -121,6 +121,7 @@ module.exports = function (r) {
      * @returns {Array}
      */
     function *addSampleMeasurements(processID, samples) {
+        console.log(samples);
         for (let i = 0; i < samples.length; i++) {
             let sample = samples[i];
             let sampleID = sample.id;

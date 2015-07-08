@@ -73,6 +73,9 @@ def add_reviews(projects_by_id, project_ids):
 def add_samples(projects_by_id, project_ids):
     samples = list(r.table('project2sample')
                    .get_all(*project_ids, index='project_id')
+                   .eq_join('sample_id', r.table('sample2propertyset'),
+                            index='sample_id')
+                   .zip().filter({'current': True})
                    .eq_join('sample_id', r.table('samples'))
                    .zip()
                    .order_by('name')
