@@ -48,23 +48,18 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         $scope.template.setup = setup;
     }
 
-    function getPropertySetID(sample){
-        mcapi('/sample/property_set/%', sample.id)
-            .success(function (result) {
-               return result.property_set_id
-            }).jsonp();
-    }
 
     function addAttachment(item) {
         var what;
+        console.log(item);
         switch (item.type) {
         case "sample":
             what = 'input_samples';
-            //item.property_set_id = getPropertySetID(item);
             item.new_properties = [];
             item.properties = [];
             item.transformed_properties = [];
             item.files = [];
+            item.property_set_id = item.property_set_id;
             break;
         case "datafile":
             if ($scope.type === 'input_files') {
@@ -195,6 +190,8 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             $scope.template.output_samples.push($scope.bk.newSample);
         } else{
             $scope.template = refineSampleProperties();
+            console.log('Template');
+            console.dir($scope.template);
         }
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
@@ -204,8 +201,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                 };
                 $state.go('projects.project.processes.list');
                 console.log("success");
-                console.dir(proc);
-                $state.go('projects.project.processes.list');
             })
             .error(function (err) {
                 $scope.template = '';

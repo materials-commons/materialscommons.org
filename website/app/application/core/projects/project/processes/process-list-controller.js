@@ -4,7 +4,6 @@ Application.Controllers.controller('projectListProcess',
 function projectListProcess($scope, project, $state, modalInstance) {
     $scope.project = project;
     $scope.current = project.processes[0];
-    console.dir($scope.project.processes);
     $scope.viewProcess = function (process) {
         $scope.current = process;
         $state.go('projects.project.processes.list.edit', {process_id : $scope.current.id});

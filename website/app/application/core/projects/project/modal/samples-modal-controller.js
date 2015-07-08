@@ -15,7 +15,7 @@ Application.Controllers.controller("modalSamplesController",
     ["$scope", "Review", "$modal", "pubsub",
         modalSamplesController]);
 
-function modalSamplesController($scope, Review , $modal, pubsub) {
+function modalSamplesController($scope, Review, $modal, pubsub) {
 
     var rowData = [];
     $scope.project.samples.forEach(function (sample) {
@@ -36,7 +36,8 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
             properties: sample.properties,
             //notes: sample.notes,
             id: sample.id,
-            type: 'sample'
+            type: 'sample',
+            property_set_id: sample.property_set_id
         });
     });
     var columnDefs = [
@@ -58,7 +59,7 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
             '<span  class="text-muted">{{data.owner}}</span>' +
             '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>',
             cellStyle: {border: 0}
-        } ,
+        },
         {displayName: "", field: "", width: 300, cellStyle: {border: 0}}
 
     ];
@@ -86,14 +87,14 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
         };
 
         $scope.modal.instance = $modal.open({
-            size: 'lg' ,
+            size: 'lg',
             templateUrl: 'application/core/projects/project/home/directives/display-sample.html',
             controller: 'ModalInstanceCtrl',
             resolve: {
                 modal: function () {
                     return $scope.modal;
                 },
-                project: function(){
+                project: function () {
                     return $scope.project;
                 }
             }
@@ -101,13 +102,13 @@ function modalSamplesController($scope, Review , $modal, pubsub) {
     }
 
     function readyFunc() {
-        var i ;
+        var i;
         var checked_entries = Review.getCheckedItems();
-        checked_entries.forEach(function(entry){
+        checked_entries.forEach(function (entry) {
             i = _.indexOf($scope.gridOptions.rowData, function (item) {
                 return item.id === entry.id;
             });
-            if (i > -1){
+            if (i > -1) {
                 $scope.gridOptions.api.selectIndex(i, true, true);
             }
         });

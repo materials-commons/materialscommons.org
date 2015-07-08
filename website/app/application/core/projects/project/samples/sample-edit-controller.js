@@ -46,6 +46,7 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
             $scope.current = $scope.project.samples[i];
         }
         getMeasurements();
+
     }
 
     init();
