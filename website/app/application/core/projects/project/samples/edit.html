@@ -1,42 +1,12 @@
 <div class="details-main-content">
-    <div class="row">
-        <ul style="list-style: none;">
-            <li style="display: inline-block;padding-right: 20px">
-                <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;"> <b><u>SEM
-                Imaging</u></b>
-            </li>
-            <li style="display: inline-block;padding-right: 20px">
-                <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;">TEM Imaging
-            </li>
-            <li style="display: inline-block;padding-right: 20px">
-                <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;"> Heat Treatment
-            </li>
-            <li style="display: inline-block;padding-right: 20px">
-                <img src="assets/img/splash/process-icon.png" style="height: 35px;padding-bottom: 10px;"> As Received
-            </li>
-        </ul>
-    </div>
     <div style="padding-left:30px;">
         <div class="row">
             <div class="sample headings">Details</div>
             <div class="col-xs-12">
                 <div class="row"><b>Name: </b>{{current.name}} <br></div>
-                <div class="row"><b>Owner:</b> tammasr@umich.edu <br></div>
-                <div class="row"><b>Description: </b><br>Lorem Ipsum is simply dummy text of the printing and
-                    typesetting
-                    industry. Lorem Ipsum
-                    has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                    galley of type and scrambled it to make a type specimen book. It has survived not only five
-                    centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
-                    popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
-                    more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
-                    Ipsum.<br></div>
-                <div class="row"><b>Note: </b><br>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry.
-                    Lorem Ipsum has been
-                    the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has survived not only five centuries, but
-                    also the leap into electronic typesetting, remaining essentially unchanged. <br></div>
+                <div class="row"><b>Owner:</b> {{current.owner}} <br></div>
+                <div class="row"><b>Description: </b><br>{{current.description}}</div>
+                <div class="row"><b>Note: </b><br></div>
             </div>
         </div>
         <div class="row">
@@ -46,53 +16,12 @@
                    <b>{{property.name}}</b> :
                     <div class="row">
                         <div class="col-xs-offset-1">
-                            Best Measure: <span style="padding-left: 5px;">{{}}</span>  <br>
+                            Best Measure: <span ng-if="property.best_measure.length !== 0" style="padding-left: 5px;">
+                            {{property.best_measure[0].value}}  {{property.best_measure[0].units}}</span>  <br>
                             Measurements: <a ng-click="measurements(property)">link</a>
                         </div>
                     </div>
                 </li>
-                <!--<li style="padding:10px;"><b>Composition</b> :-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-xs-offset-1">-->
-                            <!--Best Measure: <span style="padding-left: 5px;">Mg Al 5%  (SEM Imaging)</span>  <br>-->
-                            <!--Measurements: <a ng-click="measurements()">link</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li style="padding:10px;"><b>Volume Fraction</b> :-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-xs-offset-1">-->
-                            <!--Best Measure: <span style="padding-left: 5px;"> 44 Cubic cm (SEM Imaging)</span> <br>-->
-                            <!--Measurements: <a ng-click="measurements()">link</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li style="padding:10px;"><b>Height</b> :-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-xs-offset-1">-->
-                            <!--Best Measure: <span style="padding-left: 5px;">5 m (TEM Imaging)</span> <br>-->
-                            <!--Measurements: <a ng-click="measurements()">link</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li style="padding:10px;"><b>Area</b> :-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-xs-offset-1">-->
-                            <!--Best Measure: <span style="padding-left: 5px;">12 sq cm (TEM Imaging)</span> <br>-->
-                            <!--Measurements: <a ng-click="measurements()">link</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li style="padding:10px;"><b>Histogram</b> :-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-xs-offset-1">-->
-                            <!--Best Measure: <span style="padding-left: 5px;"><a href="" popover="Graph displayed here...."-->
-                                                                              <!--popover-title="Particle size distribution"><i-->
-                                <!--class="fa fa-fw fa-bar-chart"></i></a> </span> (SEM Imaging)<br>-->
-                            <!--Measurements: <a ng-click="measurements()">link</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</li>-->
             </ul>
         </div>
         <div class="row">

@@ -14,11 +14,11 @@ module.exports = function(r) {
         this._type = "sample";
     }
 
-    function Process(name, owner, ptype, what, how) {
+    function Process(name, owner, ptype, what, why) {
         this.name = name;
         this.owner = owner;
         this.what = what;
-        this.how = how;
+        this.why = why;
         this.process_type = ptype;
         this.birthtime = r.now();
         this.mtime = this.birthtime;

@@ -5,9 +5,9 @@ function ModalInstanceCtrl($scope, $log, modal, project, mcfile) {
     $scope.modal = modal;
     $scope.project = project;
     $scope.selected = {
-        item: $scope.modal.items[0]
+        item: $scope.modal.item
     };
-
+    console.log($scope.modal)
     $scope.fileSrc = function (file) {
         return mcfile.src(file.id);
     };

@@ -12,22 +12,56 @@ from loader.model import note
 import resp
 
 
-@app.route('/sample/measurements/<sample_id>/propertyset/<ps_id>')
+@app.route('/sample/measurements/<sample_id>/<property_set_id>')
 @jsonp
-def get_sample_measurements(sample_id, ps_id):
-    measurements = list(r.table('propertyset2property').get_all(ps_id,
+def get_sample_measurements(sample_id, property_set_id):
+    measurements = list(r.table('propertyset2property').get_all(property_set_id,
         index='attribute_set_id') \
         .eq_join('attribute_id', r.table('properties')).zip()\
         .merge(lambda property:
         {
+            'best_measure':
+                r.table('best_measure_history').get_all(property['best_measure_id'])
+                .eq_join('measurement_id', r.table('measurements')).zip()
+                .coerce_to('array'),
+
             'measurements':
-                r.table('property2measurement')
-        .get_all(property['id'], index="attribute_id")
-        .eq_join('measurement_id', r.table('measurements')).zip()
-        .coerce_to('array')
+            r.table('property2measurement')
+            .get_all(property['id'], index="attribute_id")
+            .eq_join('measurement_id', r.table('measurements')).zip()
+            .eq_join('id', r.table('process2measurement'), index="measurement_id").zip()
+            .eq_join('process_id', r.table('processes')).zip()
+            .pluck('process_id', 'name', 'units', 'value', 'mtime', 'measurement_id', 'sample_id')
+            # .merge(lambda measurement:
+            # {
+            #     'process':
+            #     r.table('process2measurement')
+            #     .get_all(measurement['id'], index="measurement_id")
+            #     .eq_join('process_id', r.table('processes')).zip()
+            #     .pluck('id', 'name')
+            #     .coerce_to('array')
+            # })
+            .coerce_to('array')
         }).run(g.conn, time_format="raw"))
     return resp.to_json(measurements)
 
+
+@app.route('/best_measure', methods=['POST'])
+@apikey
+@eventlog
+def create_best_measure_history():
+    j = request.get_json()
+    best_measure_history = dict()
+    best_measure_history['attribute_id'] = dmutil.get_required('attribute_id', j)
+    best_measure_history['measurement_id'] = dmutil.get_required('measurement_id',j)
+    best_measure_history['_type'] = 'best_measure_history'
+    best_measure_history['when'] = r.now()
+    history = dmutil.insert_entry('best_measure_history', best_measure_history,
+                                  return_created=True)
+    if history:
+        rv = r.table('properties').get(best_measure_history['attribute_id'])\
+            .update({'best_measure_id':history['id']}).run(g.conn)
+    return jsonify(history)
 
 @app.route('/sample/property_set/<sample_id>', methods=['GET'])
 @jsonp

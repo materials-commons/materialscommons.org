@@ -1,14 +1,22 @@
 Application.Controllers.controller('viewMeasurementController',
-    ["$scope", "project", "$state", "$log", "modal", viewMeasurementController]);
+    ["$scope", "project", "$state", "$log", "modal", "mcapi", viewMeasurementController]);
 
-function viewMeasurementController($scope, project, $state, $log, modal) {
+function viewMeasurementController($scope, project, $state, $log, modal, mcapi) {
     $scope.modal = modal;
     this.all = project.processes;
     $scope.selected = {
         item: {}
     };
 
+    function updateBestMeasure(){
+        mcapi('/best_measure')
+            .success(function (properties) {
+                console.dir(properties);
+            }).post({attribute_id: $scope.modal.property.attribute_id, measurement_id: $scope.selected.item.measurement_id})
+    }
+
     $scope.ok = function () {
+        updateBestMeasure();
         $scope.modal.instance.close($scope.selected.item);
         //Template.setActiveTemplate($scope.selected.item);
         $state.go('projects.project.samples.edit');

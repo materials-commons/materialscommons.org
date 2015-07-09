@@ -24,7 +24,7 @@
                 <div class="process headings">SetUp: {{current.setup[0].name}}</div>
                 <ul>
                     <li ng-repeat="property in current.setup[0].setupproperties" ng-if="property.value">
-                        {{property.name}} :: {{property.value}} {{property.unit}}
+                        {{property.name}} :: {{property.value}} {{property.units}}
                     </li>
                 </ul>
             </div>
@@ -36,7 +36,7 @@
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="open(sample)" class="link" style="padding-left: 15px;">{{sample.name}}</a>
+                        <a ng-click="openSample(sample)" class="link" style="padding-left: 15px;">{{sample.name}}</a>
 
                         <p style="padding-left: 80px">
                             <small class="text-muted">{{sample.mtime | toDateString}} , {{sample.owner}}</small>
@@ -53,7 +53,7 @@
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="open(attachment)" class="link" style="padding-left: 15px;">{{attachment.datafile_id.name}}</a>
+                        <a ng-click="openFile(attachment)" class="link" style="padding-left: 15px;">{{attachment.datafile_id.name}}</a>
 
                         <p style="padding-left: 80px">
                             <small class="text-muted">{{attachment.datafile_id.path}}</small>
@@ -66,7 +66,7 @@
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="open(attachment)" class="link" style="padding-left: 15px;">{{attachment.datafile_id.name}}</a>
+                        <a ng-click="openFile(attachment)" class="link" style="padding-left: 15px;">{{attachment.datafile_id.name}}</a>
 
                         <p style="padding-left: 80px">
                             <small class="text-muted">{{attachment.datafile_id.path}}</small>
