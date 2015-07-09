@@ -60,9 +60,9 @@ def create_tables():
     create_table("process2setup", "process_id", "setup_id")
     create_table("process2setupfile")
     create_table("properties")
-    create_table("propertyset2property", "property_set_id", "property_id")
+    create_table("propertyset2property", "attribute_set_id", "attribute_id")
     create_table("measurements", "process_id")
-    create_table("property2measurement", "property_id", "measurement_id")
+    create_table("property2measurement", "attribute_id", "measurement_id")
     create_table("process2measurement", "process_id", "measurement_id")
     create_table("sample2propertyset", "sample_id", "property_set_id")
     create_table("process2sample", "sample_id", "process_id",

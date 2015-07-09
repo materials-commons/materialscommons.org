@@ -51,7 +51,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
 
     function addAttachment(item) {
         var what;
-        console.log(item);
         switch (item.type) {
         case "sample":
             what = 'input_samples';
@@ -190,8 +189,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             $scope.template.output_samples.push($scope.bk.newSample);
         } else{
             $scope.template = refineSampleProperties();
-            console.log('Template');
-            console.dir($scope.template);
         }
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {

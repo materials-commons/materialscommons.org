@@ -27,7 +27,7 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
     };
 
     function getMeasurements(){
-        mcapi('/sample/measurements/%/propertyset/%', $scope.current.id, $scope.current.property_set_id)
+        mcapi('/sample/measurements/%/%', $scope.current.id, $scope.current.property_set_id)
             .success(function (properties) {
                 $scope.properties = properties;
             })
