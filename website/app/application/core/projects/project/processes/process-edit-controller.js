@@ -3,35 +3,12 @@ Application.Controllers.controller('projectEditProcess',
 
 function projectEditProcess($scope, project, $stateParams,  modalInstance) {
 
-    $scope.process = {
-        samples: [
-            {
-                name: 'We43 sample',
-                measurements: [{name: 'length', value: '10cm'}, {
-                    name: 'volume fraction',
-                    value: '45 k'
-                }, {name: 'width', value: '5cm'}],
-                attachments: [{name: 'A1.txt'}, {name: 'A2.txt'}]
-            },
-            {
-                name: 'Mg + Al sample',
-                measurements: [{name: 'weight', value: '1kg'}, {
-                    name: 'area fraction',
-                    value: '45 sq cm'
-                }, {name: 'width', value: '13cm'}]
-            }
-        ]
+    $scope.openSample = function(sample){
+        modalInstance.openModal(sample, 'sample', project);
     };
 
-    $scope.open = function(params){
-        //This if and else check should go away with the new model
-        if (params.ptype === 'sample'){
-            params.type = params.ptype;
-        }else if(params.ptype === 'file'){
-            params.type = 'datafile';
-        }
-
-        modalInstance.openModal(params, project);
+    $scope.openFile = function(file){
+       modalInstance.openModal(file, 'datafile', project);
     };
 
     function init() {
@@ -41,7 +18,6 @@ function projectEditProcess($scope, project, $stateParams,  modalInstance) {
         });
         if (i > -1) {
             $scope.current = $scope.project.processes[i];
-            console.dir($scope.current);
         }
     }
 

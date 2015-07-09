@@ -1,20 +1,49 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">{{selected.item.name}}</h3>
+        <h3 class="modal-title">{{modal.item.name}}</h3>
     </div>
     <div class="modal-body">
-        <div class="row">
-            <div><label>Owner:</label>  {{selected.item.owner}}</div>
-            <div><label>Updated:</label> {{selected.item.mtime | toDateString}}</div>
-            <div><label>Properties:</label>
+        <div style="padding-left:30px;">
+            <div class="row">
+                <div class="sample headings">Details</div>
+                <div class="col-xs-12">
+                    <div class="row"><b>Name: </b>{{modal.item.name}} <br></div>
+                    <div class="row"><b>Owner:</b> {{modal.item.owner}} <br></div>
+                    <div class="row"><b>Description: </b><br>
+                        {{modal.item.description}}<br></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="sample headings">Properties</div>
                 <ul>
-                    <li ng-repeat="(key, value) in selected.item.properties" ng-hide="key === 'composition'">
-                       {{key}} : {{value.value}} {{value.unit}}
+                    <li style="padding:10px;" ng-repeat="property in modal.item.properties">
+                        <b>{{property.name}}</b> :
+                        <div class="row">
+                            <div class="col-xs-offset-1">
+                                Best Measure: <span ng-if="property.best_measure.length !== 0" style="padding-left: 5px;">
+                                    {{property.best_measure[0].value}}  {{property.best_measure[0].units}}</span>  <br>
+                                Measurements:
+                                <ul>
+                                    <li ng-repeat="measure in property.measurements" ng-if="measure.process_id === modal.item.process_id">
+                                        <i>Value</i> :: {{measure.value}}<br>
+                                        <i>Unit</i> :: {{measure.units}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
-            <div ng-if="selected.item.notes.length > 0"><label>Notes:</label> {{selected.item.mtime | toDateString}}</div>
-
+            <div class="row">
+                <div class="sample headings">Attachments</div>
+                <div class="row" ng-repeat="attachment in modal.item.attachments">
+                    <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
+                        <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                        <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
+                        <a class="link" style="padding-left: 15px;">{{attachment}}</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal-footer">

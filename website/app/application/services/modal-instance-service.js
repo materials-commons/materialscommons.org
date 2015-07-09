@@ -1,20 +1,28 @@
 Application.Services.factory('modalInstance',
-    ["$modal", function ($modal) {
+    ["$modal", "mcapi", function ($modal, mcapi) {
         var service = {
             modal: {},
-            openModal: function (item, project) {
+            openModal: function (item, type, project) {
                 service.modal = {
                     instance: null,
-                    items: [item]
+                    item: {}
                 };
-
                 var template = '';
-                switch (item.type) {
+                switch (type) {
                     case "datafile":
                         template = 'application/core/projects/project/home/directives/display-file.html';
                         break;
                     case "sample":
                         template = 'application/core/projects/project/home/directives/display-sample.html';
+                        mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
+                            .success(function (properties) {
+                                item.properties = properties;
+                                service.modal.item = item;
+                            })
+                            .error(function (err) {
+                                console.log(err)
+                            })
+                            .jsonp();
                         break;
                     case "process":
                         template = 'application/core/projects/project/home/directives/display-process.html';
