@@ -78,10 +78,11 @@ module.exports = function(r) {
         this.file = {};
     }
 
-    Measurement.prototype.setValue = function(value, units, _type, nvalue, nunits) {
+    Measurement.prototype.setValue = function(value, units, _type, nvalue, nunits, element) {
         this.value = value;
         this._type = _type;
-        this.units = units;
+        this.unit = units;
+        this.element = element;
         this.nvalue = nvalue ? nvalue : value;
         this.nunits = nunits ? nunits : units;
     };

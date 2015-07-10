@@ -1,3 +1,30 @@
 <div>
-    fraction type here
+    <label class="col-xs-3 control-label" for="fractionInput">
+        {{::property.name}}
+        <i ng-if="property.required" class="fa fa-fw fa-asterisk text-danger"></i>
+    </label>
+
+    <div class="col-xs-6">
+        <div class="col-xs-8">
+            <input type="number"
+                   id="fractionInput"
+                   step="any"
+                   class="form-control"
+                   ng-required="property.required"
+                   ng-model="property.value">
+        </div>
+        <span ng-if="property.units.length === 0">{{::property.unit}}</span>
+                        <span class="col-xs-4" ng-if="property.units.length !== 0">
+                            <select ng-model="property.unit" data-placeholder="Choose"
+                                    class="form-control"
+                                    ng-required="property.required">
+                                <option value="{{choice}}"
+                                        ng-repeat="choice in property.units">
+                                    {{ choice }}
+                                </option>
+                            </select>
+                        </span>
+        <span ng-show="form.fractionInput.$error.required" class="text-danger"> You must supply a value for {{::property.name}}</span>
+        <span class="help-block">{{::property.description}}</span>
+    </div>
 </div>

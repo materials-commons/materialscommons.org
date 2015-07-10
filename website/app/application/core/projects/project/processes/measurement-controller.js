@@ -1,24 +1,28 @@
 Application.Controllers.controller('MeasurementController',
-    ["$scope", "$log", "modal", "pubsub", "measurements", "$filter", MeasurementController]);
+    ["$scope", "$log", "modal", "pubsub", "measurements", "mcapi", MeasurementController]);
 
-function MeasurementController($scope, $log, modal, pubsub, measurements, $filter) {
+function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi) {
 
     $scope.modal = modal;
     //Initializing the sample
     $scope.copySample = angular.copy($scope.modal.sample);
-    $scope.enterValue = false;
 
     $scope.showDetails = function (template) {
         var old_measures = [];
-        $scope.enterValue = false;
         $scope.chosenProperty = template;
-        if(!('measures' in $scope.chosenProperty)){
+        if (!('measures' in $scope.chosenProperty)) {
             $scope.chosenProperty.measures = [];
         }
         old_measures = existingMeasures($scope.chosenProperty, $scope.modal.sample);
         if (old_measures.length !== 0) {
             $scope.chosenProperty.measures = old_measures;
         }
+        $scope.editMeasurement();
+    };
+
+    $scope.editMeasurement = function () {
+        var propertyInstance = measurements.newInstance($scope.chosenProperty);
+        $scope.chosenProperty.measures.push(propertyInstance.property);
     };
 
     $scope.ok = function () {
@@ -29,14 +33,8 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, $filte
         $scope.modal.instance.dismiss('cancel');
     };
 
-    $scope.editMeasurement = function () {
-        $scope.enterValue = true;
-        var propertyInstance = measurements.newInstance($scope.chosenProperty);
-        $scope.chosenProperty.measures.push(propertyInstance.property);
-    };
 
     $scope.save = function () {
-        $scope.enterValue = false;
         $scope.modal.sample = storeProperties($scope.chosenProperty);
         pubsub.send('updateSampleMeasurement', $scope.modal.sample);
     };
@@ -46,7 +44,7 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, $filte
     };
 
     $scope.removeChoice = function (index) {
-        $scope.measurement.properties.splice(index, 1);
+        $scope.chosenProperty.measures.splice(index, 1);
     };
 
     $scope.modal.instance.result.then(function (selectedItem) {

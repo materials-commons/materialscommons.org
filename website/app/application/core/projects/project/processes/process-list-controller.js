@@ -10,7 +10,7 @@ function projectListProcess($scope, project, $state, modalInstance) {
     };
 
     $scope.chooseTemplate = function () {
-        modalInstance.chooseTemplate(project);
+        modalInstance.chooseTemplate($scope.project);
     };
 
 }

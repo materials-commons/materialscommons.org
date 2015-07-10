@@ -1,5 +1,5 @@
 from ..mcapp import app
-from ..decorators import apikey
+from ..decorators import apikey, jsonp
 from flask import g, request
 import rethinkdb as r
 from .. import error
@@ -29,6 +29,19 @@ def datafile_for_user_by_id(datafileid):
     df['tags'] = [t['tag'] for t in tags]
     return resp.to_json(df)
 
+
+@app.route("/datafile/<datafile_id>/tags/notes", methods=['GET'])
+@jsonp
+def get_tags_notes(datafile_id):
+    tags_notes = list(r.table('datafile').get_all(datafile_id).merge(lambda datafile:
+        {
+            'tags': r.table('tag2item').get_all(datafile_id, index='item_id')
+            .coerce_to('array'),
+            'notes': r.table('note2item').get_all(datafile_id, index='item_id')
+            .eq_join('note_id', r.table('notes'))
+            .coerce_to('array')
+        }.run(g.conn, time_format="raw")))
+    return resp.to_json(tags_notes)
 
 @app.route("/datafile/<datafile_id>", methods=['PUT'])
 @apikey
