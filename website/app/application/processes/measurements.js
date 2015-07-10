@@ -8,7 +8,8 @@ function Composition() {
         units: ["at%", "wt%"],
         nunit: "at%",
         unit: null,
-        value: null
+        value: null,
+        element: ""
     };
 
     this.validators = [];

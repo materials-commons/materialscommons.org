@@ -190,6 +190,9 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         } else{
             $scope.template = refineSampleProperties();
         }
+        $scope.template.input_files = refineFiles($scope.template.input_files);
+        $scope.template.output_files = refineFiles($scope.template.output_files);
+
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
                 $scope.template = '';
@@ -220,9 +223,22 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         items.forEach(function (item) {
             item.measurements = [];
             item.measures.forEach(function (m) {
-                each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
+                if(m.name === 'Composition'){
+                    each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute, element: m.element};
+
+                }   else{
+                    each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
+                }
                 item.measurements.push(each_measure);
             });
+        });
+        return items;
+    }
+
+    function refineFiles(files){
+        var items = [];
+        files.forEach(function (file) {
+            items.push({id: file.id, name: file.name, path: file.path});
         });
         return items;
     }

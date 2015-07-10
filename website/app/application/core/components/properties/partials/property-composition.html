@@ -1,3 +1,19 @@
-<div>
-    composition type here
+<div class="row">
+    <select style="margin-bottom: 5px;" class="form-control"
+            ui-select2="{placeholder: 'Select Element', allowClear: true}"
+            ng-multiple="false"
+            ng-model="property.element">
+        <option value=""></option>
+        <option ng-repeat="ele in elements" value="{{ele.name}}">{{ele.name}} - {{ele.full_name}}</option>
+    </select>
+</div>
+
+<div class="row">
+    <input type="radio"
+           value="at%" ng-model="property.unit"/>
+    atomic %
+    <input type="radio"
+           value="wt%" ng-model="property.unit"/>
+    weight %
+    <input placeholder="value..." class="form-control" ng-model="property.value">
 </div>
