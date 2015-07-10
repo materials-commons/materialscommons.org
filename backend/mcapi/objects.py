@@ -29,18 +29,15 @@ def get_sample_measurements(sample_id, property_set_id):
             r.table('property2measurement')
             .get_all(property['id'], index="attribute_id")
             .eq_join('measurement_id', r.table('measurements')).zip()
-            .eq_join('id', r.table('process2measurement'), index="measurement_id").zip()
-            .eq_join('process_id', r.table('processes')).zip()
-            .pluck('process_id', 'name', 'units', 'value', 'mtime', 'measurement_id', 'sample_id')
-            # .merge(lambda measurement:
-            # {
-            #     'process':
-            #     r.table('process2measurement')
-            #     .get_all(measurement['id'], index="measurement_id")
-            #     .eq_join('process_id', r.table('processes')).zip()
-            #     .pluck('id', 'name')
-            #     .coerce_to('array')
-            # })
+            .merge(lambda measurement:
+            {
+                'process':
+                r.table('process2measurement')
+                .get_all(measurement['id'], index="measurement_id")
+                .eq_join('process_id', r.table('processes')).zip()
+                .pluck('id', 'name')
+                .coerce_to('array')
+            })
             .coerce_to('array')
         }).run(g.conn, time_format="raw"))
     return resp.to_json(measurements)

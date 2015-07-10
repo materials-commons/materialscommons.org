@@ -1,7 +1,7 @@
 Application.Controllers.controller('TemplateInstanceController',
-    ["$scope", "project", "$state","$log", "modal","processTemplates", TemplateInstanceController]);
+    ["$scope", "project", "$state","$log", "modal","processTemplates", "Review",TemplateInstanceController]);
 
-function TemplateInstanceController($scope, project, $state,  $log, modal, processTemplates) {
+function TemplateInstanceController($scope, project, $state,  $log, modal, processTemplates, Review) {
     $scope.modal = modal;
     this.all = project.processes;
     $scope.selected = {
@@ -13,6 +13,7 @@ function TemplateInstanceController($scope, project, $state,  $log, modal, proce
     };
 
     $scope.ok = function () {
+        Review.resetCheckedItems();
         $scope.modal.instance.close($scope.selected.item);
         processTemplates.setActiveTemplate($scope.selected.item);
         $state.go('projects.project.processes.create');

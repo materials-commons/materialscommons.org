@@ -79,6 +79,10 @@ Application.Services.factory('Review',
                 return service.reviews;
             },
 
+            resetCheckedItems: function(){
+                service.checked_items = [];
+            },
+
             checkedItems: function (item) {
                 var i = _.indexOf(service.checked_items, function (entry) {
                     return item.id === entry.id;

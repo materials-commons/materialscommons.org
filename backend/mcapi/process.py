@@ -53,12 +53,16 @@ def get_process_information(project_id):
                                 .get_all(process['process_id'],
                                 index='process_id').filter({
                                 'direction' : "in"})
+                                .eq_join('datafile_id', r.table('datafiles'))
+                                .zip()
                                 .coerce_to('array'),
 
                                 'files_produced': r.table('process2file')
                                 .get_all(process['process_id'],
                                 index='process_id').filter({
                                 'direction' : "out"})
+                                .eq_join('datafile_id', r.table('datafiles'))
+                                .zip()
                                 .coerce_to('array')
                             })
                      .run(g.conn, time_format="raw"))

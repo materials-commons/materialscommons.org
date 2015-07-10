@@ -22,17 +22,7 @@
                 </div>
             </div>
             <div class="col-xs-8 details-main-content">
-                <div ng-if="enterValue === false">
-                    <b>Details: </b> <br><br>
-                    Category : {{chosenProperty.category}} <br>
-
-                    <div class="row">
-                        <button class="btn btn-primary" ng-click="editMeasurement(chosenProperty)">Enter
-                            {{measurement.name}}
-                        </button>
-                    </div>
-                </div>
-                <div ng-if="enterValue===true">
+                <div>
                     <div class="row" ng-repeat="property in chosenProperty.measures">
                         <div class="col-xs-8">
                             <display-property property="property"></display-property>

@@ -6,6 +6,9 @@
         <div style="padding-left:30px;">
             <div class="row">
                 <div class="sample headings">Details</div>
+                <span class="pull-right">
+                    <i style="color:red;" class="fa fa-asterisk"></i> :: Denotes current process measurements
+                </span>
                 <div class="col-xs-12">
                     <div class="row"><b>Name: </b>{{modal.item.name}} <br></div>
                     <div class="row"><b>Owner:</b> {{modal.item.owner}} <br></div>
@@ -24,9 +27,10 @@
                                     {{property.best_measure[0].value}}  {{property.best_measure[0].units}}</span>  <br>
                                 Measurements:
                                 <ul>
-                                    <li ng-repeat="measure in property.measurements" ng-if="measure.process_id === modal.item.process_id">
-                                        <i>Value</i> :: {{measure.value}}<br>
-                                        <i>Unit</i> :: {{measure.units}}
+                                    <li ng-repeat="measure in property.measurements">
+                                        <div>
+                                            <display-measurement current-process="modal.item.process_id" measure="measure"></display-measurement>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>

@@ -58,11 +58,22 @@ Application.Directives.directive("propertyComposition", propertyCompositionDirec
 function propertyCompositionDirective() {
     return {
         restrict: "E",
+        controller: "propertyCompositionController",
         scope: {
             property: "=property"
         },
         templateUrl: "application/core/components/properties/partials/property-composition.html"
     };
+}
+Application.Controllers.controller("propertyCompositionController",
+    ["$scope","mcapi", propertyCompositionController]);
+
+function propertyCompositionController($scope, mcapi) {
+    $scope.elements = [];
+    mcapi('/objects/elements')
+        .success(function(data){
+            $scope.elements = data;
+        }).jsonp();
 }
 
 Application.Directives.directive("propertyList", propertyListDirective);

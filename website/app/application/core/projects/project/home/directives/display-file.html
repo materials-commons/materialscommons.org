@@ -4,7 +4,7 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <div class="col-xs-6" ng-switch on="selected.item.mediatype">
+            <div class="col-xs-6" ng-switch on="selected.item.mediatype.mime">
                 <div ng-switch-when="image/tiff">
                     <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
                 </div>
@@ -40,15 +40,12 @@
             </div>
             <div class="col-xs-6">
                 <div><label>Owner:</label>{{selected.item.owner}}</div>
+                <div><label>Size:</label>{{selected.item.size}} kb</div>
                 <div><label>Created:</label>{{selected.item.birthtime | toDateString}}</div>
-                <div><label>Media Type:</label>{{selected.item.mediatype}}</div>
-                <div><label>Tags:</label>
-                    <tags-input display-property="id"
-                                ng-model="selected.item.tags"
-                                placeholder="" replace-spaces-with-dashes="false">
-                </div>
+                <div><label>Modified:</label>{{selected.item.mtime | toDateString}}</div>
+                <div><label>Media Type:</label>{{selected.item.mediatype.description}}</div>
                 <div><label>Notes:</label>
-                    {{activeFile.notes[0].title}}
+                    {{selected.item.notes}}
 
                     <div ng-if="selected.item.notes.length > 0" ta-bind ng-model="selected.item.notes[0].note"></div>
                 </div>

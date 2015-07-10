@@ -121,7 +121,6 @@ module.exports = function (r) {
      * @returns {Array}
      */
     function *addSampleMeasurements(processID, samples) {
-        console.log(samples);
         for (let i = 0; i < samples.length; i++) {
             let sample = samples[i];
             let sampleID = sample.id;
@@ -198,8 +197,9 @@ module.exports = function (r) {
             let current = measurements[i];
             let m = new model.Measurement(pName, pAttr, sampleID);
             m.value = current.value;
-            m.units = current.unit;
+            m.unit = current.unit;
             m._type = current._type;
+            m.element = current.element;
             let inserted = yield db.insert('measurements', m);
             createdMeasurements.push(inserted);
             yield addMeasurementToProperty(pID, inserted.id)
@@ -436,7 +436,7 @@ module.exports = function (r) {
     function *addFiles(processID, files, direction) {
         let addTo = [];
         for (let i = 0; i < files.length; i++) {
-            let p2of = new model.Process2File(processID, files[i], direction);
+            let p2of = new model.Process2File(processID, files[i].id, direction);
             addTo.push(p2of);
         }
         let created = yield db.insert('process2file', addTo);
