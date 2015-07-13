@@ -144,6 +144,11 @@ module.exports = function(r) {
         this._type = 'best_measure_history';
     }
 
+    function Sample2Datafile(sampleID, datafileID){
+        this.datafile_id = datafileID;
+        this.sample_id = sampleID;
+    }
+
 
     return {
         Sample: Sample,
@@ -164,6 +169,7 @@ module.exports = function(r) {
         Project2Process: Project2Process,
         Project2Sample: Project2Sample,
         Sample2PropertySet: Sample2PropertySet,
-        BestMeasureHistory: BestMeasureHistory
+        BestMeasureHistory: BestMeasureHistory,
+        Sample2Datafile: Sample2Datafile
     };
 };

@@ -12,15 +12,6 @@ Application.Services.factory('modalInstance',
                     case "datafile":
                         template = 'application/core/projects/project/home/directives/display-file.html';
                         service.modal.item = item;
-                        //mcapi('/datafile/%/tags/notes', item.id)
-                        //    .success(function (data) {
-                        //        console.log(data);
-                        //        service.modal.item = item;
-                        //    })
-                        //    .error(function (err) {
-                        //        console.log(err)
-                        //    })
-                        //    .jsonp();
                         break;
                     case "sample":
                         template = 'application/core/projects/project/home/directives/display-sample.html';
@@ -33,6 +24,10 @@ Application.Services.factory('modalInstance',
                                 console.log(err)
                             })
                             .jsonp();
+                        mcapi('/sample/datafile/%', item.id)
+                            .success(function (files) {
+                                item.files = files;
+                            }).jsonp();
                         break;
                     case "process":
                         template = 'application/core/projects/project/home/directives/display-process.html';

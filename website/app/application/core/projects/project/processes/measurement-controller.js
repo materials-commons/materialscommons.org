@@ -6,18 +6,22 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
     $scope.modal = modal;
     //Initializing the sample
     $scope.copySample = angular.copy($scope.modal.sample);
+    console.dir($scope.copySample);
 
     $scope.showDetails = function (template) {
-        var old_measures = [];
         $scope.chosenProperty = template;
         if (!('measures' in $scope.chosenProperty)) {
             $scope.chosenProperty.measures = [];
+            $scope.editMeasurement();
         }
+        var old_measures = [];
         old_measures = existingMeasures($scope.chosenProperty, $scope.modal.sample);
+        console.log('returning existing measures/measurements');
+        console.dir(old_measures);
         if (old_measures.length !== 0) {
-            $scope.chosenProperty.measures = old_measures;
+            //Old measure are not supposed to be editable
+            //$scope.chosenProperty.measures = old_measures;
         }
-        $scope.editMeasurement();
     };
 
     $scope.editMeasurement = function () {
@@ -36,7 +40,7 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
 
     $scope.save = function () {
         $scope.modal.sample = storeProperties($scope.chosenProperty);
-        pubsub.send('updateSampleMeasurement', $scope.modal.sample);
+        //pubsub.send('updateSampleMeasurement', $scope.modal.sample);
     };
 
     $scope.addNewChoice = function () {
@@ -59,8 +63,9 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
         i = _.indexOf($scope.copySample.properties, function (entry) {
             return chosenProperty.name === entry.name;
         });
+        console.log('checking if property exists' + i);
         if (i === -1) {
-            //check if there this property is already there in new properties.
+            //check if this property is already there in new properties.
             j = _.indexOf($scope.modal.sample.new_properties, function (entry) {
                 return chosenProperty.name === entry.name;
             });
@@ -71,14 +76,16 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
             }
         } else {
             j = null;
-            var property_id = $scope.copySample.properties[i].property_id;
+            var property_id = $scope.copySample.properties[i].attribute_id;
             j = _.indexOf($scope.modal.sample.properties, function (entry) {
                 return chosenProperty.name === entry.name;
             });
+            console.log('checking at what index it  exists' + j);
             if (j === -1) {
-                chosenProperty.property_id = property_id;
-                $scope.modal.sample.properties.push(chosenProperty);
+                //chosenProperty.property_id = property_id;
+                //$scope.modal.sample.properties.push(chosenProperty);
             } else {
+                console.log($scope.modal.sample.properties[j]);
                 $scope.modal.sample.properties[j].measures = chosenProperty.measures;
             }
         }
@@ -86,7 +93,7 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
     }
 
     function existingMeasures(chosenProperty, sample) {
-
+        console.log('hecking for existing measures ' + chosenProperty);
         $scope.measures = [];
         var i = _.indexOf(sample.properties, function (entry) {
             return chosenProperty.name === entry.name;
@@ -102,23 +109,23 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
                 return $scope.measures;
             }
         } else {
-            $scope.measures = sample.properties[i].measures;
+            $scope.measures = sample.properties[i].measurements;
             return $scope.measures;
         }
     }
 
     function init() {
         $scope.templates = measurements.templates();
-        $scope.copySample.properties = [
-            {
-                name: "Height",
-                property_id: "ABC123",
-                measurements: [
-                    {value: "50", unit: "m", _type: "number"},
-                    {value: "100", unit: "m", _type: "number"}
-                ]
-            }
-        ];
+        //$scope.copySample.properties = [
+        //    {
+        //        name: "Height",
+        //        property_id: "ABC123",
+        //        measurements: [
+        //            {value: "50", unit: "m", _type: "number"},
+        //            {value: "100", unit: "m", _type: "number"}
+        //        ]
+        //    }
+        //];
     }
 
     init();
