@@ -5,6 +5,25 @@
     <br>
 
     <div class="modal-body">
+        <div class="row">
+            Below are the actions you will have to perform on your sample. Each action is explained below <br>
+
+            COPY: <br>
+
+            SHARE: <br>
+
+            UNKNOWN: <br>
+        </div>
+        <div class="row">
+            <ul style="list-style: none">
+                <li><input type="radio" ng-model="selected.item" ng-value="copy"><span style="padding-left:30px;">Copy</span>
+                </li>
+                <li><input type="radio" ng-model="selected.item" ng-value="share"><span
+                        style="padding-left:30px;">Share</span></li>
+                <li><input type="radio" ng-model="selected.item" ng-value="unknown"><span
+                        style="padding-left:30px;">Unknown</span></li>
+            </ul>
+        </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">OK</button>

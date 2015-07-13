@@ -60,14 +60,24 @@ def create_best_measure_history():
             .update({'best_measure_id':history['id']}).run(g.conn)
     return jsonify(history)
 
+
 @app.route('/sample/property_set/<sample_id>', methods=['GET'])
 @jsonp
 def get_current_propertyset(sample_id):
     sample2property_set = list(r.table('sample2propertyset').get_all(sample_id,
     index='sample_id').filter(
-        {'current': True})
-                               .run(g.conn, time_format="raw"))
+        {'current': True}).run(g.conn, time_format="raw"))
     return args.json_as_format_arg(sample2property_set)
+
+
+@app.route('/sample/datafile/<sample_id>', methods=['GET'])
+@jsonp
+def get_sample2files(sample_id):
+    files = list(r.table('sample2datafile').get_all(sample_id, index='sample_id')
+                 .eq_join('datafile_id', r.table('datafiles')).zip()
+                 .pluck('name', 'owner', 'size', 'birthtime')
+                 .run(g.conn, time_format="raw"))
+    return resp.to_json(files)
 
 
 def getProcessesandProjects(object_id):

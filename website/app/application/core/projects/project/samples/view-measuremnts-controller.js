@@ -11,14 +11,12 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi) 
     function updateBestMeasure(){
         mcapi('/best_measure')
             .success(function (properties) {
-                console.dir(properties);
             }).post({attribute_id: $scope.modal.property.attribute_id, measurement_id: $scope.selected.item.measurement_id})
     }
 
     $scope.ok = function () {
         updateBestMeasure();
         $scope.modal.instance.close($scope.selected.item);
-        //Template.setActiveTemplate($scope.selected.item);
         $state.go('projects.project.samples.edit');
     };
 
@@ -32,5 +30,4 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi) 
     }, function () {
         $log.info('Modal dismissed at: ' + new Date());
     });
-
 }

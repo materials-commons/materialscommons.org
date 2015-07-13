@@ -133,7 +133,23 @@ module.exports = function (r) {
             yield addMeasurementsToProcess(processID, measurements);
             let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
             yield db.insert('process2sample', proc2sample);
+            let samp2files = yield addSample2File(sampleID, sample.files);
         }
+    }
+
+    // addSetupFiles adds the files used in setup to the database.
+    function *addSample2File(sampleID, files) {
+        let toAdd = [];
+        files.forEach(file => {
+            let s2f = new model.Sample2Datafile(sampleID, file.id);
+            toAdd.push(s2f);
+        });
+
+        let created = [];
+        if (toAdd.length !== 0) {
+            created = yield db.insert('sample2datafile', toAdd);
+        }
+        return created;
     }
 
     /**
@@ -148,7 +164,7 @@ module.exports = function (r) {
         let created = [];
         for (let i = 0; i < properties.length; i++) {
             let current = properties[i];
-            let pID = current.property_id;
+            let pID = current.attribute_id;
             let pName = current.name;
             let pAttr = current.attribute;
             let measurements = yield addPropertyMeasurements(pID, pName, pAttr, sampleID, current.measurements);

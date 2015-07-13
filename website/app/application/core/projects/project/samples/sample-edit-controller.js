@@ -2,9 +2,6 @@ Application.Controllers.controller('projectEditSample',
     ["$scope", "$modal", "$stateParams", "project", "mcapi", projectEditSample]);
 
 function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
-    $scope.processes = ["SEM Imaging", "Heat Treatment", "As Received"];
-    $scope.attachments = ["A1.jpg", "B1.png"];
-
     $scope.measurements = function (property) {
         $scope.modal = {
             instance: null,
@@ -39,13 +36,19 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
 
     function init() {
         $scope.project = project;
-        var i = _.indexOf($scope.project.samples, function (sample) {
-            return sample.id === $stateParams.sample_id;
-        });
-        if (i > -1) {
-            $scope.current = $scope.project.samples[i];
+        if($scope.project.samples.length !==0){
+            var i = _.indexOf($scope.project.samples, function (sample) {
+                return sample.id === $stateParams.sample_id;
+            });
+            if (i > -1) {
+                $scope.current = $scope.project.samples[i];
+            }else{
+                $scope.current =  $scope.project.samples[0];
+            }
+            getMeasurements();
         }
-        getMeasurements();
+
+
 
     }
 

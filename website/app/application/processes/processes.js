@@ -249,7 +249,7 @@ function Sem() {
     this.what = "";
     this.why = "";
     this.owner = "";
-    this.does_transform = false;
+    this.does_transform = true;
     this.setup = {
         files: []
     };
