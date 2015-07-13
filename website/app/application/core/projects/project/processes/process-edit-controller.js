@@ -8,7 +8,6 @@ function projectEditProcess($scope, project, $stateParams,  modalInstance) {
     };
 
     $scope.openFile = function(file){
-        console.dir(file);
        modalInstance.openModal(file, 'datafile', project);
     };
 

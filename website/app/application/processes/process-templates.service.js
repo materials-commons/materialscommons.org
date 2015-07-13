@@ -14,7 +14,7 @@ function processTemplates() {
             name: "SEM",
             description: "Stem Electron Microscopy",
             fn: Sem ,
-            does_transform: false
+            does_transform: true
         },
         {
             name: "As Received",

@@ -41,6 +41,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         var i = _.indexOf($scope.template.input_samples, function (entry) {
             return sample.id === entry.id;
         });
+        console.dir(sample);
         $scope.template.input_samples[i] = sample;
     }
 
@@ -55,10 +56,18 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         case "sample":
             what = 'input_samples';
             item.new_properties = [];
-            item.properties = [];
             item.transformed_properties = [];
             item.files = [];
             item.property_set_id = item.property_set_id;
+            //when they choose sample pull all property-measurements from backend
+            mcapi('/sample/measurements/%/%',item.id, item.property_set_id)
+                .success(function (properties) {
+                    item.properties  = properties;
+                })
+                .error(function (err) {
+                    console.log(err)
+                })
+                .jsonp();
             break;
         case "datafile":
             if ($scope.type === 'input_files') {
@@ -123,7 +132,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
     };
 
-    $scope.transformation = function () {
+    $scope.transformation = function (sample) {
         $scope.modal = {
             instance: null,
             sample: sample
@@ -189,6 +198,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             $scope.template.output_samples.push($scope.bk.newSample);
         } else{
             $scope.template = refineSampleProperties();
+            console.dir($scope.template);
         }
         $scope.template.input_files = refineFiles($scope.template.input_files);
         $scope.template.output_files = refineFiles($scope.template.output_files);
@@ -221,16 +231,19 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     function refine(items) {
         var each_measure = {};
         items.forEach(function (item) {
-            item.measurements = [];
-            item.measures.forEach(function (m) {
-                if(m.name === 'Composition'){
-                    each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute, element: m.element};
+            if ('measures' in item){
+                item.measurements = [];
+                item.measures.forEach(function (m) {
+                    if(m.name === 'Composition'){
+                        each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute, element: m.element};
 
-                }   else{
-                    each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
-                }
-                item.measurements.push(each_measure);
-            });
+                    }   else{
+                        each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
+                    }
+                    item.measurements.push(each_measure);
+                });
+            }
+
         });
         return items;
     }
