@@ -32,7 +32,7 @@ module.exports = function (r) {
      * @returns {Object} - The new process created from the definition.
      */
     function *create(process) {
-        let p = new model.Process(process.name, process.owner, process._type, process.what, process.why);
+        let p = new model.Process(process.name, process.owner, process._type, process.what, process.why, process.does_transform);
         let proc = yield addProcess(process.project_id, p);
         let settings = yield addProcessSetup(proc.id, process.setup);
         yield addSampleMeasurements(proc.id, process.input_samples);

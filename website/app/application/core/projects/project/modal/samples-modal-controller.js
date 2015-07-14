@@ -19,18 +19,18 @@ function modalSamplesController($scope, Review, $modal, pubsub) {
 
     var rowData = [];
     $scope.project.samples.forEach(function (sample) {
-        var composition = '';
-        if ('composition' in sample.properties) {
-            sample.properties.composition.value.forEach(function (val) {
-                composition = composition + '  ' + val.element + ': ' + val.value;
-            });
-            composition = composition + '  ' + sample.properties.composition.unit;
-        } else {
-            composition = 'unknown';
-        }
+        //var composition = '';
+        //if ('composition' in sample.properties) {
+        //    sample.properties.composition.value.forEach(function (val) {
+        //        composition = composition + '  ' + val.element + ': ' + val.value;
+        //    });
+        //    composition = composition + '  ' + sample.properties.composition.unit;
+        //} else {
+        //    composition = 'unknown';
+        //}
         rowData.push({
             name: sample.name,
-            composition: composition,
+            //composition: composition,
             owner: sample.owner,
             mtime: sample.mtime,
             properties: sample.properties,
@@ -54,8 +54,8 @@ function modalSamplesController($scope, Review, $modal, pubsub) {
             width: 600,
             cellClicked: cellClickedFunc,
             template: '<span><a>{{data.name}}</a></span>' +
-            '<p class="text-muted"><small><small class="text-muted">{{data.composition}}</small>' +
-            '<i style="padding-left: 60px; class="fa fa-fw fa-user"></i>' +
+            '<p class="text-muted"><small>' +
+            '<i class="fa fa-fw fa-user"></i>' +
             '<span  class="text-muted">{{data.owner}}</span>' +
             '<small  style="padding-left: 60px;">{{data.mtime | toDateString}}</small></small></p>',
             cellStyle: {border: 0}
