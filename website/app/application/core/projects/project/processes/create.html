@@ -1,5 +1,5 @@
 <div>
-    <div class="row" style="margin-top: 20px;">
+    <div ng-if="!isEmptyTemplate" class="row" style="margin-top: 20px;">
         <div class="col-xs-4">
             <div class="details-sidebar" style="margin-bottom: -900px;padding-bottom: 900px;">
                 <div class="row">
@@ -100,7 +100,6 @@
                                             </div>
                                         </li>
                                     </ul>
-                                    <hr/>
                                     <b>Files:</b>
                                     <ul>
                                         <li ng-repeat="file in sample.files">
@@ -111,6 +110,7 @@
                                     </ul>
                                 </div>
                             </div>
+                            <hr/>
                         </div>
                     </div>
                 </div>
