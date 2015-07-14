@@ -3,11 +3,11 @@ Application.Controllers.controller('projectCreateProcess',
 
 
 function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state) {
-    $scope.template = processTemplates.getActiveTemplate();
-    $scope.bk = {
-        selectedSample: {} ,
-        newSample: {}
-    };
+    //$scope.template = processTemplates.getActiveTemplate();
+    //$scope.bk = {
+    //    selectedSample: {} ,
+    //    newSample: {}
+    //};
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -198,10 +198,10 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             $scope.template.output_samples.push($scope.bk.newSample);
         } else{
             $scope.template = refineSampleProperties();
-            console.dir($scope.template);
         }
         $scope.template.input_files = refineFiles($scope.template.input_files);
         $scope.template.output_files = refineFiles($scope.template.output_files);
+        console.dir($scope.template);
 
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
@@ -231,8 +231,8 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     function refine(items) {
         var each_measure = {};
         items.forEach(function (item) {
+            item.measurements = [];
             if ('measures' in item){
-                item.measurements = [];
                 item.measures.forEach(function (m) {
                     if(m.name === 'Composition'){
                         each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute, element: m.element};
@@ -243,7 +243,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                     item.measurements.push(each_measure);
                 });
             }
-
         });
         return items;
     }
@@ -259,9 +258,13 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     function init(){
         $scope.template = processTemplates.getActiveTemplate();
         $scope.bk = {
-            selectedSample: {}
+            selectedSample: {} ,
+            newSample: {}
         };
-
+        $scope.isEmptyTemplate = _.isEmpty($scope.template);
+        if($scope.isEmptyTemplate === true){
+            $state.go('projects.project.processes.list')
+        }
     }
     init();
 }
