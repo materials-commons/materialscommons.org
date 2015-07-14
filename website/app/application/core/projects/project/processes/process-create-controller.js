@@ -3,13 +3,8 @@ Application.Controllers.controller('projectCreateProcess',
 
 
 function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state) {
-    //$scope.template = processTemplates.getActiveTemplate();
-    //$scope.bk = {
-    //    selectedSample: {} ,
-    //    newSample: {}
-    //};
 
-    pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
+     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
     });
 
@@ -28,6 +23,22 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     pubsub.waitOn($scope, 'addSetup', function (setup) {
         addSetup(setup);
     });
+
+    pubsub.waitOn($scope, 'updateTransformedSample', function (transformed_sample) {
+        updateTransformedSample(transformed_sample);
+    });
+
+    function updateTransformedSample(transformed_sample){
+        var i = _.indexOf($scope.template.transformed_samples, function (entry) {
+            return sample.sample_id === entry.sample_id;
+        });
+        if (i > -1){
+            $scope.template.transformed_samples[i] = transformed_sample;
+        }else{
+            $scope.template.transformed_samples.push(transformed_sample);
+        }
+        console.dir($scope.template);
+    }
 
     $scope.linkSample = function (datafile) {
         var i = _.indexOf($scope.template.input_samples, function (entry) {
