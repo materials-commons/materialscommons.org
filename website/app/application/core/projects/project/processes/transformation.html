@@ -15,13 +15,39 @@
             UNKNOWN: <br>
         </div>
         <div class="row">
-            <ul style="list-style: none">
-                <li><input type="radio" ng-model="selected.item" ng-value="copy"><span style="padding-left:30px;">Copy</span>
+            <div class="sample headings">Properties</div>
+            <ul>
+                <li style="padding:10px;" ng-repeat="property in modal.sample.properties">
+                    <b>{{property.name}}</b> :
+                    <div class="row">
+                        <div class="col-xs-offset-1">
+                            <ul class="list-inline list-unstyled">
+                                <li><input type="radio" ng-model="property.action" value="copy"><span style="padding-left:30px;">Copy</span>
+                                </li>
+                                <li><input type="radio" ng-model="property.action" value="share"><span
+                                        style="padding-left:30px;">Share</span></li>
+                                <li><input type="radio" ng-model="property.action" value="unknown"><span
+                                        style="padding-left:30px;">Unknown</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-offset-1">
+                            Best Measure: <span ng-if="property.best_measure.length !== 0"
+                                                style="padding-left: 5px;">
+                                    {{property.best_measure[0].value}}  {{property.best_measure[0].units}}</span> <br>
+                            Measurements:
+                            <ul>
+                                <li ng-repeat="measure in property.measurements">
+                                    <div>
+                                        <display-measurement current-process="modal.item.process_id"
+                                                             measure="measure"></display-measurement>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </li>
-                <li><input type="radio" ng-model="selected.item" ng-value="share"><span
-                        style="padding-left:30px;">Share</span></li>
-                <li><input type="radio" ng-model="selected.item" ng-value="unknown"><span
-                        style="padding-left:30px;">Unknown</span></li>
             </ul>
         </div>
     </div>
