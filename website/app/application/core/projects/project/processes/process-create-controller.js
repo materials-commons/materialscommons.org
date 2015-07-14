@@ -197,7 +197,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         if($scope.template._type === 'as_received'){
             $scope.template.output_samples.push($scope.bk.newSample);
         } else{
-            $scope.template = refineSampleProperties();
+                $scope.template = refineSampleProperties();
         }
         $scope.template.input_files = refineFiles($scope.template.input_files);
         $scope.template.output_files = refineFiles($scope.template.output_files);
@@ -227,6 +227,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
         return $scope.template;
     }
+
 
     function refine(items) {
         var each_measure = {};
