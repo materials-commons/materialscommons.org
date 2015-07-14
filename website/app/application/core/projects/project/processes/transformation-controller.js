@@ -1,13 +1,27 @@
 Application.Controllers.controller('TransformationController',
-    ["$scope", "$log",  "modal",TransformationController]);
+    ["$scope", "$log",  "modal","pubsub",TransformationController]);
 
-function TransformationController($scope, $log, modal) {
+function TransformationController($scope, $log, modal, pubsub) {
 
     $scope.modal = modal;
     setPropertiesToUnknown(); //is a default option
 
     $scope.ok = function () {
-        $scope.modal.sample.transformed_properties = $scope.modal.sample.properties;
+        var transformed_sample = {
+            sample_id: $scope.modal.sample.id,
+            shares: [],
+            uses: [],
+            property_set_id: $scope.modal.sample.property_set_id
+        };
+
+        $scope.modal.sample.properties.forEach(function(property){
+            if (property.action === 'share'){
+                transformed_sample.shares.push(property.id);
+            }else if(property.action === 'copy'){
+                transformed_sample.uses.push(property.id);
+            }
+        });
+        pubsub.send('updateTransformedSample', transformed_sample);
         $scope.modal.instance.close($scope.modal);
     };
 
