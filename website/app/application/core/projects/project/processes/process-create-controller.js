@@ -37,7 +37,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         }else{
             $scope.template.transformed_samples.push(transformed_sample);
         }
-        console.dir($scope.template);
     }
 
     $scope.linkSample = function (datafile) {
@@ -52,7 +51,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         var i = _.indexOf($scope.template.input_samples, function (entry) {
             return sample.id === entry.id;
         });
-        console.dir(sample);
         $scope.template.input_samples[i] = sample;
     }
 
@@ -70,6 +68,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             item.transformed_properties = [];
             item.files = [];
             item.property_set_id = item.property_set_id;
+            console.log(item.property_set_id);
             //when they choose sample pull all property-measurements from backend
             mcapi('/sample/measurements/%/%',item.id, item.property_set_id)
                 .success(function (properties) {
