@@ -321,8 +321,8 @@ module.exports = function (r) {
         for (let i = 0; i < samples.length; i++) {
             let current = samples[i];
             let aset = new model.PropertySet(true, current.property_set_id);
-            let asetCreated = yield db.insert('propertyset', aset);
-            let s2ps = new model.Sample2PropertySet(current.sample_id, createdASet.id, true);
+            let asetCreated = yield db.insert('propertysets', aset);
+            let s2ps = new model.Sample2PropertySet(current.sample_id, asetCreated.id, true);
             yield db.insert('sample2propertyset', s2ps);
             let oldPSetID = current.property_set_id;
             yield r.table('sample2propertyset').getAll(oldPSetID, {index: 'property_set_id'}).update({current: false});
@@ -350,7 +350,7 @@ module.exports = function (r) {
      */
     function *fillFromShares(psetID, shares) {
         for (let i = 0; i < shares.length; i++) {
-            let ps2p = new model.PropertySet2Property(psetID, shares[i]);
+            let ps2p = new model.PropertySet2Property(shares[i],psetID);
             yield db.insert('propertyset2property', ps2p);
         }
     }
@@ -386,7 +386,7 @@ module.exports = function (r) {
             // TODO: Talk to Brian about above.
 
             // Add to attribute set
-            let as2a = new model.PropertySet2Property(asetID, newAttr.id);
+            let as2a = new model.PropertySet2Property(newAttr.id, asetID);
             yield db.insert('propertyset2property', as2a);
         }
     }
@@ -412,7 +412,7 @@ module.exports = function (r) {
     function *attachMeasurements(newAttrID, fromAttrID) {
         // Get original attributes measurements
         let rql = r.table('property2measurement')
-            .getAll(fromAttrID, {index: 'property_id'});
+            .getAll(fromAttrID, {index: 'attribute_id'});
         let original = yield rql;
         // Change id to newAttrID and insert into table
         original.forEach(function (m) {
@@ -431,7 +431,7 @@ module.exports = function (r) {
     function *attachBestMeasureHistory(newAttrID, fromAttrID) {
         // Get original attributes best measure history
         let rql = r.table('best_measure_history')
-            .getAll(fromAttrID, {index: 'property_id'});
+            .getAll(fromAttrID, {index: 'attribute_id'});
         let original = yield rql;
 
         // Change to newAttrID and insert
