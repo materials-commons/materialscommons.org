@@ -19,6 +19,7 @@ Application.Services.factory('modalInstance',
                             .success(function (properties) {
                                 item.properties = properties;
                                 service.modal.item = item;
+                                console.dir(service.modal);
                             })
                             .error(function (err) {
                                 console.log(err)

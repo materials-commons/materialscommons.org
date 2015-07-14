@@ -16,10 +16,10 @@ function projectEditProcess($scope, project, $stateParams,  modalInstance) {
         var i = _.indexOf($scope.project.processes, function (process) {
             return process.id === $stateParams.process_id;
         });
+
         if (i > -1) {
             $scope.current = $scope.project.processes[i];
         }
-        console.dir($scope.current);
     }
 
     init();

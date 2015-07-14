@@ -14,7 +14,7 @@ module.exports = function(r) {
         this._type = "sample";
     }
 
-    function Process(name, owner, ptype, what, why) {
+    function Process(name, owner, ptype, what, why, transform) {
         this.name = name;
         this.owner = owner;
         this.what = what;
@@ -23,6 +23,7 @@ module.exports = function(r) {
         this.birthtime = r.now();
         this.mtime = this.birthtime;
         this._type = "process";
+        this.does_transform = transform;
     }
 
     function Process2Setup(processID, setupID) {
