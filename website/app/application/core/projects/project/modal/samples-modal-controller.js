@@ -12,10 +12,10 @@ function modalSamplesDirective() {
 }
 
 Application.Controllers.controller("modalSamplesController",
-    ["$scope", "Review", "$modal", "pubsub",
+    ["$scope", "Review", "$modal", "pubsub", "mcapi",
         modalSamplesController]);
 
-function modalSamplesController($scope, Review, $modal, pubsub) {
+function modalSamplesController($scope, Review, $modal, pubsub, mcapi) {
 
     var rowData = [];
     $scope.project.samples.forEach(function (sample) {
@@ -83,8 +83,21 @@ function modalSamplesController($scope, Review, $modal, pubsub) {
     function cellClickedFunc(params) {
         $scope.modal = {
             instance: null,
-            items: [params.data]
+            item: params.data
         };
+        mcapi('/sample/measurements/%/%', params.data.id, params.data.property_set_id)
+            .success(function (properties) {
+                params.data.properties = properties;
+                $scope.modal.item = params.data;
+            })
+            .error(function (err) {
+                console.log(err)
+            })
+            .jsonp();
+        mcapi('/sample/datafile/%', params.data.id)
+            .success(function (files) {
+                $scope.modal.item.files = files;
+            }).jsonp();
 
         $scope.modal.instance = $modal.open({
             size: 'lg',

@@ -1,6 +1,6 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">{{selected.item.name}}</h3>
+        <h3 class="modal-title">{{modal.item.name}}</h3>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -43,7 +43,7 @@
                 <div><label>Size:</label>{{selected.item.size}} kb</div>
                 <div><label>Created:</label>{{selected.item.birthtime | toDateString}}</div>
                 <div><label>Modified:</label>{{selected.item.mtime | toDateString}}</div>
-                <div><label>Media Type:</label>{{selected.item.mediatype.description}}</div>
+                <div><label>Media Type:</label>{{selected.item.mediatype.mime}}</div>
                 <div><label>Notes:</label>
                     {{selected.item.notes}}
 

@@ -69,7 +69,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
         },
-        rowSelected:  function (row) {
+        rowSelected: function (row) {
             Review.checkedItems(row);
             pubsub.send('addFileToReview', row);
         },
@@ -85,8 +85,16 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
     function cellClicked(params) {
         $scope.modal = {
             instance: null,
-            items: [params.node]
+            item: params.node
         };
+        //The project tree is not compatible with the actual
+        // datafile object. So i modified some field types
+        // so that display-file MODAL can be used every
+        // where to display information about file
+        $scope.modal.item.mediatype = {
+            mime: params.node.mediatype
+        }
+        $scope.modal.item.id = params.node.df_id;
 
         $scope.modal.instance = $modal.open({
             size: 'lg',
