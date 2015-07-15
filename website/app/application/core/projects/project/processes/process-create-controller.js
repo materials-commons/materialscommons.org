@@ -97,14 +97,52 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         }
     }
 
-    $scope.removeAttachment = function (item, what) {
+    $scope.removeAttachment = function (item, what, sample_id) {
+        switch (what) {
+            case "input_samples":
+                spliceItem(item, what);
+                break;
+            case "input_files":
+                spliceItem(item, what);
+                break;
+            case "output_files":
+                spliceItem(item, what) ;
+                break;
+            case "new_properties":
+                var index = _.indexOf($scope.template.input_samples, function (entry) {
+                    return sample_id === entry.id;
+                });
+                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                    return item.name === entry.name;
+                });
+                if (i > -1) {
+                    $scope.template.input_samples[index][what].splice(i, 1);
+                }
+                break;
+            case "properties":
+                var index = _.indexOf($scope.template.input_samples, function (entry) {
+                    return sample_id === entry.id;
+                });
+                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                    return item.id === entry.id;
+                });
+                console.log(i);
+                if (i > -1) {
+                    console.log($scope.template.input_samples[index][what][i]);
+                    $scope.template.input_samples[index][what][i].measures = [];
+                }
+                break;
+        }
+    };
+
+    function spliceItem(item, what){
         var i = _.indexOf($scope.template[what], function (entry) {
             return item.id === entry.id;
         });
         if (i > -1) {
             $scope.template[what].splice(i, 1);
         }
-    };
+    }
 
     $scope.removeLink = function (link, what, attachment) {
         var i = _.indexOf($scope.template[what], function (entry) {

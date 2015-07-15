@@ -59,9 +59,11 @@
                             <div class="row">
                                 <div class="col-xs-offset-2">
                                     <b>Measurements:</b>
-                                    <ul>
+                                    <ul class="list-unstyled">
                                         <li ng-repeat="property in sample.new_properties">
                                             {{property.name}}
+                                            <i ng-click="removeAttachment(property, 'new_properties', sample.id)"
+                                               class="fa fa-fw fa-close pull-right pointer"></i>
                                             <div ng-repeat="measure in property.measures">
                                                 <div>
                                                     <display-measurement measure="measure"></display-measurement>
@@ -69,9 +71,12 @@
                                             </div>
                                         </li>
                                     </ul>
-                                    <ul>
+                                    <ul class="list-unstyled">
                                         <li ng-repeat="property in sample.properties">
-                                            {{property.name}}
+                                            <div ng-if="property.measures">{{property.name}}
+                                            <i ng-click="removeAttachment(property, 'properties', sample.id)"
+                                               class="fa fa-fw fa-close pull-right pointer"></i>
+                                            </div>
                                             <div ng-repeat="measure in property.measures">
                                                 <div ng-switch="measure._type">
                                                     <div ng-switch-when="number">
@@ -207,7 +212,7 @@
                                              style="color:#3a9ee3"><a
                                              ng-click="transformation(attachment)">Transformation</a></span>
                                     </span>
-                                    <i ng-click="removeAttachment(attachment, 'samples')"
+                                    <i ng-click="removeAttachment(attachment, 'input_samples','')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
                                 </div>
 
@@ -254,7 +259,7 @@
                                     <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
 
                                     <i style="padding-left: 20px;"
-                                       ng-click="removeAttachment(attachment, 'input_files')"
+                                       ng-click="removeAttachment(attachment, 'input_files', '')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
 
                                     <span ng-if="" style="padding-left: 20px">
@@ -291,7 +296,7 @@
                                        class="link pointer">{{attachment.name}}</a>
 
                                     <i style="padding-left: 20px;"
-                                       ng-click="removeAttachment(attachment, 'output_files')"
+                                       ng-click="removeAttachment(attachment, 'output_files', '')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
                                     <span style="padding-left: 20px">
                                       <i class="fa fa-link fa-fw sample"></i>
