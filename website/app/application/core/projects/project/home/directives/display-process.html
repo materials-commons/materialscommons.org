@@ -4,38 +4,72 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <div ng-repeat="each in ['inputs', 'outputs']">
-                 <b>{{each}}</b>
-                <ul>
-                    <li  ng-repeat="(key, values) in selected.item[each]">
-                        <b>{{key}}</b>
+            <div class="process headings">Details:</div>
 
-                        <div ng-switch="" on="key">
-                            <div ng-switch-when="files">
-                                <ul style="padding-left: 30px;">
-                                    <li ng-repeat="item in values">
-                                        <a ui-sref="projects.project.files.view({'fileid': item.id})">
-                                            {{item.other.name}}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div ng-switch-when="sample">
-                                <ul style="padding-left: 30px;">
-                                    <li ng-repeat="item in values">
-                                        {{item.other.name}}
-                                    </li>
-                                </ul>
-                            </div>
-                            <div ng-switch-default>
-                                <ul style="padding-left: 30px;">
-                                    <li ng-repeat="item in values">
-                                        {{item.display_name}} : {{item.value}} {{item.unit}}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+            <div class="row"><b>Description about process:</b> <br>
+                {{selected.item.what}} <br>
+
+                <div class="row"><b>Reason you performed the process:</b><br>
+                    {{selected.item.why}} <br>
+
+                    <div class="row"><b>Owner: </b>{{selected.item.owner}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="process headings">SetUp: {{selected.item.setup[0].name}}</div>
+                <ul>
+                    <li ng-repeat="property in selected.item.setup[0].setupproperties" ng-if="property.value">
+                        {{property.name}} :: {{property.value}} {{property.units}}
                     </li>
                 </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="process headings">Samples:</div>
+                <div class="row" ng-repeat="sample in selected.item.samples">
+                    <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
+                        <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                        <img src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
+                        <a ng-click="openSample(sample)" class="link" style="padding-left: 15px;">{{sample.name}}</a>
+
+                        <p style="padding-left: 80px">
+                            <small class="text-muted">{{sample.mtime | toDateString}} , {{sample.owner}}</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="process headings">Files:</div>
+                <div>Files Used:</div>
+                <div ng-repeat="attachment in selected.item.files_used">
+                    <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
+                        <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                        <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
+                        <a ng-click="openFile(attachment)" class="link" style="padding-left: 15px;">{{attachment.name}}</a>
+
+                        <p style="padding-left: 80px">
+                            <small class="text-muted">{{attachment.path}}</small>
+                        </p>
+                    </div>
+                </div>
+
+                <div>Files Produced:</div>
+                <div ng-repeat="attachment in selected.item.files_produced">
+                    <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
+                        <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                        <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
+                        <a ng-click="openFile(attachment)" class="link" style="padding-left: 15px;">{{attachment.name}}</a>
+
+                        <p style="padding-left: 80px">
+                            <small class="text-muted">{{attachment.path}}</small>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
