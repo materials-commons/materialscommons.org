@@ -166,7 +166,8 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     $scope.open = function (size, type) {
         $scope.modal = {
             instance: null,
-            items: []
+            items: [],
+            type: type
         };
         $scope.type = type;
         $scope.modal.instance = $modal.open({
