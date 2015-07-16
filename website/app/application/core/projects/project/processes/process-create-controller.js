@@ -30,7 +30,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
 
     function updateTransformedSample(transformed_sample) {
         var i = _.indexOf($scope.template.transformed_samples, function (entry) {
-            return sample.sample_id === entry.sample_id;
+            return transformed_sample.sample_id === entry.sample_id;
         });
         if (i > -1) {
             $scope.template.transformed_samples[i] = transformed_sample;
@@ -43,8 +43,27 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         var i = _.indexOf($scope.template.input_samples, function (entry) {
             return $scope.bk.selectedSample.id === entry.id;
         });
-        $scope.template.input_samples[i].files.push({id: datafile.id, name: datafile.name});
-        $scope.bk.selectedSample = '';
+        //check for redundancy
+        var k = _.indexOf($scope.template.input_samples[i].files, function (entry) {
+            return datafile.id === entry.id;
+        });
+
+        if (k < 0){
+            if ( i > -1){
+                $scope.template.input_samples[i].files.push({id: datafile.id, name: datafile.name});
+                $scope.bk.selectedSample = '';
+            }
+        }
+    };
+
+    $scope.removeLink = function (sample, file) {
+        var k = _.indexOf($scope.template.input_samples, function (entry) {
+            return sample.id === entry.id;
+        });
+        var i = _.indexOf($scope.template.input_samples[k].files, function (entry) {
+            return file.id === entry.id;
+        });
+        $scope.template.input_samples[k].files.splice(i, 1);
     };
 
     function updateSampleMeasurement(sample) {
@@ -68,7 +87,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                 item.transformed_properties = [];
                 item.files = [];
                 item.property_set_id = item.property_set_id;
-                console.log(item.property_set_id);
                 //when they choose sample pull all property-measurements from backend
                 mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
                     .success(function (properties) {
@@ -106,7 +124,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                 spliceItem(item, what);
                 break;
             case "output_files":
-                spliceItem(item, what) ;
+                spliceItem(item, what);
                 break;
             case "new_properties":
                 var index = _.indexOf($scope.template.input_samples, function (entry) {
@@ -128,13 +146,12 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                 });
                 if (i > -1) {
                     delete $scope.template.input_samples[index][what][i]['measures'];
-                    console.log($scope.template.input_samples[index][what][i]);
                 }
                 break;
         }
     };
 
-    function spliceItem(item, what){
+    function spliceItem(item, what) {
         var i = _.indexOf($scope.template[what], function (entry) {
             return item.id === entry.id;
         });
@@ -142,21 +159,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             $scope.template[what].splice(i, 1);
         }
     }
-
-    $scope.removeLink = function (link, what, attachment) {
-        var i = _.indexOf($scope.template[what], function (entry) {
-            return attachment.id === entry.id;
-        });
-        if (i > -1) {
-            var j = _.indexOf($scope.template[what][i].links, function (entry) {
-                return link.id === entry.id;
-            });
-
-            if (j > -1) {
-                $scope.template[what][i].links.splice(j, 1);
-            }
-        }
-    };
 
     $scope.addMeasurement = function (sample) {
         $scope.modal = {
@@ -247,27 +249,28 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         } else {
             $scope.template = refineSampleProperties();
         }
+        console.dir($scope.template);
+
         $scope.template.input_files = refineFiles($scope.template.input_files);
         $scope.template.output_files = refineFiles($scope.template.output_files);
-        console.dir($scope.template);
-        mcapi('/projects2/%/processes', project.id)
-            .success(function (proc) {
-                //After you create a process try to update the whole project.
-                // Because samples, processes should be refreshed in
-                // order for user to create another process
-                $scope.template = '';
-                $scope.bk = {
-                    selectedSample: {}
-                };
-                console.log("success");
-                $state.go('projects.project.processes.list');
-            })
-            .error(function (err) {
-                $scope.template = '';
-                console.log("err");
-                console.log(err);
-            })
-            .post($scope.template);
+        //mcapi('/projects2/%/processes', project.id)
+        //    .success(function (proc) {
+        //        //After you create a process try to update the whole project.
+        //        // Because samples, processes should be refreshed in
+        //        // order for user to create another process
+        //        $scope.template = '';
+        //        $scope.bk = {
+        //            selectedSample: {}
+        //        };
+        //        console.log("success");
+        //        $state.go('projects.project.processes.list');
+        //    })
+        //    .error(function (err) {
+        //        $scope.template = '';
+        //        console.log("err");
+        //        console.log(err);
+        //    })
+        //    .post($scope.template);
     };
 
     function refineSampleProperties() {

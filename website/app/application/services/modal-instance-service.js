@@ -31,7 +31,6 @@ Application.Services.factory('modalInstance',
                         break;
                     case "process":
                         template = 'application/core/projects/project/home/directives/display-process.html';
-                        console.dir(item);
                         break;
                 }
                 service.modal.instance = $modal.open({
