@@ -126,10 +126,9 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                 var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
                     return item.id === entry.id;
                 });
-                console.log(i);
                 if (i > -1) {
+                    delete $scope.template.input_samples[index][what][i]['measures'];
                     console.log($scope.template.input_samples[index][what][i]);
-                    $scope.template.input_samples[index][what][i].measures = [];
                 }
                 break;
         }
