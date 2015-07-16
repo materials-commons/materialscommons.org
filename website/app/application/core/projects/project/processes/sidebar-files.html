@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-xs-12">
+        <b>Files Used</b>
+
+        <div class="row" ng-repeat="attachment in template.input_files">
+
+            <div ng-if="attachment.type === 'datafile'">
+                <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                <img src="assets/img/splash/file_icon.png"
+                     style="height: 40px;padding-bottom: 10px;">
+                <a ng-click="openDetails(attachment)" class="link pointer"
+                   style="padding-left: 15px;">{{attachment.name}}</a>
+
+            </div>
+        </div>
+        <br><b>Files Produced</b>
+
+        <div class="row" ng-repeat="attachment in template.output_files">
+
+            <div ng-if="attachment.type === 'datafile'">
+                <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+                <img src="assets/img/splash/file_icon.png"
+                     style="height: 40px;padding-bottom: 10px;">
+                <a ng-click="openDetails(attachment)" class="link pointer"
+                   style="padding-left: 15px;">{{attachment.name}}</a>
+            </div>
+        </div>
+    </div>
+</div>

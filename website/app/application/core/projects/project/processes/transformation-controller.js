@@ -9,16 +9,17 @@ function TransformationController($scope, $log, modal, pubsub) {
     $scope.ok = function () {
         var transformed_sample = {
             sample_id: $scope.modal.sample.id,
+            name: $scope.modal.sample.name,
             shares: [],
             uses: [],
             property_set_id: $scope.modal.sample.property_set_id
         };
 
         $scope.modal.sample.properties.forEach(function(property){
-            if (property.action === 'share'){
-                transformed_sample.shares.push(property.id);
-            }else if(property.action === 'copy'){
-                transformed_sample.uses.push(property.id);
+            if (property.action === 'is_not_transformed'){
+                transformed_sample.shares.push({id: property.id, name: property.name});
+            }else if(property.action === 'is_transformed'){
+                transformed_sample.uses.push({id: property.id, name: property.name});
             }
         });
         pubsub.send('updateTransformedSample', transformed_sample);
