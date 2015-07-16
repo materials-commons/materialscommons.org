@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectEditSample',
-    ["$scope", "$modal", "$stateParams", "project", "mcapi", projectEditSample]);
+    ["$scope", "$modal", "$stateParams", "project", "mcapi", "modalInstance", projectEditSample]);
 
-function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
+function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalInstance) {
     $scope.measurements = function (property) {
         $scope.modal = {
             instance: null,
@@ -26,13 +26,23 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
     function getMeasurements(){
         mcapi('/sample/measurements/%/%', $scope.current.id, $scope.current.property_set_id)
             .success(function (properties) {
-                $scope.properties = properties;
+                $scope.current.properties = properties;
+                console.dir($scope.current);
             })
             .error(function (err) {
                 console.log(err)
             })
             .jsonp();
+
+        mcapi('/sample/datafile/%', $scope.current.id)
+            .success(function (files) {
+                $scope.current.files = files;
+            }).jsonp();
     }
+
+    $scope.openFile = function(file){
+        modalInstance.openModal(file, 'datafile', project);
+    };
 
     function init() {
         $scope.project = project;
@@ -45,6 +55,7 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi) {
             }else{
                 $scope.current =  $scope.project.samples[0];
             }
+
             getMeasurements();
         }
 

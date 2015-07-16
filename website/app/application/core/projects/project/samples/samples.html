@@ -21,9 +21,9 @@
                     </div>
                     <ul  class="list-group">
                         <li ui-sref="projects.project.samples.edit({'sample_id': sample.id})"
-                            ng-class="{active: current.id === sample.id}"
                             class="list-group-item pointer"
                             ng-repeat="sample in project.samples"
+                            ng-class="{'sample': current.id === sample.id}"
                             ng-click="viewSample(sample)">
                             <img src="assets/img/splash/sample_icon.png" style="height: 35px;padding-bottom: 10px;">
                             {{sample.name}}

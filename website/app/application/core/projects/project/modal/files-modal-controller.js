@@ -95,7 +95,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             mime: params.node.mediatype
         }
         $scope.modal.item.id = params.node.df_id;
-
+        console.dir($scope.modal);
         $scope.modal.instance = $modal.open({
             size: 'lg',
             templateUrl: 'application/core/projects/project/home/directives/display-file.html',

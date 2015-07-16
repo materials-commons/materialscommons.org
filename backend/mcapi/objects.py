@@ -75,7 +75,7 @@ def get_current_propertyset(sample_id):
 def get_sample2files(sample_id):
     files = list(r.table('sample2datafile').get_all(sample_id, index='sample_id')
                  .eq_join('datafile_id', r.table('datafiles')).zip()
-                 .pluck('name', 'owner', 'size', 'birthtime')
+                 .pluck('name', 'owner', 'size', 'birthtime', 'mtime', 'id', 'mediatype')
                  .run(g.conn, time_format="raw"))
     return resp.to_json(files)
 
