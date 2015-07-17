@@ -12,6 +12,7 @@ function projectFilesService(pubsub) {
         channel: null,
         activeByProject: {},
         activeFile: {},
+        activeDirectory: {},
 
         setActive: function (projectID, active) {
             service.activeByProject[projectID] = active;
@@ -131,6 +132,13 @@ function projectFilesService(pubsub) {
         },
         getActiveFile: function () {
             return service.activeFile;
+        },
+        setActiveDirectory: function (what) {
+            service.activeDirectory = what;
+            //pubsub.send('activeFile.change');
+        },
+        getActiveDirectory: function () {
+            return service.activeDirectory;
         }
 
 

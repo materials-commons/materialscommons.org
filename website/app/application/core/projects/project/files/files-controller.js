@@ -3,6 +3,7 @@ Application.Controllers.controller("FilesController",
         "pubsub", "mcfile", "$state", "pubsub", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
                          $filter, mcfile, $state, pubsub) {
+
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
@@ -26,18 +27,19 @@ function FilesController($scope, projectFiles, applySearch,
     $scope.fileSrc = function (file) {
         return mcfile.src(file.id);
     };
+
     var columnDefs = [
-            {
-                displayName: "",
-                field: "name",
-                width: 350,
-                cellClicked: cellClicked,
-                cellRenderer: function (params) {
-                    return '<i style="color: #BFBFBF;"  class="fa fa-fw fa-file"></i><span>' +
-                        '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
-                        params.node.name + '</a></span>';
-                }
-            }];
+        {
+            displayName: "",
+            field: "name",
+            width: 350,
+            cellClicked: cellClicked,
+            cellRenderer: function (params) {
+                return '<i style="color: #BFBFBF;"  class="fa fa-fw fa-file"></i><span>' +
+                    '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
+                    params.node.name + '</a></span>';
+            }
+        }];
 
     $scope.gridOptions = {
         columnDefs: columnDefs,
@@ -54,9 +56,23 @@ function FilesController($scope, projectFiles, applySearch,
         },
         groupInnerCellRenderer: groupInnerCellRenderer
     };
+
+    //groupInnerCellRenderer does not have ability to add ng click. So as
+    // an alternative i used event listener to display the data directory
     function groupInnerCellRenderer(params) {
-        var template = params.node.type === 'datadir' ? params.node.displayname : 'File';
-        return template;
+        var eCell = document.createElement('span');
+        eCell.innerHTML = params.node.displayname;
+        eCell.addEventListener('click', function () {
+            projectFiles.setActiveDirectory(params.node);
+            if ($state.current.name === 'projects.project.files') {
+                console.log('yeah');
+                $state.go('projects.project.files.edit', {'file_id': ''});
+            } else {
+                pubsub.send('display-directory');
+            }
+
+        });
+        return eCell;
     }
 
     function cellClicked(params) {
