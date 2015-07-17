@@ -1,6 +1,7 @@
 Application.Controllers.controller("FilesEditController",
     ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", FilesEditController]);
 function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags) {
+
     $scope.bk = {
         editNote: false
     };
@@ -9,13 +10,19 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         $scope.editNote();
     });
 
+    pubsub.waitOn($scope, 'display-directory', function () {
+        $scope.active = projectFiles.getActiveDirectory();
+        console.dir($scope.active);
+        $scope.type = 'dir';
+    });
+
     $scope.addTag = function (tag) {
         var tag_obj = {'id': tag.tag_id, 'owner': User.u()};
-        tags.createTag(tag_obj, $scope.activeFile.df_id);
+        tags.createTag(tag_obj, $scope.active.df_id);
     };
 
     $scope.removeTag = function (tag) {
-        tags.removeTag(tag.tag_id, $scope.activeFile.df_id);
+        tags.removeTag(tag.tag_id, $scope.active.df_id);
     };
 
     $scope.editNote = function () {
@@ -33,30 +40,34 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
     };
 
     $scope.closeFile = function () {
-        $scope.activeFile = null;
+        $scope.active = null;
     };
 
     function getActiveFile() {
-        $scope.activeFile = projectFiles.getActiveFile();
-        if (isImage($scope.activeFile.mediatype)) {
+        $scope.active = projectFiles.getActiveFile();
+        $scope.type = 'file';
+        if (isImage($scope.active.mediatype)) {
             $scope.fileType = "image";
-        } else if ($scope.activeFile.mediatype === "application/pdf") {
+        } else if ($scope.active.mediatype === "application/pdf") {
             $scope.fileType = "pdf";
         }
-        else if ($scope.activeFile.mediatype === "application/vnd.ms-excel") {
+        else if ($scope.active.mediatype === "application/vnd.ms-excel") {
             $scope.fileType = "xls";
         } else {
-            $scope.fileType = $scope.activeFile.mediatype;
+            $scope.fileType = $scope.active.mediatype;
         }
 
     }
 
     function init() {
-        $scope.activeFile = {};
-        if ($stateParams.file_id) {
+        $scope.active = {};
+        $scope.type = '';
+        if ($stateParams.file_id !== "") {
             getActiveFile();
         } else {
-            $scope.activeFile = '';
+            $scope.active = projectFiles.getActiveDirectory();
+            console.dir($scope.active);
+            $scope.type = 'dir';
         }
     }
 
