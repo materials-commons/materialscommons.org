@@ -249,7 +249,7 @@ function Sem() {
     this.what = "";
     this.why = "";
     this.owner = "";
-    this.does_transform = true;
+    this.does_transform = false;
     this.setup = {
         files: []
     };
@@ -508,3 +508,571 @@ function AptDataAnalysis() {
     ];
 }
 
+function AptDataReconstruction() {
+    this.name = "APT Data Reconstruction";
+    this.description = "Atom Probe Tomography Data Reconstruction";
+    this._type = "APT";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Reconstruction Mode",
+                        attribute: "reconstruction_mode",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Voltage", "value": "voltage"}, {
+                            "name": "Shank Angle",
+                            "value": "shank_angle"
+                        },
+                            {"name": "Tip Image", "value": "tip_image"}, {"name": "Other", "value": "other"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Field Factor",
+                        attribute: "field_factor",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Image Compression Factor",
+                        attribute: "image_compression_factor",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Evaporation Field",
+                        attribute: "evaporation_field",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: 'V/nm',
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Detection Efficiency",
+                        attribute: "detection_efficiency",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "%",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Initial Radius",
+                        attribute: "initial_radius",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "nm",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Shank Angle",
+                        attribute: "shank_angle",
+                        description: "",
+                        value: null,
+                        units: ["°", "rad"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Cone to Sphere Ratio",
+                        attribute: "cone_to_sphere_ratio",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function BroadIonBeamMilling() {
+    this.name = "Broad Ion Beam Milling";
+    this.description = "Broad Ion Beam Milling";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "emarq@umich.edu";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Ion Type",
+                        attribute: "ion_type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Ga", "value": "Ga"}, {"name": "Ne", "value": "Ne"}, {
+                            "name": "Ar",
+                            "value": "Ar"
+                        }, {"name": "Other", "value": "other"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Energy",
+                        attribute: "energy",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "V",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Time",
+                        attribute: "time",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "s",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function Cogging() {
+    this.name = "Cogging";
+    this.description = "Cogging";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "jfadams@umich.edu";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Temperature",
+                        attribute: "temperature",
+                        description: "",
+                        value: null,
+                        units: ["C", "F", "K"],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Strain",
+                        attribute: "strain",
+                        description: "",
+                        value: null,
+                        units: ["mm/mm", "%"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function Compression() {
+    this.name = "Compression";
+    this.description = "Compression";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "emarq@umich.edu";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Temperature",
+                        attribute: "temperature",
+                        description: "",
+                        value: null,
+                        units: ["C", "F", "K"],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Strain",
+                        attribute: "strain",
+                        description: "",
+                        value: null,
+                        units: ["mm/mm", "%"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Strain Rate",
+                        attribute: "strain_rate",
+                        description: "",
+                        value: null,
+                        units: ["1/s", "mm/min"],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Target Total Strain",
+                        attribute: "target_total_strain",
+                        description: "",
+                        value: null,
+                        units: ["mm/mm", "%"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Load Rate",
+                        attribute: "load_rate",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function Computation() {
+    this.name = "Computation";
+    this.description = "Computation";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "bpuchala@umich.edu";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Job Settings",
+            attribute: "job_settings",
+            properties: [
+                {
+                    property: {
+                        name: "Submit Script",
+                        attribute: "submit_script",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "text",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Number of Processors",
+                        attribute: "number_of_processors",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Memory per Processor",
+                        attribute: "memory_per_processor",
+                        description: "",
+                        value: null,
+                        units: ["b", "kb", "mb", "gb"],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Walltime",
+                        attribute: "walltime",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "s",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function Creep() {
+    this.name = "Creep";
+    this.description = "Creep";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "emarq@umich.edu";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Temperature",
+                        attribute: "temperature",
+                        description: "",
+                        value: null,
+                        units: ["C", "F", "K"],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Environment",
+                        attribute: "environment",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "text",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Stress",
+                        attribute: "stress",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "MPa",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
