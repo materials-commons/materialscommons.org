@@ -416,3 +416,95 @@ function AsReceived() {
         settings: []
     };
 }
+
+function AptDataAnalysis() {
+    this.name = "APT Data Analysis";
+    this.description = "Atom Probe Tomography Data Analysis";
+    this._type = "APT";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "System Information",
+            attribute: "system_information",
+            properties: [
+                {
+                    property: {
+                        name: "Software",
+                        attribute: "software",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "text",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Software URL",
+                        attribute: "software_url",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "text",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Software Version",
+                        attribute: "software_version",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "text",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "How to Cite",
+                        attribute: "how_to_cite",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "text",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
