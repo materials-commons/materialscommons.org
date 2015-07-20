@@ -7,7 +7,7 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi) 
     $scope.selected = {
         item: {}
     };
-
+    console.dir($scope.modal);
     function updateBestMeasure(){
         mcapi('/best_measure')
             .success(function (properties) {

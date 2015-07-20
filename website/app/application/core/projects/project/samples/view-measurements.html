@@ -6,17 +6,19 @@
         Choose your best measure: <br><br>
 
         <div class="row" ng-repeat="(key, values) in modal.property.measurements | groupBy: 'name'">
-            <b><img src="assets/img/splash/process-icon.png" style="height: 30px;padding-bottom: 10px;"> Process ::
-                {{key}}</b>
+            <b>{{key}}</b>
 
             <div class="row" ng-repeat="measure in values">
                 <div class="col-xs-offset-1">
                     <div class="col-xs-1">
                         <input type="radio" ng-model="selected.item" ng-value="measure">
                     </div>
-                    <div class="col-xs-2">
-                        <i>Value</i>: {{measure.value}}<br>
-                        <i>Unit </i>: {{measure.units}} <br>
+                    <div class="col-xs-6">
+                        {{measure.value}} {{measure.unit}}
+                        <span  style="padding-left: 30px;">
+                            <img src="assets/img/splash/process-icon.png"
+                            style="height: 25px;padding-bottom: 10px;">{{measure.process[0].name}}
+                        </span>
                     </div>
                 </div>
             </div>
