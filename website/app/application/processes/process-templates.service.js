@@ -10,6 +10,12 @@ function processTemplates() {
             fn: Apt,
             does_transform: false
         },
+        //{
+        //    name: "APT Data Analysis",
+        //    description: "Atom Probe Tomography Data Analysis",
+        //    fn: AptDataAnalysis,
+        //    does_transform: false
+        //},
         {
             name: "SEM",
             description: "Stem Electron Microscopy",
