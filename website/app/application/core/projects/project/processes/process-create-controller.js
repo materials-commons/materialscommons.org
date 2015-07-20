@@ -249,28 +249,27 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         } else {
             $scope.template = refineSampleProperties();
         }
-        console.dir($scope.template);
 
         $scope.template.input_files = refineFiles($scope.template.input_files);
         $scope.template.output_files = refineFiles($scope.template.output_files);
-        //mcapi('/projects2/%/processes', project.id)
-        //    .success(function (proc) {
-        //        //After you create a process try to update the whole project.
-        //        // Because samples, processes should be refreshed in
-        //        // order for user to create another process
-        //        $scope.template = '';
-        //        $scope.bk = {
-        //            selectedSample: {}
-        //        };
-        //        console.log("success");
-        //        $state.go('projects.project.processes.list');
-        //    })
-        //    .error(function (err) {
-        //        $scope.template = '';
-        //        console.log("err");
-        //        console.log(err);
-        //    })
-        //    .post($scope.template);
+        mcapi('/projects2/%/processes', project.id)
+            .success(function (proc) {
+                //After you create a process try to update the whole project.
+                // Because samples, processes should be refreshed in
+                // order for user to create another process
+                $scope.template = '';
+                $scope.bk = {
+                    selectedSample: {}
+                };
+                console.log("success");
+                $state.go('projects.project.processes.list');
+            })
+            .error(function (err) {
+                $scope.template = '';
+                console.log("err");
+                console.log(err);
+            })
+            .post($scope.template);
     };
 
     function refineSampleProperties() {
