@@ -1076,3 +1076,195 @@ function Creep() {
         }
     ];
 }
+
+function DicPatterning() {
+    this.name = "DIC Patterning";
+    this.description = "DIC Patterning";
+    this._type = "DIC";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "agithens@umich.edu";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Scale",
+                        attribute: "scale",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Large-Scale", "value": "large_scale"}, {
+                            "name": "Small-Scale",
+                            "value": "small_scale"
+                        }]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Field of View",
+                        attribute: "field_of_view",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "microns",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Particle Size",
+                        attribute: "particle_size",
+                        description: "",
+                        value: null,
+                        units: ["microns", "nm"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Particle Type",
+                        attribute: "particle_type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Alumina", "value": "alumina"}, {"name": "Gold", "value": "gold"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Silane Type",
+                        attribute: "silane_type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "APTMS", "value": "aptms"}, {
+                            "name": "MPTMS",
+                            "value": "mptms"
+                        }, {"name": "N/A", "value": "n/a"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function DicStatisticalModelling() {
+    this.name = "DIC Statistical Modelling";
+    this.description = "DIC Statistical Modelling";
+    this._type = "DIC";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "agithens@umich.edu";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Number of Parameters",
+                        attribute: "number_of_parameters",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Number of Observations",
+                        attribute: "number_of_observations",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Model Type",
+                        attribute: "model_type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Linear", "value" : "linear"},
+                            {"name": "Interactions", "value" : "interactions"},
+                            {"name": "PureQuadratic", "value" : "purequadratic"},
+                            {"name": "Quadratic", "value" : "quadratic"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
