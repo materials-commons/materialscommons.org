@@ -35,7 +35,7 @@
             "required": false
         },
         {
-            "name": "How to Cite" ,
+            "name": "How to Cite",
             "attribute": "how_to_cite",
             "type": "text" ,
             "unit": "" ,

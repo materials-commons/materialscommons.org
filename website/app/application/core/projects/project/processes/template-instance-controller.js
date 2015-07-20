@@ -10,6 +10,7 @@ function TemplateInstanceController($scope, project, $state,  $log, modal, proce
 
     $scope.showDetails = function(template){
         $scope.selected.item = template;
+        $scope.template_details = processTemplates.newInstance(template);
     };
 
     $scope.ok = function () {
