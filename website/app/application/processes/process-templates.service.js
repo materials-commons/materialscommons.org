@@ -63,6 +63,18 @@ function processTemplates() {
             description: "Creep",
             fn: Creep,
             does_transform: true
+        },
+        {
+            name: "DIC Patterning",
+            description: "DIC Patterning",
+            fn: DicPatterning,
+            does_transform: false
+        },
+        {
+            name: "DIC Statistical Modelling",
+            description: "DIC Statistical Modelling",
+            fn: DicStatisticalModelling,
+            does_transform: false
         }
     ];
 
