@@ -24,10 +24,10 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
     };
 
     function getMeasurements(){
-        mcapi('/sample/measurements/%/%', $scope.current.id, $scope.current.property_set_id)
+        mcapi('/sample/measurements/%', $scope.current.id)
             .success(function (properties) {
                 $scope.current.properties = properties;
-                console.dir($scope.current);
+                console.dir(properties);
             })
             .error(function (err) {
                 console.log(err)
