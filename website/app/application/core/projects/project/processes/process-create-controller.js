@@ -253,6 +253,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         $scope.template.output_files = refineFiles($scope.template.output_files);
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
+                console.log(proc);
                 //After you create a process try to update the whole project.
                 // Because samples, processes should be refreshed in
                 // order for user to create another process
@@ -276,6 +277,9 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             sample.properties = refine(sample.properties);
             sample.new_properties = refine(sample.new_properties);
         });
+        if ($scope.template.transformed_samples.length !== 0){
+            $scope.template.transformed_samples = refineTransformedSamples();
+        }
         return $scope.template;
     }
 
@@ -311,6 +315,24 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             items.push({id: file.id, name: file.name, path: file.path});
         });
         return items;
+    }
+
+    function refineTransformedSamples(){
+        $scope.template.transformed_samples.forEach(function(sample){
+            sample.shares = transformActions(sample.shares);
+            sample.uses = transformActions(sample.uses);
+            sample.unknowns = transformActions(sample.unknowns);
+            sample.deletes = transformActions(sample.deletes);
+        });
+        return $scope.template.transformed_samples;
+    }
+
+    function transformActions(properties){
+        var transform =[];
+        properties.forEach(function (property) {
+            transform.push(property.id);
+        });
+        return transform;
     }
 
     function init() {
