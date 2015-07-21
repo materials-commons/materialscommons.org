@@ -36,8 +36,11 @@ module.exports = function (r) {
         let proc = yield addProcess(process.project_id, p);
         let settings = yield addProcessSetup(proc.id, process.setup);
         yield addSampleMeasurements(proc.id, process.input_samples);
+        console.log('addsample measuremenst done.....')
         yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
+        console.log('add created samples done.....');
         yield addTransformedSamples(process.transformed_samples, proc.id);
+        console.log('add transformed done*****');
         yield addFiles(proc.id, process.input_files, 'in');
         yield addFiles(proc.id, process.output_files, 'out');
 
@@ -318,6 +321,7 @@ module.exports = function (r) {
      *
      */
     function *addTransformedSamples(samples, processID) {
+        console.dir(samples);
         for (let i = 0; i < samples.length; i++) {
             let current = samples[i];
             let aset = new model.PropertySet(true, current.property_set_id);
@@ -326,7 +330,7 @@ module.exports = function (r) {
             yield db.insert('sample2propertyset', s2ps);
             let oldPSetID = current.property_set_id;
             yield r.table('sample2propertyset').getAll(oldPSetID, {index: 'property_set_id'}).update({current: false});
-            yield fillAttributeSet(asetCreated.id, current.shares, current.uses, processID);
+            yield fillAttributeSet(asetCreated.id, current.shares, current.uses, current.unknowns,  processID);
         }
     }
 
@@ -337,9 +341,13 @@ module.exports = function (r) {
      * @param {Array} uses - A list of attribute ids to use to create new attributes.
      * @param processID {String} - The process id
      */
-    function *fillAttributeSet(asetID, shares, uses, processID) {
+    function *fillAttributeSet(asetID, shares, uses, unknowns, processID) {
         yield fillFromShares(asetID, shares);
-        yield fillFromUses(asetID, uses, processID);
+        console.log('shares ****');
+        yield fillFromUses(asetID, uses);
+        console.log('uses....');
+        yield fillFromUnknowns(asetID, unknowns);
+        console.log('unknonws ****');
     }
 
     /**
@@ -371,7 +379,8 @@ module.exports = function (r) {
             let origID = attr.id;
 
             // Use as template for new attribute
-            attr.id = '';
+            //attr.id = '';
+            delete attr['id'];
             attr.birthtime = r.now();
             attr.mtime = attr.birthtime;
 
@@ -387,6 +396,35 @@ module.exports = function (r) {
 
             // Add to attribute set
             let as2a = new model.PropertySet2Property(newAttr.id, asetID);
+            yield db.insert('propertyset2property', as2a);
+        }
+    }
+
+    /**
+     * Create new attributes with no measurements.
+     * @param {String} psetID - The attribute set to update
+     * @param {Array} unknowns - A list of attributes to create new attributes
+     */
+    function *fillFromUnknowns(psetID, unknowns) {
+        for (let i = 0; i < unknowns.length; i++) {
+            let attrID = unknowns[i];
+
+            // Get the attribute we are going to copy
+            let attr = yield r.table('properties').get(attrID);
+
+            // Save this attributes id for later use.
+            let origID = attr.id;
+
+            // Use as template for new attribute
+            delete attr['id'];
+            attr.birthtime = r.now();
+            attr.mtime = attr.birthtime;
+
+            // Now insert new attribute
+            let newAttr = yield db.insert('properties', attr);
+
+            // Add to attribute set
+            let as2a = new model.PropertySet2Property(newAttr.id, psetID);
             yield db.insert('propertyset2property', as2a);
         }
     }
@@ -417,6 +455,7 @@ module.exports = function (r) {
         // Change id to newAttrID and insert into table
         original.forEach(function (m) {
             m.attribute_id = newAttrID;
+            delete m['id'];
         });
         yield db.insert('property2measurement', original);
     }
@@ -437,6 +476,7 @@ module.exports = function (r) {
         // Change to newAttrID and insert
         original.forEach(function (entry) {
             entry.attribute_id = newAttrID;
+            delete entry['id'];
         });
         yield db.insert('best_measure_history', original);
     }
