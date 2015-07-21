@@ -19,14 +19,19 @@
                     <b>{{property.name}}</b> :
                     <div class="row">
                         <div class="col-xs-offset-1">
-                            <ul class="list-inline list-unstyled">
-                                <li><input type="radio"  ng-model="property.action" value="is_transformed"><span style="padding-left:30px;">Is Transformed</span>
-                                </li>
-                                <li><input type="radio" ng-model="property.action" value="is_not_transformed"><span
-                                        style="padding-left:30px;">Is Not Transformed</span></li>
-                                <!--<li><input type="radio" ng-model="property.action" value="unknown"><span-->
-                                <!--style="padding-left:30px;">Unknown</span></li>-->
-                            </ul>
+                            <select  ng-model="property.action" data-placeholder="Choose Action"
+                                    class="form-control"
+                                    validator="required">
+                                <option ng-repeat="action in actions">{{ action }}</option>
+                            </select>
+                            <!--<ul class="list-inline list-unstyled">-->
+                                <!--<li><input type="radio"  ng-model="property.action" value="is_transformed"><span style="padding-left:30px;">Is Transformed</span>-->
+                                <!--</li>-->
+                                <!--<li><input type="radio" ng-model="property.action" value="is_not_transformed"><span-->
+                                        <!--style="padding-left:30px;">Is Not Transformed</span></li>-->
+                                <!--&lt;!&ndash;<li><input type="radio" ng-model="property.action" value="unknown"><span&ndash;&gt;-->
+                                <!--&lt;!&ndash;style="padding-left:30px;">Unknown</span></li>&ndash;&gt;-->
+                            <!--</ul>-->
                         </div>
                     </div>
                     <div class="row">
