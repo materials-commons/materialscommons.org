@@ -15,32 +15,63 @@ import resp
 @app.route('/sample/measurements/<sample_id>/<property_set_id>')
 @jsonp
 def get_sample_measurements(sample_id, property_set_id):
-    measurements = list(r.table('propertyset2property').get_all(property_set_id,
-        index='attribute_set_id') \
-        .eq_join('attribute_id', r.table('properties')).zip()\
+    measurements = list(
+        r.table('propertyset2property').get_all(property_set_id,
+                                                index='attribute_set_id') \
+        .eq_join('attribute_id', r.table('properties')).zip() \
         .merge(lambda property:
-        {
-            'best_measure':
-                r.table('best_measure_history').get_all(property['best_measure_id'])
-                .eq_join('measurement_id', r.table('measurements')).zip()
-                .coerce_to('array'),
+               {
+                   'best_measure':
+                       r.table('best_measure_history').get_all(
+                           property['best_measure_id'])
+               .eq_join('measurement_id', r.table('measurements')).zip()
+               .coerce_to('array'),
 
-            'measurements':
-            r.table('property2measurement')
-            .get_all(property['id'], index="attribute_id")
-            .eq_join('measurement_id', r.table('measurements')).zip()
-            .merge(lambda measurement:
-            {
-                'process':
-                r.table('process2measurement')
-                .get_all(measurement['id'], index="measurement_id")
-                .eq_join('process_id', r.table('processes')).zip()
-                .pluck('id', 'name')
-                .coerce_to('array')
-            })
-            .coerce_to('array')
-        }).run(g.conn, time_format="raw"))
+                   'measurements':
+                       r.table('property2measurement')
+               .get_all(property['id'], index="attribute_id")
+               .eq_join('measurement_id', r.table('measurements')).zip()
+               .merge(lambda measurement:
+                      {
+                          'process':
+                              r.table('process2measurement')
+                      .get_all(measurement['id'], index="measurement_id")
+                      .eq_join('process_id', r.table('processes')).zip()
+                      .pluck('id', 'name')
+                      .coerce_to('array')
+                      })
+               .coerce_to('array')
+               }).run(g.conn, time_format="raw"))
     return resp.to_json(measurements)
+
+
+@app.route('/sample/measurements/<sample_id>', methods=['GET'])
+@jsonp
+def get_measures_by_psets(sample_id):
+    psets = r.table('sample2propertyset').get_all(sample_id, index='sample_id')\
+            .group('property_set_id') \
+        .eq_join('property_set_id', r.table('propertyset2property'),
+                 index='attribute_set_id').zip() \
+        .eq_join('attribute_id', r.table('properties')).zip()\
+        .pluck('id', 'name', 'attribute_id') \
+        .merge(lambda property:
+               {
+                   'measurements':
+                       r.table('property2measurement')
+               .get_all(property['id'], index="attribute_id")
+               .eq_join('measurement_id', r.table('measurements')).zip()
+               .merge(lambda measurement:
+                      {
+                          'process':
+                              r.table('process2measurement')
+                      .get_all(measurement['id'], index="measurement_id")
+                      .eq_join('process_id', r.table('processes')).zip()
+                      .pluck('id', 'name')
+                      .coerce_to('array')
+                      })
+               .coerce_to('array')
+               }).run(g.conn, time_format="raw")
+    return resp.to_json(psets)
 
 
 @app.route('/best_measure', methods=['POST'])
@@ -49,15 +80,17 @@ def get_sample_measurements(sample_id, property_set_id):
 def create_best_measure_history():
     j = request.get_json()
     best_measure_history = dict()
-    best_measure_history['attribute_id'] = dmutil.get_required('attribute_id', j)
-    best_measure_history['measurement_id'] = dmutil.get_required('measurement_id',j)
+    best_measure_history['attribute_id'] = dmutil.get_required('attribute_id',
+                                                               j)
+    best_measure_history['measurement_id'] = dmutil.get_required(
+        'measurement_id', j)
     best_measure_history['_type'] = 'best_measure_history'
     best_measure_history['when'] = r.now()
     history = dmutil.insert_entry('best_measure_history', best_measure_history,
                                   return_created=True)
     if history:
-        rv = r.table('properties').get(best_measure_history['attribute_id'])\
-            .update({'best_measure_id':history['id']}).run(g.conn)
+        rv = r.table('properties').get(best_measure_history['attribute_id']) \
+            .update({'best_measure_id': history['id']}).run(g.conn)
     return jsonify(history)
 
 
@@ -65,7 +98,7 @@ def create_best_measure_history():
 @jsonp
 def get_current_propertyset(sample_id):
     sample2property_set = list(r.table('sample2propertyset').get_all(sample_id,
-    index='sample_id').filter(
+                                                                     index='sample_id').filter(
         {'current': True}).run(g.conn, time_format="raw"))
     return args.json_as_format_arg(sample2property_set)
 
@@ -73,10 +106,12 @@ def get_current_propertyset(sample_id):
 @app.route('/sample/datafile/<sample_id>', methods=['GET'])
 @jsonp
 def get_sample2files(sample_id):
-    files = list(r.table('sample2datafile').get_all(sample_id, index='sample_id')
-                 .eq_join('datafile_id', r.table('datafiles')).zip()
-                 .pluck('name', 'owner', 'size', 'birthtime', 'mtime', 'id', 'mediatype')
-                 .run(g.conn, time_format="raw"))
+    files = list(
+        r.table('sample2datafile').get_all(sample_id, index='sample_id')
+        .eq_join('datafile_id', r.table('datafiles')).zip()
+        .pluck('name', 'owner', 'size', 'birthtime', 'mtime', 'id',
+               'mediatype')
+        .run(g.conn, time_format="raw"))
     return resp.to_json(files)
 
 
