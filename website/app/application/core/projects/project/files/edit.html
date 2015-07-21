@@ -1,4 +1,4 @@
-<div class="row" ng-show="type === 'file'">
+<div class="row" ng-if="type === 'file'">
     <div class="col-xs-7" style="padding-right: 1px;">
         <div class="details-main-content">
             <div class="row">
@@ -87,24 +87,14 @@
     </div>
 </div>
 
-<div ng-show="type === 'dir'">
+<div ng-if="type === 'dir'">
     <div class="col-xs-7" style="padding-right: 1px;">
         <div class="details-main-content">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="headings">{{active.displayname}}
-                        <!--<a >-->
-                        <!--<span style="color: #e26a6a;padding-left:10px;" class="fa-stack fa-lg">-->
-                              <!--<i class="fa fa-circle-thin fa-stack-2x"></i>-->
-                              <!--<i class="fa fa-upload fa-stack-1x fa-inverse"></i>-->
-                        <!--</span></a>-->
                         <mc-flow-button dir="active" ng-if="active.type === 'datadir'"></mc-flow-button>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <file-upload-panel></file-upload-panel>
                 </div>
             </div>
         </div>
