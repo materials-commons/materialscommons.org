@@ -36,11 +36,8 @@ module.exports = function (r) {
         let proc = yield addProcess(process.project_id, p);
         let settings = yield addProcessSetup(proc.id, process.setup);
         yield addSampleMeasurements(proc.id, process.input_samples);
-        console.log('addsample measuremenst done.....')
         yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
-        console.log('add created samples done.....');
         yield addTransformedSamples(process.transformed_samples, proc.id);
-        console.log('add transformed done*****');
         yield addFiles(proc.id, process.input_files, 'in');
         yield addFiles(proc.id, process.output_files, 'out');
 
@@ -321,7 +318,6 @@ module.exports = function (r) {
      *
      */
     function *addTransformedSamples(samples, processID) {
-        console.dir(samples);
         for (let i = 0; i < samples.length; i++) {
             let current = samples[i];
             let aset = new model.PropertySet(true, current.property_set_id);
@@ -343,11 +339,8 @@ module.exports = function (r) {
      */
     function *fillAttributeSet(asetID, shares, uses, unknowns, processID) {
         yield fillFromShares(asetID, shares);
-        console.log('shares ****');
         yield fillFromUses(asetID, uses);
-        console.log('uses....');
         yield fillFromUnknowns(asetID, unknowns);
-        console.log('unknonws ****');
     }
 
     /**
