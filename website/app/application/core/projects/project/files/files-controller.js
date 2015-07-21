@@ -65,7 +65,6 @@ function FilesController($scope, projectFiles, applySearch,
         eCell.addEventListener('click', function () {
             projectFiles.setActiveDirectory(params.node);
             if ($state.current.name === 'projects.project.files') {
-                console.log('yeah');
                 $state.go('projects.project.files.edit', {'file_id': ''});
             } else {
                 pubsub.send('display-directory');
