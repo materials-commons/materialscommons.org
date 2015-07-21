@@ -90,7 +90,7 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                         each(e.target.files, function(f) {
                             var req = {
                                 project_id: project.id,
-                                directory_id: scope.dir.id,
+                                directory_id: scope.dir.df_id,
                                 filename: f.name,
                                 filesize: f.size,
                                 chunk_size: flow.opts.chunkSize,
@@ -106,7 +106,6 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                                 return false;
                             };
                             if (!flow.findFile(matchFn)) {
-                                var f2 = f;
                                 mcapi("/upload")
                                     .success(function(resp){
                                         var o = {
@@ -114,7 +113,7 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                                             file: f,
                                             attrs: {
                                                 directory_name:  scope.dir.name,
-                                                directory_id: scope.dir.id,
+                                                directory_id: scope.dir.df_id,
                                                 project_id: project.id,
                                                 project_name: project.name
                                             }
@@ -122,7 +121,7 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                                         flow.addFiles([o], e);
                                     })
                                     .error(function(data, status) {
-                                        //console.log("/upload failed %O", data, status);
+                                        console.log("/upload failed %O", data, status);
                                     }).post(req);
                             }
                         });
