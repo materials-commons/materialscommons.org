@@ -65,7 +65,7 @@ function FilesController($scope, projectFiles, applySearch,
         eCell.addEventListener('click', function () {
             projectFiles.setActiveDirectory(params.node);
             if ($state.current.name === 'projects.project.files') {
-                $state.go('projects.project.files.edit', {'file_id': ''});
+                $state.go('projects.project.files.edit', {'file_id': ''}, {reload: true});
             } else {
                 pubsub.send('display-directory');
             }
@@ -76,7 +76,7 @@ function FilesController($scope, projectFiles, applySearch,
 
     function cellClicked(params) {
         projectFiles.setActiveFile(params.node);
-        $state.go('projects.project.files.edit', {'file_id': params.node.df_id});
+        $state.go('projects.project.files.edit', {'file_id': params.node.df_id}, {reload: true});
     }
 
 }
