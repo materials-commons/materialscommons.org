@@ -5,7 +5,7 @@ function homeReviewDetailsDirective() {
         controller: 'homeReviewsDetailsDirectiveController',
         scope: true,
         replace: true,
-        templateUrl: "application/core/projects/project/home/directives/home-review-details.html"
+        templateUrl: "home-review-details.html"
     };
 }
 
