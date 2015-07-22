@@ -1,5 +1,5 @@
 Application.Controllers.controller('accountApikey',
-    ["$scope", "mcapi", "User", "Nav", function ($scope, mcapi, User, Nav) {
+    ["$scope", "mcapi", "User", function ($scope, mcapi, User) {
 
         $scope.showApiKey = function () {
             $scope.showKey = !$scope.showKey;
@@ -18,7 +18,6 @@ Application.Controllers.controller('accountApikey',
         };
 
         function init() {
-            Nav.setActiveNav('apikey');
             $scope.showKey = false;
             $scope.showHideButton = "Show API Key";
             $scope.apikey = User.apikey();
