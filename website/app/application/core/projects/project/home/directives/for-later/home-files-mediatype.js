@@ -6,7 +6,7 @@ function homeFilesDirective() {
         scope: {
             project: '=project'
         },
-        templateUrl: 'application/core/projects/project/home/directives/home-files-mediatype.html'
+        templateUrl: 'home-files-mediatype.html'
     };
 }
 

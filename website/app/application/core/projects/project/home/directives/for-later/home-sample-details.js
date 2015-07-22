@@ -5,7 +5,7 @@ function homeSampleDetailsDirective() {
         scope: true,
         controller: 'homeSampleDetailsController',
         replace: true,
-        templateUrl: "application/core/projects/project/home/directives/home-sample-details.html"
+        templateUrl: "home-sample-details.html"
     };
 }
 

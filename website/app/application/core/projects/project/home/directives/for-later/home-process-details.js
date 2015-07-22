@@ -5,7 +5,7 @@ function homeProcessDetailsDirective() {
         controller: 'homeProcessDetailsDirectiveController',
         scope:true,
         replace: true,
-        templateUrl: "application/core/projects/project/home/directives/home-process-details.html"
+        templateUrl: "home-process-details.html"
     };
 }
 

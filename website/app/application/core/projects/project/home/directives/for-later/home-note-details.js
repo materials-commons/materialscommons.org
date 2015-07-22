@@ -4,6 +4,6 @@ function homeNoteDetailsDirective() {
         restrict: "AE",
         scope: true,
         replace: true,
-        templateUrl: "application/core/projects/project/home/directives/home-note-details.html"
+        templateUrl: "home-note-details.html"
     };
 }
