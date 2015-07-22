@@ -242,22 +242,14 @@ function createNumericValidator(validationProvider) {
     validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
 }
 
-app.run(["$rootScope", "User", "Restangular", "pubsub", "recent", appRun]);
+app.run(["$rootScope", "User", "Restangular", appRun]);
 
-function appRun($rootScope, User, Restangular, pubsub, recent) {
+function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
         }
-    });
-    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-        var projectID = fromParams.id;
-        if (!fromState.abstract) {
-            recent.pushLast(projectID, "ignore", fromState.name, fromParams);
-        }
-
-        pubsub.send("breadcrumbs", toState.name);
     });
 }
