@@ -11,9 +11,9 @@ function homeProcessesDirective() {
 }
 
 Application.Controllers.controller("homeProcessesDirectiveController",
-    ["$scope", "projectState", "$state", "pubsub",
+    ["$scope", "pubsub",
         homeProcessesDirectiveController]);
-function homeProcessesDirectiveController($scope, projectState, $state, pubsub) {
+function homeProcessesDirectiveController($scope, pubsub) {
     function segmentProcesses() {
         $scope.bk = {all: []};
         $scope.project.drafts.forEach(function (draft) {
@@ -58,11 +58,6 @@ function homeProcessesDirectiveController($scope, projectState, $state, pubsub) 
     pubsub.waitOn($scope, "processes.change", function () {
         segmentProcesses();
     });
-    $scope.createProcess = function () {
-        var state = null;
-        var stateID = projectState.add($scope.project.id, state);
-        //$state.go("projects.project.home.provenance", {sid: stateID});
-        $state.go("projects.project.new-wizard");
-    };
+
     segmentProcesses();
 }
