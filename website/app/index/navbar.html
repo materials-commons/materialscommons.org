@@ -19,33 +19,8 @@
                         Help
                     </a>
                 </li>
-                <li ng-if="false" ng-class="{ navactive: isActiveStep('reviews') }">
-                    <a class="dropdown-toggle pointer large-text"
-                       data-toggle="dropdown">
-                        <i class="fa fa-comment space-right"></i> Reviews
-                    <span ng-controller="globalReviewsController"
-                          style="background-color: rgba(255, 255, 255, 0.3)" class="badge ng-binding">
-                        {{(reviews | byKey:'status':'open').length}}
-                    </span>
-                    </a>
-
-                    <div class="dropdown-menu reviews-dropdown nav-dropdown-scrollbar">
-                        <!--directive-->
-                        <global-reviews></global-reviews>
-                        <!--<div  global-reviews class="" ></div>-->
-                    </div>
-                </li>
-                <li ng-if="false">
-                    <a ng-click="showStep('machines')" ui-sref="machines"
-                       class="navbar-link large-text">
-                        <i class="fa fa-fw fa-gears space-right"></i>
-                        Machines
-                    </a>
-                </li>
-
                 <li class="dropdown divider">
-                    <a ng-click="showStep('email')"
-                       class="dropdown-toggle pointer large-text" data-toggle="dropdown">
+                    <a class="dropdown-toggle pointer large-text" data-toggle="dropdown">
                         <i class="fa fa-fw fa-user space-right"></i>{{email_address}}
                         <span class="caret caret-light"></span>
                     </a>
