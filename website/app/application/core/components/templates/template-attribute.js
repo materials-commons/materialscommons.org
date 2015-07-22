@@ -88,7 +88,7 @@ function templateAttributeHistogramDirectiveController($scope, $modal) {
 
     $scope.addMeasurement = function() {
         var modal = $modal.open({
-            templateUrl: "application/core/projects/project/provenance/wizard/add-measurements.html",
+            templateUrl: "../../projects/project/processes/for-later/wizard/add-measurements.html",
             controller: "ModalAddMeasurements",
             size: 'lg'
         });
