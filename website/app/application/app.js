@@ -226,11 +226,6 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: "application/core/projects/project/access/access.html",
             controller: "projectAccess"
         })
-        .state("projects.project.drafts", {
-            url: "/drafts",
-            templateUrl: "application/core/projects/project/drafts/drafts.html",
-            controller: "projectDrafts"
-        })
         .state("projects.project.reviews", {
             url: "/reviews/:category",
             templateUrl: "application/core/projects/project/reviews/reviews.html",
