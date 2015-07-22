@@ -1,6 +1,6 @@
-Application.Services.factory("taskBarState", taskBarStateService);
+Application.Services.factory("navBarState", navBarStateService);
 
-function taskBarStateService() {
+function navBarStateService() {
     var self = this;
     self.current = {
         activePage: ""
