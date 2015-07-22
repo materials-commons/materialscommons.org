@@ -1,13 +1,13 @@
 Application.Controllers.controller('projectsProject',
-                                   ["$scope", "provStep", "ui",
-                                    "project", "current", "pubsub", "User",
-                                    "projectFiles", "mcapi", "help", "sideboard", "projects",
-                                    "$state",
-                                    projectsProject]);
+    ["$scope", "ui",
+        "project", "current", "pubsub", "User",
+        "projectFiles", "mcapi", "help", "sideboard", "projects",
+        "$state",
+        projectsProject]);
 
-function projectsProject ($scope, provStep, ui, project, current,
-                          pubsub, User, projectFiles, mcapi,
-                          help, sideboard, projects, $state) {
+function projectsProject($scope, ui, project, current,
+                         pubsub, User, projectFiles, mcapi,
+                         help, sideboard, projects, $state) {
     $scope.projects = projects;
     $scope.sideboard = sideboard.get(project.id);
     $scope.setProject = function (project) {
@@ -17,25 +17,24 @@ function projectsProject ($scope, provStep, ui, project, current,
         $state.go("projects.project.home", {id: project.id});
     };
 
-    $scope.showHelp = function() {
+    $scope.showHelp = function () {
         return help.isActive();
     };
 
-    $scope.isExpanded = function(what) {
+    $scope.isExpanded = function (what) {
         return help.isActive() && ui.isExpanded(project.id, what);
     };
 
     current.setProject(project);
     pubsub.send("sidebar.project");
 
-    provStep.addProject(project.id);
     $scope.project = project;
 
-    $scope.showTabs = function() {
+    $scope.showTabs = function () {
         return ui.showToolbarTabs(project.id);
     };
 
-    $scope.showFiles = function() {
+    $scope.showFiles = function () {
         return ui.showFiles(project.id);
     };
 
@@ -49,7 +48,7 @@ function projectsProject ($scope, provStep, ui, project, current,
     if (!(project.id in projectFiles.model.projects)) {
         $scope.loaded = false;
         mcapi("/projects/%/tree2", project.id)
-            .success(function(files){
+            .success(function (files) {
                 var obj = {};
                 obj.dir = files[0];
                 projectFiles.model.projects[project.id] = obj;

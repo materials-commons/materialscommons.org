@@ -14,9 +14,9 @@ function projectNavBarDirective() {
 
 Application.Controllers.controller("projectNavBarDirectiveController",
     ["$scope", "current", "$state", "ui",
-        "User", "sideboard", "$state", "navBarState",
+        "User", "sideboard", "navBarState",
         projectNavBarDirectiveController]);
-function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, $state, navBarState) {
+function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, navBarState) {
     $scope.setProject = function (project) {
         current.setProject(project);
         $scope.showProjects = false;
@@ -88,23 +88,6 @@ function projectNavBarDirectiveController($scope, current, $state, ui, User, sid
         }
     };
 
-    $scope.openProvWizard = function () {
-        $state.go("projects.project.new-wizard");
-        /*
-         ui.togglePanelState($scope.project.id, "provwizard");
-         if (ui.showPanel($scope.project.id, "provwizard")) {
-         // Activating the wizard. Drafts shares this ui-view
-         // so set it to inactive.
-         ui.setPanelState($scope.project.id, "drafts", false);
-         var state = null;
-         var stateID = projectState.add($scope.project.id, state);
-         $state.go("projects.project.home.provenance", {sid: stateID});
-         } else {
-         // Deactivating the wizard
-         $state.go("projects.project.home");
-         }
-         */
-    };
     function init(){
         $scope.activePage = navBarState.getActiveState($state);
         $scope.mcuser = User.attr();
