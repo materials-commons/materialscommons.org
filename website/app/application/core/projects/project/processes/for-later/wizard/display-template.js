@@ -7,7 +7,7 @@ function displayTemplateDirective() {
             template: "=template",
         },
         controller: "displayTemplateDirectiveController",
-        templateUrl: "application/core/projects/project/provenance/wizard/display-template.html"
+        templateUrl: "/display-template.html"
     };
 }
 Application.Controllers.controller("displayTemplateDirectiveController",

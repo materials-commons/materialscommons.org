@@ -8,7 +8,7 @@ function showTemplateDetailsDirective(RecursionHelper) {
             template: "=template",
         },
         controller: "showTemplateDetailsDirectiveController",
-        templateUrl: "application/core/projects/project/provenance/wizard/show-template-details.html",
+        templateUrl: "/show-template-details.html",
         compile: function(element) {
             return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
             });

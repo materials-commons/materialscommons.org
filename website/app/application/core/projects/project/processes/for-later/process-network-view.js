@@ -8,7 +8,7 @@ function processNetworkViewDirective() {
             templates: "=templates"
         },
         controller: "processNetworkViewDirectiveController",
-        templateUrl: "application/core/projects/project/processes/process-network-view.html"
+        templateUrl: "process-network-view.html"
     };
 }
 

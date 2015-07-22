@@ -142,75 +142,6 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "projectHome"
         })
-        .state("projects.project.new-wizard", {
-            url: "/new-wizard",
-            templateUrl: "application/core/projects/project/provenance/wizard/wizard.html",
-            controller: "provWizardController"
-        })
-        .state("projects.project.new-wizard.node-details", {
-            url: "/node-details/:node_id",
-            templateUrl: "application/core/projects/project/provenance/wizard/node-details.html",
-            controller: "nodeDetailsController"
-        })
-        .state("projects.project.new-wizard.edge-details", {
-            url: "/edge-details/:edge_id",
-            templateUrl: "application/core/projects/project/provenance/wizard/edge-details.html",
-            controller: "edgeDetailsController"
-        })
-        .state("projects.project.new-wizard.templates", {
-            url: "/templates",
-            templateUrl: "application/core/projects/project/provenance/wizard/templates.html",
-            controller: "chooseTemplateController"
-        })
-        .state("projects.project.new-wizard.create-process", {
-            url: "/create/:template_id",
-            templateUrl: "application/core/projects/project/provenance/wizard/create.html",
-            controller: "createProvenanceFromTemplate",
-            resolve: {
-                template: ["templates", "$stateParams", "templateConstructer",
-                    function (templates, $stateParams, templateConstructer) {
-                        var index = _.indexOf(templates, function (template) {
-                            return template.id === $stateParams.template_id;
-                        });
-                        return index === -1 ? {} : templateConstructer.constructTemplate(templates[index]);
-                    }]
-            }
-        })
-        .state("projects.project.new-wizard.create-process.edit", {
-            url: "/edit/:section/:category/:attribute",
-            templateUrl: "application/core/projects/project/provenance/wizard/edit.html",
-            controller: "createProvenanceEdit",
-            resolve: {
-                section: ["template", "$stateParams", function (template, $stateParams) {
-                    var index = _.indexOf(template.sections, function (section) {
-                        return section.name === $stateParams.section;
-                    });
-                    return template.sections[index];
-                }],
-                category: ["section", "$stateParams", function (section, $stateParams) {
-                    var index = _.indexOf(section.categories, function (category) {
-                        return category.category === $stateParams.category;
-                    });
-                    return section.categories[index];
-                }],
-
-                attribute: ["category", "$stateParams", function (category, $stateParams) {
-                    if ($stateParams.attribute) {
-                        var index = _.indexOf(category.attributes, function (attribute) {
-                            return attribute.attribute === $stateParams.attribute;
-                        });
-                        return category.attributes[index];
-                    } else {
-                        return false;
-                    }
-                }]
-            }
-        })
-        .state("projects.project.provenance", {
-            url: "/provenance/:item_id/:prov_type",
-            templateUrl: "application/core/projects/project/provenance/new/provenance.html",
-            controller: "projectProvenanceController"
-        })
         .state("projects.project.files", {
             url: "/files",
             templateUrl: "application/core/projects/project/files/files.html",
@@ -276,11 +207,6 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             url: "/samples/:category",
             templateUrl: "application/core/projects/project/samples/samples.html",
             controller: "projectSamples"
-        })
-        .state("projects.project.samples.create", {
-            url: "/samples/create",
-            templateUrl: "application/core/projects/project/samples/create.html",
-            controller: "projectSamplesCreate"
         })
         .state("projects.project.samples.edit", {
             url: "/edit/:sample_id",
