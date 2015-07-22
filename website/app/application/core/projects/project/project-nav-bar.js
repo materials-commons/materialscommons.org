@@ -1,5 +1,5 @@
-Application.Directives.directive("projectTaskBar", projectTaskBarDirective);
-function projectTaskBarDirective() {
+Application.Directives.directive("projectNavBar", projectNavBarDirective);
+function projectNavBarDirective() {
     return {
         restrict: "E",
         replace: true,
@@ -7,16 +7,16 @@ function projectTaskBarDirective() {
             project: "=project",
             projects: "=projects"
         },
-        controller: "projectTaskBarDirectiveController",
-        templateUrl: "application/core/projects/project/project-task-bar.html"
+        controller: "projectNavBarDirectiveController",
+        templateUrl: "application/core/projects/project/project-nav-bar.html"
     };
 }
 
-Application.Controllers.controller("projectTaskBarDirectiveController",
+Application.Controllers.controller("projectNavBarDirectiveController",
     ["$scope", "current", "$state", "ui",
-        "User", "sideboard", "$state", "taskBarState",
-        projectTaskBarDirectiveController]);
-function projectTaskBarDirectiveController($scope, current, $state, ui, User, sideboard, $state, taskBarState) {
+        "User", "sideboard", "$state", "navBarState",
+        projectNavBarDirectiveController]);
+function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, $state, navBarState) {
     $scope.setProject = function (project) {
         current.setProject(project);
         $scope.showProjects = false;
@@ -66,7 +66,7 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
     };
 
     $scope.toggleExpanded = function (panel) {
-        $scope.activePage = taskBarState.setActiveState(panel);
+        $scope.activePage = navBarState.setActiveState(panel);
         if (panel === 'processes'){
             $state.go('projects.project.processes.list');
         }else{
@@ -106,7 +106,7 @@ function projectTaskBarDirectiveController($scope, current, $state, ui, User, si
          */
     };
     function init(){
-        $scope.activePage = taskBarState.getActiveState($state);
+        $scope.activePage = navBarState.getActiveState($state);
         $scope.mcuser = User.attr();
         $scope.list = sideboard.get($scope.project.id);
 
