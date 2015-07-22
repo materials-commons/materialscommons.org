@@ -87,7 +87,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         })
         .state('account.settings', {
             url: '/settings',
-            templateUrl: 'application/core/account/settings.html'
+            templateUrl: 'application/core/account/settings/settings.html'
         })
         .state('account.templates', {
             url: '/templates',
