@@ -12,7 +12,6 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
 
     pubsub.waitOn($scope, 'display-directory', function () {
         $scope.active = projectFiles.getActiveDirectory();
-        console.dir($scope.active);
         $scope.type = 'dir';
     });
 
@@ -43,20 +42,29 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         $scope.active = null;
     };
 
+    $scope.rename = function(active) {
+        console.log("rename %O", active);
+    };
+
     function getActiveFile() {
         $scope.active = projectFiles.getActiveFile();
-        $scope.type = 'file';
-        if (isImage($scope.active.mediatype)) {
-            $scope.fileType = "image";
-        } else if ($scope.active.mediatype === "application/pdf") {
-            $scope.fileType = "pdf";
-        }
-        else if ($scope.active.mediatype === "application/vnd.ms-excel") {
-            $scope.fileType = "xls";
+        if (!$scope.active) {
+            // A refresh on page has happened, so show top level directory.
+            $scope.active = $scope.active = projectFiles.getActiveDirectory();
+            $scope.type = 'dir';
         } else {
-            $scope.fileType = $scope.active.mediatype;
+            $scope.type = 'file';
+            if (isImage($scope.active.mediatype)) {
+                $scope.fileType = "image";
+            } else if ($scope.active.mediatype === "application/pdf") {
+                $scope.fileType = "pdf";
+            }
+            else if ($scope.active.mediatype === "application/vnd.ms-excel") {
+                $scope.fileType = "xls";
+            } else {
+                $scope.fileType = $scope.active.mediatype;
+            }
         }
-
     }
 
     function init() {
@@ -66,7 +74,6 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
             getActiveFile();
         } else {
             $scope.active = projectFiles.getActiveDirectory();
-            console.dir($scope.active);
             $scope.type = 'dir';
         }
     }
