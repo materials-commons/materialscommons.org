@@ -1,7 +1,7 @@
 Application.Controllers.controller('accountTemplates',
-                                   ["$scope", "mcapi", "User", "alertService", "$filter", "Nav", "model.templates", accountTemplates]);
+    ["$scope", "mcapi", "User", "$filter", "model.templates", accountTemplates]);
 
-function accountTemplates ($scope, mcapi, User, alertService, $filter, Nav, templates) {
+function accountTemplates($scope, mcapi, User, $filter, templates) {
     $scope.check = function (t) {
         var status = $scope.preferred_templates.filter(function (el) {
             return el.template_name === t.template_name;
@@ -43,9 +43,8 @@ function accountTemplates ($scope, mcapi, User, alertService, $filter, Nav, temp
     };
 
     function init() {
-        Nav.setActiveNav('Templates');
         $scope.preferred_templates = [];
-        templates.getList().then(function(templates) {
+        templates.getList().then(function (templates) {
             $scope.all_templates = templates;
             $scope.process_templates = $filter('byKey')(templates, 'template_type', 'process');
             $scope.experimental_templates = $filter('byKey')(templates, 'template_pick', 'experiment');
