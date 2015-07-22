@@ -79,4 +79,9 @@ function FilesController($scope, projectFiles, applySearch,
         $state.go('projects.project.files.edit', {'file_id': params.node.df_id}, {reload: true});
     }
 
+    function init() {
+        projectFiles.setActiveDirectory($scope.files[0]);
+    }
+
+    init();
 }
