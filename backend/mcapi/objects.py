@@ -26,7 +26,6 @@ def get_sample_measurements(sample_id, property_set_id):
                            property['best_measure_id'])
                .eq_join('measurement_id', r.table('measurements')).zip()
                .coerce_to('array'),
-
                    'measurements':
                        r.table('property2measurement')
                .get_all(property['id'], index="attribute_id")
