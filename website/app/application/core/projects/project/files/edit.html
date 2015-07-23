@@ -68,8 +68,8 @@
                             <a ng-click="file.editNote = !file.editNote"><i class="fa fa-fw fa-edit"></i></a></span>
 
                 <div class="row" ng-show="!file.editNote">
-                    <div class="col-xs-3">Title:</div>
-                    <div class="col-xs-8">{{file.active.notes[0].title}}</div>
+                    <div class="col-xs-8">Title: {{file.active.notes[0].title}}</div>
+                    <hr>
                     <div ng-if="file.active.notes.length !== 0" class="col-xs-11" ta-bind
                          ng-model="file.active.notes[0].note"></div>
                 </div>
