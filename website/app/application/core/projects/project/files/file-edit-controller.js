@@ -1,6 +1,6 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", FilesEditController]);
-function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags) {
+    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", FilesEditController]);
+function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi) {
 
     $scope.bk = {
         editNote: false
@@ -42,8 +42,14 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         $scope.active = null;
     };
 
-    $scope.rename = function(active) {
+    $scope.rename = function (active) {
         console.log("rename %O", active);
+        mcapi("/datafile/%", $stateParams.file_id)
+            .success(function (data) {
+                console.log("success: %O", data);
+                $scope.active.name = "renamed";
+            })
+            .put({name: "renamed"})
     };
 
     function getActiveFile() {
