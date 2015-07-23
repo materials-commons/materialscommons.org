@@ -6,10 +6,8 @@ from .. import error
 from .. import access
 from .. import resp
 from .. import dmutil
-from loader.model import note
 from loader.model import note2item
 from build_notes import construct_notes, update_join, does_join_exists
-
 
 
 @app.route('/datafile/<datafileid>', methods=['GET'])
@@ -19,7 +17,7 @@ def datafile_for_user_by_id(datafileid):
     rr = r.table('datafiles').get(datafileid)
     df = rr.run(g.conn, time_format='raw')
     if df is None:
-        return error.bad_request("No such datafile: %s" % (datafileid))
+        return error.bad_request("No such datafile: %s" % datafileid)
     access.check(user, df['owner'], df['id'])
     tags = list(r.table('tag2item')
                 .get_all(datafileid, index='item_id')
@@ -33,35 +31,41 @@ def datafile_for_user_by_id(datafileid):
 @app.route("/datafile/<datafile_id>/tags/notes", methods=['GET'])
 @jsonp
 def get_tags_notes(datafile_id):
-    tags_notes = list(r.table('datafile').get_all(datafile_id).merge(lambda datafile:
-        {
-            'tags': r.table('tag2item').get_all(datafile_id, index='item_id')
-            .coerce_to('array'),
-            'notes': r.table('note2item').get_all(datafile_id, index='item_id')
-            .eq_join('note_id', r.table('notes'))
-            .coerce_to('array')
-        }.run(g.conn, time_format="raw")))
+    tags_notes = list(r.table('datafile').get_all(datafile_id).
+                      merge(lambda datafile:
+                            {
+                                'tags': r.table('tag2item').get_all(
+                                    datafile_id, index='item_id')
+                                .coerce_to('array'),
+                                'notes': r.table('note2item').get_all(
+                                    datafile_id, index='item_id')
+                                .eq_join('note_id', r.table('notes'))
+                                .coerce_to('array')
+                            }).run(g.conn, time_format="raw"))
     return resp.to_json(tags_notes)
+
 
 @app.route("/datafile/<datafile_id>", methods=['PUT'])
 @apikey
 def update_datafile(datafile_id):
     user = access.get_user()
     j = request.get_json()
-    df = r.table("datafiles").get(datafile_id).run(g.conn)
+    df = r.table("datafiles").get(datafile_id).run(g.conn, time_format="raw")
     if df is None:
-        return error.bad_request("No such datafile: %s" % (datafile_id))
+        return error.bad_request("No such datafile: %s" % datafile_id)
     access.check(user, df['owner'], df['id'])
     name = dmutil.get_optional("name", j, None)
     if name is not None:
-        r.table("datafiles").get(datafile_id).update({"name": name}).run(g.conn)
+        err = rename_datafile(datafile_id, name)
+        if err is not None:
+            return error.bad_request(err)
 
     tag_id = dmutil.get_optional("tag_id", j, None)
     if tag_id is not None:
         # make sure tag exists
         tag = r.table("tags").get(tag_id).run(g.conn)
         if tag is None:
-            return error.bad_request("No such tag: %s" % (tag_id))
+            return error.bad_request("No such tag: %s" % tag_id)
         # Make sure file isn't already tagged with this tag
         tags = list(r.table("tag2item")
                     .get_all(df['id'], index="item_id")
@@ -77,8 +81,18 @@ def update_datafile(datafile_id):
             "item_name": df['name'],
             "item_type": "datafile"
         }).run(g.conn)
-
     return resp.to_json(df)
+
+
+def rename_datafile(datafile_id, name):
+    matching_name_count = r.table("datadir2datafile").get_all(datafile_id, index="datafile_id"). \
+        eq_join("datadir_id", r.table("datadir2datafile"), index="datadir_id").zip(). \
+        eq_join("datafile_id", r.table("datafiles")).zip(). \
+        filter({"name": name}).count().run(g.conn)
+    if matching_name_count != 0:
+        return "file with name '%s' already exists" % name
+    r.table("datafiles").get(datafile_id).update({"name": name}).run(g.conn)
+    return None
 
 
 @app.route("/datafile/<datafile_id>/note", methods=['PUT'])
