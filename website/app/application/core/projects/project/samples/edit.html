@@ -9,9 +9,22 @@
             </div>
         </div>
         <div class="row">
-            <div class="sample headings">Properties</div>
+            <div class="sample headings">Transformation</div>
+            <p><small class="text-muted">This section will provide <b>{{current.name}}</b> initial measuremenets and how these measures have been transformed overrtime.</small></p>
+            <ul style="padding-left: 40px;" class="list-inline">
+                <li style="padding:10px;" ng-repeat="(key, values) in property_sets">
+                    <div ng-repeat="process in values">
+                        <b ng-if="process.does_transform === true">
+                            <img style="height: 30px;padding-bottom: 10px;" src="assets/img/splash/process-icon.png">
+                            <a ng-class="{'underline': key === ps_id}"
+                               ng-click="showProperties(key)">{{process.name}}</a></b>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
             <ul>
-                <li style="padding:10px;" ng-repeat="property in current.properties">
+                <li style="padding:10px;" ng-repeat="property in properties">
                     <b>{{property.name}}</b> :
                     <div class="row">
                         <div class="col-xs-offset-1">
@@ -34,6 +47,8 @@
                 </li>
             </ul>
         </div>
+
+
         <div class="row">
             <div class="sample headings">Attachments</div>
             <div class="row" ng-repeat="file in current.files">
