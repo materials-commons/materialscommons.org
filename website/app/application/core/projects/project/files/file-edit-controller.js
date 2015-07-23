@@ -1,6 +1,7 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", FilesEditController]);
-function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal) {
+    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", "toastr",
+        FilesEditController]);
+function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal, toastr) {
 
     $scope.bk = {
         editNote: false
@@ -60,6 +61,9 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
                 .success(function () {
                     $scope.active.name = name;
                     pubsub.send('files.refresh');
+                })
+                .error(function(err) {
+                    toastr.error("Rename failed: " + err.error, "Error");
                 })
                 .put({name: name});
         });
