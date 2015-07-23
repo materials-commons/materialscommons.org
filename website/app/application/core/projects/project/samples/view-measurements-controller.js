@@ -1,17 +1,20 @@
 Application.Controllers.controller('viewMeasurementController',
-    ["$scope", "project", "$state", "$log", "modal", "mcapi", viewMeasurementController]);
+    ["$scope", "project", "$state", "$log", "modal", "mcapi", "pubsub", viewMeasurementController]);
 
-function viewMeasurementController($scope, project, $state, $log, modal, mcapi) {
+function viewMeasurementController($scope, project, $state, $log, modal, mcapi, pubsub) {
     $scope.modal = modal;
     this.all = project.processes;
     $scope.selected = {
         item: {}
     };
-    console.dir($scope.modal);
-    function updateBestMeasure(){
+    function updateBestMeasure() {
         mcapi('/best_measure')
-            .success(function (properties) {
-            }).post({attribute_id: $scope.modal.property.attribute_id, measurement_id: $scope.selected.item.measurement_id})
+            .success(function () {
+                pubsub.send('updateBestMeasurement');
+            }).post({
+                attribute_id: $scope.modal.property.attribute_id,
+                measurement_id: $scope.selected.item.measurement_id
+            })
     }
 
     $scope.ok = function () {

@@ -3,7 +3,7 @@
 
     <div class="row" ng-repeat="sample in template.input_samples">
         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-        <img src="../../../../../../assets/img/splash/sample_icon.png"
+        <img src="assets/img/splash/sample_icon.png"
              style="height: 40px;padding-bottom: 10px;">
         <a ng-click="openDetails(sample)" class="link pointer"
            style="padding-left: 15px;">{{sample.name}}</a>
@@ -62,7 +62,7 @@
                 <ul>
                     <li ng-repeat="file in sample.files">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                        <img src="../../../../../../assets/img/splash/file_icon.png"
+                        <img src="assets/img/splash/file_icon.png"
                              style="height: 30px;padding-bottom: 10px;"> {{file.name}}
                         <i ng-click="removeLink(sample, file)"
                            class="fa fa-fw fa-close pull-right pointer"></i>
