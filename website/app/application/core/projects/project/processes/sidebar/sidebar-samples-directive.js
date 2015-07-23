@@ -3,6 +3,6 @@ function sidebarSamplesDirective() {
     return {
         restrict: "EA",
         scope: true,
-        templateUrl: 'sidebar-samples.html'
+        templateUrl: 'application/core/projects/project/processes/sidebar/sidebar-samples.html'
     };
 }
