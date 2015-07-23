@@ -45,32 +45,17 @@ def get_sample_measurements(sample_id, property_set_id):
     return resp.to_json(measurements)
 
 
-@app.route('/sample/measurements/<sample_id>', methods=['GET'])
+@app.route('/sample/propertysets/<sample_id>', methods=['GET'])
 @jsonp
-def get_measures_by_psets(sample_id):
-    psets = r.table('sample2propertyset').get_all(sample_id, index='sample_id')\
-            .group('property_set_id') \
-        .eq_join('property_set_id', r.table('propertyset2property'),
-                 index='attribute_set_id').zip() \
-        .eq_join('attribute_id', r.table('properties')).zip()\
-        .pluck('id', 'name', 'attribute_id') \
-        .merge(lambda property:
-               {
-                   'measurements':
-                       r.table('property2measurement')
-               .get_all(property['id'], index="attribute_id")
-               .eq_join('measurement_id', r.table('measurements')).zip()
-               .merge(lambda measurement:
-                      {
-                          'process':
-                              r.table('process2measurement')
-                      .get_all(measurement['id'], index="measurement_id")
-                      .eq_join('process_id', r.table('processes')).zip()
-                      .pluck('id', 'name')
-                      .coerce_to('array')
-                      })
-               .coerce_to('array')
-               }).run(g.conn, time_format="raw")
+def get_propertysets(sample_id):
+    psets = r.table('sample2propertyset') \
+        .get_all(sample_id, index='sample_id') \
+        .eq_join('property_set_id', r.table('process2sample'),
+                 index='property_set_id').zip() \
+        .group('property_set_id').pluck('process_id') \
+        .eq_join('process_id', r.table('processes')).zip() \
+        .pluck('process_id', 'name', 'does_transform')\
+            .run(g.conn, time_format="raw")
     return resp.to_json(psets)
 
 
