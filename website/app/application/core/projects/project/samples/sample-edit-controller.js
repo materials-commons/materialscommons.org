@@ -24,10 +24,23 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
     };
 
     function getMeasurements(){
-        mcapi('/sample/measurements/%', $scope.current.id)
-            .success(function (properties) {
-                $scope.current.properties = properties;
-                console.dir(properties);
+        mcapi('/sample/propertysets/%', $scope.current.id)
+            .success(function (property_sets) {
+                angular.forEach(property_sets, function(values, key){
+                   var count = 0;
+                    values.forEach(function(item){
+                        if(item.does_transform === true){
+                            count ++;
+                        }
+                    });
+                    if (count < 1){
+                        values[0].does_transform = true;
+                        values[0].name = "Start"
+                    }
+
+                });
+                $scope.property_sets = property_sets;
+                $scope.showProperties(Object.keys(property_sets)[0]);
             })
             .error(function (err) {
                 console.log(err)
@@ -43,6 +56,18 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
     $scope.openFile = function(file){
         modalInstance.openModal(file, 'datafile', project);
     };
+
+    $scope.showProperties = function(ps_id){
+        $scope.ps_id = ps_id;
+        mcapi('/sample/measurements/%/%', $scope.current.id, ps_id)
+            .success(function (properties) {
+                $scope.properties = properties;
+            })
+            .error(function (err) {
+                console.log(err)
+            })
+            .jsonp();
+    }
 
     function init() {
         $scope.project = project;
