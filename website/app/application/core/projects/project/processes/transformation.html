@@ -6,12 +6,17 @@
 
     <div class="modal-body">
         <div class="row">
-            Below are the actions you will have to perform on your sample properties. Each action is explained below <br>
+            Below are the actions you will have to perform on your sample properties. Each action is explained below
+            <br>
 
-           <b>Is Transformed: </b>  <br>
+            <b>Copy: </b> <br>
+            <b>Share:</b> <br>
+            <b>Delete: </b> <br>
+            <b>Unknown: </b> <br>
 
-            <b>Is Not Transformed:</b> <br>
-        </div> <br>
+        </div>
+        <br>
+
         <div class="row">
             <div class="sample headings">Properties</div>
             <ul>
@@ -19,35 +24,42 @@
                     <b>{{property.name}}</b> :
                     <div class="row">
                         <div class="col-xs-offset-1">
-                            <select  ng-model="property.action" data-placeholder="Choose Action"
+                            <select ng-model="property.action" data-placeholder="Choose Action"
                                     class="form-control"
                                     validator="required">
                                 <option ng-repeat="action in actions">{{ action }}</option>
                             </select>
-                            <!--<ul class="list-inline list-unstyled">-->
-                                <!--<li><input type="radio"  ng-model="property.action" value="is_transformed"><span style="padding-left:30px;">Is Transformed</span>-->
-                                <!--</li>-->
-                                <!--<li><input type="radio" ng-model="property.action" value="is_not_transformed"><span-->
-                                        <!--style="padding-left:30px;">Is Not Transformed</span></li>-->
-                                <!--&lt;!&ndash;<li><input type="radio" ng-model="property.action" value="unknown"><span&ndash;&gt;-->
-                                <!--&lt;!&ndash;style="padding-left:30px;">Unknown</span></li>&ndash;&gt;-->
-                            <!--</ul>-->
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-offset-1">
-                            Best Measure: <span ng-if="property.best_measure.length !== 0"
-                                                style="padding-left: 5px;">
+                            <div class="col-xs-6">
+                                Best Measure: <span ng-if="property.best_measure.length !== 0"
+                                                    style="padding-left: 5px;">
                                     {{property.best_measure[0].value}}  {{property.best_measure[0].units}}</span> <br>
-                            Measurements:
-                            <ul>
-                                <li ng-repeat="measure in property.measurements">
-                                    <div>
-                                        <display-measurement current-process="modal.item.process_id"
-                                                             measure="measure"></display-measurement>
-                                    </div>
-                                </li>
-                            </ul>
+                                Measurements:
+                                <ul>
+                                    <li ng-repeat="measure in property.measurements">
+                                        <div>
+                                            <display-measurement current-process="modal.item.process_id"
+                                                                 measure="measure"></display-measurement>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-5">
+                                <p style="padding: 10px;" class="bg-warning" ng-if="property.action==='unknown'">
+                                    {{property.name}} measures will be unknown as a result of this transformation</p>
+
+                                <p style="padding: 10px;" class="bg-success" ng-if="property.action==='copy'">
+                                    {{property.name}} measures will be copied over as a result of this transformation</p>
+
+                                <p style="padding: 10px;" class="bg-success" ng-if="property.action==='share'">
+                                    {{property.name}} measures shared as a result of this transformation</p>
+
+                                <p style="padding: 10px;" class="bg-danger" ng-if="property.action==='delete'">
+                                    {{property.name}} will be deleted as a result of this transformation</p>
+                            </div>
                         </div>
                     </div>
                 </li>
