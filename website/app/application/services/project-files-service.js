@@ -10,7 +10,7 @@ function projectFilesService(pubsub) {
             projects: {}
         },
         activeByProject: {},
-        activeFile: {},
+        activeFile: null,
         activeDirectory: {},
 
         isActive: function (projectID) {
@@ -55,6 +55,18 @@ function projectFilesService(pubsub) {
                     }
                 }
             });
+        },
+
+        findFileByID: function(projectID, fileID) {
+            var f = null;
+            var treeModel = new TreeModel(),
+                root = treeModel.parse(service.model.projects[projectID].dir);
+            root.walk({strategy: 'pre'}, function(node) {
+                if (node.model.df_id == fileID) {
+                    f = node.model;
+                }
+            });
+            return f;
         },
 
         setActiveFile: function (what) {

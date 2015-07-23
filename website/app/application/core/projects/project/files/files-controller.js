@@ -3,12 +3,15 @@ Application.Controllers.controller("FilesController",
         "pubsub", "mcfile", "$state", "pubsub", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
                          $filter, mcfile, $state, pubsub) {
-
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
     $scope.files = [f];
     applySearch($scope, "searchInput", applyQuery);
+
+    pubsub.waitOn($scope, 'files.refresh', function() {
+        $scope.gridOptions.api.refreshView();
+    });
 
     function applyQuery() {
         var search = {
@@ -65,7 +68,7 @@ function FilesController($scope, projectFiles, applySearch,
         eCell.addEventListener('click', function () {
             projectFiles.setActiveDirectory(params.node);
             if ($state.current.name === 'projects.project.files') {
-                $state.go('projects.project.files.edit', {'file_id': ''});
+                $state.go('projects.project.files.edit', {'file_id': ''}, {reload: true});
             } else {
                 pubsub.send('display-directory');
             }
@@ -76,7 +79,12 @@ function FilesController($scope, projectFiles, applySearch,
 
     function cellClicked(params) {
         projectFiles.setActiveFile(params.node);
-        $state.go('projects.project.files.edit', {'file_id': params.node.df_id});
+        $state.go('projects.project.files.edit', {'file_id': params.node.df_id}, {reload: true});
     }
 
+    function init() {
+        projectFiles.setActiveDirectory($scope.files[0]);
+    }
+
+    init();
 }

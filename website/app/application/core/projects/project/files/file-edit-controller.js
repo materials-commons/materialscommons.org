@@ -1,6 +1,6 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", FilesEditController]);
-function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags) {
+    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", FilesEditController]);
+function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal) {
 
     $scope.bk = {
         editNote: false
@@ -12,7 +12,6 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
 
     pubsub.waitOn($scope, 'display-directory', function () {
         $scope.active = projectFiles.getActiveDirectory();
-        console.dir($scope.active);
         $scope.type = 'dir';
     });
 
@@ -43,20 +42,48 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         $scope.active = null;
     };
 
+    $scope.rename = function () {
+        var modalInstance = $modal.open({
+            size: 'sm',
+            templateUrl: 'application/core/projects/project/files/rename-file.html',
+            controller: 'RenameFileModalController',
+            controllerAs: 'file',
+            resolve: {
+                active: function() {
+                    return $scope.active;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(name) {
+            mcapi("/datafile/%", $stateParams.file_id)
+                .success(function () {
+                    $scope.active.name = name;
+                    pubsub.send('files.refresh');
+                })
+                .put({name: name});
+        });
+    };
+
     function getActiveFile() {
         $scope.active = projectFiles.getActiveFile();
-        $scope.type = 'file';
-        if (isImage($scope.active.mediatype)) {
-            $scope.fileType = "image";
-        } else if ($scope.active.mediatype === "application/pdf") {
-            $scope.fileType = "pdf";
-        }
-        else if ($scope.active.mediatype === "application/vnd.ms-excel") {
-            $scope.fileType = "xls";
+        if (!$scope.active) {
+            // A refresh on page has happened, so show top level directory.
+            $scope.active = $scope.active = projectFiles.getActiveDirectory();
+            $scope.type = 'dir';
         } else {
-            $scope.fileType = $scope.active.mediatype;
+            $scope.type = 'file';
+            if (isImage($scope.active.mediatype)) {
+                $scope.fileType = "image";
+            } else if ($scope.active.mediatype === "application/pdf") {
+                $scope.fileType = "pdf";
+            }
+            else if ($scope.active.mediatype === "application/vnd.ms-excel") {
+                $scope.fileType = "xls";
+            } else {
+                $scope.fileType = $scope.active.mediatype;
+            }
         }
-
     }
 
     function init() {
@@ -66,10 +93,30 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
             getActiveFile();
         } else {
             $scope.active = projectFiles.getActiveDirectory();
-            console.dir($scope.active);
             $scope.type = 'dir';
         }
     }
 
     init();
+}
+
+Application.Controllers.controller("RenameFileModalController",
+    ["$modalInstance", "active", RenameFileModalController]);
+function RenameFileModalController($modalInstance, active) {
+    var ctrl = this;
+    ctrl.name = "";
+    ctrl.rename = rename;
+    ctrl.cancel = cancel;
+
+    ///////////
+
+    function rename() {
+        if (ctrl.name != "" && ctrl.name != active.name) {
+            $modalInstance.close(ctrl.name);
+        }
+    }
+
+    function cancel() {
+        $modalInstance.dismiss('cancel');
+    }
 }
