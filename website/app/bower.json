@@ -24,7 +24,8 @@
     "localforage": "~1.2.2",
     "js-data-localforage": "~1.0.0",
     "imagesloaded": "~3.1.8",
-    "ag-grid": "~1.4.1"
+    "ag-grid": "~1.4.1",
+    "angular-toastr": "~1.4.1"
   },
   "resolutions": {
     "ag-grid": "1.8.0"
