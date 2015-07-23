@@ -327,6 +327,8 @@ module.exports = function (r) {
             let oldPSetID = current.property_set_id;
             yield r.table('sample2propertyset').getAll(oldPSetID, {index: 'property_set_id'}).update({current: false});
             yield fillAttributeSet(asetCreated.id, current.shares, current.uses, current.unknowns,  processID);
+            let proc2sample = new model.Process2Sample(processID, current.sample_id, asetCreated.id, 'out');
+            yield db.insert('process2sample', proc2sample);
         }
     }
 
