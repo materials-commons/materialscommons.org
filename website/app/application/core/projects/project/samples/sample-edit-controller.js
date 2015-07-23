@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectEditSample',
-    ["$scope", "$modal", "$stateParams", "project", "mcapi", "modalInstance", projectEditSample]);
+    ["$scope", "$modal", "$stateParams", "project", "mcapi", "modalInstance", "$filter", projectEditSample]);
 
-function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalInstance) {
+function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalInstance, $filter) {
     $scope.measurements = function (property) {
         $scope.modal = {
             instance: null,
@@ -27,17 +27,12 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
         mcapi('/sample/propertysets/%', $scope.current.id)
             .success(function (property_sets) {
                 angular.forEach(property_sets, function(values, key){
-                   var count = 0;
                     values.forEach(function(item){
-                        if(item.does_transform === true){
-                            count ++;
+                        if(item.name === "As Received"){
+                            item.does_transform = true;
+                            setOthersToFalse(values);
                         }
                     });
-                    if (count < 1){
-                        values[0].does_transform = true;
-                        values[0].name = "Start"
-                    }
-
                 });
                 $scope.property_sets = property_sets;
                 $scope.showProperties(Object.keys(property_sets)[0]);
@@ -53,12 +48,22 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
             }).jsonp();
     }
 
+    function setOthersToFalse(values){
+        values.forEach(function(item){
+            if(item.name === "As Received"){
+            } else{
+                item.does_transform = false;
+            }
+        });
+    }
+
     $scope.openFile = function(file){
         modalInstance.openModal(file, 'datafile', project);
     };
 
     $scope.showProperties = function(ps_id){
         $scope.ps_id = ps_id;
+        $scope.properties = [];
         mcapi('/sample/measurements/%/%', $scope.current.id, ps_id)
             .success(function (properties) {
                 $scope.properties = properties;
