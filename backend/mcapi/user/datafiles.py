@@ -52,6 +52,10 @@ def update_datafile(datafile_id):
     if df is None:
         return error.bad_request("No such datafile: %s" % (datafile_id))
     access.check(user, df['owner'], df['id'])
+    name = dmutil.get_optional("name", j, None)
+    if name is not None:
+        r.table("datafiles").get(datafile_id).update({"name": name}).run(g.conn)
+
     tag_id = dmutil.get_optional("tag_id", j, None)
     if tag_id is not None:
         # make sure tag exists
@@ -73,7 +77,8 @@ def update_datafile(datafile_id):
             "item_name": df['name'],
             "item_type": "datafile"
         }).run(g.conn)
-        return resp.to_json(df)
+
+    return resp.to_json(df)
 
 
 @app.route("/datafile/<datafile_id>/note", methods=['PUT'])
