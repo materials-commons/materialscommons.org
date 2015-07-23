@@ -66,7 +66,7 @@ def create_tables():
     create_table("process2measurement", "process_id", "measurement_id")
     create_table("sample2propertyset", "sample_id", "property_set_id")
     create_table("process2sample", "sample_id", "process_id",
-                 "attribute_set_id", "_type")
+                 "property_set_id", "_type")
     create_table("project2sample", "sample_id", "project_id")
     create_table("best_measure_history", "process_id", "attribute_id")
     create_table("process2file", "process_id", "datafile_id", "_type")
