@@ -7,7 +7,7 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
     ctrl.editNote = false;
 
     pubsub.waitOn($scope, 'datafile-note.change', function () {
-        ctrl.editNote();
+        ctrl.editNote = !ctrl.editNote;
     });
 
     pubsub.waitOn($scope, 'display-directory', function () {
