@@ -27,21 +27,15 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
         mcapi('/sample/propertysets/%', $scope.current.id)
             .success(function (property_sets) {
                 angular.forEach(property_sets, function(values, key){
-                   var count = 0;
                     values.forEach(function(item){
-                        if(item.does_transform === true){
-                            count = count + 2;
+                        if(item.name === "As Received"){
+                            item.does_transform = true;
+                            setOthersToFalse(values);
                         }
                     });
-                    if (count < 1){
-                        values[0].does_transform = true;
-                        values[0].name = "As Received"
-                    }
-
                 });
                 $scope.property_sets = property_sets;
-                console.dir($scope.property_sets);
-                //$scope.showProperties(Object.keys(property_sets)[0]);
+                $scope.showProperties(Object.keys(property_sets)[0]);
             })
             .error(function (err) {
                 console.log(err)
@@ -54,6 +48,15 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
             }).jsonp();
     }
 
+    function setOthersToFalse(values){
+        values.forEach(function(item){
+            if(item.name === "As Received"){
+            } else{
+                item.does_transform = false;
+            }
+        });
+    }
+
     $scope.openFile = function(file){
         modalInstance.openModal(file, 'datafile', project);
     };
@@ -64,8 +67,6 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
         mcapi('/sample/measurements/%/%', $scope.current.id, ps_id)
             .success(function (properties) {
                 $scope.properties = properties;
-                console.log(properties);
-                console.log(ps_id)
             })
             .error(function (err) {
                 console.log(err)
