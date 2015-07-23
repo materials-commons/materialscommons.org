@@ -1,6 +1,6 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", FilesEditController]);
-function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi) {
+    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", FilesEditController]);
+function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal) {
 
     $scope.bk = {
         editNote: false
@@ -42,14 +42,27 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         $scope.active = null;
     };
 
-    $scope.rename = function (active) {
-        console.log("rename %O", active);
-        mcapi("/datafile/%", $stateParams.file_id)
-            .success(function (data) {
-                console.log("success: %O", data);
-                $scope.active.name = "renamed";
-            })
-            .put({name: "renamed"})
+    $scope.rename = function () {
+        var modalInstance = $modal.open({
+            size: 'sm',
+            templateUrl: 'application/core/projects/project/files/rename-file.html',
+            controller: 'RenameFileModalController',
+            controllerAs: 'file',
+            resolve: {
+                active: function() {
+                    return $scope.active;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(name) {
+            mcapi("/datafile/%", $stateParams.file_id)
+                .success(function () {
+                    $scope.active.name = name;
+                    pubsub.send('files.refresh');
+                })
+                .put({name: name});
+        });
     };
 
     function getActiveFile() {
@@ -85,4 +98,25 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
     }
 
     init();
+}
+
+Application.Controllers.controller("RenameFileModalController",
+    ["$modalInstance", "active", RenameFileModalController]);
+function RenameFileModalController($modalInstance, active) {
+    var ctrl = this;
+    ctrl.name = "";
+    ctrl.rename = rename;
+    ctrl.cancel = cancel;
+
+    ///////////
+
+    function rename() {
+        if (ctrl.name != "" && ctrl.name != active.name) {
+            $modalInstance.close(ctrl.name);
+        }
+    }
+
+    function cancel() {
+        $modalInstance.dismiss('cancel');
+    }
 }
