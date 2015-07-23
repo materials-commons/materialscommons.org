@@ -19,6 +19,7 @@ def get_sample_measurements(sample_id, property_set_id):
         r.table('propertyset2property').get_all(property_set_id,
                                                 index='attribute_set_id') \
         .eq_join('attribute_id', r.table('properties')).zip() \
+        .order_by('name')\
         .merge(lambda property:
                {
                    'best_measure':
