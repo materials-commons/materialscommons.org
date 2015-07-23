@@ -3,12 +3,15 @@ Application.Controllers.controller("FilesController",
         "pubsub", "mcfile", "$state", "pubsub", FilesController]);
 function FilesController($scope, projectFiles, applySearch,
                          $filter, mcfile, $state, pubsub) {
-
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
     $scope.files = [f];
     applySearch($scope, "searchInput", applyQuery);
+
+    pubsub.waitOn($scope, 'files.refresh', function() {
+        $scope.gridOptions.api.refreshView();
+    });
 
     function applyQuery() {
         var search = {
