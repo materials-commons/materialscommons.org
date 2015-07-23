@@ -3,6 +3,6 @@ function sidebarSetupDirective() {
     return {
         restrict: "EA",
         scope: true,
-        templateUrl: 'sidebar-setup.html'
+        templateUrl: 'application/core/projects/project/processes/sidebar/sidebar-setup.html'
     };
 }
