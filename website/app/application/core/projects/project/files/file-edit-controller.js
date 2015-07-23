@@ -50,19 +50,19 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
             controller: 'RenameFileModalController',
             controllerAs: 'file',
             resolve: {
-                active: function() {
+                active: function () {
                     return $scope.active;
                 }
             }
         });
 
-        modalInstance.result.then(function(name) {
+        modalInstance.result.then(function (name) {
             mcapi("/datafile/%", $stateParams.file_id)
                 .success(function () {
                     $scope.active.name = name;
                     pubsub.send('files.refresh');
                 })
-                .error(function(err) {
+                .error(function (err) {
                     toastr.error("Rename failed: " + err.error, "Error");
                 })
                 .put({name: name});
@@ -72,7 +72,10 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
     function getActiveFile() {
         $scope.active = projectFiles.getActiveFile();
         if (!$scope.active) {
-            // A refresh on page has happened, so show top level directory.
+            // A refresh on page has happened. That means we have lost
+            // out state in the directory tree. We have the file but
+            // tree isn't open on that file. In this case we show the
+            // top level directory.
             $scope.active = $scope.active = projectFiles.getActiveDirectory();
             $scope.type = 'dir';
         } else {
@@ -81,8 +84,7 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
                 $scope.fileType = "image";
             } else if ($scope.active.mediatype === "application/pdf") {
                 $scope.fileType = "pdf";
-            }
-            else if ($scope.active.mediatype === "application/vnd.ms-excel") {
+            } else if ($scope.active.mediatype === "application/vnd.ms-excel") {
                 $scope.fileType = "xls";
             } else {
                 $scope.fileType = $scope.active.mediatype;
