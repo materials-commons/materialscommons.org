@@ -39,6 +39,10 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         }
     }
 
+    $scope.cancel = function(){
+        $state.go('projects.project.processes.list');
+    };
+
     $scope.linkSample = function (datafile) {
         var i = _.indexOf($scope.template.input_samples, function (entry) {
             return $scope.bk.selectedSample.id === entry.id;
