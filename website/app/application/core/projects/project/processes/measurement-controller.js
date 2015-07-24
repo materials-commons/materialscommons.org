@@ -6,7 +6,6 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
     $scope.modal = modal;
     //Initializing the sample
     $scope.copySample = angular.copy($scope.modal.sample);
-    console.dir($scope.copySample);
 
     $scope.showDetails = function (template) {
         $scope.chosenProperty = template;
@@ -16,8 +15,6 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
         }
         var old_measures = [];
         old_measures = existingMeasures($scope.chosenProperty, $scope.modal.sample);
-        console.log('returning existing measures/measurements');
-        console.dir(old_measures);
         if (old_measures.length !== 0) {
             //Old measure are not supposed to be editable
             //$scope.chosenProperty.measures = old_measures;
@@ -39,6 +36,7 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
 
 
     $scope.save = function () {
+        console.dir($scope.chosenProperty);
         $scope.modal.sample = storeProperties($scope.chosenProperty);
         //pubsub.send('updateSampleMeasurement', $scope.modal.sample);
     };

@@ -6,3 +6,4 @@ function sidebarSamplesDirective() {
         templateUrl: 'application/core/projects/project/processes/sidebar/sidebar-samples.html'
     };
 }
+
