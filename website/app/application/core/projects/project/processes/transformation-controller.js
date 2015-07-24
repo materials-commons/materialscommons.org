@@ -27,8 +27,6 @@ function TransformationController($scope, $log, modal, pubsub) {
                 transformed_sample.deletes.push({id: property.id, name: property.name});
             }
         });
-
-        console.dir(transformed_sample);
         pubsub.send('updateTransformedSample', transformed_sample);
         $scope.modal.instance.close($scope.modal);
     };
@@ -38,7 +36,9 @@ function TransformationController($scope, $log, modal, pubsub) {
 
     function setPropertiesToUnknown(){
         $scope.modal.sample.properties.forEach(function(property){
-             property.action = 'unknown';
+            if(!(property.action)){
+                property.action = 'unknown';
+            }
         });
     }
 

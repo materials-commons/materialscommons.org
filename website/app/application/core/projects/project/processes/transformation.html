@@ -24,11 +24,13 @@
                     <b>{{property.name}}</b> :
                     <div class="row">
                         <div class="col-xs-offset-1">
-                            <select ng-model="property.action" data-placeholder="Choose Action"
-                                    class="form-control"
-                                    validator="required">
-                                <option ng-repeat="action in actions">{{ action }}</option>
-                            </select>
+                            <div class="col-xs-2">
+                                <select ng-model="property.action" data-placeholder="Choose Action"
+                                        class="form-control"
+                                        validator="required">
+                                    <option ng-repeat="action in actions">{{ action }}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
