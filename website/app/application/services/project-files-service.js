@@ -3,8 +3,8 @@
  * for manipulating the selected flag in the list of files in a project, as well as channel
  * that controllers, directives and services can set to receive events on.
  */
-Application.Services.factory('projectFiles', ['pubsub', projectFilesService]);
-function projectFilesService(pubsub) {
+Application.Services.factory('projectFiles', projectFilesService);
+function projectFilesService() {
     var service = {
         model: {
             projects: {}
@@ -71,7 +71,6 @@ function projectFilesService(pubsub) {
 
         setActiveFile: function (what) {
             service.activeFile = what;
-            pubsub.send('activeFile.change');
         },
 
         getActiveFile: function () {
