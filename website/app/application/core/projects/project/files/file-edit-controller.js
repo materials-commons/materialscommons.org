@@ -2,8 +2,6 @@ Application.Controllers.controller("FilesEditController",
     ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", "toastr", "$state",
         FilesEditController]);
 function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal, toastr, $state) {
-    console.log("FilesEditController: %O", $stateParams);
-    //console.dir($state);
     var ctrl = this;
 
     ctrl.editNote = false;
