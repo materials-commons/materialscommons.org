@@ -1,7 +1,7 @@
 <div ng-switch="measure._type">
     <div ng-switch-when="number">
         <span style="padding-left: 30px;"> {{measure.value}} {{measure.unit}}</span>
-        <span  style="padding-left: 30px;">
+        <span ng-if="currentProcess" style="padding-left: 30px;">
             <img src="assets/img/splash/process-icon.png"
                  style="height: 25px;padding-bottom: 10px;">{{measure.process[0].name}}
         </span>
@@ -9,8 +9,8 @@
                 style="color:red;" class="fa fa-asterisk"></i></span>
     </div>
     <div ng-switch-when="fraction">
-        <span style="padding-left: 30px;">{{measure.value}} {{measure.unit}}</span>
-        <span  style="padding-left: 30px;">
+        <span style="padding-left: 30px;">{{measure.value.attribute1}}/{{measure.value.attribute2}} {{measure.unit}}</span>
+        <span ng-if="currentProcess" style="padding-left: 30px;">
             <img src="assets/img/splash/process-icon.png"
                  style="height: 25px;padding-bottom: 10px;">{{measure.process[0].name}}
         </span>
@@ -19,7 +19,7 @@
     </div>
     <div ng-switch-when="string">
         <span style="padding-left: 30px;"> {{measure.value}}</span>
-        <span style="padding-left: 30px;">
+        <span ng-if="currentProcess" style="padding-left: 30px;">
             <img src="assets/img/splash/process-icon.png"
                  style="height: 25px;padding-bottom: 10px;">{{measure.process[0].name}}
         </span>
@@ -28,7 +28,7 @@
     </div>
     <div ng-switch-when="composition">
         <span style="padding-left: 30px;"> {{measure.element}} - {{measure.value}} {{measure.unit}}</span>
-        <span style="padding-left: 30px;">
+        <span ng-if="currentProcess" style="padding-left: 30px;">
             <img src="assets/img/splash/process-icon.png"
                  style="height: 25px;padding-bottom: 10px;">{{measure.process[0].name}}
         </span>
@@ -47,5 +47,8 @@
            popover-title="Particle size distribution">{{measure.name}}
             <i class="fa fa-bar-chart"></i>
         </a>
+    </div>
+    <div ng-switch-when="line">
+        <a ng-click="showLineChart(measure)" ><i class="fa fa-fw fa-line-chart"></i></a>
     </div>
 </div>
