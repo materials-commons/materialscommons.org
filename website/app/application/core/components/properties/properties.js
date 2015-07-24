@@ -276,6 +276,12 @@ function propertyLineDirectiveController($scope) {
                 type: "line"
             }]
     };
+
+    $scope.showLineChart = function(property){
+        console.log('im here in properties js');
+        console.dir(property);
+    };
+
 }
 
 Application.Directives.directive("propertyFraction", propertyFractionDirective);

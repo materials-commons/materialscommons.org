@@ -205,7 +205,27 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             }
         });
     };
+    $scope.showLineChart = function(property){
+        console.dir(property);
+        $scope.modal = {
+            instance: null,
+            property: property
+        };
 
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/processes/sidebar/line-graph.html',
+            controller: '',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
     $scope.open = function (size, type) {
         $scope.modal = {
             instance: null,
