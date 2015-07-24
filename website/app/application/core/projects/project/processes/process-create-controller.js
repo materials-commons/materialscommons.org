@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state","Projects","current", projectCreateProcess]);
 
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state) {
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state, Projects, current) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -38,6 +38,10 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             $scope.template.transformed_samples.push(transformed_sample);
         }
     }
+
+    $scope.cancel = function(){
+        $state.go('projects.project.processes.list');
+    };
 
     $scope.linkSample = function (datafile) {
         var i = _.indexOf($scope.template.input_samples, function (entry) {
@@ -253,16 +257,25 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         $scope.template.output_files = refineFiles($scope.template.output_files);
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
-                console.log(proc);
                 //After you create a process try to update the whole project.
                 // Because samples, processes should be refreshed in
-                // order for user to create another process
-                $scope.template = '';
-                $scope.bk = {
-                    selectedSample: {}
-                };
-                console.log("success");
-                $state.go('projects.project.processes.list');
+                // order for user to create another process.
+
+                //Currently i'm reloading all the projects , but we need to reload single project.
+                Projects.getList(true).then(function(projects) {
+                    var i = _.indexOf(projects, function(p) {
+                        return p.id == project.id;
+                    });
+                    current.setProject(projects[i]);
+                    project.processes = projects[i].processes;
+                    project.samples = projects[i].samples;
+                    $scope.template = '';
+                    $scope.bk = {
+                        selectedSample: {}
+                    };
+                    console.log("success");
+                    $state.go('projects.project.processes.list');
+                });
             })
             .error(function (err) {
                 $scope.template = '';
