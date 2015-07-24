@@ -235,7 +235,6 @@ module.exports = function (r) {
     }
 
 
-
     /**
      * Adds measurements to the given process. This allows for tracking
      * which processes took which measurements.
@@ -327,7 +326,7 @@ module.exports = function (r) {
             let oldPSetID = current.property_set_id;
             yield r.table('sample2propertyset').getAll(oldPSetID, {index: 'property_set_id'}).update({current: false});
             yield r.table('propertysets').getAll(oldPSetID).update({current: false});
-            yield fillAttributeSet(asetCreated.id, current.shares, current.uses, current.unknowns,  processID);
+            yield fillAttributeSet(asetCreated.id, current.shares, current.uses, current.unknowns, processID);
             let proc2sample = new model.Process2Sample(processID, current.sample_id, asetCreated.id, 'out');
             yield db.insert('process2sample', proc2sample);
         }
@@ -354,7 +353,7 @@ module.exports = function (r) {
      */
     function *fillFromShares(psetID, shares) {
         for (let i = 0; i < shares.length; i++) {
-            let ps2p = new model.PropertySet2Property(shares[i],psetID);
+            let ps2p = new model.PropertySet2Property(shares[i], psetID);
             yield db.insert('propertyset2property', ps2p);
         }
     }
@@ -405,7 +404,7 @@ module.exports = function (r) {
         for (let i = 0; i < unknowns.length; i++) {
             let attrID = unknowns[i];
 
-            // Get the attribute we are going to copy
+            // Get the attribute
             let attr = yield r.table('properties').get(attrID);
 
             // Save this attributes id for later use.
@@ -415,6 +414,7 @@ module.exports = function (r) {
             delete attr['id'];
             attr.birthtime = r.now();
             attr.mtime = attr.birthtime;
+            attr.best_measure_id = '';
 
             // Now insert new attribute
             let newAttr = yield db.insert('properties', attr);

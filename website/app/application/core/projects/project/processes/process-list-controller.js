@@ -3,7 +3,6 @@ Application.Controllers.controller('projectListProcess',
 
 function projectListProcess($scope, project, $state, modalInstance) {
     $scope.project = project;
-
     if(project.processes.length !== 0){
         $scope.current = project.processes[0];
         $state.go('projects.project.processes.list.edit', {process_id : $scope.current.id});

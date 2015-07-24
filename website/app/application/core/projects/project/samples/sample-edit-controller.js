@@ -1,7 +1,12 @@
 Application.Controllers.controller('projectEditSample',
-    ["$scope", "$modal", "$stateParams", "project", "mcapi", "modalInstance", "$filter", projectEditSample]);
+    ["$scope", "$modal", "$stateParams", "project", "mcapi", "modalInstance", "pubsub", projectEditSample]);
 
-function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalInstance, $filter) {
+function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalInstance, pubsub) {
+
+    pubsub.waitOn($scope, 'updateBestMeasurement', function () {
+        getMeasurements($scope.current.id);
+    });
+
     $scope.measurements = function (property) {
         $scope.modal = {
             instance: null,
@@ -23,8 +28,8 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
         });
     };
 
-    function getMeasurements(){
-        mcapi('/sample/propertysets/%', $scope.current.id)
+    function getMeasurements(sample_id){
+        mcapi('/sample/propertysets/%', sample_id)
             .success(function (property_sets) {
                 angular.forEach(property_sets, function(values, key){
                     values.forEach(function(item){
@@ -63,7 +68,6 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
 
     $scope.showProperties = function(ps_id){
         $scope.ps_id = ps_id;
-        $scope.properties = [];
         mcapi('/sample/measurements/%/%', $scope.current.id, ps_id)
             .success(function (properties) {
                 $scope.properties = properties;
@@ -86,7 +90,7 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
                 $scope.current =  $scope.project.samples[0];
             }
 
-            getMeasurements();
+            getMeasurements($scope.current.id);
         }
 
 
