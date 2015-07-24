@@ -67,13 +67,16 @@ function projectNavBarDirectiveController($scope, current, $state, ui, User, sid
 
     $scope.toggleExpanded = function (panel) {
         $scope.activePage = navBarState.setActiveState(panel);
-        if (panel === 'processes'){
+        if (panel === 'processes') {
             $state.go('projects.project.processes.list');
-        }else{
-            $state.go('projects.project.' + panel);
+        } else {
+            if (panel == 'files') {
+                $state.go('projects.project.files.all');
+            } else {
+                $state.go('projects.project.' + panel);
+            }
         }
     };
-
 
     $scope.openDrafts = function () {
         ui.togglePanelState($scope.project.id, "drafts");
@@ -88,12 +91,13 @@ function projectNavBarDirectiveController($scope, current, $state, ui, User, sid
         }
     };
 
-    function init(){
+    function init() {
         $scope.activePage = navBarState.getActiveState($state);
         $scope.mcuser = User.attr();
         $scope.list = sideboard.get($scope.project.id);
 
     }
+
     init();
 
 }
