@@ -1,10 +1,11 @@
 Application.Controllers.controller("FilesAllController",
-    ["$scope", "projectFiles", "mcfile", "$state", "pubsub", FilesAllController]);
-function FilesAllController($scope, projectFiles, mcfile, $state, pubsub) {
+    ["$scope", "projectFiles", "mcfile", "$state", "pubsub","$filter",  FilesAllController]);
+function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filter) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
     $scope.files = [f];
+    $scope.files[0].children = $filter('orderBy')($scope.files[0].children, 'displayname');
 
     pubsub.waitOn($scope, 'files.refresh', function() {
         $scope.gridOptions.api.refreshView();
@@ -33,7 +34,7 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub) {
         rowsAlreadyGrouped: true,
         rowClicked: rowClicked,
         enableColResize: true,
-        enableSorting: true,
+        enableSorting: false,
         rowHeight: 30,
         angularCompileRows: true,
         icons: {
@@ -52,6 +53,12 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub) {
     function rowClicked(params) {
         if (params.node.type == 'datadir') {
             projectFiles.setActiveDirectory(params.node)
+            if (!params.node.sorted) {
+                var file = projectFiles.findFileByID($scope.project.id, params.node.df_id);
+                file.children = $filter('orderBy')(file.children, 'displayname');
+                file.sorted = true;
+                $scope.gridOptions.api.onNewRows();
+            }
         } else {
             projectFiles.setActiveFile(params.node);
         }
