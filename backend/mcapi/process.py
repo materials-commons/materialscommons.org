@@ -46,7 +46,9 @@ def get_process_information(project_id):
                                 'samples': r.table('process2sample')
                                 .get_all(process['process_id'],
                                          index='process_id')
-                                .eq_join('sample_id', r.table("samples")).zip()
+                                .eq_join('sample_id', r.table("samples"))
+                                .without({"right": {"_type": True}})
+                                .zip()
                                 .coerce_to('array'),
 
                                 'files_used': r.table('process2file')
