@@ -1,7 +1,6 @@
 Application.Controllers.controller("FilesAllController",
     ["$scope", "projectFiles", "mcfile", "$state", "pubsub", FilesAllController]);
 function FilesAllController($scope, projectFiles, mcfile, $state, pubsub) {
-    console.log("FilesAllController");
     var f = projectFiles.model.projects[$scope.project.id].dir;
 
     // Root is name of project. Have it opened by default.
@@ -51,7 +50,6 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub) {
     }
 
     function rowClicked(params) {
-        console.log("rowClicks %O", params);
         if (params.node.type == 'datadir') {
             projectFiles.setActiveDirectory(params.node)
         } else {
@@ -61,7 +59,6 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub) {
     }
 
     function init() {
-        console.log("FilesAllController init");
         projectFiles.setActiveDirectory($scope.files[0]);
         $state.go('projects.project.files.all.edit', {file_id: $scope.files[0].df_id, file_type: 'datadir'});
     }
