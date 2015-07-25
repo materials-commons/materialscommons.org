@@ -5,6 +5,7 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filte
 
     // Root is name of project. Have it opened by default.
     $scope.files = [f];
+    $scope.files[0].expanded = true;
     $scope.files[0].children = $filter('orderBy')($scope.files[0].children, 'displayname');
 
     pubsub.waitOn($scope, 'files.refresh', function () {
