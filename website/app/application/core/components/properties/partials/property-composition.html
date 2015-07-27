@@ -1,11 +1,14 @@
 <div class="row">
-    <select style="margin-bottom: 5px;" class="form-control"
-            ui-select2="{placeholder: 'Select Element', allowClear: true}"
+    <select  style="margin-bottom: 5px;" class="form-control"
             ng-multiple="false"
             ng-model="property.element">
         <option value=""></option>
-        <option ng-repeat="ele in elements" value="{{ele.name}}">{{ele.name}} - {{ele.full_name}}</option>
+        <option ng-selected="property.element === ele.name"
+                ng-repeat="ele in elements" value="{{ele.name}}" >
+            {{ele.name}} - {{ele.full_name}}
+        </option>
     </select>
+    {{property.element}}
 </div>
 
 <div class="row">

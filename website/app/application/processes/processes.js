@@ -413,7 +413,27 @@ function AsReceived() {
     this.does_transform = false;
     this.setup = {
         files: [],
-        settings: []
+        settings: [{
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Manufacturer",
+                        attribute: "manufacturer",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: null,
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }]
+        }]
     };
 }
 

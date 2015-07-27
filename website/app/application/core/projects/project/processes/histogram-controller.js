@@ -24,8 +24,8 @@ function histogramController($scope, modal, $log, project) {
     });
 
     function processColumns(){
-        $scope.categories = $scope.modal.property.measurement.categories.split("\n");
-        $scope.values = $scope.modal.property.measurement.values.split("\n");
+        $scope.categories = $scope.modal.property.value.categories.split("\n");
+        $scope.values = $scope.modal.property.value.values.split("\n");
     }
 }
 
