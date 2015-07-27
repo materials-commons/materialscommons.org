@@ -21,51 +21,45 @@
     <div class="col-xs-7">
         <div>
             <ul class="taskbar nav nav-tabs" role="tablist">
-                <li role="presentation" ng-class="{'active': activePage === 'home'}">
-                    <a ng-click="toggleExpanded('home')"
-                       aria-controls="profile" role="tab"
-                       class="pointer"
-                       data-toggle="tab">
+                <li role="presentation" ui-sref-active="active">
+                    <a ui-sref="projects.project.home"
+                       ui-sref-opts="{reload: true}"
+                       class="pointer">
                         <i class="fa fa-fw fa-home"></i>Home
                     </a>
                 </li>
-                <li role="presentation" ng-class="{'active': activePage === 'processes'}">
-                    <a ng-click="toggleExpanded('processes')"
-                       aria-controls="profile" role="tab"
-                       class="pointer"
-                       data-toggle="tab">
+                <li role="presentation" ui-sref-active="active">
+                    <a ui-sref="projects.project.processes.list"
+                       ui-sref-opts="{reload: true}"
+                       class="pointer">
                         <i class="fa fa-fw fa-code-fork bold"></i>Processes
                     </a>
                 </li>
-                <li role="presentation" ng-class="{'active': activePage === 'files'}">
-                    <a ng-click="toggleExpanded('files')"
-                       aria-controls="profile" role="tab"
-                       class="pointer"
-                       data-toggle="tab">
+                <li role="presentation" ui-sref-active="active">
+                    <a ui-sref="projects.project.files"
+                       ui-sref-opts="{reload: true}"
+                       class="pointer">
                         <i class="fa fa-fw fa-files-o"></i> Files
                     </a>
                 </li>
-                <li role="presentation" ng-class="{'active': activePage === 'samples'}">
-                    <a ng-click="toggleExpanded('samples')"
-                       aria-controls="profile" role="tab"
-                       class="pointer"
-                       data-toggle="tab">
+                <li role="presentation" ui-sref-active="active">
+                    <a ui-sref="projects.project.samples"
+                       ui-sref-opts="{reload: true}"
+                       class="pointer">
                         <i class="fa fa-fw fa-cubes"></i> Samples
                     </a>
                 </li>
-                <li role="presentation" ng-class="{'active': activePage === 'reviews'}">
-                    <a ng-click="toggleExpanded('reviews')"
-                       aria-controls="profile" role="tab"
-                       class="pointer"
-                       settings data-toggle="tab">
+                <li role="presentation" ui-sref-active="active">
+                    <a ui-sref="projects.project.reviews"
+                       ui-sref-opts="{reload: true}"
+                       class="pointer">
                         <i class="fa fa-fw fa-comment"></i> Reviews
                     </a>
                 </li>
-                <li role="presentation" ng-class="{'active': activePage === 'notes'}">
-                    <a ng-click="toggleExpanded('notes')"
-                       aria-controls="profile" role="tab"
-                       class="pointer"
-                       data-toggle="tab">
+                <li ng-if="false" role="presentation" ui-sref-active="active">
+                    <a ui-sref="projects.project.notes"
+                       ui-sref-opts="{reload: true}"
+                       class="pointer">
                         <i class="fa fa-fw fa-edit"></i>Notes
                     </a>
                 </li>
@@ -75,25 +69,19 @@
     <div class="col-xs-2">
         <div>
             <ul class="taskbar nav nav-tabs" role="tablist">
-                <li role="presentation" ng-class="{'active': activePage === 'access'}">
+                <li role="presentation" ui-sref-active="active">
                     <a  style="padding: 10px 5px;"
+                        ui-sref="projects.project.access"
+                        ui-sref-opts="{reload: true}"
                         class="pointer"
-                        ng-click="toggleExpanded('access')" ui-sref="projects.project.access"
                         title="Project Settings">
                         <i class="fa fa-fw fa-1x fa-gear"></i>
-                    </a>
-                </li>
-                <li role="presentation" ng-class="{'active': activePage === 'drafts'}">
-                    <a style="padding: 10px 5px;"
-                       class="pointer"
-                       ng-click="toggleExpanded('drafts')" title="Drafts">
-                        <i class="fa fa-fw fa-1x fa-pencil-square-o"></i>
                     </a>
                 </li>
                 <li ng-class="{'active': activePage === 'sideboard'}">
                     <a style="padding: 10px 5px;" ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"
                        class="pointer"
-                       ng-click="toggleExpanded('sideboard')" title="Sideboard">
+                       ng-click="togglePanel('sideboard')" title="Sideboard">
                         <i class="fa fa-fw fa-1x fa-clipboard"></i>
                         <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
                     </a>
