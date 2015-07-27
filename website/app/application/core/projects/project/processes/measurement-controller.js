@@ -1,7 +1,7 @@
 Application.Controllers.controller('MeasurementController',
-    ["$scope", "$log", "modal", "pubsub", "measurements", "mcapi", MeasurementController]);
+    ["$scope", "$log", "modal", "measurements", "toastr", MeasurementController]);
 
-function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi) {
+function MeasurementController($scope, $log, modal, measurements, toastr) {
 
     $scope.modal = modal;
     //Initializing the sample
@@ -37,6 +37,7 @@ function MeasurementController($scope, $log, modal, pubsub, measurements, mcapi)
 
     $scope.save = function () {
         $scope.modal.sample = storeProperties($scope.chosenProperty);
+        toastr.success("Saved: " + $scope.chosenProperty.name);
     };
 
     $scope.addNewChoice = function () {
