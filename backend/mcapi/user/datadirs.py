@@ -6,9 +6,9 @@ import rethinkdb as r
 from ..utils import json_for_single_item_list
 from ..args import add_all_arg_options, json_as_format_arg
 from .. import access
-from ..import dmutil
-from ..import error
-from ..import validate
+from .. import dmutil
+from .. import error
+from .. import validate
 from loader.model import datadir
 from ..cache import DItem2
 
@@ -80,3 +80,18 @@ def get_datadir(datafile_id):
         lambda drow: drow['datafiles'].contains(datafile_id))
     selection = list(rr.run(g.conn, time_format='raw'))
     return json_as_format_arg(selection)
+
+
+@app.route('/datadirs/<datadir_id>/tree')
+@apikey
+@jsonp
+def get_datadir_tree(datadir_id):
+    d = r.table('datadirs').get("1284d1d6-75db-42ee-a4a5-6f7afeab2240")\
+        .merge(lambda row: {
+        "dirs": r.table('datadirs')
+               .get_all(row('id'), index='parent').coerce_to('array'),
+        "files": r.table('datadir2datafile')
+               .get_all(row('id'), index='datadir_id')
+               .eq_join('datafile_id', r.table('datafiles')).zip().coerce_to('array')
+    }).run(g.conn)
+    resp.to_join(d)
