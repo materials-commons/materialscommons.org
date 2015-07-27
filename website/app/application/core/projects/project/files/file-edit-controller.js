@@ -1,7 +1,7 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", "toastr",
+    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", "toastr", "$state",
         FilesEditController]);
-function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal, toastr) {
+function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal, toastr, $state) {
     var ctrl = this;
 
     ctrl.editNote = false;
@@ -68,13 +68,13 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         ctrl.active = projectFiles.getActiveFile();
         if (!ctrl.active) {
             // A refresh on page has happened. That means we have lost
-            // out state in the directory tree. We have the file but
+            // our state in the directory tree. We have the file but
             // tree isn't open on that file. In this case we show the
             // top level directory.
             ctrl.active = ctrl.active = projectFiles.getActiveDirectory();
-            ctrl.type = 'dir';
+            //ctrl.type = 'dir';
         } else {
-            ctrl.type = 'file';
+            //ctrl.type = 'file';
             if (isImage(ctrl.active.mediatype)) {
                 ctrl.fileType = "image";
             } else if (ctrl.active.mediatype === "application/pdf") {
@@ -89,17 +89,18 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
 
     function init() {
         ctrl.active = {};
-        ctrl.type = '';
-        if ($stateParams.file_id !== "") {
+        ctrl.type = $stateParams.file_type;
+        if (ctrl.type == 'datafile') {
             getActiveFile();
         } else {
             ctrl.active = projectFiles.getActiveDirectory();
-            ctrl.type = 'dir';
         }
     }
 
     init();
 }
+
+////////////////////////////////
 
 Application.Controllers.controller("RenameFileModalController",
     ["$modalInstance", "active", RenameFileModalController]);
