@@ -80,8 +80,8 @@
                 <!--------- string --------->
                 <div ng-switch-when="string">
                     <label class="col-xs-3 control-label" for="stringInput">
-                        {{::setting.name}}
-                        <i ng-if="setting.required"
+                        {{::setting.property.name}}
+                        <i ng-if="setting.property.required"
                            class="fa fa-fw fa-asterisk text-danger"></i>
                     </label>
 

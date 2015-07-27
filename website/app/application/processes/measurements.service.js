@@ -106,18 +106,18 @@ function measurementsService() {
             category: "scalar",
             fn: BandGap
         },
-        {
-            name: "Fatigue Life",
-            description: "",
-            category: "pairs",
-            fn: FatigueLife
-        },
-        {
-            name: "Crack Growth",
-            description: "",
-            category: "pairs",
-            fn: CrackGrowth
-        },
+        //{
+        //    name: "Fatigue Life",
+        //    description: "",
+        //    category: "pairs",
+        //    fn: FatigueLife
+        //},
+        //{
+        //    name: "Crack Growth",
+        //    description: "",
+        //    category: "pairs",
+        //    fn: CrackGrowth
+        //},
         {
             name: "Particle Size Distribution",
             description: "",

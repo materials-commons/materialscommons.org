@@ -71,6 +71,7 @@ Application.Controllers.controller("propertyCompositionController",
 function propertyCompositionController($scope, mcapi) {
     $scope.elements = [];
     $scope.property.unit = 'at%';  //setting default unit
+
     mcapi('/objects/elements')
         .success(function(data){
             $scope.elements = data;
