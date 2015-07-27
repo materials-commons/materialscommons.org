@@ -19,7 +19,7 @@
 
                         <div ng-repeat="measure in property.measures">
                             <div>
-                                <display-measurement measure="measure"></display-measurement>
+                                <display-measurement measure="measure" project="project"></display-measurement>
                             </div>
                         </div>
                     </li>
@@ -47,16 +47,19 @@
                                         {{measure.attribute2.value}} {{measure.attribute2.unit}}
                                     </span>
                                 </div>
+                                <div ng-switch-when="histogram">
+                                      <span style="padding-left: 30px;">
+                                        <a ng-click="showHistogram(measure)" ><i class="fa fa-fw fa-bar-chart"></i></a>
+                                    </span>
+                                    <!--<a href="" popover="Graph displayed here...."-->
+                                       <!--popover-title="Particle size distribution">{{measure.name}}-->
+                                        <!--<i class="fa fa-bar-chart"></i>-->
+                                    <!--</a>-->
+                                </div>
                                 <div ng-switch-when="line">
                                     <span style="padding-left: 30px;">
-                                          <a ng-click="showLineChart(property)" ><i class="fa fa-fw fa-line-chart"></i></a>
+                                        <a ng-click="showLineGraph(measure)" ><i class="fa fa-fw fa-line-chart"></i></a>
                                     </span>
-                                </div>
-                                <div ng-switch-when="histogram">
-                                    <a href="" popover="Graph displayed here...."
-                                       popover-title="Particle size distribution">{{measure.name}}
-                                        <i class="fa fa-bar-chart"></i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -74,6 +77,5 @@
                 </ul>
             </div>
         </div>
-        <hr/>
     </div>
 </div>
