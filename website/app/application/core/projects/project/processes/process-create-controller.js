@@ -68,6 +68,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             return file.id === entry.id;
         });
         $scope.template.input_samples[k].files.splice(i, 1);
+        $scope.bk.selectedSample = '';
     };
 
     function updateSampleMeasurement(sample) {
@@ -205,8 +206,9 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             }
         });
     };
+
     $scope.showLineChart = function(property){
-        console.dir(property);
+        console.log('inside create');
         $scope.modal = {
             instance: null,
             property: property
@@ -214,8 +216,49 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
 
         $scope.modal.instance = $modal.open({
             size: 'lg',
-            templateUrl: 'application/core/projects/project/processes/sidebar/line-graph.html',
-            controller: '',
+            templateUrl: 'application/core/projects/project/processes/line.html',
+            controller: 'lineGraphController',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
+    $scope.showHistogram = function(property){
+        $scope.modal = {
+            instance: null,
+            property: property
+        };
+
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/processes/histogram.html',
+            controller: 'histogramController',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
+
+    $scope.showLineGraph = function(property){
+        $scope.modal = {
+            instance: null,
+            property: property
+        };
+
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/processes/line.html',
+            controller: 'lineGraphController',
             resolve: {
                 modal: function () {
                     return $scope.modal;
