@@ -208,7 +208,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     };
 
     $scope.showLineChart = function(property){
-        console.log('inside create');
         $scope.modal = {
             instance: null,
             property: property
