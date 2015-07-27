@@ -70,6 +70,7 @@ Application.Controllers.controller("propertyCompositionController",
 
 function propertyCompositionController($scope, mcapi) {
     $scope.elements = [];
+    $scope.property.unit = 'at%';  //setting default unit
     mcapi('/objects/elements')
         .success(function(data){
             $scope.elements = data;
@@ -108,7 +109,7 @@ function propertyHistogramDirectiveController($scope) {
     $scope.histogramConfig = {
         options: {
             title: {
-                text: $scope.attribute.name
+                text: $scope.attribute
             },
             chart: {
                 renderTo: "container",
@@ -276,12 +277,6 @@ function propertyLineDirectiveController($scope) {
                 type: "line"
             }]
     };
-
-    $scope.showLineChart = function(property){
-        console.log('im here in properties js');
-        console.dir(property);
-    };
-
 }
 
 Application.Directives.directive("propertyFraction", propertyFractionDirective);
