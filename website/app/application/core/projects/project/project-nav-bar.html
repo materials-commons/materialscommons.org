@@ -1,92 +1,105 @@
-<div class="row" style="background-color: #518394; margin-bottom: 0px">
-    <div class="col-xs-3">
-        <ul style="padding-left: 5px;" class="taskbar nav nav-tabs">
-            <li class="dropdown projects-drop-down">
-                <a title="{{project.name}}" class="dropdown-toggle pointer" data-toggle="dropdown"
-                   style="padding-left: 5px;">
-                    <i class="fa fa-fw fa-briefcase"></i>
-                    {{project.name | truncate: 17: '...'}} <span class="white badge" style="float: none;">{{projects.length}}</span>
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu projects-dropdown nav-dropdown-scrollbar" role="menu">
-                    <li data-toggle="modal"
-                        data-target="#newProject"><a><i class="fa fa-fw fa-plus"></i>New Project</a></li>
-                    <li class="divider"></li>
-                    <li ng-repeat="p in projects"
-                        ng-class="{'active-project': p.id === project.id}" ng-click="setProject(p)"><a>{{p.name}}</a>
-                    </li>
-                </ul>
-        </ul>
-    </div>
-    <div class="col-xs-7">
-        <div>
-            <ul class="taskbar nav nav-tabs" role="tablist">
-                <li role="presentation" ui-sref-active="active">
-                    <a ui-sref="projects.project.home"
-                       ui-sref-opts="{reload: true}"
-                       class="pointer">
-                        <i class="fa fa-fw fa-home"></i>Home
+<div>
+    <div class="row" style="background-color: #518394; margin-bottom: 0px">
+        <div class="col-xs-3">
+            <ul style="padding-left: 5px;" class="taskbar nav nav-tabs">
+                <li class="dropdown projects-drop-down">
+                    <a title="{{project.name}}" class="dropdown-toggle pointer" data-toggle="dropdown"
+                       style="padding-left: 5px;">
+                        <i class="fa fa-fw fa-briefcase"></i>
+                        {{project.name | truncate: 17: '...'}} <span class="white badge" style="float: none;">{{projects.length}}</span>
+                        <span class="caret"></span>
                     </a>
-                </li>
-                <li role="presentation" ui-sref-active="active">
-                    <a ui-sref="projects.project.processes.list"
-                       ui-sref-opts="{reload: true}"
-                       class="pointer">
-                        <i class="fa fa-fw fa-code-fork bold"></i>Processes
-                    </a>
-                </li>
-                <li role="presentation" ui-sref-active="active">
-                    <a ui-sref="projects.project.files"
-                       ui-sref-opts="{reload: true}"
-                       class="pointer">
-                        <i class="fa fa-fw fa-files-o"></i> Files
-                    </a>
-                </li>
-                <li role="presentation" ui-sref-active="active">
-                    <a ui-sref="projects.project.samples"
-                       ui-sref-opts="{reload: true}"
-                       class="pointer">
-                        <i class="fa fa-fw fa-cubes"></i> Samples
-                    </a>
-                </li>
-                <li role="presentation" ui-sref-active="active">
-                    <a ui-sref="projects.project.reviews"
-                       ui-sref-opts="{reload: true}"
-                       class="pointer">
-                        <i class="fa fa-fw fa-comment"></i> Reviews
-                    </a>
-                </li>
-                <li ng-if="false" role="presentation" ui-sref-active="active">
-                    <a ui-sref="projects.project.notes"
-                       ui-sref-opts="{reload: true}"
-                       class="pointer">
-                        <i class="fa fa-fw fa-edit"></i>Notes
-                    </a>
-                </li>
+                    <ul class="dropdown-menu projects-dropdown nav-dropdown-scrollbar" role="menu">
+                        <li data-toggle="modal"
+                            data-target="#newProject"><a><i class="fa fa-fw fa-plus"></i>New Project</a></li>
+                        <li class="divider"></li>
+                        <li ng-repeat="p in projects"
+                            ng-class="{'active-project': p.id === project.id}" ng-click="setProject(p)">
+                            <a>{{p.name}}</a>
+                        </li>
+                    </ul>
             </ul>
         </div>
+        <div class="col-xs-7">
+            <div>
+                <ul class="taskbar nav nav-tabs" role="tablist">
+                    <li role="presentation" ui-sref-active="active">
+                        <a ui-sref="projects.project.home"
+                           ui-sref-opts="{reload: true}"
+                           class="pointer">
+                            <i class="fa fa-fw fa-home"></i>Home
+                        </a>
+                    </li>
+                    <li role="presentation" ui-sref-active="active">
+                        <a ui-sref="projects.project.processes.list"
+                           ui-sref-opts="{reload: true}"
+                           class="pointer">
+                            <i class="fa fa-fw fa-code-fork bold"></i>Processes
+                        </a>
+                    </li>
+                    <li role="presentation" ui-sref-active="active">
+                        <a ui-sref="projects.project.files"
+                           ui-sref-opts="{reload: true}"
+                           class="pointer">
+                            <i class="fa fa-fw fa-files-o"></i> Files
+                        </a>
+                    </li>
+                    <li role="presentation" ui-sref-active="active">
+                        <a ui-sref="projects.project.samples"
+                           ui-sref-opts="{reload: true}"
+                           class="pointer">
+                            <i class="fa fa-fw fa-cubes"></i> Samples
+                        </a>
+                    </li>
+                    <li role="presentation" ui-sref-active="active">
+                        <a ui-sref="projects.project.reviews"
+                           ui-sref-opts="{reload: true}"
+                           class="pointer">
+                            <i class="fa fa-fw fa-comment"></i> Reviews
+                        </a>
+                    </li>
+                    <li ng-if="false" role="presentation" ui-sref-active="active">
+                        <a ui-sref="projects.project.notes"
+                           ui-sref-opts="{reload: true}"
+                           class="pointer">
+                            <i class="fa fa-fw fa-edit"></i>Notes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div>
+                <ul class="taskbar nav nav-tabs" role="tablist">
+                    <li role="presentation" ui-sref-active="active">
+                        <a style="padding: 10px 5px;"
+                           ui-sref="projects.project.access"
+                           ui-sref-opts="{reload: true}"
+                           class="pointer"
+                           title="Project Settings">
+                            <i class="fa fa-fw fa-1x fa-gear"></i>
+                        </a>
+                    </li>
+                    <li ng-class="{'active': activePage === 'sideboard'}">
+                        <a style="padding: 10px 5px;"
+                           ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"
+                           class="pointer"
+                           ng-click="togglePanel('sideboard')" title="Sideboard">
+                            <i class="fa fa-fw fa-1x fa-clipboard"></i>
+                            <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="col-xs-2">
-        <div>
-            <ul class="taskbar nav nav-tabs" role="tablist">
-                <li role="presentation" ui-sref-active="active">
-                    <a  style="padding: 10px 5px;"
-                        ui-sref="projects.project.access"
-                        ui-sref-opts="{reload: true}"
-                        class="pointer"
-                        title="Project Settings">
-                        <i class="fa fa-fw fa-1x fa-gear"></i>
-                    </a>
-                </li>
-                <li ng-class="{'active': activePage === 'sideboard'}">
-                    <a style="padding: 10px 5px;" ng-class="{'tool-inactive': !showPanel('sideboard'), 'tool-active': showPanel('sideboard')}"
-                       class="pointer"
-                       ng-click="togglePanel('sideboard')" title="Sideboard">
-                        <i class="fa fa-fw fa-1x fa-clipboard"></i>
-                        <span class="badge badge-superscript-count">{{list.sideboard.length}}</span>
-                    </a>
-                </li>
-            </ul>
+    <div class="row" style="margin-top: 15px">
+        <div class="col-xs-offset-1">
+            <input class="col-xs-11"
+                   type="text"
+                   placeholder="SEARCH PROJECT..."
+                   ng-model="query"
+                   on-enter="search()">
         </div>
     </div>
 </div>
