@@ -14,12 +14,13 @@
                 <sidebar-setup></sidebar-setup>
                 <hr class="divider"/>
 
-                <div class="row" ng-if="template._type === 'as_received'">
-                    <b><br>New Sample</b>
-                    <div style="padding-left: 20px;" class="col-xs-8">
-
-                        <div ng-if="bk.newSample.name">Name: {{bk.newSample.name}}</div>
-                        <div ng-if="bk.newSample.description">Description: {{bk.newSample.description}}</div>
+                <div ng-show="template._type === 'as_received'">
+                    <div class="row">New Sample</div>
+                    <div class="row">
+                        <div style="padding-left: 20px;" class="col-xs-8">
+                            <div ng-if="bk.newSample.name">Name: {{bk.newSample.name}}</div>
+                            <div ng-if="bk.newSample.description">Description: {{bk.newSample.description}}</div>
+                        </div>
                     </div>
                 </div>
 
@@ -62,7 +63,7 @@
                     </div>
                     <br>
                     <hr class="divider"/>
-                    <div ng-if="template._type !== 'as_received'" class="row">
+                    <div ng-show="template._type !== 'as_received'" class="row">
                         <div class="col-xs-12 process headings">Samples</div>
                         <div class="row" style="padding: 15px;">
                             <br>
