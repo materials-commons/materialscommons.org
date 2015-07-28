@@ -2,7 +2,7 @@
     <div class="col-xs-offset-2">
         <div ng-if="search.results.total != 0">
             <div class="row">
-                <h4>Found {{search.results.total}}. Showing top {{search.results.hits.length}} matches.</h4>
+                <h4>Showing top {{search.results.hits.length}} matches of {{search.results.total}} found.</h4>
             </div>
             <div ng-repeat="hit in search.results.hits" class="row" style="margin-top: 20px">
                 <span>
