@@ -165,6 +165,12 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "FilesEditController",
             controllerAs: 'file'
         })
+        .state("projects.project.files.edit", {
+            url: "/edit/:file_id/:file_type",
+            templateUrl: "application/core/projects/project/files/edit.html",
+            controller: "FilesEditController",
+            controllerAs: "file"
+        })
         .state("projects.project.files.images", {
             url: "/images",
             templateUrl: "application/core/projects/project/files/images.html",
@@ -181,12 +187,12 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "FilesSearchController",
             controllerAs: "search"
         })
-        .state("projects.project.files.edit", {
-            url: "/edit/:file_id",
-            templateUrl: "application/core/projects/project/files/edit.html",
-            controller: "FilesEditController",
-            controllerAs: 'file'
-        })
+        //.state("projects.project.files.edit", {
+        //    url: "/edit/:file_id",
+        //    templateUrl: "application/core/projects/project/files/edit.html",
+        //    controller: "FilesEditController",
+        //    controllerAs: 'file'
+        //})
         .state("projects.project.access", {
             url: "/access",
             templateUrl: "application/core/projects/project/access/access.html",
