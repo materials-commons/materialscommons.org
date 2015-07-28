@@ -39,8 +39,8 @@ function projectNavBarDirectiveController($scope, current, $state, ui, User, sid
     };
 
     $scope.search = function() {
+        searchQuery.set($scope.project.id, $scope.query);
         if ($scope.query != "") {
-            searchQuery.set($scope.project.id, $scope.query);
             $state.go('projects.project.search', {query: $scope.query}, {reload: true});
         }
     };
