@@ -1,0 +1,13 @@
+<div style="margin-top: 20px">
+    <div ng-if="search.results.total != 0">
+        <div class="row">
+            Found {{search.results.total}} matches
+        </div>
+        <div ng-repeat="hit in search.results.hits" class="row">
+            {{hit._source.name}}
+        </div>
+    </div>
+    <div ng-if="search.results.total === 0">
+        <h4>No Matches Found</h4>
+    </div>
+</div>

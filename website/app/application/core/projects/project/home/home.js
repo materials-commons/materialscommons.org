@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectHome',
-    ["$scope", "project", "ui", "mcapi", "$state", projectHome]);
+    ["$scope", "project", "ui", projectHome]);
 
-function projectHome($scope, project, ui, mcapi, $state) {
+function projectHome($scope, project, ui) {
 
     $scope.showPanel = function(what) {
         return ui.showPanel(project.id, what);
@@ -12,8 +12,4 @@ function projectHome($scope, project, ui, mcapi, $state) {
     };
 
     $scope.project = project;
-
-    $scope.search = function() {
-        $state.go('projects.project.home.results', {query: $scope.query}, {reload: true});
-    }
 }

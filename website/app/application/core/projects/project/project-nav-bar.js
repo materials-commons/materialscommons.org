@@ -38,6 +38,12 @@ function projectNavBarDirectiveController($scope, current, $state, ui, User, sid
         $scope.activePage = navBarState.setActiveState(panel);
     };
 
+    $scope.search = function() {
+        if ($scope.query != "") {
+            $state.go('projects.project.search', {query: $scope.query}, {reload: true});
+        }
+    };
+
     function init() {
         $scope.mcuser = User.attr();
         $scope.list = sideboard.get($scope.project.id);
