@@ -5,6 +5,15 @@
             <div ui-view></div>
         </div>
         <div class="row">
+            <div class="col-xs-offset-1">
+                <input class="col-xs-11"
+                       type="text"
+                       placeholder="SEARCH PROJECT..."
+                       ng-model="query"
+                       on-enter="search()">
+            </div>
+        </div>
+        <div class="row">
             <div class="col-xs-6">
                 <div home-processes project="project"></div>
                 <div home-reviews project="project"></div>
