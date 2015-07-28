@@ -7,6 +7,7 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi, 
     $scope.selected = {
         item: {}
     };
+    processColumns();
     function updateBestMeasure() {
         mcapi('/best_measure')
             .success(function () {
@@ -33,4 +34,13 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi, 
     }, function () {
         $log.info('Modal dismissed at: ' + new Date());
     });
+
+    function processColumns(){
+        $scope.modal.property.measurements.forEach(function(measure){
+            if(measure._type === 'line' || measure._type === 'histogram'){
+                measure.categories = measure.value.categories.split("\n");
+                measure.values = measure.value.values.split("\n");
+            }
+        });
+    }
 }
