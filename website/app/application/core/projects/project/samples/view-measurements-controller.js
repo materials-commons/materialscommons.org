@@ -41,6 +41,13 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi, 
                 measure.categories = measure.value.categories.split("\n");
                 measure.values = measure.value.values.split("\n");
             }
+            //Setting radio button to checked if best measure is already present
+            if($scope.modal.property.best_measure.length > 0){
+                if(measure.measurement_id === $scope.modal.property.best_measure[0].id){
+                    $scope.selected.item = measure;
+                }
+            }
+
         });
     }
 }
