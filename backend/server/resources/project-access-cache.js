@@ -1,69 +1,61 @@
-module.exports = function(access) {
-    'use strict';
+const _ = require('lodash');
 
-    let self = {
-        projectAccessCache: {},
-        adminUsersCache: {}
-    };
+class ProjectAccessCache {
+    constructor(access) {
+        this.access = access;
+        this.projectAccessCache = {};
+        this.adminUsersCache = {};
+    }
 
-    let _ = require('lodash');
-    return {
-        find: find,
-        clear: clear,
-        validateAccess: validateAccess
-    };
-
-    // find looks up a given project in the project cache.
-    // If the projectAccessCache hasn't been loaded it loads the
-    // cache.
-    function *find(project_id) {
-        if (_.isEmpty(self.adminUsersCache)) {
-            console.log('loading admin users cache');
-            let adminUsers = yield access.adminUsers();
+    *find(project_id) {
+        if (_.isEmpty(this.adminUsersCache)) {
+            let adminUsers = yield this.access.adminUsers();
+            let self = this;
             adminUsers.forEach(function(user) {
                 self.adminUsersCache[user.id] = user;
             });
         }
 
-        if (!_.isEmpty(self.projectAccessCache)) {
-            return self.projectAccessCache[project_id];
+        if (!_.isEmpty(this.projectAccessCache)) {
+            return this.projectAccessCache[project_id];
         }
 
-        console.log('loading project access cache');
-        self.projectAccessCache = yield access.allByProject();
-        return self.projectAccessCache[project_id];
+        this.projectAccessCache = yield this.access.allByProject();
+        return this.projectAccessCache[project_id];
     }
 
-    // clear will clear the current project cache. This is useful
-    // when project permissions have been updated or a new project
-    // has been created.
-    function clear() {
-        console.log('clearing project access cache', self.adminUsersCache);
-        self.projectAccessCache = {};
-        self.adminUsersCache = {};
+    clear() {
+        this.projectAccessCache = {};
+        this.adminUsersCache = {};
     }
 
-    // validateAccess checks if the user has access to the
-    // given project. This method assumes that find was called
-    // first so that the projectAccessCache was preloaded. If the
-    // projectAccessCache is empty then it returns false (no access).
-    function validateAccess(project_id, user) {
-        if (user.id in self.adminUsersCache) {
+    validateAccess(project_id, user) {
+        if (user.id in this.adminUsersCache) {
             return true;
         }
 
-        if (_.isEmpty(self.projectAccessCache)) {
+        if (_.isEmpty(this.projectAccessCache)) {
             return false;
         }
 
-        if (!(project_id in self.projectAccessCache)) {
+        if (!(project_id in this.projectAccessCache)) {
             return false;
         }
-        let index = _.indexOf(self.projectAccessCache[project_id], function(a) {
+
+        let index = _.indexOf(this.projectAccessCache[project_id], function(a) {
             return a.user_id == user.id;
         });
 
         // when index !== -1 we found the given user in the project.
         return index !== -1;
     }
+}
+
+let accessCache = null;
+module.exports = function(access) {
+    if (!accessCache) {
+        accessCache = new ProjectAccessCache(access);
+    }
+
+    return accessCache;
 };

@@ -1,40 +1,28 @@
 // apikey cache caches the user apikeys for quick lookup.
-// It preloads all the users the first time it is call.ed
-var _ = require('lodash');
-module.exports = function(model) {
-    'use strict';
-    let apikeyCache = {};
-    return {
-        find: find,
-        clear: clear
-    };
+// It preloads all the users the first time it is called
+const _ = require('lodash');
 
-    ////////////////////
+class APIKeyCache {
+    constructor(model) {
+        this.cache = {};
+        this.model = model;
+    }
 
-    // find looks up an apikey in the cache. If the cache
-    // is empty is loads it.
-    function* find(apikey) {
-        if (! _.isEmpty(apikeyCache)) {
-            console.log('keycache not empty');
-            return apikeyCache[apikey];
+    *find(apikey) {
+        if (! _.isEmpty(this.cache)) {
+            return this.cache[apikey];
         }
 
-        console.log('loading apikey cache');
-        let users = yield model.getUsers();
-        apikeyCache = users2map(users);
-        return apikeyCache[apikey];
+        let users = yield this.model.getUsers();
+        this.cache = this._users2map(users);
+        return this.cache[apikey];
     }
 
-    function clear() {
-        console.log('clearing apikey cache');
-        apikeyCache = {};
-        console.log('after clear: ', apikeyCache);
+    clear() {
+        this.cache = {};
     }
 
-    // users2map converts the array of users into a map
-    // indexed by apikey.
-    function users2map(users) {
-        console.log('users2map');
+    _users2map(users) {
         let map = {};
         users.forEach(function(user) {
             map[user.apikey] = {
@@ -45,4 +33,14 @@ module.exports = function(model) {
         });
         return map;
     }
+}
+
+let apikeyCache = null;
+
+module.exports = function(model) {
+    if (! apikeyCache) {
+        apikeyCache = new APIKeyCache(model);
+    }
+
+    return apikeyCache;
 };
