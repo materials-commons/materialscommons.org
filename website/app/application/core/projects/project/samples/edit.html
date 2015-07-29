@@ -32,14 +32,16 @@
                     <b>{{property.name}}</b> :
                     <div class="row">
                         <div class="col-xs-offset-1">
-                            Best Measure:
-                            <span ng-if="property.best_measure.length !== 0">
-                                <display-measurement project="project" measure="property.best_measure[0]"></display-measurement>
-                                <a style="padding-left: 10px;" class="underline" ng-click="measurements(property)">edit</a>
-                            </span>
-
-                            <br>
-                            Measurements:
+                            <div class="row">
+                               <span> <u>Best Measure </u>::
+                                    <a style="padding-left: 10px;" class="underline" ng-click="measurements(property)">edit</a>
+                                </span>
+                                <span ng-if="property.best_measure.length !== 0" >
+                                    <display-measurement project="project"
+                                                         measure="property.best_measure[0]"></display-measurement>
+                                </span>
+                            </div>
+                            <u>Measurements</u> ::
                             <ul>
                                 <li ng-repeat="measure in property.measurements">
                                     <div>

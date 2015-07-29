@@ -4,10 +4,12 @@ Application.Controllers.controller('lineGraphController',
 function lineGraphController($scope, modal, $log, project) {
     $scope.modal = modal;
     $scope.project = project;
-    processColumns();
+    $scope.chartObject = {};
     $scope.selected = {
         item: {}
     };
+
+    processColumns();
     $scope.ok = function () {
         $scope.modal.instance.close($scope.selected.item);
     };
@@ -26,6 +28,28 @@ function lineGraphController($scope, modal, $log, project) {
     function processColumns(){
         $scope.categories = $scope.modal.property.value.categories.split("\n");
         $scope.values = $scope.modal.property.value.values.split("\n");
+        $scope.chartObject.data = {
+            "cols": [
+                    {id: "x", label: "X", type: "string"},
+                    {id: "y", label: "Y", type: "number"}
+            ],
+            "rows": []
+        }
+        for (var i = 0; i < $scope.categories.length ; i++){
+            $scope.chartObject.data.rows.push({c: [{v: $scope.categories[i]}, {v: $scope.values[i]}]});
+        }
     }
+
+    $scope.chartObject.type = 'LineChart';
+    $scope.chartObject.options = {
+        'title': 'X Vs Y - Line Graph' ,
+        "vAxis": {
+            "title": "Y-values"
+        },
+        "hAxis": {
+            "title": "X-categories"
+        }
+    };
+
 }
 
