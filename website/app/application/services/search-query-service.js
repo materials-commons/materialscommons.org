@@ -1,18 +1,17 @@
-Application.Services.factory("searchParams", [searchParamsService]);
+Application.Services.factory("searchQuery", [searchQueryService]);
 
 // searchParams tracks params used in searches. This way
 // searches can be passed across different states and we
 // don't have to worry about trying to pass them in the url
 // or if we would need to escape the search string.
-function searchParamsService() {
+function searchQueryService() {
     var self = this;
     self.searchById = {};
 
     // initForId creates a new entry in searchById.
     function initForId(id) {
         self.searchById[id] = {
-            search: "",
-            key: ""
+            query: ""
         };
     }
 
@@ -28,23 +27,22 @@ function searchParamsService() {
 
     self.service = {
         // set sets the search params for an id.
-        set: function(id, key, search) {
+        set: function(id, query) {
             var entry = getForId(id);
-            entry.key = key;
-            entry.search = search;
+
+            entry.query = query;
         },
 
         // get returns the search params for an id.
         get: function(id) {
-            return getForId(id);
+            return getForId(id).query;
         },
 
         // clear is a convenience function to clear the
         // search params for an id.
         clear: function(id) {
             var entry = getForId(id);
-            entry.search = "";
-            entry.key = "";
+            entry.query = "";
         }
     };
 
