@@ -14,8 +14,8 @@ function projectEditReview($scope, project, $stateParams, Review, User, $filter,
         Review.closeReview($scope.review.id, project);
     };
 
-    $scope.openDetails = function (params) {
-        modalInstance.openModal(params, project);
+    $scope.openDetails = function (params, type) {
+        modalInstance.openModal(params, type, project);
     };
     $scope.project = project;
     $scope.user = User.u();
