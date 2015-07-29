@@ -24,7 +24,7 @@ var app = angular.module('materialscommons',
         'ngDragDrop', 'ngTagsInput',
         'ng-context-menu', 'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
-        "hljs", "nsPopover", "RecursionHelper",
+        "hljs", "nsPopover", "RecursionHelper",'googlechart',
         'application.core.constants', 'application.core.services',
         'application.core.controllers',
         'application.core.filters', 'application.core.directives']);
