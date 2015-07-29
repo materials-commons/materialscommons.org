@@ -31,37 +31,7 @@
                                class="fa fa-fw fa-close pull-right pointer"></i>
                         </div>
                         <div ng-repeat="measure in property.measures">
-                            <div ng-switch="measure._type">
-                                <div ng-switch-when="number">
-                                    <span style="padding-left: 30px;"> {{measure.value}} {{measure.unit}}</span>
-                                </div>
-                                <div ng-switch-when="fraction">
-                                    <span style="padding-left: 30px;">{{measure.value}} {{measure.unit}}</span>
-                                </div>
-                                <div ng-switch-when="string">
-                                    <span style="padding-left: 30px;"> {{measure.value}}</span>
-                                </div>
-                                <div ng-switch-when="pair">
-                                    <span style="padding-left: 30px;">
-                                        {{measure.attribute1.value}} {{measure.attribute1.unit}} ::
-                                        {{measure.attribute2.value}} {{measure.attribute2.unit}}
-                                    </span>
-                                </div>
-                                <div ng-switch-when="histogram">
-                                      <span style="padding-left: 30px;">
-                                        <a ng-click="showHistogram(measure)" ><i class="fa fa-fw fa-bar-chart"></i></a>
-                                    </span>
-                                    <!--<a href="" popover="Graph displayed here...."-->
-                                       <!--popover-title="Particle size distribution">{{measure.name}}-->
-                                        <!--<i class="fa fa-bar-chart"></i>-->
-                                    <!--</a>-->
-                                </div>
-                                <div ng-switch-when="line">
-                                    <span style="padding-left: 30px;">
-                                        <a ng-click="showLineGraph(measure)" ><i class="fa fa-fw fa-line-chart"></i></a>
-                                    </span>
-                                </div>
-                            </div>
+                            <display-measurement measure="measure" project="project"></display-measurement>
                         </div>
                     </li>
                 </ul>

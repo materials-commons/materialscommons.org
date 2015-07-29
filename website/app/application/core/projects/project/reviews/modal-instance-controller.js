@@ -1,7 +1,7 @@
 Application.Controllers.controller('ModalInstanceCtrl',
-    ["$scope", "$log", "modal", "project", "mcfile", ModalInstanceCtrl]);
+    ["$scope", "$log", "modal", "project", "mcfile", "modalInstance", ModalInstanceCtrl]);
 
-function ModalInstanceCtrl($scope, $log, modal, project, mcfile) {
+function ModalInstanceCtrl($scope, $log, modal, project, mcfile, modalInstance) {
     $scope.modal = modal;
     $scope.project = project;
     $scope.selected = {
@@ -28,5 +28,13 @@ function ModalInstanceCtrl($scope, $log, modal, project, mcfile) {
 
     $scope.downloadSrc = function (file) {
         return mcfile.downloadSrc(file.id);
+    };
+
+    $scope.openSample = function(sample){
+        modalInstance.openModal(sample, 'sample', project);
+    };
+
+    $scope.openFile = function(file){
+        modalInstance.openModal(file, 'datafile', project);
     };
 }
