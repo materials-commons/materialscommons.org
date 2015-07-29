@@ -10,7 +10,11 @@
         </div>
         <div class="row">
             <div class="sample headings">Transformation</div>
-            <p><small class="text-muted">This section will provide <b>{{current.name}}</b> initial measuremenets and how these measures have been transformed overrtime.</small></p>
+            <p>
+                <small class="text-muted">This section will provide <b>{{current.name}}</b> initial measurements and
+                    how these measures have been transformed overtime.
+                </small>
+            </p>
             <ul style="padding-left: 40px;" class="list-inline">
                 <li style="padding:10px;" ng-repeat="(key, values) in property_sets">
                     <div ng-repeat="process in values">
@@ -28,17 +32,18 @@
                     <b>{{property.name}}</b> :
                     <div class="row">
                         <div class="col-xs-offset-1">
-                            Best Measure: <span ng-if="property.best_measure.length !== 0"
-                                                style="padding-left: 5px;">
-                                    {{property.best_measure[0].value}}  {{property.best_measure[0].unit}} </span> <a
-                                style="padding-left: 10px;" class="underline" ng-click="measurements(property)">edit</a>
+                            Best Measure:
+                            <span ng-if="property.best_measure.length !== 0">
+                                <display-measurement project="project" measure="property.best_measure[0]"></display-measurement>
+                                <a style="padding-left: 10px;" class="underline" ng-click="measurements(property)">edit</a>
+                            </span>
+
                             <br>
                             Measurements:
                             <ul>
                                 <li ng-repeat="measure in property.measurements">
                                     <div>
-                                        <display-measurement current-process=""
-                                                             measure="measure"></display-measurement>
+                                        <display-measurement project="project" measure="measure"></display-measurement>
                                     </div>
                                 </li>
                             </ul>

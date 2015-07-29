@@ -71,11 +71,23 @@ function projectEditSample($scope, $modal, $stateParams, project, mcapi, modalIn
         mcapi('/sample/measurements/%/%', $scope.current.id, ps_id)
             .success(function (properties) {
                 $scope.properties = properties;
+                processColumns();
+
             })
             .error(function (err) {
                 console.log(err)
             })
             .jsonp();
+    }
+
+    function processColumns(){
+        $scope.properties.forEach(function(property){
+            if(property.best_measure.length > 0 && (property.best_measure[0]._type === 'line' ||
+                property.best_measure[0]._type === 'histogram')){
+                property.best_measure[0].categories = property.best_measure[0].value.categories.split("\n");
+                property.best_measure[0].values = property.best_measure[0].value.values.split("\n");
+            }
+        });
     }
 
     function init() {
