@@ -1,0 +1,30 @@
+<div style="margin-top: 20px">
+    <div class="col-xs-offset-2">
+        <div ng-if="search.results.total != 0">
+            <div class="row">
+                <h4>Showing top {{search.results.hits.length}} matches of {{search.results.total}} found.</h4>
+            </div>
+            <div ng-repeat="hit in search.results.hits" class="row" style="margin-top: 20px">
+                <span>
+                    <b>{{$index+1}}. </b>
+                    <i class="fa fa-files-o fa-fw" style="color: #9F88C1;"></i>
+                    <a ng-click="search.openFile(hit._source)">{{hit._source.name}}</a>
+                    {{hit._source.mediatype.mime}}
+                </span>
+                <span class="row">Path: {{hit._source.path}}</span>
+
+                <div ng-if="search.isImage(hit._source.mediatype.mime)">
+                    <a ng-click="search.openFile(hit._source)">
+                        <img class="img-thumbnail" height="140" width="140" ng-src="{{search.fileSrc(hit._source.id)}}">
+                    </a>
+                </div>
+                <div ng-if="hit._source.contents.length !== 0">
+                    <p>{{hit._source.contents | truncate:75:'...':true}}</p>
+                </div>
+            </div>
+        </div>
+        <div ng-if="search.results.total === 0">
+            <h4 class="center">No Matches Found</h4>
+        </div>
+    </div>
+</div>
