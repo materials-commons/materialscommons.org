@@ -13,9 +13,9 @@ function projectNavBarDirective() {
 }
 
 Application.Controllers.controller("projectNavBarDirectiveController",
-    ["$scope", "current", "$state", "ui", "User", "sideboard", "navBarState",
+    ["$scope", "current", "$state", "ui", "User", "sideboard", "navBarState", "searchQuery",
         projectNavBarDirectiveController]);
-function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, navBarState) {
+function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, navBarState, searchQuery) {
     $scope.setProject = function (project) {
         current.setProject(project);
         $scope.showProjects = false;
@@ -38,9 +38,17 @@ function projectNavBarDirectiveController($scope, current, $state, ui, User, sid
         $scope.activePage = navBarState.setActiveState(panel);
     };
 
+    $scope.search = function() {
+        searchQuery.set($scope.project.id, $scope.query);
+        if ($scope.query != "") {
+            $state.go('projects.project.search', {query: $scope.query}, {reload: true});
+        }
+    };
+
     function init() {
         $scope.mcuser = User.attr();
         $scope.list = sideboard.get($scope.project.id);
+        $scope.query = searchQuery.get($scope.project.id);
     }
 
     init();

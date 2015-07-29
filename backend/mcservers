@@ -47,7 +47,7 @@ function start_servers()
     R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcstored..."
-        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" > /tmp/mcstored.out.${SERVERTYPE} 2>&1&
+        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > /tmp/mcstored.out.${SERVERTYPE} 2>&1&
     fi
 
     R=$(is_running "sbin/app_mc.js" "p $MC_APP_SERVICE_PORT")
@@ -189,6 +189,7 @@ if [ $TESTSERVER = "t" ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MCFS_PORT=35882
+    export MC_ES_URL="http://localhost:9500"
     if [ "$MCDB_FILE" = "" ]; then
         export MCDB_FILE=~/test_data/rethinkdb_dump_test_data.tar.gz
     fi
@@ -217,6 +218,7 @@ elif [ $TESTSERVER = "u" ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MCFS_PORT=35882
+    export MC_ES_URL="http://localhost:9500"
     if [ "$MCDB_FILE" = "" ]; then
         export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
     fi
@@ -241,6 +243,7 @@ else
     export RETHINKDB_CLUSTER_PORT=29015
     export MCDB_DIR=~
     export MCFS_PORT=35862
+    export MC_ES_URL="http://localhost:9200"
     if [ $(hostname) = "materialscommons" ]; then
         export MCDIR=/mcfs/data/materialscommons
     else
