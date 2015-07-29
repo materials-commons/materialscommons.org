@@ -52,7 +52,7 @@
                     <img ng-if="attachment.type === 'sample'" src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
                     <img ng-if="attachment.type === 'process'" src="assets/img/splash/process-icon.png" style="height: 40px;padding-bottom: 10px;">
                     <img ng-if="attachment.type === 'datafile'" src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                    <a class="link" style="padding-left: 15px;" ng-click="openDetails(attachment)">{{attachment.name}}</a>
+                    <a class="link" style="padding-left: 15px;" ng-click="openDetails(attachment, attachment.type)">{{attachment.name}}</a>
                     <p style="padding-left: 80px"><small class="text-muted">{{attachment.path}}</small></p>
                 </div>
             </div>
