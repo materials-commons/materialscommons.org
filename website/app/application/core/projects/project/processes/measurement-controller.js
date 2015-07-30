@@ -75,7 +75,7 @@ function MeasurementController($scope, $log, modal, measurements, toastr) {
             }
         } else {
             j = null;
-            var property_id = $scope.copySample.properties[i].attribute_id;
+            var property_id = $scope.copySample.properties[i].property_id;
             j = _.indexOf($scope.modal.sample.properties, function (entry) {
                 return chosenProperty.name === entry.name;
             });

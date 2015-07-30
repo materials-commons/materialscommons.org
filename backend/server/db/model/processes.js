@@ -164,7 +164,7 @@ module.exports = function (r) {
         let created = [];
         for (let i = 0; i < properties.length; i++) {
             let current = properties[i];
-            let pID = current.attribute_id;
+            let pID = current.property_id;
             let pName = current.name;
             let pAttr = current.attribute;
             let measurements = yield addPropertyMeasurements(pID, pName, pAttr, sampleID, current.measurements);
@@ -450,7 +450,7 @@ module.exports = function (r) {
         let original = yield rql;
         // Change id to newAttrID and insert into table
         original.forEach(function (m) {
-            m.attribute_id = newAttrID;
+            m.property_id = newAttrID;
             delete m['id'];
         });
         yield db.insert('property2measurement', original);
@@ -471,7 +471,7 @@ module.exports = function (r) {
 
         // Change to newAttrID and insert
         original.forEach(function (entry) {
-            entry.attribute_id = newAttrID;
+            entry.property_id = newAttrID;
             delete entry['id'];
         });
         yield db.insert('best_measure_history', original);
