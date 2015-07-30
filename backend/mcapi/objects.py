@@ -65,8 +65,7 @@ def get_propertysets(sample_id):
 def create_best_measure_history():
     j = request.get_json()
     best_measure_history = dict()
-    best_measure_history['attribute_id'] = dmutil.get_required('property_id',
-                                                               j)
+    best_measure_history['property_id'] = dmutil.get_required('property_id', j)
     best_measure_history['measurement_id'] = dmutil.get_required(
         'measurement_id', j)
     best_measure_history['_type'] = 'best_measure_history'
