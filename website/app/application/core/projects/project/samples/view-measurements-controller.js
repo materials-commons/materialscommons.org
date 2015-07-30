@@ -13,7 +13,7 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi, 
             .success(function () {
                 pubsub.send('updateBestMeasurement');
             }).post({
-                attribute_id: $scope.modal.property.attribute_id,
+                property_id: $scope.modal.property.property_id,
                 measurement_id: $scope.selected.item.measurement_id
             })
     }
@@ -30,7 +30,6 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi, 
 
     $scope.modal.instance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
-
     }, function () {
         $log.info('Modal dismissed at: ' + new Date());
     });
