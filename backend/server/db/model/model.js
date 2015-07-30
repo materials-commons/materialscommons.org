@@ -95,7 +95,7 @@ module.exports = function(r) {
     function Property(name, attribute) {
         this.parent_id = '';
         this.birthtime = r.now();
-        this._type = 'attribute';
+        this._type = 'property';
         this.name = name;
         this.attribute = attribute;
         this.best_measure_id = '';
@@ -107,12 +107,12 @@ module.exports = function(r) {
     }
 
     function Property2Measurement(attrID, measurementID) {
-        this.attribute_id = attrID;
+        this.property_id = attrID;
         this.measurement_id = measurementID;
     }
 
     function Property2Process(attrID, processID) {
-        this.attribute_id = attrID;
+        this.property_id = attrID;
         this.process_id = processID;
     }
 
@@ -134,12 +134,12 @@ module.exports = function(r) {
     }
 
     function PropertySet2Property(attrID, asetID) {
-        this.attribute_set_id = asetID;
-        this.attribute_id = attrID;
+        this.property_set_id = asetID;
+        this.property_id = attrID;
     }
 
     function BestMeasureHistory(attrID, mID) {
-        this.attribute_id = attrID;
+        this.property_id = attrID;
         this.measurement_id = mID;
         this.when = r.now();
         this._type = 'best_measure_history';
