@@ -52,7 +52,7 @@ function projectsProject($scope, ui, project, current,
                 var obj = {};
                 obj.dir = files[0];
                 projectFiles.model.projects[project.id] = obj;
-                projectFiles.loadByMediaType(project);
+                //projectFiles.loadByMediaType(project);
                 $scope.loaded = true;
             }).jsonp();
     }
