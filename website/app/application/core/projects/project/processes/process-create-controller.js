@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state","Projects","current", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state","Projects","current", "measurements",projectCreateProcess]);
 
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state, Projects, current) {
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state, Projects, current, measurements) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -412,6 +412,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
 
     function init() {
         $scope.template = processTemplates.getActiveTemplate();
+        measurements.templates();
         $scope.bk = {
             selectedSample: {},
             newSample: {}

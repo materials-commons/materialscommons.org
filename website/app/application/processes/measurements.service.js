@@ -3,6 +3,7 @@ Application.Services.factory("measurements", measurementsService);
 function measurementsService() {
     var self = this;
     self.activeTemplate = {};
+    self.copy = [],
     self.measurements = [
         {
             name: "Composition",
@@ -190,11 +191,14 @@ function measurementsService() {
 
     return {
         templates: function() {
-            return self.measurements;
+            self.copy  = angular.copy(self.measurements);
         },
 
         newInstance: function(m) {
             return new m.fn();
+        },
+        templatesCopy: function(){
+           return self.copy
         }
     };
 }
