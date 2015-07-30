@@ -133,7 +133,7 @@ module.exports = function (r) {
             yield addMeasurementsToProcess(processID, measurements);
             let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
             yield db.insert('process2sample', proc2sample);
-            let samp2files = yield addSample2File(sampleID, sample.files);
+            yield addSample2File(sampleID, sample.files);
         }
     }
 
