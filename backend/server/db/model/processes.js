@@ -439,7 +439,7 @@ module.exports = function (r) {
     /**
      * Creates a new set of measurements for the new attribute by
      * copying over the original attributes measurements, changing the
-     * attribute_id to the new attributes id, and inserting.
+     * property_id to the new attributes id, and inserting.
      * @param {String} newAttrID - The new attribute
      * @param {String} fromAttrID - The attribute the new one came from
      */
@@ -459,7 +459,7 @@ module.exports = function (r) {
     /**
      * Creates a new best measure history for the new attribute by
      * copying over the original attributes history, changing the
-     * attribute_id to the new attributes id, and inserting.
+     * property_id to the new attributes id, and inserting.
      * @param {String} newAttrID - The new attribute
      * @param {String} fromAttrID - The attribute the new one came from
      */
