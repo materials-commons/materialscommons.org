@@ -297,7 +297,7 @@ function Sem() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: "°",
+                        unit: "degrees",
                         _type: "number",
                         required: false,
                         choices: []
