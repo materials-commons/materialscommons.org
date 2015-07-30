@@ -164,7 +164,7 @@ module.exports = function (r) {
         let created = [];
         for (let i = 0; i < properties.length; i++) {
             let current = properties[i];
-            let pID = current.attribute_id;
+            let pID = current.property_id;
             let pName = current.name;
             let pAttr = current.attribute;
             let measurements = yield addPropertyMeasurements(pID, pName, pAttr, sampleID, current.measurements);
@@ -439,18 +439,18 @@ module.exports = function (r) {
     /**
      * Creates a new set of measurements for the new attribute by
      * copying over the original attributes measurements, changing the
-     * attribute_id to the new attributes id, and inserting.
+     * property_id to the new attributes id, and inserting.
      * @param {String} newAttrID - The new attribute
      * @param {String} fromAttrID - The attribute the new one came from
      */
     function *attachMeasurements(newAttrID, fromAttrID) {
         // Get original attributes measurements
         let rql = r.table('property2measurement')
-            .getAll(fromAttrID, {index: 'attribute_id'});
+            .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
         // Change id to newAttrID and insert into table
         original.forEach(function (m) {
-            m.attribute_id = newAttrID;
+            m.property_id = newAttrID;
             delete m['id'];
         });
         yield db.insert('property2measurement', original);
@@ -459,19 +459,19 @@ module.exports = function (r) {
     /**
      * Creates a new best measure history for the new attribute by
      * copying over the original attributes history, changing the
-     * attribute_id to the new attributes id, and inserting.
+     * property_id to the new attributes id, and inserting.
      * @param {String} newAttrID - The new attribute
      * @param {String} fromAttrID - The attribute the new one came from
      */
     function *attachBestMeasureHistory(newAttrID, fromAttrID) {
         // Get original attributes best measure history
         let rql = r.table('best_measure_history')
-            .getAll(fromAttrID, {index: 'attribute_id'});
+            .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
 
         // Change to newAttrID and insert
         original.forEach(function (entry) {
-            entry.attribute_id = newAttrID;
+            entry.property_id = newAttrID;
             delete entry['id'];
         });
         yield db.insert('best_measure_history', original);
