@@ -12,7 +12,7 @@ function setupInstanceController($scope, project, $state,  $log, modal, pubsub, 
 
     $scope.ok = function () {
         $scope.modal.instance.close($scope.selected.item);
-        pubsub.send('addSetupToSample', $scope.selected.item);
+        //pubsub.send('addSetupToSample', $scope.selected.item);
         $state.go('projects.project.processes.create');
     };
 

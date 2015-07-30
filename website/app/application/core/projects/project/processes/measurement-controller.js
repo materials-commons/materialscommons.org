@@ -8,19 +8,10 @@ function MeasurementController($scope, $log, modal, measurements, toastr) {
     $scope.copySample = angular.copy($scope.modal.sample);
 
     $scope.showDetails = function (template) {
-        console.dir($scope.chosenProperty);
         $scope.chosenProperty = template;
         if (!('measures' in $scope.chosenProperty)) {
             $scope.chosenProperty.measures = [];
             $scope.editMeasurement();
-        }else{
-
-        }
-        var old_measures = [];
-        old_measures = existingMeasures($scope.chosenProperty, $scope.modal.sample);
-        if (old_measures.length !== 0) {
-            //Old measure are not supposed to be editable
-            //$scope.chosenProperty.measures = old_measures;
         }
     };
 
@@ -89,31 +80,8 @@ function MeasurementController($scope, $log, modal, measurements, toastr) {
         return $scope.modal.sample;
     }
 
-    function existingMeasures(chosenProperty, sample) {
-        $scope.measures = [];
-        var i = _.indexOf(sample.properties, function (entry) {
-            return chosenProperty.name === entry.name;
-        });
-        if (i === -1) {
-            var j = _.indexOf(sample.new_properties, function (item) {
-                return chosenProperty.name === item.name;
-            });
-            if (j === -1) {
-                return $scope.measures;
-            } else {
-                $scope.measures = sample.new_properties[j].measures;
-                return $scope.measures;
-            }
-        } else {
-            $scope.measures = sample.properties[i].measurements;
-            return $scope.measures;
-        }
-    }
-
     function init() {
-        console.log('controller instance');
         $scope.templates = measurements.templatesCopy();
-        console.dir($scope.templates);
     }
 
     init();

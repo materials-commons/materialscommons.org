@@ -1,8 +1,8 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state","Projects","current", "measurements",projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state", "Projects", "current", "measurements", "modalInstance", projectCreateProcess]);
 
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state, Projects, current, measurements) {
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state, Projects, current, measurements, modalInstance) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -20,10 +20,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         updateSampleMeasurement(sample);
     });
 
-    pubsub.waitOn($scope, 'addSetup', function (setup) {
-        addSetup(setup);
-    });
-
     pubsub.waitOn($scope, 'updateTransformedSample', function (transformed_sample) {
         updateTransformedSample(transformed_sample);
     });
@@ -39,7 +35,15 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         }
     }
 
-    $scope.cancel = function(){
+    $scope.openSample = function (sample) {
+        modalInstance.openModal(sample, 'sample', project);
+    };
+
+    $scope.openFile = function (file) {
+        modalInstance.openModal(file, 'datafile', project);
+    };
+
+    $scope.cancel = function () {
         $state.go('projects.project.processes.list');
     };
 
@@ -52,8 +56,8 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             return datafile.id === entry.id;
         });
 
-        if (k < 0){
-            if ( i > -1){
+        if (k < 0) {
+            if (i > -1) {
                 $scope.template.input_samples[i].files.push({id: datafile.id, name: datafile.name});
                 $scope.bk.selectedSample = '';
             }
@@ -77,11 +81,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
         $scope.template.input_samples[i] = sample;
     }
-
-    function addSetup(setup) {
-        $scope.template.setup = setup;
-    }
-
 
     function addAttachment(item) {
         var what;
@@ -207,7 +206,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
     };
 
-    $scope.showLineChart = function(property){
+    $scope.showLineChart = function (property) {
         $scope.modal = {
             instance: null,
             property: property
@@ -227,7 +226,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             }
         });
     };
-    $scope.showHistogram = function(property){
+    $scope.showHistogram = function (property) {
         $scope.modal = {
             instance: null,
             property: property
@@ -248,7 +247,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
     };
 
-    $scope.showLineGraph = function(property){
+    $scope.showLineGraph = function (property) {
         $scope.modal = {
             instance: null,
             property: property
@@ -310,6 +309,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     };
 
     $scope.createProcess = function () {
+        $scope.isProcessing = true;
         if ($scope.template._type === 'as_received') {
             $scope.template.output_samples.push($scope.bk.newSample);
         } else {
@@ -317,15 +317,17 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         }
         $scope.template.input_files = refineFiles($scope.template.input_files);
         $scope.template.output_files = refineFiles($scope.template.output_files);
+        refineSetUpProperties();
         mcapi('/projects2/%/processes', project.id)
             .success(function (proc) {
+                $scope.isProcessing = false;
                 //After you create a process try to update the whole project.
                 // Because samples, processes should be refreshed in
                 // order for user to create another process.
 
                 //Currently i'm reloading all the projects , but we need to reload single project.
-                Projects.getList(true).then(function(projects) {
-                    var i = _.indexOf(projects, function(p) {
+                Projects.getList(true).then(function (projects) {
+                    var i = _.indexOf(projects, function (p) {
                         return p.id == project.id;
                     });
                     current.setProject(projects[i]);
@@ -347,12 +349,23 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             .post($scope.template);
     };
 
+    function refineSetUpProperties(){
+        $scope.settings =  $scope.template.setup.settings[0].properties;
+        $scope.template.setup.settings[0].properties = [];
+        $scope.settings.forEach(function(property){
+            if (property.property.value !== null){
+                $scope.template.setup.settings[0].properties.push(property)
+            }
+        })
+
+    }
+
     function refineSampleProperties() {
         $scope.template.input_samples.forEach(function (sample) {
             sample.properties = refine(sample.properties);
             sample.new_properties = refine(sample.new_properties);
         });
-        if ($scope.template.transformed_samples.length !== 0){
+        if ($scope.template.transformed_samples.length !== 0) {
             $scope.template.transformed_samples = refineTransformedSamples();
         }
         return $scope.template;
@@ -392,8 +405,8 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         return items;
     }
 
-    function refineTransformedSamples(){
-        $scope.template.transformed_samples.forEach(function(sample){
+    function refineTransformedSamples() {
+        $scope.template.transformed_samples.forEach(function (sample) {
             sample.shares = transformActions(sample.shares);
             sample.uses = transformActions(sample.uses);
             sample.unknowns = transformActions(sample.unknowns);
@@ -402,8 +415,8 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         return $scope.template.transformed_samples;
     }
 
-    function transformActions(properties){
-        var transform =[];
+    function transformActions(properties) {
+        var transform = [];
         properties.forEach(function (property) {
             transform.push(property.id);
         });
