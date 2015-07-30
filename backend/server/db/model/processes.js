@@ -446,7 +446,7 @@ module.exports = function (r) {
     function *attachMeasurements(newAttrID, fromAttrID) {
         // Get original attributes measurements
         let rql = r.table('property2measurement')
-            .getAll(fromAttrID, {index: 'attribute_id'});
+            .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
         // Change id to newAttrID and insert into table
         original.forEach(function (m) {
@@ -466,7 +466,7 @@ module.exports = function (r) {
     function *attachBestMeasureHistory(newAttrID, fromAttrID) {
         // Get original attributes best measure history
         let rql = r.table('best_measure_history')
-            .getAll(fromAttrID, {index: 'attribute_id'});
+            .getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
 
         // Change to newAttrID and insert
