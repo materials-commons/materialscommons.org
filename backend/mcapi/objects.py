@@ -17,8 +17,8 @@ import resp
 def get_sample_measurements(sample_id, property_set_id):
     measurements = list(
         r.table('propertyset2property').get_all(property_set_id,
-                                                index='attribute_set_id') \
-        .eq_join('attribute_id', r.table('properties')).zip() \
+                                                index='property_set_id') \
+        .eq_join('property_id', r.table('properties')).zip() \
         .order_by('name')\
         .merge(lambda property:
                {
@@ -29,7 +29,7 @@ def get_sample_measurements(sample_id, property_set_id):
                .coerce_to('array'),
                    'measurements':
                        r.table('property2measurement')
-               .get_all(property['id'], index="attribute_id")
+               .get_all(property['id'], index="property_id")
                .eq_join('measurement_id', r.table('measurements')).zip()
                .merge(lambda measurement:
                       {
@@ -65,7 +65,7 @@ def get_propertysets(sample_id):
 def create_best_measure_history():
     j = request.get_json()
     best_measure_history = dict()
-    best_measure_history['attribute_id'] = dmutil.get_required('attribute_id',
+    best_measure_history['attribute_id'] = dmutil.get_required('property_id',
                                                                j)
     best_measure_history['measurement_id'] = dmutil.get_required(
         'measurement_id', j)
@@ -74,7 +74,7 @@ def create_best_measure_history():
     history = dmutil.insert_entry('best_measure_history', best_measure_history,
                                   return_created=True)
     if history:
-        rv = r.table('properties').get(best_measure_history['attribute_id']) \
+        rv = r.table('properties').get(best_measure_history['property_id']) \
             .update({'best_measure_id': history['id']}).run(g.conn)
     return jsonify(history)
 
