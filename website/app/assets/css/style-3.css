@@ -2386,6 +2386,8 @@ header {
   text-transform: uppercase;
 }
 
+
+
 .btn-cancel {
   background-color: #E57373;
 }
@@ -2396,6 +2398,12 @@ header {
 
 .btn-process {
   background-color: #3A9EE3;
+}
+
+.btn-process:hover{
+  background-color: #3575b4;
+  color: #ffffff;
+  border-color: #3A9EE3 ;
 }
 
 .btn-files {

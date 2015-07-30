@@ -79,7 +79,7 @@
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/sample_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openDetails(attachment)" class="link pointer"
+                                    <a ng-click="openSample(attachment)" class="link pointer"
                                        style="padding-left: 15px;">{{attachment.name}}</a>
                                     <span ng-if="!template.does_transform" style="padding-left: 20px">
                                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span
@@ -135,7 +135,7 @@
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openDetails(attachment)" class="link pointer">{{attachment.name}}</a>
+                                    <a ng-click="openFile(attachment)"  class="link pointer">{{attachment.name}}</a>
 
                                     <i style="padding-left: 20px;"
                                        ng-click="removeAttachment(attachment, 'input_files', '')"
@@ -171,7 +171,7 @@
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openDetails(attachment)"
+                                    <a ng-click="openFile(attachment)"
                                        class="link pointer">{{attachment.name}}</a>
 
                                     <i style="padding-left: 20px;"
@@ -211,7 +211,7 @@
                         </div>
                         <div class="col-xs-3">
                             <button ng-click="createProcess()"
-                                    class=" btn btn-default btn-process  btn-details-container">Submit
+                                    ng-disabled="isProcessing" class=" btn btn-default btn-process btn-details-container">Submit
                             </button>
                         </div>
                     </div>

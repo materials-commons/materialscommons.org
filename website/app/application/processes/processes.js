@@ -88,7 +88,7 @@ function Apt() {
                         description: "",
                         value: null,
                         units: ["pJ", "nJ"],
-                        unit: null,
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
@@ -136,7 +136,7 @@ function Apt() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "selection",
                         required: false,
                         choices: [
@@ -185,7 +185,7 @@ function Apt() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         required: false,
                         _type: "selection",
                         choices: [
@@ -222,7 +222,7 @@ function Apt() {
                         description: "",
                         value: null,
                         units: ["atm", "Pa", "torr"],
-                        unit: null,
+                        unit: "",
                         required: false,
                         _type: "number",
                         choices: []
@@ -313,7 +313,7 @@ function Sem() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
@@ -364,7 +364,7 @@ function Sem() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "selection",
                         required: false,
                         choices: [{"name": "Secondary", "value": "secondary"},
@@ -424,7 +424,7 @@ function AsReceived() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "string",
                         required: false,
                         choices: []
@@ -466,8 +466,8 @@ function AptDataAnalysis() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
-                        _type: "text",
+                        unit: "",
+                        _type: "string",
                         required: false,
                         choices: []
                     },
@@ -483,7 +483,7 @@ function AptDataAnalysis() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "text",
+                        _type: "string",
                         required: false,
                         choices: []
                     },
@@ -499,7 +499,7 @@ function AptDataAnalysis() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "text",
+                        _type: "string",
                         required: false,
                         choices: []
                     },
@@ -514,8 +514,8 @@ function AptDataAnalysis() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
-                        _type: "text",
+                        unit: "",
+                        _type: "string",
                         required: false,
                         choices: []
                     },
@@ -557,7 +557,7 @@ function AptDataReconstruction() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "selection",
                         required: false,
                         choices: [{"name": "Voltage", "value": "voltage"}, {
@@ -716,7 +716,7 @@ function BroadIonBeamMilling() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "selection",
                         required: false,
                         choices: [{"name": "Ga", "value": "Ga"}, {"name": "Ne", "value": "Ne"}, {
@@ -794,7 +794,7 @@ function Cogging() {
                         description: "",
                         value: null,
                         units: ["C", "F", "K"],
-                        unit: null,
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
@@ -853,7 +853,7 @@ function Compression() {
                         description: "",
                         value: null,
                         units: ["C", "F", "K"],
-                        unit: null,
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
@@ -960,8 +960,8 @@ function Computation() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
-                        _type: "text",
+                        unit: "",
+                        _type: "string",
                         required: false,
                         choices: []
                     },
@@ -992,7 +992,7 @@ function Computation() {
                         description: "",
                         value: null,
                         units: ["b", "kb", "mb", "gb"],
-                        unit: null,
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
@@ -1051,7 +1051,7 @@ function Creep() {
                         description: "",
                         value: null,
                         units: ["C", "F", "K"],
-                        unit: null,
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
@@ -1068,7 +1068,7 @@ function Creep() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "text",
+                        _type: "string",
                         required: false,
                         choices: []
                     },
@@ -1126,7 +1126,7 @@ function DicPatterning() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "selection",
                         required: false,
                         choices: [{"name": "Large-Scale", "value": "large_scale"}, {
@@ -1239,7 +1239,7 @@ function DicStatisticalModelling() {
                         description: "",
                         value: null,
                         units: [],
-                        unit: null,
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
