@@ -45,7 +45,7 @@
                         </a>
                     </li>
                     <li role="presentation" ui-sref-active="active">
-                        <a ui-sref="projects.project.samples"
+                        <a ui-sref="projects.project.samples.all"
                            ui-sref-opts="{reload: true}"
                            class="pointer">
                             <i class="fa fa-fw fa-cubes"></i> Samples
@@ -91,15 +91,6 @@
                     </li>
                 </ul>
             </div>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 15px; z-index: 1000">
-        <div class="col-xs-offset-1">
-            <input class="col-xs-11"
-                   type="text"
-                   placeholder="SEARCH FILES..."
-                   ng-model="query"
-                   on-enter="search()">
         </div>
     </div>
 </div>
