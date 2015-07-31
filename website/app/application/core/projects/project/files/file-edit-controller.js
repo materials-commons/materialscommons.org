@@ -106,7 +106,6 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
 
     init();
 
-
     //////////////////////
 
     // TODO: Clean this up so we don't have to search for different id keys
