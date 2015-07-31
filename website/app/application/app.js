@@ -135,7 +135,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             onEnter: ["pubsub", "project", function (pubsub, project) {
                 pubsub.send("reviews.change");
             }],
-            controller: "projectsProject"
+            controller: "ProjectController"
         })
         .state('projects.project.home', {
             url: '/home',
@@ -187,12 +187,6 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "FilesSearchController",
             controllerAs: "search"
         })
-        //.state("projects.project.files.edit", {
-        //    url: "/edit/:file_id",
-        //    templateUrl: "application/core/projects/project/files/edit.html",
-        //    controller: "FilesEditController",
-        //    controllerAs: 'file'
-        //})
         .state("projects.project.access", {
             url: "/access",
             templateUrl: "application/core/projects/project/access/access.html",
@@ -245,14 +239,24 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectEditProcess"
         })
         .state("projects.project.samples", {
-            url: "/samples/:category",
+            url: "/samples",
             templateUrl: "application/core/projects/project/samples/samples.html",
-            controller: "projectSamples"
+            controller: "SamplesController"
+        })
+        .state("projects.project.samples.all", {
+            url: "/all",
+            templateUrl: "application/core/projects/project/samples/all.html",
+            controller: "SamplesAllController"
+        })
+        .state("projects.project.samples.all.edit", {
+            url: "/edit/:sample_id",
+            templateUrl: "application/core/projects/project/samples/edit.html",
+            controller: "SamplesEditController"
         })
         .state("projects.project.samples.edit", {
             url: "/edit/:sample_id",
             templateUrl: "application/core/projects/project/samples/edit.html",
-            controller: "projectEditSample"
+            controller: "SamplesEditController"
         });
 
     $urlRouterProvider.otherwise('/home');
