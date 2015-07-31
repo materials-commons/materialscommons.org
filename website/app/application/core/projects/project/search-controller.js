@@ -24,8 +24,7 @@ function searchController(mcapi, project, $stateParams, mcfile, $state, projectF
     }
 
     function openFile(f) {
-        var file = projectFiles.findFileByID(project.id, f.id);
-        projectFiles.setActiveFile(file);
+        projectFiles.setActiveFile(f);
         $state.go('projects.project.files.edit', {file_id: f.id, file_type: f._type});
     }
 }
