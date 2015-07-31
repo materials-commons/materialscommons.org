@@ -30,7 +30,7 @@ function homeReviewsDirectiveController($scope) {
             width: 300,
             template: '<span ng-bind="data.title"></span>' +
             '<p><small class="text-muted"><i class="fa fa-fw fa-user"></i>' +
-            '<span ng-bind="data.who"></span>' +
+            '<span  class="text-muted" ng-bind="data.who"></span>' +
             '<small  style="padding-left: 60px;" ng-bind="data.mtime"></small></small></p>',
             cellStyle: {border: 0}
         },
