@@ -1274,10 +1274,10 @@ function DicStatisticalModelling() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Linear", "value" : "linear"},
-                            {"name": "Interactions", "value" : "interactions"},
-                            {"name": "PureQuadratic", "value" : "purequadratic"},
-                            {"name": "Quadratic", "value" : "quadratic"}]
+                        choices: [{"name": "Linear", "value": "linear"},
+                            {"name": "Interactions", "value": "interactions"},
+                            {"name": "PureQuadratic", "value": "purequadratic"},
+                            {"name": "Quadratic", "value": "quadratic"}]
                     },
                     validators: [],
                     valid: false,

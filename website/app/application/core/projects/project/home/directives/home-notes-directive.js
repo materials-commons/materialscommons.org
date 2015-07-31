@@ -21,7 +21,7 @@ function homeNotesDirectiveController($scope, $filter) {
         rowData.push({
             title: note.title,
             msg: n ,
-            owner: note.creator,
+            owner: note.owner,
             mtime: note.mtime
         });
     });
