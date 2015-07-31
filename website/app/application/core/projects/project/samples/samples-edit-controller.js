@@ -33,7 +33,7 @@ function SamplesEditController($scope, $modal, $stateParams, project, mcapi, mod
             .success(function (property_sets) {
                 angular.forEach(property_sets, function (values, key) {
                     values.forEach(function (item) {
-                        if (item.name === "As Received") {
+                        if (item.process_type === "as_received") {
                             item.does_transform = true;
                             setOthersToFalse(values);
                         }
@@ -55,7 +55,7 @@ function SamplesEditController($scope, $modal, $stateParams, project, mcapi, mod
 
     function setOthersToFalse(values) {
         values.forEach(function (item) {
-            if (item.name === "As Received") {
+            if (item.process_type === "as_received") {
             } else {
                 item.does_transform = false;
             }
