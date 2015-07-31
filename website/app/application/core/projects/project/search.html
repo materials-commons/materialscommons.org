@@ -26,7 +26,21 @@
                         </div>
                     </div>
                     <div ng-switch-when="sample">
-                        Show sample
+                        <span>
+                            <b>{{$index+1}}.</b>
+                            <i class="fa fa-fw fa-cubes" style="color: #f0ad4e;"></i>
+                            <a ui-sref="projects.project.samples.edit({sample_id: hit._source.sample_id})">{{hit._source.name}}</a>
+                        </span>
+
+                        <div class="row">
+                            <span>
+                                <a ui-sref="projects.project.samples.edit({sample_id: hit._source.sample_id})">
+                                    <img ng-repeat="image in search.images(hit._source.files)| first:3"
+                                         class="img-thumbnail" height="140" width="140"
+                                         ng-src={{search.fileSrc(image.datafile_id)}}>
+                                </a>
+                            </span>
+                        </div>
                     </div>
                     <div ng-switch-when="process">
                         Show process
