@@ -1,19 +1,28 @@
 <div>
-    <div ng-if="!loaded">
+    <div ng-show="!loaded">
         <div class="loading-panel col-xs-4">
             <center>
                 <h4><i class="fa fa-spinner fa-spin fa-4x"></i> Loading {{project.name}}...</h4>
             </center>
         </div>
     </div>
-    <div ng-if="loaded">
+    <div ng-show="loaded">
         <div class="row project-task-bar">
             <project-nav-bar
                 project="project"
                 projects="projects">
             </project-nav-bar>
         </div>
-        <div class="row" style="padding-top: 80px;">
+        <div class="row" style="padding-top: 60px;">
+            <div class="col-xs-offset-1">
+                <input class="col-xs-11"
+                       type="text"
+                       placeholder="SEARCH FILES..."
+                       ng-model="query"
+                       on-enter="search()">
+            </div>
+        </div>
+        <div ng-if="loaded" class="row">
             <div ng-class="{'col-sm-12': isExpanded('help'), 'col-sm-4': !isExpanded('help') && showHelp()}" ng-show="showHelp()">
                 <userguide></userguide>
             </div>

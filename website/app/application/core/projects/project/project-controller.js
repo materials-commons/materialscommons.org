@@ -1,11 +1,11 @@
-Application.Controllers.controller('projectsProject',
+Application.Controllers.controller('ProjectController',
     ["$scope", "ui",
         "project", "current", "pubsub", "User",
         "projectFiles", "mcapi", "help", "sideboard", "projects",
         "$state",
-        projectsProject]);
+        ProjectController]);
 
-function projectsProject($scope, ui, project, current,
+function ProjectController($scope, ui, project, current,
                          pubsub, User, projectFiles, mcapi,
                          help, sideboard, projects, $state) {
     $scope.projects = projects;
@@ -23,6 +23,12 @@ function projectsProject($scope, ui, project, current,
 
     $scope.isExpanded = function (what) {
         return help.isActive() && ui.isExpanded(project.id, what);
+    };
+
+    $scope.search = function() {
+        if ($scope.query != "") {
+            $state.go('projects.project.search', {query: $scope.query});
+        }
     };
 
     current.setProject(project);
