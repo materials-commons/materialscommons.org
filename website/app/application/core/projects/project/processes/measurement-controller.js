@@ -1,13 +1,14 @@
 Application.Controllers.controller('MeasurementController',
-    ["$scope", "$log", "modal", "measurements", "toastr", MeasurementController]);
+    ["$scope", "$log", "modal", "measurements", MeasurementController]);
 
-function MeasurementController($scope, $log, modal, measurements, toastr) {
+function MeasurementController($scope, $log, modal, measurements) {
 
     $scope.modal = modal;
     //Initializing the sample
     $scope.copySample = angular.copy($scope.modal.sample);
 
     $scope.showDetails = function (template) {
+        $scope.message = "";
         $scope.chosenProperty = template;
         if (!('measures' in $scope.chosenProperty)) {
             $scope.chosenProperty.measures = [];
@@ -31,14 +32,17 @@ function MeasurementController($scope, $log, modal, measurements, toastr) {
 
     $scope.save = function () {
         $scope.modal.sample = storeProperties($scope.chosenProperty);
-        toastr.success("Saved: " + $scope.chosenProperty.name);
+        $scope.message = $scope.chosenProperty.name + ' is saved onto the left sidebar!';
+        //toastr.success("Saved: " + $scope.chosenProperty.name);
     };
 
     $scope.addNewChoice = function () {
+        $scope.message = "";
         $scope.editMeasurement();
     };
 
     $scope.removeChoice = function (index) {
+        $scope.message = "";
         $scope.chosenProperty.measures.splice(index, 1);
     };
 
