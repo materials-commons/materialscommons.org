@@ -54,7 +54,7 @@ def get_propertysets(sample_id):
                  index='property_set_id').zip() \
         .group('property_set_id').pluck('process_id') \
         .eq_join('process_id', r.table('processes')).zip() \
-        .pluck('process_id', 'name', 'does_transform')\
+        .pluck('process_id', 'name', 'does_transform', 'process_type')\
             .run(g.conn, time_format="raw")
     return resp.to_json(psets)
 
