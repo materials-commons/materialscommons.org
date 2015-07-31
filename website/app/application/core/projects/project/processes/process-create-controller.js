@@ -349,11 +349,11 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             .post($scope.template);
     };
 
-    function refineSetUpProperties(){
-        $scope.settings =  $scope.template.setup.settings[0].properties;
+    function refineSetUpProperties() {
+        $scope.settings = $scope.template.setup.settings[0].properties;
         $scope.template.setup.settings[0].properties = [];
-        $scope.settings.forEach(function(property){
-            if (property.property.value !== null){
+        $scope.settings.forEach(function (property) {
+            if (property.property.value !== null) {
                 $scope.template.setup.settings[0].properties.push(property)
             }
         })

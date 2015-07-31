@@ -7,7 +7,7 @@
                 </div>
             </div>
             <ul  class="list-group">
-                <li ui-sref="projects.project.processes.list.edit({'process_id': process.id})"
+                <li ui-sref="projects.project.processes.list.view({'process_id': process.id})"
                     ng-class="{'process': current.id === process.id}"
                     class="list-group-item pointer"
                     ng-repeat="process in project.processes"
