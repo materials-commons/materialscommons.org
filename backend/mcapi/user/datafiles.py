@@ -104,6 +104,8 @@ def update_datafile_note(datafile_id):
     if n2item:
         return update_join(n, n2item)
     else:
+        n['birthtime'] = r.now()
+        n['mtime'] = n['birthtime']
         new_note = dmutil.insert_entry('notes', n,
                                        return_created=True)
         n2item = note2item.Note2Item(datafile_id, 'datafile', new_note['id'])
