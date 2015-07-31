@@ -52,7 +52,7 @@ function homeSamplesController($scope) {
         rowData: rowData,
         enableColResize: true,
         headerHeight: 0,
-        rowHeight: 85,
+        rowHeight: 65,
         rowStyle: {'border-bottom': 'dotted #d3d3d3'},
         angularCompileRows: true
     };
