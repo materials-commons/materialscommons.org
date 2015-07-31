@@ -30,7 +30,8 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
 
     ctrl.fileSrc = function (file) {
         if (file) {
-            return mcfile.src(file.df_id);
+            var id = getID(file);
+            return mcfile.src(id);
         }
     };
 
@@ -104,6 +105,23 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
     }
 
     init();
+
+
+    //////////////////////
+
+    // TODO: Clean this up so we don't have to search for different id keys
+    // returns the file id depending on which key it is under.
+    function getID(file) {
+        if ('df_id' in file) {
+            return file.df_id;
+        } else if ('datafile_id' in file) {
+            return file.datafile_id;
+        } else if ('id' in file) {
+            return file.id;
+        } else {
+            return ""
+        }
+    }
 }
 
 ////////////////////////////////
