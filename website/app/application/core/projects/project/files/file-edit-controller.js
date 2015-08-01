@@ -16,7 +16,11 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
     });
 
     ctrl.addTag = function (tag) {
-        var tag_obj = {'id': tag.tag_id, 'owner': User.u()};
+        var tag_obj = {
+            tag_id: tag.tag_id,
+            owner: User.u(),
+            item_type: 'datafile'
+        };
         tags.createTag(tag_obj, ctrl.active.df_id);
     };
 
