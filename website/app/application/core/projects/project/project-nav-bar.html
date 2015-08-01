@@ -26,6 +26,7 @@
                     <li role="presentation" ui-sref-active="active">
                         <a ui-sref="projects.project.home"
                            ui-sref-opts="{reload: true}"
+                           ng-click="clearSearch()"
                            class="pointer">
                             <i class="fa fa-fw fa-home"></i>Home
                         </a>
@@ -33,6 +34,7 @@
                     <li role="presentation" ui-sref-active="active">
                         <a ui-sref="projects.project.processes.list"
                            ui-sref-opts="{reload: true}"
+                           ng-click="clearSearch()"
                            class="pointer">
                             <i class="fa fa-fw fa-code-fork bold"></i>Processes
                         </a>
@@ -40,6 +42,7 @@
                     <li role="presentation" ui-sref-active="active">
                         <a ui-sref="projects.project.files.all"
                            ui-sref-opts="{reload: true}"
+                           ng-click="clearSearch()"
                            class="pointer">
                             <i class="fa fa-fw fa-files-o"></i> Files
                         </a>
@@ -47,6 +50,7 @@
                     <li role="presentation" ui-sref-active="active">
                         <a ui-sref="projects.project.samples.all"
                            ui-sref-opts="{reload: true}"
+                           ng-click="clearSearch()"
                            class="pointer">
                             <i class="fa fa-fw fa-cubes"></i> Samples
                         </a>
@@ -54,6 +58,7 @@
                     <li role="presentation" ui-sref-active="active">
                         <a ui-sref="projects.project.reviews"
                            ui-sref-opts="{reload: true}"
+                           ng-click="clearSearch()"
                            class="pointer">
                             <i class="fa fa-fw fa-comment"></i> Reviews
                         </a>
@@ -61,6 +66,7 @@
                     <li ng-if="false" role="presentation" ui-sref-active="active">
                         <a ui-sref="projects.project.notes"
                            ui-sref-opts="{reload: true}"
+                           ng-click="clearSearch()"
                            class="pointer">
                             <i class="fa fa-fw fa-edit"></i>Notes
                         </a>
@@ -75,6 +81,7 @@
                         <a style="padding: 10px 5px;"
                            ui-sref="projects.project.access"
                            ui-sref-opts="{reload: true}"
+                           ng-click="clearSearch()"
                            class="pointer"
                            title="Project Settings">
                             <i class="fa fa-fw fa-1x fa-gear"></i>
