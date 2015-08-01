@@ -26,22 +26,17 @@ def add_tag(item_id):
     j = request.get_json()
     tag_id = dmutil.get_required('tag_id', j)
     item_type = dmutil.get_required('item_type', j)
-    owner = dmutil.get_required('owner', j)
-    model_tag = tag.Tag(tag_id, owner)
-    res = dmutil.insert_entry('tags', model_tag.__dict__, return_created=True)
-    if res:
-        res = r.table('tag2item').insert({
-            'tag_id': res['id'],
-            'item_id': item_id,
-            'item_type': item_type
-        }).run(g.conn)
-        return resp.to_json(res)
+    res = r.table('tag2item').insert({
+        'tag_id': tag_id,
+        'item_id': item_id,
+        'item_type': item_type
+    }).run(g.conn)
+    return resp.to_json(res)
 
 
 @app.route('/tags/<tag_id>/item/<item_id>', methods=['DELETE'])
 @apikey(shared=True)
 def remove_tag(tag_id, item_id):
-    print tag_id
     sel = r.table('tag2item').get_all(tag_id, index='tag_id')\
         .filter({'item_id': item_id}).delete().run(g.conn)
     return jsonify(sel)
