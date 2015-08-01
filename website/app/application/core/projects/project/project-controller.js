@@ -2,12 +2,13 @@ Application.Controllers.controller('ProjectController',
     ["$scope", "ui",
         "project", "current", "pubsub", "User",
         "projectFiles", "mcapi", "help", "sideboard", "projects",
-        "$state",
+        "$state", "searchQuery",
         ProjectController]);
 
 function ProjectController($scope, ui, project, current,
                          pubsub, User, projectFiles, mcapi,
-                         help, sideboard, projects, $state) {
+                         help, sideboard, projects, $state, searchQuery) {
+    $scope.query = searchQuery.get(project.id);
     $scope.projects = projects;
     $scope.sideboard = sideboard.get(project.id);
     $scope.setProject = function (project) {
@@ -27,7 +28,8 @@ function ProjectController($scope, ui, project, current,
 
     $scope.search = function() {
         if ($scope.query != "") {
-            $state.go('projects.project.search', {query: $scope.query});
+            searchQuery.set(project.id, $scope.query);
+            $state.go('projects.project.search', {query: $scope.query}, {reload: true});
         }
     };
 
