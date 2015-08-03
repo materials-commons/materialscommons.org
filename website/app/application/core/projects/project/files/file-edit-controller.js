@@ -1,7 +1,7 @@
 Application.Controllers.controller("FilesEditController",
-    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", "toastr", "$state",
+    ["$scope", "$stateParams", "projectFiles", "User", "mcfile", "pubsub", "tags", "mcapi", "$modal", "toastr", "project",
         FilesEditController]);
-function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal, toastr, $state) {
+function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, pubsub, tags, mcapi, $modal, toastr, project) {
     var ctrl = this;
 
     ctrl.editNote = false;
@@ -15,39 +15,51 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         ctrl.type = 'dir';
     });
 
-    ctrl.addTag = function (tag) {
+    ctrl.addTag = addTag;
+    ctrl.removeTag = removeTag;
+    ctrl.downloadSrc = downloadSrc;
+    ctrl.fileSrc = fileSrc;
+    ctrl.closeFile = closeFile;
+    ctrl.rename = rename;
+    ctrl.createFolder = createFolder;
+
+    init();
+
+    //////////////////////
+
+    function addTag(tag) {
         var tag_obj = {
             tag_id: tag.tag_id,
             owner: User.u(),
             item_type: 'datafile'
         };
         tags.createTag(tag_obj, ctrl.active.df_id);
-    };
+    }
 
-    ctrl.removeTag = function (tag) {
+    function removeTag(tag) {
         tags.removeTag(tag.tag_id, ctrl.active.df_id);
-    };
+    }
 
-    ctrl.downloadSrc = function (file) {
+    function downloadSrc(file) {
         return mcfile.downloadSrc(file.df_id);
-    };
+    }
 
-    ctrl.fileSrc = function (file) {
+    function fileSrc(file) {
         if (file) {
             var id = getID(file);
             return mcfile.src(id);
         }
-    };
+    }
 
-    ctrl.closeFile = function () {
+    function closeFile() {
         ctrl.active = null;
-    };
+    }
 
-    ctrl.rename = function () {
+    function rename() {
         var modalInstance = $modal.open({
             size: 'sm',
             templateUrl: 'application/core/projects/project/files/rename-file.html',
-            controller: 'RenameFileModalController',
+            controller: 'FileModalController',
             controllerAs: 'file',
             resolve: {
                 active: function () {
@@ -55,7 +67,6 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
                 }
             }
         });
-
         modalInstance.result.then(function (name) {
             mcapi("/datafile/%", $stateParams.file_id)
                 .success(function () {
@@ -67,7 +78,49 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
                 })
                 .put({name: name});
         });
-    };
+    }
+
+    function createFolder() {
+        var modalInstance = $modal.open({
+            size: 'sm',
+            templateUrl: 'application/core/projects/project/files/create-folder.html',
+            controller: 'FileModalController',
+            controllerAs: 'folder',
+            resolve: {
+                active: function () {
+                    return ctrl.active;
+                }
+            }
+        });
+        modalInstance.result.then(function (name) {
+            mcapi('/datadirs')
+                .success(function (datadir) {
+                    ctrl.active.addFolder = false;
+                    ctrl.active.children.push(datadir);
+                    pubsub.send('files.refresh');
+                })
+                .post({
+                    project_id: project.id,
+                    parent: ctrl.active.df_id,
+                    name: ctrl.active.name + '/' + name,
+                    level: ctrl.active.level+1
+                });
+        });
+    }
+
+    // TODO: Clean this up so we don't have to search for different id keys
+    // returns the file id depending on which key it is under.
+    function getID(file) {
+        if ('df_id' in file) {
+            return file.df_id;
+        } else if ('datafile_id' in file) {
+            return file.datafile_id;
+        } else if ('id' in file) {
+            return file.id;
+        } else {
+            return ""
+        }
+    }
 
     function getActiveFile() {
         ctrl.active = projectFiles.getActiveFile();
@@ -107,39 +160,21 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
             ctrl.active = projectFiles.getActiveDirectory();
         }
     }
-
-    init();
-
-    //////////////////////
-
-    // TODO: Clean this up so we don't have to search for different id keys
-    // returns the file id depending on which key it is under.
-    function getID(file) {
-        if ('df_id' in file) {
-            return file.df_id;
-        } else if ('datafile_id' in file) {
-            return file.datafile_id;
-        } else if ('id' in file) {
-            return file.id;
-        } else {
-            return ""
-        }
-    }
 }
 
 ////////////////////////////////
 
-Application.Controllers.controller("RenameFileModalController",
-    ["$modalInstance", "active", RenameFileModalController]);
-function RenameFileModalController($modalInstance, active) {
+Application.Controllers.controller("FileModalController",
+    ["$modalInstance", "active", FileModalController]);
+function FileModalController($modalInstance, active) {
     var ctrl = this;
     ctrl.name = "";
-    ctrl.rename = rename;
+    ctrl.useName = useName;
     ctrl.cancel = cancel;
 
     ///////////
 
-    function rename() {
+    function useName() {
         if (ctrl.name != "" && ctrl.name != active.name) {
             $modalInstance.close(ctrl.name);
         }
