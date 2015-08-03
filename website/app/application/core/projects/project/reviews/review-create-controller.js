@@ -1,5 +1,5 @@
 Application.Controllers.controller('projectCreateReview',
-    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state", "$filter", "modalInstance",projectCreateReview]);
+    ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state", "$filter", "modalInstance", projectCreateReview]);
 
 function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state, $filter, modalInstance) {
 
@@ -96,8 +96,8 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
         modalInstance.openModal(params, project);
     };
 
-    $scope.cancel = function(){
-     init();
+    $scope.cancel = function () {
+        init();
     };
 
     function init() {
