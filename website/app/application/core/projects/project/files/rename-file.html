@@ -4,10 +4,10 @@
     </div>
     <div class="modal-body">
         <input type="text" ng-model="file.name"
-               class="col-xs-12" on-enter="file.rename()" placeholder="New name...">
+               class="col-xs-12" on-enter="file.useName()" placeholder="New name...">
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="file.rename()">Rename</button>
+        <button class="btn btn-primary" ng-click="file.useName()">Rename</button>
         <button class="btn btn-warning" ng-click="file.cancel()">Cancel</button>
     </div>
 </div>
