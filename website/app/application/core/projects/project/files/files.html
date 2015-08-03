@@ -4,8 +4,8 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li ui-sref-active="active"><a ui-sref="projects.project.files.all">all Files</a></li>
-                    <li ui-sref-active="active"><a ui-sref="projects.project.files.images">images</a></li>
-                    <li ui-sref-active="active"><a ui-sref="projects.project.files.types">by type</a></li>
+                    <li ng-if="false" ui-sref-active="active"><a ui-sref="projects.project.files.images">images</a></li>
+                    <li ng-if="false" ui-sref-active="active"><a ui-sref="projects.project.files.types">by type</a></li>
                 </ul>
                 <input ng-if="false" class="pull-right col-xs-6" style="margin-top: 15px; background-color: #D2C4D5"
                        type="text" placeholder="SEARCH..." on-enter="files.showSearchResults()">
