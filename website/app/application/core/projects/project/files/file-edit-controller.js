@@ -101,6 +101,9 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
                     ctrl.active.children.push(datadir);
                     pubsub.send('files.refresh');
                 })
+                .error(function (err) {
+                    toastr.error("Create folder failed: " + err.error, "Error");
+                })
                 .post({
                     project_id: project.id,
                     parent: ctrl.active.df_id,
