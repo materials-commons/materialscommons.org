@@ -379,12 +379,18 @@ def create_process():
     return resp.to_json_id(id)
 
 
-@app.route('/process/update/<path:processid>', methods=['PUT'])
+@app.route('/processes/<process_id>', methods=['PUT'])
 @apikey
-@crossdomain(origin='*')
-def update_process(processid):
-    rv = r.table('processes').get(processid).update(request.json).run(g.conn)
-    if (rv['replaced'] == 1 or rv['unchanged'] == 1):
-        return ''
-    else:
-        error.update_conflict("Unable to update process: " + processid)
+def update_process(process_id):
+    j = request.get_json()
+    #Update Name, What, Why
+    r.table('processes').get(process_id).update({'name': j['name'],
+        'what': j['what'], 'why': j['why']})\
+        .run(g.conn, time_format="raw")
+    #Update setup
+    if 'setup' in j:
+        for property in j['setup']:
+            r.table('setupproperties').get(property['id'])\
+                .update({'value': property['value'], 'unit': property['units']})\
+            .run(g.conn, time_format="raw")
+    return resp.to_json_id(process_id)

@@ -33,7 +33,6 @@ function MeasurementController($scope, $log, modal, measurements) {
     $scope.save = function () {
         $scope.modal.sample = storeProperties($scope.chosenProperty);
         $scope.message = $scope.chosenProperty.name + ' is saved onto the left sidebar!';
-        //toastr.success("Saved: " + $scope.chosenProperty.name);
     };
 
     $scope.addNewChoice = function () {
