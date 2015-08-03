@@ -9,6 +9,8 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filte
     $scope.files[0].children = $filter('orderBy')($scope.files[0].children, 'displayname');
 
     pubsub.waitOn($scope, 'files.refresh', function () {
+        $scope.gridOptions.api.recomputeAggregates();
+        $scope.gridOptions.api.refreshGroupRows();
         $scope.gridOptions.api.refreshView();
     });
 
