@@ -25,7 +25,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
         {
             displayName: "",
             field: "name",
-            width: 350,
+            width: 550,
             checkboxSelection: true,
             cellClicked: cellClicked,
             cellRenderer: function (params) {
@@ -33,27 +33,27 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
                     '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
                     params.node.name + '</a></span>';
             }
-        },
-        {
-            displayName: "",
-            field: "size",
-            width: 150,
-            cellRenderer: function (params) {
-                if (params.node.size === 0) {
-                    return '';
-                } else {
-                    return parseInt(params.node.size / 1024) + ' mb';
-                }
-            }
-        },
-        {
-            displayName: "",
-            field: "birthtime",
-            width: 250,
-            cellRenderer: function (params) {
-                return $filter('toDateString')(params.node.birthtime);
-            }
         }
+        //{
+        //    displayName: "",
+        //    field: "size",
+        //    width: 150,
+        //    cellRenderer: function (params) {
+        //        if (params.node.size === 0) {
+        //            return '';
+        //        } else {
+        //            return parseInt(params.node.size / 1024) + ' mb';
+        //        }
+        //    }
+        //},
+        //{
+        //    displayName: "",
+        //    field: "birthtime",
+        //    width: 250,
+        //    cellRenderer: function (params) {
+        //        return $filter('toDateString')(params.node.birthtime);
+        //    }
+        //}
     ];
 
     $scope.gridOptions = {

@@ -39,7 +39,7 @@ function homeFilesDirectiveController($scope, projectFiles,
             if (params.node.size === 0) {
                 return '';
             } else {
-                return parseInt(params.node.size / 1024) + ' mb';
+                return parseInt(params.node.size / 1024) + ' kb';
             }
         }
         },
