@@ -95,6 +95,7 @@
         <div class="details-main-content">
             <div class="row">
                 <div class="col-xs-12">
+                    <a class="pull-right" ng-click="file.createFolder()">CREATE FOLDER</a>
                     <div class="headings">{{file.active.displayname}}
                         <mc-flow-button dir="file.active" ng-if="file.active.type === 'datadir'"></mc-flow-button>
                     </div>
