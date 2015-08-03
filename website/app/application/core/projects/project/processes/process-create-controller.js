@@ -1,5 +1,7 @@
 Application.Controllers.controller('projectCreateProcess',
-    ["$scope", "project", "processTemplates", "$modal", "pubsub", "mcapi", "$state", "Projects", "current", "measurements", "modalInstance", projectCreateProcess]);
+    ["$scope", "project", "processTemplates", "$modal", "pubsub",
+        "mcapi", "$state", "Projects", "current", "measurements",
+        "modalInstance", projectCreateProcess]);
 
 
 function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state, Projects, current, measurements, modalInstance) {
