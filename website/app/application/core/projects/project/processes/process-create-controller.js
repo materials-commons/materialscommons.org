@@ -1,10 +1,11 @@
 Application.Controllers.controller('projectCreateProcess',
     ["$scope", "project", "processTemplates", "$modal", "pubsub",
         "mcapi", "$state", "Projects", "current", "measurements",
-        "modalInstance", projectCreateProcess]);
+        "modalInstance", "$filter",projectCreateProcess]);
 
 
-function projectCreateProcess($scope, project, processTemplates, $modal, pubsub, mcapi, $state, Projects, current, measurements, modalInstance) {
+function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
+                              mcapi, $state, Projects, current, measurements, modalInstance, $filter) {
 
     pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
         addAttachment(sample);
@@ -427,6 +428,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
 
     function init() {
         $scope.template = processTemplates.getActiveTemplate();
+        $scope.template.name = $scope.template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
         measurements.templates();
         $scope.bk = {
             selectedSample: {},
