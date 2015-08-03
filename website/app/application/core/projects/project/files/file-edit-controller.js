@@ -95,6 +95,8 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
         modalInstance.result.then(function (name) {
             mcapi('/datadirs')
                 .success(function (datadir) {
+                    datadir.parent = ctrl.active;
+                    datadir.group = true;
                     ctrl.active.addFolder = false;
                     ctrl.active.children.push(datadir);
                     pubsub.send('files.refresh');
