@@ -16,7 +16,8 @@ Application.Controllers.controller("homeNotesDirectiveController",
 
 function homeNotesDirectiveController($scope, $filter) {
     var rowData = [];
-    $scope.project.notes.forEach(function (note) {
+    var notes = $filter('orderBy')($scope.project.notes, 'title');
+    notes.forEach(function (note) {
         var n = $filter('truncate')( note.note,140, '...');
         rowData.push({
             title: note.title,
