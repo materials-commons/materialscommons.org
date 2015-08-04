@@ -37,7 +37,7 @@ Application.Services.factory('modalInstance',
                 service.modal.instance = $modal.open({
                     size: 'lg',
                     templateUrl: template,
-                    controller: 'ModalInstanceCtrl',
+                    controller: 'displaySampleController',
                     resolve: {
                         modal: function () {
                             return service.modal;
