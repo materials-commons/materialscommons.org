@@ -2355,6 +2355,12 @@ header {
   line-height: 24px;
 }
 
+.mc-icon-image {
+  height: 30px;
+  padding-bottom: 10px;
+  margin-right:5px
+}
+
 .details-main-content .who {
   color: #919191;
   font-weight: 500
