@@ -5,10 +5,22 @@
                  src="assets/img/splash/file_icon.png">
             <span style="color: #9F88C1; font-size: 20px;padding-left: 15px;">FILES</span>
         </div>
-        <div class="panel-body home-panel-body no-max-height">
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <input class="col-xs-11" type="text" placeholder="SEARCH FILES..."
+                       ng-model="query" on-enter="search()">
+            </div>
+        </div>
+        <div ng-if="showTree" class="panel-body home-panel-body no-max-height">
             <div style="padding: 20px;width: 100%; height: 100%;"
                  angular-grid="gridOptions"
                  class="ag-file-browser">
+            </div>
+        </div>
+        <div ng-if="!showTree">
+            Show search results here
+            <div ng-repeat="hit in results.hits">
+                {{hit._source.name}}
             </div>
         </div>
     </div>
