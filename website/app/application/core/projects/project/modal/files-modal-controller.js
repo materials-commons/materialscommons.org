@@ -19,6 +19,8 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
     // Root is name of project. Have it opened by default.
     f.showDetails = true;
     $scope.files = [f];
+    $scope.files[0].expanded = true;
+    $scope.files[0].children = $filter('orderBy')($scope.files[0].children, 'displayname');
     $scope.files.showDetails = true;
     var columnDefs = [
 
@@ -27,39 +29,19 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             field: "name",
             width: 550,
             checkboxSelection: true,
-            cellClicked: cellClicked,
             cellRenderer: function (params) {
                 return '<i style="color: #BFBFBF;" class="fa fa-fw fa-file"></i><span>' +
                     '<a data-toggle="tooltip" data-placement="top" title="{{params.node.name}}">' +
                     params.node.name + '</a></span>';
             }
         }
-        //{
-        //    displayName: "",
-        //    field: "size",
-        //    width: 150,
-        //    cellRenderer: function (params) {
-        //        if (params.node.size === 0) {
-        //            return '';
-        //        } else {
-        //            return parseInt(params.node.size / 1024) + ' mb';
-        //        }
-        //    }
-        //},
-        //{
-        //    displayName: "",
-        //    field: "birthtime",
-        //    width: 250,
-        //    cellRenderer: function (params) {
-        //        return $filter('toDateString')(params.node.birthtime);
-        //    }
-        //}
     ];
 
     $scope.gridOptions = {
         columnDefs: columnDefs,
         rowData: $scope.files,
         rowSelection: 'multiple',
+        rowClicked: rowClicked,
         rowsAlreadyGrouped: true,
         enableColResize: true,
         enableSorting: true,
@@ -78,37 +60,45 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
     };
 
     function groupInnerCellRenderer(params) {
-        var template = params.node.type === 'datadir' ? params.node.displayname : 'File';
-        return template;
+        return params.node.type === 'datadir' ? params.node.displayname : 'File';
     }
 
-    function cellClicked(params) {
-        $scope.modal = {
-            instance: null,
-            item: params.node
-        };
-        //The project tree is not compatible with the actual
-        // datafile object. So i modified some field types
-        // so that display-file MODAL can be used every
-        // where to display information about file
-        $scope.modal.item.mediatype = {
-            mime: params.node.mediatype
-        }
-        $scope.modal.item.id = params.node.df_id;
-        console.dir($scope.modal);
-        $scope.modal.instance = $modal.open({
-            size: 'lg',
-            templateUrl: 'application/core/projects/project/home/directives/display-file.html',
-            controller: 'ModalInstanceCtrl',
-            resolve: {
-                modal: function () {
-                    return $scope.modal;
-                },
-                project: function () {
-                    return $scope.project;
-                }
+    function rowClicked(params) {
+        if (params.node.type == 'datadir') {
+            var file = projectFiles.findFileByID($scope.project.id, params.node.df_id);
+            file.expanded = params.node.expanded;
+            if (!params.node.sorted) {
+                file.children = $filter('orderBy')(file.children, 'displayname');
+                file.sorted = true;
+                $scope.gridOptions.api.onNewRows();
             }
-        });
+        } else {
+            $scope.modal = {
+                instance: null,
+                item: params.node
+            };
+            //The project tree is not compatible with the actual
+            // datafile object. So i modified some field types
+            // so that display-file MODAL can be used every
+            // where to display information about file
+            $scope.modal.item.mediatype = {
+                mime: params.node.mediatype
+            };
+            $scope.modal.item.id = params.node.df_id;
+            $scope.modal.instance = $modal.open({
+                size: 'lg',
+                templateUrl: 'application/core/projects/project/home/directives/display-file.html',
+                controller: 'ModalInstanceCtrl',
+                resolve: {
+                    modal: function () {
+                        return $scope.modal;
+                    },
+                    project: function () {
+                        return $scope.project;
+                    }
+                }
+            });
+        }
     }
 
 }
