@@ -52,8 +52,7 @@
                         <a ng-click="openFile(file)" class="link" style="padding-left: 15px;">{{file.name}}</a>
 
                         <p style="padding-left: 80px">
-                            <small class="text-muted">{{file.birthtime | toDateString}} , {{file.owner}} , {{file.size}}
-                                kb
+                            <small class="text-muted">{{file.birthtime | toDateString}} , {{file.size | bytes}}
                             </small>
                         </p>
 
