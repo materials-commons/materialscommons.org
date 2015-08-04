@@ -34,6 +34,7 @@
                                     <li ng-repeat="measure in property.measurements">
                                         <div>
                                             <display-measurement current-process="modal.item.process_id"
+                                                                 edit-measure="editMeasure"
                                                                  measure="measure"></display-measurement>
                                         </div>
                                     </li>
@@ -63,7 +64,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button ng-if="!editMeasure" class="btn btn-primary" ng-click="ok()">OK</button>
+        <button ng-if="editMeasure" class="btn btn-primary" ng-click="ok()">Save</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </div>

@@ -390,7 +390,17 @@ def update_process(process_id):
     #Update setup
     if 'setup' in j:
         for property in j['setup']:
-            r.table('setupproperties').get(property['id'])\
-                .update({'value': property['value'], 'unit': property['units']})\
-            .run(g.conn, time_format="raw")
+            update_property('setupproperties', property)
+    if 'samples' in j:
+        for sample in j['samples']:
+            for property in sample['properties']:
+                for measure in property['measurements']:
+                    update_property('measurements', measure)
     return resp.to_json_id(process_id)
+
+
+def update_property(table_name, property):
+    rv = r.table(table_name).get(property['id'])\
+                .update({'value': property['value'], 'unit': property['unit']})\
+            .run(g.conn, time_format="raw")
+    return rv

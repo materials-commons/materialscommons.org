@@ -6,7 +6,8 @@ function displayMeasurementDirective() {
         scope: {
             measure: '=measure',
             currentProcess: '=',
-            project: '=project'
+            project: '=project',
+            editMeasure: '='
         },
         templateUrl: 'application/core/components/properties/partials/display-measurement.html'
     };
