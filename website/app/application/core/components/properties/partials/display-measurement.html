@@ -12,7 +12,7 @@
         <span style="padding-left: 30px;">{{measure.value.attribute1}}/{{measure.value.attribute2}} {{measure.unit}}</span>
         <span style="padding-left: 30px;">
             <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-                 style="height: 25px;padding-bottom: 10px;">{{measure.process[0].name}}
+                 style="height: 25px;padding-bottom: 10px; margin-right: 5px">{{measure.process[0].name}}
         </span>
         <span ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;"><i
                 style="color:red;" class="fa fa-asterisk"></i></span>
