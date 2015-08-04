@@ -68,7 +68,7 @@ module.exports = function(r) {
         this.attribute = attribute;
         this._type = _type;
         this.value = value;
-        this.units = unit;
+        this.unit = unit;
     }
 
     function Measurement(name, attribute, sampleID) {

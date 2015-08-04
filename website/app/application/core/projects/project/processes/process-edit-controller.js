@@ -17,6 +17,7 @@ function projectEditProcess($scope, project, $stateParams, modalInstance, $state
     };
 
     $scope.done = function () {
+        console.dir($scope.template);
         mcapi('/processes/%', $scope.template.id)
             .success(function (proc) {
                 //Currently i'm reloading all the projects , but we need to reload single project.
@@ -34,7 +35,8 @@ function projectEditProcess($scope, project, $stateParams, modalInstance, $state
                     console.log("success");
                     $state.go('projects.project.processes.list.view');
                 });
-            }).put({name: $scope.template.name, what: $scope.template.what, why: $scope.template.why, setup: $scope.template.setup[0].setupproperties});
+            }).put({name: $scope.template.name, what: $scope.template.what, why: $scope.template.why,
+         setup: $scope.template.setup[0].setupproperties, samples: $scope.template.samples});
     };
 
     function init() {
