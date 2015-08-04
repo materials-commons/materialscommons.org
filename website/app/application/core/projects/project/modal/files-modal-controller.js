@@ -13,8 +13,11 @@ function modalFilesDirective() {
 
 Application.Controllers.controller("modalFilesDirectiveController",
     ["$scope", "projectFiles",
-        "$filter", "Review", "pubsub", "$modal", modalFilesDirectiveController]);
-function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub, $modal) {
+        "$filter", "Review", "pubsub", "$modal", "mcapi", modalFilesDirectiveController]);
+function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub, $modal, mcapi) {
+    $scope.showTree = true;
+    $scope.search = search;
+
     var f = projectFiles.model.projects[$scope.project.id].dir;
     f.showDetails = true;
     $scope.files = [f];
@@ -98,6 +101,15 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
                 }
             });
         }
+    }
+
+    function search() {
+        mcapi("/search/project/%/files", $scope.project.id)
+            .success(function (results) {
+                $scope.showTree = false;
+                $scope.results = results;
+            })
+            .post({query_string: $scope.query});
     }
 
 }
