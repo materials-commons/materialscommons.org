@@ -12,13 +12,12 @@ function homeSamplesDirective() {
 }
 
 Application.Controllers.controller("homeSamplesController",
-    ["$scope",
-        homeSamplesController]);
+    ["$scope", "$filter", homeSamplesController]);
 
-function homeSamplesController($scope) {
-
+function homeSamplesController($scope, $filter) {
     var rowData = [];
-    $scope.project.samples.forEach(function (sample) {
+    var samples = $filter('orderBy')($scope.project.samples, 'name');
+    samples.forEach(function (sample) {
         var composition = '';
         if ('composition' in sample.properties) {
             sample.properties.composition.value.forEach(function (val) {
@@ -56,5 +55,4 @@ function homeSamplesController($scope) {
         rowStyle: {'border-bottom': 'dotted #d3d3d3'},
         angularCompileRows: true
     };
-
 }
