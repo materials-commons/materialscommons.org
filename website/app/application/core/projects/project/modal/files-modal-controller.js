@@ -16,7 +16,6 @@ Application.Controllers.controller("modalFilesDirectiveController",
         "$filter", "Review", "pubsub", "$modal", modalFilesDirectiveController]);
 function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub, $modal) {
     var f = projectFiles.model.projects[$scope.project.id].dir;
-    // Root is name of project. Have it opened by default.
     f.showDetails = true;
     $scope.files = [f];
     $scope.files[0].expanded = true;
