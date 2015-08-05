@@ -393,9 +393,10 @@ def update_process(process_id):
             update_property('setupproperties', property)
     if 'samples' in j:
         for sample in j['samples']:
-            for property in sample['properties']:
-                for measure in property['measurements']:
-                    update_property('measurements', measure)
+            if 'properties' in sample:
+                for property in sample['properties']:
+                    for measure in property['measurements']:
+                        update_property('measurements', measure)
     return resp.to_json_id(process_id)
 
 
