@@ -77,7 +77,7 @@
 
                         <p style="padding-left: 80px">
                             <small class="text-muted">{{attachment.mtime | toDateString}}, {{attachment.owner}},
-                                Size: {{attachment.size}}kb
+                                Size: {{attachment.size | bytes}}
                             </small>
                         </p>
                     </div>
@@ -96,7 +96,7 @@
 
                         <p style="padding-left: 80px">
                             <small class="text-muted">{{attachment.mtime | toDateString}}, {{attachment.owner}},
-                                Size: {{attachment.size}}kb
+                                Size: {{attachment.size | bytes}}
                             </small>
                         </p>
                     </div>
