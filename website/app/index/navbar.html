@@ -8,8 +8,11 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand"
-               ng-click="goHome()">MaterialsCommons</a>
+               ng-click="goHome()">
+                MaterialsCommons
+            </a>
         </div>
+
         <div class="collapse navbar-collapse">
             <ul ng-show="email_address" class="nav navbar-nav navbar-right">
                 <li>
@@ -59,6 +62,11 @@
                     </ul>
                 </li>
             </ul>
+            <input type="text"
+                   class="col-xs-4 col-md-6 col-lg-6 navbar-right navbar-search"
+                   placeholder="SEARCH PROJECT..."
+                   ng-model="query"
+                   on-enter="search()">
         </div>
     </nav>
 </div>
