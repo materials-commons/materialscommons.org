@@ -2458,3 +2458,12 @@ header {
 .modal.fade .modal-dialog {
   transform: translate(0,0);
 }
+
+.navbar-search {
+  margin-top: 7px;
+  color:black;
+  margin-right:8px;
+  border-radius:3px;
+  border-style:solid;
+  border-color:white
+}
