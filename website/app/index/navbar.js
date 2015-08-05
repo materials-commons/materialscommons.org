@@ -11,10 +11,10 @@ function navbarDirective() {
 }
 
 Application.Controllers.controller("navbarDirectiveController",
-    ["$scope", "help",
+    ["$scope", "help", "$state", "searchQuery", "current",
         navbarDirectiveController]);
 
-function navbarDirectiveController($scope, help) {
+function navbarDirectiveController($scope, help, $state, searchQuery, current) {
     // This is needed to toggle the menu closed when an item is selected.
     // This is a part of how ui-bootstrap interacts with the menus and
     // the menu item does an ng-click.
@@ -26,4 +26,15 @@ function navbarDirectiveController($scope, help) {
         help.toggle();
     };
 
+    $scope.search = search;
+
+    ////////////////////////
+
+    function search() {
+        var projectID = current.projectID();
+        if ($scope.query != "") {
+            searchQuery.set(projectID, $scope.query);
+            $state.go('projects.project.search', {query: $scope.query}, {reload: true});
+        }
+    }
 }
