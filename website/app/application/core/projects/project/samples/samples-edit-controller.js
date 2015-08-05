@@ -1,7 +1,10 @@
 Application.Controllers.controller('SamplesEditController',
-    ["$scope", "$modal", "$stateParams", "project", "mcapi", "modalInstance", "pubsub", SamplesEditController]);
+    ["$scope", "$modal", "$stateParams", "project", "mcapi", "modalInstance", "pubsub", "mcfile", SamplesEditController]);
 
-function SamplesEditController($scope, $modal, $stateParams, project, mcapi, modalInstance, pubsub) {
+function SamplesEditController($scope, $modal, $stateParams, project, mcapi, modalInstance, pubsub, mcfile) {
+
+    $scope.fileSrc = mcfile.src;
+    $scope.isImage = isImage;
 
     pubsub.waitOn($scope, 'updateBestMeasurement', function () {
         getMeasurements($scope.current.id);
@@ -66,6 +69,15 @@ function SamplesEditController($scope, $modal, $stateParams, project, mcapi, mod
         modalInstance.openModal(file, 'datafile', project);
     };
 
+    $scope.openProcess = function(processID) {
+        var i = _.indexOf(project.processes, function(proc) {
+            return proc.id == processID;
+        });
+        if (i !== -1) {
+            modalInstance.openModal(project.processes[i], 'process', project);
+        }
+    };
+
     $scope.showProperties = function (ps_id) {
         $scope.ps_id = ps_id;
         mcapi('/sample/measurements/%/%', $scope.current.id, ps_id)
@@ -78,7 +90,7 @@ function SamplesEditController($scope, $modal, $stateParams, project, mcapi, mod
                 console.log(err)
             })
             .jsonp();
-    }
+    };
 
     function processColumns() {
         $scope.properties.forEach(function (property) {
@@ -107,6 +119,5 @@ function SamplesEditController($scope, $modal, $stateParams, project, mcapi, mod
     }
 
     init();
-
 }
 

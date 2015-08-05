@@ -12,22 +12,13 @@ function modalSamplesDirective() {
 }
 
 Application.Controllers.controller("modalSamplesController",
-    ["$scope", "Review", "$modal", "pubsub", "mcapi",
+    ["$scope", "Review", "$modal", "pubsub", "mcapi", "$filter",
         modalSamplesController]);
 
-function modalSamplesController($scope, Review, $modal, pubsub, mcapi) {
-
+function modalSamplesController($scope, Review, $modal, pubsub, mcapi, $filter) {
     var rowData = [];
-    $scope.project.samples.forEach(function (sample) {
-        //var composition = '';
-        //if ('composition' in sample.properties) {
-        //    sample.properties.composition.value.forEach(function (val) {
-        //        composition = composition + '  ' + val.element + ': ' + val.value;
-        //    });
-        //    composition = composition + '  ' + sample.properties.composition.unit;
-        //} else {
-        //    composition = 'unknown';
-        //}
+    var samples = $filter('orderBy')($scope.project.samples, 'name');
+    samples.forEach(function (sample) {
         rowData.push({
             name: sample.name,
             //composition: composition,
