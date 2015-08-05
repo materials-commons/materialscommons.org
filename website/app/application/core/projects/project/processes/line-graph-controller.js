@@ -8,7 +8,6 @@ function lineGraphController($scope, modal, $log, project) {
     $scope.selected = {
         item: {}
     };
-
     processColumns();
     $scope.ok = function () {
         $scope.modal.instance.close($scope.selected.item);
