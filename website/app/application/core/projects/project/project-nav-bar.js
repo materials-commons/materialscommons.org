@@ -13,9 +13,9 @@ function projectNavBarDirective() {
 }
 
 Application.Controllers.controller("projectNavBarDirectiveController",
-    ["$scope", "current", "$state", "ui", "User", "sideboard", "navBarState", "searchQuery",
+    ["$scope", "current", "$state", "ui", "User", "sideboard", "navBarState", "pubsub",
         projectNavBarDirectiveController]);
-function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, navBarState, searchQuery) {
+function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, navBarState, pubsub) {
     $scope.setProject = function (project) {
         current.setProject(project);
         $scope.showProjects = false;
@@ -35,7 +35,7 @@ function projectNavBarDirectiveController($scope, current, $state, ui, User, sid
     };
 
     $scope.clearSearch = function() {
-        searchQuery.set(current.projectID(), "");
+        pubsub.send('clear.search');
     };
 
     $scope.togglePanel = function (panel) {
