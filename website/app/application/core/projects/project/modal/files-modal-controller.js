@@ -12,11 +12,18 @@ function modalFilesDirective() {
 }
 
 Application.Controllers.controller("modalFilesDirectiveController",
-    ["$scope", "projectFiles",
-        "$filter", "Review", "pubsub", "$modal", "mcapi", modalFilesDirectiveController]);
-function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub, $modal, mcapi) {
-    $scope.showTree = true;
+    ["$scope", "projectFiles", "$filter", "Review", "pubsub", "$modal",
+        "mcapi", "mcfile", "modalInstance", modalFilesDirectiveController]);
+function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub,
+                                       $modal, mcapi, mcfile, modalInstance) {
+    $scope.modalState = {
+        showTree: true,
+        query: ""
+    };
     $scope.search = search;
+    $scope.fileSrc = mcfile.src;
+    $scope.openFilePopup = openFilePopup;
+    $scope.isImage = isImage;
 
     var f = projectFiles.model.projects[$scope.project.id].dir;
     f.showDetails = true;
@@ -45,20 +52,69 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
         rowSelection: 'multiple',
         rowClicked: rowClicked,
         rowsAlreadyGrouped: true,
-        enableColResize: true,
-        enableSorting: true,
         rowHeight: 30,
-        angularCompileRows: true,
         icons: {
             groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
         },
         rowSelected: function (row) {
+            console.dir(row);
             Review.checkedItems(row);
             pubsub.send('addFileToReview', row);
         },
         suppressRowClickSelection: true,
         groupInnerCellRenderer: groupInnerCellRenderer
+    };
+
+    var searchColumnDefs = [
+        {
+            displayName: "",
+            field: "name",
+            checkboxSelection: true,
+            cellRenderer: function (params) {
+                var imageHTML = '';
+                var contentHTML = '';
+
+                if (isImage(params.data._source.mediatype.mime)) {
+                    imageHTML = [
+                        '<a>',
+                        '<img class="img-thumbnail" height="140" width="140"',
+                        'src="' + mcfile.src(params.data._source.id) + '"></a>'
+                    ].join(' ');
+                } else if (params.data._source.contents.length !== 0) {
+                    var contents = $filter('truncate')(params.data._source.contents, 75, '...', true);
+                    contentHTML= '<p>' + contents + '</p>';
+                }
+                return [
+                    '<span>',
+                    '<i class="fa fa-files-o fa-fw" style="color: #9F88C1;"></i>',
+                    params.data._source.name,
+                    params.data._source.mediatype.mime,
+                    '</span>',
+                    '<span class="row">Path:'+ params.data._source.path + '</span>',
+                    imageHTML,
+                    contentHTML
+                ].join(' ');
+            }
+        }
+    ];
+
+    $scope.results = {
+        hits: []
+    };
+
+    $scope.searchGridOptions = {
+        columnDefs: searchColumnDefs,
+        rowData: $scope.results.hits,
+        rowSelected: function (row) {
+            var f = projectFiles.findFileByID($scope.project.id, row._id);
+            Review.checkedItems(f);
+            pubsub.send('addFileToReview', f);
+        },
+        rowSelection: 'multiple',
+        rowHeight: 150,
+        colWidth: 500,
+        angularCompileRows: false
     };
 
     function groupInnerCellRenderer(params) {
@@ -106,10 +162,23 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
     function search() {
         mcapi("/search/project/%/files", $scope.project.id)
             .success(function (results) {
-                $scope.showTree = false;
-                $scope.results = results;
+                $scope.modalState.showTree = false;
+                $scope.searchGridOptions.api.setRows(results.hits);
             })
-            .post({query_string: $scope.query});
+            .post({query_string: $scope.modalState.query});
     }
 
+    function openFilePopup(file) {
+        console.log("openFilePopup called");
+        var f = file;
+        if ('datafile_id' in file) {
+            // We don't have a full file object, so find it in projectFiles
+            f = projectFiles.findFileByID($scope.project.id, file.datafile_id);
+            var mime = f.mediatype;
+            f.mediatype = {
+                mime: mime
+            };
+        }
+        modalInstance.openModal(f, 'datafile', $scope.project);
+    }
 }
