@@ -50,7 +50,7 @@ def load_admins():
     admin_group = list(r.table('users').get_all(True, index='admin')
                        .run(g.conn))
     if not admin_group:
-        _admins = ['gtarcea@umich.edu', 'tammasr@umich.edu']
+        _admins = []
     else:
         for u in admin_group:
             _admins.append(u['id'])
