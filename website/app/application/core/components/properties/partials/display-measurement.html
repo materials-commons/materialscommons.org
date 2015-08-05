@@ -1,78 +1,78 @@
 <div ng-switch="measure._type">
     <div ng-switch-when="number">
-        <span style="padding-left: 30px;"> {{measure.value}} {{measure.unit}}</span>
-        <span style="padding-left: 30px;">
-            <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-                 style="height: 25px;padding-bottom: 10px;">
-            <a ng-click="openProcess(measure.process[0].id)">{{measure.process[0].name}}</a>
-        </span>
-        <span ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;"><i
-                style="color:red;" class="fa fa-asterisk"></i></span>
+        <div ng-if="editMeasure">
+            <div ng-if="currentProcess && measure.process[0].id === currentProcess">
+                <input style="width: 60px;" ng-model="measure.value">
+                <input style="width: 60px;" ng-model="measure.unit">
+                <display-process-name></display-process-name>
+            </div>
+            <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
+                {{measure.value}} {{measure.unit}}
+                <display-process-name></display-process-name>
+            </div>
+        </div>
+        <div ng-if="!editMeasure">
+            {{measure.value}} {{measure.unit}}
+            <display-process-name></display-process-name>
+        </div>
     </div>
+
 
     <div ng-switch-when="fraction">
-        <span style="padding-left: 30px;">{{measure.value.attribute1}}/{{measure.value.attribute2}} {{measure.unit}}</span>
-        <span style="padding-left: 30px;">
-            <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-                 style="height: 25px;padding-bottom: 10px; margin-right: 5px">
-            <a ng-click="openProcess(measure.process[0].id)">{{measure.process[0].name}}</a>
-        </span>
-        <span ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;"><i
-                style="color:red;" class="fa fa-asterisk"></i></span>
+        <div ng-if="editMeasure">
+            <div ng-if="currentProcess && measure.process[0].id === currentProcess">
+                <input style="width: 60px;" ng-model="measure.value.attribute1">
+                <input style="width: 60px;" ng-model="measure.value.attribute2">
+                <span ng-if="measure.unit"><input style="width: 60px;" ng-model="measure.unit"></span>
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+            <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
+                {{measure.value.attribute1}}/{{measure.value.attribute2}} {{measure.unit}}
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+        </div>
+        <div ng-if="!editMeasure">
+            {{measure.value.attribute1}}/{{measure.value.attribute2}} {{measure.unit}}
+            <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        </div>
     </div>
+
 
     <div ng-switch-when="string">
-        <span style="padding-left: 30px;"> {{measure.value}}</span>
-        <span style="padding-left: 30px;">
-            <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-                 style="height: 25px;padding-bottom: 10px;">
-            <a ng-click="openProcess(measure.process[0].id)">{{measure.process[0].name}}</a>
-        </span>
-        <span ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;"><i
-                style="color:red;" class="fa fa-asterisk"></i></span>
+        <div ng-if="editMeasure">
+            <div ng-if="currentProcess && measure.process[0].id === currentProcess">
+                <input ng-model="measure.value">
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+            <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
+                {{measure.value}}
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+        </div>
+        <div ng-if="!editMeasure">
+            {{measure.value}}
+            <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        </div>
     </div>
 
+
     <div ng-switch-when="composition">
-        <span style="padding-left: 30px;"> {{measure.element}} - {{measure.value}} {{measure.unit}}</span>
-        <span style="padding-left: 30px;">
-            <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-                 style="height: 25px;padding-bottom: 10px;">
-            <a ng-click="openProcess(measure.process[0].id)">{{measure.process[0].name}}</a>
-        </span>
-        <span ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;"><i
-                style="color:red;" class="fa fa-asterisk"></i></span>
+        {{measure.element}} - {{measure.value}} {{measure.unit}}
+        <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
     </div>
 
     <div ng-switch-when="pair">
-        <span style="padding-left: 30px;">
-            {{measure.attribute1.value}} {{measure.attribute1.unit}} ::
-            {{measure.attribute2.value}} {{measure.attribute2.unit}}
-        </span>
+        {{measure.attribute1.value}} {{measure.attribute1.unit}} ::
+        {{measure.attribute2.value}} {{measure.attribute2.unit}}
     </div>
 
     <div ng-switch-when="histogram">
-         <span style="padding-left: 30px;">
-            <a ng-click="showHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
-        </span>
-        <span  style="padding-left: 30px;">
-            <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-                 style="height: 25px;padding-bottom: 10px;">
-            <a ng-click="openProcess(measure.process[0].id)">{{measure.process[0].name}}</a>
-        </span>
-          <span ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;"><i
-                  style="color:red;" class="fa fa-asterisk"></i></span>
+        <a ng-click="showHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
+        <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
     </div>
 
     <div ng-switch-when="line">
-        <span style="padding-left: 30px;">
-            <a ng-click="showLineGraph(measure)"><i class="fa fa-fw fa-line-chart"></i></a>
-        </span>
-        <span style="padding-left: 30px;">
-            <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-                 style="height: 25px;padding-bottom: 10px;">
-            <a ng-click="openProcess(measure.process[0].id)">{{measure.process[0].name}}</a>
-        </span>
-          <span ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;"><i
-                  style="color:red;" class="fa fa-asterisk"></i></span>
+        <a ng-click="showLineGraph(measure)"><i class="fa fa-fw fa-line-chart"></i></a>
+        <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
     </div>
 </div>
