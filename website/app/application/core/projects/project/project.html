@@ -13,16 +13,7 @@
                 projects="projects">
             </project-nav-bar>
         </div>
-        <div class="row" style="padding-top: 60px;">
-            <div class="col-xs-offset-1">
-                <input class="col-xs-11"
-                       type="text"
-                       placeholder="SEARCH PROJECT..."
-                       ng-model="query"
-                       on-enter="search()">
-            </div>
-        </div>
-        <div ng-if="loaded" class="row">
+        <div ng-if="loaded" class="row" style="padding-top: 40px;">
             <div ng-class="{'col-sm-12': isExpanded('help'), 'col-sm-4': !isExpanded('help') && showHelp()}" ng-show="showHelp()">
                 <userguide></userguide>
             </div>
