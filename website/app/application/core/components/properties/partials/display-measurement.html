@@ -57,8 +57,20 @@
 
 
     <div ng-switch-when="composition">
-        {{measure.element}} - {{measure.value}} {{measure.unit}}
-        <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        <div ng-if="editMeasure">
+            <div ng-if="currentProcess && measure.process[0].id === currentProcess">
+                {{measure.element}}<input ng-model="measure.value"><input ng-model="measure.unit">
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+            <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
+                {{measure.element}} - {{measure.value}} {{measure.unit}}
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+        </div>
+        <div ng-if="!editMeasure">
+            {{measure.element}} - {{measure.value}} {{measure.unit}}
+            <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        </div>
     </div>
 
     <div ng-switch-when="pair">
@@ -72,7 +84,19 @@
     </div>
 
     <div ng-switch-when="line">
-        <a ng-click="showLineGraph(measure)"><i class="fa fa-fw fa-line-chart"></i></a>
-        <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        <div ng-if="editMeasure">
+            <div ng-if="currentProcess && measure.process[0].id === currentProcess">
+                <a ng-click="editLineGraph(measure)"><i class="fa fa-fw fa-line-chart"></i></a>
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+            <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
+                <a ng-click="showLineGraph(measure)"><i class="fa fa-fw fa-line-chart"></i></a>
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+        </div>
+        <div ng-if="!editMeasure">
+            <a ng-click="showLineGraph(measure)"><i class="fa fa-fw fa-line-chart"></i></a>
+            <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        </div>
     </div>
 </div>
