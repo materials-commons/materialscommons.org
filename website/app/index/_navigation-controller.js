@@ -9,5 +9,4 @@ function _indexNavigation($scope, User, $state, current) {
             $state.go("home");
         }
     };
-
 }
