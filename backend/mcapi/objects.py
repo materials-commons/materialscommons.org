@@ -91,11 +91,14 @@ def get_current_propertyset(sample_id):
 @jsonp
 def get_sample2files(sample_id):
     files = list(
-        r.table('sample2datafile').get_all(sample_id, index='sample_id')
-        .eq_join('datafile_id', r.table('datafiles')).zip()
-        .pluck('name', 'owner', 'size', 'birthtime', 'mtime', 'id',
-               'mediatype')
-        .run(g.conn, time_format="raw"))
+        r.table('samples').get_all(sample_id).
+        eq_join('id', r.table('sample2datafile'), index='sample_id').zip().
+        eq_join('datafile_id', r.table('datafiles')).zip().
+        merge(lambda df: {
+            'processes': r.table('process2file').get_all(df['datafile_id'], index='datafile_id').
+            eq_join('process_id', r.table('processes')).zip().coerce_to('ARRAY')
+        }).run(g.conn, time_format="raw")
+    )
     return resp.to_json(files)
 
 

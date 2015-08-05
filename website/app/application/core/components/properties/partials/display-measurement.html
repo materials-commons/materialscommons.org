@@ -4,16 +4,16 @@
             <div ng-if="currentProcess && measure.process[0].id === currentProcess">
                 <input style="width: 60px;" ng-model="measure.value">
                 <input style="width: 60px;" ng-model="measure.unit">
-                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+                <display-process-name></display-process-name>
             </div>
             <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
                 {{measure.value}} {{measure.unit}}
-                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+                <display-process-name></display-process-name>
             </div>
         </div>
         <div ng-if="!editMeasure">
             {{measure.value}} {{measure.unit}}
-            <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            <display-process-name></display-process-name>
         </div>
     </div>
 
@@ -70,6 +70,7 @@
         <a ng-click="showHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
         <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
     </div>
+
     <div ng-switch-when="line">
         <a ng-click="showLineGraph(measure)"><i class="fa fa-fw fa-line-chart"></i></a>
         <display-process-name current-process="currentProcess" measure="measure"></display-process-name>

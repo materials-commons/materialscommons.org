@@ -19,7 +19,8 @@
                 <li style="padding:10px;" ng-repeat="(key, values) in property_sets">
                     <div ng-repeat="process in values">
                         <b ng-if="process.does_transform === true">
-                            <img style="height: 30px;padding-bottom: 10px;" src="assets/img/splash/process-icon.png">
+                            <img style="height: 30px;padding-bottom: 10px; margin-right:5px"
+                                 src="assets/img/splash/process-icon.png">
                             <a ng-class="{'underline': key === ps_id}"
                                ng-click="showProperties(key)"> {{process.name}}</a></b>
                     </div>
@@ -36,7 +37,7 @@
                                <span> <u>Best Measure </u>::
                                     <a style="padding-left: 10px;" class="underline" ng-click="measurements(property)">edit</a>
                                 </span>
-                                <span ng-if="property.best_measure.length !== 0" >
+                                <span ng-if="property.best_measure.length !== 0">
                                     <display-measurement project="project"
                                                          measure="property.best_measure[0]"></display-measurement>
                                 </span>
@@ -45,7 +46,8 @@
                             <ul>
                                 <li ng-repeat="measure in property.measurements">
                                     <div>
-                                        <display-measurement current-process="true" project="project" measure="measure"></display-measurement>
+                                        <display-measurement current-process="true" project="project"
+                                                             measure="measure"></display-measurement>
                                     </div>
                                 </li>
                             </ul>
@@ -57,19 +59,30 @@
 
 
         <div class="row">
-            <div class="sample headings">Attachments</div>
-            <div class="row" ng-repeat="file in current.files">
-                <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
-                    <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
+            <div class="sample headings">Files</div>
+            <div class="row" ng-repeat="file in current.files" style="margin-bottom: 20px">
+                <div style="padding-left: 10px;padding-bottom: 10px;line-height: 5px;">
                     <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
                     <a ng-click="openFile(file)" class="link" style="padding-left: 15px;">{{file.name}}</a>
 
-                    <p style="padding-left: 80px">
-                        <small class="text-muted">{{file.birthtime | toDateString}} , {{file.owner}} , {{file.size}}
-                            kb
-                        </small>
-                    </p>
-
+                    <div style="padding-left: 80px">
+                        <p class="row">
+                            <small class="text-muted">{{file.birthtime | toDateString}}, {{file.size | bytes}}
+                            </small>
+                        </p>
+                        <div ng-if="isImage(file.mediatype.mime)" class="row">
+                            <a ng-click="openFile(file)">
+                                <img class="img-thumbnail" height="140" width="140"
+                                     ng-src={{fileSrc(file.id)}}>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="true" class="row" style="padding-left: 80px">
+                    <span ng-repeat="process in file.processes">
+                        <img class="mc-icon-image" src="assets/img/splash/process-icon.png">
+                        <a ng-click="openProcess(process.id)">{{process.name}}</a>
+                    </span>
                 </div>
             </div>
         </div>

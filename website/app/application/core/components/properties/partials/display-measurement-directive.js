@@ -14,8 +14,17 @@ function displayMeasurementDirective() {
 }
 
 Application.Controllers.controller("displayMeasurementDirectiveController",
-    ["$scope",  "$modal",  displayMeasurementDirectiveController]);
-function displayMeasurementDirectiveController($scope, $modal) {
+    ["$scope",  "$modal", "modalInstance", displayMeasurementDirectiveController]);
+function displayMeasurementDirectiveController($scope, $modal, modalInstance) {
+
+    $scope.openProcess = function(processID) {
+        var i = _.indexOf($scope.project.processes, function(proc) {
+            return proc.id == processID;
+        });
+        if (i !== -1) {
+            modalInstance.openModal($scope.project.processes[i], 'process', $scope.project);
+        }
+    };
 
     $scope.showHistogram = function(property){
         $scope.modal = {

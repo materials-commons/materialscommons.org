@@ -17,7 +17,6 @@ function displaySampleController($scope, $log, modal, $state, project, mcfile, m
     };
 
     $scope.ok = function () {
-        console.dir($scope.modal.item);
         $scope.modal.instance.close($scope.selected.item);
     };
 

@@ -62,7 +62,6 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filte
     $scope.gridOptions = {
         columnDefs: columnDefs,
         rowData: $scope.files,
-        //rowSelection: 'multiple',
         rowsAlreadyGrouped: true,
         rowClicked: rowClicked,
         enableColResize: false,

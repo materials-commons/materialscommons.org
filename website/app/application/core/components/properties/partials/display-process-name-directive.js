@@ -2,10 +2,7 @@ Application.Directives.directive('displayProcessName', displayProcessNameDirecti
 function displayProcessNameDirective() {
     return {
         restrict: "EA",
-        scope: {
-           measure: '=',
-            currentProcess: '='
-        },
+        scope: true,
         templateUrl: 'application/core/components/properties/partials/display-process-name.html'
     };
 }

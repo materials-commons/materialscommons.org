@@ -34,7 +34,7 @@
                                     <li ng-repeat="measure in property.measurements">
                                         <div>
                                             <display-measurement current-process="modal.item.process_id"
-                                                                 edit-measure="editMeasure"
+                                                                 edit-measure="editMeasure" project="project"
                                                                  measure="measure"></display-measurement>
                                         </div>
                                     </li>
@@ -53,8 +53,7 @@
                         <a ng-click="openFile(file)" class="link" style="padding-left: 15px;">{{file.name}}</a>
 
                         <p style="padding-left: 80px">
-                            <small class="text-muted">{{file.birthtime | toDateString}} , {{file.owner}} , {{file.size}}
-                                kb
+                            <small class="text-muted">{{file.birthtime | toDateString}} , {{file.size | bytes}}
                             </small>
                         </p>
 

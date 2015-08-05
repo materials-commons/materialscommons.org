@@ -15,9 +15,6 @@ Application.Controllers.controller("modalProcessesDirectiveController",
         modalProcessesDirectiveController]);
 function modalProcessesDirectiveController($scope, $modal, pubsub, Review) {
     $scope.bk = {all: []};
-    $scope.project.drafts.forEach(function (draft) {
-        $scope.bk.all.push(draft);
-    });
     $scope.project.processes.forEach(function (process) {
         $scope.bk.all.push(process);
     });
