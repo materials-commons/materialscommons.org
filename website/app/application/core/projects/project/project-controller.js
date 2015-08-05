@@ -1,16 +1,10 @@
 Application.Controllers.controller('ProjectController',
-    ["$scope", "ui",
-        "project", "current", "pubsub", "User",
-        "projectFiles", "mcapi", "help", "sideboard", "projects",
-        "$state", "searchQuery",
-        ProjectController]);
+    ["$scope", "ui", "project", "current", "projectFiles",
+        "mcapi", "help", "projects", "$state", ProjectController]);
 
-function ProjectController($scope, ui, project, current,
-                         pubsub, User, projectFiles, mcapi,
-                         help, sideboard, projects, $state, searchQuery) {
-    $scope.query = searchQuery.get(project.id);
+function ProjectController($scope, ui, project, current, projectFiles, mcapi,
+                           help, projects, $state) {
     $scope.projects = projects;
-    $scope.sideboard = sideboard.get(project.id);
     $scope.setProject = function (project) {
         $scope.project = project;
         current.setProject(project);
@@ -26,31 +20,8 @@ function ProjectController($scope, ui, project, current,
         return help.isActive() && ui.isExpanded(project.id, what);
     };
 
-    $scope.search = function() {
-        if ($scope.query != "") {
-            searchQuery.set(project.id, $scope.query);
-            $state.go('projects.project.search', {query: $scope.query}, {reload: true});
-        }
-    };
-
     current.setProject(project);
-    pubsub.send("sidebar.project");
-
     $scope.project = project;
-
-    $scope.showTabs = function () {
-        return ui.showToolbarTabs(project.id);
-    };
-
-    $scope.showFiles = function () {
-        return ui.showFiles(project.id);
-    };
-
-    $scope.isActive = function (tab) {
-        return tab === $scope.activeTab;
-    };
-    $scope.mcuser = User.attr();
-
     $scope.loaded = true;
 
     if (!(project.id in projectFiles.model.projects)) {
