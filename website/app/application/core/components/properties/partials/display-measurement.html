@@ -79,8 +79,20 @@
     </div>
 
     <div ng-switch-when="histogram">
-        <a ng-click="showHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
-        <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        <div ng-if="editMeasure">
+            <div ng-if="currentProcess && measure.process[0].id === currentProcess">
+                <a ng-click="editHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+            <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
+                <a ng-click="showHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
+                <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+            </div>
+        </div>
+        <div ng-if="!editMeasure">
+            <a ng-click="showHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
+            <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
+        </div>
     </div>
 
     <div ng-switch-when="line">

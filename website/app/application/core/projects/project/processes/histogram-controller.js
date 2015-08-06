@@ -31,11 +31,12 @@ function histogramController($scope, modal, $log, project) {
         $scope.values = $scope.modal.property.value.values.split("\n");
         $scope.chartObject.data = {
             "cols": [
-                {id: "x", label: "X", type: "string"},
-                {id: "y", label: "Y", type: "number"}
+                {id: "x", label: "Categories", type: "string"},
+                {id: "y", label: "Values", type: "number"}
             ],
             "rows": []
-        }
+        };
+
         for (var i = 0; i < $scope.categories.length ; i++){
             $scope.chartObject.data.rows.push({c: [{v: $scope.categories[i]}, {v: $scope.values[i]}]});
         }
@@ -43,12 +44,12 @@ function histogramController($scope, modal, $log, project) {
 
     $scope.chartObject.type = 'ColumnChart';
     $scope.chartObject.options = {
-        'title': 'Categories Vs Values - Histogram' ,
+        'title': 'Histogram' ,
         "vAxis": {
             "title": "Values"
         },
         "hAxis": {
-            "title": "Temperatures"
+            "title": "Categories"
         }
     };
 }
