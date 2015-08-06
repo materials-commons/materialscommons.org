@@ -29,11 +29,12 @@ function lineGraphController($scope, modal, $log, project) {
         $scope.values = $scope.modal.property.value.values.split("\n");
         $scope.chartObject.data = {
             "cols": [
-                    {id: "x", label: "X", type: "string"},
-                    {id: "y", label: "Y", type: "number"}
+                    {id: "x", label: "Categories", type: "string"},
+                    {id: "y", label: "Values", type: "number"}
             ],
             "rows": []
-        }
+        };
+
         for (var i = 0; i < $scope.categories.length ; i++){
             $scope.chartObject.data.rows.push({c: [{v: $scope.categories[i]}, {v: $scope.values[i]}]});
         }
@@ -41,12 +42,12 @@ function lineGraphController($scope, modal, $log, project) {
 
     $scope.chartObject.type = 'LineChart';
     $scope.chartObject.options = {
-        'title': 'X Vs Y - Line Graph' ,
+        'title': 'Line Graph' ,
         "vAxis": {
-            "title": "Y-values"
+            "title": "Values"
         },
         "hAxis": {
-            "title": "X-categories"
+            "title": "Categories"
         }
     };
 
