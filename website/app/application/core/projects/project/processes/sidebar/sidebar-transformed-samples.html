@@ -8,19 +8,19 @@
            style="padding-left: 15px;">{{sample.name}}</a>
        <div class="row">
             <div class="col-xs-offset-2">
-                <b>Copy:</b>
-                <ul>
-                    <li ng-repeat="property in sample.uses">{{property.name}}</li>
-                </ul>
-                <b>Share:</b>
+                <!--<b>Copy:</b>-->
+                <!--<ul>-->
+                    <!--<li ng-repeat="property in sample.uses">{{property.name}}</li>-->
+                <!--</ul>-->
+                <b>Not Transformed:</b>
                 <ul>
                     <li ng-repeat="property in sample.shares">{{property.name}}</li>
                 </ul>
-                <b>Unknown:</b>
+                <b>Is Transformed:</b>
                 <ul>
                     <li ng-repeat="property in sample.unknowns">{{property.name}}</li>
                 </ul>
-                <b>Delete:</b>
+                <b>End Attribute (Deleted):</b>
                 <ul>
                     <li ng-repeat="property in sample.deletes">{{property.name}}</li>
                 </ul>
