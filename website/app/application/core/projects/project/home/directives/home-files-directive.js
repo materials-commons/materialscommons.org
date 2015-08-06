@@ -69,13 +69,6 @@ function homeFilesDirectiveController($scope, projectFiles, $filter, $modal) {
                 instance: null,
                 item: params.node
             };
-            //The project tree is not compatible with the actual
-            // datafile object. So i modified some field types
-            // so that display-file MODAL can be used every
-            // where to display information about file
-            $scope.modal.item.mediatype = {
-                mime: params.node.mediatype
-            };
             $scope.modal.item.id = params.node.df_id;
             $scope.modal.instance = $modal.open({
                 size: 'lg',

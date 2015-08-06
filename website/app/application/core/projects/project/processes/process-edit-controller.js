@@ -17,7 +17,6 @@ function projectEditProcess($scope, project, $stateParams, modalInstance, $state
     };
 
     $scope.done = function () {
-        console.dir($scope.template);
         mcapi('/processes/%', $scope.template.id)
             .success(function (proc) {
                 //Currently i'm reloading all the projects , but we need to reload single project.
