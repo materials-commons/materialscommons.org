@@ -16,7 +16,6 @@ function searchController(mcapi, project, $stateParams, mcfile, $state, projectF
     function init() {
         mcapi("/search/project/%/files", project.id)
             .success(function (results) {
-                console.dir(results);
                 ctrl.results = results;
             })
             .post({query_string: $stateParams.query});
@@ -36,7 +35,6 @@ function searchController(mcapi, project, $stateParams, mcfile, $state, projectF
         if ('datafile_id' in file) {
             // We don't have a full file object, so find it in projectFiles
             f = projectFiles.findFileByID(project.id, file.datafile_id);
-            console.log("openFilePopup %O", f);
         }
         modalInstance.openModal(f, 'datafile', project);
     }
