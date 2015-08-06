@@ -83,7 +83,7 @@ class DItem2:
         self.displayname = basename(name)
         self.type = type
         self.children = []
-        self.df_id = id
+        self.datafile_id = id
         self.data = {}
 
 

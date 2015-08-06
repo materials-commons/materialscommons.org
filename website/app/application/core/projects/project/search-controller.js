@@ -16,6 +16,7 @@ function searchController(mcapi, project, $stateParams, mcfile, $state, projectF
     function init() {
         mcapi("/search/project/%/files", project.id)
             .success(function (results) {
+                console.dir(results);
                 ctrl.results = results;
             })
             .post({query_string: $stateParams.query});

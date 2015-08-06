@@ -90,7 +90,7 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                         each(e.target.files, function(f) {
                             var req = {
                                 project_id: project.id,
-                                directory_id: scope.dir.df_id,
+                                directory_id: scope.dir.datafile_id,
                                 filename: f.name,
                                 filesize: f.size,
                                 chunk_size: flow.opts.chunkSize,
@@ -113,7 +113,7 @@ function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
                                             file: f,
                                             attrs: {
                                                 directory_name:  scope.dir.name,
-                                                directory_id: scope.dir.df_id,
+                                                directory_id: scope.dir.datafile_id,
                                                 project_id: project.id,
                                                 project_name: project.name
                                             }
