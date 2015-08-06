@@ -1,5 +1,10 @@
-<div ng-controller="accountSettings">
-    <label>Change Name:</label>
-    <input type="text" ng-model="mcuser.fullname"></input>
-    <button class="btn btn-info" ng-click="updateName()">Update</button>
+<div class="row" ng-controller="accountSettings"><br>
+
+    <div class="col-sm-4">
+        <legend>Change Name:</legend>
+        <form class="form-horizontal">
+            <input type="text" ng-model="mcuser.fullname">
+            <button class="btn btn-info" ng-click="updateName()">Update</button>
+        </form>
+    </div>
 </div>
