@@ -21,7 +21,7 @@ function viewMeasurementController($scope, project, $state, $log, modal, mcapi, 
     $scope.ok = function () {
         updateBestMeasure();
         $scope.modal.instance.close($scope.selected.item);
-        $state.go('projects.project.samples.edit');
+        $state.go('projects.project.samples.all.edit');
     };
 
     $scope.cancel = function () {
