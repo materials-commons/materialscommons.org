@@ -25,7 +25,7 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filte
             width: 350,
             cellRenderer: function (params) {
                 var icon = "fa-file";
-                switch (params.node.mediatype) {
+                switch (params.node.mediatype.mime) {
                 case "application/pdf":
                     icon = "fa-file-pdf-o";
                     break;
@@ -48,7 +48,7 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filte
                     icon = "fa-file-powerpoint-o";
                     break;
                 default:
-                    if (isImage(params.node.mediatype)) {
+                    if (isImage(params.node.mediatype.mime)) {
                         icon = "fa-file-image-o";
                     }
                     break;

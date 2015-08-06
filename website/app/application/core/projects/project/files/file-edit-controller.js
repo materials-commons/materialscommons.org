@@ -137,21 +137,15 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
             ctrl.active = ctrl.active = projectFiles.getActiveDirectory();
             //ctrl.type = 'dir';
         } else {
-            if (_.isObject(ctrl.active.mediatype)) {
-                // TODO: Fix this hack
-                // This exists because search sends back the full mediatype, while
-                // the tree doesn't.
-                ctrl.active.mediatype = ctrl.active.mediatype.mime;
-            }
             //ctrl.type = 'file';
-            if (isImage(ctrl.active.mediatype)) {
+            if (isImage(ctrl.active.mediatype.mime)) {
                 ctrl.fileType = "image";
-            } else if (ctrl.active.mediatype === "application/pdf") {
+            } else if (ctrl.active.mediatype.mime === "application/pdf") {
                 ctrl.fileType = "pdf";
-            } else if (ctrl.active.mediatype === "application/vnd.ms-excel") {
+            } else if (ctrl.active.mediatype.mime === "application/vnd.ms-excel") {
                 ctrl.fileType = "xls";
             } else {
-                ctrl.fileType = ctrl.active.mediatype;
+                ctrl.fileType = ctrl.active.mediatype.mime;
             }
         }
     }

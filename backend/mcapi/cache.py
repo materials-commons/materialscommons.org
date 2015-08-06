@@ -141,11 +141,11 @@ def build_tree(datadirs):
             data['path'] = dfitem.fullname
             dfitem.data = data
             if 'mediatype' not in df:
-                dfitem.mediatype = "unknown"
+                dfitem.mediatype = {"mime": "unknown"}
             elif 'mime' not in df['mediatype']:
-                dfitem.mediatype = "unknown"
+                dfitem.mediatype = {"mime": "unknown"}
             else:
-                dfitem.mediatype = df['mediatype']['mime']
+                dfitem.mediatype = df['mediatype']
             ditem.children.append(dfitem)
         parent_name = dirname(ditem.name)
         if parent_name in all_data_dirs:

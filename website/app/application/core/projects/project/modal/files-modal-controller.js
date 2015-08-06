@@ -58,7 +58,6 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
             groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
         },
         rowSelected: function (row) {
-            console.dir(row);
             Review.checkedItems(row);
             pubsub.send('addFileToReview', row);
         },
@@ -135,13 +134,6 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
                 instance: null,
                 item: params.node
             };
-            //The project tree is not compatible with the actual
-            // datafile object. So i modified some field types
-            // so that display-file MODAL can be used every
-            // where to display information about file
-            $scope.modal.item.mediatype = {
-                mime: params.node.mediatype
-            };
             $scope.modal.item.id = params.node.df_id;
             $scope.modal.instance = $modal.open({
                 size: 'lg',
@@ -169,15 +161,10 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
     }
 
     function openFilePopup(file) {
-        console.log("openFilePopup called");
         var f = file;
         if ('datafile_id' in file) {
             // We don't have a full file object, so find it in projectFiles
             f = projectFiles.findFileByID($scope.project.id, file.datafile_id);
-            var mime = f.mediatype;
-            f.mediatype = {
-                mime: mime
-            };
         }
         modalInstance.openModal(f, 'datafile', $scope.project);
     }
