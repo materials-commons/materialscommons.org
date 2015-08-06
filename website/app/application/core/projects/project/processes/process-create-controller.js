@@ -56,12 +56,12 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
         //check for redundancy
         var k = _.indexOf($scope.template.input_samples[i].files, function (entry) {
-            return datafile.id === entry.id;
+            return datafile.datafile_id === entry.datafile_id;
         });
 
         if (k < 0) {
             if (i > -1) {
-                $scope.template.input_samples[i].files.push({id: datafile.id, name: datafile.name});
+                $scope.template.input_samples[i].files.push({id: datafile.datafile_id, name: datafile.name});
                 $scope.bk.selectedSample = '';
             }
         }
@@ -72,7 +72,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             return sample.id === entry.id;
         });
         var i = _.indexOf($scope.template.input_samples[k].files, function (entry) {
-            return file.id === entry.id;
+            return file.datafile_id === entry.datafile_id;
         });
         $scope.template.input_samples[k].files.splice(i, 1);
         $scope.bk.selectedSample = '';
@@ -342,7 +342,6 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
                     $scope.bk = {
                         selectedSample: {}
                     };
-                    console.log("success");
                     $state.go('projects.project.processes.list');
                 });
             })
@@ -405,7 +404,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     function refineFiles(files) {
         var items = [];
         files.forEach(function (file) {
-            items.push({id: file.id, name: file.name, path: file.path});
+            items.push({id: file.datafile_id, name: file.name, path: file.path});
         });
         return items;
     }
@@ -468,7 +467,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         });
         modal.result.then(function (linkedFiles) {
             linkedFiles.forEach(function (f) {
-                sample.files.push({id: f.id, name: f.name});
+                sample.files.push({id: f.datafile_id, name: f.name});
             })
         });
     }
@@ -512,7 +511,7 @@ function LinkFilesToSampleController($modalInstance, project, files,
 
     function unlinkFile(file) {
         var i = _.indexOf(ctrl.filesToLink, function (f) {
-            return f.id == file.id;
+            return f.datafile_id == file.datafile_id;
         });
 
         if (i !== -1) {
