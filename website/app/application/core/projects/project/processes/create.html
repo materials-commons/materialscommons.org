@@ -32,7 +32,7 @@
                     <sidebar-transformed-samples></sidebar-transformed-samples>
                 </div>
                 <hr class="divider"/>
-                 <sidebar-files></sidebar-files>
+                <sidebar-files></sidebar-files>
                 <hr class="divider"/>
             </div>
         </div>
@@ -57,7 +57,7 @@
                     </div>
                     <br>
 
-                    <div  class="row">
+                    <div class="row">
                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a
                             ng-click="setUp()">Setup</a></span>
                     </div>
@@ -74,25 +74,44 @@
                             </button>
                             <br><br>
 
-                            <div class="row" ng-repeat="attachment in template.input_samples">
-                                <div ng-if="attachment.type === 'sample'" class="col-xs-12">
+                            <div class="row" ng-repeat="sample in template.input_samples">
+                                <div ng-if="sample.type === 'sample'" class="col-xs-12">
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/sample_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openSample(attachment)" class="link pointer"
-                                       style="padding-left: 15px;">{{attachment.name}}</a>
+                                    <a ng-click="openSample(sample)" class="link pointer"
+                                       style="padding-left: 15px;">{{sample.name}}</a>
                                     <span ng-if="!template.does_transform" style="padding-left: 20px">
                                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span
                                             style="color:#3a9ee3"><a
-                                            ng-click="addMeasurement(attachment)">Measurement</a></span>
+                                            ng-click="addMeasurement(sample)">Measurement</a></span>
                                     </span>
                                      <span ng-if="template.does_transform" style="padding-left: 20px">
                                         <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span
                                              style="color:#3a9ee3"><a
-                                             ng-click="transformation(attachment)">Transformation</a></span>
+                                             ng-click="transformation(sample)">Transformation</a></span>
                                     </span>
-                                    <i ng-click="removeAttachment(attachment, 'input_samples','')"
+
+
+                                    <i ng-click="removeAttachment(sample, 'input_samples','')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
+
+                                    <div class="row">
+                                        <span ng-if="template.input_files.length != 0">
+                                            <a ng-click="linkFilesToSample(template.input_files, sample)"
+                                               class="file pointer">
+                                                <i class="fa fa-fw fa-link"></i>
+                                                Link <b>input</b> files to sample
+                                            </a>
+                                        </span>
+                                        <span class="col-xs-offset-1" ng-if="template.output_files.length != 0">
+                                            <a ng-click="linkFilesToSample(template.output_files, sample)"
+                                               class="file pointer">
+                                                <i class="fa fa-fw fa-link"></i>
+                                                Link <b>output</b> files to sample
+                                            </a>
+                                        </span>
+                                    </div>
                                 </div>
 
                             </div>
@@ -135,18 +154,20 @@
                                     <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                                     <img src="assets/img/splash/file_icon.png"
                                          style="height: 40px;padding-bottom: 10px;">
-                                    <a ng-click="openFile(attachment)"  class="link pointer">{{attachment.name}}</a>
+                                    <a ng-click="openFile(attachment)" class="link pointer">{{attachment.name}}</a>
 
                                     <i style="padding-left: 20px;"
                                        ng-click="removeAttachment(attachment, 'input_files', '')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
 
-                                    <span  ng-show="template.does_transform === false" style="padding-left: 20px">
-                                      <i class="fa fa-link fa-fw sample"></i>
-                                        <span><a class="sample"
-                                                 ng-click="link = !link">Link Sample</a>
+                                    <div ng-if="false">
+                                        <span ng-show="template.does_transform === false" style="padding-left: 20px">
+                                          <i class="fa fa-link fa-fw sample"></i>
+                                            <span><a class="sample"
+                                                     ng-click="link = !link">Link Sample</a>
+                                            </span>
                                         </span>
-                                    </span>
+                                    </div>
 
                                     <div ng-if="link" class="row">
                                         <select ng-change="linkSample(attachment, 'input_files')"
@@ -178,12 +199,14 @@
                                        ng-click="removeAttachment(attachment, 'output_files', '')"
                                        class="fa fa-fw fa-close pull-right pointer"></i>
 
-                                    <span ng-show="template.does_transform === false" style="padding-left: 20px">
-                                      <i class="fa fa-link fa-fw sample"></i>
-                                        <span><a class="sample"
-                                                 ng-click="link = !link">Link Sample</a>
+                                    <div ng-if="false">
+                                        <span ng-show="template.does_transform === false" style="padding-left: 20px">
+                                          <i class="fa fa-link fa-fw sample"></i>
+                                            <span><a class="sample"
+                                                     ng-click="link = !link">Link Sample</a>
+                                            </span>
                                         </span>
-                                    </span>
+                                    </div>
 
                                     <div ng-if="link" class="row">
                                         <select ng-change="linkSample(attachment, 'output_files')"
@@ -203,6 +226,7 @@
 
                     <div class="row">
                         <br>
+
                         <div class="col-xs-3">
                             <button ng-click="cancel()"
                                     class="btn-details-container btn btn-default btn btn-cancel">
@@ -211,7 +235,8 @@
                         </div>
                         <div class="col-xs-3">
                             <button ng-click="createProcess()"
-                                    ng-disabled="isProcessing" class=" btn btn-default btn-process btn-details-container">Submit
+                                    ng-disabled="isProcessing"
+                                    class=" btn btn-default btn-process btn-details-container">Submit
                             </button>
                         </div>
                     </div>

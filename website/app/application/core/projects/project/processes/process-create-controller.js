@@ -1,7 +1,7 @@
 Application.Controllers.controller('projectCreateProcess',
     ["$scope", "project", "processTemplates", "$modal", "pubsub",
         "mcapi", "$state", "Projects", "current", "measurements",
-        "modalInstance", "$filter",projectCreateProcess]);
+        "modalInstance", "$filter", projectCreateProcess]);
 
 
 function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
@@ -88,29 +88,29 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
     function addAttachment(item) {
         var what;
         switch (item.type) {
-            case "sample":
-                what = 'input_samples';
-                item.new_properties = [];
-                item.transformed_properties = [];
-                item.files = [];
-                item.property_set_id = item.property_set_id;
-                //when they choose sample pull all property-measurements from backend
-                mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
-                    .success(function (properties) {
-                        item.properties = properties;
-                    })
-                    .error(function (err) {
-                        console.log(err)
-                    })
-                    .jsonp();
-                break;
-            case "datafile":
-                if ($scope.type === 'input_files') {
-                    what = 'input_files';
-                } else {
-                    what = 'output_files';
-                }
-                break;
+        case "sample":
+            what = 'input_samples';
+            item.new_properties = [];
+            item.transformed_properties = [];
+            item.files = [];
+            item.property_set_id = item.property_set_id;
+            //when they choose sample pull all property-measurements from backend
+            mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
+                .success(function (properties) {
+                    item.properties = properties;
+                })
+                .error(function (err) {
+                    console.log(err)
+                })
+                .jsonp();
+            break;
+        case "datafile":
+            if ($scope.type === 'input_files') {
+                what = 'input_files';
+            } else {
+                what = 'output_files';
+            }
+            break;
         }
         var i = _.indexOf($scope.template[what], function (entry) {
             return item.id === entry.id;
@@ -124,37 +124,37 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
 
     $scope.removeAttachment = function (item, what, sample_id) {
         switch (what) {
-            case "input_samples":
-                spliceItem(item, what);
-                break;
-            case "input_files":
-                spliceItem(item, what);
-                break;
-            case "output_files":
-                spliceItem(item, what);
-                break;
-            case "new_properties":
-                var index = _.indexOf($scope.template.input_samples, function (entry) {
-                    return sample_id === entry.id;
-                });
-                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
-                    return item.name === entry.name;
-                });
-                if (i > -1) {
-                    $scope.template.input_samples[index][what].splice(i, 1);
-                }
-                break;
-            case "properties":
-                var index = _.indexOf($scope.template.input_samples, function (entry) {
-                    return sample_id === entry.id;
-                });
-                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
-                    return item.id === entry.id;
-                });
-                if (i > -1) {
-                    delete $scope.template.input_samples[index][what][i]['measures'];
-                }
-                break;
+        case "input_samples":
+            spliceItem(item, what);
+            break;
+        case "input_files":
+            spliceItem(item, what);
+            break;
+        case "output_files":
+            spliceItem(item, what);
+            break;
+        case "new_properties":
+            var index = _.indexOf($scope.template.input_samples, function (entry) {
+                return sample_id === entry.id;
+            });
+            var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                return item.name === entry.name;
+            });
+            if (i > -1) {
+                $scope.template.input_samples[index][what].splice(i, 1);
+            }
+            break;
+        case "properties":
+            var index = _.indexOf($scope.template.input_samples, function (entry) {
+                return sample_id === entry.id;
+            });
+            var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                return item.id === entry.id;
+            });
+            if (i > -1) {
+                delete $scope.template.input_samples[index][what][i]['measures'];
+            }
+            break;
         }
     };
 
@@ -229,6 +229,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             }
         });
     };
+
     $scope.showHistogram = function (property) {
         $scope.modal = {
             instance: null,
@@ -270,6 +271,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
             }
         });
     };
+
     $scope.open = function (size, type) {
         $scope.modal = {
             instance: null,
@@ -440,5 +442,101 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         }
     }
 
+    $scope.linkFilesToSample = linkFilesToSample;
+
     init();
+
+
+    /////////
+
+    function linkFilesToSample(files, sample) {
+        var modal = $modal.open({
+            templateUrl: 'application/core/projects/project/processes/link-files-to-sample.html',
+            controller: 'LinkFilesToSampleController',
+            controllerAs: 'sample',
+            resolve: {
+                files: function () {
+                    return files;
+                },
+                sampleName: function () {
+                    return sample.name;
+                },
+                project: function () {
+                    return project;
+                }
+            }
+        });
+        modal.result.then(function (linkedFiles) {
+            linkedFiles.forEach(function (f) {
+                sample.files.push({id: f.id, name: f.name});
+            })
+        });
+    }
+}
+
+Application.Controllers.controller("LinkFilesToSampleController",
+    ["$modalInstance", "project", "files", "sampleName", "modalInstance",
+        LinkFilesToSampleController]);
+function LinkFilesToSampleController($modalInstance, project, files,
+                                     sampleName, modalInstance) {
+    var ctrl = this;
+    ctrl.name = sampleName;
+    ctrl.files = files;
+    ctrl.ok = ok;
+    ctrl.cancel = cancel;
+    ctrl.filesToLink = [];
+    ctrl.linkFile = linkFile;
+    ctrl.unlinkFile = unlinkFile;
+    ctrl.linkAllFiles = linkAllFiles;
+    ctrl.unlinkAllFiles = unlinkAllFiles;
+    ctrl.openFile = openFile;
+
+    files.forEach(function (f) {
+        f.linked = false;
+    });
+
+    /////////
+
+    function ok() {
+        $modalInstance.close(ctrl.filesToLink);
+    }
+
+    function cancel() {
+        $modalInstance.dismiss('cancel');
+    }
+
+    function linkFile(file) {
+        file.linked = true;
+        ctrl.filesToLink.push(file);
+    }
+
+    function unlinkFile(file) {
+        var i = _.indexOf(ctrl.filesToLink, function (f) {
+            return f.id == file.id;
+        });
+
+        if (i !== -1) {
+            file.linked = false;
+            ctrl.filesToLink.splice(i, 1);
+        }
+    }
+
+    function linkAllFiles() {
+        ctrl.filesToLink = [];
+        ctrl.files.forEach(function (f) {
+            f.linked = true;
+            ctrl.filesToLink.push(f);
+        });
+    }
+
+    function unlinkAllFiles() {
+        ctrl.files.forEach(function (f) {
+            f.linked = false;
+        });
+        ctrl.filesToLink = [];
+    }
+
+    function openFile(file) {
+        modalInstance.openModal(file, 'datafile', project);
+    }
 }
