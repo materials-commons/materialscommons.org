@@ -8,15 +8,7 @@ function ModalInstanceCtrl($scope, $log, modal, project, mcfile, modalInstance) 
         item: $scope.modal.item
     };
     $scope.fileSrc = function (file) {
-        var id;
-        if ('df_id' in file) {
-            id = file.df_id;
-        } else if ('datafile_id' in file) {
-            id = file.datafile_id;
-        } else {
-            id = file.id;
-        }
-        return mcfile.src(id);
+        return mcfile.src(file.datafile_id);
     };
 
     $scope.ok = function () {
