@@ -46,8 +46,7 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
 
     function fileSrc(file) {
         if (file) {
-            var id = getID(file);
-            return mcfile.src(id);
+            return mcfile.src(file.datafile_id);
         }
     }
 
@@ -111,20 +110,6 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
                     level: ctrl.active.level+1
                 });
         });
-    }
-
-    // TODO: Clean this up so we don't have to search for different id keys
-    // returns the file id depending on which key it is under.
-    function getID(file) {
-        if ('df_id' in file) {
-            return file.df_id;
-        } else if ('datafile_id' in file) {
-            return file.datafile_id;
-        } else if ('id' in file) {
-            return file.id;
-        } else {
-            return ""
-        }
     }
 
     function getActiveFile() {
