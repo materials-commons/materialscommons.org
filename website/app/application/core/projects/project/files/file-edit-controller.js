@@ -33,15 +33,15 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
             owner: User.u(),
             item_type: 'datafile'
         };
-        tags.createTag(tag_obj, ctrl.active.df_id);
+        tags.createTag(tag_obj, ctrl.active.datafile_id);
     }
 
     function removeTag(tag) {
-        tags.removeTag(tag.tag_id, ctrl.active.df_id);
+        tags.removeTag(tag.tag_id, ctrl.active.datafile_id);
     }
 
     function downloadSrc(file) {
-        return mcfile.downloadSrc(file.df_id);
+        return mcfile.downloadSrc(file.datafile_id);
     }
 
     function fileSrc(file) {
@@ -106,7 +106,7 @@ function FilesEditController($scope, $stateParams, projectFiles, User, mcfile, p
                 })
                 .post({
                     project_id: project.id,
-                    parent: ctrl.active.df_id,
+                    parent: ctrl.active.datafile_id,
                     name: ctrl.active.name + '/' + name,
                     level: ctrl.active.level+1
                 });

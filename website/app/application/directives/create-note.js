@@ -46,7 +46,7 @@ function createNoteDirectiveController(User, mcapi, current, pubsub) {
         };
         switch (ctrl.itemType) {
             case "datafile":
-                mcapi('/datafile/%/note', ctrl.item.df_id)
+                mcapi('/datafile/%/note', ctrl.item.datafile_id)
                     .success(function (note) {
                         ctrl.item.notes = [note];
                         pubsub.send('datafile-note.change');

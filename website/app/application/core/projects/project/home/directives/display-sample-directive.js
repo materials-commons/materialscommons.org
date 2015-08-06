@@ -12,8 +12,17 @@ function displaySampleController($scope, $log, modal, $state, project, mcfile, m
     if ($state.current.name === 'projects.project.processes.list.edit'){
         $scope.editMeasure = true;
     }
+
     $scope.fileSrc = function (file) {
-        return mcfile.src(file.id);
+        var id;
+        if ('df_id' in file) {
+            id = file.df_id;
+        } else if ('datafile_id' in file) {
+            id = file.datafile_id;
+        } else {
+            id = file.id;
+        }
+        return mcfile.src(id);
     };
 
     $scope.ok = function () {

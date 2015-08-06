@@ -122,7 +122,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
 
     function rowClicked(params) {
         if (params.node.type == 'datadir') {
-            var file = projectFiles.findFileByID($scope.project.id, params.node.df_id);
+            var file = projectFiles.findFileByID($scope.project.id, params.node.datafile_id);
             file.expanded = params.node.expanded;
             if (!params.node.sorted) {
                 file.children = $filter('orderBy')(file.children, 'displayname');
@@ -134,7 +134,7 @@ function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pu
                 instance: null,
                 item: params.node
             };
-            $scope.modal.item.id = params.node.df_id;
+            $scope.modal.item.id = params.node.datafile_id;
             $scope.modal.instance = $modal.open({
                 size: 'lg',
                 templateUrl: 'application/core/projects/project/home/directives/display-file.html',
