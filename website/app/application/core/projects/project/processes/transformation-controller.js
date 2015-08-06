@@ -1,11 +1,11 @@
 Application.Controllers.controller('TransformationController',
-    ["$scope", "$log",  "modal","pubsub",TransformationController]);
+    ["$scope", "$log", "modal", "pubsub", TransformationController]);
 
 function TransformationController($scope, $log, modal, pubsub) {
 
     $scope.modal = modal;
     setPropertiesToUnknown(); //is a default option
-    $scope.actions = ["unknown", "copy","share", "delete"];
+    $scope.actions = ["Is Transformed", "Not Transformed", "End Attribute"];
     $scope.ok = function () {
         var transformed_sample = {
             sample_id: $scope.modal.sample.id,
@@ -16,14 +16,14 @@ function TransformationController($scope, $log, modal, pubsub) {
             unknowns: [],
             property_set_id: $scope.modal.sample.property_set_id
         };
-        $scope.modal.sample.properties.forEach(function(property){
-            if (property.action === 'share'){
+        $scope.modal.sample.properties.forEach(function (property) {
+            if (property.action === 'Not Transformed') {
                 transformed_sample.shares.push({id: property.id, name: property.name});
-            }else if(property.action === 'copy'){
+            } else if (property.action === 'copy') {
                 transformed_sample.uses.push({id: property.id, name: property.name});
-            } else if(property.action === 'unknown'){
+            } else if (property.action === 'Is Transformed') {
                 transformed_sample.unknowns.push({id: property.id, name: property.name});
-            }else if(property.action === 'delete'){
+            } else if (property.action === 'End Attribute') {
                 transformed_sample.deletes.push({id: property.id, name: property.name});
             }
         });
@@ -34,10 +34,10 @@ function TransformationController($scope, $log, modal, pubsub) {
     $scope.cancel = function () {
     };
 
-    function setPropertiesToUnknown(){
-        $scope.modal.sample.properties.forEach(function(property){
-            if(!(property.action)){
-                property.action = 'unknown';
+    function setPropertiesToUnknown() {
+        $scope.modal.sample.properties.forEach(function (property) {
+            if (!(property.action)) {
+                property.action = 'End Attribute';
             }
         });
     }

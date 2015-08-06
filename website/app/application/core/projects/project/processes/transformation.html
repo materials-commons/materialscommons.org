@@ -8,11 +8,9 @@
         <div class="row">
             Below are the actions you will have to perform on your sample properties. Each action is explained below
             <br>
-
-            <b>Copy: </b> <br>
-            <b>Share:</b> <br>
-            <b>Delete: </b> <br>
-            <b>Unknown: </b> <br>
+            <b>Not Transformed</b> <br>
+            <b>End Attribute (Default)</b> <br>
+            <b>Is Transformed</b> <br>
 
         </div>
         <br>
@@ -50,16 +48,16 @@
                                 </ul>
                             </div>
                             <div class="col-xs-5">
-                                <p style="padding: 10px;" class="bg-warning" ng-if="property.action==='unknown'">
+                                <p style="padding: 10px;" class="bg-warning" ng-if="property.action==='Is Transformed'">
                                     {{property.name}} measures will be unknown as a result of this transformation</p>
 
-                                <p style="padding: 10px;" class="bg-success" ng-if="property.action==='copy'">
-                                    {{property.name}} measures will be copied over as a result of this transformation</p>
+                                <!--<p style="padding: 10px;" class="bg-success" ng-if="property.action==='copy'">-->
+                                    <!--{{property.name}} measures will be copied over as a result of this transformation</p>-->
 
-                                <p style="padding: 10px;" class="bg-success" ng-if="property.action==='share'">
+                                <p style="padding: 10px;" class="bg-success" ng-if="property.action==='Not Transformed'">
                                     {{property.name}} measures shared as a result of this transformation</p>
 
-                                <p style="padding: 10px;" class="bg-danger" ng-if="property.action==='delete'">
+                                <p style="padding: 10px;" class="bg-danger" ng-if="property.action==='End Attribute'">
                                     {{property.name}} will be deleted as a result of this transformation</p>
                             </div>
                         </div>
