@@ -62,7 +62,7 @@ function projectFilesService() {
             var treeModel = new TreeModel(),
                 root = treeModel.parse(service.model.projects[projectID].dir);
             root.walk({strategy: 'pre'}, function(node) {
-                if (node.model.df_id == fileID) {
+                if (node.model.datafile_id == fileID) {
                     f = node.model;
                 }
             });

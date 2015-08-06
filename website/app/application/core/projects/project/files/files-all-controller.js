@@ -84,7 +84,7 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filte
     function rowClicked(params) {
         if (params.node.type == 'datadir') {
             projectFiles.setActiveDirectory(params.node);
-            var file = projectFiles.findFileByID($scope.project.id, params.node.df_id);
+            var file = projectFiles.findFileByID($scope.project.id, params.node.datafile_id);
             file.expanded = params.node.expanded;
             if (!params.node.sorted) {
                 file.children = $filter('orderBy')(file.children, 'displayname');
@@ -94,12 +94,12 @@ function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filte
         } else {
             projectFiles.setActiveFile(params.node);
         }
-        $state.go('projects.project.files.all.edit', {file_id: params.node.df_id, file_type: params.node.type});
+        $state.go('projects.project.files.all.edit', {file_id: params.node.datafile_id, file_type: params.node.type});
     }
 
     function init() {
         projectFiles.setActiveDirectory($scope.files[0]);
-        $state.go('projects.project.files.all.edit', {file_id: $scope.files[0].df_id, file_type: 'datadir'});
+        $state.go('projects.project.files.all.edit', {file_id: $scope.files[0].datafile_id, file_type: 'datadir'});
     }
 
     init();
