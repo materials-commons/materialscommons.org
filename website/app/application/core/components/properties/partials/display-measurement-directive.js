@@ -68,4 +68,46 @@ function displayMeasurementDirectiveController($scope, $modal, modalInstance) {
         });
     };
 
+    $scope.editLineGraph = function(property){
+        $scope.modal = {
+            instance: null,
+            property: property
+        };
+
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/processes/edit-line.html',
+            controller: 'lineGraphController',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    };
+
+    $scope.editHistogram = function(property){
+        $scope.modal = {
+            instance: null,
+            property: property
+        };
+
+        $scope.modal.instance = $modal.open({
+            size: 'lg',
+            templateUrl: 'application/core/projects/project/processes/edit-histogram.html',
+            controller: 'histogramController',
+            resolve: {
+                modal: function () {
+                    return $scope.modal;
+                },
+                project: function () {
+                    return $scope.project;
+                }
+            }
+        });
+    }
+
 }
