@@ -42,7 +42,7 @@
                                                          measure="property.best_measure[0]"></display-measurement>
                                 </span>
                             </div>
-                            <u>Measurements</u> ::
+                            <u>Measurements</u> :: <span ng-if="property.measurements.length === 0">--None--</span>
                             <ul>
                                 <li ng-repeat="measure in property.measurements">
                                     <div>

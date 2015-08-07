@@ -9,7 +9,7 @@ function projectEditProcess($scope, project, $stateParams, modalInstance, $state
     };
 
     $scope.openFile = function (file) {
-        modalInstance.openModal(file, 'datafile', projpect);
+        modalInstance.openModal(file, 'datafile', project);
     };
 
     $scope.openSample = function (sample) {
