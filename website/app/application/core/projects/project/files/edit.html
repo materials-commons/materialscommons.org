@@ -1,5 +1,5 @@
 <div class="row" ng-if="file.type === 'datafile'">
-    <div class="col-xs-7" style="padding-left: 0px; padding-right: 1px;">
+    <div class="col-xs-12" style="padding-left: 0px; padding-right: 1px;">
         <div class="details-main-content">
             <div class="row">
                 <div class="col-xs-12">
@@ -17,9 +17,19 @@
             </div>
 
             <div class="row">
+                <div class="file headings row">details</div>
+                <ul class="list-inline">
+                    <li>Type: {{file.active.mediatype.mime}}</li>
+                    <li>Owner: {{file.active.owner}}</li>
+                    <li>Created: {{file.active.birthtime | toDateString}}</li>
+                </ul>
+                <br>
+            </div>
+
+            <div class="row">
                 <div class="col-xs-12" ng-switch="file.fileType">
                     <div ng-switch-when="image">
-                        <img class="img-responsive center-block"
+                        <img class="img-responsive center-block col-xs-8"
                              ng-src="{{file.fileSrc(file.active)}}">
                     </div>
                     <div ng-switch-when="pdf">
@@ -44,46 +54,30 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-xs-5" style="padding-left: 0px;padding-right: 0px">
-        <div class="details-main-content">
-            <div class="file headings">details</div>
             <div class="row">
-                <div class="col-xs-3"> Type:</div>
-                <div class="col-xs-6">{{file.active.mediatype.mime}}</div>
-                <br>
-
-                <div class="col-xs-3"> Owner:</div>
-                <div class="col-xs-6">{{file.active.owner}}</div>
-                <br>
-
-                <div class="col-xs-3"> Created:</div>
-                <div class="col-xs-6">{{file.active.birthtime | toDateString}}</div>
-                <br>
-            </div>
-            <div class="file headings">tags</div>
-            <div class="row" style="padding: 10px;">
-                <div class="row">
-                    <tags-input on-tag-added="file.addTag($tag)" display-property="tag_id"
-                                on-tag-removed="file.removeTag($tag)" ng-model="file.active.tags"
-                                placeholder="Add a Tag" replace-spaces-with-dashes="false">
-                    </tags-input>
+                <div class="file headings">tags</div>
+                <div class="row" style="padding: 10px;">
+                    <div class="row">
+                        <tags-input on-tag-added="file.addTag($tag)" display-property="tag_id"
+                                    on-tag-removed="file.removeTag($tag)" ng-model="file.active.tags"
+                                    placeholder="Add a Tag" replace-spaces-with-dashes="false">
+                        </tags-input>
+                    </div>
                 </div>
-            </div>
-            <div class="file headings">note</div>
-            <div class="row">
+                <div class="file headings">note</div>
+                <div class="row">
                     <span class="pull-right">
                             <a ng-click="file.editNote = !file.editNote"><i class="fa fa-fw fa-edit"></i></a></span>
 
-                <div class="row" ng-show="!file.editNote">
-                    <div class="col-xs-8">Title: {{file.active.notes[0].title}}</div>
-                    <hr>
-                    <div ng-if="file.active.notes.length !== 0" class="col-xs-11" ta-bind
-                         ng-model="file.active.notes[0].note"></div>
-                </div>
-                <div class="row" ng-show="file.editNote">
-                    <create-note item-type="datafile" item="file.active"></create-note>
+                    <div class="row" ng-show="!file.editNote">
+                        <div class="col-xs-8">Title: {{file.active.notes[0].title}}</div>
+                        <hr>
+                        <div ng-if="file.active.notes.length !== 0" class="col-xs-11" ta-bind
+                             ng-model="file.active.notes[0].note"></div>
+                    </div>
+                    <div class="row" ng-show="file.editNote">
+                        <create-note item-type="datafile" item="file.active"></create-note>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,37 +85,25 @@
 </div>
 
 <div ng-if="file.type === 'datadir'">
-    <div class="col-xs-7" style="padding-left: 0px; padding-right: 1px;">
+    <div class="col-xs-12" style="padding-left: 0px; padding-right: 1px;">
         <div class="details-main-content">
             <div class="row">
                 <div class="col-xs-12">
                     <a class="pull-right" ng-click="file.createFolder()">CREATE FOLDER</a>
+
                     <div class="headings">{{file.active.displayname}}
                         <mc-flow-button dir="file.active" ng-if="file.active.type === 'datadir'"></mc-flow-button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-xs-5" style="padding-left: 0px;padding-right: 0px">
-        <div class="details-main-content">
-            <div class="file headings">details</div>
             <div class="row">
-                <div class="col-xs-3"> Type:</div>
-                <div class="col-xs-6">directory</div>
-                <br>
-
-                <div class="col-xs-3"> Owner:</div>
-                <div class="col-xs-6">{{file.active.owner}}</div>
-                <br>
-
-                <div class="col-xs-3"> Created:</div>
-                <div class="col-xs-6">{{file.active.birthtime | toDateString}}</div>
-                <br>
-
-                <div class="col-xs-3"> Path:</div>
-                <div class="col-xs-6">{{file.active.name}}</div>
-                <br>
+                <div class="file headings row">details</div>
+                <ul class="list-inline">
+                    <li>Type: directory</li>
+                    <li>Owner: {{file.active.owner}}</li>
+                    <li>Created: {{file.active.birthtime | toDateString}}</li>
+                </ul>
+                <span>Path: {{file.active.name}}</span>
             </div>
         </div>
     </div>
