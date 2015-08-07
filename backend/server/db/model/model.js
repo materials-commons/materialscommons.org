@@ -36,11 +36,11 @@ module.exports = function(r) {
         this.process_id = processID;
     }
 
-    function Process2Sample(processID, sampleID, psetID, _type) {
+    function Process2Sample(processID, sampleID, psetID, direction) {
         this.sample_id = sampleID;
         this.process_id = processID;
         this.property_set_id = psetID;
-        this._type = _type;
+        this.direction = direction;
     }
 
     function Process2Setupfile(processID, fileID) {

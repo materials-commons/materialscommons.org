@@ -37,6 +37,7 @@ function SamplesEditController($scope, $modal, $stateParams, project, mcapi, mod
                 angular.forEach(property_sets, function (values, key) {
                     values.forEach(function (item) {
                         if (item.process_type === "as_received") {
+                            item.direction = 'out',
                             item.does_transform = true;
                             setOthersToFalse(values);
                         }
