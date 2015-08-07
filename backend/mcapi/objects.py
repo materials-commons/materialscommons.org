@@ -52,10 +52,10 @@ def get_propertysets(sample_id):
         .get_all(sample_id, index='sample_id') \
         .eq_join('property_set_id', r.table('process2sample'),
                  index='property_set_id').zip() \
-        .group('property_set_id').pluck('process_id') \
+        .group('property_set_id').pluck('process_id', 'direction') \
         .eq_join('process_id', r.table('processes')).zip() \
-        .pluck('process_id', 'name', 'does_transform', 'process_type')\
-            .run(g.conn, time_format="raw")
+        .pluck('process_id', 'name', 'does_transform', 'process_type', 'direction')\
+        .run(g.conn, time_format="raw")
     return resp.to_json(psets)
 
 
