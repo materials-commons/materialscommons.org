@@ -30,12 +30,6 @@ function start_servers()
         fi
         echo "  Setting up database..."
         scripts/dbcreate.py
-        if [ $TESTSERVER = "u" ]; then
-            if [ "$REINIT" = "t" ]; then
-                echo "  Loading templates..."
-                (cd ./scripts; ./loadtemplates.sh -p $MCDB_PORT > /dev/null)
-            fi
-        fi
     fi
 
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
