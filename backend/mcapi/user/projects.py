@@ -3,8 +3,6 @@ from ..decorators import crossdomain, apikey, jsonp
 from flask import g, request
 import rethinkdb as r
 from .. import args
-from os.path import dirname, basename
-import json
 from .. import dmutil
 from .. import validate
 from .. import error
@@ -19,7 +17,6 @@ from .. import cache
 @jsonp
 def get_all_group_projects():
     user = access.get_user()
-    projects = []
     if access.is_administrator(user):
         projects = list(r.table('projects').order_by('name')
                         .filter(r.row["owner"].ne("delete@materialscommons.org"))
@@ -49,7 +46,6 @@ def add_computed_attributes(projects, user):
         add_users(projects_by_id, project_ids)
         add_reviews(projects_by_id, project_ids)
         add_samples(projects_by_id, project_ids)
-        add_drafts(projects_by_id, project_ids, user)
         add_processes(projects_by_id, project_ids)
         add_notes(projects_by_id, project_ids)
         add_events(projects_by_id, project_ids)
