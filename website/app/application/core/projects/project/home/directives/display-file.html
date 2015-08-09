@@ -14,6 +14,15 @@
                 <div ng-switch-when="image/jpeg">
                     <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
                 </div>
+                <div ng-switch-when="image/gif">
+                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
+                </div>
+                <div ng-switch-when="image/png">
+                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
+                </div>
+                <div ng-switch-when="image/x-ms-bmp">
+                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
+                </div>
                 <div ng-switch-when="application/pdf">
                     <div class="embed-responsive embed-responsive-4by3">
                         <embed class="col-xs-8 embed-responsive-item"
