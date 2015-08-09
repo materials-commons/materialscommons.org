@@ -11,6 +11,9 @@
                 <div ng-switch-when="image/bmp">
                     <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
                 </div>
+                <div ng-switch-when="image/jpeg">
+                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
+                </div>
                 <div ng-switch-when="application/pdf">
                     <div class="embed-responsive embed-responsive-4by3">
                         <embed class="col-xs-8 embed-responsive-item"
@@ -45,6 +48,7 @@
                 <div><label>Modified:</label>{{selected.item.mtime | toDateString}}</div>
                 <div><label>Media Type:</label>{{selected.item.mediatype.mime}}</div>
                 <div><label>Notes:</label>
+
                     <div ng-if="selected.item.notes.length > 0" ta-bind ng-model="selected.item.notes[0].note"></div>
                 </div>
             </div>
