@@ -4,18 +4,11 @@
             <p><a ng-click="goHome()">Clear filter</a></p>
             <alert close="goHome()">{{alertMessage}}</alert>
         </div>
-        <!--<div class="panel-heading" style="padding-top: 20px;">-->
-            <!--<div class="btn-toolbar">-->
-                <!--<div class="btn-group">-->
-                    <!--<button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar')">Day</button>-->
-                    <!--<button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar')">Week</button>-->
-                    <!--<button class="btn btn-success" ng-click="changeView('month', 'myCalendar')">Month</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
         <div class="panel-body">
-            <div style="padding-bottom: 6px;" ui-calendar="uiConfig.calendar" calendar="myCalendar"
-                 ng-model="eventSources"></div>
+            <div ng-if="ready">
+                <div style="padding-bottom: 6px;" ui-calendar="uiConfig.calendar" calendar="myCalendar"
+                     ng-model="eventSources"></div>
+            </div>
         </div>
 
     </div>
