@@ -424,20 +424,3 @@ function PhasesPresent() {
     };
     this.validators = [];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
