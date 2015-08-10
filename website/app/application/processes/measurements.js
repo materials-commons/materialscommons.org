@@ -69,9 +69,9 @@ function Length() {
         description: "",
         _type: "number",
         _category: "scalar",
-        units: [],
+        units: ["m", "cm"],
         nunit: "m",
-        unit: "m",
+        unit: "",
         value: null
     };
 
@@ -85,9 +85,9 @@ function Width() {
         description: "",
         _type: "number",
         _category: "scalar",
-        units: [],
+        units: ["m", "cm"],
         nunit: "m",
-        unit: "m",
+        unit: "",
         value: null
     };
     this.validators = [];
@@ -100,9 +100,9 @@ function Height() {
         description: "",
         _type: "number",
         _category: "scalar",
-        units: [],
+        units: ["m", "cm"],
         nunit: "m",
-        unit: "m",
+        unit: "",
         value: null
     };
     this.validators = [];
