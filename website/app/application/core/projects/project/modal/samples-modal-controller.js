@@ -87,7 +87,7 @@ function modalSamplesController($scope, Review, $modal, pubsub, mcapi, $filter) 
             .jsonp();
         mcapi('/sample/datafile/%', params.data.id)
             .success(function (files) {
-                $scope.modal.item.files = files;
+                $scope.modal.item.linked_files = files;
             }).jsonp();
 
         $scope.modal.instance = $modal.open({
