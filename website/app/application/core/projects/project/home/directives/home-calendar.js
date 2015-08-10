@@ -65,7 +65,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
         uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
     };
 
-    $scope.eventRender = function (event, element, view) {
+    $scope.eventRender = function (event, element) {
         $timeout(function () {
             $(element).attr('tooltip', event.description);
             $compile(element)($scope);
@@ -87,6 +87,7 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
 
     $scope.eventSources = [$scope.event_reviews, $scope.event_notes, $scope.event_processes, $scope.event_samples];
 
+    $scope.ready = false;
     $scope.uiConfig = {
         calendar: {
             height: 450,
@@ -101,4 +102,10 @@ function homeCalendarController($scope, Events, uiCalendarConfig, $compile, $tim
             eventRender: $scope.eventRender
         }
     };
+
+    $timeout(function () {
+        // Make sure the calendar directive has loaded, but running the ng event loop
+        // before setting ready to true which then renders in the ng-if.
+        $scope.ready = true;
+    });
 }
