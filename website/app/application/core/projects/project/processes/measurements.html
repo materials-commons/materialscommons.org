@@ -23,27 +23,27 @@
                 </div>
             </div>
             <div class="col-xs-8 details-main-content">
-                <div>
-                    <div class="row" ng-repeat="property in chosenProperty.measures">
-                        <div class="col-xs-8">
-                            <display-property property="property"></display-property>
-                        </div>
-                        <div class="col-xs-1">
-                            <i ng-click="addNewChoice()" style="color:#3a9ee3" class="fa fa-plus fa-fw"></i>
-                        </div>
-                        <div class="col-xs-1">
-                            <i ng-click="removeChoice($index)" style="color:#e57373" class="fa fa-minus fa-fw"></i>
-                        </div>
+                <div class="row" ng-repeat="property in chosenProperty.measures">
+                    <div class="col-xs-10">
+                        <display-property property="property"></display-property>
                     </div>
-
-                    <div class="row">
-                        <div ng-if="chosenProperty" class="col-xs-3">
-                            <button class="btn btn-primary" ng-click="save()">Save</button>
-                        </div>
-                    </div> <br>
-                    <p style="padding: 10px;" class="bg-success" ng-if="message">
-                        {{message}}</p>
+                    <div class="col-xs-1">
+                        <i ng-click="addNewChoice()" style="color:#3a9ee3" class="fa fa-plus fa-fw"></i>
+                    </div>
+                    <div class="col-xs-1">
+                        <i ng-click="removeChoice($index)" style="color:#e57373" class="fa fa-minus fa-fw"></i>
+                    </div>
                 </div>
+
+                <div class="row">
+                    <div ng-if="chosenProperty" class="col-xs-3">
+                        <button class="btn btn-primary" ng-click="save()">Save</button>
+                    </div>
+                </div>
+                <br>
+
+                <p style="padding: 10px;" class="bg-success" ng-if="message">
+                    {{message}}</p>
             </div>
         </div>
     </div>

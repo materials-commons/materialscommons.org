@@ -26,7 +26,7 @@ Application.Services.factory('modalInstance',
                             .jsonp();
                         mcapi('/sample/datafile/%', item.id)
                             .success(function (files) {
-                                item.files = files;
+                                item.linked_files = files;
                             }).jsonp();
                         break;
                     case "process":

@@ -55,8 +55,8 @@ function Apt() {
                         attribute: "specimen_temperature",
                         description: "",
                         value: null,
-                        units: [],
-                        unit: "K",
+                        units: ["K", "F", "C"],
+                        unit: "",
                         _type: "number",
                         required: true,
                         choices: []
