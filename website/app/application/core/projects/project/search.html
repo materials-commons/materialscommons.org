@@ -23,7 +23,7 @@
                             </a>
                         </div>
                         <div ng-if="hit._source.contents.length !== 0">
-                            <p>{{hit._source.contents | truncate:75:'...':true}}</p>
+                            <p>{{hit._source.contents | truncate:75:'...':false}}</p>
                         </div>
                     </div>
 
