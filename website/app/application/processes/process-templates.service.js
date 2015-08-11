@@ -75,6 +75,18 @@ function processTemplates() {
             description: "DIC Statistical Modelling",
             fn: DicStatisticalModelling,
             does_transform: false
+        },
+        {
+            name: "Electropolishing",
+            description: "Electropolishing",
+            fn: Electropolishing,
+            does_transform: true
+        },
+        {
+            name: "Etching",
+            description: "Etching",
+            fn: Etching,
+            does_transform: true
         }
     ];
 
