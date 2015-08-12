@@ -101,9 +101,9 @@ function processTemplates() {
             does_transform: false
         },
         {
-            name: "Low ",
-            description: "EPMA Data Collection",
-            fn: EpmaDataCollection,
+            name: "Low Cycle Fatigue",
+            description: "Low Cycle Fatigue",
+            fn: LowCycleFatigue,
             does_transform: false
         }
     ];
