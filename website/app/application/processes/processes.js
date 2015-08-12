@@ -1483,7 +1483,7 @@ function EbsdSemDataCollection() {
     this.what = "";
     this.why = "";
     this.owner = "emarq@umich.edu";
-    this.does_transform = true;
+    this.does_transform = false;
     this.setup = {
         files: []
     };
@@ -1638,7 +1638,7 @@ function EpmaDataCollection() {
     this.what = "";
     this.why = "";
     this.owner = "tradiasa@umich.edu";
-    this.does_transform = true;
+    this.does_transform = false;
     this.setup = {
         files: []
     };
@@ -1765,5 +1765,147 @@ function EpmaDataCollection() {
         }
     ];
 }
+
+function LowCycleFatigue() {
+    this.name = "Low Cycle Fatigue";
+    this.description = "Low Cycle Fatigue";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "jonesjwa@umich.edu";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Voltage",
+                        attribute: "voltage",
+                        description: "",
+                        value: null,
+                        units: ["kv", "V"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Beam Current",
+                        attribute: "beam_current",
+                        description: "",
+                        value: null,
+                        units: ["A", "nA"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Beam Size",
+                        attribute: "beam_size",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "µm",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Scan Type",
+                        attribute: "scan_type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "select",
+                        required: false,
+                        choices: [{"name": "Line", "value" : "line"},
+                            {"name": "Grid", "value" : "grid"},
+                            {"name": "Point", "value" : "point"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Step Size",
+                        attribute: "step_size",
+                        description: "",
+                        value: null,
+                        units: ["microns"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Grid Dimensions",
+                        attribute: "grid_dimensions",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Location",
+                        attribute: "location",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
 
 
