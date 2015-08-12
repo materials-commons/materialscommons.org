@@ -1469,3 +1469,301 @@ function Etching() {
         }
     ];
 }
+
+function EbsdSemDataCollection() {
+    this.name = "EBSD SEM Data Collection";
+    this.description = "EBSD SEM Data Collection";
+    this._type = "SEM";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "emarq@umich.edu";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Voltage",
+                        attribute: "voltage",
+                        description: "",
+                        value: null,
+                        units: ["kv", "V"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Current",
+                        attribute: "current",
+                        description: "",
+                        value: null,
+                        units: ["A", "mA"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Sample Tilt",
+                        attribute: "sample_tilt",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "degrees",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Magnification",
+                        attribute: "magnification",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Acquisition Time",
+                        attribute: "acquisition_time",
+                        description: "",
+                        value: null,
+                        units: ["s", "ms"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Scan Size",
+                        attribute: "scan_size",
+                        description: "",
+                        value: null,
+                        units: ["microns"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Step Size",
+                        attribute: "step_size",
+                        description: "",
+                        value: null,
+                        units: ["microns"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Working Distance",
+                        attribute: "working_distance",
+                        description: "",
+                        value: null,
+                        units: ["mm"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function EpmaDataCollection() {
+    this.name = "EPMA Data Collection";
+    this.description = "EPMA Data Collection";
+    this._type = "EPMA";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "tradiasa@umich.edu";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Voltage",
+                        attribute: "voltage",
+                        description: "",
+                        value: null,
+                        units: ["kv", "V"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Beam Current",
+                        attribute: "beam_current",
+                        description: "",
+                        value: null,
+                        units: ["A", "nA"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Beam Size",
+                        attribute: "beam_size",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "µm",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Scan Type",
+                        attribute: "scan_type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "select",
+                        required: false,
+                        choices: [{"name": "Line", "value" : "line"},
+                            {"name": "Grid", "value" : "grid"},
+                            {"name": "Point", "value" : "point"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Step Size",
+                        attribute: "step_size",
+                        description: "",
+                        value: null,
+                        units: ["microns"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Grid Dimensions",
+                        attribute: "grid_dimensions",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Location",
+                        attribute: "location",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+

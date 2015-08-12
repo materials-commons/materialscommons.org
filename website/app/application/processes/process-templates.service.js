@@ -87,6 +87,24 @@ function processTemplates() {
             description: "Etching",
             fn: Etching,
             does_transform: true
+        },
+        {
+            name: "EBSD SEM Data Collection",
+            description: "EBSD SEM Data Collection",
+            fn: EbsdSemDataCollection,
+            does_transform: false
+        },
+        {
+            name: "EPMA Data Collection",
+            description: "EPMA Data Collection",
+            fn: EpmaDataCollection,
+            does_transform: false
+        },
+        {
+            name: "Low ",
+            description: "EPMA Data Collection",
+            fn: EpmaDataCollection,
+            does_transform: false
         }
     ];
 
