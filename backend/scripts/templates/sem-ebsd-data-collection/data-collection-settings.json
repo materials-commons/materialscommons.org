@@ -45,8 +45,8 @@
             "required": false
         },
         {
-            "name": "Aquisition Time",
-            "attribute": "aquisition_time",
+            "name": "Acquisition Time",
+            "attribute": "acquisition_time",
             "type": "number",
             "unit": "",
             "unit_choice": ["s", "ms"],
