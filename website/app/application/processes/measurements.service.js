@@ -179,14 +179,42 @@ function measurementsService() {
             description: "",
             category: "chart",
             fn: StressDisplacement
-        }
+        },
         //{
         //    name: "Phases Present",
         //    attribute: "phases_present",
         //    description: "",
         //    category: "list",
         //    fn: PhasesPresent
-        //}
+        //} ,
+        {
+            name: "Shape",
+            attribute: "shape",
+            description: "",
+            category: "scalar",
+            fn: Shape
+        },
+        {
+            name: "Gauge Length",
+            attribute: "gauge_length",
+            description: "",
+            category: "scalar",
+            fn: GaugeLength
+        },
+        {
+            name: "Gauge Thickness",
+            attribute: "gauge_thickness",
+            description: "",
+            category: "scalar",
+            fn: GaugeThickness
+        },
+        {
+            name: "Area",
+            attribute: "area",
+            description: "",
+            category: "scalar",
+            fn: Area
+        }
     ];
 
     return {
