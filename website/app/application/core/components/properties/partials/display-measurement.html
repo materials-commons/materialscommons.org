@@ -111,4 +111,22 @@
             <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
         </div>
     </div>
+
+    <div ng-switch-when="selection">
+        <div ng-if="editMeasure">
+            <div ng-if="currentProcess && measure.process[0].id === currentProcess">
+                <input style="width: 60px;" ng-model="measure.value">
+                <input style="width: 60px;" ng-model="measure.unit">
+                <display-process-name></display-process-name>
+            </div>
+            <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
+                {{measure.value}} {{measure.unit}}
+                <display-process-name></display-process-name>
+            </div>
+        </div>
+        <div ng-if="!editMeasure">
+            {{measure.value}} {{measure.unit}}
+            <display-process-name></display-process-name>
+        </div>
+    </div>
 </div>

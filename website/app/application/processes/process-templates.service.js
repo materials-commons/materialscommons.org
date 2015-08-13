@@ -105,6 +105,12 @@ function processTemplates() {
             description: "Low Cycle Fatigue",
             fn: LowCycleFatigue,
             does_transform: false
+        },
+        {
+            name: "Annealing",
+            description: "Annealing",
+            fn: Annealing,
+            does_transform: false
         }
     ];
 
