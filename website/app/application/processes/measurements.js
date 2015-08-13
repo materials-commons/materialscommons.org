@@ -424,3 +424,69 @@ function PhasesPresent() {
     };
     this.validators = [];
 }
+
+function Shape() {
+    this.property = {
+        name: "Shape",
+        attribute: "shape",
+        description: "",
+        _type: "selection",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: "",
+        value: null,
+        choices: [{"name": "Round Bar", "value" : "round_bar"},
+            {"name": "Rectangular", "value" : "rectangular"},
+            {"name": "Notch", "value" : "notch"}]
+    };
+    this.validators = [];
+}
+
+function GaugeLength() {
+    this.property = {
+        name: "Gauge Length",
+        attribute: "gauge_length",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: ["mm", "cm", "m"],
+        nunit: "mm",
+        unit: "",
+        value: null,
+        choices: []
+    };
+    this.validators = [];
+}
+
+function GaugeThickness() {
+    this.property = {
+        name: "Gauge Thickness",
+        attribute: "gauge_thickness",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: ["mm", "cm", "m"],
+        nunit: "mm",
+        unit: "",
+        value: null,
+        choices: []
+    };
+    this.validators = [];
+}
+
+function Area() {
+    this.property = {
+        name: "Area",
+        attribute: "area",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: ["mm*mm", "cm*cm"],
+        nunit: "mm*mm",
+        unit: "",
+        value: null,
+        choices: []
+    };
+    this.validators = [];
+}

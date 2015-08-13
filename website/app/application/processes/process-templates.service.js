@@ -75,6 +75,42 @@ function processTemplates() {
             description: "DIC Statistical Modelling",
             fn: DicStatisticalModelling,
             does_transform: false
+        },
+        {
+            name: "Electropolishing",
+            description: "Electropolishing",
+            fn: Electropolishing,
+            does_transform: true
+        },
+        {
+            name: "Etching",
+            description: "Etching",
+            fn: Etching,
+            does_transform: true
+        },
+        {
+            name: "EBSD SEM Data Collection",
+            description: "EBSD SEM Data Collection",
+            fn: EbsdSemDataCollection,
+            does_transform: false
+        },
+        {
+            name: "EPMA Data Collection",
+            description: "EPMA Data Collection",
+            fn: EpmaDataCollection,
+            does_transform: false
+        },
+        {
+            name: "Low Cycle Fatigue",
+            description: "Low Cycle Fatigue",
+            fn: LowCycleFatigue,
+            does_transform: false
+        },
+        {
+            name: "Annealing",
+            description: "Annealing",
+            fn: Annealing,
+            does_transform: false
         }
     ];
 
