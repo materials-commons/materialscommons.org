@@ -1580,7 +1580,7 @@ function EbsdSemDataCollection() {
                         value: null,
                         units: ["microns"],
                         unit: "",
-                        _type: "number",
+                        _type: "string",
                         required: false,
                         choices: []
                     },
