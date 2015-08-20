@@ -119,7 +119,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state('projects.create', {
             url: '/create',
             templateUrl: 'application/core/projects/create.html',
-            controller: 'projectsCreate'
+            controller: 'CreateProjectController',
+            controllerAs: 'project'
         })
         .state('projects.project', {
             url: '/project/:id',
