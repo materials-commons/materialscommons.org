@@ -1,9 +1,9 @@
-(function(module) {
+(function (module) {
     module.controller('LoginController', LoginController);
 
     LoginController.$inject = ["$state", "User", "toastr",
-            "mcapi", "pubsub", "model.projects",
-            "projectFiles", "$anchorScroll", "$location"];
+        "mcapi", "pubsub", "model.projects",
+        "projectFiles", "$anchorScroll", "$location"];
 
     /* @ngInject */
     function LoginController($state, User, toastr, mcapi, pubsub, projects, projectFiles, $anchorScroll, $location) {
@@ -15,7 +15,7 @@
 
         ////////////////////
 
-        function login () {
+        function login() {
             mcapi('/user/%/apikey', ctrl.email, ctrl.password)
                 .success(function (u) {
                     User.setAuthenticated(true, u);
