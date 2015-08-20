@@ -1,4 +1,4 @@
-(function(module) {
+(function (module) {
     module.directive("projectNavBar", projectNavBarDirective);
 
     function projectNavBarDirective() {
@@ -17,7 +17,7 @@
     }
 
     module.controller("ProjectNavBarDirectiveController", ProjectNavBarDirectiveController);
-        ProjectNavBarDirectiveController.$inject = ["current", "$state", "User", "pubsub"];
+    ProjectNavBarDirectiveController.$inject = ["current", "$state", "User", "pubsub"];
 
     /* @ngInject */
     function ProjectNavBarDirectiveController(current, $state, User, pubsub) {
@@ -35,7 +35,7 @@
             $state.go("projects.project.home", {id: project.id});
         }
 
-        function clearSearch () {
+        function clearSearch() {
             pubsub.send('clear.search');
         }
     }
