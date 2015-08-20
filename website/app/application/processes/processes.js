@@ -1580,7 +1580,7 @@ function EbsdSemDataCollection() {
                         value: null,
                         units: ["microns"],
                         unit: "",
-                        _type: "string",
+                        _type: "number",
                         required: false,
                         choices: []
                     },
@@ -1637,7 +1637,7 @@ function EpmaDataCollection() {
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.owner = "tradiasa@umich.edu";
+    this.owner = "";
     this.does_transform = false;
     this.setup = {
         files: []
