@@ -160,7 +160,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.files.all", {
             url: "/all",
             templateUrl: "application/core/projects/project/files/all.html",
-            controller: "FilesAllController"
+            controller: "FilesAllController",
+            controllerAs: 'files'
         })
         .state("projects.project.files.all.edit", {
             url: "/edit/:file_id/:file_type",
