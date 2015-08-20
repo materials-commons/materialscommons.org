@@ -137,7 +137,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             onEnter: ["pubsub", "project", function (pubsub, project) {
                 pubsub.send("reviews.change");
             }],
-            controller: "ProjectController"
+            controller: "ProjectController",
+            controllerAs: 'project'
         })
         .state('projects.project.home', {
             url: '/home',
