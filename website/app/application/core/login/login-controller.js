@@ -1,39 +1,54 @@
-Application.Controllers.controller('login',
-    ["$scope", "$state", "User", "toastr",
-        "mcapi", "pubsub", "model.projects",
-        "projectFiles", "$anchorScroll", "$location", loginController]);
-function loginController($scope, $state, User, toastr, mcapi, pubsub, projects, projectFiles, $anchorScroll, $location) {
-    $scope.login = function () {
-        mcapi('/user/%/apikey', $scope.email, $scope.password)
-            .success(function (u) {
-                User.setAuthenticated(true, u);
-                pubsub.send("tags.change");
-                projects.clear();
-                projectFiles.clear();
-                projects.getList().then(function (projects) {
-                    if (projects.length === 0) {
-                        $state.go("projects.create");
-                    } else {
-                        $state.go('projects.project.home', {id: projects[0].id});
-                    }
-                });
-            })
-            .error(function (reason) {
-                $scope.message = "Incorrect Password/Username!"
-                toastr.error(reason.error, 'Error', {
-                    closeButton: true
-                });
-            }).put({password: $scope.password});
-    };
+(function(module) {
+    module.controller('LoginController', LoginController);
 
-    $scope.cancel = function () {
-        $state.transitionTo('home');
-    };
-    $scope.goTo = function (id) {
-        // set the location.hash to the id of
-        // the element you wish to scroll to.
-        $location.hash(id);
-        // call $anchorScroll()
-        $anchorScroll();
-    };
-}
+    LoginController.$inject = ["$state", "User", "toastr",
+            "mcapi", "pubsub", "model.projects",
+            "projectFiles", "$anchorScroll", "$location"];
+
+    /* @ngInject */
+    function LoginController($state, User, toastr, mcapi, pubsub, projects, projectFiles, $anchorScroll, $location) {
+        var ctrl = this;
+
+        ctrl.cancel = cancel;
+        ctrl.gotoID = gotoID;
+        ctrl.login = login;
+
+        ////////////////////
+
+        function login () {
+            mcapi('/user/%/apikey', ctrl.email, ctrl.password)
+                .success(function (u) {
+                    User.setAuthenticated(true, u);
+                    pubsub.send("tags.change");
+                    projects.clear();
+                    projectFiles.clear();
+                    projects.getList().then(function (projects) {
+                        if (projects.length === 0) {
+                            $state.go("projects.create");
+                        } else {
+                            $state.go('projects.project.home', {id: projects[0].id});
+                        }
+                    });
+                })
+                .error(function (reason) {
+                    ctrl.message = "Incorrect Password/Username!";
+                    toastr.error(reason.error, 'Error', {
+                        closeButton: true
+                    });
+                }).put({password: ctrl.password});
+        }
+
+        function cancel() {
+            $state.transitionTo('home');
+        }
+
+        function gotoID(id) {
+            // set the location.hash to the id of
+            // the element you wish to scroll to.
+            $location.hash(id);
+            // call $anchorScroll()
+            $anchorScroll();
+        }
+    }
+
+}(angular.module('materialscommons')));
