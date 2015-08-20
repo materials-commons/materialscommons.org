@@ -5,6 +5,7 @@ function mcFlowService(User) {
         {
             target: target,
             testChunks: false,
+            forceChunkSize: true,
             fileParameterName: "chunkData"
         }
     );
