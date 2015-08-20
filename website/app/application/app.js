@@ -5,6 +5,7 @@ Application.Services = angular.module('application.core.services', []);
 Application.Controllers = angular.module('application.core.controllers', []);
 Application.Filters = angular.module('application.core.filters', []);
 Application.Directives = angular.module('application.core.directives', []);
+angular.module('materialscommons', []);
 
 var app = angular.module('materialscommons',
     [
@@ -26,7 +27,7 @@ var app = angular.module('materialscommons',
         '$strap.directives', 'ui.bootstrap', 'toastr',
         "hljs", "nsPopover", "RecursionHelper",'googlechart',
         'application.core.constants', 'application.core.services',
-        'application.core.controllers',
+        'application.core.controllers', 'materialscommons',
         'application.core.filters', 'application.core.directives']);
 
 // This factory needs to hang off of this module for some reason

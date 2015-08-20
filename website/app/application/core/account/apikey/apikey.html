@@ -1,6 +1,6 @@
-<div class="col-sm-4" ng-controller="accountApikey">
+<div class="col-sm-4" ng-controller="APIKeyController as apikey">
     <br>
-    <button ng-click="showApiKey()" class="btn btn-default btn-info">{{ showHideButton }}</button>
-    <button ng-click="resetApiKey()" class="btn btn-default btn-danger">Reset API Key</button>
-    <br><br><br><p ng-show="showKey">Your current apikey is:  <b> {{ apikey }}</b></p>
+    <button ng-click="apikey.showAPIKey()" class="btn btn-default btn-info">{{ apikey.showHideButton }}</button>
+    <button ng-click="apikey.resetAPIKey()" class="btn btn-default btn-danger">Reset API Key</button>
+    <br><br><br><p ng-show="apikey.showKey">Your current apikey is:  <b> {{ apikey.apikey }}</b></p>
 </div>
