@@ -127,14 +127,14 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
                 project: ["$stateParams", "model.projects", "projects", "templates",
-                    function ($stateParams, Projects, projects, templates) {
+                    function ($stateParams, Projects) {
                         // We use templates as a dependency so that they are all loaded
                         // before getting to this step. Otherwise the order of items
                         // being resolved isn't in the order we need them.
                         return Projects.get($stateParams.id);
                     }]
             },
-            onEnter: ["pubsub", "project", function (pubsub, project) {
+            onEnter: ["pubsub", "project", function (pubsub) {
                 pubsub.send("reviews.change");
             }],
             controller: "ProjectController",
@@ -193,7 +193,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.access", {
             url: "/access",
             templateUrl: "application/core/projects/project/access/access.html",
-            controller: "projectAccess"
+            controller: "ProjectAccessController",
+            controllerAs: 'access'
         })
         .state("projects.project.reviews", {
             url: "/reviews/:category",
