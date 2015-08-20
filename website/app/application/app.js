@@ -58,7 +58,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         })
         .state('logout', {
             url: '/logout',
-            controller: 'logout'
+            controller: 'LogoutController'
         })
         .state('reviews', {
             url: '/reviews',
