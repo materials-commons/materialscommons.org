@@ -1,23 +1,25 @@
 <div>
-    <div ng-show="!loaded">
+    <div ng-show="!project.loaded">
         <div class="loading-panel col-xs-4">
             <center>
-                <h4><i class="fa fa-spinner fa-spin fa-4x"></i> Loading {{project.name}}...</h4>
+                <h4><i class="fa fa-spinner fa-spin fa-4x"></i> Loading {{project.project.name}}...</h4>
             </center>
         </div>
     </div>
-    <div ng-show="loaded">
+    <div ng-show="project.loaded">
         <div class="row project-task-bar">
             <project-nav-bar
-                project="project"
-                projects="projects">
+                project="project.project"
+                projects="project.projects">
             </project-nav-bar>
         </div>
-        <div ng-if="loaded" class="row" style="padding-top: 40px;">
-            <div ng-class="{'col-sm-12': isExpanded('help'), 'col-sm-4': !isExpanded('help') && showHelp()}" ng-show="showHelp()">
+        <div ng-if="project.loaded" class="row" style="padding-top: 40px;">
+            <div ng-class="{'col-sm-12': project.isExpanded('help'), 'col-sm-4': !project.isExpanded('help') && project.showHelp()}"
+                 ng-show="project.showHelp()">
                 <userguide></userguide>
             </div>
-            <div ng-class="{'col-sm-8': showHelp(), 'col-sm-12': !showHelp()}" ng-show="!isExpanded('help')">
+            <div ng-class="{'col-sm-8': project.showHelp(), 'col-sm-12': !project.showHelp()}"
+                 ng-show="!project.isExpanded('help')">
                 <div ui-view></div>
             </div>
         </div>

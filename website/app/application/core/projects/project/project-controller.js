@@ -1,38 +1,41 @@
-Application.Controllers.controller('ProjectController',
-    ["$scope", "ui", "project", "current", "projectFiles",
-        "mcapi", "help", "projects", "$state", ProjectController]);
+(function (module) {
+    module.controller('ProjectController', ProjectController);
 
-function ProjectController($scope, ui, project, current, projectFiles, mcapi,
-                           help, projects, $state) {
-    $scope.projects = projects;
-    $scope.setProject = function (project) {
-        $scope.project = project;
+    ProjectController.$inject = ["ui", "project", "current", "projectFiles",
+        "mcapi", "help", "projects"];
+
+    /* @ngInject */
+    function ProjectController(ui, project, current, projectFiles, mcapi, help, projects) {
+        var ctrl = this;
+
         current.setProject(project);
-        $scope.showProjects = false;
-        $state.go("projects.project.home", {id: project.id});
-    };
 
-    $scope.showHelp = function () {
-        return help.isActive();
-    };
+        ctrl.isExpanded = isExpanded;
+        ctrl.projects = projects;
+        ctrl.showHelp = showHelp;
+        ctrl.project = project;
+        ctrl.loaded = true;
+        ctrl.projects = projects;
 
-    $scope.isExpanded = function (what) {
-        return help.isActive() && ui.isExpanded(project.id, what);
-    };
+        if (!(project.id in projectFiles.model.projects)) {
+            ctrl.loaded = false;
+            mcapi("/projects/%/tree2", project.id)
+                .success(function (files) {
+                    var obj = {};
+                    obj.dir = files[0];
+                    projectFiles.model.projects[project.id] = obj;
+                    ctrl.loaded = true;
+                }).jsonp();
+        }
 
-    current.setProject(project);
-    $scope.project = project;
-    $scope.loaded = true;
+        ////////////////////////////
 
-    if (!(project.id in projectFiles.model.projects)) {
-        $scope.loaded = false;
-        mcapi("/projects/%/tree2", project.id)
-            .success(function (files) {
-                var obj = {};
-                obj.dir = files[0];
-                projectFiles.model.projects[project.id] = obj;
-                //projectFiles.loadByMediaType(project);
-                $scope.loaded = true;
-            }).jsonp();
+        function isExpanded(what) {
+            return help.isActive() && ui.isExpanded(project.id, what);
+        }
+
+        function showHelp() {
+            return help.isActive();
+        }
     }
-}
+}(angular.module('materialscommons')));
