@@ -148,7 +148,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state('projects.project.search', {
             url: '/search/:query',
             templateUrl: 'application/core/projects/project/search.html',
-            controller: 'searchController',
+            controller: 'SearchController',
             controllerAs: 'search'
         })
         .state("projects.project.files", {
