@@ -14,7 +14,7 @@
                 <div class="details-sidebar">
                     <ul class="list-group">
                         <li ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
-                            ng-repeat="template in templates | filter:search"
+                            ng-repeat="template in templates | orderBy: 'name' |filter:search"
                             class="list-group-item pointer">
                             <div>{{template.name}}</div>
                         </li>
