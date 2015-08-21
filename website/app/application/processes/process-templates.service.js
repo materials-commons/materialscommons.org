@@ -133,8 +133,8 @@ function processTemplates() {
         {
             name: "Hardness",
             description: "Hardness",
-            fn: Hardness,
-            does_transform: false
+            fn: Hardness1,
+            does_transform: true
         }
     ];
 
