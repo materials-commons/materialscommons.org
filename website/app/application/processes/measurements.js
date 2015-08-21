@@ -490,3 +490,19 @@ function Area() {
     };
     this.validators = [];
 }
+
+function Hardness() {
+    this.property = {
+        name: "Hardness",
+        attribute: "hardness",
+        description: "",
+        _type: "number",
+        _category: "scalar",
+        units: [],
+        nunit: "",
+        unit: "",
+        value: null,
+        choices: []
+    };
+    this.validators = [];
+}
