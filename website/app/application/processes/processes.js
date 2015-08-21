@@ -2466,7 +2466,7 @@ function HeatTreatment() {
     ];
 }
 
-function Hardness() {
+function Hardness1() {
     this.name = "Hardness";
     this.description = "Hardness";
     this._type = "OTHER";
