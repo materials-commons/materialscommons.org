@@ -1482,7 +1482,7 @@ function EbsdSemDataCollection() {
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.owner = "emarq@umich.edu";
+    this.owner = "";
     this.does_transform = false;
     this.setup = {
         files: []
@@ -1778,8 +1778,8 @@ function LowCycleFatigue() {
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.owner = "jonesjwa@umich.edu";
-    this.does_transform = false;
+    this.owner = "";
+    this.does_transform = true;
     this.setup = {
         files: []
     };
@@ -1955,8 +1955,8 @@ function Annealing() {
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.owner = "aerielm@umich.edu ";
-    this.does_transform = false;
+    this.owner = "";
+    this.does_transform = true;
     this.setup = {
         files: []
     };
@@ -1987,8 +1987,8 @@ function Annealing() {
                         attribute: "time",
                         description: "",
                         value: null,
-                        units: [],
-                        unit: "s",
+                        units: ["seconds","minutes","hours"],
+                        unit: "",
                         _type: "number",
                         required: false,
                         choices: []
@@ -2054,5 +2054,492 @@ function Annealing() {
     ];
 }
 
+function UltrasonicFatigue() {
+    this.name = "Ultrasonic Fatigue";
+    this.description = "Ultrasonic Fatigue";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Amplifiers (count)",
+                        attribute: "amplifier_count",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Power Control",
+                        attribute: "power_control",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Resonating Frequency",
+                        attribute: "resonating_frequency",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "kHz",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Calibration Constant",
+                        attribute: "calibration_constant",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Stress Ratio",
+                        attribute: "stress_ratio",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Max Stress",
+                        attribute: "max_stress",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "MPa",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Test Temperature",
+                        attribute: "test_temperature",
+                        description: "",
+                        value: null,
+                        units: ["C", "F", "K"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Test Environment",
+                        attribute: "test_environment",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
 
+function TEM() {
+    this.name = "TEM";
+    this.description = "Transmission Electron Microscope";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Voltage",
+                        attribute: "voltage",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Mode",
+                        attribute: "mode",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Diffraction", "value" : "diffraction"},
+                            {"name": "Diffraction Imaging", "value" : "diffraction_imaging"},
+                            {"name": "High Resolution Imaging", "value" : "high_resolution_imaging"},
+                            {"name": "Scanning z-contrast", "value" : "scanning_z_contrast"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Conventional Scanning",
+                        attribute: "conventional_scanning",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Yes", "value" : "yes"},
+                            {"name": "No", "value" : "no"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Scanning",
+                        attribute: "scanning",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Bright Field", "value" : "bright_field"},
+                            {"name": "High Angle Angular Dark Field", "value" : "high_angle_angular_dark_field"},
+                            {"name": "Tilt Series", "value" : "tilt_series"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Stage",
+                        attribute: "stage",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Standard", "value" : "standard"},
+                            {"name": "Cryo", "value" : "cryo"},
+                            {"name": "Heating", "value" : "heating"}, {"name": "Other", "value" : "other"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Apparatus",
+                        attribute: "apparatus",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Spot Size",
+                        attribute: "spot_size",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Camera Length",
+                        attribute: "camera_length",
+                        description: "",
+                        value: null,
+                        units: ["cm", "mm","m"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
 
+function HeatTreatment() {
+    this.name = "Heat Treatment";
+    this.description = "HeatTreatment";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = true;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Temperature",
+                        attribute: "temperature",
+                        description: "",
+                        value: null,
+                        units: ["K", "F", "C"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Time",
+                        attribute: "time",
+                        description: "",
+                        value: null,
+                        units: ["seconds","minutes","hours"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Cooling Type",
+                        attribute: "cooling_type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Air Quench", "value" : "air_quench"},
+                            {"name": "Water Quench", "value" : "water_quench"},
+                            {"name": "Furnace Cooled", "value" : "furnace_cooled"},
+                            {"name": "Air Cooled", "value" : "air_cooled"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Cooling Rate",
+                        attribute: "cooling_rate",
+                        description: "",
+                        value: null,
+                        units: ["C/s", "K/s"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
+
+function Hardness() {
+    this.name = "Hardness";
+    this.description = "Hardness";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Type",
+                        attribute: "type",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [{"name": "Vickers", "value" : "vickers"},
+                            {"name": "Rockwell A", "value" : "rockwell_a"},
+                            {"name": "Rockwell B", "value" : "rockwell_b"},
+                            {"name": "Rockwell C", "value" : "rockwell_c"}]
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Load",
+                        attribute: "load",
+                        description: "",
+                        value: null,
+                        units: ["ibf", "N"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Dwell Time",
+                        attribute: "dwell_time",
+                        description: "",
+                        value: null,
+                        units: ["seconds", "minutes", "hours"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                }
+            ]
+        }
+    ];
+}
