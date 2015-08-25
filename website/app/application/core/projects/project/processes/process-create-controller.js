@@ -439,6 +439,7 @@ function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
         if ($scope.isEmptyTemplate === true) {
             $state.go('projects.project.processes.list')
         }
+        $scope.project = project;
     }
 
     $scope.linkFilesToSample = linkFilesToSample;
