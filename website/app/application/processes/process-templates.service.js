@@ -104,13 +104,37 @@ function processTemplates() {
             name: "Low Cycle Fatigue",
             description: "Low Cycle Fatigue",
             fn: LowCycleFatigue,
-            does_transform: false
+            does_transform: true
         },
         {
             name: "Annealing",
             description: "Annealing",
             fn: Annealing,
+            does_transform: true
+        },
+        {
+            name: "Ultrasonic Fatigue",
+            description: "Ultrasonic Fatigue",
+            fn: UltrasonicFatigue,
+            does_transform: true
+        },
+        {
+            name: "TEM",
+            description: "TEM",
+            fn: TEM,
             does_transform: false
+        },
+        {
+            name: "Heat Treatment",
+            description: "Heat Treatment",
+            fn: HeatTreatment,
+            does_transform: true
+        },
+        {
+            name: "Hardness",
+            description: "Hardness",
+            fn: Hardness1,
+            does_transform: true
         }
     ];
 
