@@ -2466,6 +2466,32 @@ function HeatTreatment() {
     ];
 }
 
+function AsMeasured() {
+    this.name = "As Measured";
+    this.description = "As Measured process allows you to add in all your As Received measurements";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: []
+        }
+    ];
+}
+
 function Hardness1() {
     this.name = "Hardness";
     this.description = "Hardness";
