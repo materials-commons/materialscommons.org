@@ -836,7 +836,7 @@ function Compression() {
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.owner = "emarq@umich.edu";
+    this.owner = "";
     this.does_transform = true;
     this.setup = {
         files: []
@@ -864,8 +864,24 @@ function Compression() {
                 },
                 {
                     property: {
-                        name: "Strain",
-                        attribute: "strain",
+                        name: "True Strain",
+                        attribute: "true_strain",
+                        description: "",
+                        value: null,
+                        units: ["mm/mm", "percentage"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Engineering Strain",
+                        attribute: "engineering_strain",
                         description: "",
                         value: null,
                         units: ["mm/mm", "percentage"],
