@@ -1,5 +1,6 @@
 <div class="row" style="padding-left: 5px;">
     <br>
+
     <div class="panel panel-primary">
         <div class="panel-heading help-color">
             <i class="fa fa-fw fa-book"></i>
@@ -21,20 +22,10 @@
                             <h4 class="text-center">Glossary</h4>
                             <hr/>
                             <div class="row">
-                                <div class="col-xs-3"><i class="fa fa-fw fa-tachometer"></i>Dashboard:</div>
-                                <div class="col-xs-8">is the area where you can see all
-                                    panels for a project.
+                                <div class="col-xs-3"><i class="fa fa-fw fa-copy"></i>Datafile:</div>
+                                <div class="col-xs-8">Datafiles are the raw files containing information from
+                                    experiments or computations.
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-3"><i class="fa fa-fw fa-pencil-square-o"></i> Draft:</div>
-                                <div class="col-xs-8">can be defined as an incomplete provenance step. When you save
-                                    your provenance as draft you can go back and modify at anytime.
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-3"><i class="fa fa-fw"></i>Last login:</div>
-                                <div class="col-xs-8">will provide your last login date onto Materials Commons.</div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-briefcase"></i>Project:</div>
@@ -45,7 +36,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw"></i>Provenance:</div>
-                                <div class="col-xs-8">is defined as the history of data</div>
+                                <div class="col-xs-8">is defined as the history of data.The provenance information that
+                                    describes how datafiles and samples are created, transformed, analyzed or measured
+                                    is stored in a Process
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-code-fork"></i>Process:</div>
@@ -67,9 +61,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3"><i class="fa fa-fw fa-cubes"></i>Sample:</div>
-                                <div class="col-xs-8">is defined as a material on which user can perform some
-                                    experiment. During provenance creation sample will be an input into the
-                                    process.
+                                <div class="col-xs-8">Samples are digital objects representing experimental or virtual
+                                    computational materials samples. Key attributes are stored in Samples so that they
+                                    can be easily used for analysis and modeling
                                 </div>
                             </div>
                             <div class="row">
@@ -78,12 +72,6 @@
                                     process(experiment/computation/data analysis). There are set of pre-defined
                                     templates
                                     on Materials Commons.
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-3"><i class="fa fa-fw fa-clipboard"></i>Sideboard:</div>
-                                <div class="col-xs-8">is an area where you can add/drag various items to compare
-                                    side-by-side.
                                 </div>
                             </div>
 
@@ -97,27 +85,35 @@
                         <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showNav">
                             <h4 class="text-center">Navigation Bar</h4>
                             <hr/>
-                            <b>Navigation:</b>
-
-                            <div class="watermark">Draft</div>
-
-                            <p>MaterialsCommons navigation bar helps user to switch between different projects and navigate between global pages.</p>
+                            <b>Navigation Bar</b>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/navigation-bar.png">
                             </div>
+                            <div class="watermark">Draft</div>
+                            <b>Switch Projects</b>
+
+                            <p>Navigation bar allows you to switch between different projects</p>
+
+                            <div style="padding-top: 10px;padding-bottom: 10px;">
+                                <img class="img-responsive" src="assets/img/userguide/choose-project.png">
+                            </div>
+                            <b>Search:</b>
+
+                            <p>Search bar allows you to search files/samples/processes across your projects.
+                            </p>
                             <b>Settings:</b>
 
-                            <p>Apart from navigation user can also update their username, password, customize templates(
-                                for provenance) and reset apikey.
+                            <p>Under settings you can update username, password and reset apikey.
                             </p>
+
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/navbar-settings.png">
                             </div>
 
                             <b>Help </b>
 
-                            <p>Help page or Userguide is a manual which describes about what and how to use
+                            <p>Help page/Userguide is a manual which describes about what and how to use
                                 MaterialsCommons. For the ease of use, userguide is designed such that it can be opened
                                 on the side, while the user can still work on their respective panels. </p>
                         </div>
@@ -129,10 +125,10 @@
                         <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showHome">
                             <h4 class="text-center">Home Page</h4>
                             <hr/>
-                            <p>Homepage contains panels for Reviews, Samples, Files, Notes and Provenance.
-                                Content inside panels changes with respect to the project. In this section we will
-                                describe
-                                about commonly used icons and their function.</p>
+                            <p>Homepage contains panels for Reviews, Samples, Files, Notes, Provenance and Calendar will
+                                keep track of all your events. Content inside panels changes with respect to the
+                                project. </p>
+
                             <div class="watermark">Draft</div>
                             <img class="img-responsive" src="assets/img/userguide/home-page.png">
                         </div>
@@ -143,11 +139,12 @@
                         <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showReviews">
                             <h4 class="text-center">Reviews</h4>
                             <hr/>
-                            <p>Panel will list all the reviews created inside a project. List may contain
-                                reviews which you have requested to others or vice-versa. When you click on the title,
-                                review toggles and details will be opened.
-                                You can comment on the review by clicking on the comment button.
-                                If you close the review it will be removed from the list (archived).
+                            <p>Panel will list all the reviews created inside a project. List is categorized into 4 types:
+                                <br>
+                                MY REVIEWS:  are the reviews you have requested others<br>
+                                DUE: are the reviews requested to you by other researcher<br>
+                                ALL: MY REVIEWS + DUE<br>
+                                ARCHIVED: are the closed reviews<br>
                             </p>
 
                             <div class="watermark">Draft</div>
@@ -158,14 +155,14 @@
                             <b>How to create a review</b>
 
                             <p>When you click <b>create</b> button it will open up a form to the right where you can
-                                fill in the title, pick a user who has to review and add your comment. </p>
+                                fill in the title, pick a user/users who has to review and add in your comment. </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive" src="assets/img/userguide/create-review.png">
                             </div>
                         </div>
                     </li>
-                    <li  class="list-group-item list-group-item">
+                    <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
 
                         <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showSamples">
@@ -199,19 +196,17 @@
 
                             <b>How to create a provenance:</b><br><br>
 
-                            <b>Step1 : Choose Template</b>
+                            <b>Step1 : Choose Template/Process</b>
 
-                            <p>In order to create provenance first you have to choose a template.
-                                Based on the template you choose, provenance steps may vary.
-                                For Example: You wanted to
-                                collect data through Atom Probe Experiment.
-                                So now you have to choose APT Data Collection Template from the drop-down list
+                            <p>In order to create provenance first you have to choose a Process.
+                                Based on the process you choose, provenance steps may vary.
                             </p>
 
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive"
                                      src="assets/img/userguide/choose-template.png">
                             </div>
+                            <p>After you hit OK then process form will be opened.</p>
                             <div style="padding-top: 10px;padding-bottom: 10px;">
                                 <img class="img-responsive"
                                      src="assets/img/userguide/create-process.png">
@@ -229,29 +224,24 @@
                             <p>Files panel will show you all your uploaded files for a project. It will preserve the
                                 directory layout. You can view the file by clicking on the name of the file.
                             </p>
-
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/files.png">
+                                <img class="img-responsive"
+                                     src="assets/img/userguide/files-view.png">
                             </div>
                             <b>How to create a sub folder</b>
 
                             <p>Project name will be your root folder. Any folder's you wanted to create will be under
-                                this root folder. Click on the plus icon <i class="fa fa-plus"></i> next to the folder
-                                name and then fill out the details and click add.</p>
+                                this root folder. Click on the <a>CREATE FOLDER</a> link, enter name of the folder and click add.</p>
 
-                            <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/create-folder-annotated.png">
-                            </div>
                             <b>How to upload a file</b>
 
                             <p>If you want to upload a file into a directory then click on the upload icon <i
-                                    class="fa fa-upload"></i> next to the folder into which you wanted to upload the
-                                file. Then a pop up window will appear through which you can browse and select a file.
+                                    class="fa fa-upload"></i> Then a pop up window will appear through which you can browse and select a file.
                                 After you select it will appear under "Files to Upload List" as shown in the image
                                 below. </p>
-
                             <div style="padding-top: 10px;padding-bottom: 10px;">
-                                <img class="img-responsive" src="assets/img/userguide/upload-file-annotated.png">
+                                <img class="img-responsive"
+                                     src="assets/img/userguide/upload-file.png">
                             </div>
                         </div>
                     </li>
