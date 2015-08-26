@@ -836,7 +836,7 @@ function Compression() {
     this.project_id = "";
     this.what = "";
     this.why = "";
-    this.owner = "emarq@umich.edu";
+    this.owner = "";
     this.does_transform = true;
     this.setup = {
         files: []
@@ -864,8 +864,24 @@ function Compression() {
                 },
                 {
                     property: {
-                        name: "Strain",
-                        attribute: "strain",
+                        name: "True Strain",
+                        attribute: "true_strain",
+                        description: "",
+                        value: null,
+                        units: ["mm/mm", "percentage"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Engineering Strain",
+                        attribute: "engineering_strain",
                         description: "",
                         value: null,
                         units: ["mm/mm", "percentage"],
@@ -2462,6 +2478,32 @@ function HeatTreatment() {
                     errorMessage: ""
                 }
             ]
+        }
+    ];
+}
+
+function AsMeasured() {
+    this.name = "As Measured";
+    this.description = "As Measured process allows you to add in all your As Received measurements";
+    this._type = "OTHER";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = false;
+    this.setup = {
+        files: []
+    };
+    this.setup.settings = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: []
         }
     ];
 }
