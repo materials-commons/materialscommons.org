@@ -131,6 +131,12 @@ function processTemplates() {
             does_transform: true
         },
         {
+            name: "As Measured",
+            description: "As Measured process allows you to add in all your As Received measurements",
+            fn: AsMeasured,
+            does_transform: false
+        },
+        {
             name: "Hardness",
             description: "Hardness",
             fn: Hardness1,
