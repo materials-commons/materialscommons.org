@@ -60,34 +60,48 @@
 
         <hr class="divider"/>
         <div class="row">
-            <div class="col-xs-12 headings">Message</div>
-            <div class="col-xs-8">
-                <input placeholder="SUBJECT" class="form-control" name="title" ng-model="model.title" required/><br>
+            <div class="col-xs-12 headings">MESSAGE</div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="row"><br>
+                        <input placeholder="Title..." class="form-control" name="title" ng-model="model.title"
+                               required/>
 
-                <div ng-if="createReviewForm.$submitted || createReviewForm.title.$touched"
-                     ng-messages="createReviewForm.title.$error" class="errors">
-                   You did not enter Subject.
-                </div>
-                <text-angular ta-toolbar="[['h2', 'h5', 'h6', 'quote','bold','italics','underline'],
+                        <div ng-if="createReviewForm.$submitted || createReviewForm.title.$touched"
+                             ng-messages="createReviewForm.title.$error" class="errors">
+                            <div ng-message="required">You did not enter subject.</div>
+                        </div>
+                        <br>
+                    </div>
+                    <text-angular ta-toolbar="[['h2', 'h5', 'h6', 'quote','bold','italics','underline'],
                               ['ul','ol', 'justifyLeft', 'insertLink', 'insertImage']]"
-                              name="comment" ng-model="model.comment" required></text-angular>
-                <div ng-if="createReviewForm.$submitted || createReviewForm.comment.$touched"
-                     ng-messages="createReviewForm.comment.$error" class="errors">
-                    <div ng-message="required">Please fill in your comment</div>
+                                  name="comment" ng-model="model.comment" required></text-angular>
+                    <div ng-if="createReviewForm.$submitted || createReviewForm.comment.$touched"
+                         ng-messages="createReviewForm.comment.$error" class="errors">
+                        <div ng-message="required">Please fill in your comment</div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <br>
+            <button ng-click="cancel()" class="btn-details-container btn btn-default btn btn-cancel">Cancel</button>
+            <span ng-if="createReviewForm.$valid">
+                    <button ng-if="model.attachments.length > 0" ng-click="createReview(createReviewForm.$valid)"
+                            ng-class="{'btn-inactive': createReviewForm.$valid === false}"
+                            class=" btn btn-default btn-review  btn-details-container">Send
+                    </button>
+                    <button ng-if="model.attachments.length < 1" ng-click="createReview(createReviewForm.$valid)"
+                            ng-class="{'btn-inactive': createReviewForm.$valid === false}"
+                            ng-confirm-click="Do you want to continue without attachments?"
+                            class=" btn btn-default btn-review  btn-details-container">Send
+                    </button>
+            </span>
+            <button ng-if="!createReviewForm.$valid" ng-click="createReview(createReviewForm.$valid)"
+                    ng-class="{'btn-inactive': createReviewForm.$valid === false}"
+                    class=" btn btn-default btn-review  btn-details-container">Send
+            </button>
 
-            <div class="col-xs-3">
-                <button ng-click="cancel()" class="btn-details-container btn btn-default btn btn-cancel">Cancel</button>
-            </div>
-            <div class="col-xs-3">
-                <button ng-click="createReview(createReviewForm.$valid)" ng-class="{'btn-inactive': createReviewForm.$valid === false}"
-                        class=" btn btn-default btn-review  btn-details-container">Send
-                </button>
-            </div>
         </div>
     </form>
 </div>
