@@ -1,8 +1,11 @@
-Application.Controllers.controller('projectNotes',
-    ["$scope", "project", projectNotes]);
+(function (module) {
+    module.controller('projectNotes', projectNotes);
+    projectNotes.$inject = ["project"];
 
-function projectNotes($scope, project) {
+    function projectNotes(project) {
+        var ctrl = this;
 
-    $scope.project = project;
+        ctrl.project = project;
+    }
 
-}
+}(angular.module('materialscommons')));
