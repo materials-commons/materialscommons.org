@@ -216,7 +216,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.notes", {
             url: "/notes",
             templateUrl: "application/core/projects/project/notes/notes.html",
-            controller: "projectNotes"
+            controller: "projectNotes",
+            controllerAs: 'notes'
         })
         .state("projects.project.sideboard", {
             url: "/sideboard",
