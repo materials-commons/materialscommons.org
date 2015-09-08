@@ -2,7 +2,7 @@
     module.controller('projectHome', projectHome);
     projectHome.$inject = ["project"];
 
-    function projectHome(project, ui) {
+    function projectHome(project) {
         var ctrl = this;
         ctrl.project = project;
     }
