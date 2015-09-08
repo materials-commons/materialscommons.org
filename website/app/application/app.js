@@ -143,7 +143,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
-            controller: "projectHome"
+            controller: "projectHome",
+            controllerAs: "home"
         })
         .state('projects.project.search', {
             url: '/search/:query',
