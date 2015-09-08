@@ -102,7 +102,7 @@ function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcap
     };
 
     $scope.cancel = function () {
-        init();
+        $state.go('projects.project.reviews.edit', {category: 'all'});
     };
 
     function init() {
