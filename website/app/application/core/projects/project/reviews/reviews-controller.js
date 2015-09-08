@@ -1,19 +1,20 @@
-Application.Controllers.controller('projectReviews',
-    ["$scope", "project", "$filter", "Review", "pubsub", "User", "$stateParams", projectReviews]);
+(function (module) {
+    module.controller('projectReviews', projectReviews);
+    projectReviews.$inject = ["$scope", "project", "$filter", "Review", "pubsub", "User", "$stateParams"];
 
-function projectReviews($scope, project, $filter, Review, pubsub, User, $stateParams) {
+    function projectReviews($scope, project, $filter, Review, pubsub, User, $stateParams) {
 
-    pubsub.waitOn($scope, 'activeReview.change', function () {
-        $scope.review = Review.getActiveReview();
-    });
+        pubsub.waitOn($scope, 'activeReview.change', function () {
+            $scope.review = Review.getActiveReview();
+        });
 
-    pubsub.waitOn($scope, 'reviews.change', function () {
-        $scope.reviews = Review.getReviews();
-    });
+        pubsub.waitOn($scope, 'reviews.change', function () {
+            $scope.reviews = Review.getReviews();
+        });
 
-    $scope.listReviewsByType = function (type) {
-        $scope.type = type;
-        switch (type) {
+        $scope.listReviewsByType = function (type) {
+            $scope.type = type;
+            switch (type) {
             case "all":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
                 Review.listReviewsByType($scope.reviews, type);
@@ -32,13 +33,15 @@ function projectReviews($scope, project, $filter, Review, pubsub, User, $statePa
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
                 Review.listReviewsByType($scope.reviews, type);
                 break;
-        }
-    };
+            }
+        };
 
-    function init() {
-        $scope.project = project;
-        $scope.listReviewsByType($stateParams.category === "" ? 'my_reviews' : $stateParams.category);
+        function init() {
+            $scope.project = project;
+            $scope.listReviewsByType($stateParams.category === "" ? 'my_reviews' : $stateParams.category);
+        }
+
+        init();
     }
 
-    init();
-}
+}(angular.module('materialscommons')));
