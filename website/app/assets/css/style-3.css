@@ -234,22 +234,6 @@ ul.taskbar.nav li.projects-drop-down a:focus {
     top: -6px;
 }
 
-/************End index.html **************************/
-
-/*.validation-invalid {*/
-/*color: #FF4136;*/
-/*}*/
-
-/*************************************************All about table th, td, hover *************************/
-
-/*.pagination {*/
-/*text-align: center;*/
-/*cursor: pointer;*/
-/*}*/
-
-/*******************************************************************************************************/
-
-/*************************************************All about top navigation bar *************************/
 
 /*************************************This controls the height,  padding, and border radius and space between(margin bottom) of all input elements******/
 .form-horizontal
@@ -270,20 +254,10 @@ ul.taskbar.nav li.projects-drop-down a:focus {
     opacity: 1;
 }
 
-/*.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {*/
-/*padding-left: 10px;*/
-/*padding-right: 10px;*/
-/*}*/
-
 .form-horizontal .form-group {
     margin-bottom: 5px;
     margin-left: 10px;
 }
-
-/*textarea.form-control {*/
-/*height: 80px;*/
-/*width: 400px;*/
-/*}*/
 
 /************************************Other*************************************/
 
@@ -312,10 +286,6 @@ ul.taskbar.nav li.projects-drop-down a:focus {
 p {
     margin: 0px;
 }
-
-/*.col-sm-2 {*/
-/*width: 12%;*/
-/*}*/
 
 footer {
     position: fixed;
@@ -713,75 +683,6 @@ textarea.no-resize {
     transform: translate(0, 0);
 }
 
-.tree, .tree ul {
-    margin: 0;
-    padding: 0;
-    list-style: none
-}
-
-.tree ul {
-    margin-left: 1em;
-    position: relative
-}
-
-.tree ul ul {
-    margin-left: .5em
-}
-
-.tree ul:before {
-    content: "";
-    display: block;
-    width: 0;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    border-left: 1px dotted #D2C4D5
-}
-
-.tree li {
-    margin: 0;
-    padding: 0 1em;
-    line-height: 2em;
-    color: #369;
-    font-weight: 700;
-    position: relative
-}
-
-.tree ul li:before {
-    content: "";
-    display: block;
-    width: 10px;
-    height: 0;
-    border-top: 1px dotted #D2C4D5;
-    margin-top: -1px;
-    position: absolute;
-    top: 1em;
-    left: 0
-}
-
-.tree ul li:last-child:before {
-    background: #fff;
-    height: auto;
-    top: 1em;
-    bottom: 0
-}
-
-.tree li a {
-    text-decoration: none;
-    color: #369;
-}
-
-.tree li button, .tree li button:active, .tree li button:focus {
-    text-decoration: none;
-    color: #369;
-    border: none;
-    background: transparent;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    outline: 0;
-}
-
 header {
     background: url('../img/splash/bg1.png');
     background-size: cover;
@@ -804,11 +705,6 @@ header {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
-/*.login-splash {*/
-/*padding: 50px;*/
-/*background-color: rgba(255, 255, 255, 0.3);*/
-/*text-align: center;*/
-/*}*/
 .icon-splash {
     background-color: white;
     height: 30vh;
