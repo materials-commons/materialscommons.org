@@ -29,6 +29,7 @@
     "angular-google-chart": "~0.0.11"
   },
   "resolutions": {
-    "ag-grid": "1.8.0"
+    "ag-grid": "1.8.0",
+    "angular-bootstrap": "~0.12.1"
   }
 }
