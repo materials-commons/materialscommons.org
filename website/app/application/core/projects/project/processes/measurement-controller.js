@@ -21,8 +21,13 @@ function MeasurementController($scope, $log, modal, measurements) {
         $scope.chosenProperty.measures.push(propertyInstance.property);
     };
 
-    $scope.ok = function () {
-        $scope.modal.instance.close($scope.chosenProperty);
+    $scope.ok = function (isValid) {
+        if (!isValid) {
+            return;
+        }
+        else {
+            $scope.modal.instance.close($scope.chosenProperty);
+        }
     };
 
     $scope.cancel = function () {
@@ -30,9 +35,14 @@ function MeasurementController($scope, $log, modal, measurements) {
     };
 
 
-    $scope.save = function () {
-        $scope.modal.sample = storeProperties($scope.chosenProperty);
-        $scope.message = $scope.chosenProperty.name + ' is saved onto the left sidebar!';
+    $scope.save = function (isValid) {
+        if (!isValid) {
+            return;
+        }
+        else {
+            $scope.modal.sample = storeProperties($scope.chosenProperty);
+            $scope.message = $scope.chosenProperty.name + ' is saved onto the left sidebar!';
+        }
     };
 
     $scope.addNewChoice = function () {

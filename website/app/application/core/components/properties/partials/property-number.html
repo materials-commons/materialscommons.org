@@ -1,11 +1,13 @@
-<div class="row">
+<div ng-form="propertyForm" class="row">
     <div class="col-xs-3">
         <b>{{::property.name}}</b>
         <i ng-if="property.required" class="fa fa-fw fa-asterisk text-danger"></i>
     </div>
     <div class="col-xs-3">
-        <input style="width: 100px;" type="number" id="numberInput" step="any" class="form-control"
+        <input style="width: 100px;" type="number" name="numberInput" step="any" class="form-control"
                ng-required="property.required" ng-model="property.value">
+
+
     </div>
     <div class="col-xs-3">
         <span ng-if="property.units.length === 0">{{::property.unit}}</span>
@@ -18,9 +20,13 @@
         </select>
         </span>
     </div>
-
     <div class="row">
-        <span ng-show="form.numberInput.$error.required" class="text-danger"> You must supply a value for {{::property.name}}</span>
         <span class="help-block">{{::property.description}}</span>
     </div>
+    <br><div class="row">
+    <div ng-messages="propertyForm.numberInput.$error" class="errors">
+        <div ng-message="number">Please enter number.</div>
+        <div ng-message="required">Its a required field.</div>
+    </div>
+</div>
 </div>
