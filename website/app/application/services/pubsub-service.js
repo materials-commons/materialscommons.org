@@ -1,22 +1,24 @@
-Application.Services.factory('pubsub',
-    ["$rootScope", function ($rootScope) {
-        var pubsubService = {};
-        pubsubService.message = '';
+(function (module) {
+    module.factory('pubsub',
+        ["$rootScope", function ($rootScope) {
+            var pubsubService = {};
+            pubsubService.message = '';
 
-        pubsubService.send = function (channel, msg) {
-            if (arguments.length === 2) {
-                this.message = msg;
-            } else {
-                this.message = '';
-            }
-            $rootScope.$broadcast(channel);
-        };
+            pubsubService.send = function (channel, msg) {
+                if (arguments.length === 2) {
+                    this.message = msg;
+                } else {
+                    this.message = '';
+                }
+                $rootScope.$broadcast(channel);
+            };
 
-        pubsubService.waitOn = function (scope, channel, fn) {
-            scope.$on(channel, function () {
-                fn(pubsubService.message);
-            });
-        };
+            pubsubService.waitOn = function (scope, channel, fn) {
+                scope.$on(channel, function () {
+                    fn(pubsubService.message);
+                });
+            };
 
-        return pubsubService;
-    }]);
+            return pubsubService;
+        }]);
+}(angular.module('materialscommons')));
