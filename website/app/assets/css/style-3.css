@@ -2478,3 +2478,11 @@ header {
     border-style: solid;
     border-color: white;
 }
+
+.errors{
+    color: red;
+}
+
+.btn-inactive {
+    background-color: grey;
+}

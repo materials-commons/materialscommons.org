@@ -31,6 +31,7 @@
             var i = _.indexOf($scope.model.assigned_to, user);
             $scope.model.assigned_to.splice(i, 1);
             $scope.users.push(user);
+            $scope.selectedUser = '';
         };
 
         $scope.removeAttachment = function (item) {
@@ -65,21 +66,27 @@
             });
         };
 
-        $scope.createReview = function () {
-            $scope.review = {messages: [], attachments: []};
-            $scope.review.author = User.u();
-            $scope.review.assigned_to = $scope.model.assigned_to;
-            $scope.review.status = 'open';
-            $scope.review.title = $scope.model.title;
-            $scope.review.attachments = $scope.model.attachments;
-            var newdate = new Date();
-            $scope.review.messages.push({
-                'message': $scope.model.comment,
-                'who': User.u(),
-                'date': newdate.toDateString()
-            });
-            $scope.review.project = $scope.project.id;
-            saveData();
+        $scope.createReview = function (isValid) {
+            if (!isValid) {
+                return;
+            }
+            else {
+                $scope.review = {messages: [], attachments: []};
+                $scope.review.author = User.u();
+                $scope.review.assigned_to = $scope.model.assigned_to;
+                $scope.review.status = 'open';
+                $scope.review.title = $scope.model.title;
+                $scope.review.attachments = $scope.model.attachments;
+                var newdate = new Date();
+                $scope.review.messages.push({
+                    'message': $scope.model.comment,
+                    'who': User.u(),
+                    'date': newdate.toDateString()
+                });
+                $scope.review.project = $scope.project.id;
+                saveData();
+            }
+
         };
 
         function saveData() {
@@ -90,7 +97,7 @@
                     $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
                     Review.setReviews($scope.reviews);
                     $state.go('projects.project.reviews.edit', {category: 'all', review_id: review.id});
-                }).error(function () {
+                }).error(function (reason) {
                 }).post($scope.review);
         }
 
@@ -99,7 +106,7 @@
         };
 
         $scope.cancel = function () {
-            init();
+            $state.go('projects.project.reviews.edit', {category: 'all'});
         };
 
         function init() {
