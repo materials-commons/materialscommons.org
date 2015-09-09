@@ -1,22 +1,24 @@
-Application.Services.factory("current", currentService);
+(function (module) {
+    module.factory("current", currentService);
 
-function currentService() {
-    var self = this;
-    self.current = {
-        project: null
-    };
+    function currentService() {
+        var self = this;
+        self.current = {
+            project: null
+        };
 
-    return {
-        projectID: function() {
-            return self.current.project.id;
-        },
+        return {
+            projectID: function () {
+                return self.current.project.id;
+            },
 
-        project: function() {
-            return self.current.project;
-        },
+            project: function () {
+                return self.current.project;
+            },
 
-        setProject: function(project) {
-            self.current.project = project;
-        }
-    };
-}
+            setProject: function (project) {
+                self.current.project = project;
+            }
+        };
+    }
+}(angular.module('materialscommons')));
