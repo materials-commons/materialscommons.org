@@ -1,11 +1,17 @@
-Application.Controllers.controller("FilesSearchController", ["$state", FilesSearchController]);
-function FilesSearchController($state) {
-    console.log("FileSearchController");
-    var ctrl = this;
-    ctrl.showResults = showResults;
+(function (module) {
+    module.controller("FilesSearchController", FilesSearchController);
 
-    /////////////////
-    function showResults() {
-        $state.go('projects.project.files.search');
+    FilesSearchController.$inject = ["$state"];
+
+    /* @ngInject */
+    function FilesSearchController($state) {
+        var ctrl = this;
+        ctrl.showResults = showResults;
+
+        /////////////////
+        function showResults() {
+            $state.go('projects.project.files.search');
+        }
     }
-}
+
+}(angular.module('materialscommons')));

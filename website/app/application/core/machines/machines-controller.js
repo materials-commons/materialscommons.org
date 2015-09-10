@@ -1,5 +1,8 @@
-Application.Controllers.controller('machines',
-    ["$scope", "mcapi", "$injector","current", function ($scope, mcapi, $injector, current) {
+(function (module) {
+    module.controller('machines', machinesController);
+    machinesController.$inject = ["$scope", "mcapi", "$injector"];
+
+    function machinesController($scope, mcapi, $injector) {
         var $validationProvider = $injector.get('$validation');
 
         $scope.clear_machine = function () {
@@ -79,5 +82,5 @@ Application.Controllers.controller('machines',
         }
 
         init();
-    }])
-;
+    }
+}(angular.module('materialscommons')));

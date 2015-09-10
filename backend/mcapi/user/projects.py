@@ -167,8 +167,7 @@ def get_project_toplevel_datadir(project, user):
 
 def make_toplevel_datadir(j, user):
     name = dmutil.get_required('name', j)
-    access = dmutil.get_optional('access', j, "private")
-    ddir = datadir.DataDir(name, access, user, "")
+    ddir = datadir.DataDir(name, user, "", "")
     dir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
     return dir_id
 

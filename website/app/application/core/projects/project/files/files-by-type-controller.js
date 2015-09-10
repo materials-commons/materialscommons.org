@@ -1,5 +1,12 @@
-Application.Controllers.controller("FilesByTypeController", ["$state", FilesByTypeController]);
-function FilesByTypeController() {
-    console.log("FileByTypeController");
-}
+(function (module) {
+    module.controller("FilesByTypeController", FilesByTypeController);
+
+    FilesByTypeController.$inject = ["$state"];
+
+    /* @ngInject */
+    function FilesByTypeController() {
+        console.log("FileByTypeController");
+    }
+
+}(angular.module('materialscommons')));
 

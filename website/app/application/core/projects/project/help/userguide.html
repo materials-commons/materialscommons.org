@@ -3,10 +3,10 @@
         <div class="panel-heading help-color">
             <i class="fa fa-fw fa-book"></i>
             <span>Userguide (Draft)</span>
-            <a ng-click="close()" class="pull-right bar-control"><i class="fa fa-fw fa-close"></i></a>
-            <a ng-click="toggleExpand()" class="pull-right bar-control">
+            <a ng-click="userguide.close()" class="pull-right bar-control"><i class="fa fa-fw fa-close"></i></a>
+            <a ng-click="userguide.toggleExpanded()" class="pull-right bar-control">
                 <i class="fa"
-                   ng-class="{'fa-expand': !isExpanded(), 'fa-compress': isExpanded()}"></i>
+                   ng-class="{'fa-expand': !userguide.isExpanded(), 'fa-compress': userguide.isExpanded()}"></i>
             </a>
         </div>
         <div class="panel-body home-panel-body " style="overflow-y: auto;min-height:800px;">
@@ -14,9 +14,9 @@
                 <ul class="list-group">
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-bars"></i>
-                        <a ng-click="userStart = !userStart">User Start</a>
+                        <a ng-click="userguide.userStart = !userguide.userStart">User Start</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userStart">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.userStart">
                             <h4 class="text-center">User Start</h4>
                             <hr/>
                             <div class="row">
@@ -65,7 +65,7 @@
                                 <img class="img-responsive"
                                      src="assets/img/userguide/user-start/upload-files-ustart.png">
                             </div>
-                            <b><a ng-click="goTo('createSample')">Create Sample</a></b>
+                            <b><a ng-click="userguide.goTo('createSample')">Create Sample</a></b>
 
                             <p>Under the samples panel click on <i class="fa fa-fw fa-plus"></i> icon and fill in the
                                 details of the sample and hit
@@ -98,10 +98,10 @@
                         </div>
                     </li>
                     <li class="list-group-item">
-                        <i class=" fa fa-fw fa-book"></i> <a ng-click="showGlossary = !showGlossary">Glossary</a>
+                        <i class=" fa fa-fw fa-book"></i> <a ng-click="userguide.showGlossary = !userguide.showGlossary">Glossary</a>
 
                         <div style="background-color: #e9e7dd;padding-top: 20px; padding-left: 5px;"
-                             ng-show="showGlossary">
+                             ng-show="userguide.showGlossary">
                             <h4 class="text-center">Glossary</h4>
                             <hr/>
                             <div class="row">
@@ -176,9 +176,9 @@
                     </li>
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-bars"></i>
-                        <a ng-click="showNav = !showNav">Nav bar</a>
+                        <a ng-click="userguide.showNav = !userguide.showNav">Nav bar</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showNav">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showNav">
                             <h4 class="text-center">Navigation Bar</h4>
                             <hr/>
                             <b>Navigation:</b>
@@ -224,9 +224,9 @@
                     </li>
                     <li class="list-group-item">
                         <i class=" fa fa-fw fa-briefcase"></i>
-                        <a ng-click="showProjectBar = !showProjectBar">Project Bar</a>
+                        <a ng-click="userguide.showProjectBar = !userguide.showProjectBar">Project Bar</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showProjectBar">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showProjectBar">
                             <h4 class="text-center">Project Bar</h4>
                             <hr/>
                             <b>Switch Projects</b>
@@ -297,10 +297,10 @@
                     </li>
 
                     <li class="list-group-item">
-                        <i class=" fa fa-fw fa-home"></i> <a ng-click="showHome = !showHome">Home
+                        <i class=" fa fa-fw fa-home"></i> <a ng-click="userguide.showHome = !userguide.showHome">Home
                         Page</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showHome">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showHome">
                             <h4 class="text-center">Home Page</h4>
                             <hr/>
                             <p>Homepage contains panels for Reviews, Samples, Files, Notes and Provenance.
@@ -320,22 +320,22 @@
                             <p>Search will filter out all the items matching the entered search name.</p>
                             <b>3. Create</b>
 
-                            <p><a ng-click="showReviews = !showReviews">How to create Review</a></p>
+                            <p><a ng-click="userguide.showReviews = !userguide.showReviews">How to create Review</a></p>
 
-                            <p><a ng-click="showSamples = !showSamples">How to create Sample</a></p>
+                            <p><a ng-click="userguide.showSamples = !userguide.showSamples">How to create Sample</a></p>
 
-                            <p><a ng-click="showNotes = !showNotes">How to create File</a></p>
+                            <p><a ng-click="userguide.showFile = !userguide.showFile">How to create File</a></p>
 
-                            <p><a ng-click="showNotes = !showNotes">How to create Note</a></p>
+                            <p><a ng-click="userguide.showNotes = !userguide.showNotes">How to create Note</a></p>
 
-                            <p><a ng-click="showProvenance = !showProvenance">How to create Provenance</a></p>
+                            <p><a ng-click="userguide.showProvenance = !userguide.showProvenance">How to create Provenance</a></p>
                             <img class="img-responsive" src="assets/img/userguide/home-annotated.png">
                         </div>
                     </li>
                     <li class="list-group-item">
-                        <i class=" fa fa-fw fa-comment-o"></i> <a ng-click="showReviews = !showReviews">Reviews</a>
+                        <i class=" fa fa-fw fa-comment-o"></i> <a ng-click="userguide.showReviews = !userguide.showReviews">Reviews</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showReviews">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showReviews">
                             <h4 class="text-center">Reviews</h4>
                             <hr/>
                             <p>Panel will list all the reviews created inside a project. List may contain
@@ -377,9 +377,9 @@
                         </div>
                     </li>
                     <li  class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-cubes"></i> <a ng-click="showSamples = !showSamples">Samples</a>
+                        <i class=" fa fa-fw fa-cubes"></i> <a ng-click="userguide.showSamples = !userguide.showSamples">Samples</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showSamples">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showSamples">
                             <h4 class="text-center">Samples</h4>
                             <hr/>
                             <p>Panel will list all the samples inside a project. When you click on the sample name you
@@ -417,9 +417,9 @@
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-edit"></i> <a ng-click="showNotes = !showNotes">Notes</a>
+                        <i class=" fa fa-fw fa-edit"></i> <a ng-click="userguide.showNotes = !userguide.showNotes">Notes</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showNotes">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showNotes">
                             <h4 class="text-center">Notes</h4>
                             <hr/>
                             <b>List: </b>
@@ -449,9 +449,9 @@
                     </li>
                     <li class="list-group-item list-group-item">
                         <i class=" fa fa-fw fa-code-fork"></i> <a
-                            ng-click="showProvenance = !showProvenance">Processes</a>
+                            ng-click="userguide.showProvenance = !userguide.showProvenance">Processes</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showProvenance">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showProvenance">
                             <h4 class="text-center">Provenance</h4>
                             <hr/>
 
@@ -551,9 +551,9 @@
                         </div>
                     </li>
                     <li class="list-group-item list-group-item">
-                        <i class=" fa fa-fw fa-copy"></i><a ng-click="showFile = !showFile">Files</a>
+                        <i class=" fa fa-fw fa-copy"></i><a ng-click="userguide.showFile = !userguide.showFile">Files</a>
 
-                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="showFile">
+                        <div style="padding-top: 20px;background-color: #e9e7dd;" ng-show="userguide.showFile">
                             <h4 class="text-center">Files</h4>
                             <hr/>
                             <div class="watermark">Draft</div>

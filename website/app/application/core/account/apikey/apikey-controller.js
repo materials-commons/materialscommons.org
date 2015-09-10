@@ -1,28 +1,35 @@
-Application.Controllers.controller('accountApikey',
-    ["$scope", "mcapi", "User", function ($scope, mcapi, User) {
+(function (module) {
+    module.controller('APIKeyController', APIKeyController);
 
-        $scope.showApiKey = function () {
-            $scope.showKey = !$scope.showKey;
-            if (!$scope.showKey) {
-                $scope.showHideButton = "Show API Key";
+    APIKeyController.$inject = ["mcapi", "User"];
+
+    /* @ngInject */
+    function APIKeyController(mcapi, User) {
+        var ctrl = this;
+
+        ctrl.showKey = false;
+        ctrl.showHideButton = "Show API Key";
+        ctrl.apikey = User.apikey();
+
+        ctrl.showAPIKey = showAPIKey;
+        ctrl.resetAPIKey = resetAPIKey;
+
+        //////////////////
+
+        function showAPIKey () {
+            ctrl.showKey = !ctrl.showKey;
+            if (!ctrl.showKey) {
+                ctrl.showHideButton = "Show API Key";
             } else {
-                $scope.showHideButton = "Hide API Key";
+                ctrl.showHideButton = "Hide API Key";
             }
-        };
+        }
 
-        $scope.resetApikey = function () {
+        function resetAPIKey() {
             mcapi('/user/%/apikey/reset', User.u())
                 .success(function (data) {
                     User.reset_apikey(data.apikey);
                 }).put();
-        };
-
-        function init() {
-            $scope.showKey = false;
-            $scope.showHideButton = "Show API Key";
-            $scope.apikey = User.apikey();
         }
-
-        init();
-
-    }]);
+    }
+}(angular.module('materialscommons')));
