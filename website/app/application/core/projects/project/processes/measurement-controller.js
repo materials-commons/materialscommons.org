@@ -8,6 +8,7 @@ function MeasurementController($scope, $log, modal, measurements) {
     $scope.copySample = angular.copy($scope.modal.sample);
 
     $scope.showDetails = function (template) {
+        console.dir($scope.chosenProperty);
         $scope.message = "";
         $scope.chosenProperty = template;
         if (!('measures' in $scope.chosenProperty)) {
