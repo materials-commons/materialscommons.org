@@ -83,7 +83,7 @@ if __name__ == "__main__":
             r.table("users").get(options.email).update({
                 "admin": True
             }).run(conn)
-        print "Add user: " + options.email
+        print "Add user: " + options.email + " with password: " + options.password
         apiport = 5002
         if options.port == 28015:
             apiport = 5000

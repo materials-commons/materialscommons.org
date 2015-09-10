@@ -52,7 +52,7 @@
     </div>
 </div>
 <div class="modal fade"
-     ng-controller="newProjectModal"
+     ng-controller="newProjectModalController as project"
      id="newProject"
      tabindex="-1"
      role="dialog"
@@ -71,9 +71,9 @@
             </div>
             <div class="modal-body">
                 <label>Name:</label>
-                <input ng-model="model.name" class="form-control">
+                <input ng-model="project.name" class="form-control">
                 <br>
-                <button ng-click="createProject()"
+                <button ng-click="project.create()"
                         class="btn btn-info"
                         data-dismiss="modal">
                     Create

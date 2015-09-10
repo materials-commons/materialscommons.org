@@ -1,50 +1,51 @@
-Application.Directives.directive('createNote', createNoteDirective);
-function createNoteDirective() {
-    return {
-        restrict: "EA",
-        controller: 'createNoteDirectiveController',
-        controllerAs: 'note',
-        scope: {
-            item: '=item',
-            itemType: '@'
-        },
-        bindToController: true,
-        templateUrl: 'application/directives/create-note.html'
-    };
-}
+(function (module) {
+    module.directive('createNote', createNoteDirective);
+    function createNoteDirective() {
+        return {
+            restrict: "EA",
+            controller: 'createNoteDirectiveController',
+            controllerAs: 'note',
+            scope: {
+                item: '=item',
+                itemType: '@'
+            },
+            bindToController: true,
+            templateUrl: 'application/directives/create-note.html'
+        };
+    }
 
-Application.Controllers.controller('createNoteDirectiveController',
-    ["User", "mcapi", "current", "pubsub", createNoteDirectiveController]);
+    module.controller('createNoteDirectiveController', createNoteDirectiveController);
+    createNoteDirectiveController.$inject = ["User", "mcapi", "current", "pubsub"];
 
-function createNoteDirectiveController(User, mcapi, current, pubsub) {
-    var ctrl = this;
-    ctrl.model = {
-        title: '',
-        note: ''
-    };
+    function createNoteDirectiveController(User, mcapi, current, pubsub) {
+        var ctrl = this;
+        ctrl.model = {
+            title: '',
+            note: ''
+        };
 
-    ctrl.project = current.project();
+        ctrl.project = current.project();
 
-    ctrl.cancel = function () {
-        switch (ctrl.itemType) {
+        ctrl.cancel = function () {
+            switch (ctrl.itemType) {
             case "datafile":
-                 pubsub.send('datafile-note.change');
+                pubsub.send('datafile-note.change');
                 break;
             case "project":
                 break;
             case "sample":
                 break;
-        }
-    };
-
-    ctrl.save = function () {
-        var note = {
-            owner: User.u(),
-            project_id: ctrl.project.id,
-            note: ctrl.model.note,
-            title: ctrl.model.title
+            }
         };
-        switch (ctrl.itemType) {
+
+        ctrl.save = function () {
+            var note = {
+                owner: User.u(),
+                project_id: ctrl.project.id,
+                note: ctrl.model.note,
+                title: ctrl.model.title
+            };
+            switch (ctrl.itemType) {
             case "datafile":
                 mcapi('/datafile/%/note', ctrl.item.datafile_id)
                     .success(function (note) {
@@ -56,15 +57,16 @@ function createNoteDirectiveController(User, mcapi, current, pubsub) {
                 break;
             case "sample":
                 break;
-        }
-    };
+            }
+        };
 
-    function init() {
-        if (ctrl.itemType == 'datafile' && ctrl.item.notes.length) {
-            ctrl.model.title = ctrl.item.notes[0].title;
-            ctrl.model.note = ctrl.item.notes[0].note;
+        function init() {
+            if (ctrl.itemType == 'datafile' && ctrl.item.notes.length) {
+                ctrl.model.title = ctrl.item.notes[0].title;
+                ctrl.model.note = ctrl.item.notes[0].note;
+            }
         }
+
+        init();
     }
-
-    init();
-}
+}(angular.module('materialscommons')));

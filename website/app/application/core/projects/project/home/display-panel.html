@@ -1,35 +1,35 @@
 <div>
-    <div ng-switch="panelName">
+    <div ng-switch="panel.panelName">
         <div ng-switch-when="reviews"
              class="row"
-             ng-show="show('reviews')">
-            <div home-reviews project="project"></div>
+             ng-show="panel.show('reviews')">
+            <div home-reviews project="panel.project"></div>
         </div>
         <div ng-switch-when="files"
              class="row"
-             ng-show="show('files')">
-            <div home-files project="project"></div>
+             ng-show="panel.show('files')">
+            <div home-files project="panel.project"></div>
         </div>
         <div ng-switch-when="sideboard"
              class="row"
-             ng-show="show('sideboard')">
-            <div split-icon="true" home-sideboard project="project"></div>
+             ng-show="panel.show('sideboard')">
+            <div split-icon="true" home-sideboard project="panel.project"></div>
         </div>
         <div ng-switch-when="samples"
              class="row"
-             ng-show="show('samples')">
-            <div home-samples project="project"></div>
+             ng-show="panel.show('samples')">
+            <div home-samples project="panel.project"></div>
         </div>
         <div ng-switch-when="notes"
              class="row"
-             ng-show="show('notes')">
-            <div home-notes project="project"></div>
+             ng-show="panel.show('notes')">
+            <div home-notes project="panel.project"></div>
         </div>
 
         <div ng-switch-when="processes"
              class="row"
-             ng-show="show('processes')">
-            <div home-processes project="project"></div>
+             ng-show="panel.show('processes')">
+            <div home-processes project="panel.project"></div>
         </div>
     </div>
 </div>

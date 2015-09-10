@@ -1,15 +1,10 @@
-Application.Controllers.controller('projectHome',
-    ["$scope", "project", "ui", projectHome]);
+(function (module) {
+    module.controller('projectHome', projectHome);
+    projectHome.$inject = ["project"];
 
-function projectHome($scope, project, ui) {
+    function projectHome(project) {
+        var ctrl = this;
+        ctrl.project = project;
+    }
 
-    $scope.showPanel = function(what) {
-        return ui.showPanel(project.id, what);
-    };
-
-    $scope.openPanel = function (panel) {
-        ui.togglePanelState(project.id, panel);
-    };
-
-    $scope.project = project;
-}
+}(angular.module('materialscommons')));

@@ -1,27 +1,27 @@
-Application.Directives.directive("displayReview", displayReviewDirective);
-function displayReviewDirective() {
-    return {
-        restrict: "E",
-        replace: true,
-        scope: {
-            review: "=review",
-            showSideboard: "=showSideboard"
-        },
-        controller: "displayReviewDirectiveController",
-        templateUrl: "application/core/projects/project/home/directives/display-review.html"
-    };
-}
-Application.Controllers.controller("displayReviewDirectiveController",
-                                   ["$scope", "sideboard", "current",
-                                    displayReviewDirectiveController]);
+(function (module) {
+    module.directive("displayReview", displayReviewDirective);
+    function displayReviewDirective() {
+        return {
+            restrict: "E",
+            replace: true,
+            scope: {
+                review: "=review"
+            },
+            controller: "DisplayReviewDirectiveController",
+            controllerAs: 'view',
+            bindToController: true,
+            templateUrl: "application/core/projects/project/home/directives/display-review.html"
+        };
+    }
 
-function displayReviewDirectiveController($scope, sideboard, current) {
-    $scope.addToSideboard = function(review, event) {
-        sideboard.handleFromEvent(current.projectID(), review, event, 'sideboard');
+    //////////////////////////////////
 
-    };
-    $scope.remove = function (review, event) {
-        sideboard.handleFromEvent(current.projectID(), review, event, 'sideboard');
-    };
+    module.controller("DisplayReviewDirectiveController", DisplayReviewDirectiveController);
 
-}
+    DisplayReviewDirectiveController.$inject = [];
+
+    /* @ngInject */
+    function DisplayReviewDirectiveController() {
+    }
+
+}(angular.module('materialscommons')));
