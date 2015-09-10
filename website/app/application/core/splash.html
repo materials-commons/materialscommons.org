@@ -1,4 +1,4 @@
-<div ng-controller="login">
+<div ng-controller="LoginController as login">
     <div id="top" class="row">
         <header>
             <div class="row">
@@ -7,16 +7,16 @@
             <div class="row">
                 <div class="login-splash">
                     <div class="row">
-                        <input ng-model="email" name="email" required="" class="form-control"
+                        <input ng-model="login.email" name="email" required="" class="form-control"
                                placeholder="Email..."
                                type="email">
                     </div>
                     <br>
 
                     <div class="row">
-                        <input ng-model="password" required=""
+                        <input ng-model="login.password" required=""
                                class="form-control" placeholder="Password..."
-                               on-enter="login()"
+                               on-enter="login.login()"
                                type="password">
                     </div>
                     <br>
@@ -25,7 +25,7 @@
                     </p>
                     <div ng-if="false" class="row">
                         <div class="col-xs-6">
-                            <input type="checkbox" ng-model="rememberMe"> Remember me
+                            <input type="checkbox" ng-model="login.rememberMe"> Remember me
                         </div>
                         <div class="col-xs-5">
                             <a>Forgot Password?</a>
@@ -34,7 +34,7 @@
                     <br>
 
                     <div class="row">
-                        <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="login()">
+                        <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="login.login()">
                             Login
                         </button>
                     </div>
@@ -49,7 +49,7 @@
         <ul class="list-inline text-center">
             <li>
                 <div style="width: 90px;">
-                    <a ng-click="goTo('process01')">
+                    <a ng-click="login.gotoID('process01')">
                         <img style="height: 60px;"
                              src="assets/img/splash/process-icon.png"></a>
 
@@ -58,7 +58,7 @@
             </li>
             <li>
                 <div style="width: 90px;">
-                    <a ng-click="goTo('sample01')">
+                    <a ng-click="login.gotoID('sample01')">
                         <img style="height: 60px;"
                              src="assets/img/splash/sample_icon.png"></a>
 
@@ -67,7 +67,7 @@
             </li>
             <li>
                 <div style="width: 90px;">
-                    <a ng-click="goTo('review01')">
+                    <a ng-click="login.gotoID('review01')">
                         <img style="height: 60px;"
                              src="assets/img/splash/review_icon.png"></a>
 
@@ -76,7 +76,7 @@
             </li>
             <li>
                 <div style="width: 90px;">
-                    <a ng-click="goTo('file01')"><img style="height: 60px;"
+                    <a ng-click="login.gotoID('file01')"><img style="height: 60px;"
                                                       src="assets/img/splash/file_icon.png"></a>
 
                     <p style="color: grey;padding-top: 8px;">FILES</p>
@@ -84,7 +84,7 @@
             </li>
             <li>
                 <div style="width: 90px;" class="text-center">
-                    <a ng-click="goTo('notes01')"><img style="height: 60px;"
+                    <a ng-click="login.gotoID('notes01')"><img style="height: 60px;"
                                                        src="assets/img/splash/note_icon.png"></a>
 
                     <p style="color: grey;padding-top: 8px;">NOTES</p>
@@ -95,7 +95,7 @@
     <div class="row process-splash" id="process01">
         <div class="row">
             <ul class="nav pull-right scroll-top corner">
-                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                <li><a ng-click="login.gotoID('top')" title="Scroll to top" style="color: white;">
                     <i class="glyphicon glyphicon-chevron-up"></i></a></li>
             </ul>
         </div>
@@ -172,7 +172,7 @@
     <div class="row sample-splash" id="sample01">
         <div class="row">
             <ul class="nav pull-right scroll-top corner">
-                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                <li><a ng-click="login.gotoID('top')" title="Scroll to top" style="color: white;">
                     <i class="glyphicon glyphicon-chevron-up"></i></a></li>
             </ul>
         </div>
@@ -244,7 +244,7 @@
     <div class="row review-splash" id="review01">
         <div class="row">
             <ul class="nav pull-right scroll-top corner">
-                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                <li><a ng-click="login.gotoID('top')" title="Scroll to top" style="color: white;">
                     <i class="glyphicon glyphicon-chevron-up"></i></a></li>
             </ul>
         </div>
@@ -321,7 +321,7 @@
     <div class="row file-splash" id="file01">
         <div class="row">
             <ul class="nav pull-right scroll-top corner">
-                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                <li><a ng-click="login.gotoID('top')" title="Scroll to top" style="color: white;">
                     <i class="glyphicon glyphicon-chevron-up"></i></a></li>
             </ul>
         </div>
@@ -393,7 +393,7 @@
     <div class="row note-splash" id="notes01">
         <div class="row">
             <ul class="nav pull-right scroll-top corner">
-                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                <li><a ng-click="login.gotoID('top')" title="Scroll to top" style="color: white;">
                     <i class="glyphicon glyphicon-chevron-up"></i></a></li>
             </ul>
         </div>
@@ -466,7 +466,7 @@
     <div ng-if="false" class="row calendar-splash" id="calendar01">
         <div class="row">
             <ul class="nav pull-right scroll-top corner">
-                <li><a ng-click="goTo('top')" title="Scroll to top" style="color: white;">
+                <li><a ng-click="login.gotoID('top')" title="Scroll to top" style="color: white;">
                     <i class="glyphicon glyphicon-chevron-up"></i></a></li>
             </ul>
         </div>

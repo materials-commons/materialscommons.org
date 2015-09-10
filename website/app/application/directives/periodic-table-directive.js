@@ -1,5 +1,8 @@
-Application.Controllers.controller("PeriodicTableController",
-    ["$scope", function ($scope) {
+(function (module) {
+    module.controller("PeriodicTableController", PeriodicTableController);
+    PeriodicTableController.$inject = ["$scope"];
+
+    function PeriodicTableController($scope) {
 
         $scope.addElement = function (ele) {
             $scope.doc.value.push({'element': ele, 'value': ''});
@@ -31,15 +34,17 @@ Application.Controllers.controller("PeriodicTableController",
         }
 
         init();
-    }]);
-Application.Directives.directive('periodicTable',
-    function () {
-        return {
-            restrict: "A",
-            controller: 'PeriodicTableController',
-            scope: {
-                doc: '=doc'
-            },
-            templateUrl: 'application/directives/periodic-table.html'
-        };
-    });
+    }
+
+    module.directive('periodicTable',
+        function () {
+            return {
+                restrict: "A",
+                controller: 'PeriodicTableController',
+                scope: {
+                    doc: '=doc'
+                },
+                templateUrl: 'application/directives/periodic-table.html'
+            };
+        });
+}(angular.module('materialscommons')));

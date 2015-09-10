@@ -1,10 +1,4 @@
-var Application = Application || {};
-
-Application.Constants = angular.module('application.core.constants', []);
-Application.Services = angular.module('application.core.services', []);
-Application.Controllers = angular.module('application.core.controllers', []);
-Application.Filters = angular.module('application.core.filters', []);
-Application.Directives = angular.module('application.core.directives', []);
+angular.module('materialscommons', []);
 
 var app = angular.module('materialscommons',
     [
@@ -25,9 +19,7 @@ var app = angular.module('materialscommons',
         'ng-context-menu', 'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
         "hljs", "nsPopover", "RecursionHelper",'googlechart',
-        'application.core.constants', 'application.core.services',
-        'application.core.controllers',
-        'application.core.filters', 'application.core.directives']);
+        'materialscommons']);
 
 // This factory needs to hang off of this module for some reason
 app.factory('msocket', ["socketFactory", function (socketFactory) {
@@ -57,7 +49,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         })
         .state('logout', {
             url: '/logout',
-            controller: 'logout'
+            controller: 'LogoutController'
         })
         .state('reviews', {
             url: '/reviews',
@@ -118,34 +110,37 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state('projects.create', {
             url: '/create',
             templateUrl: 'application/core/projects/create.html',
-            controller: 'projectsCreate'
+            controller: 'CreateProjectController',
+            controllerAs: 'project'
         })
         .state('projects.project', {
             url: '/project/:id',
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
                 project: ["$stateParams", "model.projects", "projects", "templates",
-                    function ($stateParams, Projects, projects, templates) {
+                    function ($stateParams, Projects) {
                         // We use templates as a dependency so that they are all loaded
                         // before getting to this step. Otherwise the order of items
                         // being resolved isn't in the order we need them.
                         return Projects.get($stateParams.id);
                     }]
             },
-            onEnter: ["pubsub", "project", function (pubsub, project) {
+            onEnter: ["pubsub", "project", function (pubsub) {
                 pubsub.send("reviews.change");
             }],
-            controller: "ProjectController"
+            controller: "ProjectController",
+            controllerAs: 'project'
         })
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
-            controller: "projectHome"
+            controller: "projectHome",
+            controllerAs: "home"
         })
         .state('projects.project.search', {
             url: '/search/:query',
             templateUrl: 'application/core/projects/project/search.html',
-            controller: 'searchController',
+            controller: 'SearchController',
             controllerAs: 'search'
         })
         .state("projects.project.files", {
@@ -157,7 +152,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.files.all", {
             url: "/all",
             templateUrl: "application/core/projects/project/files/all.html",
-            controller: "FilesAllController"
+            controller: "FilesAllController",
+            controllerAs: 'files'
         })
         .state("projects.project.files.all.edit", {
             url: "/edit/:file_id/:file_type",
@@ -190,7 +186,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.access", {
             url: "/access",
             templateUrl: "application/core/projects/project/access/access.html",
-            controller: "projectAccess"
+            controller: "ProjectAccessController",
+            controllerAs: 'access'
         })
         .state("projects.project.reviews", {
             url: "/reviews/:category",
@@ -210,7 +207,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.notes", {
             url: "/notes",
             templateUrl: "application/core/projects/project/notes/notes.html",
-            controller: "projectNotes"
+            controller: "projectNotes",
+            controllerAs: 'notes'
         })
         .state("projects.project.sideboard", {
             url: "/sideboard",
