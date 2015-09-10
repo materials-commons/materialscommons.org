@@ -15,7 +15,7 @@
                 <div class="col-xs-4">
                     <div class="details-sidebar">
                         <ul class="list-group">
-                            <li ng-class="{'active': template === chosenProperty}" ng-click="showDetails(template)"
+                            <li ng-class="{'active': template === chosenProperty}" ng-click="showDetails(measurementsForm.$valid, template)"
                                 ng-repeat="template in templates | filter:search"
                                 class="list-group-item pointer">
                                 <div>{{template.name}}</div>
@@ -36,14 +36,6 @@
                             <i ng-click="removeChoice($index)" style="color:#e57373" class="fa fa-minus fa-fw"></i>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div ng-if="chosenProperty" class="col-xs-3">
-                            <button class="btn btn-primary" ng-click="save(measurementsForm.$valid)">Save</button>
-                        </div>
-                    </div>
-                    <br>
-
                     <p style="padding: 10px;" class="bg-success" ng-if="message">
                         {{message}}</p>
                 </div>
