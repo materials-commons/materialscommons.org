@@ -159,14 +159,8 @@
                     $scope.modal.sample.new_properties[j] = property;
                 }
             } else {
-                k = _.indexOf($scope.copySample.properties, function (prop) {
-                    return property.name === prop.name;
-                });
-                if (k < 0) {
-                    $scope.modal.sample.old_properties.push(property);
-                }else{
-                    $scope.modal.sample.old_properties[k] = property;
-                }
+                var old_prop = $scope.copySample.properties[i];
+                $scope.modal.sample.old_properties[i] = property;
             }
         }
 
