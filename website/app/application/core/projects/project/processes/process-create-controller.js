@@ -91,7 +91,7 @@
             case "sample":
                 what = 'input_samples';
                 item.new_properties = [];
-                item.old_properties = [];
+                item.old_properties = item.properties;
                 item.transformed_properties = [];
                 item.files = [];
                 item.property_set_id = item.property_set_id;
