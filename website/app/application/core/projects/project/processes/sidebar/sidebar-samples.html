@@ -17,7 +17,7 @@
                         <i ng-click="removeAttachment(property, 'new_properties', sample.id)"
                            class="fa fa-fw fa-close pull-right pointer"></i>
 
-                        <div ng-repeat="measure in property.measures">
+                        <div ng-repeat="measure in property.measurements">
                             <div>
                                 <display-measurement measure="measure" project="project"></display-measurement>
                             </div>
@@ -25,12 +25,12 @@
                     </li>
                 </ul>
                 <ul class="list-unstyled">
-                    <li ng-repeat="property in sample.properties">
-                        <div ng-if="property.measures">{{property.name}}
+                    <li ng-repeat="property in sample.old_properties">
+                        <div ng-if="property.measurements">{{property.name}}
                             <i ng-click="removeAttachment(property, 'properties', sample.id)"
                                class="fa fa-fw fa-close pull-right pointer"></i>
                         </div>
-                        <div ng-repeat="measure in property.measures">
+                        <div ng-repeat="measure in property.measurements">
                             <display-measurement measure="measure" project="project"></display-measurement>
                         </div>
                     </li>
