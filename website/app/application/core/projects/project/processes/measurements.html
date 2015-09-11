@@ -15,7 +15,7 @@
                 <div class="col-xs-4">
                     <div class="details-sidebar">
                         <ul class="list-group">
-                            <li ng-class="{'active': template === chosenProperty}" ng-click="showDetails(measurementsForm.$valid, template)"
+                            <li ng-class="{'active': template === chosenProperty}" ng-click="switchProperty(template)"
                                 ng-repeat="template in templates | filter:search"
                                 class="list-group-item pointer">
                                 <div>{{template.name}}</div>
@@ -24,19 +24,23 @@
                     </div>
                 </div>
                 <div class="col-xs-8 details-main-content">
-
-                    <div class="row" ng-repeat="property in chosenProperty.measures">
+                    <div class="row">
                         <div class="col-xs-10">
-                            <display-property property="property"></display-property>
+                            <display-property property="chosenProperty"></display-property>
+                            </div>
                         </div>
-                        <div class="col-xs-1">
-                            <i ng-click="addNewChoice()" style="color:#3a9ee3" class="fa fa-plus fa-fw"></i>
-                        </div>
-                        <div class="col-xs-1">
-                            <i ng-click="removeChoice($index)" style="color:#e57373" class="fa fa-minus fa-fw"></i>
-                        </div>
-                    </div>
-                    <p style="padding: 10px;" class="bg-success" ng-if="message">
+                        <!--<div class="row" ng-repeat="property in chosenProperty.measures">-->
+                        <!--<div class="col-xs-10">-->
+                            <!--<display-property property="property"></display-property>-->
+                        <!--</div>-->
+                        <!--<div class="col-xs-1">-->
+                            <!--<i ng-click="addNewChoice()" style="color:#3a9ee3" class="fa fa-plus fa-fw"></i>-->
+                        <!--</div>-->
+                        <!--<div class="col-xs-1">-->
+                            <!--<i ng-click="removeChoice($index)" style="color:#e57373" class="fa fa-minus fa-fw"></i>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <p style="padding: 10px;" class="bg-warning" ng-if="message">
                         {{message}}</p>
                 </div>
             </div>
