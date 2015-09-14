@@ -228,6 +228,17 @@
             },
             templatesCopy: function () {
                 return self.copy
+            },
+
+            currentProperty: function(){
+
+            },
+
+            isValid: function(){
+
+            },
+            saveToSample: function(){
+
             }
         };
     }
