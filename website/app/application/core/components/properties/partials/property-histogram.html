@@ -1,30 +1,14 @@
-<div>
-    <div class="row">
-        <h5>Measurements</h5>
-        <div>
-            <div class="col-xs-6">
-                <strong>Categories </strong> <br>
-                <strong> (one entry per line) </strong><br>
-                <textarea ng-model="property.value.categories" class="col-xs-10" rows="20"></textarea>
-            </div>
-            <div class="col-xs-6">
-                <strong>Values</strong> <br>
-                <strong>(one entry per line) </strong><br>
-                <textarea ng-model="property.value.values" class="col-xs-10" rows="20"></textarea>
-            </div>
-            <!--<div class="row">-->
-                <!--<button ng-click="submitMeasurement()" class="btn btn-success">Submit</button>-->
-                <!--<button ng-click="clear()" class="btn btn-danger">Clear</button>-->
-                <!--<button ng-click="viewInGraph()" class="btn btn-primary">View Graph</button>-->
-            <!--</div>-->
-            <!--<div class="row" ng-if="showMeasurementGraph">-->
-                <!--<highchart config="histogramMeasurementConfig"></highchart>-->
-            <!--</div>-->
-        </div>
-        <!--<ul class="list-unstyled">-->
-            <!--<li ng-repeat="measure in measurements">-->
-                <!--{{measure.process}}-->
-            <!--</li>-->
-        <!--</ul>-->
+<div class="row">
+    <h4>{{property.name}} :: {{property.description}}</h4>
+    <hr/>
+    <div class="col-xs-6">
+        <strong>Categories </strong> <br>
+        <strong> (one entry per line) </strong><br>
+        <textarea ng-model="property.value.categories" class="col-xs-10" rows="20"></textarea>
+    </div>
+    <div class="col-xs-6">
+        <strong>Values</strong> <br>
+        <strong>(one entry per line) </strong><br>
+        <textarea ng-model="property.value.values" class="col-xs-10" rows="20"></textarea>
     </div>
 </div>
