@@ -17,7 +17,6 @@
         </div>
     </div>
 
-
     <div ng-switch-when="fraction">
         <div ng-if="editMeasure">
             <div ng-if="currentProcess && measure.process[0].id === currentProcess">
@@ -27,16 +26,15 @@
                 <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
             </div>
             <div ng-if="currentProcess && measure.process[0].id !== currentProcess">
-                {{measure.value.attribute1}}/{{measure.value.attribute2}} {{measure.unit}}
+                {{measure.value}} {{measure.unit}}
                 <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
             </div>
         </div>
         <div ng-if="!editMeasure">
-            {{measure.value.attribute1}}/{{measure.value.attribute2}} {{measure.unit}}
+            {{measure.value }} {{measure.unit}}
             <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
         </div>
     </div>
-
 
     <div ng-switch-when="string">
         <div ng-if="editMeasure">
@@ -54,7 +52,6 @@
             <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
         </div>
     </div>
-
 
     <div ng-switch-when="composition">
         <div ng-if="editMeasure">
@@ -74,8 +71,7 @@
     </div>
 
     <div ng-switch-when="pair">
-        {{measure.attribute1.value}} {{measure.attribute1.unit}} ::
-        {{measure.attribute2.value}} {{measure.attribute2.unit}}
+
     </div>
 
     <div ng-switch-when="histogram">
@@ -89,7 +85,7 @@
                 <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
             </div>
         </div>
-        <div ng-if="!editMeasure">
+        <div class="row" ng-if="!editMeasure">
             <a ng-click="showHistogram(measure)"><i class="fa fa-fw fa-bar-chart"></i></a>
             <display-process-name current-process="currentProcess" measure="measure"></display-process-name>
         </div>
