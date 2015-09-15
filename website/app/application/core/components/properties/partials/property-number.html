@@ -1,5 +1,5 @@
 <div class="row col-xs-9">
-    <h4>{{property.name}} :: {{property.description}}</h4>
+    <h4>{{property.name}} : {{property.description}}</h4>
     <hr/>
     <div class="row">Unit: <span ng-if="property.units.length === 0">{{::property.unit}}</span>
         <span ng-if="property.units.length !== 0">
@@ -14,7 +14,7 @@
 </div>
 <div class="row">
     <div class="col-xs-8">
-        <strong>Enter length measures </strong> <br>
+        <strong>Enter {{property.name}} measures </strong> <br>
         <strong>(one entry per line) </strong><br>
         type: {{property._type}}
         <textarea ng-model="property.value" class="col-xs-12" rows="20"></textarea>
