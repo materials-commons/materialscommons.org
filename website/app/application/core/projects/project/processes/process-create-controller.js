@@ -327,7 +327,6 @@
             $scope.template.input_files = refineFiles($scope.template.input_files);
             $scope.template.output_files = refineFiles($scope.template.output_files);
             refineSetUpProperties();
-            console.dir($scope.template);
             mcapi('/projects2/%/processes', project.id)
                 .success(function (proc) {
                     measurements.reset();
