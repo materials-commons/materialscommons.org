@@ -12,6 +12,7 @@ module.exports = function(model) {
     router.post('/projects2/:project_id/processes', validateProjectAccess, processes.create);
     router.post('/projects2/:project_id/samples', validateProjectAccess, samples.create);
     router.put('/projects2/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
+    router.get('/projects2/:project_id/dir/:directory_id', validateProjectAccess, projects.dirTree);
 
     return router;
 };

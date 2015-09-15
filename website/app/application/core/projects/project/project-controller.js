@@ -1,31 +1,29 @@
 (function (module) {
     module.controller('ProjectController', ProjectController);
 
-    ProjectController.$inject = ["ui", "project", "current", "projectFiles",
-        "mcapi", "help", "projects"];
+    ProjectController.$inject = ["ui", "project", "current", "mcapi", "help", "gridFiles", "projects"];
 
     /* @ngInject */
-    function ProjectController(ui, project, current, projectFiles, mcapi, help, projects) {
+    function ProjectController(ui, project, current, mcapi, help, gridFiles, projects) {
         var ctrl = this;
 
         current.setProject(project);
-
         ctrl.isExpanded = isExpanded;
-        ctrl.projects = projects;
         ctrl.showHelp = showHelp;
         ctrl.project = project;
         ctrl.loaded = true;
         ctrl.projects = projects;
 
-        if (!(project.id in projectFiles.model.projects)) {
+        if (!project.files) {
             ctrl.loaded = false;
-            mcapi("/projects/%/tree2", project.id)
+            mcapi('/projects2/%/dir/top', project.id)
                 .success(function (files) {
-                    var obj = {};
-                    obj.dir = files[0];
-                    projectFiles.model.projects[project.id] = obj;
+                    project.files = gridFiles.toGrid(files);
                     ctrl.loaded = true;
-                }).jsonp();
+                })
+                .error(function (err) {
+                    console.log('error calling projects2 %O', err);
+                }).get();
         }
 
         ////////////////////////////
