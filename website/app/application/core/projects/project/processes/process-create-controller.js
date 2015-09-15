@@ -320,6 +320,9 @@
                 $scope.template.output_samples.push($scope.bk.newSample);
             } else {
                 //$scope.template = refineSampleProperties();
+                if ($scope.template.transformed_samples.length !== 0) {
+                    $scope.template.transformed_samples = refineTransformedSamples();
+                }
             }
             $scope.template.input_files = refineFiles($scope.template.input_files);
             $scope.template.output_files = refineFiles($scope.template.output_files);
@@ -327,6 +330,7 @@
             console.dir($scope.template);
             mcapi('/projects2/%/processes', project.id)
                 .success(function (proc) {
+                    measurements.reset();
                     $scope.isProcessing = false;
                     //After you create a process try to update the whole project.
                     // Because samples, processes should be refreshed in
