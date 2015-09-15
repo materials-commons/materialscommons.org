@@ -26,13 +26,11 @@
                 <div class="col-xs-8 details-main-content">
                     <div class="row">
                         <div class="col-xs-10">
+                            <p style="padding: 10px;" class="bg-danger" ng-if="message">
+                                {{message}}</p>
                             <display-property property="chosenProperty"></display-property>
                             </div>
                         </div>
-                        <!--<div class="row" ng-repeat="property in chosenProperty.measures">-->
-                        <!--<div class="col-xs-10">-->
-                            <!--<display-property property="property"></display-property>-->
-                        <!--</div>-->
                     <div ng-if="chosenProperty.name === 'composition'">
                         <div class="col-xs-1">
                             <i ng-click="addNewChoice()" style="color:#3a9ee3" class="fa fa-plus fa-fw"></i>
@@ -43,13 +41,12 @@
                     </div>
 
                     <!--</div>-->
-                    <p style="padding: 10px;" class="bg-warning" ng-if="message">
-                        {{message}}</p>
+
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok(measurementsForm.$valid)">OK</button>
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
 
