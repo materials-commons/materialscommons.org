@@ -42,7 +42,7 @@ def create_tables():
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
 
-    create_table("datadirs", "name", "project_id")
+    create_table("datadirs", "name", "project_id", "parent")
     create_table("project2datadir", "datadir_id", "project_id")
     create_table("project2datafile", "project_id", "datafile_id")
     create_table("tag2item", "tag_id", "item_id")
