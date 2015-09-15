@@ -1,11 +1,14 @@
-module.exports = function(r) {
+module.exports = function (r) {
     'use strict';
-    let run = require('./run');
-    let getSingle = require('./get-single');
+    const run = require('./run');
+    const getSingle = require('./get-single');
+    const path = require('path');
+
     return {
         all: all,
         forUser: forUser,
-        get: function(id, index) {
+        dirTree: dirTree,
+        get: function (id, index) {
             return getSingle(r, 'projects', id, index);
         },
         r: r
@@ -44,7 +47,7 @@ module.exports = function(r) {
     // transformDates removes the rethinkdb specific date
     // fields
     function transformDates(rql) {
-        rql = rql.merge(function(project) {
+        rql = rql.merge(function (project) {
             return {
                 mtime: project('mtime').toEpochTime(),
                 birthtime: project('birthtime').toEpochTime()
@@ -56,11 +59,11 @@ module.exports = function(r) {
     // addComputed adds additional attributes to the rql that
     // that are computed from other tables.
     function addComputed(rql) {
-        rql = rql.merge(function(project) {
+        rql = rql.merge(function (project) {
             return {
                 users: r.table('access')
                     .getAll(project('id'), {index: 'project_id'})
-                    .map(function(entry) {
+                    .map(function (entry) {
                         return entry.merge({
                             'user': entry('user_id')
                         });
@@ -83,5 +86,82 @@ module.exports = function(r) {
         });
 
         return rql;
+    }
+
+    // dirTree retrieves the files and directories for the given directory.
+    // If no directory id is supplied then it gets the top level directory
+    // for the project.
+    function dirTree(projectID, directoryID) {
+        if (directoryID == "top") {
+            return topLevelDir(projectID);
+        } else {
+            return directoryByID(directoryID);
+        }
+    }
+
+    function topLevelDir(projectID) {
+        let rql = r.table('projects').getAll(projectID).
+            eqJoin('name', r.table('datadirs'), {index: 'name'}).zip().
+            eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip().
+            filter({'project_id': projectID}).
+            merge(function (ddir) {
+                return {
+                    'files': r.table('datadir2datafile').
+                        getAll(ddir('datadir_id'), {index: 'datadir_id'}).
+                        eqJoin('datafile_id', r.table('datafiles')).
+                        zip().
+                        coerceTo('array'),
+                    'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
+                }
+            });
+        return run(rql).then(results => toTree(results[0]));
+    }
+
+    function directoryByID(directoryID) {
+        let rql = r.table('project2datadir').getAll(directoryID, {index: 'datadir_id'}).
+            eqJoin('datadir_id', r.table('datadir')).
+            zip().
+            merge(function (ddir) {
+                return {
+                    'files': r.table('datadir2datafile').
+                        getAll(ddir('datadir_id'), {index: 'datadir_id'}).
+                        eqJoin('datafile_id', r.table('datafiles')).
+                        zip().
+                        coerceTo('array'),
+                    'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
+                }
+            });
+        return run(rql).then(results => toTree(results[0]));
+    }
+
+    function toTree(results) {
+        let dir = {
+            _type: 'directory',
+            id: results.datadir_id,
+            size: 0,
+            name: path.basename(results.name),
+            children: []
+        };
+
+        results.files.forEach(function (file) {
+            let fentry = {
+                _type: 'file',
+                size: file.size,
+                name: file.name,
+                id: file.id
+            };
+            dir.children.push(fentry);
+        });
+
+        results.directories.forEach(function (d) {
+            let dentry = {
+                _type: 'directory',
+                id: d.id,
+                size: 0,
+                name: path.basename(d.name),
+            };
+            dir.children.push(dentry);
+        });
+        return dir;
     }
 };
