@@ -1,11 +1,11 @@
-<div class="row">
+<div ng-form="propertyForm" class="row">
     <div class="col-xs-3">
         <b>{{::property.name}}</b>
         <i ng-if="property.required" class="fa fa-fw fa-asterisk text-danger"></i>
     </div>
     <div class="col-xs-3">
         <select ng-model="property.value" data-placeholder="Choose"
-                id="selectInput"
+                name="selectInput"
                 class="form-control "
                 ng-required="property.required">
             <option value="{{choice.value}}" ng-repeat="choice in property.choices">
@@ -24,9 +24,13 @@
             </select>
         </span>
     </div>
+    <div class="row">
+        <div ng-messages="propertyForm.selectInput.$error" class="errors">
+            <div ng-message="required">Please select from options</div>
+        </div>
+    </div>
 
     <div class="row">
-        <span ng-show="form.numberInput.$error.required" class="text-danger"> You must supply a value for {{::property.name}}</span>
         <span class="help-block">{{::property.description}}</span>
     </div>
 </div>

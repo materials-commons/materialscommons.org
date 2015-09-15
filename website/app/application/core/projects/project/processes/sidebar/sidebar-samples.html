@@ -17,21 +17,38 @@
                         <i ng-click="removeAttachment(property, 'new_properties', sample.id)"
                            class="fa fa-fw fa-close pull-right pointer"></i>
 
-                        <div ng-repeat="measure in property.measures">
-                            <div>
-                                <display-measurement measure="measure" project="project"></display-measurement>
+                        <div ng-switch on="property._type">
+                            <div ng-switch-when="histogram">
+                                <display-measurement measure="property" project="project"></display-measurement>
+                            </div>
+                            <div ng-switch-when="line">
+                                <display-measurement measure="property" project="project"></display-measurement>
+                            </div>
+                            <div ng-switch-default>
+                                <div ng-repeat="measure in property.measurements">
+                                    <display-measurement measure="measure" project="project"></display-measurement>
+                                </div>
                             </div>
                         </div>
                     </li>
                 </ul>
                 <ul class="list-unstyled">
-                    <li ng-repeat="property in sample.properties">
-                        <div ng-if="property.measures">{{property.name}}
+                    <li ng-repeat="property in sample.old_properties">
+                        {{property.name}}
                             <i ng-click="removeAttachment(property, 'properties', sample.id)"
                                class="fa fa-fw fa-close pull-right pointer"></i>
-                        </div>
-                        <div ng-repeat="measure in property.measures">
-                            <display-measurement measure="measure" project="project"></display-measurement>
+                        <div ng-switch on="property._type">
+                            <div ng-switch-when="histogram">
+                                <display-measurement measure="property" project="project"></display-measurement>
+                            </div>
+                            <div ng-switch-when="line">
+                                <display-measurement measure="property" project="project"></display-measurement>
+                            </div>
+                            <div ng-switch-default>
+                                <div ng-repeat="measure in property.measurements">
+                                    <display-measurement measure="measure" project="project"></display-measurement>
+                                </div>
+                            </div>
                         </div>
                     </li>
                 </ul>
