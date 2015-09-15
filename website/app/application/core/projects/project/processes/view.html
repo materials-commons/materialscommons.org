@@ -1,7 +1,9 @@
 <div class="details-main-content">
     <div class="row" style="padding: 10px;color: #C0C0C0">
         {{current.birthtime | toDateString}}
-        <button ng-click="editProvenance()" class="pull-right btn-details-container btn btn-default btn btn-cancel">Edit</button>
+        <button ng-click="editProvenance()" class="pull-right btn-details-container btn btn-default btn btn-cancel">
+            Edit
+        </button>
     </div>
     <div class="row">
         <div class="row">
@@ -9,14 +11,47 @@
                 <div class="process headings">Details:</div>
 
                 <div class="row"><b>Description about process:</b> <br>
-                    {{current.what}} <div ng-if="current.what === ''">--None--</div>
+                    {{current.what}}
+                    <div ng-if="current.what === ''">--None--</div>
 
                     <div class="row"><b>Reason you performed the process:</b><br>
-                        {{current.why}}<div ng-if="current.why === ''">--None--</div>
+                        {{current.why}}
+                        <div ng-if="current.why === ''">--None--</div>
 
                         <div class="row"><b>Owner: </b>{{current.owner}}</div>
                         <div class="row"><b>Does Transform: </b>{{current.does_transform}}</div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="process-tab">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="" data-toggle="tab"><i class="fa fa-fw fa-gear"></i>Set Up</a>
+                    </li>
+                    <li><a href="" data-toggle="tab"><i class="fa fa-fw fa-cubes"></i>Samples</a>
+                    </li>
+                    <li><a href="" data-toggle="tab"><i class="fa fa-fw fa-copy"></i>Files</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content clearfix">
+                    <div class="tab-pane active" id="1a">
+                        <ul>
+                            <li ng-repeat="property in current.setup[0].setupproperties" ng-if="property.value">
+                                {{property.name}} :: {{property.value}} {{property.units}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="2a">
+                        <h3>We use the class nav-pills instead of nav-tabs which automatically creates a background color
+                            for the tab</h3>
+                    </div>
+                    <div class="tab-pane" id="3a">
+                        <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
+                    </div>
+
                 </div>
             </div>
         </div>
