@@ -2,38 +2,21 @@ angular.module('materialscommons', []);
 
 var app = angular.module('materialscommons',
     [
-        'ngAnimate',
         'ngSanitize',
         'ngMessages',
         'ui',
-        'highcharts-ng',
         'ngCookies',
         'ui.router',
-        'ngHandsontable',
-        'btford.socket-io',
         'restangular',
         'jmdobry.angular-cache',
-        'validation', 'validation.rule', 'wu.masonry',
         'textAngular', 'angularGrid',
         'ngDragDrop', 'ngTagsInput',
-        'ng-context-menu', 'angular.filter', 'ui.calendar',
+        'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
-        "hljs", "nsPopover", "RecursionHelper",'googlechart',
+        "hljs", "RecursionHelper",'googlechart',
         'materialscommons']);
 
-// This factory needs to hang off of this module for some reason
-app.factory('msocket', ["socketFactory", function (socketFactory) {
-    var msocket = socketFactory({
-        ioSocket: io.connect('https://localhost:8082')
-    });
-    msocket.forward('file');
-    msocket.forward('connect');
-    msocket.forward('disconnect');
-    msocket.forward('error');
-    return msocket;
-}]);
-
-app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", function ($stateProvider, $validationProvider, $urlRouterProvider) {
+app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
 
     mcglobals = {};
     doConfig();
@@ -263,32 +246,7 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         });
 
     $urlRouterProvider.otherwise('/home');
-    createNumericValidator($validationProvider);
-    $validationProvider.showSuccessMessage = false;
-    $validationProvider.setErrorHTML(function (msg) {
-        return '<span class="validation-invalid">' + msg + '</span>';
-    });
-
-    $validationProvider.setSuccessHTML(function (msg) {
-        return '<span class="validation-valid">' + msg + '</span>';
-    });
-
 }]);
-
-function createNumericValidator(validationProvider) {
-    var expression = {
-        numeric: /^[0-9]*\.?[0-9]+$/
-    };
-
-    var validationMsgs = {
-        numeric: {
-            error: "Invalid numeric value",
-            success: ""
-        }
-    };
-
-    validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
-}
 
 app.run(["$rootScope", "User", "Restangular", appRun]);
 

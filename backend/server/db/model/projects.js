@@ -119,7 +119,7 @@ module.exports = function (r) {
 
     function directoryByID(directoryID) {
         let rql = r.table('project2datadir').getAll(directoryID, {index: 'datadir_id'}).
-            eqJoin('datadir_id', r.table('datadir')).
+            eqJoin('datadir_id', r.table('datadirs')).
             zip().
             merge(function (ddir) {
                 return {

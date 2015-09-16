@@ -984,6 +984,15 @@ header {
     background-color: #fff;
 }
 
+.ag-cell-focus {
+    background: #AC91BA;
+    color: white;
+}
+
+.dir-focus {
+    background: #AC91BA;
+}
+
 .modal.fade .modal-dialog {
     transform: translate(0, 0);
 }
