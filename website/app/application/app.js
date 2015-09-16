@@ -239,7 +239,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.processes.list.view", {
             url: "/view/:process_id",
             templateUrl: "application/core/projects/project/processes/view.html",
-            controller: "projectViewProcess"
+            controller: "projectViewProcess",
+            controllerAs: 'view'
         })
         .state("projects.project.samples", {
             url: "/samples",
