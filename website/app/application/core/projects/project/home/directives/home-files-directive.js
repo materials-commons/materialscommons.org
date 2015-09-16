@@ -195,7 +195,7 @@
     function HomeFilesDirectiveController(projectFiles, $filter, $modal) {
         var ctrl = this;
 
-        console.log('HomeFilesDirectiveController %O', ctrl.project);
+        //console.log('HomeFilesDirectiveController %O', ctrl.project);
         //var f = projectFiles.model.projects[ctrl.project.id].dir;
         //
         //// Root is name of project. Have it opened by default.
@@ -205,7 +205,7 @@
         //ctrl.files[0].children = $filter('orderBy')(ctrl.files[0].children, 'displayname');
         //ctrl.files.showDetails = true;
         var f = this.project.files;
-        console.dir(f);
+        //console.dir(f);
         f.showDetails = true;
         ctrl.files = f;
 

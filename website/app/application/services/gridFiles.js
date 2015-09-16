@@ -1,10 +1,58 @@
-(function(module) {
+(function (module) {
     module.factory('gridFiles', gridFiles);
 
     function gridFiles() {
+        function compareFileEntry(fentry1, fentry2) {
+            if (fentry1.name < fentry2.name) {
+                return -1;
+            } else if (fentry1.name > fentry2.name) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        function createGridChildren(filesChildren) {
+            var children = [];
+            filesChildren.forEach(function (entry) {
+                var centry;
+                if (entry._type == 'directory') {
+                    centry = createDirectoryEntry(entry);
+                } else {
+                    centry = createFileEntry(entry);
+                }
+                children.push(centry);
+            });
+            return children;
+        }
+
+        function createDirectoryEntry(entry) {
+            return {
+                group: true,
+                expanded: false,
+                data: {
+                    name: entry.name,
+                    _type: 'directory',
+                    id: entry.id,
+                    childrenLoaded: false
+                },
+                children: []
+            };
+        }
+
+        function createFileEntry(entry) {
+            return {
+                group: false,
+                data: {
+                    name: entry.name,
+                    _type: 'file',
+                    id: entry.id
+                }
+            };
+        }
+
         return {
-            toGrid: function(files) {
-                var children = [];
+            toGrid: function (files) {
                 var gridData = [
                     {
                         group: true,
@@ -12,45 +60,20 @@
                         data: {
                             name: files.name,
                             _type: files._type,
-                            id: files.id
+                            id: files.id,
+                            childrenLoaded: true
                         },
-                        children: children
+                        children: []
                     }
                 ];
-                files.children.sort(function(entry1, entry2) {
-                    if (entry1.name < entry2.name) {
-                        return -1;
-                    } else if (entry1.name > entry2.name) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-                files.children.forEach(function(entry) {
-                    var centry;
-                    if (entry._type == 'directory') {
-                        centry = {
-                            group: true,
-                            expanded: false,
-                            data: {
-                                name: entry.name,
-                                _type: 'directory',
-                                id: entry.id
-                            }
-                        };
-                    } else {
-                        centry = {
-                            group: false,
-                            data: {
-                                name: entry.name,
-                                _type: 'file',
-                                id: entry.id
-                            }
-                        };
-                    }
-                    children.push(centry);
-                });
+                files.children.sort(compareFileEntry);
+                gridData[0].children = createGridChildren(files.children);
                 return gridData;
+            },
+
+            toGridChildren(fentry) {
+                fentry.children.sort(compareFileEntry);
+                return createGridChildren(fentry.children);
             }
         }
     }

@@ -4,8 +4,12 @@
             <div class="row">
                 <file-upload-panel></file-upload-panel>
             </div>
-            <div style="padding: 20px;width: 100%; height: 100%;"
-                 angular-grid="files.gridOptions"
+            <div ng-if="files.gridShowingFlag" style="padding: 20px;width: 100%; height: 100%;"
+                 ag-grid="files.gridOptions"
+                 class="ag-file-browser">
+            </div>
+            <div ng-if="!files.gridShowingFlag" style="padding: 20px;width: 100%; height: 100%;"
+                 ag-grid="files.gridOptions"
                  class="ag-file-browser">
             </div>
         </div>
