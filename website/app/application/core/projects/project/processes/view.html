@@ -1,7 +1,8 @@
 <div class="details-main-content">
     <div class="row" style="padding: 10px;color: #C0C0C0">
         {{current.birthtime | toDateString}}
-        <button ng-click="editProvenance()" class="pull-right btn-details-container btn btn-default btn btn-cancel">
+        <button ng-click="view.editProvenance()"
+                class="pull-right btn-details-container btn btn-default btn btn-cancel">
             Edit
         </button>
     </div>
@@ -11,45 +12,174 @@
                 <div class="process headings">Details:</div>
 
                 <div class="row"><b>Description about process:</b> <br>
-                    {{current.what}}
+                    {{view.current.what}}
                     <div ng-if="current.what === ''">--None--</div>
 
                     <div class="row"><b>Reason you performed the process:</b><br>
-                        {{current.why}}
-                        <div ng-if="current.why === ''">--None--</div>
+                        {{view.current.why}}
+                        <div ng-if="view.current.why === ''">--None--</div>
 
-                        <div class="row"><b>Owner: </b>{{current.owner}}</div>
-                        <div class="row"><b>Does Transform: </b>{{current.does_transform}}</div>
+                        <div class="row"><b>Owner: </b>{{view.current.owner}}</div>
+                        <div class="row"><b>Does Transform: </b>{{view.current.does_transform}}</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="process-tab">
-                <ul class="nav nav-pills">
+                <ul class="nav nav-tabs">
                     <li class="active">
-                        <a href="" data-toggle="tab"><i class="fa fa-fw fa-gear"></i>Set Up</a>
+                        <a ng-click="view.setTab('setup')" data-toggle="tab"><b><i
+                                class="fa fa-fw fa-gear"></i>SETUP</b></a>
                     </li>
-                    <li><a href="" data-toggle="tab"><i class="fa fa-fw fa-cubes"></i>Samples</a>
+                    <li><a ng-click="view.setTab('samples')" data-toggle="tab"><b><i class="fa fa-fw fa-cubes"></i>SAMPLES</b></a>
                     </li>
-                    <li><a href="" data-toggle="tab"><i class="fa fa-fw fa-copy"></i>Files</a>
+                    <li><a ng-click="view.setTab('files')" data-toggle="tab"><b><i
+                            class="fa fa-fw fa-copy"></i>FILES</b></a>
                     </li>
                 </ul>
 
                 <div class="tab-content clearfix">
-                    <div class="tab-pane active" id="1a">
+                    <div ng-class="{active: view.isSet('setup')}" class="tab-pane active" id="1a">
                         <ul>
-                            <li ng-repeat="property in current.setup[0].setupproperties" ng-if="property.value">
+                            <li ng-repeat="property in view.current.setup[0].setupproperties" ng-if="property.value">
                                 {{property.name}} :: {{property.value}} {{property.units}}
                             </li>
                         </ul>
                     </div>
-                    <div class="tab-pane" id="2a">
-                        <h3>We use the class nav-pills instead of nav-tabs which automatically creates a background color
-                            for the tab</h3>
+                    <div ng-class="{active: view.isSet('samples')}" class="tab-pane" id="2a">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Details</th>
+                                <th>Properties</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr style="height: 120px;">
+                                <td style="width: 50%"><b>Test Sample 1</b>
+
+                                    <div style="padding-bottom: 15px;">
+                                        <p style="font-size: 12px;padding-bottom: 10px;">
+                                            09/15/2015
+                                            <span style="padding-left: 10px">tammasr@umich.edu </span>
+                                            <span style="padding-left: 10px; color: #63b663">Mg 88 Al 11 Mn 1 wt%</span>
+                                        </p>
+
+                                        <p class="text-small">The point of using Lorem Ipsum is that it has a
+                                            more-or-less normal distribution of letters, as opposed to using 'Content
+                                            here,
+                                            content here', making it look like readable English. </p>
+
+                                        <p>
+                                            <img class="img-thumbnail" height="100" width="100"
+                                                 src="assets/img/img1.jpg">
+                                            <img class="img-thumbnail" height="100" width="100"
+                                                 src="assets/img/img2.jpg">
+                                            <img class="img-thumbnail" height="100" width="100"
+                                                 src="assets/img/img3.jpg">
+                                        </p>
+                                    </div>
+                                </td>
+                                <td style="width: 50%">
+                                    <ul style="list-style-type: circle;">
+                                        <li> Particle Shape Distribution:<img src="assets/img/histogram2.jpg"
+                                                                              style="height: 35px;padding-bottom: 10px;">
+                                        </li>
+                                        <li>Composition: Mg 88 Al 11 Mn 1 wt%</li>
+                                        <li>Volume: 20 cm^3</li>
+                                        <li>Area: 44 m^2</li>
+                                        <li>Width: 12 cm</li>
+                                        <li> Grain size Distribution: <img src="assets/img/line.png"
+                                                                           style="height: 35px;padding-bottom: 10px;">
+                                        </li>
+                                        <li>Crystal: Rectangle</li>
+                                        <li>Area Fraction: 2/3 cm^3</li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            <tr style="height: 120px;">
+                                <td style="width: 50%"><b>Test Sample 2</b>
+
+                                    <div style="padding-bottom: 15px;">
+                                        <p style="font-size: 12px;padding-bottom: 10px;">
+                                            08/15/2015
+                                            <span style="padding-left: 10px">gtarcea@umich.edu </span>
+                                            <span style="padding-left: 10px; color: #63b663">Al 88 Al 11 Mn 1 wt%</span>
+                                        </p>
+
+                                        <p class="text-small">The point of using Lorem Ipsum is that it has a
+                                            more-or-less normal distribution of letters, as opposed to using 'Content
+                                            here,
+                                            content here', making it look like readable English. more-or-less normal
+                                            distribution of letters, as opposed to using 'Content here,
+                                            content here', making it look like readable English. more-or-less normal
+                                            distribution of letters, as opposed to using 'Content here,
+                                            content here', making it look like readable English. </p>
+
+                                        <p>
+                                            <img class="img-thumbnail" height="100" width="100"
+                                                 src="assets/img/img1.jpg">
+                                            <img class="img-thumbnail" height="100" width="100"
+                                                 src="assets/img/img2.jpg">
+                                            <img class="img-thumbnail" height="100" width="100"
+                                                 src="assets/img/img3.jpg">
+                                        </p>
+                                    </div>
+                                </td>
+                                <td style="width: 50%">
+                                    <ul style="list-style-type: circle;">
+                                        <li> Particle Shape Distribution:<img src="assets/img/histogram2.jpg"
+                                                                              style="height: 35px;padding-bottom: 10px;">
+                                        </li>
+                                        <li>Composition: Mg 88 Al 11 Mn 1 wt%</li>
+                                        <li>Volume: 20 cm^3</li>
+                                        <li>Area: 44 m^2</li>
+                                        <li>Width: 12 cm</li>
+                                        <li> Grain size Distribution: <img src="assets/img/line.png"
+                                                                           style="height: 35px;padding-bottom: 10px;">
+                                        </li>
+                                        <li>Crystal: Rectangle</li>
+                                        <li>Area Fraction: 2/3 cm^3</li>
+                                    </ul>
+                                </td>
+                                </td>
+                            </tr>
+                            <tr style="height: 120px;">
+                                <td style="width: 50%"><b> Test Sample 3 </b>
+
+                                    <div style="padding-bottom: 15px;">
+                                        <p style="font-size: 12px;padding-bottom: 10px;">
+                                            09/15/2015
+                                            <span style="padding-left: 10px">tammasr@umich.edu </span>
+                                            <span style="padding-left: 10px;color: #63b663">Mg 88 Al 11 Mn 1 wt%</span>
+                                        </p>
+                                    </div>
+                                </td>
+                                <td style="width: 50%">
+                                    <ul style="list-style-type: circle;">
+                                        <li> Particle Shape Distribution:<img src="assets/img/histogram2.jpg"
+                                                                              style="height: 35px;padding-bottom: 10px;">
+                                        </li>
+                                        <li>Composition: Mg 88 Al 11 Mn 1 wt%</li>
+                                        <li>Volume: 20 cm^3</li>
+                                        <li>Area: 44 m^2</li>
+                                        <li>Width: 12 cm</li>
+                                        <li> Grain size Distribution: <img src="assets/img/line.png"
+                                                                           style="height: 35px;padding-bottom: 10px;">
+                                        </li>
+                                        <li>Crystal: Rectangle</li>
+                                        <li>Area Fraction: 2/3 cm^3</li>
+                                    </ul>
+                                </td>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="tab-pane" id="3a">
-                        <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
+                    <div ng-class="{active: view.isSet('files')}" class="tab-pane" id="3a">
+                        <h3> This is Files tab section</h3>
                     </div>
 
                 </div>
@@ -58,9 +188,9 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <div class="process headings">SetUp: {{current.setup[0].name}}</div>
+                <div class="process headings">SetUp: {{view.current.setup[0].name}}</div>
                 <ul>
-                    <li ng-repeat="property in current.setup[0].setupproperties" ng-if="property.value">
+                    <li ng-repeat="property in view.current.setup[0].setupproperties" ng-if="property.value">
                         {{property.name}} :: {{property.value}} {{property.units}}
                     </li>
                 </ul>
@@ -69,17 +199,18 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="process headings">Samples:</div>
-                <div class="row" ng-repeat="sample in current.samples">
+                <div class="row" ng-repeat="sample in view.current.samples">
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openSample(sample)" class="link" style="padding-left: 15px;">{{sample.name}}</a>
-                        <span ng-if="current.does_transform">
+                        <a ng-click="view.openSample(sample)" class="link"
+                           style="padding-left: 15px;">{{sample.name}}</a>
+                        <span ng-if="view.current.does_transform">
                             <span ng-if="sample._type==='in'">
-                                  (Before {{current.name}})
+                                  (Before {{view.current.name}})
                             </span>
                              <span ng-if="sample._type==='out'">
-                                 (After {{current.name}})
+                                 (After {{view.current.name}})
                              </span>
                         </span>
 
@@ -94,14 +225,14 @@
             <div class="col-xs-12">
                 <div class="process headings">Files:</div>
                 <div>Files Used:</div>
-                <div ng-if="current.files_used.length === 0">
+                <div ng-if="view.current.files_used.length === 0">
                     --None--
                 </div>
-                <div ng-repeat="attachment in current.files_used">
+                <div ng-repeat="attachment in view.current.files_used">
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openFile(attachment)" class="link"
+                        <a ng-click="view.openFile(attachment)" class="link"
                            style="padding-left: 15px;">{{attachment.name}}</a>
 
                         <p style="padding-left: 80px">
@@ -113,14 +244,14 @@
                 </div>
 
                 <div>Files Produced:</div>
-                <div ng-if="current.files_produced.length === 0">
+                <div ng-if="view.current.files_produced.length === 0">
                     --None--<br>
                 </div>
-                <div ng-repeat="attachment in current.files_produced">
+                <div ng-repeat="attachment in view.current.files_produced">
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openFile(attachment)" class="link"
+                        <a ng-click="view.openFile(attachment)" class="link"
                            style="padding-left: 15px;">{{attachment.name}}</a>
 
                         <p style="padding-left: 80px">

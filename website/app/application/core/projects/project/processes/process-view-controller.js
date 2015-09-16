@@ -1,29 +1,46 @@
 (function (module) {
     module.controller('projectViewProcess', projectViewProcess);
-    projectViewProcess.$inject = ["$scope", "project", "$stateParams", "modalInstance", "$state"];
+    projectViewProcess.$inject = ["project", "$stateParams", "modalInstance", "$state"];
 
-    function projectViewProcess($scope, project, $stateParams, modalInstance, $state) {
+    function projectViewProcess(project, $stateParams, modalInstance, $state) {
+        var  viewCtrl = this;
 
-        $scope.openSample = function (sample) {
-            modalInstance.openModal(sample, 'sample', project);
-        };
+        viewCtrl.openSample = openSample;
+        viewCtrl.openFile = openFile;
+        viewCtrl.editProvenance = editProvenance;
+        viewCtrl.setTab = setTab;
+        viewCtrl.isSet = isSet;
 
-        $scope.openFile = function (file) {
-            modalInstance.openModal(file, 'datafile', project);
-        };
+        viewCtrl.project = project;
+        viewCtrl.tab = 'setup';
 
-        $scope.editProvenance = function () {
-            $state.go('projects.project.processes.list.edit', {process_id: $scope.current.id});
-        };
+        function openSample(sample) {
+            modalInstance.openModal(sample, 'sample', viewCtrl.project);
+        }
+
+        function openFile(file) {
+            modalInstance.openModal(file, 'datafile', viewCtrl.project);
+        }
+
+        function editProvenance() {
+            $state.go('projects.project.processes.list.edit', {process_id: viewCtrl.current.id});
+        }
+
+        function setTab(tabId) {
+            viewCtrl.tab = tabId;
+        }
+
+        function isSet(tabId) {
+            return viewCtrl.tab === tabId;
+        }
 
         function init() {
-            $scope.project = project;
-            var i = _.indexOf($scope.project.processes, function (process) {
+            var i = _.indexOf(viewCtrl.project.processes, function (process) {
                 return process.id === $stateParams.process_id;
             });
 
             if (i > -1) {
-                $scope.current = $scope.project.processes[i];
+                viewCtrl.current = viewCtrl.project.processes[i];
             }
         }
 
