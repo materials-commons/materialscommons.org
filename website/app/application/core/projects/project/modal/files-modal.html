@@ -13,7 +13,7 @@
         </div>
         <div ng-show="modalState.showTree" class="panel-body home-panel-body no-max-height">
             <div style="padding: 20px;width: 100%; height: 100%;"
-                 angular-grid="gridOptions"
+                 ag-grid="gridOptions"
                  class="ag-file-browser">
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <a ng-click="modalState.showTree = true; modalState.query =''">
                     <i class="fa fa-fw fa-backward"></i>Back to file tree
                 </a>
-                <div angular-grid="searchGridOptions" class=""></div>
+                <div ag-grid="searchGridOptions" class=""></div>
             </div>
         </div>
     </div>
