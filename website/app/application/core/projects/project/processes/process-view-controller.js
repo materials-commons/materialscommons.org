@@ -1,9 +1,9 @@
 (function (module) {
     module.controller('projectViewProcess', projectViewProcess);
-    projectViewProcess.$inject = ["project", "$stateParams", "modalInstance", "$state"];
+    projectViewProcess.$inject = ["project", "$stateParams", "modalInstance", "$state", "mcapi"];
 
-    function projectViewProcess(project, $stateParams, modalInstance, $state) {
-        var  viewCtrl = this;
+    function projectViewProcess(project, $stateParams, modalInstance, $state, mcapi) {
+        var viewCtrl = this;
 
         viewCtrl.openSample = openSample;
         viewCtrl.openFile = openFile;
@@ -34,6 +34,21 @@
             return viewCtrl.tab === tabId;
         }
 
+        function getSampleDetails(process) {
+            if (process.samples.length !== 0) {
+                mcapi('/samples')
+                    .success(function (samples) {
+                        console.dir(samples);
+                        viewCtrl.current.samples = samples;
+                    })
+                    .error(function (err) {
+                        console.log(err)
+                    })
+                    .post({samples: process.samples});
+            }
+
+        }
+
         function init() {
             var i = _.indexOf(viewCtrl.project.processes, function (process) {
                 return process.id === $stateParams.process_id;
@@ -41,6 +56,7 @@
 
             if (i > -1) {
                 viewCtrl.current = viewCtrl.project.processes[i];
+                getSampleDetails(viewCtrl.current);
             }
         }
 
