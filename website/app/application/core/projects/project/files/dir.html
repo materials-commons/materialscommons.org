@@ -1,0 +1,22 @@
+<div class="col-xs-12" style="padding-left: 0px; padding-right: 1px;">
+    <div class="details-main-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <a class="pull-right" ng-click="file.createFolder()">CREATE FOLDER</a>
+
+                <div class="headings">{{file.active.displayname}}
+                    <mc-flow-button dir="file.active" ng-if="file.active.type === 'datadir'"></mc-flow-button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="file headings row">details</div>
+            <ul class="list-inline">
+                <li>Type: directory</li>
+                <li>Owner: {{file.active.owner}}</li>
+                <li>Created: {{file.active.birthtime | toDateString}}</li>
+            </ul>
+            <span>Path: {{file.active.name}}</span>
+        </div>
+    </div>
+</div>
