@@ -1,17 +1,20 @@
-<div class="row" ng-if="file.type === 'datafile'">
-    <div class="col-xs-12" style="padding-left: 0px; padding-right: 1px;">
-        <div class="details-main-content">
+<div class="row ">
+    <div class="col-xs-12 no-padding">
+        <div class="details-main-content full-height">
+            <span class="file heading-label-lg">{{file.active.name}}<hr></span>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="headings">
-                        {{file.active.name}}
-                        <a ng-href="{{file.downloadSrc(file.active)}}" download="{{file.active.name}}">
-                            <span style="color: #9782be;padding-left:10px;" class="fa-stack fa-lg">
-                                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                <i class="fa fa-download fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                        <a ng-click="file.rename()" class="pull-right">Rename</a>
+                    <div class="row">
+                        <ul class="list-inline">
+                            <li><a ng-click="file.rename()" class="heading-label text-uppercase">rename</a></li>
+                            <li>
+                                <a ng-href="{{file.downloadSrc(file.active)}}"
+                                   class="heading-label text-uppercase"
+                                   download="{{file.active.name}}">
+                                    download
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -65,7 +68,7 @@
                     </div>
                 </div>
                 <div class="file headings">note</div>
-                <div class="row">
+                <div ng-if="false" class="row">
                     <span class="pull-right">
                             <a ng-click="file.editNote = !file.editNote"><i class="fa fa-fw fa-edit"></i></a></span>
 
@@ -79,31 +82,6 @@
                         <create-note item-type="datafile" item="file.active"></create-note>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div ng-if="file.type === 'datadir'">
-    <div class="col-xs-12" style="padding-left: 0px; padding-right: 1px;">
-        <div class="details-main-content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <a class="pull-right" ng-click="file.createFolder()">CREATE FOLDER</a>
-
-                    <div class="headings">{{file.active.displayname}}
-                        <mc-flow-button dir="file.active" ng-if="file.active.type === 'datadir'"></mc-flow-button>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="file headings row">details</div>
-                <ul class="list-inline">
-                    <li>Type: directory</li>
-                    <li>Owner: {{file.active.owner}}</li>
-                    <li>Created: {{file.active.birthtime | toDateString}}</li>
-                </ul>
-                <span>Path: {{file.active.name}}</span>
             </div>
         </div>
     </div>
