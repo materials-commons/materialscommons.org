@@ -56,13 +56,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr style="height: 120px;">
-                                <td style="width: 50%"><b>Test Sample 1</b>
+                            <tr ng-repeat="sample in current.samples" style="height: 120px;">
+                                <td style="width: 50%"><b>{{sample.name}}</b>
 
                                     <div style="padding-bottom: 15px;">
                                         <p style="font-size: 12px;padding-bottom: 10px;">
-                                            09/15/2015
-                                            <span style="padding-left: 10px">tammasr@umich.edu </span>
+                                            {{sample.birthtime | toDateString}}
+                                            <span style="padding-left: 10px">{{sample.owner}}</span>
                                             <span style="padding-left: 10px; color: #63b663">Mg 88 Al 11 Mn 1 wt%</span>
                                         </p>
 
@@ -83,97 +83,9 @@
                                 </td>
                                 <td style="width: 50%">
                                     <ul style="list-style-type: circle;">
-                                        <li> Particle Shape Distribution:<img src="assets/img/histogram2.jpg"
-                                                                              style="height: 35px;padding-bottom: 10px;">
-                                        </li>
-                                        <li>Composition: Mg 88 Al 11 Mn 1 wt%</li>
-                                        <li>Volume: 20 cm^3</li>
-                                        <li>Area: 44 m^2</li>
-                                        <li>Width: 12 cm</li>
-                                        <li> Grain size Distribution: <img src="assets/img/line.png"
-                                                                           style="height: 35px;padding-bottom: 10px;">
-                                        </li>
-                                        <li>Crystal: Rectangle</li>
-                                        <li>Area Fraction: 2/3 cm^3</li>
+                                        <li ng-repeat="property in sample.properties">
+                                            {{property.name}} : {{property.best_measure[0].value}} {{property.best_measure[0].unit}}</li>
                                     </ul>
-                                </td>
-                            </tr>
-
-                            <tr style="height: 120px;">
-                                <td style="width: 50%"><b>Test Sample 2</b>
-
-                                    <div style="padding-bottom: 15px;">
-                                        <p style="font-size: 12px;padding-bottom: 10px;">
-                                            08/15/2015
-                                            <span style="padding-left: 10px">gtarcea@umich.edu </span>
-                                            <span style="padding-left: 10px; color: #63b663">Al 88 Al 11 Mn 1 wt%</span>
-                                        </p>
-
-                                        <p class="text-small">The point of using Lorem Ipsum is that it has a
-                                            more-or-less normal distribution of letters, as opposed to using 'Content
-                                            here,
-                                            content here', making it look like readable English. more-or-less normal
-                                            distribution of letters, as opposed to using 'Content here,
-                                            content here', making it look like readable English. more-or-less normal
-                                            distribution of letters, as opposed to using 'Content here,
-                                            content here', making it look like readable English. </p>
-
-                                        <p>
-                                            <img class="img-thumbnail" height="100" width="100"
-                                                 src="assets/img/img1.jpg">
-                                            <img class="img-thumbnail" height="100" width="100"
-                                                 src="assets/img/img2.jpg">
-                                            <img class="img-thumbnail" height="100" width="100"
-                                                 src="assets/img/img3.jpg">
-                                            ... <a>more</a> (10) files
-                                        </p>
-                                    </div>
-                                </td>
-                                <td style="width: 50%">
-                                    <ul style="list-style-type: circle;">
-                                        <li> Particle Shape Distribution:<img src="assets/img/histogram2.jpg"
-                                                                              style="height: 35px;padding-bottom: 10px;">
-                                        </li>
-                                        <li>Composition: Mg 88 Al 11 Mn 1 wt%</li>
-                                        <li>Volume: 20 cm^3</li>
-                                        <li>Area: 44 m^2</li>
-                                        <li>Width: 12 cm</li>
-                                        <li> Grain size Distribution: <img src="assets/img/line.png"
-                                                                           style="height: 35px;padding-bottom: 10px;">
-                                        </li>
-                                        <li>Crystal: Rectangle</li>
-                                        <li>Area Fraction: 2/3 cm^3</li>
-                                    </ul>
-                                </td>
-                                </td>
-                            </tr>
-                            <tr style="height: 120px;">
-                                <td style="width: 50%"><b> Test Sample 3 </b>
-
-                                    <div style="padding-bottom: 15px;">
-                                        <p style="font-size: 12px;padding-bottom: 10px;">
-                                            09/15/2015
-                                            <span style="padding-left: 10px">tammasr@umich.edu </span>
-                                            <span style="padding-left: 10px;color: #63b663">Mg 88 Al 11 Mn 1 wt%</span>
-                                        </p>
-                                    </div>
-                                </td>
-                                <td style="width: 50%">
-                                    <ul style="list-style-type: circle;">
-                                        <li> Particle Shape Distribution:<img src="assets/img/histogram2.jpg"
-                                                                              style="height: 35px;padding-bottom: 10px;">
-                                        </li>
-                                        <li>Composition: Mg 88 Al 11 Mn 1 wt%</li>
-                                        <li>Volume: 20 cm^3</li>
-                                        <li>Area: 44 m^2</li>
-                                        <li>Width: 12 cm</li>
-                                        <li> Grain size Distribution: <img src="assets/img/line.png"
-                                                                           style="height: 35px;padding-bottom: 10px;">
-                                        </li>
-                                        <li>Crystal: Rectangle</li>
-                                        <li>Area Fraction: 2/3 cm^3</li>
-                                    </ul>
-                                </td>
                                 </td>
                             </tr>
                             </tbody>
