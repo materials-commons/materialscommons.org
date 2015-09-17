@@ -8,9 +8,9 @@ import json
 import resp
 
 
-# @app.route('/sample/measurements/<sample_id>/<property_set_id>')
-# @jsonp
-def get_sample_measurements(property_set_id):
+@app.route('/sample/measurements/<sample_id>/<property_set_id>')
+@jsonp
+def get_sample_measurements(sample_id, property_set_id):
     measurements = list(
         r.table('propertyset2property').get_all(property_set_id,
                                                 index='property_set_id') \
@@ -38,7 +38,7 @@ def get_sample_measurements(property_set_id):
                       })
                .coerce_to('array')
                }).run(g.conn, time_format="raw"))
-    return measurements
+    return resp.to_json(measurements)
 
 
 @app.route('/sample/propertysets/<sample_id>', methods=['GET'])
@@ -120,5 +120,21 @@ def fill_in_measurements():
     j = request.get_json()
     samples = j['samples']
     for sample in samples:
-        sample['properties'] = get_sample_measurements(sample['property_set_id'])
+        sample['properties'] = get_properties_and_best_measures(sample['property_set_id'])
     return resp.to_json(samples)
+
+
+def get_properties_and_best_measures(property_set_id):
+    properties = list(
+        r.table('propertyset2property').get_all(property_set_id,
+                                                index='property_set_id') \
+        .eq_join('property_id', r.table('properties')).zip().order_by('name')\
+        .merge(lambda property:
+               {
+                   'best_measure':
+                       r.table('best_measure_history').get_all(
+                           property['best_measure_id'])
+               .eq_join('measurement_id', r.table('measurements')).zip()
+               .coerce_to('array')
+               }).run(g.conn, time_format="raw"))
+    return properties
