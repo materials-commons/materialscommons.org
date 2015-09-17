@@ -28,91 +28,37 @@
         <div class="row">
             <div class="process-tab">
                 <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a ng-click="view.setTab('setup')" data-toggle="tab"><b><i
+                    <li class="active" ui-sref-active="active">
+                        <a ui-sref="projects.project.processes.list.view.setup"><b><i
                                 class="fa fa-fw fa-gear"></i>SETUP</b></a>
                     </li>
-                    <li><a ng-click="view.setTab('samples')" data-toggle="tab"><b><i class="fa fa-fw fa-cubes"></i>SAMPLES</b></a>
+                    <li ui-sref-active="active"><a ui-sref="projects.project.processes.list.view.samples"><b><i
+                            class="fa fa-fw fa-cubes"></i>SAMPLES</b></a>
                     </li>
-                    <li><a ng-click="view.setTab('files')" data-toggle="tab"><b><i
+                    <li ui-sref-active="active"><a ui-sref="projects.project.processes.list.view.files"><b><i
                             class="fa fa-fw fa-copy"></i>FILES</b></a>
                     </li>
                 </ul>
-
                 <div class="tab-content clearfix">
-                    <div ng-class="{active: view.isSet('setup')}" class="tab-pane active" id="1a">
-                        <ul>
-                            <li ng-repeat="property in view.current.setup[0].setupproperties" ng-if="property.value">
-                                {{property.name}} :: {{property.value}} {{property.units}}
-                            </li>
-                        </ul>
-                    </div>
-                    <div ng-class="{active: view.isSet('samples')}" class="tab-pane" id="2a">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Details</th>
-                                <th>Properties</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="sample in current.samples" style="height: 120px;">
-                                <td style="width: 50%"><b>{{sample.name}}</b>
-
-                                    <div style="padding-bottom: 15px;">
-                                        <p style="font-size: 12px;padding-bottom: 10px;">
-                                            {{sample.birthtime | toDateString}}
-                                            <span style="padding-left: 10px">{{sample.owner}}</span>
-                                            <span style="padding-left: 10px; color: #63b663">Mg 88 Al 11 Mn 1 wt%</span>
-                                        </p>
-
-                                        <p class="text-small">The point of using Lorem Ipsum is that it has a
-                                            more-or-less normal distribution of letters, as opposed to using 'Content
-                                            here,
-                                            content here', making it look like readable English. </p>
-
-                                        <p>
-                                            <img class="img-thumbnail" height="100" width="100"
-                                                 src="assets/img/img1.jpg">
-                                            <img class="img-thumbnail" height="100" width="100"
-                                                 src="assets/img/img2.jpg">
-                                            <img class="img-thumbnail" height="100" width="100"
-                                                 src="assets/img/img3.jpg">
-                                            ... <a>more</a> (10) files
-                                        </p>
-                                    </div>
-                                </td>
-                                <td style="width: 50%">
-                                    <ul style="list-style-type: circle;">
-                                        <li ng-repeat="property in sample.properties">
-                                            <div ng-switch="property.best_measure[0]._type">
-                                                <div ng-switch-when="histogram">
-                                                    {{property.name}} :
-                                                    <a ng-click="viewChart(property)"><i class="fa fa-fw fa-bar-chart"></i></a>
-                                                </div>
-                                                <div ng-switch-when="line">
-                                                    {{property.name}} :
-                                                    <a ng-click="viewChart(property)"><i class="fa fa-fw fa-bar-chart"></i></a>
-                                                </div>
-                                                <div ng-switch-default>
-                                                    {{property.name}} : {{property.best_measure[0].value}}
-                                                    {{property.best_measure[0].unit}}
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div ng-class="{active: view.isSet('files')}" class="tab-pane" id="3a">
-                        <h3> This is Files tab section</h3>
-                    </div>
-
+                    <div ui-view=""></div>
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <div class="row">
             <div class="col-xs-12">

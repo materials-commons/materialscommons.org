@@ -1,0 +1,7 @@
+<div  class="tab-pane active">
+    <ul>
+        <li ng-repeat="property in view.current.setup[0].setupproperties" ng-if="property.value">
+            {{property.name}} :: {{property.value}} {{property.units}}
+        </li>
+    </ul>
+</div>
