@@ -1,11 +1,10 @@
 (function (module) {
     module.controller("FilesAllController", FilesAllController);
 
-    FilesAllController.$inject = ["$scope", "projectFiles", "project", "mcfile", "$state",
-        "pubsub", "$filter", "mcapi", "gridFiles"];
+    FilesAllController.$inject = ["$scope", "project", "$state", "pubsub", "mcapi", "gridFiles"];
 
     /* @ngInject */
-    function FilesAllController($scope, projectFiles, project, mcfile, $state, pubsub, $filter, mcapi, gridFiles) {
+    function FilesAllController($scope, project, $state, pubsub, mcapi, gridFiles) {
         var ctrl = this;
 
         ctrl.gridShowingFlag = true;
@@ -19,49 +18,9 @@
             ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
         });
 
-        ctrl.fileSrc = fileSrc;
-
         init();
 
         ///////////////////////////////
-
-        function fileSrc(file) {
-            return mcfile.src(file.id);
-        }
-
-        function rowClicked(params) {
-            if (params.data._type == 'directory' && !params.data.childrenLoaded) {
-                mcapi('/projects2/%/dir/%', project.id, params.data.id)
-                    .success(function (files) {
-                        var treeModel = new TreeModel(),
-                            root = treeModel.parse(project.files[0]);
-                        var dir = root.first({strategy: 'pre'}, function (node) {
-                            return node.model.data.id === params.data.id;
-                        });
-                        dir.model.children = gridFiles.toGridChildren(files);
-                        dir.model.data.childrenLoaded = true;
-                        ctrl.gridOptions.api.onNewRows();
-                    }).get();
-            } else if (params.data._type == 'directory') {
-                ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
-            }
-            //if (params.node._type == 'datadir') {
-            //    projectFiles.setActiveDirectory(params.node);
-            //    var file = projectFiles.findFileByID(project.id, params.node.datafile_id);
-            //    file.expanded = params.node.expanded;
-            //    if (!params.node.sorted) {
-            //        file.children = $filter('orderBy')(file.children, 'displayname');
-            //        file.sorted = true;
-            //        ctrl.gridOptions.api.onNewRows();
-            //    }
-            //} else {
-            //    projectFiles.setActiveFile(params.node);
-            //}
-            //$state.go('projects.project.files.all.edit', {
-            //    file_id: params.node.datafile_id,
-            //    file_type: params.node.type
-            //});
-        }
 
         function init() {
             var columnDefs = [
@@ -72,10 +31,12 @@
                     cellRenderer: {
                         renderer: 'group',
                         innerRenderer: function (params) {
-                            return '<span' + ' id="' + params.data.id + '">' + params.data.name + '</span>';
+                            if (params.data._type == 'directory') {
+                                return '<span' + ' id="' + params.data.id + '">' + params.data.name + '</span>';
+                            }
 
                             var icon = "fa-file";
-                            switch (params.node.mediatype.mime) {
+                            switch (params.data.mediatype.mime) {
                             case "application/pdf":
                                 icon = "fa-file-pdf-o";
                                 break;
@@ -98,22 +59,23 @@
                                 icon = "fa-file-powerpoint-o";
                                 break;
                             default:
-                                if (isImage(params.node.mediatype.mime)) {
+                                if (isImage(params.data.mediatype.mime)) {
                                     icon = "fa-file-image-o";
                                 }
                                 break;
                             }
-                            return '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="' + params.node.name + '">' +
-                                '<a data-toggle="tooltip" data-placement="top">' +
-                                params.node.name + '</a></span>';
+                            return '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="' + params.data.name + '">' +
+                                params.data.name + '</span>';
                         }
                     }
-                }];
+                }
+            ];
 
             ctrl.gridOptions = {
                 columnDefs: columnDefs,
                 rowData: ctrl.files,
                 rowClicked: rowClicked,
+                rowSelection: 'single',
                 rowsAlreadyGrouped: true,
                 enableColResize: false,
                 enableSorting: false,
@@ -125,10 +87,40 @@
                 }
             };
 
-            //projectFiles.setActiveDirectory(ctrl.files[0]);
             //$state.go('projects.project.files.all.edit', {file_id: ctrl.files[0].datafile_id, file_type: 'datadir'});
         }
 
+        function rowClicked(params) {
+            if (params.data._type == 'directory') {
+                handleDirectory(params);
+            } else {
+                handleFile(params);
+            }
+        }
 
+        function handleDirectory(params) {
+            if (!params.data.childrenLoaded) {
+                mcapi('/projects2/%/dir/%', project.id, params.data.id)
+                    .success(function (files) {
+                        var treeModel = new TreeModel(),
+                            root = treeModel.parse(project.files[0]);
+                        var dir = root.first({strategy: 'pre'}, function (node) {
+                            return node.model.data.id === params.data.id;
+                        });
+                        dir.model.children = gridFiles.toGridChildren(files);
+                        dir.model.data.childrenLoaded = true;
+                        ctrl.gridOptions.api.onNewRows();
+                        ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                        //$state.go('projects.project.files.all.dir', {dir_id: params.data.id});
+                    }).get();
+            } else {
+                ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                //$state.go('projects.project.files.all.dir', {dir_id: params.data.id});
+            }
+        }
+
+        function handleFile(params) {
+            $state.go('projects.project.files.all.edit', {file_id: params.data.id});
+        }
     }
 }(angular.module('materialscommons')));
