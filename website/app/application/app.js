@@ -82,11 +82,6 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 Projects: "model.projects",
                 projects: function (Projects) {
                     return Projects.getList();
-                },
-
-                Templates: "model.templates",
-                templates: function (Templates) {
-                    return Templates.getList();
                 }
             }
         })
@@ -100,7 +95,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/project/:id',
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
-                project: ["$stateParams", "model.projects", "projects", "templates",
+                project: ["$stateParams", "model.projects", "projects",
                     function ($stateParams, Projects) {
                         // We use templates as a dependency so that they are all loaded
                         // before getting to this step. Otherwise the order of items
@@ -139,13 +134,19 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controllerAs: 'files'
         })
         .state("projects.project.files.all.edit", {
-            url: "/edit/:file_id/:file_type",
+            url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
             controller: "FilesEditController",
             controllerAs: 'file'
         })
+        .state("projects.project.files.all.dir", {
+            url: "/dir/:dir_id",
+            templateUrl: "application/core/projects/project/files/dir.html",
+            controller: "DirController",
+            controllerAs: "dir"
+        })
         .state("projects.project.files.edit", {
-            url: "/edit/:file_id/:file_type",
+            url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
             controller: "FilesEditController",
             controllerAs: "file"
