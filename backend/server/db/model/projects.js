@@ -148,6 +148,7 @@ module.exports = function (r) {
                 _type: 'file',
                 size: file.size,
                 name: file.name,
+                mediatype: file.mediatype,
                 id: file.id
             };
             dir.children.push(fentry);
@@ -158,7 +159,7 @@ module.exports = function (r) {
                 _type: 'directory',
                 id: d.id,
                 size: 0,
-                name: path.basename(d.name),
+                name: path.basename(d.name)
             };
             dir.children.push(dentry);
         });
