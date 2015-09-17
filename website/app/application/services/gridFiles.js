@@ -34,6 +34,7 @@
                     name: entry.name,
                     _type: 'directory',
                     id: entry.id,
+                    size: '',
                     childrenLoaded: false
                 },
                 children: []
@@ -46,6 +47,8 @@
                 data: {
                     name: entry.name,
                     _type: 'file',
+                    size: bytesToSizeStr(entry.size),
+                    mediatype: entry.mediatype,
                     id: entry.id
                 }
             };
