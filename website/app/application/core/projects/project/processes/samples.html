@@ -1,0 +1,61 @@
+<div  class="tab-pane">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Details</th>
+            <th>Properties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="sample in current.samples" style="height: 120px;">
+            <td style="width: 50%"><b>{{sample.name}}</b>
+
+                <div style="padding-bottom: 15px;">
+                    <p style="font-size: 12px;padding-bottom: 10px;">
+                        {{sample.birthtime | toDateString}}
+                        <span style="padding-left: 10px">{{sample.owner}}</span>
+                        <span style="padding-left: 10px; color: #63b663">Mg 88 Al 11 Mn 1 wt%</span>
+                    </p>
+
+                    <p class="text-small">The point of using Lorem Ipsum is that it has a
+                        more-or-less normal distribution of letters, as opposed to using 'Content
+                        here,
+                        content here', making it look like readable English. </p>
+
+                    <p>
+                        <img class="img-thumbnail" height="100" width="100"
+                             src="assets/img/img1.jpg">
+                        <img class="img-thumbnail" height="100" width="100"
+                             src="assets/img/img2.jpg">
+                        <img class="img-thumbnail" height="100" width="100"
+                             src="assets/img/img3.jpg">
+                        ... <a>more</a> (10) files
+                    </p>
+                </div>
+            </td>
+            <td style="width: 50%">
+                <ul style="list-style-type: circle;">
+                    <li ng-repeat="property in sample.properties">
+                        <div ng-switch="property.best_measure[0]._type">
+                            <div ng-switch-when="histogram">
+                                {{property.name}} :
+                                <a ng-click="viewChart(property)"><i
+                                        class="fa fa-fw fa-bar-chart"></i></a>
+                            </div>
+                            <div ng-switch-when="line">
+                                {{property.name}} :
+                                <a ng-click="viewChart(property)"><i
+                                        class="fa fa-fw fa-bar-chart"></i></a>
+                            </div>
+                            <div ng-switch-default>
+                                {{property.name}} : {{property.best_measure[0].value}}
+                                {{property.best_measure[0].unit}}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

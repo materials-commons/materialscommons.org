@@ -242,6 +242,25 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectViewProcess",
             controllerAs: 'view'
         })
+        .state("projects.project.processes.list.view.setup", {
+            url: "/setup",
+            templateUrl: "application/core/projects/project/processes/setup.html"
+            //controller: "projectViewProcess",
+            //controllerAs: 'view'
+        })
+        .state("projects.project.processes.list.view.samples", {
+            url: "/samples",
+            templateUrl: "application/core/projects/project/processes/samples.html"
+            //controller: "projectViewProcess",
+            //controllerAs: 'view'
+        })
+        .state("projects.project.processes.list.view.files", {
+            url: "/files",
+            templateUrl: "application/core/projects/project/processes/files.html"
+            //controller: "projectViewProcess",
+            //controllerAs: 'view'
+        })
+
         .state("projects.project.samples", {
             url: "/samples",
             templateUrl: "application/core/projects/project/samples/samples.html",
