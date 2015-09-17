@@ -1,20 +1,24 @@
 <div class="row">
-    <div class="col-xs-4">
-        <div class="details-sidebar" style=" margin-bottom: -900px;padding-bottom: 900px;">
+    <div class="col-xs-3 no-padding">
+        <div class="details-sidebar full-height">
+            <div class="row">
+                <span class="file heading-label text-uppercase">file tree </span>
+                <hr class="heading-label">
+            </div>
             <div class="row">
                 <file-upload-panel></file-upload-panel>
             </div>
-            <div ng-if="files.gridShowingFlag" style="padding: 20px;width: 100%; height: 100%;"
+            <div ng-if="files.gridShowingFlag"
                  ag-grid="files.gridOptions"
                  class="ag-file-browser">
             </div>
-            <div ng-if="!files.gridShowingFlag" style="padding: 20px;width: 100%; height: 100%;"
+            <div ng-if="!files.gridShowingFlag"
                  ag-grid="files.gridOptions"
                  class="ag-file-browser">
             </div>
         </div>
     </div>
-    <div class="col-xs-8">
+    <div class="col-xs-9 no-padding">
         <div ui-view></div>
     </div>
 </div>
