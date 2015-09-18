@@ -113,6 +113,7 @@
 
         function init() {
             console.log('calling datafile');
+            //**** Move this to route so we don't need to deal with mcapi.
             mcapi('/projects2/%/files/%', project.id, $stateParams.file_id)
                 .success(function (file) {
                     console.dir(file);
