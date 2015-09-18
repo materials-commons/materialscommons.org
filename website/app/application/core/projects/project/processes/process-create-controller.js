@@ -369,42 +369,42 @@
 
         }
 
-        function refineSampleProperties() {
-            $scope.template.input_samples.forEach(function (sample) {
-                sample.properties = refine(sample.properties);
-                sample.new_properties = refine(sample.new_properties);
-            });
-            if ($scope.template.transformed_samples.length !== 0) {
-                $scope.template.transformed_samples = refineTransformedSamples();
-            }
-            return $scope.template;
-        }
+        //function refineSampleProperties() {
+        //    $scope.template.input_samples.forEach(function (sample) {
+        //        sample.properties = refine(sample.properties);
+        //        sample.new_properties = refine(sample.new_properties);
+        //    });
+        //    if ($scope.template.transformed_samples.length !== 0) {
+        //        $scope.template.transformed_samples = refineTransformedSamples();
+        //    }
+        //    return $scope.template;
+        //}
 
 
-        function refine(items) {
-            var each_measure = {};
-            items.forEach(function (item) {
-                item.measurements = [];
-                if ('measures' in item) {
-                    item.measures.forEach(function (m) {
-                        if (m.name === 'Composition') {
-                            each_measure = {
-                                value: m.value,
-                                _type: m._type,
-                                unit: m.unit,
-                                attribute: m.attribute,
-                                element: m.element
-                            };
-
-                        } else {
-                            each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
-                        }
-                        item.measurements.push(each_measure);
-                    });
-                }
-            });
-            return items;
-        }
+        //function refine(items) {
+        //    var each_measure = {};
+        //    items.forEach(function (item) {
+        //        item.measurements = [];
+        //        if ('measures' in item) {
+        //            item.measures.forEach(function (m) {
+        //                if (m.name === 'Composition') {
+        //                    each_measure = {
+        //                        value: m.value,
+        //                        _type: m._type,
+        //                        unit: m.unit,
+        //                        attribute: m.attribute,
+        //                        element: m.element
+        //                    };
+        //
+        //                } else {
+        //                    each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
+        //                }
+        //                item.measurements.push(each_measure);
+        //            });
+        //        }
+        //    });
+        //    return items;
+        //}
 
         function refineFiles(files) {
             var items = [];

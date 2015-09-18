@@ -23,7 +23,7 @@
         };
 
         function newProperty(template) {
-            $scope.touchedProperties = measurements.getTouchedProperties();
+            $scope.touchedProperties = measurements.getTouchedProperties($scope.modal.sample.name);
             var i = _.indexOf($scope.touchedProperties, function (prop) {
                 return prop.name === template.name;
             });
