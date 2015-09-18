@@ -8,7 +8,8 @@
         </thead>
         <tbody>
         <tr ng-repeat="sample in current.samples">
-            <td><b>{{sample.name}}</b>
+            <td>
+                <b><a ui-sref="projects.project.samples.all.edit({sample_id: sample.id})">{{sample.name}}</a></b>
                 <div style="padding-bottom: 15px;">
                     <p style="font-size: 12px;padding-bottom: 10px;">
                         {{sample.birthtime | toDateString}}

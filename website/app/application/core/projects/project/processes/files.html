@@ -9,7 +9,8 @@
             </thead>
             <tbody>
             <tr ng-repeat="file in current.files_used">
-                <td><b>{{file.name}}</b>
+                <td>
+                    <b><a ui-sref="projects.project.files.all.edit({file_id: file.id, file_type: file.type})">{{file.name}}</a></b>
 
                     <div style="padding-bottom: 15px;">
                         <p style="font-size: 12px;padding-bottom: 10px;">
