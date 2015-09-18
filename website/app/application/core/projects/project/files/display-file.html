@@ -1,0 +1,32 @@
+<div class="col-xs-12" ng-switch="view.fileType">
+    <div ng-switch-when="image">
+        <img class="img-responsive center-block col-xs-8"
+             ng-src="{{view.fileSrc}}">
+    </div>
+    <div ng-switch-when="pdf">
+        <div class="embed-responsive embed-responsive-4by3">
+            <embed class="col-xs-8 embed-responsive-item"
+                   ng-src="{{view.fileSrc}}">
+            </embed>
+        </div>
+    </div>
+    <div ng-switch-when="xls">
+        <span><i class="fa fa-fw fa-file-excel-o"></i>Download the excel file</span>
+    </div>
+    <div ng-switch-default>
+        <div ng-if="view.file.size <= 10000"
+             hljs include="view.fileSrc">
+        </div>
+        <code ng-if="view.file.size > 10000 && view.file.size <= 2000000"
+              style="white-space: pre-line" ng-include="view.fileSrc">
+        </code>
+
+        <div ng-if="view.file.size > 2000000">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-file fa-stack-1x"></i>
+                <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                File too big to display
+            </span>
+        </div>
+    </div>
+</div>
