@@ -35,7 +35,7 @@
                     field: "name",
                     width: 300,
                     template: '<div class="cursor-pointer"><span ng-bind="data.name"></span>' +
-                    '<p><small><small  class="text-muted">{{data.mtime | toDateString}}</small></small></p></div>',
+                    '<p><small><small class="text-muted">{{data.mtime | toDateString}}</small></small></p></div>',
                     cellStyle: {border: 0}
                 },
                 {
