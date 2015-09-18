@@ -1,85 +1,65 @@
 <div class="row ">
     <div class="col-xs-12 no-padding">
         <div class="details-main-content full-height">
-            <span class="file heading-label-lg">{{file.active.name}}<hr></span>
+            <ul class="list-inline no-bottom-margin">
+                <li><span class="heading-label-lg" style="color: #c3c3c3">{{file.active.name}}</span></li>
+                <li><a ng-click="file.rename()" class="heading-label text-uppercase">rename</a></li>
+                <li>
+                    <a ng-href="{{file.downloadSrc(file.active)}}"
+                       class="heading-label text-uppercase"
+                       download="{{file.active.name}}">
+                        download
+                    </a>
+                </li>
+            </ul>
+            <ul class="list-inline text-muted no-bottom-margin">
+                <li>Type: {{file.active.mediatype.mime}}</li>
+                <li>Owner: {{file.active.owner}}</li>
+                <li>Created: {{file.active.birthtime | toDateString}}</li>
+                <li>Size: {{file.active.size | bytes}}</li>
+            </ul>
+
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="row">
-                        <ul class="list-inline">
-                            <li><a ng-click="file.rename()" class="heading-label text-uppercase">rename</a></li>
-                            <li>
-                                <a ng-href="{{file.downloadSrc(file.active)}}"
-                                   class="heading-label text-uppercase"
-                                   download="{{file.active.name}}">
-                                    download
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="section">
+                    <span class="file headings">description</span>
+
+                    <p>{{file.active.description}}</p>
                 </div>
             </div>
 
             <div class="row">
-                <div class="file headings row">details</div>
-                <ul class="list-inline">
-                    <li>Type: {{file.active.mediatype.mime}}</li>
-                    <li>Owner: {{file.active.owner}}</li>
-                    <li>Created: {{file.active.birthtime | toDateString}}</li>
-                </ul>
-                <br>
+                <div class="section">
+                    <display-file file="file.active"></display-file>
+                </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-12" ng-switch="file.fileType">
-                    <div ng-switch-when="image">
-                        <img class="img-responsive center-block col-xs-8"
-                             ng-src="{{file.fileSrc(file.active)}}">
-                    </div>
-                    <div ng-switch-when="pdf">
-                        <div class="embed-responsive embed-responsive-4by3">
-                            <embed class="col-xs-8 embed-responsive-item"
-                                   ng-src="{{file.fileSrc(file.active)}}">
-                            </embed>
-                        </div>
-                    </div>
-                    <div ng-switch-when="xls">Download the excel file
-                    </div>
-                    <div ng-switch-default>
-                        <div ng-if="file.active.size <= 10000"
-                             hljs include="file.fileSrc(file.active)">
-                        </div>
-                        <code
-                                ng-if="file.active.size > 10000 && file.active.size <= 2000000"
-                                style="white-space:pre-line" ng-include="file.fileSrc(file.active)">
-                        </code>
-
-                        <div ng-if="file.active.size > 2000000">File too big to display</div>
-                    </div>
+                <div class="section">
+                    <span class="file headings">tags</span>
+                    <tags-input on-tag-added="file.addTag($tag)" display-property="tag_id"
+                                on-tag-removed="file.removeTag($tag)" ng-model="file.active.tags"
+                                placeholder="Add a Tag" replace-spaces-with-dashes="false">
+                    </tags-input>
                 </div>
             </div>
+
             <div class="row">
-                <div class="file headings">tags</div>
-                <div class="row" style="padding: 10px;">
-                    <div class="row">
-                        <tags-input on-tag-added="file.addTag($tag)" display-property="tag_id"
-                                    on-tag-removed="file.removeTag($tag)" ng-model="file.active.tags"
-                                    placeholder="Add a Tag" replace-spaces-with-dashes="false">
-                        </tags-input>
-                    </div>
-                </div>
-                <div class="file headings">note</div>
-                <div ng-if="false" class="row">
+                <div class="section">
+                    <span class="file headings">note</span>
+
+                    <div ng-if="false" class="row">
                     <span class="pull-right">
                             <a ng-click="file.editNote = !file.editNote"><i class="fa fa-fw fa-edit"></i></a></span>
 
-                    <div class="row" ng-show="!file.editNote">
-                        <div class="col-xs-8">Title: {{file.active.notes[0].title}}</div>
-                        <hr>
-                        <div ng-if="file.active.notes.length !== 0" class="col-xs-11" ta-bind
-                             ng-model="file.active.notes[0].note"></div>
-                    </div>
-                    <div class="row" ng-show="file.editNote">
-                        <create-note item-type="datafile" item="file.active"></create-note>
+                        <div class="row" ng-show="!file.editNote">
+                            <div class="col-xs-8">Title: {{file.active.notes[0].title}}</div>
+                            <hr>
+                            <div ng-if="file.active.notes.length !== 0" class="col-xs-11" ta-bind
+                                 ng-model="file.active.notes[0].note"></div>
+                        </div>
+                        <div class="row" ng-show="file.editNote">
+                            <create-note item-type="datafile" item="file.active"></create-note>
+                        </div>
                     </div>
                 </div>
             </div>
