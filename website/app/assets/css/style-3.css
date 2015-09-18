@@ -909,6 +909,14 @@ header {
     margin-top: 22px;
 }
 
+.section {
+    padding-top: 20px;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0px;
+}
+
 hr.heading-label {
     margin-bottom: 2px;
 }
