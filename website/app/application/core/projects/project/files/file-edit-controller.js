@@ -14,9 +14,9 @@
         //    ctrl.editNote = !ctrl.editNote;
         //});
         //
-        //ctrl.addTag = addTag;
-        //ctrl.removeTag = removeTag;
-        //ctrl.downloadSrc = downloadSrc;
+        ctrl.addTag = addTag;
+        ctrl.removeTag = removeTag;
+        ctrl.downloadSrc = downloadSrc;
         //ctrl.fileSrc = fileSrc;
         //ctrl.closeFile = closeFile;
         //ctrl.rename = rename;
@@ -26,22 +26,22 @@
 
         //////////////////////
 
-        //function addTag(tag) {
-        //    var tag_obj = {
-        //        tag_id: tag.tag_id,
-        //        owner: User.u(),
-        //        item_type: 'datafile'
-        //    };
-        //    tags.createTag(tag_obj, ctrl.active.datafile_id);
-        //}
-        //
-        //function removeTag(tag) {
-        //    tags.removeTag(tag.tag_id, ctrl.active.datafile_id);
-        //}
-        //
-        //function downloadSrc(file) {
-        //    return mcfile.downloadSrc(file.datafile_id);
-        //}
+        function addTag(tag) {
+            var tag_obj = {
+                tag_id: tag.tag_id,
+                owner: User.u(),
+                item_type: 'datafile'
+            };
+            tags.createTag(tag_obj, ctrl.active.datafile_id);
+        }
+
+        function removeTag(tag) {
+            tags.removeTag(tag.tag_id, ctrl.active.datafile_id);
+        }
+
+        function downloadSrc(file) {
+            return mcfile.downloadSrc(file.datafile_id);
+        }
         //
         //function fileSrc(file) {
         //    if (file) {
