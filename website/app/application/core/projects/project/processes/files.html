@@ -1,3 +1,34 @@
 <div class="tab-pane">
-    <h3> This is Files tab section</h3>
+    <div class="tab-pane">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Details</th>
+                <th>Notes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="file in current.files_used">
+                <td><b>{{file.name}}</b>
+
+                    <div style="padding-bottom: 15px;">
+                        <p style="font-size: 12px;padding-bottom: 10px;">
+                            {{file.birthtime | toDateString}}
+                            <span style="padding-left: 10px">{{file.owner}}</span>
+                            <span style="padding-left: 10px">{{file.size}}</span>
+                        </p>
+
+                        <p class="text-small">{{file.notes}}</p>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <img class="img-thumbnail" height="300" width="300"
+                             src="assets/img/img1.jpg">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
