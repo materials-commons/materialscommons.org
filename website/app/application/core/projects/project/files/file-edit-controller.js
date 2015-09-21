@@ -2,12 +2,14 @@
     module.controller("FilesEditController", FilesEditController);
 
     FilesEditController.$inject = ["$scope", "$stateParams", "User", "mcfile",
-        "pubsub", "tags", "mcapi", "$modal", "toastr", "project"];
+        "pubsub", "tags", "$modal", "toastr", "project", "file"];
 
     /* @ngInject */
-    function FilesEditController($scope, $stateParams, User, mcfile, pubsub, tags, mcapi, $modal, toastr, project) {
+    function FilesEditController($scope, $stateParams, User, mcfile, pubsub, tags, $modal, toastr, project, file) {
         var ctrl = this;
 
+        ctrl.renameActive = false;
+        ctrl.active = file;
         //ctrl.editNote = false;
         //
         //pubsub.waitOn($scope, 'datafile-note.change', function () {
@@ -21,8 +23,6 @@
         //ctrl.closeFile = closeFile;
         //ctrl.rename = rename;
         //ctrl.createFolder = createFolder;
-
-        init();
 
         //////////////////////
 
@@ -40,8 +40,9 @@
         }
 
         function downloadSrc(file) {
-            return mcfile.downloadSrc(file.datafile_id);
+            return mcfile.downloadSrc(file.id);
         }
+
         //
         //function fileSrc(file) {
         //    if (file) {
@@ -111,18 +112,6 @@
         //    });
         //}
 
-        function init() {
-            console.log('calling datafile');
-            //**** Move this to route so we don't need to deal with mcapi.
-            mcapi('/projects2/%/files/%', project.id, $stateParams.file_id)
-                .success(function (file) {
-                    console.dir(file);
-                    ctrl.active = file;
-                })
-                .error(function (err) {
-                    toastr.error("Failed retrieving file: " + err.error, "Error");
-                }).get();
-        }
     }
 
 ////////////////////////////////
