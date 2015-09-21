@@ -1,23 +1,23 @@
 (function(module) {
-    module.directive("displayFile", displayFileDirective);
-    function displayFileDirective() {
+    module.directive("displayFileContents", displayFileContentsDirective);
+    function displayFileContentsDirective() {
         return {
             restrict: "E",
-            controller: 'DisplayFileDirectiveController',
+            controller: 'DisplayFileContentsDirectiveController',
             controllerAs: 'view',
             bindToController: true,
             scope: {
                 file: '=file'
             },
-            templateUrl: 'application/core/projects/project/files/display-file.html'
+            templateUrl: 'application/core/projects/project/files/display-file-contents.html'
         };
     }
 
-    module.controller("displayFileDirectiveController", DisplayFileDirectiveController);
-    DisplayFileDirectiveController.$inject = ["mcfile"];
+    module.controller("DisplayFileContentsDirectiveController", DisplayFileContentsDirectiveController);
+    DisplayFileContentsDirectiveController.$inject = ["mcfile"];
 
     /* @ngInject */
-    function DisplayFileDirectiveController(mcfile) {
+    function DisplayFileContentsDirectiveController(mcfile) {
         var ctrl = this;
         ctrl.fileType = determineFileType(ctrl.file.mediatype);
         ctrl.fileSrc = mcfile.src(ctrl.file.id);
