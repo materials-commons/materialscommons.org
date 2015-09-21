@@ -1,4 +1,7 @@
 <div  class="tab-pane active">
+    <div ng-if="view.current.setup[0].setupproperties.length === 0">
+         No Setup information
+    </div>
     <ul>
         <li ng-repeat="property in view.current.setup[0].setupproperties" ng-if="property.value">
             {{property.name}} :: {{property.value}} {{property.units}}
