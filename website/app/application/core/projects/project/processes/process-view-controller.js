@@ -10,24 +10,23 @@
         viewCtrl.editProvenance = editProvenance;
         viewCtrl.images = images;
         viewCtrl.fileSrc = fileSrc;
+        viewCtrl.isSet = isSet;
+        viewCtrl.setTab = setTab;
 
         viewCtrl.project = project;
-        viewCtrl.tab = 'setup';
+
+
+        function setTab(tabId) {
+            viewCtrl.tab = tabId;
+        }
+
+        function isSet(tabId) {
+            return viewCtrl.tab === tabId;
+        }
 
         function fileSrc(id) {
             return mcfile.src(id);
         }
-
-        function images(files) {
-            var images = [];
-            files.forEach(function (f) {
-                if (isImage(f.mediatype.mime)) {
-                    images.push(f);
-                }
-            });
-            return images;
-        }
-
 
         function openSample(sample) {
             modalInstance.openModal(sample, 'sample', viewCtrl.project);
@@ -46,7 +45,6 @@
                 mcapi('/samples')
                     .success(function (samples) {
                         viewCtrl.current.samples = samples;
-                        console.dir(viewCtrl.current.samples)
                     })
                     .error(function (err) {
                         console.log(err);
@@ -64,7 +62,9 @@
                 viewCtrl.current = viewCtrl.project.processes[i];
                 getSampleDetails(viewCtrl.current);
             }
+
         }
+
         init();
 
 
