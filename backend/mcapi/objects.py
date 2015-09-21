@@ -121,6 +121,7 @@ def fill_in_measurements():
     samples = j['samples']
     for sample in samples:
         sample['properties'] = get_properties_and_best_measures(sample['property_set_id'])
+        sample['linked_files'] = get_linked_files(sample['id'])
     return resp.to_json(samples)
 
 
@@ -129,12 +130,19 @@ def get_properties_and_best_measures(property_set_id):
         r.table('propertyset2property').get_all(property_set_id,
                                                 index='property_set_id') \
         .eq_join('property_id', r.table('properties')).zip().order_by('name')\
-        .merge(lambda property:
-               {
-                   'best_measure':
-                       r.table('best_measure_history').get_all(
-                           property['best_measure_id'])
+        .merge(lambda property: {
+            'best_measure':
+                r.table('best_measure_history').get_all(property['best_measure_id'])
                .eq_join('measurement_id', r.table('measurements')).zip()
                .coerce_to('array')
-               }).run(g.conn, time_format="raw"))
+        }).run(g.conn, time_format="raw"))
     return properties
+
+
+def get_linked_files(id):
+    files = list(r.table('samples').get_all(id).eq_join('id',
+            r.table('sample2datafile'),
+            index='sample_id').zip().eq_join('datafile_id',
+            r.table('datafiles')).zip().coerce_to('array')
+            .run(g.conn, time_format="raw"))
+    return files

@@ -29,6 +29,7 @@
                 mcapi('/samples')
                     .success(function (samples) {
                         viewCtrl.current.samples = samples;
+                        console.dir(samples);
                     })
                     .error(function (err) {
                         console.log(err)

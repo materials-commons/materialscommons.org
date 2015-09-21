@@ -1,4 +1,4 @@
-<div  class="tab-pane">
+<div class="tab-pane">
     <table class="table">
         <thead>
         <tr>
@@ -10,13 +10,19 @@
         <tr ng-repeat="sample in current.samples">
             <td>
                 <b><a ui-sref="projects.project.samples.all.edit({sample_id: sample.id})">{{sample.name}}</a></b>
+
                 <div style="padding-bottom: 15px;">
                     <p style="font-size: 12px;padding-bottom: 10px;">
                         {{sample.birthtime | toDateString}}
                         <span style="padding-left: 10px">{{sample.owner}}</span>
                     </p>
 
-                    <p class="text-small">{{sample.description}} </p>
+                    <p class="text-small">{{sample.description}} This is a test sample received from the manufacturere
+                        ABC.
+                        Further testing is needed to predict the material properties at different length scales. Sample
+                        has got some initial images generated from Scanning electron microsope
+                    </p>
+
                     <p>
                         <img class="img-thumbnail" height="100" width="100"
                              src="assets/img/img1.jpg">
