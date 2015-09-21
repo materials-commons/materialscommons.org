@@ -10,23 +10,19 @@
             <tbody>
             <tr ng-repeat="file in current.files_used">
                 <td>
-                    <b><a ui-sref="projects.project.files.all.edit({file_id: file.id, file_type: file.type})">{{file.name}}</a></b>
+                    <b><a ui-sref="projects.project.files.all.edit({file_id: file.id,
+                    file_type: file.type})">{{file.name}}</a></b>
 
                     <div style="padding-bottom: 15px;">
                         <p style="font-size: 12px;padding-bottom: 10px;">
                             {{file.birthtime | toDateString}}
                             <span style="padding-left: 10px">{{file.owner}}</span>
-                            <span style="padding-left: 10px">{{file.size}}</span>
+                            <span style="padding-left: 10px">{{file.size | bytes}} </span>
                         </p>
-
-                        <p class="text-small">{{file.notes}}</p>
                     </div>
                 </td>
                 <td>
-                    <div>
-                        <img class="img-thumbnail" height="300" width="300"
-                             src="assets/img/img1.jpg">
-                    </div>
+                    <img class="img-thumbnail" height="220" width="220" ng-src={{view.fileSrc(file.id)}}>
                 </td>
             </tr>
             </tbody>
