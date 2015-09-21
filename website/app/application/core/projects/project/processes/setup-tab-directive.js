@@ -3,9 +3,7 @@
 
     function setupTabDirective() {
         return {
-            scope: {
-                current: "="
-            },
+            scope: true,
             restrict: "E",
             templateUrl: "application/core/projects/project/processes/setup.html"
         };

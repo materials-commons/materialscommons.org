@@ -3,9 +3,7 @@
 
     function filesTabDirective() {
         return {
-            scope: {
-                current: "="
-            },
+            scope: true,
             restrict: "E",
             templateUrl: "application/core/projects/project/processes/files.html"
         };
