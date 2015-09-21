@@ -18,6 +18,7 @@ module.exports = function(model) {
     router.put('/projects2/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
 
     router.get('/projects2/:project_id/files/:file_id', validateProjectAccess, files.get);
+    router.put('/projects2/:project_id/files/:file_id', validateProjectAccess, files.put);
 
     return router;
 };
