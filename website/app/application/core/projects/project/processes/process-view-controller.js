@@ -14,6 +14,7 @@
         viewCtrl.setTab = setTab;
 
         viewCtrl.project = project;
+        viewCtrl.tab = 'setup';
 
 
         function setTab(tabId) {
@@ -51,6 +52,18 @@
                     })
                     .post({samples: process.samples});
             }
+        }
+
+        function images(files) {
+            var images = [];
+            if (files){
+                files.forEach(function (f) {
+                    if (isImage(f.mediatype.mime)) {
+                        images.push(f);
+                    }
+                });
+            }
+            return images;
         }
 
         function init() {
