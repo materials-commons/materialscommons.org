@@ -224,7 +224,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.processes.list", {
             url: "/list",
             templateUrl: "application/core/projects/project/processes/list.html",
-            controller: "projectListProcess"
+            controller: "projectListProcess",
+            redirectTo: "projects.project.processes.list.view.setup"
         })
         .state("projects.project.processes.create", {
             url: "/create",
@@ -310,14 +311,18 @@ function createNumericValidator(validationProvider) {
     validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
 }
 
-app.run(["$rootScope", "User", "Restangular", appRun]);
+app.run(["$rootScope", "$state", "User", "Restangular", appRun]);
 
-function appRun($rootScope, User, Restangular) {
+function appRun($rootScope, $state, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
-    $rootScope.$on('$stateChangeStart', function () {
+    $rootScope.$on('$stateChangeStart', function (evt, to, params) {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
+        }
+        if (to.redirectTo) {
+            evt.preventDefault();
+            $state.go(to.redirectTo, params)
         }
     });
 }

@@ -1,4 +1,5 @@
 <div class="details-main-content">
+    <h3>{{current.process.name}}</h3>
     <div class="row" style="padding: 10px;color: #C0C0C0">
         {{current.birthtime | toDateString}}
         <button ng-click="view.editProvenance()"
@@ -27,20 +28,38 @@
         </div>
         <div class="row">
             <div class="process-tab">
+                <!--<ul class="nav nav-tabs">-->
+                    <!--<li ng-class="{active: view.tab === 'setup'}" ui-sref-active="active">-->
+                        <!--<a ui-sref="projects.project.processes.list.view.setup"><b><i-->
+                                <!--class="fa fa-fw fa-gear"></i>SETUP</b></a>-->
+                    <!--</li>-->
+                    <!--<li ui-sref-active="active"><a ui-sref="projects.project.processes.list.view.samples"><b><i-->
+                            <!--class="fa fa-fw fa-cubes"></i>SAMPLES</b></a>-->
+                    <!--</li>-->
+                    <!--<li ui-sref-active="active"><a ui-sref="projects.project.processes.list.view.files"><b><i-->
+                            <!--class="fa fa-fw fa-copy"></i>FILES</b></a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+                <!--<div class="tab-content clearfix">-->
+                    <!--<div ui-view=""></div>-->
+                <!--</div>-->
                 <ul class="nav nav-tabs">
-                    <li class="active" ui-sref-active="active">
-                        <a ui-sref="projects.project.processes.list.view.setup"><b><i
-                                class="fa fa-fw fa-gear"></i>SETUP</b></a>
-                    </li>
-                    <li ui-sref-active="active"><a ui-sref="projects.project.processes.list.view.samples"><b><i
-                            class="fa fa-fw fa-cubes"></i>SAMPLES</b></a>
-                    </li>
-                    <li ui-sref-active="active"><a ui-sref="projects.project.processes.list.view.files"><b><i
-                            class="fa fa-fw fa-copy"></i>FILES</b></a>
+                    <li ng-class="{active:view.isSet('setup')}" class="active">
+                        <a ng-click="view.setTab('setup')"><b><i class="fa fa-fw fa-gear"></i>SETUP</b></a></li>
+                    <li ng-class="{active:view.isSet('samples')}"><a ng-click="view.setTab('samples')"><b><i class="fa fa-fw fa-cubes"></i>SAMPLES</b></a></li>
+                    <li ng-class="{active:view.isSet('files')}"><a ng-click="view.setTab('files')"><b><i class="fa fa-fw fa-copy"></i>FILES</b></a>
                     </li>
                 </ul>
                 <div class="tab-content clearfix">
-                    <div ui-view=""></div>
+                    <div ng-show="view.isSet('setup')">
+                       <setup-tab current="view.current"></setup-tab>
+                    </div>
+                    <div ng-show="view.isSet('samples')">
+                        <samples-tab current="view.current"></samples-tab>
+                    </div>
+                    <div ng-show="view.isSet('files')">
+                        <files-tab current="view.current"></files-tab>
+                    </div>
                 </div>
             </div>
         </div>
