@@ -17,20 +17,24 @@
                         <span style="padding-left: 10px">{{sample.owner}}</span>
                     </p>
 
-                    <p class="text-small">{{sample.description}} This is a test sample received from the manufacturere
-                        ABC.
-                        Further testing is needed to predict the material properties at different length scales. Sample
-                        has got some initial images generated from Scanning electron microsope
+                    <p class="text-small">{{sample.description}}
+                        <!--This is a test sample received from the manufacturere-->
+                        <!--ABC.-->
+                        <!--Further testing is needed to predict the material properties at different length scales. Sample-->
+                        <!--has got some initial images generated from Scanning electron microsope-->
                     </p>
-
-                    <p>
-                        <img class="img-thumbnail" height="100" width="100"
-                             src="assets/img/img1.jpg">
-                        <img class="img-thumbnail" height="100" width="100"
-                             src="assets/img/img2.jpg">
-                        <img class="img-thumbnail" height="100" width="100"
-                             src="assets/img/img3.jpg">
-                        ... <a>more</a> (10) files
+                    <p ng-if="sample.linked_files.length !== 0">
+                        <span ng-repeat="image in view.images(sample.linked_files) | first:3">
+                               <img class="img-thumbnail" height="100" width="100"
+                                    ng-src={{view.fileSrc(image.datafile_id)}}>
+                        </span>
+                        <!--<img class="img-thumbnail" height="100" width="100"-->
+                             <!--src="assets/img/img1.jpg">-->
+                        <!--<img class="img-thumbnail" height="100" width="100"-->
+                             <!--src="assets/img/img2.jpg">-->
+                        <!--<img class="img-thumbnail" height="100" width="100"-->
+                             <!--src="assets/img/img3.jpg">-->
+                        ... <a>more</a> files
                     </p>
                 </div>
             </td>
