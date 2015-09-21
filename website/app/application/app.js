@@ -13,7 +13,7 @@ var app = angular.module('materialscommons',
         'ngDragDrop', 'ngTagsInput',
         'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
-        "hljs", "RecursionHelper",'googlechart',
+        "hljs", "RecursionHelper", 'googlechart',
         'materialscommons']);
 
 app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
@@ -132,12 +132,20 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             templateUrl: "application/core/projects/project/files/all.html",
             controller: "FilesAllController",
             controllerAs: 'files'
+
         })
         .state("projects.project.files.all.edit", {
             url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
             controller: "FilesEditController",
-            controllerAs: 'file'
+            controllerAs: 'file',
+            resolve: {
+                file: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('projects2', $stateParams.id).
+                            one('files', $stateParams.file_id).get();
+                    }]
+            }
         })
         .state("projects.project.files.all.dir", {
             url: "/dir/:dir_id",
@@ -253,6 +261,16 @@ app.run(["$rootScope", "User", "Restangular", appRun]);
 
 function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
+
+    // appRun will run when the application starts up and before any controllers have run.
+    // This means it will run on a refresh. We check if the user is already authenticated
+    // during the run. If they are then the browser has been refreshed and we need to
+    // set the apikey param for Restangular. This param is set in the login-controller.
+    // However on a refresh the login-controller isn't run so we need to explicitly set
+    // the apikey param in Restangular.
+    if (User.isAuthenticated()) {
+        Restangular.setDefaultRequestParams({apikey: User.apikey()});
+    }
 
     $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
