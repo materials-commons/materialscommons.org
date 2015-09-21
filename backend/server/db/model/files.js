@@ -7,16 +7,17 @@
 
 module.exports = function(r) {
     const runQuery = require('./run');
+    const db = require('./db')(r);
 
     return {
         countInProject: countInProject,
-        get: get
+        get: get,
+        put: put
     };
 
     function* countInProject(ids, projectID) {
         let rql = r.table('datafiles').getAll(r.args(ids));
-        let count = yield rql.filter({project_id: projectID}).count();
-        return count;
+        return yield rql.filter({project_id: projectID}).count();
     }
 
     // get details on a file
@@ -39,5 +40,34 @@ module.exports = function(r) {
                 }
             });
         return runQuery(rql);
+    }
+
+    // update file
+    function* put(file_id, file) {
+        let updateFields = {};
+
+        if (file.name) {
+            updateFields.name = file.name;
+            let isValid = yield validateFileName(file_id, file.name);
+            if (!isValid) {
+                return {error: `file with name '${file.name}' already exists`};
+            }
+        }
+
+        if (file.description) {
+            updateFields.description = file.description;
+        }
+
+        let newVal = yield db.update('datafiles', file_id, updateFields);
+        return {val: newVal};
+    }
+
+    function* validateFileName(fileID, fileName) {
+        let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).
+            eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip().
+            eqJoin('datafile_id', r.table('datafiles')).zip().
+            filter({name: fileName}).count();
+        let matchingNameCount = yield runQuery(rql);
+        return matchingNameCount === 0;
     }
 };
