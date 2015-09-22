@@ -1032,12 +1032,12 @@ header {
   color: grey;
 }
 
-.process-tab .tab-content .tab-pane .table > tbody > tr > td {
+.process-tab  .table > tbody > tr > td {
   height: 240px;
   width: 50%;
 }
 
-.process-tab .tab-content .tab-pane .table > tbody > tr > td > .overflow {
+.process-tab .table > tbody > tr > td > .overflow {
   max-height: 200px;
   overflow-y: auto;
 }
