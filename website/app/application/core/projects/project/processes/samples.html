@@ -16,16 +16,8 @@
                         {{sample.birthtime | toDateString}}
                         <span style="padding-left: 10px">{{sample.owner}}</span>
                     </p>
-
                     <p class="text-small">{{sample.description}}</p>
-
-                    <p ng-if="sample.linked_files.length !== 0">
-                        <span ng-repeat="image in view.images(sample.linked_files) | first:3">
-                               <img class="img-thumbnail" height="100" width="100"
-                                    ng-src={{view.fileSrc(image.datafile_id)}}>
-                        </span>
-                        ... <a>more</a> files
-                    </p>
+                    <display-image-tab files-list="sample.linked_files"></display-image-tab>
                 </div>
             </td>
             <td>
