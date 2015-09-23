@@ -249,8 +249,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectViewProcess",
             controllerAs: 'view',
             resolve: {
-                processes: ["$stateParams", "processes", "Restangular",
-                    function ($stateParams, processes, Restangular) {
+                processes: ["$stateParams", "processes", "Restangular",  "mcapi",
+                    function ($stateParams, processes, Restangular, mcapi) {
                         var i = _.indexOf(processes, function (process) {
                             return process.id === $stateParams.process_id;
                         });
@@ -260,9 +260,15 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
                         }else{
                             process = processes[0];
                         }
-                        Restangular.one('samples').post({samples: process.samples}).then(function(samples){
-                            console.dir(samples);
-                        })
+                        mcapi('/samples')
+                            .success(function (samples) {
+                                 process.samples = samples;
+                                return process;
+                            })
+                            .error(function (err) {
+                                console.log(err);
+                            })
+                            .post({samples: process.samples});
                     }
                 ]
             }
