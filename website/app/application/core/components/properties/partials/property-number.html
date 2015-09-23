@@ -1,26 +1,25 @@
-<div class="row">
-    <div class="col-xs-3">
-        <b>{{::property.name}}</b>
-        <i ng-if="property.required" class="fa fa-fw fa-asterisk text-danger"></i>
-    </div>
-    <div class="col-xs-3">
-        <input style="width: 100px;" type="number" id="numberInput" step="any" class="form-control"
-               ng-required="property.required" ng-model="property.value">
-    </div>
-    <div class="col-xs-3">
-        <span ng-if="property.units.length === 0">{{::property.unit}}</span>
+<div class="row col-xs-9">
+    <h4>{{property.name}} : {{property.description}}</h4>
+    <hr/>
+    <div class="row">Unit: <span ng-if="property.units.length === 0">{{::property.unit}}</span>
         <span ng-if="property.units.length !== 0">
-        <select style="width: 100px;" ng-model="property.unit" data-placeholder="Choose"
-                class="form-control" ng-required="property.required">
-            <option value="{{choice}}" ng-repeat="choice in property.units">
-                {{ choice }}
-            </option>
-        </select>
-        </span>
+            <select style="width: 200px;" ng-model="property.unit" data-placeholder="Choose"
+                    class="form-control" ng-required="property.required">
+                <option value="{{choice}}" ng-repeat="choice in property.units">
+                    {{ choice }}
+                </option>
+            </select>
+    </span>
     </div>
-
-    <div class="row">
-        <span ng-show="form.numberInput.$error.required" class="text-danger"> You must supply a value for {{::property.name}}</span>
-        <span class="help-block">{{::property.description}}</span>
+</div>
+<div class="row">
+    <div class="col-xs-8">
+        <strong>Enter {{property.name}} measures </strong> <br>
+        <strong>(one entry per line) </strong><br>
+        type: {{property._type}}
+        <textarea ng-model="property.value" class="col-xs-12" rows="20"></textarea>
+    </div>
+    <div class="col-xs-4">
+        <p class="errors">{{message}}</p>
     </div>
 </div>

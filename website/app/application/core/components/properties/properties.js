@@ -74,12 +74,19 @@
 
     function propertyCompositionController($scope, mcapi) {
         $scope.elements = [];
-        $scope.property.unit = 'at%';  //setting default unit
-
+        $scope.property.unit = 'wt%';  //setting default unit
+        if ($scope.property.value === null) {
+            $scope.property.value = {'elements': "", 'values': ""};
+        }
         mcapi('/objects/elements')
             .success(function (data) {
                 $scope.elements = data;
             }).jsonp();
+
+        $scope.addElement = function(){
+            $scope.property.value.elements = $scope.property.value.elements + $scope.property.element + "\n";
+        }
+
     }
 
     module.directive("propertyList", propertyListDirective);
