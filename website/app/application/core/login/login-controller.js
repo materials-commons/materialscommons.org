@@ -1,12 +1,12 @@
 (function (module) {
     module.controller('LoginController', LoginController);
 
-    LoginController.$inject = ["$state", "User", "toastr",
+    LoginController.$inject = ["Restangular", "$state", "User", "toastr",
         "mcapi", "pubsub", "model.projects",
         "projectFiles", "$anchorScroll", "$location"];
 
     /* @ngInject */
-    function LoginController($state, User, toastr, mcapi, pubsub, projects, projectFiles, $anchorScroll, $location) {
+    function LoginController(Restangular, $state, User, toastr, mcapi, pubsub, projects, projectFiles, $anchorScroll, $location) {
         var ctrl = this;
 
         ctrl.cancel = cancel;
@@ -22,6 +22,7 @@
                     pubsub.send("tags.change");
                     projects.clear();
                     projectFiles.clear();
+                    Restangular.setDefaultRequestParams({apikey: User.apikey()});
                     projects.getList().then(function (projects) {
                         if (projects.length === 0) {
                             $state.go("projects.create");
