@@ -18,7 +18,7 @@ var app = angular.module('materialscommons',
         'ngDragDrop', 'ngTagsInput',
         'ng-context-menu', 'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
-        "hljs", "nsPopover", "RecursionHelper",'googlechart',
+        "hljs", "nsPopover", "RecursionHelper", 'googlechart',
         'materialscommons']);
 
 // This factory needs to hang off of this module for some reason
@@ -224,7 +224,14 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.processes.list", {
             url: "/list",
             templateUrl: "application/core/projects/project/processes/list.html",
-            controller: "projectListProcess"
+            controller: "projectListProcess",
+            controllerAs: "processlist",
+            resolve: {
+                processes: ["project",
+                    function (project) {
+                        return project.processes;
+                    }]
+            }
         })
         .state("projects.project.processes.create", {
             url: "/create",
@@ -240,7 +247,25 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             url: "/view/:process_id",
             templateUrl: "application/core/projects/project/processes/view.html",
             controller: "projectViewProcess",
-            controllerAs: 'view'
+            controllerAs: 'view',
+            resolve: {
+                processes: ["$stateParams", "processes", "Restangular",
+                    function ($stateParams, processes, Restangular) {
+                        var i = _.indexOf(processes, function (process) {
+                            return process.id === $stateParams.process_id;
+                        });
+                        var process = {};
+                        if (i > -1) {
+                            process = processes[i];
+                        }else{
+                            process = processes[0];
+                        }
+                        Restangular.one('samples').post({samples: process.samples}).then(function(samples){
+                            console.dir(samples);
+                        })
+                    }
+                ]
+            }
         })
         .state("projects.project.processes.list.view.setup", {
             url: "/setup",
