@@ -3,7 +3,7 @@
         <div class="details-main-content full-height">
             <ul class="list-inline no-bottom-margin">
                 <li>
-                    <span ng-if="!file.renameActive" class="heading-label-lg">{{file.active.name}}</span>
+                    <h2 class="color" ng-if="!file.renameActive">{{file.active.name}}</h2>
                     <span ng-if="file.renameActive">
                         <input type="text" ng-model="file.newName">
                         <button class="btn btn-files">Done</button>
