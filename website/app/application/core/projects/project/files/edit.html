@@ -3,7 +3,7 @@
         <div class="details-main-content full-height">
             <ul class="list-inline no-bottom-margin">
                 <li>
-                    <span ng-if="!file.renameActive" class="heading-label-lg" style="color: #c3c3c3">{{file.active.name}}</span>
+                    <span ng-if="!file.renameActive" class="heading-label-lg">{{file.active.name}}</span>
                     <span ng-if="file.renameActive">
                         <input type="text" ng-model="file.newName">
                         <button class="btn btn-files">Done</button>
@@ -28,7 +28,7 @@
 
             <div class="row">
                 <div class="section">
-                    <span class="file headings">description</span>
+                    <span class="headings">description</span>
 
                     <p>{{file.active.description}}</p>
                 </div>
@@ -42,7 +42,7 @@
 
             <div class="row">
                 <div class="section">
-                    <span class="file headings">tags</span>
+                    <span class="headings">tags</span>
                     <tags-input on-tag-added="file.addTag($tag)" display-property="tag_id"
                                 on-tag-removed="file.removeTag($tag)" ng-model="file.active.tags"
                                 placeholder="Add a Tag" replace-spaces-with-dashes="false">
@@ -52,7 +52,7 @@
 
             <div class="row">
                 <div class="section">
-                    <span class="file headings">note</span>
+                    <span class="headings">note</span>
 
                     <div ng-if="false" class="row">
                     <span class="pull-right">
