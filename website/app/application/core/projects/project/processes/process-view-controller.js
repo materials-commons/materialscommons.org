@@ -5,7 +5,8 @@
 
     function projectViewProcess(project, mcfile, $stateParams, modalInstance, $state, mcapi, process) {
         var viewCtrl = this;
-
+        console.log('inside');
+        console.dir(process);
         viewCtrl.openSample = openSample;
         viewCtrl.openFile = openFile;
         viewCtrl.editProvenance = editProvenance;
@@ -16,7 +17,8 @@
 
         viewCtrl.project = project;
         viewCtrl.tab = 'setup';
-
+        viewCtrl.process = process;
+         console.dir(viewCtrl.process);
 
         function setTab(tabId) {
             viewCtrl.tab = tabId;
