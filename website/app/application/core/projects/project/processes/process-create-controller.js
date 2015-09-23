@@ -91,6 +91,7 @@
             case "sample":
                 what = 'input_samples';
                 item.new_properties = [];
+                item.old_properties = [];
                 item.transformed_properties = [];
                 item.files = [];
                 item.property_set_id = item.property_set_id;
@@ -318,13 +319,17 @@
             if ($scope.template._type === 'as_received') {
                 $scope.template.output_samples.push($scope.bk.newSample);
             } else {
-                $scope.template = refineSampleProperties();
+                //$scope.template = refineSampleProperties();
+                if ($scope.template.transformed_samples.length !== 0) {
+                    $scope.template.transformed_samples = refineTransformedSamples();
+                }
             }
             $scope.template.input_files = refineFiles($scope.template.input_files);
             $scope.template.output_files = refineFiles($scope.template.output_files);
             refineSetUpProperties();
             mcapi('/projects2/%/processes', project.id)
                 .success(function (proc) {
+                    measurements.reset();
                     $scope.isProcessing = false;
                     //After you create a process try to update the whole project.
                     // Because samples, processes should be refreshed in
