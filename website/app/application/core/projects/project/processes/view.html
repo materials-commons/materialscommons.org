@@ -1,7 +1,7 @@
 <div class="details-main-content">
-    <h3>{{view.current.name}}</h3>
+    <h3>{{view.process.name}}</h3>
     <div class="row" style="padding: 10px;color: #C0C0C0">
-        {{current.birthtime | toDateString}}
+        {{view.process.birthtime | toDateString}}
         <button ng-click="view.editProvenance()"
                 class="pull-right btn-details-container btn btn-default btn btn-cancel">
             Edit
@@ -13,15 +13,15 @@
                 <div class="process headings">Details:</div>
 
                 <div class="row"><b>Description about process:</b> <br>
-                    {{view.current.what}}
-                    <div ng-if="current.what === ''">--None--</div>
+                    {{view.process.what}}
+                    <div ng-if="process.what === ''">--None--</div>
 
                     <div class="row"><b>Reason you performed the process:</b><br>
-                        {{view.current.why}}
-                        <div ng-if="view.current.why === ''">--None--</div>
+                        {{view.process.why}}
+                        <div ng-if="view.process.why === ''">--None--</div>
 
-                        <div class="row"><b>Owner: </b>{{view.current.owner}}</div>
-                        <div class="row"><b>Does Transform: </b>{{view.current.does_transform}}</div>
+                        <div class="row"><b>Owner: </b>{{view.process.owner}}</div>
+                        <div class="row"><b>Does Transform: </b>{{view.process.does_transform}}</div>
                     </div>
                 </div>
             </div>
@@ -37,13 +37,13 @@
                 </ul>
                 <div class="tab-content clearfix">
                     <div ng-show="view.isSet('setup')">
-                       <setup-tab current="view.current"></setup-tab>
+                       <setup-tab current="view.process"></setup-tab>
                     </div>
                     <div ng-show="view.isSet('samples')">
                         <samples-tab></samples-tab>
                     </div>
                     <div ng-show="view.isSet('files')">
-                        <files-tab current="view.current"></files-tab>
+                        <files-tab current="view.process"></files-tab>
                     </div>
                 </div>
             </div>
