@@ -73,7 +73,7 @@
 
             if (i > -1) {
                 viewCtrl.current = viewCtrl.project.processes[i];
-                getSampleDetails(viewCtrl.current);
+                //getSampleDetails(viewCtrl.current);
             }
 
         }
