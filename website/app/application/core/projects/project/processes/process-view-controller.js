@@ -1,8 +1,9 @@
 (function (module) {
     module.controller('projectViewProcess', projectViewProcess);
-    projectViewProcess.$inject = ["project", "mcfile", "$stateParams", "modalInstance", "$state", "mcapi"];
+    projectViewProcess.$inject = ["project", "mcfile", "$stateParams", "modalInstance", "$state",
+        "mcapi", "process"];
 
-    function projectViewProcess(project, mcfile, $stateParams, modalInstance, $state, mcapi) {
+    function projectViewProcess(project, mcfile, $stateParams, modalInstance, $state, mcapi, process) {
         var viewCtrl = this;
 
         viewCtrl.openSample = openSample;
@@ -41,18 +42,18 @@
             $state.go('projects.project.processes.list.edit', {process_id: viewCtrl.current.id});
         }
 
-        function getSampleDetails(process) {
-            if (process.samples.length !== 0) {
-                mcapi('/samples')
-                    .success(function (samples) {
-                        viewCtrl.current.samples = samples;
-                    })
-                    .error(function (err) {
-                        console.log(err);
-                    })
-                    .post({samples: process.samples});
-            }
-        }
+        //function getSampleDetails(process) {
+        //    if (process.samples.length !== 0) {
+        //        mcapi('/samples')
+        //            .success(function (samples) {
+        //                viewCtrl.current.samples = samples;
+        //            })
+        //            .error(function (err) {
+        //                console.log(err);
+        //            })
+        //            .post({samples: process.samples});
+        //    }
+        //}
 
         function images(files) {
             var images = [];
@@ -66,19 +67,19 @@
             return images;
         }
 
-        function init() {
-            var i = _.indexOf(viewCtrl.project.processes, function (process) {
-                return process.id === $stateParams.process_id;
-            });
-
-            if (i > -1) {
-                viewCtrl.current = viewCtrl.project.processes[i];
-                //getSampleDetails(viewCtrl.current);
-            }
-
-        }
-
-        init();
+        //function init() {
+        //    var i = _.indexOf(viewCtrl.project.processes, function (process) {
+        //        return process.id === $stateParams.process_id;
+        //    });
+        //
+        //    if (i > -1) {
+        //        viewCtrl.current = viewCtrl.project.processes[i];
+        //        //getSampleDetails(viewCtrl.current);
+        //    }
+        //
+        //}
+        //
+        //init();
 
 
     }
