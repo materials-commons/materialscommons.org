@@ -35,10 +35,25 @@
     <!-- endbuild -->
 </head>
 <body>
-<div class="row">
-    <navbar></navbar>
+<navbar></navbar>
+<div class="container">
+    <div class="row">
+        <div ng-controller="FlexController">
+            <div class="col-lg-4" style="background-color: white">
+                <ul ng-if="true">
+                    <li ng-repeatx="col in col2 track by $index">{{col}}</li>
+                    <li>Hello</li>
+                </ul>
+            </div>
+            <div class="col-lg-8" style="background-color: white">
+                <ul ng-if="false">
+                    <li ng-repeat="col in col2 track by $index">{{col}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
+<div ng-if="false">
     <div class="main-content">
         <div class="row app-container">
             <div ui-view>
