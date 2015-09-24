@@ -11,6 +11,7 @@
         processListCtrl.processes = processes;
         processListCtrl.project = project;
         processListCtrl.current = {};
+
         if (processListCtrl.processes.length !== 0) {
             processListCtrl.current = processListCtrl.processes[0];
         }

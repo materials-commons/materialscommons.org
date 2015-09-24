@@ -7,7 +7,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="sample in current.samples">
+        <tr ng-repeat="sample in view.process.samples">
             <td>
                 <b><a ui-sref="projects.project.samples.all.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
@@ -16,6 +16,7 @@
                         {{sample.birthtime | toDateString}}
                         <span style="padding-left: 10px">{{sample.owner}}</span>
                     </p>
+
                     <p class="text-small">{{sample.description}}</p>
                     <display-image-tab files-list="sample.linked_files"></display-image-tab>
                 </div>
