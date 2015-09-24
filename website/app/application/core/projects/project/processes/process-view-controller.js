@@ -16,7 +16,7 @@
         viewCtrl.project = project;
         viewCtrl.tab = 'setup';
         viewCtrl.process = process;
-
+        console.dir(process);
         function setTab(tabId) {
             viewCtrl.tab = tabId;
         }
