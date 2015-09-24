@@ -40,4 +40,22 @@
             $scope.query = "";
         })
     }
+
+    module.controller("FlexController", FlexController);
+    FlexController.$inject = ["$scope"];
+    function FlexController($scope) {
+        var col1Length = 1000;
+        var col2Length = 2;
+        var i = 0;
+        $scope.col1 = [];
+        $scope.col2 = [];
+
+        for (i = 0; i < col1Length; i++) {
+            $scope.col1.push("col1");
+        }
+
+        for (i = 0; i < col2Length; i++) {
+            $scope.col2.push("col2");
+        }
+    }
 }(angular.module('materialscommons')));
