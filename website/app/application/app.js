@@ -249,8 +249,8 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectViewProcess",
             controllerAs: 'view',
             resolve: {
-                process: ["$stateParams", "processes", "Restangular", "mcapi",
-                    function ($stateParams, processes, Restangular, mcapi) {
+                process: ["$stateParams", "processes", "Restangular",
+                    function ($stateParams, processes, Restangular) {
                         var i = _.indexOf(processes, function (process) {
                             return process.id === $stateParams.process_id;
                         });
@@ -260,7 +260,9 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
                         } else {
                             process = processes[0];
                         }
-                       process.samples =  Restangular.all("samples").post({samples: process.samples});
+                       Restangular.all("samples").post({process_id: process.id}).then(function(response){
+                           process.samples = response.samples;
+                       });
                         return process;
                     }
                 ]
@@ -333,7 +335,6 @@ app.run(["$rootScope", "User", "Restangular", appRun]);
 function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
-    console.log('app run');
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
