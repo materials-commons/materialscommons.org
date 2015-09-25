@@ -18,20 +18,24 @@
             case "all":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
                 Review.listReviewsByType($scope.reviews, type);
+                $scope.noReviewsMessage = "No reviews of any type";
                 break;
             case "my_reviews":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'author', User.u());
                 $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
                 Review.listReviewsByType($scope.reviews, type);
+                $scope.noReviewsMessage = "You have no open reviews";
                 break;
             case "due":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
                 $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
                 Review.listReviewsByType($scope.reviews, type);
+                $scope.noReviewsMessage = "You have no reviews due";
                 break;
             case "closed":
                 $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
                 Review.listReviewsByType($scope.reviews, type);
+                $scope.noReviewsMessage = "There are no archived reviews";
                 break;
             }
         };
