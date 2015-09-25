@@ -1,6 +1,6 @@
 <div class="details-main-content" style="border: 2px solid red; ">
     <div class="row" style="padding: 10px;color: #C0C0C0">
-        {{current.birthtime | toDateString}}
+        {{edit.process.birthtime | toDateString}}
     </div>
     <div class="row">
         <div class="row">
@@ -28,9 +28,9 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <div class="process headings">SetUp: {{current.setup[0].name}}</div>
+                <div class="process headings">SetUp: {{edit.process.setup[0].name}}</div>
                 <ul>
-                    <li ng-repeat="property in current.setup[0].setupproperties" ng-if="property.value">
+                    <li ng-repeat="property in edit.process.setup[0].setupproperties" ng-if="property.value">
                         {{property.name}} ::
                         <div class="row"><input class="col-xs-2" ng-model="property.value"><input ng-if="property.units" class="col-xs-1" ng-model="property.units"> </div>
                     </li>
@@ -40,12 +40,12 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="process headings">Samples:</div>
-                <div class="row" ng-repeat="sample in current.samples">
+                <div class="row" ng-repeat="sample in edit.process.samples">
                     <div style="padding-left: 10px;padding-bottom: 20px;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openSample(sample)" class="link" style="padding-left: 15px;">{{sample.name}}</a>
-                        <span ng-if="current.does_transform">
+                        <a ng-click="edit.openSample(sample)" class="link" style="padding-left: 15px;">{{sample.name}}</a>
+                        <span ng-if="edit.process.does_transform">
                             <span ng-if="sample._type==='in'">
                                   (Before {{current.name}})
                             </span>
@@ -65,14 +65,14 @@
             <div class="col-xs-12">
                 <div class="process headings">Files:</div>
                 <div>Files Used:</div>
-                <div ng-if="template.files_used.length === 0">
+                <div ng-if="edit.process.files_used.length === 0">
                     --None--
                 </div>
-                <div ng-repeat="attachment in template.files_used">
+                <div ng-repeat="attachment in edit.process.files_used">
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openFile(attachment)" class="link"
+                        <a ng-click="edit.openFile(attachment)" class="link"
                            style="padding-left: 15px;">{{attachment.name}}</a>
 
                         <p style="padding-left: 80px">
@@ -84,14 +84,14 @@
                 </div>
 
                 <div>Files Produced:</div>
-                <div ng-if="template.files_produced.length === 0">
+                <div ng-if="edit.process.files_produced.length === 0">
                     --None--<br>
                 </div>
-                <div ng-repeat="attachment in template.files_produced">
+                <div ng-repeat="attachment in edit.process.files_produced">
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
                         <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openFile(attachment)" class="link"
+                        <a ng-click="edit.openFile(attachment)" class="link"
                            style="padding-left: 15px;">{{attachment.name}}</a>
 
                         <p style="padding-left: 80px">
@@ -107,13 +107,13 @@
     <div class="row">
         <br>
         <div class="col-xs-3">
-            <button ng-click="cancel()"
+            <button ng-click="edit.cancel()"
                     class="btn-details-container btn btn-default btn btn-cancel">
                 Cancel
             </button>
         </div>
         <div class="col-xs-3">
-            <button ng-click="done()"
+            <button ng-click="edit.done()"
                     ng-disabled="isProcessing" class=" btn btn-default btn-process btn-details-container">Done
             </button>
         </div>

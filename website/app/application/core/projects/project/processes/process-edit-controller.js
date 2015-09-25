@@ -4,20 +4,30 @@
         "mcapi", "Projects", "current"];
 
     function projectEditProcess($scope, project, $stateParams, modalInstance, $state, mcapi, Projects, current) {
+        var editCtrl = this;
 
-        $scope.cancel = function () {
+        editCtrl.cancel = cancel;
+        editCtrl.openFile = openFile;
+        editCtrl.openSample = openSample;
+        editCtrl.done = done;
+
+        editCtrl.propject = project;
+        editCtrl.process = process;
+
+
+        function cancel() {
             $state.go('projects.project.processes.list.view');
-        };
+        }
 
-        $scope.openFile = function (file) {
+         function openFile(file) {
             modalInstance.openModal(file, 'datafile', project);
-        };
+        }
 
-        $scope.openSample = function (sample) {
+        function openSample(sample) {
             modalInstance.openModal(sample, 'sample', project);
-        };
+        }
 
-        $scope.done = function () {
+        function done() {
             mcapi('/processes/%', $scope.template.id)
                 .success(function (proc) {
                     //Currently i'm reloading all the projects , but we need to reload single project.
@@ -39,20 +49,7 @@
                     name: $scope.template.name, what: $scope.template.what, why: $scope.template.why,
                     setup: $scope.template.setup[0].setupproperties, samples: $scope.template.samples
                 });
-        };
-
-        function init() {
-            $scope.project = project;
-            var i = _.indexOf($scope.project.processes, function (process) {
-                return process.id === $stateParams.process_id;
-            });
-
-            if (i > -1) {
-                $scope.template = $scope.project.processes[i];
-            }
         }
-
-        init();
     }
 }(angular.module('materialscommons')));
 
