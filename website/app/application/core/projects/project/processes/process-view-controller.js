@@ -17,6 +17,7 @@
         viewCtrl.tab = 'setup';
         viewCtrl.process = process;
         console.dir(process);
+
         function setTab(tabId) {
             viewCtrl.tab = tabId;
         }
@@ -38,7 +39,7 @@
         }
 
         function editProvenance() {
-            $state.go('projects.project.processes.list.edit', {process_id: viewCtrl.current.id});
+            $state.go('projects.project.processes.list.edit', {process_id: viewCtrl.process.id});
         }
 
         function images(files) {
@@ -55,5 +56,3 @@
 
     }
 }(angular.module('materialscommons')));
-
-;
