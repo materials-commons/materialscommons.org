@@ -112,7 +112,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
-            controller: "projectHome",
+            controller: "ProjectHomeController",
             controllerAs: "home"
         })
         .state('projects.project.search', {

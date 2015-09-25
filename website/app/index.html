@@ -5,8 +5,7 @@
     <title>Materials Commons</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Materials Repository">
-    <meta name="author" content="">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="author" content="PRISMS Center">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -18,6 +17,7 @@
           rel='stylesheet' type='text/css'>
 
     <!-- build:css assets/css/style.css -->
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
     <link href="assets/css/select2/select2.css" rel="stylesheet">
@@ -27,40 +27,18 @@
     <link href="assets/css/fullcalendar.css" rel="stylesheet">
     <link href="assets/css/ng-tags-input.css" rel="stylesheet">
     <link href="bower_components/ag-grid/dist/angular-grid.min.css" rel="stylesheet">
-    <link href="bower_components/ag-grid/dist/theme-fresh.min.css" rel="stylesheet">
+    <link href="bower_components/ag-grid/dist/theme-blue.min.css" rel="stylesheet">
     <link href="bower_components/angular-toastr/dist/angular-toastr.min.css" rel="stylesheet">
 
     <!-- Application style sheet -->
     <link href="assets/css/style-3.css" rel="stylesheet">
+    <link href="application/core/projects/project/project.css" rel="stylesheet">
+    <link href="application/core/projects/project/files/files.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
 <body>
 <navbar></navbar>
-<div class="container">
-    <div class="row">
-        <div ng-controller="FlexController">
-            <div class="col-lg-4" style="background-color: white">
-                <ul ng-if="true">
-                    <li ng-repeatx="col in col2 track by $index">{{col}}</li>
-                    <li>Hello</li>
-                </ul>
-            </div>
-            <div class="col-lg-8" style="background-color: white">
-                <ul ng-if="false">
-                    <li ng-repeat="col in col2 track by $index">{{col}}</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<div ng-if="false">
-    <div class="main-content">
-        <div class="row app-container">
-            <div ui-view>
-            </div>
-        </div>
-    </div>
-</div>
+<div ui-view></div>
 <div class="modal fade"
      ng-controller="newProjectModalController as project"
      id="newProject"
