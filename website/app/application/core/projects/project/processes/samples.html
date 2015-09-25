@@ -7,7 +7,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="sample in current.samples">
+        <tr ng-repeat="sample in view.process.samples">
             <td>
                 <b><a ui-sref="projects.project.samples.all.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
