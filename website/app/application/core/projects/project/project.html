@@ -1,19 +1,11 @@
 <div>
-    <div ng-show="!project.loaded">
-        <div class="loading-panel col-xs-4">
-            <center>
-                <h4><i class="fa fa-spinner fa-spin fa-4x"></i> Loading {{project.project.name}}...</h4>
-            </center>
-        </div>
-    </div>
-    <div ng-show="project.loaded">
-        <div class="row project-task-bar">
-            <project-nav-bar
-                project="project.project"
-                projects="project.projects">
-            </project-nav-bar>
-        </div>
-        <div ng-if="project.loaded" class="row" style="padding-top: 40px;">
+    <project-nav-bar
+            project="project.project"
+            projects="project.projects">
+    </project-nav-bar>
+
+    <div class="project-content">
+        <div ng-if="project.loaded" class="row">
             <div ng-class="{'col-sm-12': project.isExpanded('help'), 'col-sm-4': !project.isExpanded('help') && project.showHelp()}"
                  ng-show="project.showHelp()">
                 <userguide></userguide>
@@ -25,3 +17,4 @@
         </div>
     </div>
 </div>
+
