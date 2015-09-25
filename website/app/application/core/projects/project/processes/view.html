@@ -1,8 +1,7 @@
 <div class="details-main-content">
-    {{view.process}}
     <h3>{{view.process.name}}</h3>
     <div class="row" style="padding: 10px;color: #C0C0C0">
-        {{view.current.birthtime | toDateString}}
+        {{view.process.birthtime | toDateString}}
         <button ng-click="view.editProvenance()"
                 class="pull-right btn-details-container btn btn-default btn btn-cancel">
             Edit
@@ -16,7 +15,6 @@
                 <div class="row"><b>Description about process:</b> <br>
                     {{view.process.what}}
                     <div ng-if="current.what === ''">--None--</div>
-
                     <div class="row"><b>Reason you performed the process:</b><br>
                         {{view.process.why}}
                         <div ng-if="view.process.why === ''">--None--</div>

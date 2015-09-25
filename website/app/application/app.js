@@ -249,26 +249,21 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectViewProcess",
             controllerAs: 'view',
             resolve: {
-                processes: ["$stateParams", "processes", "Restangular",  "mcapi",
-                    function ($stateParams, processes, Restangular, mcapi) {
+                process: ["$stateParams", "processes", "Restangular",
+                    function ($stateParams, processes, Restangular) {
                         var i = _.indexOf(processes, function (process) {
                             return process.id === $stateParams.process_id;
                         });
                         var process = {};
                         if (i > -1) {
                             process = processes[i];
-                        }else{
+                        } else {
                             process = processes[0];
                         }
-                        mcapi('/samples')
-                            .success(function (samples) {
-                                 process.samples = samples;
-                                return process;
-                            })
-                            .error(function (err) {
-                                console.log(err);
-                            })
-                            .post({samples: process.samples});
+                       Restangular.all("samples").post({process_id: process.id}).then(function(response){
+                           process.samples = response.samples;
+                       });
+                        return process;
                     }
                 ]
             }
@@ -339,6 +334,10 @@ app.run(["$rootScope", "User", "Restangular", appRun]);
 
 function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
+
+    if (User.isAuthenticated()) {
+        Restangular.setDefaultRequestParams({apikey: User.apikey()});
+    }
 
     $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
