@@ -11,8 +11,6 @@
             {headerName: "Owner", field: "owner"}
         ];
 
-        console.dir(ctrl.project);
-
         var samples = $filter('orderBy')(ctrl.project.samples, 'name');
 
         ctrl.gridOptions = {
