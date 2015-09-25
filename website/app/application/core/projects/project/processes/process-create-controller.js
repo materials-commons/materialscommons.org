@@ -315,6 +315,8 @@
         };
 
         $scope.createProcess = function () {
+            console.log('yes');
+            console.dir($scope.template);
             $scope.isProcessing = true;
             if ($scope.template._type === 'as_received') {
                 $scope.template.output_samples.push($scope.bk.newSample);

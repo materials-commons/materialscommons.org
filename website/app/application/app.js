@@ -241,7 +241,15 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.processes.list.edit", {
             url: "/edit/:process_id",
             templateUrl: "application/core/projects/project/processes/edit.html",
-            controller: "projectEditProcess"
+            controller: "projectEditProcess",
+            controllerAs: 'edit',
+            resolve: {
+                process: ["processes", "processList", "$stateParams",
+                    function (processes, processList, $stateParams) {
+                        return processList.getProcess($stateParams.process_id, processes);
+                    }
+                ]
+            }
         })
         .state("projects.project.processes.list.view", {
             url: "/view/:process_id",
@@ -249,21 +257,9 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectViewProcess",
             controllerAs: 'view',
             resolve: {
-                process: ["$stateParams", "processes", "Restangular",
-                    function ($stateParams, processes, Restangular) {
-                        var i = _.indexOf(processes, function (process) {
-                            return process.id === $stateParams.process_id;
-                        });
-                        var process = {};
-                        if (i > -1) {
-                            process = processes[i];
-                        } else {
-                            process = processes[0];
-                        }
-                       Restangular.all("samples").post({process_id: process.id}).then(function(response){
-                           process.samples = response.samples;
-                       });
-                        return process;
+                process: ["$stateParams", "processes", "processList",
+                    function ($stateParams, processes, processList) {
+                        return  processList.getProcess($stateParams.process_id, processes);
                     }
                 ]
             }
@@ -334,7 +330,7 @@ app.run(["$rootScope", "User", "Restangular", appRun]);
 
 function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
-
+    console.log('app.run');
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
