@@ -1,8 +1,8 @@
 <div class="tab-pane">
-    <div ng-if="current.files_used.length === 0 && current.files_produced.length === 0">
+    <div ng-if="view.process.files_used.length === 0 && view.process.files_produced.length === 0">
         No files
     </div>
-    <table ng-if="current.files_used.length !== 0"class="table">
+    <table ng-if="view.process.files_used.length !== 0"class="table">
         <thead>
         <tr>
             <th>Input File Details</th>
@@ -10,7 +10,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="file in current.files_used">
+        <tr ng-repeat="file in view.process.files_used">
             <td>
                 <b><a ui-sref="projects.project.files.all.edit({file_id: file.id,
                     file_type: file.type})">{{file.name}}</a></b>
@@ -29,7 +29,7 @@
         </tr>
         </tbody>
     </table>
-    <table ng-if="current.files_produced.length !== 0" class="table">
+    <table ng-if="view.process.files_produced.length !== 0" class="table">
         <thead>
         <tr>
             <th>Output File Details</th>
@@ -37,7 +37,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="file in current.files_produced">
+        <tr ng-repeat="file in view.process.files_produced">
             <td>
                 <b><a ui-sref="projects.project.files.all.edit({file_id: file.id,
                     file_type: file.type})">{{file.name}}</a></b>
