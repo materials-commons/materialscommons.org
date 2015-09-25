@@ -22,12 +22,15 @@ body {
     text-transform: uppercase;
     border-radius: 2px;
     font-weight: 500;
-    color: white;
 }
 
 .btn-danger {
     background-color: #E57373;
     border-color: #E57373;
+}
+
+.text-danger {
+    color: #E57373;
 }
 
 a {
@@ -50,11 +53,38 @@ h3, h4, h5, h6 {
     color: #515151;
 }
 
+/* Menu bar */
+.list-inline.menu-bar > li {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 10px;
+}
+
+.list-inline.menu-bar > li.active a {
+    font-weight: bold;
+    color: #3182c3;
+}
+
+/* Special buttons */
+.btn.btn-attention {
+    color: #ffffff;
+    border: none;
+    border-radius: 0px;
+    font-weight: 500;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
 /* Display contents in cards */
 
 .card {
     background-color: #ffffff;
     border-radius: 3px;
+}
+
+.card-header {
+    padding-top: 15px;
+    padding-bottom: 30px;
 }
 
 .card-dark {
@@ -67,6 +97,19 @@ h3, h4, h5, h6 {
 
 .card-right {
     border-radius: 0 3px 3px 0;
+}
+
+.card-side-bar {
+    min-height: 500px;
+    overflow-y: auto;
+    max-height: 1200px;
+    border: 1px solid #c3c3c3;
+}
+
+/* Centering */
+.center-vertical {
+    position: absolute;
+    top: 50%;
 }
 
 /***********Begin sideboard.html ***********/
@@ -1004,10 +1047,12 @@ hr.heading-label {
 
 .btn-files {
     background-color: #AC91BA;
+    color: #ffffff;
 }
 
 .btn-sample {
     background-color: #26A69A;
+    color: #ffffff;
 }
 
 .review-active {
