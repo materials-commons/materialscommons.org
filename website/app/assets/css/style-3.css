@@ -7,20 +7,17 @@ body {
     font-family: roboto;
     font-weight: 400;
     font-style: normal;
-    /*font-weight: font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    padding-top: 0px;
-    /*font-size: 13px;*/
+    /*padding-top: 0px;*/
     overflow-y: scroll;
     overflow-x: hidden;
-    /*color: #5e5e5e;*/
     color: #515151;
-    /* background-color: #e9e9ea; */
     background-color: #e9e9e9;
-    /*background-color: #f5f5f5;*/
     height: 100%;
+    margin-top: 41px;
 }
 
-/*** Basic styles for website ***/
+/*** Override basic bootstrap styles ***/
+
 .btn {
     text-transform: uppercase;
     border-radius: 2px;
@@ -51,6 +48,25 @@ h3, h4, h5, h6 {
 
 .text-emphasis {
     color: #515151;
+}
+
+/* Display contents in cards */
+
+.card {
+    background-color: #ffffff;
+    border-radius: 3px;
+}
+
+.card-dark {
+    background-color: #f6f6f6;
+}
+
+.card-left {
+    border-radius: 3px 0 0 3px;
+}
+
+.card-right {
+    border-radius: 0 3px 3px 0;
 }
 
 /***********Begin sideboard.html ***********/
@@ -190,22 +206,25 @@ h3, h4, h5, h6 {
     background-color: #eeeeee;
 }
 
-ul.taskbar.nav li a:hover,
-ul.taskbar.nav li a:focus {
+ul.project-bar.nav li a:hover,
+ul.project-bar.nav li a:focus {
     font-weight: normal;
     background-color: #f5f5f5;
     color: #7990a3;
     border-bottom: 1px solid #518394;
 }
 
-ul.taskbar.nav li.projects-drop-down a:hover,
-ul.taskbar.nav li.projects-drop-down a:focus {
+ul.project-bar.nav li.projects-drop-down a:hover,
+ul.project-bar.nav li.projects-drop-down a:focus {
     font-weight: normal;
-     /*background-color: #f5f5f5;*/
     background-color: #45707D;
     color: #fff;
     border: 0;
     border-top: 1px solid #518394;
+}
+
+ul.project-bar.nav .open > a {
+    background-color: #45707d;
 }
 
 .navbar {
@@ -370,43 +389,6 @@ h4, h5, h6 {
     border-bottom-width: 0px;
 }
 
-.main-content {
-    margin-top: 41px;
-}
-
-.project-task-bar {
-    left: 0;
-    position: fixed;
-    right: 0;
-    z-index: 100;
-}
-
-.taskbar {
-    border-bottom: transparent;
-}
-
-.taskbar.nav.nav-tabs > li > a {
-    color: #ffffff;
-    font-size: 16px;
-    border-radius: 0 0 0 0;
-}
-
-.taskbar.nav-tabs > li.active > a {
-    background-color: #f5f5f5;
-    color: #7990a3;
-    border-bottom: 1px solid #f5f5f5;
-}
-
-.taskbar.nav-tabs > li.active > a:hover {
-    opacity: 1;
-    border-bottom: 1px solid #f5f5f5;
-}
-
-.taskbar.nav-tabs > li > a:hover {
-    opacity: 1;
-    border-bottom: 1px solid #f5f5f5;
-}
-
 .home-item {
     background-color: #ffffff;
     border-top-style: solid;
@@ -490,11 +472,6 @@ h4, h5, h6 {
 
 .home-panel-body ul {
     margin-bottom: 0px;
-}
-
-.row.app-container {
-    margin-rightx: 15px;
-    margin-leftx: 10px;
 }
 
 .nav-tabs > li > a {
@@ -1116,25 +1093,4 @@ hr.heading-label {
 .underline-input input[type="text"]:focus,
 .underline-input input[type="text"].focus {
     border-bottom: solid 2px #969696;
-}
-
-/* Try out flexbox to solve our problems with height */
-
-/*.row {*/
-    /*display: flex;*/
-/*}*/
-
-
-.box {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-}
-
-.box .row {
-    flex: 0 1 20px;
-}
-
-.box .row.content {
-    flex: 1 1 auto;
 }

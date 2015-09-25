@@ -1,10 +1,25 @@
 (function (module) {
-    module.controller('projectHome', projectHome);
-    projectHome.$inject = ["project"];
+    module.controller('ProjectHomeController', ProjectHomeController);
+    ProjectHomeController.$inject = ["project", "$filter"];
 
-    function projectHome(project) {
+    function ProjectHomeController(project, $filter) {
         var ctrl = this;
         ctrl.project = project;
+
+        var columnDefs = [
+            {headerName: "Name", field: "name"},
+            {headerName: "Owner", field: "owner"}
+        ];
+
+        console.dir(ctrl.project);
+
+        var samples = $filter('orderBy')(ctrl.project.samples, 'name');
+
+        ctrl.gridOptions = {
+            columnDefs: columnDefs,
+            rowData: samples,
+            rowHeight: 45
+        }
     }
 
 }(angular.module('materialscommons')));

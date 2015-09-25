@@ -1,0 +1,40 @@
+.project-bar {
+    border-bottom: transparent;
+}
+
+.project-bar.nav.nav-tabs > li > a {
+    color: #ffffff;
+    font-size: 16px;
+    border-radius: 0 0 0 0;
+}
+
+.project-bar.nav-tabs > li.active > a {
+    background-color: #f5f5f5;
+    color: #7990a3;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.project-bar.nav-tabs > li.active > a:hover {
+    opacity: 1;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.project-bar.nav-tabs > li > a:hover {
+    opacity: 1;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.project-nav-bar {
+    background-color: #518394;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    right: 0;
+}
+
+/* project layout */
+.project-content {
+    padding-top: 55px;
+    margin-left: 30px;
+    margin-right: 30px;
+}

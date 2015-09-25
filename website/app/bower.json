@@ -33,7 +33,8 @@
     "angular-messages": "1.3.6",
     "textAngular": "1.2.1",
     "jquery": "1.11.3",
-    "restangular": "~1.5.1"
+    "restangular": "~1.5.1",
+    "font-awesome": "~4.4.0"
   },
   "resolutions": {
     "angular-bootstrap": "~0.12.1"
