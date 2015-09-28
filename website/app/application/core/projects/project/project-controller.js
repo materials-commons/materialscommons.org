@@ -16,13 +16,13 @@
 
         if (!project.files) {
             ctrl.loaded = false;
-            mcapi('/projects2/%/dir/top', project.id)
+            mcapi('/v2/projects/%/dir/top', project.id)
                 .success(function (files) {
                     project.files = gridFiles.toGrid(files);
                     ctrl.loaded = true;
                 })
                 .error(function (err) {
-                    console.log('error calling projects2 %O', err);
+                    console.log('error calling projects %O', err);
                 }).get();
         }
 
