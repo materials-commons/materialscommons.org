@@ -9,16 +9,17 @@ module.exports = function(model) {
     let files = require('./files')(model.files);
     let processes = require('./processes')(model.processes, schema);
 
-    router.get('/projects2', projects.all);
-    router.get('/projects2/:project_id/dir/:directory_id', validateProjectAccess, projects.dirTree);
+    router.get('/projects', projects.all);
+    router.get('/projects/:project_id/dir/:directory_id', validateProjectAccess, projects.dirTree);
 
-    router.post('/projects2/:project_id/processes', validateProjectAccess, processes.create);
+    router.post('/projects/:project_id/processes', validateProjectAccess, processes.create);
+    router.put('/projects/:project_id/processes', validateProjectAccess, processes.update);
 
-    router.post('/projects2/:project_id/samples', validateProjectAccess, samples.create);
-    router.put('/projects2/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
+    router.post('/projects/:project_id/samples', validateProjectAccess, samples.create);
+    router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
 
-    router.get('/projects2/:project_id/files/:file_id', validateProjectAccess, files.get);
-    router.put('/projects2/:project_id/files/:file_id', validateProjectAccess, files.put);
+    router.get('/projects/:project_id/files/:file_id', validateProjectAccess, files.get);
+    router.put('/projects/:project_id/files/:file_id', validateProjectAccess, files.put);
 
     return router;
 };
