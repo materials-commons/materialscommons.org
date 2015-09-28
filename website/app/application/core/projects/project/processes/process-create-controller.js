@@ -94,7 +94,6 @@
                 item.old_properties = [];
                 item.transformed_properties = [];
                 item.files = [];
-                item.property_set_id = item.property_set_id;
                 //when they choose sample pull all property-measurements from backend
                 mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
                     .success(function (properties) {
@@ -124,6 +123,7 @@
         }
 
         $scope.removeAttachment = function (item, what, sample_id) {
+            var index, i;
             switch (what) {
             case "input_samples":
                 spliceItem(item, what);
@@ -135,10 +135,10 @@
                 spliceItem(item, what);
                 break;
             case "new_properties":
-                var index = _.indexOf($scope.template.input_samples, function (entry) {
+                index = _.indexOf($scope.template.input_samples, function (entry) {
                     return sample_id === entry.id;
                 });
-                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
                     return item.name === entry.name;
                 });
                 if (i > -1) {
@@ -146,10 +146,10 @@
                 }
                 break;
             case "properties":
-                var index = _.indexOf($scope.template.input_samples, function (entry) {
+                index = _.indexOf($scope.template.input_samples, function (entry) {
                     return sample_id === entry.id;
                 });
-                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
                     return item.id === entry.id;
                 });
                 if (i > -1) {
@@ -327,8 +327,8 @@
             $scope.template.input_files = refineFiles($scope.template.input_files);
             $scope.template.output_files = refineFiles($scope.template.output_files);
             refineSetUpProperties();
-            mcapi('/projects2/%/processes', project.id)
-                .success(function (proc) {
+            mcapi('/v2/projects/%/processes', project.id)
+                .success(function () {
                     measurements.reset();
                     $scope.isProcessing = false;
                     //After you create a process try to update the whole project.

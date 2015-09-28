@@ -142,7 +142,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             resolve: {
                 file: ["$stateParams", "Restangular",
                     function ($stateParams, Restangular) {
-                        return Restangular.one('projects2', $stateParams.id).
+                        return Restangular.one('v2').one('projects', $stateParams.id).
                             one('files', $stateParams.file_id).get();
                     }]
             }

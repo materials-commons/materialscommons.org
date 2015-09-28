@@ -100,7 +100,7 @@
 
         function handleDirectory(params) {
             if (!params.data.childrenLoaded) {
-                mcapi('/projects2/%/dir/%', project.id, params.data.id)
+                mcapi('/v2/projects/%/dir/%', project.id, params.data.id)
                     .success(function (files) {
                         var treeModel = new TreeModel(),
                             root = treeModel.parse(project.files[0]);
