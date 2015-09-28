@@ -4,10 +4,17 @@ module.exports = function(processes, schema) {
     let parse = require('co-body');
 
     return {
+        update: update,
         create: create
     };
 
     /////////////////////////
+
+    function* update(next) {
+        this.status = 200;
+        this.body = {hello: 'world'};
+        yield next;
+    }
 
     // create creates a new process and associated dependencies.
     // It validates the submitted entry and enters in default
