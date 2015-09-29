@@ -23,7 +23,7 @@
             <div class="col-xs-12">
                 <div class="process headings">SetUp: {{selected.item.setup[0].name}}</div>
                 <ul>
-                    <li ng-repeat="property in selected.item.setup[0].setupproperties" ng-if="property.value">
+                    <li ng-repeat="property in selected.item.setup[0].properties" ng-if="property.value">
                         {{property.name}} :: {{property.value}} {{property.units}}
                     </li>
                 </ul>
