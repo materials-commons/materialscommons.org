@@ -1,61 +1,59 @@
-<!--<div class="details-main-content" style="border: 2px solid red; ">-->
-    <!--<div class="row" style="padding: 10px;color: #C0C0C0">-->
-        <!--{{edit.process.birthtime | toDateString}}-->
-    <!--</div>-->
-    <!--<div class="row">-->
-        <!--<div class="row">-->
-            <!--<div class="col-xs-8">-->
-                <!--<div class="process headings">Edit Provenance:</div>-->
-                <!--Name your process-->
-                <!--<div class="row">-->
-                    <!--<input ng-model="template.name" class="form-control" style="width: 400px;">-->
-                <!--</div>-->
-                <!--<br>-->
-                <!--How would you describe your process?-->
-                <!--<div class="row">-->
-                        <!--<textarea placeholder="What" ng-model="template.what" class="form-control col-xs-8">-->
-                        <!--</textarea>-->
-                <!--</div>-->
-                <!--<br>-->
-                <!--Why did you do?-->
-                <!--<div class="row">-->
-                        <!--<textarea placeholder="Why" ng-model="template.why" class="form-control col-xs-8">-->
-                        <!--</textarea>-->
-                <!--</div>-->
-                <!--<br>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row">-->
-            <!--<div class="col-xs-12">-->
-                <!--<div class="process headings">SetUp: {{edit.process.setup[0].name}}</div>-->
-                <!--<ul>-->
-                    <!--<li ng-repeat="property in edit.process.setup[0].setupproperties" ng-if="property.value">-->
-                        <!--{{property.name}} ::-->
-                        <!--<div class="row"><input class="col-xs-2" ng-model="property.value"><input ng-if="property.units" class="col-xs-1" ng-model="property.units"> </div>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row">-->
-            <!--<div class="col-xs-12">-->
-                <!--<div class="process headings">Samples:</div>-->
+<div class="details-main-content" style="border: 2px solid red; ">
 
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="row">-->
-        <!--<br>-->
-        <!--<div class="col-xs-3">-->
-            <!--<button ng-click="edit.cancel()"-->
-                    <!--class="btn-details-container btn btn-default btn btn-cancel">-->
-                <!--Cancel-->
-            <!--</button>-->
-        <!--</div>-->
-        <!--<div class="col-xs-3">-->
-            <!--<button ng-click="edit.done()"-->
-                    <!--ng-disabled="isProcessing" class=" btn btn-default btn-process btn-details-container">Done-->
-            <!--</button>-->
-        <!--</div>-->
-        <!--<br><br>-->
-    <!--</div>-->
-<!--</div>-->
+    <div class="row">
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="process headings">Edit Provenance:</div>
+                Name your process
+                <div class="row">
+                    <input ng-model="edit.template.name" class="form-control" style="width: 400px;">
+                </div>
+                <br>
+                How would you describe your process?
+                <div class="row">
+                        <textarea placeholder="What" ng-model="edit.template.what" class="form-control col-xs-8">
+                        </textarea>
+                </div>
+                <br>
+                Why did you do?
+                <div class="row">
+                        <textarea placeholder="Why" ng-model="edit.template.why" class="form-control col-xs-8">
+                        </textarea>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="process headings">SetUp: {{edit.process.setup[0].name}}</div>
+                <ul>
+                    <li ng-repeat="property in edit.template.setup[0].setupproperties" ng-if="property.value">
+                        {{property.name}} ::
+                        <div class="row"><input class="col-xs-2" ng-model="property.value"><input ng-if="property.units" class="col-xs-1" ng-model="property.units"> </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="process headings">Samples:</div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+        <div class="col-xs-3">
+            <button ng-click="edit.cancel()"
+                    class="btn-details-container btn btn-default btn btn-cancel">
+                Cancel
+            </button>
+        </div>
+        <div class="col-xs-3">
+            <button ng-click="edit.done()"
+                    ng-disabled="isProcessing" class=" btn btn-default btn-process btn-details-container">Done
+            </button>
+        </div>
+        <br><br>
+    </div>
+</div>

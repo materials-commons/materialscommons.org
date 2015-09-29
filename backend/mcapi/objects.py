@@ -6,6 +6,12 @@ import dmutil
 import args
 import json
 import resp
+import sys
+
+
+def msg(s):
+    print s
+    sys.stdout.flush()
 
 
 @app.route('/sample/measurements/<sample_id>/<property_set_id>')
@@ -105,7 +111,6 @@ class DEncoder2(json.JSONEncoder):
 
 
 @app.route('/objects/elements', methods=['GET'])
-@apikey
 @jsonp
 def get_all_elements():
     rr = r.table('elements').order_by('name')
@@ -113,29 +118,62 @@ def get_all_elements():
     return args.json_as_format_arg(selection)
 
 
-@app.route('/samples', methods=['POST'])
+# get_process_details: will get the process information, samples associated and
+#  their best measures and linked_files
+@app.route('/process/details/<process_id>', methods=['GET'])
 @apikey
-@eventlog
-def fill_in_measurements():
-    j = request.get_json()
-    samples = get_best_measures_and_linked_files(j['process_id'])
-    return resp.to_json({'samples': samples})
+@jsonp
+def get_process_details(process_id):
+    p = list(r.table('processes').get_all(process_id, index='id')
+        .merge( lambda process:
+            {
+                'setup': r.table('process2setup')
+                .get_all(process['id'], index='process_id')
+                .eq_join("setup_id", r.table("setups")).zip()
+                .merge(lambda setup: {
+                        'properties':
+                        r.table('setupproperties')
+                        .get_all(setup['setup_id'], index="setup_id")
+                        .coerce_to('array')
+                })
+                .coerce_to('array'),
 
-
-def get_best_measures_and_linked_files(process_id):
-    samples = list(r.table('process2sample').get_all(process_id, index='process_id') \
-        .eq_join('sample_id', r.table("samples")).zip()\
-        .merge( lambda sample: {
-            'properties': r.table('propertyset2property')
+                'samples': r.table('process2sample')
+                .get_all(process['id'], index='process_id')
+                .eq_join('sample_id', r.table("samples"))
+                .without({"right": {"_type": True}})
+                .zip()
+                .merge(lambda sample: {
+                    'properties': r.table('propertyset2property')
                     .get_all(sample['property_set_id'], index= 'property_set_id')
                     .eq_join('property_id', r.table('properties')).zip()
                     .order_by('name').merge(lambda property: {
                         'best_measure': r.table('best_measure_history')\
-                        .get_all(property['best_measure_id']).eq_join('measurement_id',
+                        .get_all(property['best_measure_id'])
+                                            .eq_join('measurement_id',
                         r.table('measurements')).zip().coerce_to('array')
                     }),
-            'linked_files': r.table('sample2datafile').get_all(sample['id'],
-                index='sample_id').eq_join('datafile_id',
-                r.table('datafiles')).zip().coerce_to('array')
+                    'linked_files': r.table('sample2datafile')
+                       .get_all(sample['id'],
+                    index='sample_id').eq_join('datafile_id',
+                    r.table('datafiles')).zip().coerce_to('array')
+                })
+                .coerce_to('array'),
+
+                'files_used': r.table('process2file')
+                .get_all(process['id'],
+                index='process_id').filter({
+                'direction': "in"})
+                .eq_join('datafile_id', r.table('datafiles'))
+                .zip()
+                .coerce_to('array'),
+
+                'files_produced': r.table('process2file')
+                .get_all(process['id'],
+                index='process_id').filter({
+                'direction': "out"})
+                .eq_join('datafile_id', r.table('datafiles'))
+                .zip()
+                .coerce_to('array')
         }).run(g.conn, time_format="raw"))
-    return samples
+    return resp.to_json(p)
