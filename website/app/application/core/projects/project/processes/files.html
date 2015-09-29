@@ -1,0 +1,59 @@
+<div class="tab-pane">
+    <div ng-if="view.process.files_used.length === 0 && view.process.files_produced.length === 0">
+        No files
+    </div>
+    <table ng-if="view.process.files_used.length !== 0"class="table">
+        <thead>
+        <tr>
+            <th>Input File Details</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="file in view.process.files_used">
+            <td>
+                <b><a ui-sref="projects.project.files.all.edit({file_id: file.id,
+                    file_type: file.type})">{{file.name}}</a></b>
+
+                <div style="padding-bottom: 15px;">
+                    <p style="font-size: 12px;padding-bottom: 10px;">
+                        {{file.birthtime | toDateString}}
+                        <span style="padding-left: 10px">{{file.owner}}</span>
+                        <span style="padding-left: 10px">{{file.size | bytes}} </span>
+                    </p>
+                </div>
+            </td>
+            <td>
+                <img class="img-thumbnail" height="220" width="220" ng-src={{view.fileSrc(file.id)}}>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table ng-if="view.process.files_produced.length !== 0" class="table">
+        <thead>
+        <tr>
+            <th>Output File Details</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="file in view.process.files_produced">
+            <td>
+                <b><a ui-sref="projects.project.files.all.edit({file_id: file.id,
+                    file_type: file.type})">{{file.name}}</a></b>
+
+                <div style="padding-bottom: 15px;">
+                    <p style="font-size: 12px;padding-bottom: 10px;">
+                        {{file.birthtime | toDateString}}
+                        <span style="padding-left: 10px">{{file.owner}}</span>
+                        <span style="padding-left: 10px">{{file.size | bytes}} </span>
+                    </p>
+                </div>
+            </td>
+            <td>
+                <img class="img-thumbnail" height="220" width="220" ng-src={{view.fileSrc(file.id)}}>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

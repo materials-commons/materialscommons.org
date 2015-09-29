@@ -226,7 +226,6 @@ module.exports = function (r) {
      * @returns {Array} - A list of the measurements that were added.
      */
     function *addExistingPropertyMeasurements(sampleID, properties) {
-        console.log(properties.length);
         let created = [];
         for (let i = 0; i < properties.length; i++) {
             let current = properties[i];
@@ -234,7 +233,6 @@ module.exports = function (r) {
             let pName = current.name;
             let pAttr = current.attribute;
             let measurements = yield addPropertyMeasurements(pID, pName, pAttr, sampleID, current.measurements);
-            console.log(measurements);
             created.push.apply(created, measurements);
         }
         return created;

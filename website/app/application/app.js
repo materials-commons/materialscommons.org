@@ -213,26 +213,83 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "projectProcesses",
             controllerAs: 'processes'
         })
-        .state("projects.project.processes.list", {
-            url: "/list",
-            templateUrl: "application/core/projects/project/processes/list.html",
-            controller: "projectListProcess"
-        })
         .state("projects.project.processes.create", {
             url: "/create",
             templateUrl: "application/core/projects/project/processes/create.html",
-            controller: "projectCreateProcess"
+            controller: "projectCreateProcess",
+            resolve: {
+                template: ["processList", "processTemplates", "$filter", "measurements",
+                    function (processList, processTemplates, $filter, measurements) {
+                        var template = processTemplates.getActiveTemplate();
+                        template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+                        measurements.templates();
+                        return template;
+                    }
+                ]
+            }
         })
-        .state("projects.project.processes.list.edit", {
+        .state("projects.project.processes.edit", {
             url: "/edit/:process_id",
             templateUrl: "application/core/projects/project/processes/edit.html",
-            controller: "projectEditProcess"
+            controller: "projectEditProcess",
+            controllerAs: 'edit',
+            resolve: {
+                template: ["processes", "processList", "$stateParams", "processTemplates", "processEdit",
+                    function (processes, processList, $stateParams, processTemplates, processEdit) {
+                        //var process = processList.getProcess($stateParams.process_id, processes);
+                        //var template = processTemplates.getTemplateByName(process.template_name);
+                        //console.log(process);
+                        //console.log(template);
+                        //return processEdit.transformSetup($stateParams.process_id)
+                    }
+                ]
+            }
+        })
+        .state("projects.project.processes.list", {
+            url: "/list",
+            templateUrl: "application/core/projects/project/processes/list.html",
+            controller: "projectListProcess",
+            controllerAs: "processlist",
+            resolve: {
+                processes: ["project", "ProcessList", "Restangular",
+                    function (project, ProcessList, Restangular) {
+                        return Restangular.one('processes').one('project', project.id).getList();
+                    }]
+            }
         })
         .state("projects.project.processes.list.view", {
             url: "/view/:process_id",
             templateUrl: "application/core/projects/project/processes/view.html",
-            controller: "projectViewProcess"
+            controller: "projectViewProcess",
+            controllerAs: 'view',
+            resolve: {
+                process: ["$stateParams", "Restangular", "processes",
+                    function ($stateParams, Restangular, processes) {
+                        if ($stateParams.process_id) {
+                            var process_id = $stateParams.process_id;
+                        } else {
+                            if (processes.length > 0) {
+                                process_id = processes[0].id;
+                            }
+                        }
+                        return Restangular.one('process').one('details', process_id).get();
+                    }
+                ]
+            }
         })
+        .state("projects.project.processes.list.view.setup", {
+            url: "/setup",
+            templateUrl: "application/core/projects/project/processes/setup.html"
+        })
+        .state("projects.project.processes.list.view.samples", {
+            url: "/samples",
+            templateUrl: "application/core/projects/project/processes/samples.html"
+        })
+        .state("projects.project.processes.list.view.files", {
+            url: "/files",
+            templateUrl: "application/core/projects/project/processes/files.html"
+        })
+
         .state("projects.project.samples", {
             url: "/samples",
             templateUrl: "application/core/projects/project/samples/samples.html",
@@ -261,6 +318,10 @@ app.run(["$rootScope", "User", "Restangular", appRun]);
 
 function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
+    console.log('app.run');
+    if (User.isAuthenticated()) {
+        Restangular.setDefaultRequestParams({apikey: User.apikey()});
+    }
 
     // appRun will run when the application starts up and before any controllers have run.
     // This means it will run on a refresh. We check if the user is already authenticated

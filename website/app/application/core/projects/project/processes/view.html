@@ -1,7 +1,11 @@
 <div class="details-main-content">
+    <h3>{{view.process.name}}</h3>
     <div class="row" style="padding: 10px;color: #C0C0C0">
-        {{current.birthtime | toDateString}}
-        <button ng-click="editProvenance()" class="pull-right btn-details-container btn btn-default btn btn-cancel">Edit</button>
+        {{view.process.birthtime | toDateString}}
+        <button ng-click="view.editProvenance()"
+                class="pull-right btn-details-container btn btn-default btn btn-cancel">
+            Edit
+        </button>
     </div>
     <div class="row">
         <div class="row">
@@ -9,90 +13,36 @@
                 <div class="process headings">Details:</div>
 
                 <div class="row"><b>Description about process:</b> <br>
-                    {{current.what}} <div ng-if="current.what === ''">--None--</div>
-
+                    {{view.process.what}}
+                    <div ng-if="current.what === ''">--None--</div>
                     <div class="row"><b>Reason you performed the process:</b><br>
-                        {{current.why}}<div ng-if="current.why === ''">--None--</div>
+                        {{view.process.why}}
+                        <div ng-if="view.process.why === ''">--None--</div>
 
-                        <div class="row"><b>Owner: </b>{{current.owner}}</div>
-                        <div class="row"><b>Does Transform: </b>{{current.does_transform}}</div>
+                        <div class="row"><b>Owner: </b>{{view.process.owner}}</div>
+                        <div class="row"><b>Does Transform: </b>{{view.process.does_transform}}</div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
-            <div class="col-xs-12">
-                <div class="process headings">SetUp: {{current.setup[0].name}}</div>
-                <ul>
-                    <li ng-repeat="property in current.setup[0].setupproperties" ng-if="property.value">
-                        {{property.name}} :: {{property.value}} {{property.units}}
+            <div class="process-tab">
+                <ul class="nav nav-tabs">
+                    <li ng-class="{active:view.isSet('setup')}">
+                        <a ng-click="view.setTab('setup')"><b><i class="fa fa-fw fa-gear"></i>SETUP</b></a></li>
+                    <li ng-class="{active:view.isSet('samples')}"><a ng-click="view.setTab('samples')"><b><i class="fa fa-fw fa-cubes"></i>SAMPLES</b></a></li>
+                    <li ng-class="{active:view.isSet('files')}"><a ng-click="view.setTab('files')"><b><i class="fa fa-fw fa-copy"></i>FILES</b></a>
                     </li>
                 </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="process headings">Samples:</div>
-                <div class="row" ng-repeat="sample in current.samples">
-                    <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
-                        <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                        <img src="assets/img/splash/sample_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openSample(sample)" class="link" style="padding-left: 15px;">{{sample.name}}</a>
-                        <span ng-if="current.does_transform">
-                            <span ng-if="sample._type==='in'">
-                                  (Before {{current.name}})
-                            </span>
-                             <span ng-if="sample._type==='out'">
-                                 (After {{current.name}})
-                             </span>
-                        </span>
-
-                        <p style="padding-left: 80px">
-                            <small class="text-muted">{{sample.mtime | toDateString}} , {{sample.owner}}</small>
-                        </p>
+                <div class="tab-content clearfix">
+                    <div ng-show="view.isSet('setup')">
+                       <setup-tab current="view.process"></setup-tab>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="process headings">Files:</div>
-                <div>Files Used:</div>
-                <div ng-if="current.files_used.length === 0">
-                    --None--
-                </div>
-                <div ng-repeat="attachment in current.files_used">
-                    <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
-                        <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                        <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openFile(attachment)" class="link"
-                           style="padding-left: 15px;">{{attachment.name}}</a>
-
-                        <p style="padding-left: 80px">
-                            <small class="text-muted">{{attachment.mtime | toDateString}}, {{attachment.owner}},
-                                Size: {{attachment.size | bytes}}
-                            </small>
-                        </p>
+                    <div ng-show="view.isSet('samples')">
+                        <samples-tab></samples-tab>
                     </div>
-                </div>
-
-                <div>Files Produced:</div>
-                <div ng-if="current.files_produced.length === 0">
-                    --None--<br>
-                </div>
-                <div ng-repeat="attachment in current.files_produced">
-                    <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
-                        <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
-                        <img src="assets/img/splash/file_icon.png" style="height: 40px;padding-bottom: 10px;">
-                        <a ng-click="openFile(attachment)" class="link"
-                           style="padding-left: 15px;">{{attachment.name}}</a>
-
-                        <p style="padding-left: 80px">
-                            <small class="text-muted">{{attachment.mtime | toDateString}}, {{attachment.owner}},
-                                Size: {{attachment.size | bytes}}
-                            </small>
-                        </p>
+                    <div ng-show="view.isSet('files')">
+                        <files-tab current="view.process"></files-tab>
                     </div>
                 </div>
             </div>
