@@ -1,11 +1,11 @@
 (function (module) {
     module.controller('projectCreateProcess', projectCreateProcess);
-    projectCreateProcess.$inject = ["$scope", "project", "processTemplates", "$modal", "pubsub",
+    projectCreateProcess.$inject = ["$scope", "project", "$modal", "pubsub",
         "mcapi", "$state", "Projects", "current", "measurements",
-        "modalInstance", "$filter"];
+        "template"];
 
-    function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
-                                  mcapi, $state, Projects, current, measurements, modalInstance, $filter) {
+    function projectCreateProcess($scope, project, $modal, pubsub,
+                                  mcapi, $state, Projects, current, measurements, template) {
 
         pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
             addAttachment(sample);
@@ -38,45 +38,45 @@
             }
         }
 
-        $scope.openSample = function (sample) {
-            modalInstance.openModal(sample, 'sample', project);
-        };
-
-        $scope.openFile = function (file) {
-            modalInstance.openModal(file, 'datafile', project);
-        };
+        //$scope.openSample = function (sample) {
+        //    modalInstance.openModal(sample, 'sample', project);
+        //};
+        //
+        //$scope.openFile = function (file) {
+        //    modalInstance.openModal(file, 'datafile', project);
+        //};
 
         $scope.cancel = function () {
             $state.go('projects.project.processes.list');
         };
 
-        $scope.linkSample = function (datafile) {
-            var i = _.indexOf($scope.template.input_samples, function (entry) {
-                return $scope.bk.selectedSample.id === entry.id;
-            });
-            //check for redundancy
-            var k = _.indexOf($scope.template.input_samples[i].files, function (entry) {
-                return datafile.datafile_id === entry.datafile_id;
-            });
+        //$scope.linkSample = function (datafile) {
+        //    var i = _.indexOf($scope.template.input_samples, function (entry) {
+        //        return $scope.bk.selectedSample.id === entry.id;
+        //    });
+        //    //check for redundancy
+        //    var k = _.indexOf($scope.template.input_samples[i].files, function (entry) {
+        //        return datafile.datafile_id === entry.datafile_id;
+        //    });
+        //
+        //    if (k < 0) {
+        //        if (i > -1) {
+        //            $scope.template.input_samples[i].files.push({id: datafile.datafile_id, name: datafile.name});
+        //            $scope.bk.selectedSample = '';
+        //        }
+        //    }
+        //};
 
-            if (k < 0) {
-                if (i > -1) {
-                    $scope.template.input_samples[i].files.push({id: datafile.datafile_id, name: datafile.name});
-                    $scope.bk.selectedSample = '';
-                }
-            }
-        };
-
-        $scope.removeLink = function (sample, file) {
-            var k = _.indexOf($scope.template.input_samples, function (entry) {
-                return sample.id === entry.id;
-            });
-            var i = _.indexOf($scope.template.input_samples[k].files, function (entry) {
-                return file.datafile_id === entry.datafile_id;
-            });
-            $scope.template.input_samples[k].files.splice(i, 1);
-            $scope.bk.selectedSample = '';
-        };
+        //$scope.removeLink = function (sample, file) {
+        //    var k = _.indexOf($scope.template.input_samples, function (entry) {
+        //        return sample.id === entry.id;
+        //    });
+        //    var i = _.indexOf($scope.template.input_samples[k].files, function (entry) {
+        //        return file.datafile_id === entry.datafile_id;
+        //    });
+        //    $scope.template.input_samples[k].files.splice(i, 1);
+        //    $scope.bk.selectedSample = '';
+        //};
 
         function updateSampleMeasurement(sample) {
             var i = _.indexOf($scope.template.input_samples, function (entry) {
@@ -88,30 +88,30 @@
         function addAttachment(item) {
             var what;
             switch (item.type) {
-            case "sample":
-                what = 'input_samples';
-                item.new_properties = [];
-                item.old_properties = [];
-                item.transformed_properties = [];
-                item.files = [];
-                item.property_set_id = item.property_set_id;
-                //when they choose sample pull all property-measurements from backend
-                mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
-                    .success(function (properties) {
-                        item.properties = properties;
-                    })
-                    .error(function (err) {
-                        console.log(err)
-                    })
-                    .jsonp();
-                break;
-            case "datafile":
-                if ($scope.type === 'input_files') {
-                    what = 'input_files';
-                } else {
-                    what = 'output_files';
-                }
-                break;
+                case "sample":
+                    what = 'input_samples';
+                    item.new_properties = [];
+                    item.old_properties = [];
+                    item.transformed_properties = [];
+                    item.files = [];
+                    item.property_set_id = item.property_set_id;
+                    //when they choose sample pull all property-measurements from backend
+                    mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
+                        .success(function (properties) {
+                            item.properties = properties;
+                        })
+                        .error(function (err) {
+                            console.log(err)
+                        })
+                        .jsonp();
+                    break;
+                case "datafile":
+                    if ($scope.type === 'input_files') {
+                        what = 'input_files';
+                    } else {
+                        what = 'output_files';
+                    }
+                    break;
             }
             var i = _.indexOf($scope.template[what], function (entry) {
                 return item.id === entry.id;
@@ -125,37 +125,37 @@
 
         $scope.removeAttachment = function (item, what, sample_id) {
             switch (what) {
-            case "input_samples":
-                spliceItem(item, what);
-                break;
-            case "input_files":
-                spliceItem(item, what);
-                break;
-            case "output_files":
-                spliceItem(item, what);
-                break;
-            case "new_properties":
-                var index = _.indexOf($scope.template.input_samples, function (entry) {
-                    return sample_id === entry.id;
-                });
-                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
-                    return item.name === entry.name;
-                });
-                if (i > -1) {
-                    $scope.template.input_samples[index][what].splice(i, 1);
-                }
-                break;
-            case "properties":
-                var index = _.indexOf($scope.template.input_samples, function (entry) {
-                    return sample_id === entry.id;
-                });
-                var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
-                    return item.id === entry.id;
-                });
-                if (i > -1) {
-                    delete $scope.template.input_samples[index][what][i]['measures'];
-                }
-                break;
+                case "input_samples":
+                    spliceItem(item, what);
+                    break;
+                case "input_files":
+                    spliceItem(item, what);
+                    break;
+                case "output_files":
+                    spliceItem(item, what);
+                    break;
+                case "new_properties":
+                    var index = _.indexOf($scope.template.input_samples, function (entry) {
+                        return sample_id === entry.id;
+                    });
+                    var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                        return item.name === entry.name;
+                    });
+                    if (i > -1) {
+                        $scope.template.input_samples[index][what].splice(i, 1);
+                    }
+                    break;
+                case "properties":
+                    var index = _.indexOf($scope.template.input_samples, function (entry) {
+                        return sample_id === entry.id;
+                    });
+                    var i = _.indexOf($scope.template.input_samples[index][what], function (entry) {
+                        return item.id === entry.id;
+                    });
+                    if (i > -1) {
+                        delete $scope.template.input_samples[index][what][i]['measures'];
+                    }
+                    break;
             }
         };
 
@@ -315,13 +315,11 @@
         };
 
         $scope.createProcess = function () {
-            console.log('yes');
             console.dir($scope.template);
             $scope.isProcessing = true;
             if ($scope.template._type === 'as_received') {
                 $scope.template.output_samples.push($scope.bk.newSample);
             } else {
-                //$scope.template = refineSampleProperties();
                 if ($scope.template.transformed_samples.length !== 0) {
                     $scope.template.transformed_samples = refineTransformedSamples();
                 }
@@ -368,45 +366,7 @@
                     $scope.template.setup.settings[0].properties.push(property)
                 }
             })
-
         }
-
-        //function refineSampleProperties() {
-        //    $scope.template.input_samples.forEach(function (sample) {
-        //        sample.properties = refine(sample.properties);
-        //        sample.new_properties = refine(sample.new_properties);
-        //    });
-        //    if ($scope.template.transformed_samples.length !== 0) {
-        //        $scope.template.transformed_samples = refineTransformedSamples();
-        //    }
-        //    return $scope.template;
-        //}
-
-
-        //function refine(items) {
-        //    var each_measure = {};
-        //    items.forEach(function (item) {
-        //        item.measurements = [];
-        //        if ('measures' in item) {
-        //            item.measures.forEach(function (m) {
-        //                if (m.name === 'Composition') {
-        //                    each_measure = {
-        //                        value: m.value,
-        //                        _type: m._type,
-        //                        unit: m.unit,
-        //                        attribute: m.attribute,
-        //                        element: m.element
-        //                    };
-        //
-        //                } else {
-        //                    each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
-        //                }
-        //                item.measurements.push(each_measure);
-        //            });
-        //        }
-        //    });
-        //    return items;
-        //}
 
         function refineFiles(files) {
             var items = [];
@@ -435,18 +395,13 @@
         }
 
         function init() {
-            $scope.template = processTemplates.getActiveTemplate();
-            $scope.template.name = $scope.template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-            measurements.templates();
             $scope.bk = {
                 selectedSample: {},
                 newSample: {}
             };
-            $scope.isEmptyTemplate = _.isEmpty($scope.template);
-            if ($scope.isEmptyTemplate === true) {
-                $state.go('projects.project.processes.list')
-            }
             $scope.project = project;
+            $scope.template = template;
+            console.dir(template);
         }
 
         $scope.linkFilesToSample = linkFilesToSample;

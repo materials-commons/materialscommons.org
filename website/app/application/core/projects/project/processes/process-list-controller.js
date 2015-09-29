@@ -3,26 +3,22 @@
     projectListProcess.$inject = ["processes", "project", "$state", "modalInstance"];
 
     function projectListProcess(processes, project, $state, modalInstance) {
-        var processListCtrl = this;
+        var ctrl = this;
 
-        processListCtrl.chooseTemplate = chooseTemplate;
-        processListCtrl.viewProcess = viewProcess;
+        ctrl.chooseTemplate = chooseTemplate;
+        ctrl.viewProcess = viewProcess;
 
-        processListCtrl.processes = processes;
-        processListCtrl.project = project;
-        processListCtrl.current = {};
-
-        if (processListCtrl.processes.length !== 0) {
-            processListCtrl.current = processListCtrl.processes[0];
-        }
+        ctrl.processes = processes;
+        ctrl.project = project;
+        ctrl.current = {};
 
          function viewProcess(process) {
-            processListCtrl.current = process;
-            $state.go('projects.project.processes.list.view.setup', {process_id: processListCtrl.current.id});
+            ctrl.current = process;
+            $state.go('projects.project.processes.list.view.setup', {process_id: ctrl.current.id});
         }
 
         function chooseTemplate() {
-            modalInstance.chooseTemplate(processListCtrl.project);
+            modalInstance.chooseTemplate(ctrl.project);
         }
     }
 }(angular.module('materialscommons')));

@@ -1,5 +1,6 @@
 (function (module) {
-    module.factory("processTemplates", processTemplates);
+    module.factory("processTemplates",
+        [processTemplates]);
 
     function processTemplates() {
         var self = this;
@@ -161,6 +162,17 @@
 
             setActiveTemplate: function (template) {
                 self.activeTemplate = this.newInstance(template);
+            },
+
+            getTemplateByName: function (what) {
+                var q = $q.defer();
+                var i = _.indexOf(self.templates, function (template) {
+                    return template.name === what;
+                });
+
+                if (i > -1){
+                    return this.newInstance(self.templates[i]);
+                }
             }
         };
     }
