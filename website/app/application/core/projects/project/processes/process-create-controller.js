@@ -50,33 +50,6 @@
             $state.go('projects.project.processes.list');
         };
 
-        $scope.linkSample = function (datafile) {
-            var i = _.indexOf($scope.template.input_samples, function (entry) {
-                return $scope.bk.selectedSample.id === entry.id;
-            });
-            //check for redundancy
-            var k = _.indexOf($scope.template.input_samples[i].files, function (entry) {
-                return datafile.datafile_id === entry.datafile_id;
-            });
-
-            if (k < 0) {
-                if (i > -1) {
-                    $scope.template.input_samples[i].files.push({id: datafile.datafile_id, name: datafile.name});
-                    $scope.bk.selectedSample = '';
-                }
-            }
-        };
-
-        $scope.removeLink = function (sample, file) {
-            var k = _.indexOf($scope.template.input_samples, function (entry) {
-                return sample.id === entry.id;
-            });
-            var i = _.indexOf($scope.template.input_samples[k].files, function (entry) {
-                return file.datafile_id === entry.datafile_id;
-            });
-            $scope.template.input_samples[k].files.splice(i, 1);
-            $scope.bk.selectedSample = '';
-        };
 
         function updateSampleMeasurement(sample) {
             var i = _.indexOf($scope.template.input_samples, function (entry) {
@@ -94,6 +67,7 @@
                 item.old_properties = [];
                 item.transformed_properties = [];
                 item.files = [];
+                item.property_set_id = item.property_set_id;
                 //when they choose sample pull all property-measurements from backend
                 mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
                     .success(function (properties) {
@@ -369,43 +343,6 @@
 
         }
 
-        function refineSampleProperties() {
-            $scope.template.input_samples.forEach(function (sample) {
-                sample.properties = refine(sample.properties);
-                sample.new_properties = refine(sample.new_properties);
-            });
-            if ($scope.template.transformed_samples.length !== 0) {
-                $scope.template.transformed_samples = refineTransformedSamples();
-            }
-            return $scope.template;
-        }
-
-
-        function refine(items) {
-            var each_measure = {};
-            items.forEach(function (item) {
-                item.measurements = [];
-                if ('measures' in item) {
-                    item.measures.forEach(function (m) {
-                        if (m.name === 'Composition') {
-                            each_measure = {
-                                value: m.value,
-                                _type: m._type,
-                                unit: m.unit,
-                                attribute: m.attribute,
-                                element: m.element
-                            };
-
-                        } else {
-                            each_measure = {value: m.value, _type: m._type, unit: m.unit, attribute: m.attribute};
-                        }
-                        item.measurements.push(each_measure);
-                    });
-                }
-            });
-            return items;
-        }
-
         function refineFiles(files) {
             var items = [];
             files.forEach(function (file) {
@@ -433,18 +370,12 @@
         }
 
         function init() {
-            $scope.template = processTemplates.getActiveTemplate();
-            $scope.template.name = $scope.template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-            measurements.templates();
             $scope.bk = {
                 selectedSample: {},
                 newSample: {}
             };
-            $scope.isEmptyTemplate = _.isEmpty($scope.template);
-            if ($scope.isEmptyTemplate === true) {
-                $state.go('projects.project.processes.list')
-            }
             $scope.project = project;
+            $scope.template = template;
         }
 
         $scope.linkFilesToSample = linkFilesToSample;
