@@ -1,0 +1,7 @@
+<div ng-if="imageTab.filesList.length !== 0">
+    <span ng-repeat="img in imageTab.images(imageTab.filesList) | first:3">
+        <img class="img-thumbnail" height="100" width="100"
+             ng-src={{imageTab.fileSrc(img.datafile_id)}}>
+    </span>
+    ... <a>more ({{imageTab.filesList.length}})</a> files
+</div>

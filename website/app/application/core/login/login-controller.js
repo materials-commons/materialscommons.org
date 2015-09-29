@@ -1,11 +1,12 @@
 (function (module) {
     module.controller('LoginController', LoginController);
 
-    LoginController.$inject = ["$state", "User", "toastr",
+    LoginController.$inject = ["Restangular", "$state", "User", "toastr",
         "mcapi", "pubsub", "model.projects",
         "$anchorScroll", "$location", "Restangular"];
 
     /* @ngInject */
+
     function LoginController($state, User, toastr, mcapi, pubsub, projects, $anchorScroll, $location, Restangular) {
         var ctrl = this;
 

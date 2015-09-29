@@ -5,7 +5,7 @@
         var self = this;
         self.activeTemplate = {};
         self.copy = [];
-        self.touchedProperties = [];
+        self.touchedProperties = {};
         self.activeProperty = {};
         self.copySample = {};
         self.modal = {sample: {}};
@@ -238,9 +238,16 @@
             verifyAndSave: function (property) {
                 if (('value' in property) && property.value !== null) {
                     if (this.isExistingPropertyValid(property)) {
-                        self.touchedProperties.push(property);
+                        //check for the sample touchedProperties
+                        var key = self.modal.sample.name;
+                        if (self.touchedProperties.hasOwnProperty(key)){
+                            self.touchedProperties[key].push(property);
+                        } else{
+                            self.touchedProperties[key] = [];
+                            self.touchedProperties[key].push(property);
+                        }
                         this.processMeasurments(property);
-                        return true;
+                        return self.modal.sample;
                     }
                     else {
                         return false;
@@ -252,6 +259,7 @@
 
             processMeasurments: function (property) {
                 var type = property._type;
+                var values = [] ;
                 switch (type) {
                     case 'number':
                         values = property.value.split("\n");
@@ -280,12 +288,33 @@
                         this.saveToSample(property);
                         break;
                     case 'histogram':
+                        property.measurements = [];
+                        property.measurements.push({
+                            value: property.value,
+                            _type: type,
+                            unit: property.unit,
+                            attribute: property.attribute
+                        });
                         this.saveToSample(property);
                         break;
                     case 'line':
+                        property.measurements = [];
+                        property.measurements.push({
+                            value: property.value,
+                            _type: type,
+                            unit: property.unit,
+                            attribute: property.attribute
+                        });
                         this.saveToSample(property);
                         break;
                     case 'selection':
+                        property.measurements = [];
+                        property.measurements.push({
+                            value: property.value,
+                            _type: type,
+                            unit: property.unit,
+                            attribute: property.attribute
+                        });
                         this.saveToSample(property);
                         break;
                     case 'composition':
@@ -393,8 +422,12 @@
                 }
             },
 
-            getTouchedProperties: function () {
-                return self.touchedProperties;
+            getTouchedProperties: function (key) {
+                if (self.touchedProperties.hasOwnProperty(key)){
+                    return self.touchedProperties[key]
+                } else {
+                    return [];
+                }
             },
 
             copySample: function (sample) {
@@ -403,7 +436,7 @@
             },
 
             reset: function(){
-            self.touchedProperties = [];
+                self.touchedProperties = {};
             }
         };
     }

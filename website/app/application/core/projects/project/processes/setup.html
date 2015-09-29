@@ -1,0 +1,20 @@
+<div class="tab-pane active">
+    <div ng-if="view.process.setup[0].properties.length === 0">
+        No Setup information
+    </div>
+
+    <table ng-if="view.process.setup[0].properties.length !== 0" class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="property in view.process.setup[0].properties">
+            <td style="height: 0px;"> {{property.name}}</td>
+            <td style="height: 0px;">{{property.value}} {{property.units}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
