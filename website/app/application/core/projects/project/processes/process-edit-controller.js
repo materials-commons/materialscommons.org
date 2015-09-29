@@ -1,41 +1,29 @@
 (function (module) {
     module.controller('projectEditProcess', projectEditProcess);
-    projectEditProcess.$inject = ["project", "modalInstance", "$state", "process"];
+    projectEditProcess.$inject = ["project", "modalInstance", "$state", "processTemplates", "template"];
 
-    function projectEditProcess(project, modalInstance, $state, process) {
-        var editCtrl = this;
-        editCtrl.cancel = cancel;
-        editCtrl.openFile = openFile;
-        editCtrl.openSample = openSample;
-        editCtrl.done = done;
+    function projectEditProcess(project, modalInstance, $state, processTemplates, template) {
+        var ctrl = this;
+        ctrl.cancel = cancel;
+        ctrl.openFile = openFile;
+        ctrl.openSample = openSample;
+        ctrl.done = done;
 
-        editCtrl.project = project;
-        editCtrl.process = process;
-        editCtrl.cloneProcess = angular.clone(process);
-        console.dir(process);
-        editCtrl.prepareSetUp = prepareSetUp;
-
-        function prepareSetUp(){
-            editCtrl.process.setup = {
-                settings: [{properties: editCtrl.cloneProcess.setup[0].setupproperties}]
-            };
-            editCtrl.process.setup.settings[0].properties.forEach(function(item){
-                item.property = item;
-
-            });
-        }
-
+        ctrl.project = project;
+        ctrl.template = template;
+        console.log('edit controller');
+        console.dir(ctrl.template);
 
         function cancel() {
             $state.go('projects.project.processes.list.view');
         }
 
         function openFile(file) {
-            modalInstance.openModal(file, 'datafile', editCtrl.project);
+            modalInstance.openModal(file, 'datafile', ctrl.project);
         }
 
         function openSample(sample) {
-            modalInstance.openModal(sample, 'sample', editCtrl.project);
+            modalInstance.openModal(sample, 'sample', ctrl.project);
         }
 
         function done() {

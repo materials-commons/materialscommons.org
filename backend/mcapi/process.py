@@ -19,7 +19,8 @@ def msg(s):
 @apikey
 @jsonp
 def get_processes_for_project(project_id):
-    processes = get_processes(project_id)
+    processes = []
+    processes = get_process_information(project_id)
     return resp.to_json(processes)
 
 
@@ -28,103 +29,64 @@ def get_process_information(project_id):
                      .get_all(project_id, index="project_id")
                      .eq_join("process_id", r.table("processes")).zip()
                      .order_by(r.desc('birthtime'))
-                     .merge(lambda process:
-                            {
-                                'setup': r.table('process2setup')
-                                .get_all(process['process_id'],
-                                         index='process_id')
-                                .eq_join("setup_id", r.table("setups")).zip()
-                                .merge(lambda setup: {
-                                        'setupproperties':
-                                            r.table('setupproperties')
-                                            .get_all(setup['setup_id'],
-                                                     index="setup_id")
-                                            .coerce_to('array')
-                                    })
-                                .coerce_to('array'),
-
-                                'samples': r.table('process2sample')
-                                .get_all(process['process_id'],
-                                         index='process_id')
-                                .eq_join('sample_id', r.table("samples"))
-                                .without({"right": {"_type": True}})
-                                .zip()
-                                .coerce_to('array'),
-
-                                'files_used': r.table('process2file')
-                                .get_all(process['process_id'],
-                                index='process_id').filter({
-                                'direction' : "in"})
-                                .eq_join('datafile_id', r.table('datafiles'))
-                                .zip()
-                                .coerce_to('array'),
-
-                                'files_produced': r.table('process2file')
-                                .get_all(process['process_id'],
-                                index='process_id').filter({
-                                'direction' : "out"})
-                                .eq_join('datafile_id', r.table('datafiles'))
-                                .zip()
-                                .coerce_to('array')
-                            })
                      .run(g.conn, time_format="raw"))
     return processes
 
 
-def get_processes(project_id):
-    processes = list(r.table("processes")
-                     .get_all(project_id, index="project_id")
-                     .run(g.conn, time_format="raw"))
-    # For fast lookup put processes in a map
-    by_ids = {p['id']: p for p in processes}
-
-    # Add additional fields to fill in for the properties
-    # and upstream/downstream processes
-    for id, process in by_ids.iteritems():
-        process['inputs'] = {}
-        process['outputs'] = {}
-        process['upstream'] = {}
-        process['downstream'] = {}
-
-    if len(by_ids) != 0:
-        all_property_sets = get_property_sets(by_ids)
-        add_process_properties(all_property_sets, by_ids)
-        connect_feeders(all_property_sets, by_ids)
-    return processes
-
-
-def get_property_sets(processes):
-    # Get all properties for all of the processes
-    all = list(r.table("property_sets")
-               .get_all(*processes.keys(), index="item_id")
-               .eq_join("id", r.table("properties"), index="item_id")
-               .map(lambda row: row.merge({
-                   "left": {
-                       "ps_id": row["left"]["id"],
-                       "ps_name": row["left"]["name"],
-                       "ps_process_id": row["left"]["item_id"],
-                       "ps_item_type": row["left"]["item_type"]
-                   }
-               }))
-               .without({
-                   "left": {
-                       "id": True,
-                       "name": True,
-                       "item_id": True,
-                       "item_type": True
-                   }
-               })
-               .zip().run(g.conn, time_format="raw"))
-    return all
+# def get_processes(project_id):
+#     processes = list(r.table("processes")
+#                      .get_all(project_id, index="project_id")
+#                      .run(g.conn, time_format="raw"))
+#     # For fast lookup put processes in a map
+#     by_ids = {p['id']: p for p in processes}
+#
+#     # Add additional fields to fill in for the properties
+#     # and upstream/downstream processes
+#     for id, process in by_ids.iteritems():
+#         process['inputs'] = {}
+#         process['outputs'] = {}
+#         process['upstream'] = {}
+#         process['downstream'] = {}
+#
+#     if len(by_ids) != 0:
+#         all_property_sets = get_property_sets(by_ids)
+#         add_process_properties(all_property_sets, by_ids)
+#         connect_feeders(all_property_sets, by_ids)
+#     return processes
 
 
-def add_process_properties(property_sets, processes):
-    # Now go through each property set and add the property set
-    # and its properties to the relevant process
-    for property_set in property_sets:
-        process_id = property_set["ps_process_id"]
-        process = processes[process_id]
-        add_property_set(property_set, process)
+# def get_property_sets(processes):
+#     # Get all properties for all of the processes
+#     all = list(r.table("property_sets")
+#                .get_all(*processes.keys(), index="item_id")
+#                .eq_join("id", r.table("properties"), index="item_id")
+#                .map(lambda row: row.merge({
+#                    "left": {
+#                        "ps_id": row["left"]["id"],
+#                        "ps_name": row["left"]["name"],
+#                        "ps_process_id": row["left"]["item_id"],
+#                        "ps_item_type": row["left"]["item_type"]
+#                    }
+#                }))
+#                .without({
+#                    "left": {
+#                        "id": True,
+#                        "name": True,
+#                        "item_id": True,
+#                        "item_type": True
+#                    }
+#                })
+#                .zip().run(g.conn, time_format="raw"))
+#     return all
+
+
+# def add_process_properties(property_sets, processes):
+#     # Now go through each property set and add the property set
+#     # and its properties to the relevant process
+#     for property_set in property_sets:
+#         process_id = property_set["ps_process_id"]
+#         process = processes[process_id]
+#         add_property_set(property_set, process)
 
 
 def add_property_set(property_set, process):

@@ -221,34 +221,48 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectProcesses",
             controllerAs: 'processes'
         })
+        .state("projects.project.processes.create", {
+            url: "/create",
+            templateUrl: "application/core/projects/project/processes/create.html",
+            controller: "projectCreateProcess",
+            resolve: {
+                template: ["processList", "processTemplates", "$filter", "measurements",
+                    function (processList, processTemplates, $filter, measurements) {
+                        var template = processTemplates.getActiveTemplate();
+                        template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+                        measurements.templates();
+                        return template;
+                    }
+                ]
+            }
+        })
+        .state("projects.project.processes.edit", {
+            url: "/edit/:process_id",
+            templateUrl: "application/core/projects/project/processes/edit.html",
+            controller: "projectEditProcess",
+            controllerAs: 'edit',
+            resolve: {
+                template: ["processes", "processList", "$stateParams", "processTemplates", "processEdit",
+                    function (processes, processList, $stateParams, processTemplates, processEdit) {
+                        //var process = processList.getProcess($stateParams.process_id, processes);
+                        //var template = processTemplates.getTemplateByName(process.template_name);
+                        //console.log(process);
+                        //console.log(template);
+                        //return processEdit.transformSetup($stateParams.process_id)
+                    }
+                ]
+            }
+        })
         .state("projects.project.processes.list", {
             url: "/list",
             templateUrl: "application/core/projects/project/processes/list.html",
             controller: "projectListProcess",
             controllerAs: "processlist",
             resolve: {
-                processes: ["project",
-                    function (project) {
-                        return project.processes;
+                processes: ["project", "ProcessList", "Restangular",
+                    function (project, ProcessList, Restangular) {
+                        return Restangular.one('processes').one('project', project.id).getList();
                     }]
-            }
-        })
-        .state("projects.project.processes.create", {
-            url: "/create",
-            templateUrl: "application/core/projects/project/processes/create.html",
-            controller: "projectCreateProcess"
-        })
-        .state("projects.project.processes.list.edit", {
-            url: "/edit/:process_id",
-            templateUrl: "application/core/projects/project/processes/edit.html",
-            controller: "projectEditProcess",
-            controllerAs: 'edit',
-            resolve: {
-                process: ["processes", "processList", "$stateParams",
-                    function (processes, processList, $stateParams) {
-                        return processList.getProcess($stateParams.process_id, processes);
-                    }
-                ]
             }
         })
         .state("projects.project.processes.list.view", {
@@ -257,9 +271,16 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
             controller: "projectViewProcess",
             controllerAs: 'view',
             resolve: {
-                process: ["$stateParams", "processes", "processList",
-                    function ($stateParams, processes, processList) {
-                        return  processList.getProcess($stateParams.process_id, processes);
+                process: ["$stateParams", "Restangular", "processes",
+                    function ($stateParams, Restangular, processes) {
+                        if ($stateParams.process_id) {
+                            var process_id = $stateParams.process_id;
+                        } else {
+                            if (processes.length > 0) {
+                                process_id = processes[0].id;
+                            }
+                        }
+                        return Restangular.one('process').one('details', process_id).get();
                     }
                 ]
             }

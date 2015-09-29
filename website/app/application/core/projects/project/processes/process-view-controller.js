@@ -3,27 +3,25 @@
     projectViewProcess.$inject = ["project", "mcfile", "modalInstance", "$state", "process"];
 
     function projectViewProcess(project, mcfile, modalInstance, $state, process) {
-        var viewCtrl = this;
+        var ctrl = this;
+        ctrl.openSample = openSample;
+        ctrl.openFile = openFile;
+        ctrl.editProvenance = editProvenance;
+        ctrl.images = images;
+        ctrl.fileSrc = fileSrc;
+        ctrl.isSet = isSet;
+        ctrl.setTab = setTab;
 
-        viewCtrl.openSample = openSample;
-        viewCtrl.openFile = openFile;
-        viewCtrl.editProvenance = editProvenance;
-        viewCtrl.images = images;
-        viewCtrl.fileSrc = fileSrc;
-        viewCtrl.isSet = isSet;
-        viewCtrl.setTab = setTab;
-
-        viewCtrl.project = project;
-        viewCtrl.tab = 'setup';
-        viewCtrl.process = process;
-        console.dir(process);
+        ctrl.project = project;
+        ctrl.tab = 'setup';
+        ctrl.process = process[0];
 
         function setTab(tabId) {
-            viewCtrl.tab = tabId;
+            ctrl.tab = tabId;
         }
 
         function isSet(tabId) {
-            return viewCtrl.tab === tabId;
+            return ctrl.tab === tabId;
         }
 
         function fileSrc(id) {
@@ -31,15 +29,15 @@
         }
 
         function openSample(sample) {
-            modalInstance.openModal(sample, 'sample', viewCtrl.project);
+            modalInstance.openModal(sample, 'sample', ctrl.project);
         }
 
         function openFile(file) {
-            modalInstance.openModal(file, 'datafile', viewCtrl.project);
+            modalInstance.openModal(file, 'datafile', ctrl.project);
         }
 
         function editProvenance() {
-            $state.go('projects.project.processes.list.edit', {process_id: viewCtrl.process.id});
+            $state.go('projects.project.processes.edit', {process_id: ctrl.process.id});
         }
 
         function images(files) {
