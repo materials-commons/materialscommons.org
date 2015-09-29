@@ -14,13 +14,79 @@ module.exports = function (r) {
 
     let model = require('./model')(r);
     let db = require('./db')(r);
+    let dbExec = require('./run');
 
     return {
+        update: update,
         create: create,
+        get: get,
         r: r
     };
 
     ///////////////// Module public methods /////////////////
+
+    /**
+     * Updates existing process fields
+     */
+    function *update(processID, process) {
+        if (process.setup) {
+           yield updateProcessSetup(process.setup);
+        }
+
+        if (process.name || process.why || process.what) {
+            yield updateProcessAttributes(processID, process);
+        }
+
+        if (process.samples) {
+            yield updateSampleMeasurements(process.samples);
+        }
+
+        return yield get(processID);
+    }
+
+    // updateProcessSetup updates the setupproperties table entries. It assumes
+    // that the list of properties already exists.
+    function* updateProcessSetup(setupProperties) {
+        let rql = r.table('setupproperties').insert(setupProperties, {conflict: "update"});
+        yield dbExec(rql);
+    }
+
+    // updateProcessAttributes updates the name, why and/or what properties for a
+    // process. It explicitly checks that they exist.
+    function* updateProcessAttributes(processID, process) {
+        let updateAttrs = {};
+        if (process.name) {
+            updateAttrs.name = process.name;
+        }
+        if (process.why) {
+            updateAttrs.why = process.why;
+        }
+        if (process.what) {
+            updateAttrs.what = process.what;
+        }
+        yield db.update('processes', processID, updateAttrs);
+    }
+
+    // updateSampleMeasurements updates existing measurements for samples. It does
+    // not currently support addition or deletion.
+    function* updateSampleMeasurements(samples) {
+        let measurements = [];
+        samples.forEach(function(sample) {
+            if (sample.properties) {
+                sample.properties.forEach(function(prop) {
+                    prop.measurements.forEach(function(m) {
+                        measurements.push(m);
+                    })
+                })
+            }
+        });
+        let rql = r.table('measurements').insert(measurements, {conflict: "update"});
+        yield dbExec(rql);
+    }
+
+    function* get(processID) {
+        return {error: "Not implemented"};
+    }
 
     /**
      * Creates a new process from the passed in process definition. This

@@ -1,7 +1,8 @@
-module.exports = function(processes, schema) {
+module.exports = function (processes, schema) {
     'use strict';
-    let ec = require('./error-code');
-    let parse = require('co-body');
+    const ec = require('./error-code');
+    const parse = require('co-body');
+    const httpStatus = require('http-status');
 
     return {
         update: update,
@@ -11,9 +12,14 @@ module.exports = function(processes, schema) {
     /////////////////////////
 
     function* update(next) {
-        this.status = 200;
-        this.body = {hello: 'world'};
+        let process = yield parse(this);
+        let rv = yield processes.update(this.params.process_id, process);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.body = rv.val;
         yield next;
+
     }
 
     // create creates a new process and associated dependencies.
@@ -143,7 +149,7 @@ module.exports = function(processes, schema) {
         schema.processes.addDefaultsToTarget(process);
 
         // Add owner and project to created samples
-        process.samples_created.forEach(function(s) {
+        process.samples_created.forEach(function (s) {
             s.owner = process.owner;
             s.project_id = process.project_id;
         });
