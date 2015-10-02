@@ -1,7 +1,7 @@
 (function (module) {
     module.controller('LoginController', LoginController);
 
-    LoginController.$inject = ["Restangular", "$state", "User", "toastr",
+    LoginController.$inject = ["$state", "User", "toastr",
         "mcapi", "pubsub", "model.projects",
         "$anchorScroll", "$location", "Restangular"];
 
