@@ -6,7 +6,8 @@ module.exports = function (processes, schema) {
 
     return {
         update: update,
-        create: create
+        create: create,
+        get: get
     };
 
     /////////////////////////
@@ -20,6 +21,11 @@ module.exports = function (processes, schema) {
         this.body = rv.val;
         yield next;
 
+    }
+
+
+    function* get(next) {
+        yield next;
     }
 
     // create creates a new process and associated dependencies.
