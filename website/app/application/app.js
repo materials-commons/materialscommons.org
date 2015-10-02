@@ -318,7 +318,6 @@ app.run(["$rootScope", "User", "Restangular", appRun]);
 
 function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
-    console.log('app.run');
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
