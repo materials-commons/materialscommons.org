@@ -39,18 +39,26 @@
                         </button>
                     </div>
                 </div>
-                <ul ng-if="reviews.length !== 0" class="list-group">
-                    <li class="list-group-item pointer"
-                        ng-repeat="r in reviews"
-                        ng-class="{active: review.id === r.id}"
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="r in reviews"
                         ui-sref="projects.project.reviews.edit({'review_id': r.id})">
-                        <h4 class="list-group-item-heading">{{r.title}}</h4>
-                        <span class="pull-right">
-                            <i class="fa fa-fw fa-comment"></i>{{r.messages.length}}
-                        </span>
-                        <p>{{r.title}}</p>
+                        {{r.title}}
+                        <span class="pull-right"><i class="fa fa-fw fa-comment"></i>{{r.messages.length}}</span>
+                        <div ta-bind class="small" ng-model="r.messages[0].message"></div>
                     </li>
                 </ul>
+                <!--<ul ng-if="reviews.length !== 0" class="list-group">-->
+                    <!--<li class="list-group-item pointer"-->
+                        <!--ng-repeat="r in reviews"-->
+                        <!--ng-class="{active: review.id === r.id}"-->
+                        <!--ui-sref="projects.project.reviews.edit({'review_id': r.id})">-->
+                        <!--<h4 class="list-group-item-heading">{{r.title}}</h4>-->
+                        <!--<span class="pull-right">-->
+                            <!--<i class="fa fa-fw fa-comment"></i>{{r.messages.length}}-->
+                        <!--</span>-->
+                        <!--<p>{{r.title}}</p>-->
+                    <!--</li>-->
+                <!--</ul>-->
 
                 <h4 ng-if="reviews.length === 0" class="text-center text-uppercase">
                     {{noReviewsMessage}}
