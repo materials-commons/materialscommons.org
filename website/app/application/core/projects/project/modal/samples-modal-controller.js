@@ -64,9 +64,9 @@
             angularCompileRows: true,
             rowSelection: 'multiple',
             ready: readyFunc,
-            rowSelected: function (sample) {
-                Review.checkedItems(sample);
-                pubsub.send('addSampleToReview', sample);
+            rowSelected: function (row) {
+                Review.checkedItems(row.node.data);
+                pubsub.send('addSampleToReview', row.node.data);
             },
             suppressRowClickSelection: true
         };
