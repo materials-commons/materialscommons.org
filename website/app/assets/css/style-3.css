@@ -981,6 +981,10 @@ header {
     padding-top: 20px;
 }
 
+.section-as-margin {
+    margin-top: 20px;
+}
+
 .no-bottom-margin {
     margin-bottom: 0px;
 }
