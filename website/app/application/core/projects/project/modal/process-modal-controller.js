@@ -64,8 +64,8 @@
             ready: readyFunc,
             //cellClicked: cellClickedFunc,
             rowSelected: function (process) {
-                Review.checkedItems(process);
-                pubsub.send('addProcessToReview', process);
+                Review.checkedItems(process.node.data);
+                pubsub.send('addProcessToReview', process.node.data);
             },
             suppressRowClickSelection: true
         };
