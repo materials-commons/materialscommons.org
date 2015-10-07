@@ -51,10 +51,25 @@
             </tags-input>
         </div>
 
-        <div ng-if="false" class="row">
-            <h4 class="text-uppercase section">notes</h4>
+        <div ng-if="true" class="row">
+            <ul class="list-inline no-bottom-margin">
+                <li><h4 class="text-uppercase section">notes</h4></li>
+                <li ng-if="!ctrl.addNoteActive">
+                    <a ng-click="ctrl.addNoteActive = true" class="text-small text-uppercase">
+                        <i class="fa fa-fw fa-plus"></i>add note
+                    </a>
+                </li>
+            </ul>
 
-            <div ng-repeat="note in ctrl.file.notes" class="row">
+            <div ng-if="ctrl.addNoteActive">
+                <div class="row">
+                    <create-note note="ctrl.newNote"
+                                 save="ctrl.saveNote(note)"
+                                 cancel="ctrl.cancelNote()">
+                    </create-note>
+                </div>
+            </div>
+            <div ng-if="!ctrl.addNoteActive" ng-repeat="note in ctrl.file.notes" class="row">
                     <span class="pull-right">
                             <a ng-click="note.edit = !note.edit"><i class="fa fa-fw fa-edit"></i></a></span>
 
@@ -64,8 +79,8 @@
                     <div class="col-xs-11" ta-bind ng-model="note.note"></div>
                 </div>
                 <div class="row" ng-if="note.edit">
-                    <create-note note-title="note.file" note-body="note.note"
-                                 accept="ctrl.saveNote()"
+                    <create-note note="note"
+                                 save="ctrl.saveNote(note)"
                                  cancel="ctrl.cancelNote()">
                     </create-note>
                 </div>
