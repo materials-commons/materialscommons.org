@@ -11,11 +11,19 @@
         ctrl.files = project.files;
         ctrl.files[0].expanded = true;
 
-        pubsub.waitOn($scope, 'files.refresh', function () {
-            ctrl.gridOptions.api.recomputeAggregates();
-            ctrl.gridOptions.api.refreshGroupRows();
-            ctrl.gridOptions.api.refreshView();
-            ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+        pubsub.waitOn($scope, 'files.refresh', function (f) {
+            var treeModel = new TreeModel(),
+                root = treeModel.parse(project.files[0]);
+            var file = root.first({strategy: 'pre'}, function (node) {
+                return node.model.data.id === f.id;
+            });
+            if (file) {
+                file.model.data.name = f.name;
+                ctrl.gridOptions.api.recomputeAggregates();
+                ctrl.gridOptions.api.refreshGroupRows();
+                ctrl.gridOptions.api.refreshView();
+                ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+            }
         });
 
         init();
