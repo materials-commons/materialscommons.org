@@ -15,11 +15,16 @@
         ctrl.downloadSrc = downloadSrc;
         ctrl.saveNote = saveNote;
         ctrl.cancelNote = cancelNote;
+        ctrl.addNoteActive = false;
+        ctrl.newNote = {
+            note: '',
+            title: ''
+        };
 
         //////////////////////
 
-        function saveNote(title, body) {
-            console.log("saveNote called");
+        function saveNote(note) {
+            console.log("saveNote called", note);
         }
 
         function cancelNote() {
