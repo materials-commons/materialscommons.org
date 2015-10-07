@@ -1,143 +1,88 @@
 (function (module) {
     module.controller("FilesEditController", FilesEditController);
 
-    FilesEditController.$inject = ["$scope", "$stateParams", "User", "mcfile",
-        "pubsub", "tags", "$modal", "toastr", "project", "file"];
+    FilesEditController.$inject = ["$scope", "mcfile", "pubsub","toastr", "file"];
 
     /* @ngInject */
-    function FilesEditController($scope, $stateParams, User, mcfile, pubsub, tags, $modal, toastr, project, file) {
+    function FilesEditController($scope, mcfile, pubsub, toastr, file) {
         var ctrl = this;
 
+        ctrl.newName = "";
         ctrl.renameActive = false;
         ctrl.active = file;
+        ctrl.renameFile = renameFile;
         //ctrl.editNote = false;
         //
         //pubsub.waitOn($scope, 'datafile-note.change', function () {
         //    ctrl.editNote = !ctrl.editNote;
         //});
         //
-        ctrl.addTag = addTag;
-        ctrl.removeTag = removeTag;
+        ctrl.updateTags = updateTags;
         ctrl.downloadSrc = downloadSrc;
-        //ctrl.fileSrc = fileSrc;
-        //ctrl.closeFile = closeFile;
-        //ctrl.rename = rename;
-        //ctrl.createFolder = createFolder;
 
         //////////////////////
 
-        function addTag(tag) {
-            var tag_obj = {
-                tag_id: tag.tag_id,
-                owner: User.u(),
-                item_type: 'datafile'
-            };
-            tags.createTag(tag_obj, ctrl.active.datafile_id);
+        function renameFile() {
+            if (ctrl.newName === "") {
+                return;
+            } else if (ctrl.newName === file.name) {
+                return;
+            }
+            file.name = ctrl.newName;
+            file.customPUT({name: ctrl.newName}).then(function (f) {
+                file.name = f.name;
+                ctrl.renameActive = false;
+                pubsub.send('files.refresh', file);
+            }).catch(function (err) {
+                toastr.error("File rename failed: " + err.error, "Error");
+            });
         }
 
-        function removeTag(tag) {
-            tags.removeTag(tag.tag_id, ctrl.active.datafile_id);
+        function updateTags() {
+            file.customPUT({tags: ctrl.active.tags}).then(function() {
+            }).catch(function(err) {
+                toastr.error("Failed updating tags: " + err.error, "Error");
+            });
         }
 
         function downloadSrc(file) {
             return mcfile.downloadSrc(file.id);
         }
-
-        //
-        //function fileSrc(file) {
-        //    if (file) {
-        //        return mcfile.src(file.datafile_id);
-        //    }
-        //}
-        //
-        //function closeFile() {
-        //    ctrl.active = null;
-        //}
-        //
-        //function rename() {
-        //    var modalInstance = $modal.open({
-        //        size: 'sm',
-        //        templateUrl: 'application/core/projects/project/files/rename-file.html',
-        //        controller: 'FileModalController',
-        //        controllerAs: 'file',
-        //        resolve: {
-        //            active: function () {
-        //                return ctrl.active;
-        //            }
-        //        }
-        //    });
-        //    modalInstance.result.then(function (name) {
-        //        mcapi("/datafile/%", $stateParams.file_id)
-        //            .success(function () {
-        //                ctrl.active.name = name;
-        //                pubsub.send('files.refresh');
-        //            })
-        //            .error(function (err) {
-        //                toastr.error("Rename failed: " + err.error, "Error");
-        //            })
-        //            .put({name: name});
-        //    });
-        //}
-        //
-        //function createFolder() {
-        //    var modalInstance = $modal.open({
-        //        size: 'sm',
-        //        templateUrl: 'application/core/projects/project/files/create-folder.html',
-        //        controller: 'FileModalController',
-        //        controllerAs: 'folder',
-        //        resolve: {
-        //            active: function () {
-        //                return ctrl.active;
-        //            }
-        //        }
-        //    });
-        //    modalInstance.result.then(function (name) {
-        //        mcapi('/datadirs')
-        //            .success(function (datadir) {
-        //                datadir.parent = ctrl.active;
-        //                datadir.group = true;
-        //                ctrl.active.addFolder = false;
-        //                ctrl.active.children.push(datadir);
-        //                pubsub.send('files.refresh');
-        //            })
-        //            .error(function (err) {
-        //                toastr.error("Create folder failed: " + err.error, "Error");
-        //            })
-        //            .post({
-        //                project_id: project.id,
-        //                parent: ctrl.active.datafile_id,
-        //                name: ctrl.active.name + '/' + name,
-        //                level: ctrl.active.level + 1
-        //            });
-        //    });
-        //}
-
     }
+}(angular.module('materialscommons')));
 
 ////////////////////////////////
 
-    module.controller("FileModalController", FileModalController);
-
-    FileModalController.$inject = ["$modalInstance", "active"];
-
-    /* @ngInject */
-    function FileModalController($modalInstance, active) {
-        var ctrl = this;
-        ctrl.name = "";
-        ctrl.useName = useName;
-        ctrl.cancel = cancel;
-
-        ///////////
-
-        function useName() {
-            if (ctrl.name != "" && ctrl.name != active.name) {
-                $modalInstance.close(ctrl.name);
-            }
-        }
-
-        function cancel() {
-            $modalInstance.dismiss('cancel');
-        }
-    }
-
-}(angular.module('materialscommons')));
+//
+//function createFolder() {
+//    var modalInstance = $modal.open({
+//        size: 'sm',
+//        templateUrl: 'application/core/projects/project/files/create-folder.html',
+//        controller: 'FileModalController',
+//        controllerAs: 'folder',
+//        resolve: {
+//            active: function () {
+//                return ctrl.active;
+//            }
+//        }
+//    });
+//    modalInstance.result.then(function (name) {
+//        mcapi('/datadirs')
+//            .success(function (datadir) {
+//                datadir.parent = ctrl.active;
+//                datadir.group = true;
+//                ctrl.active.addFolder = false;
+//                ctrl.active.children.push(datadir);
+//                pubsub.send('files.refresh');
+//            })
+//            .error(function (err) {
+//                toastr.error("Create folder failed: " + err.error, "Error");
+//            })
+//            .post({
+//                project_id: project.id,
+//                parent: ctrl.active.datafile_id,
+//                name: ctrl.active.name + '/' + name,
+//                level: ctrl.active.level + 1
+//            });
+//    });
+//}
