@@ -1,26 +1,30 @@
 (function (module) {
     module.controller("FilesEditController", FilesEditController);
 
-    FilesEditController.$inject = ["$scope", "mcfile", "pubsub","toastr", "file"];
+    FilesEditController.$inject = ["mcfile", "pubsub","toastr", "file"];
 
     /* @ngInject */
-    function FilesEditController($scope, mcfile, pubsub, toastr, file) {
+    function FilesEditController(mcfile, pubsub, toastr, file) {
         var ctrl = this;
 
         ctrl.newName = "";
         ctrl.renameActive = false;
-        ctrl.active = file;
+        ctrl.file = file;
         ctrl.renameFile = renameFile;
-        //ctrl.editNote = false;
-        //
-        //pubsub.waitOn($scope, 'datafile-note.change', function () {
-        //    ctrl.editNote = !ctrl.editNote;
-        //});
-        //
         ctrl.updateTags = updateTags;
         ctrl.downloadSrc = downloadSrc;
+        ctrl.saveNote = saveNote;
+        ctrl.cancelNote = cancelNote;
 
         //////////////////////
+
+        function saveNote(title, body) {
+            console.log("saveNote called");
+        }
+
+        function cancelNote() {
+            console.log("cancelNote called");
+        }
 
         function renameFile() {
             if (ctrl.newName === "") {
@@ -39,13 +43,13 @@
         }
 
         function updateTags() {
-            file.customPUT({tags: ctrl.active.tags}).then(function() {
+            file.customPUT({tags: ctrl.file.tags}).then(function() {
             }).catch(function(err) {
                 toastr.error("Failed updating tags: " + err.error, "Error");
             });
         }
 
-        function downloadSrc(file) {
+        function downloadSrc() {
             return mcfile.downloadSrc(file.id);
         }
     }
@@ -61,7 +65,7 @@
 //        controller: 'FileModalController',
 //        controllerAs: 'folder',
 //        resolve: {
-//            active: function () {
+//            file: function () {
 //                return ctrl.active;
 //            }
 //        }
