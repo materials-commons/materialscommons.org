@@ -1,28 +1,20 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">Attachments {{modal.type}}</h3>
+        <h3 class="modal-title">Attachments</h3>
     </div>
     <div class="modal-body">
         <div class="row">
             <!-- Nav tabs -->
-            <div ng-show="modal.type">
-                <ul class="nav nav-tabs" role="tablist" id="myTab">
-                    <li ng-show="modal.type !=='samples'" ng-class="{active: modal.type !== 'samples'}"><a
-                            data-target="#1" data-toggle="tab">Files</a></li>
-                    <li ng-show="modal.type === 'samples'" ng-class="{active: modal.type === 'samples'}"><a
-                            data-target="#2" data-toggle="tab" ng-class="{active: modal.type === 'samples'}">Samples</a>
+                <ul class="nav nav-tabs" role="tablist" >
+                    <li class="active"><a
+                            data-target="#2" data-toggle="tab" >Samples</a>
                     </li>
-                    <li ng-if="modal.type === 'processes'"><a data-target="#3" data-toggle="tab">Processes</a></li>
+                    <li ><a data-target="#3" data-toggle="tab">Processes</a></li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane" ng-class="{active: modal.type !== 'samples'}" id="1">
-                        <div style="padding: 10px;">
-                            <div modal-files project="project"></div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" ng-class="{active: modal.type === 'samples'}" id="2">
+                    <div class="tab-pane active"  id="2">
                         <div style="padding: 10px;">
                             <div modal-samples project="project"></div>
                         </div>
@@ -33,31 +25,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div ng-show="!modal.type">
-                <ul class="nav nav-tabs" role="tablist" id="myTab2">
-                    <!--<li class="active"><a data-target="#11" data-toggle="tab">Files</a></li>-->
-                    <li><a data-target="#22" data-toggle="tab">Samples</a></li>
-                    <li><a data-target="#33" data-toggle="tab">Processes</a></li>
-                </ul>
-                <div class="tab-content">
-                    <!--<div class="tab-pane active" id="11">-->
-                        <!--<div style="padding: 10px;">-->
-                            <!--<div modal-files project="project"></div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <div class="tab-pane" id="22">
-                        <div style="padding: 10px;">
-                            <div modal-samples project="project"></div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="33">
-                        <div style="padding: 10px;">
-                            <div modal-processes project="project"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="modal-footer">
