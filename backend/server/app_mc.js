@@ -36,7 +36,7 @@ if (!module.parent) {
 
     var options = cli.parse();
     var port = options.port || 3000;
-    console.log('Listening on port: ' + port);
+    console.log('Listening on port: ' + port + ' pid: ' + process.pid);
     app.listen(port);
 }
 
