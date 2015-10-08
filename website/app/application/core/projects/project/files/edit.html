@@ -1,29 +1,6 @@
 <div class="row">
     <div class="col-xs-12 card card-right">
-        <ul class="list-inline no-bottom-margin">
-            <li>
-                <h2 class="file-color" ng-if="!ctrl.renameActive">{{ctrl.file.name}}</h2>
-                <span ng-if="ctrl.renameActive">
-                    <input type="text" class="section-as-margin" ng-model="ctrl.newName" on-enter="ctrl.renameFile()">
-                    <button class="btn btn-files" ng-click="ctrl.renameFile()">Done</button>
-                    <button class="btn btn-danger" ng-click="ctrl.newName = ''; ctrl.renameActive = false">Cancel
-                    </button>
-                </span>
-            </li>
-            <li ng-if="!ctrl.renameActive">
-                <a ng-click="ctrl.renameActive = !ctrl.renameActive" class="heading-label text-uppercase">rename</a>
-            </li>
-            <li ng-if="!ctrl.renameActive">
-                <a ng-href="{{ctrl.downloadSrc()}}"
-                   class="heading-label text-uppercase"
-                   download="{{ctrl.file.name}}">
-                    download
-                </a>
-            </li>
-            <li ng-if="!ctrl.renameActive">
-                <a ng-click="ctrl.deleteFile()" class="heading-label text-uppercase text-danger">delete</a>
-            </li>
-        </ul>
+        <file-edit-controls file="ctrl.file"></file-edit-controls>
         <ul class="list-inline text-muted no-bottom-margin">
             <li>Type: {{ctrl.file.mediatype.mime}}</li>
             <li>Owner: {{ctrl.file.owner}}</li>
@@ -44,47 +21,11 @@
         </div>
 
         <div class="row">
-            <h4 class="text-uppercase section">tags</h4>
-            <tags-input on-tag-added="ctrl.updateTags()" display-property="tag_id"
-                        on-tag-removed="ctrl.updateTags()" ng-model="ctrl.file.tags"
-                        placeholder="Add a Tag" replace-spaces-with-dashes="false">
-            </tags-input>
+            <file-tags file="ctrl.file"></file-tags>
         </div>
 
-        <div ng-if="true" class="row">
-            <ul class="list-inline no-bottom-margin">
-                <li><h4 class="text-uppercase section">notes</h4></li>
-                <li ng-if="!ctrl.addNoteActive">
-                    <a ng-click="ctrl.addNoteActive = true" class="text-small text-uppercase">
-                        <i class="fa fa-fw fa-plus"></i>add note
-                    </a>
-                </li>
-            </ul>
-
-            <div ng-if="ctrl.addNoteActive">
-                <div class="row">
-                    <edit-note note="ctrl.newNote"
-                                 save="ctrl.saveNewNote(note)"
-                                 cancel="ctrl.cancelNote(note)">
-                    </edit-note>
-                </div>
-            </div>
-            <div ng-if="!ctrl.addNoteActive" ng-repeat="note in ctrl.file.notes" class="row section">
-                    <span class="pull-right">
-                            <a ng-click="note.edit = !note.edit"><i class="fa fa-fw fa-edit"></i></a></span>
-
-                <div class="row" ng-if="!note.edit">
-                    <h4>Title: {{note.title}}</h4>
-                    <hr>
-                    <div ta-bind ng-model="note.note"></div>
-                </div>
-                <div class="row" ng-if="note.edit">
-                    <edit-note note="note"
-                                 save="ctrl.updateNote(note)"
-                                 cancel="ctrl.cancelNote(note)">
-                    </edit-note>
-                </div>
-            </div>
+        <div class="row">
+            <file-notes file="ctrl.file"></file-notes>
         </div>
     </div>
 </div>
