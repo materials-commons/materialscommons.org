@@ -19,7 +19,7 @@
     function FileEditControlsDirectiveController(mcfile, pubsub, toastr) {
         var ctrl = this;
 
-        ctrl.newName = "";
+        ctrl.newName = ctrl.file.name;
         ctrl.renameActive = false;
         ctrl.renameFile = renameFile;
         ctrl.downloadSrc = downloadSrc;
@@ -39,6 +39,7 @@
             if (ctrl.newName === "") {
                 return;
             } else if (ctrl.newName === ctrl.file.name) {
+                ctrl.renameActive = false;
                 return;
             }
             ctrl.file.name = ctrl.newName;

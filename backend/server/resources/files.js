@@ -28,7 +28,7 @@ module.exports = function(files) {
         yield next;
     }
 
-    // delete will delete a file if the file is not being used by any processes.
+    // deleteFile will attempt to delete the named file.
     function* deleteFile(next) {
         console.log('deleteFile in resources called');
         let rv = yield files.deleteFile(this.params.file_id);

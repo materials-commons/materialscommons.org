@@ -4,7 +4,7 @@
                 <span ng-if="ctrl.renameActive">
                     <input type="text" class="section-as-margin" ng-model="ctrl.newName" on-enter="ctrl.renameFile()">
                     <button class="btn btn-files" ng-click="ctrl.renameFile()">Done</button>
-                    <button class="btn btn-danger" ng-click="ctrl.newName = ''; ctrl.renameActive = false">Cancel
+                    <button class="btn btn-danger" ng-click="ctrl.newName = ctrl.file.name; ctrl.renameActive = false">Cancel
                     </button>
                 </span>
     </li>

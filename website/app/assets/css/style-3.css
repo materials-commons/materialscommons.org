@@ -103,8 +103,13 @@ h3, h4, h5, h6 {
   overflow-y: auto;
   max-height: 1200px;
   border: 1px solid #c3c3c3;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.card-side-bar.padding {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 /* Centering */
