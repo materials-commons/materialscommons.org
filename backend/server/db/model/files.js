@@ -14,7 +14,8 @@ module.exports = function(r) {
     return {
         countInProject: countInProject,
         get: get,
-        put: put
+        put: put,
+        deleteFile
     };
 
     function* countInProject(ids, projectID) {
@@ -94,10 +95,8 @@ module.exports = function(r) {
     function* updateTags(fileID, tags) {
         let rql = r.table('tag2item').getAll(fileID, {index: 'item_id'});
         let tagsFromDB = yield runQuery(rql);
-        let currentTags = [];
-        tagsFromDB.forEach(t => currentTags.push(t.tag_id));
-        let tagsFlat = [];
-        tags.forEach(t => tagsFlat.push(t.tag_id));
+        let currentTags = tagsFromDB.map(t => t.tag_id);
+        let tagsFlat = tags.map(t => t.tag_id);
         let tagsDeleted = _.difference(currentTags, tagsFlat);
         let tagsAdded = _.difference(tagsFlat, currentTags);
         if (tagsDeleted.length) {
@@ -114,16 +113,14 @@ module.exports = function(r) {
     function* deleteTags(tagsDeleted, tagsFromDB) {
             let tagsHash = [];
             tagsFromDB.forEach(t => tagsHash[t.tag_id] = t);
-            let tagsToDelete = [];
-            tagsDeleted.forEach(t => tagsToDelete.push(tagsHash[t].id));
+            let tagsToDelete = tagsDeleted.map(t => tagsHash[t].id);
             let rql = r.table('tag2item').getAll(r.args(tagsToDelete)).delete();
             return yield runQuery(rql);
     }
 
     // addTags will add tags to a file.
     function* addTags(tagsAdded, fileID) {
-        let tagsToAdd = [];
-        tagsAdded.forEach(t => tagsToAdd.push(new model.Tag2Item(t, fileID, 'datafile')));
+        let tagsToAdd = [] = tagsAdded.map(t => new model.Tag2Item(t, fileID, 'datafile'));
         let rql = r.table('tag2item').insert(tagsToAdd);
         return yield runQuery(rql);
     }
@@ -169,5 +166,28 @@ module.exports = function(r) {
         let newNote = yield db.insert('notes', n);
         let note2item = new model.Note2Item(fileID, 'datafile', newNote.id);
         return yield db.insert('note2item', note2item);
+    }
+
+    // deleteFile deletes a file if that file is not currently used in any
+    // processes or samples.
+    function *deleteFile(fileID) {
+        let f = yield get(fileID);
+
+        if (f.samples.length) {
+            return {error: 'File used in samples'};
+        } else if (f.processes.length) {
+            return {error: 'File used in processes'};
+        }
+
+        if (f.notes.length) {
+            var noteIDs = f.notes.map(n => n.id);
+            yield r.table('notes').getAll(r.args(noteIDs)).delete();
+            yield r.table('note2item').getAll(r.args(noteIDs), {index: 'note_id'}).delete();
+        }
+
+        yield r.table('datafiles').get(fileID).delete();
+        yield r.table('project2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
+        yield r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
+        return {val: f};
     }
 };
