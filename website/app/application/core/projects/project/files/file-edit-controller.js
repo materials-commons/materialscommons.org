@@ -13,8 +13,10 @@
         ctrl.renameFile = renameFile;
         ctrl.updateTags = updateTags;
         ctrl.downloadSrc = downloadSrc;
-        ctrl.saveNote = saveNote;
+        ctrl.saveNewNote = saveNewNote;
         ctrl.cancelNote = cancelNote;
+        ctrl.updateNote = updateNote;
+        ctrl.deleteFile = deleteFile;
         ctrl.addNoteActive = false;
         ctrl.newNote = {
             note: '',
@@ -23,12 +25,37 @@
 
         //////////////////////
 
-        function saveNote(note) {
-            console.log("saveNote called", note);
+        function deleteFile() {
+
         }
 
-        function cancelNote() {
-            console.log("cancelNote called");
+        function updateNote(note) {
+            var notes = [];
+            notes.push(note);
+            file.customPUT({notes: notes}).then(function(f) {
+                file.notes = f.notes;
+                note.edit = false;
+            }).catch(function(err) {
+                toastr.error("Failed updating note: " + err.error, "Error");
+            });
+        }
+
+        function saveNewNote(note) {
+            var notes = [];
+            notes.push({note: note.note, title: note.title});
+            file.customPUT({notes: notes}).then(function(f) {
+                file.notes = f.notes;
+                ctrl.addNoteActive = false;
+                ctrl.newNote.note = '';
+                ctrl.newNote.title = '';
+            }).catch(function(err) {
+                toastr.error("Failed adding note: " + err.error, "Error");
+            });
+        }
+
+        function cancelNote(note) {
+            ctrl.addNoteActive = false;
+            note.edit = false;
         }
 
         function renameFile() {

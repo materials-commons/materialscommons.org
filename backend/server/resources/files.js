@@ -19,7 +19,7 @@ module.exports = function(files) {
     // at the files.put method.
     function* put(next) {
         let file = yield parse(this);
-        let rv = yield files.put(this.params.file_id, file);
+        let rv = yield files.put(this.params.file_id, this.params.project_id, this.reqctx.user.id, file);
         if (rv.error) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
