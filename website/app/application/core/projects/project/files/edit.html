@@ -63,26 +63,26 @@
 
             <div ng-if="ctrl.addNoteActive">
                 <div class="row">
-                    <create-note note="ctrl.newNote"
-                                 save="ctrl.saveNote(note)"
-                                 cancel="ctrl.cancelNote()">
-                    </create-note>
+                    <edit-note note="ctrl.newNote"
+                                 save="ctrl.saveNewNote(note)"
+                                 cancel="ctrl.cancelNote(note)">
+                    </edit-note>
                 </div>
             </div>
-            <div ng-if="!ctrl.addNoteActive" ng-repeat="note in ctrl.file.notes" class="row">
+            <div ng-if="!ctrl.addNoteActive" ng-repeat="note in ctrl.file.notes" class="row section">
                     <span class="pull-right">
                             <a ng-click="note.edit = !note.edit"><i class="fa fa-fw fa-edit"></i></a></span>
 
                 <div class="row" ng-if="!note.edit">
-                    <div class="col-xs-8">Title: {{note.title}}</div>
+                    <h4>Title: {{note.title}}</h4>
                     <hr>
-                    <div class="col-xs-11" ta-bind ng-model="note.note"></div>
+                    <div ta-bind ng-model="note.note"></div>
                 </div>
                 <div class="row" ng-if="note.edit">
-                    <create-note note="note"
-                                 save="ctrl.saveNote(note)"
-                                 cancel="ctrl.cancelNote()">
-                    </create-note>
+                    <edit-note note="note"
+                                 save="ctrl.updateNote(note)"
+                                 cancel="ctrl.cancelNote(note)">
+                    </edit-note>
                 </div>
             </div>
         </div>
