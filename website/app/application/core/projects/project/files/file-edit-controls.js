@@ -28,7 +28,11 @@
         ////////////////////////////////
 
         function deleteFile() {
-
+            ctrl.file.remove().then(function(f) {
+                // do something here with deleting the file.
+            }).catch(function(err) {
+                toastr.error("File deletion failed: " + err.error, "Error");
+            });
         }
 
         function renameFile() {
