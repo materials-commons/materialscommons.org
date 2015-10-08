@@ -169,7 +169,7 @@ module.exports = function(r) {
     }
 
     // deleteFile deletes a file if that file is not currently used in any
-    // processes or samples.
+    // processes or samples. It also removes all the files notes.
     function *deleteFile(fileID) {
         let f = yield get(fileID);
 
