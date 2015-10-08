@@ -2,10 +2,10 @@
     module.controller('projectCreateProcess', projectCreateProcess);
     projectCreateProcess.$inject = ["$scope", "project", "processTemplates", "$modal", "pubsub",
         "mcapi", "$state", "Projects", "current", "measurements",
-        "modalInstance", "$filter"];
+        "modalInstance", "template"];
 
     function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
-                                  mcapi, $state, Projects, current, measurements, modalInstance, $filter) {
+                                  mcapi, $state, Projects, current, measurements, modalInstance, template) {
 
         pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
             addAttachment(sample);

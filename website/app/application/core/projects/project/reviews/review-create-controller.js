@@ -40,6 +40,7 @@
         };
 
         function addAttachment(item) {
+            console.log('add attachment');
             var i = _.indexOf($scope.model.attachments, function (entry) {
                 return item.id === entry.id;
             });
@@ -48,6 +49,7 @@
             } else {
                 $scope.model.attachments.splice(i, 1);
             }
+            console.dir($scope.model);
         }
 
         $scope.open = function (size) {
