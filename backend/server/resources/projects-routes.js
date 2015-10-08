@@ -21,6 +21,7 @@ module.exports = function(model) {
 
     router.get('/projects/:project_id/files/:file_id', validateProjectAccess, files.get);
     router.put('/projects/:project_id/files/:file_id', validateProjectAccess, files.put);
+    router.delete('/projects/:project_id/files/:file_id', validateProjectAccess, files.deleteFile);
 
     return router;
 };
