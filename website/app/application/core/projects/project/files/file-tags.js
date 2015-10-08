@@ -9,10 +9,13 @@
             controller: 'FileTagsDirectiveController',
             controllerAs: 'ctrl',
             bindToController: true,
-            template: '<tags-input on-tag-added="ctrl.updateTags()" display-property="tag_id"' +
-            'on-tag-removed="ctrl.updateTags()" ng-model="ctrl.file.tags"' +
-            'placeholder="Tags..." replace-spaces-with-dashes="false">' +
-            '</tags-input>'
+            template: [
+                '<h4 class="text-uppercase section">tags</h4>',
+                '<tags-input on-tag-added="ctrl.updateTags()" display-property="tag_id"',
+                '            on-tag-removed="ctrl.updateTags()" ng-model="ctrl.file.tags"',
+                '            placeholder="Tags..." replace-spaces-with-dashes="false">',
+                '</tags-input>'
+            ].join(' ')
         };
     }
 
@@ -27,7 +30,7 @@
         //////////////////////////
 
         function updateTags() {
-            file.customPUT({tags: ctrl.file.tags}).then(function () {
+            ctrl.file.customPUT({tags: ctrl.file.tags}).then(function () {
             }).catch(function (err) {
                 toastr.error("Failed updating tags: " + err.error, "Error");
             });
