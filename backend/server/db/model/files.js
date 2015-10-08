@@ -9,6 +9,7 @@ module.exports = function(r) {
     const runQuery = require('./run');
     const db = require('./db')(r);
     const _ = require('lodash');
+    const model = require('./model')(r);
 
     return {
         countInProject: countInProject,
@@ -45,7 +46,7 @@ module.exports = function(r) {
     }
 
     // update file
-    function* put(fileID, file) {
+    function* put(fileID, projectID, user, file) {
         let updateFields = {};
 
         if (file.name) {
@@ -69,13 +70,15 @@ module.exports = function(r) {
         }
 
         if (file.notes) {
-            yield updateNotes(fileID, file.notes);
+            yield updateNotes(fileID, projectID, user, file.notes);
         }
 
         let newVal = yield get(fileID);
         return {val: newVal};
     }
 
+    // validateFileName ensures that the file name doesn't already exist in
+    // the given directory. This is used when a file is being renamed.
     function* validateFileName(fileID, fileName) {
         let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).
             eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip().
@@ -85,6 +88,9 @@ module.exports = function(r) {
         return matchingNameCount === 0;
     }
 
+    // updateTags updates the list of tags associated with a file. It takes a
+    // list of tags, compares that to the current tags associated with the
+    // file and adds or removes tags as needed.
     function* updateTags(fileID, tags) {
         let rql = r.table('tag2item').getAll(fileID, {index: 'item_id'});
         let tagsFromDB = yield runQuery(rql);
@@ -104,6 +110,7 @@ module.exports = function(r) {
         return true;
     }
 
+    // deleteTags will delete tags associated with a file.
     function* deleteTags(tagsDeleted, tagsFromDB) {
             let tagsHash = [];
             tagsFromDB.forEach(t => tagsHash[t.tag_id] = t);
@@ -113,14 +120,54 @@ module.exports = function(r) {
             return yield runQuery(rql);
     }
 
+    // addTags will add tags to a file.
     function* addTags(tagsAdded, fileID) {
         let tagsToAdd = [];
-        tagsAdded.forEach(t => tagsToAdd.push({tag_id: t, item_id: fileID, item_type: 'datafile'}));
+        tagsAdded.forEach(t => tagsToAdd.push(new model.Tag2Item(t, fileID, 'datafile')));
         let rql = r.table('tag2item').insert(tagsToAdd);
         return yield runQuery(rql);
     }
 
-    function* updateNotes(fileID, notes) {
-        return "";
+    // updateNotes adds, modifies or deletes notes associated with a file. It
+    // takes a list of notes and for each note determines if that note is being
+    // updated, removed, or created.
+    function* updateNotes(fileID, projectID, user, notes) {
+        for (let note of notes) {
+            if (note.id && note.delete) {
+                yield deleteNote(note);
+            } else if (note.id) {
+                yield updateNote(note);
+            } else {
+                yield addNote(note, fileID, user, projectID);
+            }
+        }
+        return true;
+    }
+
+    // deleteNote deletes a given note.
+    function* deleteNote(note) {
+        yield r.table('notes').get(note.id).delete();
+        return yield r.table('note2item').getAll(note.id, {index: 'note_id'}).delete();
+    }
+
+    // updateNote updates a given note. The only fields that can be changed are the title and/or the note field.
+    function* updateNote(note) {
+        let n = {};
+        if (note.title) {
+            n.title = note.title;
+        }
+        if (note.note) {
+            n.note = note.note;
+        }
+        n.mtime = r.now();
+        return yield r.table('notes').get(note.id).update(n);
+    }
+
+    // addNote adds a new note and associates it with the given file.
+    function* addNote(note, fileID, owner, projectID) {
+        let n = new model.Note(note.title, note.note, projectID, owner);
+        let newNote = yield db.insert('notes', n);
+        let note2item = new model.Note2Item(fileID, 'datafile', newNote.id);
+        return yield db.insert('note2item', note2item);
     }
 };

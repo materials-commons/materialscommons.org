@@ -1,6 +1,6 @@
 (function (module) {
-    module.directive('createNote', createNoteDirective);
-    function createNoteDirective() {
+    module.directive('editNote', editNoteDirective);
+    function editNoteDirective() {
         return {
             restrict: "E",
             scope: {
@@ -8,7 +8,7 @@
                 save: "&",
                 cancel: "&"
             },
-            templateUrl: 'application/directives/create-note.html'
+            templateUrl: 'application/directives/edit-note.html'
         };
     }
 }(angular.module('materialscommons')));
