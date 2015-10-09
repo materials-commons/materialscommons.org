@@ -4,6 +4,7 @@ module.exports = function(files) {
 
     return {
         get: get,
+        getList: getList,
         put: put,
         deleteFile
     };
@@ -13,6 +14,12 @@ module.exports = function(files) {
     // get retrieves a file.
     function* get(next) {
         this.body = yield files.get(this.params.file_id);
+        yield next;
+    }
+
+    function* getList(next) {
+        let args = yield parse(this);
+        this.body = yield files.getList(this.params.project_id, args.file_ids);
         yield next;
     }
 

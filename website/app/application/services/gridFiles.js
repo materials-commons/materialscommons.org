@@ -47,7 +47,7 @@
                 data: {
                     name: entry.name,
                     _type: 'file',
-                    size: bytesToSizeStr(entry.size),
+                    size: entry.size,
                     mediatype: entry.mediatype,
                     id: entry.id
                 }
@@ -77,6 +77,15 @@
             toGridChildren(fentry) {
                 fentry.children.sort(compareFileEntry);
                 return createGridChildren(fentry.children);
+            },
+
+            findEntry(files, id) {
+                var treeModel = new TreeModel(),
+                    root = treeModel.parse(files);
+                var entry = root.first({strategy: 'pre'}, function (node) {
+                    return node.model.data.id === id;
+                });
+                return entry;
             }
         }
     }
