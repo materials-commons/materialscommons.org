@@ -18,7 +18,7 @@
                     </p>
 
                     <p class="text-small">{{sample.description}}</p>
-                    <display-image-tab files-list="sample.linked_files"></display-image-tab>
+                    <display-image-tab sample-obj="sample"></display-image-tab>
                 </div>
             </td>
             <td>
@@ -26,8 +26,7 @@
                     <ul style="list-style-type: circle;">
                         <li ng-repeat="property in sample.properties">
                             {{property.name}} :
-                            <display-measurement project="project"
-                                                 measure="property.best_measure[0]"></display-measurement>
+                            <display-measurement project="project" measure="property.best_measure[0]"></display-measurement>
                         </li>
                     </ul>
                 </div>

@@ -75,9 +75,23 @@ def add_samples(projects_by_id, project_ids):
                    .eq_join('sample_id', r.table('samples'))
                    .zip()
                    .order_by('name')
-                   .run(g.conn, time_format='raw'))
-    for sample in samples:
-        sample['properties'] = {}
+                    .merge(lambda sample: {
+                        'properties': r.table('propertyset2property')
+                        .get_all(sample['property_set_id'], index= 'property_set_id')
+                        .eq_join('property_id', r.table('properties')).zip()
+                        .order_by('name').merge(lambda property: {
+                        'best_measure': r.table('best_measure_history')\
+                        .get_all(property['best_measure_id'])
+                                            .eq_join('measurement_id',
+                        r.table('measurements')).zip().coerce_to('array')
+                    }),
+                    'linked_files': r.table('sample2datafile')
+                       .get_all(sample['id'],
+                    index='sample_id').eq_join('datafile_id',
+                    r.table('datafiles')).zip().coerce_to('array')
+                }).coerce_to('array').run(g.conn, time_format='raw'))
+    # for sample in samples:
+    #     sample['properties'] = {}
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 

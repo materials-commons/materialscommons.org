@@ -4,11 +4,11 @@
     function displayImageDirective() {
         return {
             scope: {
-                filesList : "="
+                sampleObj : "="
             },
             restrict: "E",
             controller: "displayImageTabDirectiveController",
-            controllerAs: 'imageTab',
+            controllerAs: 'ctrl',
             bindToController: true,
             templateUrl: "application/core/projects/project/processes/display-image-tab.html"
         };
